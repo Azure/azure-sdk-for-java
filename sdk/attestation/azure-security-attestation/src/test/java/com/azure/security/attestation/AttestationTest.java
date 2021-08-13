@@ -3,21 +3,31 @@
 package com.azure.security.attestation;
 
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestMode;
-import com.azure.security.attestation.models.AttestSgxEnclaveRequest;
+import com.azure.core.util.BinaryData;
+import com.azure.core.util.Context;
+import com.azure.security.attestation.models.AttestationData;
+import com.azure.security.attestation.models.AttestationDataInterpretation;
+import com.azure.security.attestation.models.AttestationOptions;
 import com.azure.security.attestation.models.AttestationResponse;
-import com.azure.security.attestation.models.DataType;
-import com.azure.security.attestation.models.RuntimeData;
-import com.nimbusds.jwt.JWTClaimsSet;
+import com.azure.security.attestation.models.AttestationResult;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.test.StepVerifier;
 
 import java.util.Arrays;
 import java.util.Base64;
+import java.util.Map;
 
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class AttestationTest extends AttestationClientTestBase {
@@ -33,7 +43,7 @@ public class AttestationTest extends AttestationClientTestBase {
             + "ICB9CiAgICAgICAgfQogICAgICAgIA";
 
 
-    private final String sgxQuote =
+    private final String openEnclaveReport =
         "AQAAAAIAAADkEQAAAAAAAAMAAg"
         + "AAAAAABQAKAJOacjP3nEyplAoNs5V_Bgc42MPzGo7hPWS_h-3tExJrAAAAABERAwX_g"
         + "AYAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAUAAAAAAAAA"
@@ -135,62 +145,425 @@ public class AttestationTest extends AttestationClientTestBase {
 
         AttestationClientBuilder attestationBuilder = getBuilder(httpClient, clientUri);
 
-        AttestationClient client = attestationBuilder.buildAttestationClient();
+        AttestationClient client = attestationBuilder.buildClient();
 
-        byte[] decodedRuntimeData = Base64.getUrlDecoder().decode(runtimeData);
-        byte[] decodedSgxQuote = Base64.getUrlDecoder().decode(sgxQuote);
+        BinaryData decodedRuntimeData = BinaryData.fromBytes(Base64.getUrlDecoder().decode(runtimeData));
+        BinaryData decodedOpenEnclaveReport = BinaryData.fromBytes(Base64.getUrlDecoder().decode(openEnclaveReport));
+        BinaryData sgxQuote = BinaryData.fromBytes(Arrays.copyOfRange(decodedOpenEnclaveReport.toBytes(), 0x10, decodedOpenEnclaveReport.toBytes().length));
 
-        AttestSgxEnclaveRequest request = new AttestSgxEnclaveRequest()
-            .setQuote(Arrays.copyOfRange(decodedSgxQuote, 0x10, decodedSgxQuote.length))
-            .setRuntimeData(
-                new RuntimeData()
-                    .setDataType(DataType.BINARY)
-                    .setData(decodedRuntimeData)
-            );
-        AttestationResponse response = client.attestSgxEnclave(request);
+        AttestationOptions request = new AttestationOptions(sgxQuote)
+            .setRunTimeData(new AttestationData(decodedRuntimeData, AttestationDataInterpretation.BINARY));
+        AttestationResult result = client.attestSgxEnclave(request);
 
-        JWTClaimsSet claims = verifyAttestationToken(httpClient, clientUri, response.getToken()).block();
-
-        assertNotNull(claims);
-        assertTrue(claims.getClaims().containsKey("iss"));
-
-        // In playback mode, the client URI is bogus and thus cannot be relied on for test purposes.
-        if (testContextManager.getTestMode() != TestMode.PLAYBACK) {
-            Assertions.assertEquals(clientUri, claims.getClaims().get("iss"));
-        }
-
+        verifyAttestationResult(clientUri, result, decodedRuntimeData, false);
     }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getAttestationClients")
+    void testAttestSgxEnclaveNoRuntimeData(HttpClient httpClient, String clientUri) {
+
+        AttestationClientBuilder attestationBuilder = getBuilder(httpClient, clientUri);
+
+        AttestationClient client = attestationBuilder.buildClient();
+
+        BinaryData decodedRuntimeData = BinaryData.fromBytes(Base64.getUrlDecoder().decode(runtimeData));
+        BinaryData decodedOpenEnclaveReport = BinaryData.fromBytes(Base64.getUrlDecoder().decode(openEnclaveReport));
+        BinaryData sgxQuote = BinaryData.fromBytes(Arrays.copyOfRange(decodedOpenEnclaveReport.toBytes(), 0x10, decodedOpenEnclaveReport.toBytes().length));
+
+        AttestationResult result = client.attestSgxEnclave(sgxQuote);
+        verifyAttestationResult(clientUri, result, null, false);
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getAttestationClients")
+    void testAttestSgxEnclaveRuntimeJson(HttpClient httpClient, String clientUri) {
+
+        AttestationClientBuilder attestationBuilder = getBuilder(httpClient, clientUri);
+
+        AttestationClient client = attestationBuilder.buildClient();
+
+        BinaryData decodedRuntimeData = BinaryData.fromBytes(Base64.getUrlDecoder().decode(runtimeData));
+        BinaryData decodedOpenEnclaveReport = BinaryData.fromBytes(Base64.getUrlDecoder().decode(openEnclaveReport));
+        BinaryData sgxQuote = BinaryData.fromBytes(Arrays.copyOfRange(decodedOpenEnclaveReport.toBytes(), 0x10, decodedOpenEnclaveReport.toBytes().length));
+
+        AttestationOptions request = new AttestationOptions(sgxQuote)
+            .setRunTimeData(new AttestationData(decodedRuntimeData, AttestationDataInterpretation.JSON));
+
+        AttestationResult result = client.attestSgxEnclave(request);
+        verifyAttestationResult(clientUri, result, decodedRuntimeData, true);
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getAttestationClients")
+    void testAttestSgxEnclaveDraftPolicy(HttpClient httpClient, String clientUri) {
+
+        AttestationClientBuilder attestationBuilder = getBuilder(httpClient, clientUri);
+
+        AttestationClient client = attestationBuilder.buildClient();
+
+        BinaryData decodedRuntimeData = BinaryData.fromBytes(Base64.getUrlDecoder().decode(runtimeData));
+        BinaryData decodedOpenEnclaveReport = BinaryData.fromBytes(Base64.getUrlDecoder().decode(openEnclaveReport));
+        BinaryData sgxQuote = BinaryData.fromBytes(Arrays.copyOfRange(decodedOpenEnclaveReport.toBytes(), 0x10, decodedOpenEnclaveReport.toBytes().length));
+
+        AttestationOptions request = new AttestationOptions(sgxQuote)
+            .setDraftPolicyForAttestation("version=1.0; authorizationrules{=> permit();}; issuancerules{};")
+            .setRunTimeData(new AttestationData(decodedRuntimeData, AttestationDataInterpretation.JSON));
+
+        Response<AttestationResult> response = client.attestSgxEnclaveWithResponse(request, Context.NONE);
+        assertTrue(response instanceof AttestationResponse);
+        AttestationResponse<AttestationResult> attestResponse = (AttestationResponse<AttestationResult>) response;
+
+        // When a draft policy is specified, the token is unsecured.
+        assertTrue(attestResponse.getToken().getAlgorithm() == "none");
+
+        verifyAttestationResult(clientUri, response.getValue(), decodedRuntimeData, true);
+    }
+
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getAttestationClients")
     void testAttestSgxEnclaveAsync(HttpClient httpClient, String clientUri) {
 
         AttestationClientBuilder attestationBuilder = getBuilder(httpClient, clientUri);
-        AttestationAsyncClient client = attestationBuilder.buildAttestationAsyncClient();
+        AttestationAsyncClient client = attestationBuilder.buildAsyncClient();
 
-        byte[] decodedRuntimeData = Base64.getUrlDecoder().decode(runtimeData);
-        byte[] decodedSgxQuote = Base64.getUrlDecoder().decode(sgxQuote);
+        BinaryData decodedRuntimeData = BinaryData.fromBytes(Base64.getUrlDecoder().decode(runtimeData));
+        BinaryData decodedOpenEnclaveReport = BinaryData.fromBytes(Base64.getUrlDecoder().decode(openEnclaveReport));
+        BinaryData sgxQuote = BinaryData.fromBytes(Arrays.copyOfRange(decodedOpenEnclaveReport.toBytes(), 0x10, decodedOpenEnclaveReport.toBytes().length));
 
-        AttestSgxEnclaveRequest request = new AttestSgxEnclaveRequest()
-            .setQuote(Arrays.copyOfRange(decodedSgxQuote, 0x10, decodedSgxQuote.length))
-            .setRuntimeData(
-                new RuntimeData()
-                    .setDataType(DataType.BINARY)
-                    .setData(decodedRuntimeData)
-            );
+        AttestationOptions request = new AttestationOptions(sgxQuote)
+            .setRunTimeData(new AttestationData(decodedRuntimeData, AttestationDataInterpretation.BINARY));
 
-        StepVerifier.create(client.attestSgxEnclave(request)
-                .flatMap(response -> verifyAttestationToken(httpClient, clientUri, response.getToken())))
-            .assertNext(claims -> {
-                assertTrue(claims.getClaims().containsKey("iss"));
-
-                // In playback mode, the client URI is bogus and thus cannot be relied on for test purposes.
-                if (testContextManager.getTestMode() != TestMode.PLAYBACK) {
-                    Assertions.assertEquals(clientUri, claims.getClaims().get("iss"));
-                }
+        StepVerifier.create(client.attestSgxEnclave(request))
+            .assertNext(result -> {
+                verifyAttestationResult(clientUri, result, decodedRuntimeData, false);
             })
             .expectComplete()
             .verify();
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getAttestationClients")
+    void testAttestSgxEnclaveNoRuntimeDataAsync(HttpClient httpClient, String clientUri) {
+
+        AttestationClientBuilder attestationBuilder = getBuilder(httpClient, clientUri);
+
+        AttestationAsyncClient client = attestationBuilder.buildAsyncClient();
+
+        BinaryData decodedRuntimeData = BinaryData.fromBytes(Base64.getUrlDecoder().decode(runtimeData));
+        BinaryData decodedOpenEnclaveReport = BinaryData.fromBytes(Base64.getUrlDecoder().decode(openEnclaveReport));
+        BinaryData sgxQuote = BinaryData.fromBytes(Arrays.copyOfRange(decodedOpenEnclaveReport.toBytes(), 0x10, decodedOpenEnclaveReport.toBytes().length));
+
+        AttestationOptions request = new AttestationOptions(sgxQuote);
+
+        StepVerifier.create(client.attestSgxEnclave(request))
+            .assertNext(result -> verifyAttestationResult(clientUri, result, null, false))
+            .expectComplete()
+            .verify();
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getAttestationClients")
+    void testAttestSgxEnclaveRuntimeJsonAsync(HttpClient httpClient, String clientUri) {
+
+        AttestationClientBuilder attestationBuilder = getBuilder(httpClient, clientUri);
+
+        AttestationAsyncClient client = attestationBuilder.buildAsyncClient();
+
+        BinaryData decodedRuntimeData = BinaryData.fromBytes(Base64.getUrlDecoder().decode(runtimeData));
+        BinaryData decodedOpenEnclaveReport = BinaryData.fromBytes(Base64.getUrlDecoder().decode(openEnclaveReport));
+        BinaryData sgxQuote = BinaryData.fromBytes(Arrays.copyOfRange(decodedOpenEnclaveReport.toBytes(), 0x10, decodedOpenEnclaveReport.toBytes().length));
+
+        AttestationOptions options = new AttestationOptions(sgxQuote)
+            .setRunTimeData(new AttestationData(decodedRuntimeData, AttestationDataInterpretation.JSON));
+
+        StepVerifier.create(client.attestSgxEnclave(options))
+            .assertNext(result -> verifyAttestationResult(clientUri, result, decodedRuntimeData, true))
+            .expectComplete()
+            .verify();
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getAttestationClients")
+    void testAttestSgxEnclaveDraftPolicyAsync(HttpClient httpClient, String clientUri) {
+
+        AttestationClientBuilder attestationBuilder = getBuilder(httpClient, clientUri);
+
+        AttestationAsyncClient client = attestationBuilder.buildAsyncClient();
+
+        BinaryData decodedRuntimeData = BinaryData.fromBytes(Base64.getUrlDecoder().decode(runtimeData));
+        BinaryData decodedOpenEnclaveReport = BinaryData.fromBytes(Base64.getUrlDecoder().decode(openEnclaveReport));
+        BinaryData sgxQuote = BinaryData.fromBytes(Arrays.copyOfRange(decodedOpenEnclaveReport.toBytes(), 0x10, decodedOpenEnclaveReport.toBytes().length));
+
+        AttestationOptions request = new AttestationOptions(sgxQuote)
+            .setDraftPolicyForAttestation("version=1.0; authorizationrules{=> permit();}; issuancerules{};")
+            .setRunTimeData(new AttestationData(decodedRuntimeData, AttestationDataInterpretation.JSON));
+
+        StepVerifier.create(client.attestSgxEnclaveWithResponse(request))
+            .assertNext(response -> {
+                assertTrue(response instanceof AttestationResponse);
+                AttestationResponse<AttestationResult> attestResponse = (AttestationResponse<AttestationResult>) response;
+                verifyAttestationResult(clientUri, response.getValue(), decodedRuntimeData, true);
+            })
+            .expectComplete()
+            .verify();
+
+    }
+
+    @Test()
+    void testAttestationOptions() {
+        BinaryData decodedRuntimeData = BinaryData.fromBytes(Base64.getUrlDecoder().decode(runtimeData));
+        BinaryData decodedOpenEnclaveReport = BinaryData.fromBytes(Base64.getUrlDecoder().decode(openEnclaveReport));
+
+        AttestationOptions request1 = new AttestationOptions(decodedOpenEnclaveReport);
+        AttestationOptions request2 = new AttestationOptions(decodedOpenEnclaveReport)
+            .setInitTimeData(new AttestationData(decodedRuntimeData, AttestationDataInterpretation.JSON))
+            .setInitTimeData(new AttestationData(decodedOpenEnclaveReport, AttestationDataInterpretation.BINARY))
+            .setRunTimeData(new AttestationData(BinaryData.fromBytes(new byte[] { 1, 2, 3, 4, 5}), AttestationDataInterpretation.BINARY));
+
+        assertArrayEquals(decodedOpenEnclaveReport.toBytes(), request2.getInitTimeData().getData().toBytes());
+        assertArrayEquals(new byte[] { 1, 2, 3, 4, 5}, request2.getRunTimeData().getData().toBytes());
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getAttestationClients")
+    void testAttestOpenEnclave(HttpClient httpClient, String clientUri) {
+
+        AttestationClientBuilder attestationBuilder = getBuilder(httpClient, clientUri);
+
+        AttestationClient client = attestationBuilder.buildClient();
+
+        BinaryData decodedRuntimeData = BinaryData.fromBytes(Base64.getUrlDecoder().decode(runtimeData));
+        BinaryData decodedOpenEnclaveReport = BinaryData.fromBytes(Base64.getUrlDecoder().decode(openEnclaveReport));
+
+        AttestationOptions request = new AttestationOptions(decodedOpenEnclaveReport)
+            .setRunTimeData(new AttestationData(decodedRuntimeData, AttestationDataInterpretation.BINARY));
+        AttestationResult result = client.attestOpenEnclave(request);
+
+        verifyAttestationResult(clientUri, result, decodedRuntimeData, false);
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getAttestationClients")
+    void testAttestOpenEnclaveNoRuntimeData(HttpClient httpClient, String clientUri) {
+
+        AttestationClientBuilder attestationBuilder = getBuilder(httpClient, clientUri);
+
+        AttestationClient client = attestationBuilder.buildClient();
+
+        BinaryData decodedOpenEnclaveReport = BinaryData.fromBytes(Base64.getUrlDecoder().decode(openEnclaveReport));
+
+        AttestationOptions request = new AttestationOptions(decodedOpenEnclaveReport);
+
+        AttestationResult result = client.attestOpenEnclave(request);
+        verifyAttestationResult(clientUri, result, null, false);
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getAttestationClients")
+    void testAttestOpenEnclaveRuntimeJson(HttpClient httpClient, String clientUri) {
+
+        AttestationClientBuilder attestationBuilder = getBuilder(httpClient, clientUri);
+
+        AttestationClient client = attestationBuilder.buildClient();
+
+        BinaryData decodedRuntimeData = BinaryData.fromBytes(Base64.getUrlDecoder().decode(runtimeData));
+        BinaryData decodedOpenEnclaveReport = BinaryData.fromBytes(Base64.getUrlDecoder().decode(openEnclaveReport));
+
+        AttestationOptions request = new AttestationOptions(decodedOpenEnclaveReport)
+            .setRunTimeData(new AttestationData(decodedRuntimeData, AttestationDataInterpretation.JSON));
+
+        AttestationResult result = client.attestOpenEnclave(request);
+        verifyAttestationResult(clientUri, result, decodedRuntimeData, true);
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getAttestationClients")
+    void testAttestOpenEnclaveDraftPolicy(HttpClient httpClient, String clientUri) {
+
+        AttestationClientBuilder attestationBuilder = getBuilder(httpClient, clientUri);
+
+        AttestationClient client = attestationBuilder.buildClient();
+
+        BinaryData decodedRuntimeData = BinaryData.fromBytes(Base64.getUrlDecoder().decode(runtimeData));
+        BinaryData decodedOpenEnclaveReport = BinaryData.fromBytes(Base64.getUrlDecoder().decode(openEnclaveReport));
+
+        AttestationOptions request = new AttestationOptions(decodedOpenEnclaveReport)
+            .setDraftPolicyForAttestation("version=1.0; authorizationrules{=> permit();}; issuancerules{};")
+            .setRunTimeData(new AttestationData(decodedRuntimeData, AttestationDataInterpretation.JSON));
+
+        Response<AttestationResult> response = client.attestOpenEnclaveWithResponse(request, Context.NONE);
+        assertTrue(response instanceof AttestationResponse);
+        AttestationResponse<AttestationResult> attestResponse = (AttestationResponse<AttestationResult>) response;
+
+        // When a draft policy is specified, the token is unsecured.
+        assertTrue(attestResponse.getToken().getAlgorithm() == "none");
+
+        verifyAttestationResult(clientUri, response.getValue(), decodedRuntimeData, true);
+    }
+
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getAttestationClients")
+    void testAttestOpenEnclaveAsync(HttpClient httpClient, String clientUri) {
+
+        AttestationClientBuilder attestationBuilder = getBuilder(httpClient, clientUri);
+        AttestationAsyncClient client = attestationBuilder.buildAsyncClient();
+
+        BinaryData decodedRuntimeData = BinaryData.fromBytes(Base64.getUrlDecoder().decode(runtimeData));
+        BinaryData decodedOpenEnclaveReport = BinaryData.fromBytes(Base64.getUrlDecoder().decode(openEnclaveReport));
+
+        AttestationOptions options = new AttestationOptions(decodedOpenEnclaveReport)
+            .setRunTimeData(new AttestationData(decodedRuntimeData, AttestationDataInterpretation.BINARY));
+
+        StepVerifier.create(client.attestOpenEnclave(options))
+            .assertNext(result -> verifyAttestationResult(clientUri, result, decodedRuntimeData, false))
+            .expectComplete()
+            .verify();
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getAttestationClients")
+    void testAttestOpenEnclaveNoRuntimeDataAsync(HttpClient httpClient, String clientUri) {
+
+        AttestationClientBuilder attestationBuilder = getBuilder(httpClient, clientUri);
+
+        AttestationAsyncClient client = attestationBuilder.buildAsyncClient();
+
+        BinaryData decodedOpenEnclaveReport = BinaryData.fromBytes(Base64.getUrlDecoder().decode(openEnclaveReport));
+
+        StepVerifier.create(client.attestOpenEnclave(decodedOpenEnclaveReport))
+            .assertNext(result -> verifyAttestationResult(clientUri, result, null, false))
+            .expectComplete()
+            .verify();
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getAttestationClients")
+    void testAttestOpenEnclaveRuntimeJsonAsync(HttpClient httpClient, String clientUri) {
+
+        AttestationClientBuilder attestationBuilder = getBuilder(httpClient, clientUri);
+
+        AttestationAsyncClient client = attestationBuilder.buildAsyncClient();
+
+        BinaryData decodedRuntimeData = BinaryData.fromBytes(Base64.getUrlDecoder().decode(runtimeData));
+        BinaryData decodedOpenEnclaveReport = BinaryData.fromBytes(Base64.getUrlDecoder().decode(openEnclaveReport));
+
+        AttestationOptions options = new AttestationOptions(decodedOpenEnclaveReport)
+            .setRunTimeData(new AttestationData(decodedRuntimeData, AttestationDataInterpretation.JSON));
+
+        StepVerifier.create(client.attestOpenEnclave(options))
+            .assertNext(result -> verifyAttestationResult(clientUri, result, decodedRuntimeData, true))
+            .expectComplete()
+            .verify();
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getAttestationClients")
+    void testAttestOpenEnclaveDraftPolicyAsync(HttpClient httpClient, String clientUri) {
+
+        AttestationClientBuilder attestationBuilder = getBuilder(httpClient, clientUri);
+
+        AttestationAsyncClient client = attestationBuilder.buildAsyncClient();
+
+        BinaryData decodedRuntimeData = BinaryData.fromBytes(Base64.getUrlDecoder().decode(runtimeData));
+        BinaryData decodedOpenEnclaveReport = BinaryData.fromBytes(Base64.getUrlDecoder().decode(openEnclaveReport));
+
+        AttestationOptions options = new AttestationOptions(decodedOpenEnclaveReport)
+            .setDraftPolicyForAttestation("version=1.0; authorizationrules{=> permit();}; issuancerules{};")
+            .setRunTimeData(new AttestationData(decodedRuntimeData, AttestationDataInterpretation.JSON));
+
+        StepVerifier.create(client.attestOpenEnclaveWithResponse(options))
+            .assertNext(response -> {
+                assertTrue(response instanceof AttestationResponse);
+                AttestationResponse<AttestationResult> attestResponse = (AttestationResponse<AttestationResult>) response;
+                verifyAttestationResult(clientUri, response.getValue(), decodedRuntimeData, true);
+            })
+            .expectComplete()
+            .verify();
+
+    }
+
+
+    private void verifyAttestationResult(String clientUri, AttestationResult result, BinaryData runtimeData, boolean expectJson) {
+        assertNotNull(result.getIssuer());
+
+        // In playback mode, the client URI is bogus and thus cannot be relied on for test purposes.
+        if (testContextManager.getTestMode() != TestMode.PLAYBACK) {
+            Assertions.assertEquals(clientUri, result.getIssuer());
+        }
+
+        assertNotNull(result.getMrEnclave());
+        assertNotNull(result.getMrSigner());
+        assertNotNull(result.getSvn());
+        assertNull(result.getNonce());
+
+        if (expectJson) {
+            ObjectMapper mapper = new ObjectMapper();
+            assertTrue(result.getRuntimeClaims() instanceof Map);
+            @SuppressWarnings("unchecked")
+            Map<String, Object> runtimeClaims = (Map<String, Object>) result.getRuntimeClaims();
+            @SuppressWarnings("unchecked")
+            Map<String, Object> expectedClaims = assertDoesNotThrow(() -> (Map<String, Object>) mapper.readValue(runtimeData.toBytes(), Object.class));
+            assertObjectEqual(expectedClaims, runtimeClaims);
+        } else if (runtimeData != null) {
+            Assertions.assertArrayEquals(runtimeData.toBytes(), result.getEnclaveHeldData().toBytes());
+        }
+    }
+
+    void assertObjectEqual(Map<String, Object> expected, Map<String, Object> actual) {
+        expected.forEach((key, o) -> {
+            logger.verbose("Key: " + key);
+            assertTrue(actual.containsKey(key));
+            if (expected.get(key) instanceof Map) {
+                assertTrue(actual.get(key) instanceof Map);
+                @SuppressWarnings("unchecked")
+                Map<String, Object> expectedInner = (Map<String, Object>) expected.get(key);
+                @SuppressWarnings("unchecked")
+                Map<String, Object> actualInner = (Map<String, Object>) actual.get(key);
+                assertObjectEqual(expectedInner, actualInner);
+            } else {
+                assertEquals(o, actual.get(key));
+            }
+        });
+
+    }
+
+
+    /**
+     * This test cannot be written until the setPolicy APIs are written because it depends on
+     * setting attestation policy :(.
+     */
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getAttestationClients")
+    void attestTpm() {
+    }
+
+    /**
+     * This test cannot be written until the setPolicy APIs are written because it depends on
+     * setting attestation policy :(.
+     */
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getAttestationClients")
+    void attestTpmAsync() {
+    }
+
+    /**
+     * This test cannot be written until the setPolicy APIs are written because it depends on
+     * setting attestation policy :(.
+     */
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getAttestationClients")
+    void attestTpmWithResponse() {
+    }
+
+    /**
+     * This test cannot be written until the setPolicy APIs are written because it depends on
+     * setting attestation policy :(.
+     */
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getAttestationClients")
+    void attestTpmWithResponseAsync() {
     }
 }
 

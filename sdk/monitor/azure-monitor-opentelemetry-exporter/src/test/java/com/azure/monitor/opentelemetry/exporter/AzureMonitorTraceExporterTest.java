@@ -52,6 +52,16 @@ public class AzureMonitorTraceExporterTest extends MonitorExporterClientTestBase
         Assertions.assertTrue(export.isSuccess());
     }
 
+    @Test
+    public void testExportRequestDataWithAuthentication() {
+        AzureMonitorTraceExporter azureMonitorTraceExporter = getClientBuilderWithAuthentication()
+            .connectionString("InstrumentationKey=ikey;IngestionEndpoint=https://testendpoint.com")
+            .buildTraceExporter();
+        CompletableResultCode export = azureMonitorTraceExporter.export(Collections.singleton(new RequestSpanData()));
+        Assertions.assertTrue(export.isDone());
+        Assertions.assertTrue(export.isSuccess());
+    }
+
     static class RequestSpanData implements SpanData {
 
         @Override
