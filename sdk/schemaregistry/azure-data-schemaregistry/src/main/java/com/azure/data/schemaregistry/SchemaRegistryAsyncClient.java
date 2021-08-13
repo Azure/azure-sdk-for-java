@@ -171,12 +171,12 @@ public final class SchemaRegistryAsyncClient {
                 }
 
                 SerializationType serializationType =
-                    SerializationType.fromString(response.getDeserializedHeaders().getXSchemaType());
+                    SerializationType.fromString(response.getDeserializedHeaders().getSchemaType());
 
                 SchemaProperties schemaObject = new SchemaProperties(schemaId,
                     serializationType,
                     null,
-                    response.getValue().getBytes(SCHEMA_REGISTRY_SERVICE_ENCODING));
+                    response.getValue());
 
                 idCache.putIfAbsent(schemaId, schemaObject);
                 logger.verbose("Cached schema object. Path: '{}'", schemaId);
