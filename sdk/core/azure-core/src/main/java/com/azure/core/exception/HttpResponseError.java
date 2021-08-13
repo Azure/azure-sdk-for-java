@@ -3,14 +3,12 @@
 
 package com.azure.core.exception;
 
-import java.io.Serializable;
 import java.util.List;
 
 /**
  * This class represents the error details of an HTTP response.
  */
-public final class HttpResponseError implements Serializable {
-    private static final long serialVersionUID = 6945948383457635564L;
+public final class HttpResponseError {
 
     private final String code;
     private final String message;

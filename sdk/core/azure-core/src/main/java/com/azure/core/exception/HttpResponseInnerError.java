@@ -3,13 +3,11 @@
 
 package com.azure.core.exception;
 
-import java.io.Serializable;
 
 /**
  * The inner error of a {@link HttpResponseError}.
  */
-public final class HttpResponseInnerError implements Serializable {
-    private static final long serialVersionUID = 3633446699792897071L;
+public final class HttpResponseInnerError {
 
     private String code;
     private HttpResponseInnerError innerError;
