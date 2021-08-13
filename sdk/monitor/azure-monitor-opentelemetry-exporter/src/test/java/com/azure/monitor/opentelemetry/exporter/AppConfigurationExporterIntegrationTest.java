@@ -50,7 +50,7 @@ public class AppConfigurationExporterIntegrationTest extends AzureMonitorTraceEx
         assertTrue(exporterCountDown.await(60, TimeUnit.SECONDS));
     }
 
-    @Disabled
+    @Disabled("Multiple tests fail to trigger end span - https://github.com/Azure/azure-sdk-for-java/issues/23567")
     @Test
     public void testDisableTracing() throws InterruptedException {
         CountDownLatch appConfigCountDown = new CountDownLatch(1);

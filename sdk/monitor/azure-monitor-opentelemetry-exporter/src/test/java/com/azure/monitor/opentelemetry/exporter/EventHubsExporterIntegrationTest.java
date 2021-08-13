@@ -68,7 +68,7 @@ public class EventHubsExporterIntegrationTest extends AzureMonitorTraceExporterT
         assertTrue(exporterCountDown.await(5, TimeUnit.SECONDS));
     }
 
-    @Disabled
+    @Disabled("Processor integration tests require separate consumer group to not have partition contention in CI - https://github.com/Azure/azure-sdk-for-java/issues/23567")
     @Test
     public void processorTest() throws InterruptedException {
         CountDownLatch exporterCountDown = new CountDownLatch(3);
