@@ -1,22 +1,23 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.services.visualstudio.com/v2.1/track",
+    "Uri" : "https://REDACTED.in.applicationinsights.azure.com/v2.1/track",
     "Headers" : {
+      "User-Agent" : "azsdk-java-azure-monitor-opentelemetry-exporter/1.0.0-beta.5 (11.0.8; Windows 10; 10.0)",
       "Content-Type" : "application/json"
     },
     "Response" : {
+      "content-length" : "49",
       "Strict-Transport-Security" : "max-age=31536000",
       "Access-Control-Allow-Origin" : "*",
       "X-Content-Type-Options" : "nosniff",
-      "x-ms-session-id" : "CF1D0F8E-AB7A-47FF-8272-4E30E8689700",
+      "x-ms-session-id" : "4A1535E9-8B48-4BC2-93C2-D7B86F43CCE6",
       "retry-after" : "0",
-      "Content-Length" : "49",
       "Access-Control-Max-Age" : "3600",
       "StatusCode" : "200",
-      "Body" : "{\"itemsReceived\":3,\"itemsAccepted\":3,\"errors\":[]}",
-      "Date" : "Mon, 05 Oct 2020 06:13:57 GMT",
+      "Body" : "{\"itemsReceived\":1,\"itemsAccepted\":1,\"errors\":[]}",
       "Access-Control-Allow-Headers" : "Origin, X-Requested-With, Content-Name, Content-Type, Accept, Sdk-Context",
+      "Date" : "Thu, 15 Jul 2021 20:28:17 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
