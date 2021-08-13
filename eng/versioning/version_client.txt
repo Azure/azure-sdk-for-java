@@ -114,7 +114,7 @@ com.azure:azure-security-keyvault-certificates;4.2.1;4.2.2
 com.azure:azure-security-keyvault-jca;1.0.1;2.0.0-beta.1
 com.azure:azure-security-test-keyvault-jca;1.0.0;1.0.0
 com.azure:azure-security-keyvault-keys;4.3.1;4.3.2
-com.azure:azure-security-keyvault-secrets;4.3.1;4.3.2
+com.azure:azure-security-keyvault-secrets;4.3.2;4.4.0-beta.1
 com.azure:azure-security-keyvault-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-sdk-template;1.2.1-beta.2;1.2.1-beta.16
 com.azure:azure-spring-data-cosmos;3.9.0;3.10.0-beta.1
