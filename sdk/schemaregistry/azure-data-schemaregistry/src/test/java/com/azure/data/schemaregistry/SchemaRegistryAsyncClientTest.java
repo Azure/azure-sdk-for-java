@@ -21,6 +21,7 @@ import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Objects;
@@ -137,7 +138,7 @@ public class SchemaRegistryAsyncClientTest {
     public void testGetSchemaThenGuidCacheHit() {
         String mockId = "mock-id---";
         SchemasGetByIdHeaders mockHeaders = new SchemasGetByIdHeaders();
-        mockHeaders.setXSchemaType(MOCK_SERIALIZATION.toString());
+        mockHeaders.setSchemaType(MOCK_SERIALIZATION.toString());
         when(restService.getSchemas()).thenReturn(schemas);
         when(schemas.getByIdWithResponseAsync(mockId))
             .thenReturn(
@@ -145,7 +146,7 @@ public class SchemaRegistryAsyncClientTest {
                     null,
                     200,
                     null,
-                    MOCK_AVRO_SCHEMA,
+                    MOCK_AVRO_SCHEMA.getBytes(StandardCharsets.UTF_8),
                     mockHeaders)));
 
         StepVerifier.create(client.getSchema(mockId)

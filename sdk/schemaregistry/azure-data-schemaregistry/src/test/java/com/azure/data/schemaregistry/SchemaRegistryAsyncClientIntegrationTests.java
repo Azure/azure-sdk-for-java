@@ -17,6 +17,7 @@ import reactor.test.StepVerifier;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.regex.Pattern;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -29,6 +30,8 @@ public class SchemaRegistryAsyncClientIntegrationTests extends TestBase {
     private static final String AZURE_EVENTHUBS_FULLY_QUALIFIED_DOMAIN_NAME = "AZURE_EVENTHUBS_FULLY_QUALIFIED_DOMAIN_NAME";
     private static final String SCHEMA_CONTENT = "{\"type\" : \"record\",\"namespace\" : \"TestSchema\",\"name\" : \"Employee\",\"fields\" : [{ \"name\" : \"Name\" , \"type\" : \"string\" },{ \"name\" : \"Age\", \"type\" : \"int\" }]}";
     private static final String SCHEMA_GROUP = "at";
+    private static final Pattern WHITESPACE_PATTERN = Pattern.compile("\\s+", Pattern.MULTILINE);
+    private static final String SCHEMA_CONTENT_NO_WHITESPACE = WHITESPACE_PATTERN.matcher(SCHEMA_CONTENT).replaceAll("");
 
     SchemaRegistryClientBuilder builder;
 
@@ -59,8 +62,10 @@ public class SchemaRegistryAsyncClientIntegrationTests extends TestBase {
                 assertNotNull(response.getSchemaId());
                 schemaId.set(response.getSchemaId());
 
+                // Replace white space.
                 final String contents = new String(response.getSchema(), StandardCharsets.UTF_8);
-                assertEquals(SCHEMA_CONTENT, contents);
+                final String actualContents = WHITESPACE_PATTERN.matcher(contents).replaceAll("");
+                assertEquals(SCHEMA_CONTENT_NO_WHITESPACE, actualContents);
             }).verifyComplete();
 
 
@@ -75,8 +80,10 @@ public class SchemaRegistryAsyncClientIntegrationTests extends TestBase {
                 assertEquals(schemaIdToGet, schema.getSchemaId());
                 assertEquals(SerializationType.AVRO, schema.getSerializationType());
 
+                // Replace white space.
                 final String contents = new String(schema.getSchema(), StandardCharsets.UTF_8);
-                assertEquals(SCHEMA_CONTENT, contents);
+                final String actualContents = WHITESPACE_PATTERN.matcher(contents).replaceAll("");
+                assertEquals(SCHEMA_CONTENT_NO_WHITESPACE, actualContents);
             })
             .verifyComplete();
     }
