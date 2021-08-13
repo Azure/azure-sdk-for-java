@@ -3,12 +3,16 @@
 
 package com.azure.core.http.policy;
 
+import com.azure.core.http.HttpHeaders;
+import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpRequest;
+import com.azure.core.http.HttpResponse;
 import com.azure.core.util.logging.ClientLogger;
 
 import java.net.HttpURLConnection;
+import java.util.Set;
 
 /**
  * The interface for determining the retry strategy used in {@link RetryPolicy}.
@@ -24,30 +28,24 @@ public interface RedirectStrategy {
      * @return The max number of retry attempts.
      */
     int getMaxRetries();
+    String getLocationHeader();
+    Set<HttpMethod> getRedirectableMethods();
 
     /**
+     *
+     * @param
+     *
+     */
+    /**
      * Determines if the url should be redirected between each retry.
+     *
+     * @param responseHeaders the ongoing request headers
+     * @param tryCount redirect retries so far
+     * @param attemptedRedirectLocations attempted redirect retries locations so far
      *
      * @return {@code true} if the request should be redirected, {@code false}
      * otherwise
      */
-    boolean shouldAttemptRedirect();
+    boolean shouldAttemptRedirect(HttpHeaders responseHeaders, int tryCount, Set<String> attemptedRedirectLocations);
 
-    /**
-     * Determines if it's a valid retry scenario based on statusCode and tryCount.
-     *
-     * @param statusCode HTTP response status code
-     * @param tryCount Redirect retries so far
-     * @return True if statusCode corresponds to HTTP redirect response codes and redirect
-     * retries is less than {@code MAX_REDIRECT_RETRIES}.
-     */
-    // default boolean shouldAttemptDirect(int statusCode, int tryCount) {
-    //     if (tryCount >= MAX_REDIRECT_RETRIES) {
-    //         logger.verbose("Max redirect retries limit reached: {}.", MAX_REDIRECT_RETRIES);
-    //         return false;
-    //     }
-    //     return statusCode == HttpURLConnection.HTTP_MOVED_TEMP
-    //         || statusCode == HttpURLConnection.HTTP_MOVED_PERM
-    //         || statusCode == PERMANENT_REDIRECT_STATUS_CODE;
-    // }
 }

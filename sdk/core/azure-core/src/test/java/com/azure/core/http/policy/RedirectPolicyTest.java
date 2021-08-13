@@ -39,7 +39,7 @@ public class RedirectPolicyTest {
 
         HttpPipeline pipeline = new HttpPipelineBuilder()
             .httpClient(httpClient)
-            .policies(new RedirectPolicy(308))
+            .policies(new RedirectPolicy())
             .build();
 
         HttpResponse response = pipeline.send(new HttpRequest(HttpMethod.GET,
