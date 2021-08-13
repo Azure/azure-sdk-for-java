@@ -19,6 +19,7 @@ import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.ItemDeserializer;
 import com.azure.cosmos.implementation.guava25.base.Preconditions;
 import com.azure.cosmos.implementation.query.Transformer;
+import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
@@ -41,7 +42,9 @@ import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import static com.azure.cosmos.implementation.Utils.getEffectiveCosmosChangeFeedRequestOptions;
 import static com.azure.cosmos.implementation.Utils.setContinuationTokenAndMaxItemCount;
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 /**
  * CosmosAsyncContainer with encryption capabilities.
@@ -56,6 +59,8 @@ public class CosmosEncryptionAsyncContainer {
     ImplementationBridgeHelpers.CosmosItemResponseHelper.CosmosItemResponseBuilderAccessor cosmosItemResponseBuilderAccessor;
     ImplementationBridgeHelpers.CosmosItemRequestOptionsHelper.CosmosItemRequestOptionsAccessor cosmosItemRequestOptionsAccessor;
     ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.CosmosQueryRequestOptionsAccessor cosmosQueryRequestOptionsAccessor;
+    ImplementationBridgeHelpers.CosmosChangeFeedRequestOptionsHelper.CosmosChangeFeedRequestOptionsAccessor cosmosChangeFeedRequestOptionsAccessor;
+    ImplementationBridgeHelpers.CosmosAsyncContainerHelper.CosmosAsyncContainerAccessor cosmosAsyncContainerAccessor;
 
     CosmosEncryptionAsyncContainer(CosmosAsyncContainer container,
                                    CosmosEncryptionAsyncClient cosmosEncryptionAsyncClient) {
@@ -66,6 +71,8 @@ public class CosmosEncryptionAsyncContainer {
         this.cosmosItemResponseBuilderAccessor = ImplementationBridgeHelpers.CosmosItemResponseHelper.getCosmosItemResponseBuilderAccessor();
         this.cosmosItemRequestOptionsAccessor = ImplementationBridgeHelpers.CosmosItemRequestOptionsHelper.getCosmosItemRequestOptionsAccessor();
         this.cosmosQueryRequestOptionsAccessor = ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.getCosmosQueryRequestOptionsAccessor();
+        this.cosmosChangeFeedRequestOptionsAccessor = ImplementationBridgeHelpers.CosmosChangeFeedRequestOptionsHelper.getCosmosChangeFeedRequestOptionsAccessor();
+        this.cosmosAsyncContainerAccessor = ImplementationBridgeHelpers.CosmosAsyncContainerHelper.getCosmosAsyncContainerAccessor();
     }
 
     EncryptionProcessor getEncryptionProcessor() {
@@ -270,6 +277,13 @@ public class CosmosEncryptionAsyncContainer {
         }
     }
 
+    public <T> CosmosPagedFlux<T> queryChangeFeed(CosmosChangeFeedRequestOptions options, Class<T> classType) {
+        checkNotNull(options, "Argument 'options' must not be null.");
+        checkNotNull(classType, "Argument 'classType' must not be null.");
+
+        return queryChangeFeedHelper(options, classType,false);
+    }
+
     /**
      * Get the CosmosEncryptionAsyncClient
      *
@@ -466,6 +480,12 @@ public class CosmosEncryptionAsyncContainer {
         this.cosmosQueryRequestOptionsAccessor.setHeader(requestOptions, Constants.INTENDED_COLLECTION_RID_HEADER, this.encryptionProcessor.getContainerRid());
     }
 
+    private void setRequestHeaders(CosmosChangeFeedRequestOptions requestOptions) {
+        this.cosmosChangeFeedRequestOptionsAccessor.setHeader(requestOptions, Constants.IS_CLIENT_ENCRYPTED_HEADER, "true");
+        this.cosmosChangeFeedRequestOptionsAccessor.setHeader(requestOptions, Constants.INTENDED_COLLECTION_RID_HEADER, this.encryptionProcessor.getContainerRid());
+    }
+
+
     private <T> CosmosPagedFlux<T> queryItemsHelper(SqlQuerySpec sqlQuerySpec,
                                                     CosmosQueryRequestOptions options,
                                                     Class<T> classType,
@@ -493,6 +513,33 @@ public class CosmosEncryptionAsyncContainer {
 
         return UtilBridgeInternal.createCosmosPagedFlux(pagedFluxOptions -> {
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, finalOptions);
+            return tFlux;
+        });
+    }
+
+    private <T> CosmosPagedFlux<T> queryChangeFeedHelper(CosmosChangeFeedRequestOptions options,
+                                                         Class<T> classType,
+                                                         boolean isRetry) {
+        setRequestHeaders(options);
+        CosmosChangeFeedRequestOptions finalOptions = options;
+        Flux<FeedResponse<T>> tFlux =
+            UtilBridgeInternal.createCosmosPagedFlux(((Transformer<T>) func -> queryDecryptionTransformer(classType,
+                func)).transform(cosmosAsyncContainerAccessor.queryChangeFeedInternalFunc(this.container, options,
+                JsonNode.class))).byPage().onErrorResume(exception -> {
+                if (exception instanceof CosmosException) {
+                    final CosmosException cosmosException = (CosmosException) exception;
+                    if (!isRetry && isIncorrectContainerRid(cosmosException)) {
+                        this.encryptionProcessor.getIsEncryptionSettingsInitDone().set(false);
+                        return this.encryptionProcessor.initializeEncryptionSettingsAsync(true).thenMany(
+                            (CosmosPagedFlux.defer(() -> queryChangeFeedHelper(finalOptions, classType, true).byPage())));
+                    }
+                }
+                return Mono.error(exception);
+            });
+
+
+        return UtilBridgeInternal.createCosmosPagedFlux(pagedFluxOptions -> {
+            getEffectiveCosmosChangeFeedRequestOptions(pagedFluxOptions, finalOptions);
             return tFlux;
         });
     }

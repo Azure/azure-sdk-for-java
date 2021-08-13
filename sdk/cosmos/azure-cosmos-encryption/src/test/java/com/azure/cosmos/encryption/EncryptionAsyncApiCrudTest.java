@@ -43,13 +43,13 @@ import static org.assertj.core.api.Assertions.fail;
 public class EncryptionAsyncApiCrudTest extends TestSuiteBase {
     private CosmosAsyncClient client;
     private CosmosAsyncDatabase cosmosAsyncDatabase;
-    private static final int TIMEOUT = 6000_000;
     private CosmosEncryptionAsyncClient cosmosEncryptionAsyncClient;
     private CosmosEncryptionAsyncDatabase cosmosEncryptionAsyncDatabase;
-    private CosmosEncryptionAsyncContainer cosmosEncryptionAsyncContainer;
     private CosmosEncryptionAsyncContainer encryptionContainerWithIncompatiblePolicyVersion;
     private EncryptionKeyWrapMetadata metadata1;
     private EncryptionKeyWrapMetadata metadata2;
+    static final int TIMEOUT = 6000_000;
+    CosmosEncryptionAsyncContainer cosmosEncryptionAsyncContainer;
 
     @Factory(dataProvider = "clientBuilders")
     public EncryptionAsyncApiCrudTest(CosmosClientBuilder clientBuilder) {
