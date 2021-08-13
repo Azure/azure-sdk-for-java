@@ -249,21 +249,6 @@ public final class SchemaRegistryAsyncClient {
         typeParserMap.clear();
     }
 
-    /**
-     * Checks if caches should be reinitialized to satisfy initial configuration
-     */
-    private void resetIfNeeded() {
-        // todo add verbose log
-        if (idCache.size() > this.maxSchemaMapSize) {
-            idCache.clear();
-            logger.verbose("Cleared schema ID cache.");
-        }
-        if (schemaStringCache.size() > this.maxSchemaMapSize) {
-            schemaStringCache.clear();
-            logger.verbose("Cleared schema string cache.");
-        }
-    }
-
     private static String getSchemaStringCacheKey(String schemaGroup, String schemaName, String schemaString) {
         return schemaGroup + schemaName + schemaString;
     }
