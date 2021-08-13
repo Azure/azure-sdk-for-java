@@ -47,14 +47,14 @@ If you load configuration properties from Azure Key Vault, the preceding detecti
 Note that replaced properties will not be refreshed as common properties from Key Vault property source.
 #### Active Properties
 
-|Name|Description|Comment|
-|:---|:---|:---
-spring.cloud.azure.cosmos.connection-mode|Represents the connection mode to be used by the client in the Azure Cosmos DB database service.||
-spring.cloud.azure.cosmos.consistency-level|Document DB Cosmos level.||
-spring.cloud.azure.cosmos.database|Cosmos DB database name.||
-spring.cloud.azure.cosmos.key|Cosmos DB key.||
-spring.cloud.azure.cosmos.populate-query-metrics|Populate Diagnostics Strings and Query metrics.||
-spring.cloud.azure.cosmos.uri|Cosmos DB URI.||
+|Name|Description|
+|:---|:---
+spring.cloud.azure.cosmos.connection-mode|Represents the connection mode to be used by the client in the Azure Cosmos DB database service.|
+spring.cloud.azure.cosmos.consistency-level|Cosmos DB consistency level.|
+spring.cloud.azure.cosmos.database|Cosmos DB database name.|
+spring.cloud.azure.cosmos.key|Cosmos DB key.|
+spring.cloud.azure.cosmos.populate-query-metrics|Populate Diagnostics Strings and Query metrics.|
+spring.cloud.azure.cosmos.uri|Cosmos DB URI.|
 
 #### Deprecated Properties
 |Obsolete Type|Description|Replacement Type|
@@ -62,7 +62,7 @@ spring.cloud.azure.cosmos.uri|Cosmos DB URI.||
 azure.cosmos.connection-mode|Represents the connection mode to be used by the client in the Azure Cosmos DB database service.|**spring.cloud.azure.cosmos.connection-mode**|
 azure.cosmos.consistency-level|Cosmos DB consistency level.|**spring.cloud.azure.cosmos.consistency-level**|
 azure.cosmos.database|Cosmos DB database name.|**spring.cloud.azure.cosmos.database** |
-azure.cosmos.key|Cosmos DB key.|Please use **spring.cloud.azure.cosmos.key** instead.|
+azure.cosmos.key|Cosmos DB key.|**spring.cloud.azure.cosmos.key**|
 azure.cosmos.populate-query-metrics|Populate Diagnostics Strings and Query metrics.|**spring.cloud.azure.cosmos.populate-query-metrics** |
 azure.cosmos.uri|Cosmos DB URI.|**spring.cloud.azure.cosmos.uri** |
 
@@ -78,8 +78,6 @@ spring.cloud.azure.cosmos.database=your-cosmos-databasename
 spring.cloud.azure.cosmos.populateQueryMetrics=true
 secondary-key=put-your-cosmos-secondary-key-here
 ```
-
-Property `azure.cosmos.consistency-level` is also supported.
 
 AzureKeyCredential feature provides capability to rotate keys on the fly. You can use `AzureKeyCredential.update()` methods to rotate key. For more information on this, see the [Sample Application][sample_cosmos_switch_key] code.
 
