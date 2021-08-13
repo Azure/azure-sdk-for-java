@@ -3,8 +3,6 @@ package com.azure.data.schemaregistry;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
-import com.azure.core.http.policy.HttpLogDetailLevel;
-import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.test.TestBase;
 import com.azure.data.schemaregistry.models.SerializationType;
@@ -28,7 +26,7 @@ import static org.mockito.Mockito.when;
 public class SchemaRegistryAsyncClientIntegrationTests extends TestBase {
     private static final int RESOURCE_LENGTH = 16;
     private static final String AZURE_EVENTHUBS_FULLY_QUALIFIED_DOMAIN_NAME = "AZURE_EVENTHUBS_FULLY_QUALIFIED_DOMAIN_NAME";
-    private static final String SCHEMA_CONTENT = "{\"type\" : \"record\",\"namespace\" : \"TestSchema\",\"name\" : \"Employee\",\"fields\" : [{ \"name\" : \"Name\" , \"type\" : \"string\" },{ \"name\" : \"Age\", \"type\" : \"int\" }]}";
+    private static final String SCHEMA_CONTENT = "\"{\"type\" : \"record\",\"namespace\" : \"TestSchema\",\"name\" : \"Employee\",\"fields\" : [{ \"name\" : \"Name\" , \"type\" : \"string\" },{ \"name\" : \"Age\", \"type\" : \"int\" }]}\"";
     private static final String SCHEMA_GROUP = "at";
     private static final Pattern WHITESPACE_PATTERN = Pattern.compile("\\s+", Pattern.MULTILINE);
     private static final String SCHEMA_CONTENT_NO_WHITESPACE = WHITESPACE_PATTERN.matcher(SCHEMA_CONTENT).replaceAll("");
@@ -148,9 +146,6 @@ public class SchemaRegistryAsyncClientIntegrationTests extends TestBase {
 
         builder = new SchemaRegistryClientBuilder()
             .credential(tokenCredential)
-            .httpLogOptions(new HttpLogOptions()
-                .setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
-                .setPrettyPrintBody(true))
             .endpoint(endpoint);
 
         if (interceptorManager.isPlaybackMode()) {

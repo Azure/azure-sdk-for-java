@@ -152,7 +152,6 @@ public final class SchemaRegistryAsyncClient {
      * @return The {@link SchemaProperties} associated with the given {@code schemaId} along with the HTTP
      * response.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<SchemaProperties>> getSchemaWithResponse(String schemaId) {
         return FluxUtil.withContext(context -> getSchemaWithResponse(schemaId, context));
     }
