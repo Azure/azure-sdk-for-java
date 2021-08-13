@@ -86,8 +86,6 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
     static final String MODEL_ID_NOT_FOUND_ERROR_CODE = "1022";
 
     // Error Message
-    static final String HTTPS_EXCEPTION_MESSAGE =
-        "Max retries 3 times exceeded. Error Details: Key credentials require HTTPS to prevent leaking the key.";
     static final String INVALID_UUID_EXCEPTION_MESSAGE = "Invalid UUID string: ";
     static final String INVALID_SOURCE_URL_EXCEPTION_MESSAGE = "Failed to download the image from the submitted URL. "
         + "The URL may either be invalid or the server hosting the image is experiencing some technical difficulties.";
