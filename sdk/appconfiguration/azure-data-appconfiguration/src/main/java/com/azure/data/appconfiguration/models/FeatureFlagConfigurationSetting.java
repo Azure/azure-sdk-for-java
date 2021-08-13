@@ -6,6 +6,7 @@ package com.azure.data.appconfiguration.models;
 import com.azure.core.util.logging.ClientLogger;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -45,6 +46,7 @@ public final class FeatureFlagConfigurationSetting extends ConfigurationSetting 
         this.isEnabled = isEnabled;
         super.setKey(KEY_PREFIX + featureId);
         super.setContentType(FEATURE_FLAG_CONTENT_TYPE);
+        clientFilters = new ArrayList<>();
     }
 
     /**
