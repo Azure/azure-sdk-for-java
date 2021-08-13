@@ -50,7 +50,7 @@ public class CosmosBulkAsyncTest extends BatchTestBase {
         safeCloseAsync(this.bulkClient);
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    @Test(groups = {"simple"}, timeOut = TIMEOUT * 2)
     public void createItem_withBulkAndThroughputControl() throws InterruptedException {
         int totalRequest = getTotalRequest(180, 200);
 
