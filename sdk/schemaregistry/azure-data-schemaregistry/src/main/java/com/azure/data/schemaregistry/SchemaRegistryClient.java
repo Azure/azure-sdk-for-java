@@ -77,7 +77,6 @@ public final class SchemaRegistryClient {
      * @return The {@link SchemaProperties} associated with the given {@code schemaId} along with the HTTP
      * response.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
     Response<SchemaProperties> getSchemaWithResponse(String schemaId, Context context) {
         return this.asyncClient.getSchemaWithResponse(schemaId, context).block();
     }
@@ -109,7 +108,6 @@ public final class SchemaRegistryClient {
      * @param context The context to pass to the Http pipeline.
      * @return The unique identifier for this schema.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
     Response<String> getSchemaIdWithResponse(String schemaGroup, String schemaName, String schemaString,
         SerializationType serializationType, Context context) {
         return this.asyncClient
