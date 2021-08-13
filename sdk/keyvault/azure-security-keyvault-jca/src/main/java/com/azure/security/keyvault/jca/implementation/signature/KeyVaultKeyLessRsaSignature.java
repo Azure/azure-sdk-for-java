@@ -3,6 +3,7 @@
 
 package com.azure.security.keyvault.jca.implementation.signature;
 
+import java.security.AlgorithmParameters;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.InvalidAlgorithmParameterException;
@@ -54,4 +55,14 @@ public class KeyVaultKeyLessRsaSignature extends AbstractKeyVaultKeyLessSignatur
     public String getAlgorithmName() {
         return "RSASSA-PSS";
     }
+
+    /**
+     * add this method to enable engineGetParameters which added in this commit:
+     * https://github.com/openjdk/jdk/commit/316140ff92af7ac1aadb74de9cd37a5f3c412406
+     * @return AlgorithmParameters
+     */
+    protected AlgorithmParameters engineGetParameters() {
+        return null;
+    }
+
 }
