@@ -28,6 +28,8 @@ import com.azure.data.schemaregistry.implementation.models.SerializationType;
 import com.azure.data.schemaregistry.implementation.models.ServiceErrorResponseException;
 import reactor.core.publisher.Mono;
 
+import java.nio.charset.StandardCharsets;
+
 /** An instance of this class provides access to all the operations defined in Schemas. */
 public final class Schemas {
     /** The proxy service used to perform REST calls. */
@@ -125,7 +127,7 @@ public final class Schemas {
                 .flatMap(
                         (SchemasGetByIdResponse res) -> {
                             if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
+                                return Mono.just(new String(res.getValue(), StandardCharsets.UTF_8));
                             } else {
                                 return Mono.empty();
                             }
