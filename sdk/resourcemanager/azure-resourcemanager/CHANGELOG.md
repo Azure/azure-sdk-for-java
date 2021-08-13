@@ -1,11 +1,17 @@
 # Release History
 
-## 2.7.0-beta.1 (Unreleased)
+## 2.8.0-beta.1 (Unreleased)
+
+
+## 2.7.0 (2021-08-12)
 
 ### Features Added
 
 - Added overload of `create(Context)` for `Creatable`.
 - Added overload of `apply(Context)` for `Appliable`.
+### Dependency Updates
+
+- Updated core dependency from resources
 
 ## 2.6.0 (2021-06-18)
 

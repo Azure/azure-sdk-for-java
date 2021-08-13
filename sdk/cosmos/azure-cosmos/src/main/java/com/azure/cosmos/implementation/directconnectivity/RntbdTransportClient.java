@@ -478,7 +478,7 @@ public class RntbdTransportClient extends TransportClient {
             this.shutdownTimeout = Duration.ofSeconds(15L);
             this.threadCount = 2 * Runtime.getRuntime().availableProcessors();
             this.userAgent = new UserAgentContainer();
-            this.channelAcquisitionContextEnabled = true;
+            this.channelAcquisitionContextEnabled = false;
         }
 
         // endregion
