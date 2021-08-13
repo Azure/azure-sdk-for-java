@@ -20,6 +20,7 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.regex.Pattern;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
@@ -85,6 +86,57 @@ public class SchemaRegistryAsyncClientIntegrationTests extends TestBase {
                 final String contents = new String(schema.getSchema(), StandardCharsets.UTF_8);
                 final String actualContents = WHITESPACE_PATTERN.matcher(contents).replaceAll("");
                 assertEquals(SCHEMA_CONTENT_NO_WHITESPACE, actualContents);
+            })
+            .verifyComplete();
+    }
+
+    /**
+     * Verifies that we can register a schema and then get it by its schemaId. Then add another version of it, and get
+     * that version.
+     */
+    @Test
+    public void registerAndGetSchemaTwice() {
+        // Arrange
+        initializeBuilder();
+        final String schemaContentModified = "{\"type\" : \"record\",\"namespace\" : \"TestSchema\",\"name\" : \"Employee\",\"fields\" : [{ \"name\" : \"Name\" , \"type\" : \"string\" },{ \"name\" : \"Age\", \"type\" : \"int\" },{ \"name\" : \"Sign\", \"type\" : \"string\" }]}";
+        final String schemaName = testResourceNamer.randomName("sch", RESOURCE_LENGTH);
+        final SchemaRegistryAsyncClient client1 = builder.buildAsyncClient();
+        final SchemaRegistryAsyncClient client2 = builder.buildAsyncClient();
+
+        final AtomicReference<String> schemaId = new AtomicReference<>();
+        final AtomicReference<String> schemaId2 = new AtomicReference<>();
+
+        // Act & Assert
+        StepVerifier.create(client1.registerSchema(SCHEMA_GROUP, schemaName, SCHEMA_CONTENT, SerializationType.AVRO))
+            .assertNext(response -> {
+                assertEquals(schemaName, response.getSchemaName());
+                assertNotNull(response.getSchemaId());
+                schemaId.set(response.getSchemaId());
+            }).verifyComplete();
+
+        StepVerifier.create(client1.registerSchema(SCHEMA_GROUP, schemaName, schemaContentModified, SerializationType.AVRO))
+            .assertNext(response -> {
+                assertEquals(schemaName, response.getSchemaName());
+                assertNotNull(response.getSchemaId());
+                schemaId2.set(response.getSchemaId());
+            }).verifyComplete();
+
+        // Assert that we can get a schema based on its id. We registered a schema with client1 and its response is
+        // cached, so it won't make a network call when getting the schema. client2 will not have this information.
+        assertNotEquals(schemaId.get(), schemaId2.get());
+
+        // Act & Assert
+        final String schemaToGet = schemaId2.get();
+        StepVerifier.create(client2.getSchema(schemaId2.get()))
+            .assertNext(schema -> {
+                assertEquals(schemaToGet, schema.getSchemaId());
+                assertEquals(SerializationType.AVRO, schema.getSerializationType());
+
+                // Replace white space.
+                final String contents = new String(schema.getSchema(), StandardCharsets.UTF_8);
+                final String expected = WHITESPACE_PATTERN.matcher(schemaContentModified).replaceAll("");
+                final String actualContents = WHITESPACE_PATTERN.matcher(contents).replaceAll("");
+                assertEquals(expected, actualContents);
             })
             .verifyComplete();
     }
