@@ -302,7 +302,7 @@
       {
         "regex": true,
         "code": "java\\.annotation\\.attributeValueChanged",
-        "new": "method byte\\[\\] com\\.azure\\.security\\.keyvault\\.keys\\.models\\.JsonWebKey::get(D|Dp|E|K|N|P|Q|Qi|T|X|Y)\\(\\)",
+        "new": "method byte\\[\\] com\\.azure\\.security\\.keyvault\\.keys\\.models\\.JsonWebKey::(g|s)et(D|Dp|Dq|E|K|N|P|Q|Qi|T|X|Y)\\(\\)",
         "justification": "The class used by the serialization/deserialization annotations is package private and moving it is not a breaking change."
       },
       {
