@@ -143,7 +143,7 @@ public class AttestationTest extends AttestationClientTestBase {
     @MethodSource("getAttestationClients")
     void testAttestSgxEnclave(HttpClient httpClient, String clientUri) {
 
-        AttestationClientBuilder attestationBuilder = getBuilder(httpClient, clientUri);
+        AttestationClientBuilder attestationBuilder = getAttestationBuilder(httpClient, clientUri);
 
         AttestationClient client = attestationBuilder.buildClient();
 
@@ -162,7 +162,7 @@ public class AttestationTest extends AttestationClientTestBase {
     @MethodSource("getAttestationClients")
     void testAttestSgxEnclaveNoRuntimeData(HttpClient httpClient, String clientUri) {
 
-        AttestationClientBuilder attestationBuilder = getBuilder(httpClient, clientUri);
+        AttestationClientBuilder attestationBuilder = getAttestationBuilder(httpClient, clientUri);
 
         AttestationClient client = attestationBuilder.buildClient();
 
@@ -178,7 +178,7 @@ public class AttestationTest extends AttestationClientTestBase {
     @MethodSource("getAttestationClients")
     void testAttestSgxEnclaveRuntimeJson(HttpClient httpClient, String clientUri) {
 
-        AttestationClientBuilder attestationBuilder = getBuilder(httpClient, clientUri);
+        AttestationClientBuilder attestationBuilder = getAttestationBuilder(httpClient, clientUri);
 
         AttestationClient client = attestationBuilder.buildClient();
 
@@ -197,7 +197,7 @@ public class AttestationTest extends AttestationClientTestBase {
     @MethodSource("getAttestationClients")
     void testAttestSgxEnclaveDraftPolicy(HttpClient httpClient, String clientUri) {
 
-        AttestationClientBuilder attestationBuilder = getBuilder(httpClient, clientUri);
+        AttestationClientBuilder attestationBuilder = getAttestationBuilder(httpClient, clientUri);
 
         AttestationClient client = attestationBuilder.buildClient();
 
@@ -224,7 +224,7 @@ public class AttestationTest extends AttestationClientTestBase {
     @MethodSource("getAttestationClients")
     void testAttestSgxEnclaveAsync(HttpClient httpClient, String clientUri) {
 
-        AttestationClientBuilder attestationBuilder = getBuilder(httpClient, clientUri);
+        AttestationClientBuilder attestationBuilder = getAttestationBuilder(httpClient, clientUri);
         AttestationAsyncClient client = attestationBuilder.buildAsyncClient();
 
         BinaryData decodedRuntimeData = BinaryData.fromBytes(Base64.getUrlDecoder().decode(runtimeData));
@@ -246,7 +246,7 @@ public class AttestationTest extends AttestationClientTestBase {
     @MethodSource("getAttestationClients")
     void testAttestSgxEnclaveNoRuntimeDataAsync(HttpClient httpClient, String clientUri) {
 
-        AttestationClientBuilder attestationBuilder = getBuilder(httpClient, clientUri);
+        AttestationClientBuilder attestationBuilder = getAttestationBuilder(httpClient, clientUri);
 
         AttestationAsyncClient client = attestationBuilder.buildAsyncClient();
 
@@ -266,7 +266,7 @@ public class AttestationTest extends AttestationClientTestBase {
     @MethodSource("getAttestationClients")
     void testAttestSgxEnclaveRuntimeJsonAsync(HttpClient httpClient, String clientUri) {
 
-        AttestationClientBuilder attestationBuilder = getBuilder(httpClient, clientUri);
+        AttestationClientBuilder attestationBuilder = getAttestationBuilder(httpClient, clientUri);
 
         AttestationAsyncClient client = attestationBuilder.buildAsyncClient();
 
@@ -287,7 +287,7 @@ public class AttestationTest extends AttestationClientTestBase {
     @MethodSource("getAttestationClients")
     void testAttestSgxEnclaveDraftPolicyAsync(HttpClient httpClient, String clientUri) {
 
-        AttestationClientBuilder attestationBuilder = getBuilder(httpClient, clientUri);
+        AttestationClientBuilder attestationBuilder = getAttestationBuilder(httpClient, clientUri);
 
         AttestationAsyncClient client = attestationBuilder.buildAsyncClient();
 
@@ -329,7 +329,7 @@ public class AttestationTest extends AttestationClientTestBase {
     @MethodSource("getAttestationClients")
     void testAttestOpenEnclave(HttpClient httpClient, String clientUri) {
 
-        AttestationClientBuilder attestationBuilder = getBuilder(httpClient, clientUri);
+        AttestationClientBuilder attestationBuilder = getAttestationBuilder(httpClient, clientUri);
 
         AttestationClient client = attestationBuilder.buildClient();
 
@@ -347,7 +347,7 @@ public class AttestationTest extends AttestationClientTestBase {
     @MethodSource("getAttestationClients")
     void testAttestOpenEnclaveNoRuntimeData(HttpClient httpClient, String clientUri) {
 
-        AttestationClientBuilder attestationBuilder = getBuilder(httpClient, clientUri);
+        AttestationClientBuilder attestationBuilder = getAttestationBuilder(httpClient, clientUri);
 
         AttestationClient client = attestationBuilder.buildClient();
 
@@ -363,7 +363,7 @@ public class AttestationTest extends AttestationClientTestBase {
     @MethodSource("getAttestationClients")
     void testAttestOpenEnclaveRuntimeJson(HttpClient httpClient, String clientUri) {
 
-        AttestationClientBuilder attestationBuilder = getBuilder(httpClient, clientUri);
+        AttestationClientBuilder attestationBuilder = getAttestationBuilder(httpClient, clientUri);
 
         AttestationClient client = attestationBuilder.buildClient();
 
@@ -381,7 +381,7 @@ public class AttestationTest extends AttestationClientTestBase {
     @MethodSource("getAttestationClients")
     void testAttestOpenEnclaveDraftPolicy(HttpClient httpClient, String clientUri) {
 
-        AttestationClientBuilder attestationBuilder = getBuilder(httpClient, clientUri);
+        AttestationClientBuilder attestationBuilder = getAttestationBuilder(httpClient, clientUri);
 
         AttestationClient client = attestationBuilder.buildClient();
 
@@ -407,7 +407,7 @@ public class AttestationTest extends AttestationClientTestBase {
     @MethodSource("getAttestationClients")
     void testAttestOpenEnclaveAsync(HttpClient httpClient, String clientUri) {
 
-        AttestationClientBuilder attestationBuilder = getBuilder(httpClient, clientUri);
+        AttestationClientBuilder attestationBuilder = getAttestationBuilder(httpClient, clientUri);
         AttestationAsyncClient client = attestationBuilder.buildAsyncClient();
 
         BinaryData decodedRuntimeData = BinaryData.fromBytes(Base64.getUrlDecoder().decode(runtimeData));
@@ -426,7 +426,7 @@ public class AttestationTest extends AttestationClientTestBase {
     @MethodSource("getAttestationClients")
     void testAttestOpenEnclaveNoRuntimeDataAsync(HttpClient httpClient, String clientUri) {
 
-        AttestationClientBuilder attestationBuilder = getBuilder(httpClient, clientUri);
+        AttestationClientBuilder attestationBuilder = getAttestationBuilder(httpClient, clientUri);
 
         AttestationAsyncClient client = attestationBuilder.buildAsyncClient();
 
@@ -442,7 +442,7 @@ public class AttestationTest extends AttestationClientTestBase {
     @MethodSource("getAttestationClients")
     void testAttestOpenEnclaveRuntimeJsonAsync(HttpClient httpClient, String clientUri) {
 
-        AttestationClientBuilder attestationBuilder = getBuilder(httpClient, clientUri);
+        AttestationClientBuilder attestationBuilder = getAttestationBuilder(httpClient, clientUri);
 
         AttestationAsyncClient client = attestationBuilder.buildAsyncClient();
 
@@ -462,7 +462,7 @@ public class AttestationTest extends AttestationClientTestBase {
     @MethodSource("getAttestationClients")
     void testAttestOpenEnclaveDraftPolicyAsync(HttpClient httpClient, String clientUri) {
 
-        AttestationClientBuilder attestationBuilder = getBuilder(httpClient, clientUri);
+        AttestationClientBuilder attestationBuilder = getAttestationBuilder(httpClient, clientUri);
 
         AttestationAsyncClient client = attestationBuilder.buildAsyncClient();
 

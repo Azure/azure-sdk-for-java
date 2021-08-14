@@ -13,6 +13,7 @@ import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.security.attestation.models.AttestationSigner;
 import com.azure.security.attestation.models.AttestationSigningKey;
 import com.azure.security.attestation.models.AttestationToken;
+import com.azure.security.attestation.models.AttestationTokenValidationOptions;
 import com.nimbusds.jose.Header;
 import com.nimbusds.jose.JOSEException;
 import com.nimbusds.jose.JOSEObject;
@@ -21,10 +22,13 @@ import com.nimbusds.jose.JWSHeader;
 import com.nimbusds.jose.JWSObject;
 import com.nimbusds.jose.JWSSigner;
 import com.nimbusds.jose.JWSSignerOption;
+import com.nimbusds.jose.JWSVerifier;
 import com.nimbusds.jose.Payload;
 import com.nimbusds.jose.PlainObject;
 import com.nimbusds.jose.crypto.ECDSASigner;
+import com.nimbusds.jose.crypto.ECDSAVerifier;
 import com.nimbusds.jose.crypto.RSASSASigner;
+import com.nimbusds.jose.crypto.RSASSAVerifier;
 import com.nimbusds.jose.crypto.opts.AllowWeakRSAKey;
 import com.nimbusds.jose.jwk.JWK;
 import com.nimbusds.jose.util.Base64;
@@ -33,16 +37,23 @@ import com.nimbusds.jwt.JWTClaimsSet;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.security.PublicKey;
 import java.security.cert.CertificateEncodingException;
 import java.security.interfaces.ECPrivateKey;
+import java.security.interfaces.ECPublicKey;
 import java.security.interfaces.RSAPrivateKey;
+import java.security.interfaces.RSAPublicKey;
 import java.text.ParseException;
+import java.time.Duration;
+import java.time.Instant;
 import java.time.LocalDateTime;
-import java.time.ZoneOffset;
+import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * An AttestationToken represents a Json Web Token/Json Web Signature object returned from or sent to
@@ -78,7 +89,6 @@ public class AttestationTokenImpl implements AttestationToken {
 
     private final ClientLogger logger;
     private final String rawToken;
-
     private final Header header;
     private final JWSHeader jwsHeader;
     private final Payload payload;
@@ -209,49 +219,243 @@ public class AttestationTokenImpl implements AttestationToken {
         return jwsHeader.getContentType();
     }
 
+    final AtomicReference<String> issuer = new AtomicReference<>();
     @Override
     public String getIssuer() {
-        JWTClaimsSet claimsSet;
-        try {
-            claimsSet = JWTClaimsSet.parse(payload.toJSONObject());
-        } catch (ParseException e) {
-            throw logger.logExceptionAsError(new RuntimeException(e.getMessage()));
+        if (issuer.get() == null) {
+            JWTClaimsSet claimsSet;
+            try {
+                claimsSet = JWTClaimsSet.parse(payload.toJSONObject());
+            } catch (ParseException e) {
+                throw logger.logExceptionAsError(new RuntimeException(e.getMessage()));
+            }
+            issuer.set(claimsSet.getIssuer());
         }
-        return claimsSet.getIssuer();
+        return issuer.get();
     }
 
+    final AtomicReference<LocalDateTime> issuedAt = new AtomicReference<>();
     @Override
     public LocalDateTime getIssuedAt() {
-        JWTClaimsSet claimsSet;
-        try {
-            claimsSet = JWTClaimsSet.parse(payload.toJSONObject());
-        } catch (ParseException e) {
-            throw logger.logExceptionAsError(new RuntimeException(e.getMessage()));
+        if (issuedAt.get() == null) {
+            JWTClaimsSet claimsSet;
+            try {
+                claimsSet = JWTClaimsSet.parse(payload.toJSONObject());
+            } catch (ParseException e) {
+                throw logger.logExceptionAsError(new RuntimeException(e.getMessage()));
+            }
+
+            Date issueTime = claimsSet.getIssueTime();
+            Instant instant = issueTime.toInstant();
+            LocalDateTime localDateTime = instant
+                .atZone(ZoneId.systemDefault())
+                    .toLocalDateTime();
+            issuedAt.set(localDateTime);
         }
-        return LocalDateTime.ofEpochSecond(claimsSet.getIssueTime().getTime() / 1000, 0, ZoneOffset.UTC);
+        return issuedAt.get();
     }
 
+    final AtomicReference<LocalDateTime> expiresOn = new AtomicReference<>();
     @Override
     public LocalDateTime getExpiresOn() {
-        JWTClaimsSet claimsSet;
-        try {
-            claimsSet = JWTClaimsSet.parse(payload.toJSONObject());
-        } catch (ParseException e) {
-            throw logger.logExceptionAsError(new RuntimeException(e.getMessage()));
+        if (expiresOn.get() == null) {
+            JWTClaimsSet claimsSet;
+            try {
+                claimsSet = JWTClaimsSet.parse(payload.toJSONObject());
+            } catch (ParseException e) {
+                throw logger.logExceptionAsError(new RuntimeException(e.getMessage()));
+            }
+
+            expiresOn.set(claimsSet
+                .getExpirationTime()
+                .toInstant()
+                .atZone(ZoneId.systemDefault())
+                .toLocalDateTime());
         }
-        return LocalDateTime.ofEpochSecond(claimsSet.getExpirationTime().getTime() / 1000, 0, ZoneOffset.UTC);
+        return expiresOn.get();
     }
 
+    final AtomicReference<LocalDateTime> notBeforeTime = new AtomicReference<>();
     @Override
     public LocalDateTime getNotBefore() {
-        JWTClaimsSet claimsSet;
-        try {
-            claimsSet = JWTClaimsSet.parse(payload.toJSONObject());
-        } catch (ParseException e) {
-            throw logger.logExceptionAsError(new RuntimeException(e.getMessage()));
+        if (notBeforeTime.get() == null) {
+            JWTClaimsSet claimsSet;
+            try {
+                claimsSet = JWTClaimsSet.parse(payload.toJSONObject());
+            } catch (ParseException e) {
+                throw logger.logExceptionAsError(new RuntimeException(e.getMessage()));
+            }
+
+            notBeforeTime.set(claimsSet
+                .getNotBeforeTime()
+                .toInstant()
+                .atZone(ZoneId.systemDefault())
+                .toLocalDateTime());
         }
-        return LocalDateTime.ofEpochSecond(claimsSet.getNotBeforeTime().getTime() / 1000, 0, ZoneOffset.UTC);
+        return notBeforeTime.get();
     }
+
+
+    /**
+     * Validate the attestation token.
+     *
+     * The validate method verifies the following elements in the attestation token are valid.
+     *
+     * <ul>
+     *     <li>The token signature (if it is signed)</li>
+     *     <li>The token expiration time (if it has an expiration time)</li>
+     *     <li>The token 'not before' time (if it has a not before time)</li>
+     *     <li>The issuer of the token</li>
+     *     <li>Any customer provided validations.</li>
+     * </ul>
+     * @param signers - a list of potential signers for the attestation token.
+     * @param options - Options providing finer granular control over the validation.
+     */
+    public void validate(List<AttestationSigner> signers, AttestationTokenValidationOptions options) {
+        if (!options.getValidateToken()) {
+            return;
+        }
+
+        // First thing we do is to cryptographically verify the signature of the token.
+        AttestationSigner signer = validateTokenSignature(signers);
+
+        validateTokenTimeProperties(options);
+        validateTokenIssuer(options);
+
+        // Finally, give the developer a chance to validate the token.
+        if (options.getValidationCallback() != null) {
+            options.getValidationCallback().accept(this, signer);
+        }
+    }
+
+    /**
+     * Validate the issuer for the token, if desired.
+     * @param options - Options controlling the validation.
+     */
+    private void validateTokenIssuer(AttestationTokenValidationOptions options) {
+        if (options.getExpectedIssuer() != null && this.getIssuer() != null) {
+            if (!this.getIssuer().equals(options.getExpectedIssuer())) {
+                throw logger.logExceptionAsError(new RuntimeException(String.format("Token Validation Failed due to mismatched issuer. Expected issuer %s, but found %s", options.getExpectedIssuer(), getIssuer())));
+            }
+        }
+    }
+
+    private void validateTokenTimeProperties(AttestationTokenValidationOptions options) {
+        LocalDateTime timeNow = LocalDateTime.now();
+        timeNow = timeNow.minusNanos(timeNow.getNano());
+
+        if (this.getExpiresOn() != null && options.getValidateExpiresOn()) {
+            final LocalDateTime expirationTime = this.getExpiresOn();
+            if (timeNow.isAfter(expirationTime)) {
+                final Duration timeDelta = Duration.between(timeNow, expirationTime);
+                if (timeDelta.abs().compareTo(options.getValidationSlack()) > 0) {
+                    throw logger.logExceptionAsError(
+                        new RuntimeException(
+                            String.format("Token Validation Failed due to expiration time. Current time: %s Expiration time: %s", timeNow.toString(), this.getExpiresOn().toString())));
+                }
+            }
+        }
+
+        if (this.getNotBefore() != null && options.getValidateNotBefore()) {
+            final LocalDateTime notBefore = this.getNotBefore();
+            if (timeNow.isBefore(notBefore)) {
+                final Duration timeDelta = Duration.between(timeNow, notBefore);
+                if (timeDelta.abs().compareTo(options.getValidationSlack()) > 0) {
+                    throw logger.logExceptionAsError(new RuntimeException(String.format("Token Validation Failed due to NotBefore time. Current time: %s Token becomes valid at: %s", timeNow.toString(), this.getNotBefore().toString())));
+                }
+            }
+        }
+    }
+
+    /**
+     * Validates the signature and ensures that one of the signers signed the attestation token.
+     * @param signers - candidate signers for the token.
+     * @return the signer who signed this token, or null if the token is unsigned.
+     *
+     * @throws RuntimeException if there is a validation error.
+     */
+    private AttestationSigner validateTokenSignature(List<AttestationSigner> signers) {
+        // Early out if we have an unsecured token.
+        if (this.getAlgorithm().equals("none")) {
+            return null;
+        }
+
+        AtomicReference<JWSObject> jwt = new AtomicReference<>();
+        try {
+            jwt.set(JWSObject.parse(rawToken));
+        } catch (ParseException e) {
+            logger.logExceptionAsError(new RuntimeException(e.getMessage()));
+        }
+        AtomicReference<AttestationSigner> tokenSigner = new AtomicReference<>();
+        List<AttestationSigner> candidateSigners = getCandidateSigners(signers);
+        for (AttestationSigner signer : candidateSigners) {
+            final PublicKey key = signer.getCertificates().get(0).getPublicKey();
+
+            JWSVerifier verifier = null;
+            if (key instanceof RSAPublicKey) {
+                RSAPublicKey publicKey = (RSAPublicKey) key;
+                verifier = new RSASSAVerifier(publicKey);
+            } else if (key instanceof ECPublicKey) {
+                ECPublicKey publicKey = (ECPublicKey) key;
+                try {
+                    verifier = new ECDSAVerifier(publicKey);
+                } catch (JOSEException e) {
+                    throw logger.logExceptionAsError(new RuntimeException(e.getMessage()));
+                }
+            }
+
+            // Attempt to verify the token with the signer.
+            try {
+                if (jwt.get().verify(verifier)) {
+                    tokenSigner.set(signer);
+                    break;
+                }
+            } catch (JOSEException e) {
+                throw logger.logExceptionAsError(new RuntimeException(e.getMessage()));
+            }
+        }
+        return tokenSigner.get();
+    }
+
+    /**
+     * Get a list of possible signers for this attestation token. If the "signers" parameter
+     * is supplied, pick from that list, otherwise consult the JWS header for possible signers.
+     * @param signers - possible list of candidate signers.
+     * @return A list of possible signers for this token.
+     */
+    private List<AttestationSigner> getCandidateSigners(List<AttestationSigner> signers) {
+        List<AttestationSigner> candidates = new ArrayList<>();
+        final String desiredKeyId = this.getKeyId();
+
+        // If we have a Key ID and a list of signers, use the list of signers to find the key.
+        if (desiredKeyId != null && signers != null) {
+            signers.forEach(signer -> {
+                if (desiredKeyId.equals(signer.getKeyId())) {
+                    candidates.add(signer);
+                }
+            });
+        }
+
+        // If we didn't find a certificate in the previous step, just return the candidates provided
+        // by the caller - we can't do better than just the whole list of possible signers.
+        if (candidates.size() == 0) {
+            // We didn't find a candidate, so if the caller provided a list of candidates, use that
+            // as the possible signers.
+            if (signers != null && signers.size() != 0) {
+                signers.forEach(signer -> candidates.add(signer));
+            } else {
+                // The caller didn't provide a set of signers, maybe there's one in the token itself.
+                if (this.getCertificateChain() != null) {
+                    candidates.add(this.getCertificateChain());
+                }
+                if (this.getJsonWebKey() != null) {
+                    candidates.add(this.getJsonWebKey());
+                }
+            }
+        }
+        return candidates;
+    }
+
 
     static final String EMPTY_TOKEN = "eyJhbGciOiJub25lIn0..";
 
@@ -310,7 +514,7 @@ public class AttestationTokenImpl implements AttestationToken {
         // Create a signer from the provided signing key.
         JWSSigner signer;
         try {
-            if (signingKey.getPrivateKey() instanceof  RSAPrivateKey) {
+            if (signingKey.getPrivateKey() instanceof RSAPrivateKey) {
                 // If the caller wants to allow weak keys, allow them.
                 Set<JWSSignerOption> options = new HashSet<>();
                 if (signingKey.getAllowWeakKey()) {

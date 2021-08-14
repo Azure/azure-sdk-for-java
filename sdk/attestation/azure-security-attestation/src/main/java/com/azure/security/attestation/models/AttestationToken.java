@@ -175,5 +175,4 @@ public interface AttestationToken {
      * @return the nbf value.
      */
     LocalDateTime getNotBefore();
-
 }
