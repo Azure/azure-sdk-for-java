@@ -20,7 +20,7 @@
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-data-tables</artifactId>
-          <version>12.1.1</version> <!-- {x-version-update;com.azure:azure-data-tables;current} -->
+          <version>12.2.0-beta.1</version> <!-- {x-version-update;com.azure:azure-data-tables;current} -->
         </dependency>
       </dependencies>
 
