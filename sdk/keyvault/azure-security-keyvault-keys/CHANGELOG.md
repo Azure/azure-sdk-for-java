@@ -1,6 +1,6 @@
 # Release History
 
-## 4.4.0-beta.2 (2021-08-10)
+## 4.4.0-beta.2 (2021-08-13)
 
 ### Features Added
 - To support Secure Key Release for Key Vault and Managed HSM, added `Exportable` and `ReleasePolicy` to the following classes:
