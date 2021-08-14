@@ -340,6 +340,11 @@
         "code": "java.method.added",
         "new": "method com.azure.core.http.policy.HttpLogOptions com.azure.core.http.policy.HttpLogOptions::setResponseLogger(com.azure.core.http.policy.HttpResponseLogger)",
         "justification": "New method included in azure-core."
+      },
+      {
+        "code": "java.method.added",
+        "new": "method void com.azure.core.credential.AzureSasCredential::<init>(java.lang.String, java.util.function.Function<java.lang.String, java.lang.String>)",
+        "justification": "New constructor added in azure-core."
       }
     ]
   }
