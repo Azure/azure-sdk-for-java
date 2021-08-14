@@ -46,7 +46,6 @@ public final class FeatureFlagConfigurationSetting extends ConfigurationSetting 
         this.isEnabled = isEnabled;
         super.setKey(KEY_PREFIX + featureId);
         super.setContentType(FEATURE_FLAG_CONTENT_TYPE);
-        clientFilters = new ArrayList<>();
     }
 
     /**
@@ -241,6 +240,9 @@ public final class FeatureFlagConfigurationSetting extends ConfigurationSetting 
      * @return the feature flag filters of this configuration setting.
      */
     public List<FeatureFlagFilter> getClientFilters() {
+        if (clientFilters == null) {
+            clientFilters = new ArrayList<>();
+        }
         return clientFilters;
     }
 
@@ -266,6 +268,9 @@ public final class FeatureFlagConfigurationSetting extends ConfigurationSetting 
      * @return The updated {@link FeatureFlagConfigurationSetting} object.
      */
     public FeatureFlagConfigurationSetting addClientFilter(FeatureFlagFilter clientFilter) {
+        if (clientFilters == null) {
+            clientFilters = new ArrayList<>();
+        }
         clientFilters.add(clientFilter);
         updateSettingValue();
         return this;
