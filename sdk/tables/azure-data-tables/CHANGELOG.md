@@ -1,6 +1,6 @@
 # Release History
 
-## 12.1.1 (2021-08-12)
+## 12.1.1 (2021-08-13)
 
 ### Bugs Fixed
 - Fixed an issue that made getting entities from a Cosmos endpoint fail as it does not return a `Timestamp@odata.type` property in a `TableEntity` alongside the `Timestamp` property, like Storage endpoint do. This is apparently intended behavior, so we now always convert `Timestamp` to `OffsetDateTime` as it is a reserved property name and will always be provided by the service.
