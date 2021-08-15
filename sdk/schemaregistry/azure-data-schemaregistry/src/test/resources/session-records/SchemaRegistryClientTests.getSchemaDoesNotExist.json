@@ -4,7 +4,7 @@
     "Uri" : "https://REDACTED.servicebus.windows.net/$schemagroups/getSchemaById/59f112cf-ff02-40e6-aca9-0d30ed7f7f94?api-version=2020-09-01-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.5; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "4e46e6d4-b821-425a-b11f-0940f6958ce5"
+      "x-ms-client-request-id" : "313558ef-20b4-498a-b71d-ecd2291ce7ad"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
@@ -12,8 +12,8 @@
       "Server" : "Microsoft-HTTPAPI/2.0",
       "retry-after" : "0",
       "StatusCode" : "404",
-      "Body" : "{\"Code\":404,\"Detail\":\"Schema id 59f112cf-ff02-40e6-aca9-0d30ed7f7f94 does not exist. TrackingId:35de45ef-fdb9-4610-970e-5cd89233f3b1_G17, SystemTracker:conniey.servicebus.windows.net:$schemagroups\\/getSchemaById\\/59f112cf-ff02-40e6-aca9-0d30ed7f7f94, Timestamp:2021-08-15T17:51:05\"}",
-      "Date" : "Sun, 15 Aug 2021 17:51:05 GMT",
+      "Body" : "{\"Code\":404,\"Detail\":\"Schema id 59f112cf-ff02-40e6-aca9-0d30ed7f7f94 does not exist. TrackingId:cb7162ab-8dd4-45a1-9995-011d2c4caaa7_G20, SystemTracker:conniey.servicebus.windows.net:$schemagroups\\/getSchemaById\\/59f112cf-ff02-40e6-aca9-0d30ed7f7f94, Timestamp:2021-08-15T17:50:27\"}",
+      "Date" : "Sun, 15 Aug 2021 17:50:27 GMT",
       "Content-Type" : "application/json"
     },
     "Exception" : null

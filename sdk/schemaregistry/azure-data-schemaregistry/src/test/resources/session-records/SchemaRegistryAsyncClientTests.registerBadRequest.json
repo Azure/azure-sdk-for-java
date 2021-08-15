@@ -1,10 +1,10 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://REDACTED.servicebus.windows.net/$schemagroups/at/schemas/sch65328bb39?api-version=2020-09-01-preview",
+    "Uri" : "https://REDACTED.servicebus.windows.net/$schemagroups/at/schemas/sch3709387ed?api-version=2020-09-01-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.5; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "b4f3a386-275a-461e-8147-5a15e30f341b",
+      "x-ms-client-request-id" : "4b26782a-aaf6-451a-8020-47e37ba27c82",
       "Content-Type" : "text/plain; charset=utf-8"
     },
     "Response" : {
@@ -13,11 +13,11 @@
       "Server" : "Microsoft-HTTPAPI/2.0",
       "retry-after" : "0",
       "StatusCode" : "400",
-      "Body" : "{\"Code\":400,\"Detail\":\"Schema validation failed: 'type' was not found for field: Age. TrackingId:7ebe2618-a4cb-4cc7-b36b-c128d058556c_G27, SystemTracker:conniey.servicebus.windows.net:$schemagroups\\/at\\/schemas\\/sch65328bb39, Timestamp:2021-08-13T23:19:46\"}",
-      "Date" : "Fri, 13 Aug 2021 23:19:46 GMT",
+      "Body" : "{\"Code\":400,\"Detail\":\"Schema validation failed: 'type' was not found for field: Age. TrackingId:d242f51d-beca-4742-8646-f4cf46fac2e7_G21, SystemTracker:conniey.servicebus.windows.net:$schemagroups\\/at\\/schemas\\/sch3709387ed, Timestamp:2021-08-15T17:51:05\"}",
+      "Date" : "Sun, 15 Aug 2021 17:51:05 GMT",
       "Content-Type" : "application/json"
     },
     "Exception" : null
   } ],
-  "variables" : [ "sch65328bb39" ]
+  "variables" : [ "sch3709387ed" ]
 }
