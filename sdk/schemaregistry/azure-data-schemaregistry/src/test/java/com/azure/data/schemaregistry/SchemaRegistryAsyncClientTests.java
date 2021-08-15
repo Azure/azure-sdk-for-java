@@ -41,6 +41,36 @@ public class SchemaRegistryAsyncClientTests extends TestBase {
     SchemaRegistryClientBuilder builder;
 
     @Override
+    protected void beforeTest() {
+        final String endpoint;
+        TokenCredential tokenCredential;
+        if (interceptorManager.isPlaybackMode()) {
+            tokenCredential = mock(TokenCredential.class);
+            when(tokenCredential.getToken(any(TokenRequestContext.class)))
+                .thenReturn(Mono.fromCallable(() -> {
+                    return new AccessToken("foo", OffsetDateTime.now().plusMinutes(20));
+                }));
+            endpoint = "https://foo.servicebus.windows.net";
+        } else {
+            tokenCredential = new DefaultAzureCredentialBuilder().build();
+            endpoint = System.getenv(AZURE_EVENTHUBS_FULLY_QUALIFIED_DOMAIN_NAME);
+
+            assertNotNull(endpoint, "'endpoint' cannot be null in LIVE/RECORD mode.");
+        }
+
+        builder = new SchemaRegistryClientBuilder()
+            .credential(tokenCredential)
+            .endpoint(endpoint);
+
+        if (interceptorManager.isPlaybackMode()) {
+            builder.httpClient(interceptorManager.getPlaybackClient());
+        } else {
+            builder.addPolicy(new RetryPolicy())
+                .addPolicy(interceptorManager.getRecordPolicy());
+        }
+    }
+
+    @Override
     protected void afterTest() {
         Mockito.framework().clearInlineMocks();
         super.afterTest();
@@ -52,8 +82,6 @@ public class SchemaRegistryAsyncClientTests extends TestBase {
     @Test
     public void registerAndGetSchema() {
         // Arrange
-        initializeBuilder();
-
         final String schemaName = testResourceNamer.randomName("sch", RESOURCE_LENGTH);
         final SchemaRegistryAsyncClient client1 = builder.buildAsyncClient();
         final SchemaRegistryAsyncClient client2 = builder.buildAsyncClient();
@@ -100,7 +128,6 @@ public class SchemaRegistryAsyncClientTests extends TestBase {
     @Test
     public void registerAndGetSchemaTwice() {
         // Arrange
-        initializeBuilder();
         final String schemaContentModified = "{\"type\" : \"record\",\"namespace\" : \"TestSchema\",\"name\" : \"Employee\",\"fields\" : [{ \"name\" : \"Name\" , \"type\" : \"string\" },{ \"name\" : \"Age\", \"type\" : \"int\" },{ \"name\" : \"Sign\", \"type\" : \"string\" }]}";
         final String schemaName = testResourceNamer.randomName("sch", RESOURCE_LENGTH);
         final SchemaRegistryAsyncClient client1 = builder.buildAsyncClient();
@@ -150,8 +177,6 @@ public class SchemaRegistryAsyncClientTests extends TestBase {
     @Test
     public void registerAndGetSchemaId() {
         // Arrange
-        initializeBuilder();
-
         final String schemaName = testResourceNamer.randomName("sch", RESOURCE_LENGTH);
         final SchemaRegistryAsyncClient client1 = builder.buildAsyncClient();
         final SchemaRegistryAsyncClient client2 = builder.buildAsyncClient();
@@ -183,8 +208,6 @@ public class SchemaRegistryAsyncClientTests extends TestBase {
     @Test
     public void registerBadRequest() {
         // Arrange
-        initializeBuilder();
-
         final String invalidContent = "\"{\"type\" : \"record\",\"namespace\" : \"TestSchema\",\"name\" : \"Employee\",\"fields\" : [{ \"name\" : \"Name\" , \"type\" : \"string\" },{ \"name\" : \"Age\" }]}\"";
         final String schemaName = testResourceNamer.randomName("sch", RESOURCE_LENGTH);
         final SchemaRegistryAsyncClient client1 = builder.buildAsyncClient();
@@ -205,8 +228,6 @@ public class SchemaRegistryAsyncClientTests extends TestBase {
     @Test
     public void registerAndGetCachedSchema() {
         // Arrange
-        initializeBuilder();
-
         final String schemaName = testResourceNamer.randomName("sch", RESOURCE_LENGTH);
         final SchemaRegistryAsyncClient client1 = builder.buildAsyncClient();
 
@@ -246,8 +267,6 @@ public class SchemaRegistryAsyncClientTests extends TestBase {
     @Test
     public void getSchemaDoesNotExist() {
         // Arrange
-        initializeBuilder();
-
         final String schemaId = "59f112cf-ff02-40e6-aca9-0d30ed7f7f94";
         final SchemaRegistryAsyncClient client1 = builder.buildAsyncClient();
 
@@ -266,8 +285,6 @@ public class SchemaRegistryAsyncClientTests extends TestBase {
     @Test
     public void getSchemaIdDoesNotExist() {
         // Arrange
-        initializeBuilder();
-
         final SchemaRegistryAsyncClient client1 = builder.buildAsyncClient();
 
         // Act & Assert
@@ -277,34 +294,5 @@ public class SchemaRegistryAsyncClientTests extends TestBase {
                 assertEquals(404, ((ResourceNotFoundException) error).getResponse().getStatusCode());
             })
             .verify();
-    }
-
-    void initializeBuilder() {
-        final String endpoint;
-        TokenCredential tokenCredential;
-        if (interceptorManager.isPlaybackMode()) {
-            tokenCredential = mock(TokenCredential.class);
-            when(tokenCredential.getToken(any(TokenRequestContext.class)))
-                .thenReturn(Mono.fromCallable(() -> {
-                    return new AccessToken("foo", OffsetDateTime.now().plusMinutes(20));
-                }));
-            endpoint = "https://foo.servicebus.windows.net";
-        } else {
-            tokenCredential = new DefaultAzureCredentialBuilder().build();
-            endpoint = System.getenv(AZURE_EVENTHUBS_FULLY_QUALIFIED_DOMAIN_NAME);
-
-            assertNotNull(endpoint, "'endpoint' cannot be null in LIVE/RECORD mode.");
-        }
-
-        builder = new SchemaRegistryClientBuilder()
-            .credential(tokenCredential)
-            .endpoint(endpoint);
-
-        if (interceptorManager.isPlaybackMode()) {
-            builder.httpClient(interceptorManager.getPlaybackClient());
-        } else {
-            builder.addPolicy(new RetryPolicy())
-                .addPolicy(interceptorManager.getRecordPolicy());
-        }
     }
 }
