@@ -37,8 +37,7 @@ public final class SchemaRegistryClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SchemaProperties registerSchema(String schemaGroup, String schemaName, String schemaString,
                                            SerializationType serializationType) {
-        return registerSchemaWithResponse(schemaGroup, schemaName, schemaString, serializationType, Context.NONE)
-            .getValue();
+        return this.asyncClient.registerSchema(schemaGroup, schemaName, schemaString, serializationType).block();
     }
 
     /**
@@ -67,7 +66,7 @@ public final class SchemaRegistryClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SchemaProperties getSchema(String schemaId) {
-        return getSchemaWithResponse(schemaId, Context.NONE).getValue();
+        return this.asyncClient.getSchema(schemaId).block();
     }
 
     /**
@@ -94,8 +93,7 @@ public final class SchemaRegistryClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public String getSchemaId(String schemaGroup, String schemaName, String schemaString,
                               SerializationType serializationType) {
-        return getSchemaIdWithResponse(schemaGroup, schemaName, schemaString, serializationType, Context.NONE)
-            .getValue();
+        return this.asyncClient.getSchemaId(schemaGroup, schemaName, schemaString, serializationType).block();
     }
 
     /**
