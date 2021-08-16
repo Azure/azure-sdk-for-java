@@ -269,7 +269,7 @@ public class AppConfigurationPropertySource extends EnumerablePropertySource<Con
     private Object createFeature(FeatureFlagConfigurationSetting item) throws IOException {
         String key = getFeatureSimpleName(item);
         Feature feature = new Feature(key, item);
-        HashMap<Integer, FeatureFlagFilter> featureEnabledFor = feature.getEnabledFor();
+        Map<Integer, FeatureFlagFilter> featureEnabledFor = feature.getEnabledFor();
 
         // Setting Enabled For to null, but enabled = true will result in the feature
         // being on. This is the case of a feature is on/off and set to on. This is to
@@ -285,8 +285,8 @@ public class AppConfigurationPropertySource extends EnumerablePropertySource<Con
         for (int filter = 0; filter < feature.getEnabledFor().size(); filter++) {
             FeatureFlagFilter featureFilterEvaluationContext = featureEnabledFor.get(filter);
             Map<String, Object> parameters = featureFilterEvaluationContext.getParameters();
-
-            if (parameters == null || !featureEnabledFor.get(filter).getName().equals(TARGETING_FILTER)) {
+            
+            if (parameters == null || !TARGETING_FILTER.equals(featureEnabledFor.get(filter).getName())) {
                 continue;
             }
 

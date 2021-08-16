@@ -4,6 +4,7 @@ package com.azure.spring.cloud.config.feature.management.entity;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.azure.data.appconfiguration.models.FeatureFlagConfigurationSetting;
 import com.azure.data.appconfiguration.models.FeatureFlagFilter;
@@ -21,7 +22,7 @@ public class Feature {
     private String key;
 
     @JsonAlias("enabled-for")
-    private HashMap<Integer, FeatureFlagFilter> enabledFor;
+    private Map<Integer, FeatureFlagFilter> enabledFor;
 
     public Feature() {
     }
@@ -54,14 +55,14 @@ public class Feature {
     /**
      * @return the enabledFor
      */
-    public HashMap<Integer, FeatureFlagFilter> getEnabledFor() {
+    public Map<Integer, FeatureFlagFilter> getEnabledFor() {
         return enabledFor;
     }
 
     /**
      * @param enabledFor the enabledFor to set
      */
-    public void setEnabledFor(HashMap<Integer, FeatureFlagFilter> enabledFor) {
+    public void setEnabledFor(Map<Integer, FeatureFlagFilter> enabledFor) {
         this.enabledFor = enabledFor;
     }
 
