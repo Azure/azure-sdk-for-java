@@ -78,13 +78,8 @@ public final class FeatureFlagConfigurationSetting extends ConfigurationSetting 
         this.description = updatedSetting.getDescription();
         this.isEnabled = updatedSetting.isEnabled();
         this.displayName = updatedSetting.getDisplayName();
-        if (updatedSetting.getClientFilters() != null) {
-            this.clientFilters = StreamSupport.stream(updatedSetting.getClientFilters().spliterator(), false)
+        this.clientFilters = StreamSupport.stream(updatedSetting.getClientFilters().spliterator(), false)
                                      .collect(Collectors.toList());
-        } else {
-            this.clientFilters = null;
-        }
-
         return this;
     }
 
