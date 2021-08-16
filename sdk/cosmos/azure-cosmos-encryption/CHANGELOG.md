@@ -1,5 +1,8 @@
 # Release History
 
+## 1.0.0-beta.8 (Unreleased)
+
+
 ### 1.0.0-beta.7 (2021-08-16)
 #### New Features
 * Redesigned Database and Container encryption cache for staleness when recreating database and containers in encryption.

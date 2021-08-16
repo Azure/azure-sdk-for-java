@@ -1,5 +1,8 @@
 ## Release History
 
+## 4.19.0-beta.1 (Unreleased)
+
+
 ### 4.18.0 (2021-08-16)
 #### New Features
 * Integrated cosmos diagnostics with open telemetry tracer.
