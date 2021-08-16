@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.identity.util;
 
 import com.azure.core.exception.ClientAuthenticationException;
@@ -9,7 +12,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.powermock.modules.junit4.PowerMockRunner;
 
-import java.security.cert.CertificateExpiredException;
 import java.util.Arrays;
 
 @RunWith(PowerMockRunner.class)

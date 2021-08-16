@@ -5,8 +5,6 @@ package com.azure.core.experimental.credential;
 
 import com.azure.core.credential.TokenRequestContext;
 
-
-import java.util.Arrays;
 import java.util.List;
 
 /**
