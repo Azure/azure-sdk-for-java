@@ -3,10 +3,7 @@
 
 package com.azure.communication.networktraversal;
 
-import com.azure.communication.networktraversal.implementation.CommunicationNetworkingClientImpl;
-import com.azure.communication.networktraversal.models.CommunicationRelayConfigurationRequest;
 import com.azure.communication.networktraversal.models.CommunicationRelayConfiguration;
-import com.azure.communication.networktraversal.implementation.CommunicationNetworkTraversalsImpl;
 import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
@@ -21,11 +18,11 @@ import com.azure.core.util.Context;
 @ServiceClient(builder = CommunicationRelayClientBuilder.class, isAsync = false)
 public final class CommunicationRelayClient {
 
-    private final CommunicationNetworkTraversalsImpl client;
+    private final CommunicationRelayAsyncClient client;
     private final ClientLogger logger = new ClientLogger(CommunicationRelayClient.class);
 
-    CommunicationRelayClient(CommunicationNetworkingClientImpl communicationNetworkingClient) {
-        client = communicationNetworkingClient.getCommunicationNetworkTraversals();
+    CommunicationRelayClient(CommunicationRelayAsyncClient communicationNetworkingClient) {
+        client = communicationNetworkingClient;
     }
 
     /**
@@ -36,9 +33,7 @@ public final class CommunicationRelayClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CommunicationRelayConfiguration getRelayConfiguration(CommunicationUserIdentifier communicationUser) {
-        CommunicationRelayConfigurationRequest body = new CommunicationRelayConfigurationRequest();
-        body.setId(communicationUser.getId());
-        return client.issueRelayConfiguration(body);
+        return client.getRelayConfiguration(communicationUser).block();
        
     }
 
@@ -52,15 +47,8 @@ public final class CommunicationRelayClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CommunicationRelayConfiguration> getRelayConfigurationWithResponse(CommunicationUserIdentifier communicationUser, Context context) {
         context = context == null ? Context.NONE : context;
-        CommunicationRelayConfigurationRequest body = new CommunicationRelayConfigurationRequest();
-        body.setId(communicationUser.getId());
-        
         Response<CommunicationRelayConfiguration> response =
-            client.issueRelayConfigurationWithResponseAsync(body, context).block();
-
-        if (response == null || response.getValue() == null) {
-            throw logger.logExceptionAsError(new IllegalStateException("Service failed to return a response or expected value."));
-        }
+            client.getRelayConfigurationWithResponse(communicationUser, context).block();
         
         return response;
     }

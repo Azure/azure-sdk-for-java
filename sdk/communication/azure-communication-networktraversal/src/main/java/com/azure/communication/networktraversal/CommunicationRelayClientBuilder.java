@@ -209,6 +209,8 @@ public final class CommunicationRelayClientBuilder {
      * @return CommunicationRelayAsyncClient instance
      */
     public CommunicationRelayAsyncClient buildAsyncClient() {
+        Objects.requireNonNull(endpoint, "'ednpoint' cannot be null.");
+        Objects.requireNonNull(customPolicies, "'customPolicies' cannot be null.");
         return new CommunicationRelayAsyncClient(createServiceImpl());
     }
 
@@ -220,13 +222,13 @@ public final class CommunicationRelayClientBuilder {
      * @return CommunicationRelayClient instance
      */
     public CommunicationRelayClient buildClient() {
-        return new CommunicationRelayClient(createServiceImpl());
+        Objects.requireNonNull(endpoint, "'ednpoint' cannot be null.");
+        Objects.requireNonNull(customPolicies, "'customPolicies' cannot be null.");
+        return new CommunicationRelayClient(buildAsyncClient());
     }
 
     private CommunicationNetworkingClientImpl createServiceImpl() {
-        Objects.requireNonNull(endpoint, "'ednpoint' cannot be null.");
-        Objects.requireNonNull(httpClient, "'httpClient' cannot be null.");
-        Objects.requireNonNull(customPolicies, "'customPolicies' cannot be null.");
+
 
         HttpPipeline builderPipeline = this.pipeline;
         if (this.pipeline == null) {

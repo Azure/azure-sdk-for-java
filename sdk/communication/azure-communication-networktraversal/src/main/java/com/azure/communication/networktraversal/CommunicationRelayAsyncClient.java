@@ -6,7 +6,6 @@ package com.azure.communication.networktraversal;
 import com.azure.communication.networktraversal.implementation.CommunicationNetworkingClientImpl;
 import com.azure.communication.networktraversal.implementation.CommunicationNetworkTraversalsImpl;
 import com.azure.communication.networktraversal.models.CommunicationRelayConfiguration;
-import com.azure.communication.networktraversal.models.CommunicationErrorResponse;
 import com.azure.communication.networktraversal.models.CommunicationRelayConfigurationRequest;
 import com.azure.communication.networktraversal.models.CommunicationErrorResponseException;
 import com.azure.communication.common.CommunicationUserIdentifier;
@@ -16,7 +15,10 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.http.rest.Response;
 import reactor.core.publisher.Mono;
+import com.azure.core.util.Context;
+
 import static com.azure.core.util.FluxUtil.monoError;
+import static com.azure.core.util.FluxUtil.withContext;
 
 /**
  * Asynchronous client interface for Azure Communication Network Traversal
@@ -43,7 +45,7 @@ public final class CommunicationRelayAsyncClient {
         CommunicationRelayConfigurationRequest body = new CommunicationRelayConfigurationRequest();
         body.setId(communicationUser.getId());
         
-        return client.issueRelayConfigurationAsync(body);
+        return withContext(context -> client.issueRelayConfigurationAsync(body, context));
     }
 
     /**
@@ -57,18 +59,28 @@ public final class CommunicationRelayAsyncClient {
         try {
             CommunicationRelayConfigurationRequest body = new CommunicationRelayConfigurationRequest();
             body.setId(communicationUser.getId());
-            return client.issueRelayConfigurationWithResponseAsync(body)
-                .onErrorMap(CommunicationErrorResponseException.class, e -> translateException(e));
+            return withContext(context -> client.issueRelayConfigurationWithResponseAsync(body, context)
+                .onErrorMap(CommunicationErrorResponseException.class, e -> e));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
-
-    private CommunicationErrorResponseException translateException(CommunicationErrorResponseException exception) {
-        CommunicationErrorResponse error = null;
-        if (exception.getValue() != null) {
-            error = exception.getValue();
+    
+    /**
+     * Creates a new CommunicationRelayConfiguration with response.
+     *
+     * @param communicationUser The CommunicationUserIdentifier for whom to issue a token
+     * @param context A {@link Context} representing the request context.
+     * @return The created Communication Relay Configuration.
+     */
+    Mono<Response<CommunicationRelayConfiguration>> getRelayConfigurationWithResponse(CommunicationUserIdentifier communicationUser, Context context) {
+        try {
+            CommunicationRelayConfigurationRequest body = new CommunicationRelayConfigurationRequest();
+            body.setId(communicationUser.getId());
+            return client.issueRelayConfigurationWithResponseAsync(body, context)
+                .onErrorMap(CommunicationErrorResponseException.class, e -> e);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
         }
-        return new CommunicationErrorResponseException(exception.getMessage(), exception.getResponse(), error);
     }
 }

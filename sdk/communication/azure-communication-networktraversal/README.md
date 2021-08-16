@@ -31,7 +31,7 @@ It will provide TURN credentials to a user.
 There are two forms of authentication to use the Relay SDK:
 
 ### Azure Active Directory Token Authentication
-A `DefaultAzureCredential` object must be passed to the `CommunicationRelayClientBuilder` via the credential() function. Endpoint and httpClient must also be set via the endpoint() and httpClient() functions respectively.
+A `DefaultAzureCredential` object can be passed to the `CommunicationRelayClientBuilder` via the credential() function. Endpoint must also be set via the endpoint() function.
 
 `AZURE_CLIENT_SECRET`, `AZURE_CLIENT_ID` and `AZURE_TENANT_ID` environment variables
 are needed to create a DefaultAzureCredential object.
@@ -49,7 +49,7 @@ CommunicationRelayClient communicationRelayClient = new CommunicationRelayClient
 
 ### AzureKeyCredential Authentication
 Network Traversal uses HMAC authentication with the resource access key.
-The access key can be used to create an AzureKeyCredential and provided to the `CommunicationRelayClientBuilder` via the credential() function. Endpoint and httpClient must also be set via the endpoint() and httpClient() functions respectively.
+The access key can be used to create an AzureKeyCredential and provided to the `CommunicationRelayClientBuilder` via the credential() function. Endpoint must also be set via the endpoint() function.
 
 <!-- embedme ./src/samples/java/com/azure/communication/networktraversal/ReadmeSamples.java#L21-L28 -->
 ```java

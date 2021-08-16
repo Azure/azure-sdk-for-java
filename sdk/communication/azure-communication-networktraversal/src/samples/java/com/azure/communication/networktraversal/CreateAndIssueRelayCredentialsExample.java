@@ -9,6 +9,12 @@ import com.azure.communication.networktraversal.models.CommunicationRelayConfigu
 import com.azure.communication.networktraversal.models.CommunicationIceServer;
 import java.util.List;
 
+/**
+ * Shows how to get a CommunicationUserIdentifier using CommunicationIdentityClient
+ * to later return a relay configuration using CommunicationRelayConfiguration
+ * 
+ * It iterates over the lis of CommunicationIceServer to print the urls, username and credential
+ */
 public class CreateAndIssueRelayCredentialsExample {
     public static void main(String[] args) {
         String connectionString = System.getenv("COMMUNICATION_SAMPLES_CONNECTION_STRING");
