@@ -46,14 +46,18 @@ public class SchemaRegistryAsyncClientTests extends TestBase {
 
     @Override
     protected void beforeTest() {
-        final String endpoint;
+                final String endpoint;
         TokenCredential tokenCredential;
+
         if (interceptorManager.isPlaybackMode()) {
             tokenCredential = mock(TokenCredential.class);
-            when(tokenCredential.getToken(any(TokenRequestContext.class)))
-                .thenReturn(Mono.fromCallable(() -> {
+
+            when(tokenCredential.getToken(any(TokenRequestContext.class))).thenAnswer(invocationOnMock -> {
+                return Mono.fromCallable(() -> {
                     return new AccessToken("foo", OffsetDateTime.now().plusMinutes(20));
-                }));
+                });
+            });
+
             endpoint = "https://foo.servicebus.windows.net";
         } else {
             tokenCredential = new DefaultAzureCredentialBuilder().build();
