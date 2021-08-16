@@ -15,6 +15,9 @@ import static com.azure.core.experimental.implementation.graalvm.GraalVMFeatureU
 import static com.azure.core.experimental.implementation.graalvm.GraalVMFeatureUtils.getClassesForPackage;
 import static com.azure.core.experimental.implementation.graalvm.GraalVMFeatureUtils.registerClass;
 
+/**
+ * Implementations of this interface should configure the features specific to the Azure SDK client libraries.
+ */
 public interface GraalVMFeature extends Feature {
 
     default Set<String[]> getDynamicProxies() {
@@ -59,8 +62,8 @@ public interface GraalVMFeature extends Feature {
         }
 
         if (!missingClasses.isEmpty()) {
-            System.out.println("AZURE SDK: Not registering Azure GraalVM support for " + getClass() +
-                               " as not all specified classes were found on classpath. Missing classes are:");
+            System.out.println("AZURE SDK: Not registering Azure GraalVM support for " + getClass()
+                    + " as not all specified classes were found on classpath. Missing classes are:");
             missingClasses.forEach(cls -> System.out.println("  - " + cls));
         } else {
             System.out.println("AZURE SDK: Registering Azure GraalVM support for " + getClass());

@@ -27,7 +27,10 @@ import java.util.stream.Stream;
 
 import static org.graalvm.nativeimage.hosted.RuntimeReflection.register;
 
-public class GraalVMFeatureUtils {
+/**
+ * Utility class to configure GraalVM features.
+ */
+public final class GraalVMFeatureUtils {
 
     /**
      * Registers the given interfaces for dynamic proxy generation.
@@ -158,7 +161,7 @@ public class GraalVMFeatureUtils {
                     .replace(".class", "");
 
                 if (fqcn.startsWith(packageName)) {
-                    if (! fqcn.startsWith(packageName)) {
+                    if (!fqcn.startsWith(packageName)) {
                         continue;
                     }
 
@@ -178,5 +181,9 @@ public class GraalVMFeatureUtils {
             }
         }
         return count;
+    }
+
+    private GraalVMFeatureUtils() {
+        // private ctor
     }
 }

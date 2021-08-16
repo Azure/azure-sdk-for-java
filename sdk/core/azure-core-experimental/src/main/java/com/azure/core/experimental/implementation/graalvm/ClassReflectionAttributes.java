@@ -10,7 +10,7 @@ import java.util.Objects;
  * Represents the attributes of a given class that should be made available reflectively as part of a GraalVM native
  * image compilation.
  */
-public class ClassReflectionAttributes {
+public final class ClassReflectionAttributes {
     private final String name;
     private final EnumSet<ReflectionAttributes> set;
 
