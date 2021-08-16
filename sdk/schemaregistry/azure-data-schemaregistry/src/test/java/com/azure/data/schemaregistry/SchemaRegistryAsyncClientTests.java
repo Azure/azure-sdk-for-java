@@ -46,7 +46,7 @@ public class SchemaRegistryAsyncClientTests extends TestBase {
 
     @Override
     protected void beforeTest() {
-                final String endpoint;
+        final String endpoint;
         TokenCredential tokenCredential;
 
         if (interceptorManager.isPlaybackMode()) {
