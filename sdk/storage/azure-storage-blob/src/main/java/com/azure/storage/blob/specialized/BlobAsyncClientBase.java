@@ -1386,7 +1386,7 @@ public class BlobAsyncClientBase {
         return FluxUtil.writeFile(data, file, chunkNum * finalParallelTransferOptions.getBlockSizeLong());
     }
 
-    private static Response<BlobProperties> buildBlobPropertiesResponse(BlobDownloadAsyncResponse response) {
+    static Response<BlobProperties> buildBlobPropertiesResponse(BlobDownloadAsyncResponse response) {
         // blobSize determination - contentLength only returns blobSize if the download is not chunked.
         BlobDownloadHeaders hd = response.getDeserializedHeaders();
         long blobSize = getBlobLength(hd);

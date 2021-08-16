@@ -18,6 +18,7 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.BlobServiceClient;
 import com.azure.storage.blob.implementation.util.ModelHelper;
+import com.azure.storage.blob.models.BlobDownloadAsyncResponse;
 import com.azure.storage.blob.models.BlobDownloadContentAsyncResponse;
 import com.azure.storage.blob.models.BlobDownloadContentResponse;
 import com.azure.storage.blob.models.BlobImmutabilityPolicy;
@@ -57,12 +58,16 @@ import com.azure.storage.common.implementation.FluxInputStream;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
+import reactor.util.function.Tuple2;
 
+import java.io.BufferedOutputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.UncheckedIOException;
 import java.net.URL;
+import java.nio.ByteBuffer;
 import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.OpenOption;
 import java.nio.file.StandardOpenOption;
@@ -70,6 +75,7 @@ import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 import static com.azure.storage.common.implementation.StorageImplUtils.blockWithOptionalTimeout;
@@ -303,12 +309,20 @@ public class BlobClientBase {
         ConsistentReadControl consistentReadControl = options.getConsistentReadControl() == null
             ? ConsistentReadControl.ETAG : options.getConsistentReadControl();
 
-        BlobProperties properties = getPropertiesWithResponse(options.getRequestConditions(), null, null).getValue();
-        String eTag = properties.getETag();
-        String versionId = properties.getVersionId();
-
         BlobRange range = options.getRange() == null ? new BlobRange(0) : options.getRange();
         int chunkSize = options.getBlockSize() == null ? 4 * Constants.MB : options.getBlockSize();
+
+        BlobDownloadAsyncResponse downloadResponse = client.downloadWithResponse(
+            new BlobRange(range.getOffset(), (long) chunkSize), null, options.getRequestConditions(), false)
+            .block();
+        Objects.requireNonNull(downloadResponse);
+        ByteBuffer initialBuffer = FluxUtil.collectBytesInByteBufferStream(downloadResponse.getValue())
+            .map(ByteBuffer::wrap).block();
+        Objects.requireNonNull(initialBuffer);
+        BlobProperties properties = BlobAsyncClientBase.buildBlobPropertiesResponse(downloadResponse).getValue();
+
+        String eTag = properties.getETag();
+        String versionId = properties.getVersionId();
 
         BlobRequestConditions requestConditions = options.getRequestConditions() == null
             ? new BlobRequestConditions() : options.getRequestConditions();
@@ -339,8 +353,9 @@ public class BlobClientBase {
                     + "supported."));
         }
 
-        return new BlobInputStream(client, range.getOffset(), range.getCount(), chunkSize,
-            requestConditions, properties);
+        return new BlobInputStream(client, range.getOffset() + initialBuffer.remaining(),
+            range.getCount() == null ? null : range.getCount() - initialBuffer.remaining(),
+            chunkSize, initialBuffer, requestConditions, properties);
     }
 
     /**

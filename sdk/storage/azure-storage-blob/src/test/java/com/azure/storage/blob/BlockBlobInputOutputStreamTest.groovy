@@ -40,6 +40,8 @@ class BlockBlobInputOutputStreamTest extends APISpec {
 
         count == retVal
 
+        // I think this first test case is failing. What does download file do? I think it catches this exception on initial download
+        // Does the way I've written it work if the blob is < 4mb but just non-zero? i.e. does the service accept an end range that is past blob
         where:
         dataSize        || retVal
         0               || -1

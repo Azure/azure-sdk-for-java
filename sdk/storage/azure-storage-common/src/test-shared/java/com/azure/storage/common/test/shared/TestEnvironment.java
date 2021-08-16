@@ -88,18 +88,18 @@ public final class TestEnvironment {
     private static TestAccount readTestAccountFromEnvironment(String prefix, TestMode testMode) {
         String name = "azstoragesdkaccount";
         String key = "astorageaccountkey";
-        String connectionString = "DefaultEndpointsProtocol=https;AccountName=teststorage;"
+        String connectionString = "DefaultEndpointsProtocol=http;AccountName=teststorage;"
             + "AccountKey=atestaccountkey;EndpointSuffix=core.windows.net";
         if (testMode != TestMode.PLAYBACK) {
             name = Configuration.getGlobalConfiguration().get(prefix + "ACCOUNT_NAME");
             key = Configuration.getGlobalConfiguration().get(prefix + "ACCOUNT_KEY");
             connectionString =  Configuration.getGlobalConfiguration().get(prefix + "CONNECTION_STRING");
             if (connectionString == null || connectionString.trim().isEmpty()) {
-                connectionString = String.format("DefaultEndpointsProtocol=https;AccountName=%s;"
+                connectionString = String.format("DefaultEndpointsProtocol=http;AccountName=%s;"
                     + "AccountKey=%s;EndpointSuffix=core.windows.net", name, key);
             }
         }
-        String blobEndpoint = String.format("https://%s.blob.core.windows.net", name);
+        String blobEndpoint = String.format("http://%s.blob.core.windows.net", name);
         String blobEndpointSecondary = String.format("https://%s-secondary.blob.core.windows.net", name);
         String dataLakeEndpoint = String.format("https://%s.dfs.core.windows.net", name);
         String queueEndpoint = String.format("https://%s.queue.core.windows.net", name);
