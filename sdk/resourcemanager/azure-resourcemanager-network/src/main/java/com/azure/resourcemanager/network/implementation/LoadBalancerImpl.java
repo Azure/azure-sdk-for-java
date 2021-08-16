@@ -5,6 +5,14 @@ package com.azure.resourcemanager.network.implementation;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.NetworkManager;
+import com.azure.resourcemanager.network.fluent.models.BackendAddressPoolInner;
+import com.azure.resourcemanager.network.fluent.models.FrontendIpConfigurationInner;
+import com.azure.resourcemanager.network.fluent.models.InboundNatRuleInner;
+import com.azure.resourcemanager.network.fluent.models.LoadBalancerInner;
+import com.azure.resourcemanager.network.fluent.models.LoadBalancingRuleInner;
+import com.azure.resourcemanager.network.fluent.models.OutboundRuleInner;
+import com.azure.resourcemanager.network.fluent.models.ProbeInner;
+import com.azure.resourcemanager.network.models.HasNetworkInterfaces;
 import com.azure.resourcemanager.network.models.InboundNatPool;
 import com.azure.resourcemanager.network.models.LoadBalancer;
 import com.azure.resourcemanager.network.models.LoadBalancerBackend;
@@ -12,6 +20,7 @@ import com.azure.resourcemanager.network.models.LoadBalancerFrontend;
 import com.azure.resourcemanager.network.models.LoadBalancerHttpProbe;
 import com.azure.resourcemanager.network.models.LoadBalancerInboundNatPool;
 import com.azure.resourcemanager.network.models.LoadBalancerInboundNatRule;
+import com.azure.resourcemanager.network.models.LoadBalancerOutboundRule;
 import com.azure.resourcemanager.network.models.LoadBalancerPrivateFrontend;
 import com.azure.resourcemanager.network.models.LoadBalancerProbe;
 import com.azure.resourcemanager.network.models.LoadBalancerPublicFrontend;
@@ -21,15 +30,12 @@ import com.azure.resourcemanager.network.models.LoadBalancingRule;
 import com.azure.resourcemanager.network.models.NicIpConfiguration;
 import com.azure.resourcemanager.network.models.ProbeProtocol;
 import com.azure.resourcemanager.network.models.PublicIpAddress;
-import com.azure.resourcemanager.network.fluent.models.BackendAddressPoolInner;
-import com.azure.resourcemanager.network.fluent.models.FrontendIpConfigurationInner;
-import com.azure.resourcemanager.network.models.HasNetworkInterfaces;
-import com.azure.resourcemanager.network.fluent.models.InboundNatRuleInner;
-import com.azure.resourcemanager.network.fluent.models.LoadBalancerInner;
-import com.azure.resourcemanager.network.fluent.models.LoadBalancingRuleInner;
-import com.azure.resourcemanager.network.fluent.models.ProbeInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
+import reactor.core.Exceptions;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -38,11 +44,11 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.TreeMap;
-import reactor.core.Exceptions;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
+import java.util.stream.Collectors;
 
-/** Implementation of the LoadBalancer interface. */
+/**
+ * Implementation of the LoadBalancer interface.
+ */
 class LoadBalancerImpl
     extends GroupableParentResourceWithTagsImpl<LoadBalancer, LoadBalancerInner, LoadBalancerImpl, NetworkManager>
     implements LoadBalancer, LoadBalancer.Definition, LoadBalancer.Update {
@@ -59,6 +65,7 @@ class LoadBalancerImpl
     private Map<String, LoadBalancerFrontend> frontends;
     private Map<String, LoadBalancerInboundNatRule> inboundNatRules;
     private Map<String, LoadBalancerInboundNatPool> inboundNatPools;
+    private Map<String, LoadBalancerOutboundRule> outboundRules;
 
     LoadBalancerImpl(String name, final LoadBalancerInner innerModel, final NetworkManager networkManager) {
         super(name, innerModel, networkManager);
@@ -106,6 +113,7 @@ class LoadBalancerImpl
         initializeLoadBalancingRulesFromInner();
         initializeInboundNatRulesFromInner();
         initializeInboundNatPoolsFromInner();
+        initializeOutboundRulesFromInner();
     }
 
     protected LoadBalancerBackendImpl ensureUniqueBackend() {
@@ -245,6 +253,33 @@ class LoadBalancerImpl
             SubResource ref = natPool.innerModel().frontendIpConfiguration();
             if (ref != null && !this.frontends().containsKey(ResourceUtils.nameFromResourceId(ref.id()))) {
                 natPool.innerModel().withFrontendIpConfiguration(null);
+            }
+        }
+
+        // TODO: Reset and update outbound rules
+        List<OutboundRuleInner> innerOutboundRules = innersFromWrappers(this.outboundRules.values());
+        if (null == innerOutboundRules) {
+            innerOutboundRules = new ArrayList<>();
+        }
+        this.innerModel().withOutboundRules(innerOutboundRules);
+
+        for (LoadBalancerOutboundRule outboundRule : this.outboundRules.values()) {
+            // Clear deleted frontend references
+            List<SubResource> refs = outboundRule.innerModel().frontendIpConfigurations();
+            if (refs != null && !refs.isEmpty()) {
+                List<SubResource> existingFrontendIpConfigurations =
+                    refs.stream()
+                        .filter(ref ->
+                            this.frontends().containsKey(ResourceUtils.nameFromResourceId(ref.id()))
+                        )
+                        .collect(Collectors.toList());
+                existingFrontendIpConfigurations = existingFrontendIpConfigurations.isEmpty() ? null : existingFrontendIpConfigurations;
+                outboundRule.innerModel().withFrontendIpConfigurations(existingFrontendIpConfigurations);
+            }
+            // clear deleted backend references
+            SubResource ref = outboundRule.innerModel().backendAddressPool();
+            if(ref != null && !this.backends().containsKey(ResourceUtils.nameFromResourceId(ref.id()))) {
+                outboundRule.innerModel().withBackendAddressPool(null);
             }
         }
 
@@ -419,6 +454,17 @@ class LoadBalancerImpl
         }
     }
 
+    private void initializeOutboundRulesFromInner() {
+        this.outboundRules = new TreeMap<>();
+        List<OutboundRuleInner> rulesInner = this.innerModel().outboundRules();
+        if (rulesInner != null) {
+            for (OutboundRuleInner ruleInner : rulesInner) {
+                LoadBalancerOutboundRule rule = new LoadBalancerOutboundRuleImpl(ruleInner, this);
+                this.outboundRules.put(ruleInner.name(), rule);
+            }
+        }
+    }
+
     String futureResourceId() {
         return new StringBuilder()
             .append(super.resourceIdBase())
@@ -464,6 +510,13 @@ class LoadBalancerImpl
     LoadBalancerImpl withInboundNatPool(LoadBalancerInboundNatPoolImpl inboundNatPool) {
         if (inboundNatPool != null) {
             this.inboundNatPools.put(inboundNatPool.name(), inboundNatPool);
+        }
+        return this;
+    }
+
+    LoadBalancerImpl withOutboundRule(LoadBalancerOutboundRuleImpl outboundRule) {
+        if (outboundRule != null) {
+            this.outboundRules.put(outboundRule.name(), outboundRule);
         }
         return this;
     }
@@ -835,5 +888,27 @@ class LoadBalancerImpl
     @Override
     public LoadBalancerPublicFrontend findFrontendByPublicIpAddress(PublicIpAddress publicIPAddress) {
         return (publicIPAddress != null) ? this.findFrontendByPublicIpAddress(publicIPAddress.id()) : null;
+    }
+
+    @Override
+    public LoadBalancerImpl withoutOutboundRule(String name) {
+        this.outboundRules.remove(name);
+        return this;
+    }
+
+    @Override
+    public LoadBalancerOutboundRuleImpl defineOutboundRule(String name) {
+        LoadBalancerOutboundRule outboundRule = this.outboundRules.get(name);
+        if (outboundRule == null) {
+            OutboundRuleInner inner = new OutboundRuleInner().withName(name);
+            return new LoadBalancerOutboundRuleImpl(inner, this);
+        } else {
+            return (LoadBalancerOutboundRuleImpl) outboundRule;
+        }
+    }
+
+    @Override
+    public LoadBalancerOutboundRuleImpl updateOutboundRule(String name) {
+        return (LoadBalancerOutboundRuleImpl) this.outboundRules.get(name);
     }
 }

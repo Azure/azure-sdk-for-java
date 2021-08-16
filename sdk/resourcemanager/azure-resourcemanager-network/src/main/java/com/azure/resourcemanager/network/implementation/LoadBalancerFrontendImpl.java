@@ -38,7 +38,7 @@ class LoadBalancerFrontendImpl extends ChildResourceImpl<FrontendIpConfiguration
         LoadBalancerPrivateFrontend.UpdateDefinition<LoadBalancer.Update>,
         LoadBalancerPrivateFrontend.Update,
         LoadBalancerPublicFrontend,
-        LoadBalancerPublicFrontend.Definition<LoadBalancer.DefinitionStages.WithCreate>,
+        LoadBalancerPublicFrontend.Definition<LoadBalancer.DefinitionStages.WithCreateAndOutboundRule>,
         LoadBalancerPublicFrontend.UpdateDefinition<LoadBalancer.Update>,
         LoadBalancerPublicFrontend.Update {
 
