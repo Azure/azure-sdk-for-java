@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.BiFunction;
 import java.util.function.Function;
@@ -32,6 +33,7 @@ import static com.azure.core.util.polling.PollerFlux.create;
 import static com.azure.core.util.polling.PollerFlux.error;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
@@ -211,6 +213,36 @@ public class PollerTests {
                 == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED)
             .verifyComplete();
         assertEquals(1, activationCallCount[0]);
+    }
+
+    @Test
+    public void noPollingForSynchronouslyCompletedActivationInSyncPollerTest() {
+        int[] activationCallCount = new int[1];
+        activationCallCount[0] = 0;
+        when(activationOperationWithResponse.apply(any())).thenReturn(Mono.defer(() -> {
+            activationCallCount[0]++;
+            return Mono.just(new PollResponse<Response>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED,
+                new Response("ActivationDone")));
+        }));
+
+        SyncPoller<Response, CertificateOutput> syncPoller = create(
+            Duration.ofMillis(10),
+            activationOperationWithResponse,
+            pollOperation,
+            cancelOperation,
+            fetchResultOperation)
+            .getSyncPoller();
+
+        when(pollOperation.apply(any())).thenReturn(
+            Mono.error(new RuntimeException("Polling shouldn't happen for synchronously completed activation.")));
+
+        try {
+            PollResponse<Response> response = syncPoller.waitForCompletion(Duration.ofSeconds(1));
+            assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, response.getStatus());
+            assertEquals(1, activationCallCount[0]);
+        } catch (Exception e) {
+            fail("SyncPoller did not complete on activation", e);
+        }
     }
 
     @Test
