@@ -266,15 +266,10 @@ $PackageExclusions = @{
 
 # Validates if the package will succeed in the CI build by validating the 
 # existence of a com folder in the unzipped source package
-function SourcePackageHasComFolder($package, $workingDirectory) {
-  $packageDirectory = Join-Path `
-    $workingDirectory `
-    "$($package.packageGroupId)__$($package.packageArtifactId)__$($package.packageVersion)"
-  New-Item -ItemType Directory -Path $packageDirectory -Force
-
+function SourcePackageHasComFolder($artifactNamePrefix, $packageDirectory) {
   try
   {
-    $packageArtifact = "$($package.packageGroupId):$($package.packageArtifactId):$($package.packageVersion):jar:sources"
+    $packageArtifact = "${artifactNamePrefix}:jar:sources"
     $mvnResults = mvn `
       dependency:copy `
       -Dartifact="$packageArtifact" `
@@ -282,7 +277,6 @@ function SourcePackageHasComFolder($package, $workingDirectory) {
 
     if ($LASTEXITCODE) { 
       LogWarning "Could not download source artifact: $packageArtifact"
-      # TODO: Better outputting
       $mvnResults | Write-Host
       return $false
     }
@@ -308,13 +302,9 @@ function SourcePackageHasComFolder($package, $workingDirectory) {
   return $true
 }
 
-function PackageDependenciesResolve($package, $workingDirectory) { 
-  $packageDirectory = Join-Path `
-    $workingDirectory `
-    "$($package.packageGroupId)__$($package.packageArtifactId)__$($package.packageVersion)"
-  New-Item -ItemType Directory -Path $packageDirectory -Force
+function PackageDependenciesResolve($artifactNamePrefix, $packageDirectory) {
   
-  $pomArtifactName = "$($package.packageGroupId):$($package.packageArtifactId):$($package.packageVersion):pom"
+  $pomArtifactName = "${artifactNamePrefix}:pom"
   $artifactDownloadOutput = mvn `
     dependency:copy `
     -Dartifact="$pomArtifactName" `
@@ -326,7 +316,6 @@ function PackageDependenciesResolve($package, $workingDirectory) {
     return $false
   }
 
-  # Rename so dependency:copy-dependencies can find the pom file
   $downloadedPomPath = (Get-ChildItem -File -Path $packageDirectory -Filter '*.pom')[0]
 
   # -P '!azure-mgmt-sdk-test-jar' excludes the unpublished test jar from
@@ -346,9 +335,16 @@ function PackageDependenciesResolve($package, $workingDirectory) {
   return $true
 }
 
-function ValidatePackage($package, $workingDirectory) { 
-  return (SourcePackageHasComFolder $package $workingDirectory) `
-    -and (PackageDependenciesResolve $package $workingDirectory)
+function ValidatePackage($package, $workingDirectory) {
+  $artifactNamePrefix = "$($package.packageGroupId):$($package.packageArtifactId):$($package.packageVersion)"
+
+  $packageDirectory = Join-Path `
+    $workingDirectory `
+    "$($package.packageGroupId)__$($package.packageArtifactId)__$($package.packageVersion)"
+  New-Item -ItemType Directory -Path $packageDirectory -Force
+
+  return (SourcePackageHasComFolder $artifactNamePrefix $packageDirectory) `
+    -and (PackageDependenciesResolve $artifactNamePrefix $packageDirectory)
 }
 
 function Update-java-DocsMsPackages($DocsRepoLocation, $DocsMetadata) { 
