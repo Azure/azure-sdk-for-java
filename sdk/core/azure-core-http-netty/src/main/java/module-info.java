@@ -14,6 +14,8 @@ module com.azure.http.netty {
     requires reactor.netty;
     requires reactor.netty.core;
     requires reactor.netty.http;
+    requires org.graalvm.sdk;
+    requires svm;
 
     exports com.azure.core.http.netty;
 

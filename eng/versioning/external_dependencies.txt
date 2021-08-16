@@ -46,6 +46,7 @@ io.github.bonigarcia:webdrivermanager;4.3.1
 io.micrometer:micrometer-core;1.7.2
 io.micrometer:micrometer-registry-azure-monitor;1.7.2
 io.micrometer:micrometer-registry-graphite;1.7.2
+io.netty:netty-all;4.1.66.Final
 io.netty:netty-buffer;4.1.66.Final
 io.netty:netty-common;4.1.66.Final
 io.netty:netty-codec-http;4.1.66.Final
@@ -89,6 +90,9 @@ org.glassfish.tyrus.bundles:tyrus-standalone-client;1.16
 org.hibernate.validator:hibernate-validator;6.2.0.Final
 org.javatuples:javatuples;1.2
 org.linguafranca.pwdb:KeePassJava2;2.1.4
+org.graalvm.buildtools:junit-platform-native;0.9.1
+org.graalvm.sdk:graal-sdk;21.2.0
+org.graalvm.nativeimage:svm;21.2.0
 org.powermock:powermock-api-mockito2;2.0.2
 org.powermock:powermock-module-junit4;2.0.2
 org.postgresql:postgresql;42.2.23

@@ -64,6 +64,20 @@
     </dependency>
 
     <dependency>
+      <groupId>org.graalvm.sdk</groupId>
+      <artifactId>graal-sdk</artifactId>
+      <version>21.2.0</version>  <!-- {x-version-update;org.graalvm.sdk:graal-sdk;external_dependency} -->
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.graalvm.nativeimage</groupId>
+      <artifactId>svm</artifactId>
+      <version>21.2.0</version>  <!-- {x-version-update;org.graalvm.nativeimage:svm;external_dependency} -->
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-api</artifactId>
       <version>5.7.2</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-api;external_dependency} -->
@@ -105,6 +119,22 @@
           <compilerArgs>
             <arg>-Xlint:deprecation</arg>
           </compilerArgs>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-enforcer-plugin</artifactId>
+        <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
+        <configuration>
+          <rules>
+            <bannedDependencies>
+              <includes>
+                <include>org.graalvm.sdk:graal-sdk:[21.1.0]</include>
+                <include>org.graalvm.nativeimage:svm:[21.1.0]</include>
+              </includes>
+            </bannedDependencies>
+          </rules>
         </configuration>
       </plugin>
     </plugins>

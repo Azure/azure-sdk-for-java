@@ -21,6 +21,13 @@ public final class ConfigurationSettingPage implements Page<ConfigurationSetting
     private List<ConfigurationSetting> items;
 
     /**
+     * Creates an instance of {@link ConfigurationSettingPage}
+     */
+    public ConfigurationSettingPage() {
+        // public constructor for graalvm
+    }
+
+    /**
      * Gets the link to the next page.
      *
      * @return The link to the next page or {@code null} if there are no more resources to fetch.

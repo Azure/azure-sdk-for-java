@@ -108,6 +108,7 @@
     <jacoco.min.branchcoverage>0.30</jacoco.min.branchcoverage>
     <jacoco.skip.coverage.check>false</jacoco.skip.coverage.check>
     <relative.path.to.eng.folder>../../..</relative.path.to.eng.folder>
+    <graalvm.enable>false</graalvm.enable>
   </properties>
 
   <build>
@@ -1386,5 +1387,31 @@
         </plugins>
       </build>
     </profile>
+
+    <profile>
+      <id>native</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.graalvm.buildtools</groupId>
+            <artifactId>native-maven-plugin</artifactId>
+            <version>0.9.1</version>  <!-- {x-version-update;org.graalvm.buildtools:junit-platform-native;external_dependency} -->
+            <configuration>
+              <skip>${graalvm.enable}</skip>
+            </configuration>
+            <executions>
+              <execution>
+                <id>test-native</id>
+                <goals>
+                  <goal>test</goal>
+                </goals>
+                <phase>test</phase>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
   </profiles>
 </project>

@@ -3,6 +3,8 @@
 
 module com.azure.core.experimental {
     requires transitive com.azure.core;
+    requires org.graalvm.sdk;
+    requires svm;
 
     exports com.azure.core.experimental.serializer;
     exports com.azure.core.experimental.implementation;
