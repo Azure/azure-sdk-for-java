@@ -294,17 +294,37 @@ public final class AttestationAsyncClient {
         return withContext(context -> attestOpenEnclaveWithResponse(options, context));
     }
 
+    /**
+     * Actually perform the OpenEnclave attestation.
+     * @param options - Options for the attestation.
+     * @param context - context for the operation.
+     * @return The result of the attestation operation.
+     */
     Mono<Response<AttestationResult>> attestOpenEnclaveWithResponse(AttestationOptions options, Context context) {
+        AttestationOptionsImpl optionsImpl = new AttestationOptionsImpl(options);
 
-        final AttestationOptionsImpl optionsImpl = new AttestationOptionsImpl(options);
+        AttestationTokenValidationOptions validationOptions = options.getValidationOptions();
+        if (validationOptions == null) {
+            validationOptions = this.tokenValidationOptions;
+        }
 
+        AttestationTokenValidationOptions finalValidationOptions = validationOptions;
         return this.attestImpl.attestOpenEnclaveWithResponseAsync(optionsImpl.getInternalAttestOpenEnclaveRequest(), context)
-            // Create an AttestationToken from the raw response from the service.
             .map(response -> Utilities.generateResponseFromModelType(response, new AttestationTokenImpl(response.getValue().getToken())))
+            .flatMap(response -> {
+                if (finalValidationOptions.getValidateToken()) {
+                    return getCachedAttestationSigners()
+                        .map(signers -> {
+                            response.getValue().validate(signers, finalValidationOptions);
+                            return response;
+                        });
+                } else {
+                    return Mono.just(response);
+                }
+            })
             .map(response -> {
-                // Extract the AttestationResult from the AttestationToken.
-                com.azure.security.attestation.implementation.models.AttestationResult generated = response.getValue().getBody(com.azure.security.attestation.implementation.models.AttestationResult.class);
-                return Utilities.generateAttestationResponseFromModelType(response, response.getValue(), AttestationResultImpl.fromGeneratedAttestationResult(generated));
+                com.azure.security.attestation.implementation.models.AttestationResult generatedResult = response.getValue().getBody(com.azure.security.attestation.implementation.models.AttestationResult.class);
+                return Utilities.generateAttestationResponseFromModelType(response, response.getValue(), AttestationResultImpl.fromGeneratedAttestationResult(generatedResult));
             });
     }
 
@@ -390,13 +410,19 @@ public final class AttestationAsyncClient {
         // Ensure that the incoming request makes sense.
         AttestationOptionsImpl optionsImpl = new AttestationOptionsImpl(options);
 
+        AttestationTokenValidationOptions validationOptions = options.getValidationOptions();
+        if (validationOptions == null) {
+            validationOptions = this.tokenValidationOptions;
+        }
+
+        AttestationTokenValidationOptions finalValidationOptions = validationOptions;
         return this.attestImpl.attestSgxEnclaveWithResponseAsync(optionsImpl.getInternalAttestSgxRequest(), context)
             .map(response -> Utilities.generateResponseFromModelType(response, new AttestationTokenImpl(response.getValue().getToken())))
             .flatMap(response -> {
-                if (tokenValidationOptions.getValidateToken()) {
+                if (finalValidationOptions.getValidateToken()) {
                     return getCachedAttestationSigners()
                         .map(signers -> {
-                            response.getValue().validate(signers, this.tokenValidationOptions);
+                            response.getValue().validate(signers, finalValidationOptions);
                             return response;
                         });
                 } else {
