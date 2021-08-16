@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.core.experimental.graalvm;
+
+package com.azure.core.experimental.implementation.graalvm;
 
 import com.oracle.svm.core.jdk.proxy.DynamicProxyRegistry;
 import org.graalvm.nativeimage.ImageSingletons;

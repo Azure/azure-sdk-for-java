@@ -1395,9 +1395,10 @@
           <plugin>
             <groupId>org.graalvm.buildtools</groupId>
             <artifactId>native-maven-plugin</artifactId>
-            <version>0.9.1</version>  <!-- {x-version-update;org.graalvm.buildtools:junit-platform-native;external_dependency} -->
+            <version>0.9.2</version>  <!-- {x-version-update;org.graalvm.buildtools:junit-platform-native;external_dependency} -->
             <configuration>
               <skip>${graalvm.enable}</skip>
+              <buildArgs>--no-fallback</buildArgs>
             </configuration>
             <executions>
               <execution>

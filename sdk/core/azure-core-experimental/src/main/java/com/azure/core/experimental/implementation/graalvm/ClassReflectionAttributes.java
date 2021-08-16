@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.core.experimental.graalvm;
+
+package com.azure.core.experimental.implementation.graalvm;
 
 import java.util.EnumSet;
 import java.util.Objects;

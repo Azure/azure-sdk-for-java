@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.core.http.netty.implementation.graalvm.features;
 
 import com.oracle.svm.core.annotate.Alias;
@@ -16,8 +19,6 @@ import io.netty.handler.ssl.ApplicationProtocolConfig;
 import io.netty.handler.ssl.ApplicationProtocolConfig.SelectorFailureBehavior;
 import io.netty.handler.ssl.CipherSuiteFilter;
 import io.netty.handler.ssl.ClientAuth;
-import io.netty.handler.ssl.JdkAlpnApplicationProtocolNegotiator;
-import io.netty.handler.ssl.JdkApplicationProtocolNegotiator;
 import io.netty.handler.ssl.SslContext;
 import io.netty.handler.ssl.SslContextOption;
 import io.netty.handler.ssl.SslProvider;
@@ -73,8 +74,6 @@ final class Target_io_netty_util_internal_logging_InternalLoggerFactory {
 //*********************************************************
 
 
-
-
 // SSL
 // This whole section is mostly about removing static analysis references to openssl/tcnative
 
@@ -94,11 +93,27 @@ final class Target_io_netty_handler_ssl_SslProvider {
     }
 }
 
-@TargetClass(className = "io.netty.handler.ssl.JdkAlpnApplicationProtocolNegotiator")
+@TargetClass(className = "io.netty.handler.ssl.JdkAlpnApplicationProtocolNegotiator",
+            onlyWith = Target_io_netty_handler_ssl_JdkAlpnApplicationProtocolNegotiator.OnlyIfInClassPath.class)
 final class Target_io_netty_handler_ssl_JdkAlpnApplicationProtocolNegotiator {
     @Alias
     static boolean isAlpnSupported() {
         return true;
+    }
+
+    static class OnlyIfInClassPath implements BooleanSupplier {
+        @Override
+        public boolean getAsBoolean() {
+            try {
+                Class.forName(
+                        "io.netty.handler.ssl.JdkAlpnApplicationProtocolNegotiator",
+                        false,
+                        Thread.currentThread().getContextClassLoader());
+                return true;
+            } catch (ClassNotFoundException e) {
+                return false;
+            }
+        }
     }
 }
 
@@ -226,7 +241,7 @@ final class Target_io_netty_handler_ssl_JdkAlpnApplicationProtocolNegotiator_Alp
     @Substitute
     public SSLEngine wrapSslEngine(SSLEngine engine,
                                    ByteBufAllocator alloc,
-                                   JdkApplicationProtocolNegotiator applicationNegotiator,
+                                   io.netty.handler.ssl.JdkApplicationProtocolNegotiator applicationNegotiator,
                                    boolean isServer) {
         return (SSLEngine) (Object) new Target_io_netty_handler_ssl_JdkAlpnSslEngine(engine, applicationNegotiator,
             isServer);
@@ -241,7 +256,7 @@ final class Target_io_netty_handler_ssl_JdkAlpnApplicationProtocolNegotiator_Alp
     @Substitute
     public SSLEngine wrapSslEngine(SSLEngine engine,
                                    ByteBufAllocator alloc,
-                                   JdkApplicationProtocolNegotiator applicationNegotiator,
+                                   io.netty.handler.ssl.JdkApplicationProtocolNegotiator applicationNegotiator,
                                    boolean isServer) {
         if (Target_io_netty_handler_ssl_JettyAlpnSslEngine.isAvailable()) {
             return isServer ?
@@ -264,13 +279,13 @@ final class Target_io_netty_handler_ssl_JettyAlpnSslEngine {
 
     @Substitute
     static Target_io_netty_handler_ssl_JettyAlpnSslEngine newClientEngine(
-        SSLEngine engine, JdkApplicationProtocolNegotiator applicationNegotiator) {
+        SSLEngine engine, io.netty.handler.ssl.JdkApplicationProtocolNegotiator applicationNegotiator) {
         return null;
     }
 
     @Substitute
     static Target_io_netty_handler_ssl_JettyAlpnSslEngine newServerEngine(
-        SSLEngine engine, JdkApplicationProtocolNegotiator applicationNegotiator) {
+        SSLEngine engine, io.netty.handler.ssl.JdkApplicationProtocolNegotiator applicationNegotiator) {
         return null;
     }
 }
@@ -281,7 +296,7 @@ final class Target_io_netty_handler_ssl_JettyAlpnSslEngine {
 final class Target_io_netty_handler_ssl_JdkAlpnSslEngine {
     @Alias
     Target_io_netty_handler_ssl_JdkAlpnSslEngine(
-        final SSLEngine engine, final JdkApplicationProtocolNegotiator applicationNegotiator, final boolean isServer) {
+        final SSLEngine engine, final io.netty.handler.ssl.JdkApplicationProtocolNegotiator applicationNegotiator, final boolean isServer) {
 
     }
 }
@@ -290,6 +305,8 @@ final class Target_io_netty_handler_ssl_JdkAlpnSslEngine {
 final class Target_io_netty_handler_ssl_SslContext {
 
     @Substitute
+    @SafeVarargs
+    @SuppressWarnings("varargs")
     static SslContext newServerContextInternal(SslProvider provider,
                                                Provider sslContextProvider,
                                                X509Certificate[] trustCertCollection,
@@ -317,6 +334,8 @@ final class Target_io_netty_handler_ssl_SslContext {
     }
 
     @Substitute
+    @SafeVarargs
+    @SuppressWarnings("varargs")
     static SslContext newClientContextInternal(SslProvider provider,
                                                Provider sslContextProvider,
                                                X509Certificate[] trustCert,
@@ -353,24 +372,25 @@ final class Target_io_netty_handler_ssl_JdkDefaultApplicationProtocolNegotiator 
 }
 
 @TargetClass(className = "io.netty.handler.ssl.JdkSslContext")
+@SuppressWarnings("deprecation")
 final class Target_io_netty_handler_ssl_JdkSslContext {
 
     @Substitute
-    static JdkApplicationProtocolNegotiator toNegotiator(ApplicationProtocolConfig config, boolean isServer) {
+    static io.netty.handler.ssl.JdkApplicationProtocolNegotiator toNegotiator(ApplicationProtocolConfig config, boolean isServer) {
         if (config == null) {
-            return (JdkApplicationProtocolNegotiator) (Object) Target_io_netty_handler_ssl_JdkDefaultApplicationProtocolNegotiator.INSTANCE;
+            return (io.netty.handler.ssl.JdkApplicationProtocolNegotiator) (Object) Target_io_netty_handler_ssl_JdkDefaultApplicationProtocolNegotiator.INSTANCE;
         }
 
         switch (config.protocol()) {
             case NONE:
-                return (JdkApplicationProtocolNegotiator) (Object) Target_io_netty_handler_ssl_JdkDefaultApplicationProtocolNegotiator.INSTANCE;
+                return (io.netty.handler.ssl.JdkApplicationProtocolNegotiator) (Object) Target_io_netty_handler_ssl_JdkDefaultApplicationProtocolNegotiator.INSTANCE;
             case ALPN:
                 if (isServer) {
                     SelectorFailureBehavior behavior = config.selectorFailureBehavior();
                     if (behavior == SelectorFailureBehavior.FATAL_ALERT) {
-                        return new JdkAlpnApplicationProtocolNegotiator(true, config.supportedProtocols());
+                        return new io.netty.handler.ssl.JdkAlpnApplicationProtocolNegotiator(true, config.supportedProtocols());
                     } else if (behavior == SelectorFailureBehavior.NO_ADVERTISE) {
-                        return new JdkAlpnApplicationProtocolNegotiator(false, config.supportedProtocols());
+                        return new io.netty.handler.ssl.JdkAlpnApplicationProtocolNegotiator(false, config.supportedProtocols());
                     } else {
                         throw new UnsupportedOperationException(new StringBuilder("JDK provider does not support ")
                                                                     .append(config.selectorFailureBehavior()).append(" failure behavior").toString());
@@ -378,9 +398,9 @@ final class Target_io_netty_handler_ssl_JdkSslContext {
                 } else {
                     switch (config.selectedListenerFailureBehavior()) {
                         case ACCEPT:
-                            return new JdkAlpnApplicationProtocolNegotiator(false, config.supportedProtocols());
+                            return new io.netty.handler.ssl.JdkAlpnApplicationProtocolNegotiator(false, config.supportedProtocols());
                         case FATAL_ALERT:
-                            return new JdkAlpnApplicationProtocolNegotiator(true, config.supportedProtocols());
+                            return new io.netty.handler.ssl.JdkAlpnApplicationProtocolNegotiator(true, config.supportedProtocols());
                         default:
                             throw new UnsupportedOperationException(new StringBuilder("JDK provider does not support ")
                                                                         .append(config.selectedListenerFailureBehavior()).append(" failure behavior")
@@ -396,76 +416,6 @@ final class Target_io_netty_handler_ssl_JdkSslContext {
     }
 
 }
-
-///*
-// * This one only prints exceptions otherwise we get a useless bogus
-// * exception message: https://github.com/eclipse-vertx/vert.x/issues/1657
-// */
-//@TargetClass(className = "io.netty.bootstrap.AbstractBootstrap")
-//final class Target_io_netty_bootstrap_AbstractBootstrap {
-//
-//    @Alias
-//    private ChannelFactory channelFactory;
-//
-//    @Alias
-//    void init(Channel channel) throws Exception {
-//    }
-//
-//    @Alias
-//    public AbstractBootstrapConfig config() {
-//        return null;
-//    }
-//
-//    @Substitute
-//    final ChannelFuture initAndRegister() {
-//        Channel channel = null;
-//        try {
-//            channel = channelFactory.newChannel();
-//            init(channel);
-//        } catch (Throwable t) {
-//            // THE FIX IS HERE:
-//            t.printStackTrace();
-//            if (channel != null) {
-//                // channel can be null if newChannel crashed (eg SocketException("too many open files"))
-//                channel.unsafe().closeForcibly();
-//            }
-//            // as the Channel is not registered yet we need to force the usage of the GlobalEventExecutor
-//            return new DefaultChannelPromise(channel, GlobalEventExecutor.INSTANCE).setFailure(t);
-//        }
-//
-//        ChannelFuture regFuture = config().group().register(channel);
-//        if (regFuture.cause() != null) {
-//            if (channel.isRegistered()) {
-//                channel.close();
-//            } else {
-//                channel.unsafe().closeForcibly();
-//            }
-//        }
-//
-//        // If we are here and the promise is not failed, it's one of the following cases:
-//        // 1) If we attempted registration from the event loop, the registration has been completed at this point.
-//        //    i.e. It's safe to attempt bind() or connect() now because the channel has been registered.
-//        // 2) If we attempted registration from the other thread, the registration request has been successfully
-//        //    added to the event loop's task queue for later execution.
-//        //    i.e. It's safe to attempt bind() or connect() now:
-//        //         because bind() or connect() will be executed *after* the scheduled registration task is executed
-//        //         because register(), bind(), and connect() are all bound to the same thread.
-//
-//        return regFuture;
-//
-//    }
-//}
-
-
-//@TargetClass(className = "io.netty.channel.nio.NioEventLoop")
-//final class Target_io_netty_channel_nio_NioEventLoop {
-//
-//    @Substitute
-//    private static Queue<Runnable> newTaskQueue0(int maxPendingTasks) {
-//        return new LinkedBlockingDeque<>();
-//    }
-//}
-
 
 @TargetClass(className = "io.netty.buffer.AbstractReferenceCountedByteBuf")
 final class Target_io_netty_buffer_AbstractReferenceCountedByteBuf {
@@ -516,17 +466,6 @@ final class Target_io_netty_util_concurrent_ScheduledFutureTask {
     }
 }
 
-//@TargetClass(className = "io.netty.channel.ChannelHandlerMask")
-//final class Target_io_netty_channel_ChannelHandlerMask {
-//
-//    // Netty tries to self-optimized itself, but it requires lots of reflection. We disable this behavior and avoid
-//    // misleading DEBUG messages in the log.
-//    @Substitute
-//    private static boolean isSkippable(final Class<?> handlerType, final String methodName, final Class... paramTypes) {
-//        return false;
-//    }
-//}
-
 @TargetClass(className = "io.netty.util.internal.NativeLibraryLoader")
 final class Target_io_netty_util_internal_NativeLibraryLoader {
 
@@ -537,18 +476,6 @@ final class Target_io_netty_util_internal_NativeLibraryLoader {
     }
 
 }
-
-
-
-// We need to delete this class but we let GraalVM dead code elimination do it for us.
-// Otherwise it causes a problem when --report-unsupported-elements-at-runtime is enabled:
-// when trying to delete the class, GraalVM throws a java.lang.NoClassDefFoundError: Lcom/aayushatharva/brotli4j/decoder/DecoderJNI$Wrapper;
-// While we recommend not using this option, some extensions out there are using it.
-//@TargetClass(className = "io.netty.handler.codec.compression.BrotliDecoder")
-//@Delete
-//final class Target_BrotliDecoder {
-//
-//}
 
 @TargetClass(className = "io.netty.handler.codec.http.HttpContentDecompressor")
 final class Target_io_netty_handler_codec_http_HttpContentDecompressor {
@@ -577,32 +504,5 @@ final class Target_io_netty_handler_codec_http_HttpContentDecompressor {
         return null;
     }
 }
-
-//@TargetClass(className = "io.netty.handler.codec.http2.DelegatingDecompressorFrameListener")
-//final class Target_io_netty_handler_codec_http2_DelegatingDecompressorFrameListener {
-//
-//    @Alias
-//    boolean strict;
-//
-//    @Substitute
-//    protected EmbeddedChannel newContentDecompressor(ChannelHandlerContext ctx, CharSequence contentEncoding)
-//        throws Http2Exception {
-//        if (!HttpHeaderValues.GZIP.contentEqualsIgnoreCase(contentEncoding)
-//                && !HttpHeaderValues.X_GZIP.contentEqualsIgnoreCase(contentEncoding)) {
-//            if (!HttpHeaderValues.DEFLATE.contentEqualsIgnoreCase(contentEncoding)
-//                    && !HttpHeaderValues.X_DEFLATE.contentEqualsIgnoreCase(contentEncoding)) {
-//                return null;
-//            } else {
-//                ZlibWrapper wrapper = this.strict ? ZlibWrapper.ZLIB : ZlibWrapper.ZLIB_OR_NONE;
-//                return new EmbeddedChannel(ctx.channel().id(), ctx.channel().metadata().hasDisconnect(), ctx.channel().config(),
-//                    new ChannelHandler[] { ZlibCodecFactory.newZlibDecoder(wrapper) });
-//            }
-//        } else {
-//            return new EmbeddedChannel(ctx.channel().id(), ctx.channel().metadata().hasDisconnect(), ctx.channel().config(),
-//                new ChannelHandler[] { ZlibCodecFactory.newZlibDecoder(ZlibWrapper.GZIP) });
-//        }
-//    }
-//}
-
 
 public class NettySubstitutions { }

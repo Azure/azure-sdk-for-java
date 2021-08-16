@@ -24,7 +24,7 @@
     "allDeclaredFields": true
   },
   {
-    "name": "com.azure.data.appconfiguration.implementation.SecretReferenceConfigurationSetting",
+    "name": "com.azure.data.appconfiguration.models.SecretReferenceConfigurationSetting",
     "allDeclaredConstructors": true,
     "allDeclaredMethods": true,
     "allDeclaredFields": true

@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.core.experimental.graalvm;
+
+package com.azure.core.experimental.implementation.graalvm;
 
 import org.graalvm.nativeimage.hosted.Feature;
 
@@ -9,10 +10,10 @@ import java.util.Collections;
 import java.util.Set;
 import java.util.TreeSet;
 
-import static com.azure.core.experimental.graalvm.GraalVMFeatureUtils.addProxyClass;
-import static com.azure.core.experimental.graalvm.GraalVMFeatureUtils.findClass;
-import static com.azure.core.experimental.graalvm.GraalVMFeatureUtils.getClassesForPackage;
-import static com.azure.core.experimental.graalvm.GraalVMFeatureUtils.registerClass;
+import static com.azure.core.experimental.implementation.graalvm.GraalVMFeatureUtils.addProxyClass;
+import static com.azure.core.experimental.implementation.graalvm.GraalVMFeatureUtils.findClass;
+import static com.azure.core.experimental.implementation.graalvm.GraalVMFeatureUtils.getClassesForPackage;
+import static com.azure.core.experimental.implementation.graalvm.GraalVMFeatureUtils.registerClass;
 
 public interface GraalVMFeature extends Feature {
 

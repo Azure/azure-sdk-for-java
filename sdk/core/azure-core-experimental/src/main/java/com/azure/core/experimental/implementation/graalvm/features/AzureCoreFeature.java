@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.core.experimental.implementation.graalvm.features;
 
-import com.azure.core.experimental.graalvm.GraalVMFeature;
+import com.azure.core.experimental.implementation.graalvm.GraalVMFeature;
 import com.oracle.svm.core.annotate.AutomaticFeature;
 
 @AutomaticFeature

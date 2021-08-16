@@ -2,14 +2,14 @@
 // Licensed under the MIT License.
 package com.azure.core.experimental.implementation.graalvm.features;
 
-import com.azure.core.experimental.graalvm.ClassReflectionAttributes;
-import com.azure.core.experimental.graalvm.GraalVMFeature;
+import com.azure.core.experimental.implementation.graalvm.ClassReflectionAttributes;
+import com.azure.core.experimental.implementation.graalvm.GraalVMFeature;
 import com.oracle.svm.core.annotate.AutomaticFeature;
 
 import java.util.Set;
 
-import static com.azure.core.experimental.graalvm.ClassReflectionAttributes.createWithAllDeclared;
-import static com.azure.core.experimental.graalvm.GraalVMFeatureUtils.setOf;
+import static com.azure.core.experimental.implementation.graalvm.ClassReflectionAttributes.createWithAllDeclared;
+import static com.azure.core.experimental.implementation.graalvm.GraalVMFeatureUtils.setOf;
 
 @AutomaticFeature
 public class IdentityFeature implements GraalVMFeature {

@@ -45,14 +45,14 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-netty</artifactId>
-      <version>1.10.2</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
+      <version>1.11.0-beta.1</version> <!-- {x-version-update;unreleased_com.azure:azure-core-http-netty;dependency} -->
     </dependency>
 
     <!-- Test dependencies -->
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-test</artifactId>
-      <version>1.7.0</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
+      <version>1.8.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -102,10 +102,11 @@
     <dependency>
       <groupId>org.graalvm.buildtools</groupId>
       <artifactId>junit-platform-native</artifactId>
-      <version>0.9.1</version> <!-- {x-version-update;org.graalvm.buildtools:junit-platform-native;external_dependency} -->
+      <version>0.9.2</version> <!-- {x-version-update;org.graalvm.buildtools:junit-platform-native;external_dependency} -->
       <scope>test</scope>
     </dependency>
 
+    <!-- all graalvm config is in core-experimental -->
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-experimental</artifactId>
