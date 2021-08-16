@@ -185,9 +185,7 @@ public final class DedicatedHostGroupsClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param hostGroupName The name of the dedicated host group.
-     * @param parameters Specifies information about the dedicated host group that the dedicated hosts should be
-     *     assigned to. &lt;br&gt;&lt;br&gt; Currently, a dedicated host can only be added to a dedicated host group at
-     *     creation time. An existing dedicated host cannot be added to another dedicated host group.
+     * @param parameters Parameters supplied to the Create Dedicated Host Group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -220,7 +218,7 @@ public final class DedicatedHostGroupsClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2020-06-01";
+        final String apiVersion = "2021-04-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -235,7 +233,7 @@ public final class DedicatedHostGroupsClientImpl
                             parameters,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -244,9 +242,7 @@ public final class DedicatedHostGroupsClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param hostGroupName The name of the dedicated host group.
-     * @param parameters Specifies information about the dedicated host group that the dedicated hosts should be
-     *     assigned to. &lt;br&gt;&lt;br&gt; Currently, a dedicated host can only be added to a dedicated host group at
-     *     creation time. An existing dedicated host cannot be added to another dedicated host group.
+     * @param parameters Parameters supplied to the Create Dedicated Host Group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -280,7 +276,7 @@ public final class DedicatedHostGroupsClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2020-06-01";
+        final String apiVersion = "2021-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -301,9 +297,7 @@ public final class DedicatedHostGroupsClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param hostGroupName The name of the dedicated host group.
-     * @param parameters Specifies information about the dedicated host group that the dedicated hosts should be
-     *     assigned to. &lt;br&gt;&lt;br&gt; Currently, a dedicated host can only be added to a dedicated host group at
-     *     creation time. An existing dedicated host cannot be added to another dedicated host group.
+     * @param parameters Parameters supplied to the Create Dedicated Host Group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -329,9 +323,7 @@ public final class DedicatedHostGroupsClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param hostGroupName The name of the dedicated host group.
-     * @param parameters Specifies information about the dedicated host group that the dedicated hosts should be
-     *     assigned to. &lt;br&gt;&lt;br&gt; Currently, a dedicated host can only be added to a dedicated host group at
-     *     creation time. An existing dedicated host cannot be added to another dedicated host group.
+     * @param parameters Parameters supplied to the Create Dedicated Host Group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -349,9 +341,7 @@ public final class DedicatedHostGroupsClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param hostGroupName The name of the dedicated host group.
-     * @param parameters Specifies information about the dedicated host group that the dedicated hosts should be
-     *     assigned to. &lt;br&gt;&lt;br&gt; Currently, a dedicated host can only be added to a dedicated host group at
-     *     creation time. An existing dedicated host cannot be added to another dedicated host group.
+     * @param parameters Parameters supplied to the Create Dedicated Host Group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -369,8 +359,7 @@ public final class DedicatedHostGroupsClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param hostGroupName The name of the dedicated host group.
-     * @param parameters Specifies information about the dedicated host group that the dedicated host should be assigned
-     *     to. Only tags may be updated.
+     * @param parameters Parameters supplied to the Update Dedicated Host Group operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -403,7 +392,7 @@ public final class DedicatedHostGroupsClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2020-06-01";
+        final String apiVersion = "2021-04-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -418,7 +407,7 @@ public final class DedicatedHostGroupsClientImpl
                             parameters,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -426,8 +415,7 @@ public final class DedicatedHostGroupsClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param hostGroupName The name of the dedicated host group.
-     * @param parameters Specifies information about the dedicated host group that the dedicated host should be assigned
-     *     to. Only tags may be updated.
+     * @param parameters Parameters supplied to the Update Dedicated Host Group operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -461,7 +449,7 @@ public final class DedicatedHostGroupsClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2020-06-01";
+        final String apiVersion = "2021-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -481,8 +469,7 @@ public final class DedicatedHostGroupsClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param hostGroupName The name of the dedicated host group.
-     * @param parameters Specifies information about the dedicated host group that the dedicated host should be assigned
-     *     to. Only tags may be updated.
+     * @param parameters Parameters supplied to the Update Dedicated Host Group operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -507,8 +494,7 @@ public final class DedicatedHostGroupsClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param hostGroupName The name of the dedicated host group.
-     * @param parameters Specifies information about the dedicated host group that the dedicated host should be assigned
-     *     to. Only tags may be updated.
+     * @param parameters Parameters supplied to the Update Dedicated Host Group operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -525,8 +511,7 @@ public final class DedicatedHostGroupsClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param hostGroupName The name of the dedicated host group.
-     * @param parameters Specifies information about the dedicated host group that the dedicated host should be assigned
-     *     to. Only tags may be updated.
+     * @param parameters Parameters supplied to the Update Dedicated Host Group operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -570,7 +555,7 @@ public final class DedicatedHostGroupsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-06-01";
+        final String apiVersion = "2021-04-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -582,7 +567,7 @@ public final class DedicatedHostGroupsClientImpl
                             apiVersion,
                             this.client.getSubscriptionId(),
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -618,7 +603,7 @@ public final class DedicatedHostGroupsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-06-01";
+        final String apiVersion = "2021-04-01";
         context = this.client.mergeContext(context);
         return service
             .delete(
@@ -680,8 +665,9 @@ public final class DedicatedHostGroupsClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param hostGroupName The name of the dedicated host group.
-     * @param expand The expand expression to apply on the operation. The response shows the list of instance view of
-     *     the dedicated hosts under the dedicated host group.
+     * @param expand The expand expression to apply on the operation. 'InstanceView' will retrieve the list of instance
+     *     views of the dedicated hosts under the dedicated host group. 'UserData' is not supported for dedicated host
+     *     group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -709,7 +695,7 @@ public final class DedicatedHostGroupsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-06-01";
+        final String apiVersion = "2021-04-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -724,7 +710,7 @@ public final class DedicatedHostGroupsClientImpl
                             this.client.getSubscriptionId(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -732,8 +718,9 @@ public final class DedicatedHostGroupsClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param hostGroupName The name of the dedicated host group.
-     * @param expand The expand expression to apply on the operation. The response shows the list of instance view of
-     *     the dedicated hosts under the dedicated host group.
+     * @param expand The expand expression to apply on the operation. 'InstanceView' will retrieve the list of instance
+     *     views of the dedicated hosts under the dedicated host group. 'UserData' is not supported for dedicated host
+     *     group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -762,7 +749,7 @@ public final class DedicatedHostGroupsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-06-01";
+        final String apiVersion = "2021-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -782,8 +769,9 @@ public final class DedicatedHostGroupsClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param hostGroupName The name of the dedicated host group.
-     * @param expand The expand expression to apply on the operation. The response shows the list of instance view of
-     *     the dedicated hosts under the dedicated host group.
+     * @param expand The expand expression to apply on the operation. 'InstanceView' will retrieve the list of instance
+     *     views of the dedicated hosts under the dedicated host group. 'UserData' is not supported for dedicated host
+     *     group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -848,8 +836,9 @@ public final class DedicatedHostGroupsClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param hostGroupName The name of the dedicated host group.
-     * @param expand The expand expression to apply on the operation. The response shows the list of instance view of
-     *     the dedicated hosts under the dedicated host group.
+     * @param expand The expand expression to apply on the operation. 'InstanceView' will retrieve the list of instance
+     *     views of the dedicated hosts under the dedicated host group. 'UserData' is not supported for dedicated host
+     *     group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -890,7 +879,7 @@ public final class DedicatedHostGroupsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-06-01";
+        final String apiVersion = "2021-04-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -912,7 +901,7 @@ public final class DedicatedHostGroupsClientImpl
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -945,7 +934,7 @@ public final class DedicatedHostGroupsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-06-01";
+        final String apiVersion = "2021-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1055,7 +1044,7 @@ public final class DedicatedHostGroupsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-06-01";
+        final String apiVersion = "2021-04-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1071,7 +1060,7 @@ public final class DedicatedHostGroupsClientImpl
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1098,7 +1087,7 @@ public final class DedicatedHostGroupsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-06-01";
+        final String apiVersion = "2021-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1205,7 +1194,7 @@ public final class DedicatedHostGroupsClientImpl
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1278,7 +1267,7 @@ public final class DedicatedHostGroupsClientImpl
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**

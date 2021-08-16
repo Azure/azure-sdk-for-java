@@ -32,6 +32,13 @@ public class AnalysisDefinitionInner extends ProxyOnlyResource {
         return this.description;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public AnalysisDefinitionInner withKind(String kind) {
+        super.withKind(kind);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

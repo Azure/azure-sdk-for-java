@@ -3,6 +3,7 @@
 
 package com.azure.ai.textanalytics.models;
 
+import com.azure.ai.textanalytics.implementation.PiiEntityPropertiesHelper;
 import com.azure.core.annotation.Immutable;
 
 /**
@@ -13,46 +14,66 @@ public final class PiiEntity {
     /*
      * PiiEntity text as appears in the request.
      */
-    private final String text;
+    private String text;
 
     /*
      * PiiEntity category, such as Person/Location/Org/SSN etc
      */
-    private final EntityCategory category;
+    private PiiEntityCategory category;
 
     /*
      * PiiEntity sub category, such as Medical/Stock exchange/Sports etc
      */
-    private final String subcategory;
+    private String subcategory;
 
     /*
      * Confidence score between 0 and 1 of the extracted entity.
      */
-    private final double confidenceScore;
+    private double confidenceScore;
 
     /*
      * Start position for the entity text.
      */
-    private final int offset;
+    private int offset;
 
-    /**
-     * Creates a {@link PiiEntity} model that describes entity.
-     * @param text The entity text as appears in the request.
-     * @param category The entity category, such as Person/Location/Org/SSN etc.
-     * @param subcategory The entity subcategory, such as Medical/Stock exchange/Sports etc.
-     * @param confidenceScore A confidence score between 0 and 1 of the recognized entity.
-     * @param offset The start position for the entity text
-     */
-    public PiiEntity(String text, EntityCategory category, String subcategory, double confidenceScore, int offset) {
-        this.text = text;
-        this.category = category;
-        this.subcategory = subcategory;
-        this.confidenceScore = confidenceScore;
-        this.offset = offset;
+    private int length;
+
+    static {
+        PiiEntityPropertiesHelper.setAccessor(new PiiEntityPropertiesHelper.PiiEntityAccessor() {
+            @Override
+            public void setText(PiiEntity entity, String text) {
+                entity.setText(text);
+            }
+
+            @Override
+            public void setCategory(PiiEntity entity, PiiEntityCategory category) {
+                entity.setCategory(category);
+            }
+
+            @Override
+            public void setSubcategory(PiiEntity entity, String subcategory) {
+                entity.setSubcategory(subcategory);
+            }
+
+            @Override
+            public void setConfidenceScore(PiiEntity entity, double confidenceScore) {
+                entity.setConfidenceScore(confidenceScore);
+            }
+
+            @Override
+            public void setOffset(PiiEntity entity, int offset) {
+                entity.setOffset(offset);
+            }
+
+            @Override
+            public void setLength(PiiEntity entity, int length) {
+                entity.setLength(length);
+            }
+        });
     }
 
     /**
-     * Get the text property: PII entity text as appears in the request.
+     * Gets the text property: PII entity text as appears in the request.
      *
      * @return The {@code text} value.
      */
@@ -61,16 +82,16 @@ public final class PiiEntity {
     }
 
     /**
-     * Get the category property: Categorized entity category, such as Person/Location/Org/SSN etc.
+     * Gets the category property: Categorized entity category, such as Person/Location/Org/SSN etc.
      *
      * @return The {@code category} value.
      */
-    public EntityCategory getCategory() {
+    public PiiEntityCategory getCategory() {
         return this.category;
     }
 
     /**
-     * Get the subcategory property: Categorized entity subcategory, such as Medical/Stock exchange/Sports etc.
+     * Gets the subcategory property: Categorized entity subcategory, such as Medical/Stock exchange/Sports etc.
      *
      * @return The {@code subcategory} value.
      */
@@ -79,7 +100,7 @@ public final class PiiEntity {
     }
 
     /**
-     * Get the score property: Confidence score between 0 and 1 of the recognized entity.
+     * Gets the score property: Confidence score between 0 and 1 of the recognized entity.
      *
      * @return The {@code confidenceScore} value.
      */
@@ -88,11 +109,44 @@ public final class PiiEntity {
     }
 
     /**
-     * Get the offset property: the start position for the entity text.
+     * Gets the offset property: the start position for the entity text.
      *
      * @return The {@code offset} value.
      */
     public int getOffset() {
         return this.offset;
+    }
+
+    /**
+     * Gets the length of entity text.
+     *
+     * @return The length of entity text.
+     */
+    public int getLength() {
+        return length;
+    }
+
+    private void setText(String text) {
+        this.text = text;
+    }
+
+    private void setCategory(PiiEntityCategory category) {
+        this.category = category;
+    }
+
+    private void setSubcategory(String subcategory) {
+        this.subcategory = subcategory;
+    }
+
+    private void setConfidenceScore(double confidenceScore) {
+        this.confidenceScore = confidenceScore;
+    }
+
+    private void setOffset(int offset) {
+        this.offset = offset;
+    }
+
+    private void setLength(int length) {
+        this.length = length;
     }
 }

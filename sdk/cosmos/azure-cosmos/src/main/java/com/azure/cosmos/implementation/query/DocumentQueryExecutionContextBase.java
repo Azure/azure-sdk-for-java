@@ -2,30 +2,35 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation.query;
 
-import com.azure.cosmos.implementation.DiagnosticsClientContext;
-import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
-import com.azure.cosmos.implementation.routing.PartitionKeyRangeIdentity;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConsistencyLevel;
-import com.azure.cosmos.models.CosmosQueryRequestOptions;
-import com.azure.cosmos.models.FeedResponse;
-import com.azure.cosmos.models.ModelBridgeInternal;
-import com.azure.cosmos.implementation.Resource;
-import com.azure.cosmos.models.SqlParameter;
-import com.azure.cosmos.models.SqlQuerySpec;
+import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.ReplicatedResourceClientUtils;
+import com.azure.cosmos.implementation.Resource;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RuntimeConstants.MediaTypes;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.RxDocumentServiceResponse;
 import com.azure.cosmos.implementation.Strings;
 import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
+import com.azure.cosmos.implementation.feedranges.FeedRangePartitionKeyImpl;
+import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
+import com.azure.cosmos.implementation.routing.PartitionKeyRangeIdentity;
+import com.azure.cosmos.models.CosmosQueryRequestOptions;
+import com.azure.cosmos.models.FeedRange;
+import com.azure.cosmos.models.FeedResponse;
+import com.azure.cosmos.models.ModelBridgeInternal;
+import com.azure.cosmos.models.SqlParameter;
+import com.azure.cosmos.models.SqlQuerySpec;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.time.Duration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -86,10 +91,13 @@ implements IDocumentQueryExecutionContext<T> {
                                                                     SqlQuerySpec querySpec,
                                                                     PartitionKeyInternal partitionKeyInternal,
                                                                     PartitionKeyRange targetRange,
-                                                                    String collectionRid) {
+                                                                    String collectionRid,
+                                                                    String throughputControlGroup) {
         RxDocumentServiceRequest request = querySpec != null
                 ? this.createQueryDocumentServiceRequest(requestHeaders, querySpec)
                 : this.createReadFeedDocumentServiceRequest(requestHeaders);
+        request.requestContext.resolvedCollectionRid = collectionRid;
+        request.throughputControlGroupName = throughputControlGroup;
 
         if (partitionKeyInternal != null) {
             request.setPartitionKeyInternal(partitionKeyInternal);
@@ -97,6 +105,26 @@ implements IDocumentQueryExecutionContext<T> {
 
         this.populatePartitionKeyRangeInfo(request, targetRange, collectionRid);
 
+        return request;
+    }
+
+    protected RxDocumentServiceRequest createDocumentServiceRequestWithFeedRange(Map<String, String> requestHeaders,
+                                                                    SqlQuerySpec querySpec,
+                                                                    PartitionKeyInternal partitionKeyInternal,
+                                                                    FeedRange feedRange,
+                                                                    String collectionRid,
+                                                                    String throughputControlGroupName) {
+        RxDocumentServiceRequest request = querySpec != null
+                                               ? this.createQueryDocumentServiceRequest(requestHeaders, querySpec)
+                                               : this.createReadFeedDocumentServiceRequest(requestHeaders);
+        request.requestContext.resolvedCollectionRid = collectionRid;
+        request.throughputControlGroupName = throughputControlGroupName;
+
+        if (partitionKeyInternal != null) {
+            feedRange = new FeedRangePartitionKeyImpl(partitionKeyInternal);
+        }
+
+        request.applyFeedRangeFilter(FeedRangeInternal.convert(feedRange));
         return request;
     }
 
@@ -166,6 +194,11 @@ implements IDocumentQueryExecutionContext<T> {
             }
         }
 
+        Map<String, String> customOptions = ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.getCosmosQueryRequestOptionsAccessor().getHeader(cosmosQueryRequestOptions);
+        if(customOptions != null) {
+            requestHeaders.putAll(customOptions);
+        }
+
         requestHeaders.put(HttpConstants.HttpHeaders.CONTINUATION, ModelBridgeInternal.getRequestContinuationFromQueryRequestOptions(cosmosQueryRequestOptions));
         requestHeaders.put(HttpConstants.HttpHeaders.IS_QUERY, Strings.toString(true));
 
@@ -190,6 +223,12 @@ implements IDocumentQueryExecutionContext<T> {
 
         if(cosmosQueryRequestOptions.isQueryMetricsEnabled()){
             requestHeaders.put(HttpConstants.HttpHeaders.POPULATE_QUERY_METRICS, String.valueOf(cosmosQueryRequestOptions.isQueryMetricsEnabled()));
+        }
+
+        if (cosmosQueryRequestOptions.getDedicatedGatewayRequestOptions() != null &&
+            cosmosQueryRequestOptions.getDedicatedGatewayRequestOptions().getMaxIntegratedCacheStaleness() != null) {
+            requestHeaders.put(HttpConstants.HttpHeaders.DEDICATED_GATEWAY_PER_REQUEST_CACHE_STALENESS,
+                String.valueOf(Utils.getMaxIntegratedCacheStalenessInMillis(cosmosQueryRequestOptions.getDedicatedGatewayRequestOptions())));
         }
 
         return requestHeaders;

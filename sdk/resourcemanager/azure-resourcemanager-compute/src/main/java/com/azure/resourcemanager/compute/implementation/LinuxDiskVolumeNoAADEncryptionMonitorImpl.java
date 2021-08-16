@@ -8,6 +8,7 @@ import com.azure.resourcemanager.compute.models.DiskInstanceView;
 import com.azure.resourcemanager.compute.models.DiskVolumeEncryptionMonitor;
 import com.azure.resourcemanager.compute.models.EncryptionStatus;
 import com.azure.resourcemanager.compute.models.InstanceViewStatus;
+import com.azure.resourcemanager.compute.models.InstanceViewTypes;
 import com.azure.resourcemanager.compute.models.OperatingSystemTypes;
 import com.azure.resourcemanager.compute.models.VirtualMachineExtensionInstanceView;
 import com.azure.resourcemanager.compute.fluent.models.VirtualMachineInner;
@@ -73,7 +74,7 @@ class LinuxDiskVolumeNoAADEncryptionMonitorImpl implements DiskVolumeEncryptionM
     @Override
     public Map<String, InstanceViewStatus> diskInstanceViewEncryptionStatuses() {
         if (virtualMachine.instanceView() == null || virtualMachine.instanceView().disks() == null) {
-            return new HashMap<String, InstanceViewStatus>();
+            return new HashMap<>();
         }
         //
         HashMap<String, InstanceViewStatus> div = new HashMap<String, InstanceViewStatus>();
@@ -125,7 +126,8 @@ class LinuxDiskVolumeNoAADEncryptionMonitorImpl implements DiskVolumeEncryptionM
      * @return the retrieved virtual machine
      */
     private Mono<VirtualMachineInner> retrieveVirtualMachineAsync() {
-        return computeManager.serviceClient().getVirtualMachines().getByResourceGroupAsync(rgName, vmName);
+        return computeManager.serviceClient().getVirtualMachines()
+            .getByResourceGroupAsync(rgName, vmName, InstanceViewTypes.INSTANCE_VIEW);
         // Exception if vm not found
     }
 

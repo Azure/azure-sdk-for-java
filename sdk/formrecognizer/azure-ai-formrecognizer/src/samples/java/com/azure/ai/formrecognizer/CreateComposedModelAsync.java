@@ -54,9 +54,8 @@ public class CreateComposedModelAsync {
         String labeledModelId2 = model2Poller.getSyncPoller().getFinalResult().getModelId();
 
         client.beginCreateComposedModel(Arrays.asList(labeledModelId1, labeledModelId2),
-            new CreateComposedModelOptions()
-                .setModelName("my composed model name")
-                .setPollInterval(Duration.ofSeconds(5)))
+            new CreateComposedModelOptions().setModelName("my composed model name"))
+            .setPollInterval(Duration.ofSeconds(5))
             .flatMap(AsyncPollResponse::getFinalResult)
             .subscribe(customFormModel -> {
 
@@ -65,8 +64,8 @@ public class CreateComposedModelAsync {
                 System.out.printf("Model name: %s%n", customFormModel.getModelName());
                 System.out.printf("Is this a composed model: %s%n",
                     customFormModel.getCustomModelProperties().isComposed());
-                System.out.printf("Composed model creation started on: ", customFormModel.getTrainingStartedOn());
-                System.out.printf("Composed model creation completed on: ", customFormModel.getTrainingCompletedOn());
+                System.out.printf("Composed model creation started on:  %s%n", customFormModel.getTrainingStartedOn());
+                System.out.printf("Composed model creation completed on:  %s%n", customFormModel.getTrainingCompletedOn());
 
                 System.out.println("Recognized Fields:");
                 customFormModel.getSubmodels().forEach(customFormSubmodel -> {

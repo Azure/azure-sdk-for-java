@@ -13,12 +13,12 @@ import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
-import com.azure.core.util.IterableStream;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobServiceVersion;
-import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
+import com.azure.storage.blob.implementation.AzureBlobStorageImplBuilder;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.models.DeleteSnapshotsOptionType;
@@ -52,13 +52,15 @@ public final class BlobBatchAsyncClient {
 
     private final AzureBlobStorageImpl client;
     private final boolean containerScoped;
+    private final BlobServiceVersion serviceVersion;
 
     BlobBatchAsyncClient(String clientUrl, HttpPipeline pipeline, BlobServiceVersion version, boolean containerScoped) {
-        this.client = new AzureBlobStorageBuilder()
+        this.serviceVersion = version;
+        this.client = new AzureBlobStorageImplBuilder()
             .url(clientUrl)
             .pipeline(pipeline)
             .version(version.getVersion())
-            .build();
+            .buildClient();
         this.containerScoped = containerScoped;
     }
 
@@ -68,7 +70,7 @@ public final class BlobBatchAsyncClient {
      * @return a new {@link BlobBatch} instance.
      */
     public BlobBatch getBlobBatch() {
-        return new BlobBatch(client.getUrl(), client.getHttpPipeline());
+        return new BlobBatch(client.getUrl(), client.getHttpPipeline(), serviceVersion);
     }
 
     /**
@@ -126,14 +128,14 @@ public final class BlobBatchAsyncClient {
         Context finalContext = context == null ? Context.NONE : context;
         return batch.prepareBlobBatchSubmission()
             .flatMap(batchOperationInfo -> containerScoped
-                ? client.containers().submitBatchWithRestResponseAsync(null,
-                Flux.fromIterable(batchOperationInfo.getBody()),
+                ? client.getContainers().submitBatchWithResponseAsync(null,
                 batchOperationInfo.getContentLength(), batchOperationInfo.getContentType(),
+                Flux.fromIterable(batchOperationInfo.getBody()), null, null,
                 finalContext.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
                 .flatMap(response ->
                     BlobBatchHelper.mapBatchResponse(batchOperationInfo, response, throwOnAnyFailure, logger))
-                : client.services().submitBatchWithRestResponseAsync(Flux.fromIterable(batchOperationInfo.getBody()),
-                batchOperationInfo.getContentLength(), batchOperationInfo.getContentType(),
+                : client.getServices().submitBatchWithResponseAsync(batchOperationInfo.getContentLength(),
+                batchOperationInfo.getContentType(), Flux.fromIterable(batchOperationInfo.getBody()), null, null,
                 finalContext.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
                 .flatMap(response ->
                     BlobBatchHelper.mapBatchResponse(batchOperationInfo, response, throwOnAnyFailure, logger)));

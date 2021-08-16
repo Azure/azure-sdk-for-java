@@ -21,7 +21,7 @@ import java.util.concurrent.TimeoutException;
 /**
  * Helper class to help with retry policies.
  */
-public class RetryUtil {
+public final class RetryUtil {
     private static final double JITTER_FACTOR = 0.08;
     // Base sleep wait time.
     private static final Duration SERVER_BUSY_WAIT_TIME = Duration.ofSeconds(4);
@@ -53,6 +53,28 @@ public class RetryUtil {
     }
 
     /**
+     * Given a {@link Mono} will apply the retry policy to it when the operation times out or throws a transient error.
+     *
+     * @param source The publisher to apply the retry policy to.
+     * @param retryOptions A {@link AmqpRetryOptions}.
+     * @param errorMessage Text added to error logs.
+     * @param allowsLongOperation A boolean value indicating whether to allow the {@param source} to run long time
+     *  and not to timeout it. If it's false, a {@link TimeoutException} will be thrown if the {@param source} doesn't
+     *  complete before the {@code getTryTimeout()} of {@param retryOptions}.
+     *
+     * @return A publisher that returns the results of the {@link Mono} if any of the retry attempts are successful.
+     *     Otherwise, propagates a {@link TimeoutException}.
+     */
+    public static <T> Mono<T> withRetry(Mono<T> source, AmqpRetryOptions retryOptions, String errorMessage,
+                                        boolean allowsLongOperation) {
+        if (!allowsLongOperation) {
+            source = source.timeout(retryOptions.getTryTimeout());
+        }
+        return source.retryWhen(createRetry(retryOptions))
+            .doOnError(error -> LOGGER.error(errorMessage, error));
+    }
+
+    /**
      * Given a {@link Flux} will apply the retry policy to it when the operation times out.
      *
      * @param source The publisher to apply the retry policy to.
@@ -75,9 +97,7 @@ public class RetryUtil {
      *     Otherwise, propagates a {@link TimeoutException}.
      */
     public static <T> Mono<T> withRetry(Mono<T> source, AmqpRetryOptions retryOptions, String timeoutMessage) {
-        return source.timeout(retryOptions.getTryTimeout())
-            .retryWhen(createRetry(retryOptions))
-            .doOnError(error -> LOGGER.error(timeoutMessage, error));
+        return withRetry(source, retryOptions, timeoutMessage, false);
     }
 
     static Retry createRetry(AmqpRetryOptions options) {
@@ -96,7 +116,6 @@ public class RetryUtil {
                 retrySpec = Retry.backoff(options.getMaxRetries(), delay);
                 break;
         }
-
         return retrySpec.jitter(JITTER_FACTOR)
             .maxBackoff(options.getMaxDelay())
             .filter(error -> error instanceof TimeoutException

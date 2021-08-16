@@ -3,43 +3,71 @@
 trigger:
   branches:
     include:
-      - master
+      - main
       - hotfix/*
       - release/*
   paths:
     include:
-      - sdk/storage/
+      - sdk/storage/ci.yml
+      - sdk/storage/azure-storage-blob/
+      - sdk/storage/azure-storage-blob-batch/
+      - sdk/storage/azure-storage-blob-changefeed/
+      - sdk/storage/azure-storage-blob-cryptography/
+      - sdk/storage/azure-storage-blob-nio/
+      - sdk/storage/azure-storage-common/
+      - sdk/storage/azure-storage-file-datalake/
+      - sdk/storage/azure-storage-file-share/
+      - sdk/storage/azure-storage-internal-avro/
+      - sdk/storage/azure-storage-perf/
+      - sdk/storage/azure-storage-queue/
     exclude:
-      - sdk/storage/mgmt-v2016_01_01
-      - sdk/storage/mgmt-v2017_10_01
-      - sdk/storage/mgmt-v2018_02_01
-      - sdk/storage/mgmt-v2018_03_01_preview
-      - sdk/storage/mgmt-v2018_07_01
-      - sdk/storage/mgmt-v2018_11_01
-      - sdk/storage/mgmt-v2019_04_01
-      - sdk/storage/mgmt-v2019_06_01
-      - sdk/storage/microsoft-azure-storage-blob
-      - sdk/storage/mgmt
+      - sdk/storage/pom.xml
+      - sdk/storage/azure-storage-blob/pom.xml
+      - sdk/storage/azure-storage-blob-batch/pom.xml
+      - sdk/storage/azure-storage-blob-changefeed/pom.xml
+      - sdk/storage/azure-storage-blob-cryptography/pom.xml
+      - sdk/storage/azure-storage-blob-nio/pom.xml
+      - sdk/storage/azure-storage-common/pom.xml
+      - sdk/storage/azure-storage-file-datalake/pom.xml
+      - sdk/storage/azure-storage-file-share/pom.xml
+      - sdk/storage/azure-storage-internal-avro/pom.xml
+      - sdk/storage/azure-storage-perf/pom.xml
+      - sdk/storage/azure-storage-queue/pom.xml
 
 pr:
   branches:
     include:
-      - master
+      - main
       - feature/*
       - hotfix/*
       - release/*
   paths:
     include:
-      - sdk/storage/
+      - sdk/storage/ci.yml
+      - sdk/storage/azure-storage-blob/
+      - sdk/storage/azure-storage-blob-batch/
+      - sdk/storage/azure-storage-blob-changefeed/
+      - sdk/storage/azure-storage-blob-cryptography/
+      - sdk/storage/azure-storage-blob-nio/
+      - sdk/storage/azure-storage-common/
+      - sdk/storage/azure-storage-file-datalake/
+      - sdk/storage/azure-storage-file-share/
+      - sdk/storage/azure-storage-internal-avro/
+      - sdk/storage/azure-storage-perf/
+      - sdk/storage/azure-storage-queue/
     exclude:
-      - sdk/storage/mgmt-v2016_01_01
-      - sdk/storage/mgmt-v2017_10_01
-      - sdk/storage/mgmt-v2018_02_01
-      - sdk/storage/mgmt-v2018_03_01_preview
-      - sdk/storage/mgmt-v2018_07_01
-      - sdk/storage/mgmt-v2018_11_01
-      - sdk/storage/mgmt-v2019_04_01
-      - sdk/storage/mgmt-v2019_06_01
+      - sdk/storage/pom.xml
+      - sdk/storage/azure-storage-blob/pom.xml
+      - sdk/storage/azure-storage-blob-batch/pom.xml
+      - sdk/storage/azure-storage-blob-changefeed/pom.xml
+      - sdk/storage/azure-storage-blob-cryptography/pom.xml
+      - sdk/storage/azure-storage-blob-nio/pom.xml
+      - sdk/storage/azure-storage-common/pom.xml
+      - sdk/storage/azure-storage-file-datalake/pom.xml
+      - sdk/storage/azure-storage-file-share/pom.xml
+      - sdk/storage/azure-storage-internal-avro/pom.xml
+      - sdk/storage/azure-storage-perf/pom.xml
+      - sdk/storage/azure-storage-queue/pom.xml
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml

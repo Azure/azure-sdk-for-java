@@ -24,9 +24,10 @@ import com.azure.storage.common.implementation.credentials.CredentialValidator;
 import com.azure.storage.common.policy.RequestRetryOptions;
 import com.azure.storage.common.policy.StorageSharedKeyCredentialPolicy;
 import com.azure.storage.common.sas.CommonSasQueryParameters;
-import com.azure.storage.file.share.implementation.AzureFileStorageBuilder;
 import com.azure.storage.file.share.implementation.AzureFileStorageImpl;
+import com.azure.storage.file.share.implementation.AzureFileStorageImplBuilder;
 import com.azure.storage.file.share.implementation.util.BuilderHelper;
+
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -141,11 +142,11 @@ public class ShareClientBuilder {
             }
         }, retryOptions, logOptions, clientOptions, httpClient, perCallPolicies, perRetryPolicies, configuration);
 
-        AzureFileStorageImpl azureFileStorage = new AzureFileStorageBuilder()
+        AzureFileStorageImpl azureFileStorage = new AzureFileStorageImplBuilder()
             .url(endpoint)
             .pipeline(pipeline)
             .version(serviceVersion.getVersion())
-            .build();
+            .buildClient();
 
         return new ShareAsyncClient(azureFileStorage, shareName, snapshot, accountName, serviceVersion);
     }
@@ -263,7 +264,8 @@ public class ShareClientBuilder {
     /**
      * Sets the SAS token used to authorize requests sent to the service.
      *
-     * @param sasToken The SAS token to use for authenticating requests.
+     * @param sasToken The SAS token to use for authenticating requests. This string should only be the query parameters
+     * (with or without a leading '?') and not a full url.
      * @return the updated ShareClientBuilder
      * @throws NullPointerException If {@code sasToken} is {@code null}.
      */

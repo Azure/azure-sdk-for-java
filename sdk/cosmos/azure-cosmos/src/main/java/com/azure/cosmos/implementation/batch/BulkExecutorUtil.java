@@ -46,15 +46,17 @@ final class BulkExecutorUtil {
         CosmosItemOperation cosmosItemOperation,
         ThrottlingRetryOptions throttlingRetryOptions) {
 
-        if (cosmosItemOperation instanceof ItemBulkOperation<?>) {
-            final ItemBulkOperation<?> itemBulkOperation = (ItemBulkOperation<?>) cosmosItemOperation;
+        if (cosmosItemOperation instanceof ItemBulkOperation<?, ?>) {
+            final ItemBulkOperation<?, ?> itemBulkOperation = (ItemBulkOperation<?, ?>) cosmosItemOperation;
 
             ResourceThrottleRetryPolicy resourceThrottleRetryPolicy = new ResourceThrottleRetryPolicy(
                 throttlingRetryOptions.getMaxRetryAttemptsOnThrottledRequests(),
-                throttlingRetryOptions.getMaxRetryWaitTime());
+                throttlingRetryOptions.getMaxRetryWaitTime(),
+                true);
 
             BulkOperationRetryPolicy bulkRetryPolicy = new BulkOperationRetryPolicy(
                 docClientWrapper.getCollectionCache(),
+                docClientWrapper.getPartitionKeyRangeCache(),
                 BridgeInternal.getLink(container),
                 resourceThrottleRetryPolicy);
             itemBulkOperation.setRetryPolicy(bulkRetryPolicy);
@@ -92,8 +94,8 @@ final class BulkExecutorUtil {
 
         checkNotNull(operation, "expected non-null operation");
 
-        if (operation instanceof ItemBulkOperation<?>) {
-            final ItemBulkOperation<?> itemBulkOperation = (ItemBulkOperation<?>) operation;
+        if (operation instanceof ItemBulkOperation<?, ?>) {
+            final ItemBulkOperation<?, ?> itemBulkOperation = (ItemBulkOperation<?, ?>) operation;
 
             final Mono<String> pkRangeIdMono = BulkExecutorUtil.getCollectionInfoAsync(docClientWrapper, container)
                 .flatMap(collection -> {
@@ -103,13 +105,11 @@ final class BulkExecutorUtil {
 
                     return docClientWrapper.getPartitionKeyRangeCache()
                         .tryLookupAsync(null, collection.getResourceId(), null, null)
-                        .map((Utils.ValueHolder<CollectionRoutingMap> routingMap) -> {
-
-                            return routingMap.v.getRangeByEffectivePartitionKey(
+                        .map((Utils.ValueHolder<CollectionRoutingMap> routingMap) ->
+                            routingMap.v.getRangeByEffectivePartitionKey(
                                 getEffectivePartitionKeyString(
                                     partitionKeyInternal,
-                                    definition)).getId();
-                        });
+                                    definition)).getId());
                 });
 
             return pkRangeIdMono;

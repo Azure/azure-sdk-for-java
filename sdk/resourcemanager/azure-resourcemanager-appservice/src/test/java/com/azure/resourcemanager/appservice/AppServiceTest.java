@@ -3,27 +3,22 @@
 
 package com.azure.resourcemanager.appservice;
 
-import com.azure.core.annotation.BodyParam;
-import com.azure.core.annotation.ExpectedResponses;
-import com.azure.core.annotation.Get;
-import com.azure.core.annotation.Host;
-import com.azure.core.annotation.HostParam;
-import com.azure.core.annotation.PathParam;
-import com.azure.core.annotation.Post;
-import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.credential.TokenCredential;
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
+import com.azure.core.http.HttpRequest;
+import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.rest.Response;
-import com.azure.core.http.rest.RestProxy;
 import com.azure.core.http.rest.SimpleResponse;
-import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.models.AppServiceCertificateOrder;
 import com.azure.resourcemanager.appservice.models.AppServiceDomain;
 import com.azure.resourcemanager.appservice.models.PublishingProfile;
@@ -36,10 +31,6 @@ import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.resources.ResourceManager;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.nio.ByteBuffer;
-import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
@@ -52,13 +43,14 @@ import com.azure.resourcemanager.test.utils.TestDelayProvider;
 import com.azure.resourcemanager.test.utils.TestIdentifierProvider;
 import org.apache.commons.net.ftp.FTP;
 import org.apache.commons.net.ftp.FTPClient;
-import org.junit.jupiter.api.Assertions;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.util.retry.Retry;
 
 /** The base for app service tests. */
 public class AppServiceTest extends ResourceManagerTestBase {
+
+    private static final ClientLogger LOGGER = new ClientLogger(AppServiceTest.class);
+
     protected ResourceManager resourceManager;
     protected KeyVaultManager keyVaultManager;
     protected AppServiceManager appServiceManager;
@@ -179,6 +171,7 @@ public class AppServiceTest extends ResourceManagerTestBase {
         }
         try {
             ftpClient.connect(server);
+            ftpClient.enterLocalPassiveMode();
             ftpClient.login(profile.ftpUsername(), profile.ftpPassword());
             ftpClient.setFileType(FTP.BINARY_FILE_TYPE);
             for (String segment : path.split("/")) {
@@ -194,83 +187,56 @@ public class AppServiceTest extends ResourceManagerTestBase {
         }
     }
 
-    protected Response<String> curl(String urlString) throws IOException {
+    protected static Response<String> curl(String urlString) {
+        HttpRequest request = new HttpRequest(HttpMethod.GET, urlString);
+        Mono<Response<String>> response =
+            stringResponse(HTTP_PIPELINE.send(request)
+                .flatMap(response1 -> {
+                    int code = response1.getStatusCode();
+                    if (code == 200 || code == 400 || code == 404) {
+                        return Mono.just(response1);
+                    } else {
+                        return Mono.error(new HttpResponseException(response1));
+                    }
+                })
+                .retryWhen(Retry
+                    .fixedDelay(3, Duration.ofSeconds(30))
+                    .filter(t -> t instanceof TimeoutException)));
+        return response.block();
+    }
+
+    protected static String post(String urlString, String body) {
         try {
-            Mono<Response<Flux<ByteBuffer>>> response =
-                HTTP_CLIENT.getString(getHost(urlString), getPathAndQuery(urlString))
+            HttpRequest request = new HttpRequest(HttpMethod.POST, urlString).setBody(body);
+            Mono<Response<String>> response =
+                stringResponse(HTTP_PIPELINE.send(request)
+                    .flatMap(response1 -> {
+                        int code = response1.getStatusCode();
+                        if (code == 200 || code == 400 || code == 404) {
+                            return Mono.just(response1);
+                        } else {
+                            return Mono.error(new HttpResponseException(response1));
+                        }
+                    })
                     .retryWhen(Retry
                         .fixedDelay(3, Duration.ofSeconds(30))
-                        .filter(t -> t instanceof TimeoutException));
-            return stringResponse(response).block();
-        } catch (MalformedURLException e) {
-            Assertions.fail();
-            return null;
-        }
-    }
-
-    protected String post(String urlString, String body) {
-        try {
-            return stringResponse(HTTP_CLIENT.postString(getHost(urlString), getPathAndQuery(urlString), body))
-                .block()
-                .getValue();
+                        .filter(t -> t instanceof TimeoutException)));
+            Response<String> ret = response.block();
+            return ret == null ? null : ret.getValue();
         } catch (Exception e) {
+            LOGGER.logThrowableAsError(e);
             return null;
         }
     }
 
-    private String getHost(String urlString) throws MalformedURLException {
-        URL url = new URL(urlString);
-        String protocol = url.getProtocol();
-        String host = url.getAuthority();
-        return protocol + "://" + host;
+    private static Mono<Response<String>> stringResponse(Mono<HttpResponse> responseMono) {
+        return responseMono.flatMap(response -> response.getBodyAsString()
+            .map(str -> new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), str)));
     }
 
-    private String getPathAndQuery(String urlString) throws MalformedURLException {
-        URL url = new URL(urlString);
-        String path = url.getPath();
-        String query = url.getQuery();
-        if (query != null && !query.isEmpty()) {
-            path = path + "?" + query;
-        }
-        return path;
-    }
-
-    private static Mono<Response<String>> stringResponse(Mono<Response<Flux<ByteBuffer>>> responseMono) {
-        return responseMono
-            .flatMap(
-                response ->
-                    FluxUtil
-                        .collectBytesInByteBufferStream(response.getValue())
-                        .map(bytes -> new String(bytes, StandardCharsets.UTF_8))
-                        .map(
-                            str ->
-                                new SimpleResponse<>(
-                                    response.getRequest(), response.getStatusCode(), response.getHeaders(), str)));
-    }
-
-    private static final WebAppTestClient HTTP_CLIENT =
-        RestProxy
-            .create(
-                WebAppTestClient.class,
-                new HttpPipelineBuilder()
-                    .policies(
-                        new HttpLoggingPolicy(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS)),
-                        new RetryPolicy("Retry-After", ChronoUnit.SECONDS))
-                    .build());
-
-    @Host("{$host}")
-    @ServiceInterface(name = "WebAppTestClient")
-    private interface WebAppTestClient {
-        @Get("{path}")
-        @ExpectedResponses({200, 400, 404})
-        Mono<Response<Flux<ByteBuffer>>> getString(
-            @HostParam("$host") String host, @PathParam(value = "path", encoded = true) String path);
-
-        @Post("{path}")
-        @ExpectedResponses({200, 400, 404})
-        Mono<Response<Flux<ByteBuffer>>> postString(
-            @HostParam("$host") String host,
-            @PathParam(value = "path", encoded = true) String path,
-            @BodyParam("text/plain") String body);
-    }
+    private static final HttpPipeline HTTP_PIPELINE = new HttpPipelineBuilder()
+        .policies(
+            new HttpLoggingPolicy(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC)),
+            new RetryPolicy("Retry-After", ChronoUnit.SECONDS))
+        .build();
 }

@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.mediaservices.implementation;
 
-import com.azure.resourcemanager.mediaservices.MediaservicesManager;
 import com.azure.resourcemanager.mediaservices.fluent.models.ListPathsResponseInner;
 import com.azure.resourcemanager.mediaservices.models.ListPathsResponse;
 import com.azure.resourcemanager.mediaservices.models.StreamingPath;
@@ -14,9 +13,11 @@ import java.util.List;
 public final class ListPathsResponseImpl implements ListPathsResponse {
     private ListPathsResponseInner innerObject;
 
-    private final MediaservicesManager serviceManager;
+    private final com.azure.resourcemanager.mediaservices.MediaServicesManager serviceManager;
 
-    ListPathsResponseImpl(ListPathsResponseInner innerObject, MediaservicesManager serviceManager) {
+    ListPathsResponseImpl(
+        ListPathsResponseInner innerObject,
+        com.azure.resourcemanager.mediaservices.MediaServicesManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -43,7 +44,7 @@ public final class ListPathsResponseImpl implements ListPathsResponse {
         return this.innerObject;
     }
 
-    private MediaservicesManager manager() {
+    private com.azure.resourcemanager.mediaservices.MediaServicesManager manager() {
         return this.serviceManager;
     }
 }

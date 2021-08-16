@@ -33,6 +33,14 @@ public interface View {
     String type();
 
     /**
+     * Gets the etag property: eTag of the resource. To handle concurrent update scenario, this field will be used to
+     * determine whether the user is updating the latest version or not.
+     *
+     * @return the etag value.
+     */
+    String etag();
+
+    /**
      * Gets the displayName property: User input name of the view. Required.
      *
      * @return the displayName value.
@@ -75,6 +83,20 @@ public interface View {
     OffsetDateTime modifiedOn();
 
     /**
+     * Gets the dateRange property: Selected date range for viewing cost in.
+     *
+     * @return the dateRange value.
+     */
+    String dateRange();
+
+    /**
+     * Gets the currency property: Selected currency.
+     *
+     * @return the currency value.
+     */
+    String currency();
+
+    /**
      * Gets the chart property: Chart type of the main view in Cost Analysis. Required.
      *
      * @return the chart value.
@@ -110,13 +132,13 @@ public interface View {
     List<PivotProperties> pivots();
 
     /**
-     * Gets the typePropertiesQueryType property: The type of the report. Usage represents actual usage, forecast
-     * represents forecasted data and UsageAndForecast represents both usage and forecasted data. Actual usage and
-     * forecasted data can be differentiated based on dates.
+     * Gets the typePropertiesType property: The type of the report. Usage represents actual usage, forecast represents
+     * forecasted data and UsageAndForecast represents both usage and forecasted data. Actual usage and forecasted data
+     * can be differentiated based on dates.
      *
-     * @return the typePropertiesQueryType value.
+     * @return the typePropertiesType value.
      */
-    ReportType typePropertiesQueryType();
+    ReportType typePropertiesType();
 
     /**
      * Gets the timeframe property: The time frame for pulling data for the report. If custom, then a specific time
@@ -134,19 +156,18 @@ public interface View {
     ReportConfigTimePeriod timePeriod();
 
     /**
-     * Gets the dataset property: Has definition for data in this report config.
+     * Gets the dataSet property: Has definition for data in this report config.
      *
-     * @return the dataset value.
+     * @return the dataSet value.
      */
-    ReportConfigDataset dataset();
+    ReportConfigDataset dataSet();
 
     /**
-     * Gets the etag property: eTag of the resource. To handle concurrent update scenario, this field will be used to
-     * determine whether the user is updating the latest version or not.
+     * Gets the includeMonetaryCommitment property: Include monetary commitment.
      *
-     * @return the etag value.
+     * @return the includeMonetaryCommitment value.
      */
-    String etag();
+    Boolean includeMonetaryCommitment();
 
     /**
      * Gets the inner com.azure.resourcemanager.costmanagement.fluent.models.ViewInner object.
@@ -194,18 +215,18 @@ public interface View {
          * created, but also allows for any other optional properties to be specified.
          */
         interface WithCreate
-            extends DefinitionStages.WithDisplayName,
+            extends DefinitionStages.WithEtag,
+                DefinitionStages.WithDisplayName,
                 DefinitionStages.WithScope,
                 DefinitionStages.WithChart,
                 DefinitionStages.WithAccumulated,
                 DefinitionStages.WithMetric,
                 DefinitionStages.WithKpis,
                 DefinitionStages.WithPivots,
-                DefinitionStages.WithTypePropertiesQueryType,
+                DefinitionStages.WithTypePropertiesType,
                 DefinitionStages.WithTimeframe,
                 DefinitionStages.WithTimePeriod,
-                DefinitionStages.WithDataset,
-                DefinitionStages.WithEtag {
+                DefinitionStages.WithDataSet {
             /**
              * Executes the create request.
              *
@@ -220,6 +241,18 @@ public interface View {
              * @return the created resource.
              */
             View create(Context context);
+        }
+        /** The stage of the View definition allowing to specify etag. */
+        interface WithEtag {
+            /**
+             * Specifies the etag property: eTag of the resource. To handle concurrent update scenario, this field will
+             * be used to determine whether the user is updating the latest version or not..
+             *
+             * @param etag eTag of the resource. To handle concurrent update scenario, this field will be used to
+             *     determine whether the user is updating the latest version or not.
+             * @return the next definition stage.
+             */
+            WithCreate withEtag(String etag);
         }
         /** The stage of the View definition allowing to specify displayName. */
         interface WithDisplayName {
@@ -323,19 +356,19 @@ public interface View {
              */
             WithCreate withPivots(List<PivotProperties> pivots);
         }
-        /** The stage of the View definition allowing to specify typePropertiesQueryType. */
-        interface WithTypePropertiesQueryType {
+        /** The stage of the View definition allowing to specify typePropertiesType. */
+        interface WithTypePropertiesType {
             /**
-             * Specifies the typePropertiesQueryType property: The type of the report. Usage represents actual usage,
+             * Specifies the typePropertiesType property: The type of the report. Usage represents actual usage,
              * forecast represents forecasted data and UsageAndForecast represents both usage and forecasted data.
              * Actual usage and forecasted data can be differentiated based on dates..
              *
-             * @param typePropertiesQueryType The type of the report. Usage represents actual usage, forecast represents
+             * @param typePropertiesType The type of the report. Usage represents actual usage, forecast represents
              *     forecasted data and UsageAndForecast represents both usage and forecasted data. Actual usage and
              *     forecasted data can be differentiated based on dates.
              * @return the next definition stage.
              */
-            WithCreate withTypePropertiesQueryType(ReportType typePropertiesQueryType);
+            WithCreate withTypePropertiesType(ReportType typePropertiesType);
         }
         /** The stage of the View definition allowing to specify timeframe. */
         interface WithTimeframe {
@@ -359,27 +392,15 @@ public interface View {
              */
             WithCreate withTimePeriod(ReportConfigTimePeriod timePeriod);
         }
-        /** The stage of the View definition allowing to specify dataset. */
-        interface WithDataset {
+        /** The stage of the View definition allowing to specify dataSet. */
+        interface WithDataSet {
             /**
-             * Specifies the dataset property: Has definition for data in this report config..
+             * Specifies the dataSet property: Has definition for data in this report config..
              *
-             * @param dataset Has definition for data in this report config.
+             * @param dataSet Has definition for data in this report config.
              * @return the next definition stage.
              */
-            WithCreate withDataset(ReportConfigDataset dataset);
-        }
-        /** The stage of the View definition allowing to specify etag. */
-        interface WithEtag {
-            /**
-             * Specifies the etag property: eTag of the resource. To handle concurrent update scenario, this field will
-             * be used to determine whether the user is updating the latest version or not..
-             *
-             * @param etag eTag of the resource. To handle concurrent update scenario, this field will be used to
-             *     determine whether the user is updating the latest version or not.
-             * @return the next definition stage.
-             */
-            WithCreate withEtag(String etag);
+            WithCreate withDataSet(ReportConfigDataset dataSet);
         }
     }
     /**
@@ -391,18 +412,18 @@ public interface View {
 
     /** The template for View update. */
     interface Update
-        extends UpdateStages.WithDisplayName,
+        extends UpdateStages.WithEtag,
+            UpdateStages.WithDisplayName,
             UpdateStages.WithScope,
             UpdateStages.WithChart,
             UpdateStages.WithAccumulated,
             UpdateStages.WithMetric,
             UpdateStages.WithKpis,
             UpdateStages.WithPivots,
-            UpdateStages.WithTypePropertiesQueryType,
+            UpdateStages.WithTypePropertiesType,
             UpdateStages.WithTimeframe,
             UpdateStages.WithTimePeriod,
-            UpdateStages.WithDataset,
-            UpdateStages.WithEtag {
+            UpdateStages.WithDataSet {
         /**
          * Executes the update request.
          *
@@ -420,6 +441,18 @@ public interface View {
     }
     /** The View update stages. */
     interface UpdateStages {
+        /** The stage of the View update allowing to specify etag. */
+        interface WithEtag {
+            /**
+             * Specifies the etag property: eTag of the resource. To handle concurrent update scenario, this field will
+             * be used to determine whether the user is updating the latest version or not..
+             *
+             * @param etag eTag of the resource. To handle concurrent update scenario, this field will be used to
+             *     determine whether the user is updating the latest version or not.
+             * @return the next definition stage.
+             */
+            Update withEtag(String etag);
+        }
         /** The stage of the View update allowing to specify displayName. */
         interface WithDisplayName {
             /**
@@ -522,19 +555,19 @@ public interface View {
              */
             Update withPivots(List<PivotProperties> pivots);
         }
-        /** The stage of the View update allowing to specify typePropertiesQueryType. */
-        interface WithTypePropertiesQueryType {
+        /** The stage of the View update allowing to specify typePropertiesType. */
+        interface WithTypePropertiesType {
             /**
-             * Specifies the typePropertiesQueryType property: The type of the report. Usage represents actual usage,
+             * Specifies the typePropertiesType property: The type of the report. Usage represents actual usage,
              * forecast represents forecasted data and UsageAndForecast represents both usage and forecasted data.
              * Actual usage and forecasted data can be differentiated based on dates..
              *
-             * @param typePropertiesQueryType The type of the report. Usage represents actual usage, forecast represents
+             * @param typePropertiesType The type of the report. Usage represents actual usage, forecast represents
              *     forecasted data and UsageAndForecast represents both usage and forecasted data. Actual usage and
              *     forecasted data can be differentiated based on dates.
              * @return the next definition stage.
              */
-            Update withTypePropertiesQueryType(ReportType typePropertiesQueryType);
+            Update withTypePropertiesType(ReportType typePropertiesType);
         }
         /** The stage of the View update allowing to specify timeframe. */
         interface WithTimeframe {
@@ -558,27 +591,15 @@ public interface View {
              */
             Update withTimePeriod(ReportConfigTimePeriod timePeriod);
         }
-        /** The stage of the View update allowing to specify dataset. */
-        interface WithDataset {
+        /** The stage of the View update allowing to specify dataSet. */
+        interface WithDataSet {
             /**
-             * Specifies the dataset property: Has definition for data in this report config..
+             * Specifies the dataSet property: Has definition for data in this report config..
              *
-             * @param dataset Has definition for data in this report config.
+             * @param dataSet Has definition for data in this report config.
              * @return the next definition stage.
              */
-            Update withDataset(ReportConfigDataset dataset);
-        }
-        /** The stage of the View update allowing to specify etag. */
-        interface WithEtag {
-            /**
-             * Specifies the etag property: eTag of the resource. To handle concurrent update scenario, this field will
-             * be used to determine whether the user is updating the latest version or not..
-             *
-             * @param etag eTag of the resource. To handle concurrent update scenario, this field will be used to
-             *     determine whether the user is updating the latest version or not.
-             * @return the next definition stage.
-             */
-            Update withEtag(String etag);
+            Update withDataSet(ReportConfigDataset dataSet);
         }
     }
     /**

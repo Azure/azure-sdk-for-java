@@ -7,14 +7,14 @@ package com.azure.security.attestation;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.Response;
 import com.azure.security.attestation.implementation.PolicyCertificatesImpl;
-import com.azure.security.attestation.models.CloudErrorException;
 import com.azure.security.attestation.models.PolicyCertificatesModifyResponse;
 import com.azure.security.attestation.models.PolicyCertificatesResponse;
 import reactor.core.publisher.Mono;
 
-/** Initializes a new instance of the asynchronous AttestationClient type. */
+/** Initializes a new instance of the asynchronous AzureAttestationRestClient type. */
 @ServiceClient(builder = AttestationClientBuilder.class, isAsync = true)
 public final class PolicyCertificatesAsyncClient {
     private final PolicyCertificatesImpl serviceClient;
@@ -31,25 +31,27 @@ public final class PolicyCertificatesAsyncClient {
     /**
      * Retrieves the set of certificates used to express policy for the current tenant.
      *
-     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response to an attestation policy management API.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PolicyCertificatesResponse>> getWithResponse() {
-        return this.serviceClient.getWithResponseAsync();
+        return this.serviceClient.getWithResponseAsync()
+            .map(response -> Utilities.generateResponseFromModelType(response, PolicyCertificatesResponse.fromGenerated(response.getValue())));
     }
 
     /**
      * Retrieves the set of certificates used to express policy for the current tenant.
      *
-     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response to an attestation policy management API.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PolicyCertificatesResponse> get() {
-        return this.serviceClient.getAsync();
+        return this.serviceClient.getAsync()
+            .map(PolicyCertificatesResponse::fromGenerated);
     }
 
     /**
@@ -57,13 +59,14 @@ public final class PolicyCertificatesAsyncClient {
      *
      * @param policyCertificateToAdd An RFC 7519 Json Web Token.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response to an attestation policy management API.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PolicyCertificatesModifyResponse>> addWithResponse(String policyCertificateToAdd) {
-        return this.serviceClient.addWithResponseAsync(policyCertificateToAdd);
+        return this.serviceClient.addWithResponseAsync(policyCertificateToAdd)
+            .map(response -> Utilities.generateResponseFromModelType(response, PolicyCertificatesModifyResponse.fromGenerated(response.getValue())));
     }
 
     /**
@@ -71,13 +74,14 @@ public final class PolicyCertificatesAsyncClient {
      *
      * @param policyCertificateToAdd An RFC 7519 Json Web Token.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response to an attestation policy management API.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PolicyCertificatesModifyResponse> add(String policyCertificateToAdd) {
-        return this.serviceClient.addAsync(policyCertificateToAdd);
+        return this.serviceClient.addAsync(policyCertificateToAdd)
+            .map(PolicyCertificatesModifyResponse::fromGenerated);
     }
 
     /**
@@ -86,13 +90,14 @@ public final class PolicyCertificatesAsyncClient {
      *
      * @param policyCertificateToRemove An RFC 7519 Json Web Token.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response to an attestation policy management API.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PolicyCertificatesModifyResponse>> removeWithResponse(String policyCertificateToRemove) {
-        return this.serviceClient.removeWithResponseAsync(policyCertificateToRemove);
+        return this.serviceClient.removeWithResponseAsync(policyCertificateToRemove)
+            .map(response -> Utilities.generateResponseFromModelType(response, PolicyCertificatesModifyResponse.fromGenerated(response.getValue())));
     }
 
     /**
@@ -101,12 +106,13 @@ public final class PolicyCertificatesAsyncClient {
      *
      * @param policyCertificateToRemove An RFC 7519 Json Web Token.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response to an attestation policy management API.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PolicyCertificatesModifyResponse> remove(String policyCertificateToRemove) {
-        return this.serviceClient.removeAsync(policyCertificateToRemove);
+        return this.serviceClient.removeAsync(policyCertificateToRemove)
+            .map(PolicyCertificatesModifyResponse::fromGenerated);
     }
 }

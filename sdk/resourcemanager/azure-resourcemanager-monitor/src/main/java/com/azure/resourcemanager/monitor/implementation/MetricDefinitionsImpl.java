@@ -9,6 +9,7 @@ import com.azure.resourcemanager.monitor.MonitorManager;
 import com.azure.resourcemanager.monitor.models.MetricDefinition;
 import com.azure.resourcemanager.monitor.models.MetricDefinitions;
 import com.azure.resourcemanager.monitor.fluent.MetricDefinitionsClient;
+import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
 
 /** Implementation for {@link MetricDefinitions}. */
 public class MetricDefinitionsImpl implements MetricDefinitions {
@@ -30,11 +31,11 @@ public class MetricDefinitionsImpl implements MetricDefinitions {
 
     @Override
     public PagedIterable<MetricDefinition> listByResource(String resourceId) {
-        return this.inner().list(resourceId).mapPage(inner -> new MetricDefinitionImpl(inner, myManager));
+        return PagedConverter.mapPage(this.inner().list(resourceId), inner -> new MetricDefinitionImpl(inner, myManager));
     }
 
     @Override
     public PagedFlux<MetricDefinition> listByResourceAsync(String resourceId) {
-        return this.inner().listAsync(resourceId).mapPage(inner -> new MetricDefinitionImpl(inner, myManager));
+        return PagedConverter.mapPage(this.inner().listAsync(resourceId), inner -> new MetricDefinitionImpl(inner, myManager));
     }
 }

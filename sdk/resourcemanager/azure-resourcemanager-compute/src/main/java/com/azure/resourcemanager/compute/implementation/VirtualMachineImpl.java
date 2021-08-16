@@ -6,7 +6,11 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.SubResource;
 import com.azure.core.management.provider.IdentifierProvider;
+import com.azure.core.management.serializer.SerializerFactory;
+import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.serializer.SerializerAdapter;
+import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.compute.ComputeManager;
 import com.azure.resourcemanager.compute.models.AvailabilitySet;
 import com.azure.resourcemanager.compute.models.AvailabilitySetSkuTypes;
@@ -49,6 +53,7 @@ import com.azure.resourcemanager.compute.models.VirtualMachineDataDisk;
 import com.azure.resourcemanager.compute.models.VirtualMachineEncryption;
 import com.azure.resourcemanager.compute.models.VirtualMachineEvictionPolicyTypes;
 import com.azure.resourcemanager.compute.models.VirtualMachineExtension;
+import com.azure.resourcemanager.compute.models.VirtualMachineIdentity;
 import com.azure.resourcemanager.compute.models.VirtualMachineInstanceView;
 import com.azure.resourcemanager.compute.models.VirtualMachineCustomImage;
 import com.azure.resourcemanager.compute.models.VirtualMachinePriorityTypes;
@@ -89,6 +94,7 @@ import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -100,6 +106,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.Callable;
+import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
 
 /** The implementation for VirtualMachine and its create and update interfaces. */
 class VirtualMachineImpl
@@ -111,10 +118,14 @@ class VirtualMachineImpl
         VirtualMachine.Update,
         VirtualMachine.DefinitionStages.WithSystemAssignedIdentityBasedAccessOrCreate,
         VirtualMachine.UpdateStages.WithSystemAssignedIdentityBasedAccessOrUpdate {
+
+    private final ClientLogger logger = new ClientLogger(VirtualMachineImpl.class);
+
     // Clients
     private final StorageManager storageManager;
     private final NetworkManager networkManager;
     private final AuthorizationManager authorizationManager;
+
     // the name of the virtual machine
     private final String vmName;
     // used to generate unique name for any dependency resources
@@ -168,7 +179,12 @@ class VirtualMachineImpl
     private ProximityPlacementGroupType newProximityPlacementGroupType;
     // To manage OS profile
     private boolean removeOsProfile;
-    private final ClientLogger logger = new ClientLogger(VirtualMachineImpl.class);
+
+    // Snapshot of the updateParameter when update() is called, used to compare whether there is modification to VM during updateResourceAsync
+    VirtualMachineUpdateInner updateParameterSnapshotOnUpdate;
+    private static final SerializerAdapter SERIALIZER_ADAPTER =
+        SerializerFactory.createDefaultManagementSerializerAdapter();
+
     private final ObjectMapper mapper;
     private static final JacksonAnnotationIntrospector ANNOTATION_INTROSPECTOR =
         new JacksonAnnotationIntrospector() {
@@ -207,11 +223,18 @@ class VirtualMachineImpl
         this.virtualMachineMsiHandler = new VirtualMachineMsiHandler(authorizationManager, this);
         this.newProximityPlacementGroupName = null;
         this.newProximityPlacementGroupType = null;
+
         this.mapper = new ObjectMapper();
         this.mapper.setAnnotationIntrospector(ANNOTATION_INTROSPECTOR);
     }
 
     // Verbs
+
+    @Override
+    public VirtualMachineImpl update() {
+        updateParameterSnapshotOnUpdate = this.deepCopyInnerToUpdateParameter();
+        return super.update();
+    };
 
     @Override
     public Mono<VirtualMachine> refreshAsync() {
@@ -351,12 +374,12 @@ class VirtualMachineImpl
 
     @Override
     public PagedIterable<VirtualMachineSize> availableSizes() {
-        return this
+        return PagedConverter.mapPage(this
             .manager()
             .serviceClient()
             .getVirtualMachines()
-            .listAvailableSizes(this.resourceGroupName(), this.name())
-            .mapPage(VirtualMachineSizeImpl::new);
+            .listAvailableSizes(this.resourceGroupName(), this.name()),
+            VirtualMachineSizeImpl::new);
     }
 
     @Override
@@ -1265,8 +1288,14 @@ class VirtualMachineImpl
     }
 
     @Override
+    public VirtualMachineImpl withBootDiagnosticsOnManagedStorageAccount() {
+        this.bootDiagnosticsHandler.withBootDiagnostics(true);
+        return this;
+    }
+
+    @Override
     public VirtualMachineImpl withBootDiagnostics() {
-        this.bootDiagnosticsHandler.withBootDiagnostics();
+        this.bootDiagnosticsHandler.withBootDiagnostics(false);
         return this;
     }
 
@@ -1510,7 +1539,12 @@ class VirtualMachineImpl
 
     @Override
     public NetworkInterface getPrimaryNetworkInterface() {
-        return this.networkManager.networkInterfaces().getById(primaryNetworkInterfaceId());
+        return this.getPrimaryNetworkInterfaceAsync().block();
+    }
+
+    @Override
+    public Mono<NetworkInterface> getPrimaryNetworkInterfaceAsync() {
+        return this.networkManager.networkInterfaces().getByIdAsync(primaryNetworkInterfaceId());
     }
 
     @Override
@@ -1821,7 +1855,8 @@ class VirtualMachineImpl
                     // same as createResourceAsync
                     prepareCreateResourceAsync().block();
                 },
-                this::reset);
+                this::reset,
+                Context.NONE);
     }
 
     @Override
@@ -1838,32 +1873,24 @@ class VirtualMachineImpl
         this.virtualMachineMsiHandler.processCreatedExternalIdentities();
 
         VirtualMachineUpdateInner updateParameter = new VirtualMachineUpdateInner();
-        updateParameter.withPlan(this.innerModel().plan());
-        updateParameter.withHardwareProfile(this.innerModel().hardwareProfile());
-        updateParameter.withStorageProfile(this.innerModel().storageProfile());
-        updateParameter.withOsProfile(this.innerModel().osProfile());
-        updateParameter.withNetworkProfile(this.innerModel().networkProfile());
-        updateParameter.withDiagnosticsProfile(this.innerModel().diagnosticsProfile());
-        updateParameter.withBillingProfile(this.innerModel().billingProfile());
-        updateParameter.withAvailabilitySet(this.innerModel().availabilitySet());
-        updateParameter.withLicenseType(this.innerModel().licenseType());
-        updateParameter.withZones(this.innerModel().zones());
-        updateParameter.withTags(this.innerModel().tags());
-        updateParameter.withProximityPlacementGroup(this.innerModel().proximityPlacementGroup());
-        updateParameter.withPriority(this.innerModel().priority());
+        this.copyInnerToUpdateParameter(updateParameter);
         this.virtualMachineMsiHandler.handleExternalIdentities(updateParameter);
 
-        final VirtualMachineImpl self = this;
-        return this
-            .manager()
-            .serviceClient()
-            .getVirtualMachines()
-            .updateAsync(resourceGroupName(), vmName, updateParameter)
-            .map(
-                virtualMachineInner -> {
-                    reset(virtualMachineInner);
-                    return self;
-                });
+        final boolean vmModified = this.isVirtualMachineModifiedDuringUpdate(updateParameter);
+        if (vmModified) {
+            return this
+                .manager()
+                .serviceClient()
+                .getVirtualMachines()
+                .updateAsync(resourceGroupName(), vmName, updateParameter)
+                .map(
+                    virtualMachineInner -> {
+                        reset(virtualMachineInner);
+                        return this;
+                    });
+        } else {
+            return Mono.just(this);
+        }
     }
 
     // CreateUpdateTaskGroup.ResourceCreator.afterPostRunAsync implementation
@@ -2330,6 +2357,60 @@ class VirtualMachineImpl
         return !this.isInCreateMode();
     }
 
+    boolean isVirtualMachineModifiedDuringUpdate(VirtualMachineUpdateInner updateParameter) {
+        if (updateParameterSnapshotOnUpdate == null || updateParameter == null) {
+            return true;
+        } else {
+            try {
+                String jsonStrSnapshot =
+                    SERIALIZER_ADAPTER.serialize(updateParameterSnapshotOnUpdate, SerializerEncoding.JSON);
+                String jsonStr = SERIALIZER_ADAPTER.serialize(updateParameter, SerializerEncoding.JSON);
+                return !jsonStr.equals(jsonStrSnapshot);
+            } catch (IOException e) {
+                // ignored, treat as modified
+                return true;
+            }
+        }
+    }
+
+    VirtualMachineUpdateInner deepCopyInnerToUpdateParameter() {
+        VirtualMachineUpdateInner updateParameter = new VirtualMachineUpdateInner();
+        copyInnerToUpdateParameter(updateParameter);
+        try {
+            // deep copy via json
+            String jsonStr = SERIALIZER_ADAPTER.serialize(updateParameter, SerializerEncoding.JSON);
+            updateParameter =
+                SERIALIZER_ADAPTER.deserialize(jsonStr, VirtualMachineUpdateInner.class, SerializerEncoding.JSON);
+        } catch (IOException e) {
+            // ignored, null to signify not available
+            return null;
+        }
+        // deep copy identity, with userAssignedIdentities==null to signify no change
+        if (this.innerModel().identity() != null) {
+            VirtualMachineIdentity identity = new VirtualMachineIdentity();
+            identity.withType(this.innerModel().identity().type());
+            updateParameter.withIdentity(identity);
+        }
+
+        return updateParameter;
+    }
+
+    private void copyInnerToUpdateParameter(VirtualMachineUpdateInner updateParameter) {
+        //updateParameter.withPlan(this.innerModel().plan());   // update cannot change plan
+        updateParameter.withHardwareProfile(this.innerModel().hardwareProfile());
+        updateParameter.withStorageProfile(this.innerModel().storageProfile());
+        updateParameter.withOsProfile(this.innerModel().osProfile());
+        updateParameter.withNetworkProfile(this.innerModel().networkProfile());
+        updateParameter.withDiagnosticsProfile(this.innerModel().diagnosticsProfile());
+        updateParameter.withBillingProfile(this.innerModel().billingProfile());
+        updateParameter.withAvailabilitySet(this.innerModel().availabilitySet());
+        updateParameter.withLicenseType(this.innerModel().licenseType());
+        updateParameter.withZones(this.innerModel().zones());
+        updateParameter.withTags(this.innerModel().tags());
+        updateParameter.withProximityPlacementGroup(this.innerModel().proximityPlacementGroup());
+        updateParameter.withPriority(this.innerModel().priority());
+    }
+
     RoleAssignmentHelper.IdProvider idProvider() {
         return new RoleAssignmentHelper.IdProvider() {
             @Override
@@ -2559,9 +2640,14 @@ class VirtualMachineImpl
     private class BootDiagnosticsHandler {
         private final VirtualMachineImpl vmImpl;
         private String creatableDiagnosticsStorageAccountKey;
+        private boolean useManagedStorageAccount = false;
 
         BootDiagnosticsHandler(VirtualMachineImpl vmImpl) {
             this.vmImpl = vmImpl;
+            if (isBootDiagnosticsEnabled()
+                && this.vmInner().diagnosticsProfile().bootDiagnostics().storageUri() == null) {
+                this.useManagedStorageAccount = true;
+            }
         }
 
         public boolean isBootDiagnosticsEnabled() {
@@ -2582,21 +2668,24 @@ class VirtualMachineImpl
             return null;
         }
 
-        BootDiagnosticsHandler withBootDiagnostics() {
+        BootDiagnosticsHandler withBootDiagnostics(boolean useManagedStorageAccount) {
             // Diagnostics storage uri will be set later by this.handleDiagnosticsSettings(..)
             this.enableDisable(true);
+            this.useManagedStorageAccount = useManagedStorageAccount;
             return this;
         }
 
         BootDiagnosticsHandler withBootDiagnostics(Creatable<StorageAccount> creatable) {
             // Diagnostics storage uri will be set later by this.handleDiagnosticsSettings(..)
             this.enableDisable(true);
+            this.useManagedStorageAccount = false;
             this.creatableDiagnosticsStorageAccountKey = this.vmImpl.addDependency(creatable);
             return this;
         }
 
         BootDiagnosticsHandler withBootDiagnostics(String storageAccountBlobEndpointUri) {
             this.enableDisable(true);
+            this.useManagedStorageAccount = false;
             this.vmInner().diagnosticsProfile().bootDiagnostics().withStorageUri(storageAccountBlobEndpointUri);
             return this;
         }
@@ -2607,10 +2696,15 @@ class VirtualMachineImpl
 
         BootDiagnosticsHandler withoutBootDiagnostics() {
             this.enableDisable(false);
+            this.useManagedStorageAccount = false;
             return this;
         }
 
         void prepare() {
+            if (useManagedStorageAccount) {
+                return;
+            }
+
             DiagnosticsProfile diagnosticsProfile = this.vmInner().diagnosticsProfile();
             if (diagnosticsProfile == null
                 || diagnosticsProfile.bootDiagnostics() == null
@@ -2651,6 +2745,10 @@ class VirtualMachineImpl
         }
 
         void handleDiagnosticsSettings() {
+            if (useManagedStorageAccount) {
+                return;
+            }
+
             DiagnosticsProfile diagnosticsProfile = this.vmInner().diagnosticsProfile();
             if (diagnosticsProfile == null
                 || diagnosticsProfile.bootDiagnostics() == null

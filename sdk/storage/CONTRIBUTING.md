@@ -5,7 +5,7 @@ Thank you for your interest in contributing to Azure SDK for Java.
 
 - For reporting bugs, requesting features, or asking for support, please file an issue in the [issues](https://github.com/Azure/azure-sdk-for-java/issues) section of the project.
 
-- If you would like to become an active contributor to this project please follow the instructions provided in [Microsoft Azure Projects Contribution Guidelines](https://azure.github.com/guidelines.html).
+- If you would like to become an active contributor to this project please follow the instructions provided in [Microsoft Azure Projects Contribution Guidelines](https://opensource.microsoft.com/collaborate).
 
 - To make code changes, or contribute something new, please follow the [GitHub Forks / Pull requests model](https://help.github.com/articles/fork-a-repo/): Fork the repo, make the change and propose it back by submitting a pull request.
 
@@ -79,7 +79,7 @@ mvn -f sdk/{root-projectForlderDir}/{specific-projectForlderDir}/pom.xml -Dgpg.s
 
 ## Versions and versioning
 
-Tooling has been introduced to centralize versioning and help ease the pain of updating artifact versions in POM and README files. Under the eng\versioning directory there exists version text files, one for client ([version_client.txt](https://github.com/Azure/azure-sdk-for-java/blob/master/eng/versioning/version_client.txt)) and one for data ([version_data.txt](https://github.com/Azure/azure-sdk-for-java/blob/master/eng/versioning/version_data.txt)). The format of the version files is as follows:
+Tooling has been introduced to centralize versioning and help ease the pain of updating artifact versions in POM and README files. Under the eng\versioning directory there exists version text files, one for client ([version_client.txt](https://github.com/Azure/azure-sdk-for-java/blob/main/eng/versioning/version_client.txt)) and one for data ([version_data.txt](https://github.com/Azure/azure-sdk-for-java/blob/main/eng/versioning/version_data.txt)). The format of the version files is as follows:
 
 `groupId:artifactId;dependency-version;current-version`
 
@@ -143,7 +143,7 @@ In theory, absence of an x-version-update tag would do the same thing but the to
 
 ### What does the process look like?
 
-I need to tick up the version of azure-storage libraries how would I do it? Guidelines for incrementing versions after release can be found [here](https://github.com/Azure/azure-sdk/blob/master/docs/policies/releases.md#incrementing-after-release).
+I need to tick up the version of azure-storage libraries how would I do it? Guidelines for incrementing versions after release can be found [here](https://github.com/Azure/azure-sdk/blob/main/docs/policies/releases.md#incrementing-after-release).
 
 1. I'd open up eng\versioning\version_client.txt and update the current-versions of the libraries that are built and released as part of the azure storage pipeline. This list can be found in pom.service.xml under the sdk/storage directory. It's worth noting that any module entry starting with "../" are external module dependencies and not something that's released as part of the pipeline. Once we GA, these build dependencies for library components outside of a given area should go away and be replaced with downloading the appropriate dependency from Maven like we do for external dependencies.
 2. Execute the update_versions python script from the root of the enlistment

@@ -1,0 +1,48 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.blob.core.windows.net/1c1c19fc01c1c19fc9113762086960fbe1444419ea06?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2020-10-02",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.13.0-beta.1 (11; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "8cf86f7b-3dfd-482a-94ef-eebb68d85928"
+    },
+    "Response" : {
+      "content-length" : "0",
+      "x-ms-version" : "2020-10-02",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "eTag" : "0x8D947B7B4FAF86B",
+      "Last-Modified" : "Thu, 15 Jul 2021 17:40:59 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "7e5bf941-501e-0009-68a0-798f62000000",
+      "x-ms-client-request-id" : "8cf86f7b-3dfd-482a-94ef-eebb68d85928",
+      "Date" : "Thu, 15 Jul 2021 17:40:59 GMT"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.blob.core.windows.net/1c1c19fc01c1c19fc9113762086960fbe1444419ea06?restype=container&comp=acl",
+    "Headers" : {
+      "x-ms-version" : "2020-10-02",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.13.0-beta.1 (11; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "fb83ddd7-08cd-43d1-8c72-a44d8e2ee8c8",
+      "Content-Type" : "application/xml"
+    },
+    "Response" : {
+      "content-length" : "251",
+      "x-ms-version" : "2020-10-02",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "LeaseNotPresentWithContainerOperation",
+      "retry-after" : "0",
+      "StatusCode" : "412",
+      "x-ms-request-id" : "f0de9b13-601e-005f-74a0-797e8d000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>LeaseNotPresentWithContainerOperation</Code><Message>There is currently no lease on the container.\nRequestId:f0de9b13-601e-005f-74a0-797e8d000000\nTime:2021-07-15T17:40:59.1456147Z</Message></Error>",
+      "x-ms-client-request-id" : "fb83ddd7-08cd-43d1-8c72-a44d8e2ee8c8",
+      "Date" : "Thu, 15 Jul 2021 17:40:59 GMT",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "1c1c19fc01c1c19fc9113762086960fbe1444419ea06", "1c1c19fc1079984f", "1c1c19fc15277a9a" ]
+}

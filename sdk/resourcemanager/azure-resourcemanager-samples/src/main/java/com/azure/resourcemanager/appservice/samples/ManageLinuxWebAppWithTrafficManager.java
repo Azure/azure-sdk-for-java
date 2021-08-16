@@ -37,7 +37,7 @@ import java.io.IOException;
  */
 public final class ManageLinuxWebAppWithTrafficManager {
     private static String rgName;
-
+    // [SuppressMessage("Microsoft.Security", "CS002:SecretInNextLine", Justification="Serves as an example, not for deployment. Please change when using this in your code.")]
     private static final String CERT_PASSWORD = "StrongPass!12";
 
     private static AzureResourceManager azureResourceManager;
@@ -247,7 +247,7 @@ public final class ManageLinuxWebAppWithTrafficManager {
     }
 
     private static final String WEB_APP_PACKAGE_URL =
-        "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/master/sdk/resourcemanager/azure-resourcemanager-samples/src/main/resources/helloworld.zip";
+        "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/main/sdk/resourcemanager/azure-resourcemanager-samples/src/main/resources/helloworld.zip";
 
     private static WebApp createWebApp(String name, AppServicePlan plan) {
         return azureResourceManager.webApps().define(name)

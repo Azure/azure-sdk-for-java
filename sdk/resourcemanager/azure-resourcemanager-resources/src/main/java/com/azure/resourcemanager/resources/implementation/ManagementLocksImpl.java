@@ -124,6 +124,10 @@ public final class ManagementLocksImpl
 
     @Override
     public PagedFlux<ManagementLock> listByResourceGroupAsync(String resourceGroupName) {
+        if (CoreUtils.isNullOrEmpty(resourceGroupName)) {
+            return new PagedFlux<>(() -> Mono.error(
+                new IllegalArgumentException("Parameter 'resourceGroupName' is required and cannot be null.")));
+        }
         return wrapPageAsync(this.manager().managementLockClient().getManagementLocks()
             .listByResourceGroupAsync(resourceGroupName));
     }
@@ -135,6 +139,14 @@ public final class ManagementLocksImpl
 
     @Override
     public Mono<ManagementLock> getByResourceGroupAsync(String resourceGroupName, String name) {
+        if (CoreUtils.isNullOrEmpty(resourceGroupName)) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter 'resourceGroupName' is required and cannot be null."));
+        }
+        if (CoreUtils.isNullOrEmpty(name)) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter 'name' is required and cannot be null."));
+        }
         return this.manager().managementLockClient().getManagementLocks()
             .getByResourceGroupAsync(resourceGroupName, name)
             .map(this::wrapModel);
@@ -160,6 +172,14 @@ public final class ManagementLocksImpl
 
     @Override
     public Mono<Void> deleteByResourceGroupAsync(String resourceGroupName, String name) {
+        if (CoreUtils.isNullOrEmpty(resourceGroupName)) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter 'resourceGroupName' is required and cannot be null."));
+        }
+        if (CoreUtils.isNullOrEmpty(name)) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter 'name' is required and cannot be null."));
+        }
         return this.manager().managementLockClient().getManagementLocks()
             .deleteAsync(resourceGroupName, name);
     }

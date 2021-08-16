@@ -240,9 +240,9 @@ public interface FailureValidator {
                 @Override
                 public void validate(Throwable t) {
                     assertThat(t).isNotNull();
-                    assertThat(t).isInstanceOf(IllegalArgumentException.class);
-                    IllegalArgumentException ex = (IllegalArgumentException) t;
-                    assertThat(ex.getMessage()).isEqualTo(RMResources.ResourceTokenNotFound);
+                    assertThat(t).isInstanceOf(UnauthorizedException.class);
+                    UnauthorizedException ex = (UnauthorizedException) t;
+                    assertThat(ex.getMessage()).contains(RMResources.ResourceTokenNotFound);
                 }
             });
             return this;

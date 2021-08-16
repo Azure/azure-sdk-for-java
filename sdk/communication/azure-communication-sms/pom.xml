@@ -1,8 +1,8 @@
 <!-- Copyright (c) Microsoft Corporation. All rights reserved.
      Licensed under the MIT License. -->
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
@@ -15,12 +15,12 @@
   <groupId>com.azure</groupId>
   <artifactId>azure-communication-sms</artifactId>
   <packaging>jar</packaging>
-  <version>1.0.0-beta.4</version> <!-- {x-version-update;com.azure:azure-communication-sms;current} -->
+  <version>1.1.0-beta.1</version> <!-- {x-version-update;com.azure:azure-communication-sms;current} -->
 
   <name>Microsoft Azure library for sending SMS messages</name>
   <description>
-    This package contains clients and data structures used to send SMS messages with Azure Communication SMS Service. 
-    For this release, see notes - https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/communication/azure-communication-sms/README.md and https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/communication/azure-communication-sms/CHANGELOG.md. 
+    This package contains clients and data structures used to send SMS messages with Azure Communication SMS Service.
+    For this release, see notes - https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/communication/azure-communication-sms/README.md and https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/communication/azure-communication-sms/CHANGELOG.md.
     Microsoft Azure Communication SMS quickstart - https://docs.microsoft.com/azure/communication-services/quickstarts/telephony-sms/send?pivots=programming-language-java
   </description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
@@ -41,71 +41,72 @@
   <properties>
     <src.dir>src/main</src.dir>
     <test.dir>src/test</test.dir>
-    <jacoco.min.linecoverage>0.75</jacoco.min.linecoverage>
-    <jacoco.min.branchcoverage>0.75</jacoco.min.branchcoverage>    
+    <jacoco.min.linecoverage>0.70</jacoco.min.linecoverage>
+    <jacoco.min.branchcoverage>0.70</jacoco.min.branchcoverage>
+    <jacoco.skip.coverage.check>false</jacoco.skip.coverage.check>
   </properties>
 
   <dependencies>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.12.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+      <version>1.19.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-communication-common</artifactId>
-      <version>1.0.0-beta.4</version> <!-- {x-version-update;com.azure:azure-communication-common;current} -->
+      <version>1.0.3</version> <!-- {x-version-update;com.azure:azure-communication-common;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-test</artifactId>
-      <version>1.5.2</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
+      <version>1.7.0</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
       <scope>test</scope>
-    </dependency>         
+    </dependency>
     <dependency>
       <groupId>com.nimbusds</groupId>
       <artifactId>nimbus-jose-jwt</artifactId>
-      <version>8.19</version> <!-- {x-version-update;com.nimbusds:nimbus-jose-jwt;external_dependency} -->
+      <version>9.10</version> <!-- {x-version-update;com.nimbusds:nimbus-jose-jwt;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-api</artifactId>
-      <version>5.6.3</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-api;external_dependency} -->
+      <version>5.7.2</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-api;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-engine</artifactId>
-      <version>5.6.3</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-engine;external_dependency} -->
+      <version>5.7.2</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-engine;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-params</artifactId>
-      <version>5.6.3</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-params;external_dependency} -->
+      <version>5.7.2</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-params;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>io.projectreactor</groupId>
       <artifactId>reactor-test</artifactId>
-      <version>3.3.12.RELEASE</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
+      <version>3.4.8</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-okhttp</artifactId>
-      <version>1.4.1</version> <!-- {x-version-update;com.azure:azure-core-http-okhttp;dependency} -->
+      <version>1.7.2</version> <!-- {x-version-update;com.azure:azure-core-http-okhttp;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.2.2</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->    
+      <version>1.3.5</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>
-    <build>
+  <build>
     <plugins>
       <plugin>
         <groupId>org.jacoco</groupId>
@@ -116,6 +117,15 @@
             <include>com/azure/communication/sms/*.class</include>
           </includes>
         </configuration>
+        <executions>
+          <execution>
+            <id>coverage-report</id>
+            <phase>verify</phase>
+            <goals>
+              <goal>report</goal>
+            </goals>
+          </execution>
+        </executions>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -131,6 +141,23 @@
           </rules>
         </configuration>
       </plugin>
+      <plugin>
+        <groupId>org.revapi</groupId>
+        <artifactId>revapi-maven-plugin</artifactId>
+        <version>0.11.2</version> <!-- {x-version-update;org.revapi:revapi-maven-plugin;external_dependency} -->
+        <configuration>
+          <analysisConfiguration>
+            <revapi.ignore>
+              <item>
+                <code>java.method.added</code>
+                <class>com.azure.core.util.HttpClientOptions</class>
+                <justification>Transitive from Core. Not our problem</justification>
+              </item>
+            </revapi.ignore>
+          </analysisConfiguration>
+        </configuration>
+      </plugin>
     </plugins>
   </build>
+
 </project>

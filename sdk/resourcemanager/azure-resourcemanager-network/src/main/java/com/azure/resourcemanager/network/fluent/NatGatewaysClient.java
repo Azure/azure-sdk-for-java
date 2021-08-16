@@ -192,7 +192,7 @@ public interface NatGatewaysClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param natGatewayName The name of the nat gateway.
-     * @param parameters Nat Gateway resource.
+     * @param parameters Parameters supplied to the create or update nat gateway operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -207,7 +207,7 @@ public interface NatGatewaysClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param natGatewayName The name of the nat gateway.
-     * @param parameters Nat Gateway resource.
+     * @param parameters Parameters supplied to the create or update nat gateway operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -222,7 +222,7 @@ public interface NatGatewaysClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param natGatewayName The name of the nat gateway.
-     * @param parameters Nat Gateway resource.
+     * @param parameters Parameters supplied to the create or update nat gateway operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -237,7 +237,7 @@ public interface NatGatewaysClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param natGatewayName The name of the nat gateway.
-     * @param parameters Nat Gateway resource.
+     * @param parameters Parameters supplied to the create or update nat gateway operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -253,7 +253,7 @@ public interface NatGatewaysClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param natGatewayName The name of the nat gateway.
-     * @param parameters Nat Gateway resource.
+     * @param parameters Parameters supplied to the create or update nat gateway operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -268,7 +268,7 @@ public interface NatGatewaysClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param natGatewayName The name of the nat gateway.
-     * @param parameters Nat Gateway resource.
+     * @param parameters Parameters supplied to the create or update nat gateway operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -282,7 +282,7 @@ public interface NatGatewaysClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param natGatewayName The name of the nat gateway.
-     * @param parameters Nat Gateway resource.
+     * @param parameters Parameters supplied to the create or update nat gateway operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.

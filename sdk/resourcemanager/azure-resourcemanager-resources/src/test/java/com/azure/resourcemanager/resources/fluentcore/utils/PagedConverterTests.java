@@ -30,6 +30,62 @@ public class PagedConverterTests {
     private final ClientLogger logger = new ClientLogger(this.getClass());
 
     @Test
+    public void testMapPage() {
+        PagedFlux<String> pagedFlux = mockPagedFlux("base", 0, 10, 4);
+        PagedIterable<String> pagedIterable = new PagedIterable<>(pagedFlux);
+
+        PagedIterable<String> convertedPagedIterable = PagedConverter.mapPage(pagedIterable, item -> item + "#");
+
+        Iterator<PagedResponse<String>> iteratorByPage = convertedPagedIterable.iterableByPage().iterator();
+        Assertions.assertTrue(iteratorByPage.hasNext());
+        PagedResponse<String> page1 = iteratorByPage.next();
+        Assertions.assertEquals(4, page1.getValue().size());
+        Assertions.assertEquals("base0#", page1.getValue().get(0));
+        Assertions.assertEquals("base3#", page1.getValue().get(3));
+        Assertions.assertTrue(iteratorByPage.hasNext());
+        Assertions.assertEquals(4, iteratorByPage.next().getValue().size());
+        Assertions.assertTrue(iteratorByPage.hasNext());
+        Assertions.assertEquals(2, iteratorByPage.next().getValue().size());
+        Assertions.assertFalse(iteratorByPage.hasNext());
+
+        Iterator<String> iterator = convertedPagedIterable.iterator();
+        Assertions.assertTrue(iterator.hasNext());
+        Assertions.assertEquals("base0#", iterator.next());
+        for (int i = 1; i < 10; ++i) {
+            Assertions.assertTrue(iterator.hasNext());
+            Assertions.assertEquals("base" + i + "#", iterator.next());
+        }
+        Assertions.assertFalse(iterator.hasNext());
+    }
+
+    @Test
+    public void testMapPageWithPagedIterable() {
+        PagedFlux<String> pagedFlux = mockPagedFlux("base", 0, 10, 4);
+        PagedIterable<String> pagedIterable = new PagedIterable<>(pagedFlux);
+
+        PagedIterable<String> convertedPagedIterable = PagedConverter.mapPage(pagedIterable, item -> item + "#");
+
+        PagedIterable<String> afterMapPage = convertedPagedIterable.mapPage(item -> item + "#");
+        Assertions.assertEquals(10, afterMapPage.stream().count());
+    }
+
+    @Test
+    public void testMapPageIterator() {
+        PagedFlux<String> pagedFlux = mockPagedFlux("base", 0, 10, 4);
+        PagedFlux<String> convertedPagedFlux = PagedConverter.mapPage(pagedFlux, item -> item + "#");
+
+        StepVerifier.create(convertedPagedFlux.byPage())
+            .expectSubscription()
+            .expectNextMatches(p -> p.getValue().size() == 4
+                && p.getValue().get(0).equals("base0#")
+                && p.getValue().get(p.getValue().size() - 1).equals("base3#"))
+            .expectNextMatches(p -> p.getValue().size() == 4)
+            .expectNextMatches(p -> p.getValue().size() == 2)
+            .expectComplete()
+            .verify();
+    }
+
+    @Test
     public void testFlatMapPage() {
         PagedFlux<String> pagedFlux = mockPagedFlux("base", 0, 10, 4);
         PagedFlux<String> convertedPagedFlux = PagedConverter.flatMapPage(pagedFlux, item -> Flux.just(item, item + "#"));
@@ -109,6 +165,18 @@ public class PagedConverterTests {
             .verify();
 
         Assertions.assertEquals(10, new PagedIterable<>(mergedPagedFlux).stream().count());
+    }
+
+    @Test
+    public void testMapPageOnePage() {
+        AtomicInteger pageCount = new AtomicInteger(0);
+        PagedFlux<String> pagedFlux = mockPagedFlux("base", 0, 10, 4, pageCount);
+        PagedFlux<String> convertedPagedFlux = PagedConverter.mapPage(pagedFlux, item -> item + "#");
+        PagedIterable<String> pagedIterable = new PagedIterable<>(convertedPagedFlux);
+
+        pagedIterable.stream().findFirst().get();
+
+        Assertions.assertEquals(1, pageCount.get());
     }
 
     @Test

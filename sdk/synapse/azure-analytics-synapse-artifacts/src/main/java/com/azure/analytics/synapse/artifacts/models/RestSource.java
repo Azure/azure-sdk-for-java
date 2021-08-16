@@ -57,6 +57,14 @@ public final class RestSource extends CopySource {
     @JsonProperty(value = "requestInterval")
     private Object requestInterval;
 
+    /*
+     * Specifies the additional columns to be added to source data. Type: array
+     * of objects(AdditionalColumns) (or Expression with resultType array of
+     * objects).
+     */
+    @JsonProperty(value = "additionalColumns")
+    private Object additionalColumns;
+
     /**
      * Get the requestMethod property: The HTTP method used to call the RESTful API. The default is GET. Type: string
      * (or Expression with resultType string).
@@ -186,6 +194,28 @@ public final class RestSource extends CopySource {
      */
     public RestSource setRequestInterval(Object requestInterval) {
         this.requestInterval = requestInterval;
+        return this;
+    }
+
+    /**
+     * Get the additionalColumns property: Specifies the additional columns to be added to source data. Type: array of
+     * objects(AdditionalColumns) (or Expression with resultType array of objects).
+     *
+     * @return the additionalColumns value.
+     */
+    public Object getAdditionalColumns() {
+        return this.additionalColumns;
+    }
+
+    /**
+     * Set the additionalColumns property: Specifies the additional columns to be added to source data. Type: array of
+     * objects(AdditionalColumns) (or Expression with resultType array of objects).
+     *
+     * @param additionalColumns the additionalColumns value to set.
+     * @return the RestSource object itself.
+     */
+    public RestSource setAdditionalColumns(Object additionalColumns) {
+        this.additionalColumns = additionalColumns;
         return this;
     }
 }

@@ -3,10 +3,14 @@
 
 package com.azure.security.keyvault.keys;
 
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.policy.HttpLogDetailLevel;
+import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.test.TestMode;
 import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.security.keyvault.keys.models.CreateKeyOptions;
@@ -14,12 +18,13 @@ import com.azure.security.keyvault.keys.models.DeletedKey;
 import com.azure.security.keyvault.keys.models.KeyProperties;
 import com.azure.security.keyvault.keys.models.KeyType;
 import com.azure.security.keyvault.keys.models.KeyVaultKey;
-import org.junit.jupiter.api.Disabled;
+import com.azure.security.keyvault.keys.models.ReleaseKeyResult;
+import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import java.io.IOException;
 import java.net.HttpURLConnection;
-import java.nio.ByteBuffer;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -29,24 +34,25 @@ import static com.azure.security.keyvault.keys.cryptography.TestHelper.DISPLAY_N
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
 
 public class KeyClientTest extends KeyClientTestBase {
-
-    private KeyClient client;
+    protected KeyClient client;
 
     @Override
     protected void beforeTest() {
         beforeTestSetup();
     }
 
-    private void getKeyClient(HttpClient httpClient, KeyServiceVersion serviceVersion) {
+    protected void createKeyClient(HttpClient httpClient, KeyServiceVersion serviceVersion) {
         HttpPipeline httpPipeline = getHttpPipeline(httpClient, serviceVersion);
         KeyAsyncClient asyncClient = spy(new KeyClientBuilder()
             .vaultUrl(getEndpoint())
             .pipeline(httpPipeline)
             .serviceVersion(serviceVersion)
+            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
             .buildAsyncClient());
 
         if (interceptorManager.isPlaybackMode()) {
@@ -62,7 +68,7 @@ public class KeyClientTest extends KeyClientTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getTestParameters")
     public void setKey(HttpClient httpClient, KeyServiceVersion serviceVersion) {
-        getKeyClient(httpClient, serviceVersion);
+        createKeyClient(httpClient, serviceVersion);
         setKeyRunner((expected) -> assertKeyEquals(expected, client.createKey(expected)));
     }
 
@@ -72,7 +78,7 @@ public class KeyClientTest extends KeyClientTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getTestParameters")
     public void createRsaKey(HttpClient httpClient, KeyServiceVersion serviceVersion) {
-        getKeyClient(httpClient, serviceVersion);
+        createKeyClient(httpClient, serviceVersion);
         createRsaKeyRunner((expected) -> assertKeyEquals(expected, client.createRsaKey(expected)));
     }
 
@@ -82,8 +88,15 @@ public class KeyClientTest extends KeyClientTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getTestParameters")
     public void setKeyEmptyName(HttpClient httpClient, KeyServiceVersion serviceVersion) {
-        getKeyClient(httpClient, serviceVersion);
-        assertRestException(() -> client.createKey("", KeyType.RSA), ResourceModifiedException.class, HttpURLConnection.HTTP_BAD_REQUEST);
+        createKeyClient(httpClient, serviceVersion);
+
+        if (isManagedHsmTest) {
+            assertRestException(() -> client.createKey("", KeyType.RSA_HSM), HttpResponseException.class,
+                HttpURLConnection.HTTP_SERVER_ERROR);
+        } else {
+            assertRestException(() -> client.createKey("", KeyType.RSA), ResourceModifiedException.class,
+                HttpURLConnection.HTTP_BAD_REQUEST);
+        }
     }
 
     /**
@@ -92,7 +105,7 @@ public class KeyClientTest extends KeyClientTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getTestParameters")
     public void setKeyNullType(HttpClient httpClient, KeyServiceVersion serviceVersion) {
-        getKeyClient(httpClient, serviceVersion);
+        createKeyClient(httpClient, serviceVersion);
         setKeyEmptyValueRunner((key) -> {
             assertRestException(() -> client.createKey(key.getName(), key.getKeyType()), ResourceModifiedException.class, HttpURLConnection.HTTP_BAD_REQUEST);
         });
@@ -104,7 +117,7 @@ public class KeyClientTest extends KeyClientTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getTestParameters")
     public void setKeyNull(HttpClient httpClient, KeyServiceVersion serviceVersion) {
-        getKeyClient(httpClient, serviceVersion);
+        createKeyClient(httpClient, serviceVersion);
         assertRunnableThrowsException(() -> client.createKey(null), NullPointerException.class);
         assertRunnableThrowsException(() -> client.createKey(null), NullPointerException.class);
     }
@@ -115,7 +128,7 @@ public class KeyClientTest extends KeyClientTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getTestParameters")
     public void updateKey(HttpClient httpClient, KeyServiceVersion serviceVersion) {
-        getKeyClient(httpClient, serviceVersion);
+        createKeyClient(httpClient, serviceVersion);
         updateKeyRunner((original, updated) -> {
             assertKeyEquals(original, client.createKey(original));
             KeyVaultKey keyToUpdate = client.getKey(original.getName());
@@ -130,7 +143,7 @@ public class KeyClientTest extends KeyClientTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getTestParameters")
     public void updateDisabledKey(HttpClient httpClient, KeyServiceVersion serviceVersion) {
-        getKeyClient(httpClient, serviceVersion);
+        createKeyClient(httpClient, serviceVersion);
         updateDisabledKeyRunner((original, updated) -> {
             assertKeyEquals(original, client.createKey(original));
             KeyVaultKey keyToUpdate = client.getKey(original.getName());
@@ -145,7 +158,7 @@ public class KeyClientTest extends KeyClientTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getTestParameters")
     public void getKey(HttpClient httpClient, KeyServiceVersion serviceVersion) {
-        getKeyClient(httpClient, serviceVersion);
+        createKeyClient(httpClient, serviceVersion);
         getKeyRunner((original) -> {
             client.createKey(original);
             assertKeyEquals(original, client.getKey(original.getName()));
@@ -158,7 +171,7 @@ public class KeyClientTest extends KeyClientTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getTestParameters")
     public void getKeySpecificVersion(HttpClient httpClient, KeyServiceVersion serviceVersion) {
-        getKeyClient(httpClient, serviceVersion);
+        createKeyClient(httpClient, serviceVersion);
         getKeySpecificVersionRunner((key, keyWithNewVal) -> {
             KeyVaultKey keyVersionOne = client.createKey(key);
             KeyVaultKey keyVersionTwo = client.createKey(keyWithNewVal);
@@ -173,7 +186,7 @@ public class KeyClientTest extends KeyClientTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getTestParameters")
     public void getKeyNotFound(HttpClient httpClient, KeyServiceVersion serviceVersion) {
-        getKeyClient(httpClient, serviceVersion);
+        createKeyClient(httpClient, serviceVersion);
         assertRestException(() -> client.getKey("non-existing"),  ResourceNotFoundException.class, HttpURLConnection.HTTP_NOT_FOUND);
     }
 
@@ -183,7 +196,7 @@ public class KeyClientTest extends KeyClientTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getTestParameters")
     public void deleteKey(HttpClient httpClient, KeyServiceVersion serviceVersion) {
-        getKeyClient(httpClient, serviceVersion);
+        createKeyClient(httpClient, serviceVersion);
         deleteKeyRunner((keyToDelete) -> {
             sleepInRecordMode(30000);
             assertKeyEquals(keyToDelete,  client.createKey(keyToDelete));
@@ -209,7 +222,7 @@ public class KeyClientTest extends KeyClientTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getTestParameters")
     public void deleteKeyNotFound(HttpClient httpClient, KeyServiceVersion serviceVersion) {
-        getKeyClient(httpClient, serviceVersion);
+        createKeyClient(httpClient, serviceVersion);
         assertRestException(() -> client.beginDeleteKey("non-existing"), ResourceNotFoundException.class, HttpURLConnection.HTTP_NOT_FOUND);
     }
 
@@ -219,7 +232,7 @@ public class KeyClientTest extends KeyClientTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getTestParameters")
     public void getDeletedKeyNotFound(HttpClient httpClient, KeyServiceVersion serviceVersion) {
-        getKeyClient(httpClient, serviceVersion);
+        createKeyClient(httpClient, serviceVersion);
         assertRestException(() -> client.getDeletedKey("non-existing"),  ResourceNotFoundException.class, HttpURLConnection.HTTP_NOT_FOUND);
     }
 
@@ -230,7 +243,7 @@ public class KeyClientTest extends KeyClientTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getTestParameters")
     public void recoverDeletedKey(HttpClient httpClient, KeyServiceVersion serviceVersion) {
-        getKeyClient(httpClient, serviceVersion);
+        createKeyClient(httpClient, serviceVersion);
         recoverDeletedKeyRunner((keyToDeleteAndRecover) -> {
             assertKeyEquals(keyToDeleteAndRecover, client.createKey(keyToDeleteAndRecover));
             SyncPoller<DeletedKey, Void> poller = client.beginDeleteKey(keyToDeleteAndRecover.getName());
@@ -264,7 +277,7 @@ public class KeyClientTest extends KeyClientTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getTestParameters")
     public void recoverDeletedKeyNotFound(HttpClient httpClient, KeyServiceVersion serviceVersion) {
-        getKeyClient(httpClient, serviceVersion);
+        createKeyClient(httpClient, serviceVersion);
         assertRestException(() -> client.beginRecoverDeletedKey("non-existing"), ResourceNotFoundException.class, HttpURLConnection.HTTP_NOT_FOUND);
     }
 
@@ -274,7 +287,7 @@ public class KeyClientTest extends KeyClientTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getTestParameters")
     public void backupKey(HttpClient httpClient, KeyServiceVersion serviceVersion) {
-        getKeyClient(httpClient, serviceVersion);
+        createKeyClient(httpClient, serviceVersion);
         backupKeyRunner((keyToBackup) -> {
             assertKeyEquals(keyToBackup, client.createKey(keyToBackup));
             byte[] backupBytes = (client.backupKey(keyToBackup.getName()));
@@ -289,7 +302,7 @@ public class KeyClientTest extends KeyClientTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getTestParameters")
     public void backupKeyNotFound(HttpClient httpClient, KeyServiceVersion serviceVersion) {
-        getKeyClient(httpClient, serviceVersion);
+        createKeyClient(httpClient, serviceVersion);
         assertRestException(() -> client.backupKey("non-existing"),  ResourceNotFoundException.class, HttpURLConnection.HTTP_NOT_FOUND);
     }
 
@@ -299,7 +312,7 @@ public class KeyClientTest extends KeyClientTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getTestParameters")
     public void restoreKey(HttpClient httpClient, KeyServiceVersion serviceVersion) {
-        getKeyClient(httpClient, serviceVersion);
+        createKeyClient(httpClient, serviceVersion);
         restoreKeyRunner((keyToBackupAndRestore) -> {
             assertKeyEquals(keyToBackupAndRestore, client.createKey(keyToBackupAndRestore));
             byte[] backupBytes = (client.backupKey(keyToBackupAndRestore.getName()));
@@ -329,7 +342,7 @@ public class KeyClientTest extends KeyClientTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getTestParameters")
     public void restoreKeyFromMalformedBackup(HttpClient httpClient, KeyServiceVersion serviceVersion) {
-        getKeyClient(httpClient, serviceVersion);
+        createKeyClient(httpClient, serviceVersion);
         byte[] keyBackupBytes = "non-existing".getBytes();
         assertRestException(() -> client.restoreKeyBackup(keyBackupBytes), ResourceModifiedException.class, HttpURLConnection.HTTP_BAD_REQUEST);
     }
@@ -340,7 +353,7 @@ public class KeyClientTest extends KeyClientTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getTestParameters")
     public void listKeys(HttpClient httpClient, KeyServiceVersion serviceVersion) {
-        getKeyClient(httpClient, serviceVersion);
+        createKeyClient(httpClient, serviceVersion);
         listKeysRunner((keys) -> {
             HashMap<String, CreateKeyOptions> keysToList = keys;
             for (CreateKeyOptions key :  keysToList.values()) {
@@ -366,7 +379,7 @@ public class KeyClientTest extends KeyClientTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getTestParameters")
     public void getDeletedKey(HttpClient httpClient, KeyServiceVersion serviceVersion) {
-        getKeyClient(httpClient, serviceVersion);
+        createKeyClient(httpClient, serviceVersion);
         getDeletedKeyRunner((keyToDeleteAndGet) -> {
             assertKeyEquals(keyToDeleteAndGet, client.createKey(keyToDeleteAndGet));
             SyncPoller<DeletedKey, Void> poller = client.beginDeleteKey(keyToDeleteAndGet.getName());
@@ -384,16 +397,21 @@ public class KeyClientTest extends KeyClientTestBase {
         });
     }
 
-
     /**
      * Tests that deleted keys can be listed in the key vault.
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getTestParameters")
     public void listDeletedKeys(HttpClient httpClient, KeyServiceVersion serviceVersion) {
-        getKeyClient(httpClient, serviceVersion);
+        createKeyClient(httpClient, serviceVersion);
+
+        /*if (!interceptorManager.isPlaybackMode()) {
+            return;
+        }*/
+
         listDeletedKeysRunner((keys) -> {
             HashMap<String, CreateKeyOptions> keysToDelete = keys;
+
             for (CreateKeyOptions key : keysToDelete.values()) {
                 assertKeyEquals(key, client.createKey(key));
             }
@@ -406,10 +424,12 @@ public class KeyClientTest extends KeyClientTestBase {
                     pollResponse = poller.poll();
                 }
             }
+
             sleepInRecordMode(300000);
 
             Iterable<DeletedKey> deletedKeys = client.listDeletedKeys();
             assertTrue(deletedKeys.iterator().hasNext());
+
             for (DeletedKey deletedKey : deletedKeys) {
                 assertNotNull(deletedKey.getDeletedOn());
                 assertNotNull(deletedKey.getRecoveryId());
@@ -423,7 +443,7 @@ public class KeyClientTest extends KeyClientTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getTestParameters")
     public void listKeyVersions(HttpClient httpClient, KeyServiceVersion serviceVersion) {
-        getKeyClient(httpClient, serviceVersion);
+        createKeyClient(httpClient, serviceVersion);
         listKeyVersionsRunner((keys) -> {
             List<CreateKeyOptions> keyVersions = keys;
             String keyName = null;
@@ -441,49 +461,35 @@ public class KeyClientTest extends KeyClientTestBase {
     }
 
     /**
-     * Tests that an RSA key with a public exponent can be created in the key vault.
+     * Tests that an existing key can be released.
      */
-    @Disabled // Service issue: https://github.com/Azure/azure-sdk-for-java/issues/17382
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getTestParameters")
-    public void createRsaKeyWithPublicExponent(HttpClient httpClient, KeyServiceVersion serviceVersion) {
-        getKeyClient(httpClient, serviceVersion);
-        createRsaKeyWithPublicExponentRunner((createRsaKeyOptions) -> {
-            KeyVaultKey rsaKey = client.createRsaKey(createRsaKeyOptions);
-            assertKeyEquals(createRsaKeyOptions, rsaKey);
-            ByteBuffer wrappedArray = ByteBuffer.wrap(rsaKey.getKey().getE()); // Big-endian by default
-            assertEquals(createRsaKeyOptions.getPublicExponent(), wrappedArray.getInt());
-        });
-    }
+    public void releaseKey(HttpClient httpClient, KeyServiceVersion serviceVersion) {
+        // TODO: Remove assumption once Key Vault allows for creating exportable keys.
+        Assumptions.assumeTrue(isManagedHsmTest);
 
-    /**
-     * Tests that a key can be exported from the key vault.
-     */
-    @Disabled // Service issue: https://github.com/Azure/azure-sdk-for-java/issues/17382
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("getTestParameters")
-    public void exportKey(HttpClient httpClient, KeyServiceVersion serviceVersion) {
-        getKeyClient(httpClient, serviceVersion);
-        exportKeyRunner((createKeyOptions) -> {
-            client.createKey(createKeyOptions);
-            KeyVaultKey exportedKey = client.exportKey(createKeyOptions.getName(), "testEnvironment");
-            assertKeyEquals(createKeyOptions, exportedKey);
-        });
-    }
+        createKeyClient(httpClient, serviceVersion);
+        releaseKeyRunner((keyToRelease, attestationUrl) -> {
+            assertKeyEquals(keyToRelease,  client.createRsaKey(keyToRelease));
 
-    /**
-     * Tests that a specific key version can be exported from the key vault.
-     */
-    @Disabled // Service issue: https://github.com/Azure/azure-sdk-for-java/issues/17382
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("getTestParameters")
-    public void exportKeyVersion(HttpClient httpClient, KeyServiceVersion serviceVersion) {
-        getKeyClient(httpClient, serviceVersion);
-        exportKeyRunner((createKeyOptions) -> {
-            KeyVaultKey originalKey = client.createKey(createKeyOptions);
-            KeyVaultKey exportedKey =
-                client.exportKey(originalKey.getName(), originalKey.getProperties().getVersion(), "testEnvironment");
-            assertKeyEquals(createKeyOptions, exportedKey);
+            String target = "testAttestationToken";
+
+            if (getTestMode() != TestMode.PLAYBACK) {
+                if (!attestationUrl.endsWith("/")) {
+                    attestationUrl = attestationUrl + "/";
+                }
+
+                try {
+                    target = getAttestationToken(attestationUrl + "generate-test-token");
+                } catch (IOException e) {
+                    fail("Found error when deserializing attestation token.", e);
+                }
+            }
+
+            ReleaseKeyResult releaseKeyResult = client.releaseKey(keyToRelease.getName(), target);
+
+            assertNotNull(releaseKeyResult.getValue());
         });
     }
 

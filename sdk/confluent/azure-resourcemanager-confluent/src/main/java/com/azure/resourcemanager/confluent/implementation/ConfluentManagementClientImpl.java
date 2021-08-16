@@ -25,6 +25,7 @@ import com.azure.resourcemanager.confluent.fluent.ConfluentManagementClient;
 import com.azure.resourcemanager.confluent.fluent.MarketplaceAgreementsClient;
 import com.azure.resourcemanager.confluent.fluent.OrganizationOperationsClient;
 import com.azure.resourcemanager.confluent.fluent.OrganizationsClient;
+import com.azure.resourcemanager.confluent.fluent.ValidationsClient;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.nio.ByteBuffer;
@@ -148,6 +149,18 @@ public final class ConfluentManagementClientImpl implements ConfluentManagementC
         return this.organizations;
     }
 
+    /** The ValidationsClient object to access its operations. */
+    private final ValidationsClient validations;
+
+    /**
+     * Gets the ValidationsClient object to access its operations.
+     *
+     * @return the ValidationsClient object.
+     */
+    public ValidationsClient getValidations() {
+        return this.validations;
+    }
+
     /**
      * Initializes an instance of ConfluentManagementClient client.
      *
@@ -170,10 +183,11 @@ public final class ConfluentManagementClientImpl implements ConfluentManagementC
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2020-03-01";
+        this.apiVersion = "2021-03-01-preview";
         this.marketplaceAgreements = new MarketplaceAgreementsClientImpl(this);
         this.organizationOperations = new OrganizationOperationsClientImpl(this);
         this.organizations = new OrganizationsClientImpl(this);
+        this.validations = new ValidationsClientImpl(this);
     }
 
     /**
@@ -258,7 +272,7 @@ public final class ConfluentManagementClientImpl implements ConfluentManagementC
                         if (managementError.getCode() == null || managementError.getMessage() == null) {
                             managementError = null;
                         }
-                    } catch (IOException ioe) {
+                    } catch (IOException | RuntimeException ioe) {
                         logger.logThrowableAsWarning(ioe);
                     }
                 }
@@ -287,7 +301,7 @@ public final class ConfluentManagementClientImpl implements ConfluentManagementC
             super(null);
             this.statusCode = statusCode;
             this.httpHeaders = httpHeaders;
-            this.responseBody = responseBody.getBytes(StandardCharsets.UTF_8);
+            this.responseBody = responseBody == null ? null : responseBody.getBytes(StandardCharsets.UTF_8);
         }
 
         public int getStatusCode() {

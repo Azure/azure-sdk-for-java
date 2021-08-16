@@ -60,7 +60,7 @@ class SnippetDict:
 
 
 def re_space_snippet(snippet_list):
-    # find identation (or whitespace characters) on the left side
+    # find indentation (or whitespace characters) on the left side
     white_space = [
         re.match(WHITESPACE_EXTRACTION, line).groupdict()["leadingspace"]
         for line in snippet_list
@@ -74,12 +74,13 @@ def re_space_snippet(snippet_list):
     return [line.replace(white_space_for_replacement, "", 1) for line in snippet_list]
 
 
-def get_snippets_from_file(file):
+def get_snippets_from_file(file, verbose):
     finished_snippets = {}
     running_dict = SnippetDict()
 
     with open(file, "r", encoding="utf-8") as source:
-        print(file)
+        if verbose:
+            print(file)
         for line in source.readlines():
 
             begin = re.match(SNIPPET_BEGIN, line)
@@ -87,12 +88,14 @@ def get_snippets_from_file(file):
 
             if begin:
                 id_beginning = begin.groupdict()["id"]
-                print("beginning {}".format(id_beginning))
+                if verbose:
+                    print("beginning {}".format(id_beginning))
                 running_dict.begin_snippet(id_beginning)
             elif end:
                 id_ending = end.groupdict()["id"]
                 ending = running_dict.finalize_snippet(id_ending)
-                print("ending {}".format(id_ending))
+                if verbose:
+                    print("ending {}".format(id_ending))
                 finished_snippets[id_ending] = ending
             elif running_dict:
                 running_dict.process_line(line)
@@ -118,6 +121,14 @@ if __name__ == "__main__":
         help="The path to the directory containing our package or service. Essentially used as a scoping mechanism for the replacement of the snippets.",
         required=True,
     )
+    parser.add_argument(
+        "--verbose",
+        "-v",
+        dest="verbose",
+        help="Flag indicating if verbose, debug level, output should be printed.",
+        required=False,
+        default=False
+    )
     args = parser.parse_args()
 
     # walk the codebase, find all java files
@@ -132,7 +143,7 @@ if __name__ == "__main__":
     snippets = {}
 
     for file in snippet_files:
-        snippet_dict = get_snippets_from_file(file)
+        snippet_dict = get_snippets_from_file(file, args.verbose)
         snippets.update(snippet_dict)
 
     for file in all_files:
@@ -174,4 +185,3 @@ if __name__ == "__main__":
             with open(file, "w", encoding="utf-8") as out_file:
                 for line in amended_file:
                     out_file.write(line)
- 

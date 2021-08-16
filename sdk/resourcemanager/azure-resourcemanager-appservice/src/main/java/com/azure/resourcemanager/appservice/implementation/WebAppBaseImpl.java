@@ -33,6 +33,8 @@ import com.azure.resourcemanager.appservice.models.HostingEnvironmentProfile;
 import com.azure.resourcemanager.appservice.models.HostnameBinding;
 import com.azure.resourcemanager.appservice.models.HostnameSslState;
 import com.azure.resourcemanager.appservice.models.HostnameType;
+import com.azure.resourcemanager.appservice.models.IpFilterTag;
+import com.azure.resourcemanager.appservice.models.IpSecurityRestriction;
 import com.azure.resourcemanager.appservice.models.JavaVersion;
 import com.azure.resourcemanager.appservice.models.MSDeploy;
 import com.azure.resourcemanager.appservice.models.ManagedPipelineMode;
@@ -58,12 +60,17 @@ import com.azure.resourcemanager.appservice.models.WebSiteBase;
 import com.azure.resourcemanager.authorization.models.BuiltInRole;
 import com.azure.resourcemanager.authorization.utils.RoleAssignmentHelper;
 import com.azure.resourcemanager.msi.models.Identity;
+import com.azure.resourcemanager.resources.fluentcore.arm.models.PrivateEndpoint;
+import com.azure.resourcemanager.resources.fluentcore.arm.models.PrivateEndpointConnection;
+import com.azure.resourcemanager.resources.fluentcore.arm.models.PrivateEndpointConnectionProvisioningState;
+import com.azure.resourcemanager.resources.fluentcore.arm.models.PrivateLinkResource;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.azure.resourcemanager.resources.fluentcore.dag.FunctionalTaskItem;
 import com.azure.resourcemanager.resources.fluentcore.dag.IndexableTaskItem;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
+import com.azure.resourcemanager.appservice.fluent.models.RemotePrivateEndpointConnectionArmResourceInner;
 import reactor.core.Disposable;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -83,6 +90,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.stream.Collectors;
@@ -109,6 +117,9 @@ abstract class WebAppBaseImpl<FluentT extends WebAppBase, FluentImplT extends We
 
     protected static final String SETTING_FUNCTIONS_WORKER_RUNTIME = "FUNCTIONS_WORKER_RUNTIME";
     protected static final String SETTING_FUNCTIONS_EXTENSION_VERSION = "FUNCTIONS_EXTENSION_VERSION";
+
+    protected static final String IP_RESTRICTION_ACTION_ALLOW = "Allow";
+    protected static final String IP_RESTRICTION_ACTION_DENY = "Deny";
 
     private static final Map<AzureEnvironment, String> DNS_MAP =
         new HashMap<AzureEnvironment, String>() {
@@ -542,6 +553,14 @@ abstract class WebAppBaseImpl<FluentT extends WebAppBase, FluentImplT extends We
     }
 
     @Override
+    public List<IpSecurityRestriction> ipSecurityRules() {
+        if (this.siteConfig == null || this.siteConfig.ipSecurityRestrictions() == null) {
+            return Collections.emptyList();
+        }
+        return Collections.unmodifiableList(siteConfig.ipSecurityRestrictions());
+    }
+
+    @Override
     public OperatingSystem operatingSystem() {
         if (innerModel().kind() != null && innerModel().kind().toLowerCase(Locale.ROOT).contains("linux")) {
             return OperatingSystem.LINUX;
@@ -640,7 +659,7 @@ abstract class WebAppBaseImpl<FluentT extends WebAppBase, FluentImplT extends We
         final Disposable subscription =
             observable
                 // Do not block current thread
-                .subscribeOn(Schedulers.elastic())
+                .subscribeOn(Schedulers.boundedElastic())
                 .subscribe(
                     s -> {
                         try {
@@ -1724,6 +1743,203 @@ abstract class WebAppBaseImpl<FluentT extends WebAppBase, FluentImplT extends We
             siteConfig.withLinuxFxVersion(fxVersion);
         } else {
             siteConfig.withWindowsFxVersion(fxVersion);
+        }
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public FluentImplT withAccessFromAllNetworks() {
+        this.ensureIpSecurityRestrictions();
+        this.siteConfig.withIpSecurityRestrictions(new ArrayList<>());
+        return (FluentImplT) this;
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public FluentImplT withAccessFromNetworkSubnet(String subnetId, int priority) {
+        this.ensureIpSecurityRestrictions();
+        this.siteConfig.ipSecurityRestrictions().add(new IpSecurityRestriction()
+            .withAction(IP_RESTRICTION_ACTION_ALLOW)
+            .withPriority(priority)
+            .withTag(IpFilterTag.DEFAULT)
+            .withVnetSubnetResourceId(subnetId));
+        return (FluentImplT) this;
+    }
+
+    @Override
+    public FluentImplT withAccessFromIpAddress(String ipAddress, int priority) {
+        String ipAddressCidr = ipAddress.contains("/") ? ipAddress : ipAddress + "/32";
+        return withAccessFromIpAddressRange(ipAddressCidr, priority);
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public FluentImplT withAccessFromIpAddressRange(String ipAddressCidr, int priority) {
+        this.ensureIpSecurityRestrictions();
+        this.siteConfig.ipSecurityRestrictions().add(new IpSecurityRestriction()
+            .withAction(IP_RESTRICTION_ACTION_ALLOW)
+            .withPriority(priority)
+            .withTag(IpFilterTag.DEFAULT)
+            .withIpAddress(ipAddressCidr));
+        return (FluentImplT) this;
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public FluentImplT withAccessRule(IpSecurityRestriction ipSecurityRule) {
+        this.ensureIpSecurityRestrictions();
+        this.siteConfig.ipSecurityRestrictions().add(ipSecurityRule);
+        return (FluentImplT) this;
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public FluentImplT withoutNetworkSubnetAccess(String subnetId) {
+        if (this.siteConfig != null && this.siteConfig.ipSecurityRestrictions() != null) {
+            this.siteConfig.withIpSecurityRestrictions(this.siteConfig.ipSecurityRestrictions().stream()
+                .filter(r -> !(IP_RESTRICTION_ACTION_ALLOW.equalsIgnoreCase(r.action())
+                    && IpFilterTag.DEFAULT == r.tag()
+                    && subnetId.equalsIgnoreCase(r.vnetSubnetResourceId())))
+                .collect(Collectors.toList())
+            );
+        }
+        return (FluentImplT) this;
+    }
+
+    @Override
+    public FluentImplT withoutIpAddressAccess(String ipAddress) {
+        String ipAddressCidr = ipAddress.contains("/") ? ipAddress : ipAddress + "/32";
+        return withoutIpAddressRangeAccess(ipAddressCidr);
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public FluentImplT withoutIpAddressRangeAccess(String ipAddressCidr) {
+        if (this.siteConfig != null && this.siteConfig.ipSecurityRestrictions() != null) {
+            this.siteConfig.withIpSecurityRestrictions(this.siteConfig.ipSecurityRestrictions().stream()
+                .filter(r -> !(IP_RESTRICTION_ACTION_ALLOW.equalsIgnoreCase(r.action())
+                    && IpFilterTag.DEFAULT == r.tag()
+                    && Objects.equals(ipAddressCidr, r.ipAddress())))
+                .collect(Collectors.toList())
+            );
+        }
+        return (FluentImplT) this;
+    }
+
+    @Override
+    public Map<String, String> getSiteAppSettings() {
+        return getSiteAppSettingsAsync().block();
+    }
+
+    @Override
+    public Mono<Map<String, String>> getSiteAppSettingsAsync() {
+        return kuduClient.settings();
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public FluentImplT withoutAccessRule(IpSecurityRestriction ipSecurityRule) {
+        if (this.siteConfig != null && this.siteConfig.ipSecurityRestrictions() != null) {
+            this.siteConfig.withIpSecurityRestrictions(this.siteConfig.ipSecurityRestrictions().stream()
+                .filter(r -> !(Objects.equals(r.action(), ipSecurityRule.action())
+                    && Objects.equals(r.tag(), ipSecurityRule.tag())
+                    && (Objects.equals(r.ipAddress(), ipSecurityRule.ipAddress())
+                    || Objects.equals(r.vnetSubnetResourceId(), ipSecurityRule.vnetSubnetResourceId()))))
+                .collect(Collectors.toList())
+            );
+        }
+        return (FluentImplT) this;
+    }
+
+    private void ensureIpSecurityRestrictions() {
+        if (this.siteConfig == null) {
+            this.siteConfig = new SiteConfigResourceInner();
+        }
+        if (this.siteConfig.ipSecurityRestrictions() == null) {
+            this.siteConfig.withIpSecurityRestrictions(new ArrayList<>());
+        }
+    }
+
+    protected static final class PrivateLinkResourceImpl implements PrivateLinkResource {
+        private final com.azure.resourcemanager.appservice.models.PrivateLinkResource innerModel;
+
+        protected PrivateLinkResourceImpl(com.azure.resourcemanager.appservice.models.PrivateLinkResource innerModel) {
+            this.innerModel = innerModel;
+        }
+
+        @Override
+        public String groupId() {
+            return innerModel.properties().groupId();
+        }
+
+        @Override
+        public List<String> requiredMemberNames() {
+            return Collections.unmodifiableList(innerModel.properties().requiredMembers());
+        }
+
+        @Override
+        public List<String> requiredDnsZoneNames() {
+            return Collections.unmodifiableList(innerModel.properties().requiredZoneNames());
+        }
+    }
+
+    protected static final class PrivateEndpointConnectionImpl implements PrivateEndpointConnection {
+        private final RemotePrivateEndpointConnectionArmResourceInner innerModel;
+
+        private final PrivateEndpoint privateEndpoint;
+        private final com.azure.resourcemanager.resources.fluentcore.arm.models.PrivateLinkServiceConnectionState
+            privateLinkServiceConnectionState;
+        private final PrivateEndpointConnectionProvisioningState provisioningState;
+
+        protected PrivateEndpointConnectionImpl(RemotePrivateEndpointConnectionArmResourceInner innerModel) {
+            this.innerModel = innerModel;
+
+            this.privateEndpoint = innerModel.privateEndpoint() == null
+                ? null
+                : new PrivateEndpoint(innerModel.privateEndpoint().id());
+            this.privateLinkServiceConnectionState = innerModel.privateLinkServiceConnectionState() == null
+                ? null
+                : new com.azure.resourcemanager.resources.fluentcore.arm.models.PrivateLinkServiceConnectionState(
+                innerModel.privateLinkServiceConnectionState().status() == null
+                    ? null
+                    : com.azure.resourcemanager.resources.fluentcore.arm.models.PrivateEndpointServiceConnectionStatus
+                    .fromString(innerModel.privateLinkServiceConnectionState().status()),
+                innerModel.privateLinkServiceConnectionState().description(),
+                innerModel.privateLinkServiceConnectionState().actionsRequired());
+            this.provisioningState = innerModel.provisioningState() == null
+                ? null
+                : PrivateEndpointConnectionProvisioningState.fromString(innerModel.provisioningState());
+        }
+
+        @Override
+        public String id() {
+            return innerModel.id();
+        }
+
+        @Override
+        public String name() {
+            return innerModel.name();
+        }
+
+        @Override
+        public String type() {
+            return innerModel.type();
+        }
+
+        @Override
+        public PrivateEndpoint privateEndpoint() {
+            return privateEndpoint;
+        }
+
+        @Override
+        public com.azure.resourcemanager.resources.fluentcore.arm.models.PrivateLinkServiceConnectionState
+            privateLinkServiceConnectionState() {
+            return privateLinkServiceConnectionState;
+        }
+
+        @Override
+        public PrivateEndpointConnectionProvisioningState provisioningState() {
+            return provisioningState;
         }
     }
 }

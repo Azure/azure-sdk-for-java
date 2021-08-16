@@ -29,7 +29,7 @@ public interface LocalNetworkGatewaysClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param localNetworkGatewayName The name of the local network gateway.
-     * @param parameters A common class for general resource information.
+     * @param parameters Parameters supplied to the create or update local network gateway operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -44,7 +44,7 @@ public interface LocalNetworkGatewaysClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param localNetworkGatewayName The name of the local network gateway.
-     * @param parameters A common class for general resource information.
+     * @param parameters Parameters supplied to the create or update local network gateway operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -59,7 +59,7 @@ public interface LocalNetworkGatewaysClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param localNetworkGatewayName The name of the local network gateway.
-     * @param parameters A common class for general resource information.
+     * @param parameters Parameters supplied to the create or update local network gateway operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -74,7 +74,7 @@ public interface LocalNetworkGatewaysClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param localNetworkGatewayName The name of the local network gateway.
-     * @param parameters A common class for general resource information.
+     * @param parameters Parameters supplied to the create or update local network gateway operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -90,7 +90,7 @@ public interface LocalNetworkGatewaysClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param localNetworkGatewayName The name of the local network gateway.
-     * @param parameters A common class for general resource information.
+     * @param parameters Parameters supplied to the create or update local network gateway operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -105,7 +105,7 @@ public interface LocalNetworkGatewaysClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param localNetworkGatewayName The name of the local network gateway.
-     * @param parameters A common class for general resource information.
+     * @param parameters Parameters supplied to the create or update local network gateway operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -120,7 +120,7 @@ public interface LocalNetworkGatewaysClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param localNetworkGatewayName The name of the local network gateway.
-     * @param parameters A common class for general resource information.
+     * @param parameters Parameters supplied to the create or update local network gateway operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.

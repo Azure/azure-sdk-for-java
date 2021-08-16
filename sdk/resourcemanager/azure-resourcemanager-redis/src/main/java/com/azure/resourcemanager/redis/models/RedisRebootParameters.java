@@ -8,6 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
 /** Specifies which Redis node(s) to reboot. */
 @Fluent
@@ -18,7 +19,7 @@ public final class RedisRebootParameters {
      * Which Redis node(s) to reboot. Depending on this value data loss is
      * possible.
      */
-    @JsonProperty(value = "rebootType", required = true)
+    @JsonProperty(value = "rebootType")
     private RebootType rebootType;
 
     /*
@@ -26,6 +27,13 @@ public final class RedisRebootParameters {
      */
     @JsonProperty(value = "shardId")
     private Integer shardId;
+
+    /*
+     * A list of redis instances to reboot, specified by per-instance SSL ports
+     * or non-SSL ports.
+     */
+    @JsonProperty(value = "ports")
+    private List<Integer> ports;
 
     /**
      * Get the rebootType property: Which Redis node(s) to reboot. Depending on this value data loss is possible.
@@ -68,16 +76,32 @@ public final class RedisRebootParameters {
     }
 
     /**
+     * Get the ports property: A list of redis instances to reboot, specified by per-instance SSL ports or non-SSL
+     * ports.
+     *
+     * @return the ports value.
+     */
+    public List<Integer> ports() {
+        return this.ports;
+    }
+
+    /**
+     * Set the ports property: A list of redis instances to reboot, specified by per-instance SSL ports or non-SSL
+     * ports.
+     *
+     * @param ports the ports value to set.
+     * @return the RedisRebootParameters object itself.
+     */
+    public RedisRebootParameters withPorts(List<Integer> ports) {
+        this.ports = ports;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (rebootType() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property rebootType in model RedisRebootParameters"));
-        }
     }
 }

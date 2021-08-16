@@ -124,6 +124,7 @@ class VirtualMachineMsiHandler extends RoleAssignmentHelper {
      * @return VirtualMachineMsiHandler
      */
     VirtualMachineMsiHandler withoutExternalManagedServiceIdentity(String identityId) {
+        // mark as to be removed
         this.userAssignedIdentities.put(identityId, null);
         return this;
     }

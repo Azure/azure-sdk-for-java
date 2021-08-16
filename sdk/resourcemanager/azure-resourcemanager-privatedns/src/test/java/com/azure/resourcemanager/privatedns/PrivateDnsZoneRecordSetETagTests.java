@@ -27,6 +27,9 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 
 public class PrivateDnsZoneRecordSetETagTests extends ResourceManagerTestBase {
@@ -63,7 +66,40 @@ public class PrivateDnsZoneRecordSetETagTests extends ResourceManagerTestBase {
 
     @Override
     protected void cleanUpResources() {
-        resourceManager.resourceGroups().deleteByName(rgName);
+        resourceManager.resourceGroups().beginDeleteByName(rgName);
+    }
+
+    @Test
+    public void canUpdateZone() {
+        final Region region = Region.US_EAST;
+        final String topLevelDomain = "www.contoso" + generateRandomResourceName("z", 10) + ".com";
+
+        PrivateDnsZone privateDnsZone =
+            privateZoneManager.privateZones().define(topLevelDomain)
+                .withNewResourceGroup(rgName, region)
+                .withTag("key1", "value1")
+                .create();
+
+        privateDnsZone.update()
+            .withoutTag("key1")
+            .withTag("key2", "value2")
+            .withTag("key3", "value3")
+            .apply();
+
+        privateDnsZone.refresh();
+        Assertions.assertEquals(2, privateDnsZone.tags().size());
+        Assertions.assertEquals(new HashSet<>(Arrays.asList("key2", "key3")), privateDnsZone.tags().keySet());
+        Assertions.assertEquals(Arrays.asList("value2", "value3"), new ArrayList<>(privateDnsZone.tags().values()));
+
+        privateDnsZone.update()
+            .defineARecordSet("www")
+                .withIPv4Address("23.96.104.40")
+                .withIPv4Address("24.97.105.41")
+                .withTimeToLive(7200)
+                .withETagCheck()
+                .attach()
+            .apply();
+        Assertions.assertEquals(1, TestUtilities.getSize(privateDnsZone.aRecordSets().list()));
     }
 
     @Test
@@ -95,7 +131,10 @@ public class PrivateDnsZoneRecordSetETagTests extends ResourceManagerTestBase {
             privateZoneManager.privateZones().define(topLevelDomain).withNewResourceGroup(rgName, region).withETagCheck().create();
         Assertions.assertNotNull(privateDnsZone.etag());
 
-        Runnable runnable = () -> privateDnsZone.update().withETagCheck(privateDnsZone.etag() + "-foo").apply();
+        Runnable runnable = () -> privateDnsZone.update()
+            .withTag("k1", "v1")
+            .withETagCheck(privateDnsZone.etag() + "-foo")
+            .apply();
         ensureETagExceptionIsThrown(runnable);
         privateDnsZone.update().withETagCheck(privateDnsZone.etag()).apply();
     }

@@ -4,45 +4,59 @@
 package com.azure.spring.integration.eventhub.converter;
 
 import com.azure.messaging.eventhubs.EventData;
-import com.azure.spring.integration.core.AzureHeaders;
+import com.azure.spring.integration.core.EventHubHeaders;
 import com.azure.spring.integration.core.converter.AzureMessageConverter;
-import com.azure.spring.integration.test.support.AzureMessageConverterTest;
-import org.junit.Test;
+import com.azure.spring.integration.test.support.UnaryAzureMessageConverterTest;
+import org.junit.jupiter.api.Test;
+import org.springframework.integration.support.MessageBuilder;
+import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageHeaders;
-import org.springframework.messaging.support.NativeMessageHeaderAccessor;
 import org.springframework.util.LinkedMultiValueMap;
 
+import java.nio.charset.StandardCharsets;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertSame;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.springframework.messaging.support.NativeMessageHeaderAccessor.NATIVE_HEADERS;
 
-public class EventHubMessageConverterTest extends AzureMessageConverterTest<EventData> {
+public class EventHubMessageConverterTest extends UnaryAzureMessageConverterTest<EventData> {
 
     private static final String EVENT_DATA = "event-hub-test-string";
-    private static final int PARTITION_ID = 1;
-    private static final String NATIVE_HEADERS_SPAN_ID_KEY = "spanId";
-    private static final List<String> NATIVE_HEADERS_SPAN_ID_VALUE = Arrays.asList("spanId-1", "spanId-2");
-    private static final String NATIVE_HEADERS_SPAN_TRACE_ID_KEY = "spanTraceId";
-    private static final List<String> NATIVE_HEADERS_SPAN_TRACE_ID_VALUE = Arrays
-            .asList("spanTraceId-1", "spanTraceId-2");
+
+    private static final String PARTITION_KEY = "abc";
+    private static final Instant ENQUEUED_TIME = Instant.now().minus(1, ChronoUnit.DAYS);
+    private static final Long OFFSET = 1234567890L;
+    private static final Long SEQUENCE_NUMBER = 123456L;
 
     @Override
-    protected EventData getInstance() {
-        return new EventData(this.payload.getBytes());
-    }
-
-    @Override
-    public AzureMessageConverter<EventData> getConverter() {
+    public AzureMessageConverter<EventData, EventData> getConverter() {
         return new EventHubMessageConverter();
     }
 
     @Override
     protected Class<EventData> getTargetClass() {
         return EventData.class;
+    }
+
+    @Override
+    protected void assertMessageHeadersEqual(EventData azureMessage, Message<?> message) {
+        assertEquals(azureMessage.getProperties().get(headerProperties), message.getHeaders().get(headerProperties));
+    }
+
+    @Test
+    public void testNonUtf8DecodingPayload() {
+        String utf16Payload = new String(payload.getBytes(), StandardCharsets.UTF_16);
+        Message<String> message = MessageBuilder.withPayload(utf16Payload).build();
+        EventData azureMessage = getConverter().fromMessage(message, getTargetClass());
+        assertEquals(utf16Payload, azureMessage.getBodyAsString());
+        assertNotEquals(payload, azureMessage.getBodyAsString());
     }
 
     private static class MyEventHubMessageConverter extends EventHubMessageConverter {
@@ -54,58 +68,98 @@ public class EventHubMessageConverterTest extends AzureMessageConverterTest<Even
         public Map<String, Object> buildCustomHeaders(EventData azureMessage) {
             return super.buildCustomHeaders(azureMessage);
         }
+
+        @Override
+        protected String toJson(Object value) {
+            return super.toJson(value);
+        }
     }
 
     @Test
-    public void testSetCustomHeadersWithCommon() {
-        EventData eventData = new EventData(EVENT_DATA);
+    public void testConvertCustomHeadersToEventData() {
         Map<String, Object> headerMap = new HashMap<>();
-        headerMap.put(AzureHeaders.RAW_PARTITION_ID, PARTITION_ID);
+        headerMap.put("fake-header", "fake-value");
         MessageHeaders headers = new MessageHeaders(headerMap);
 
-        MyEventHubMessageConverter convert = new MyEventHubMessageConverter();
-        convert.setCustomHeaders(headers, eventData);
-        assertEquals(Integer.parseInt(String.valueOf(eventData.getProperties()
-                .get(AzureHeaders.RAW_PARTITION_ID))), PARTITION_ID);
+        EventData eventData = new EventData(EVENT_DATA);
+
+        MyEventHubMessageConverter converter = new MyEventHubMessageConverter();
+        converter.setCustomHeaders(headers, eventData);
+
+        assertEquals(eventData.getProperties().get("fake-header"), "fake-value");
         assertEquals(eventData.getBodyAsString(), EVENT_DATA);
     }
 
     @Test
-    public void testSetCustomHeadersWithNativesHeader() {
-        EventData eventData = new EventData(EVENT_DATA);
+    public void testConvertNativeHeadersToEventData() {
         Map<String, Object> headerMap = new HashMap<>();
-        LinkedMultiValueMap<String, String> linkedMultiValueMap = new LinkedMultiValueMap<>();
-        linkedMultiValueMap.put(NATIVE_HEADERS_SPAN_ID_KEY, NATIVE_HEADERS_SPAN_ID_VALUE);
-        linkedMultiValueMap.put(NATIVE_HEADERS_SPAN_TRACE_ID_KEY, NATIVE_HEADERS_SPAN_TRACE_ID_VALUE);
-        headerMap.put(NativeMessageHeaderAccessor.NATIVE_HEADERS, linkedMultiValueMap);
+        LinkedMultiValueMap<String, String> nativeHeaders = new LinkedMultiValueMap<>();
+        nativeHeaders.put("spanId", Arrays.asList("spanId-1", "spanId-2"));
+        nativeHeaders.put("spanTraceId", Arrays.asList("spanTraceId-1", "spanTraceId-2"));
+        headerMap.put(NATIVE_HEADERS, nativeHeaders);
         MessageHeaders headers = new MessageHeaders(headerMap);
 
-        MyEventHubMessageConverter convert = new MyEventHubMessageConverter();
-        convert.setCustomHeaders(headers, eventData);
-        assertSame(eventData.getProperties().get(NativeMessageHeaderAccessor.NATIVE_HEADERS).getClass(),
-                String.class);
+        EventData eventData = new EventData(EVENT_DATA);
+
+        MyEventHubMessageConverter converter = new MyEventHubMessageConverter();
+        converter.setCustomHeaders(headers, eventData);
+
+        assertEquals(eventData.getProperties().get(NATIVE_HEADERS).getClass(), String.class);
+        assertEquals(eventData.getProperties().get(NATIVE_HEADERS), converter.toJson(nativeHeaders));
     }
 
     @Test
-    public void testBuildCustomHeadersWithCommon() {
+    public void testCustomHeadersFromEventData() {
         EventData eventData = new EventData(EVENT_DATA);
-        eventData.getProperties().put(AzureHeaders.RAW_PARTITION_ID, PARTITION_ID);
-        MyEventHubMessageConverter convert = new MyEventHubMessageConverter();
-        Map<String, Object> headerHeadersMap = convert.buildCustomHeaders(eventData);
-        assertEquals(headerHeadersMap.get(AzureHeaders.RAW_PARTITION_ID), PARTITION_ID);
+        eventData.getProperties().put("fake-header", "fake-value");
+
+        MyEventHubMessageConverter converter = new MyEventHubMessageConverter();
+        Map<String, Object> headerHeadersMap = converter.buildCustomHeaders(eventData);
+        assertEquals(headerHeadersMap.get("fake-header"), "fake-value");
         assertEquals(eventData.getBodyAsString(), EVENT_DATA);
     }
 
     @Test
-    public void testBuildCustomHeadersWithNativeHeaders() {
+    public void testNativeHeadersFromEventData() {
         EventData eventData = new EventData(EVENT_DATA);
-        String nativeHeadersString = "{\"spanId\":[\"spanId-1\", \"spanId-2\"],"
-            + "\"spanTraceId\":[\"spanTraceId-1\", \"spanTraceId-2\"]}";
-        eventData.getProperties().put(NativeMessageHeaderAccessor.NATIVE_HEADERS, nativeHeadersString);
+        String nativeHeadersString = "{\"spanId\":[\"spanId-1\", \"spanId-2\"],\"spanTraceId\":[\"spanTraceId-1\", \"spanTraceId-2\"]}";
+        eventData.getProperties().put(NATIVE_HEADERS, nativeHeadersString);
 
-        MyEventHubMessageConverter convert = new MyEventHubMessageConverter();
-        Map<String, Object> headerHeadersMap = convert.buildCustomHeaders(eventData);
-        assertSame(headerHeadersMap.get(NativeMessageHeaderAccessor.NATIVE_HEADERS).getClass(),
-                LinkedMultiValueMap.class);
+        MyEventHubMessageConverter converter = new MyEventHubMessageConverter();
+        Map<String, Object> headerHeadersMap = converter.buildCustomHeaders(eventData);
+        assertEquals(headerHeadersMap.get(NATIVE_HEADERS).getClass(), LinkedMultiValueMap.class);
+    }
+
+    @Test
+    public void testSystemPropertiesScreenedOut() {
+        Map<String, Object> headerMap = new HashMap<>();
+        headerMap.put(EventHubHeaders.PARTITION_KEY, PARTITION_KEY);
+        headerMap.put(EventHubHeaders.ENQUEUED_TIME, ENQUEUED_TIME);
+        headerMap.put(EventHubHeaders.OFFSET, OFFSET);
+        headerMap.put(EventHubHeaders.SEQUENCE_NUMBER, SEQUENCE_NUMBER);
+        MessageHeaders headers = new MessageHeaders(headerMap);
+
+        EventData eventData = new EventData(EVENT_DATA);
+
+        MyEventHubMessageConverter converter = new MyEventHubMessageConverter();
+        converter.setCustomHeaders(headers, eventData);
+
+        assertFalse(eventData.getProperties().containsKey(EventHubHeaders.PARTITION_KEY));
+        assertFalse(eventData.getProperties().containsKey(EventHubHeaders.ENQUEUED_TIME));
+        assertFalse(eventData.getProperties().containsKey(EventHubHeaders.OFFSET));
+        assertFalse(eventData.getProperties().containsKey(EventHubHeaders.SEQUENCE_NUMBER));
+    }
+
+    @Test
+    public void testSystemPropertiesConvertedFromEventData() {
+        EventData eventData = new EventData(EVENT_DATA);
+
+        MyEventHubMessageConverter converter = new MyEventHubMessageConverter();
+        Map<String, Object> headerHeadersMap = converter.buildCustomHeaders(eventData);
+
+        assertTrue(headerHeadersMap.containsKey(EventHubHeaders.ENQUEUED_TIME));
+        assertTrue(headerHeadersMap.containsKey(EventHubHeaders.OFFSET));
+        assertTrue(headerHeadersMap.containsKey(EventHubHeaders.SEQUENCE_NUMBER));
+        assertTrue(headerHeadersMap.containsKey(EventHubHeaders.PARTITION_KEY));
     }
 }

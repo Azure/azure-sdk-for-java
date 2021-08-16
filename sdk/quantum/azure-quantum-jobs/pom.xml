@@ -13,7 +13,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-quantum-jobs</artifactId>
-  <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-quantum-jobs;current} -->
+  <version>1.0.0-beta.2</version> <!-- {x-version-update;com.azure:azure-quantum-jobs;current} -->
 
   <name>Microsoft Azure client library for Azure Quantum service</name>
   <description>This package contains the Microsoft Azure Quantum SDK.</description>
@@ -42,12 +42,12 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.12.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+      <version>1.19.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-netty</artifactId>
-      <version>1.7.1</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
+      <version>1.10.2</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
     </dependency>
 
 
@@ -56,25 +56,25 @@
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-params</artifactId>
-      <version>5.6.3</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-params;external_dependency} -->
+      <version>5.7.2</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-params;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-test</artifactId>
-      <version>1.5.2</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
+      <version>1.7.0</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.2.2</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <version>1.3.5</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-blob</artifactId>
-      <version>12.10.0</version> <!-- {x-version-update;com.azure:azure-storage-blob;dependency} -->
+      <version>12.13.0</version> <!-- {x-version-update;com.azure:azure-storage-blob;dependency} -->
 
       <scope>test</scope>
     </dependency>

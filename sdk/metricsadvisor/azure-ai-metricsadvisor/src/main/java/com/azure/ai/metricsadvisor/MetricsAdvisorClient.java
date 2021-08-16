@@ -9,7 +9,7 @@ import com.azure.ai.metricsadvisor.models.AnomalyIncident;
 import com.azure.ai.metricsadvisor.models.DataPointAnomaly;
 import com.azure.ai.metricsadvisor.models.DimensionKey;
 import com.azure.ai.metricsadvisor.models.EnrichmentStatus;
-import com.azure.ai.metricsadvisor.models.ErrorCodeException;
+import com.azure.ai.metricsadvisor.models.MetricsAdvisorResponseException;
 import com.azure.ai.metricsadvisor.models.IncidentRootCause;
 import com.azure.ai.metricsadvisor.models.ListAlertOptions;
 import com.azure.ai.metricsadvisor.models.ListAnomaliesAlertedOptions;
@@ -44,7 +44,7 @@ import java.util.List;
  * @see MetricsAdvisorClientBuilder
  */
 @ServiceClient(builder = MetricsAdvisorClientBuilder.class)
-public class MetricsAdvisorClient {
+public final class MetricsAdvisorClient {
 
     private final MetricsAdvisorAsyncClient client;
 
@@ -70,7 +70,7 @@ public class MetricsAdvisorClient {
      * @param activeSince the start time for querying series ingested after this time.
      * @return A {@link PagedIterable} of the {@link MetricSeriesDefinition metric series definitions}.
      * @throws IllegalArgumentException thrown if {@code metricId} fail the UUID format validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws NullPointerException thrown if the {@code metricId} or {@code activeSince}
      * is null.
      */
@@ -93,7 +93,7 @@ public class MetricsAdvisorClient {
      *
      * @return A {@link PagedIterable} of the {@link MetricSeriesDefinition metric series definitions}.
      * @throws IllegalArgumentException thrown if {@code metricId} fail the UUID format validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws NullPointerException thrown if the {@code metricId} or {@code activeSince}
      * is null.
      */
@@ -169,7 +169,7 @@ public class MetricsAdvisorClient {
      * @param endTime The end time for querying the time series data.
      * @return the list of enrichment status's for the specified metric.
      * @throws IllegalArgumentException thrown if {@code metricId} fail the UUID format validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws NullPointerException thrown if {@code metricId}, {@code startTime} and {@code endTime}
      * is null.
      */
@@ -193,7 +193,7 @@ public class MetricsAdvisorClient {
      *
      * @return the list of enrichment status's for the specified metric.
      * @throws IllegalArgumentException thrown if {@code metricId} fail the UUID format validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws NullPointerException thrown if {@code metricId}, {@code startTime} and {@code endTime}
      * is null.
      */
@@ -210,11 +210,11 @@ public class MetricsAdvisorClient {
      * a detection configuration.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.MetricsAdvisorClient.listMetricEnrichedSeriesData#List-String-OffsetDateTime-OffsetDateTime}
+     * {@codesnippet com.azure.ai.metricsadvisor.MetricsAdvisorClient.listMetricEnrichedSeriesData#String-List-OffsetDateTime-OffsetDateTime}
      *
-     * @param seriesKeys The time series key list, each key identifies a specific time series.
      * @param detectionConfigurationId The id of the configuration used to enrich the time series
      *     identified by the keys in {@code seriesKeys}.
+     * @param seriesKeys The time series key list, each key identifies a specific time series.
      * @param startTime The start time.
      * @param endTime The end time.
      * @return The enriched time series.
@@ -224,12 +224,12 @@ public class MetricsAdvisorClient {
      *     or {@code startTime} or {@code endTime} is null.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<MetricEnrichedSeriesData> listMetricEnrichedSeriesData(List<DimensionKey> seriesKeys,
-                                                                                String detectionConfigurationId,
+    public PagedIterable<MetricEnrichedSeriesData> listMetricEnrichedSeriesData(String detectionConfigurationId,
+                                                                                List<DimensionKey> seriesKeys,
                                                                                 OffsetDateTime startTime,
                                                                                 OffsetDateTime endTime) {
-        return listMetricEnrichedSeriesData(seriesKeys,
-            detectionConfigurationId,
+        return listMetricEnrichedSeriesData(detectionConfigurationId,
+            seriesKeys,
             startTime,
             endTime,
             Context.NONE);
@@ -240,11 +240,11 @@ public class MetricsAdvisorClient {
      * a detection configuration.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.MetricsAdvisorClient.listMetricEnrichedSeriesData#List-String-OffsetDateTime-OffsetDateTime-Context}
+     * {@codesnippet com.azure.ai.metricsadvisor.MetricsAdvisorClient.listMetricEnrichedSeriesData#String-List-OffsetDateTime-OffsetDateTime-Context}
      *
-     * @param seriesKeys The time series key list, each key identifies a specific time series.
      * @param detectionConfigurationId The id of the configuration used to enrich the time series
      *     identified by the keys in {@code seriesKeys}.
+     * @param seriesKeys The time series key list, each key identifies a specific time series.
      * @param startTime The start time of the time range within which the enriched data is returned.
      * @param endTime The end time of the time range within which the enriched data is returned.
      * @param context Additional context that is passed through the Http pipeline during the service call.
@@ -256,13 +256,13 @@ public class MetricsAdvisorClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MetricEnrichedSeriesData> listMetricEnrichedSeriesData(
-        List<DimensionKey> seriesKeys,
         String detectionConfigurationId,
+        List<DimensionKey> seriesKeys,
         OffsetDateTime startTime,
         OffsetDateTime endTime,
         Context context) {
-        return new PagedIterable<>(client.listMetricEnrichedSeriesData(seriesKeys,
-            detectionConfigurationId,
+        return new PagedIterable<>(client.listMetricEnrichedSeriesData(detectionConfigurationId,
+            seriesKeys,
             startTime,
             endTime,
             context == null ? Context.NONE : context));
@@ -377,7 +377,7 @@ public class MetricsAdvisorClient {
      *
      * @return the list of root causes for that incident.
      * @throws IllegalArgumentException thrown if {@code detectionConfigurationId} fail the UUID format validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws NullPointerException thrown if the {@code detectionConfigurationId} or {@code incidentId} is null.
      **/
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -399,7 +399,7 @@ public class MetricsAdvisorClient {
      *
      * @return the list of root causes for that incident.
      * @throws IllegalArgumentException thrown if {@code detectionConfigurationId} fail the UUID format validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws NullPointerException thrown if the {@code detectionConfigurationId} or {@code incidentId} is null.
      **/
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -419,7 +419,7 @@ public class MetricsAdvisorClient {
      *
      * @return the list of root causes for that anomalyIncident.
      * @throws IllegalArgumentException thrown if {@code detectionConfigurationId} fail the UUID format validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws NullPointerException thrown if the {@code detectionConfigurationId} or {@code incidentId} is null.
      **/
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -578,11 +578,10 @@ public class MetricsAdvisorClient {
      * Fetch the incidents in an alert.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.MetricsAdvisorClient.listIncidentsForAlert#String-String-ListIncidentsAlertedOptions}
+     * {@codesnippet com.azure.ai.metricsadvisor.MetricsAdvisorClient.listIncidentsForAlert#String-String}
      *
      * @param alertConfigurationId The anomaly alert configuration id.
      * @param alertId The alert id.
-     * @param options The additional parameters.
      *
      * @return The incidents.
      * @throws IllegalArgumentException thrown if {@code alertConfigurationId} or {@code alertId} does not
@@ -592,9 +591,11 @@ public class MetricsAdvisorClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AnomalyIncident> listIncidentsForAlert(
         String alertConfigurationId,
-        String alertId,
-        ListIncidentsAlertedOptions options) {
-        return listIncidentsForAlert(alertConfigurationId, alertId, options, Context.NONE);
+        String alertId) {
+        return this.listIncidentsForAlert(alertConfigurationId,
+            alertId,
+            null,
+            Context.NONE);
     }
 
     /**
@@ -628,7 +629,7 @@ public class MetricsAdvisorClient {
      * Create a new metric feedback.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.MetricsAdvisorClient.addFeeddback#String-MetricFeedback}
+     * {@codesnippet com.azure.ai.metricsadvisor.MetricsAdvisorClient.addFeedback#String-MetricFeedback}
      *
      * @param metricId the unique id for which the feedback needs to be submitted.
      * @param metricFeedback the actual metric feedback.
@@ -638,7 +639,7 @@ public class MetricsAdvisorClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MetricFeedback addFeedback(String metricId, MetricFeedback metricFeedback) {
-        return createMetricFeedbackWithResponse(metricId, metricFeedback, Context.NONE).getValue();
+        return addFeedbackWithResponse(metricId, metricFeedback, Context.NONE).getValue();
     }
 
     /**
@@ -655,8 +656,8 @@ public class MetricsAdvisorClient {
      * @throws NullPointerException If {@code metricId}, {@code metricFeedback.dimensionFilter} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<MetricFeedback> createMetricFeedbackWithResponse(String metricId, MetricFeedback metricFeedback,
-        Context context) {
+    public Response<MetricFeedback> addFeedbackWithResponse(String metricId, MetricFeedback metricFeedback,
+                                                            Context context) {
         return client.addFeedbackWithResponse(metricId, metricFeedback, context).block();
     }
 
@@ -706,7 +707,7 @@ public class MetricsAdvisorClient {
      * @return A {@link PagedIterable} containing information of all the {@link MetricFeedback metric feedbacks}
      * in the account.
      * @throws IllegalArgumentException thrown if {@code metricId} fail the UUID format validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws NullPointerException thrown if the {@code metricId} is null.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -729,7 +730,7 @@ public class MetricsAdvisorClient {
      * @return A {@link PagedIterable} containing information of all the {@link MetricFeedback metric feedbacks}
      * in the account.
      * @throws IllegalArgumentException thrown if {@code metricId} fail the UUID format validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws NullPointerException thrown if the {@code metricId} is null.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -751,7 +752,7 @@ public class MetricsAdvisorClient {
      *
      * @return the {@link PagedIterable} of the dimension values for that metric.
      * @throws IllegalArgumentException thrown if {@code metricId} fail the UUID format validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws NullPointerException thrown if the {@code metricId} or {@code dimensionName} is null.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -774,7 +775,7 @@ public class MetricsAdvisorClient {
      *
      * @return the {@link PagedIterable} of the dimension values for that metric.
      * @throws IllegalArgumentException thrown if {@code metricId} fail the UUID format validation.
-     * @throws ErrorCodeException thrown if the request is rejected by server.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws NullPointerException thrown if the {@code metricId} or {@code dimensionName} is null.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)

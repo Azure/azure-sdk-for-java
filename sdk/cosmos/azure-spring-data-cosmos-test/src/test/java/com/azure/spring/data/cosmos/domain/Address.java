@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.spring.data.cosmos.domain;
 
+import com.azure.spring.data.cosmos.common.TestConstants;
 import com.azure.spring.data.cosmos.core.mapping.Container;
 import com.azure.spring.data.cosmos.core.mapping.PartitionKey;
 import org.springframework.data.annotation.Id;
@@ -10,6 +11,16 @@ import java.util.Objects;
 
 @Container()
 public class Address {
+
+    public static final Address TEST_ADDRESS1_PARTITION1 = new Address(
+        TestConstants.POSTAL_CODE, TestConstants.STREET, TestConstants.CITY);
+    public static final Address TEST_ADDRESS2_PARTITION1 = new Address(
+        TestConstants.POSTAL_CODE_0, TestConstants.STREET_0, TestConstants.CITY);
+    public static final Address TEST_ADDRESS1_PARTITION2 = new Address(
+        TestConstants.POSTAL_CODE_1, TestConstants.STREET_1, TestConstants.CITY_0);
+    public static final Address TEST_ADDRESS4_PARTITION3 = new Address(
+        TestConstants.POSTAL_CODE, TestConstants.STREET_2, TestConstants.CITY_1);
+
     @Id
     String postalCode;
     String street;

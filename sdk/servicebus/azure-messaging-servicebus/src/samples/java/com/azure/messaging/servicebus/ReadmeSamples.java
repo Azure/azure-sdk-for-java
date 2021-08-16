@@ -242,4 +242,19 @@ public class ReadmeSamples {
         processorClient.start();
     }
 
+    public void connectionSharingAcrossClients() {
+        // Create shared builder.
+        ServiceBusClientBuilder sharedConnectionBuilder = new ServiceBusClientBuilder()
+            .connectionString("<< CONNECTION STRING FOR THE SERVICE BUS NAMESPACE >>");
+        // Create receiver and sender which will share the connection.
+        ServiceBusReceiverClient receiver = sharedConnectionBuilder
+            .receiver()
+            .queueName("<< QUEUE NAME >>")
+            .buildClient();
+        ServiceBusSenderClient sender = sharedConnectionBuilder
+            .sender()
+            .queueName("<< QUEUE NAME >>")
+            .buildClient();
+    }
+
 }

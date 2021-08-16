@@ -12,6 +12,7 @@
     <relativePath>../azure-spring-boot-test-parent</relativePath>
   </parent>
 
+  <groupId>com.azure.spring</groupId>
   <artifactId>azure-spring-boot-test-keyvault</artifactId>
   <version>1.0.0</version> <!-- {x-version-update;com.azure.spring:azure-spring-boot-test-keyvault;current} -->
 
@@ -19,7 +20,7 @@
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>azure-spring-boot-starter-keyvault-secrets</artifactId>
-      <version>3.2.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-boot-starter-keyvault-secrets;current} -->
+      <version>3.8.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-boot-starter-keyvault-secrets;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure.spring</groupId>
@@ -27,19 +28,9 @@
       <version>1.0.0</version> <!-- {x-version-update;com.azure.spring:azure-spring-boot-test-core;current} -->
     </dependency>
     <dependency>
-      <groupId>com.microsoft.azure</groupId>
-      <artifactId>azure</artifactId>
-      <version>1.34.0</version> <!-- {x-version-update;spring_com.microsoft.azure:azure;external_dependency} -->
-      <exclusions>
-        <exclusion>
-          <groupId>com.fasterxml.jackson.core</groupId>
-          <artifactId>jackson-core</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>com.google.code.gson</groupId>
-          <artifactId>gson</artifactId>
-        </exclusion>
-      </exclusions>
+      <groupId>com.azure.resourcemanager</groupId>
+      <artifactId>azure-resourcemanager</artifactId>
+      <version>2.7.0</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager;dependency} -->
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>

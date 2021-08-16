@@ -7,8 +7,9 @@ package com.azure.messaging.eventgrid.systemevents;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
+import java.util.Map;
 
-/** The AcsChatMessageEditedEventData model. */
+/** Schema of the Data property of an EventGridEvent for a Microsoft.Communication.ChatMessageEdited event. */
 @Fluent
 public final class AcsChatMessageEditedEventData extends AcsChatMessageEventBaseProperties {
     /*
@@ -16,6 +17,12 @@ public final class AcsChatMessageEditedEventData extends AcsChatMessageEventBase
      */
     @JsonProperty(value = "messageBody")
     private String messageBody;
+
+    /*
+     * The chat message metadata
+     */
+    @JsonProperty(value = "metadata")
+    private Map<String, String> metadata;
 
     /*
      * The time at which the message was edited
@@ -44,6 +51,26 @@ public final class AcsChatMessageEditedEventData extends AcsChatMessageEventBase
     }
 
     /**
+     * Get the metadata property: The chat message metadata.
+     *
+     * @return the metadata value.
+     */
+    public Map<String, String> getMetadata() {
+        return this.metadata;
+    }
+
+    /**
+     * Set the metadata property: The chat message metadata.
+     *
+     * @param metadata the metadata value to set.
+     * @return the AcsChatMessageEditedEventData object itself.
+     */
+    public AcsChatMessageEditedEventData setMetadata(Map<String, String> metadata) {
+        this.metadata = metadata;
+        return this;
+    }
+
+    /**
      * Get the editTime property: The time at which the message was edited.
      *
      * @return the editTime value.
@@ -60,6 +87,71 @@ public final class AcsChatMessageEditedEventData extends AcsChatMessageEventBase
      */
     public AcsChatMessageEditedEventData setEditTime(OffsetDateTime editTime) {
         this.editTime = editTime;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AcsChatMessageEditedEventData setMessageId(String messageId) {
+        super.setMessageId(messageId);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AcsChatMessageEditedEventData setSenderCommunicationIdentifier(
+            CommunicationIdentifierModel senderCommunicationIdentifier) {
+        super.setSenderCommunicationIdentifier(senderCommunicationIdentifier);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AcsChatMessageEditedEventData setSenderDisplayName(String senderDisplayName) {
+        super.setSenderDisplayName(senderDisplayName);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AcsChatMessageEditedEventData setComposeTime(OffsetDateTime composeTime) {
+        super.setComposeTime(composeTime);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AcsChatMessageEditedEventData setType(String type) {
+        super.setType(type);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AcsChatMessageEditedEventData setVersion(Long version) {
+        super.setVersion(version);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AcsChatMessageEditedEventData setRecipientCommunicationIdentifier(
+            CommunicationIdentifierModel recipientCommunicationIdentifier) {
+        super.setRecipientCommunicationIdentifier(recipientCommunicationIdentifier);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AcsChatMessageEditedEventData setTransactionId(String transactionId) {
+        super.setTransactionId(transactionId);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AcsChatMessageEditedEventData setThreadId(String threadId) {
+        super.setThreadId(threadId);
         return this;
     }
 }

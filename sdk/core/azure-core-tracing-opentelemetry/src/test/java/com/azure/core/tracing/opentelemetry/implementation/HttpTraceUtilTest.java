@@ -2,76 +2,57 @@
 // Licensed under the MIT License.
 package com.azure.core.tracing.opentelemetry.implementation;
 
-import com.azure.core.tracing.opentelemetry.OpenTelemetryTracer;
-import com.azure.core.util.Context;
 import io.opentelemetry.api.trace.Span;
 import io.opentelemetry.api.trace.StatusCode;
-import io.opentelemetry.api.trace.Tracer;
-import io.opentelemetry.context.Scope;
-import io.opentelemetry.sdk.OpenTelemetrySdk;
 import io.opentelemetry.sdk.trace.ReadableSpan;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 
-import static com.azure.core.util.tracing.Tracer.PARENT_SPAN_KEY;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
-
+/**
+ * Class to test methods of HttpTraceUtil.
+ */
 public class HttpTraceUtilTest {
 
-    private OpenTelemetryTracer openTelemetryTracer;
-    private Tracer tracer;
-    private Context tracingContext;
+    @Mock
     private Span parentSpan;
-    private Scope scope;
+
+    private AutoCloseable openMocks;
 
     @BeforeEach
-    public void setUp() {
-        openTelemetryTracer = new OpenTelemetryTracer();
-        // Get the global singleton Tracer object.
-        tracer = OpenTelemetrySdk.builder().build().getTracer("TracerSdkTest");
-        // Start user parent span.
-        parentSpan = tracer.spanBuilder(PARENT_SPAN_KEY).startSpan();
-        scope = parentSpan.makeCurrent();
-        // Add parent span to tracingContext
-        tracingContext = new Context(PARENT_SPAN_KEY, parentSpan);
+    public void setup() {
+        this.openMocks = MockitoAnnotations.openMocks(this);
     }
 
     @AfterEach
-    public void tearDown() {
-        // Clear out tracer and tracingContext objects
-        scope.close();
-        tracer = null;
-        tracingContext = null;
-        assertNull(tracer);
-        assertNull(tracingContext);
+    public void tearDown() throws Exception {
+        this.openMocks.close();
     }
 
     @Test
     public void parseUnknownStatusCode() {
         // Act
-
-        ReadableSpan span2 = (ReadableSpan) HttpTraceUtil.setSpanStatus(parentSpan, 1, null);
+        HttpTraceUtil.setSpanStatus(parentSpan, 1, null);
 
         // Assert
-        assertNotNull(span2.toSpanData());
-        assertEquals(StatusCode.UNSET, span2.toSpanData().getStatus().getStatusCode());
+        verify(parentSpan, times(1))
+            .setStatus(StatusCode.UNSET);
     }
 
     @Test
     public void parseUnauthenticatedStatusCode() {
-        //Arrange
-        final String errorMessage = "unauthenticated test user";
 
         // Act
-        ReadableSpan span2 = (ReadableSpan) HttpTraceUtil.setSpanStatus(parentSpan, 401, null);
+        HttpTraceUtil.setSpanStatus(parentSpan, 401, null);
 
         // Assert
-        assertNotNull(span2.toSpanData());
-        assertEquals(StatusCode.ERROR, span2.toSpanData().getStatus().getStatusCode());
+        verify(parentSpan, times(1))
+            .setStatus(StatusCode.ERROR, "Unauthorized");
     }
 
     @Test
@@ -80,7 +61,7 @@ public class HttpTraceUtilTest {
         ReadableSpan span2 = (ReadableSpan) HttpTraceUtil.setSpanStatus(parentSpan, 504, null);
 
         // Assert
-        assertNotNull(span2.toSpanData());
-        assertEquals(StatusCode.ERROR, span2.toSpanData().getStatus().getStatusCode());
+        verify(parentSpan, times(1))
+            .setStatus(StatusCode.ERROR, "Gateway Timeout");
     }
 }

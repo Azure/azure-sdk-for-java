@@ -3,7 +3,6 @@
 
 package com.azure.search.documents.implementation.models;
 
-import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.search.documents.util.SearchPagedResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -14,6 +13,8 @@ import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.Map;
 import java.util.Objects;
+
+import static com.azure.search.documents.implementation.util.Utility.getDefaultSerializerAdapter;
 
 /**
  * Serialization and deserialization of search page continuation token.
@@ -34,6 +35,8 @@ public final class SearchContinuationToken {
      */
     public static final String NEXT_PAGE_PARAMETERS = "nextPageParameters";
 
+    private static final ObjectMapper MAPPER = new ObjectMapper();
+
     private SearchContinuationToken() {
     }
 
@@ -51,14 +54,14 @@ public final class SearchContinuationToken {
             return null;
         }
 
-        String nextParametersString = null;
+        String nextParametersString;
         try {
-            nextParametersString = new JacksonAdapter().serialize(nextPageParameters, SerializerEncoding.JSON);
+            nextParametersString = getDefaultSerializerAdapter().serialize(nextPageParameters, SerializerEncoding.JSON);
         } catch (IOException ex) {
             throw new IllegalStateException("Failed to serialize the search request.");
         }
 
-        ObjectNode tokenJson = new ObjectMapper().createObjectNode();
+        ObjectNode tokenJson = MAPPER.createObjectNode();
         tokenJson.put(API_VERSION, apiVersion);
         tokenJson.put(NEXT_LINK, nextLink);
         tokenJson.put(NEXT_PAGE_PARAMETERS, nextParametersString);
@@ -77,12 +80,12 @@ public final class SearchContinuationToken {
     public static SearchRequest deserializeToken(String apiVersion, String continuationToken) {
         try {
             String decodedToken = new String(Base64.getDecoder().decode(continuationToken), StandardCharsets.UTF_8);
-            Map<String, String> tokenFields = new ObjectMapper().readValue(decodedToken, Map.class);
+            Map<String, String> tokenFields = MAPPER.readValue(decodedToken, Map.class);
             if (!apiVersion.equals(tokenFields.get(API_VERSION))) {
                 throw new IllegalStateException("Continuation token uses invalid apiVersion" + apiVersion);
             }
-            return new JacksonAdapter().deserialize(tokenFields.get(NEXT_PAGE_PARAMETERS),
-                SearchRequest.class, SerializerEncoding.JSON);
+            return getDefaultSerializerAdapter().deserialize(tokenFields.get(NEXT_PAGE_PARAMETERS), SearchRequest.class,
+                SerializerEncoding.JSON);
         } catch (IOException e) {
             throw new IllegalArgumentException("The continuation token is invalid. Token: " + continuationToken);
         }

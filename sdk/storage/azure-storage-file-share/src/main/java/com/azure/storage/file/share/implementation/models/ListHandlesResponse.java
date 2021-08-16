@@ -13,9 +13,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * An enumeration of handles.
- */
+/** An enumeration of handles. */
 @JacksonXmlRootElement(localName = "EnumerationResults")
 @Fluent
 public final class ListHandlesResponse {
@@ -30,19 +28,19 @@ public final class ListHandlesResponse {
     }
 
     /*
-     * The handleList property.
+     * The HandleList property.
      */
     @JsonProperty(value = "Entries")
     private EntriesWrapper handleList;
 
     /*
-     * The nextMarker property.
+     * The NextMarker property.
      */
     @JsonProperty(value = "NextMarker", required = true)
     private String nextMarker;
 
     /**
-     * Get the handleList property: The handleList property.
+     * Get the handleList property: The HandleList property.
      *
      * @return the handleList value.
      */
@@ -54,7 +52,7 @@ public final class ListHandlesResponse {
     }
 
     /**
-     * Set the handleList property: The handleList property.
+     * Set the handleList property: The HandleList property.
      *
      * @param handleList the handleList value to set.
      * @return the ListHandlesResponse object itself.
@@ -65,7 +63,7 @@ public final class ListHandlesResponse {
     }
 
     /**
-     * Get the nextMarker property: The nextMarker property.
+     * Get the nextMarker property: The NextMarker property.
      *
      * @return the nextMarker value.
      */
@@ -74,7 +72,7 @@ public final class ListHandlesResponse {
     }
 
     /**
-     * Set the nextMarker property: The nextMarker property.
+     * Set the nextMarker property: The NextMarker property.
      *
      * @param nextMarker the nextMarker value to set.
      * @return the ListHandlesResponse object itself.

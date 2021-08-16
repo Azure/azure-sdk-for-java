@@ -1,0 +1,39 @@
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+
+trigger:
+  branches:
+    include:
+      - main
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/healthcareapis/ci.yml
+      - sdk/healthcareapis/azure-resourcemanager-healthcareapis/
+    exclude:
+      - sdk/healthcareapis/pom.xml
+      - sdk/healthcareapis/azure-resourcemanager-healthcareapis/pom.xml
+
+pr:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/healthcareapis/ci.yml
+      - sdk/healthcareapis/azure-resourcemanager-healthcareapis/
+    exclude:
+      - sdk/healthcareapis/pom.xml
+      - sdk/healthcareapis/azure-resourcemanager-healthcareapis/pom.xml
+
+extends:
+  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: healthcareapis
+    Artifacts:
+      - name: azure-resourcemanager-healthcareapis
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagerhealthcareapis

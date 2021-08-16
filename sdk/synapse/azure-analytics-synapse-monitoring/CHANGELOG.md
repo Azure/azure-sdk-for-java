@@ -1,5 +1,17 @@
-## 1.0.0-beta.2 (Unreleased)
+# Release History
 
+## 1.0.0-beta.4 (2021-08-10)
+- Update to 2020-12-01 API version
+
+## 1.0.0-beta.3 (2021-04-06)
+
+### Dependency Updates
+- Update azure-core to 1.15.0
+
+## 1.0.0-beta.2 (2021-02-09)
+
+- Support specifying the service API version. (AutoRest update)
+- Send missing "Accept" request headers
 
 ## 1.0.0-beta.1 (2020-12-15)
 

@@ -31,6 +31,9 @@ public final class WorkspaceSkuNameEnum extends ExpandableStringEnum<WorkspaceSk
     /** Static value CapacityReservation for WorkspaceSkuNameEnum. */
     public static final WorkspaceSkuNameEnum CAPACITY_RESERVATION = fromString("CapacityReservation");
 
+    /** Static value LACluster for WorkspaceSkuNameEnum. */
+    public static final WorkspaceSkuNameEnum LACLUSTER = fromString("LACluster");
+
     /**
      * Creates or finds a WorkspaceSkuNameEnum from its string representation.
      *

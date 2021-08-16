@@ -8,25 +8,65 @@
   <artifactId>azure-cognitiveservices-service</artifactId>
   <packaging>pom</packaging>
   <version>1.0.0</version><!-- Need not change for every release-->
-  <modules>
-    <module>ms-azure-cs-autosuggest</module>
-    <module>ms-azure-cs-computervision</module>
-    <module>ms-azure-cs-contentmoderator</module>
-    <module>ms-azure-cs-customimagesearch</module>
-    <module>ms-azure-cs-customsearch</module>
-    <module>ms-azure-cs-customvision-prediction</module>
-    <module>ms-azure-cs-customvision-training</module>
-    <module>ms-azure-cs-entitysearch</module>
-    <module>ms-azure-cs-faceapi</module>
-    <module>ms-azure-cs-imagesearch</module>
-    <module>ms-azure-cs-luis-authoring</module>
-    <module>ms-azure-cs-luis-runtime</module>
-    <module>ms-azure-cs-newssearch</module>
-    <module>ms-azure-cs-qnamaker</module>
-    <module>ms-azure-cs-spellcheck</module>
-    <module>ms-azure-cs-textanalytics</module>
-    <module>ms-azure-cs-videosearch</module>
-    <module>ms-azure-cs-visualsearch</module>
-    <module>ms-azure-cs-websearch</module>
-  </modules>
+
+  <profiles>
+    <profile>
+      <id>coverage</id>
+      <modules>
+      </modules>
+
+      <dependencies>
+      </dependencies>
+
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.jacoco</groupId>
+            <artifactId>jacoco-maven-plugin</artifactId>
+            <version>0.8.5</version> <!-- {x-version-update;org.jacoco:jacoco-maven-plugin;external_dependency} -->
+            <executions>
+              <execution>
+                <id>report-aggregate</id>
+                <phase>verify</phase>
+                <goals>
+                  <goal>report-aggregate</goal>
+                </goals>
+                <configuration>
+                  <outputDirectory>${project.reporting.outputDirectory}/test-coverage</outputDirectory>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <profile>
+      <id>default</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+      <modules>
+        <module>azure-resourcemanager-cognitiveservices</module>
+        <module>ms-azure-cs-autosuggest</module>
+        <module>ms-azure-cs-computervision</module>
+        <module>ms-azure-cs-contentmoderator</module>
+        <module>ms-azure-cs-customimagesearch</module>
+        <module>ms-azure-cs-customsearch</module>
+        <module>ms-azure-cs-customvision-prediction</module>
+        <module>ms-azure-cs-customvision-training</module>
+        <module>ms-azure-cs-entitysearch</module>
+        <module>ms-azure-cs-faceapi</module>
+        <module>ms-azure-cs-imagesearch</module>
+        <module>ms-azure-cs-luis-authoring</module>
+        <module>ms-azure-cs-luis-runtime</module>
+        <module>ms-azure-cs-newssearch</module>
+        <module>ms-azure-cs-qnamaker</module>
+        <module>ms-azure-cs-spellcheck</module>
+        <module>ms-azure-cs-textanalytics</module>
+        <module>ms-azure-cs-videosearch</module>
+        <module>ms-azure-cs-visualsearch</module>
+        <module>ms-azure-cs-websearch</module>
+      </modules>
+    </profile>
+  </profiles>
 </project>

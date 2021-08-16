@@ -6,16 +6,11 @@ package com.azure.communication.chat.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Map;
 
-/** The SendChatMessageOptions model. */
+/** Details of the message to send. */
 @Fluent
 public final class SendChatMessageOptions {
-    /*
-     * The chat message priority.
-     */
-    @JsonProperty(value = "priority")
-    private ChatMessagePriority priority;
-
     /*
      * Chat message content.
      */
@@ -29,25 +24,17 @@ public final class SendChatMessageOptions {
     @JsonProperty(value = "senderDisplayName")
     private String senderDisplayName;
 
-    /**
-     * Get the priority property: The chat message priority.
-     *
-     * @return the priority value.
+    /*
+     * The chat message type.
      */
-    public ChatMessagePriority getPriority() {
-        return this.priority;
-    }
+    @JsonProperty(value = "type")
+    private ChatMessageType type;
 
-    /**
-     * Set the priority property: The chat message priority.
-     *
-     * @param priority the priority value to set.
-     * @return the SendChatMessageOptions object itself.
+    /*
+     * Message metadata.
      */
-    public SendChatMessageOptions setPriority(ChatMessagePriority priority) {
-        this.priority = priority;
-        return this;
-    }
+    @JsonProperty(value = "metadata")
+    private Map<String, String> metadata;
 
     /**
      * Get the content property: Chat message content.
@@ -88,6 +75,46 @@ public final class SendChatMessageOptions {
      */
     public SendChatMessageOptions setSenderDisplayName(String senderDisplayName) {
         this.senderDisplayName = senderDisplayName;
+        return this;
+    }
+
+    /**
+     * Get the type property: The chat message type.
+     *
+     * @return the type value.
+     */
+    public ChatMessageType getType() {
+        return this.type;
+    }
+
+    /**
+     * Set the type property: The chat message type.
+     *
+     * @param type the type value to set.
+     * @return the SendChatMessageOptions object itself.
+     */
+    public SendChatMessageOptions setType(ChatMessageType type) {
+        this.type = type;
+        return this;
+    }
+
+    /**
+     * Get the metadata property: Message metadata.
+     *
+     * @return the metadata value.
+     */
+    public Map<String, String> getMetadata() {
+        return this.metadata;
+    }
+
+    /**
+     * Set the metadata property: Message metadata.
+     *
+     * @param metadata the metadata value to set.
+     * @return the SendChatMessageOptions object itself.
+     */
+    public SendChatMessageOptions setMetadata(Map<String, String> metadata) {
+        this.metadata = metadata;
         return this;
     }
 }

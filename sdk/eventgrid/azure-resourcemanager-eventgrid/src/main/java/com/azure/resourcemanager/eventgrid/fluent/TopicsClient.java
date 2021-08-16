@@ -323,6 +323,37 @@ public interface TopicsClient {
      * @return shared access keys of the Topic.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
+    SyncPoller<PollResult<TopicSharedAccessKeysInner>, TopicSharedAccessKeysInner> beginRegenerateKey(
+        String resourceGroupName, String topicName, TopicRegenerateKeyRequest regenerateKeyRequest);
+
+    /**
+     * Regenerate a shared access key for a topic.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param topicName Name of the topic.
+     * @param regenerateKeyRequest Request body to regenerate key.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return shared access keys of the Topic.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SyncPoller<PollResult<TopicSharedAccessKeysInner>, TopicSharedAccessKeysInner> beginRegenerateKey(
+        String resourceGroupName, String topicName, TopicRegenerateKeyRequest regenerateKeyRequest, Context context);
+
+    /**
+     * Regenerate a shared access key for a topic.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param topicName Name of the topic.
+     * @param regenerateKeyRequest Request body to regenerate key.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return shared access keys of the Topic.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     TopicSharedAccessKeysInner regenerateKey(
         String resourceGroupName, String topicName, TopicRegenerateKeyRequest regenerateKeyRequest);
 
@@ -339,7 +370,7 @@ public interface TopicsClient {
      * @return shared access keys of the Topic.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<TopicSharedAccessKeysInner> regenerateKeyWithResponse(
+    TopicSharedAccessKeysInner regenerateKey(
         String resourceGroupName, String topicName, TopicRegenerateKeyRequest regenerateKeyRequest, Context context);
 
     /**

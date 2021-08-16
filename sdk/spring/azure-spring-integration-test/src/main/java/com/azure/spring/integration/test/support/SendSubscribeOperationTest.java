@@ -9,8 +9,8 @@ import com.azure.spring.integration.core.api.CheckpointMode;
 import com.azure.spring.integration.core.api.Checkpointer;
 import com.azure.spring.integration.core.api.SendOperation;
 import com.azure.spring.integration.test.support.pojo.User;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.support.GenericMessage;
 
@@ -22,67 +22,31 @@ import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public abstract class SendSubscribeOperationTest<T extends SendOperation> {
 
-    @SuppressWarnings("unchecked")
     protected T sendSubscribeOperation;
 
     protected String partitionId = "1";
     protected String destination = "test";
-    private String payload = "payload";
-    private User user = new User(payload);
-    private Map<String, Object> headers = new HashMap<>();
+    protected String payload = "payload";
+    protected User user = new User(payload);
+    protected Map<String, Object> headers = new HashMap<>();
     protected Message<User> userMessage = new GenericMessage<>(user, headers);
 
-    protected List<Message<User>> messages =
-        IntStream.range(1, 5).mapToObj(String::valueOf).map(User::new).map(u -> new GenericMessage<>(u, headers))
-            .collect(Collectors.toList());
-    private Message<String> stringMessage = new GenericMessage<>(payload, headers);
-    private Message<byte[]> byteMessage = new GenericMessage<>(payload.getBytes(StandardCharsets.UTF_8), headers);
+    protected List<Message<User>> messages = IntStream.range(1, 5)
+                                                      .mapToObj(String::valueOf)
+                                                      .map(User::new)
+                                                      .map(u -> new GenericMessage<>(u, headers))
+                                                      .collect(Collectors.toList());
+    private final Message<String> stringMessage = new GenericMessage<>(payload, headers);
+    private final Message<byte[]> byteMessage = new GenericMessage<>(payload.getBytes(StandardCharsets.UTF_8), headers);
 
-    public T getSendSubscribeOperation() {
-        return sendSubscribeOperation;
-    }
-
-    public void setSendSubscribeOperation(T sendSubscribeOperation) {
-        this.sendSubscribeOperation = sendSubscribeOperation;
-    }
-
-    public String getPartitionId() {
-        return partitionId;
-    }
-
-    public void setPartitionId(String partitionId) {
-        this.partitionId = partitionId;
-    }
-
-    public String getDestination() {
-        return destination;
-    }
-
-    public void setDestination(String destination) {
-        this.destination = destination;
-    }
-
-    public Message<User> getUserMessage() {
-        return userMessage;
-    }
-
-    public void setUserMessage(Message<User> userMessage) {
-        this.userMessage = userMessage;
-    }
-
-    public List<Message<User>> getMessages() {
-        return messages;
-    }
-
-    public void setMessages(List<Message<User>> messages) {
-        this.messages = messages;
-    }
+    @BeforeEach
+    public abstract void setUp() throws Exception;
 
     @Test
     public void testSendString() {
@@ -117,7 +81,7 @@ public abstract class SendSubscribeOperationTest<T extends SendOperation> {
         verifyCheckpointSuccessCalled(messages.size());
     }
 
-    private void manualCheckpointHandler(Message<?> message) {
+    protected void manualCheckpointHandler(Message<?> message) {
         assertTrue(message.getHeaders().containsKey(AzureHeaders.CHECKPOINTER));
         Checkpointer checkpointer = message.getHeaders().get(AzureHeaders.CHECKPOINTER, Checkpointer.class);
         assertNotNull(checkpointer);
@@ -141,9 +105,6 @@ public abstract class SendSubscribeOperationTest<T extends SendOperation> {
         assertEquals(user, message.getPayload());
     }
 
-    @Before
-    public abstract void setUp() throws Exception;
-
     protected abstract void verifyCheckpointSuccessCalled(int times);
 
     protected abstract void verifyCheckpointBatchSuccessCalled(int times);
@@ -162,5 +123,32 @@ public abstract class SendSubscribeOperationTest<T extends SendOperation> {
     protected void verifyCheckpointFailure(Checkpointer checkpointer) {
         checkpointer.failure();
         verifyCheckpointFailureCalled(1);
+    }
+
+    public String getPartitionId() {
+        return partitionId;
+    }
+
+    public void setPartitionId(String partitionId) {
+        this.partitionId = partitionId;
+    }
+
+    public T getSendSubscribeOperation() {
+        return sendSubscribeOperation;
+    }
+
+    public void setSendSubscribeOperation(T sendSubscribeOperation) {
+        this.sendSubscribeOperation = sendSubscribeOperation;
+    }
+
+    protected void waitMillis(long millis) {
+        if (millis <= 0) {
+            millis = 30;
+        }
+        try {
+            Thread.sleep(millis);
+        } catch (InterruptedException ignore) {
+
+        }
     }
 }

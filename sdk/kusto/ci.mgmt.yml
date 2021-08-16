@@ -2,24 +2,56 @@
 trigger:
   branches:
     include:
-      - master
+      - main
       - feature/*
       - hotfix/*
       - release/*
   paths:
     include:
-      - sdk/kusto/
+      - sdk/kusto/ci.mgmt.yml
+      - sdk/kusto/mgmt-v2018_09_07_preview/
+      - sdk/kusto/mgmt-v2019_05_15/
+      - sdk/kusto/mgmt-v2019_09_07/
+      - sdk/kusto/mgmt-v2019_11_09/
+      - sdk/kusto/mgmt-v2020_02_15/
+      - sdk/kusto/mgmt-v2020_06_14/
+      - sdk/kusto/mgmt-v2020_09_18/
+    exclude:
+      - sdk/kusto/pom.xml
+      - sdk/kusto/mgmt-v2018_09_07_preview/pom.xml
+      - sdk/kusto/mgmt-v2019_05_15/pom.xml
+      - sdk/kusto/mgmt-v2019_09_07/pom.xml
+      - sdk/kusto/mgmt-v2019_11_09/pom.xml
+      - sdk/kusto/mgmt-v2020_02_15/pom.xml
+      - sdk/kusto/mgmt-v2020_06_14/pom.xml
+      - sdk/kusto/mgmt-v2020_09_18/pom.xml
 
 pr:
   branches:
     include:
-      - master
+      - main
       - feature/*
       - hotfix/*
       - release/*
   paths:
     include:
-      - sdk/kusto/
+      - sdk/kusto/ci.mgmt.yml
+      - sdk/kusto/mgmt-v2018_09_07_preview/
+      - sdk/kusto/mgmt-v2019_05_15/
+      - sdk/kusto/mgmt-v2019_09_07/
+      - sdk/kusto/mgmt-v2019_11_09/
+      - sdk/kusto/mgmt-v2020_02_15/
+      - sdk/kusto/mgmt-v2020_06_14/
+      - sdk/kusto/mgmt-v2020_09_18/
+    exclude:
+      - sdk/kusto/pom.xml
+      - sdk/kusto/mgmt-v2018_09_07_preview/pom.xml
+      - sdk/kusto/mgmt-v2019_05_15/pom.xml
+      - sdk/kusto/mgmt-v2019_09_07/pom.xml
+      - sdk/kusto/mgmt-v2019_11_09/pom.xml
+      - sdk/kusto/mgmt-v2020_02_15/pom.xml
+      - sdk/kusto/mgmt-v2020_06_14/pom.xml
+      - sdk/kusto/mgmt-v2020_09_18/pom.xml
 
 stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-management.yml

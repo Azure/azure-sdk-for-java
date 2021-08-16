@@ -1,6 +1,8 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.storage.blob
 
-import com.azure.core.test.TestMode
 import com.azure.storage.blob.models.BlobContainerEncryptionScope
 import com.azure.storage.blob.models.BlobItem
 import com.azure.storage.blob.models.BlobStorageException
@@ -10,6 +12,7 @@ import com.azure.storage.blob.models.PageRange
 import com.azure.storage.blob.sas.BlobSasPermission
 import com.azure.storage.blob.sas.BlobServiceSasSignatureValues
 import com.azure.storage.blob.specialized.AppendBlobClient
+import com.azure.storage.blob.specialized.BlobClientBase
 import com.azure.storage.blob.specialized.BlockBlobClient
 import com.azure.storage.blob.specialized.PageBlobClient
 import com.azure.storage.blob.specialized.SpecializedBlobClientBuilder
@@ -34,11 +37,7 @@ class CPKNTest extends APISpec {
         ces = new BlobContainerEncryptionScope().setDefaultEncryptionScope(scope2).setEncryptionScopeOverridePrevented(true)
 
         builder = getContainerClientBuilder(cc.getBlobContainerUrl())
-            .credential(primaryCredential)
-
-        if (testMode == TestMode.RECORD && recordLiveMode) {
-            builder.addPolicy(interceptorManager.getRecordPolicy())
-        }
+            .credential(env.primaryAccount.credential)
 
         cpknContainer = builder.encryptionScope(es).buildClient()
 
@@ -131,7 +130,7 @@ class CPKNTest extends APISpec {
         cpknAppendBlob.create()
 
         when:
-        def response = cpknAppendBlob.appendBlockWithResponse(defaultInputStream.get(), defaultDataSize, null, null,
+        def response = cpknAppendBlob.appendBlockWithResponse(data.defaultInputStream, data.defaultDataSize, null, null,
             null, null)
 
         then:
@@ -145,7 +144,7 @@ class CPKNTest extends APISpec {
         cpknAppendBlob.create()
         def blobName = generateBlobName()
         def sourceBlob = cc.getBlobClient(blobName).getBlockBlobClient()
-        sourceBlob.upload(defaultInputStream.get(), defaultDataSize)
+        sourceBlob.upload(data.defaultInputStream, data.defaultDataSize)
 
         when:
         def sas = new BlobServiceSasSignatureValues()
@@ -153,7 +152,7 @@ class CPKNTest extends APISpec {
             .setPermissions(new BlobSasPermission().setReadPermission(true))
             .setContainerName(cc.getBlobContainerName())
             .setBlobName(blobName)
-            .generateSasQueryParameters(primaryCredential)
+            .generateSasQueryParameters(env.primaryAccount.credential)
             .encode()
         def response = cpknAppendBlob.appendBlockFromUrlWithResponse(sourceBlob.getBlobUrl().toString() + "?" + sas,
             null, null, null, null, null, null)
@@ -204,7 +203,7 @@ class CPKNTest extends APISpec {
             .setPermissions(new BlobSasPermission().setReadPermission(true))
             .setContainerName(cc.getBlobContainerName())
             .setBlobName(blobName)
-            .generateSasQueryParameters(primaryCredential)
+            .generateSasQueryParameters(env.primaryAccount.credential)
             .encode()
 
         def response = cpknPageBlob.uploadPagesFromUrlWithResponse(new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1),
@@ -255,7 +254,7 @@ class CPKNTest extends APISpec {
 
     def "Block blob upload"() {
         setup:
-        def response = cpknBlockBlob.uploadWithResponse(defaultInputStream.get(), defaultDataSize, null, null, null, null, null,
+        def response = cpknBlockBlob.uploadWithResponse(data.defaultInputStream, data.defaultDataSize, null, null, null, null, null,
             null, null)
 
         expect:
@@ -266,8 +265,8 @@ class CPKNTest extends APISpec {
 
     def "Block blob stage block"() {
         setup:
-        cpknBlockBlob.upload(defaultInputStream.get(), defaultDataSize)
-        def response = cpknBlockBlob.stageBlockWithResponse(getBlockID(), defaultInputStream.get(), defaultDataSize, null, null,
+        cpknBlockBlob.upload(data.defaultInputStream, data.defaultDataSize)
+        def response = cpknBlockBlob.stageBlockWithResponse(getBlockID(), data.defaultInputStream, data.defaultDataSize, null, null,
             null, null)
         def headers = response.getHeaders()
 
@@ -280,7 +279,7 @@ class CPKNTest extends APISpec {
     def "Block blob commit block list"() {
         setup:
         def blockID = getBlockID()
-        cpknBlockBlob.stageBlock(blockID, defaultInputStream.get(), defaultDataSize)
+        cpknBlockBlob.stageBlock(blockID, data.defaultInputStream, data.defaultDataSize)
         def ids = [blockID] as List
 
         when:
@@ -374,6 +373,47 @@ class CPKNTest extends APISpec {
         def key = new byte[32] // 256 bit key
         new Random(seed).nextBytes(key)
         return key
+    }
+
+    def "getEncryptionScopeClient"() {
+        setup:
+        def newEncryptionScope = "newtestscope"
+
+        when: "AppendBlob"
+        def newCpknAppendBlob = cpknAppendBlob.getEncryptionScopeClient(newEncryptionScope)
+
+        then:
+        newCpknAppendBlob instanceof AppendBlobClient
+        newCpknAppendBlob.getEncryptionScope() != cpknAppendBlob.getEncryptionScope()
+
+        when: "BlockBlob"
+        def newCpknBlockBlob = cpknBlockBlob.getEncryptionScopeClient(newEncryptionScope)
+
+        then:
+        newCpknBlockBlob instanceof BlockBlobClient
+        newCpknBlockBlob.getEncryptionScope() != cpknBlockBlob.getEncryptionScope()
+
+        when: "PageBlob"
+        def newCpknPageBlob = cpknPageBlob.getEncryptionScopeClient(newEncryptionScope)
+
+        then:
+        newCpknPageBlob instanceof PageBlobClient
+        newCpknPageBlob.getEncryptionScope() != cpknPageBlob.getEncryptionScope()
+
+        when: "BlobClient"
+        def cpkBlobClient = cpknContainer.getBlobClient(generateBlobName()) // Inherits container's CPK
+        def newCpknBlobClient = cpkBlobClient.getEncryptionScopeClient(newEncryptionScope)
+
+        then:
+        newCpknBlobClient instanceof BlobClient
+        newCpknBlobClient.getEncryptionScope() != cpkBlobClient.getEncryptionScope()
+
+        when: "BlobClientBase"
+        def newCpknBlobClientBase = ((BlobClientBase) cpkBlobClient).getEncryptionScopeClient(newEncryptionScope)
+
+        then:
+        newCpknBlobClientBase instanceof BlobClientBase
+        newCpknBlobClientBase.getEncryptionScope() != cpkBlobClient.getEncryptionScope()
     }
 
 }

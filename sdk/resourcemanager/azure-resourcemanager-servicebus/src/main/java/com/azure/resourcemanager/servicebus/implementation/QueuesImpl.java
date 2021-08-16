@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.management.Region;
 import com.azure.resourcemanager.servicebus.ServiceBusManager;
 import com.azure.resourcemanager.servicebus.fluent.QueuesClient;
-import com.azure.resourcemanager.servicebus.fluent.models.QueueResourceInner;
+import com.azure.resourcemanager.servicebus.fluent.models.SBQueueInner;
 import com.azure.resourcemanager.servicebus.models.Queue;
 import com.azure.resourcemanager.servicebus.models.Queues;
 import com.azure.resourcemanager.servicebus.models.ServiceBusNamespace;
@@ -22,7 +22,7 @@ class QueuesImpl
     extends ServiceBusChildResourcesImpl<
         Queue,
         QueueImpl,
-        QueueResourceInner,
+        SBQueueInner,
         QueuesClient,
         ServiceBusManager,
         ServiceBusNamespace>
@@ -53,18 +53,18 @@ class QueuesImpl
     }
 
     @Override
-    protected Mono<QueueResourceInner> getInnerByNameAsync(String name) {
+    protected Mono<SBQueueInner> getInnerByNameAsync(String name) {
         return this.innerModel().getAsync(this.resourceGroupName, this.namespaceName, name);
     }
 
     @Override
-    protected PagedFlux<QueueResourceInner> listInnerAsync() {
-        return this.innerModel().listAllAsync(this.resourceGroupName, this.namespaceName);
+    protected PagedFlux<SBQueueInner> listInnerAsync() {
+        return this.innerModel().listByNamespaceAsync(this.resourceGroupName, this.namespaceName);
     }
 
     @Override
-    protected PagedIterable<QueueResourceInner> listInner() {
-        return this.innerModel().listAll(this.resourceGroupName, this.namespaceName);
+    protected PagedIterable<SBQueueInner> listInner() {
+        return this.innerModel().listByNamespace(this.resourceGroupName, this.namespaceName);
     }
 
     @Override
@@ -73,12 +73,12 @@ class QueuesImpl
                 this.namespaceName,
                 name,
                 this.region,
-                new QueueResourceInner(),
+                new SBQueueInner(),
                 this.manager());
     }
 
     @Override
-    protected QueueImpl wrapModel(QueueResourceInner inner) {
+    protected QueueImpl wrapModel(SBQueueInner inner) {
         if (inner == null) {
             return null;
         }

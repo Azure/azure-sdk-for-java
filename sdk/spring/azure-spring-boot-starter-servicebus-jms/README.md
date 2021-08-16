@@ -5,21 +5,19 @@ With this starter you could easily use Spring JMS Queue and Topic with Azure Ser
 [Package (Maven)][package] | [API reference documentation][refdocs] | [Product documentation][docs] | [Samples][sample]
 
 ## Getting started
+
 ### Prerequisites
-- [Java Development Kit (JDK)][jdk_link] with version 8 or above
-- [Azure Subscription][azure_subscription]
-- [Maven](https://maven.apache.org/) 3.0 and above
+- [Environment checklist][environment_checklist]
 
 ### Include the package
-[//]: # ({x-version-update-start;com.azure.spring:azure-spring-boot-starter-servicebus-jms;current})
+1. [Add azure-spring-boot-bom].
+1. Add dependency. `<version>` can be skipped because we already add `azure-spring-boot-bom`.
 ```xml
 <dependency>
-    <groupId>com.azure.spring</groupId>
-    <artifactId>azure-spring-boot-starter-servicebus-jms</artifactId>
-    <version>3.2.0-beta.1</version>
+  <groupId>com.azure.spring</groupId>
+  <artifactId>azure-spring-boot-starter-servicebus-jms</artifactId>
 </dependency>
 ```
-[//]: # ({x-version-update-end})
 
 ## Key concepts
 This starter uses Azure Service Bus messaging features (queues and publish/subscribe topics) from Java applications using the popular Java Message Service (JMS) API standard with AMQP 1.0.
@@ -39,6 +37,8 @@ Append the following code to the end of the *application.properties* file. Repla
 ```yaml
 spring.jms.servicebus.connection-string=<ServiceBusNamespaceConnectionString>
 spring.jms.servicebus.idle-timeout=<IdleTimeout>
+# Supported values for pricing-tier are premium, standard and basic. Premium uses Java Message Service (JMS) 2.0, while standard and basic use JMS 1.0 to interact with Azure Service Bus.
+spring.jms.servicebus.pricing-tier=<ServiceBusPricingTier>
 ```
 
 #### Use Service Bus topic
@@ -49,6 +49,8 @@ Append the following code to the end of the *application.properties* file. Repla
 spring.jms.servicebus.connection-string=<ServiceBusNamespaceConnectionString>
 spring.jms.servicebus.topic-client-id=<ServiceBusTopicClientId>
 spring.jms.servicebus.idle-timeout=<IdleTimeout>
+# Supported values for pricing-tier are premium and standard.
+spring.jms.servicebus.pricing-tier=<ServiceBusPricingTier>
 ```
 
 ### Implement basic Service Bus functionality
@@ -82,8 +84,6 @@ public class User implements Serializable {
 
 }
 ```
-
-`Serializable` is implemented to use the `send` method in `JmsTemplate` in the Spring framework. Otherwise, a customized `MessageConverter` bean should be defined to serialize the content to json in text format. For more information about `MessageConverter`, see the official [Spring JMS starter project](https://spring.io/guides/gs/messaging-jms/).
 
 #### Create a new class for the message send controller
 
@@ -178,7 +178,39 @@ public class User implements Serializable {
         }
     }
     ```
+### Optional Service Bus functionality
+A customized `MessageConverter` bean can be used to convert between Java objects and JMS messages.
 
+#### Set [content-type][servicebus-message-payloads] of messages 
+
+Below code snippet sets content-type of `BytesMessage` as `application/json`.
+
+<!-- embedme ../azure-spring-boot/src/samples/java/com/azure/spring/jms/CustomizedMessageConverter.java#L25-L45 -->
+```java
+@Component
+public class CustomMessageConverter extends MappingJackson2MessageConverter {
+
+    private static final String TYPE_ID_PROPERTY = "_type";
+    private static final Symbol CONTENT_TYPE = Symbol.valueOf("application/json");
+
+    public CustomMessageConverter() {
+        this.setTargetType(MessageType.BYTES);
+        this.setTypeIdPropertyName(TYPE_ID_PROPERTY);
+    }
+
+    @Override
+    protected BytesMessage mapToBytesMessage(Object object, Session session, ObjectWriter objectWriter)
+        throws JMSException, IOException {
+        final BytesMessage bytesMessage = super.mapToBytesMessage(object, session, objectWriter);
+        JmsBytesMessage jmsBytesMessage = (JmsBytesMessage) bytesMessage;
+        AmqpJmsMessageFacade facade = (AmqpJmsMessageFacade) jmsBytesMessage.getFacade();
+        facade.setContentType(CONTENT_TYPE);
+        return jmsBytesMessage;
+    }
+}
+```
+
+For more information about `MessageConverter`, see the official [Spring JMS guide][spring_jms_guide].
 ## Troubleshooting
 If the JDK version you use is greater than 1.8, You may meet this problem: 
 ```
@@ -207,26 +239,28 @@ logging.level.org.springframework.web=DEBUG
 logging.level.org.hibernate=ERROR
 ```
 
-For more information about setting logging in spring, please refer to the [official doc](https://docs.spring.io/spring-boot/docs/current/reference/html/spring-boot-features.html#boot-features-logging).
+For more information about setting logging in spring, please refer to the [official doc](https://docs.spring.io/spring-boot/docs/current/reference/html/features.html#boot-features-logging).
  
 
 ## Next steps
 The following section provides sample projects illustrating how to use the starter in different cases.
 ### More sample code
-- [JMS Service Bus Queue](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/azure-spring-boot-sample-servicebus-jms-queue)
-- [JMS Service Bus Topic](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/azure-spring-boot-sample-servicebus-jms-topic)
+- [JMS Service Bus Queue](https://github.com/Azure-Samples/azure-spring-boot-samples/tree/tag_azure-spring-boot_3.6.0/servicebus/azure-spring-boot-sample-servicebus-jms-queue)
+- [JMS Service Bus Topic](https://github.com/Azure-Samples/azure-spring-boot-samples/tree/tag_azure-spring-boot_3.6.0/servicebus/azure-spring-boot-sample-servicebus-jms-topic)
 
 
 ## Contributing
 This project welcomes contributions and suggestions.  Most contributions require you to agree to a Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us the rights to use your contribution. For details, visit https://cla.microsoft.com.
 
-Please follow [instructions here](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/CONTRIBUTING.md) to build from source or contribute.
+Please follow [instructions here](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/CONTRIBUTING.md) to build from source or contribute.
 
 <!-- LINKS -->
 [docs]: https://docs.microsoft.com/azure/developer/java/spring-framework/configure-spring-boot-starter-java-app-with-azure-service-bus
 [refdocs]: https://azure.github.io/azure-sdk-for-java/springboot.html#azure-spring-boot
-[package]: https://mvnrepository.com/artifact/com.microsoft.azure/azure-servicebus-jms-spring-boot-starter
-[sample]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-samples/
+[package]: https://mvnrepository.com/artifact/com.azure.spring/azure-spring-boot-starter-servicebus-jms
+[sample]: https://github.com/Azure-Samples/azure-spring-boot-samples/
 [logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK#use-logback-logging-framework-in-a-spring-boot-application
-[azure_subscription]: https://azure.microsoft.com/free
-[jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
+[servicebus-message-payloads]: https://docs.microsoft.com/azure/service-bus-messaging/service-bus-messages-payloads
+[spring_jms_guide]: https://spring.io/guides/gs/messaging-jms/
+[environment_checklist]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/ENVIRONMENT_CHECKLIST.md#ready-to-run-checklist
+[Add azure-spring-boot-bom]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/AZURE_SPRING_BOMS_USAGE.md#add-azure-spring-boot-bom

@@ -3,23 +3,31 @@
 trigger:
   branches:
     include:
-      - master
+      - main
       - hotfix/*
       - release/*
   paths:
     include:
       - sdk/tables/
+    exclude:
+      - sdk/tables/pom.xml
+      - sdk/tables/azure-data-tables/pom.xml
+      - sdk/tables/azure-data-tables-perf/pom.xml
 
 pr:
   branches:
     include:
-      - master
+      - main
       - feature/*
       - hotfix/*
       - release/*
   paths:
     include:
       - sdk/tables/
+    exclude:
+      - sdk/tables/pom.xml
+      - sdk/tables/azure-data-tables/pom.xml
+      - sdk/tables/azure-data-tables-perf/pom.xml
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml

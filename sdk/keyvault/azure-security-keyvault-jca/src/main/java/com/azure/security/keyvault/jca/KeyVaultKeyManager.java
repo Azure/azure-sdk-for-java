@@ -24,7 +24,7 @@ import static java.util.logging.Level.WARNING;
 /**
  * The Azure Key Vault variant of the X509ExtendedKeyManager.
  */
-public class KeyVaultKeyManager extends X509ExtendedKeyManager {
+public final class KeyVaultKeyManager extends X509ExtendedKeyManager {
 
     /**
      * Stores the logger.
@@ -71,7 +71,7 @@ public class KeyVaultKeyManager extends X509ExtendedKeyManager {
              * If we only have one alias and the keystore type is not 
              * 'AzureKeyVault' return that alias as a match.
              */
-            if (!keystore.getProvider().getName().equals("AzureKeyVault")
+            if (!keystore.getProvider().getName().equals(KeyVaultJcaProvider.PROVIDER_NAME)
                 && keystore.size() == 1) {
                 alias = keystore.aliases().nextElement();
             }
@@ -95,7 +95,7 @@ public class KeyVaultKeyManager extends X509ExtendedKeyManager {
              * If we only have one alias and the keystore type is not 
              * 'AzureKeyVault' return that alias as a match.
              */
-            if (!keystore.getProvider().getName().equals("AzureKeyVault")
+            if (!keystore.getProvider().getName().equals(KeyVaultJcaProvider.PROVIDER_NAME)
                 && keystore.size() == 1) {
                 alias = keystore.aliases().nextElement();
             }

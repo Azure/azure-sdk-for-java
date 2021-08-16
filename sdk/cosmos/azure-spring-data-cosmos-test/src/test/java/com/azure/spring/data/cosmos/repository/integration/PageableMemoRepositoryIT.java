@@ -6,21 +6,22 @@ import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.spring.data.cosmos.CosmosFactory;
+import com.azure.spring.data.cosmos.IntegrationTestCollectionManager;
 import com.azure.spring.data.cosmos.core.CosmosTemplate;
 import com.azure.spring.data.cosmos.core.query.CosmosPageRequest;
 import com.azure.spring.data.cosmos.domain.Importance;
 import com.azure.spring.data.cosmos.domain.PageableMemo;
 import com.azure.spring.data.cosmos.repository.TestRepositoryConfig;
 import com.azure.spring.data.cosmos.repository.repository.PageableMemoRepository;
-import com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation;
-import org.junit.AfterClass;
 import org.junit.Before;
+import org.junit.ClassRule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import reactor.core.publisher.Flux;
@@ -33,6 +34,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -42,10 +44,8 @@ public class PageableMemoRepositoryIT {
 
     private static final int TOTAL_CONTENT_SIZE = 500;
 
-    private static final CosmosEntityInformation<PageableMemo, String> entityInformation =
-        new CosmosEntityInformation<>(PageableMemo.class);
-
-    private static CosmosTemplate staticTemplate;
+    @ClassRule
+    public static final IntegrationTestCollectionManager collectionManager = new IntegrationTestCollectionManager();
 
     @Autowired
     private CosmosTemplate template;
@@ -60,16 +60,17 @@ public class PageableMemoRepositoryIT {
     private CosmosFactory cosmosFactory;
 
     private static Set<PageableMemo> memoSet;
+    private static Set<PageableMemo> normalMemos;
 
     private static boolean isSetupDone;
 
     @Before
     public void setUp() {
+        collectionManager.ensureContainersCreated(template, PageableMemo.class);
+
         if (isSetupDone) {
             return;
         }
-        template.createContainerIfNotExists(entityInformation);
-        staticTemplate = template;
         memoSet = new HashSet<>();
         final Random random = new Random();
         final Importance[] importanceValues = Importance.values();
@@ -83,12 +84,13 @@ public class PageableMemoRepositoryIT {
             repository.save(memo);
             memoSet.add(memo);
         }
-        isSetupDone = true;
-    }
 
-    @AfterClass
-    public static void afterClassCleanup() {
-        staticTemplate.deleteContainer(entityInformation.getContainerName());
+        // Set of memos with NORMAL importance
+        normalMemos = memoSet.stream()
+            .filter(m -> m.getImportance().equals(Importance.NORMAL))
+            .collect(Collectors.toSet());
+
+        isSetupDone = true;
     }
 
     @Test
@@ -134,6 +136,27 @@ public class PageableMemoRepositoryIT {
         verifyItemsWithOffsetAndLimit(skipCount, takeCount, TOTAL_CONTENT_SIZE - skipCount);
     }
 
+    @Test
+    public void testFindByImportanceUsingSliceWithPageSizeLessThanReturned() {
+        final Set<PageableMemo> memos = findByWithSlice(20);
+        boolean equal = memos.equals(normalMemos);
+        assertThat(equal).isTrue();
+    }
+
+    @Test
+    public void testFindByImportanceUsingSliceWithPageSizeLessThanTotal() {
+        final Set<PageableMemo> memos = findByWithSlice(200);
+        boolean equal = memos.equals(normalMemos);
+        assertThat(equal).isTrue();
+    }
+
+    @Test
+    public void testFindByImportanceUsingSliceWithPageSizeGreaterThanTotal() {
+        final Set<PageableMemo> memos = findByWithSlice(10000);
+        boolean equal = memos.equals(normalMemos);
+        assertThat(equal).isTrue();
+    }
+
     private Flux<FeedResponse<PageableMemo>> getItemsWithOffsetAndLimit(int skipCount, int takeCount) {
         final CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
         options.setMaxDegreeOfParallelism(2);
@@ -142,7 +165,7 @@ public class PageableMemoRepositoryIT {
 
         final CosmosAsyncClient cosmosAsyncClient = applicationContext.getBean(CosmosAsyncClient.class);
         return cosmosAsyncClient.getDatabase(cosmosFactory.getDatabaseName())
-                           .getContainer(entityInformation.getContainerName())
+                           .getContainer(collectionManager.getContainerName(PageableMemo.class))
                            .queryItems(query, options, PageableMemo.class)
                            .byPage();
     }
@@ -168,6 +191,18 @@ public class PageableMemoRepositoryIT {
             final Pageable pageable = page.nextPageable();
             page = repository.findAll(pageable);
             outputSet.addAll((page.getContent()));
+        }
+        return outputSet;
+    }
+
+    private Set<PageableMemo> findByWithSlice(int pageSize) {
+        final CosmosPageRequest pageRequest = new CosmosPageRequest(0, pageSize, null);
+        Slice<PageableMemo> slice = repository.findByImportance(Importance.NORMAL, pageRequest);
+        final Set<PageableMemo> outputSet = new HashSet<>(slice.getContent());
+        while (slice.hasNext()) {
+            final Pageable pageable = slice.nextPageable();
+            slice = repository.findByImportance(Importance.NORMAL, pageable);
+            outputSet.addAll((slice.getContent()));
         }
         return outputSet;
     }

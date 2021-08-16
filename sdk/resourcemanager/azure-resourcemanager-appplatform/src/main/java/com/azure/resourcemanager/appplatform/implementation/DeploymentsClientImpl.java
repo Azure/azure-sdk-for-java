@@ -8,6 +8,7 @@ import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
+import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
@@ -72,7 +73,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
     @Host("{$host}")
     @ServiceInterface(name = "AppPlatformManagemen")
     private interface DeploymentsService {
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring"
                 + "/{serviceName}/apps/{appName}/deployments/{deploymentName}")
@@ -86,9 +87,10 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
             @PathParam("serviceName") String serviceName,
             @PathParam("appName") String appName,
             @PathParam("deploymentName") String deploymentName,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Put(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring"
                 + "/{serviceName}/apps/{appName}/deployments/{deploymentName}")
@@ -103,9 +105,10 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
             @PathParam("appName") String appName,
             @PathParam("deploymentName") String deploymentName,
             @BodyParam("application/json") DeploymentResourceInner deploymentResource,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Delete(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring"
                 + "/{serviceName}/apps/{appName}/deployments/{deploymentName}")
@@ -119,9 +122,10 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
             @PathParam("serviceName") String serviceName,
             @PathParam("appName") String appName,
             @PathParam("deploymentName") String deploymentName,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Patch(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring"
                 + "/{serviceName}/apps/{appName}/deployments/{deploymentName}")
@@ -136,9 +140,10 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
             @PathParam("appName") String appName,
             @PathParam("deploymentName") String deploymentName,
             @BodyParam("application/json") DeploymentResourceInner deploymentResource,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring"
                 + "/{serviceName}/apps/{appName}/deployments")
@@ -152,9 +157,10 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
             @PathParam("serviceName") String serviceName,
             @PathParam("appName") String appName,
             @QueryParam("version") String version,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring"
                 + "/{serviceName}/deployments")
@@ -167,9 +173,10 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("serviceName") String serviceName,
             @QueryParam("version") String version,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Post(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring"
                 + "/{serviceName}/apps/{appName}/deployments/{deploymentName}/start")
@@ -183,9 +190,10 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
             @PathParam("serviceName") String serviceName,
             @PathParam("appName") String appName,
             @PathParam("deploymentName") String deploymentName,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Post(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring"
                 + "/{serviceName}/apps/{appName}/deployments/{deploymentName}/stop")
@@ -199,9 +207,10 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
             @PathParam("serviceName") String serviceName,
             @PathParam("appName") String appName,
             @PathParam("deploymentName") String deploymentName,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Post(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring"
                 + "/{serviceName}/apps/{appName}/deployments/{deploymentName}/restart")
@@ -215,9 +224,10 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
             @PathParam("serviceName") String serviceName,
             @PathParam("appName") String appName,
             @PathParam("deploymentName") String deploymentName,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Post(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring"
                 + "/{serviceName}/apps/{appName}/deployments/{deploymentName}/getLogFileUrl")
@@ -231,21 +241,28 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
             @PathParam("serviceName") String serviceName,
             @PathParam("appName") String appName,
             @PathParam("deploymentName") String deploymentName,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<DeploymentResourceCollection>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<DeploymentResourceCollection>> listForClusterNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept,
+            Context context);
     }
 
     /**
@@ -289,6 +306,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
         if (deploymentName == null) {
             return Mono.error(new IllegalArgumentException("Parameter deploymentName is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -301,6 +319,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
                             serviceName,
                             appName,
                             deploymentName,
+                            accept,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
@@ -347,6 +366,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
         if (deploymentName == null) {
             return Mono.error(new IllegalArgumentException("Parameter deploymentName is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .get(
@@ -357,6 +377,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
                 serviceName,
                 appName,
                 deploymentName,
+                accept,
                 context);
     }
 
@@ -434,7 +455,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param deploymentName The name of the Deployment resource.
-     * @param deploymentResource Deployment resource payload.
+     * @param deploymentResource Parameters for the create or update operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -478,6 +499,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
         } else {
             deploymentResource.validate();
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -491,6 +513,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
                             appName,
                             deploymentName,
                             deploymentResource,
+                            accept,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
@@ -503,7 +526,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param deploymentName The name of the Deployment resource.
-     * @param deploymentResource Deployment resource payload.
+     * @param deploymentResource Parameters for the create or update operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -549,6 +572,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
         } else {
             deploymentResource.validate();
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .createOrUpdate(
@@ -560,6 +584,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
                 appName,
                 deploymentName,
                 deploymentResource,
+                accept,
                 context);
     }
 
@@ -571,7 +596,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param deploymentName The name of the Deployment resource.
-     * @param deploymentResource Deployment resource payload.
+     * @param deploymentResource Parameters for the create or update operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -605,7 +630,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param deploymentName The name of the Deployment resource.
-     * @param deploymentResource Deployment resource payload.
+     * @param deploymentResource Parameters for the create or update operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -642,7 +667,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param deploymentName The name of the Deployment resource.
-     * @param deploymentResource Deployment resource payload.
+     * @param deploymentResource Parameters for the create or update operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -667,7 +692,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param deploymentName The name of the Deployment resource.
-     * @param deploymentResource Deployment resource payload.
+     * @param deploymentResource Parameters for the create or update operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -695,7 +720,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param deploymentName The name of the Deployment resource.
-     * @param deploymentResource Deployment resource payload.
+     * @param deploymentResource Parameters for the create or update operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -721,7 +746,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param deploymentName The name of the Deployment resource.
-     * @param deploymentResource Deployment resource payload.
+     * @param deploymentResource Parameters for the create or update operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -750,7 +775,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param deploymentName The name of the Deployment resource.
-     * @param deploymentResource Deployment resource payload.
+     * @param deploymentResource Parameters for the create or update operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -774,7 +799,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param deploymentName The name of the Deployment resource.
-     * @param deploymentResource Deployment resource payload.
+     * @param deploymentResource Parameters for the create or update operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -834,6 +859,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
         if (deploymentName == null) {
             return Mono.error(new IllegalArgumentException("Parameter deploymentName is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -846,6 +872,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
                             serviceName,
                             appName,
                             deploymentName,
+                            accept,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
@@ -892,6 +919,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
         if (deploymentName == null) {
             return Mono.error(new IllegalArgumentException("Parameter deploymentName is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .delete(
@@ -902,6 +930,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
                 serviceName,
                 appName,
                 deploymentName,
+                accept,
                 context);
     }
 
@@ -1078,7 +1107,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param deploymentName The name of the Deployment resource.
-     * @param deploymentResource Deployment resource payload.
+     * @param deploymentResource Parameters for the update operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1122,6 +1151,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
         } else {
             deploymentResource.validate();
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -1135,6 +1165,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
                             appName,
                             deploymentName,
                             deploymentResource,
+                            accept,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
@@ -1147,7 +1178,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param deploymentName The name of the Deployment resource.
-     * @param deploymentResource Deployment resource payload.
+     * @param deploymentResource Parameters for the update operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1193,6 +1224,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
         } else {
             deploymentResource.validate();
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .update(
@@ -1204,6 +1236,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
                 appName,
                 deploymentName,
                 deploymentResource,
+                accept,
                 context);
     }
 
@@ -1215,7 +1248,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param deploymentName The name of the Deployment resource.
-     * @param deploymentResource Deployment resource payload.
+     * @param deploymentResource Parameters for the update operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1248,7 +1281,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param deploymentName The name of the Deployment resource.
-     * @param deploymentResource Deployment resource payload.
+     * @param deploymentResource Parameters for the update operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1285,7 +1318,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param deploymentName The name of the Deployment resource.
-     * @param deploymentResource Deployment resource payload.
+     * @param deploymentResource Parameters for the update operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1310,7 +1343,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param deploymentName The name of the Deployment resource.
-     * @param deploymentResource Deployment resource payload.
+     * @param deploymentResource Parameters for the update operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1337,7 +1370,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param deploymentName The name of the Deployment resource.
-     * @param deploymentResource Deployment resource payload.
+     * @param deploymentResource Parameters for the update operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1363,7 +1396,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param deploymentName The name of the Deployment resource.
-     * @param deploymentResource Deployment resource payload.
+     * @param deploymentResource Parameters for the update operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1391,7 +1424,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param deploymentName The name of the Deployment resource.
-     * @param deploymentResource Deployment resource payload.
+     * @param deploymentResource Parameters for the update operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1415,7 +1448,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param deploymentName The name of the Deployment resource.
-     * @param deploymentResource Deployment resource payload.
+     * @param deploymentResource Parameters for the update operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1441,7 +1474,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
-     * @param version Array of Get5ItemsItem.
+     * @param version Version of the deployments to be listed.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1472,6 +1505,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
         if (appName == null) {
             return Mono.error(new IllegalArgumentException("Parameter appName is required and cannot be null."));
         }
+        final String accept = "application/json";
         String versionConverted =
             JacksonAdapter.createDefaultSerializerAdapter().serializeList(version, CollectionFormat.CSV);
         return FluxUtil
@@ -1486,6 +1520,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
                             serviceName,
                             appName,
                             versionConverted,
+                            accept,
                             context))
             .<PagedResponse<DeploymentResourceInner>>map(
                 res ->
@@ -1506,7 +1541,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
-     * @param version Array of Get5ItemsItem.
+     * @param version Version of the deployments to be listed.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1538,6 +1573,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
         if (appName == null) {
             return Mono.error(new IllegalArgumentException("Parameter appName is required and cannot be null."));
         }
+        final String accept = "application/json";
         String versionConverted =
             JacksonAdapter.createDefaultSerializerAdapter().serializeList(version, CollectionFormat.CSV);
         context = this.client.mergeContext(context);
@@ -1550,6 +1586,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
                 serviceName,
                 appName,
                 versionConverted,
+                accept,
                 context)
             .map(
                 res ->
@@ -1569,7 +1606,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
-     * @param version Array of Get5ItemsItem.
+     * @param version Version of the deployments to be listed.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1610,7 +1647,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
-     * @param version Array of Get5ItemsItem.
+     * @param version Version of the deployments to be listed.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1632,7 +1669,25 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
-     * @param version Array of Get5ItemsItem.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return object that includes an array of App resources and a possible link for next set.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<DeploymentResourceInner> list(String resourceGroupName, String serviceName, String appName) {
+        final List<String> version = null;
+        return new PagedIterable<>(listAsync(resourceGroupName, serviceName, appName, version));
+    }
+
+    /**
+     * Handles requests to list all resources in an App.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param appName The name of the App resource.
+     * @param version Version of the deployments to be listed.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1646,30 +1701,12 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
     }
 
     /**
-     * Handles requests to list all resources in an App.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param appName The name of the App resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object that includes an array of App resources and a possible link for next set.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DeploymentResourceInner> list(String resourceGroupName, String serviceName, String appName) {
-        final List<String> version = null;
-        return new PagedIterable<>(listAsync(resourceGroupName, serviceName, appName, version));
-    }
-
-    /**
      * List deployments for a certain service.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
-     * @param version Array of Get4ItemsItem.
+     * @param version Version of the deployments to be listed.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1697,6 +1734,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
         if (serviceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter serviceName is required and cannot be null."));
         }
+        final String accept = "application/json";
         String versionConverted =
             JacksonAdapter.createDefaultSerializerAdapter().serializeList(version, CollectionFormat.CSV);
         return FluxUtil
@@ -1710,6 +1748,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
                             resourceGroupName,
                             serviceName,
                             versionConverted,
+                            accept,
                             context))
             .<PagedResponse<DeploymentResourceInner>>map(
                 res ->
@@ -1729,7 +1768,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
-     * @param version Array of Get4ItemsItem.
+     * @param version Version of the deployments to be listed.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1758,6 +1797,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
         if (serviceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter serviceName is required and cannot be null."));
         }
+        final String accept = "application/json";
         String versionConverted =
             JacksonAdapter.createDefaultSerializerAdapter().serializeList(version, CollectionFormat.CSV);
         context = this.client.mergeContext(context);
@@ -1769,6 +1809,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
                 resourceGroupName,
                 serviceName,
                 versionConverted,
+                accept,
                 context)
             .map(
                 res ->
@@ -1787,7 +1828,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
-     * @param version Array of Get4ItemsItem.
+     * @param version Version of the deployments to be listed.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1826,7 +1867,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
-     * @param version Array of Get4ItemsItem.
+     * @param version Version of the deployments to be listed.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1847,7 +1888,24 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
-     * @param version Array of Get4ItemsItem.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return object that includes an array of App resources and a possible link for next set.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<DeploymentResourceInner> listForCluster(String resourceGroupName, String serviceName) {
+        final List<String> version = null;
+        return new PagedIterable<>(listForClusterAsync(resourceGroupName, serviceName, version));
+    }
+
+    /**
+     * List deployments for a certain service.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param version Version of the deployments to be listed.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1858,23 +1916,6 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
     public PagedIterable<DeploymentResourceInner> listForCluster(
         String resourceGroupName, String serviceName, List<String> version, Context context) {
         return new PagedIterable<>(listForClusterAsync(resourceGroupName, serviceName, version, context));
-    }
-
-    /**
-     * List deployments for a certain service.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object that includes an array of App resources and a possible link for next set.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DeploymentResourceInner> listForCluster(String resourceGroupName, String serviceName) {
-        final List<String> version = null;
-        return new PagedIterable<>(listForClusterAsync(resourceGroupName, serviceName, version));
     }
 
     /**
@@ -1918,6 +1959,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
         if (deploymentName == null) {
             return Mono.error(new IllegalArgumentException("Parameter deploymentName is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -1930,6 +1972,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
                             serviceName,
                             appName,
                             deploymentName,
+                            accept,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
@@ -1976,6 +2019,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
         if (deploymentName == null) {
             return Mono.error(new IllegalArgumentException("Parameter deploymentName is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .start(
@@ -1986,6 +2030,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
                 serviceName,
                 appName,
                 deploymentName,
+                accept,
                 context);
     }
 
@@ -2195,6 +2240,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
         if (deploymentName == null) {
             return Mono.error(new IllegalArgumentException("Parameter deploymentName is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -2207,6 +2253,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
                             serviceName,
                             appName,
                             deploymentName,
+                            accept,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
@@ -2253,6 +2300,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
         if (deploymentName == null) {
             return Mono.error(new IllegalArgumentException("Parameter deploymentName is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .stop(
@@ -2263,6 +2311,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
                 serviceName,
                 appName,
                 deploymentName,
+                accept,
                 context);
     }
 
@@ -2472,6 +2521,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
         if (deploymentName == null) {
             return Mono.error(new IllegalArgumentException("Parameter deploymentName is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -2484,6 +2534,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
                             serviceName,
                             appName,
                             deploymentName,
+                            accept,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
@@ -2530,6 +2581,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
         if (deploymentName == null) {
             return Mono.error(new IllegalArgumentException("Parameter deploymentName is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .restart(
@@ -2540,6 +2592,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
                 serviceName,
                 appName,
                 deploymentName,
+                accept,
                 context);
     }
 
@@ -2750,6 +2803,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
         if (deploymentName == null) {
             return Mono.error(new IllegalArgumentException("Parameter deploymentName is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -2762,6 +2816,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
                             serviceName,
                             appName,
                             deploymentName,
+                            accept,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
@@ -2808,6 +2863,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
         if (deploymentName == null) {
             return Mono.error(new IllegalArgumentException("Parameter deploymentName is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .getLogFileUrl(
@@ -2818,6 +2874,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
                 serviceName,
                 appName,
                 deploymentName,
+                accept,
                 context);
     }
 
@@ -2901,8 +2958,15 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listNext(nextLink, context))
+            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
             .<PagedResponse<DeploymentResourceInner>>map(
                 res ->
                     new PagedResponseBase<>(
@@ -2930,9 +2994,16 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listNext(nextLink, context)
+            .listNext(nextLink, this.client.getEndpoint(), accept, context)
             .map(
                 res ->
                     new PagedResponseBase<>(
@@ -2958,8 +3029,15 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listForClusterNext(nextLink, context))
+            .withContext(context -> service.listForClusterNext(nextLink, this.client.getEndpoint(), accept, context))
             .<PagedResponse<DeploymentResourceInner>>map(
                 res ->
                     new PagedResponseBase<>(
@@ -2988,9 +3066,16 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listForClusterNext(nextLink, context)
+            .listForClusterNext(nextLink, this.client.getEndpoint(), accept, context)
             .map(
                 res ->
                     new PagedResponseBase<>(

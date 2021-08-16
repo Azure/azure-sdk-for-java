@@ -1,12 +1,19 @@
 trigger: none
 
 stages:
-  - template: ../../eng/pipelines/templates/stages/archetype-sdk-tests.yml
+  - template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
     parameters:
       ServiceDirectory: appconfiguration
+      Artifacts:
+        - name: azure-spring-cloud-test-appconfiguration-config
+          groupId: com.azure.spring
+          safeName: azurespringcloudtestappconfigurationconfig
+      TimeoutInMinutes: 90
       EnvVars:
-        AZURE_TEST_MODE: RECORD
         AZURE_APPCONFIG_CONNECTION_STRING: $(AZURE_APPCONFIG_CONNECTION_STRING)
         AZURE_CLIENT_ID: $(aad-azure-sdk-test-client-id)
         AZURE_CLIENT_SECRET: $(aad-azure-sdk-test-client-secret)
         AZURE_TENANT_ID: $(aad-azure-sdk-test-tenant-id)
+      TestStepMavenInputs:
+        options: '-Dmaven.wagon.http.pool=false $(DefaultOptions) -Dmaven.javadoc.skip=true -Drevapi.skip=true -DskipSpringITs=false -pl $(ProjectList)'
+        goals: "verify"

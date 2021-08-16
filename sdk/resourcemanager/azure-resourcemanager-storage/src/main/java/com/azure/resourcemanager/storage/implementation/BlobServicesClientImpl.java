@@ -7,6 +7,7 @@ package com.azure.resourcemanager.storage.implementation;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
+import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
@@ -60,7 +61,7 @@ public final class BlobServicesClientImpl implements BlobServicesClient {
     @Host("{$host}")
     @ServiceInterface(name = "StorageManagementCli")
     private interface BlobServicesService {
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage"
                 + "/storageAccounts/{accountName}/blobServices")
@@ -72,9 +73,10 @@ public final class BlobServicesClientImpl implements BlobServicesClient {
             @PathParam("accountName") String accountName,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Put(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage"
                 + "/storageAccounts/{accountName}/blobServices/{BlobServicesName}")
@@ -88,9 +90,10 @@ public final class BlobServicesClientImpl implements BlobServicesClient {
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("BlobServicesName") String blobServicesName,
             @BodyParam("application/json") BlobServicePropertiesInner parameters,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage"
                 + "/storageAccounts/{accountName}/blobServices/{BlobServicesName}")
@@ -103,6 +106,7 @@ public final class BlobServicesClientImpl implements BlobServicesClient {
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("BlobServicesName") String blobServicesName,
+            @HeaderParam("Accept") String accept,
             Context context);
     }
 
@@ -140,6 +144,7 @@ public final class BlobServicesClientImpl implements BlobServicesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -150,12 +155,13 @@ public final class BlobServicesClientImpl implements BlobServicesClient {
                             accountName,
                             this.client.getApiVersion(),
                             this.client.getSubscriptionId(),
+                            accept,
                             context))
             .<PagedResponse<BlobServicePropertiesInner>>map(
                 res ->
                     new PagedResponseBase<>(
                         res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -193,6 +199,7 @@ public final class BlobServicesClientImpl implements BlobServicesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .list(
@@ -201,6 +208,7 @@ public final class BlobServicesClientImpl implements BlobServicesClient {
                 accountName,
                 this.client.getApiVersion(),
                 this.client.getSubscriptionId(),
+                accept,
                 context)
             .map(
                 res ->
@@ -288,7 +296,8 @@ public final class BlobServicesClientImpl implements BlobServicesClient {
      *     insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
      *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param parameters The properties of a storage account’s Blob service.
+     * @param parameters The properties of a storage account’s Blob service, including properties for Storage Analytics
+     *     and CORS (Cross-Origin Resource Sharing) rules.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -322,6 +331,7 @@ public final class BlobServicesClientImpl implements BlobServicesClient {
             parameters.validate();
         }
         final String blobServicesName = "default";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -334,8 +344,9 @@ public final class BlobServicesClientImpl implements BlobServicesClient {
                             this.client.getSubscriptionId(),
                             blobServicesName,
                             parameters,
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -346,7 +357,8 @@ public final class BlobServicesClientImpl implements BlobServicesClient {
      *     insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
      *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param parameters The properties of a storage account’s Blob service.
+     * @param parameters The properties of a storage account’s Blob service, including properties for Storage Analytics
+     *     and CORS (Cross-Origin Resource Sharing) rules.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -381,6 +393,7 @@ public final class BlobServicesClientImpl implements BlobServicesClient {
             parameters.validate();
         }
         final String blobServicesName = "default";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .setServiceProperties(
@@ -391,6 +404,7 @@ public final class BlobServicesClientImpl implements BlobServicesClient {
                 this.client.getSubscriptionId(),
                 blobServicesName,
                 parameters,
+                accept,
                 context);
     }
 
@@ -402,7 +416,8 @@ public final class BlobServicesClientImpl implements BlobServicesClient {
      *     insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
      *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param parameters The properties of a storage account’s Blob service.
+     * @param parameters The properties of a storage account’s Blob service, including properties for Storage Analytics
+     *     and CORS (Cross-Origin Resource Sharing) rules.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -430,7 +445,8 @@ public final class BlobServicesClientImpl implements BlobServicesClient {
      *     insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
      *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param parameters The properties of a storage account’s Blob service.
+     * @param parameters The properties of a storage account’s Blob service, including properties for Storage Analytics
+     *     and CORS (Cross-Origin Resource Sharing) rules.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -450,7 +466,8 @@ public final class BlobServicesClientImpl implements BlobServicesClient {
      *     insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
      *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param parameters The properties of a storage account’s Blob service.
+     * @param parameters The properties of a storage account’s Blob service, including properties for Storage Analytics
+     *     and CORS (Cross-Origin Resource Sharing) rules.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -500,6 +517,7 @@ public final class BlobServicesClientImpl implements BlobServicesClient {
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String blobServicesName = "default";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -511,8 +529,9 @@ public final class BlobServicesClientImpl implements BlobServicesClient {
                             this.client.getApiVersion(),
                             this.client.getSubscriptionId(),
                             blobServicesName,
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -553,6 +572,7 @@ public final class BlobServicesClientImpl implements BlobServicesClient {
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String blobServicesName = "default";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .getServiceProperties(
@@ -562,6 +582,7 @@ public final class BlobServicesClientImpl implements BlobServicesClient {
                 this.client.getApiVersion(),
                 this.client.getSubscriptionId(),
                 blobServicesName,
+                accept,
                 context);
     }
 

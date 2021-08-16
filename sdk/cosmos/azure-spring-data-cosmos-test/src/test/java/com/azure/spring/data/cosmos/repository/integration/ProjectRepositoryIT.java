@@ -3,16 +3,15 @@
 package com.azure.spring.data.cosmos.repository.integration;
 
 import com.azure.cosmos.models.PartitionKey;
+import com.azure.spring.data.cosmos.IntegrationTestCollectionManager;
 import com.azure.spring.data.cosmos.common.TestUtils;
 import com.azure.spring.data.cosmos.core.CosmosTemplate;
 import com.azure.spring.data.cosmos.domain.Project;
 import com.azure.spring.data.cosmos.repository.TestRepositoryConfig;
 import com.azure.spring.data.cosmos.repository.repository.ProjectRepository;
-import com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation;
-import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.ClassRule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -74,11 +73,8 @@ public class ProjectRepositoryIT {
 
     private static final List<Project> PROJECTS = Arrays.asList(PROJECT_0, PROJECT_1, PROJECT_2, PROJECT_3, PROJECT_4);
 
-    private static final CosmosEntityInformation<Project, String> entityInformation =
-        new CosmosEntityInformation<>(Project.class);
-
-    private static CosmosTemplate staticTemplate;
-    private static boolean isSetupDone;
+    @ClassRule
+    public static final IntegrationTestCollectionManager collectionManager = new IntegrationTestCollectionManager();
 
     @Autowired
     private CosmosTemplate template;
@@ -88,22 +84,8 @@ public class ProjectRepositoryIT {
 
     @Before
     public void setUp() {
-        if (!isSetupDone) {
-            staticTemplate = template;
-            template.createContainerIfNotExists(entityInformation);
-        }
+        collectionManager.ensureContainersCreatedAndEmpty(template, Project.class);
         this.repository.saveAll(PROJECTS);
-        isSetupDone = true;
-    }
-
-    @After
-    public void cleanup() {
-        this.repository.deleteAll();
-    }
-
-    @AfterClass
-    public static void afterClassCleanup() {
-        staticTemplate.deleteContainer(entityInformation.getContainerName());
     }
 
     private void assertProjectListEquals(@NonNull List<Project> projects, @NonNull List<Project> reference) {
@@ -159,7 +141,7 @@ public class ProjectRepositoryIT {
 
         assertProjectListEquals(projects, Arrays.asList(PROJECT_0, PROJECT_4));
     }
-    
+
     @Test
     public void testFindByWithRepeatedParameters() {
         List<Project> projects = TestUtils.toList(this.repository.findByNameAndCreatorOrNameAndCreator(NAME_1, CREATOR_1, NAME_2, CREATOR_2));
@@ -378,7 +360,7 @@ public class ProjectRepositoryIT {
     @Test
     public void findByIdWithPartitionKey() {
         final Optional<Project> project = repository.findById(PROJECT_0.getId(),
-            new PartitionKey(entityInformation.getPartitionKeyFieldValue(PROJECT_0)));
+            new PartitionKey(collectionManager.getEntityInformation(Project.class).getPartitionKeyFieldValue(PROJECT_0)));
 
         Assert.assertTrue(project.isPresent());
 
@@ -407,6 +389,10 @@ public class ProjectRepositoryIT {
         projects = TestUtils.toList(repository.findByCreatorIn(Arrays.asList(CREATOR_0, FAKE_CREATOR)));
 
         assertProjectListEquals(projects, Arrays.asList(PROJECT_0, PROJECT_4));
+
+        projects = TestUtils.toList(repository.findByCreatorIn(Collections.singletonList(CREATOR_1)));
+
+        assertProjectListEquals(projects, Collections.singletonList(PROJECT_1));
     }
 
     @Test
@@ -427,6 +413,24 @@ public class ProjectRepositoryIT {
             Arrays.asList(STAR_COUNT_0, STAR_COUNT_1, STAR_COUNT_2)));
 
         assertProjectListEquals(projects, Arrays.asList(PROJECT_0, PROJECT_1, PROJECT_2, PROJECT_4));
+    }
+
+    @Test
+    public void testFindByInWithOr() {
+        List<Project> projects = TestUtils.toList(repository.findByCreatorInOrStarCount(Arrays.asList(CREATOR_0,
+            CREATOR_1), STAR_COUNT_2));
+
+        assertProjectListEquals(projects, Arrays.asList(PROJECT_0, PROJECT_4, PROJECT_1, PROJECT_2));
+
+        projects = TestUtils.toList(repository.findByCreatorInOrStarCount(Collections.singletonList(CREATOR_1),
+            STAR_COUNT_2));
+
+        assertProjectListEquals(projects, Arrays.asList(PROJECT_1, PROJECT_2));
+
+        projects = TestUtils.toList(repository.findByCreatorInOrStarCount(Collections.singletonList(CREATOR_0),
+            STAR_COUNT_0));
+
+        assertProjectListEquals(projects, Arrays.asList(PROJECT_0, PROJECT_4));
     }
 
     @Test

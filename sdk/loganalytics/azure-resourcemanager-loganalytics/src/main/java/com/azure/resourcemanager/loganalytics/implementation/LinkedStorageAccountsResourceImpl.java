@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.loganalytics.implementation;
 
 import com.azure.core.util.Context;
-import com.azure.resourcemanager.loganalytics.LogAnalyticsManager;
 import com.azure.resourcemanager.loganalytics.fluent.models.LinkedStorageAccountsResourceInner;
 import com.azure.resourcemanager.loganalytics.models.DataSourceType;
 import com.azure.resourcemanager.loganalytics.models.LinkedStorageAccountsResource;
@@ -18,7 +17,7 @@ public final class LinkedStorageAccountsResourceImpl
         LinkedStorageAccountsResource.Update {
     private LinkedStorageAccountsResourceInner innerObject;
 
-    private final LogAnalyticsManager serviceManager;
+    private final com.azure.resourcemanager.loganalytics.LogAnalyticsManager serviceManager;
 
     public String id() {
         return this.innerModel().id();
@@ -49,7 +48,7 @@ public final class LinkedStorageAccountsResourceImpl
         return this.innerObject;
     }
 
-    private LogAnalyticsManager manager() {
+    private com.azure.resourcemanager.loganalytics.LogAnalyticsManager manager() {
         return this.serviceManager;
     }
 
@@ -87,7 +86,8 @@ public final class LinkedStorageAccountsResourceImpl
         return this;
     }
 
-    LinkedStorageAccountsResourceImpl(DataSourceType name, LogAnalyticsManager serviceManager) {
+    LinkedStorageAccountsResourceImpl(
+        DataSourceType name, com.azure.resourcemanager.loganalytics.LogAnalyticsManager serviceManager) {
         this.innerObject = new LinkedStorageAccountsResourceInner();
         this.serviceManager = serviceManager;
         this.dataSourceType = name;
@@ -120,7 +120,8 @@ public final class LinkedStorageAccountsResourceImpl
     }
 
     LinkedStorageAccountsResourceImpl(
-        LinkedStorageAccountsResourceInner innerObject, LogAnalyticsManager serviceManager) {
+        LinkedStorageAccountsResourceInner innerObject,
+        com.azure.resourcemanager.loganalytics.LogAnalyticsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
         this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourcegroups");

@@ -3,10 +3,16 @@
 
 package com.azure.core.amqp.implementation;
 
+import com.azure.core.amqp.AmqpConnection;
 import com.azure.core.amqp.AmqpEndpointState;
 import com.azure.core.amqp.AmqpMessageConstant;
+import com.azure.core.amqp.AmqpRetryOptions;
+import com.azure.core.amqp.AmqpShutdownSignal;
 import com.azure.core.amqp.ClaimsBasedSecurityNode;
 import com.azure.core.amqp.exception.AmqpErrorCondition;
+import com.azure.core.amqp.exception.AmqpErrorContext;
+import com.azure.core.amqp.exception.AmqpException;
+import com.azure.core.amqp.exception.AmqpResponseCode;
 import com.azure.core.amqp.implementation.handler.ReceiveLinkHandler;
 import org.apache.qpid.proton.amqp.Symbol;
 import org.apache.qpid.proton.amqp.messaging.Source;
@@ -27,26 +33,28 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
-import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
+import reactor.test.publisher.TestPublisher;
 
 import java.io.IOException;
 import java.time.Duration;
-import java.util.List;
 import java.util.Map;
 import java.util.function.Supplier;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 
 class ReactorReceiverTest {
@@ -63,19 +71,25 @@ class ReactorReceiverTest {
     @Mock
     private Record record;
     @Mock
-    private ReactorDispatcher dispatcher;
+    private ReactorDispatcher reactorDispatcher;
     @Mock
     private Supplier<Integer> creditSupplier;
+    @Mock
+    private AmqpConnection amqpConnection;
+    @Mock
+    private TokenManager tokenManager;
 
-    @Captor
-    private ArgumentCaptor<Runnable> dispatcherCaptor;
+    private final TestPublisher<AmqpShutdownSignal> shutdownSignals = TestPublisher.create();
+    private final AmqpRetryOptions retryOptions = new AmqpRetryOptions();
+    private final TestPublisher<AmqpResponseCode> authorizationResults = TestPublisher.createCold();
 
     private ReceiveLinkHandler receiverHandler;
     private ReactorReceiver reactorReceiver;
+    private AutoCloseable mocksCloseable;
 
     @BeforeAll
     static void beforeAll() {
-        StepVerifier.setDefaultTimeout(Duration.ofSeconds(30));
+        StepVerifier.setDefaultTimeout(Duration.ofSeconds(10));
     }
 
     @AfterAll
@@ -85,7 +99,7 @@ class ReactorReceiverTest {
 
     @BeforeEach
     void setup() {
-        MockitoAnnotations.initMocks(this);
+        mocksCloseable = MockitoAnnotations.openMocks(this);
 
         when(cbsNode.authorize(any(), any())).thenReturn(Mono.empty());
 
@@ -98,39 +112,66 @@ class ReactorReceiverTest {
         final String entityPath = "test-entity-path";
         receiverHandler = new ReceiveLinkHandler("test-connection-id", "test-host",
             "test-receiver-name", entityPath);
-        final ActiveClientTokenManager tokenManager = new ActiveClientTokenManager(Mono.just(cbsNode),
-            "test-tokenAudience", "test-scopes");
 
-        reactorReceiver = new ReactorReceiver(entityPath, receiver, receiverHandler, tokenManager, dispatcher);
+        when(tokenManager.getAuthorizationResults()).thenReturn(authorizationResults.flux());
+
+        when(amqpConnection.getShutdownSignals()).thenReturn(shutdownSignals.flux());
+
+        reactorReceiver = new ReactorReceiver(amqpConnection, entityPath, receiver, receiverHandler, tokenManager,
+            reactorDispatcher, retryOptions);
     }
 
     @AfterEach
-    void teardown() {
+    void teardown() throws Exception {
         Mockito.framework().clearInlineMocks();
 
-        receiver = null;
-        cbsNode = null;
-        event = null;
+        if (mocksCloseable != null) {
+            mocksCloseable.close();
+        }
     }
 
     /**
-     * Verify we can add credits to the link.
+     * Verify we can add and get credits to and from the link.
      */
     @Test
     void addCredits() throws IOException {
         final int credits = 15;
-        reactorReceiver.addCredits(credits);
+        final int currentCredits = 13;
+
+        when(receiver.getRemoteCredit()).thenReturn(currentCredits);
+
+        doAnswer(invocation -> {
+            final Runnable work = invocation.getArgument(0);
+            work.run();
+            return null;
+        }).when(reactorDispatcher).invoke(any(Runnable.class));
+
+        StepVerifier.create(reactorReceiver.addCredits(credits))
+            .verifyComplete();
 
         // Assert
-        verify(dispatcher).invoke(dispatcherCaptor.capture());
-
-        final List<Runnable> invocations = dispatcherCaptor.getAllValues();
-        assertEquals(1, invocations.size());
-
-        // Apply the invocation.
-        invocations.get(0).run();
-
         verify(receiver).flow(credits);
+
+        assertEquals(currentCredits, reactorReceiver.getCredits());
+    }
+
+    /**
+     * Verify the sink errors if we cannot schedule work.
+     */
+    @Test
+    void addCreditsErrors() throws IOException {
+        final int credits = 15;
+
+        doAnswer(invocation -> {
+            throw new IOException("Fake exception");
+        }).when(reactorDispatcher).invoke(any(Runnable.class));
+
+        StepVerifier.create(reactorReceiver.addCredits(credits))
+            .expectError(RuntimeException.class)
+            .verify();
+
+        // Assert
+        verifyNoInteractions(receiver);
     }
 
     /**
@@ -138,13 +179,56 @@ class ReactorReceiverTest {
      */
     @Test
     void updateEndpointState() {
+        final Event closeEvent = mock(Event.class);
+        final Receiver closeReceiver = mock(Receiver.class);
+        when(closeEvent.getLink()).thenReturn(closeReceiver);
+        when(closeEvent.getReceiver()).thenReturn(closeReceiver);
+
+        when(closeReceiver.getLocalState()).thenReturn(EndpointState.ACTIVE);
+        when(closeReceiver.getRemoteCondition()).thenReturn(null);
+
         StepVerifier.create(reactorReceiver.getEndpointStates())
             .expectNext(AmqpEndpointState.UNINITIALIZED)
             .then(() -> receiverHandler.onLinkRemoteOpen(event))
             .expectNext(AmqpEndpointState.ACTIVE)
             .then(() -> receiverHandler.close())
             .expectNext(AmqpEndpointState.CLOSED)
+            .then(() -> receiverHandler.onLinkRemoteClose(closeEvent))
             .verifyComplete();
+    }
+
+
+    /**
+     * Verifies EndpointStates are propagated.
+     */
+    @Test
+    void updateEndpointStateWithError() {
+        final Event closeEvent = mock(Event.class);
+        final Receiver closeReceiver = mock(Receiver.class);
+        final AmqpErrorCondition condition = AmqpErrorCondition.CONNECTION_FORCED;
+        final ErrorCondition errorCondition = new ErrorCondition(
+            Symbol.valueOf(condition.getErrorCondition()), "Forced error condition");
+        when(closeEvent.getLink()).thenReturn(closeReceiver);
+        when(closeEvent.getReceiver()).thenReturn(closeReceiver);
+
+        when(closeReceiver.getLocalState()).thenReturn(EndpointState.ACTIVE);
+        when(closeReceiver.getRemoteCondition()).thenReturn(errorCondition);
+
+        StepVerifier.create(reactorReceiver.getEndpointStates())
+            .expectNext(AmqpEndpointState.UNINITIALIZED)
+            .then(() -> receiverHandler.onLinkRemoteOpen(event))
+            .expectNext(AmqpEndpointState.ACTIVE)
+            .then(() -> receiverHandler.close())
+            .expectNext(AmqpEndpointState.CLOSED)
+            .then(() -> receiverHandler.onLinkRemoteClose(closeEvent))
+            .expectErrorSatisfies(error -> {
+                assertTrue(error instanceof AmqpException);
+                assertEquals(condition, ((AmqpException) error).getErrorCondition());
+            })
+            .verify();
+
+        verify(closeReceiver).close();
+        verify(closeReceiver).setCondition(errorCondition);
     }
 
     /**
@@ -178,7 +262,6 @@ class ReactorReceiverTest {
 
         verify(link).setCondition(captor.capture());
         Assertions.assertSame(condition, captor.getValue());
-
     }
 
     @Test
@@ -229,8 +312,22 @@ class ReactorReceiverTest {
             return messageBytes.length;
         });
 
-        when(creditSupplier.get()).thenReturn(10);
+        final int creditsToAdd = 10;
+
+        doAnswer(invocation -> {
+            final Runnable work = invocation.getArgument(0);
+            work.run();
+            return null;
+        }).when(reactorDispatcher).invoke(any(Runnable.class));
+
+        when(creditSupplier.get()).thenReturn(creditsToAdd);
         reactorReceiver.setEmptyCreditListener(creditSupplier);
+
+        doAnswer(invocationOnMock -> {
+            final Runnable work = invocationOnMock.getArgument(0);
+            work.run();
+            return null;
+        }).when(reactorDispatcher).invoke(any(Runnable.class));
 
         // Act & Assert
         StepVerifier.create(reactorReceiver.receive())
@@ -239,24 +336,290 @@ class ReactorReceiverTest {
                 Assertions.assertNotNull(message.getMessageAnnotations());
 
                 final Map<Symbol, Object> values = message.getMessageAnnotations().getValue();
-                Assertions.assertTrue(values.containsKey(Symbol.getSymbol(AmqpMessageConstant.OFFSET_ANNOTATION_NAME.getValue())));
-                Assertions.assertTrue(values.containsKey(Symbol.getSymbol(AmqpMessageConstant.SEQUENCE_NUMBER_ANNOTATION_NAME.getValue())));
-                Assertions.assertTrue(values.containsKey(Symbol.getSymbol(AmqpMessageConstant.ENQUEUED_TIME_UTC_ANNOTATION_NAME.getValue())));
+                assertTrue(values.containsKey(Symbol.getSymbol(AmqpMessageConstant.OFFSET_ANNOTATION_NAME.getValue())));
+                assertTrue(values.containsKey(Symbol.getSymbol(AmqpMessageConstant.SEQUENCE_NUMBER_ANNOTATION_NAME.getValue())));
+                assertTrue(values.containsKey(Symbol.getSymbol(AmqpMessageConstant.ENQUEUED_TIME_UTC_ANNOTATION_NAME.getValue())));
             })
             .thenCancel()
             .verify();
 
         verify(creditSupplier).get();
 
-        // Verify that the get addCredits was called on that dispatcher.
-        verify(dispatcher).invoke(dispatcherCaptor.capture());
+        verify(receiver).flow(creditsToAdd);
+    }
 
-        final List<Runnable> invocations = dispatcherCaptor.getAllValues();
-        assertEquals(1, invocations.size());
+    /**
+     * Verifies that when an exception occurs in the parent, the connection is also closed.
+     */
+    @Test
+    void parentDisposesConnection() throws IOException {
+        // Arrange
+        final AmqpShutdownSignal shutdownSignal = new AmqpShutdownSignal(false, false,
+            "Test-shutdown-signal");
+        final Event event = mock(Event.class);
+        final Link link = mock(Link.class);
 
-        // Apply the invocation.
-        invocations.get(0).run();
+        when(link.getLocalState()).thenReturn(EndpointState.ACTIVE);
 
-        verify(receiver).flow(10);
+        when(event.getLink()).thenReturn(link);
+
+        doAnswer(invocationOnMock -> {
+            receiverHandler.onLinkRemoteClose(event);
+            return null;
+        }).when(receiver).close();
+
+        doAnswer(invocation -> {
+            final Runnable work = invocation.getArgument(0);
+            work.run();
+            return null;
+        }).when(reactorDispatcher).invoke(any(Runnable.class));
+
+        // Act
+        shutdownSignals.next(shutdownSignal);
+
+        // We are in the process of disposing.
+        assertTrue(reactorReceiver.isDisposed());
+
+        // This turns it into a synchronous operation so we know that it is disposed completely.
+        reactorReceiver.dispose();
+
+        // Assert
+        verify(receiver).close();
+    }
+
+    /**
+     * Verifies that when an exception occurs in the parent, the endpoints are also disposed.
+     */
+    @Test
+    void parentClosesEndpoint() throws IOException {
+        // Arrange
+        final AmqpShutdownSignal shutdownSignal = new AmqpShutdownSignal(false, false, "Test-shutdown-signal");
+        final Event event = mock(Event.class);
+        final Link link = mock(Link.class);
+
+        when(link.getLocalState()).thenReturn(EndpointState.ACTIVE);
+
+        when(event.getLink()).thenReturn(link);
+
+        doAnswer(invocationOnMock -> {
+            receiverHandler.onLinkRemoteClose(event);
+            return null;
+        }).when(receiver).close();
+
+        doAnswer(invocation -> {
+            final Runnable work = invocation.getArgument(0);
+            work.run();
+            return null;
+        }).when(reactorDispatcher).invoke(any(Runnable.class));
+
+        // Act
+        StepVerifier.create(reactorReceiver.getEndpointStates())
+            .expectNext(AmqpEndpointState.UNINITIALIZED)
+            .then(() -> shutdownSignals.next(shutdownSignal))
+            .expectNext(AmqpEndpointState.CLOSED)
+            .expectComplete()
+            .verify();
+
+        // Assert
+        assertTrue(reactorReceiver.isDisposed());
+
+        verify(receiver).close();
+    }
+
+    /**
+     * An error in the handler will also close the sender.
+     */
+    @Test
+    void disposesOnHandlerError() {
+        // Arrange
+        final AmqpErrorCondition amqpErrorCondition = AmqpErrorCondition.CONNECTION_FRAMING_ERROR;
+        final Event event = mock(Event.class);
+        final Link link = mock(Link.class);
+        final ErrorCondition errorCondition = new ErrorCondition(
+            Symbol.getSymbol(amqpErrorCondition.getErrorCondition()), "Test error condition");
+
+        when(link.getLocalState()).thenReturn(EndpointState.ACTIVE);
+        when(link.getRemoteCondition()).thenReturn(errorCondition);
+
+        when(event.getLink()).thenReturn(link);
+
+        // Act and Assert
+        StepVerifier.create(reactorReceiver.getEndpointStates())
+            .expectNext(AmqpEndpointState.UNINITIALIZED)
+            .then(() -> receiverHandler.onLinkRemoteClose(event))
+            .expectErrorSatisfies(error -> {
+                assertTrue(error instanceof AmqpException);
+                assertEquals(((AmqpException) error).getErrorCondition(), amqpErrorCondition);
+            })
+            .verify();
+
+        assertTrue(reactorReceiver.isDisposed());
+    }
+
+    /**
+     * A complete in the handler will also close the sender.
+     */
+    @Test
+    void disposesOnHandlerComplete() {
+        // Arrange
+        final Event event = mock(Event.class);
+        final Link link = mock(Link.class);
+
+        when(link.getLocalState()).thenReturn(EndpointState.ACTIVE);
+        when(event.getLink()).thenReturn(link);
+
+        // Act and Assert
+        StepVerifier.create(reactorReceiver.getEndpointStates())
+            .expectNext(AmqpEndpointState.UNINITIALIZED)
+            .then(() -> receiverHandler.onLinkFinal(event))
+            .expectNext(AmqpEndpointState.CLOSED)
+            .expectComplete()
+            .verify();
+
+        StepVerifier.create(reactorReceiver.getEndpointStates())
+            .expectNext(AmqpEndpointState.CLOSED)
+            .verifyComplete();
+
+        assertTrue(reactorReceiver.isDisposed());
+    }
+
+    /**
+     * Tests {@link ReactorReceiver#closeAsync(String, ErrorCondition)}.
+     */
+    @Test
+    void disposeCompletes() throws IOException {
+        // Arrange
+        final String message = "some-message";
+        final AmqpErrorCondition errorCondition = AmqpErrorCondition.UNAUTHORIZED_ACCESS;
+        final ErrorCondition condition = new ErrorCondition(Symbol.getSymbol(errorCondition.getErrorCondition()),
+            "Test-users");
+        final Event event = mock(Event.class);
+
+        when(receiver.getLocalState()).thenReturn(EndpointState.ACTIVE, EndpointState.CLOSED);
+
+        when(event.getLink()).thenReturn(receiver);
+
+        doAnswer(invocationOnMock -> {
+            receiverHandler.onLinkRemoteClose(event);
+            return null;
+        }).when(receiver).close();
+
+        doAnswer(invocation -> {
+            final Runnable work = invocation.getArgument(0);
+            work.run();
+            return null;
+        }).when(reactorDispatcher).invoke(any(Runnable.class));
+
+        // Act
+        StepVerifier.create(reactorReceiver.closeAsync(message, condition))
+            .expectComplete()
+            .verify();
+
+        // Expect the same outcome.
+        StepVerifier.create(reactorReceiver.closeAsync("something", null))
+            .expectComplete()
+            .verify();
+
+        StepVerifier.create(reactorReceiver.closeAsync())
+            .expectComplete()
+            .verify();
+
+        // Assert
+        assertTrue(reactorReceiver.isDisposed());
+
+        verify(receiver).setCondition(condition);
+        verify(receiver).close();
+
+        shutdownSignals.assertNoSubscribers();
+    }
+
+    /**
+     * Tests {@link ReactorReceiver#dispose()}.
+     */
+    @Test
+    void disposeBlocking() throws IOException {
+        // Arrange
+        final Event event = mock(Event.class);
+        final Link link = mock(Link.class);
+
+        when(link.getLocalState()).thenReturn(EndpointState.ACTIVE);
+
+        when(event.getLink()).thenReturn(link);
+
+        doAnswer(invocationOnMock -> {
+            final Runnable runnable = invocationOnMock.getArgument(0);
+            runnable.run();
+            return null;
+        }).when(reactorDispatcher).invoke(any(Runnable.class));
+
+        doAnswer(invocationOnMock -> {
+            receiverHandler.onLinkRemoteClose(event);
+            return null;
+        }).when(receiver).close();
+
+        // Act
+        reactorReceiver.dispose();
+
+        // Assert
+        StepVerifier.create(reactorReceiver.closeAsync())
+            .expectComplete()
+            .verify();
+
+        assertTrue(reactorReceiver.isDisposed());
+
+        verify(receiver).close();
+
+        shutdownSignals.assertNoSubscribers();
+    }
+
+    @Test
+    void closesWhenNoLongerAuthorized() throws IOException {
+        // Arrange
+        final AmqpException error = new AmqpException(false, AmqpErrorCondition.ILLEGAL_STATE, "not-allowed",
+            new AmqpErrorContext("foo-bar"));
+
+        when(receiver.getLocalState()).thenReturn(EndpointState.ACTIVE, EndpointState.CLOSED);
+
+        doAnswer(invocationOnMock -> {
+            final Runnable work = invocationOnMock.getArgument(0);
+            work.run();
+            return null;
+        }).when(reactorDispatcher).invoke(any(Runnable.class));
+
+        doAnswer(invocationOnMock -> {
+            receiverHandler.onLinkRemoteClose(event);
+            return null;
+        }).when(receiver).close();
+
+        // Assert and Act
+        StepVerifier.create(reactorReceiver.receive())
+            .then(() -> authorizationResults.error(error))
+            .verifyComplete();
+    }
+
+    @Test
+    void closesWhenAuthorizationResultsComplete() throws IOException {
+        // Arrange
+        final Event event = mock(Event.class);
+        final Link link = mock(Link.class);
+
+        when(event.getLink()).thenReturn(link);
+        when(link.getLocalState()).thenReturn(EndpointState.CLOSED);
+
+        doAnswer(invocationOnMock -> {
+            final Runnable work = invocationOnMock.getArgument(0);
+            work.run();
+            return null;
+        }).when(reactorDispatcher).invoke(any(Runnable.class));
+
+        doAnswer(invocationOnMock -> {
+            receiverHandler.onLinkRemoteClose(event);
+            return null;
+        }).when(receiver).close();
+
+        // Assert and Act
+        StepVerifier.create(reactorReceiver.receive())
+            .then(authorizationResults::complete)
+            .verifyComplete();
     }
 }

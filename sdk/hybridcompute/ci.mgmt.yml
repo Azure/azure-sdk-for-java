@@ -2,24 +2,36 @@
 trigger:
   branches:
     include:
-      - master
+      - main
       - feature/*
       - hotfix/*
       - release/*
   paths:
     include:
-      - sdk/hybridcompute/
+      - sdk/hybridcompute/ci.mgmt.yml
+      - sdk/hybridcompute/mgmt-v2019_12_12/
+      - sdk/hybridcompute/mgmt-v2020_08_02/
+    exclude:
+      - sdk/hybridcompute/pom.xml
+      - sdk/hybridcompute/mgmt-v2019_12_12/pom.xml
+      - sdk/hybridcompute/mgmt-v2020_08_02/pom.xml
 
 pr:
   branches:
     include:
-      - master
+      - main
       - feature/*
       - hotfix/*
       - release/*
   paths:
     include:
-      - sdk/hybridcompute/
+      - sdk/hybridcompute/ci.mgmt.yml
+      - sdk/hybridcompute/mgmt-v2019_12_12/
+      - sdk/hybridcompute/mgmt-v2020_08_02/
+    exclude:
+      - sdk/hybridcompute/pom.xml
+      - sdk/hybridcompute/mgmt-v2019_12_12/pom.xml
+      - sdk/hybridcompute/mgmt-v2020_08_02/pom.xml
 
 stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-management.yml

@@ -13,6 +13,9 @@ public final class RegionCategory extends ExpandableStringEnum<RegionCategory> {
     /** Static value Recommended for RegionCategory. */
     public static final RegionCategory RECOMMENDED = fromString("Recommended");
 
+    /** Static value Extended for RegionCategory. */
+    public static final RegionCategory EXTENDED = fromString("Extended");
+
     /** Static value Other for RegionCategory. */
     public static final RegionCategory OTHER = fromString("Other");
 

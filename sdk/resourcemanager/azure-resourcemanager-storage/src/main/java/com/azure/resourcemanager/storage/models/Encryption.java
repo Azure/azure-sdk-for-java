@@ -40,6 +40,12 @@ public final class Encryption {
     @JsonProperty(value = "keyvaultproperties")
     private KeyVaultProperties keyVaultProperties;
 
+    /*
+     * The identity to be used with service-side encryption at rest.
+     */
+    @JsonProperty(value = "identity")
+    private EncryptionIdentity encryptionIdentity;
+
     /**
      * Get the services property: List of services which support encryption.
      *
@@ -125,6 +131,26 @@ public final class Encryption {
     }
 
     /**
+     * Get the encryptionIdentity property: The identity to be used with service-side encryption at rest.
+     *
+     * @return the encryptionIdentity value.
+     */
+    public EncryptionIdentity encryptionIdentity() {
+        return this.encryptionIdentity;
+    }
+
+    /**
+     * Set the encryptionIdentity property: The identity to be used with service-side encryption at rest.
+     *
+     * @param encryptionIdentity the encryptionIdentity value to set.
+     * @return the Encryption object itself.
+     */
+    public Encryption withEncryptionIdentity(EncryptionIdentity encryptionIdentity) {
+        this.encryptionIdentity = encryptionIdentity;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -140,6 +166,9 @@ public final class Encryption {
         }
         if (keyVaultProperties() != null) {
             keyVaultProperties().validate();
+        }
+        if (encryptionIdentity() != null) {
+            encryptionIdentity().validate();
         }
     }
 }

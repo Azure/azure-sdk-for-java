@@ -1,0 +1,33 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.azure.com/%2Fdtmi%2Fcom%2Fexample%2Fthermostat-1.json",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-iot-modelsrepository/1.1.0-beta.1 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "537a41a9-a508-4e4a-8390-6399bb3ffb01"
+    },
+    "Response" : {
+      "X-Cache" : "HIT",
+      "x-ms-version" : "2018-03-28",
+      "Server" : "ECAcc (sed/E107)",
+      "Access-Control-Allow-Methods" : "GET, HEAD, OPTIONS",
+      "Last-Modified" : "Tue, 15 Dec 2020 21:10:57 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Access-Control-Allow-Headers" : "*",
+      "Date" : "Tue, 23 Mar 2021 22:20:07 GMT",
+      "Content-MD5" : "U0VZgOgpfb6bwvG5UDVZuw==",
+      "Accept-Ranges" : "bytes",
+      "Access-Control-Expose-Headers" : "*",
+      "Etag" : "\"0x8D8A13DEABC53BA\"",
+      "x-ms-error-code" : "ConditionNotMet",
+      "Content-Length" : "2469",
+      "x-ms-request-id" : "3e2ce5fe-301e-0060-0838-1c7551000000",
+      "Body" : "{\n  \"@context\": \"dtmi:dtdl:context;2\",\n  \"@id\": \"dtmi:com:example:Thermostat;1\",\n  \"@type\": \"Interface\",\n  \"displayName\": \"Thermostat\",\n  \"description\": \"Reports current temperature and provides desired temperature control.\",\n  \"contents\": [\n    {\n      \"@type\": [\n        \"Telemetry\",\n        \"Temperature\"\n      ],\n      \"name\": \"temperature\",\n      \"displayName\": \"Temperature\",\n      \"description\": \"Temperature in degrees Celsius.\",\n      \"schema\": \"double\",\n      \"unit\": \"degreeCelsius\"\n    },\n    {\n      \"@type\": [\n        \"Property\",\n        \"Temperature\"\n      ],\n      \"name\": \"targetTemperature\",\n      \"schema\": \"double\",\n      \"displayName\": \"Target Temperature\",\n      \"description\": \"Allows to remotely specify the desired target temperature.\",\n      \"unit\": \"degreeCelsius\",\n      \"writable\": true\n    },\n    {\n      \"@type\": [\n        \"Property\",\n        \"Temperature\"\n      ],\n      \"name\": \"maxTempSinceLastReboot\",\n      \"schema\": \"double\",\n      \"unit\": \"degreeCelsius\",\n      \"displayName\": \"Max temperature since last reboot.\",\n      \"description\": \"Returns the max temperature since last device reboot.\"\n    },\n    {\n      \"@type\": \"Command\",\n      \"name\": \"getMaxMinReport\",\n      \"displayName\": \"Get Max-Min report.\",\n      \"description\": \"This command returns the max, min and average temperature from the specified time to the current time.\",\n      \"request\": {\n        \"name\": \"since\",\n        \"displayName\": \"Since\",\n        \"description\": \"Period to return the max-min report.\",\n        \"schema\": \"dateTime\"\n      },\n      \"response\": {\n        \"name\": \"tempReport\",\n        \"displayName\": \"Temperature Report\",\n        \"schema\": {\n          \"@type\": \"Object\",\n          \"fields\": [\n            {\n              \"name\": \"maxTemp\",\n              \"displayName\": \"Max temperature\",\n              \"schema\": \"double\"\n            },\n            {\n              \"name\": \"minTemp\",\n              \"displayName\": \"Min temperature\",\n              \"schema\": \"double\"\n            },\n            {\n              \"name\": \"avgTemp\",\n              \"displayName\": \"Average Temperature\",\n              \"schema\": \"double\"\n            },\n            {\n              \"name\": \"startTime\",\n              \"displayName\": \"Start Time\",\n              \"schema\": \"dateTime\"\n            },\n            {\n              \"name\": \"endTime\",\n              \"displayName\": \"End Time\",\n              \"schema\": \"dateTime\"\n            }\n          ]\n        }\n      }\n    }\n  ]\n}",
+      "Age" : "437504",
+      "Content-Type" : "application/json"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

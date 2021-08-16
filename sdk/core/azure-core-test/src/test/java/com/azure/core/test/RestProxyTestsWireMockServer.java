@@ -41,6 +41,8 @@ import static com.github.tomakehurst.wiremock.client.WireMock.put;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlPathMatching;
 
 public final class RestProxyTestsWireMockServer {
+    private static final JacksonAdapter JACKSON_ADAPTER = new JacksonAdapter();
+
     public static WireMockServer getRestProxyTestsServer() {
         WireMockServer server = new WireMockServer(WireMockConfiguration.options()
             .extensions(new RestProxyResponseTransformer())
@@ -124,7 +126,7 @@ public final class RestProxyTestsWireMockServer {
 
             return new ResponseDefinitionBuilder().withStatus(200)
                 .withHeaders(toWireMockHeaders(getBaseHttpHeaders()))
-                .withBody(new JacksonAdapter().serialize(responseBody, SerializerEncoding.JSON))
+                .withBody(JACKSON_ADAPTER.serialize(responseBody, SerializerEncoding.JSON))
                 .build();
         }
 
@@ -166,7 +168,7 @@ public final class RestProxyTestsWireMockServer {
 
             return new ResponseDefinitionBuilder()
                 .withStatus(200)
-                .withBody(new JacksonAdapter().serialize(formBody, SerializerEncoding.JSON))
+                .withBody(JACKSON_ADAPTER.serialize(formBody, SerializerEncoding.JSON))
                 .build();
         }
 

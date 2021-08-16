@@ -7,6 +7,7 @@ package com.azure.resourcemanager.storage.implementation;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
+import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
@@ -60,7 +61,7 @@ public final class TablesClientImpl implements TablesClient {
     @Host("{$host}")
     @ServiceInterface(name = "StorageManagementCli")
     private interface TablesService {
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Put(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage"
                 + "/storageAccounts/{accountName}/tableServices/default/tables/{tableName}")
@@ -73,9 +74,10 @@ public final class TablesClientImpl implements TablesClient {
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("tableName") String tableName,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Patch(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage"
                 + "/storageAccounts/{accountName}/tableServices/default/tables/{tableName}")
@@ -88,9 +90,10 @@ public final class TablesClientImpl implements TablesClient {
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("tableName") String tableName,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage"
                 + "/storageAccounts/{accountName}/tableServices/default/tables/{tableName}")
@@ -103,9 +106,10 @@ public final class TablesClientImpl implements TablesClient {
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("tableName") String tableName,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Delete(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage"
                 + "/storageAccounts/{accountName}/tableServices/default/tables/{tableName}")
@@ -118,9 +122,10 @@ public final class TablesClientImpl implements TablesClient {
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("tableName") String tableName,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage"
                 + "/storageAccounts/{accountName}/tableServices/default/tables")
@@ -132,14 +137,18 @@ public final class TablesClientImpl implements TablesClient {
             @PathParam("accountName") String accountName,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ListTableResource>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept,
+            Context context);
     }
 
     /**
@@ -181,6 +190,7 @@ public final class TablesClientImpl implements TablesClient {
         if (tableName == null) {
             return Mono.error(new IllegalArgumentException("Parameter tableName is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -192,8 +202,9 @@ public final class TablesClientImpl implements TablesClient {
                             this.client.getApiVersion(),
                             this.client.getSubscriptionId(),
                             tableName,
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -236,6 +247,7 @@ public final class TablesClientImpl implements TablesClient {
         if (tableName == null) {
             return Mono.error(new IllegalArgumentException("Parameter tableName is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .create(
@@ -245,6 +257,7 @@ public final class TablesClientImpl implements TablesClient {
                 this.client.getApiVersion(),
                 this.client.getSubscriptionId(),
                 tableName,
+                accept,
                 context);
     }
 
@@ -354,6 +367,7 @@ public final class TablesClientImpl implements TablesClient {
         if (tableName == null) {
             return Mono.error(new IllegalArgumentException("Parameter tableName is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -365,8 +379,9 @@ public final class TablesClientImpl implements TablesClient {
                             this.client.getApiVersion(),
                             this.client.getSubscriptionId(),
                             tableName,
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -409,6 +424,7 @@ public final class TablesClientImpl implements TablesClient {
         if (tableName == null) {
             return Mono.error(new IllegalArgumentException("Parameter tableName is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .update(
@@ -418,6 +434,7 @@ public final class TablesClientImpl implements TablesClient {
                 this.client.getApiVersion(),
                 this.client.getSubscriptionId(),
                 tableName,
+                accept,
                 context);
     }
 
@@ -527,6 +544,7 @@ public final class TablesClientImpl implements TablesClient {
         if (tableName == null) {
             return Mono.error(new IllegalArgumentException("Parameter tableName is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -538,8 +556,9 @@ public final class TablesClientImpl implements TablesClient {
                             this.client.getApiVersion(),
                             this.client.getSubscriptionId(),
                             tableName,
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -582,6 +601,7 @@ public final class TablesClientImpl implements TablesClient {
         if (tableName == null) {
             return Mono.error(new IllegalArgumentException("Parameter tableName is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .get(
@@ -591,6 +611,7 @@ public final class TablesClientImpl implements TablesClient {
                 this.client.getApiVersion(),
                 this.client.getSubscriptionId(),
                 tableName,
+                accept,
                 context);
     }
 
@@ -700,6 +721,7 @@ public final class TablesClientImpl implements TablesClient {
         if (tableName == null) {
             return Mono.error(new IllegalArgumentException("Parameter tableName is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -711,8 +733,9 @@ public final class TablesClientImpl implements TablesClient {
                             this.client.getApiVersion(),
                             this.client.getSubscriptionId(),
                             tableName,
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -755,6 +778,7 @@ public final class TablesClientImpl implements TablesClient {
         if (tableName == null) {
             return Mono.error(new IllegalArgumentException("Parameter tableName is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .delete(
@@ -764,6 +788,7 @@ public final class TablesClientImpl implements TablesClient {
                 this.client.getApiVersion(),
                 this.client.getSubscriptionId(),
                 tableName,
+                accept,
                 context);
     }
 
@@ -859,6 +884,7 @@ public final class TablesClientImpl implements TablesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -869,6 +895,7 @@ public final class TablesClientImpl implements TablesClient {
                             accountName,
                             this.client.getApiVersion(),
                             this.client.getSubscriptionId(),
+                            accept,
                             context))
             .<PagedResponse<TableInner>>map(
                 res ->
@@ -879,7 +906,7 @@ public final class TablesClientImpl implements TablesClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -917,6 +944,7 @@ public final class TablesClientImpl implements TablesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .list(
@@ -925,6 +953,7 @@ public final class TablesClientImpl implements TablesClient {
                 accountName,
                 this.client.getApiVersion(),
                 this.client.getSubscriptionId(),
+                accept,
                 context)
             .map(
                 res ->
@@ -1024,8 +1053,15 @@ public final class TablesClientImpl implements TablesClient {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listNext(nextLink, context))
+            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
             .<PagedResponse<TableInner>>map(
                 res ->
                     new PagedResponseBase<>(
@@ -1035,7 +1071,7 @@ public final class TablesClientImpl implements TablesClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1053,9 +1089,16 @@ public final class TablesClientImpl implements TablesClient {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listNext(nextLink, context)
+            .listNext(nextLink, this.client.getEndpoint(), accept, context)
             .map(
                 res ->
                     new PagedResponseBase<>(

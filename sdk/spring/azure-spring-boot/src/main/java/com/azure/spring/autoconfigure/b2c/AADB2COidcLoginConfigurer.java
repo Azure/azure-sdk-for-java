@@ -4,33 +4,42 @@ package com.azure.spring.autoconfigure.b2c;
 
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.oauth2.client.endpoint.DefaultAuthorizationCodeTokenResponseClient;
+import org.springframework.security.oauth2.client.endpoint.OAuth2AccessTokenResponseClient;
+import org.springframework.security.oauth2.client.endpoint.OAuth2AuthorizationCodeGrantRequest;
 
 /**
  * Configure B2C OAUTH2 login properties.
  */
 public class AADB2COidcLoginConfigurer extends AbstractHttpConfigurer<AADB2COidcLoginConfigurer, HttpSecurity> {
 
-    private final AADB2CProperties properties;
-
     private final AADB2CLogoutSuccessHandler handler;
 
     private final AADB2CAuthorizationRequestResolver resolver;
 
-    public AADB2COidcLoginConfigurer(AADB2CProperties properties,
-                                     AADB2CLogoutSuccessHandler handler, AADB2CAuthorizationRequestResolver resolver) {
-        this.properties = properties;
+    public AADB2COidcLoginConfigurer(AADB2CLogoutSuccessHandler handler, AADB2CAuthorizationRequestResolver resolver) {
         this.handler = handler;
         this.resolver = resolver;
     }
 
     @Override
     public void init(HttpSecurity http) throws Exception {
+        // @formatter:off
         http.logout()
                 .logoutSuccessHandler(handler)
                 .and()
             .oauth2Login()
-                .loginProcessingUrl(properties.getLoginProcessingUrl())
                 .authorizationEndpoint()
-                    .authorizationRequestResolver(resolver);
+                    .authorizationRequestResolver(resolver)
+                    .and()
+                .tokenEndpoint()
+                    .accessTokenResponseClient(accessTokenResponseClient());
+        // @formatter:on
+    }
+
+    protected OAuth2AccessTokenResponseClient<OAuth2AuthorizationCodeGrantRequest> accessTokenResponseClient() {
+        DefaultAuthorizationCodeTokenResponseClient result = new DefaultAuthorizationCodeTokenResponseClient();
+        result.setRequestEntityConverter(new AADB2COAuth2AuthorizationCodeGrantRequestEntityConverter());
+        return result;
     }
 }

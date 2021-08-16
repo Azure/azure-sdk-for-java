@@ -221,7 +221,7 @@ public final class VpnServerConfigurationsClientImpl
                     new IllegalArgumentException(
                         "Parameter vpnServerConfigurationName is required and cannot be null."));
         }
-        final String apiVersion = "2020-07-01";
+        final String apiVersion = "2021-02-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -235,7 +235,7 @@ public final class VpnServerConfigurationsClientImpl
                             apiVersion,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -274,7 +274,7 @@ public final class VpnServerConfigurationsClientImpl
                     new IllegalArgumentException(
                         "Parameter vpnServerConfigurationName is required and cannot be null."));
         }
-        final String apiVersion = "2020-07-01";
+        final String apiVersion = "2021-02-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -349,7 +349,7 @@ public final class VpnServerConfigurationsClientImpl
      *
      * @param resourceGroupName The resource group name of the VpnServerConfiguration.
      * @param vpnServerConfigurationName The name of the VpnServerConfiguration being created or updated.
-     * @param vpnServerConfigurationParameters VpnServerConfiguration Resource.
+     * @param vpnServerConfigurationParameters Parameters supplied to create or update VpnServerConfiguration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -390,7 +390,7 @@ public final class VpnServerConfigurationsClientImpl
         } else {
             vpnServerConfigurationParameters.validate();
         }
-        final String apiVersion = "2020-07-01";
+        final String apiVersion = "2021-02-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -405,7 +405,7 @@ public final class VpnServerConfigurationsClientImpl
                             vpnServerConfigurationParameters,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -413,7 +413,7 @@ public final class VpnServerConfigurationsClientImpl
      *
      * @param resourceGroupName The resource group name of the VpnServerConfiguration.
      * @param vpnServerConfigurationName The name of the VpnServerConfiguration being created or updated.
-     * @param vpnServerConfigurationParameters VpnServerConfiguration Resource.
+     * @param vpnServerConfigurationParameters Parameters supplied to create or update VpnServerConfiguration.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -456,7 +456,7 @@ public final class VpnServerConfigurationsClientImpl
         } else {
             vpnServerConfigurationParameters.validate();
         }
-        final String apiVersion = "2020-07-01";
+        final String apiVersion = "2021-02-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -476,7 +476,7 @@ public final class VpnServerConfigurationsClientImpl
      *
      * @param resourceGroupName The resource group name of the VpnServerConfiguration.
      * @param vpnServerConfigurationName The name of the VpnServerConfiguration being created or updated.
-     * @param vpnServerConfigurationParameters VpnServerConfiguration Resource.
+     * @param vpnServerConfigurationParameters Parameters supplied to create or update VpnServerConfiguration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -505,7 +505,7 @@ public final class VpnServerConfigurationsClientImpl
      *
      * @param resourceGroupName The resource group name of the VpnServerConfiguration.
      * @param vpnServerConfigurationName The name of the VpnServerConfiguration being created or updated.
-     * @param vpnServerConfigurationParameters VpnServerConfiguration Resource.
+     * @param vpnServerConfigurationParameters Parameters supplied to create or update VpnServerConfiguration.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -537,7 +537,7 @@ public final class VpnServerConfigurationsClientImpl
      *
      * @param resourceGroupName The resource group name of the VpnServerConfiguration.
      * @param vpnServerConfigurationName The name of the VpnServerConfiguration being created or updated.
-     * @param vpnServerConfigurationParameters VpnServerConfiguration Resource.
+     * @param vpnServerConfigurationParameters Parameters supplied to create or update VpnServerConfiguration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -557,7 +557,7 @@ public final class VpnServerConfigurationsClientImpl
      *
      * @param resourceGroupName The resource group name of the VpnServerConfiguration.
      * @param vpnServerConfigurationName The name of the VpnServerConfiguration being created or updated.
-     * @param vpnServerConfigurationParameters VpnServerConfiguration Resource.
+     * @param vpnServerConfigurationParameters Parameters supplied to create or update VpnServerConfiguration.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -580,7 +580,7 @@ public final class VpnServerConfigurationsClientImpl
      *
      * @param resourceGroupName The resource group name of the VpnServerConfiguration.
      * @param vpnServerConfigurationName The name of the VpnServerConfiguration being created or updated.
-     * @param vpnServerConfigurationParameters VpnServerConfiguration Resource.
+     * @param vpnServerConfigurationParameters Parameters supplied to create or update VpnServerConfiguration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -601,7 +601,7 @@ public final class VpnServerConfigurationsClientImpl
      *
      * @param resourceGroupName The resource group name of the VpnServerConfiguration.
      * @param vpnServerConfigurationName The name of the VpnServerConfiguration being created or updated.
-     * @param vpnServerConfigurationParameters VpnServerConfiguration Resource.
+     * @param vpnServerConfigurationParameters Parameters supplied to create or update VpnServerConfiguration.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -625,7 +625,7 @@ public final class VpnServerConfigurationsClientImpl
      *
      * @param resourceGroupName The resource group name of the VpnServerConfiguration.
      * @param vpnServerConfigurationName The name of the VpnServerConfiguration being created or updated.
-     * @param vpnServerConfigurationParameters VpnServerConfiguration Resource.
+     * @param vpnServerConfigurationParameters Parameters supplied to create or update VpnServerConfiguration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -645,7 +645,7 @@ public final class VpnServerConfigurationsClientImpl
      *
      * @param resourceGroupName The resource group name of the VpnServerConfiguration.
      * @param vpnServerConfigurationName The name of the VpnServerConfiguration being created or updated.
-     * @param vpnServerConfigurationParameters VpnServerConfiguration Resource.
+     * @param vpnServerConfigurationParameters Parameters supplied to create or update VpnServerConfiguration.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -699,7 +699,7 @@ public final class VpnServerConfigurationsClientImpl
                     new IllegalArgumentException(
                         "Parameter vpnServerConfigurationName is required and cannot be null."));
         }
-        final String apiVersion = "2020-07-01";
+        final String apiVersion = "2021-02-01";
         final String accept = "application/json";
         TagsObject vpnServerConfigurationParameters = new TagsObject();
         vpnServerConfigurationParameters.withTags(tags);
@@ -716,7 +716,7 @@ public final class VpnServerConfigurationsClientImpl
                             vpnServerConfigurationParameters,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -756,7 +756,7 @@ public final class VpnServerConfigurationsClientImpl
                     new IllegalArgumentException(
                         "Parameter vpnServerConfigurationName is required and cannot be null."));
         }
-        final String apiVersion = "2020-07-01";
+        final String apiVersion = "2021-02-01";
         final String accept = "application/json";
         TagsObject vpnServerConfigurationParameters = new TagsObject();
         vpnServerConfigurationParameters.withTags(tags);
@@ -892,7 +892,7 @@ public final class VpnServerConfigurationsClientImpl
                     new IllegalArgumentException(
                         "Parameter vpnServerConfigurationName is required and cannot be null."));
         }
-        final String apiVersion = "2020-07-01";
+        final String apiVersion = "2021-02-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -906,7 +906,7 @@ public final class VpnServerConfigurationsClientImpl
                             apiVersion,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -945,7 +945,7 @@ public final class VpnServerConfigurationsClientImpl
                     new IllegalArgumentException(
                         "Parameter vpnServerConfigurationName is required and cannot be null."));
         }
-        final String apiVersion = "2020-07-01";
+        final String apiVersion = "2021-02-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1124,7 +1124,7 @@ public final class VpnServerConfigurationsClientImpl
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2020-07-01";
+        final String apiVersion = "2021-02-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1146,7 +1146,7 @@ public final class VpnServerConfigurationsClientImpl
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1178,7 +1178,7 @@ public final class VpnServerConfigurationsClientImpl
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2020-07-01";
+        final String apiVersion = "2021-02-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1283,7 +1283,7 @@ public final class VpnServerConfigurationsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-07-01";
+        final String apiVersion = "2021-02-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1299,7 +1299,7 @@ public final class VpnServerConfigurationsClientImpl
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1325,7 +1325,7 @@ public final class VpnServerConfigurationsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-07-01";
+        final String apiVersion = "2021-02-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1427,7 +1427,7 @@ public final class VpnServerConfigurationsClientImpl
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1499,7 +1499,7 @@ public final class VpnServerConfigurationsClientImpl
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**

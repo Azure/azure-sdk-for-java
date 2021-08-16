@@ -10,6 +10,7 @@ import com.azure.core.management.Resource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.BastionHostIpConfiguration;
 import com.azure.resourcemanager.network.models.ProvisioningState;
+import com.azure.resourcemanager.network.models.Sku;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -26,6 +27,12 @@ public class BastionHostInner extends Resource {
      */
     @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
+
+    /*
+     * The sku of this Bastion Host.
+     */
+    @JsonProperty(value = "sku")
+    private Sku sku;
 
     /*
      * IP configuration of the Bastion Host resource.
@@ -58,6 +65,26 @@ public class BastionHostInner extends Resource {
      */
     public String etag() {
         return this.etag;
+    }
+
+    /**
+     * Get the sku property: The sku of this Bastion Host.
+     *
+     * @return the sku value.
+     */
+    public Sku sku() {
+        return this.sku;
+    }
+
+    /**
+     * Set the sku property: The sku of this Bastion Host.
+     *
+     * @param sku the sku value to set.
+     * @return the BastionHostInner object itself.
+     */
+    public BastionHostInner withSku(Sku sku) {
+        this.sku = sku;
+        return this;
     }
 
     /**
@@ -149,6 +176,9 @@ public class BastionHostInner extends Resource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (sku() != null) {
+            sku().validate();
+        }
         if (ipConfigurations() != null) {
             ipConfigurations().forEach(e -> e.validate());
         }

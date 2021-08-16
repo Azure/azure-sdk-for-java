@@ -7,10 +7,12 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.Response;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.models.AccessTier;
+import com.azure.storage.blob.models.CustomerProvidedKey;
 import com.azure.storage.blob.options.BlobParallelUploadOptions;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobHttpHeaders;
@@ -106,6 +108,29 @@ public class BlobClient extends BlobClientBase {
     }
 
     /**
+     * Creates a new {@link BlobClient} with the specified {@code encryptionScope}.
+     *
+     * @param encryptionScope the encryption scope for the blob, pass {@code null} to use no encryption scope.
+     * @return a {@link BlobClient} with the specified {@code encryptionScope}.
+     */
+    @Override
+    public BlobClient getEncryptionScopeClient(String encryptionScope) {
+        return new BlobClient(client.getEncryptionScopeAsyncClient(encryptionScope));
+    }
+
+    /**
+     * Creates a new {@link BlobClient} with the specified {@code customerProvidedKey}.
+     *
+     * @param customerProvidedKey the {@link CustomerProvidedKey} for the blob,
+     * pass {@code null} to use no customer provided key.
+     * @return a {@link BlobClient} with the specified {@code customerProvidedKey}.
+     */
+    @Override
+    public BlobClient getCustomerProvidedKeyClient(CustomerProvidedKey customerProvidedKey) {
+        return new BlobClient(client.getCustomerProvidedKeyAsyncClient(customerProvidedKey));
+    }
+
+    /**
      * Creates a new {@link AppendBlobClient} associated with this blob.
      *
      * @return A {@link AppendBlobClient} associated with this blob.
@@ -171,6 +196,32 @@ public class BlobClient extends BlobClientBase {
             blobRequestConditions.setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD);
         }
         uploadWithResponse(data, length, null, null, null, null, blobRequestConditions, null, Context.NONE);
+    }
+
+    /**
+     * Creates a new blob. By default this method will not overwrite an existing blob.
+     *
+     * @param data The data to write to the blob.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void upload(BinaryData data) {
+        upload(data, false);
+    }
+
+    /**
+     * Creates a new blob, or updates the content of an existing blob.
+     *
+     * @param data The data to write to the blob.
+     * @param overwrite Whether or not to overwrite, should data exist on the blob.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void upload(BinaryData data, boolean overwrite) {
+        BlobRequestConditions blobRequestConditions = new BlobRequestConditions();
+        if (!overwrite) {
+            blobRequestConditions.setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD);
+        }
+        uploadWithResponse(new BlobParallelUploadOptions(data).setRequestConditions(blobRequestConditions),
+            null, Context.NONE);
     }
 
     /**

@@ -12,20 +12,20 @@ import com.azure.core.http.policy.AzureSasCredentialPolicy;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.util.ClientOptions;
-import com.azure.core.util.CoreUtils;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.SasImplUtils;
-import com.azure.storage.common.implementation.credentials.CredentialValidator;
-import com.azure.storage.common.sas.CommonSasQueryParameters;
 import com.azure.storage.common.implementation.connectionstring.StorageAuthenticationSettings;
 import com.azure.storage.common.implementation.connectionstring.StorageConnectionString;
 import com.azure.storage.common.implementation.connectionstring.StorageEndpoint;
+import com.azure.storage.common.implementation.credentials.CredentialValidator;
 import com.azure.storage.common.policy.RequestRetryOptions;
 import com.azure.storage.common.policy.StorageSharedKeyCredentialPolicy;
-import com.azure.storage.file.share.implementation.AzureFileStorageBuilder;
+import com.azure.storage.common.sas.CommonSasQueryParameters;
 import com.azure.storage.file.share.implementation.AzureFileStorageImpl;
+import com.azure.storage.file.share.implementation.AzureFileStorageImplBuilder;
 import com.azure.storage.file.share.implementation.util.BuilderHelper;
 
 import java.net.MalformedURLException;
@@ -141,11 +141,11 @@ public class ShareFileClientBuilder {
             }
         }, retryOptions, logOptions, clientOptions, httpClient, perCallPolicies, perRetryPolicies, configuration);
 
-        return new AzureFileStorageBuilder()
+        return new AzureFileStorageImplBuilder()
             .url(endpoint)
             .pipeline(pipeline)
             .version(serviceVersion.getVersion())
-            .build();
+            .buildClient();
     }
 
     /**
@@ -336,7 +336,8 @@ public class ShareFileClientBuilder {
     /**
      * Sets the SAS token used to authorize requests sent to the service.
      *
-     * @param sasToken The SAS token to use for authenticating requests.
+     * @param sasToken The SAS token to use for authenticating requests. This string should only be the query parameters
+     * (with or without a leading '?') and not a full url.
      * @return the updated ShareFileClientBuilder
      * @throws NullPointerException If {@code sasToken} is {@code null}.
      */

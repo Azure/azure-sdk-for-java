@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.loganalytics.implementation;
 
-import com.azure.resourcemanager.loganalytics.LogAnalyticsManager;
 import com.azure.resourcemanager.loganalytics.fluent.models.WorkspacePurgeStatusResponseInner;
 import com.azure.resourcemanager.loganalytics.models.PurgeState;
 import com.azure.resourcemanager.loganalytics.models.WorkspacePurgeStatusResponse;
@@ -12,10 +11,11 @@ import com.azure.resourcemanager.loganalytics.models.WorkspacePurgeStatusRespons
 public final class WorkspacePurgeStatusResponseImpl implements WorkspacePurgeStatusResponse {
     private WorkspacePurgeStatusResponseInner innerObject;
 
-    private final LogAnalyticsManager serviceManager;
+    private final com.azure.resourcemanager.loganalytics.LogAnalyticsManager serviceManager;
 
     WorkspacePurgeStatusResponseImpl(
-        WorkspacePurgeStatusResponseInner innerObject, LogAnalyticsManager serviceManager) {
+        WorkspacePurgeStatusResponseInner innerObject,
+        com.azure.resourcemanager.loganalytics.LogAnalyticsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -28,7 +28,7 @@ public final class WorkspacePurgeStatusResponseImpl implements WorkspacePurgeSta
         return this.innerObject;
     }
 
-    private LogAnalyticsManager manager() {
+    private com.azure.resourcemanager.loganalytics.LogAnalyticsManager manager() {
         return this.serviceManager;
     }
 }

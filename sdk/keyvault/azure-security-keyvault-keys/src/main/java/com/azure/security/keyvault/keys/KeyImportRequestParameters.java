@@ -12,7 +12,6 @@ import java.util.Map;
 
 @Fluent
 class KeyImportRequestParameters {
-
     /**
      * Whether to import as a hardware key (HSM) or software key.
      */
@@ -20,13 +19,13 @@ class KeyImportRequestParameters {
     private Boolean hsm;
 
     /**
-     * The Json web key.
+     * The JSON Web Key to import.
      */
     @JsonProperty(value = "key", required = true)
     private JsonWebKey key;
 
     /**
-     * The keyAttributes property.
+     * The key attributes.
      */
     @JsonProperty(value = "attributes")
     private KeyRequestAttributes keyAttributes;
@@ -37,109 +36,119 @@ class KeyImportRequestParameters {
     @JsonProperty(value = "tags")
     private Map<String, String> tags;
 
-    /**
+    /*
      * The policy rules under which the key can be exported.
      */
     @JsonProperty(value = "release_policy")
     private KeyReleasePolicy releasePolicy;
 
     /**
-     * Get the keyAttributes value.
+     * Get the key attributes.
      *
-     * @return the keyAttributes value
+     * @return The key attributes.
      */
     public KeyRequestAttributes getKeyAttributes() {
         return this.keyAttributes;
     }
 
     /**
-     * Set the keyAttributes value.
+     * Set the key attributes.
      *
-     * @param keyAttributes the keyAttributes value to set
-     * @return the KeyRequestParameters object itself.
+     * @param keyAttributes The key attributes to set.
+     *
+     * @return The updated {@link KeyRequestParameters} object.
      */
     public KeyImportRequestParameters setKeyAttributes(KeyRequestAttributes keyAttributes) {
         this.keyAttributes = keyAttributes;
+
         return this;
     }
 
     /**
-     * Get the tags value.
+     * Get the tags associated with the key.
      *
-     * @return the tags value
+     * @return The tag names and values.
      */
     public Map<String, String> getTags() {
         return this.tags;
     }
 
     /**
-     * Set the tags value.
+     * Set the tags to be associated with the key.
      *
-     * @param tags the tags value to set
-     * @return the KeyRequestParameters object itself.
+     * @param tags The tags to set.
+     *
+     * @return The updated {@link KeyRequestParameters} object.
      */
     public KeyImportRequestParameters setTags(Map<String, String> tags) {
         this.tags = tags;
+
         return this;
     }
 
     /**
-     * Set the hsm value.
+     * Set the HSM value.
      *
-     * @param hsm the hsm value to set
-     * @return the KeyImportParameters object itself.
+     * @param hsm The HSM value to set.
+     *
+     * @return The KeyImportParameters object itself.
      */
     public KeyImportRequestParameters setHsm(Boolean hsm) {
         this.hsm = hsm;
+
         return this;
     }
 
     /**
-     * Get the hsm value.
+     * Get the HSM value.
      *
-     * @return the hsm value
+     * @return The HSM value
      */
     public Boolean getHsm() {
         return this.hsm;
     }
 
     /**
-     * Get the key value.
+     * Get the JSON Web Key to import.
      *
-     * @return the key value
+     * @return The JSON Web Key.
      */
     public JsonWebKey getKey() {
         return this.key;
     }
 
     /**
-     * Set the key value.
+     * Set the JSON Web Key to import.
      *
-     * @param key the key value to set
-     * @return the KeyImportParameters object itself.
+     * @param key The JSON Web Key to set.
+     *
+     * @return The updated {@link KeyImportRequestParameters} object.
      */
     public KeyImportRequestParameters setKey(JsonWebKey key) {
         this.key = key;
+
         return this;
     }
 
     /**
      * Get the policy rules under which the key can be exported.
      *
-     * @return The release policy.
+     * @return The policy rules under which the key can be exported.
      */
     public KeyReleasePolicy getReleasePolicy() {
-        return releasePolicy;
+        return this.releasePolicy;
     }
 
     /**
      * Set the policy rules under which the key can be exported.
      *
-     * @param releasePolicy The release policy to set.
+     * @param releasePolicy The policy rules under which the key can be exported.
+     *
      * @return The updated {@link KeyImportRequestParameters} object.
      */
     public KeyImportRequestParameters setReleasePolicy(KeyReleasePolicy releasePolicy) {
         this.releasePolicy = releasePolicy;
+
         return this;
     }
 }

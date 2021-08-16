@@ -1,16 +1,11 @@
 trigger: none
 
 stages:
-  - template: ../../eng/pipelines/templates/stages/archetype-sdk-tests.yml
+  - template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
     parameters:
       ServiceDirectory: textanalytics
+      TestMode: RECORD # to make sure recordedData is not null but still testing LIVE mode
       Artifacts:
         - name: azure-ai-textanalytics
           groupId: com.azure
           safeName: azureaitextanalytics
-      # resource creation is disabled because we are trying to test the stable endpoint.
-      # Will enable it when service rolls out AAD to all region.
-      DisableAzureResourceCreation: true
-      EnvVars:
-        AZURE_TEXT_ANALYTICS_API_KEY: $(java-textanalytics-test-api-key)
-        AZURE_TEXT_ANALYTICS_ENDPOINT: $(java-textanalytics-sdk-endpoint)

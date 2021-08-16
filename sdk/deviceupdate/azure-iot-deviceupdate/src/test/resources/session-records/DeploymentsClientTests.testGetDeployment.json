@@ -1,0 +1,18 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.api.prod.adu.microsoft.com/deviceupdate/blue/v2/management/deployments/dpokluda-test-2021-302-1202-48",
+    "Headers" : { },
+    "Response" : {
+      "traceparent" : "00-06ea37263e2cc44babf17fcf835b8709-6d4a8defeadd0e46-00",
+      "retry-after" : "0",
+      "Content-Length" : "439",
+      "StatusCode" : "200",
+      "Body" : "{\r\n  \"deploymentId\": \"dpokluda-test-2021-302-1202-48\",\r\n  \"deploymentType\": \"Complete\",\r\n  \"startDateTime\": \"2021-03-02T20:04:52.8525661+00:00\",\r\n  \"deviceGroupType\": \"DeviceGroupDefinitions\",\r\n  \"deviceGroupDefinition\": [\r\n    \"dpokluda-test\"\r\n  ],\r\n  \"updateId\": {\r\n    \"provider\": \"Contoso\",\r\n    \"name\": \"Virtual-Machine\",\r\n    \"version\": \"2021.302.1202.48\"\r\n  },\r\n  \"isCanceled\": false,\r\n  \"isCompleted\": false,\r\n  \"isRetry\": false\r\n}",
+      "Date" : "Tue, 02 Mar 2021 21:29:08 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

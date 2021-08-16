@@ -83,6 +83,7 @@ public final class DataLakePathClientBuilder {
     public DataLakePathClientBuilder() {
         logOptions = getDefaultHttpLogOptions();
         blobClientBuilder = new BlobClientBuilder();
+        blobClientBuilder.addPolicy(BuilderHelper.getBlobUserAgentModificationPolicy());
     }
 
     /**
@@ -131,9 +132,8 @@ public final class DataLakePathClientBuilder {
             endpoint, retryOptions, logOptions,
             clientOptions, httpClient, perCallPolicies, perRetryPolicies, configuration, logger);
 
-        return new DataLakeFileAsyncClient(pipeline, String.format("%s/%s/%s", endpoint, dataLakeFileSystemName,
-            pathName), serviceVersion, accountName, dataLakeFileSystemName, pathName,
-            blobClientBuilder.buildAsyncClient().getBlockBlobAsyncClient());
+        return new DataLakeFileAsyncClient(pipeline, endpoint, serviceVersion, accountName, dataLakeFileSystemName,
+            pathName, blobClientBuilder.buildAsyncClient().getBlockBlobAsyncClient());
     }
 
     /**
@@ -180,9 +180,8 @@ public final class DataLakePathClientBuilder {
             retryOptions, logOptions,
             clientOptions, httpClient, perCallPolicies, perRetryPolicies, configuration, logger);
 
-        return new DataLakeDirectoryAsyncClient(pipeline, String.format("%s/%s/%s", endpoint, dataLakeFileSystemName,
-            pathName), serviceVersion, accountName, dataLakeFileSystemName, pathName,
-            blobClientBuilder.buildAsyncClient().getBlockBlobAsyncClient());
+        return new DataLakeDirectoryAsyncClient(pipeline, endpoint, serviceVersion, accountName, dataLakeFileSystemName,
+            pathName, blobClientBuilder.buildAsyncClient().getBlockBlobAsyncClient());
     }
 
     /**
@@ -218,7 +217,8 @@ public final class DataLakePathClientBuilder {
     /**
      * Sets the SAS token used to authorize requests sent to the service.
      *
-     * @param sasToken The SAS token to use for authenticating requests.
+     * @param sasToken The SAS token to use for authenticating requests. This string should only be the query parameters
+     * (with or without a leading '?') and not a full url.
      * @return the updated DataLakePathClientBuilder
      * @throws NullPointerException If {@code sasToken} is {@code null}.
      */

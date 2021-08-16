@@ -25,4 +25,9 @@ public class EventHubProducerDestination implements ProducerDestination {
     public String getNameForPartition(int partition) {
         return this.name + "-" + partition;
     }
+
+    @Override
+    public String toString() {
+        return "EventHubProducerDestination{" + "name='" + name + '\'' + '}';
+    }
 }

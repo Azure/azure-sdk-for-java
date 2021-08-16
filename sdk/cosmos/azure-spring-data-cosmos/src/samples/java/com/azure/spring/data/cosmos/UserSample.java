@@ -11,7 +11,7 @@ package com.azure.spring.data.cosmos;
 import com.azure.spring.data.cosmos.core.mapping.Container;
 import org.springframework.data.annotation.Id;
 
-@Container(containerName = "myContainer")
+@Container(containerName = "myContainer", autoScale = true, ru = "4000")
 public class UserSample {
     @Id
     private String emailAddress;

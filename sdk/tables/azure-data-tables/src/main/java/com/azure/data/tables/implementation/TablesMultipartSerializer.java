@@ -9,14 +9,15 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.SerializerEncoding;
-import com.azure.data.tables.implementation.models.BatchChangeSet;
-import com.azure.data.tables.models.BatchOperationResponse;
-import com.azure.data.tables.implementation.models.BatchSubRequest;
+import com.azure.data.tables.implementation.models.TransactionalBatchChangeSet;
+import com.azure.data.tables.implementation.models.TransactionalBatchSubRequest;
 import com.azure.data.tables.implementation.models.MultipartPart;
 import com.azure.data.tables.implementation.models.TableServiceError;
+import com.azure.data.tables.models.TableTransactionActionResponse;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -33,14 +34,17 @@ public class TablesMultipartSerializer extends TablesJacksonSerializer {
     private static final String BOUNDARY_DELIMETER = "--";
     private final ClientLogger logger = new ClientLogger(TablesMultipartSerializer.class);
 
-    private static class BatchOperationResponseParams {
+    private static class TableTransactionActionResponseBuilder {
         private int statusCode;
         private Object value;
         private final HttpHeaders headers = new HttpHeaders();
 
-        BatchOperationResponse build() {
-            BatchOperationResponse response = ModelHelper.createBatchOperationResponse(statusCode, value);
-            headers.forEach(h -> response.getHeaders().put(h.getName(), h.getValue()));
+        TableTransactionActionResponse build() {
+            TableTransactionActionResponse response =
+                ModelHelper.createTableTransactionActionResponse(statusCode, value);
+
+            headers.forEach(h -> response.getHeaders().set(h.getName(), h.getValue()));
+
             return response;
         }
 
@@ -53,7 +57,7 @@ public class TablesMultipartSerializer extends TablesJacksonSerializer {
         }
 
         void putHeader(String name, String value) {
-            this.headers.put(name, value);
+            this.headers.set(name, value);
         }
     }
 
@@ -61,17 +65,35 @@ public class TablesMultipartSerializer extends TablesJacksonSerializer {
     public void serialize(Object object, SerializerEncoding encoding, OutputStream outputStream) throws IOException {
         if (object instanceof MultipartPart<?>) {
             writeMultipartPart(object, encoding, outputStream);
-        } else if (object instanceof BatchSubRequest) {
+        } else if (object instanceof TransactionalBatchSubRequest) {
             writeRequest(object, outputStream);
         } else {
             super.serialize(object, encoding, outputStream);
         }
     }
 
+    @Override
+    public String serialize(Object object, SerializerEncoding encoding) throws IOException {
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+
+        serialize(object, encoding, stream);
+
+        return stream.toString(StandardCharsets.UTF_8.name());
+    }
+
+    @Override
+    public byte[] serializeToBytes(Object object, SerializerEncoding encoding) throws IOException {
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+
+        serialize(object, encoding, stream);
+
+        return stream.toByteArray();
+    }
+
     private void writeMultipartPart(Object object, SerializerEncoding encoding, OutputStream os) throws IOException {
         MultipartPart<?> part = (MultipartPart<?>) object;
 
-        if (part instanceof BatchChangeSet) {
+        if (part instanceof TransactionalBatchChangeSet) {
             write("Content-Type: " + part.getContentType() + "\r\n\r\n", os);
         }
 
@@ -85,7 +107,7 @@ public class TablesMultipartSerializer extends TablesJacksonSerializer {
     }
 
     private void writeRequest(Object object, OutputStream os) throws IOException {
-        HttpRequest request = ((BatchSubRequest) object).getHttpRequest();
+        HttpRequest request = ((TransactionalBatchSubRequest) object).getHttpRequest();
         String method = request.getHttpMethod() == HttpMethod.PATCH ? "MERGE" : request.getHttpMethod().toString();
 
         write("Content-Type: application/http\r\n", os);
@@ -114,29 +136,33 @@ public class TablesMultipartSerializer extends TablesJacksonSerializer {
 
     @Override
     public <U> U deserialize(String value, Type type, SerializerEncoding serializerEncoding) throws IOException {
-        if (type == BatchOperationResponse.class) {
-            return deserialize(new ByteArrayInputStream(value.getBytes(StandardCharsets.UTF_8)), type,
-                serializerEncoding);
+        return deserialize(value.getBytes(StandardCharsets.UTF_8), type, serializerEncoding);
+    }
+
+    @Override
+    public <U> U deserialize(byte[] bytes, Type type, SerializerEncoding encoding) throws IOException {
+        if (type == TableTransactionActionResponse.class) {
+            return deserialize(new ByteArrayInputStream(bytes), type, encoding);
         } else {
-            return super.deserialize(value, type, serializerEncoding);
+            return super.deserialize(bytes, type, encoding);
         }
     }
 
     @Override
     @SuppressWarnings("unchecked")
-    public <U> U deserialize(InputStream inputStream, Type type, SerializerEncoding serializerEncoding)
-        throws IOException {
-        if (type == BatchOperationResponse[].class) {
+    public <U> U deserialize(InputStream inputStream, Type type, SerializerEncoding serializerEncoding) throws IOException {
+        if (type == TableTransactionActionResponse[].class) {
             BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8));
             String line = reader.readLine();
+
             if (line == null || !line.startsWith(BOUNDARY_DELIMETER + "batchresponse_")) {
-                throw logger.logExceptionAsError(new IllegalStateException("Invalid multipart response"));
+                throw logger.logExceptionAsError(new IllegalStateException("Invalid multipart response."));
             }
 
-            BatchOperationResponseParams responseParams = null;
+            TableTransactionActionResponseBuilder responseParams = null;
             boolean foundBody = false;
             String body = null;
-            List<BatchOperationResponse> responses = new ArrayList<>();
+            List<TableTransactionActionResponse> responses = new ArrayList<>();
 
             while ((line = reader.readLine()) != null) {
                 if (line.startsWith(BOUNDARY_DELIMETER + "changesetresponse_")) {
@@ -146,7 +172,7 @@ public class TablesMultipartSerializer extends TablesJacksonSerializer {
                                 responseParams.setValue(deserialize(body, TableServiceError.class, serializerEncoding));
                             } catch (IOException e) {
                                 logger.logThrowableAsWarning(
-                                    new IOException("Unable to deserialize sub-response body", e));
+                                    new IOException("Unable to deserialize sub-response body.", e));
                                 responseParams.setValue(body);
                             }
                         }
@@ -156,12 +182,12 @@ public class TablesMultipartSerializer extends TablesJacksonSerializer {
                     foundBody = false;
                     body = null;
                 } else if (responseParams == null && line.startsWith("HTTP/1.1")) {
-                    responseParams = new BatchOperationResponseParams();
-                    // Characters 9-12 in the first line of the HTTP response are the status code
+                    responseParams = new TableTransactionActionResponseBuilder();
+                    // Characters 9-12 in the first line of the HTTP response are the status code.
                     responseParams.setStatusCode(Integer.parseInt(line.substring(9, 12)));
                 } else if (responseParams != null && !foundBody) {
                     if (line.isEmpty()) {
-                        // An empty line after the headers delimits the body
+                        // An empty line after the headers delimits the body.
                         foundBody = true;
                     } else {
                         // A header line
@@ -169,12 +195,12 @@ public class TablesMultipartSerializer extends TablesJacksonSerializer {
                         responseParams.putHeader(header[0].trim(), header[1].trim());
                     }
                 } else if (responseParams != null && !line.isEmpty()) {
-                    // The rest of the lines constitute the body until we get to the delimiter again
+                    // The rest of the lines constitute the body until we get to the delimiter again.
                     body = (body == null ? line : body + line) + "\r\n";
                 }
             }
 
-            return (U) responses.toArray(new BatchOperationResponse[0]);
+            return (U) responses.toArray(new TableTransactionActionResponse[0]);
         } else {
             return super.deserialize(inputStream, type, serializerEncoding);
         }

@@ -15,6 +15,7 @@ import com.azure.resourcemanager.resources.fluentcore.model.implementation.Wrapp
 import reactor.core.publisher.Mono;
 
 import java.util.Objects;
+import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
 
 /**
  * Implementation for {@link EventHubConsumerGroups}.
@@ -70,17 +71,17 @@ public final class EventHubConsumerGroupsImpl
     @Override
     public PagedIterable<EventHubConsumerGroup> listByEventHub(
         String resourceGroupName, String namespaceName, String eventHubName) {
-        return innerModel()
-            .listByEventHub(resourceGroupName, namespaceName, eventHubName)
-            .mapPage(this::wrapModel);
+        return PagedConverter.mapPage(innerModel()
+            .listByEventHub(resourceGroupName, namespaceName, eventHubName),
+            this::wrapModel);
     }
 
     @Override
     public PagedFlux<EventHubConsumerGroup> listByEventHubAsync(
         String resourceGroupName, String namespaceName, String eventHubName) {
-        return innerModel()
-            .listByEventHubAsync(resourceGroupName, namespaceName, eventHubName)
-            .mapPage(this::wrapModel);
+        return PagedConverter.mapPage(innerModel()
+            .listByEventHubAsync(resourceGroupName, namespaceName, eventHubName),
+            this::wrapModel);
     }
 
     @Override

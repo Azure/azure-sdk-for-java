@@ -12,26 +12,26 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Storage Service Properties.
- */
+/** Storage Service Properties. */
 @JacksonXmlRootElement(localName = "StorageServiceProperties")
 @Fluent
 public final class BlobServiceProperties {
     /*
-     * The logging property.
+     * Azure Analytics Logging settings.
      */
     @JsonProperty(value = "Logging")
     private BlobAnalyticsLogging logging;
 
     /*
-     * The hourMetrics property.
+     * a summary of request statistics grouped by API in hour or minute
+     * aggregates for blobs
      */
     @JsonProperty(value = "HourMetrics")
     private BlobMetrics hourMetrics;
 
     /*
-     * The minuteMetrics property.
+     * a summary of request statistics grouped by API in hour or minute
+     * aggregates for blobs
      */
     @JsonProperty(value = "MinuteMetrics")
     private BlobMetrics minuteMetrics;
@@ -61,19 +61,20 @@ public final class BlobServiceProperties {
     private String defaultServiceVersion;
 
     /*
-     * The deleteRetentionPolicy property.
+     * the retention policy which determines how long the associated data
+     * should persist
      */
     @JsonProperty(value = "DeleteRetentionPolicy")
     private BlobRetentionPolicy deleteRetentionPolicy;
 
     /*
-     * The staticWebsite property.
+     * The properties that enable an account to host a static website
      */
     @JsonProperty(value = "StaticWebsite")
     private StaticWebsite staticWebsite;
 
     /**
-     * Get the logging property: The logging property.
+     * Get the logging property: Azure Analytics Logging settings.
      *
      * @return the logging value.
      */
@@ -82,7 +83,7 @@ public final class BlobServiceProperties {
     }
 
     /**
-     * Set the logging property: The logging property.
+     * Set the logging property: Azure Analytics Logging settings.
      *
      * @param logging the logging value to set.
      * @return the BlobServiceProperties object itself.
@@ -93,7 +94,8 @@ public final class BlobServiceProperties {
     }
 
     /**
-     * Get the hourMetrics property: The hourMetrics property.
+     * Get the hourMetrics property: a summary of request statistics grouped by API in hour or minute aggregates for
+     * blobs.
      *
      * @return the hourMetrics value.
      */
@@ -102,7 +104,8 @@ public final class BlobServiceProperties {
     }
 
     /**
-     * Set the hourMetrics property: The hourMetrics property.
+     * Set the hourMetrics property: a summary of request statistics grouped by API in hour or minute aggregates for
+     * blobs.
      *
      * @param hourMetrics the hourMetrics value to set.
      * @return the BlobServiceProperties object itself.
@@ -113,7 +116,8 @@ public final class BlobServiceProperties {
     }
 
     /**
-     * Get the minuteMetrics property: The minuteMetrics property.
+     * Get the minuteMetrics property: a summary of request statistics grouped by API in hour or minute aggregates for
+     * blobs.
      *
      * @return the minuteMetrics value.
      */
@@ -122,7 +126,8 @@ public final class BlobServiceProperties {
     }
 
     /**
-     * Set the minuteMetrics property: The minuteMetrics property.
+     * Set the minuteMetrics property: a summary of request statistics grouped by API in hour or minute aggregates for
+     * blobs.
      *
      * @param minuteMetrics the minuteMetrics value to set.
      * @return the BlobServiceProperties object itself.
@@ -156,10 +161,9 @@ public final class BlobServiceProperties {
     }
 
     /**
-     * Get the defaultServiceVersion property: The default version to use for
-     * requests to the Blob service if an incoming request's version is not
-     * specified. Possible values include version 2008-10-27 and all more
-     * recent versions.
+     * Get the defaultServiceVersion property: The default version to use for requests to the Blob service if an
+     * incoming request's version is not specified. Possible values include version 2008-10-27 and all more recent
+     * versions.
      *
      * @return the defaultServiceVersion value.
      */
@@ -168,10 +172,9 @@ public final class BlobServiceProperties {
     }
 
     /**
-     * Set the defaultServiceVersion property: The default version to use for
-     * requests to the Blob service if an incoming request's version is not
-     * specified. Possible values include version 2008-10-27 and all more
-     * recent versions.
+     * Set the defaultServiceVersion property: The default version to use for requests to the Blob service if an
+     * incoming request's version is not specified. Possible values include version 2008-10-27 and all more recent
+     * versions.
      *
      * @param defaultServiceVersion the defaultServiceVersion value to set.
      * @return the BlobServiceProperties object itself.
@@ -182,8 +185,8 @@ public final class BlobServiceProperties {
     }
 
     /**
-     * Get the deleteRetentionPolicy property: The deleteRetentionPolicy
-     * property.
+     * Get the deleteRetentionPolicy property: the retention policy which determines how long the associated data should
+     * persist.
      *
      * @return the deleteRetentionPolicy value.
      */
@@ -192,8 +195,8 @@ public final class BlobServiceProperties {
     }
 
     /**
-     * Set the deleteRetentionPolicy property: The deleteRetentionPolicy
-     * property.
+     * Set the deleteRetentionPolicy property: the retention policy which determines how long the associated data should
+     * persist.
      *
      * @param deleteRetentionPolicy the deleteRetentionPolicy value to set.
      * @return the BlobServiceProperties object itself.
@@ -204,7 +207,7 @@ public final class BlobServiceProperties {
     }
 
     /**
-     * Get the staticWebsite property: The staticWebsite property.
+     * Get the staticWebsite property: The properties that enable an account to host a static website.
      *
      * @return the staticWebsite value.
      */
@@ -213,7 +216,7 @@ public final class BlobServiceProperties {
     }
 
     /**
-     * Set the staticWebsite property: The staticWebsite property.
+     * Set the staticWebsite property: The properties that enable an account to host a static website.
      *
      * @param staticWebsite the staticWebsite value to set.
      * @return the BlobServiceProperties object itself.

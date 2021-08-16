@@ -2,30 +2,52 @@
 trigger:
   branches:
     include:
-      - master
+      - main
       - feature/*
       - hotfix/*
       - release/*
   paths:
     include:
-      - sdk/mediaservices/
+      - sdk/mediaservices/ci.mgmt.yml
+      - sdk/mediaservices/mgmt-v2015_10_01/
+      - sdk/mediaservices/mgmt-v2018_03_30_preview/
+      - sdk/mediaservices/mgmt-v2018_06_01_preview/
+      - sdk/mediaservices/mgmt-v2018_07_01/
+      - sdk/mediaservices/mgmt-v2019_05_01_preview/
+      - sdk/mediaservices/mgmt-v2020_05_01/
     exclude:
-      - sdk/mediaservices/azure
-      - sdk/mediaservices/microsoft-azure-media
+      - sdk/mediaservices/pom.xml
+      - sdk/mediaservices/mgmt-v2015_10_01/pom.xml
+      - sdk/mediaservices/mgmt-v2018_03_30_preview/pom.xml
+      - sdk/mediaservices/mgmt-v2018_06_01_preview/pom.xml
+      - sdk/mediaservices/mgmt-v2018_07_01/pom.xml
+      - sdk/mediaservices/mgmt-v2019_05_01_preview/pom.xml
+      - sdk/mediaservices/mgmt-v2020_05_01/pom.xml
 
 pr:
   branches:
     include:
-      - master
+      - main
       - feature/*
       - hotfix/*
       - release/*
   paths:
     include:
-      - sdk/mediaservices/
+      - sdk/mediaservices/ci.mgmt.yml
+      - sdk/mediaservices/mgmt-v2015_10_01/
+      - sdk/mediaservices/mgmt-v2018_03_30_preview/
+      - sdk/mediaservices/mgmt-v2018_06_01_preview/
+      - sdk/mediaservices/mgmt-v2018_07_01/
+      - sdk/mediaservices/mgmt-v2019_05_01_preview/
+      - sdk/mediaservices/mgmt-v2020_05_01/
     exclude:
-      - sdk/mediaservices/azure
-      - sdk/mediaservices/microsoft-azure-media
+      - sdk/mediaservices/pom.xml
+      - sdk/mediaservices/mgmt-v2015_10_01/pom.xml
+      - sdk/mediaservices/mgmt-v2018_03_30_preview/pom.xml
+      - sdk/mediaservices/mgmt-v2018_06_01_preview/pom.xml
+      - sdk/mediaservices/mgmt-v2018_07_01/pom.xml
+      - sdk/mediaservices/mgmt-v2019_05_01_preview/pom.xml
+      - sdk/mediaservices/mgmt-v2020_05_01/pom.xml
 
 stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-management.yml

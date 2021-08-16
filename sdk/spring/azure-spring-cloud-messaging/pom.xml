@@ -12,7 +12,7 @@
 
   <groupId>com.azure.spring</groupId>
   <artifactId>azure-spring-cloud-messaging</artifactId>
-  <version>2.2.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-messaging;current} -->
+  <version>2.8.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-messaging;current} -->
 
   <name>Azure Spring Cloud Messaging</name>
 
@@ -20,44 +20,17 @@
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>azure-spring-cloud-context</artifactId>
-      <version>2.2.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-context;current} -->
+      <version>2.8.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-context;current} -->
     </dependency>
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-messaging</artifactId>
-      <version>5.2.10.RELEASE</version> <!-- {x-version-update;org.springframework:spring-messaging;external_dependency} -->
+      <version>5.3.9</version> <!-- {x-version-update;org.springframework:spring-messaging;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>azure-spring-integration-core</artifactId>
-      <version>2.2.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-integration-core;current} -->
-    </dependency>
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>4.13.1</version> <!-- {x-version-update;junit:junit;external_dependency} -->
-      <scope>test</scope>
-    </dependency>
-
-    <dependency>
-      <groupId>org.mockito</groupId>
-      <artifactId>mockito-core</artifactId>
-      <version>3.3.3</version> <!-- {x-version-update;org.mockito:mockito-core;external_dependency} -->
-      <scope>test</scope>
-    </dependency>
-
-    <dependency>
-      <groupId>org.powermock</groupId>
-      <artifactId>powermock-api-mockito2</artifactId>
-      <version>2.0.2</version> <!-- {x-version-update;org.powermock:powermock-api-mockito2;external_dependency} -->
-      <scope>test</scope>
-    </dependency>
-
-    <dependency>
-      <groupId>org.powermock</groupId>
-      <artifactId>powermock-module-junit4</artifactId>
-      <version>2.0.2</version> <!-- {x-version-update;org.powermock:powermock-module-junit4;external_dependency} -->
-      <scope>test</scope>
+      <version>2.8.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-integration-core;current} -->
     </dependency>
 
     <!-- Added this dependency to include necessary annotations used by reactor core.
@@ -68,6 +41,14 @@
       <artifactId>jsr305</artifactId>
       <version>3.0.2</version> <!-- {x-version-update;com.google.code.findbugs:jsr305;external_dependency} -->
       <scope>provided</scope>
+    </dependency>
+
+    <!-- TEST-->
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-test</artifactId>
+      <version>2.5.3</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-test;external_dependency} -->
+      <scope>test</scope>
     </dependency>
   </dependencies>
 
@@ -81,7 +62,7 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>org.springframework:spring-messaging:[5.2.10.RELEASE]</include> <!-- {x-include-update;org.springframework:spring-messaging;external_dependency} -->
+                <include>org.springframework:spring-messaging:[5.3.9]</include> <!-- {x-include-update;org.springframework:spring-messaging;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>

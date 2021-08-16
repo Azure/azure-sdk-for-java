@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.storage.blob.nio
 
 import com.azure.storage.blob.models.BlobErrorCode
@@ -5,9 +8,12 @@ import com.azure.storage.blob.models.BlobStorageException
 import com.azure.storage.blob.models.BlockListType
 import com.azure.storage.blob.models.ParallelTransferOptions
 import com.azure.storage.blob.specialized.BlockBlobClient
+import com.azure.storage.common.test.shared.extensions.LiveOnly
 import spock.lang.Ignore
 import spock.lang.Requires
 import spock.lang.Unroll
+
+import java.nio.file.ClosedFileSystemException
 
 class NioBlobOutputStreamTest extends APISpec {
     BlockBlobClient bc
@@ -47,7 +53,7 @@ class NioBlobOutputStreamTest extends APISpec {
         inputStream.read() == -1
     }
 
-    @Requires({ liveMode() }) // Because we upload in blocks
+    @LiveOnly // Because we upload in blocks
     @Ignore("failing in ci")
     def "Write min error"() {
         // Create an append blob at the destination to ensure writes fail. Customers should eventually be notified via
@@ -88,7 +94,7 @@ class NioBlobOutputStreamTest extends APISpec {
         compareInputStreams(inputStream, new ByteArrayInputStream(data), dataSize)
     }
 
-    @Requires({ liveMode() }) // Because we upload in blocks
+    @LiveOnly // Because we upload in blocks
     @Ignore("Ci failures")
     def "Write array error"() {
         // Create an append blob at the destination to ensure writes fail. Customers should eventually be notified via
@@ -148,7 +154,7 @@ class NioBlobOutputStreamTest extends APISpec {
         thrown(IndexOutOfBoundsException)
     }
 
-    @Requires({ liveMode() }) // Because we upload in blocks
+    @LiveOnly // Because we upload in blocks
     @Ignore("failing in ci")
     def "Write offset len network error"() {
         // Create an append blob at the destination to ensure writes fail. Customers should eventually be notified via
@@ -176,19 +182,19 @@ class NioBlobOutputStreamTest extends APISpec {
         nioStream.write(5)
 
         then:
-        thrown(IOException)
+        thrown(ClosedFileSystemException)
 
         when:
         nioStream.write(new byte[5])
 
         then:
-        thrown(IOException)
+        thrown(ClosedFileSystemException)
 
         when:
         nioStream.write(new byte[5], 2, 1)
 
         then:
-        thrown(IOException)
+        thrown(ClosedFileSystemException)
     }
 
     // Flush does not actually flush data right now
@@ -206,7 +212,7 @@ class NioBlobOutputStreamTest extends APISpec {
     }
 
     // Flush should at least check the stream state
-    @Requires({ liveMode() }) // Because we upload in blocks
+    @LiveOnly // Because we upload in blocks
     @Ignore("failing in ci")
     def "Flush error"() {
         // Create an append blob at the destination to ensure writes fail. Customers should eventually be notified via
@@ -237,7 +243,7 @@ class NioBlobOutputStreamTest extends APISpec {
         nioStream.flush()
 
         then:
-        thrown(IOException)
+        thrown(ClosedFileSystemException)
     }
 
     def "Close"() {
@@ -264,7 +270,7 @@ class NioBlobOutputStreamTest extends APISpec {
         nioStream.close()
 
         then:
-        thrown(IOException)
+        thrown(ClosedFileSystemException)
     }
 }
 

@@ -10,242 +10,17 @@ import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
-import com.azure.resourcemanager.servicebus.fluent.models.QueueResourceInner;
-import com.azure.resourcemanager.servicebus.fluent.models.ResourceListKeysInner;
-import com.azure.resourcemanager.servicebus.fluent.models.SharedAccessAuthorizationRuleResourceInner;
-import com.azure.resourcemanager.servicebus.models.Policykey;
-import com.azure.resourcemanager.servicebus.models.QueueCreateOrUpdateParameters;
-import com.azure.resourcemanager.servicebus.models.SharedAccessAuthorizationRuleCreateOrUpdateParameters;
+import com.azure.resourcemanager.servicebus.fluent.models.SBAuthorizationRuleInner;
+import com.azure.resourcemanager.servicebus.fluent.models.SBQueueInner;
+import com.azure.resourcemanager.servicebus.fluent.models.AccessKeysInner;
+import com.azure.resourcemanager.servicebus.models.AccessRights;
+import com.azure.resourcemanager.servicebus.models.RegenerateAccessKeyParameters;
+import java.util.List;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in QueuesClient. */
 public interface QueuesClient {
     /**
-     * Gets the queues within a namespace.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param namespaceName The namespace name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the queues within a namespace.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<QueueResourceInner> listAllAsync(String resourceGroupName, String namespaceName);
-
-    /**
-     * Gets the queues within a namespace.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param namespaceName The namespace name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the queues within a namespace.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<QueueResourceInner> listAll(String resourceGroupName, String namespaceName);
-
-    /**
-     * Gets the queues within a namespace.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param namespaceName The namespace name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the queues within a namespace.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<QueueResourceInner> listAll(String resourceGroupName, String namespaceName, Context context);
-
-    /**
-     * Creates or updates a Service Bus queue. This operation is idempotent.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param namespaceName The namespace name.
-     * @param queueName The queue name.
-     * @param parameters Parameters supplied to the Create Or Update Queue operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return description of queue Resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<QueueResourceInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String namespaceName, String queueName, QueueCreateOrUpdateParameters parameters);
-
-    /**
-     * Creates or updates a Service Bus queue. This operation is idempotent.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param namespaceName The namespace name.
-     * @param queueName The queue name.
-     * @param parameters Parameters supplied to the Create Or Update Queue operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return description of queue Resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<QueueResourceInner> createOrUpdateAsync(
-        String resourceGroupName, String namespaceName, String queueName, QueueCreateOrUpdateParameters parameters);
-
-    /**
-     * Creates or updates a Service Bus queue. This operation is idempotent.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param namespaceName The namespace name.
-     * @param queueName The queue name.
-     * @param parameters Parameters supplied to the Create Or Update Queue operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return description of queue Resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    QueueResourceInner createOrUpdate(
-        String resourceGroupName, String namespaceName, String queueName, QueueCreateOrUpdateParameters parameters);
-
-    /**
-     * Creates or updates a Service Bus queue. This operation is idempotent.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param namespaceName The namespace name.
-     * @param queueName The queue name.
-     * @param parameters Parameters supplied to the Create Or Update Queue operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return description of queue Resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<QueueResourceInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String namespaceName,
-        String queueName,
-        QueueCreateOrUpdateParameters parameters,
-        Context context);
-
-    /**
-     * Deletes a queue from the specified namespace in a resource group.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param namespaceName The namespace name.
-     * @param queueName The queue name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String namespaceName, String queueName);
-
-    /**
-     * Deletes a queue from the specified namespace in a resource group.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param namespaceName The namespace name.
-     * @param queueName The queue name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Void> deleteAsync(String resourceGroupName, String namespaceName, String queueName);
-
-    /**
-     * Deletes a queue from the specified namespace in a resource group.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param namespaceName The namespace name.
-     * @param queueName The queue name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(String resourceGroupName, String namespaceName, String queueName);
-
-    /**
-     * Deletes a queue from the specified namespace in a resource group.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param namespaceName The namespace name.
-     * @param queueName The queue name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String namespaceName, String queueName, Context context);
-
-    /**
-     * Returns a description for the specified queue.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param namespaceName The namespace name.
-     * @param queueName The queue name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return description of queue Resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<QueueResourceInner>> getWithResponseAsync(
-        String resourceGroupName, String namespaceName, String queueName);
-
-    /**
-     * Returns a description for the specified queue.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param namespaceName The namespace name.
-     * @param queueName The queue name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return description of queue Resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<QueueResourceInner> getAsync(String resourceGroupName, String namespaceName, String queueName);
-
-    /**
-     * Returns a description for the specified queue.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param namespaceName The namespace name.
-     * @param queueName The queue name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return description of queue Resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    QueueResourceInner get(String resourceGroupName, String namespaceName, String queueName);
-
-    /**
-     * Returns a description for the specified queue.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param namespaceName The namespace name.
-     * @param queueName The queue name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return description of queue Resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<QueueResourceInner> getWithResponse(
-        String resourceGroupName, String namespaceName, String queueName, Context context);
-
-    /**
      * Gets all authorization rules for a queue.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
@@ -257,7 +32,7 @@ public interface QueuesClient {
      * @return all authorization rules for a queue.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<SharedAccessAuthorizationRuleResourceInner> listAuthorizationRulesAsync(
+    PagedFlux<SBAuthorizationRuleInner> listAuthorizationRulesAsync(
         String resourceGroupName, String namespaceName, String queueName);
 
     /**
@@ -272,7 +47,7 @@ public interface QueuesClient {
      * @return all authorization rules for a queue.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<SharedAccessAuthorizationRuleResourceInner> listAuthorizationRules(
+    PagedIterable<SBAuthorizationRuleInner> listAuthorizationRules(
         String resourceGroupName, String namespaceName, String queueName);
 
     /**
@@ -288,7 +63,7 @@ public interface QueuesClient {
      * @return all authorization rules for a queue.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<SharedAccessAuthorizationRuleResourceInner> listAuthorizationRules(
+    PagedIterable<SBAuthorizationRuleInner> listAuthorizationRules(
         String resourceGroupName, String namespaceName, String queueName, Context context);
 
     /**
@@ -298,19 +73,19 @@ public interface QueuesClient {
      * @param namespaceName The namespace name.
      * @param queueName The queue name.
      * @param authorizationRuleName The authorization rule name.
-     * @param parameters Parameters supplied to the Create Or Update Authorization Rules operation.
+     * @param rights The rights associated with the rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return description of a namespace authorization rule.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<SharedAccessAuthorizationRuleResourceInner>> createOrUpdateAuthorizationRuleWithResponseAsync(
+    Mono<Response<SBAuthorizationRuleInner>> createOrUpdateAuthorizationRuleWithResponseAsync(
         String resourceGroupName,
         String namespaceName,
         String queueName,
         String authorizationRuleName,
-        SharedAccessAuthorizationRuleCreateOrUpdateParameters parameters);
+        List<AccessRights> rights);
 
     /**
      * Creates an authorization rule for a queue.
@@ -319,19 +94,19 @@ public interface QueuesClient {
      * @param namespaceName The namespace name.
      * @param queueName The queue name.
      * @param authorizationRuleName The authorization rule name.
-     * @param parameters Parameters supplied to the Create Or Update Authorization Rules operation.
+     * @param rights The rights associated with the rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return description of a namespace authorization rule.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<SharedAccessAuthorizationRuleResourceInner> createOrUpdateAuthorizationRuleAsync(
+    Mono<SBAuthorizationRuleInner> createOrUpdateAuthorizationRuleAsync(
         String resourceGroupName,
         String namespaceName,
         String queueName,
         String authorizationRuleName,
-        SharedAccessAuthorizationRuleCreateOrUpdateParameters parameters);
+        List<AccessRights> rights);
 
     /**
      * Creates an authorization rule for a queue.
@@ -340,19 +115,14 @@ public interface QueuesClient {
      * @param namespaceName The namespace name.
      * @param queueName The queue name.
      * @param authorizationRuleName The authorization rule name.
-     * @param parameters Parameters supplied to the Create Or Update Authorization Rules operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return description of a namespace authorization rule.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SharedAccessAuthorizationRuleResourceInner createOrUpdateAuthorizationRule(
-        String resourceGroupName,
-        String namespaceName,
-        String queueName,
-        String authorizationRuleName,
-        SharedAccessAuthorizationRuleCreateOrUpdateParameters parameters);
+    Mono<SBAuthorizationRuleInner> createOrUpdateAuthorizationRuleAsync(
+        String resourceGroupName, String namespaceName, String queueName, String authorizationRuleName);
 
     /**
      * Creates an authorization rule for a queue.
@@ -361,7 +131,23 @@ public interface QueuesClient {
      * @param namespaceName The namespace name.
      * @param queueName The queue name.
      * @param authorizationRuleName The authorization rule name.
-     * @param parameters Parameters supplied to the Create Or Update Authorization Rules operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return description of a namespace authorization rule.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SBAuthorizationRuleInner createOrUpdateAuthorizationRule(
+        String resourceGroupName, String namespaceName, String queueName, String authorizationRuleName);
+
+    /**
+     * Creates an authorization rule for a queue.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param namespaceName The namespace name.
+     * @param queueName The queue name.
+     * @param authorizationRuleName The authorization rule name.
+     * @param rights The rights associated with the rule.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -369,81 +155,12 @@ public interface QueuesClient {
      * @return description of a namespace authorization rule.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<SharedAccessAuthorizationRuleResourceInner> createOrUpdateAuthorizationRuleWithResponse(
+    Response<SBAuthorizationRuleInner> createOrUpdateAuthorizationRuleWithResponse(
         String resourceGroupName,
         String namespaceName,
         String queueName,
         String authorizationRuleName,
-        SharedAccessAuthorizationRuleCreateOrUpdateParameters parameters,
-        Context context);
-
-    /**
-     * Gets an authorization rule for a queue by rule name.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param namespaceName The namespace name.
-     * @param queueName The queue name.
-     * @param authorizationRuleName The authorization rule name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an authorization rule for a queue by rule name.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<SharedAccessAuthorizationRuleResourceInner>> postAuthorizationRuleWithResponseAsync(
-        String resourceGroupName, String namespaceName, String queueName, String authorizationRuleName);
-
-    /**
-     * Gets an authorization rule for a queue by rule name.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param namespaceName The namespace name.
-     * @param queueName The queue name.
-     * @param authorizationRuleName The authorization rule name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an authorization rule for a queue by rule name.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<SharedAccessAuthorizationRuleResourceInner> postAuthorizationRuleAsync(
-        String resourceGroupName, String namespaceName, String queueName, String authorizationRuleName);
-
-    /**
-     * Gets an authorization rule for a queue by rule name.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param namespaceName The namespace name.
-     * @param queueName The queue name.
-     * @param authorizationRuleName The authorization rule name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an authorization rule for a queue by rule name.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    SharedAccessAuthorizationRuleResourceInner postAuthorizationRule(
-        String resourceGroupName, String namespaceName, String queueName, String authorizationRuleName);
-
-    /**
-     * Gets an authorization rule for a queue by rule name.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param namespaceName The namespace name.
-     * @param queueName The queue name.
-     * @param authorizationRuleName The authorization rule name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an authorization rule for a queue by rule name.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<SharedAccessAuthorizationRuleResourceInner> postAuthorizationRuleWithResponse(
-        String resourceGroupName,
-        String namespaceName,
-        String queueName,
-        String authorizationRuleName,
+        List<AccessRights> rights,
         Context context);
 
     /**
@@ -527,7 +244,7 @@ public interface QueuesClient {
      * @return an authorization rule for a queue by rule name.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<SharedAccessAuthorizationRuleResourceInner>> getAuthorizationRuleWithResponseAsync(
+    Mono<Response<SBAuthorizationRuleInner>> getAuthorizationRuleWithResponseAsync(
         String resourceGroupName, String namespaceName, String queueName, String authorizationRuleName);
 
     /**
@@ -543,7 +260,7 @@ public interface QueuesClient {
      * @return an authorization rule for a queue by rule name.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<SharedAccessAuthorizationRuleResourceInner> getAuthorizationRuleAsync(
+    Mono<SBAuthorizationRuleInner> getAuthorizationRuleAsync(
         String resourceGroupName, String namespaceName, String queueName, String authorizationRuleName);
 
     /**
@@ -559,7 +276,7 @@ public interface QueuesClient {
      * @return an authorization rule for a queue by rule name.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SharedAccessAuthorizationRuleResourceInner getAuthorizationRule(
+    SBAuthorizationRuleInner getAuthorizationRule(
         String resourceGroupName, String namespaceName, String queueName, String authorizationRuleName);
 
     /**
@@ -576,7 +293,7 @@ public interface QueuesClient {
      * @return an authorization rule for a queue by rule name.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<SharedAccessAuthorizationRuleResourceInner> getAuthorizationRuleWithResponse(
+    Response<SBAuthorizationRuleInner> getAuthorizationRuleWithResponse(
         String resourceGroupName,
         String namespaceName,
         String queueName,
@@ -596,7 +313,7 @@ public interface QueuesClient {
      * @return namespace/ServiceBus Connection String.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<ResourceListKeysInner>> listKeysWithResponseAsync(
+    Mono<Response<AccessKeysInner>> listKeysWithResponseAsync(
         String resourceGroupName, String namespaceName, String queueName, String authorizationRuleName);
 
     /**
@@ -612,7 +329,7 @@ public interface QueuesClient {
      * @return namespace/ServiceBus Connection String.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ResourceListKeysInner> listKeysAsync(
+    Mono<AccessKeysInner> listKeysAsync(
         String resourceGroupName, String namespaceName, String queueName, String authorizationRuleName);
 
     /**
@@ -628,8 +345,7 @@ public interface QueuesClient {
      * @return namespace/ServiceBus Connection String.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ResourceListKeysInner listKeys(
-        String resourceGroupName, String namespaceName, String queueName, String authorizationRuleName);
+    AccessKeysInner listKeys(String resourceGroupName, String namespaceName, String queueName, String authorizationRuleName);
 
     /**
      * Primary and secondary connection strings to the queue.
@@ -645,7 +361,7 @@ public interface QueuesClient {
      * @return namespace/ServiceBus Connection String.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ResourceListKeysInner> listKeysWithResponse(
+    Response<AccessKeysInner> listKeysWithResponse(
         String resourceGroupName,
         String namespaceName,
         String queueName,
@@ -659,19 +375,19 @@ public interface QueuesClient {
      * @param namespaceName The namespace name.
      * @param queueName The queue name.
      * @param authorizationRuleName The authorization rule name.
-     * @param policykey Key that needs to be regenerated.
+     * @param parameters Parameters supplied to regenerate the authorization rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return namespace/ServiceBus Connection String.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<ResourceListKeysInner>> regenerateKeysWithResponseAsync(
+    Mono<Response<AccessKeysInner>> regenerateKeysWithResponseAsync(
         String resourceGroupName,
         String namespaceName,
         String queueName,
         String authorizationRuleName,
-        Policykey policykey);
+        RegenerateAccessKeyParameters parameters);
 
     /**
      * Regenerates the primary or secondary connection strings to the queue.
@@ -680,19 +396,19 @@ public interface QueuesClient {
      * @param namespaceName The namespace name.
      * @param queueName The queue name.
      * @param authorizationRuleName The authorization rule name.
-     * @param policykey Key that needs to be regenerated.
+     * @param parameters Parameters supplied to regenerate the authorization rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return namespace/ServiceBus Connection String.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ResourceListKeysInner> regenerateKeysAsync(
+    Mono<AccessKeysInner> regenerateKeysAsync(
         String resourceGroupName,
         String namespaceName,
         String queueName,
         String authorizationRuleName,
-        Policykey policykey);
+        RegenerateAccessKeyParameters parameters);
 
     /**
      * Regenerates the primary or secondary connection strings to the queue.
@@ -701,14 +417,19 @@ public interface QueuesClient {
      * @param namespaceName The namespace name.
      * @param queueName The queue name.
      * @param authorizationRuleName The authorization rule name.
+     * @param parameters Parameters supplied to regenerate the authorization rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return namespace/ServiceBus Connection String.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ResourceListKeysInner> regenerateKeysAsync(
-        String resourceGroupName, String namespaceName, String queueName, String authorizationRuleName);
+    AccessKeysInner regenerateKeys(
+        String resourceGroupName,
+        String namespaceName,
+        String queueName,
+        String authorizationRuleName,
+        RegenerateAccessKeyParameters parameters);
 
     /**
      * Regenerates the primary or secondary connection strings to the queue.
@@ -717,23 +438,7 @@ public interface QueuesClient {
      * @param namespaceName The namespace name.
      * @param queueName The queue name.
      * @param authorizationRuleName The authorization rule name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return namespace/ServiceBus Connection String.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    ResourceListKeysInner regenerateKeys(
-        String resourceGroupName, String namespaceName, String queueName, String authorizationRuleName);
-
-    /**
-     * Regenerates the primary or secondary connection strings to the queue.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param namespaceName The namespace name.
-     * @param queueName The queue name.
-     * @param authorizationRuleName The authorization rule name.
-     * @param policykey Key that needs to be regenerated.
+     * @param parameters Parameters supplied to regenerate the authorization rule.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -741,11 +446,254 @@ public interface QueuesClient {
      * @return namespace/ServiceBus Connection String.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ResourceListKeysInner> regenerateKeysWithResponse(
+    Response<AccessKeysInner> regenerateKeysWithResponse(
         String resourceGroupName,
         String namespaceName,
         String queueName,
         String authorizationRuleName,
-        Policykey policykey,
+        RegenerateAccessKeyParameters parameters,
         Context context);
+
+    /**
+     * Gets the queues within a namespace.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param namespaceName The namespace name.
+     * @param skip Skip is only used if a previous operation returned a partial result. If a previous response contains
+     *     a nextLink element, the value of the nextLink element will include a skip parameter that specifies a starting
+     *     point to use for subsequent calls.
+     * @param top May be used to limit the number of results to the most recent N usageDetails.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the queues within a namespace.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<SBQueueInner> listByNamespaceAsync(
+        String resourceGroupName, String namespaceName, Integer skip, Integer top);
+
+    /**
+     * Gets the queues within a namespace.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param namespaceName The namespace name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the queues within a namespace.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<SBQueueInner> listByNamespaceAsync(String resourceGroupName, String namespaceName);
+
+    /**
+     * Gets the queues within a namespace.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param namespaceName The namespace name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the queues within a namespace.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<SBQueueInner> listByNamespace(String resourceGroupName, String namespaceName);
+
+    /**
+     * Gets the queues within a namespace.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param namespaceName The namespace name.
+     * @param skip Skip is only used if a previous operation returned a partial result. If a previous response contains
+     *     a nextLink element, the value of the nextLink element will include a skip parameter that specifies a starting
+     *     point to use for subsequent calls.
+     * @param top May be used to limit the number of results to the most recent N usageDetails.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the queues within a namespace.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<SBQueueInner> listByNamespace(
+        String resourceGroupName, String namespaceName, Integer skip, Integer top, Context context);
+
+    /**
+     * Creates or updates a Service Bus queue. This operation is idempotent.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param namespaceName The namespace name.
+     * @param queueName The queue name.
+     * @param parameters Parameters supplied to create or update a queue resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return description of queue Resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<SBQueueInner>> createOrUpdateWithResponseAsync(
+        String resourceGroupName, String namespaceName, String queueName, SBQueueInner parameters);
+
+    /**
+     * Creates or updates a Service Bus queue. This operation is idempotent.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param namespaceName The namespace name.
+     * @param queueName The queue name.
+     * @param parameters Parameters supplied to create or update a queue resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return description of queue Resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<SBQueueInner> createOrUpdateAsync(
+        String resourceGroupName, String namespaceName, String queueName, SBQueueInner parameters);
+
+    /**
+     * Creates or updates a Service Bus queue. This operation is idempotent.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param namespaceName The namespace name.
+     * @param queueName The queue name.
+     * @param parameters Parameters supplied to create or update a queue resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return description of queue Resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SBQueueInner createOrUpdate(
+        String resourceGroupName, String namespaceName, String queueName, SBQueueInner parameters);
+
+    /**
+     * Creates or updates a Service Bus queue. This operation is idempotent.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param namespaceName The namespace name.
+     * @param queueName The queue name.
+     * @param parameters Parameters supplied to create or update a queue resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return description of queue Resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<SBQueueInner> createOrUpdateWithResponse(
+        String resourceGroupName, String namespaceName, String queueName, SBQueueInner parameters, Context context);
+
+    /**
+     * Deletes a queue from the specified namespace in a resource group.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param namespaceName The namespace name.
+     * @param queueName The queue name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String namespaceName, String queueName);
+
+    /**
+     * Deletes a queue from the specified namespace in a resource group.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param namespaceName The namespace name.
+     * @param queueName The queue name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Void> deleteAsync(String resourceGroupName, String namespaceName, String queueName);
+
+    /**
+     * Deletes a queue from the specified namespace in a resource group.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param namespaceName The namespace name.
+     * @param queueName The queue name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void delete(String resourceGroupName, String namespaceName, String queueName);
+
+    /**
+     * Deletes a queue from the specified namespace in a resource group.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param namespaceName The namespace name.
+     * @param queueName The queue name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<Void> deleteWithResponse(
+        String resourceGroupName, String namespaceName, String queueName, Context context);
+
+    /**
+     * Returns a description for the specified queue.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param namespaceName The namespace name.
+     * @param queueName The queue name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return description of queue Resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<SBQueueInner>> getWithResponseAsync(String resourceGroupName, String namespaceName, String queueName);
+
+    /**
+     * Returns a description for the specified queue.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param namespaceName The namespace name.
+     * @param queueName The queue name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return description of queue Resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<SBQueueInner> getAsync(String resourceGroupName, String namespaceName, String queueName);
+
+    /**
+     * Returns a description for the specified queue.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param namespaceName The namespace name.
+     * @param queueName The queue name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return description of queue Resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SBQueueInner get(String resourceGroupName, String namespaceName, String queueName);
+
+    /**
+     * Returns a description for the specified queue.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param namespaceName The namespace name.
+     * @param queueName The queue name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return description of queue Resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<SBQueueInner> getWithResponse(
+        String resourceGroupName, String namespaceName, String queueName, Context context);
 }

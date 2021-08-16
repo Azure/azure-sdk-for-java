@@ -79,6 +79,7 @@ public class DataLakeFileSystemClientBuilder {
     public DataLakeFileSystemClientBuilder() {
         logOptions = getDefaultHttpLogOptions();
         blobContainerClientBuilder = new BlobContainerClientBuilder();
+        blobContainerClientBuilder.addPolicy(BuilderHelper.getBlobUserAgentModificationPolicy());
     }
 
     /**
@@ -118,8 +119,8 @@ public class DataLakeFileSystemClientBuilder {
             endpoint, retryOptions, logOptions,
             clientOptions, httpClient, perCallPolicies, perRetryPolicies, configuration, logger);
 
-        return new DataLakeFileSystemAsyncClient(pipeline, String.format("%s/%s", endpoint, dataLakeFileSystemName),
-            serviceVersion, accountName, dataLakeFileSystemName, blobContainerClientBuilder.buildAsyncClient());
+        return new DataLakeFileSystemAsyncClient(pipeline, endpoint, serviceVersion, accountName,
+            dataLakeFileSystemName, blobContainerClientBuilder.buildAsyncClient());
     }
 
     /**
@@ -186,7 +187,8 @@ public class DataLakeFileSystemClientBuilder {
     /**
      * Sets the SAS token used to authorize requests sent to the service.
      *
-     * @param sasToken The SAS token to use for authenticating requests.
+     * @param sasToken The SAS token to use for authenticating requests. This string should only be the query parameters
+     * (with or without a leading '?') and not a full url.
      * @return the updated DataLakeFileSystemClientBuilder
      * @throws NullPointerException If {@code sasToken} is {@code null}.
      */

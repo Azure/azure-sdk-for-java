@@ -64,7 +64,7 @@ class RedisFirewallRulesImpl
             .manager()
             .serviceClient()
             .getFirewallRules()
-            .listByRedisResourceAsync(this.getParent().resourceGroupName(), this.getParent().name())
+            .listAsync(this.getParent().resourceGroupName(), this.getParent().name())
             .map(
                 firewallRuleInner ->
                     new RedisFirewallRuleImpl(firewallRuleInner.name(), this.getParent(), firewallRuleInner))

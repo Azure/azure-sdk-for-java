@@ -7,6 +7,7 @@ import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.BackoffRetryUtility;
+import com.azure.cosmos.implementation.CosmosSchedulers;
 import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.GoneException;
 import com.azure.cosmos.implementation.HttpConstants;
@@ -98,7 +99,12 @@ public class ConsistencyWriter {
         TimeoutHelper timeout,
         boolean forceRefresh) {
 
-        if (timeout.isElapsed()) {
+        if (timeout.isElapsed() &&
+            // skip throwing RequestTimeout on first retry because the first retry with
+            // force address refresh header can be critical to recover for example from
+            // stale Gateway caches etc.
+            BridgeInternal.getRetryContext(entity.requestContext.cosmosDiagnostics) != null &&
+            BridgeInternal.getRetryContext(entity.requestContext.cosmosDiagnostics).getRetryCount() > 1) {
             return Mono.error(new RequestTimeoutException());
         }
 
@@ -107,7 +113,7 @@ public class ConsistencyWriter {
         return  BackoffRetryUtility
             .executeRetry(
                 () -> this.writePrivateAsync(entity, timeout, forceRefresh),
-                new SessionTokenMismatchRetryPolicy())
+                new SessionTokenMismatchRetryPolicy(BridgeInternal.getRetryContext(entity.requestContext.cosmosDiagnostics)))
             .doOnEach(
             arg -> {
                 try {
@@ -123,7 +129,13 @@ public class ConsistencyWriter {
         RxDocumentServiceRequest request,
         TimeoutHelper timeout,
         boolean forceRefresh) {
-        if (timeout.isElapsed()) {
+
+        if (timeout.isElapsed() &&
+            // skip throwing RequestTimeout on first retry because the first retry with
+            // force address refresh header can be critical to recover for example from
+            // stale Gateway caches etc.
+            BridgeInternal.getRetryContext(request.requestContext.cosmosDiagnostics) != null &&
+            BridgeInternal.getRetryContext(request.requestContext.cosmosDiagnostics).getRetryCount() > 1) {
             return Mono.error(new RequestTimeoutException());
         }
 
@@ -334,9 +346,13 @@ public class ConsistencyWriter {
         }).repeatWhen(s -> s.flatMap(x -> {
             // repeat with a delay
             if ((ConsistencyWriter.MAX_NUMBER_OF_WRITE_BARRIER_READ_RETRIES - writeBarrierRetryCount.get()) > ConsistencyWriter.MAX_SHORT_BARRIER_RETRIES_FOR_MULTI_REGION) {
-                return Mono.delay(Duration.ofMillis(ConsistencyWriter.DELAY_BETWEEN_WRITE_BARRIER_CALLS_IN_MS)).flux();
+                return Mono.delay(
+                    Duration.ofMillis(ConsistencyWriter.DELAY_BETWEEN_WRITE_BARRIER_CALLS_IN_MS),
+                    CosmosSchedulers.COSMOS_PARALLEL).flux();
             } else {
-                return Mono.delay(Duration.ofMillis(ConsistencyWriter.SHORT_BARRIER_RETRY_INTERVAL_IN_MS_FOR_MULTI_REGION)).flux();
+                return Mono.delay(
+                    Duration.ofMillis(ConsistencyWriter.SHORT_BARRIER_RETRY_INTERVAL_IN_MS_FOR_MULTI_REGION),
+                    CosmosSchedulers.COSMOS_PARALLEL).flux();
             }
         })
         ).take(1).single();
@@ -359,7 +375,7 @@ public class ConsistencyWriter {
 
     void startBackgroundAddressRefresh(RxDocumentServiceRequest request) {
         this.addressSelector.resolvePrimaryUriAsync(request, true)
-                            .publishOn(Schedulers.elastic())
+                            .publishOn(Schedulers.boundedElastic())
                             .subscribe(
                                 r -> {
                                 },

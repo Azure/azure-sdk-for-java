@@ -6,6 +6,7 @@ package com.azure.resourcemanager.appplatform.implementation;
 
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
+import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
@@ -52,12 +53,15 @@ public final class RuntimeVersionsClientImpl implements RuntimeVersionsClient {
     @Host("{$host}")
     @ServiceInterface(name = "AppPlatformManagemen")
     private interface RuntimeVersionsService {
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get("/providers/Microsoft.AppPlatform/runtimeVersions")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<AvailableRuntimeVersionsInner>> listRuntimeVersions(
-            @HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion, Context context);
+            @HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
+            Context context);
     }
 
     /**
@@ -75,9 +79,12 @@ public final class RuntimeVersionsClientImpl implements RuntimeVersionsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context -> service.listRuntimeVersions(this.client.getEndpoint(), this.client.getApiVersion(), context))
+                context ->
+                    service
+                        .listRuntimeVersions(this.client.getEndpoint(), this.client.getApiVersion(), accept, context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
@@ -98,8 +105,9 @@ public final class RuntimeVersionsClientImpl implements RuntimeVersionsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.listRuntimeVersions(this.client.getEndpoint(), this.client.getApiVersion(), context);
+        return service.listRuntimeVersions(this.client.getEndpoint(), this.client.getApiVersion(), accept, context);
     }
 
     /**

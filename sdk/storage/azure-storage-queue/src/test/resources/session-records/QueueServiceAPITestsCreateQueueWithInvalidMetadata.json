@@ -1,26 +1,26 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://REDACTED.queue.core.windows.net/9ef1c32fb31846ec",
+    "Uri" : "https://REDACTED.queue.core.windows.net/ef7b0df799586b",
     "Headers" : {
-      "x-ms-version" : "2019-12-12",
-      "User-Agent" : "azsdk-java-azure-storage-queue/12.6.0-beta.1 (11.0.6; Windows 10 10.0)",
-      "x-ms-client-request-id" : "6c3f19f0-15db-4063-934c-c53206650959"
+      "x-ms-version" : "2020-06-12",
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.10.0-beta.1 (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "d2e06975-3910-4dea-a918-d6090f468448"
     },
     "Response" : {
-      "x-ms-version" : "2019-12-12",
+      "content-length" : "260",
+      "x-ms-version" : "2020-06-12",
       "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
       "x-ms-error-code" : "InvalidMetadata",
       "retry-after" : "0",
-      "Content-Length" : "260",
       "StatusCode" : "400",
-      "x-ms-request-id" : "37a3aeb1-3003-009b-0604-3a8ca5000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidMetadata</Code><Message>The metadata specified is invalid. It has characters that are not permitted.\nRequestId:37a3aeb1-3003-009b-0604-3a8ca5000000\nTime:2020-06-04T00:06:42.6644681Z</Message></Error>",
-      "Date" : "Thu, 04 Jun 2020 00:06:42 GMT",
-      "x-ms-client-request-id" : "6c3f19f0-15db-4063-934c-c53206650959",
+      "x-ms-request-id" : "78b233f6-8003-0008-1f09-41ec2e000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidMetadata</Code><Message>The metadata specified is invalid. It has characters that are not permitted.\nRequestId:78b233f6-8003-0008-1f09-41ec2e000000\nTime:2021-05-04T17:18:36.7586137Z</Message></Error>",
+      "x-ms-client-request-id" : "d2e06975-3910-4dea-a918-d6090f468448",
+      "Date" : "Tue, 04 May 2021 17:18:36 GMT",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   } ],
-  "variables" : [ "9ef1c32fb31846ec" ]
+  "variables" : [ "ef7b0df799586b" ]
 }

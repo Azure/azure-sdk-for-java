@@ -33,6 +33,12 @@ public class RouteInner extends SubResource {
     private String etag;
 
     /*
+     * The type of the resource.
+     */
+    @JsonProperty(value = "type")
+    private String type;
+
+    /*
      * The destination CIDR to which the route applies.
      */
     @JsonProperty(value = "properties.addressPrefix")
@@ -56,6 +62,13 @@ public class RouteInner extends SubResource {
      */
     @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
+
+    /*
+     * A value indicating whether this route overrides overlapping BGP routes
+     * regardless of LPM.
+     */
+    @JsonProperty(value = "properties.hasBgpOverride")
+    private Boolean hasBgpOverride;
 
     /**
      * Get the name property: The name of the resource that is unique within a resource group. This name can be used to
@@ -86,6 +99,26 @@ public class RouteInner extends SubResource {
      */
     public String etag() {
         return this.etag;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     *
+     * @return the type value.
+     */
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Set the type property: The type of the resource.
+     *
+     * @param type the type value to set.
+     * @return the RouteInner object itself.
+     */
+    public RouteInner withType(String type) {
+        this.type = type;
+        return this;
     }
 
     /**
@@ -157,6 +190,28 @@ public class RouteInner extends SubResource {
      */
     public ProvisioningState provisioningState() {
         return this.provisioningState;
+    }
+
+    /**
+     * Get the hasBgpOverride property: A value indicating whether this route overrides overlapping BGP routes
+     * regardless of LPM.
+     *
+     * @return the hasBgpOverride value.
+     */
+    public Boolean hasBgpOverride() {
+        return this.hasBgpOverride;
+    }
+
+    /**
+     * Set the hasBgpOverride property: A value indicating whether this route overrides overlapping BGP routes
+     * regardless of LPM.
+     *
+     * @param hasBgpOverride the hasBgpOverride value to set.
+     * @return the RouteInner object itself.
+     */
+    public RouteInner withHasBgpOverride(Boolean hasBgpOverride) {
+        this.hasBgpOverride = hasBgpOverride;
+        return this;
     }
 
     /** {@inheritDoc} */

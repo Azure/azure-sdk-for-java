@@ -3,16 +3,6 @@
 
 package com.azure.messaging.eventhubs;
 
-import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
-import static com.azure.core.util.tracing.Tracer.DIAGNOSTIC_ID_KEY;
-import static com.azure.core.util.tracing.Tracer.ENTITY_PATH_KEY;
-import static com.azure.core.util.tracing.Tracer.HOST_NAME_KEY;
-import static com.azure.core.util.tracing.Tracer.MESSAGE_ENQUEUED_TIME;
-import static com.azure.core.util.tracing.Tracer.SCOPE_KEY;
-import static com.azure.core.util.tracing.Tracer.SPAN_CONTEXT_KEY;
-import static com.azure.messaging.eventhubs.implementation.ClientConstants.AZ_NAMESPACE_VALUE;
-import static com.azure.messaging.eventhubs.implementation.ClientConstants.AZ_TRACING_SERVICE_NAME;
-
 import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
@@ -33,8 +23,11 @@ import com.azure.messaging.eventhubs.models.PartitionContext;
 import com.azure.messaging.eventhubs.models.PartitionEvent;
 import com.azure.messaging.eventhubs.models.PartitionOwnership;
 import com.azure.messaging.eventhubs.models.ReceiveOptions;
-import java.io.Closeable;
-import java.io.IOException;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Signal;
+import reactor.core.scheduler.Scheduler;
+import reactor.core.scheduler.Schedulers;
+
 import java.time.Duration;
 import java.util.List;
 import java.util.Locale;
@@ -43,9 +36,16 @@ import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Signal;
-import reactor.core.scheduler.Schedulers;
+
+import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
+import static com.azure.core.util.tracing.Tracer.DIAGNOSTIC_ID_KEY;
+import static com.azure.core.util.tracing.Tracer.ENTITY_PATH_KEY;
+import static com.azure.core.util.tracing.Tracer.HOST_NAME_KEY;
+import static com.azure.core.util.tracing.Tracer.MESSAGE_ENQUEUED_TIME;
+import static com.azure.core.util.tracing.Tracer.SCOPE_KEY;
+import static com.azure.core.util.tracing.Tracer.SPAN_CONTEXT_KEY;
+import static com.azure.messaging.eventhubs.implementation.ClientConstants.AZ_NAMESPACE_VALUE;
+import static com.azure.messaging.eventhubs.implementation.ClientConstants.AZ_TRACING_SERVICE_NAME;
 
 /**
  * The partition pump manager that keeps track of all the partition pumps started by this {@link EventProcessorClient}.
@@ -59,10 +59,14 @@ import reactor.core.scheduler.Schedulers;
  * </p>
  */
 class PartitionPumpManager {
+    private static final int MAXIMUM_QUEUE_SIZE = 10000;
 
+    //TODO (conniey): Add a configurable scheduler size, at the moment we are creating a new elastic scheduler
+    // for each partition pump that will have at most number of processors * 4.
+    private final int schedulerSize = Runtime.getRuntime().availableProcessors() * 4;
     private final ClientLogger logger = new ClientLogger(PartitionPumpManager.class);
     private final CheckpointStore checkpointStore;
-    private final Map<String, EventHubConsumerAsyncClient> partitionPumps = new ConcurrentHashMap<>();
+    private final Map<String, PartitionPump> partitionPumps = new ConcurrentHashMap<>();
     private final Supplier<PartitionProcessor> partitionProcessorFactory;
     private final EventHubClientBuilder eventHubClientBuilder;
     private final TracerProvider tracerProvider;
@@ -71,6 +75,7 @@ class PartitionPumpManager {
     private final Duration maxWaitTime;
     private final int maxBatchSize;
     private final boolean batchReceiveMode;
+    private final int prefetch;
 
     /**
      * Creates an instance of partition pump manager.
@@ -103,6 +108,10 @@ class PartitionPumpManager {
         this.maxBatchSize = maxBatchSize;
         this.maxWaitTime = maxWaitTime;
         this.batchReceiveMode = batchReceiveMode;
+
+        this.prefetch = eventHubClientBuilder.getPrefetchCount() == null
+            ? EventHubClientBuilder.DEFAULT_PREFETCH_COUNT
+            : eventHubClientBuilder.getPrefetchCount();
     }
 
     /**
@@ -128,19 +137,25 @@ class PartitionPumpManager {
      * @param ownership The partition ownership information for which the connection state will be verified.
      */
     void verifyPartitionConnection(PartitionOwnership ownership) {
-        String partitionId = ownership.getPartitionId();
-        if (partitionPumps.containsKey(partitionId)) {
-            EventHubConsumerAsyncClient consumerClient = partitionPumps.get(partitionId);
-            if (consumerClient.isConnectionClosed()) {
-                logger.info("Connection closed for {}, partition {}. Removing the consumer.",
-                    ownership.getEventHubName(), partitionId);
-                try {
-                    partitionPumps.get(partitionId).close();
-                } catch (Exception ex) {
-                    logger.warning(Messages.FAILED_CLOSE_CONSUMER_PARTITION, partitionId, ex);
-                } finally {
-                    partitionPumps.remove(partitionId);
-                }
+        final String partitionId = ownership.getPartitionId();
+        final PartitionPump partitionPump = partitionPumps.get(partitionId);
+
+        if (partitionPump == null) {
+            logger.info("eventHubName[{}] partitionId[{}] No partition pump found for ownership record.",
+                ownership.getEventHubName(), partitionId);
+            return;
+        }
+
+        final EventHubConsumerAsyncClient consumerClient = partitionPump.getClient();
+        if (consumerClient.isConnectionClosed()) {
+            logger.info("eventHubName[{}] partitionId[{}] Connection closed for partition. Removing the consumer.",
+                ownership.getEventHubName(), partitionId);
+            try {
+                partitionPump.close();
+            } catch (Exception ex) {
+                logger.warning(Messages.FAILED_CLOSE_CONSUMER_PARTITION, partitionId, ex);
+            } finally {
+                partitionPumps.remove(partitionId);
             }
         }
     }
@@ -166,7 +181,7 @@ class PartitionPumpManager {
             InitializationContext initializationContext = new InitializationContext(partitionContext);
             partitionProcessor.initialize(initializationContext);
 
-            EventPosition startFromEventPosition = null;
+            EventPosition startFromEventPosition;
             // A checkpoint indicates the last known successfully processed event.
             // So, the event position to start a new partition processing should be exclusive of the
             // offset/sequence number in the checkpoint. If no checkpoint is available, start from
@@ -186,10 +201,14 @@ class PartitionPumpManager {
             ReceiveOptions receiveOptions = new ReceiveOptions().setOwnerLevel(0L)
                 .setTrackLastEnqueuedEventProperties(trackLastEnqueuedEventProperties);
 
+            Scheduler scheduler = Schedulers.newBoundedElastic(schedulerSize,
+                MAXIMUM_QUEUE_SIZE, "partition-pump-" + claimedOwnership.getPartitionId());
             EventHubConsumerAsyncClient eventHubConsumer = eventHubClientBuilder.buildAsyncClient()
-                .createConsumer(claimedOwnership.getConsumerGroup(), EventHubClientBuilder.DEFAULT_PREFETCH_COUNT);
+                .createConsumer(claimedOwnership.getConsumerGroup(), prefetch);
+            PartitionPump partitionPump = new PartitionPump(claimedOwnership.getPartitionId(), eventHubConsumer,
+                scheduler);
 
-            partitionPumps.put(claimedOwnership.getPartitionId(), eventHubConsumer);
+            partitionPumps.put(claimedOwnership.getPartitionId(), partitionPump);
             //@formatter:off
             Flux<Flux<PartitionEvent>> partitionEventFlux;
             Flux<PartitionEvent> receiver = eventHubConsumer
@@ -211,17 +230,17 @@ class PartitionPumpManager {
             }
             partitionEventFlux
                 .concatMap(Flux::collectList)
-                .publishOn(Schedulers.boundedElastic())
+                .publishOn(scheduler, false, prefetch)
                 .subscribe(partitionEventBatch -> {
                     processEvents(partitionContext, partitionProcessor,
                         eventHubConsumer, partitionEventBatch);
                 },
                     /* EventHubConsumer receive() returned an error */
-                    ex -> handleError(claimedOwnership, eventHubConsumer, partitionProcessor, ex, partitionContext),
+                    ex -> handleError(claimedOwnership, partitionPump, partitionProcessor, ex, partitionContext),
                     () -> {
                         partitionProcessor.close(new CloseContext(partitionContext,
                             CloseReason.EVENT_PROCESSOR_SHUTDOWN));
-                        cleanup(claimedOwnership, eventHubConsumer);
+                        cleanup(claimedOwnership, partitionPump);
                     });
             //@formatter:on
         } catch (Exception ex) {
@@ -305,11 +324,11 @@ class PartitionPumpManager {
         }
     }
 
-    Map<String, EventHubConsumerAsyncClient> getPartitionPumps() {
+    Map<String, PartitionPump> getPartitionPumps() {
         return this.partitionPumps;
     }
 
-    private void handleError(PartitionOwnership claimedOwnership, EventHubConsumerAsyncClient eventHubConsumer,
+    private void handleError(PartitionOwnership claimedOwnership, PartitionPump partitionPump,
         PartitionProcessor partitionProcessor, Throwable throwable, PartitionContext partitionContext) {
         boolean shouldRethrow = true;
         if (!(throwable instanceof PartitionProcessorException)) {
@@ -322,18 +341,18 @@ class PartitionPumpManager {
         // Any exception while receiving events will result in the processor losing ownership
         CloseReason closeReason = CloseReason.LOST_PARTITION_OWNERSHIP;
         partitionProcessor.close(new CloseContext(partitionContext, closeReason));
-        cleanup(claimedOwnership, eventHubConsumer);
+        cleanup(claimedOwnership, partitionPump);
         if (shouldRethrow) {
             PartitionProcessorException exception = (PartitionProcessorException) throwable;
             throw logger.logExceptionAsError(exception);
         }
     }
 
-    private void cleanup(PartitionOwnership claimedOwnership, EventHubConsumerAsyncClient eventHubConsumer) {
+    private void cleanup(PartitionOwnership claimedOwnership, PartitionPump partitionPump) {
         try {
             // close the consumer
             logger.info("Closing consumer for partition id {}", claimedOwnership.getPartitionId());
-            eventHubConsumer.close();
+            partitionPump.close();
         } finally {
             // finally, remove the partition from partitionPumps map
             logger.info("Removing partition id {} from list of processing partitions",
@@ -374,19 +393,20 @@ class PartitionPumpManager {
         if (!spanScope.isPresent() || !tracerProvider.isEnabled()) {
             return;
         }
-        if (spanScope.get() instanceof Closeable) {
-            Closeable close = (Closeable) processSpanContext.getData(SCOPE_KEY).get();
+
+        Object spanObject = spanScope.get();
+        if (spanObject instanceof AutoCloseable) {
+            AutoCloseable close = (AutoCloseable) spanObject;
             try {
                 close.close();
-                tracerProvider.endSpan(processSpanContext, signal);
-            } catch (IOException ioException) {
-                logger.error(Messages.EVENT_PROCESSOR_RUN_END, ioException);
+            } catch (Exception exception) {
+                logger.error(Messages.EVENT_PROCESSOR_RUN_END, exception);
             }
 
         } else {
-            logger.warning(String.format(Locale.US,
-                Messages.PROCESS_SPAN_SCOPE_TYPE_ERROR,
-                spanScope.get() != null ? spanScope.getClass() : "null"));
+            logger.verbose(String.format(Locale.US, Messages.PROCESS_SPAN_SCOPE_TYPE_ERROR,
+                spanObject != null ? spanObject.getClass() : "null"));
         }
+        tracerProvider.endSpan(processSpanContext, signal);
     }
 }

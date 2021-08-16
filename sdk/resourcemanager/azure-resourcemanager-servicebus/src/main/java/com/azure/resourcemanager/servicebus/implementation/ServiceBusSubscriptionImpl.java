@@ -3,14 +3,12 @@
 
 package com.azure.resourcemanager.servicebus.implementation;
 
-import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.IndependentChildResourceImpl;
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.servicebus.ServiceBusManager;
-import com.azure.resourcemanager.servicebus.fluent.models.SubscriptionResourceInner;
+import com.azure.resourcemanager.servicebus.fluent.models.SBSubscriptionInner;
 import com.azure.resourcemanager.servicebus.models.EntityStatus;
 import com.azure.resourcemanager.servicebus.models.ServiceBusSubscription;
-import com.azure.resourcemanager.servicebus.models.SubscriptionCreateOrUpdateParameters;
 import com.azure.resourcemanager.servicebus.models.Topic;
 import reactor.core.publisher.Mono;
 
@@ -24,7 +22,7 @@ class ServiceBusSubscriptionImpl extends
     IndependentChildResourceImpl<
         ServiceBusSubscription,
         Topic,
-        SubscriptionResourceInner,
+        SBSubscriptionInner,
         ServiceBusSubscriptionImpl,
         ServiceBusManager>
     implements
@@ -32,22 +30,16 @@ class ServiceBusSubscriptionImpl extends
         ServiceBusSubscription.Definition,
         ServiceBusSubscription.Update {
     private final String namespaceName;
-    private final Region region;
 
     ServiceBusSubscriptionImpl(String resourceGroupName,
-                     String namespaceName,
-                     String topicName,
-                     String name,
-                     Region region,
-                     SubscriptionResourceInner inner,
-                     ServiceBusManager manager) {
+                               String namespaceName,
+                               String topicName,
+                               String name,
+                               SBSubscriptionInner inner,
+                               ServiceBusManager manager) {
         super(name, inner, manager);
         this.namespaceName = namespaceName;
-        this.region = region;
         this.withExistingParentResource(resourceGroupName, topicName);
-        if (inner.location() == null) {
-            inner.withLocation(this.region.toString());
-        }
     }
 
     @Override
@@ -85,8 +77,7 @@ class ServiceBusSubscriptionImpl extends
         if (this.innerModel().lockDuration() == null) {
             return 0;
         }
-        TimeSpan timeSpan = TimeSpan.parse(this.innerModel().lockDuration());
-        return (long) timeSpan.totalSeconds();
+        return this.innerModel().lockDuration().getSeconds();
     }
 
     @Override
@@ -94,8 +85,7 @@ class ServiceBusSubscriptionImpl extends
         if (this.innerModel().autoDeleteOnIdle() == null) {
             return 0;
         }
-        TimeSpan timeSpan = TimeSpan.parse(this.innerModel().autoDeleteOnIdle());
-        return (long) timeSpan.totalMinutes();
+        return this.innerModel().autoDeleteOnIdle().toMinutes();
     }
 
     @Override
@@ -103,7 +93,7 @@ class ServiceBusSubscriptionImpl extends
         if (this.innerModel().defaultMessageTimeToLive() == null) {
             return null;
         }
-        return TimeSpan.parse(this.innerModel().defaultMessageTimeToLive()).toDuration();
+        return this.innerModel().defaultMessageTimeToLive();
     }
 
     @Override
@@ -173,21 +163,19 @@ class ServiceBusSubscriptionImpl extends
 
     @Override
     public ServiceBusSubscriptionImpl withDeleteOnIdleDurationInMinutes(int durationInMinutes) {
-        TimeSpan timeSpan = new TimeSpan().withMinutes(durationInMinutes);
-        this.innerModel().withAutoDeleteOnIdle(timeSpan.toString());
+        this.innerModel().withAutoDeleteOnIdle(Duration.ofMinutes(durationInMinutes));
         return this;
     }
 
     @Override
     public ServiceBusSubscriptionImpl withMessageLockDurationInSeconds(int durationInSeconds) {
-        TimeSpan timeSpan = new TimeSpan().withSeconds(durationInSeconds);
-        this.innerModel().withLockDuration(timeSpan.toString());
+        this.innerModel().withLockDuration(Duration.ofSeconds(durationInSeconds));
         return this;
     }
 
     @Override
     public ServiceBusSubscriptionImpl withDefaultMessageTTL(Duration ttl) {
-        this.innerModel().withDefaultMessageTimeToLive(TimeSpan.fromDuration(ttl).toString());
+        this.innerModel().withDefaultMessageTimeToLive(ttl);
         return this;
     }
 
@@ -252,7 +240,7 @@ class ServiceBusSubscriptionImpl extends
     }
 
     @Override
-    protected Mono<SubscriptionResourceInner> getInnerAsync() {
+    protected Mono<SBSubscriptionInner> getInnerAsync() {
         return this.manager().serviceClient().getSubscriptions()
                 .getAsync(this.resourceGroupName(),
                         this.namespaceName,
@@ -268,26 +256,10 @@ class ServiceBusSubscriptionImpl extends
                     this.namespaceName,
                     this.parentName,
                     this.name(),
-                    prepareForCreate(this.innerModel()))
+                    this.innerModel())
             .map(inner -> {
                 setInner(inner);
                 return self;
             });
-    }
-
-    private SubscriptionCreateOrUpdateParameters prepareForCreate(SubscriptionResourceInner inner) {
-        return new SubscriptionCreateOrUpdateParameters()
-            .withAutoDeleteOnIdle(inner.autoDeleteOnIdle())
-            .withDefaultMessageTimeToLive(inner.defaultMessageTimeToLive())
-            .withDeadLetteringOnFilterEvaluationExceptions(inner.deadLetteringOnFilterEvaluationExceptions())
-            .withDeadLetteringOnMessageExpiration(inner.deadLetteringOnMessageExpiration())
-            .withEnableBatchedOperations(inner.enableBatchedOperations())
-            .withEntityAvailabilityStatus(inner.entityAvailabilityStatus())
-            .withIsReadOnly(inner.isReadOnly())
-            .withLockDuration(inner.lockDuration())
-            .withMaxDeliveryCount(inner.maxDeliveryCount())
-            .withRequiresSession(inner.requiresSession())
-            .withStatus(inner.status())
-            .withLocation(inner.location());
     }
 }

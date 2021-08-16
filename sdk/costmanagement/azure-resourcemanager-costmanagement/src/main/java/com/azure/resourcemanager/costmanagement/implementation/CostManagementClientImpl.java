@@ -26,8 +26,10 @@ import com.azure.resourcemanager.costmanagement.fluent.CostManagementClient;
 import com.azure.resourcemanager.costmanagement.fluent.DimensionsClient;
 import com.azure.resourcemanager.costmanagement.fluent.ExportsClient;
 import com.azure.resourcemanager.costmanagement.fluent.ForecastsClient;
+import com.azure.resourcemanager.costmanagement.fluent.GenerateReservationDetailsReportsClient;
 import com.azure.resourcemanager.costmanagement.fluent.OperationsClient;
 import com.azure.resourcemanager.costmanagement.fluent.QueriesClient;
+import com.azure.resourcemanager.costmanagement.fluent.SettingsClient;
 import com.azure.resourcemanager.costmanagement.fluent.ViewsClient;
 import java.io.IOException;
 import java.lang.reflect.Type;
@@ -104,6 +106,18 @@ public final class CostManagementClientImpl implements CostManagementClient {
         return this.defaultPollInterval;
     }
 
+    /** The SettingsClient object to access its operations. */
+    private final SettingsClient settings;
+
+    /**
+     * Gets the SettingsClient object to access its operations.
+     *
+     * @return the SettingsClient object.
+     */
+    public SettingsClient getSettings() {
+        return this.settings;
+    }
+
     /** The ViewsClient object to access its operations. */
     private final ViewsClient views;
 
@@ -164,6 +178,18 @@ public final class CostManagementClientImpl implements CostManagementClient {
         return this.queries;
     }
 
+    /** The GenerateReservationDetailsReportsClient object to access its operations. */
+    private final GenerateReservationDetailsReportsClient generateReservationDetailsReports;
+
+    /**
+     * Gets the GenerateReservationDetailsReportsClient object to access its operations.
+     *
+     * @return the GenerateReservationDetailsReportsClient object.
+     */
+    public GenerateReservationDetailsReportsClient getGenerateReservationDetailsReports() {
+        return this.generateReservationDetailsReports;
+    }
+
     /** The OperationsClient object to access its operations. */
     private final OperationsClient operations;
 
@@ -207,12 +233,14 @@ public final class CostManagementClientImpl implements CostManagementClient {
         this.serializerAdapter = serializerAdapter;
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
-        this.apiVersion = "2020-06-01";
+        this.apiVersion = "2019-11-01";
+        this.settings = new SettingsClientImpl(this);
         this.views = new ViewsClientImpl(this);
         this.alerts = new AlertsClientImpl(this);
         this.forecasts = new ForecastsClientImpl(this);
         this.dimensions = new DimensionsClientImpl(this);
         this.queries = new QueriesClientImpl(this);
+        this.generateReservationDetailsReports = new GenerateReservationDetailsReportsClientImpl(this);
         this.operations = new OperationsClientImpl(this);
         this.exports = new ExportsClientImpl(this);
     }
@@ -299,7 +327,7 @@ public final class CostManagementClientImpl implements CostManagementClient {
                         if (managementError.getCode() == null || managementError.getMessage() == null) {
                             managementError = null;
                         }
-                    } catch (IOException ioe) {
+                    } catch (IOException | RuntimeException ioe) {
                         logger.logThrowableAsWarning(ioe);
                     }
                 }
@@ -328,7 +356,7 @@ public final class CostManagementClientImpl implements CostManagementClient {
             super(null);
             this.statusCode = statusCode;
             this.httpHeaders = httpHeaders;
-            this.responseBody = responseBody.getBytes(StandardCharsets.UTF_8);
+            this.responseBody = responseBody == null ? null : responseBody.getBytes(StandardCharsets.UTF_8);
         }
 
         public int getStatusCode() {

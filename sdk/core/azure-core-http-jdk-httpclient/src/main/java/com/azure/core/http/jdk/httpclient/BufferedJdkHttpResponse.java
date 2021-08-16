@@ -5,6 +5,7 @@ package com.azure.core.http.jdk.httpclient;
 
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
+import com.azure.core.http.HttpResponse;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -29,5 +30,10 @@ final class BufferedJdkHttpResponse extends JdkHttpResponseBase {
     @Override
     public Mono<byte[]> getBodyAsByteArray() {
         return Mono.defer(() -> Mono.just(body));
+    }
+
+    @Override
+    public HttpResponse buffer() {
+        return this; // This response is already buffered.
     }
 }

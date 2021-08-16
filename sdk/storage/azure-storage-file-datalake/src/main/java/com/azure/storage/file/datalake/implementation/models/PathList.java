@@ -6,18 +6,19 @@ package com.azure.storage.file.datalake.implementation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import java.util.ArrayList;
 import java.util.List;
 
-/**
- * The PathList model.
- */
+/** The PathList model. */
+@JacksonXmlRootElement(localName = "PathList")
 @Fluent
 public final class PathList {
     /*
      * The paths property.
      */
     @JsonProperty(value = "paths")
-    private List<Path> paths;
+    private List<Path> paths = new ArrayList<>();
 
     /**
      * Get the paths property: The paths property.

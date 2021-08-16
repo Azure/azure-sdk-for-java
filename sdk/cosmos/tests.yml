@@ -3,88 +3,62 @@ trigger: none
 variables:
   - template: ../../eng/pipelines/templates/variables/globals.yml
   - name: AdditionalArgs
-    value: ''
+    value: '-DCOSMOS.CLIENT_TELEMETRY_ENDPOINT=$(cosmos-client-telemetry-endpoint) -DCOSMOS.CLIENT_TELEMETRY_COSMOS_ACCOUNT=$(cosmos-client-telemetry-cosmos-account)'
 
 stages:
-  - stage: Cosmos_Live_Test
-    jobs:
-      - template: /eng/pipelines/templates/jobs/archetype-sdk-tests-generate.yml
-        parameters:
-          CloudConfig:
-            SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources)
-            Cloud: Public
-          MatrixConfigs:
-            - Name: Cosmos_live_test
-              Path: sdk/cosmos/platform-matrix.json
-              Selection: all
-              GenerateVMJobs: true
-          AdditionalParameters:
-            ServiceDirectory: cosmos
-            Artifacts:
-              - name: azure-cosmos
-                groupId: com.azure
-                safeName: azurecosmos
-            AdditionalModules:
-              - name: azure-cosmos-benchmark
-                groupId: com.azure
-            TimeoutInMinutes: 120
-            MaxParallel: 8
-            PreSteps:
-              - template: /eng/pipelines/templates/steps/install-reporting-tools.yml
-            TestStepMavenInputs:
-              goals: verify
-              options: '$(ProfileFlag) -Dgpg.skip $(AdditionalArgs) -pl $(ProjectList)'
-            TestResultsFiles: '**/junitreports/TEST-*.xml'
+  - template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
+    parameters:
+      CloudConfig:
+        Cosmos_Public:
+          SubscriptionConfigurations:
+            - $(sub-config-azure-cloud-test-resources)
+            - $(sub-config-cosmos-azure-cloud-test-resources)
+      Clouds: 'Cosmos_Public'
+      MatrixConfigs:
+        - Name: Cosmos_live_test
+          Path: sdk/cosmos/platform-matrix.json
+          Selection: all
+          GenerateVMJobs: true
+      ServiceDirectory: cosmos
+      Artifacts:
+        - name: azure-cosmos
+          groupId: com.azure
+          safeName: azurecosmos
+      AdditionalModules:
+        - name: azure-cosmos-benchmark
+          groupId: com.azure
+      TimeoutInMinutes: 120
+      MaxParallel: 8
+      PreSteps:
+        - template: /eng/pipelines/templates/steps/install-reporting-tools.yml
+      TestStepMavenInputs:
+        goals: verify
+        options: '$(DefaultTestOptions) $(ProfileFlag) $(AdditionalArgs)'
+        mavenOptions: '$(DefaultTestMavenOptions)'
+      TestResultsFiles: '**/junitreports/TEST-*.xml'
 
-  - stage: Cosmos_Live_Test_Integration
-    dependsOn: []
-    jobs:
-      - template: /eng/pipelines/templates/jobs/archetype-sdk-tests-generate.yml
-        parameters:
-          CloudConfig:
-            SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources)
-            Cloud: Public
-          MatrixConfigs:
-            - Name: Cosmos_live_test_integration
-              Path: sdk/cosmos/integration-matrix.json
-              Selection: all
-              GenerateVMJobs: true
-          AdditionalParameters:
-            ServiceDirectory: cosmos
-            Artifacts:
-              - name: azure-spring-data-cosmos-test
-                groupId: com.azure
-                safeName: azurespringdatacosmostest
-            TimeoutInMinutes: 90
-            EnvVars:
-              AZURE_TEST_MODE: LIVE
-            PreSteps:
-              - template: /eng/pipelines/templates/steps/install-reporting-tools.yml
-            PostSteps:
-              - script: |
-                  python --version
-                  python -m pip install setuptools termcolor in_place
-                  python sdk/spring/scripts/replace_util.py --module cosmos --log debug --color false
-                displayName: 'Run replace_util.py'
-              - task: Maven@3
-                displayName: 'Build and Install again, JDK Version: $(JavaBuildVersion)'
-                inputs:
-                  mavenPomFile: pom.xml
-                  goals: 'install'
-                  options: '$(DefaultOptions) -DskipTests -Dgpg.skip -Dmaven.javadoc.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Drevapi.skip=true -pl $(ProjectList) -am'
-                  mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
-                  javaHomeOption: 'JDKVersion'
-                  jdkVersionOption: $(JavaBuildVersion)
-                  jdkArchitectureOption: 'x64'
-                  publishJUnitResults: false
-              - task: Maven@3
-                displayName: 'Run tests again: $(DisplayName)'
-                inputs:
-                  mavenPomFile: pom.xml
-                  goals: clean verify
-                  options: '$(ProfileFlag) -Dgpg.skip -Dmaven.wagon.http.pool=false $(DefaultOptions) -Dmaven.javadoc.skip=true -Drevapi.skip=true -pl $(ProjectList)'
-                env:
-                  AZURE_TEST_MODE: LIVE
-            TestStepMavenInputs:
-              goals: clean verify
-              options: '$(ProfileFlag) -Dgpg.skip -Dmaven.wagon.http.pool=false $(DefaultOptions) -Dmaven.javadoc.skip=true -Drevapi.skip=true -pl $(ProjectList)'
+  - template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
+    parameters:
+      TestName: 'Integration'
+      CloudConfig:
+        Public:
+          SubscriptionConfigurations:
+            - $(sub-config-azure-cloud-test-resources)
+            - $(sub-config-cosmos-azure-cloud-test-resources)
+      MatrixConfigs:
+        - Name: Cosmos_live_test_integration
+          Path: sdk/cosmos/integration-matrix.json
+          Selection: all
+          GenerateVMJobs: true
+      ServiceDirectory: cosmos
+      Artifacts:
+        - name: azure-spring-data-cosmos-test
+          groupId: com.azure
+          safeName: azurespringdatacosmostest
+      TimeoutInMinutes: 90
+      PreSteps:
+        - template: /eng/pipelines/templates/steps/install-reporting-tools.yml
+      TestStepMavenInputs:
+        goals: clean verify
+        options: '$(DefaultTestOptions) $(ProfileFlag)'
+        mavenOptions: '$(DefaultTestMavenOptions)'

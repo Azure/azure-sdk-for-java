@@ -48,7 +48,7 @@ public class AADB2CAuthorizationRequestResolver implements OAuth2AuthorizationRe
     public AADB2CAuthorizationRequestResolver(@NonNull ClientRegistrationRepository repository,
                                               @NonNull AADB2CProperties properties) {
         this.properties = properties;
-        this.passwordResetUserFlow = this.properties.getUserFlows().getPasswordReset();
+        this.passwordResetUserFlow = this.properties.getPasswordReset();
         this.defaultResolver = new DefaultOAuth2AuthorizationRequestResolver(repository, REQUEST_BASE_URI);
     }
 
@@ -97,7 +97,7 @@ public class AADB2CAuthorizationRequestResolver implements OAuth2AuthorizationRe
 
     private String getRegistrationId(HttpServletRequest request) {
         if (REQUEST_MATCHER.matches(request)) {
-            return REQUEST_MATCHER.extractUriTemplateVariables(request).get(REGISTRATION_ID_NAME);
+            return REQUEST_MATCHER.matcher(request).getVariables().get(REGISTRATION_ID_NAME);
         }
 
         return null;

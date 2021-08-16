@@ -3,31 +3,42 @@
 
 package com.azure.storage.blob.implementation.util;
 
+import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.RequestConditions;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.serializer.JacksonAdapter;
+import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.blob.ProgressReceiver;
-import com.azure.storage.blob.implementation.models.BlobDownloadHeaders;
 import com.azure.storage.blob.implementation.models.BlobItemInternal;
 import com.azure.storage.blob.implementation.models.BlobItemPropertiesInternal;
 import com.azure.storage.blob.implementation.models.BlobTag;
 import com.azure.storage.blob.implementation.models.BlobTags;
+import com.azure.storage.blob.implementation.models.BlobsDownloadHeaders;
 import com.azure.storage.blob.implementation.models.FilterBlobItem;
-import com.azure.storage.blob.models.PageBlobCopyIncrementalRequestConditions;
+import com.azure.storage.blob.models.BlobBeginCopySourceRequestConditions;
+import com.azure.storage.blob.models.BlobDownloadHeaders;
+import com.azure.storage.blob.models.BlobImmutabilityPolicy;
+import com.azure.storage.blob.models.BlobImmutabilityPolicyMode;
 import com.azure.storage.blob.models.BlobItem;
 import com.azure.storage.blob.models.BlobItemProperties;
 import com.azure.storage.blob.models.BlobLeaseRequestConditions;
-import com.azure.storage.blob.models.BlobBeginCopySourceRequestConditions;
+import com.azure.storage.blob.models.BlobQueryHeaders;
+import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.ObjectReplicationPolicy;
 import com.azure.storage.blob.models.ObjectReplicationRule;
 import com.azure.storage.blob.models.ObjectReplicationStatus;
+import com.azure.storage.blob.models.PageBlobCopyIncrementalRequestConditions;
 import com.azure.storage.blob.models.ParallelTransferOptions;
 import com.azure.storage.blob.models.TaggedBlobItem;
 import com.azure.storage.common.implementation.Constants;
 
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -38,6 +49,10 @@ import java.util.Map;
  * RESERVED FOR INTERNAL USE.
  */
 public class ModelHelper {
+
+    private static final SerializerAdapter SERIALIZER = new JacksonAdapter();
+    private static final ClientLogger LOGGER = new ClientLogger(ModelHelper.class);
+
 
     /**
      * Indicates the default size above which the upload will be broken into blocks and parallelized.
@@ -153,13 +168,13 @@ public class ModelHelper {
     }
 
     /**
-     * Transforms {@link BlobDownloadHeaders} into a public {@link com.azure.storage.blob.models.BlobDownloadHeaders}.
+     * Transforms {@link BlobsDownloadHeaders} into a public {@link BlobDownloadHeaders}.
      *
-     * @param internalHeaders {@link BlobDownloadHeaders}
-     * @return {@link com.azure.storage.blob.models.BlobDownloadHeaders}
+     * @param internalHeaders {@link BlobsDownloadHeaders}
+     * @return {@link BlobDownloadHeaders}
      */
-    public static com.azure.storage.blob.models.BlobDownloadHeaders populateBlobDownloadHeaders(
-        BlobDownloadHeaders internalHeaders) {
+    public static BlobDownloadHeaders populateBlobDownloadHeaders(
+        BlobsDownloadHeaders internalHeaders, String errorCode) {
         /*
         We have these two types because we needed to update this interface in a way that could not be generated
         (getObjectReplicationSourcePolicies), so we switched to generating BlobDownloadHeaders into implementation and
@@ -168,43 +183,43 @@ public class ModelHelper {
         com.azure.storage.blob.models.BlobDownloadHeaders headers =
             new com.azure.storage.blob.models.BlobDownloadHeaders();
         headers.setLastModified(internalHeaders.getLastModified());
-        headers.setMetadata(internalHeaders.getMetadata());
+        headers.setMetadata(internalHeaders.getXMsMeta());
         headers.setETag(internalHeaders.getETag());
         headers.setContentLength(internalHeaders.getContentLength());
         headers.setContentType(internalHeaders.getContentType());
         headers.setContentRange(internalHeaders.getContentRange());
         headers.setContentEncoding(internalHeaders.getContentEncoding());
         headers.setContentLanguage(internalHeaders.getContentLanguage());
-        headers.setContentMd5(internalHeaders.getContentMd5());
+        headers.setContentMd5(internalHeaders.getContentMD5());
         headers.setContentDisposition(internalHeaders.getContentDisposition());
         headers.setCacheControl(internalHeaders.getCacheControl());
-        headers.setBlobSequenceNumber(internalHeaders.getBlobSequenceNumber());
-        headers.setBlobType(internalHeaders.getBlobType());
-        headers.setLeaseStatus(internalHeaders.getLeaseStatus());
-        headers.setLeaseState(internalHeaders.getLeaseState());
-        headers.setLeaseDuration(internalHeaders.getLeaseDuration());
-        headers.setCopyId(internalHeaders.getCopyId());
-        headers.setCopyStatus(internalHeaders.getCopyStatus());
-        headers.setCopySource(internalHeaders.getCopySource());
-        headers.setCopyProgress(internalHeaders.getCopyProgress());
-        headers.setCopyCompletionTime(internalHeaders.getCopyCompletionTime());
-        headers.setCopyStatusDescription(internalHeaders.getCopyStatusDescription());
-        headers.setIsServerEncrypted(internalHeaders.isServerEncrypted());
-        headers.setClientRequestId(internalHeaders.getClientRequestId());
-        headers.setRequestId(internalHeaders.getRequestId());
-        headers.setVersion(internalHeaders.getVersion());
-        headers.setVersionId(internalHeaders.getVersionId());
+        headers.setBlobSequenceNumber(internalHeaders.getXMsBlobSequenceNumber());
+        headers.setBlobType(internalHeaders.getXMsBlobType());
+        headers.setLeaseStatus(internalHeaders.getXMsLeaseStatus());
+        headers.setLeaseState(internalHeaders.getXMsLeaseState());
+        headers.setLeaseDuration(internalHeaders.getXMsLeaseDuration());
+        headers.setCopyId(internalHeaders.getXMsCopyId());
+        headers.setCopyStatus(internalHeaders.getXMsCopyStatus());
+        headers.setCopySource(internalHeaders.getXMsCopySource());
+        headers.setCopyProgress(internalHeaders.getXMsCopyProgress());
+        headers.setCopyCompletionTime(internalHeaders.getXMsCopyCompletionTime());
+        headers.setCopyStatusDescription(internalHeaders.getXMsCopyStatusDescription());
+        headers.setIsServerEncrypted(internalHeaders.isXMsServerEncrypted());
+        headers.setClientRequestId(internalHeaders.getXMsClientRequestId());
+        headers.setRequestId(internalHeaders.getXMsRequestId());
+        headers.setVersion(internalHeaders.getXMsVersion());
+        headers.setVersionId(internalHeaders.getXMsVersionId());
         headers.setAcceptRanges(internalHeaders.getAcceptRanges());
         headers.setDateProperty(internalHeaders.getDateProperty());
-        headers.setBlobCommittedBlockCount(internalHeaders.getBlobCommittedBlockCount());
-        headers.setEncryptionKeySha256(internalHeaders.getEncryptionKeySha256());
-        headers.setEncryptionScope(internalHeaders.getEncryptionScope());
-        headers.setBlobContentMD5(internalHeaders.getBlobContentMD5());
-        headers.setContentCrc64(internalHeaders.getContentCrc64());
-        headers.setErrorCode(internalHeaders.getErrorCode());
-        headers.setTagCount(internalHeaders.getTagCount());
+        headers.setBlobCommittedBlockCount(internalHeaders.getXMsBlobCommittedBlockCount());
+        headers.setEncryptionKeySha256(internalHeaders.getXMsEncryptionKeySha256());
+        headers.setEncryptionScope(internalHeaders.getXMsEncryptionScope());
+        headers.setBlobContentMD5(internalHeaders.getXMsBlobContentMd5());
+        headers.setContentCrc64(internalHeaders.getXMsContentCrc64());
+        headers.setErrorCode(errorCode);
+        headers.setTagCount(internalHeaders.getXMsTagCount());
 
-        Map<String, String> objectReplicationStatus = internalHeaders.getObjectReplicationRules();
+        Map<String, String> objectReplicationStatus = internalHeaders.getXMsOr();
         Map<String, List<ObjectReplicationRule>> internalSourcePolicies = new HashMap<>();
         objectReplicationStatus = objectReplicationStatus == null ? new HashMap<>() : objectReplicationStatus;
         headers.setObjectReplicationDestinationPolicyId(objectReplicationStatus.getOrDefault("policy-id", null));
@@ -226,8 +241,15 @@ public class ModelHelper {
             objectReplicationSourcePolicies.add(new ObjectReplicationPolicy(entry.getKey(), entry.getValue()));
         }
         headers.setObjectReplicationSourcePolicies(objectReplicationSourcePolicies);
-        headers.setSealed(internalHeaders.isSealed());
-        headers.setLastAccessedTime(internalHeaders.getLastAccessed());
+        headers.setSealed(internalHeaders.isXMsBlobSealed());
+        headers.setLastAccessedTime(internalHeaders.getXMsLastAccessTime());
+        headers.setCurrentVersion(internalHeaders.isXMsIsCurrentVersion());
+
+        headers.setImmutabilityPolicy(new BlobImmutabilityPolicy()
+            .setPolicyMode(internalHeaders.getXMsImmutabilityPolicyMode() == null ? null
+            : BlobImmutabilityPolicyMode.fromString(internalHeaders.getXMsImmutabilityPolicyMode()))
+            .setExpiryTime(internalHeaders.getXMsImmutabilityPolicyUntilDate()));
+        headers.setHasLegalHold(internalHeaders.isXMsLegalHold());
 
         return headers;
     }
@@ -253,6 +275,8 @@ public class ModelHelper {
 
         blobItem.setObjectReplicationSourcePolicies(
             transformObjectReplicationMetadata(blobItemInternal.getObjectReplicationMetadata()));
+
+        blobItem.setHasVersionsOnly(blobItemInternal.isHasVersionsOnly());
 
         return blobItem;
     }
@@ -318,6 +342,11 @@ public class ModelHelper {
         blobItemProperties.setRehydratePriority(blobItemPropertiesInternal.getRehydratePriority());
         blobItemProperties.setSealed(blobItemPropertiesInternal.isSealed());
         blobItemProperties.setLastAccessedTime(blobItemPropertiesInternal.getLastAccessedOn());
+        blobItemProperties.setExpiryTime(blobItemPropertiesInternal.getExpiresOn());
+        blobItemProperties.setImmutabilityPolicy(new BlobImmutabilityPolicy()
+            .setExpiryTime(blobItemPropertiesInternal.getImmutabilityPolicyExpiresOn())
+            .setPolicyMode(blobItemPropertiesInternal.getImmutabilityPolicyMode()));
+        blobItemProperties.setHasLegalHold(blobItemPropertiesInternal.isLegalHold());
 
         return blobItemProperties;
     }
@@ -436,5 +465,104 @@ public class ModelHelper {
             objectReplicationSourcePolicies.add(new ObjectReplicationPolicy(entry.getKey(), entry.getValue()));
         }
         return objectReplicationSourcePolicies;
+    }
+
+    public static String getErrorCode(HttpHeaders headers) {
+        if (headers == null) {
+            return null;
+        }
+        return headers.getValue("x-ms-error-code");
+    }
+
+    public static String getETag(HttpHeaders headers) {
+        if (headers == null) {
+            return null;
+        }
+        return headers.getValue("ETag");
+    }
+
+    public static BlobsDownloadHeaders transformBlobDownloadHeaders(HttpHeaders headers) {
+        if (headers == null) {
+            return null;
+        }
+        try {
+            return SERIALIZER.deserialize(headers, BlobsDownloadHeaders.class);
+        } catch (IOException e) {
+            throw LOGGER.logExceptionAsError(new RuntimeException(e));
+        }
+    }
+
+    public static BlobQueryHeaders transformQueryHeaders(HttpHeaders headers) {
+        if (headers == null) {
+            return null;
+        }
+        try {
+            return SERIALIZER.deserialize(headers, BlobQueryHeaders.class);
+        } catch (IOException e) {
+            throw LOGGER.logExceptionAsError(new RuntimeException(e));
+        }
+    }
+
+    public static void validateConditionsNotPresent(BlobRequestConditions requestConditions,
+        EnumSet<BlobRequestConditionProperty> invalidConditions, String operationName, String parameterName) {
+        if (requestConditions == null) {
+            return;
+        }
+        List<String> invalidConditionsFound = null;
+
+        for (BlobRequestConditionProperty condition : invalidConditions) {
+            switch (condition) {
+                case LEASE_ID:
+                    if (requestConditions.getLeaseId() != null) {
+                        invalidConditionsFound = invalidConditionsFound == null ? new ArrayList<>()
+                            : invalidConditionsFound;
+                        invalidConditionsFound.add(BlobRequestConditionProperty.LEASE_ID.toString());
+                    }
+                    break;
+                case TAGS_CONDITIONS:
+                    if (requestConditions.getTagsConditions() != null) {
+                        invalidConditionsFound = invalidConditionsFound == null ? new ArrayList<>()
+                            : invalidConditionsFound;
+                        invalidConditionsFound.add(BlobRequestConditionProperty.TAGS_CONDITIONS.toString());
+                    }
+                    break;
+                case IF_MODIFIED_SINCE:
+                    if (requestConditions.getIfModifiedSince() != null) {
+                        invalidConditionsFound = invalidConditionsFound == null ? new ArrayList<>()
+                            : invalidConditionsFound;
+                        invalidConditionsFound.add(BlobRequestConditionProperty.IF_MODIFIED_SINCE.toString());
+                    }
+                    break;
+                case IF_UNMODIFIED_SINCE:
+                    if (requestConditions.getIfUnmodifiedSince() != null) {
+                        invalidConditionsFound = invalidConditionsFound == null ? new ArrayList<>()
+                            : invalidConditionsFound;
+                        invalidConditionsFound.add(BlobRequestConditionProperty.IF_UNMODIFIED_SINCE.toString());
+                    }
+                    break;
+                case IF_MATCH:
+                    if (requestConditions.getIfMatch() != null) {
+                        invalidConditionsFound = invalidConditionsFound == null ? new ArrayList<>()
+                            : invalidConditionsFound;
+                        invalidConditionsFound.add(BlobRequestConditionProperty.IF_MATCH.toString());
+                    }
+                    break;
+                case IF_NONE_MATCH:
+                    if (requestConditions.getIfNoneMatch() != null) {
+                        invalidConditionsFound = invalidConditionsFound == null ? new ArrayList<>()
+                            : invalidConditionsFound;
+                        invalidConditionsFound.add(BlobRequestConditionProperty.IF_NONE_MATCH.toString());
+                    }
+                    break;
+                default:
+                    break;
+            }
+        }
+        if (invalidConditionsFound != null && !invalidConditionsFound.isEmpty()) {
+            String unsupported = String.join(", ", invalidConditionsFound);
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("%s does not support the %s request condition(s) for parameter '%s'.",
+                    operationName, unsupported, parameterName)));
+        }
     }
 }

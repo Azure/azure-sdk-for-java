@@ -83,19 +83,22 @@ class ProxyEncryptionMonitorImpl implements DiskVolumeEncryptionMonitor {
                 .flatMap(
                     virtualMachine -> {
                         VirtualMachineExtensionInner extension = encryptionExtension(virtualMachine);
-                        if (EncryptionExtensionIdentifier.isNoAADVersion(osType(), extension.typeHandlerVersion())) {
-                            self.resolvedEncryptionMonitor =
-                                (osType() == OperatingSystemTypes.LINUX)
+                        if (extension != null) {
+                            if (EncryptionExtensionIdentifier.isNoAADVersion(osType(),
+                                extension.typeHandlerVersion())) {
+                                self.resolvedEncryptionMonitor = (osType() == OperatingSystemTypes.LINUX)
                                     ? new LinuxDiskVolumeNoAADEncryptionMonitorImpl(virtualMachine.id(), computeManager)
                                     : new WindowsVolumeNoAADEncryptionMonitorImpl(virtualMachine.id(), computeManager);
-                        } else {
-                            self.resolvedEncryptionMonitor =
-                                (osType() == OperatingSystemTypes.LINUX)
+                            } else {
+                                self.resolvedEncryptionMonitor = (osType() == OperatingSystemTypes.LINUX)
                                     ? new LinuxDiskVolumeLegacyEncryptionMonitorImpl(
-                                        virtualMachine.id(), computeManager)
+                                    virtualMachine.id(), computeManager)
                                     : new WindowsVolumeLegacyEncryptionMonitorImpl(virtualMachine.id(), computeManager);
+                            }
+                            return self.resolvedEncryptionMonitor.refreshAsync();
+                        } else {
+                            return Mono.just(self);
                         }
-                        return self.resolvedEncryptionMonitor.refreshAsync();
                     })
                 .switchIfEmpty(Mono.just(self));
         }

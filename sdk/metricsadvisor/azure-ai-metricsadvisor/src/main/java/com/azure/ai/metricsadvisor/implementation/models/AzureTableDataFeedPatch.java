@@ -18,14 +18,14 @@ public final class AzureTableDataFeedPatch extends DataFeedDetailPatch {
      * The dataSourceParameter property.
      */
     @JsonProperty(value = "dataSourceParameter")
-    private AzureTableParameter dataSourceParameter;
+    private AzureTableParameterPatch dataSourceParameter;
 
     /**
      * Get the dataSourceParameter property: The dataSourceParameter property.
      *
      * @return the dataSourceParameter value.
      */
-    public AzureTableParameter getDataSourceParameter() {
+    public AzureTableParameterPatch getDataSourceParameter() {
         return this.dataSourceParameter;
     }
 
@@ -35,7 +35,7 @@ public final class AzureTableDataFeedPatch extends DataFeedDetailPatch {
      * @param dataSourceParameter the dataSourceParameter value to set.
      * @return the AzureTableDataFeedPatch object itself.
      */
-    public AzureTableDataFeedPatch setDataSourceParameter(AzureTableParameter dataSourceParameter) {
+    public AzureTableDataFeedPatch setDataSourceParameter(AzureTableParameterPatch dataSourceParameter) {
         this.dataSourceParameter = dataSourceParameter;
         return this;
     }

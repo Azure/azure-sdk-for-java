@@ -1,0 +1,32 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.search.windows.net/indexes?api-version=2021-04-30-Preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-search-documents/11.5.0-beta.1 (11.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "f53e7ee8-a8d8-45d3-b4f3-c977e77ff831",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "334",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "request-id" : "f53e7ee8-a8d8-45d3-b4f3-c977e77ff831",
+      "StatusCode" : "400",
+      "Date" : "Tue, 13 Jul 2021 19:22:19 GMT",
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "f53e7ee8-a8d8-45d3-b4f3-c977e77ff831",
+      "elapsed-time" : "4",
+      "OData-Version" : "4.0",
+      "Expires" : "-1",
+      "Body" : "{\"error\":{\"code\":\"\",\"message\":\"The request is invalid. Details: index.tokenizers[0].flags : Values of property \\\"flags\\\" must belong to the set of allowed values (case-sensitive) or be in the pipe form of them (e.g. value1|value2|...): CANON_EQ, CASE_INSENSITIVE, COMMENTS, DOTALL, LITERAL, MULTILINE, UNICODE_CASE, UNIX_LINES.\\r\\n\"}}",
+      "Content-Language" : "en",
+      "x-ms-client-request-id" : "f53e7ee8-a8d8-45d3-b4f3-c977e77ff831",
+      "Preference-Applied" : "odata.include-annotations=\"*\"",
+      "Content-Type" : "application/json; odata.metadata=minimal"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "hotelscanuseallregexflagsemptyflagstokenizerb3e188281e7327", "azsmnet42437c66f90" ]
+}

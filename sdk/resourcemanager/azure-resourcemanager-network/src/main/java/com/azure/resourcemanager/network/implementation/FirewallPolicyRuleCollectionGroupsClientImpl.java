@@ -187,7 +187,7 @@ public final class FirewallPolicyRuleCollectionGroupsClientImpl implements Firew
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-07-01";
+        final String apiVersion = "2021-02-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -202,7 +202,7 @@ public final class FirewallPolicyRuleCollectionGroupsClientImpl implements Firew
                             this.client.getSubscriptionId(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -245,7 +245,7 @@ public final class FirewallPolicyRuleCollectionGroupsClientImpl implements Firew
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-07-01";
+        final String apiVersion = "2021-02-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -449,7 +449,7 @@ public final class FirewallPolicyRuleCollectionGroupsClientImpl implements Firew
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-07-01";
+        final String apiVersion = "2021-02-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -464,7 +464,7 @@ public final class FirewallPolicyRuleCollectionGroupsClientImpl implements Firew
                             this.client.getSubscriptionId(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -507,7 +507,7 @@ public final class FirewallPolicyRuleCollectionGroupsClientImpl implements Firew
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-07-01";
+        final String apiVersion = "2021-02-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -588,7 +588,7 @@ public final class FirewallPolicyRuleCollectionGroupsClientImpl implements Firew
      * @param resourceGroupName The name of the resource group.
      * @param firewallPolicyName The name of the Firewall Policy.
      * @param ruleCollectionGroupName The name of the FirewallPolicyRuleCollectionGroup.
-     * @param parameters Rule Collection Group resource.
+     * @param parameters Parameters supplied to the create or update FirewallPolicyRuleCollectionGroup operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -630,7 +630,7 @@ public final class FirewallPolicyRuleCollectionGroupsClientImpl implements Firew
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2020-07-01";
+        final String apiVersion = "2021-02-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -646,7 +646,7 @@ public final class FirewallPolicyRuleCollectionGroupsClientImpl implements Firew
                             parameters,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -655,7 +655,7 @@ public final class FirewallPolicyRuleCollectionGroupsClientImpl implements Firew
      * @param resourceGroupName The name of the resource group.
      * @param firewallPolicyName The name of the Firewall Policy.
      * @param ruleCollectionGroupName The name of the FirewallPolicyRuleCollectionGroup.
-     * @param parameters Rule Collection Group resource.
+     * @param parameters Parameters supplied to the create or update FirewallPolicyRuleCollectionGroup operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -699,7 +699,7 @@ public final class FirewallPolicyRuleCollectionGroupsClientImpl implements Firew
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2020-07-01";
+        final String apiVersion = "2021-02-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -721,7 +721,7 @@ public final class FirewallPolicyRuleCollectionGroupsClientImpl implements Firew
      * @param resourceGroupName The name of the resource group.
      * @param firewallPolicyName The name of the Firewall Policy.
      * @param ruleCollectionGroupName The name of the FirewallPolicyRuleCollectionGroup.
-     * @param parameters Rule Collection Group resource.
+     * @param parameters Parameters supplied to the create or update FirewallPolicyRuleCollectionGroup operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -752,7 +752,7 @@ public final class FirewallPolicyRuleCollectionGroupsClientImpl implements Firew
      * @param resourceGroupName The name of the resource group.
      * @param firewallPolicyName The name of the Firewall Policy.
      * @param ruleCollectionGroupName The name of the FirewallPolicyRuleCollectionGroup.
-     * @param parameters Rule Collection Group resource.
+     * @param parameters Parameters supplied to the create or update FirewallPolicyRuleCollectionGroup operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -787,7 +787,7 @@ public final class FirewallPolicyRuleCollectionGroupsClientImpl implements Firew
      * @param resourceGroupName The name of the resource group.
      * @param firewallPolicyName The name of the Firewall Policy.
      * @param ruleCollectionGroupName The name of the FirewallPolicyRuleCollectionGroup.
-     * @param parameters Rule Collection Group resource.
+     * @param parameters Parameters supplied to the create or update FirewallPolicyRuleCollectionGroup operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -810,7 +810,7 @@ public final class FirewallPolicyRuleCollectionGroupsClientImpl implements Firew
      * @param resourceGroupName The name of the resource group.
      * @param firewallPolicyName The name of the Firewall Policy.
      * @param ruleCollectionGroupName The name of the FirewallPolicyRuleCollectionGroup.
-     * @param parameters Rule Collection Group resource.
+     * @param parameters Parameters supplied to the create or update FirewallPolicyRuleCollectionGroup operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -836,7 +836,7 @@ public final class FirewallPolicyRuleCollectionGroupsClientImpl implements Firew
      * @param resourceGroupName The name of the resource group.
      * @param firewallPolicyName The name of the Firewall Policy.
      * @param ruleCollectionGroupName The name of the FirewallPolicyRuleCollectionGroup.
-     * @param parameters Rule Collection Group resource.
+     * @param parameters Parameters supplied to the create or update FirewallPolicyRuleCollectionGroup operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -859,7 +859,7 @@ public final class FirewallPolicyRuleCollectionGroupsClientImpl implements Firew
      * @param resourceGroupName The name of the resource group.
      * @param firewallPolicyName The name of the Firewall Policy.
      * @param ruleCollectionGroupName The name of the FirewallPolicyRuleCollectionGroup.
-     * @param parameters Rule Collection Group resource.
+     * @param parameters Parameters supplied to the create or update FirewallPolicyRuleCollectionGroup operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -885,7 +885,7 @@ public final class FirewallPolicyRuleCollectionGroupsClientImpl implements Firew
      * @param resourceGroupName The name of the resource group.
      * @param firewallPolicyName The name of the Firewall Policy.
      * @param ruleCollectionGroupName The name of the FirewallPolicyRuleCollectionGroup.
-     * @param parameters Rule Collection Group resource.
+     * @param parameters Parameters supplied to the create or update FirewallPolicyRuleCollectionGroup operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -906,7 +906,7 @@ public final class FirewallPolicyRuleCollectionGroupsClientImpl implements Firew
      * @param resourceGroupName The name of the resource group.
      * @param firewallPolicyName The name of the Firewall Policy.
      * @param ruleCollectionGroupName The name of the FirewallPolicyRuleCollectionGroup.
-     * @param parameters Rule Collection Group resource.
+     * @param parameters Parameters supplied to the create or update FirewallPolicyRuleCollectionGroup operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -957,7 +957,7 @@ public final class FirewallPolicyRuleCollectionGroupsClientImpl implements Firew
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-07-01";
+        final String apiVersion = "2021-02-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -980,7 +980,7 @@ public final class FirewallPolicyRuleCollectionGroupsClientImpl implements Firew
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1017,7 +1017,7 @@ public final class FirewallPolicyRuleCollectionGroupsClientImpl implements Firew
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-07-01";
+        final String apiVersion = "2021-02-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1142,7 +1142,7 @@ public final class FirewallPolicyRuleCollectionGroupsClientImpl implements Firew
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**

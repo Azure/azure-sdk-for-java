@@ -53,7 +53,15 @@ public class ChangeLog {
         }).filter(Objects::nonNull).collect(Collectors.toList());
 
 
-        Stream<ChangeLog> changeLogForStage = stages.entrySet().stream().map(entry -> new DefinitionStageChangeLog(entry.getValue(), entry.getKey()));
+        Stream<ChangeLog> changeLogForStage = stages.entrySet().stream()
+            .filter(entry -> {
+                JApiChangeStatus changeStatus = classMap.get(entry.getKey()).getChangeStatus();
+                if (changeStatus == JApiChangeStatus.NEW || changeStatus == JApiChangeStatus.REMOVED) {
+                    return false; // Filter totally new / empty stages.
+                }
+                return true;
+            })
+            .map(entry -> new DefinitionStageChangeLog(entry.getValue(), entry.getKey()));
         return Stream.concat(changeLogForStage, changeLogForNonStage.stream()).collect(Collectors.toList());
     }
 

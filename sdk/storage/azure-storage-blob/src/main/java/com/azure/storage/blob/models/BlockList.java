@@ -12,9 +12,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * The BlockList model.
- */
+/** The BlockList model. */
 @JacksonXmlRootElement(localName = "BlockList")
 @Fluent
 public final class BlockList {
@@ -29,7 +27,7 @@ public final class BlockList {
     }
 
     /*
-     * The committedBlocks property.
+     * The CommittedBlocks property.
      */
     @JsonProperty(value = "CommittedBlocks")
     private CommittedBlocksWrapper committedBlocks;
@@ -45,13 +43,13 @@ public final class BlockList {
     }
 
     /*
-     * The uncommittedBlocks property.
+     * The UncommittedBlocks property.
      */
     @JsonProperty(value = "UncommittedBlocks")
     private UncommittedBlocksWrapper uncommittedBlocks;
 
     /**
-     * Get the committedBlocks property: The committedBlocks property.
+     * Get the committedBlocks property: The CommittedBlocks property.
      *
      * @return the committedBlocks value.
      */
@@ -63,7 +61,7 @@ public final class BlockList {
     }
 
     /**
-     * Set the committedBlocks property: The committedBlocks property.
+     * Set the committedBlocks property: The CommittedBlocks property.
      *
      * @param committedBlocks the committedBlocks value to set.
      * @return the BlockList object itself.
@@ -74,7 +72,7 @@ public final class BlockList {
     }
 
     /**
-     * Get the uncommittedBlocks property: The uncommittedBlocks property.
+     * Get the uncommittedBlocks property: The UncommittedBlocks property.
      *
      * @return the uncommittedBlocks value.
      */
@@ -86,7 +84,7 @@ public final class BlockList {
     }
 
     /**
-     * Set the uncommittedBlocks property: The uncommittedBlocks property.
+     * Set the uncommittedBlocks property: The UncommittedBlocks property.
      *
      * @param uncommittedBlocks the uncommittedBlocks value to set.
      * @return the BlockList object itself.

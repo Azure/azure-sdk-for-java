@@ -34,7 +34,7 @@ class GetExecutor<K, V> {
     private final DataLocator _dataLocator;
     private final KeyExtractor<K> _keyExtractor;
     private final ResponseHandler<K, V> _responseHandler;
-    private final MetricsFactory _metricsFactory;
+    private final Metrics _metrics;
     private final Clock _clock;
     private final OperationsLogger _logger;
 
@@ -48,20 +48,22 @@ class GetExecutor<K, V> {
         final MetricsFactory metricsFactory,
         final Clock clock,
         final OperationsLogger logger) {
+        Preconditions.checkNotNull(metricsFactory, "The MetricsFactory is null!");
         _dataLocator = Preconditions.checkNotNull(dataLocator, "The DataLocator for this entity is null!");
         _keyExtractor = Preconditions.checkNotNull(keyExtractor, "The CosmosDBKeyExtractorV3 is null!");
         _responseHandler = Preconditions.checkNotNull(responseHandler, "The CosmosDBResponseHandler is null!");
-        _metricsFactory = Preconditions.checkNotNull(metricsFactory, "The MetricsFactory is null!");
         _clock = Preconditions.checkNotNull(clock, "The Clock is null!");
         _logger = Preconditions.checkNotNull(logger, "The Logger is null!");
+        // Initialize the metrics prior to the first operation
+        final CollectionKey activeCollection = _dataLocator.getCollection();
+        _metrics = metricsFactory.getMetrics(activeCollection, Constants.METHOD_GET);
     }
 
     Result<K, V> get(final K key, final GetRequestOptions requestOptions) throws CosmosDBDataAccessorException {
         final String id = _keyExtractor.getId(key);
         final PartitionKey partitioningKey = new PartitionKey(_keyExtractor.getPartitioningKey(key));
         final CollectionKey activeCollection = _dataLocator.getCollection();
-        final Metrics metrics = _metricsFactory.getMetrics(activeCollection, Constants.METHOD_GET_ETAG);
-        metrics.logCounterMetric(Constants.CALL_COUNT_TOTAL);
+        _metrics.logCounterMetric(Metrics.Type.CALL_COUNT);
         final long startTime = _clock.millis();
 
         try {
@@ -79,22 +81,22 @@ class GetExecutor<K, V> {
             return _responseHandler.convertResponse(key, response, requestOptions.shouldFetchTombstone());
         } catch (CosmosException ex) {
             if (ex.getStatusCode() == HttpStatus.SC_NOT_FOUND) {
-                metrics.logCounterMetric(Constants.NOT_FOUND);
+                _metrics.logCounterMetric(Metrics.Type.NOT_FOUND);
                 return _responseHandler.convertException(key, ex);
             }
 
-            metrics.error(startTime);
+            _metrics.error(startTime);
             final String errorMessage = String.format(ERROR_MESSAGE_FORMAT, id, activeCollection.getCollectionName());
             throw _responseHandler.createException(errorMessage, ex);
         } catch (Exception ex) {
-            metrics.error(startTime);
+            _metrics.error(startTime);
             final String errorMessage = String.format(ERROR_MESSAGE_FORMAT, id, activeCollection.getCollectionName());
             throw new CosmosDBDataAccessorException.Builder()
                 .setMessage(errorMessage)
                 .setCause(ex.getCause())
                 .build();
         } finally {
-            metrics.completed(startTime);
+            _metrics.completed(startTime);
         }
     }
 }

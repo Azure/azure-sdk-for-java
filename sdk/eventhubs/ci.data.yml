@@ -3,36 +3,40 @@
 trigger:
   branches:
     include:
-      - master
+      - main
       - feature/*
       - hotfix/*
       - release/*
   paths:
     include:
-      - sdk/eventhubs/
+      - sdk/eventhubs/ci.data.yml
+      - sdk/eventhubs/microsoft-azure-eventhubs/
+      - sdk/eventhubs/microsoft-azure-eventhubs-eph/
+      - sdk/eventhubs/microsoft-azure-eventhubs-extensions/
     exclude:
-      - sdk/eventhubs/mgmt-v2015_08_01
-      - sdk/eventhubs/mgmt-v2017_04_01
-      - sdk/eventhubs/mgmt-v2018_01_01_preview
-      - sdk/eventhubs/azure-messaging-eventhubs
-      - sdk/eventhubs/azure-messaging-eventhubs-checkpointstore-blob
+      - sdk/eventhubs/pom.xml
+      - sdk/eventhubs/microsoft-azure-eventhubs/pom.xml
+      - sdk/eventhubs/microsoft-azure-eventhubs-eph/pom.xml
+      - sdk/eventhubs/microsoft-azure-eventhubs-extensions/pom.xml
 
 pr:
   branches:
     include:
-      - master
+      - main
       - feature/*
       - hotfix/*
       - release/*
   paths:
     include:
-      - sdk/eventhubs/
+      - sdk/eventhubs/ci.data.yml
+      - sdk/eventhubs/microsoft-azure-eventhubs/
+      - sdk/eventhubs/microsoft-azure-eventhubs-eph/
+      - sdk/eventhubs/microsoft-azure-eventhubs-extensions/
     exclude:
-      - sdk/eventhubs/mgmt-v2015_08_01
-      - sdk/eventhubs/mgmt-v2017_04_01
-      - sdk/eventhubs/mgmt-v2018_01_01_preview
-      - sdk/eventhubs/azure-messaging-eventhubs
-      - sdk/eventhubs/azure-messaging-eventhubs-checkpointstore-blob
+      - sdk/eventhubs/pom.xml
+      - sdk/eventhubs/microsoft-azure-eventhubs/pom.xml
+      - sdk/eventhubs/microsoft-azure-eventhubs-eph/pom.xml
+      - sdk/eventhubs/microsoft-azure-eventhubs-extensions/pom.xml
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml

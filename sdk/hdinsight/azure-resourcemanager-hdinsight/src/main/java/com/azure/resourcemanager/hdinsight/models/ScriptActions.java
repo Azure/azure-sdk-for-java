@@ -90,4 +90,33 @@ public interface ScriptActions {
      */
     Response<RuntimeScriptActionDetail> getExecutionDetailWithResponse(
         String resourceGroupName, String clusterName, String scriptExecutionId, Context context);
+
+    /**
+     * Gets the async operation status of execution operation.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param clusterName The name of the cluster.
+     * @param operationId The long running operation id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the async operation status of execution operation.
+     */
+    AsyncOperationResult getExecutionAsyncOperationStatus(
+        String resourceGroupName, String clusterName, String operationId);
+
+    /**
+     * Gets the async operation status of execution operation.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param clusterName The name of the cluster.
+     * @param operationId The long running operation id.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the async operation status of execution operation.
+     */
+    Response<AsyncOperationResult> getExecutionAsyncOperationStatusWithResponse(
+        String resourceGroupName, String clusterName, String operationId, Context context);
 }

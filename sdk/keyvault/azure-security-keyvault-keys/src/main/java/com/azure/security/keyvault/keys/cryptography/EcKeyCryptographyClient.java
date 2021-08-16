@@ -5,12 +5,15 @@ package com.azure.security.keyvault.keys.cryptography;
 
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.security.keyvault.keys.cryptography.models.DecryptParameters;
 import com.azure.security.keyvault.keys.cryptography.models.DecryptResult;
+import com.azure.security.keyvault.keys.cryptography.models.EncryptParameters;
 import com.azure.security.keyvault.keys.cryptography.models.EncryptResult;
-import com.azure.security.keyvault.keys.cryptography.models.UnwrapResult;
+import com.azure.security.keyvault.keys.cryptography.models.EncryptionAlgorithm;
 import com.azure.security.keyvault.keys.cryptography.models.KeyWrapAlgorithm;
-import com.azure.security.keyvault.keys.cryptography.models.SignatureAlgorithm;
 import com.azure.security.keyvault.keys.cryptography.models.SignResult;
+import com.azure.security.keyvault.keys.cryptography.models.SignatureAlgorithm;
+import com.azure.security.keyvault.keys.cryptography.models.UnwrapResult;
 import com.azure.security.keyvault.keys.cryptography.models.VerifyResult;
 import com.azure.security.keyvault.keys.cryptography.models.WrapResult;
 import com.azure.security.keyvault.keys.models.JsonWebKey;
@@ -55,13 +58,25 @@ class EcKeyCryptographyClient extends LocalKeyCryptographyClient {
     }
 
     @Override
-    Mono<EncryptResult> encryptAsync(EncryptOptions options, Context context, JsonWebKey key) {
+    Mono<EncryptResult> encryptAsync(EncryptionAlgorithm algorithm, byte[] plaintext, Context context, JsonWebKey key) {
         throw logger.logExceptionAsError(new UnsupportedOperationException(
             "Encrypt operation is not supported for EC key"));
     }
 
     @Override
-    Mono<DecryptResult> decryptAsync(DecryptOptions options, Context context, JsonWebKey key) {
+    Mono<EncryptResult> encryptAsync(EncryptParameters options, Context context, JsonWebKey key) {
+        throw logger.logExceptionAsError(new UnsupportedOperationException(
+            "Encrypt operation is not supported for EC key"));
+    }
+
+    @Override
+    Mono<DecryptResult> decryptAsync(EncryptionAlgorithm algorithm, byte[] plaintext, Context context, JsonWebKey key) {
+        throw logger.logExceptionAsError(new UnsupportedOperationException(
+            "Encrypt operation is not supported for EC key"));
+    }
+
+    @Override
+    Mono<DecryptResult> decryptAsync(DecryptParameters options, Context context, JsonWebKey key) {
         throw logger.logExceptionAsError(new UnsupportedOperationException(
             "Decrypt operation is not supported for EC key"));
     }
@@ -71,7 +86,7 @@ class EcKeyCryptographyClient extends LocalKeyCryptographyClient {
         keyPair = getKeyPair(key);
 
         // Interpret the requested algorithm
-        Algorithm baseAlgorithm = AlgorithmResolver.Default.get(algorithm.toString());
+        Algorithm baseAlgorithm = AlgorithmResolver.DEFAULT.get(algorithm.toString());
 
         if (baseAlgorithm == null) {
             if (serviceCryptoAvailable()) {
@@ -113,7 +128,7 @@ class EcKeyCryptographyClient extends LocalKeyCryptographyClient {
         keyPair = getKeyPair(key);
 
         // Interpret the requested algorithm
-        Algorithm baseAlgorithm = AlgorithmResolver.Default.get(algorithm.toString());
+        Algorithm baseAlgorithm = AlgorithmResolver.DEFAULT.get(algorithm.toString());
 
         if (baseAlgorithm == null) {
             if (serviceCryptoAvailable()) {

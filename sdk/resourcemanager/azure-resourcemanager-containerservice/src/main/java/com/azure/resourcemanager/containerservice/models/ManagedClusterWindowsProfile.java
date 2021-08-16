@@ -9,14 +9,14 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Profile for Windows VMs in the container service cluster. */
+/** Profile for Windows VMs in the managed cluster. */
 @Fluent
 public final class ManagedClusterWindowsProfile {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagedClusterWindowsProfile.class);
 
     /*
      * Specifies the name of the administrator account. <br><br>
-     * **restriction:** Cannot end in "." <br><br> **Disallowed values:**
+     * **Restriction:** Cannot end in "." <br><br> **Disallowed values:**
      * "administrator", "admin", "user", "user1", "test", "user2", "test1",
      * "user3", "admin1", "1", "123", "a", "actuser", "adm", "admin2",
      * "aspnet", "backup", "console", "david", "guest", "john", "owner",
@@ -41,15 +41,23 @@ public final class ManagedClusterWindowsProfile {
     private String adminPassword;
 
     /*
-     * The licenseType to use for Windows VMs. Windows_Server is used to enable
-     * Azure Hybrid User Benefits for Windows VMs.
+     * The license type to use for Windows VMs. See [Azure Hybrid User
+     * Benefits](https://azure.microsoft.com/pricing/hybrid-benefit/faq/) for
+     * more details.
      */
     @JsonProperty(value = "licenseType")
     private LicenseType licenseType;
 
+    /*
+     * Whether to enable CSI proxy. For more details on CSI proxy, see the [CSI
+     * proxy GitHub repo](https://github.com/kubernetes-csi/csi-proxy).
+     */
+    @JsonProperty(value = "enableCSIProxy")
+    private Boolean enableCsiProxy;
+
     /**
      * Get the adminUsername property: Specifies the name of the administrator account. &lt;br&gt;&lt;br&gt;
-     * **restriction:** Cannot end in "." &lt;br&gt;&lt;br&gt; **Disallowed values:** "administrator", "admin", "user",
+     * **Restriction:** Cannot end in "." &lt;br&gt;&lt;br&gt; **Disallowed values:** "administrator", "admin", "user",
      * "user1", "test", "user2", "test1", "user3", "admin1", "1", "123", "a", "actuser", "adm", "admin2", "aspnet",
      * "backup", "console", "david", "guest", "john", "owner", "root", "server", "sql", "support", "support_388945a0",
      * "sys", "test2", "test3", "user4", "user5". &lt;br&gt;&lt;br&gt; **Minimum-length:** 1 character
@@ -63,7 +71,7 @@ public final class ManagedClusterWindowsProfile {
 
     /**
      * Set the adminUsername property: Specifies the name of the administrator account. &lt;br&gt;&lt;br&gt;
-     * **restriction:** Cannot end in "." &lt;br&gt;&lt;br&gt; **Disallowed values:** "administrator", "admin", "user",
+     * **Restriction:** Cannot end in "." &lt;br&gt;&lt;br&gt; **Disallowed values:** "administrator", "admin", "user",
      * "user1", "test", "user2", "test1", "user3", "admin1", "1", "123", "a", "actuser", "adm", "admin2", "aspnet",
      * "backup", "console", "david", "guest", "john", "owner", "root", "server", "sql", "support", "support_388945a0",
      * "sys", "test2", "test3", "user4", "user5". &lt;br&gt;&lt;br&gt; **Minimum-length:** 1 character
@@ -108,8 +116,8 @@ public final class ManagedClusterWindowsProfile {
     }
 
     /**
-     * Get the licenseType property: The licenseType to use for Windows VMs. Windows_Server is used to enable Azure
-     * Hybrid User Benefits for Windows VMs.
+     * Get the licenseType property: The license type to use for Windows VMs. See [Azure Hybrid User
+     * Benefits](https://azure.microsoft.com/pricing/hybrid-benefit/faq/) for more details.
      *
      * @return the licenseType value.
      */
@@ -118,14 +126,36 @@ public final class ManagedClusterWindowsProfile {
     }
 
     /**
-     * Set the licenseType property: The licenseType to use for Windows VMs. Windows_Server is used to enable Azure
-     * Hybrid User Benefits for Windows VMs.
+     * Set the licenseType property: The license type to use for Windows VMs. See [Azure Hybrid User
+     * Benefits](https://azure.microsoft.com/pricing/hybrid-benefit/faq/) for more details.
      *
      * @param licenseType the licenseType value to set.
      * @return the ManagedClusterWindowsProfile object itself.
      */
     public ManagedClusterWindowsProfile withLicenseType(LicenseType licenseType) {
         this.licenseType = licenseType;
+        return this;
+    }
+
+    /**
+     * Get the enableCsiProxy property: Whether to enable CSI proxy. For more details on CSI proxy, see the [CSI proxy
+     * GitHub repo](https://github.com/kubernetes-csi/csi-proxy).
+     *
+     * @return the enableCsiProxy value.
+     */
+    public Boolean enableCsiProxy() {
+        return this.enableCsiProxy;
+    }
+
+    /**
+     * Set the enableCsiProxy property: Whether to enable CSI proxy. For more details on CSI proxy, see the [CSI proxy
+     * GitHub repo](https://github.com/kubernetes-csi/csi-proxy).
+     *
+     * @param enableCsiProxy the enableCsiProxy value to set.
+     * @return the ManagedClusterWindowsProfile object itself.
+     */
+    public ManagedClusterWindowsProfile withEnableCsiProxy(Boolean enableCsiProxy) {
+        this.enableCsiProxy = enableCsiProxy;
         return this;
     }
 

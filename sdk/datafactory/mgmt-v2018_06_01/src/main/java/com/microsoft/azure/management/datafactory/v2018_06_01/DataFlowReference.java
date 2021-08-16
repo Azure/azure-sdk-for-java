@@ -34,7 +34,6 @@ public class DataFlowReference {
 
     /**
      * Creates an instance of DataFlowReference class.
-     * @param referenceName reference data flow name.
      */
     public DataFlowReference() {
         type = "DataFlowReference";

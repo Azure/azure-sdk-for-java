@@ -24,6 +24,8 @@ import com.azure.cosmos.implementation.RxStoreModel;
 import com.azure.cosmos.implementation.Utils;
 import reactor.core.publisher.Mono;
 
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.time.Instant;
@@ -43,6 +45,20 @@ public class RxClientCollectionCache extends RxCollectionCache {
     private final IAuthorizationTokenProvider tokenProvider;
     private final IRetryPolicyFactory retryPolicy;
     private final ISessionContainer sessionContainer;
+
+    public RxClientCollectionCache(DiagnosticsClientContext diagnosticsClientContext,
+                                   ISessionContainer sessionContainer,
+                                   RxStoreModel storeModel,
+                                   IAuthorizationTokenProvider tokenProvider,
+                                   IRetryPolicyFactory retryPolicy,
+                                   AsyncCache<String, DocumentCollection> collectionInfoByNameCache, AsyncCache<String, DocumentCollection> collectionInfoByIdCache) {
+        super(collectionInfoByNameCache, collectionInfoByIdCache);
+        this.diagnosticsClientContext = diagnosticsClientContext;
+        this.storeModel = storeModel;
+        this.tokenProvider = tokenProvider;
+        this.retryPolicy = retryPolicy;
+        this.sessionContainer = sessionContainer;
+    }
 
     public RxClientCollectionCache(DiagnosticsClientContext diagnosticsClientContext,
                                    ISessionContainer sessionContainer,

@@ -201,15 +201,7 @@ public final class AvailabilitySetsClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param availabilitySetName The name of the availability set.
-     * @param parameters Specifies information about the availability set that the virtual machine should be assigned
-     *     to. Virtual machines specified in the same availability set are allocated to different nodes to maximize
-     *     availability. For more information about availability sets, see [Manage the availability of virtual
-     *     machines](https://docs.microsoft.com/azure/virtual-machines/virtual-machines-windows-manage-availability?toc=%2fazure%2fvirtual-machines%2fwindows%2ftoc.json).
-     *     &lt;br&gt;&lt;br&gt; For more information on Azure planned maintenance, see [Planned maintenance for virtual
-     *     machines in
-     *     Azure](https://docs.microsoft.com/azure/virtual-machines/virtual-machines-windows-planned-maintenance?toc=%2fazure%2fvirtual-machines%2fwindows%2ftoc.json)
-     *     &lt;br&gt;&lt;br&gt; Currently, a VM can only be added to availability set at creation time. An existing VM
-     *     cannot be added to an availability set.
+     * @param parameters Parameters supplied to the Create Availability Set operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -243,7 +235,7 @@ public final class AvailabilitySetsClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2020-06-01";
+        final String apiVersion = "2021-04-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -258,7 +250,7 @@ public final class AvailabilitySetsClientImpl
                             parameters,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -266,15 +258,7 @@ public final class AvailabilitySetsClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param availabilitySetName The name of the availability set.
-     * @param parameters Specifies information about the availability set that the virtual machine should be assigned
-     *     to. Virtual machines specified in the same availability set are allocated to different nodes to maximize
-     *     availability. For more information about availability sets, see [Manage the availability of virtual
-     *     machines](https://docs.microsoft.com/azure/virtual-machines/virtual-machines-windows-manage-availability?toc=%2fazure%2fvirtual-machines%2fwindows%2ftoc.json).
-     *     &lt;br&gt;&lt;br&gt; For more information on Azure planned maintenance, see [Planned maintenance for virtual
-     *     machines in
-     *     Azure](https://docs.microsoft.com/azure/virtual-machines/virtual-machines-windows-planned-maintenance?toc=%2fazure%2fvirtual-machines%2fwindows%2ftoc.json)
-     *     &lt;br&gt;&lt;br&gt; Currently, a VM can only be added to availability set at creation time. An existing VM
-     *     cannot be added to an availability set.
+     * @param parameters Parameters supplied to the Create Availability Set operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -309,7 +293,7 @@ public final class AvailabilitySetsClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2020-06-01";
+        final String apiVersion = "2021-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -329,15 +313,7 @@ public final class AvailabilitySetsClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param availabilitySetName The name of the availability set.
-     * @param parameters Specifies information about the availability set that the virtual machine should be assigned
-     *     to. Virtual machines specified in the same availability set are allocated to different nodes to maximize
-     *     availability. For more information about availability sets, see [Manage the availability of virtual
-     *     machines](https://docs.microsoft.com/azure/virtual-machines/virtual-machines-windows-manage-availability?toc=%2fazure%2fvirtual-machines%2fwindows%2ftoc.json).
-     *     &lt;br&gt;&lt;br&gt; For more information on Azure planned maintenance, see [Planned maintenance for virtual
-     *     machines in
-     *     Azure](https://docs.microsoft.com/azure/virtual-machines/virtual-machines-windows-planned-maintenance?toc=%2fazure%2fvirtual-machines%2fwindows%2ftoc.json)
-     *     &lt;br&gt;&lt;br&gt; Currently, a VM can only be added to availability set at creation time. An existing VM
-     *     cannot be added to an availability set.
+     * @param parameters Parameters supplied to the Create Availability Set operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -362,15 +338,7 @@ public final class AvailabilitySetsClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param availabilitySetName The name of the availability set.
-     * @param parameters Specifies information about the availability set that the virtual machine should be assigned
-     *     to. Virtual machines specified in the same availability set are allocated to different nodes to maximize
-     *     availability. For more information about availability sets, see [Manage the availability of virtual
-     *     machines](https://docs.microsoft.com/azure/virtual-machines/virtual-machines-windows-manage-availability?toc=%2fazure%2fvirtual-machines%2fwindows%2ftoc.json).
-     *     &lt;br&gt;&lt;br&gt; For more information on Azure planned maintenance, see [Planned maintenance for virtual
-     *     machines in
-     *     Azure](https://docs.microsoft.com/azure/virtual-machines/virtual-machines-windows-planned-maintenance?toc=%2fazure%2fvirtual-machines%2fwindows%2ftoc.json)
-     *     &lt;br&gt;&lt;br&gt; Currently, a VM can only be added to availability set at creation time. An existing VM
-     *     cannot be added to an availability set.
+     * @param parameters Parameters supplied to the Create Availability Set operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -387,15 +355,7 @@ public final class AvailabilitySetsClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param availabilitySetName The name of the availability set.
-     * @param parameters Specifies information about the availability set that the virtual machine should be assigned
-     *     to. Virtual machines specified in the same availability set are allocated to different nodes to maximize
-     *     availability. For more information about availability sets, see [Manage the availability of virtual
-     *     machines](https://docs.microsoft.com/azure/virtual-machines/virtual-machines-windows-manage-availability?toc=%2fazure%2fvirtual-machines%2fwindows%2ftoc.json).
-     *     &lt;br&gt;&lt;br&gt; For more information on Azure planned maintenance, see [Planned maintenance for virtual
-     *     machines in
-     *     Azure](https://docs.microsoft.com/azure/virtual-machines/virtual-machines-windows-planned-maintenance?toc=%2fazure%2fvirtual-machines%2fwindows%2ftoc.json)
-     *     &lt;br&gt;&lt;br&gt; Currently, a VM can only be added to availability set at creation time. An existing VM
-     *     cannot be added to an availability set.
+     * @param parameters Parameters supplied to the Create Availability Set operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -413,8 +373,7 @@ public final class AvailabilitySetsClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param availabilitySetName The name of the availability set.
-     * @param parameters Specifies information about the availability set that the virtual machine should be assigned
-     *     to. Only tags may be updated.
+     * @param parameters Parameters supplied to the Update Availability Set operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -448,7 +407,7 @@ public final class AvailabilitySetsClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2020-06-01";
+        final String apiVersion = "2021-04-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -463,7 +422,7 @@ public final class AvailabilitySetsClientImpl
                             parameters,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -471,8 +430,7 @@ public final class AvailabilitySetsClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param availabilitySetName The name of the availability set.
-     * @param parameters Specifies information about the availability set that the virtual machine should be assigned
-     *     to. Only tags may be updated.
+     * @param parameters Parameters supplied to the Update Availability Set operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -507,7 +465,7 @@ public final class AvailabilitySetsClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2020-06-01";
+        final String apiVersion = "2021-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -527,8 +485,7 @@ public final class AvailabilitySetsClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param availabilitySetName The name of the availability set.
-     * @param parameters Specifies information about the availability set that the virtual machine should be assigned
-     *     to. Only tags may be updated.
+     * @param parameters Parameters supplied to the Update Availability Set operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -553,8 +510,7 @@ public final class AvailabilitySetsClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param availabilitySetName The name of the availability set.
-     * @param parameters Specifies information about the availability set that the virtual machine should be assigned
-     *     to. Only tags may be updated.
+     * @param parameters Parameters supplied to the Update Availability Set operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -571,8 +527,7 @@ public final class AvailabilitySetsClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param availabilitySetName The name of the availability set.
-     * @param parameters Specifies information about the availability set that the virtual machine should be assigned
-     *     to. Only tags may be updated.
+     * @param parameters Parameters supplied to the Update Availability Set operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -617,7 +572,7 @@ public final class AvailabilitySetsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-06-01";
+        final String apiVersion = "2021-04-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -629,7 +584,7 @@ public final class AvailabilitySetsClientImpl
                             apiVersion,
                             this.client.getSubscriptionId(),
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -666,7 +621,7 @@ public final class AvailabilitySetsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-06-01";
+        final String apiVersion = "2021-04-01";
         context = this.client.mergeContext(context);
         return service
             .delete(
@@ -757,7 +712,7 @@ public final class AvailabilitySetsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-06-01";
+        final String apiVersion = "2021-04-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -771,7 +726,7 @@ public final class AvailabilitySetsClientImpl
                             this.client.getSubscriptionId(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -808,7 +763,7 @@ public final class AvailabilitySetsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-06-01";
+        final String apiVersion = "2021-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -900,7 +855,7 @@ public final class AvailabilitySetsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-06-01";
+        final String apiVersion = "2021-04-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -922,7 +877,7 @@ public final class AvailabilitySetsClientImpl
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -949,7 +904,7 @@ public final class AvailabilitySetsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-06-01";
+        final String apiVersion = "2021-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1066,7 +1021,7 @@ public final class AvailabilitySetsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-06-01";
+        final String apiVersion = "2021-04-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1088,7 +1043,7 @@ public final class AvailabilitySetsClientImpl
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1120,7 +1075,7 @@ public final class AvailabilitySetsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-06-01";
+        final String apiVersion = "2021-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1237,7 +1192,7 @@ public final class AvailabilitySetsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-06-01";
+        final String apiVersion = "2021-04-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1255,7 +1210,7 @@ public final class AvailabilitySetsClientImpl
                 res ->
                     new PagedResponseBase<>(
                         res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1293,7 +1248,7 @@ public final class AvailabilitySetsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-06-01";
+        final String apiVersion = "2021-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1415,7 +1370,7 @@ public final class AvailabilitySetsClientImpl
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1487,7 +1442,7 @@ public final class AvailabilitySetsClientImpl
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**

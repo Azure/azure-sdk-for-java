@@ -75,7 +75,6 @@ public class WebHookActivity extends ControlActivity {
 
     /**
      * Creates an instance of WebHookActivity class.
-     * @param url webHook activity target endpoint and path. Type: string (or Expression with resultType string).
      */
     public WebHookActivity() {
         method = "POST";

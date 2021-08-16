@@ -32,6 +32,12 @@ public final class ContainerHttpGet {
     @JsonProperty(value = "scheme")
     private Scheme scheme;
 
+    /*
+     * The HTTP headers.
+     */
+    @JsonProperty(value = "httpHeaders")
+    private HttpHeaders httpHeaders;
+
     /**
      * Get the path property: The path to probe.
      *
@@ -93,10 +99,33 @@ public final class ContainerHttpGet {
     }
 
     /**
+     * Get the httpHeaders property: The HTTP headers.
+     *
+     * @return the httpHeaders value.
+     */
+    public HttpHeaders httpHeaders() {
+        return this.httpHeaders;
+    }
+
+    /**
+     * Set the httpHeaders property: The HTTP headers.
+     *
+     * @param httpHeaders the httpHeaders value to set.
+     * @return the ContainerHttpGet object itself.
+     */
+    public ContainerHttpGet withHttpHeaders(HttpHeaders httpHeaders) {
+        this.httpHeaders = httpHeaders;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (httpHeaders() != null) {
+            httpHeaders().validate();
+        }
     }
 }

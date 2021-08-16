@@ -63,6 +63,13 @@ public class MigrateMySqlStatusInner extends ProxyOnlyResource {
         return this.localMySqlEnabled;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public MigrateMySqlStatusInner withKind(String kind) {
+        super.withKind(kind);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

@@ -8,7 +8,6 @@ import com.azure.core.cryptography.AsyncKeyEncryptionKeyResolver;
 import com.azure.security.keyvault.keys.KeyClient;
 import com.azure.security.keyvault.keys.KeyClientBuilder;
 import com.azure.security.keyvault.keys.cryptography.KeyEncryptionKeyClientBuilder;
-import com.azure.security.keyvault.keys.cryptography.LocalKeyEncryptionKeyClientBuilder;
 import com.azure.security.keyvault.keys.models.CreateRsaKeyOptions;
 import com.azure.security.keyvault.keys.models.JsonWebKey;
 import com.azure.security.keyvault.keys.models.KeyOperation;
@@ -30,6 +29,8 @@ public class ReadmeSamples {
 
     private BlobClient blobClient;
     private String connectionString;
+    private String containerName;
+    private String blobName;
     private AsyncKeyEncryptionKey key;
     private AsyncKeyEncryptionKeyResolver keyResolver;
     private String keyWrapAlgorithm;
@@ -52,6 +53,8 @@ public class ReadmeSamples {
             .key(key, keyWrapAlgorithm)
             .keyResolver(keyResolver)
             .connectionString(connectionString)
+            .containerName(containerName)
+            .blobName(blobName)
             .buildEncryptedBlobClient();
     }
 
@@ -59,12 +62,14 @@ public class ReadmeSamples {
         JsonWebKey localKey = JsonWebKey.fromAes(new SecretKeySpec(keyBytes, secretKeyAlgorithm),
             Arrays.asList(KeyOperation.WRAP_KEY, KeyOperation.UNWRAP_KEY))
             .setId("my-id");
-        AsyncKeyEncryptionKey akek = new LocalKeyEncryptionKeyClientBuilder()
+        AsyncKeyEncryptionKey akek = new KeyEncryptionKeyClientBuilder()
             .buildAsyncKeyEncryptionKey(localKey).block();
 
         EncryptedBlobClient client = new EncryptedBlobClientBuilder()
             .key(akek, keyWrapAlgorithm)
             .connectionString(connectionString)
+            .containerName(containerName)
+            .blobName(blobName)
             .buildEncryptedBlobClient();
     }
 
@@ -84,9 +89,9 @@ public class ReadmeSamples {
         EncryptedBlobClient client = new EncryptedBlobClientBuilder()
             .key(akek, keyWrapAlgorithm)
             .connectionString(connectionString)
+            .containerName(containerName)
+            .blobName(blobName)
             .buildEncryptedBlobClient();
     }
-
-
 }
 

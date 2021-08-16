@@ -23,6 +23,7 @@ import com.azure.core.implementation.http.UnexpectedExceptionInformation;
 import com.azure.core.implementation.serializer.HttpResponseDecoder;
 import com.azure.core.implementation.serializer.HttpResponseDecoder.HttpDecodedResponse;
 import com.azure.core.util.Base64Url;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.UrlBuilder;
@@ -30,11 +31,13 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
+import com.azure.core.util.tracing.Tracer;
 import com.azure.core.util.tracing.TracerProxy;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.Signal;
+import reactor.util.context.ContextView;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -52,7 +55,8 @@ import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-import static com.azure.core.implementation.serializer.HttpResponseBodyDecoder.isReturnTypeDecodable;
+import static com.azure.core.implementation.serializer.HttpResponseBodyDecoder.shouldEagerlyReadResponse;
+import static com.azure.core.util.FluxUtil.monoError;
 
 /**
  * Type to create a proxy implementation for an interface describing REST API methods.
@@ -64,14 +68,16 @@ public final class RestProxy implements InvocationHandler {
     private static final ByteBuffer VALIDATION_BUFFER = ByteBuffer.allocate(0);
     private static final String BODY_TOO_LARGE = "Request body emitted %d bytes, more than the expected %d bytes.";
     private static final String BODY_TOO_SMALL = "Request body emitted %d bytes, less than the expected %d bytes.";
+    private static final String MUST_IMPLEMENT_PAGE_ERROR =
+        "Unable to create PagedResponse<T>. Body must be of a type that implements: " + Page.class;
+
+    private static final ResponseConstructorsCache RESPONSE_CONSTRUCTORS_CACHE = new ResponseConstructorsCache();
 
     private final ClientLogger logger = new ClientLogger(RestProxy.class);
     private final HttpPipeline httpPipeline;
     private final SerializerAdapter serializer;
     private final SwaggerInterfaceParser interfaceParser;
     private final HttpResponseDecoder decoder;
-
-    private final ResponseConstructorsCache responseConstructorsCache;
 
     /**
      * Create a RestProxy.
@@ -86,7 +92,6 @@ public final class RestProxy implements InvocationHandler {
         this.serializer = serializer;
         this.interfaceParser = interfaceParser;
         this.decoder = new HttpResponseDecoder(this.serializer);
-        this.responseConstructorsCache = new ResponseConstructorsCache();
     }
 
     /**
@@ -123,18 +128,24 @@ public final class RestProxy implements InvocationHandler {
             final HttpRequest request = createHttpRequest(methodParser, args);
             Context context = methodParser.setContext(args)
                 .addData("caller-method", methodParser.getFullyQualifiedMethodName())
-                .addData("azure-eagerly-read-response", isReturnTypeDecodable(methodParser.getReturnType()));
+                .addData("azure-eagerly-read-response", shouldEagerlyReadResponse(methodParser.getReturnType()));
             context = startTracingSpan(method, context);
 
             if (request.getBody() != null) {
                 request.setBody(validateLength(request));
             }
 
+            RequestOptions options = methodParser.setRequestOptions(args);
+            if (options != null) {
+                options.getRequestCallback().accept(request);
+            }
+
             final Mono<HttpResponse> asyncResponse = send(request, context);
 
             Mono<HttpDecodedResponse> asyncDecodedResponse = this.decoder.decode(asyncResponse, methodParser);
 
-            return handleRestReturnType(asyncDecodedResponse, methodParser, methodParser.getReturnType(), context);
+            return handleRestReturnType(asyncDecodedResponse, methodParser,
+                methodParser.getReturnType(), context, options);
         } catch (IOException e) {
             throw logger.logExceptionAsError(Exceptions.propagate(e));
         }
@@ -186,7 +197,8 @@ public final class RestProxy implements InvocationHandler {
      * @return The updated context containing the span context.
      */
     private Context startTracingSpan(Method method, Context context) {
-        if (!TracerProxy.isTracingEnabled()) {
+        boolean disableTracing = (boolean) context.getData(Tracer.DISABLE_TRACING_KEY).orElse(false);
+        if (!TracerProxy.isTracingEnabled() || disableTracing) {
             return context;
         }
         String spanName = String.format("%s.%s", interfaceParser.getServiceName(), method.getName());
@@ -224,7 +236,11 @@ public final class RestProxy implements InvocationHandler {
                 if (hostPath == null || hostPath.isEmpty() || "/".equals(hostPath) || path.contains("://")) {
                     urlBuilder.setPath(path);
                 } else {
-                    urlBuilder.setPath(hostPath + "/" + path);
+                    if (path.startsWith("/")) {
+                        urlBuilder.setPath(hostPath + path);
+                    } else {
+                        urlBuilder.setPath(hostPath + "/" + path);
+                    }
                 }
             }
         }
@@ -266,6 +282,19 @@ public final class RestProxy implements InvocationHandler {
             }
 
             request.getHeaders().set("Content-Type", contentType);
+            if (bodyContentObject instanceof BinaryData) {
+                BinaryData binaryData = (BinaryData) bodyContentObject;
+                if (binaryData.getLength() != null) {
+                    request.setHeader("Content-Length", binaryData.getLength().toString());
+                }
+                // The request body is not read here. The call to `toFluxByteBuffer()` lazily converts the underlying
+                // content of BinaryData to a Flux<ByteBuffer> which is then read by HttpClient implementations when
+                // sending the request to the service. There is no memory copy that happens here. Sources like
+                // InputStream, File and Flux<ByteBuffer> will not be eagerly copied into memory until it's required
+                // by the HttpClient implementations.
+                request.setBody(binaryData.toFluxByteBuffer());
+                return request;
+            }
 
             // TODO(jogiles) this feels hacky
             boolean isJson = false;
@@ -277,7 +306,9 @@ public final class RestProxy implements InvocationHandler {
                 }
             }
 
-            if (isJson) {
+            if (bodyContentObject instanceof BinaryData) {
+                request.setBody(((BinaryData) bodyContentObject).toBytes());
+            } else if (isJson) {
                 ByteArrayOutputStream stream = new AccessibleByteArrayOutputStream();
                 serializer.serialize(bodyContentObject, SerializerEncoding.JSON, stream);
 
@@ -309,15 +340,13 @@ public final class RestProxy implements InvocationHandler {
     }
 
     private Mono<HttpDecodedResponse> ensureExpectedStatus(final Mono<HttpDecodedResponse> asyncDecodedResponse,
-        final SwaggerMethodParser methodParser) {
+        final SwaggerMethodParser methodParser, RequestOptions options) {
         return asyncDecodedResponse
-            .flatMap(decodedHttpResponse -> ensureExpectedStatus(decodedHttpResponse, methodParser));
+            .flatMap(decodedHttpResponse -> ensureExpectedStatus(decodedHttpResponse, methodParser, options));
     }
 
     private static Exception instantiateUnexpectedException(final UnexpectedExceptionInformation exception,
-        final HttpResponse httpResponse,
-        final byte[] responseContent,
-        final Object responseDecodedContent) {
+        final HttpResponse httpResponse, final byte[] responseContent, final Object responseDecodedContent) {
         final int responseStatusCode = httpResponse.getStatusCode();
         final String contentType = httpResponse.getHeaderValue("Content-Type");
         final String bodyRepresentation;
@@ -331,12 +360,10 @@ public final class RestProxy implements InvocationHandler {
 
         Exception result;
         try {
-            final Constructor<? extends HttpResponseException> exceptionConstructor =
-                exception.getExceptionType().getConstructor(String.class, HttpResponse.class,
-                    exception.getExceptionBodyType());
+            final Constructor<? extends HttpResponseException> exceptionConstructor = exception.getExceptionType()
+                .getConstructor(String.class, HttpResponse.class, exception.getExceptionBodyType());
             result = exceptionConstructor.newInstance("Status code " + responseStatusCode + ", " + bodyRepresentation,
-                httpResponse,
-                responseDecodedContent);
+                httpResponse, responseDecodedContent);
         } catch (ReflectiveOperationException e) {
             String message = "Status code " + responseStatusCode + ", but an instance of "
                 + exception.getExceptionType().getCanonicalName() + " cannot be created."
@@ -360,10 +387,11 @@ public final class RestProxy implements InvocationHandler {
      * @return An async-version of the provided decodedResponse.
      */
     private Mono<HttpDecodedResponse> ensureExpectedStatus(final HttpDecodedResponse decodedResponse,
-        final SwaggerMethodParser methodParser) {
+        final SwaggerMethodParser methodParser, RequestOptions options) {
         final int responseStatusCode = decodedResponse.getSourceResponse().getStatusCode();
         final Mono<HttpDecodedResponse> asyncResult;
-        if (!methodParser.isExpectedResponseStatusCode(responseStatusCode)) {
+        if (!methodParser.isExpectedResponseStatusCode(responseStatusCode)
+                && (options == null || options.isThrowOnError())) {
             Mono<byte[]> bodyAsBytes = decodedResponse.getSourceResponse().getBodyAsByteArray();
 
             asyncResult = bodyAsBytes.flatMap((Function<byte[], Mono<HttpDecodedResponse>>) responseContent -> {
@@ -374,21 +402,17 @@ public final class RestProxy implements InvocationHandler {
                     .flatMap((Function<Object, Mono<HttpDecodedResponse>>) responseDecodedErrorObject -> {
                         // decodedBody() emits 'responseDecodedErrorObject' the successfully decoded exception
                         // body object
-                        Throwable exception =
-                            instantiateUnexpectedException(methodParser.getUnexpectedException(responseStatusCode),
-                                decodedResponse.getSourceResponse(),
-                                responseContent,
-                                responseDecodedErrorObject);
+                        Throwable exception = instantiateUnexpectedException(
+                            methodParser.getUnexpectedException(responseStatusCode),
+                            decodedResponse.getSourceResponse(), responseContent, responseDecodedErrorObject);
                         return Mono.error(exception);
                     })
                     .switchIfEmpty(Mono.defer((Supplier<Mono<HttpDecodedResponse>>) () -> {
                         // decodedBody() emits empty, indicate unable to decode 'responseContent',
                         // create exception with un-decodable content string and without exception body object.
-                        Throwable exception =
-                            instantiateUnexpectedException(methodParser.getUnexpectedException(responseStatusCode),
-                                decodedResponse.getSourceResponse(),
-                                responseContent,
-                                null);
+                        Throwable exception = instantiateUnexpectedException(
+                            methodParser.getUnexpectedException(responseStatusCode),
+                            decodedResponse.getSourceResponse(), responseContent, null);
                         return Mono.error(exception);
                     }));
             }).switchIfEmpty(Mono.defer((Supplier<Mono<HttpDecodedResponse>>) () -> {
@@ -396,9 +420,7 @@ public final class RestProxy implements InvocationHandler {
                 // body object.
                 Throwable exception =
                     instantiateUnexpectedException(methodParser.getUnexpectedException(responseStatusCode),
-                        decodedResponse.getSourceResponse(),
-                        null,
-                        null);
+                        decodedResponse.getSourceResponse(), null, null);
                 return Mono.error(exception);
             }));
         } else {
@@ -439,17 +461,13 @@ public final class RestProxy implements InvocationHandler {
             cls = (Class<? extends Response<?>>) (Object) PagedResponseBase.class;
 
             if (bodyAsObject != null && !TypeUtil.isTypeOrSubTypeOf(bodyAsObject.getClass(), Page.class)) {
-                throw logger.logExceptionAsError(new RuntimeException(
-                    "Unable to create PagedResponse<T>. Body must be of a type that implements: " + Page.class));
+                return monoError(logger, new RuntimeException(MUST_IMPLEMENT_PAGE_ERROR));
             }
         }
 
-        Constructor<? extends Response<?>> ctr = this.responseConstructorsCache.get(cls);
-        if (ctr != null) {
-            return this.responseConstructorsCache.invoke(ctr, response, bodyAsObject);
-        } else {
-            return Mono.error(new RuntimeException("Cannot find suitable constructor for class " + cls));
-        }
+        return Mono.just(RESPONSE_CONSTRUCTORS_CACHE.get(cls))
+            .switchIfEmpty(Mono.error(new RuntimeException("Cannot find suitable constructor for class " + cls)))
+            .flatMap(ctr -> RESPONSE_CONSTRUCTORS_CACHE.invoke(ctr, response, bodyAsObject));
     }
 
     private Mono<?> handleBodyReturnType(final HttpDecodedResponse response,
@@ -476,6 +494,13 @@ public final class RestProxy implements InvocationHandler {
         } else if (FluxUtil.isFluxByteBuffer(entityType)) {
             // Mono<Flux<ByteBuffer>>
             asyncResult = Mono.just(response.getSourceResponse().getBody());
+        } else if (TypeUtil.isTypeOrSubTypeOf(entityType, BinaryData.class)) {
+            // Mono<BinaryData>
+            // The raw response is directly used to create an instance of BinaryData which then provides
+            // different methods to read the response. The reading of the response is delayed until BinaryData
+            // is read and depending on which format the content is converted into, the response is not necessarily
+            // fully copied into memory resulting in lesser overall memory usage.
+            asyncResult = BinaryData.fromFlux(response.getSourceResponse().getBody());
         } else {
             // Mono<Object> or Mono<Page<T>>
             asyncResult = response.getDecodedBody((byte[]) null);
@@ -495,11 +520,12 @@ public final class RestProxy implements InvocationHandler {
     private Object handleRestReturnType(final Mono<HttpDecodedResponse> asyncHttpDecodedResponse,
         final SwaggerMethodParser methodParser,
         final Type returnType,
-        final Context context) {
+        final Context context,
+        final RequestOptions options) {
         final Mono<HttpDecodedResponse> asyncExpectedResponse =
-            ensureExpectedStatus(asyncHttpDecodedResponse, methodParser)
+            ensureExpectedStatus(asyncHttpDecodedResponse, methodParser, options)
                 .doOnEach(RestProxy::endTracingSpan)
-                .subscriberContext(reactor.util.context.Context.of("TRACING_CONTEXT", context));
+                .contextWrite(reactor.util.context.Context.of("TRACING_CONTEXT", context));
 
         final Object result;
         if (TypeUtil.isTypeOrSubTypeOf(returnType, Mono.class)) {
@@ -543,10 +569,11 @@ public final class RestProxy implements InvocationHandler {
         }
 
         // Get the context that was added to the mono, this will contain the information needed to end the span.
-        reactor.util.context.Context context = signal.getContext();
+        ContextView context = signal.getContextView();
         Optional<Context> tracingContext = context.getOrEmpty("TRACING_CONTEXT");
+        boolean disableTracing = context.getOrDefault(Tracer.DISABLE_TRACING_KEY, false);
 
-        if (!tracingContext.isPresent()) {
+        if (!tracingContext.isPresent() || disableTracing) {
             return;
         }
 

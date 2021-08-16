@@ -18,8 +18,8 @@ import com.azure.cosmos.CosmosDatabaseForTest;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.GatewayConnectionConfig;
-import com.azure.cosmos.TestNGLogListener;
 import com.azure.cosmos.ThrottlingRetryOptions;
+import com.azure.cosmos.encryption.TestNGLogListener;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.InternalObjectNode;
@@ -141,7 +141,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
                 allEqualOrLowerConsistencies(accountConsistency)));
         preferredLocations = immutableListOrNull(parsePreferredLocation(TestConfigurations.PREFERRED_LOCATIONS));
         protocols = ObjectUtils.defaultIfNull(immutableListOrNull(parseProtocols(TestConfigurations.PROTOCOLS)),
-            ImmutableList.of(Protocol.HTTPS, Protocol.TCP));
+            ImmutableList.of(Protocol.TCP));
 
         //  Object mapper configurations
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
@@ -846,7 +846,6 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
     @DataProvider
     public static Object[][] clientBuildersWithSessionConsistency() {
         return new Object[][]{
-            {createDirectRxDocumentClient(ConsistencyLevel.SESSION, Protocol.HTTPS, false, null, true)},
             {createDirectRxDocumentClient(ConsistencyLevel.SESSION, Protocol.TCP, false, null, true)},
             {createGatewayRxDocumentClient(ConsistencyLevel.SESSION, false, null, true)}
         };

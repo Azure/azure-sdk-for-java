@@ -7,7 +7,9 @@ package com.azure.resourcemanager.hdinsight.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Map;
 
 /** The kafka rest proxy configuration which contains AAD security group information. */
 @Fluent
@@ -19,6 +21,13 @@ public final class KafkaRestProperties {
      */
     @JsonProperty(value = "clientGroupInfo")
     private ClientGroupInfo clientGroupInfo;
+
+    /*
+     * The configurations that need to be overriden.
+     */
+    @JsonProperty(value = "configurationOverride")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
+    private Map<String, String> configurationOverride;
 
     /**
      * Get the clientGroupInfo property: The information of AAD security group.
@@ -37,6 +46,26 @@ public final class KafkaRestProperties {
      */
     public KafkaRestProperties withClientGroupInfo(ClientGroupInfo clientGroupInfo) {
         this.clientGroupInfo = clientGroupInfo;
+        return this;
+    }
+
+    /**
+     * Get the configurationOverride property: The configurations that need to be overriden.
+     *
+     * @return the configurationOverride value.
+     */
+    public Map<String, String> configurationOverride() {
+        return this.configurationOverride;
+    }
+
+    /**
+     * Set the configurationOverride property: The configurations that need to be overriden.
+     *
+     * @param configurationOverride the configurationOverride value to set.
+     * @return the KafkaRestProperties object itself.
+     */
+    public KafkaRestProperties withConfigurationOverride(Map<String, String> configurationOverride) {
+        this.configurationOverride = configurationOverride;
         return this;
     }
 

@@ -16,6 +16,9 @@ public final class PartitionKind extends ExpandableStringEnum<PartitionKind> {
     /** Static value Range for PartitionKind. */
     public static final PartitionKind RANGE = fromString("Range");
 
+    /** Static value MultiHash for PartitionKind. */
+    public static final PartitionKind MULTI_HASH = fromString("MultiHash");
+
     /**
      * Creates or finds a PartitionKind from its string representation.
      *

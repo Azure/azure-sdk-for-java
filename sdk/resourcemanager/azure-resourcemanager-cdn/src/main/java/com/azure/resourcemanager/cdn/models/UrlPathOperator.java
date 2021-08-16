@@ -40,6 +40,9 @@ public final class UrlPathOperator extends ExpandableStringEnum<UrlPathOperator>
     /** Static value Wildcard for UrlPathOperator. */
     public static final UrlPathOperator WILDCARD = fromString("Wildcard");
 
+    /** Static value RegEx for UrlPathOperator. */
+    public static final UrlPathOperator REG_EX = fromString("RegEx");
+
     /**
      * Creates or finds a UrlPathOperator from its string representation.
      *

@@ -4,8 +4,8 @@
 
 package com.azure.resourcemanager.mediaservices.implementation;
 
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
-import com.azure.resourcemanager.mediaservices.MediaservicesManager;
 import com.azure.resourcemanager.mediaservices.fluent.models.TransformInner;
 import com.azure.resourcemanager.mediaservices.models.Transform;
 import com.azure.resourcemanager.mediaservices.models.TransformOutput;
@@ -16,7 +16,7 @@ import java.util.List;
 public final class TransformImpl implements Transform, Transform.Definition, Transform.Update {
     private TransformInner innerObject;
 
-    private final MediaservicesManager serviceManager;
+    private final com.azure.resourcemanager.mediaservices.MediaServicesManager serviceManager;
 
     public String id() {
         return this.innerModel().id();
@@ -28,6 +28,10 @@ public final class TransformImpl implements Transform, Transform.Definition, Tra
 
     public String type() {
         return this.innerModel().type();
+    }
+
+    public SystemData systemData() {
+        return this.innerModel().systemData();
     }
 
     public OffsetDateTime created() {
@@ -55,7 +59,7 @@ public final class TransformImpl implements Transform, Transform.Definition, Tra
         return this.innerObject;
     }
 
-    private MediaservicesManager manager() {
+    private com.azure.resourcemanager.mediaservices.MediaServicesManager manager() {
         return this.serviceManager;
     }
 
@@ -92,7 +96,7 @@ public final class TransformImpl implements Transform, Transform.Definition, Tra
         return this;
     }
 
-    TransformImpl(String name, MediaservicesManager serviceManager) {
+    TransformImpl(String name, com.azure.resourcemanager.mediaservices.MediaServicesManager serviceManager) {
         this.innerObject = new TransformInner();
         this.serviceManager = serviceManager;
         this.transformName = name;
@@ -122,7 +126,8 @@ public final class TransformImpl implements Transform, Transform.Definition, Tra
         return this;
     }
 
-    TransformImpl(TransformInner innerObject, MediaservicesManager serviceManager) {
+    TransformImpl(
+        TransformInner innerObject, com.azure.resourcemanager.mediaservices.MediaServicesManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
         this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");

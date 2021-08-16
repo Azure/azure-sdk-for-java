@@ -3,7 +3,7 @@
 
 package com.microsoft.azure.servicebus.perf;
 
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.perf.test.core.TestDataCreationHelper;
 import com.microsoft.azure.servicebus.perf.core.ServiceBusStressOptions;
 import com.microsoft.azure.servicebus.perf.core.ServiceTest;
 import com.microsoft.azure.servicebus.Message;
@@ -17,7 +17,6 @@ import java.util.UUID;
  * Performance test.
  */
 public class SendMessageTest extends ServiceTest<ServiceBusStressOptions> {
-    private final ClientLogger logger = new ClientLogger(SendMessageTest.class);
     private final Message message;
 
     /**
@@ -27,7 +26,7 @@ public class SendMessageTest extends ServiceTest<ServiceBusStressOptions> {
     public SendMessageTest(ServiceBusStressOptions options) {
         super(options, ReceiveMode.PEEKLOCK);
         String messageId = UUID.randomUUID().toString();
-        message = new Message(CONTENTS);
+        message = new Message(TestDataCreationHelper.generateRandomString(options.getMessagesSizeBytesToSend()));
         message.setMessageId(messageId);
     }
 
@@ -36,7 +35,7 @@ public class SendMessageTest extends ServiceTest<ServiceBusStressOptions> {
         try {
             sender.send(message);
         } catch (InterruptedException | ServiceBusException e) {
-            throw logger.logExceptionAsWarning(new RuntimeException(e));
+            throw new RuntimeException(e);
         }
     }
 

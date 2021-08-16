@@ -3,10 +3,9 @@
 
 package com.azure.ai.textanalytics.implementation;
 
-import com.azure.ai.textanalytics.models.TextAnalyticsErrorInformation;
+import com.azure.ai.textanalytics.models.TextAnalyticsError;
 import com.azure.ai.textanalytics.models.TextAnalyticsException;
-
-import java.util.List;
+import com.azure.core.util.IterableStream;
 
 /**
  * The helper class to set the non-public properties of an {@link TextAnalyticsException} instance.
@@ -20,8 +19,7 @@ public final class TextAnalyticsExceptionPropertiesHelper {
      * Type defining the methods to set the non-public properties of an {@link TextAnalyticsException} instance.
      */
     public interface TextAnalyticsExceptionAccessor {
-        void setErrorInformationList(TextAnalyticsException textAnalyticsException,
-            List<TextAnalyticsErrorInformation> errorInformation);
+        void setErrors(TextAnalyticsException textAnalyticsException, IterableStream<TextAnalyticsError> errors);
     }
 
     /**
@@ -33,8 +31,8 @@ public final class TextAnalyticsExceptionPropertiesHelper {
         accessor = textAnalyticsExceptionAccessor;
     }
 
-    public static void setErrorInformationList(TextAnalyticsException textAnalyticsException,
-        List<TextAnalyticsErrorInformation> errorInformation) {
-        accessor.setErrorInformationList(textAnalyticsException, errorInformation);
+    public static void setErrors(TextAnalyticsException textAnalyticsException,
+        IterableStream<TextAnalyticsError> errors) {
+        accessor.setErrors(textAnalyticsException, errors);
     }
 }

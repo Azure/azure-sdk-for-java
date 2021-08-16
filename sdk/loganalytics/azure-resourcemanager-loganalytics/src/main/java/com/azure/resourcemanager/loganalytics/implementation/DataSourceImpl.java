@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.loganalytics.implementation;
 
 import com.azure.core.util.Context;
-import com.azure.resourcemanager.loganalytics.LogAnalyticsManager;
 import com.azure.resourcemanager.loganalytics.fluent.models.DataSourceInner;
 import com.azure.resourcemanager.loganalytics.models.DataSource;
 import com.azure.resourcemanager.loganalytics.models.DataSourceKind;
@@ -15,7 +14,7 @@ import java.util.Map;
 public final class DataSourceImpl implements DataSource, DataSource.Definition, DataSource.Update {
     private DataSourceInner innerObject;
 
-    private final LogAnalyticsManager serviceManager;
+    private final com.azure.resourcemanager.loganalytics.LogAnalyticsManager serviceManager;
 
     public String id() {
         return this.innerModel().id();
@@ -54,7 +53,7 @@ public final class DataSourceImpl implements DataSource, DataSource.Definition, 
         return this.innerObject;
     }
 
-    private LogAnalyticsManager manager() {
+    private com.azure.resourcemanager.loganalytics.LogAnalyticsManager manager() {
         return this.serviceManager;
     }
 
@@ -92,7 +91,7 @@ public final class DataSourceImpl implements DataSource, DataSource.Definition, 
         return this;
     }
 
-    DataSourceImpl(String name, LogAnalyticsManager serviceManager) {
+    DataSourceImpl(String name, com.azure.resourcemanager.loganalytics.LogAnalyticsManager serviceManager) {
         this.innerObject = new DataSourceInner();
         this.serviceManager = serviceManager;
         this.dataSourceName = name;
@@ -124,7 +123,8 @@ public final class DataSourceImpl implements DataSource, DataSource.Definition, 
         return this;
     }
 
-    DataSourceImpl(DataSourceInner innerObject, LogAnalyticsManager serviceManager) {
+    DataSourceImpl(
+        DataSourceInner innerObject, com.azure.resourcemanager.loganalytics.LogAnalyticsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
         this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourcegroups");

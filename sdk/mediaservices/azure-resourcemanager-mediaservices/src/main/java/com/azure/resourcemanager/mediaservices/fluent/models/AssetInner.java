@@ -7,6 +7,7 @@ package com.azure.resourcemanager.mediaservices.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.mediaservices.models.AssetStorageEncryptionFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -19,6 +20,12 @@ import java.util.UUID;
 @Fluent
 public class AssetInner extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(AssetInner.class);
+
+    /*
+     * The system metadata relating to this resource.
+     */
+    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
+    private SystemData systemData;
 
     /*
      * The Asset ID.
@@ -67,6 +74,15 @@ public class AssetInner extends ProxyResource {
      */
     @JsonProperty(value = "properties.storageEncryptionFormat", access = JsonProperty.Access.WRITE_ONLY)
     private AssetStorageEncryptionFormat storageEncryptionFormat;
+
+    /**
+     * Get the systemData property: The system metadata relating to this resource.
+     *
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
+    }
 
     /**
      * Get the assetId property: The Asset ID.

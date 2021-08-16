@@ -7,7 +7,11 @@ package com.azure.messaging.eventgrid.systemevents;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The DeviceTwinInfoX509Thumbprint model. */
+/**
+ * The thumbprint is a unique value for the x509 certificate, commonly used to find a particular certificate in a
+ * certificate store. The thumbprint is dynamically generated using the SHA1 algorithm, and does not physically exist in
+ * the certificate.
+ */
 @Fluent
 public final class DeviceTwinInfoX509Thumbprint {
     /*

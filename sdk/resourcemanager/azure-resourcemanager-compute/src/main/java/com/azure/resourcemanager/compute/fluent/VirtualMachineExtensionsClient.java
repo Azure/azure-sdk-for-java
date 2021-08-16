@@ -26,7 +26,7 @@ public interface VirtualMachineExtensionsClient {
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine where the extension should be created or updated.
      * @param vmExtensionName The name of the virtual machine extension.
-     * @param extensionParameters Describes a Virtual Machine Extension.
+     * @param extensionParameters Parameters supplied to the Create Virtual Machine Extension operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -45,7 +45,7 @@ public interface VirtualMachineExtensionsClient {
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine where the extension should be created or updated.
      * @param vmExtensionName The name of the virtual machine extension.
-     * @param extensionParameters Describes a Virtual Machine Extension.
+     * @param extensionParameters Parameters supplied to the Create Virtual Machine Extension operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -64,7 +64,7 @@ public interface VirtualMachineExtensionsClient {
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine where the extension should be created or updated.
      * @param vmExtensionName The name of the virtual machine extension.
-     * @param extensionParameters Describes a Virtual Machine Extension.
+     * @param extensionParameters Parameters supplied to the Create Virtual Machine Extension operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -83,7 +83,7 @@ public interface VirtualMachineExtensionsClient {
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine where the extension should be created or updated.
      * @param vmExtensionName The name of the virtual machine extension.
-     * @param extensionParameters Describes a Virtual Machine Extension.
+     * @param extensionParameters Parameters supplied to the Create Virtual Machine Extension operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -104,7 +104,7 @@ public interface VirtualMachineExtensionsClient {
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine where the extension should be created or updated.
      * @param vmExtensionName The name of the virtual machine extension.
-     * @param extensionParameters Describes a Virtual Machine Extension.
+     * @param extensionParameters Parameters supplied to the Create Virtual Machine Extension operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -123,7 +123,7 @@ public interface VirtualMachineExtensionsClient {
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine where the extension should be created or updated.
      * @param vmExtensionName The name of the virtual machine extension.
-     * @param extensionParameters Describes a Virtual Machine Extension.
+     * @param extensionParameters Parameters supplied to the Create Virtual Machine Extension operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -142,7 +142,7 @@ public interface VirtualMachineExtensionsClient {
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine where the extension should be created or updated.
      * @param vmExtensionName The name of the virtual machine extension.
-     * @param extensionParameters Describes a Virtual Machine Extension.
+     * @param extensionParameters Parameters supplied to the Create Virtual Machine Extension operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -163,7 +163,7 @@ public interface VirtualMachineExtensionsClient {
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine where the extension should be updated.
      * @param vmExtensionName The name of the virtual machine extension.
-     * @param extensionParameters Describes a Virtual Machine Extension.
+     * @param extensionParameters Parameters supplied to the Update Virtual Machine Extension operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -182,7 +182,7 @@ public interface VirtualMachineExtensionsClient {
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine where the extension should be updated.
      * @param vmExtensionName The name of the virtual machine extension.
-     * @param extensionParameters Describes a Virtual Machine Extension.
+     * @param extensionParameters Parameters supplied to the Update Virtual Machine Extension operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -201,7 +201,7 @@ public interface VirtualMachineExtensionsClient {
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine where the extension should be updated.
      * @param vmExtensionName The name of the virtual machine extension.
-     * @param extensionParameters Describes a Virtual Machine Extension.
+     * @param extensionParameters Parameters supplied to the Update Virtual Machine Extension operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -220,7 +220,7 @@ public interface VirtualMachineExtensionsClient {
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine where the extension should be updated.
      * @param vmExtensionName The name of the virtual machine extension.
-     * @param extensionParameters Describes a Virtual Machine Extension.
+     * @param extensionParameters Parameters supplied to the Update Virtual Machine Extension operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -241,7 +241,7 @@ public interface VirtualMachineExtensionsClient {
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine where the extension should be updated.
      * @param vmExtensionName The name of the virtual machine extension.
-     * @param extensionParameters Describes a Virtual Machine Extension.
+     * @param extensionParameters Parameters supplied to the Update Virtual Machine Extension operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -260,7 +260,7 @@ public interface VirtualMachineExtensionsClient {
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine where the extension should be updated.
      * @param vmExtensionName The name of the virtual machine extension.
-     * @param extensionParameters Describes a Virtual Machine Extension.
+     * @param extensionParameters Parameters supplied to the Update Virtual Machine Extension operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -279,7 +279,7 @@ public interface VirtualMachineExtensionsClient {
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine where the extension should be updated.
      * @param vmExtensionName The name of the virtual machine extension.
-     * @param extensionParameters Describes a Virtual Machine Extension.
+     * @param extensionParameters Parameters supplied to the Update Virtual Machine Extension operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.

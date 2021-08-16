@@ -2,24 +2,32 @@
 trigger:
   branches:
     include:
-      - master
+      - main
       - feature/*
       - hotfix/*
       - release/*
   paths:
     include:
-      - sdk/databox/
+      - sdk/databox/ci.mgmt.yml
+      - sdk/databox/mgmt-v2019_09_01/
+    exclude:
+      - sdk/databox/pom.xml
+      - sdk/databox/mgmt-v2019_09_01/pom.xml
 
 pr:
   branches:
     include:
-      - master
+      - main
       - feature/*
       - hotfix/*
       - release/*
   paths:
     include:
-      - sdk/databox/
+      - sdk/databox/ci.mgmt.yml
+      - sdk/databox/mgmt-v2019_09_01/
+    exclude:
+      - sdk/databox/pom.xml
+      - sdk/databox/mgmt-v2019_09_01/pom.xml
 
 stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-management.yml

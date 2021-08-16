@@ -4,9 +4,8 @@
 package com.azure.ai.metricsadvisor;
 
 import com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient;
-import com.azure.ai.metricsadvisor.models.NotificationHook;
-import com.azure.ai.metricsadvisor.models.ListHookOptions;
-import com.azure.ai.metricsadvisor.models.MetricsAdvisorServiceVersion;
+import com.azure.ai.metricsadvisor.administration.models.ListHookOptions;
+import com.azure.ai.metricsadvisor.administration.models.NotificationHook;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.test.TestBase;
@@ -83,10 +82,8 @@ public final class NotificationHookAsyncTest extends NotificationHookTestBase {
             .verifyComplete();
     }
 
-    // Track this with https://github.com/Azure/azure-sdk-for-java/issues/16932
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.metricsadvisor.TestUtils#getTestParameters")
-    @Override
     void testListHook(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
         MetricsAdvisorAdministrationAsyncClient client
             = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion).buildAsyncClient();
@@ -107,14 +104,16 @@ public final class NotificationHookAsyncTest extends NotificationHookTestBase {
         Assertions.assertNotNull(hookId[1]);
 
         List<NotificationHook> notificationHookList = new ArrayList<>();
-        StepVerifier.create(client.listHooks())
+        StepVerifier.create(client.listHooks(new ListHookOptions().setHookNameFilter("java_test")))
             .thenConsumeWhile(notificationHookList::add)
             .verifyComplete();
 
         assertListHookOutput(notificationHookList);
 
         List<PagedResponse<NotificationHook>> hookPageList = new ArrayList<>();
-        StepVerifier.create(client.listHooks(new ListHookOptions().setTop(ListHookInput.INSTANCE.pageSize)).byPage())
+        StepVerifier.create(client.listHooks(new ListHookOptions()
+            .setHookNameFilter("java_test")
+            .setMaxPageSize(ListHookInput.INSTANCE.pageSize)).byPage())
             .thenConsumeWhile(hookPageList::add)
             .verifyComplete();
 

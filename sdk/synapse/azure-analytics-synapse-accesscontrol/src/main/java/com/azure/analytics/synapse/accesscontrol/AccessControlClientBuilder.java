@@ -66,6 +66,22 @@ public final class AccessControlClientBuilder {
     }
 
     /*
+     * Api Version
+     */
+    private String apiVersion;
+
+    /**
+     * Sets Api Version.
+     *
+     * @param apiVersion the apiVersion value.
+     * @return the AccessControlClientBuilder.
+     */
+    public AccessControlClientBuilder apiVersion(String apiVersion) {
+        this.apiVersion = apiVersion;
+        return this;
+    }
+
+    /*
      * The HTTP pipeline to send requests through
      */
     private HttpPipeline pipeline;
@@ -201,13 +217,16 @@ public final class AccessControlClientBuilder {
      * @return an instance of AccessControlClientImpl.
      */
     private AccessControlClientImpl buildInnerClient() {
+        if (apiVersion == null) {
+            this.apiVersion = "2020-12-01";
+        }
         if (pipeline == null) {
             this.pipeline = createHttpPipeline();
         }
         if (serializerAdapter == null) {
             this.serializerAdapter = JacksonAdapter.createDefaultSerializerAdapter();
         }
-        AccessControlClientImpl client = new AccessControlClientImpl(pipeline, serializerAdapter, endpoint);
+        AccessControlClientImpl client = new AccessControlClientImpl(pipeline, serializerAdapter, endpoint, apiVersion);
         return client;
     }
 
@@ -218,9 +237,6 @@ public final class AccessControlClientBuilder {
             httpLogOptions = new HttpLogOptions();
         }
         List<HttpPipelinePolicy> policies = new ArrayList<>();
-        if (tokenCredential != null) {
-            policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, DEFAULT_SCOPES));
-        }
         String clientName = properties.getOrDefault(SDK_NAME, "UnknownName");
         String clientVersion = properties.getOrDefault(SDK_VERSION, "UnknownVersion");
         policies.add(
@@ -228,6 +244,9 @@ public final class AccessControlClientBuilder {
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
         policies.add(retryPolicy == null ? new RetryPolicy() : retryPolicy);
         policies.add(new CookiePolicy());
+        if (tokenCredential != null) {
+            policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, DEFAULT_SCOPES));
+        }
         policies.addAll(this.pipelinePolicies);
         HttpPolicyProviders.addAfterRetryPolicies(policies);
         policies.add(new HttpLoggingPolicy(httpLogOptions));

@@ -33,7 +33,7 @@ public interface VirtualNetworkGatewayConnectionsClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The name of the virtual network gateway connection.
-     * @param parameters A common class for general resource information.
+     * @param parameters Parameters supplied to the create or update virtual network gateway connection operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -50,7 +50,7 @@ public interface VirtualNetworkGatewayConnectionsClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The name of the virtual network gateway connection.
-     * @param parameters A common class for general resource information.
+     * @param parameters Parameters supplied to the create or update virtual network gateway connection operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -68,7 +68,7 @@ public interface VirtualNetworkGatewayConnectionsClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The name of the virtual network gateway connection.
-     * @param parameters A common class for general resource information.
+     * @param parameters Parameters supplied to the create or update virtual network gateway connection operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -86,7 +86,7 @@ public interface VirtualNetworkGatewayConnectionsClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The name of the virtual network gateway connection.
-     * @param parameters A common class for general resource information.
+     * @param parameters Parameters supplied to the create or update virtual network gateway connection operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -106,7 +106,7 @@ public interface VirtualNetworkGatewayConnectionsClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The name of the virtual network gateway connection.
-     * @param parameters A common class for general resource information.
+     * @param parameters Parameters supplied to the create or update virtual network gateway connection operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -123,7 +123,7 @@ public interface VirtualNetworkGatewayConnectionsClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The name of the virtual network gateway connection.
-     * @param parameters A common class for general resource information.
+     * @param parameters Parameters supplied to the create or update virtual network gateway connection operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -140,7 +140,7 @@ public interface VirtualNetworkGatewayConnectionsClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The name of the virtual network gateway connection.
-     * @param parameters A common class for general resource information.
+     * @param parameters Parameters supplied to the create or update virtual network gateway connection operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -454,7 +454,8 @@ public interface VirtualNetworkGatewayConnectionsClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The virtual network gateway connection name.
-     * @param parameters Response for GetConnectionSharedKey API service call.
+     * @param parameters Parameters supplied to the Begin Set Virtual Network Gateway connection Shared key operation
+     *     throughNetwork resource provider.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -470,7 +471,8 @@ public interface VirtualNetworkGatewayConnectionsClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The virtual network gateway connection name.
-     * @param parameters Response for GetConnectionSharedKey API service call.
+     * @param parameters Parameters supplied to the Begin Set Virtual Network Gateway connection Shared key operation
+     *     throughNetwork resource provider.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -486,7 +488,8 @@ public interface VirtualNetworkGatewayConnectionsClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The virtual network gateway connection name.
-     * @param parameters Response for GetConnectionSharedKey API service call.
+     * @param parameters Parameters supplied to the Begin Set Virtual Network Gateway connection Shared key operation
+     *     throughNetwork resource provider.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -502,7 +505,8 @@ public interface VirtualNetworkGatewayConnectionsClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The virtual network gateway connection name.
-     * @param parameters Response for GetConnectionSharedKey API service call.
+     * @param parameters Parameters supplied to the Begin Set Virtual Network Gateway connection Shared key operation
+     *     throughNetwork resource provider.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -522,7 +526,8 @@ public interface VirtualNetworkGatewayConnectionsClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The virtual network gateway connection name.
-     * @param parameters Response for GetConnectionSharedKey API service call.
+     * @param parameters Parameters supplied to the Begin Set Virtual Network Gateway connection Shared key operation
+     *     throughNetwork resource provider.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -538,7 +543,8 @@ public interface VirtualNetworkGatewayConnectionsClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The virtual network gateway connection name.
-     * @param parameters Response for GetConnectionSharedKey API service call.
+     * @param parameters Parameters supplied to the Begin Set Virtual Network Gateway connection Shared key operation
+     *     throughNetwork resource provider.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -554,7 +560,8 @@ public interface VirtualNetworkGatewayConnectionsClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The virtual network gateway connection name.
-     * @param parameters Response for GetConnectionSharedKey API service call.
+     * @param parameters Parameters supplied to the Begin Set Virtual Network Gateway connection Shared key operation
+     *     throughNetwork resource provider.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -1052,4 +1059,196 @@ public interface VirtualNetworkGatewayConnectionsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     String stopPacketCapture(
         String resourceGroupName, String virtualNetworkGatewayConnectionName, String sasUrl, Context context);
+
+    /**
+     * Lists IKE Security Associations for the virtual network gateway connection in the specified resource group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkGatewayConnectionName The name of the virtual network gateway Connection.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Flux<ByteBuffer>>> getIkeSasWithResponseAsync(
+        String resourceGroupName, String virtualNetworkGatewayConnectionName);
+
+    /**
+     * Lists IKE Security Associations for the virtual network gateway connection in the specified resource group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkGatewayConnectionName The name of the virtual network gateway Connection.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    PollerFlux<PollResult<String>, String> beginGetIkeSasAsync(
+        String resourceGroupName, String virtualNetworkGatewayConnectionName);
+
+    /**
+     * Lists IKE Security Associations for the virtual network gateway connection in the specified resource group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkGatewayConnectionName The name of the virtual network gateway Connection.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SyncPoller<PollResult<String>, String> beginGetIkeSas(
+        String resourceGroupName, String virtualNetworkGatewayConnectionName);
+
+    /**
+     * Lists IKE Security Associations for the virtual network gateway connection in the specified resource group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkGatewayConnectionName The name of the virtual network gateway Connection.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SyncPoller<PollResult<String>, String> beginGetIkeSas(
+        String resourceGroupName, String virtualNetworkGatewayConnectionName, Context context);
+
+    /**
+     * Lists IKE Security Associations for the virtual network gateway connection in the specified resource group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkGatewayConnectionName The name of the virtual network gateway Connection.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<String> getIkeSasAsync(String resourceGroupName, String virtualNetworkGatewayConnectionName);
+
+    /**
+     * Lists IKE Security Associations for the virtual network gateway connection in the specified resource group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkGatewayConnectionName The name of the virtual network gateway Connection.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    String getIkeSas(String resourceGroupName, String virtualNetworkGatewayConnectionName);
+
+    /**
+     * Lists IKE Security Associations for the virtual network gateway connection in the specified resource group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkGatewayConnectionName The name of the virtual network gateway Connection.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    String getIkeSas(String resourceGroupName, String virtualNetworkGatewayConnectionName, Context context);
+
+    /**
+     * Resets the virtual network gateway connection specified.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkGatewayConnectionName The name of the virtual network gateway Connection.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Flux<ByteBuffer>>> resetConnectionWithResponseAsync(
+        String resourceGroupName, String virtualNetworkGatewayConnectionName);
+
+    /**
+     * Resets the virtual network gateway connection specified.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkGatewayConnectionName The name of the virtual network gateway Connection.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    PollerFlux<PollResult<Void>, Void> beginResetConnectionAsync(
+        String resourceGroupName, String virtualNetworkGatewayConnectionName);
+
+    /**
+     * Resets the virtual network gateway connection specified.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkGatewayConnectionName The name of the virtual network gateway Connection.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SyncPoller<PollResult<Void>, Void> beginResetConnection(
+        String resourceGroupName, String virtualNetworkGatewayConnectionName);
+
+    /**
+     * Resets the virtual network gateway connection specified.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkGatewayConnectionName The name of the virtual network gateway Connection.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SyncPoller<PollResult<Void>, Void> beginResetConnection(
+        String resourceGroupName, String virtualNetworkGatewayConnectionName, Context context);
+
+    /**
+     * Resets the virtual network gateway connection specified.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkGatewayConnectionName The name of the virtual network gateway Connection.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Void> resetConnectionAsync(String resourceGroupName, String virtualNetworkGatewayConnectionName);
+
+    /**
+     * Resets the virtual network gateway connection specified.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkGatewayConnectionName The name of the virtual network gateway Connection.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void resetConnection(String resourceGroupName, String virtualNetworkGatewayConnectionName);
+
+    /**
+     * Resets the virtual network gateway connection specified.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkGatewayConnectionName The name of the virtual network gateway Connection.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void resetConnection(String resourceGroupName, String virtualNetworkGatewayConnectionName, Context context);
 }

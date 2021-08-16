@@ -32,8 +32,25 @@ public final class TextAnalyticsClientImplBuilder {
 
     private final Map<String, String> properties = new HashMap<>();
 
+    /** Create an instance of the TextAnalyticsClientImplBuilder. */
     public TextAnalyticsClientImplBuilder() {
         this.pipelinePolicies = new ArrayList<>();
+    }
+
+    /*
+     * Text Analytics API version (for example, v3.0).
+     */
+    private String apiVersion;
+
+    /**
+     * Sets Text Analytics API version (for example, v3.0).
+     *
+     * @param apiVersion the apiVersion value.
+     * @return the TextAnalyticsClientImplBuilder.
+     */
+    public TextAnalyticsClientImplBuilder apiVersion(String apiVersion) {
+        this.apiVersion = apiVersion;
+        return this;
     }
 
     /*
@@ -155,7 +172,7 @@ public final class TextAnalyticsClientImplBuilder {
     /*
      * The list of Http pipeline policies to add.
      */
-    private List<HttpPipelinePolicy> pipelinePolicies;
+    private final List<HttpPipelinePolicy> pipelinePolicies;
 
     /**
      * Adds a custom Http pipeline policy.
@@ -174,13 +191,16 @@ public final class TextAnalyticsClientImplBuilder {
      * @return an instance of TextAnalyticsClientImpl.
      */
     public TextAnalyticsClientImpl buildClient() {
+        if (apiVersion == null) {
+            this.apiVersion = "v3.2-preview.1";
+        }
         if (pipeline == null) {
             this.pipeline = createHttpPipeline();
         }
         if (serializerAdapter == null) {
             this.serializerAdapter = JacksonAdapter.createDefaultSerializerAdapter();
         }
-        TextAnalyticsClientImpl client = new TextAnalyticsClientImpl(pipeline, serializerAdapter, endpoint);
+        TextAnalyticsClientImpl client = new TextAnalyticsClientImpl(pipeline, serializerAdapter, apiVersion, endpoint);
         return client;
     }
 

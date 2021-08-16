@@ -26,6 +26,14 @@ public final class SalesforceServiceCloudSource extends CopySource {
     @JsonProperty(value = "readBehavior")
     private SalesforceSourceReadBehavior readBehavior;
 
+    /*
+     * Specifies the additional columns to be added to source data. Type: array
+     * of objects(AdditionalColumns) (or Expression with resultType array of
+     * objects).
+     */
+    @JsonProperty(value = "additionalColumns")
+    private Object additionalColumns;
+
     /**
      * Get the query property: Database query. Type: string (or Expression with resultType string).
      *
@@ -63,6 +71,28 @@ public final class SalesforceServiceCloudSource extends CopySource {
      */
     public SalesforceServiceCloudSource setReadBehavior(SalesforceSourceReadBehavior readBehavior) {
         this.readBehavior = readBehavior;
+        return this;
+    }
+
+    /**
+     * Get the additionalColumns property: Specifies the additional columns to be added to source data. Type: array of
+     * objects(AdditionalColumns) (or Expression with resultType array of objects).
+     *
+     * @return the additionalColumns value.
+     */
+    public Object getAdditionalColumns() {
+        return this.additionalColumns;
+    }
+
+    /**
+     * Set the additionalColumns property: Specifies the additional columns to be added to source data. Type: array of
+     * objects(AdditionalColumns) (or Expression with resultType array of objects).
+     *
+     * @param additionalColumns the additionalColumns value to set.
+     * @return the SalesforceServiceCloudSource object itself.
+     */
+    public SalesforceServiceCloudSource setAdditionalColumns(Object additionalColumns) {
+        this.additionalColumns = additionalColumns;
         return this;
     }
 }

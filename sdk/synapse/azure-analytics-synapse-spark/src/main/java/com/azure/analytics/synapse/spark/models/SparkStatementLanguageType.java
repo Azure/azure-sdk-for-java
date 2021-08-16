@@ -14,10 +14,10 @@ public final class SparkStatementLanguageType extends ExpandableStringEnum<Spark
     public static final SparkStatementLanguageType SPARK = fromString("spark");
 
     /** Static value pyspark for SparkStatementLanguageType. */
-    public static final SparkStatementLanguageType PYSPARK = fromString("pyspark");
+    public static final SparkStatementLanguageType PY_SPARK = fromString("pyspark");
 
     /** Static value dotnetspark for SparkStatementLanguageType. */
-    public static final SparkStatementLanguageType DOTNETSPARK = fromString("dotnetspark");
+    public static final SparkStatementLanguageType DOT_NET_SPARK = fromString("dotnetspark");
 
     /** Static value sql for SparkStatementLanguageType. */
     public static final SparkStatementLanguageType SQL = fromString("sql");

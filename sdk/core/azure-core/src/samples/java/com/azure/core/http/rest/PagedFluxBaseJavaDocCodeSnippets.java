@@ -21,6 +21,7 @@ import java.util.stream.IntStream;
 /**
  * Code snippets for {@link PagedFluxBase}
  */
+@SuppressWarnings("deprecation")
 public final class PagedFluxBaseJavaDocCodeSnippets {
 
     /**

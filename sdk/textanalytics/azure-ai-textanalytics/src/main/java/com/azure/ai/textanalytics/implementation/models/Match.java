@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class Match {
     /*
-     * If a well-known item is recognized, a decimal number denoting the
+     * If a well known item is recognized, a decimal number denoting the
      * confidence level between 0 and 1 will be returned.
      */
     @JsonProperty(value = "confidenceScore", required = true)
@@ -36,7 +36,7 @@ public final class Match {
     private int length;
 
     /**
-     * Get the confidenceScore property: If a well-known item is recognized, a decimal number denoting the confidence
+     * Get the confidenceScore property: If a well known item is recognized, a decimal number denoting the confidence
      * level between 0 and 1 will be returned.
      *
      * @return the confidenceScore value.
@@ -46,7 +46,7 @@ public final class Match {
     }
 
     /**
-     * Set the confidenceScore property: If a well-known item is recognized, a decimal number denoting the confidence
+     * Set the confidenceScore property: If a well known item is recognized, a decimal number denoting the confidence
      * level between 0 and 1 will be returned.
      *
      * @param confidenceScore the confidenceScore value to set.

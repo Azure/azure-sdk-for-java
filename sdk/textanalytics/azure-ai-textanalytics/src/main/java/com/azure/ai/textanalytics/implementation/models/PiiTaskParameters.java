@@ -6,6 +6,7 @@ package com.azure.ai.textanalytics.implementation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
 /** The PiiTaskParameters model. */
 @Fluent
@@ -23,10 +24,22 @@ public final class PiiTaskParameters {
     private String modelVersion;
 
     /*
+     * The loggingOptOut property.
+     */
+    @JsonProperty(value = "loggingOptOut")
+    private Boolean loggingOptOut;
+
+    /*
+     * (Optional) describes the PII categories to return
+     */
+    @JsonProperty(value = "piiCategories")
+    private List<PiiCategory> piiCategories;
+
+    /*
      * The stringIndexType property.
      */
     @JsonProperty(value = "stringIndexType")
-    private StringIndexTypeResponse stringIndexType;
+    private StringIndexType stringIndexType;
 
     /**
      * Get the domain property: The domain property.
@@ -69,11 +82,51 @@ public final class PiiTaskParameters {
     }
 
     /**
+     * Get the loggingOptOut property: The loggingOptOut property.
+     *
+     * @return the loggingOptOut value.
+     */
+    public Boolean isLoggingOptOut() {
+        return this.loggingOptOut;
+    }
+
+    /**
+     * Set the loggingOptOut property: The loggingOptOut property.
+     *
+     * @param loggingOptOut the loggingOptOut value to set.
+     * @return the PiiTaskParameters object itself.
+     */
+    public PiiTaskParameters setLoggingOptOut(Boolean loggingOptOut) {
+        this.loggingOptOut = loggingOptOut;
+        return this;
+    }
+
+    /**
+     * Get the piiCategories property: (Optional) describes the PII categories to return.
+     *
+     * @return the piiCategories value.
+     */
+    public List<PiiCategory> getPiiCategories() {
+        return this.piiCategories;
+    }
+
+    /**
+     * Set the piiCategories property: (Optional) describes the PII categories to return.
+     *
+     * @param piiCategories the piiCategories value to set.
+     * @return the PiiTaskParameters object itself.
+     */
+    public PiiTaskParameters setPiiCategories(List<PiiCategory> piiCategories) {
+        this.piiCategories = piiCategories;
+        return this;
+    }
+
+    /**
      * Get the stringIndexType property: The stringIndexType property.
      *
      * @return the stringIndexType value.
      */
-    public StringIndexTypeResponse getStringIndexType() {
+    public StringIndexType getStringIndexType() {
         return this.stringIndexType;
     }
 
@@ -83,7 +136,7 @@ public final class PiiTaskParameters {
      * @param stringIndexType the stringIndexType value to set.
      * @return the PiiTaskParameters object itself.
      */
-    public PiiTaskParameters setStringIndexType(StringIndexTypeResponse stringIndexType) {
+    public PiiTaskParameters setStringIndexType(StringIndexType stringIndexType) {
         this.stringIndexType = stringIndexType;
         return this;
     }

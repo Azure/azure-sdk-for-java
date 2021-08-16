@@ -9,7 +9,6 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.mediaservices.MediaservicesManager;
 import com.azure.resourcemanager.mediaservices.fluent.StreamingLocatorsClient;
 import com.azure.resourcemanager.mediaservices.fluent.models.ListContentKeysResponseInner;
 import com.azure.resourcemanager.mediaservices.fluent.models.ListPathsResponseInner;
@@ -25,23 +24,25 @@ public final class StreamingLocatorsImpl implements StreamingLocators {
 
     private final StreamingLocatorsClient innerClient;
 
-    private final MediaservicesManager serviceManager;
+    private final com.azure.resourcemanager.mediaservices.MediaServicesManager serviceManager;
 
-    public StreamingLocatorsImpl(StreamingLocatorsClient innerClient, MediaservicesManager serviceManager) {
+    public StreamingLocatorsImpl(
+        StreamingLocatorsClient innerClient,
+        com.azure.resourcemanager.mediaservices.MediaServicesManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<StreamingLocator> list(String resourceGroupName, String accountName) {
         PagedIterable<StreamingLocatorInner> inner = this.serviceClient().list(resourceGroupName, accountName);
-        return inner.mapPage(inner1 -> new StreamingLocatorImpl(inner1, this.manager()));
+        return Utils.mapPage(inner, inner1 -> new StreamingLocatorImpl(inner1, this.manager()));
     }
 
     public PagedIterable<StreamingLocator> list(
         String resourceGroupName, String accountName, String filter, Integer top, String orderby, Context context) {
         PagedIterable<StreamingLocatorInner> inner =
             this.serviceClient().list(resourceGroupName, accountName, filter, top, orderby, context);
-        return inner.mapPage(inner1 -> new StreamingLocatorImpl(inner1, this.manager()));
+        return Utils.mapPage(inner, inner1 -> new StreamingLocatorImpl(inner1, this.manager()));
     }
 
     public StreamingLocator get(String resourceGroupName, String accountName, String streamingLocatorName) {
@@ -246,7 +247,7 @@ public final class StreamingLocatorsImpl implements StreamingLocators {
         return this.innerClient;
     }
 
-    private MediaservicesManager manager() {
+    private com.azure.resourcemanager.mediaservices.MediaServicesManager manager() {
         return this.serviceManager;
     }
 

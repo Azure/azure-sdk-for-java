@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.loganalytics.implementation;
 
-import com.azure.resourcemanager.loganalytics.LogAnalyticsManager;
 import com.azure.resourcemanager.loganalytics.fluent.models.SearchGetSchemaResponseInner;
 import com.azure.resourcemanager.loganalytics.models.SearchGetSchemaResponse;
 import com.azure.resourcemanager.loganalytics.models.SearchMetadata;
@@ -15,9 +14,11 @@ import java.util.List;
 public final class SearchGetSchemaResponseImpl implements SearchGetSchemaResponse {
     private SearchGetSchemaResponseInner innerObject;
 
-    private final LogAnalyticsManager serviceManager;
+    private final com.azure.resourcemanager.loganalytics.LogAnalyticsManager serviceManager;
 
-    SearchGetSchemaResponseImpl(SearchGetSchemaResponseInner innerObject, LogAnalyticsManager serviceManager) {
+    SearchGetSchemaResponseImpl(
+        SearchGetSchemaResponseInner innerObject,
+        com.azure.resourcemanager.loganalytics.LogAnalyticsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -39,7 +40,7 @@ public final class SearchGetSchemaResponseImpl implements SearchGetSchemaRespons
         return this.innerObject;
     }
 
-    private LogAnalyticsManager manager() {
+    private com.azure.resourcemanager.loganalytics.LogAnalyticsManager manager() {
         return this.serviceManager;
     }
 }

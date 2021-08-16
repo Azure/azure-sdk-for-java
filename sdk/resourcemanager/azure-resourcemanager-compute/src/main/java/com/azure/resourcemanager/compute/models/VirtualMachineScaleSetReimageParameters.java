@@ -12,7 +12,7 @@ import java.util.List;
 
 /** Describes a Virtual Machine Scale Set VM Reimage Parameters. */
 @Fluent
-public final class VirtualMachineScaleSetReimageParameters extends VirtualMachineReimageParameters {
+public final class VirtualMachineScaleSetReimageParameters extends VirtualMachineScaleSetVMReimageParameters {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualMachineScaleSetReimageParameters.class);
 
     /*

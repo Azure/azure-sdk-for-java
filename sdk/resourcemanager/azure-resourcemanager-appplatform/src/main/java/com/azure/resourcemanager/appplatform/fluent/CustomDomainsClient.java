@@ -97,7 +97,7 @@ public interface CustomDomainsClient {
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param domainName The name of the custom domain resource.
-     * @param properties Custom domain of app resource payload.
+     * @param properties Properties of the custom domain resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -119,7 +119,7 @@ public interface CustomDomainsClient {
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param domainName The name of the custom domain resource.
-     * @param properties Custom domain of app resource payload.
+     * @param properties Properties of the custom domain resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -141,7 +141,7 @@ public interface CustomDomainsClient {
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param domainName The name of the custom domain resource.
-     * @param properties Custom domain of app resource payload.
+     * @param properties Properties of the custom domain resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -163,7 +163,7 @@ public interface CustomDomainsClient {
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param domainName The name of the custom domain resource.
-     * @param properties Custom domain of app resource payload.
+     * @param properties Properties of the custom domain resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -187,7 +187,7 @@ public interface CustomDomainsClient {
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param domainName The name of the custom domain resource.
-     * @param properties Custom domain of app resource payload.
+     * @param properties Properties of the custom domain resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -226,7 +226,7 @@ public interface CustomDomainsClient {
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param domainName The name of the custom domain resource.
-     * @param properties Custom domain of app resource payload.
+     * @param properties Properties of the custom domain resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -248,7 +248,24 @@ public interface CustomDomainsClient {
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param domainName The name of the custom domain resource.
-     * @param properties Custom domain of app resource payload.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return custom domain resource payload.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    CustomDomainResourceInner createOrUpdate(
+        String resourceGroupName, String serviceName, String appName, String domainName);
+
+    /**
+     * Create or update custom domain of one lifecycle application.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param appName The name of the App resource.
+     * @param domainName The name of the custom domain resource.
+     * @param properties Properties of the custom domain resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -263,23 +280,6 @@ public interface CustomDomainsClient {
         String domainName,
         CustomDomainProperties properties,
         Context context);
-
-    /**
-     * Create or update custom domain of one lifecycle application.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param appName The name of the App resource.
-     * @param domainName The name of the custom domain resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return custom domain resource payload.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    CustomDomainResourceInner createOrUpdate(
-        String resourceGroupName, String serviceName, String appName, String domainName);
 
     /**
      * Delete the custom domain of one lifecycle application.
@@ -405,7 +405,7 @@ public interface CustomDomainsClient {
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param domainName The name of the custom domain resource.
-     * @param properties Custom domain of app resource payload.
+     * @param properties Properties of the custom domain resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -427,7 +427,7 @@ public interface CustomDomainsClient {
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param domainName The name of the custom domain resource.
-     * @param properties Custom domain of app resource payload.
+     * @param properties Properties of the custom domain resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -449,7 +449,7 @@ public interface CustomDomainsClient {
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param domainName The name of the custom domain resource.
-     * @param properties Custom domain of app resource payload.
+     * @param properties Properties of the custom domain resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -471,7 +471,7 @@ public interface CustomDomainsClient {
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param domainName The name of the custom domain resource.
-     * @param properties Custom domain of app resource payload.
+     * @param properties Properties of the custom domain resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -495,7 +495,7 @@ public interface CustomDomainsClient {
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param domainName The name of the custom domain resource.
-     * @param properties Custom domain of app resource payload.
+     * @param properties Properties of the custom domain resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -534,7 +534,7 @@ public interface CustomDomainsClient {
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param domainName The name of the custom domain resource.
-     * @param properties Custom domain of app resource payload.
+     * @param properties Properties of the custom domain resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -556,7 +556,23 @@ public interface CustomDomainsClient {
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param domainName The name of the custom domain resource.
-     * @param properties Custom domain of app resource payload.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return custom domain resource payload.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    CustomDomainResourceInner update(String resourceGroupName, String serviceName, String appName, String domainName);
+
+    /**
+     * Update custom domain of one lifecycle application.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param appName The name of the App resource.
+     * @param domainName The name of the custom domain resource.
+     * @param properties Properties of the custom domain resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -571,22 +587,6 @@ public interface CustomDomainsClient {
         String domainName,
         CustomDomainProperties properties,
         Context context);
-
-    /**
-     * Update custom domain of one lifecycle application.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param appName The name of the App resource.
-     * @param domainName The name of the custom domain resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return custom domain resource payload.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    CustomDomainResourceInner update(String resourceGroupName, String serviceName, String appName, String domainName);
 
     /**
      * List the custom domains of one lifecycle application.

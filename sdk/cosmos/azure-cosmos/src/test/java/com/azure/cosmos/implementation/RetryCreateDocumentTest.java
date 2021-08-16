@@ -20,7 +20,7 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import static org.mockito.Matchers.anyObject;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doAnswer;
 
 public class RetryCreateDocumentTest extends TestSuiteBase {
@@ -62,7 +62,7 @@ public class RetryCreateDocumentTest extends TestSuiteBase {
             } else {
                 return client.getOrigGatewayStoreModel().processMessage(req);
             }
-        }).when(client.getSpyGatewayStoreModel()).processMessage(anyObject());
+        }).when(client.getSpyGatewayStoreModel()).processMessage(any());
 
         // validate
         ResourceResponseValidator<Document> validator = new ResourceResponseValidator.Builder<Document>()
@@ -91,7 +91,7 @@ public class RetryCreateDocumentTest extends TestSuiteBase {
 
                 return Mono.error(BridgeInternal.createCosmosException(req.requestContext.resourcePhysicalAddress, 1, new CosmosError() , header));
             }
-        }).when(client.getSpyGatewayStoreModel()).processMessage(anyObject());
+        }).when(client.getSpyGatewayStoreModel()).processMessage(any());
 
         // create a document to ensure collection is cached
         client.createDocument(collection.getSelfLink(),  getDocumentDefinition(), null, false)
@@ -128,7 +128,7 @@ public class RetryCreateDocumentTest extends TestSuiteBase {
             } else {
                 return client.getOrigGatewayStoreModel().processMessage(req);
             }
-        }).when(client.getSpyGatewayStoreModel()).processMessage(anyObject());
+        }).when(client.getSpyGatewayStoreModel()).processMessage(any());
 
         Document docDefinition = getDocumentDefinition();
 

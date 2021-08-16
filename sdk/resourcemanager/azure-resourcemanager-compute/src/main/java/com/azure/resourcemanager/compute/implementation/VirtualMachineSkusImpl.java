@@ -40,10 +40,10 @@ class VirtualMachineSkusImpl
 
     @Override
     public PagedFlux<VirtualMachineSku> listAsync() {
-        return PagedConverter
+        return PagedConverter.mapPage(PagedConverter
             .convertListToPagedFlux(
                 innerCollection.listSkusWithResponseAsync(
-                    offer.region().toString(), offer.publisher().name(), offer.name()))
-            .mapPage(this::wrapModel);
+                    offer.region().toString(), offer.publisher().name(), offer.name())),
+            this::wrapModel);
     }
 }

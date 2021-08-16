@@ -11,6 +11,7 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.loganalytics.fluent.models.WorkspacePurgeResponseInner;
 import com.azure.resourcemanager.loganalytics.fluent.models.WorkspacePurgeStatusResponseInner;
 import com.azure.resourcemanager.loganalytics.models.WorkspacePurgeBody;
+import com.azure.resourcemanager.loganalytics.models.WorkspacePurgesPurgeResponse;
 
 /** An instance of this class provides access to all the operations defined in WorkspacePurgesClient. */
 public interface WorkspacePurgesClient {
@@ -51,7 +52,7 @@ public interface WorkspacePurgesClient {
      * @return response containing operationId for a specific purge action.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<WorkspacePurgeResponseInner> purgeWithResponse(
+    WorkspacePurgesPurgeResponse purgeWithResponse(
         String resourceGroupName, String workspaceName, WorkspacePurgeBody body, Context context);
 
     /**

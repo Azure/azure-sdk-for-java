@@ -9,7 +9,6 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.loganalytics.LogAnalyticsManager;
 import com.azure.resourcemanager.loganalytics.fluent.DataSourcesClient;
 import com.azure.resourcemanager.loganalytics.fluent.models.DataSourceInner;
 import com.azure.resourcemanager.loganalytics.models.DataSource;
@@ -21,9 +20,10 @@ public final class DataSourcesImpl implements DataSources {
 
     private final DataSourcesClient innerClient;
 
-    private final LogAnalyticsManager serviceManager;
+    private final com.azure.resourcemanager.loganalytics.LogAnalyticsManager serviceManager;
 
-    public DataSourcesImpl(DataSourcesClient innerClient, LogAnalyticsManager serviceManager) {
+    public DataSourcesImpl(
+        DataSourcesClient innerClient, com.azure.resourcemanager.loganalytics.LogAnalyticsManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
@@ -64,14 +64,14 @@ public final class DataSourcesImpl implements DataSources {
     public PagedIterable<DataSource> listByWorkspace(String resourceGroupName, String workspaceName, String filter) {
         PagedIterable<DataSourceInner> inner =
             this.serviceClient().listByWorkspace(resourceGroupName, workspaceName, filter);
-        return inner.mapPage(inner1 -> new DataSourceImpl(inner1, this.manager()));
+        return Utils.mapPage(inner, inner1 -> new DataSourceImpl(inner1, this.manager()));
     }
 
     public PagedIterable<DataSource> listByWorkspace(
         String resourceGroupName, String workspaceName, String filter, String skiptoken, Context context) {
         PagedIterable<DataSourceInner> inner =
             this.serviceClient().listByWorkspace(resourceGroupName, workspaceName, filter, skiptoken, context);
-        return inner.mapPage(inner1 -> new DataSourceImpl(inner1, this.manager()));
+        return Utils.mapPage(inner, inner1 -> new DataSourceImpl(inner1, this.manager()));
     }
 
     public DataSource getById(String id) {
@@ -182,7 +182,7 @@ public final class DataSourcesImpl implements DataSources {
         return this.innerClient;
     }
 
-    private LogAnalyticsManager manager() {
+    private com.azure.resourcemanager.loganalytics.LogAnalyticsManager manager() {
         return this.serviceManager;
     }
 

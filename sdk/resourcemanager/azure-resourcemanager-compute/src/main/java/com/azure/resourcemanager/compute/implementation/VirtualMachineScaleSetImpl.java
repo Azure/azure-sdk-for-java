@@ -96,6 +96,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.Callable;
+import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
 
 /** Implementation of VirtualMachineScaleSet. */
 public class VirtualMachineScaleSetImpl
@@ -197,12 +198,12 @@ public class VirtualMachineScaleSetImpl
 
     @Override
     public PagedIterable<VirtualMachineScaleSetSku> listAvailableSkus() {
-        return this
+        return PagedConverter.mapPage(this
             .manager()
             .serviceClient()
             .getVirtualMachineScaleSets()
-            .listSkus(this.resourceGroupName(), this.name())
-            .mapPage(VirtualMachineScaleSetSkuImpl::new);
+            .listSkus(this.resourceGroupName(), this.name()),
+            VirtualMachineScaleSetSkuImpl::new);
     }
 
     @Override
@@ -2376,8 +2377,14 @@ public class VirtualMachineScaleSetImpl
     }
 
     @Override
+    public VirtualMachineScaleSetImpl withBootDiagnosticsOnManagedStorageAccount() {
+        this.bootDiagnosticsHandler.withBootDiagnostics(true);
+        return this;
+    }
+
+    @Override
     public VirtualMachineScaleSetImpl withBootDiagnostics() {
-        this.bootDiagnosticsHandler.withBootDiagnostics();
+        this.bootDiagnosticsHandler.withBootDiagnostics(false);
         return this;
     }
 
@@ -2850,9 +2857,15 @@ public class VirtualMachineScaleSetImpl
         private String creatableDiagnosticsStorageAccountKey;
         private String creatableStorageAccountKey;
         private StorageAccount existingStorageAccountToAssociate;
+        private boolean useManagedStorageAccount = false;
 
         BootDiagnosticsHandler(VirtualMachineScaleSetImpl vmssImpl) {
             this.vmssImpl = vmssImpl;
+            if (isBootDiagnosticsEnabled()
+                && this.vmssInner().virtualMachineProfile()
+                .diagnosticsProfile().bootDiagnostics().storageUri() == null) {
+                this.useManagedStorageAccount = true;
+            }
         }
 
         public boolean isBootDiagnosticsEnabled() {
@@ -2874,10 +2887,11 @@ public class VirtualMachineScaleSetImpl
             return null;
         }
 
-        BootDiagnosticsHandler withBootDiagnostics() {
+        BootDiagnosticsHandler withBootDiagnostics(boolean useManagedStorageAccount) {
             // Diagnostics storage uri will be set later by this.handleDiagnosticsSettings(..)
             //
             this.enableDisable(true);
+            this.useManagedStorageAccount = useManagedStorageAccount;
             return this;
         }
 
@@ -2885,12 +2899,14 @@ public class VirtualMachineScaleSetImpl
             // Diagnostics storage uri will be set later by this.handleDiagnosticsSettings(..)
             //
             this.enableDisable(true);
+            this.useManagedStorageAccount = false;
             this.creatableDiagnosticsStorageAccountKey = this.vmssImpl.addDependency(creatable);
             return this;
         }
 
         BootDiagnosticsHandler withBootDiagnostics(String storageAccountBlobEndpointUri) {
             this.enableDisable(true);
+            this.useManagedStorageAccount = false;
             this
                 .vmssInner()
                 .virtualMachineProfile()
@@ -2906,10 +2922,15 @@ public class VirtualMachineScaleSetImpl
 
         BootDiagnosticsHandler withoutBootDiagnostics() {
             this.enableDisable(false);
+            this.useManagedStorageAccount = false;
             return this;
         }
 
         void prepare() {
+            if (useManagedStorageAccount) {
+                return;
+            }
+
             this.creatableStorageAccountKey = null;
             this.existingStorageAccountToAssociate = null;
 
@@ -2961,6 +2982,10 @@ public class VirtualMachineScaleSetImpl
         }
 
         void handleDiagnosticsSettings() {
+            if (useManagedStorageAccount) {
+                return;
+            }
+
             DiagnosticsProfile diagnosticsProfile = this.vmssInner().virtualMachineProfile().diagnosticsProfile();
             if (diagnosticsProfile == null
                 || diagnosticsProfile.bootDiagnostics() == null

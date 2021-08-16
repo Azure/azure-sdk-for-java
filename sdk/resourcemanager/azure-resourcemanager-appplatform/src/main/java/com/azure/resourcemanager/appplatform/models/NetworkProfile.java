@@ -8,6 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
 /** Service network profile payload. */
 @Fluent
@@ -53,6 +54,12 @@ public final class NetworkProfile {
      */
     @JsonProperty(value = "outboundIPs", access = JsonProperty.Access.WRITE_ONLY)
     private NetworkProfileOutboundIPs outboundIPs;
+
+    /*
+     * Required inbound or outbound traffics for Azure Spring Cloud instance.
+     */
+    @JsonProperty(value = "requiredTraffics", access = JsonProperty.Access.WRITE_ONLY)
+    private List<RequiredTraffic> requiredTraffics;
 
     /**
      * Get the serviceRuntimeSubnetId property: Fully qualified resource Id of the subnet to host Azure Spring Cloud
@@ -170,6 +177,15 @@ public final class NetworkProfile {
     }
 
     /**
+     * Get the requiredTraffics property: Required inbound or outbound traffics for Azure Spring Cloud instance.
+     *
+     * @return the requiredTraffics value.
+     */
+    public List<RequiredTraffic> requiredTraffics() {
+        return this.requiredTraffics;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -177,6 +193,9 @@ public final class NetworkProfile {
     public void validate() {
         if (outboundIPs() != null) {
             outboundIPs().validate();
+        }
+        if (requiredTraffics() != null) {
+            requiredTraffics().forEach(e -> e.validate());
         }
     }
 }

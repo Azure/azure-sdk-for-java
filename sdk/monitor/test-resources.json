@@ -1,0 +1,210 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "baseName": {
+      "type": "String"
+    },
+    "configurationStores_azconfig_java_name": {
+      "defaultValue": "azconfig-java",
+      "type": "String"
+    },
+    "endpointSuffix": {
+      "defaultValue": ".azconfig.io",
+      "type": "String"
+    },
+    "testApplicationOid": {
+      "type": "string",
+      "metadata": {
+        "description": "The principal to assign the role to. This is application object id."
+      }
+    },
+    "sku": {
+      "defaultValue": "Standard",
+      "type": "string",
+      "metadata": {
+        "description": "sku type defined here."
+      }
+    },
+    "appinsights_java_name": {
+      "defaultValue": "appinsights-java",
+      "type": "String"
+    },
+    "regionId": {
+      "defaultValue": "westus2",
+      "type": "string",
+      "metadata": {
+        "description": "Which Azure Region to deploy the resource to. This must be a valid Azure regionId."
+      }
+    },
+    "eventHubName": {
+      "type": "string",
+      "defaultValue": "javaeventhub"
+    },
+    "eventHubNamespaceHostNameSuffix": {
+      "type": "string",
+      "defaultValue": "servicebus.windows.net"
+    },
+    "testApplicationId": {
+      "type": "string",
+      "metadata": {
+        "description": "The client id of the service principal used to run tests."
+      }
+    },
+    "testApplicationSecret": {
+      "type": "string",
+      "metadata": {
+        "description": "The application client secret used to run tests."
+      }
+    },
+    "tenantId": {
+      "type": "string",
+      "defaultValue": "72f988bf-86f1-41af-91ab-2d7cd011db47",
+      "metadata": {
+        "description": "The tenant id to which the application and resources belong."
+      }
+    }
+  },
+  "variables": {
+    "roleDefinitionId": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/5ae67dd6-50cb-40e7-96ff-dc2bfa4b606b')]",
+    "uniqueAzConfigName": "[concat(parameters('baseName'),'-' , parameters('configurationStores_azconfig_java_name'))]",
+    "uniqueAppInsightsName": "[concat(parameters('baseName'),'-' , parameters('appinsights_java_name'))]",
+    "endpointValue": "[concat('https://', parameters('baseName'), '-', parameters('configurationStores_azconfig_java_name'), parameters('endpointSuffix'))]",
+    "location": "[resourceGroup().location]",
+    "authorizationApiVersion": "2018-09-01-preview",
+    "authorizationRulesName": "[concat('authr', parameters('baseName'))]",
+    "eventHubsApiVersion": "2017-04-01",
+    "eventHubsDataOwnerRoleId": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/f526a384-b230-433a-b45c-95f59c4a2dec')]",
+    "eventHubsNamespaceKeyName": "RootManageSharedAccessKey",
+    "eventHubsNamespaceName": "[concat('eventhub', parameters('baseName'))]"
+  },
+  "resources": [
+    {
+      "type": "Microsoft.AppConfiguration/configurationStores",
+      "apiVersion": "2019-10-01",
+      "name": "[variables('uniqueAzConfigName')]",
+      "location":"[resourceGroup().location]",
+      "sku": {
+        "name": "[parameters('sku')]"
+      },
+      "properties": {
+        "endpoint":"[variables('endpointValue')]"
+      }
+    },
+    {
+      "type": "Microsoft.Authorization/roleAssignments",
+      "apiVersion": "2018-09-01-preview",
+      "name": "[guid(resourceGroup().id)]",
+      "properties": {
+        "roleDefinitionId": "[variables('roleDefinitionId')]",
+        "principalId": "[parameters('testApplicationOid')]"
+      }
+    },
+    {
+      "name": "[variables('uniqueAppInsightsName')]",
+      "type": "microsoft.insights/components",
+      "location": "[parameters('regionId')]",
+      "apiVersion": "2020-02-02-preview",
+      "properties": {
+        "ApplicationId": "testappinsights"
+      }
+    },
+    {
+      "type": "Microsoft.EventHub/namespaces",
+      "apiVersion": "[variables('eventHubsApiVersion')]",
+      "name": "[variables('eventHubsNamespaceName')]",
+      "location": "[variables('location')]",
+      "sku": {
+        "name": "Standard",
+        "tier": "Standard",
+        "capacity": 5
+      },
+      "properties": {
+        "zoneRedundant": false,
+        "isAutoInflateEnabled": false,
+        "maximumThroughputUnits": 0,
+        "kafkaEnabled": true
+      }
+    },
+    {
+      "type": "Microsoft.EventHub/namespaces/eventhubs",
+      "apiVersion": "[variables('eventHubsApiVersion')]",
+      "name": "[concat(variables('eventHubsNamespaceName'), '/', parameters('eventHubName'))]",
+      "location": "[variables('location')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.EventHub/namespaces', variables('eventHubsNamespaceName'))]"
+      ],
+      "properties": {
+        "messageRetentionInDays": 1,
+        "partitionCount": 5,
+        "status": "Active"
+      }
+    },
+    {
+      "type": "Microsoft.EventHub/namespaces/AuthorizationRules",
+      "apiVersion": "[variables('eventHubsApiVersion')]",
+      "name": "[concat(variables('eventHubsNamespaceName'), '/', variables('eventHubsNamespaceKeyName'))]",
+      "location": "[variables('location')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.EventHub/namespaces', variables('eventHubsNamespaceName'))]"
+      ],
+      "properties": {
+        "rights": [
+          "Send",
+          "Listen",
+          "Manage"
+        ]
+      }
+    },
+    {
+      "type": "Microsoft.Authorization/roleAssignments",
+      "apiVersion": "[variables('authorizationApiVersion')]",
+      "name": "[guid(concat('eventHubsDataOwnerRoleId', variables('eventHubsNamespaceName')))]",
+      "dependsOn": [
+        "[resourceId('Microsoft.EventHub/namespaces', variables('eventHubsNamespaceName'))]"
+      ],
+      "properties": {
+        "roleDefinitionId": "[variables('eventHubsDataOwnerRoleId')]",
+        "principalId": "[parameters('testApplicationOid')]"
+      }
+    }
+  ],
+  "outputs": {
+    "AZURE_APPCONFIG_CONNECTION_STRING": {
+      "type": "string",
+      "value": "[listKeys(resourceId('Microsoft.AppConfiguration/configurationStores',variables('uniqueAzConfigName')), '2019-02-01-preview').value[0].connectionString]"
+    },
+    "roleDefinitionId": {
+      "type": "string",
+      "value": "[variables('roleDefinitionId')]"
+    },
+    "APPLICATIONINSIGHTS_CONNECTION_STRING": {
+      "value": "[reference(resourceId('Microsoft.Insights/components', variables('uniqueAppInsightsName')), '2020-02-02-preview').ConnectionString]",
+      "type": "string"
+    },
+    "AZURE_TENANT_ID": {
+      "type": "string",
+      "value": "[parameters('tenantId')]"
+    },
+    "AZURE_CLIENT_ID": {
+      "type": "string",
+      "value": "[parameters('testApplicationId')]"
+    },
+    "AZURE_CLIENT_SECRET": {
+      "type": "string",
+      "value": "[parameters('testApplicationSecret')]"
+    },
+    "AZURE_EVENTHUBS_CONNECTION_STRING": {
+      "type": "string",
+      "value": "[concat(listKeys(resourceId('Microsoft.EventHub/namespaces/authorizationRules', variables('eventHubsNamespaceName'), variables('eventHubsNamespaceKeyName')), variables('eventHubsApiVersion')).primaryConnectionString, ';EntityPath=', parameters('eventHubName'))]"
+    },
+    "AZURE_EVENTHUBS_EVENT_HUB_NAME": {
+      "type": "string",
+      "value": "[parameters('eventHubName')]"
+    },
+    "AZURE_EVENTHUBS_FULLY_QUALIFIED_DOMAIN_NAME": {
+      "type": "string",
+      "value": "[concat(variables('eventHubsNamespaceName'), '.', parameters('eventHubNamespaceHostNameSuffix'))]"
+    }
+  }
+}

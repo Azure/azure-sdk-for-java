@@ -3,7 +3,10 @@
 package com.azure.cosmos.implementation.query;
 
 import com.azure.cosmos.BridgeInternal;
+import com.azure.cosmos.implementation.ClientSideRequestStatistics;
+import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
+import com.azure.cosmos.models.FeedRange;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.implementation.Resource;
 import com.azure.cosmos.implementation.DocumentClientRetryPolicy;
@@ -18,8 +21,10 @@ import com.azure.cosmos.implementation.query.orderbyquery.OrderbyRowComparer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.Callable;
@@ -27,16 +32,17 @@ import java.util.function.Function;
 
 class OrderByDocumentProducer<T extends Resource> extends DocumentProducer<T> {
     private final OrderbyRowComparer<T> consumeComparer;
-    private final Map<String, OrderByContinuationToken> targetRangeToOrderByContinuationTokenMap;
+    private final Map<FeedRangeEpkImpl, OrderByContinuationToken> targetRangeToOrderByContinuationTokenMap;
 
     OrderByDocumentProducer(
             OrderbyRowComparer<T> consumeComparer,
             IDocumentQueryClient client,
             String collectionResourceId,
             CosmosQueryRequestOptions cosmosQueryRequestOptions,
-            TriFunction<PartitionKeyRange, String, Integer, RxDocumentServiceRequest> createRequestFunc,
+            TriFunction<FeedRangeEpkImpl, String, Integer, RxDocumentServiceRequest> createRequestFunc,
             Function<RxDocumentServiceRequest, Mono<FeedResponse<T>>> executeRequestFunc,
             PartitionKeyRange targetRange,
+            FeedRangeEpkImpl feedRange,
             String collectionLink,
             Callable<DocumentClientRetryPolicy> createRetryPolicyFunc,
             Class<T> resourceType,
@@ -44,9 +50,10 @@ class OrderByDocumentProducer<T extends Resource> extends DocumentProducer<T> {
             int initialPageSize,
             String initialContinuationToken,
             int top,
-            Map<String, OrderByContinuationToken> targetRangeToOrderByContinuationTokenMap) {
-        super(client, collectionResourceId, cosmosQueryRequestOptions, createRequestFunc, executeRequestFunc, targetRange, collectionLink,
-                createRetryPolicyFunc, resourceType, correlatedActivityId, initialPageSize, initialContinuationToken, top);
+            Map<FeedRangeEpkImpl, OrderByContinuationToken> targetRangeToOrderByContinuationTokenMap) {
+        super(client, collectionResourceId, cosmosQueryRequestOptions, createRequestFunc, executeRequestFunc, targetRange,
+              collectionLink, createRetryPolicyFunc, resourceType, correlatedActivityId, initialPageSize,
+              initialContinuationToken,top, feedRange);
         this.consumeComparer = consumeComparer;
         this.targetRangeToOrderByContinuationTokenMap = targetRangeToOrderByContinuationTokenMap;
     }
@@ -55,8 +62,9 @@ class OrderByDocumentProducer<T extends Resource> extends DocumentProducer<T> {
         return replacementProducers.collectList().flux().flatMap(documentProducers -> {
             RequestChargeTracker tracker = new RequestChargeTracker();
             Map<String, QueryMetrics> queryMetricsMap = new HashMap<>();
+            List<ClientSideRequestStatistics> clientSideRequestStatisticsList = new ArrayList<>();
             return OrderByUtils.orderedMerge(resourceType, consumeComparer, tracker, documentProducers, queryMetricsMap,
-                    targetRangeToOrderByContinuationTokenMap)
+                    targetRangeToOrderByContinuationTokenMap, clientSideRequestStatisticsList)
                     .map(orderByQueryResult -> resultPageFrom(tracker, orderByQueryResult));
         });
     }
@@ -66,7 +74,7 @@ class OrderByDocumentProducer<T extends Resource> extends DocumentProducer<T> {
         double requestCharge = tracker.getAndResetCharge();
         Map<String, String> headers = Utils.immutableMapOf(HttpConstants.HttpHeaders.REQUEST_CHARGE, String.valueOf(requestCharge));
         FeedResponse<T> fr = BridgeInternal.createFeedResponse(Collections.singletonList((T) row), headers);
-        return new DocumentProducerFeedResponse(fr, row.getSourcePartitionKeyRange());
+        return new DocumentProducerFeedResponse(fr, row.getSourceRange());
     }
 
     protected DocumentProducer<T> createChildDocumentProducerOnSplit(
@@ -74,21 +82,22 @@ class OrderByDocumentProducer<T extends Resource> extends DocumentProducer<T> {
             String initialContinuationToken) {
 
         return new OrderByDocumentProducer<>(
-                consumeComparer,
-                client,
-                collectionRid,
-                cosmosQueryRequestOptions,
-                createRequestFunc,
-                executeRequestFuncWithRetries,
-                targetRange,
-                collectionLink,
-                createRetryPolicyFunc,
-                resourceType ,
-                correlatedActivityId,
-                pageSize,
-                initialContinuationToken,
-                top,
-                this.targetRangeToOrderByContinuationTokenMap);
+            consumeComparer,
+            client,
+            collectionRid,
+            cosmosQueryRequestOptions,
+            createRequestFunc,
+            executeRequestFuncWithRetries,
+            targetRange,
+            new FeedRangeEpkImpl(targetRange.toRange()),
+            collectionLink,
+            createRetryPolicyFunc,
+            resourceType ,
+            correlatedActivityId,
+            pageSize,
+            initialContinuationToken,
+            top,
+            this.targetRangeToOrderByContinuationTokenMap);
     }
 
 }

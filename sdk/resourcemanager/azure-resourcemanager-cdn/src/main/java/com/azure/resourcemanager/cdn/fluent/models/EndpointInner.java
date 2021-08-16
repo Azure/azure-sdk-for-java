@@ -17,6 +17,7 @@ import com.azure.resourcemanager.cdn.models.GeoFilter;
 import com.azure.resourcemanager.cdn.models.OptimizationType;
 import com.azure.resourcemanager.cdn.models.QueryStringCachingBehavior;
 import com.azure.resourcemanager.cdn.models.ResourceReference;
+import com.azure.resourcemanager.cdn.models.SystemData;
 import com.azure.resourcemanager.cdn.models.UrlSigningKey;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -171,6 +172,12 @@ public class EndpointInner extends Resource {
      */
     @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private String provisioningState;
+
+    /*
+     * Read only system data
+     */
+    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
+    private SystemData systemData;
 
     /**
      * Get the originPath property: A directory path on the origin that CDN can use to retrieve content from, e.g.
@@ -555,6 +562,15 @@ public class EndpointInner extends Resource {
         return this.provisioningState;
     }
 
+    /**
+     * Get the systemData property: Read only system data.
+     *
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
+    }
+
     /** {@inheritDoc} */
     @Override
     public EndpointInner withLocation(String location) {
@@ -595,6 +611,9 @@ public class EndpointInner extends Resource {
         }
         if (originGroups() != null) {
             originGroups().forEach(e -> e.validate());
+        }
+        if (systemData() != null) {
+            systemData().validate();
         }
     }
 }

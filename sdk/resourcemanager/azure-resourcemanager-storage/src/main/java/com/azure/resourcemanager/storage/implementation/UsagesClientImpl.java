@@ -6,6 +6,7 @@ package com.azure.resourcemanager.storage.implementation;
 
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
+import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
@@ -57,7 +58,7 @@ public final class UsagesClientImpl implements UsagesClient {
     @Host("{$host}")
     @ServiceInterface(name = "StorageManagementCli")
     private interface UsagesService {
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Storage/locations/{location}/usages")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -66,6 +67,7 @@ public final class UsagesClientImpl implements UsagesClient {
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("location") String location,
+            @HeaderParam("Accept") String accept,
             Context context);
     }
 
@@ -95,6 +97,7 @@ public final class UsagesClientImpl implements UsagesClient {
         if (location == null) {
             return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -104,12 +107,13 @@ public final class UsagesClientImpl implements UsagesClient {
                             this.client.getApiVersion(),
                             this.client.getSubscriptionId(),
                             location,
+                            accept,
                             context))
             .<PagedResponse<UsageInner>>map(
                 res ->
                     new PagedResponseBase<>(
                         res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -139,6 +143,7 @@ public final class UsagesClientImpl implements UsagesClient {
         if (location == null) {
             return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listByLocation(
@@ -146,6 +151,7 @@ public final class UsagesClientImpl implements UsagesClient {
                 this.client.getApiVersion(),
                 this.client.getSubscriptionId(),
                 location,
+                accept,
                 context)
             .map(
                 res ->

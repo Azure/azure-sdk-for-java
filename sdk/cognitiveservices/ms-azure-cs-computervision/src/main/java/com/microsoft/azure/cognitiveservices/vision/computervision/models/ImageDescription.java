@@ -43,6 +43,12 @@ public class ImageDescription {
     private ImageMetadata metadata;
 
     /**
+     * The modelVersion property.
+     */
+    @JsonProperty(value = "modelVersion")
+    private String modelVersion;
+
+    /**
      * Get the tags value.
      *
      * @return the tags value
@@ -119,6 +125,26 @@ public class ImageDescription {
      */
     public ImageDescription withMetadata(ImageMetadata metadata) {
         this.metadata = metadata;
+        return this;
+    }
+
+    /**
+     * Get the modelVersion value.
+     *
+     * @return the modelVersion value
+     */
+    public String modelVersion() {
+        return this.modelVersion;
+    }
+
+    /**
+     * Set the modelVersion value.
+     *
+     * @param modelVersion the modelVersion value to set
+     * @return the ImageDescription object itself.
+     */
+    public ImageDescription withModelVersion(String modelVersion) {
+        this.modelVersion = modelVersion;
         return this;
     }
 

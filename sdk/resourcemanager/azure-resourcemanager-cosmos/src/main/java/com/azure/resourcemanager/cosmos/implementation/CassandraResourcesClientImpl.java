@@ -378,7 +378,6 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
         if (accountName == null) {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
-        final String apiVersion = "2020-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -389,14 +388,14 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             accountName,
-                            apiVersion,
+                            this.client.getApiVersion(),
                             accept,
                             context))
             .<PagedResponse<CassandraKeyspaceGetResultsInner>>map(
                 res ->
                     new PagedResponseBase<>(
                         res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -432,7 +431,6 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
         if (accountName == null) {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
-        final String apiVersion = "2020-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -441,7 +439,7 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 accountName,
-                apiVersion,
+                this.client.getApiVersion(),
                 accept,
                 context)
             .map(
@@ -552,7 +550,6 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
         if (keyspaceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter keyspaceName is required and cannot be null."));
         }
-        final String apiVersion = "2020-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -564,10 +561,10 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
                             resourceGroupName,
                             accountName,
                             keyspaceName,
-                            apiVersion,
+                            this.client.getApiVersion(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -607,7 +604,6 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
         if (keyspaceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter keyspaceName is required and cannot be null."));
         }
-        final String apiVersion = "2020-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -617,7 +613,7 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
                 resourceGroupName,
                 accountName,
                 keyspaceName,
-                apiVersion,
+                this.client.getApiVersion(),
                 accept,
                 context);
     }
@@ -688,7 +684,7 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
-     * @param createUpdateCassandraKeyspaceParameters Parameters to create and update Cosmos DB Cassandra keyspace.
+     * @param createUpdateCassandraKeyspaceParameters The parameters to provide for the current Cassandra keyspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -730,7 +726,6 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
         } else {
             createUpdateCassandraKeyspaceParameters.validate();
         }
-        final String apiVersion = "2020-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -742,11 +737,11 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
                             resourceGroupName,
                             accountName,
                             keyspaceName,
-                            apiVersion,
+                            this.client.getApiVersion(),
                             createUpdateCassandraKeyspaceParameters,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -755,7 +750,7 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
-     * @param createUpdateCassandraKeyspaceParameters Parameters to create and update Cosmos DB Cassandra keyspace.
+     * @param createUpdateCassandraKeyspaceParameters The parameters to provide for the current Cassandra keyspace.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -799,7 +794,6 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
         } else {
             createUpdateCassandraKeyspaceParameters.validate();
         }
-        final String apiVersion = "2020-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -809,7 +803,7 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
                 resourceGroupName,
                 accountName,
                 keyspaceName,
-                apiVersion,
+                this.client.getApiVersion(),
                 createUpdateCassandraKeyspaceParameters,
                 accept,
                 context);
@@ -821,7 +815,7 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
-     * @param createUpdateCassandraKeyspaceParameters Parameters to create and update Cosmos DB Cassandra keyspace.
+     * @param createUpdateCassandraKeyspaceParameters The parameters to provide for the current Cassandra keyspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -853,7 +847,7 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
-     * @param createUpdateCassandraKeyspaceParameters Parameters to create and update Cosmos DB Cassandra keyspace.
+     * @param createUpdateCassandraKeyspaceParameters The parameters to provide for the current Cassandra keyspace.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -888,7 +882,7 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
-     * @param createUpdateCassandraKeyspaceParameters Parameters to create and update Cosmos DB Cassandra keyspace.
+     * @param createUpdateCassandraKeyspaceParameters The parameters to provide for the current Cassandra keyspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -912,7 +906,7 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
-     * @param createUpdateCassandraKeyspaceParameters Parameters to create and update Cosmos DB Cassandra keyspace.
+     * @param createUpdateCassandraKeyspaceParameters The parameters to provide for the current Cassandra keyspace.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -938,7 +932,7 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
-     * @param createUpdateCassandraKeyspaceParameters Parameters to create and update Cosmos DB Cassandra keyspace.
+     * @param createUpdateCassandraKeyspaceParameters The parameters to provide for the current Cassandra keyspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -962,7 +956,7 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
-     * @param createUpdateCassandraKeyspaceParameters Parameters to create and update Cosmos DB Cassandra keyspace.
+     * @param createUpdateCassandraKeyspaceParameters The parameters to provide for the current Cassandra keyspace.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -988,7 +982,7 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
-     * @param createUpdateCassandraKeyspaceParameters Parameters to create and update Cosmos DB Cassandra keyspace.
+     * @param createUpdateCassandraKeyspaceParameters The parameters to provide for the current Cassandra keyspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1011,7 +1005,7 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
-     * @param createUpdateCassandraKeyspaceParameters Parameters to create and update Cosmos DB Cassandra keyspace.
+     * @param createUpdateCassandraKeyspaceParameters The parameters to provide for the current Cassandra keyspace.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1066,7 +1060,6 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
         if (keyspaceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter keyspaceName is required and cannot be null."));
         }
-        final String apiVersion = "2020-09-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -1077,9 +1070,9 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
                             resourceGroupName,
                             accountName,
                             keyspaceName,
-                            apiVersion,
+                            this.client.getApiVersion(),
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1119,7 +1112,6 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
         if (keyspaceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter keyspaceName is required and cannot be null."));
         }
-        final String apiVersion = "2020-09-01";
         context = this.client.mergeContext(context);
         return service
             .deleteCassandraKeyspace(
@@ -1128,7 +1120,7 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
                 resourceGroupName,
                 accountName,
                 keyspaceName,
-                apiVersion,
+                this.client.getApiVersion(),
                 context);
     }
 
@@ -1319,7 +1311,6 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
         if (keyspaceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter keyspaceName is required and cannot be null."));
         }
-        final String apiVersion = "2020-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1331,10 +1322,10 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
                             resourceGroupName,
                             accountName,
                             keyspaceName,
-                            apiVersion,
+                            this.client.getApiVersion(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1376,7 +1367,6 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
         if (keyspaceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter keyspaceName is required and cannot be null."));
         }
-        final String apiVersion = "2020-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1386,7 +1376,7 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
                 resourceGroupName,
                 accountName,
                 keyspaceName,
-                apiVersion,
+                this.client.getApiVersion(),
                 accept,
                 context);
     }
@@ -1464,7 +1454,8 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
-     * @param updateThroughputParameters Parameters to update Cosmos DB resource throughput.
+     * @param updateThroughputParameters The RUs per second of the parameters to provide for the current Cassandra
+     *     Keyspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1506,7 +1497,6 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
         } else {
             updateThroughputParameters.validate();
         }
-        final String apiVersion = "2020-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1518,11 +1508,11 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
                             resourceGroupName,
                             accountName,
                             keyspaceName,
-                            apiVersion,
+                            this.client.getApiVersion(),
                             updateThroughputParameters,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1531,7 +1521,8 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
-     * @param updateThroughputParameters Parameters to update Cosmos DB resource throughput.
+     * @param updateThroughputParameters The RUs per second of the parameters to provide for the current Cassandra
+     *     Keyspace.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1575,7 +1566,6 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
         } else {
             updateThroughputParameters.validate();
         }
-        final String apiVersion = "2020-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1585,7 +1575,7 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
                 resourceGroupName,
                 accountName,
                 keyspaceName,
-                apiVersion,
+                this.client.getApiVersion(),
                 updateThroughputParameters,
                 accept,
                 context);
@@ -1597,7 +1587,8 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
-     * @param updateThroughputParameters Parameters to update Cosmos DB resource throughput.
+     * @param updateThroughputParameters The RUs per second of the parameters to provide for the current Cassandra
+     *     Keyspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1629,7 +1620,8 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
-     * @param updateThroughputParameters Parameters to update Cosmos DB resource throughput.
+     * @param updateThroughputParameters The RUs per second of the parameters to provide for the current Cassandra
+     *     Keyspace.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1664,7 +1656,8 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
-     * @param updateThroughputParameters Parameters to update Cosmos DB resource throughput.
+     * @param updateThroughputParameters The RUs per second of the parameters to provide for the current Cassandra
+     *     Keyspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1688,7 +1681,8 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
-     * @param updateThroughputParameters Parameters to update Cosmos DB resource throughput.
+     * @param updateThroughputParameters The RUs per second of the parameters to provide for the current Cassandra
+     *     Keyspace.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1714,7 +1708,8 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
-     * @param updateThroughputParameters Parameters to update Cosmos DB resource throughput.
+     * @param updateThroughputParameters The RUs per second of the parameters to provide for the current Cassandra
+     *     Keyspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1738,7 +1733,8 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
-     * @param updateThroughputParameters Parameters to update Cosmos DB resource throughput.
+     * @param updateThroughputParameters The RUs per second of the parameters to provide for the current Cassandra
+     *     Keyspace.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1764,7 +1760,8 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
-     * @param updateThroughputParameters Parameters to update Cosmos DB resource throughput.
+     * @param updateThroughputParameters The RUs per second of the parameters to provide for the current Cassandra
+     *     Keyspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1787,7 +1784,8 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
-     * @param updateThroughputParameters Parameters to update Cosmos DB resource throughput.
+     * @param updateThroughputParameters The RUs per second of the parameters to provide for the current Cassandra
+     *     Keyspace.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1842,7 +1840,6 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
         if (keyspaceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter keyspaceName is required and cannot be null."));
         }
-        final String apiVersion = "2020-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1854,10 +1851,10 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
                             resourceGroupName,
                             accountName,
                             keyspaceName,
-                            apiVersion,
+                            this.client.getApiVersion(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1897,7 +1894,6 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
         if (keyspaceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter keyspaceName is required and cannot be null."));
         }
-        final String apiVersion = "2020-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1907,7 +1903,7 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
                 resourceGroupName,
                 accountName,
                 keyspaceName,
-                apiVersion,
+                this.client.getApiVersion(),
                 accept,
                 context);
     }
@@ -2116,7 +2112,6 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
         if (keyspaceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter keyspaceName is required and cannot be null."));
         }
-        final String apiVersion = "2020-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -2128,10 +2123,10 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
                             resourceGroupName,
                             accountName,
                             keyspaceName,
-                            apiVersion,
+                            this.client.getApiVersion(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -2171,7 +2166,6 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
         if (keyspaceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter keyspaceName is required and cannot be null."));
         }
-        final String apiVersion = "2020-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -2181,7 +2175,7 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
                 resourceGroupName,
                 accountName,
                 keyspaceName,
-                apiVersion,
+                this.client.getApiVersion(),
                 accept,
                 context);
     }
@@ -2395,7 +2389,6 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
         if (keyspaceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter keyspaceName is required and cannot be null."));
         }
-        final String apiVersion = "2020-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -2407,14 +2400,14 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
                             resourceGroupName,
                             accountName,
                             keyspaceName,
-                            apiVersion,
+                            this.client.getApiVersion(),
                             accept,
                             context))
             .<PagedResponse<CassandraTableGetResultsInner>>map(
                 res ->
                     new PagedResponseBase<>(
                         res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -2454,7 +2447,6 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
         if (keyspaceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter keyspaceName is required and cannot be null."));
         }
-        final String apiVersion = "2020-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -2464,7 +2456,7 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
                 resourceGroupName,
                 accountName,
                 keyspaceName,
-                apiVersion,
+                this.client.getApiVersion(),
                 accept,
                 context)
             .map(
@@ -2584,7 +2576,6 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
         if (tableName == null) {
             return Mono.error(new IllegalArgumentException("Parameter tableName is required and cannot be null."));
         }
-        final String apiVersion = "2020-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -2597,10 +2588,10 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
                             accountName,
                             keyspaceName,
                             tableName,
-                            apiVersion,
+                            this.client.getApiVersion(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -2644,7 +2635,6 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
         if (tableName == null) {
             return Mono.error(new IllegalArgumentException("Parameter tableName is required and cannot be null."));
         }
-        final String apiVersion = "2020-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -2655,7 +2645,7 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
                 accountName,
                 keyspaceName,
                 tableName,
-                apiVersion,
+                this.client.getApiVersion(),
                 accept,
                 context);
     }
@@ -2731,7 +2721,7 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
      * @param tableName Cosmos DB table name.
-     * @param createUpdateCassandraTableParameters Parameters to create and update Cosmos DB Cassandra table.
+     * @param createUpdateCassandraTableParameters The parameters to provide for the current Cassandra Table.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2777,7 +2767,6 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
         } else {
             createUpdateCassandraTableParameters.validate();
         }
-        final String apiVersion = "2020-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -2790,11 +2779,11 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
                             accountName,
                             keyspaceName,
                             tableName,
-                            apiVersion,
+                            this.client.getApiVersion(),
                             createUpdateCassandraTableParameters,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -2804,7 +2793,7 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
      * @param tableName Cosmos DB table name.
-     * @param createUpdateCassandraTableParameters Parameters to create and update Cosmos DB Cassandra table.
+     * @param createUpdateCassandraTableParameters The parameters to provide for the current Cassandra Table.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2852,7 +2841,6 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
         } else {
             createUpdateCassandraTableParameters.validate();
         }
-        final String apiVersion = "2020-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -2863,7 +2851,7 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
                 accountName,
                 keyspaceName,
                 tableName,
-                apiVersion,
+                this.client.getApiVersion(),
                 createUpdateCassandraTableParameters,
                 accept,
                 context);
@@ -2876,7 +2864,7 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
      * @param tableName Cosmos DB table name.
-     * @param createUpdateCassandraTableParameters Parameters to create and update Cosmos DB Cassandra table.
+     * @param createUpdateCassandraTableParameters The parameters to provide for the current Cassandra Table.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2910,7 +2898,7 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
      * @param tableName Cosmos DB table name.
-     * @param createUpdateCassandraTableParameters Parameters to create and update Cosmos DB Cassandra table.
+     * @param createUpdateCassandraTableParameters The parameters to provide for the current Cassandra Table.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2947,7 +2935,7 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
      * @param tableName Cosmos DB table name.
-     * @param createUpdateCassandraTableParameters Parameters to create and update Cosmos DB Cassandra table.
+     * @param createUpdateCassandraTableParameters The parameters to provide for the current Cassandra Table.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2973,7 +2961,7 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
      * @param tableName Cosmos DB table name.
-     * @param createUpdateCassandraTableParameters Parameters to create and update Cosmos DB Cassandra table.
+     * @param createUpdateCassandraTableParameters The parameters to provide for the current Cassandra Table.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -3001,7 +2989,7 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
      * @param tableName Cosmos DB table name.
-     * @param createUpdateCassandraTableParameters Parameters to create and update Cosmos DB Cassandra table.
+     * @param createUpdateCassandraTableParameters The parameters to provide for the current Cassandra Table.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3027,7 +3015,7 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
      * @param tableName Cosmos DB table name.
-     * @param createUpdateCassandraTableParameters Parameters to create and update Cosmos DB Cassandra table.
+     * @param createUpdateCassandraTableParameters The parameters to provide for the current Cassandra Table.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -3055,7 +3043,7 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
      * @param tableName Cosmos DB table name.
-     * @param createUpdateCassandraTableParameters Parameters to create and update Cosmos DB Cassandra table.
+     * @param createUpdateCassandraTableParameters The parameters to provide for the current Cassandra Table.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3080,7 +3068,7 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
      * @param tableName Cosmos DB table name.
-     * @param createUpdateCassandraTableParameters Parameters to create and update Cosmos DB Cassandra table.
+     * @param createUpdateCassandraTableParameters The parameters to provide for the current Cassandra Table.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -3140,7 +3128,6 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
         if (tableName == null) {
             return Mono.error(new IllegalArgumentException("Parameter tableName is required and cannot be null."));
         }
-        final String apiVersion = "2020-09-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -3152,9 +3139,9 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
                             accountName,
                             keyspaceName,
                             tableName,
-                            apiVersion,
+                            this.client.getApiVersion(),
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -3198,7 +3185,6 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
         if (tableName == null) {
             return Mono.error(new IllegalArgumentException("Parameter tableName is required and cannot be null."));
         }
-        final String apiVersion = "2020-09-01";
         context = this.client.mergeContext(context);
         return service
             .deleteCassandraTable(
@@ -3208,7 +3194,7 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
                 accountName,
                 keyspaceName,
                 tableName,
-                apiVersion,
+                this.client.getApiVersion(),
                 context);
     }
 
@@ -3414,7 +3400,6 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
         if (tableName == null) {
             return Mono.error(new IllegalArgumentException("Parameter tableName is required and cannot be null."));
         }
-        final String apiVersion = "2020-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -3427,10 +3412,10 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
                             accountName,
                             keyspaceName,
                             tableName,
-                            apiVersion,
+                            this.client.getApiVersion(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -3476,7 +3461,6 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
         if (tableName == null) {
             return Mono.error(new IllegalArgumentException("Parameter tableName is required and cannot be null."));
         }
-        final String apiVersion = "2020-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -3487,7 +3471,7 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
                 accountName,
                 keyspaceName,
                 tableName,
-                apiVersion,
+                this.client.getApiVersion(),
                 accept,
                 context);
     }
@@ -3570,7 +3554,8 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
      * @param tableName Cosmos DB table name.
-     * @param updateThroughputParameters Parameters to update Cosmos DB resource throughput.
+     * @param updateThroughputParameters The RUs per second of the parameters to provide for the current Cassandra
+     *     table.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3616,7 +3601,6 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
         } else {
             updateThroughputParameters.validate();
         }
-        final String apiVersion = "2020-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -3629,11 +3613,11 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
                             accountName,
                             keyspaceName,
                             tableName,
-                            apiVersion,
+                            this.client.getApiVersion(),
                             updateThroughputParameters,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -3643,7 +3627,8 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
      * @param tableName Cosmos DB table name.
-     * @param updateThroughputParameters Parameters to update Cosmos DB resource throughput.
+     * @param updateThroughputParameters The RUs per second of the parameters to provide for the current Cassandra
+     *     table.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -3691,7 +3676,6 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
         } else {
             updateThroughputParameters.validate();
         }
-        final String apiVersion = "2020-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -3702,7 +3686,7 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
                 accountName,
                 keyspaceName,
                 tableName,
-                apiVersion,
+                this.client.getApiVersion(),
                 updateThroughputParameters,
                 accept,
                 context);
@@ -3715,7 +3699,8 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
      * @param tableName Cosmos DB table name.
-     * @param updateThroughputParameters Parameters to update Cosmos DB resource throughput.
+     * @param updateThroughputParameters The RUs per second of the parameters to provide for the current Cassandra
+     *     table.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3749,7 +3734,8 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
      * @param tableName Cosmos DB table name.
-     * @param updateThroughputParameters Parameters to update Cosmos DB resource throughput.
+     * @param updateThroughputParameters The RUs per second of the parameters to provide for the current Cassandra
+     *     table.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -3786,7 +3772,8 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
      * @param tableName Cosmos DB table name.
-     * @param updateThroughputParameters Parameters to update Cosmos DB resource throughput.
+     * @param updateThroughputParameters The RUs per second of the parameters to provide for the current Cassandra
+     *     table.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3812,7 +3799,8 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
      * @param tableName Cosmos DB table name.
-     * @param updateThroughputParameters Parameters to update Cosmos DB resource throughput.
+     * @param updateThroughputParameters The RUs per second of the parameters to provide for the current Cassandra
+     *     table.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -3840,7 +3828,8 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
      * @param tableName Cosmos DB table name.
-     * @param updateThroughputParameters Parameters to update Cosmos DB resource throughput.
+     * @param updateThroughputParameters The RUs per second of the parameters to provide for the current Cassandra
+     *     table.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3866,7 +3855,8 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
      * @param tableName Cosmos DB table name.
-     * @param updateThroughputParameters Parameters to update Cosmos DB resource throughput.
+     * @param updateThroughputParameters The RUs per second of the parameters to provide for the current Cassandra
+     *     table.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -3894,7 +3884,8 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
      * @param tableName Cosmos DB table name.
-     * @param updateThroughputParameters Parameters to update Cosmos DB resource throughput.
+     * @param updateThroughputParameters The RUs per second of the parameters to provide for the current Cassandra
+     *     table.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3919,7 +3910,8 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
      * @param tableName Cosmos DB table name.
-     * @param updateThroughputParameters Parameters to update Cosmos DB resource throughput.
+     * @param updateThroughputParameters The RUs per second of the parameters to provide for the current Cassandra
+     *     table.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -3979,7 +3971,6 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
         if (tableName == null) {
             return Mono.error(new IllegalArgumentException("Parameter tableName is required and cannot be null."));
         }
-        final String apiVersion = "2020-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -3992,10 +3983,10 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
                             accountName,
                             keyspaceName,
                             tableName,
-                            apiVersion,
+                            this.client.getApiVersion(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -4039,7 +4030,6 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
         if (tableName == null) {
             return Mono.error(new IllegalArgumentException("Parameter tableName is required and cannot be null."));
         }
-        final String apiVersion = "2020-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -4050,7 +4040,7 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
                 accountName,
                 keyspaceName,
                 tableName,
-                apiVersion,
+                this.client.getApiVersion(),
                 accept,
                 context);
     }
@@ -4276,7 +4266,6 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
         if (tableName == null) {
             return Mono.error(new IllegalArgumentException("Parameter tableName is required and cannot be null."));
         }
-        final String apiVersion = "2020-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -4289,10 +4278,10 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
                             accountName,
                             keyspaceName,
                             tableName,
-                            apiVersion,
+                            this.client.getApiVersion(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -4336,7 +4325,6 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
         if (tableName == null) {
             return Mono.error(new IllegalArgumentException("Parameter tableName is required and cannot be null."));
         }
-        final String apiVersion = "2020-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -4347,7 +4335,7 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
                 accountName,
                 keyspaceName,
                 tableName,
-                apiVersion,
+                this.client.getApiVersion(),
                 accept,
                 context);
     }

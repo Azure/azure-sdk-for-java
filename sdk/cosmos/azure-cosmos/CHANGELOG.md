@@ -1,7 +1,106 @@
 ## Release History
 
-## 4.12.0-beta.1 (Unreleased)
+## 4.18.0-beta.2 (Unreleased)
 
+
+### 4.18.0-beta.1 (2021-08-11)
+#### New Features
+* Integrated cosmos diagnostics with open telemetry tracer.
+* Added `BulkExecutionOptions` and `BulkExecutionThresholds`.
+
+#### Key Bug Fixes
+* Added reactor netty timeline to query plan calls.
+* Fixed serialization warning on `clientSideRequestDiagnostics`.
+* Fixed an issue when `IdleEndpointTimeout` is 0.
+* Added retry for `PrematureCloseException`.
+* Fixed a hang issue in bulk executor.
+* Fixed an issue which preventing recovery from 410/0 after split.
+* Added TransportRequestChannelAcquisitionContext in cosmos diagnostics.
+
+### 4.17.0 (2021-07-08)
+#### New Features
+* Adjust `MicroBatchSize` dynamically based on throttling rate in `BulkExecutor`.
+
+#### Key Bug Fixes
+* Fixed an issue with AAD authentication in `Strong` and `BoundedStaleness` in direct mode.
+* Fixed an issue where `ChangeFeedProcessor` was resuming from zero continuation token for new partitions on partition splits.
+
+### 4.16.0 (2021-06-11)
+#### Key Bug Fixes
+* Fixed an issue on handling partition splits during bulk operations in Gateway Mode.
+* Fixed an issue with `NumberFormatException` happening on requests on large containers.
+* Fixed an issue with BackOff time in `ThroughputController`.
+* Fixed an issue with `ThroughputControl` calculation.
+* Improved behavior when `CosmosClientBuilder.userAgentSuffix` exceeds 64 characters. Now `userAgentSuffix` will be honored as long as total userAgent value is less than 256 characters or truncated to fit the 256 characters limited.
+* Fixed issue when using client-side throughput control in combination with bulk upserts, previously resulting in unnecessarily upserting documents multiple times in some cases when getting throttled.
+
+### 4.16.0-beta.1 (2021-05-20)
+#### Key Bug Fixes
+* No changes from previous version, releasing for compatibility issues with cosmos encryption modules.
+
+### 4.15.0 (2021-05-12)
+#### New Features
+* Added `backendLatencyInMs` in `CosmosDiagnostics` for `DIRECT` connection mode.
+* Added `retryContext` in `CosmosDiagnostics` for query operations.
+
+#### Key Bug Fixes
+* Fixed ignored `HttpClient` decoder configuration issue.
+* Fixed incorrect connection mode issue in `CosmosDiagnostics`.
+* Fixed issue with handling collisions in the effective partition key.
+* Fixed `CosmosQueryRequestOptions` NPE in `readAllItems` API.
+
+### 4.15.0-beta.2 (2021-04-26)
+#### Key Bug Fixes
+* No changes from previous version, releasing for compatibility issues with cosmos encryption modules.
+
+### 4.15.0-beta.1 (2021-04-07)
+#### Key Bug Fixes
+* No changes from previous version, releasing for compatibility issues with cosmos encryption modules.
+
+### 4.14.0 (2021-04-06)
+#### New Features
+* General Availability for `readMany()` API in `CosmosAsyncContainer` and `CosmosContainer`.
+* General Availability for `handle()` API in `CosmosPagedFlux` and `CosmosPagedIterable`.
+* Upgraded Jackson to patch version 2.12.2.
+* Exposed `getDocumentUsage` and `getDocumentCountUsage()` APIs in `FeedResponse` to retrieve document count metadata.
+
+#### Key Bug Fixes
+* Allowed `CosmosPagedFlux#handle()` and `CosmosPagedIterable#handle()` API for chaining.
+* Removed `AfterBurner` module usage from `CosmosException` causing the warning logs.
+* Fixed issue of duplicate processing of items on the same Change Feed Processor instance.
+* Return `RequestTimeoutException` on client side timeout for write operations.
+
+### 4.13.1 (2021-03-22)
+#### Key Bug Fixes
+* Fixed issue preventing recovery from 410 status code and 0 sub status code due to stale Gateway caches when threads in parallel scheduler are starved.
+* Fixed warning caused because of afterburner module usage in `CosmosDiagnostics`.
+* Query performance improvements.
+
+### 4.13.0 (2021-03-11) 
+> [!IMPORTANT] 
+> This release updates `reactor-core` and `reactor-netty` major versions to `2020.0.4 (Europium)` release train.
+#### New Features
+* Updated `reactor-core` version to 3.4.3.
+* Updated `reactor-netty` version to 1.0.4.
+* Added `Diagnostics` for queries.
+
+#### Key Bug Fixes
+* Fixed `OrderBy` for mixed and undefined types for cross partition queries.
+* Fixed `readAllItems` with resourceToken.
+* Fixed issue with `resourceToken` usage in `Gateway` connection mode.
+* Fixed issues with point operations with permissions in `Gateway` connection mode.
+
+### 4.12.0 (2021-02-09)
+#### New Features
+* Added connection endpoint rediscovery feature to help reduce and spread-out high latency spikes.
+* Added changeFeed pull model beta API.
+* Added support for resuming query from a pre split continuation token after partition split.
+* Optimized query execution time by caching query plan for single partition queries with filters and orderby.
+
+#### Key Bug Fixes
+* Fixed telemetry deserialization issue.
+* Skip session token for query plan, trigger and UDF.
+* Improved session timeout 404/1002 exception handling.
 
 ### 4.11.0 (2021-01-15)
 #### New Features
@@ -41,7 +140,9 @@
 #### Key Bug Fixes
 * Improved the 449 retry policy to force back-off on initial retry and start with shorter back-offs.
 
-### 4.7.0 (2020-10-17) NOTE: WE STRONGLY RECOMMEND OUR CUSTOMERS TO USE VERSION 4.7.0 AND ABOVE
+### 4.7.0 (2020-10-17) 
+> [!IMPORTANT] 
+> We strongly recommend our customers to use version 4.7.0 and above.
 #### New Features
 * Added Beta API for transactional batches.
 

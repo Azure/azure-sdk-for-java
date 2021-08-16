@@ -43,16 +43,16 @@ public final class SentenceSentiment {
     private int length;
 
     /*
-     * The array of aspect object for the sentence.
+     * The array of sentence targets for the sentence.
      */
-    @JsonProperty(value = "aspects")
-    private List<SentenceAspect> aspects;
+    @JsonProperty(value = "targets")
+    private List<SentenceTarget> targets;
 
     /*
-     * The array of opinion object for the sentence.
+     * The array of assessments for the sentence.
      */
-    @JsonProperty(value = "opinions")
-    private List<SentenceOpinion> opinions;
+    @JsonProperty(value = "assessments")
+    private List<SentenceAssessment> assessments;
 
     /**
      * Get the text property: The sentence text.
@@ -157,42 +157,42 @@ public final class SentenceSentiment {
     }
 
     /**
-     * Get the aspects property: The array of aspect object for the sentence.
+     * Get the targets property: The array of sentence targets for the sentence.
      *
-     * @return the aspects value.
+     * @return the targets value.
      */
-    public List<SentenceAspect> getAspects() {
-        return this.aspects;
+    public List<SentenceTarget> getTargets() {
+        return this.targets;
     }
 
     /**
-     * Set the aspects property: The array of aspect object for the sentence.
+     * Set the targets property: The array of sentence targets for the sentence.
      *
-     * @param aspects the aspects value to set.
+     * @param targets the targets value to set.
      * @return the SentenceSentiment object itself.
      */
-    public SentenceSentiment setAspects(List<SentenceAspect> aspects) {
-        this.aspects = aspects;
+    public SentenceSentiment setTargets(List<SentenceTarget> targets) {
+        this.targets = targets;
         return this;
     }
 
     /**
-     * Get the opinions property: The array of opinion object for the sentence.
+     * Get the assessments property: The array of assessments for the sentence.
      *
-     * @return the opinions value.
+     * @return the assessments value.
      */
-    public List<SentenceOpinion> getOpinions() {
-        return this.opinions;
+    public List<SentenceAssessment> getAssessments() {
+        return this.assessments;
     }
 
     /**
-     * Set the opinions property: The array of opinion object for the sentence.
+     * Set the assessments property: The array of assessments for the sentence.
      *
-     * @param opinions the opinions value to set.
+     * @param assessments the assessments value to set.
      * @return the SentenceSentiment object itself.
      */
-    public SentenceSentiment setOpinions(List<SentenceOpinion> opinions) {
-        this.opinions = opinions;
+    public SentenceSentiment setAssessments(List<SentenceAssessment> assessments) {
+        this.assessments = assessments;
         return this;
     }
 }

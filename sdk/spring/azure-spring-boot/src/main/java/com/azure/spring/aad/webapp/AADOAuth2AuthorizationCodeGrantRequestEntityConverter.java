@@ -3,61 +3,51 @@
 
 package com.azure.spring.aad.webapp;
 
+import com.azure.spring.aad.AbstractOAuth2AuthorizationCodeGrantRequestEntityConverter;
 import com.azure.spring.utils.ApplicationId;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.RequestEntity;
+import org.springframework.security.oauth2.client.endpoint.AbstractOAuth2AuthorizationGrantRequest;
 import org.springframework.security.oauth2.client.endpoint.OAuth2AuthorizationCodeGrantRequest;
-import org.springframework.security.oauth2.client.endpoint.OAuth2AuthorizationCodeGrantRequestEntityConverter;
-import org.springframework.util.Assert;
+import org.springframework.security.oauth2.client.registration.ClientRegistration;
+import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
-import java.util.Collections;
 import java.util.Optional;
-import java.util.UUID;
+import java.util.Set;
+
+import static com.azure.spring.aad.AADClientRegistrationRepository.AZURE_CLIENT_REGISTRATION_ID;
 
 /**
  * Used to set "scope" parameter when use "auth-code" to get "access_token".
  */
 public class AADOAuth2AuthorizationCodeGrantRequestEntityConverter
-    extends OAuth2AuthorizationCodeGrantRequestEntityConverter {
+    extends AbstractOAuth2AuthorizationCodeGrantRequestEntityConverter {
 
-    private final AzureClientRegistration azureClient;
+    private final Set<String> azureClientAccessTokenScopes;
 
-    public AADOAuth2AuthorizationCodeGrantRequestEntityConverter(AzureClientRegistration client) {
-        azureClient = client;
+    public AADOAuth2AuthorizationCodeGrantRequestEntityConverter(Set<String> azureClientAccessTokenScopes) {
+        this.azureClientAccessTokenScopes = azureClientAccessTokenScopes;
     }
 
     @Override
-    @SuppressWarnings("unchecked")
-    public RequestEntity<?> convert(OAuth2AuthorizationCodeGrantRequest request) {
-        RequestEntity<?> requestEntity = super.convert(request);
-        Assert.notNull(requestEntity, "requestEntity can not be null");
+    protected String getApplicationId() {
+        return ApplicationId.AZURE_SPRING_AAD;
+    }
 
-        HttpHeaders httpHeaders = getHttpHeaders();
-        Optional.of(requestEntity)
-                .map(HttpEntity::getHeaders)
-                .ifPresent(headers -> headers.forEach(httpHeaders::put));
-
-        MultiValueMap<String, String> body = (MultiValueMap<String, String>) requestEntity.getBody();
-        Assert.notNull(body, "body can not be null");
-        String scopes = String.join(" ", isRequestForDefaultClient(request)
-            ? azureClient.getAccessTokenScopes()
+    @Override
+    public MultiValueMap<String, String> getHttpBody(OAuth2AuthorizationCodeGrantRequest request) {
+        MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
+        String scopes = String.join(" ", isRequestForAzureClient(request)
+            ? azureClientAccessTokenScopes
             : request.getClientRegistration().getScopes());
         body.add("scope", scopes);
-
-        return new RequestEntity<>(body, httpHeaders, requestEntity.getMethod(), requestEntity.getUrl());
+        return body;
     }
 
-    private boolean isRequestForDefaultClient(OAuth2AuthorizationCodeGrantRequest request) {
-        return request.getClientRegistration().equals(azureClient.getClient());
-    }
-
-    static HttpHeaders getHttpHeaders() {
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.put("x-client-SKU", Collections.singletonList(ApplicationId.AZURE_SPRING_AAD));
-        httpHeaders.put("x-client-VER", Collections.singletonList(ApplicationId.VERSION));
-        httpHeaders.put("client-request-id", Collections.singletonList(UUID.randomUUID().toString()));
-        return httpHeaders;
+    private boolean isRequestForAzureClient(OAuth2AuthorizationCodeGrantRequest request) {
+        return Optional.of(request)
+                       .map(AbstractOAuth2AuthorizationGrantRequest::getClientRegistration)
+                       .map(ClientRegistration::getRegistrationId)
+                       .map(id -> id.equals(AZURE_CLIENT_REGISTRATION_ID))
+                       .orElse(false);
     }
 }

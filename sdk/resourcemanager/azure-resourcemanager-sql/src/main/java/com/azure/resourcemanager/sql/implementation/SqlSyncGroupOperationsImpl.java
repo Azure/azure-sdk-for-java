@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
 
 /** Implementation for SQL Sync Group operations. */
 public class SqlSyncGroupOperationsImpl
@@ -69,22 +70,22 @@ public class SqlSyncGroupOperationsImpl
 
     @Override
     public PagedIterable<String> listSyncDatabaseIds(String locationName) {
-        return this
+        return PagedConverter.mapPage(this
             .sqlServerManager
             .serviceClient()
             .getSyncGroups()
-            .listSyncDatabaseIds(locationName)
-            .mapPage(SyncDatabaseIdPropertiesInner::id);
+            .listSyncDatabaseIds(locationName),
+            SyncDatabaseIdPropertiesInner::id);
     }
 
     @Override
     public PagedFlux<String> listSyncDatabaseIdsAsync(String locationName) {
-        return this
+        return PagedConverter.mapPage(this
             .sqlServerManager
             .serviceClient()
             .getSyncGroups()
-            .listSyncDatabaseIdsAsync(locationName)
-            .mapPage(SyncDatabaseIdPropertiesInner::id);
+            .listSyncDatabaseIdsAsync(locationName),
+            SyncDatabaseIdPropertiesInner::id);
     }
 
     @Override
@@ -242,13 +243,12 @@ public class SqlSyncGroupOperationsImpl
     @Override
     public PagedFlux<SqlSyncGroup> listAsync() {
         final SqlSyncGroupOperationsImpl self = this;
-        return this
+        return PagedConverter.mapPage(this
             .sqlServerManager
             .serviceClient()
             .getSyncGroups()
             .listByDatabaseAsync(
-                this.sqlDatabase.resourceGroupName(), this.sqlDatabase.sqlServerName(), this.sqlDatabase.name())
-            .mapPage(
+                this.sqlDatabase.resourceGroupName(), this.sqlDatabase.sqlServerName(), this.sqlDatabase.name()),
                 syncGroupInner ->
                     new SqlSyncGroupImpl(
                         syncGroupInner.name(), self.sqlDatabase, syncGroupInner, self.sqlServerManager));

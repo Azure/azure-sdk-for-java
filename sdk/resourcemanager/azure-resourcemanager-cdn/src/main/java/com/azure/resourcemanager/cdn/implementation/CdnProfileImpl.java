@@ -20,6 +20,7 @@ import reactor.core.publisher.Mono;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.Set;
+import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
 
 /**
  * Implementation for CdnProfile.
@@ -84,8 +85,8 @@ class CdnProfileImpl
 
     @Override
     public PagedIterable<ResourceUsage> listResourceUsage() {
-        return this.manager().serviceClient().getProfiles().listResourceUsage(this.resourceGroupName(), this.name())
-            .mapPage(ResourceUsage::new);
+        return PagedConverter.mapPage(this.manager().serviceClient().getProfiles().listResourceUsage(this.resourceGroupName(), this.name()),
+            ResourceUsage::new);
     }
 
     @Override

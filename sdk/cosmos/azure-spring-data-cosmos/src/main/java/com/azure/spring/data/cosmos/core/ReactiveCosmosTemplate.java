@@ -11,6 +11,7 @@ import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.PartitionKey;
+import com.azure.cosmos.models.SqlParameter;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.models.ThroughputProperties;
 import com.azure.spring.data.cosmos.Constants;
@@ -20,16 +21,20 @@ import com.azure.spring.data.cosmos.config.CosmosConfig;
 import com.azure.spring.data.cosmos.core.convert.MappingCosmosConverter;
 import com.azure.spring.data.cosmos.core.generator.CountQueryGenerator;
 import com.azure.spring.data.cosmos.core.generator.FindQuerySpecGenerator;
+import com.azure.spring.data.cosmos.core.generator.NativeQueryGenerator;
 import com.azure.spring.data.cosmos.core.query.CosmosQuery;
 import com.azure.spring.data.cosmos.core.query.Criteria;
 import com.azure.spring.data.cosmos.core.query.CriteriaType;
 import com.azure.spring.data.cosmos.exception.CosmosExceptionUtils;
 import com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation;
 import com.fasterxml.jackson.databind.JsonNode;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.data.auditing.IsNewAwareAuditingHandler;
+import org.springframework.data.domain.Sort;
 import org.springframework.lang.NonNull;
 import org.springframework.util.Assert;
 import org.springframework.util.ReflectionUtils;
@@ -37,6 +42,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
+import java.util.Optional;
 import java.util.UUID;
 
 /**
@@ -44,6 +50,8 @@ import java.util.UUID;
  */
 @SuppressWarnings("unchecked")
 public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, ApplicationContextAware {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(ReactiveCosmosTemplate.class);
 
     private final MappingCosmosConverter mappingCosmosConverter;
     private final String databaseName;
@@ -155,8 +163,9 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
                     cosmosContainerResponseMono =
                         database.createContainerIfNotExists(cosmosContainerProperties);
                 } else {
-                    ThroughputProperties throughputProperties =
-                        ThroughputProperties.createManualThroughput(information.getRequestUnit());
+                    ThroughputProperties throughputProperties = information.isAutoScale()
+                        ? ThroughputProperties.createAutoscaledThroughput(information.getRequestUnit())
+                        : ThroughputProperties.createManualThroughput(information.getRequestUnit());
                     cosmosContainerResponseMono =
                         database.createContainerIfNotExists(cosmosContainerProperties,
                             throughputProperties);
@@ -271,14 +280,15 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
         Assert.hasText(containerName, "containerName should not be null, empty or only whitespaces");
         Assert.notNull(domainType, "domainType should not be null");
 
-        final String query = String.format("select * from root where root.id = '%s'",
-            CosmosUtils.getStringIDValue(id));
+        final String query = "select * from root where root.id = @ROOT_ID";
+        final SqlParameter param = new SqlParameter("@ROOT_ID", CosmosUtils.getStringIDValue(id));
+        final SqlQuerySpec sqlQuerySpec = new SqlQuerySpec(query, param);
         final CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
         options.setQueryMetricsEnabled(this.queryMetricsEnabled);
 
         return cosmosAsyncClient.getDatabase(this.databaseName)
                                 .getContainer(containerName)
-                                .queryItems(query, options, JsonNode.class)
+                                .queryItems(sqlQuerySpec, options, JsonNode.class)
                                 .byPage()
                                 .publishOn(Schedulers.parallel())
                                 .flatMap(cosmosItemFeedResponse -> {
@@ -362,8 +372,9 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
         Assert.notNull(objectToSave, "objectToSave should not be null");
 
         final Class<T> domainType = (Class<T>) objectToSave.getClass();
+        markAuditedIfConfigured(objectToSave);
         generateIdIfNullAndAutoGenerationEnabled(objectToSave, domainType);
-        final JsonNode originalItem = prepareToPersistAndConvertToItemProperties(objectToSave);
+        final JsonNode originalItem = mappingCosmosConverter.writeJsonNode(objectToSave);
         final CosmosItemRequestOptions options = new CosmosItemRequestOptions();
         //  if the partition key is null, SDK will get the partitionKey from the object
         return cosmosAsyncClient
@@ -422,7 +433,8 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
     @Override
     public <T> Mono<T> upsert(String containerName, T object) {
         final Class<T> domainType = (Class<T>) object.getClass();
-        final JsonNode originalItem = prepareToPersistAndConvertToItemProperties(object);
+        markAuditedIfConfigured(object);
+        final JsonNode originalItem = mappingCosmosConverter.writeJsonNode(object);
         final CosmosItemRequestOptions options = new CosmosItemRequestOptions();
 
         applyVersioning(object.getClass(), originalItem, options);
@@ -522,7 +534,7 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
         Assert.notNull(domainType, "domainType should not be null.");
         Assert.hasText(containerName, "container name should not be null, empty or only whitespaces");
 
-        final Flux<JsonNode> results = findItems(query, containerName);
+        final Flux<JsonNode> results = findItems(query, containerName, domainType);
 
         return results.flatMap(d -> deleteItem(d, containerName, domainType));
     }
@@ -537,7 +549,7 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
      */
     @Override
     public <T> Flux<T> find(CosmosQuery query, Class<T> domainType, String containerName) {
-        return findItems(query, containerName)
+        return findItems(query, containerName, domainType)
             .map(cosmosItemProperties -> toDomainObject(domainType, cosmosItemProperties));
     }
 
@@ -588,7 +600,20 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
      */
     @Override
     public Mono<Long> count(CosmosQuery query, String containerName) {
-        return getCountValue(query, containerName);
+        final SqlQuerySpec querySpec = new CountQueryGenerator().generateCosmos(query);
+        return getCountValue(querySpec, containerName);
+    }
+
+    /**
+     * Count
+     *
+     * @param querySpec the document query spec
+     * @param containerName the container name
+     * @return Mono with count or error
+     */
+    @Override
+    public Mono<Long> count(SqlQuerySpec querySpec, String containerName) {
+        return getCountValue(querySpec, containerName);
     }
 
     @Override
@@ -598,11 +623,22 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
 
     @Override
     public <T> Flux<T> runQuery(SqlQuerySpec querySpec, Class<?> domainType, Class<T> returnType) {
+        return runQuery(querySpec, Sort.unsorted(), domainType, returnType);
+    }
+
+    @Override
+    public <T> Flux<T> runQuery(SqlQuerySpec querySpec, Sort sort, Class<?> domainType, Class<T> returnType) {
+        SqlQuerySpec sortedQuerySpec = NativeQueryGenerator.getInstance().generateSortedQuery(querySpec, sort);
+        return runQuery(sortedQuerySpec, domainType)
+            .map(cosmosItemProperties -> toDomainObject(returnType, cosmosItemProperties));
+    }
+
+    private Flux<JsonNode> runQuery(SqlQuerySpec querySpec, Class<?> domainType) {
         String containerName = getContainerName(domainType);
         CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
         return cosmosAsyncClient.getDatabase(this.databaseName)
                    .getContainer(containerName)
-                   .queryItems(querySpec, options, returnType)
+                   .queryItems(querySpec, options, JsonNode.class)
                    .byPage()
                    .publishOn(Schedulers.parallel())
                    .flatMap(cosmosItemFeedResponse -> {
@@ -616,8 +652,7 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
                                       CosmosExceptionUtils.exceptionHandler("Failed to find items", throwable));
     }
 
-    private Mono<Long> getCountValue(CosmosQuery query, String containerName) {
-        final SqlQuerySpec querySpec = new CountQueryGenerator().generateCosmos(query);
+    private Mono<Long> getCountValue(SqlQuerySpec querySpec, String containerName) {
         final CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
 
         options.setQueryMetricsEnabled(this.queryMetricsEnabled);
@@ -673,19 +708,24 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
         return CosmosEntityInformation.getInstance(domainType).getContainerName();
     }
 
-    private JsonNode prepareToPersistAndConvertToItemProperties(Object object) {
+
+    private void markAuditedIfConfigured(Object object) {
         if (cosmosAuditingHandler != null) {
             cosmosAuditingHandler.markAudited(object);
         }
-        return mappingCosmosConverter.writeJsonNode(object);
     }
 
-
-    private Flux<JsonNode> findItems(@NonNull CosmosQuery query,
-                                     @NonNull String containerName) {
+    private <T> Flux<JsonNode> findItems(@NonNull CosmosQuery query,
+                                     @NonNull String containerName,
+                                     @NonNull Class<T> domainType) {
         final SqlQuerySpec sqlQuerySpec = new FindQuerySpecGenerator().generateCosmos(query);
         final CosmosQueryRequestOptions cosmosQueryRequestOptions = new CosmosQueryRequestOptions();
         cosmosQueryRequestOptions.setQueryMetricsEnabled(this.queryMetricsEnabled);
+        Optional<Object> partitionKeyValue = query.getPartitionKeyValue(domainType);
+        partitionKeyValue.ifPresent(o -> {
+            LOGGER.debug("Setting partition key {}", o);
+            cosmosQueryRequestOptions.setPartitionKey(new PartitionKey(o));
+        });
 
         return cosmosAsyncClient
             .getDatabase(this.databaseName)

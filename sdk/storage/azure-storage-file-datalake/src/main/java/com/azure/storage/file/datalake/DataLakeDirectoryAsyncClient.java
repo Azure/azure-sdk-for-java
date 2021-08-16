@@ -22,18 +22,21 @@ import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.file.datalake.implementation.models.FileSystemsListPathsResponse;
-import com.azure.storage.file.datalake.implementation.models.Path;
 import com.azure.storage.file.datalake.implementation.models.PathResourceType;
 import com.azure.storage.file.datalake.implementation.util.DataLakeImplUtils;
+import com.azure.storage.file.datalake.implementation.util.TransformUtils;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.PathHttpHeaders;
 import com.azure.storage.file.datalake.models.PathItem;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
+import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.function.Function;
+import java.util.function.BiFunction;
+import java.util.stream.Collectors;
 
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.pagedFluxError;
@@ -78,9 +81,9 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
     }
 
     DataLakeDirectoryAsyncClient(DataLakePathAsyncClient dataLakePathAsyncClient) {
-        super(dataLakePathAsyncClient.getHttpPipeline(), dataLakePathAsyncClient.getPathUrl(),
+        super(dataLakePathAsyncClient.getHttpPipeline(), dataLakePathAsyncClient.getAccountUrl(),
             dataLakePathAsyncClient.getServiceVersion(), dataLakePathAsyncClient.getAccountName(),
-            dataLakePathAsyncClient.getFileSystemName(), dataLakePathAsyncClient.pathName,
+            dataLakePathAsyncClient.getFileSystemName(), Utility.urlEncode(dataLakePathAsyncClient.pathName),
             PathResourceType.DIRECTORY, dataLakePathAsyncClient.getBlockBlobAsyncClient());
     }
 
@@ -177,9 +180,10 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
 
         BlockBlobAsyncClient blockBlobAsyncClient = prepareBuilderAppendPath(fileName).buildBlockBlobAsyncClient();
 
-        return new DataLakeFileAsyncClient(getHttpPipeline(),
-            StorageImplUtils.appendToUrlPath(getPathUrl(), Utility.urlEncode(Utility.urlDecode(fileName))).toString(),
-            getServiceVersion(), getAccountName(), getFileSystemName(), Utility.urlEncode(getObjectPath() + "/"
+        String pathPrefix = getObjectPath().isEmpty() ? "" : getObjectPath() + "/";
+
+        return new DataLakeFileAsyncClient(getHttpPipeline(), getAccountUrl(),
+            getServiceVersion(), getAccountName(), getFileSystemName(), Utility.urlEncode(pathPrefix
             + Utility.urlDecode(fileName)), blockBlobAsyncClient);
     }
 
@@ -324,10 +328,11 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
         BlockBlobAsyncClient blockBlobAsyncClient = prepareBuilderAppendPath(subdirectoryName)
             .buildBlockBlobAsyncClient();
 
-        return new DataLakeDirectoryAsyncClient(getHttpPipeline(),
-            StorageImplUtils.appendToUrlPath(getPathUrl(), Utility.urlEncode(Utility.urlDecode(subdirectoryName)))
-                .toString(), getServiceVersion(), getAccountName(), getFileSystemName(),
-            Utility.urlEncode(getObjectPath() + "/" + Utility.urlDecode(subdirectoryName)), blockBlobAsyncClient);
+        String pathPrefix = getObjectPath().isEmpty() ? "" : getObjectPath() + "/";
+
+        return new DataLakeDirectoryAsyncClient(getHttpPipeline(), getAccountUrl(), getServiceVersion(),
+            getAccountName(), getFileSystemName(),
+            Utility.urlEncode(pathPrefix + Utility.urlDecode(subdirectoryName)), blockBlobAsyncClient);
     }
 
     /**
@@ -544,9 +549,9 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
      * If "false", the values will be returned as Azure Active Directory Object IDs.
      * The default value is false. Note that group and application Object IDs are not translated because they do not
      * have unique friendly names.
-     * @param maxResults Specifies the maximum number of blobs to return, including all BlobPrefix elements. If the
-     * request does not specify maxResults or specifies a value greater than 5,000, the server will return up to
-     * 5,000 items.
+     * @param maxResults Specifies the maximum number of blobs to return per page, including all BlobPrefix elements. If
+     * the request does not specify maxResults or specifies a value greater than 5,000, the server will return up to
+     * 5,000 items per page.
      * @return A reactive response emitting the list of files/directories.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -560,26 +565,35 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
 
     PagedFlux<PathItem> listPathsWithOptionalTimeout(boolean recursive, boolean userPrincipleNameReturned,
         Integer maxResults, Duration timeout) {
-        Function<String, Mono<PagedResponse<Path>>> func =
-            marker -> listPathsSegment(marker, recursive, userPrincipleNameReturned, maxResults, timeout)
-                .map(response -> new PagedResponseBase<>(
-                    response.getRequest(),
-                    response.getStatusCode(),
-                    response.getHeaders(),
-                    response.getValue().getPaths(),
-                    response.getDeserializedHeaders().getContinuation(),
-                    response.getDeserializedHeaders()));
+        BiFunction<String, Integer, Mono<PagedResponse<PathItem>>> func =
+            (marker, pageSize) -> listPathsSegment(marker, recursive, userPrincipleNameReturned,
+                pageSize == null ? maxResults : pageSize, timeout)
+                .map(response -> {
+                    List<PathItem> value = response.getValue() == null
+                        ? Collections.emptyList()
+                        : response.getValue().getPaths().stream()
+                        .map(Transforms::toPathItem)
+                        .collect(Collectors.toList());
 
-        return new PagedFlux<>(() -> func.apply(null), func).mapPage(Transforms::toPathItem);
+                    return new PagedResponseBase<>(
+                        response.getRequest(),
+                        response.getStatusCode(),
+                        response.getHeaders(),
+                        value,
+                        response.getDeserializedHeaders().getXMsContinuation(),
+                        response.getDeserializedHeaders());
+                });
+
+        return new PagedFlux<>(pageSize -> func.apply(null, pageSize), func);
     }
 
     private Mono<FileSystemsListPathsResponse> listPathsSegment(String marker, boolean recursive,
         boolean userPrincipleNameReturned, Integer maxResults, Duration timeout) {
 
         return StorageImplUtils.applyOptionalTimeout(
-            this.fileSystemDataLakeStorage.fileSystems().listPathsWithRestResponseAsync(
-                recursive, marker, getDirectoryPath(), maxResults, userPrincipleNameReturned, null,
-                null, Context.NONE), timeout);
+            this.fileSystemDataLakeStorage.getFileSystems().listPathsWithResponseAsync(
+                recursive, null, null, marker, getDirectoryPath(), maxResults, userPrincipleNameReturned,
+                Context.NONE), timeout);
     }
 
     /**
@@ -593,6 +607,7 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
 
         return new SpecializedBlobClientBuilder()
             .pipeline(getHttpPipeline())
+            .serviceVersion(TransformUtils.toBlobServiceVersion(getServiceVersion()))
             .endpoint(StorageImplUtils.appendToUrlPath(blobUrl, pathName).toString());
     }
 }

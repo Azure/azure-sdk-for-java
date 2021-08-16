@@ -117,7 +117,7 @@ public final class ImageOSDisk extends ImageDisk {
 
     /** {@inheritDoc} */
     @Override
-    public ImageOSDisk withDiskEncryptionSet(SubResource diskEncryptionSet) {
+    public ImageOSDisk withDiskEncryptionSet(DiskEncryptionSetParameters diskEncryptionSet) {
         super.withDiskEncryptionSet(diskEncryptionSet);
         return this;
     }

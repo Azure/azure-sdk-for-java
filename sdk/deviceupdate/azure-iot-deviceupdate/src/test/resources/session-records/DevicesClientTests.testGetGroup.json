@@ -1,0 +1,18 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.api.prod.adu.microsoft.com/deviceupdate/blue/v2/management/groups/Uncategorized",
+    "Headers" : { },
+    "Response" : {
+      "traceparent" : "00-2787c9dde862034d99640bc0e04a703d-0f41bf522eec1f4d-00",
+      "retry-after" : "0",
+      "Content-Length" : "158",
+      "StatusCode" : "200",
+      "Body" : "{\r\n  \"groupId\": \"Uncategorized\",\r\n  \"tags\": [],\r\n  \"createdDateTime\": \"2021-02-04T21:55:58.7115058+00:00\",\r\n  \"groupType\": \"IoTHubTag\",\r\n  \"deviceCount\": 3\r\n}",
+      "Date" : "Tue, 02 Mar 2021 21:29:01 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

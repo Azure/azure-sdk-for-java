@@ -19,6 +19,7 @@ import com.azure.analytics.synapse.artifacts.models.QueryDataFlowDebugSessionsRe
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
+import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
 import com.azure.core.annotation.PathParam;
@@ -72,13 +73,17 @@ public final class DataFlowDebugSessionsImpl {
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @BodyParam("application/json") CreateDataFlowDebugSessionRequest request,
+                @HeaderParam("Accept") String accept,
                 Context context);
 
         @Post("/queryDataFlowDebugSessions")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudErrorException.class)
         Mono<Response<QueryDataFlowDebugSessionsResponse>> queryDataFlowDebugSessionsByWorkspace(
-                @HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion, Context context);
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
+                Context context);
 
         @Post("/addDataFlowToDebugSession")
         @ExpectedResponses({200})
@@ -87,6 +92,7 @@ public final class DataFlowDebugSessionsImpl {
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @BodyParam("application/json") DataFlowDebugPackage request,
+                @HeaderParam("Accept") String accept,
                 Context context);
 
         @Post("/deleteDataFlowDebugSession")
@@ -96,6 +102,7 @@ public final class DataFlowDebugSessionsImpl {
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @BodyParam("application/json") DeleteDataFlowDebugSessionRequest request,
+                @HeaderParam("Accept") String accept,
                 Context context);
 
         @Post("/executeDataFlowDebugCommand")
@@ -105,6 +112,7 @@ public final class DataFlowDebugSessionsImpl {
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @BodyParam("application/json") DataFlowDebugCommandRequest request,
+                @HeaderParam("Accept") String accept,
                 Context context);
 
         @Get("{nextLink}")
@@ -113,6 +121,7 @@ public final class DataFlowDebugSessionsImpl {
         Mono<Response<QueryDataFlowDebugSessionsResponse>> queryDataFlowDebugSessionsByWorkspaceNext(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
                 @HostParam("endpoint") String endpoint,
+                @HeaderParam("Accept") String accept,
                 Context context);
     }
 
@@ -128,10 +137,11 @@ public final class DataFlowDebugSessionsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DataFlowDebugSessionsCreateDataFlowDebugSessionResponse> createDataFlowDebugSessionWithResponseAsync(
             CreateDataFlowDebugSessionRequest request) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.createDataFlowDebugSession(
-                                this.client.getEndpoint(), this.client.getApiVersion(), request, context));
+                                this.client.getEndpoint(), this.client.getApiVersion(), request, accept, context));
     }
 
     /**
@@ -147,8 +157,9 @@ public final class DataFlowDebugSessionsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DataFlowDebugSessionsCreateDataFlowDebugSessionResponse> createDataFlowDebugSessionWithResponseAsync(
             CreateDataFlowDebugSessionRequest request, Context context) {
+        final String accept = "application/json";
         return service.createDataFlowDebugSession(
-                this.client.getEndpoint(), this.client.getApiVersion(), request, context);
+                this.client.getEndpoint(), this.client.getApiVersion(), request, accept, context);
     }
 
     /**
@@ -223,7 +234,7 @@ public final class DataFlowDebugSessionsImpl {
      * @return response body structure for creating data flow debug session.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CreateDataFlowDebugSessionResponse> createDataFlowDebugSessionWithResponse(
+    public DataFlowDebugSessionsCreateDataFlowDebugSessionResponse createDataFlowDebugSessionWithResponse(
             CreateDataFlowDebugSessionRequest request, Context context) {
         return createDataFlowDebugSessionWithResponseAsync(request, context).block();
     }
@@ -237,10 +248,11 @@ public final class DataFlowDebugSessionsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<DataFlowDebugSessionInfo>> queryDataFlowDebugSessionsByWorkspaceSinglePageAsync() {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                         context ->
                                 service.queryDataFlowDebugSessionsByWorkspace(
-                                        this.client.getEndpoint(), this.client.getApiVersion(), context))
+                                        this.client.getEndpoint(), this.client.getApiVersion(), accept, context))
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -264,8 +276,9 @@ public final class DataFlowDebugSessionsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<DataFlowDebugSessionInfo>> queryDataFlowDebugSessionsByWorkspaceSinglePageAsync(
             Context context) {
+        final String accept = "application/json";
         return service.queryDataFlowDebugSessionsByWorkspace(
-                        this.client.getEndpoint(), this.client.getApiVersion(), context)
+                        this.client.getEndpoint(), this.client.getApiVersion(), accept, context)
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -345,9 +358,11 @@ public final class DataFlowDebugSessionsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AddDataFlowToDebugSessionResponse>> addDataFlowWithResponseAsync(
             DataFlowDebugPackage request) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
-                        service.addDataFlow(this.client.getEndpoint(), this.client.getApiVersion(), request, context));
+                        service.addDataFlow(
+                                this.client.getEndpoint(), this.client.getApiVersion(), request, accept, context));
     }
 
     /**
@@ -363,7 +378,8 @@ public final class DataFlowDebugSessionsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AddDataFlowToDebugSessionResponse>> addDataFlowWithResponseAsync(
             DataFlowDebugPackage request, Context context) {
-        return service.addDataFlow(this.client.getEndpoint(), this.client.getApiVersion(), request, context);
+        final String accept = "application/json";
+        return service.addDataFlow(this.client.getEndpoint(), this.client.getApiVersion(), request, accept, context);
     }
 
     /**
@@ -452,10 +468,11 @@ public final class DataFlowDebugSessionsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteDataFlowDebugSessionWithResponseAsync(DeleteDataFlowDebugSessionRequest request) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.deleteDataFlowDebugSession(
-                                this.client.getEndpoint(), this.client.getApiVersion(), request, context));
+                                this.client.getEndpoint(), this.client.getApiVersion(), request, accept, context));
     }
 
     /**
@@ -471,8 +488,9 @@ public final class DataFlowDebugSessionsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteDataFlowDebugSessionWithResponseAsync(
             DeleteDataFlowDebugSessionRequest request, Context context) {
+        final String accept = "application/json";
         return service.deleteDataFlowDebugSession(
-                this.client.getEndpoint(), this.client.getApiVersion(), request, context);
+                this.client.getEndpoint(), this.client.getApiVersion(), request, accept, context);
     }
 
     /**
@@ -546,10 +564,11 @@ public final class DataFlowDebugSessionsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DataFlowDebugSessionsExecuteCommandResponse> executeCommandWithResponseAsync(
             DataFlowDebugCommandRequest request) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.executeCommand(
-                                this.client.getEndpoint(), this.client.getApiVersion(), request, context));
+                                this.client.getEndpoint(), this.client.getApiVersion(), request, accept, context));
     }
 
     /**
@@ -565,7 +584,8 @@ public final class DataFlowDebugSessionsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DataFlowDebugSessionsExecuteCommandResponse> executeCommandWithResponseAsync(
             DataFlowDebugCommandRequest request, Context context) {
-        return service.executeCommand(this.client.getEndpoint(), this.client.getApiVersion(), request, context);
+        final String accept = "application/json";
+        return service.executeCommand(this.client.getEndpoint(), this.client.getApiVersion(), request, accept, context);
     }
 
     /**
@@ -639,7 +659,7 @@ public final class DataFlowDebugSessionsImpl {
      * @return response body structure of data flow result for data preview, statistics or expression preview.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DataFlowDebugCommandResponse> executeCommandWithResponse(
+    public DataFlowDebugSessionsExecuteCommandResponse executeCommandWithResponse(
             DataFlowDebugCommandRequest request, Context context) {
         return executeCommandWithResponseAsync(request, context).block();
     }
@@ -656,10 +676,11 @@ public final class DataFlowDebugSessionsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<DataFlowDebugSessionInfo>> queryDataFlowDebugSessionsByWorkspaceNextSinglePageAsync(
             String nextLink) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                         context ->
                                 service.queryDataFlowDebugSessionsByWorkspaceNext(
-                                        nextLink, this.client.getEndpoint(), context))
+                                        nextLink, this.client.getEndpoint(), accept, context))
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -684,7 +705,8 @@ public final class DataFlowDebugSessionsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<DataFlowDebugSessionInfo>> queryDataFlowDebugSessionsByWorkspaceNextSinglePageAsync(
             String nextLink, Context context) {
-        return service.queryDataFlowDebugSessionsByWorkspaceNext(nextLink, this.client.getEndpoint(), context)
+        final String accept = "application/json";
+        return service.queryDataFlowDebugSessionsByWorkspaceNext(nextLink, this.client.getEndpoint(), accept, context)
                 .map(
                         res ->
                                 new PagedResponseBase<>(

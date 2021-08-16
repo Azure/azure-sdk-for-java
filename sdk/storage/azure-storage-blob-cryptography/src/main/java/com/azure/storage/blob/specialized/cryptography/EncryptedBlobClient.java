@@ -15,6 +15,7 @@ import com.azure.storage.blob.BlobClientBuilder;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlockBlobItem;
+import com.azure.storage.blob.models.CustomerProvidedKey;
 import com.azure.storage.blob.options.BlobQueryOptions;
 import com.azure.storage.blob.models.BlobQueryResponse;
 import com.azure.storage.blob.models.BlobRequestConditions;
@@ -74,7 +75,33 @@ public class EncryptedBlobClient extends BlobClient {
     }
 
     /**
+     * Creates a new {@link EncryptedBlobClient} with the specified {@code encryptionScope}.
+     *
+     * @param encryptionScope the encryption scope for the blob, pass {@code null} to use no encryption scope.
+     * @return a {@link EncryptedBlobClient} with the specified {@code encryptionScope}.
+     */
+    @Override
+    public EncryptedBlobClient getEncryptionScopeClient(String encryptionScope) {
+        return new EncryptedBlobClient(encryptedBlobAsyncClient.getEncryptionScopeAsyncClient(encryptionScope));
+    }
+
+    /**
+     * Creates a new {@link EncryptedBlobClient} with the specified {@code customerProvidedKey}.
+     *
+     * @param customerProvidedKey the {@link CustomerProvidedKey} for the blob,
+     * pass {@code null} to use no customer provided key.
+     * @return a {@link EncryptedBlobClient} with the specified {@code customerProvidedKey}.
+     */
+    @Override
+    public EncryptedBlobClient getCustomerProvidedKeyClient(CustomerProvidedKey customerProvidedKey) {
+        return new EncryptedBlobClient(encryptedBlobAsyncClient.getCustomerProvidedKeyAsyncClient(customerProvidedKey));
+    }
+
+    /**
      * Creates and opens an output stream to write data to the block blob.
+     * <p>
+     * Note: We recommend you call write with reasonably sized buffers, you can do so by wrapping the BlobOutputStream
+     * obtained below with a {@link java.io.BufferedOutputStream}.
      *
      * @return A {@link BlobOutputStream} object used to write data to the blob.
      * @throws BlobStorageException If a storage service error occurred.
@@ -85,6 +112,9 @@ public class EncryptedBlobClient extends BlobClient {
 
     /**
      * Creates and opens an output stream to write data to the block blob.
+     * <p>
+     * Note: We recommend you call write with reasonably sized buffers, you can do so by wrapping the BlobOutputStream
+     * obtained below with a {@link java.io.BufferedOutputStream}.
      *
      * @return A {@link BlobOutputStream} object used to write data to the blob.
      * @param overwrite Whether or not to overwrite, should data exist on the blob.
@@ -106,6 +136,9 @@ public class EncryptedBlobClient extends BlobClient {
      * will be overwritten.
      * <p>
      * To avoid overwriting, pass "*" to {@link BlobRequestConditions#setIfNoneMatch(String)}.
+     * <p>
+     * Note: We recommend you call write with reasonably sized buffers, you can do so by wrapping the BlobOutputStream
+     * obtained below with a {@link java.io.BufferedOutputStream}.
      *
      * @param parallelTransferOptions {@link ParallelTransferOptions} used to configure buffered uploading.
      * @param headers {@link BlobHttpHeaders}
@@ -130,6 +163,9 @@ public class EncryptedBlobClient extends BlobClient {
      * will be overwritten.
      * <p>
      * To avoid overwriting, pass "*" to {@link BlobRequestConditions#setIfNoneMatch(String)}.
+     * <p>
+     * Note: We recommend you call write with reasonably sized buffers, you can do so by wrapping the BlobOutputStream
+     * obtained below with a {@link java.io.BufferedOutputStream}.
      *
      * @param options {@link BlockBlobOutputStreamOptions}
      *

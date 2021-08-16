@@ -5,6 +5,8 @@ package com.azure.resourcemanager.resources.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.util.Context;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.resources.ResourceManager;
 import com.azure.resourcemanager.resources.fluentcore.model.Accepted;
@@ -13,7 +15,6 @@ import com.azure.resourcemanager.resources.models.GenericResource;
 import com.azure.resourcemanager.resources.models.GenericResources;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
 import com.azure.resourcemanager.resources.models.ResourcesMoveInfo;
-import com.azure.resourcemanager.resources.models.Provider;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
@@ -23,6 +24,7 @@ import reactor.core.publisher.Mono;
 
 import java.util.List;
 import java.util.function.Function;
+import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
 
 /**
  * Implementation of the {@link GenericResources}.
@@ -43,14 +45,12 @@ public final class GenericResourcesImpl
 
     @Override
     public PagedIterable<GenericResource> list() {
-        return wrapList(this.manager().serviceClient().getResources().list()
-                .mapPage(res -> (GenericResourceInner) res));
+        return new PagedIterable<>(this.listAsync());
     }
 
     @Override
     public PagedIterable<GenericResource> listByResourceGroup(String groupName) {
-        return wrapList(this.manager().serviceClient().getResources().listByResourceGroup(groupName)
-                .mapPage(res -> (GenericResourceInner) res));
+        return new PagedIterable<>(this.listByResourceGroupAsync(groupName));
     }
 
     @Override
@@ -60,9 +60,10 @@ public final class GenericResourcesImpl
 
     @Override
     public PagedFlux<GenericResource> listByTagAsync(String resourceGroupName, String tagName, String tagValue) {
-        return wrapPageAsync(this.manager().serviceClient().getResources().listByResourceGroupAsync(resourceGroupName,
-                ResourceManagerUtils.createOdataFilterForTags(tagName, tagValue), null, null)
-                .mapPage(res -> (GenericResourceInner) res));
+        return wrapPageAsync(PagedConverter.mapPage(this.manager().serviceClient().getResources()
+                .listByResourceGroupAsync(resourceGroupName,
+                    ResourceManagerUtils.createOdataFilterForTags(tagName, tagValue), null, null),
+                res -> (GenericResourceInner) res));
     }
 
     @Override
@@ -87,16 +88,83 @@ public final class GenericResourcesImpl
 
     @Override
     public boolean checkExistenceById(String id) {
-        String apiVersion = getApiVersionFromId(id).block();
+        if (CoreUtils.isNullOrEmpty(id)) {
+            throw logger.logExceptionAsError(
+                new IllegalArgumentException("Parameter 'id' is required and cannot be null."));
+        }
+        String apiVersion = getApiVersionFromIdAsync(id).block();
+        return this.checkExistenceById(id, apiVersion);
+    }
+
+    @Override
+    public boolean checkExistenceById(String id, String apiVersion) {
+        if (CoreUtils.isNullOrEmpty(id)) {
+            throw logger.logExceptionAsError(
+                new IllegalArgumentException("Parameter 'id' is required and cannot be null."));
+        }
+        if (CoreUtils.isNullOrEmpty(apiVersion)) {
+            throw logger.logExceptionAsError(
+                new IllegalArgumentException("Parameter 'apiVersion' is required and cannot be null."));
+        }
         return this.inner().checkExistenceById(id, apiVersion);
     }
 
     @Override
-    public GenericResource getById(String id) {
-        Provider provider = this.manager().providers().getByName(ResourceUtils.resourceProviderFromResourceId(id));
-        String apiVersion = ResourceUtils.defaultApiVersion(id, provider);
-        GenericResourceImpl genericResource = wrapModel(this.inner().getById(id, apiVersion));
-        return genericResource.withApiVersion(apiVersion);
+    public Mono<GenericResource> getByIdAsync(String id) {
+        if (CoreUtils.isNullOrEmpty(id)) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter 'id' is required and cannot be null."));
+        }
+        return this.getApiVersionFromIdAsync(id)
+            .flatMap(apiVersion -> this.getByIdAsync(id, apiVersion));
+    }
+
+    @Override
+    public GenericResource getById(String id, String apiVersion) {
+        return this.getByIdAsync(id, apiVersion).block();
+    }
+
+    @Override
+    public Mono<GenericResource> getByIdAsync(String id, String apiVersion) {
+        if (CoreUtils.isNullOrEmpty(id)) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter 'id' is required and cannot be null."));
+        }
+        if (CoreUtils.isNullOrEmpty(apiVersion)) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter 'apiVersion' is required and cannot be null."));
+        }
+        return this.inner().getByIdAsync(id, apiVersion)
+            .map(this::wrapModel)
+            .map(r -> r.withApiVersion(apiVersion));
+    }
+
+    @Override
+    public Mono<Void> deleteByIdAsync(final String id) {
+        if (CoreUtils.isNullOrEmpty(id)) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter 'id' is required and cannot be null."));
+        }
+        return getApiVersionFromIdAsync(id)
+            .flatMap(apiVersion -> this.deleteByIdAsync(id, apiVersion));
+    }
+
+    @Override
+    public void deleteById(String id, String apiVersion) {
+        this.deleteByIdAsync(id, apiVersion).block();
+    }
+
+    @Override
+    public Mono<Void> deleteByIdAsync(String id, String apiVersion) {
+        if (CoreUtils.isNullOrEmpty(id)) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter 'id' is required and cannot be null."));
+        }
+        if (CoreUtils.isNullOrEmpty(apiVersion)) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter 'apiVersion' is required and cannot be null."));
+        }
+        return this.inner().deleteByIdAsync(id, apiVersion);
     }
 
     @Override
@@ -216,39 +284,54 @@ public final class GenericResourcesImpl
     }
 
     @Override
-    public Mono<Void> deleteByIdAsync(final String id) {
-        final ResourcesClient inner = this.inner();
-        return getApiVersionFromId(id)
-                .flatMap(apiVersion -> inner.deleteByIdAsync(id, apiVersion));
+    public Accepted<Void> beginDeleteById(String id) {
+        if (CoreUtils.isNullOrEmpty(id)) {
+            throw logger.logExceptionAsError(
+                new IllegalArgumentException("Parameter 'id' is required and cannot be null."));
+        }
+        String apiVersion = getApiVersionFromIdAsync(id).block();
+        return this.beginDeleteById(id, apiVersion);
     }
 
     @Override
-    public Accepted<Void> beginDeleteById(String id) {
-        String apiVersion = getApiVersionFromId(id).block();
-
+    public Accepted<Void> beginDeleteById(String id, String apiVersion) {
+        if (CoreUtils.isNullOrEmpty(id)) {
+            throw logger.logExceptionAsError(
+                new IllegalArgumentException("Parameter 'id' is required and cannot be null."));
+        }
+        if (CoreUtils.isNullOrEmpty(apiVersion)) {
+            throw logger.logExceptionAsError(
+                new IllegalArgumentException("Parameter 'apiVersion' is required and cannot be null."));
+        }
         return AcceptedImpl.newAccepted(logger,
             this.manager().serviceClient().getHttpPipeline(),
             this.manager().serviceClient().getDefaultPollInterval(),
             () -> this.inner().deleteByIdWithResponseAsync(id, apiVersion).block(),
             Function.identity(),
             Void.class,
-            null);
+            null,
+            Context.NONE);
     }
 
-    private Mono<String> getApiVersionFromId(final String id) {
+    private Mono<String> getApiVersionFromIdAsync(final String id) {
         return this.manager().providers().getByNameAsync(ResourceUtils.resourceProviderFromResourceId(id))
                 .map(provider -> ResourceUtils.defaultApiVersion(id, provider));
     }
 
     @Override
     public PagedFlux<GenericResource> listAsync() {
-        return wrapPageAsync(this.inner().listAsync()
-                .mapPage(res -> (GenericResourceInner) res));
+        return wrapPageAsync(PagedConverter.mapPage(this.inner().listAsync(),
+                res -> (GenericResourceInner) res));
     }
 
     @Override
     public PagedFlux<GenericResource> listByResourceGroupAsync(String resourceGroupName) {
-        return wrapPageAsync(this.manager().serviceClient().getResources().listByResourceGroupAsync(resourceGroupName)
-                .mapPage(res -> (GenericResourceInner) res));
+        if (CoreUtils.isNullOrEmpty(resourceGroupName)) {
+            return new PagedFlux<>(() -> Mono.error(
+                new IllegalArgumentException("Parameter 'resourceGroupName' is required and cannot be null.")));
+        }
+        return wrapPageAsync(PagedConverter.mapPage(this.manager().serviceClient().getResources()
+                .listByResourceGroupAsync(resourceGroupName),
+            res -> (GenericResourceInner) res));
     }
 }

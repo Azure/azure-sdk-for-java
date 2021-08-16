@@ -5,7 +5,25 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Immutable;
+import java.util.Map;
 
-/** The MediaJobOutputScheduledEventData model. */
+/**
+ * Job output scheduled event data. Schema of the data property of an EventGridEvent for a
+ * Microsoft.Media.JobOutputScheduled event.
+ */
 @Immutable
-public final class MediaJobOutputScheduledEventData extends MediaJobOutputStateChangeEventData {}
+public final class MediaJobOutputScheduledEventData extends MediaJobOutputStateChangeEventData {
+    /** {@inheritDoc} */
+    @Override
+    public MediaJobOutputScheduledEventData setOutput(MediaJobOutput output) {
+        super.setOutput(output);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public MediaJobOutputScheduledEventData setJobCorrelationData(Map<String, String> jobCorrelationData) {
+        super.setJobCorrelationData(jobCorrelationData);
+        return this;
+    }
+}

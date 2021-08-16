@@ -44,6 +44,7 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Paths;
 import java.security.KeyManagementException;
 import java.security.KeyStore;
 import java.security.MessageDigest;
@@ -56,8 +57,8 @@ import java.util.List;
 
 public class SpringCloudLiveOnlyTest extends AppPlatformTest {
     private static final String PIGGYMETRICS_CONFIG_URL = "https://github.com/Azure-Samples/piggymetrics-config";
-    private static final String GATEWAY_JAR_URL = "https://github.com/weidongxu-microsoft/azure-sdk-for-java-management-tests/raw/master/spring-cloud/gateway.jar";
-    private static final String PIGGYMETRICS_TAR_GZ_URL = "https://github.com/weidongxu-microsoft/azure-sdk-for-java-management-tests/raw/master/spring-cloud/piggymetrics.tar.gz";
+    private static final String GATEWAY_JAR_URL = "https://github.com/weidongxu-microsoft/azure-sdk-for-java-management-tests/raw/main/spring-cloud/gateway.jar";
+    private static final String PIGGYMETRICS_TAR_GZ_URL = "https://github.com/weidongxu-microsoft/azure-sdk-for-java-management-tests/raw/main/spring-cloud/piggymetrics.tar.gz";
 
     private static final String SPRING_CLOUD_SERVICE_PRINCIPAL = "03b39d0f-4213-4864-a245-b1476ec03169";
 
@@ -164,8 +165,9 @@ public class SpringCloudLiveOnlyTest extends AppPlatformTest {
 
         allowAllSSL();
         String cerPassword = password();
-        String cerPath = this.getClass().getResource("/").getPath() + domainName + ".cer";
-        String pfxPath = this.getClass().getResource("/").getPath() + domainName + ".pfx";
+        String resourcePath = Paths.get(this.getClass().getResource("/session-records").toURI()).getParent().toString();
+        String cerPath = resourcePath + domainName + ".cer";
+        String pfxPath = resourcePath + domainName + ".pfx";
         createCertificate(cerPath, pfxPath, domainName, cerPassword, "ssl." + domainName, "ssl." + domainName);
 
         byte[] certificate = readAllBytes(new FileInputStream(pfxPath));

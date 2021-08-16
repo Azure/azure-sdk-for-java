@@ -10,6 +10,9 @@ import java.util.Collection;
 
 /** Defines values for PatchOperationStatus. */
 public final class PatchOperationStatus extends ExpandableStringEnum<PatchOperationStatus> {
+    /** Static value Unknown for PatchOperationStatus. */
+    public static final PatchOperationStatus UNKNOWN = fromString("Unknown");
+
     /** Static value InProgress for PatchOperationStatus. */
     public static final PatchOperationStatus IN_PROGRESS = fromString("InProgress");
 

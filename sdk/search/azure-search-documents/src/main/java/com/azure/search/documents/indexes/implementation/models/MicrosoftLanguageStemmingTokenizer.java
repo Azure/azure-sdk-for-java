@@ -7,7 +7,6 @@
 package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.search.documents.indexes.models.MicrosoftStemmingTokenizerLanguage;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -15,11 +14,10 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /** Divides text using language-specific rules and reduces words to their base forms. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata\\.type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata.type")
 @JsonTypeName("#Microsoft.Azure.Search.MicrosoftLanguageStemmingTokenizer")
-@JsonFlatten
 @Fluent
-public class MicrosoftLanguageStemmingTokenizer extends LexicalTokenizer {
+public final class MicrosoftLanguageStemmingTokenizer extends LexicalTokenizer {
     /*
      * The maximum token length. Tokens longer than the maximum length are
      * split. Maximum token length that can be used is 300 characters. Tokens

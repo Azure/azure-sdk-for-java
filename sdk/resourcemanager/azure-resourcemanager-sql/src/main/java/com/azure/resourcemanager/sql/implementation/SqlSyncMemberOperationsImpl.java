@@ -15,6 +15,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import reactor.core.publisher.Mono;
+import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
 
 /** Implementation for SQL Sync Member operations. */
 public class SqlSyncMemberOperationsImpl
@@ -240,7 +241,7 @@ public class SqlSyncMemberOperationsImpl
     @Override
     public PagedFlux<SqlSyncMember> listAsync() {
         final SqlSyncMemberOperationsImpl self = this;
-        return this
+        return PagedConverter.mapPage(this
             .sqlServerManager
             .serviceClient()
             .getSyncMembers()
@@ -248,8 +249,7 @@ public class SqlSyncMemberOperationsImpl
                 this.sqlSyncGroup.resourceGroupName(),
                 this.sqlSyncGroup.sqlServerName(),
                 this.sqlSyncGroup.sqlDatabaseName(),
-                this.sqlSyncGroup.name())
-            .mapPage(
+                this.sqlSyncGroup.name()),
                 syncMemberInner ->
                     new SqlSyncMemberImpl(
                         syncMemberInner.name(), self.sqlSyncGroup, syncMemberInner, self.sqlServerManager));

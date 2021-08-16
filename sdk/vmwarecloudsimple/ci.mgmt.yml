@@ -2,24 +2,32 @@
 trigger:
   branches:
     include:
-      - master
+      - main
       - feature/*
       - hotfix/*
       - release/*
   paths:
     include:
-      - sdk/vmwarecloudsimple/
+      - sdk/vmwarecloudsimple/ci.mgmt.yml
+      - sdk/vmwarecloudsimple/mgmt-v2019_04_01/
+    exclude:
+      - sdk/vmwarecloudsimple/pom.xml
+      - sdk/vmwarecloudsimple/mgmt-v2019_04_01/pom.xml
 
 pr:
   branches:
     include:
-      - master
+      - main
       - feature/*
       - hotfix/*
       - release/*
   paths:
     include:
-      - sdk/vmwarecloudsimple/
+      - sdk/vmwarecloudsimple/ci.mgmt.yml
+      - sdk/vmwarecloudsimple/mgmt-v2019_04_01/
+    exclude:
+      - sdk/vmwarecloudsimple/pom.xml
+      - sdk/vmwarecloudsimple/mgmt-v2019_04_01/pom.xml
 
 stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-management.yml

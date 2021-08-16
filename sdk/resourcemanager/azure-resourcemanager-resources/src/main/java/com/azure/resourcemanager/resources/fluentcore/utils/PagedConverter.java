@@ -3,8 +3,8 @@
 
 package com.azure.resourcemanager.resources.fluentcore.utils;
 
-import com.azure.core.http.HttpRequest;
 import com.azure.core.http.rest.PagedFlux;
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
@@ -13,10 +13,12 @@ import org.reactivestreams.Publisher;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Utility class for conversion of PagedResponse.
@@ -24,6 +26,38 @@ import java.util.stream.Collectors;
 public final class PagedConverter {
 
     private PagedConverter() {
+    }
+
+    /**
+     * Applies map transform to elements of PagedIterable.
+     *
+     * @param pageIterable the input of PagedIterable.
+     * @param mapper the map transform of element T to element S.
+     * @param <T> input type of PagedFlux.
+     * @param <S> return type of PagedFlux.
+     * @return the PagedFlux with elements in PagedResponse transformed.
+     */
+    public static <T, S> PagedIterable<S> mapPage(PagedIterable<T> pageIterable, Function<T, S> mapper) {
+        return new PagedIterableImpl<T, S>(pageIterable, mapper);
+    }
+
+    /**
+     * Applies map transform to elements of PagedFlux.
+     *
+     * @param pagedFlux the input of PagedFlux.
+     * @param mapper the map transform of element T to element S.
+     * @param <T> input type of PagedFlux.
+     * @param <S> return type of PagedFlux.
+     * @return the PagedFlux with elements in PagedResponse transformed.
+     */
+    public static <T, S> PagedFlux<S> mapPage(PagedFlux<T> pagedFlux, Function<T, S> mapper) {
+        Supplier<PageRetriever<String, PagedResponse<S>>> provider = () -> (continuationToken, pageSize) -> {
+            Flux<PagedResponse<T>> flux = (continuationToken == null)
+                ? pagedFlux.byPage().take(1)
+                : pagedFlux.byPage(continuationToken).take(1);
+            return flux.map(mapPagedResponse(mapper));
+        };
+        return PagedFlux.create(provider);
     }
 
     /**
@@ -70,6 +104,15 @@ public final class PagedConverter {
         return PagedFlux.create(provider);
     }
 
+    private static <T, S> Function<PagedResponse<T>, PagedResponse<S>> mapPagedResponse(Function<T, S> mapper) {
+        return pagedResponse -> new PagedResponseBase<Void, S>(pagedResponse.getRequest(),
+            pagedResponse.getStatusCode(),
+            pagedResponse.getHeaders(),
+            pagedResponse.getValue().stream().map(mapper).collect(Collectors.toList()),
+            pagedResponse.getContinuationToken(),
+            null);
+    }
+
     /**
      * Applies flatMap transform to elements of PagedResponse.
      *
@@ -84,7 +127,7 @@ public final class PagedConverter {
                 Flux.fromIterable(pagedResponse.getValue())
                         .flatMapSequential(mapper)
                         .collectList()
-                        .map(values -> new PagedResponseBase<HttpRequest, S>(pagedResponse.getRequest(),
+                        .map(values -> new PagedResponseBase<Void, S>(pagedResponse.getRequest(),
                                 pagedResponse.getStatusCode(),
                                 pagedResponse.getHeaders(),
                                 values,
@@ -126,5 +169,126 @@ public final class PagedConverter {
             null,
             null
         )));
+    }
+
+    private static final class PagedIterableImpl<T, S> extends PagedIterable<S> {
+
+        private final PagedIterable<T> pagedIterable;
+        private final Function<T, S> mapper;
+        private final Function<PagedResponse<T>, PagedResponse<S>> pageMapper;
+
+        private PagedIterableImpl(PagedIterable<T> pagedIterable, Function<T, S> mapper) {
+            super(PagedFlux.create(() -> (continuationToken, pageSize)
+                -> Flux.fromStream(pagedIterable.streamByPage().map(getPageMapper(mapper)))));
+            this.pagedIterable = pagedIterable;
+            this.mapper = mapper;
+            this.pageMapper = getPageMapper(mapper);
+        }
+
+        private static <T, S> Function<PagedResponse<T>, PagedResponse<S>> getPageMapper(Function<T, S> mapper) {
+            return page -> new PagedResponseBase<Void, S>(
+                page.getRequest(),
+                page.getStatusCode(),
+                page.getHeaders(),
+                page.getElements().stream().map(mapper).collect(Collectors.toList()),
+                page.getContinuationToken(),
+                null);
+        }
+
+        @Override
+        public Stream<S> stream() {
+            return pagedIterable.stream().map(mapper);
+        }
+
+        @Override
+        public Stream<PagedResponse<S>> streamByPage() {
+            return pagedIterable.streamByPage().map(pageMapper);
+        }
+
+        @Override
+        public Stream<PagedResponse<S>> streamByPage(String continuationToken) {
+            return pagedIterable.streamByPage(continuationToken).map(pageMapper);
+        }
+
+        @Override
+        public Stream<PagedResponse<S>> streamByPage(int preferredPageSize) {
+            return pagedIterable.streamByPage(preferredPageSize).map(pageMapper);
+        }
+
+        @Override
+        public Stream<PagedResponse<S>> streamByPage(String continuationToken, int preferredPageSize) {
+            return pagedIterable.streamByPage(continuationToken, preferredPageSize).map(pageMapper);
+        }
+
+        @Override
+        public Iterator<S> iterator() {
+            return new IteratorImpl<T, S>(pagedIterable.iterator(), mapper);
+        }
+
+        @Override
+        public Iterable<PagedResponse<S>> iterableByPage() {
+            return new IterableImpl<PagedResponse<T>, PagedResponse<S>>(
+                pagedIterable.iterableByPage(), pageMapper);
+        }
+
+        @Override
+        public Iterable<PagedResponse<S>> iterableByPage(String continuationToken) {
+            return new IterableImpl<PagedResponse<T>, PagedResponse<S>>(
+                pagedIterable.iterableByPage(continuationToken), pageMapper);
+        }
+
+        @Override
+        public Iterable<PagedResponse<S>> iterableByPage(int preferredPageSize) {
+            return new IterableImpl<PagedResponse<T>, PagedResponse<S>>(
+                pagedIterable.iterableByPage(preferredPageSize), pageMapper);
+        }
+
+        @Override
+        public Iterable<PagedResponse<S>> iterableByPage(String continuationToken, int preferredPageSize) {
+            return new IterableImpl<PagedResponse<T>, PagedResponse<S>>(
+                pagedIterable.iterableByPage(continuationToken, preferredPageSize), pageMapper);
+        }
+    }
+
+    private static final class IteratorImpl<T, S> implements Iterator<S> {
+
+        private final Iterator<T> iterator;
+        private final Function<T, S> mapper;
+
+        private IteratorImpl(Iterator<T> iterator, Function<T, S> mapper) {
+            this.iterator = iterator;
+            this.mapper = mapper;
+        }
+
+        @Override
+        public boolean hasNext() {
+            return iterator.hasNext();
+        }
+
+        @Override
+        public S next() {
+            return mapper.apply(iterator.next());
+        }
+
+        @Override
+        public void remove() {
+            iterator.remove();
+        }
+    }
+
+    private static final class IterableImpl<T, S> implements Iterable<S> {
+
+        private final Iterable<T> iterable;
+        private final Function<T, S> mapper;
+
+        private IterableImpl(Iterable<T> iterable, Function<T, S> mapper) {
+            this.iterable = iterable;
+            this.mapper = mapper;
+        }
+
+        @Override
+        public Iterator<S> iterator() {
+            return new IteratorImpl<T, S>(iterable.iterator(), mapper);
+        }
     }
 }

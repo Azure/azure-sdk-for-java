@@ -1,0 +1,70 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "testApplicationId": {
+            "type": "string"
+        },
+        "testApplicationSecret": {
+            "type": "String"
+        },
+        "tenantId": {
+            "type": "String"
+        },
+        "testApplicationOid": {
+            "type": "String"
+        }
+    },
+    "variables": {
+        "configStoreName": "[substring(toLower(concat('appconfig-', uniqueString(resourceGroup().id))), 0, 22)]",
+        "roleNameGuid": "[guid(resourceGroup().id)]",
+        "roleDefinitionId": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '5ae67dd6-50cb-40e7-96ff-dc2bfa4b606b')]",
+        "keyValueName": "~2Fapplication~2Fconfig.message",
+        "keyValueValue": "Test",
+        "contentType": "",
+        "tags": ""
+    },
+    "resources": [
+        {
+            "location": "[resourceGroup().location]",
+            "type": "Microsoft.AppConfiguration/configurationStores",
+            "apiVersion": "2020-07-01-preview",
+            "name": "[variables('configStoreName')]",
+            "sku": {
+                "name": "standard"
+            }
+        },
+        {
+            "type": "Microsoft.AppConfiguration/configurationStores/keyValues",
+            "apiVersion": "2020-07-01-preview",
+            "name": "[concat(variables('configStoreName'), '/', variables('keyValueName'))]",
+            
+            "dependsOn": [
+                "[variables('configStoreName')]"
+            ],
+            "properties": {
+                "value": "[variables('keyValueValue')]",
+                "contentType": "[variables('contentType')]",
+                "tags": "[variables('tags')]"
+            }
+        }
+    ],
+    "outputs": {
+        "AZURE_TENANT_ID": {
+            "type": "string",
+            "value": "[parameters('tenantId')]"
+        },
+        "AZURE_CLIENT_ID": {
+            "type": "string",
+            "value": "[parameters('testApplicationId')]"
+        },
+        "AZURE_CLIENT_SECRET": {
+            "type": "string",
+            "value": "[parameters('testApplicationSecret')]"
+        },
+        "STORE_NAME": {
+            "type": "string",
+            "value": "[concat('https://', variables('configStoreName'), '.azconfig.io')]"
+        }
+    }
+}

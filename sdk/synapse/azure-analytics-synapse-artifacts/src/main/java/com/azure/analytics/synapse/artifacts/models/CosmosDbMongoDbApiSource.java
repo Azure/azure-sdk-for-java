@@ -45,6 +45,14 @@ public final class CosmosDbMongoDbApiSource extends CopySource {
     @JsonProperty(value = "queryTimeout")
     private Object queryTimeout;
 
+    /*
+     * Specifies the additional columns to be added to source data. Type: array
+     * of objects(AdditionalColumns) (or Expression with resultType array of
+     * objects).
+     */
+    @JsonProperty(value = "additionalColumns")
+    private Object additionalColumns;
+
     /**
      * Get the filter property: Specifies selection filter using query operators. To return all documents in a
      * collection, omit this parameter or pass an empty document ({}). Type: string (or Expression with resultType
@@ -134,6 +142,28 @@ public final class CosmosDbMongoDbApiSource extends CopySource {
      */
     public CosmosDbMongoDbApiSource setQueryTimeout(Object queryTimeout) {
         this.queryTimeout = queryTimeout;
+        return this;
+    }
+
+    /**
+     * Get the additionalColumns property: Specifies the additional columns to be added to source data. Type: array of
+     * objects(AdditionalColumns) (or Expression with resultType array of objects).
+     *
+     * @return the additionalColumns value.
+     */
+    public Object getAdditionalColumns() {
+        return this.additionalColumns;
+    }
+
+    /**
+     * Set the additionalColumns property: Specifies the additional columns to be added to source data. Type: array of
+     * objects(AdditionalColumns) (or Expression with resultType array of objects).
+     *
+     * @param additionalColumns the additionalColumns value to set.
+     * @return the CosmosDbMongoDbApiSource object itself.
+     */
+    public CosmosDbMongoDbApiSource setAdditionalColumns(Object additionalColumns) {
+        this.additionalColumns = additionalColumns;
         return this;
     }
 }

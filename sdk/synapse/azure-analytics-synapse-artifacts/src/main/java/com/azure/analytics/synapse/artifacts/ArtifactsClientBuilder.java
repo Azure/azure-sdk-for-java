@@ -40,11 +40,16 @@ import java.util.Map;
             SqlScriptClient.class,
             SparkJobDefinitionClient.class,
             NotebookClient.class,
-            WorkspaceClient.class,
-            SqlPoolsClient.class,
+            NotebookOperationResultClient.class,
+            SparkConfigurationClient.class,
             BigDataPoolsClient.class,
-            IntegrationRuntimesClient.class,
             WorkspaceGitRepoManagementClient.class,
+            IntegrationRuntimesClient.class,
+            LibraryClient.class,
+            OperationResultClient.class,
+            OperationStatusClient.class,
+            SqlPoolsClient.class,
+            WorkspaceClient.class,
             LinkedServiceAsyncClient.class,
             DatasetAsyncClient.class,
             PipelineAsyncClient.class,
@@ -56,11 +61,16 @@ import java.util.Map;
             SqlScriptAsyncClient.class,
             SparkJobDefinitionAsyncClient.class,
             NotebookAsyncClient.class,
-            WorkspaceAsyncClient.class,
-            SqlPoolsAsyncClient.class,
+            NotebookOperationResultAsyncClient.class,
+            SparkConfigurationAsyncClient.class,
             BigDataPoolsAsyncClient.class,
+            WorkspaceGitRepoManagementAsyncClient.class,
             IntegrationRuntimesAsyncClient.class,
-            WorkspaceGitRepoManagementAsyncClient.class
+            LibraryAsyncClient.class,
+            OperationResultAsyncClient.class,
+            OperationStatusAsyncClient.class,
+            SqlPoolsAsyncClient.class,
+            WorkspaceAsyncClient.class
         })
 public final class ArtifactsClientBuilder {
     private static final String SDK_NAME = "name";
@@ -90,6 +100,22 @@ public final class ArtifactsClientBuilder {
      */
     public ArtifactsClientBuilder endpoint(String endpoint) {
         this.endpoint = endpoint;
+        return this;
+    }
+
+    /*
+     * Api Version
+     */
+    private String apiVersion;
+
+    /**
+     * Sets Api Version.
+     *
+     * @param apiVersion the apiVersion value.
+     * @return the ArtifactsClientBuilder.
+     */
+    public ArtifactsClientBuilder apiVersion(String apiVersion) {
+        this.apiVersion = apiVersion;
         return this;
     }
 
@@ -229,13 +255,16 @@ public final class ArtifactsClientBuilder {
      * @return an instance of ArtifactsClientImpl.
      */
     private ArtifactsClientImpl buildInnerClient() {
+        if (apiVersion == null) {
+            this.apiVersion = "2021-06-01-preview";
+        }
         if (pipeline == null) {
             this.pipeline = createHttpPipeline();
         }
         if (serializerAdapter == null) {
             this.serializerAdapter = JacksonAdapter.createDefaultSerializerAdapter();
         }
-        ArtifactsClientImpl client = new ArtifactsClientImpl(pipeline, serializerAdapter, endpoint);
+        ArtifactsClientImpl client = new ArtifactsClientImpl(pipeline, serializerAdapter, endpoint, apiVersion);
         return client;
     }
 
@@ -246,9 +275,6 @@ public final class ArtifactsClientBuilder {
             httpLogOptions = new HttpLogOptions();
         }
         List<HttpPipelinePolicy> policies = new ArrayList<>();
-        if (tokenCredential != null) {
-            policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, DEFAULT_SCOPES));
-        }
         String clientName = properties.getOrDefault(SDK_NAME, "UnknownName");
         String clientVersion = properties.getOrDefault(SDK_VERSION, "UnknownVersion");
         policies.add(
@@ -256,6 +282,9 @@ public final class ArtifactsClientBuilder {
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
         policies.add(retryPolicy == null ? new RetryPolicy() : retryPolicy);
         policies.add(new CookiePolicy());
+        if (tokenCredential != null) {
+            policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, DEFAULT_SCOPES));
+        }
         policies.addAll(this.pipelinePolicies);
         HttpPolicyProviders.addAfterRetryPolicies(policies);
         policies.add(new HttpLoggingPolicy(httpLogOptions));
@@ -367,21 +396,21 @@ public final class ArtifactsClientBuilder {
     }
 
     /**
-     * Builds an instance of WorkspaceAsyncClient async client.
+     * Builds an instance of NotebookOperationResultAsyncClient async client.
      *
-     * @return an instance of WorkspaceAsyncClient.
+     * @return an instance of NotebookOperationResultAsyncClient.
      */
-    public WorkspaceAsyncClient buildWorkspaceAsyncClient() {
-        return new WorkspaceAsyncClient(buildInnerClient().getWorkspaces());
+    public NotebookOperationResultAsyncClient buildNotebookOperationResultAsyncClient() {
+        return new NotebookOperationResultAsyncClient(buildInnerClient().getNotebookOperationResults());
     }
 
     /**
-     * Builds an instance of SqlPoolsAsyncClient async client.
+     * Builds an instance of SparkConfigurationAsyncClient async client.
      *
-     * @return an instance of SqlPoolsAsyncClient.
+     * @return an instance of SparkConfigurationAsyncClient.
      */
-    public SqlPoolsAsyncClient buildSqlPoolsAsyncClient() {
-        return new SqlPoolsAsyncClient(buildInnerClient().getSqlPools());
+    public SparkConfigurationAsyncClient buildSparkConfigurationAsyncClient() {
+        return new SparkConfigurationAsyncClient(buildInnerClient().getSparkConfigurations());
     }
 
     /**
@@ -394,6 +423,15 @@ public final class ArtifactsClientBuilder {
     }
 
     /**
+     * Builds an instance of WorkspaceGitRepoManagementAsyncClient async client.
+     *
+     * @return an instance of WorkspaceGitRepoManagementAsyncClient.
+     */
+    public WorkspaceGitRepoManagementAsyncClient buildWorkspaceGitRepoManagementAsyncClient() {
+        return new WorkspaceGitRepoManagementAsyncClient(buildInnerClient().getWorkspaceGitRepoManagements());
+    }
+
+    /**
      * Builds an instance of IntegrationRuntimesAsyncClient async client.
      *
      * @return an instance of IntegrationRuntimesAsyncClient.
@@ -403,12 +441,48 @@ public final class ArtifactsClientBuilder {
     }
 
     /**
-     * Builds an instance of WorkspaceGitRepoManagementAsyncClient async client.
+     * Builds an instance of LibraryAsyncClient async client.
      *
-     * @return an instance of WorkspaceGitRepoManagementAsyncClient.
+     * @return an instance of LibraryAsyncClient.
      */
-    public WorkspaceGitRepoManagementAsyncClient buildWorkspaceGitRepoManagementAsyncClient() {
-        return new WorkspaceGitRepoManagementAsyncClient(buildInnerClient().getWorkspaceGitRepoManagements());
+    public LibraryAsyncClient buildLibraryAsyncClient() {
+        return new LibraryAsyncClient(buildInnerClient().getLibraries());
+    }
+
+    /**
+     * Builds an instance of OperationResultAsyncClient async client.
+     *
+     * @return an instance of OperationResultAsyncClient.
+     */
+    public OperationResultAsyncClient buildOperationResultAsyncClient() {
+        return new OperationResultAsyncClient(buildInnerClient().getOperationResults());
+    }
+
+    /**
+     * Builds an instance of OperationStatusAsyncClient async client.
+     *
+     * @return an instance of OperationStatusAsyncClient.
+     */
+    public OperationStatusAsyncClient buildOperationStatusAsyncClient() {
+        return new OperationStatusAsyncClient(buildInnerClient().getOperationStatus());
+    }
+
+    /**
+     * Builds an instance of SqlPoolsAsyncClient async client.
+     *
+     * @return an instance of SqlPoolsAsyncClient.
+     */
+    public SqlPoolsAsyncClient buildSqlPoolsAsyncClient() {
+        return new SqlPoolsAsyncClient(buildInnerClient().getSqlPools());
+    }
+
+    /**
+     * Builds an instance of WorkspaceAsyncClient async client.
+     *
+     * @return an instance of WorkspaceAsyncClient.
+     */
+    public WorkspaceAsyncClient buildWorkspaceAsyncClient() {
+        return new WorkspaceAsyncClient(buildInnerClient().getWorkspaces());
     }
 
     /**
@@ -511,21 +585,21 @@ public final class ArtifactsClientBuilder {
     }
 
     /**
-     * Builds an instance of WorkspaceClient sync client.
+     * Builds an instance of NotebookOperationResultClient sync client.
      *
-     * @return an instance of WorkspaceClient.
+     * @return an instance of NotebookOperationResultClient.
      */
-    public WorkspaceClient buildWorkspaceClient() {
-        return new WorkspaceClient(buildInnerClient().getWorkspaces());
+    public NotebookOperationResultClient buildNotebookOperationResultClient() {
+        return new NotebookOperationResultClient(buildInnerClient().getNotebookOperationResults());
     }
 
     /**
-     * Builds an instance of SqlPoolsClient sync client.
+     * Builds an instance of SparkConfigurationClient sync client.
      *
-     * @return an instance of SqlPoolsClient.
+     * @return an instance of SparkConfigurationClient.
      */
-    public SqlPoolsClient buildSqlPoolsClient() {
-        return new SqlPoolsClient(buildInnerClient().getSqlPools());
+    public SparkConfigurationClient buildSparkConfigurationClient() {
+        return new SparkConfigurationClient(buildInnerClient().getSparkConfigurations());
     }
 
     /**
@@ -538,6 +612,15 @@ public final class ArtifactsClientBuilder {
     }
 
     /**
+     * Builds an instance of WorkspaceGitRepoManagementClient sync client.
+     *
+     * @return an instance of WorkspaceGitRepoManagementClient.
+     */
+    public WorkspaceGitRepoManagementClient buildWorkspaceGitRepoManagementClient() {
+        return new WorkspaceGitRepoManagementClient(buildInnerClient().getWorkspaceGitRepoManagements());
+    }
+
+    /**
      * Builds an instance of IntegrationRuntimesClient sync client.
      *
      * @return an instance of IntegrationRuntimesClient.
@@ -547,11 +630,47 @@ public final class ArtifactsClientBuilder {
     }
 
     /**
-     * Builds an instance of WorkspaceGitRepoManagementClient sync client.
+     * Builds an instance of LibraryClient sync client.
      *
-     * @return an instance of WorkspaceGitRepoManagementClient.
+     * @return an instance of LibraryClient.
      */
-    public WorkspaceGitRepoManagementClient buildWorkspaceGitRepoManagementClient() {
-        return new WorkspaceGitRepoManagementClient(buildInnerClient().getWorkspaceGitRepoManagements());
+    public LibraryClient buildLibraryClient() {
+        return new LibraryClient(buildInnerClient().getLibraries());
+    }
+
+    /**
+     * Builds an instance of OperationResultClient sync client.
+     *
+     * @return an instance of OperationResultClient.
+     */
+    public OperationResultClient buildOperationResultClient() {
+        return new OperationResultClient(buildInnerClient().getOperationResults());
+    }
+
+    /**
+     * Builds an instance of OperationStatusClient sync client.
+     *
+     * @return an instance of OperationStatusClient.
+     */
+    public OperationStatusClient buildOperationStatusClient() {
+        return new OperationStatusClient(buildInnerClient().getOperationStatus());
+    }
+
+    /**
+     * Builds an instance of SqlPoolsClient sync client.
+     *
+     * @return an instance of SqlPoolsClient.
+     */
+    public SqlPoolsClient buildSqlPoolsClient() {
+        return new SqlPoolsClient(buildInnerClient().getSqlPools());
+    }
+
+    /**
+     * Builds an instance of WorkspaceClient sync client.
+     *
+     * @return an instance of WorkspaceClient.
+     */
+    public WorkspaceClient buildWorkspaceClient() {
+        return new WorkspaceClient(buildInnerClient().getWorkspaces());
     }
 }

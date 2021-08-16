@@ -181,7 +181,7 @@ public final class ExpressRouteCrossConnectionPeeringsClientImpl implements Expr
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-07-01";
+        final String apiVersion = "2021-02-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -204,7 +204,7 @@ public final class ExpressRouteCrossConnectionPeeringsClientImpl implements Expr
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -241,7 +241,7 @@ public final class ExpressRouteCrossConnectionPeeringsClientImpl implements Expr
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-07-01";
+        final String apiVersion = "2021-02-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -371,7 +371,7 @@ public final class ExpressRouteCrossConnectionPeeringsClientImpl implements Expr
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-07-01";
+        final String apiVersion = "2021-02-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -386,7 +386,7 @@ public final class ExpressRouteCrossConnectionPeeringsClientImpl implements Expr
                             this.client.getSubscriptionId(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -427,7 +427,7 @@ public final class ExpressRouteCrossConnectionPeeringsClientImpl implements Expr
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-07-01";
+        final String apiVersion = "2021-02-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -627,7 +627,7 @@ public final class ExpressRouteCrossConnectionPeeringsClientImpl implements Expr
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-07-01";
+        final String apiVersion = "2021-02-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -642,7 +642,7 @@ public final class ExpressRouteCrossConnectionPeeringsClientImpl implements Expr
                             this.client.getSubscriptionId(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -683,7 +683,7 @@ public final class ExpressRouteCrossConnectionPeeringsClientImpl implements Expr
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-07-01";
+        final String apiVersion = "2021-02-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -764,7 +764,8 @@ public final class ExpressRouteCrossConnectionPeeringsClientImpl implements Expr
      * @param resourceGroupName The name of the resource group.
      * @param crossConnectionName The name of the ExpressRouteCrossConnection.
      * @param peeringName The name of the peering.
-     * @param peeringParameters Peering in an ExpressRoute Cross Connection resource.
+     * @param peeringParameters Parameters supplied to the create or update ExpressRouteCrossConnection peering
+     *     operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -805,7 +806,7 @@ public final class ExpressRouteCrossConnectionPeeringsClientImpl implements Expr
         } else {
             peeringParameters.validate();
         }
-        final String apiVersion = "2020-07-01";
+        final String apiVersion = "2021-02-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -821,7 +822,7 @@ public final class ExpressRouteCrossConnectionPeeringsClientImpl implements Expr
                             peeringParameters,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -830,7 +831,8 @@ public final class ExpressRouteCrossConnectionPeeringsClientImpl implements Expr
      * @param resourceGroupName The name of the resource group.
      * @param crossConnectionName The name of the ExpressRouteCrossConnection.
      * @param peeringName The name of the peering.
-     * @param peeringParameters Peering in an ExpressRoute Cross Connection resource.
+     * @param peeringParameters Parameters supplied to the create or update ExpressRouteCrossConnection peering
+     *     operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -873,7 +875,7 @@ public final class ExpressRouteCrossConnectionPeeringsClientImpl implements Expr
         } else {
             peeringParameters.validate();
         }
-        final String apiVersion = "2020-07-01";
+        final String apiVersion = "2021-02-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -895,7 +897,8 @@ public final class ExpressRouteCrossConnectionPeeringsClientImpl implements Expr
      * @param resourceGroupName The name of the resource group.
      * @param crossConnectionName The name of the ExpressRouteCrossConnection.
      * @param peeringName The name of the peering.
-     * @param peeringParameters Peering in an ExpressRoute Cross Connection resource.
+     * @param peeringParameters Parameters supplied to the create or update ExpressRouteCrossConnection peering
+     *     operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -926,7 +929,8 @@ public final class ExpressRouteCrossConnectionPeeringsClientImpl implements Expr
      * @param resourceGroupName The name of the resource group.
      * @param crossConnectionName The name of the ExpressRouteCrossConnection.
      * @param peeringName The name of the peering.
-     * @param peeringParameters Peering in an ExpressRoute Cross Connection resource.
+     * @param peeringParameters Parameters supplied to the create or update ExpressRouteCrossConnection peering
+     *     operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -961,7 +965,8 @@ public final class ExpressRouteCrossConnectionPeeringsClientImpl implements Expr
      * @param resourceGroupName The name of the resource group.
      * @param crossConnectionName The name of the ExpressRouteCrossConnection.
      * @param peeringName The name of the peering.
-     * @param peeringParameters Peering in an ExpressRoute Cross Connection resource.
+     * @param peeringParameters Parameters supplied to the create or update ExpressRouteCrossConnection peering
+     *     operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -984,7 +989,8 @@ public final class ExpressRouteCrossConnectionPeeringsClientImpl implements Expr
      * @param resourceGroupName The name of the resource group.
      * @param crossConnectionName The name of the ExpressRouteCrossConnection.
      * @param peeringName The name of the peering.
-     * @param peeringParameters Peering in an ExpressRoute Cross Connection resource.
+     * @param peeringParameters Parameters supplied to the create or update ExpressRouteCrossConnection peering
+     *     operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1009,7 +1015,8 @@ public final class ExpressRouteCrossConnectionPeeringsClientImpl implements Expr
      * @param resourceGroupName The name of the resource group.
      * @param crossConnectionName The name of the ExpressRouteCrossConnection.
      * @param peeringName The name of the peering.
-     * @param peeringParameters Peering in an ExpressRoute Cross Connection resource.
+     * @param peeringParameters Parameters supplied to the create or update ExpressRouteCrossConnection peering
+     *     operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1032,7 +1039,8 @@ public final class ExpressRouteCrossConnectionPeeringsClientImpl implements Expr
      * @param resourceGroupName The name of the resource group.
      * @param crossConnectionName The name of the ExpressRouteCrossConnection.
      * @param peeringName The name of the peering.
-     * @param peeringParameters Peering in an ExpressRoute Cross Connection resource.
+     * @param peeringParameters Parameters supplied to the create or update ExpressRouteCrossConnection peering
+     *     operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1057,7 +1065,8 @@ public final class ExpressRouteCrossConnectionPeeringsClientImpl implements Expr
      * @param resourceGroupName The name of the resource group.
      * @param crossConnectionName The name of the ExpressRouteCrossConnection.
      * @param peeringName The name of the peering.
-     * @param peeringParameters Peering in an ExpressRoute Cross Connection resource.
+     * @param peeringParameters Parameters supplied to the create or update ExpressRouteCrossConnection peering
+     *     operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1078,7 +1087,8 @@ public final class ExpressRouteCrossConnectionPeeringsClientImpl implements Expr
      * @param resourceGroupName The name of the resource group.
      * @param crossConnectionName The name of the ExpressRouteCrossConnection.
      * @param peeringName The name of the peering.
-     * @param peeringParameters Peering in an ExpressRoute Cross Connection resource.
+     * @param peeringParameters Parameters supplied to the create or update ExpressRouteCrossConnection peering
+     *     operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1129,7 +1139,7 @@ public final class ExpressRouteCrossConnectionPeeringsClientImpl implements Expr
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**

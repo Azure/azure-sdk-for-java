@@ -3,11 +3,8 @@
 
 package com.azure.identity.implementation;
 
-import reactor.core.publisher.FluxSink;
 import reactor.core.publisher.Mono;
-import reactor.core.publisher.ReplayProcessor;
 
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Supplier;
 
 /**
@@ -16,15 +13,10 @@ import java.util.function.Supplier;
  * @param <T> The value being instantiated / accessed.
  */
 public class SynchronizedAccessor<T> {
-    private final AtomicBoolean wip;
-    private volatile T cache;
-    private final ReplayProcessor<T> replayProcessor = ReplayProcessor.create(1);
-    private final FluxSink<T> sink = replayProcessor.sink(FluxSink.OverflowStrategy.BUFFER);
-    private final Supplier<T> supplier;
+    private Mono<T> monoCache;
 
-    public SynchronizedAccessor(Supplier<T> supplier) {
-        this.wip = new AtomicBoolean(false);
-        this.supplier = supplier;
+    public SynchronizedAccessor(Supplier<Mono<T>> supplier) {
+        monoCache = supplier.get().cache();
     }
 
     /**
@@ -33,19 +25,6 @@ public class SynchronizedAccessor<T> {
      * @return the output {@code T}
      */
     public Mono<T> getValue() {
-        return Mono.defer(() -> {
-            if (cache != null) {
-                return Mono.just(cache);
-            }
-            if (!wip.getAndSet(true)) {
-                try {
-                    cache = supplier.get();
-                    sink.next(cache);
-                } catch (Exception e) {
-                    sink.error(e);
-                }
-            }
-            return replayProcessor.next();
-        });
+        return monoCache;
     }
 }

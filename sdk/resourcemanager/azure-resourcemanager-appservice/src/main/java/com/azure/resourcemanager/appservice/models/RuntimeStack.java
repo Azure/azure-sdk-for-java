@@ -75,6 +75,14 @@ public class RuntimeStack {
     public static final RuntimeStack JBOSS_EAP_7_2_JAVA8 =
         COLLECTION.addValue(new RuntimeStack("JBOSSEAP", "7.2-java8"));
 
+    /** JBOSS EAP 7-java8. */
+    public static final RuntimeStack JBOSS_EAP_7_JAVA8 =
+        COLLECTION.addValue(new RuntimeStack("JBOSSEAP", "7-java8"));
+
+    /** JBOSS EAP 7-java11. */
+    public static final RuntimeStack JBOSS_EAP_7_JAVA11 =
+        COLLECTION.addValue(new RuntimeStack("JBOSSEAP", "7-java11"));
+
     /** The name of the language runtime stack. */
     private final String stack;
     /** The version of the runtime. */

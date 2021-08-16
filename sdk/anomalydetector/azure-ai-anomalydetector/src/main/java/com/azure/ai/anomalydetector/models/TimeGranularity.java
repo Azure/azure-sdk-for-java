@@ -28,7 +28,13 @@ public enum TimeGranularity {
     PER_MINUTE("minutely"),
 
     /** Enum value secondly. */
-    PER_SECOND("secondly");
+    PER_SECOND("secondly"),
+
+    /** Enum value microsecond. */
+    MICROSECOND("microsecond"),
+
+    /** Enum value none. */
+    NONE("none");
 
     /** The actual serialized value for a TimeGranularity instance. */
     private final String value;

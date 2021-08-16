@@ -37,6 +37,9 @@ public final class CookiesOperator extends ExpandableStringEnum<CookiesOperator>
     /** Static value GreaterThanOrEqual for CookiesOperator. */
     public static final CookiesOperator GREATER_THAN_OR_EQUAL = fromString("GreaterThanOrEqual");
 
+    /** Static value RegEx for CookiesOperator. */
+    public static final CookiesOperator REG_EX = fromString("RegEx");
+
     /**
      * Creates or finds a CookiesOperator from its string representation.
      *

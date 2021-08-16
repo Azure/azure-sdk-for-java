@@ -69,6 +69,7 @@ public final class RoleAssignmentsImpl {
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @BodyParam("application/json") CheckPrincipalAccessRequest request,
+                @HeaderParam("Accept") String accept,
                 Context context);
 
         @Get("/roleAssignments")
@@ -81,6 +82,7 @@ public final class RoleAssignmentsImpl {
                 @QueryParam("principalId") String principalId,
                 @QueryParam("scope") String scope,
                 @HeaderParam("x-ms-continuation") String continuationToken,
+                @HeaderParam("Accept") String accept,
                 Context context);
 
         @Put("/roleAssignments/{roleAssignmentId}")
@@ -91,6 +93,7 @@ public final class RoleAssignmentsImpl {
                 @QueryParam("api-version") String apiVersion,
                 @PathParam("roleAssignmentId") String roleAssignmentId,
                 @BodyParam("application/json") RoleAssignmentRequest request,
+                @HeaderParam("Accept") String accept,
                 Context context);
 
         @Get("/roleAssignments/{roleAssignmentId}")
@@ -100,6 +103,7 @@ public final class RoleAssignmentsImpl {
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @PathParam("roleAssignmentId") String roleAssignmentId,
+                @HeaderParam("Accept") String accept,
                 Context context);
 
         @Delete("/roleAssignments/{roleAssignmentId}")
@@ -110,6 +114,7 @@ public final class RoleAssignmentsImpl {
                 @QueryParam("api-version") String apiVersion,
                 @PathParam("roleAssignmentId") String roleAssignmentId,
                 @QueryParam("scope") String scope,
+                @HeaderParam("Accept") String accept,
                 Context context);
     }
 
@@ -127,6 +132,7 @@ public final class RoleAssignmentsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<CheckPrincipalAccessResponse>> checkPrincipalAccessWithResponseAsync(
             SubjectInfo subject, List<RequiredAction> actions, String scope) {
+        final String accept = "application/json, text/json";
         CheckPrincipalAccessRequest request = new CheckPrincipalAccessRequest();
         request.setSubject(subject);
         request.setActions(actions);
@@ -134,7 +140,7 @@ public final class RoleAssignmentsImpl {
         return FluxUtil.withContext(
                 context ->
                         service.checkPrincipalAccess(
-                                this.client.getEndpoint(), this.client.getApiVersion(), request, context));
+                                this.client.getEndpoint(), this.client.getApiVersion(), request, accept, context));
     }
 
     /**
@@ -152,11 +158,13 @@ public final class RoleAssignmentsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<CheckPrincipalAccessResponse>> checkPrincipalAccessWithResponseAsync(
             SubjectInfo subject, List<RequiredAction> actions, String scope, Context context) {
+        final String accept = "application/json, text/json";
         CheckPrincipalAccessRequest request = new CheckPrincipalAccessRequest();
         request.setSubject(subject);
         request.setActions(actions);
         request.setScope(scope);
-        return service.checkPrincipalAccess(this.client.getEndpoint(), this.client.getApiVersion(), request, context);
+        return service.checkPrincipalAccess(
+                this.client.getEndpoint(), this.client.getApiVersion(), request, accept, context);
     }
 
     /**
@@ -260,6 +268,7 @@ public final class RoleAssignmentsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RoleAssignmentsListRoleAssignmentsResponse> listRoleAssignmentsWithResponseAsync(
             String roleId, String principalId, String scope, String continuationToken) {
+        final String accept = "application/json, text/json";
         return FluxUtil.withContext(
                 context ->
                         service.listRoleAssignments(
@@ -269,6 +278,7 @@ public final class RoleAssignmentsImpl {
                                 principalId,
                                 scope,
                                 continuationToken,
+                                accept,
                                 context));
     }
 
@@ -288,6 +298,7 @@ public final class RoleAssignmentsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RoleAssignmentsListRoleAssignmentsResponse> listRoleAssignmentsWithResponseAsync(
             String roleId, String principalId, String scope, String continuationToken, Context context) {
+        final String accept = "application/json, text/json";
         return service.listRoleAssignments(
                 this.client.getEndpoint(),
                 this.client.getApiVersion(),
@@ -295,6 +306,7 @@ public final class RoleAssignmentsImpl {
                 principalId,
                 scope,
                 continuationToken,
+                accept,
                 context);
     }
 
@@ -423,7 +435,7 @@ public final class RoleAssignmentsImpl {
      * @return role Assignment response details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<RoleAssignmentDetailsList> listRoleAssignmentsWithResponse(
+    public RoleAssignmentsListRoleAssignmentsResponse listRoleAssignmentsWithResponse(
             String roleId, String principalId, String scope, String continuationToken, Context context) {
         return listRoleAssignmentsWithResponseAsync(roleId, principalId, scope, continuationToken, context).block();
     }
@@ -444,6 +456,7 @@ public final class RoleAssignmentsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<RoleAssignmentDetails>> createRoleAssignmentWithResponseAsync(
             String roleAssignmentId, UUID roleId, UUID principalId, String scope, String principalType) {
+        final String accept = "application/json, text/json";
         RoleAssignmentRequest request = new RoleAssignmentRequest();
         request.setRoleId(roleId);
         request.setPrincipalId(principalId);
@@ -456,6 +469,7 @@ public final class RoleAssignmentsImpl {
                                 this.client.getApiVersion(),
                                 roleAssignmentId,
                                 request,
+                                accept,
                                 context));
     }
 
@@ -481,13 +495,14 @@ public final class RoleAssignmentsImpl {
             String scope,
             String principalType,
             Context context) {
+        final String accept = "application/json, text/json";
         RoleAssignmentRequest request = new RoleAssignmentRequest();
         request.setRoleId(roleId);
         request.setPrincipalId(principalId);
         request.setScope(scope);
         request.setPrincipalType(principalType);
         return service.createRoleAssignment(
-                this.client.getEndpoint(), this.client.getApiVersion(), roleAssignmentId, request, context);
+                this.client.getEndpoint(), this.client.getApiVersion(), roleAssignmentId, request, accept, context);
     }
 
     /**
@@ -654,10 +669,15 @@ public final class RoleAssignmentsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<RoleAssignmentDetails>> getRoleAssignmentByIdWithResponseAsync(String roleAssignmentId) {
+        final String accept = "application/json, text/json";
         return FluxUtil.withContext(
                 context ->
                         service.getRoleAssignmentById(
-                                this.client.getEndpoint(), this.client.getApiVersion(), roleAssignmentId, context));
+                                this.client.getEndpoint(),
+                                this.client.getApiVersion(),
+                                roleAssignmentId,
+                                accept,
+                                context));
     }
 
     /**
@@ -673,8 +693,9 @@ public final class RoleAssignmentsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<RoleAssignmentDetails>> getRoleAssignmentByIdWithResponseAsync(
             String roleAssignmentId, Context context) {
+        final String accept = "application/json, text/json";
         return service.getRoleAssignmentById(
-                this.client.getEndpoint(), this.client.getApiVersion(), roleAssignmentId, context);
+                this.client.getEndpoint(), this.client.getApiVersion(), roleAssignmentId, accept, context);
     }
 
     /**
@@ -763,6 +784,7 @@ public final class RoleAssignmentsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteRoleAssignmentByIdWithResponseAsync(String roleAssignmentId, String scope) {
+        final String accept = "application/json, text/json";
         return FluxUtil.withContext(
                 context ->
                         service.deleteRoleAssignmentById(
@@ -770,6 +792,7 @@ public final class RoleAssignmentsImpl {
                                 this.client.getApiVersion(),
                                 roleAssignmentId,
                                 scope,
+                                accept,
                                 context));
     }
 
@@ -787,8 +810,9 @@ public final class RoleAssignmentsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteRoleAssignmentByIdWithResponseAsync(
             String roleAssignmentId, String scope, Context context) {
+        final String accept = "application/json, text/json";
         return service.deleteRoleAssignmentById(
-                this.client.getEndpoint(), this.client.getApiVersion(), roleAssignmentId, scope, context);
+                this.client.getEndpoint(), this.client.getApiVersion(), roleAssignmentId, scope, accept, context);
     }
 
     /**

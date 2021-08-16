@@ -7,6 +7,7 @@ package com.azure.resourcemanager.storage.implementation;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
+import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
@@ -26,8 +27,6 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.storage.fluent.FileServicesClient;
 import com.azure.resourcemanager.storage.fluent.models.FileServiceItemsInner;
 import com.azure.resourcemanager.storage.fluent.models.FileServicePropertiesInner;
-import com.azure.resourcemanager.storage.models.CorsRules;
-import com.azure.resourcemanager.storage.models.DeleteRetentionPolicy;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in FileServicesClient. */
@@ -58,7 +57,7 @@ public final class FileServicesClientImpl implements FileServicesClient {
     @Host("{$host}")
     @ServiceInterface(name = "StorageManagementCli")
     private interface FileServicesService {
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage"
                 + "/storageAccounts/{accountName}/fileServices")
@@ -70,9 +69,10 @@ public final class FileServicesClientImpl implements FileServicesClient {
             @PathParam("accountName") String accountName,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Put(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage"
                 + "/storageAccounts/{accountName}/fileServices/{FileServicesName}")
@@ -86,9 +86,10 @@ public final class FileServicesClientImpl implements FileServicesClient {
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("FileServicesName") String fileServicesName,
             @BodyParam("application/json") FileServicePropertiesInner parameters,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage"
                 + "/storageAccounts/{accountName}/fileServices/{FileServicesName}")
@@ -101,6 +102,7 @@ public final class FileServicesClientImpl implements FileServicesClient {
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("FileServicesName") String fileServicesName,
+            @HeaderParam("Accept") String accept,
             Context context);
     }
 
@@ -137,6 +139,7 @@ public final class FileServicesClientImpl implements FileServicesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -147,8 +150,9 @@ public final class FileServicesClientImpl implements FileServicesClient {
                             accountName,
                             this.client.getApiVersion(),
                             this.client.getSubscriptionId(),
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -186,6 +190,7 @@ public final class FileServicesClientImpl implements FileServicesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .list(
@@ -194,6 +199,7 @@ public final class FileServicesClientImpl implements FileServicesClient {
                 accountName,
                 this.client.getApiVersion(),
                 this.client.getSubscriptionId(),
+                accept,
                 context);
     }
 
@@ -265,8 +271,8 @@ public final class FileServicesClientImpl implements FileServicesClient {
      *     insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
      *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param cors Sets the CORS rules. You can include up to five CorsRule elements in the request.
-     * @param shareDeleteRetentionPolicy The service properties for soft delete.
+     * @param parameters The properties of file services in storage accounts, including CORS (Cross-Origin Resource
+     *     Sharing) rules.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -274,10 +280,7 @@ public final class FileServicesClientImpl implements FileServicesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<FileServicePropertiesInner>> setServicePropertiesWithResponseAsync(
-        String resourceGroupName,
-        String accountName,
-        CorsRules cors,
-        DeleteRetentionPolicy shareDeleteRetentionPolicy) {
+        String resourceGroupName, String accountName, FileServicePropertiesInner parameters) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -297,16 +300,13 @@ public final class FileServicesClientImpl implements FileServicesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        if (cors != null) {
-            cors.validate();
-        }
-        if (shareDeleteRetentionPolicy != null) {
-            shareDeleteRetentionPolicy.validate();
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
         }
         final String fileServicesName = "default";
-        FileServicePropertiesInner parameters = new FileServicePropertiesInner();
-        parameters.withCors(cors);
-        parameters.withShareDeleteRetentionPolicy(shareDeleteRetentionPolicy);
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -319,8 +319,9 @@ public final class FileServicesClientImpl implements FileServicesClient {
                             this.client.getSubscriptionId(),
                             fileServicesName,
                             parameters,
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -330,8 +331,8 @@ public final class FileServicesClientImpl implements FileServicesClient {
      *     insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
      *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param cors Sets the CORS rules. You can include up to five CorsRule elements in the request.
-     * @param shareDeleteRetentionPolicy The service properties for soft delete.
+     * @param parameters The properties of file services in storage accounts, including CORS (Cross-Origin Resource
+     *     Sharing) rules.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -340,11 +341,7 @@ public final class FileServicesClientImpl implements FileServicesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<FileServicePropertiesInner>> setServicePropertiesWithResponseAsync(
-        String resourceGroupName,
-        String accountName,
-        CorsRules cors,
-        DeleteRetentionPolicy shareDeleteRetentionPolicy,
-        Context context) {
+        String resourceGroupName, String accountName, FileServicePropertiesInner parameters, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -364,16 +361,13 @@ public final class FileServicesClientImpl implements FileServicesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        if (cors != null) {
-            cors.validate();
-        }
-        if (shareDeleteRetentionPolicy != null) {
-            shareDeleteRetentionPolicy.validate();
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
         }
         final String fileServicesName = "default";
-        FileServicePropertiesInner parameters = new FileServicePropertiesInner();
-        parameters.withCors(cors);
-        parameters.withShareDeleteRetentionPolicy(shareDeleteRetentionPolicy);
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .setServiceProperties(
@@ -384,6 +378,7 @@ public final class FileServicesClientImpl implements FileServicesClient {
                 this.client.getSubscriptionId(),
                 fileServicesName,
                 parameters,
+                accept,
                 context);
     }
 
@@ -394,8 +389,8 @@ public final class FileServicesClientImpl implements FileServicesClient {
      *     insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
      *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param cors Sets the CORS rules. You can include up to five CorsRule elements in the request.
-     * @param shareDeleteRetentionPolicy The service properties for soft delete.
+     * @param parameters The properties of file services in storage accounts, including CORS (Cross-Origin Resource
+     *     Sharing) rules.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -403,11 +398,8 @@ public final class FileServicesClientImpl implements FileServicesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<FileServicePropertiesInner> setServicePropertiesAsync(
-        String resourceGroupName,
-        String accountName,
-        CorsRules cors,
-        DeleteRetentionPolicy shareDeleteRetentionPolicy) {
-        return setServicePropertiesWithResponseAsync(resourceGroupName, accountName, cors, shareDeleteRetentionPolicy)
+        String resourceGroupName, String accountName, FileServicePropertiesInner parameters) {
+        return setServicePropertiesWithResponseAsync(resourceGroupName, accountName, parameters)
             .flatMap(
                 (Response<FileServicePropertiesInner> res) -> {
                     if (res.getValue() != null) {
@@ -425,24 +417,17 @@ public final class FileServicesClientImpl implements FileServicesClient {
      *     insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
      *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param parameters The properties of file services in storage accounts, including CORS (Cross-Origin Resource
+     *     Sharing) rules.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the properties of File services in storage account.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<FileServicePropertiesInner> setServicePropertiesAsync(String resourceGroupName, String accountName) {
-        final CorsRules cors = null;
-        final DeleteRetentionPolicy shareDeleteRetentionPolicy = null;
-        return setServicePropertiesWithResponseAsync(resourceGroupName, accountName, cors, shareDeleteRetentionPolicy)
-            .flatMap(
-                (Response<FileServicePropertiesInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+    public FileServicePropertiesInner setServiceProperties(
+        String resourceGroupName, String accountName, FileServicePropertiesInner parameters) {
+        return setServicePropertiesAsync(resourceGroupName, accountName, parameters).block();
     }
 
     /**
@@ -452,27 +437,8 @@ public final class FileServicesClientImpl implements FileServicesClient {
      *     insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
      *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of File services in storage account.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public FileServicePropertiesInner setServiceProperties(String resourceGroupName, String accountName) {
-        final CorsRules cors = null;
-        final DeleteRetentionPolicy shareDeleteRetentionPolicy = null;
-        return setServicePropertiesAsync(resourceGroupName, accountName, cors, shareDeleteRetentionPolicy).block();
-    }
-
-    /**
-     * Sets the properties of file services in storage accounts, including CORS (Cross-Origin Resource Sharing) rules.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
-     * @param accountName The name of the storage account within the specified resource group. Storage account names
-     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param cors Sets the CORS rules. You can include up to five CorsRule elements in the request.
-     * @param shareDeleteRetentionPolicy The service properties for soft delete.
+     * @param parameters The properties of file services in storage accounts, including CORS (Cross-Origin Resource
+     *     Sharing) rules.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -481,14 +447,8 @@ public final class FileServicesClientImpl implements FileServicesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<FileServicePropertiesInner> setServicePropertiesWithResponse(
-        String resourceGroupName,
-        String accountName,
-        CorsRules cors,
-        DeleteRetentionPolicy shareDeleteRetentionPolicy,
-        Context context) {
-        return setServicePropertiesWithResponseAsync(
-                resourceGroupName, accountName, cors, shareDeleteRetentionPolicy, context)
-            .block();
+        String resourceGroupName, String accountName, FileServicePropertiesInner parameters, Context context) {
+        return setServicePropertiesWithResponseAsync(resourceGroupName, accountName, parameters, context).block();
     }
 
     /**
@@ -527,6 +487,7 @@ public final class FileServicesClientImpl implements FileServicesClient {
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String fileServicesName = "default";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -538,8 +499,9 @@ public final class FileServicesClientImpl implements FileServicesClient {
                             this.client.getApiVersion(),
                             this.client.getSubscriptionId(),
                             fileServicesName,
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -579,6 +541,7 @@ public final class FileServicesClientImpl implements FileServicesClient {
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String fileServicesName = "default";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .getServiceProperties(
@@ -588,6 +551,7 @@ public final class FileServicesClientImpl implements FileServicesClient {
                 this.client.getApiVersion(),
                 this.client.getSubscriptionId(),
                 fileServicesName,
+                accept,
                 context);
     }
 

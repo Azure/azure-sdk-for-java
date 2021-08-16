@@ -8,7 +8,6 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.loganalytics.LogAnalyticsManager;
 import com.azure.resourcemanager.loganalytics.fluent.AvailableServiceTiersClient;
 import com.azure.resourcemanager.loganalytics.fluent.models.AvailableServiceTierInner;
 import com.azure.resourcemanager.loganalytics.models.AvailableServiceTier;
@@ -23,9 +22,11 @@ public final class AvailableServiceTiersImpl implements AvailableServiceTiers {
 
     private final AvailableServiceTiersClient innerClient;
 
-    private final LogAnalyticsManager serviceManager;
+    private final com.azure.resourcemanager.loganalytics.LogAnalyticsManager serviceManager;
 
-    public AvailableServiceTiersImpl(AvailableServiceTiersClient innerClient, LogAnalyticsManager serviceManager) {
+    public AvailableServiceTiersImpl(
+        AvailableServiceTiersClient innerClient,
+        com.azure.resourcemanager.loganalytics.LogAnalyticsManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
@@ -67,7 +68,7 @@ public final class AvailableServiceTiersImpl implements AvailableServiceTiers {
         return this.innerClient;
     }
 
-    private LogAnalyticsManager manager() {
+    private com.azure.resourcemanager.loganalytics.LogAnalyticsManager manager() {
         return this.serviceManager;
     }
 }

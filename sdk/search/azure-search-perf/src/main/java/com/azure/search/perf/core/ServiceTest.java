@@ -64,7 +64,6 @@ public abstract class ServiceTest<TOptions extends PerfStressOptions> extends Pe
             .httpClient(new NettyAsyncHttpClientBuilder()
                 .proxy(new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888)))
                 .build());
-            //.httpClient(PerfStressHttpClient.create(options));
 
         this.searchIndexAsyncClient = builder.buildAsyncClient();
 

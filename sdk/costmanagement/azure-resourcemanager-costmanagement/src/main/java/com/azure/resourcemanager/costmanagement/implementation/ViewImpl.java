@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.costmanagement.implementation;
 
 import com.azure.core.util.Context;
-import com.azure.resourcemanager.costmanagement.CostManagementManager;
 import com.azure.resourcemanager.costmanagement.fluent.models.ViewInner;
 import com.azure.resourcemanager.costmanagement.models.AccumulatedType;
 import com.azure.resourcemanager.costmanagement.models.ChartType;
@@ -24,7 +23,7 @@ import java.util.List;
 public final class ViewImpl implements View, View.Definition, View.Update {
     private ViewInner innerObject;
 
-    private final CostManagementManager serviceManager;
+    private final com.azure.resourcemanager.costmanagement.CostManagementManager serviceManager;
 
     public String id() {
         return this.innerModel().id();
@@ -36,6 +35,10 @@ public final class ViewImpl implements View, View.Definition, View.Update {
 
     public String type() {
         return this.innerModel().type();
+    }
+
+    public String etag() {
+        return this.innerModel().etag();
     }
 
     public String displayName() {
@@ -52,6 +55,14 @@ public final class ViewImpl implements View, View.Definition, View.Update {
 
     public OffsetDateTime modifiedOn() {
         return this.innerModel().modifiedOn();
+    }
+
+    public String dateRange() {
+        return this.innerModel().dateRange();
+    }
+
+    public String currency() {
+        return this.innerModel().currency();
     }
 
     public ChartType chart() {
@@ -84,8 +95,8 @@ public final class ViewImpl implements View, View.Definition, View.Update {
         }
     }
 
-    public ReportType typePropertiesQueryType() {
-        return this.innerModel().typePropertiesQueryType();
+    public ReportType typePropertiesType() {
+        return this.innerModel().typePropertiesType();
     }
 
     public ReportTimeframeType timeframe() {
@@ -96,19 +107,19 @@ public final class ViewImpl implements View, View.Definition, View.Update {
         return this.innerModel().timePeriod();
     }
 
-    public ReportConfigDataset dataset() {
-        return this.innerModel().dataset();
+    public ReportConfigDataset dataSet() {
+        return this.innerModel().dataSet();
     }
 
-    public String etag() {
-        return this.innerModel().etag();
+    public Boolean includeMonetaryCommitment() {
+        return this.innerModel().includeMonetaryCommitment();
     }
 
     public ViewInner innerModel() {
         return this.innerObject;
     }
 
-    private CostManagementManager manager() {
+    private com.azure.resourcemanager.costmanagement.CostManagementManager manager() {
         return this.serviceManager;
     }
 
@@ -141,7 +152,7 @@ public final class ViewImpl implements View, View.Definition, View.Update {
         return this;
     }
 
-    ViewImpl(String name, CostManagementManager serviceManager) {
+    ViewImpl(String name, com.azure.resourcemanager.costmanagement.CostManagementManager serviceManager) {
         this.innerObject = new ViewInner();
         this.serviceManager = serviceManager;
         this.viewName = name;
@@ -171,7 +182,7 @@ public final class ViewImpl implements View, View.Definition, View.Update {
         return this;
     }
 
-    ViewImpl(ViewInner innerObject, CostManagementManager serviceManager) {
+    ViewImpl(ViewInner innerObject, com.azure.resourcemanager.costmanagement.CostManagementManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
         this.scope =
@@ -193,6 +204,11 @@ public final class ViewImpl implements View, View.Definition, View.Update {
     public View refresh(Context context) {
         this.innerObject =
             serviceManager.serviceClient().getViews().getByScopeWithResponse(scope, viewName, context).getValue();
+        return this;
+    }
+
+    public ViewImpl withEtag(String etag) {
+        this.innerModel().withEtag(etag);
         return this;
     }
 
@@ -231,8 +247,8 @@ public final class ViewImpl implements View, View.Definition, View.Update {
         return this;
     }
 
-    public ViewImpl withTypePropertiesQueryType(ReportType typePropertiesQueryType) {
-        this.innerModel().withTypePropertiesQueryType(typePropertiesQueryType);
+    public ViewImpl withTypePropertiesType(ReportType typePropertiesType) {
+        this.innerModel().withTypePropertiesType(typePropertiesType);
         return this;
     }
 
@@ -246,13 +262,8 @@ public final class ViewImpl implements View, View.Definition, View.Update {
         return this;
     }
 
-    public ViewImpl withDataset(ReportConfigDataset dataset) {
-        this.innerModel().withDataset(dataset);
-        return this;
-    }
-
-    public ViewImpl withEtag(String etag) {
-        this.innerModel().withEtag(etag);
+    public ViewImpl withDataSet(ReportConfigDataset dataSet) {
+        this.innerModel().withDataSet(dataSet);
         return this;
     }
 }

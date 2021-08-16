@@ -12,6 +12,7 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -28,10 +29,20 @@ public class TablesJacksonSerializer extends JacksonAdapter {
 
     @Override
     public void serialize(Object object, SerializerEncoding encoding, OutputStream outputStream) throws IOException {
+        outputStream.write(serializeToBytes(object, encoding));
+    }
+
+    @Override
+    public String serialize(Object object, SerializerEncoding encoding) throws IOException {
+        return new String(serializeToBytes(object, encoding), StandardCharsets.UTF_8);
+    }
+
+    @Override
+    public byte[] serializeToBytes(Object object, SerializerEncoding encoding) throws IOException {
         if (object instanceof Map) {
-            super.serialize(insertTypeProperties(object), encoding, outputStream);
+            return super.serializeToBytes(insertTypeProperties(object), encoding);
         } else {
-            super.serialize(object, encoding, outputStream);
+            return super.serializeToBytes(object, encoding);
         }
     }
 
@@ -75,32 +86,40 @@ public class TablesJacksonSerializer extends JacksonAdapter {
 
     @Override
     public <U> U deserialize(String value, Type type, SerializerEncoding serializerEncoding) throws IOException {
-        if (type == TableEntityQueryResponse.class) {
-            return deserialize(new ByteArrayInputStream(value.getBytes(StandardCharsets.UTF_8)), type,
-                serializerEncoding);
-        } else {
-            return super.deserialize(value, type, serializerEncoding);
-        }
+        return deserialize(new ByteArrayInputStream(value.getBytes(StandardCharsets.UTF_8)), type, serializerEncoding);
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public <U> U deserialize(InputStream inputStream, Type type, SerializerEncoding serializerEncoding)
         throws IOException {
-        if (type == TableEntityQueryResponse.class) {
-            return deserializeTableEntityQueryResponse(inputStream);
+        if (inputStream != null && type == TableEntityQueryResponse.class) {
+            return deserializeTableEntityQueryResponse(super.serializer().readTree(inputStream));
+        } else if (inputStream != null && shouldGetEntityFieldsAsMap(type)) {
+            return (U) getEntityFieldsAsMap(super.serializer().readTree(inputStream));
         } else {
             return super.deserialize(inputStream, type, serializerEncoding);
         }
     }
 
+    @Override
+    public <U> U deserialize(byte[] bytes, Type type, SerializerEncoding encoding) throws IOException {
+        if (bytes == null || bytes.length == 0) {
+            return super.deserialize(bytes, type, encoding);
+        } else {
+            return deserialize(new ByteArrayInputStream(bytes), type, encoding);
+        }
+    }
+
+    private static boolean shouldGetEntityFieldsAsMap(Type type) {
+        return type instanceof ParameterizedType
+            && ((ParameterizedType) type).getRawType() == Map.class;
+    }
+
     @SuppressWarnings("unchecked")
-    private <U> U deserializeTableEntityQueryResponse(InputStream inputStream) throws IOException {
+    private <U> U deserializeTableEntityQueryResponse(JsonNode node) throws IOException {
         String odataMetadata = null;
         List<Map<String, Object>> values = new ArrayList<>();
-
-        // Represents the entries in the response. It's possible that it is a single or multiple response.
-        final JsonNode node = super.serializer().readTree(inputStream);
-        Map<String, Object> singleValue = null;
 
         for (Iterator<Map.Entry<String, JsonNode>> it = node.fields(); it.hasNext();) {
             final Map.Entry<String, JsonNode> entry = it.next();
@@ -109,35 +128,17 @@ public class TablesJacksonSerializer extends JacksonAdapter {
 
             if (fieldName.equals(TablesConstants.ODATA_METADATA_KEY)) {
                 odataMetadata = childNode.asText();
-            } else if (fieldName.equals("value")) {
-                if (childNode.isArray()) {
-                    // This is a multiple-entity response.
-                    for (JsonNode childEntry : childNode) {
-                        values.add(getEntityFieldsAsMap(childEntry));
-                    }
-                } else {
-                    // This is a single-entity response where the user just happened to use the key "value".
-                    if (singleValue == null) {
-                        singleValue = new HashMap<>();
-                    }
-                    singleValue.put(fieldName, getEntityFieldAsObject(node, fieldName));
+            } else if ("value".equals(fieldName) && childNode.isArray()) {
+                // This is a multiple-entity response.
+                for (JsonNode childEntry : childNode) {
+                    values.add(getEntityFieldsAsMap(childEntry));
                 }
             } else {
-                // This is a single-entity response.
-                if (singleValue == null) {
-                    singleValue = new HashMap<>();
-                }
-                singleValue.put(fieldName, getEntityFieldAsObject(node, fieldName));
-            }
-        }
-
-        if (singleValue != null) {
-            if (values.size() > 0) {
+                // This is not a multiple-entity response.
                 throw logger.logExceptionAsError(new IllegalStateException(
                     "Unexpected response format. Response containing a 'value' array must not contain other properties."
                 ));
             }
-            values.add(singleValue);
         }
 
         return (U) new TableEntityQueryResponse()
@@ -147,15 +148,24 @@ public class TablesJacksonSerializer extends JacksonAdapter {
 
     private Map<String, Object> getEntityFieldsAsMap(JsonNode node) throws IOException {
         Map<String, Object> result = new HashMap<>();
+
         for (Iterator<String> it = node.fieldNames(); it.hasNext();) {
             String fieldName = it.next();
-            result.put(fieldName, getEntityFieldAsObject(node, fieldName));
+
+            if (!fieldName.equals(TablesConstants.ODATA_METADATA_KEY)) {
+                result.put(fieldName, getEntityFieldAsObject(node, fieldName));
+            }
         }
+
         return result;
     }
 
     private Object getEntityFieldAsObject(JsonNode parentNode, String fieldName) throws IOException {
         JsonNode valueNode = parentNode.get(fieldName);
+        if (TablesConstants.TIMESTAMP_KEY.equals(fieldName)) {
+            return EntityDataModelType.DATE_TIME.deserialize(valueNode.asText());
+        }
+
         if (TablesConstants.METADATA_KEYS.contains(fieldName)
             || fieldName.endsWith(TablesConstants.ODATA_TYPE_KEY_SUFFIX)) {
             return serializer().treeToValue(valueNode, Object.class);
@@ -169,7 +179,7 @@ public class TablesJacksonSerializer extends JacksonAdapter {
         String typeString = typeNode.asText();
         EntityDataModelType type = EntityDataModelType.fromString(typeString);
         if (type == null) {
-            logger.warning(String.format("'%s' value has unknown OData type %s", fieldName, typeString));
+            logger.warning("'{}' value has unknown OData type {}", fieldName, typeString);
             return serializer().treeToValue(valueNode, Object.class);
         }
 

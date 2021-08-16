@@ -4,19 +4,18 @@
 package com.azure.ai.metricsadvisor;
 
 import com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient;
-import com.azure.ai.metricsadvisor.models.DataFeed;
-import com.azure.ai.metricsadvisor.models.DataFeedGranularity;
-import com.azure.ai.metricsadvisor.models.DataFeedGranularityType;
-import com.azure.ai.metricsadvisor.models.DataFeedMetric;
-import com.azure.ai.metricsadvisor.models.DataFeedSchema;
-import com.azure.ai.metricsadvisor.models.DataFeedSourceType;
-import com.azure.ai.metricsadvisor.models.DataFeedStatus;
-import com.azure.ai.metricsadvisor.models.ErrorCode;
-import com.azure.ai.metricsadvisor.models.ErrorCodeException;
-import com.azure.ai.metricsadvisor.models.ListDataFeedFilter;
-import com.azure.ai.metricsadvisor.models.ListDataFeedOptions;
-import com.azure.ai.metricsadvisor.models.MetricsAdvisorServiceVersion;
-import com.azure.ai.metricsadvisor.models.PostgreSqlDataFeedSource;
+import com.azure.ai.metricsadvisor.administration.models.DataFeed;
+import com.azure.ai.metricsadvisor.administration.models.DataFeedGranularity;
+import com.azure.ai.metricsadvisor.administration.models.DataFeedGranularityType;
+import com.azure.ai.metricsadvisor.administration.models.DataFeedMetric;
+import com.azure.ai.metricsadvisor.administration.models.DataFeedSchema;
+import com.azure.ai.metricsadvisor.administration.models.DataFeedSourceType;
+import com.azure.ai.metricsadvisor.administration.models.DataFeedStatus;
+import com.azure.ai.metricsadvisor.administration.models.ListDataFeedFilter;
+import com.azure.ai.metricsadvisor.administration.models.ListDataFeedOptions;
+import com.azure.ai.metricsadvisor.administration.models.PostgreSqlDataFeedSource;
+import com.azure.ai.metricsadvisor.models.MetricsAdvisorError;
+import com.azure.ai.metricsadvisor.models.MetricsAdvisorResponseException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
@@ -44,21 +43,20 @@ import static com.azure.ai.metricsadvisor.TestUtils.DEFAULT_SUBSCRIBER_TIMEOUT_S
 import static com.azure.ai.metricsadvisor.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
 import static com.azure.ai.metricsadvisor.TestUtils.INCORRECT_UUID;
 import static com.azure.ai.metricsadvisor.TestUtils.INCORRECT_UUID_ERROR;
-import static com.azure.ai.metricsadvisor.models.DataFeedGranularityType.DAILY;
-import static com.azure.ai.metricsadvisor.models.DataFeedSourceType.AZURE_APP_INSIGHTS;
-import static com.azure.ai.metricsadvisor.models.DataFeedSourceType.AZURE_BLOB;
-import static com.azure.ai.metricsadvisor.models.DataFeedSourceType.AZURE_COSMOS_DB;
-import static com.azure.ai.metricsadvisor.models.DataFeedSourceType.AZURE_DATA_EXPLORER;
-import static com.azure.ai.metricsadvisor.models.DataFeedSourceType.AZURE_DATA_LAKE_STORAGE_GEN2;
-import static com.azure.ai.metricsadvisor.models.DataFeedSourceType.AZURE_TABLE;
-import static com.azure.ai.metricsadvisor.models.DataFeedSourceType.ELASTIC_SEARCH;
-import static com.azure.ai.metricsadvisor.models.DataFeedSourceType.HTTP_REQUEST;
-import static com.azure.ai.metricsadvisor.models.DataFeedSourceType.INFLUX_DB;
-import static com.azure.ai.metricsadvisor.models.DataFeedSourceType.MONGO_DB;
-import static com.azure.ai.metricsadvisor.models.DataFeedSourceType.MYSQL_DB;
-import static com.azure.ai.metricsadvisor.models.DataFeedSourceType.POSTGRE_SQL_DB;
-import static com.azure.ai.metricsadvisor.models.DataFeedSourceType.SQL_SERVER_DB;
-import static com.azure.ai.metricsadvisor.models.DataFeedStatus.ACTIVE;
+import static com.azure.ai.metricsadvisor.administration.models.DataFeedGranularityType.DAILY;
+import static com.azure.ai.metricsadvisor.administration.models.DataFeedSourceType.AZURE_APP_INSIGHTS;
+import static com.azure.ai.metricsadvisor.administration.models.DataFeedSourceType.AZURE_BLOB;
+import static com.azure.ai.metricsadvisor.administration.models.DataFeedSourceType.AZURE_COSMOS_DB;
+import static com.azure.ai.metricsadvisor.administration.models.DataFeedSourceType.AZURE_DATA_EXPLORER;
+import static com.azure.ai.metricsadvisor.administration.models.DataFeedSourceType.AZURE_DATA_LAKE_STORAGE_GEN2;
+import static com.azure.ai.metricsadvisor.administration.models.DataFeedSourceType.AZURE_LOG_ANALYTICS;
+import static com.azure.ai.metricsadvisor.administration.models.DataFeedSourceType.AZURE_TABLE;
+import static com.azure.ai.metricsadvisor.administration.models.DataFeedSourceType.INFLUX_DB;
+import static com.azure.ai.metricsadvisor.administration.models.DataFeedSourceType.MONGO_DB;
+import static com.azure.ai.metricsadvisor.administration.models.DataFeedSourceType.MYSQL_DB;
+import static com.azure.ai.metricsadvisor.administration.models.DataFeedSourceType.POSTGRE_SQL_DB;
+import static com.azure.ai.metricsadvisor.administration.models.DataFeedSourceType.SQL_SERVER_DB;
+import static com.azure.ai.metricsadvisor.administration.models.DataFeedStatus.ACTIVE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -94,7 +92,10 @@ public class DataFeedClientTest extends DataFeedTestBase {
                         .collect(Collectors.toList());
 
                 // Act & Assert
-                client.listDataFeeds().forEach(actualDataFeedList::add);
+                client.listDataFeeds(new ListDataFeedOptions().setListDataFeedFilter(new ListDataFeedFilter()
+                    .setDataFeedGranularityType(DAILY)
+                    .setName("java_")), Context.NONE)
+                    .forEach(actualDataFeedList::add);
 
                 expectedDataFeedIdList.set(expectedDataFeedList.stream()
                     .map(DataFeed::getId)
@@ -105,8 +106,8 @@ public class DataFeedClientTest extends DataFeedTestBase {
                         .collect(Collectors.toList());
 
                 assertEquals(inputDataFeedList.size(), actualList.size());
-                expectedDataFeedList.sort(Comparator.comparing(DataFeed::getSourceType));
-                actualList.sort(Comparator.comparing(DataFeed::getSourceType));
+                expectedDataFeedList.sort(Comparator.comparing(dataFeed -> dataFeed.getSourceType().toString()));
+                actualList.sort(Comparator.comparing(dataFeed -> dataFeed.getSourceType().toString()));
                 final AtomicInteger i = new AtomicInteger(-1);
                 final List<DataFeedSourceType> dataFeedSourceTypes = Arrays.asList(AZURE_BLOB, SQL_SERVER_DB);
                 expectedDataFeedList.forEach(expectedDataFeed ->
@@ -122,7 +123,7 @@ public class DataFeedClientTest extends DataFeedTestBase {
 
     /**
      * Verifies the result of the list data feed method to return only 3 results using
-     * {@link ListDataFeedOptions#setTop(int)}.
+     * {@link ListDataFeedOptions#setMaxPageSize(Integer)}}.
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.metricsadvisor.TestUtils#getTestParameters")
@@ -131,10 +132,16 @@ public class DataFeedClientTest extends DataFeedTestBase {
         client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion).buildClient();
 
         // Act & Assert
-        for (PagedResponse<DataFeed> dataFeedPagedResponse : client.listDataFeeds(new ListDataFeedOptions().setTop(3),
+        int pageCount = 0;
+        for (PagedResponse<DataFeed> dataFeedPagedResponse : client.listDataFeeds(new ListDataFeedOptions().setMaxPageSize(3),
             Context.NONE)
             .iterableByPage()) {
             assertTrue(3 >= dataFeedPagedResponse.getValue().size());
+            pageCount++;
+            if (pageCount > 4) {
+                // Stop after 4 pages since there can be large number of feeds.
+                break;
+            }
         }
     }
 
@@ -148,6 +155,7 @@ public class DataFeedClientTest extends DataFeedTestBase {
         final AtomicReference<String> dataFeedId = new AtomicReference<>();
         try {
             // Arrange
+            final int[] pageCount = {0};
             client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion).buildClient();
             creatDataFeedRunner(expectedDataFeed -> {
                 // Act & Assert
@@ -157,13 +165,21 @@ public class DataFeedClientTest extends DataFeedTestBase {
                 dataFeedId.set(createdDataFeed.getId());
 
                 // Act & Assert
-                client.listDataFeeds(new ListDataFeedOptions()
-                        .setListDataFeedFilter(new ListDataFeedFilter()
+                for (PagedResponse<DataFeed> dataFeedPagedResponse : client.listDataFeeds(new ListDataFeedOptions()
+                            .setListDataFeedFilter(new ListDataFeedFilter()
                             .setCreator(createdDataFeed.getCreator())),
                     Context.NONE)
-                    .forEach(dataFeed -> assertEquals(createdDataFeed.getCreator(), dataFeed.getCreator()));
-
+                    .iterableByPage()) {
+                    List<DataFeed> dataFeedList = dataFeedPagedResponse.getValue();
+                    dataFeedList.forEach(dataFeed -> assertEquals(createdDataFeed.getCreator(), dataFeed.getCreator()));
+                    pageCount[0]++;
+                    if (pageCount[0] > 4) {
+                        // Stop after 4 pages since there can be large number of feeds.
+                        break;
+                    }
+                }
             }, POSTGRE_SQL_DB);
+
         } finally {
             if (!CoreUtils.isNullOrEmpty(dataFeedId.get())) {
                 client.deleteDataFeed(dataFeedId.get());
@@ -220,10 +236,18 @@ public class DataFeedClientTest extends DataFeedTestBase {
         client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion).buildClient();
 
         // Act & Assert
-        client.listDataFeeds(
-            new ListDataFeedOptions().setListDataFeedFilter(new ListDataFeedFilter()
-                .setDataFeedStatus(ACTIVE)), Context.NONE)
-            .stream().iterator().forEachRemaining(dataFeed -> assertEquals(ACTIVE, dataFeed.getStatus()));
+        int pageCount = 0;
+        for (PagedResponse<DataFeed> dataFeedPagedResponse : client.listDataFeeds(
+            new ListDataFeedOptions().setListDataFeedFilter(new ListDataFeedFilter().setDataFeedStatus(ACTIVE)),
+                Context.NONE)
+            .iterableByPage()) {
+            dataFeedPagedResponse.getValue().forEach((dataFeed -> assertEquals(ACTIVE, dataFeed.getStatus())));
+            pageCount++;
+            if (pageCount > 4) {
+                // Stop after 4 pages since there can be large number of feeds.
+                break;
+            }
+        }
     }
 
     /**
@@ -237,11 +261,20 @@ public class DataFeedClientTest extends DataFeedTestBase {
         client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion).buildClient();
 
         // Act & Assert
-        client.listDataFeeds(
-            new ListDataFeedOptions().setListDataFeedFilter(new ListDataFeedFilter()
-                .setDataFeedGranularityType(DAILY)), Context.NONE)
-            .stream().iterator()
-            .forEachRemaining(dataFeed -> assertEquals(DAILY, dataFeed.getGranularity().getGranularityType()));
+        int[] pageCount = new int[] {0};
+
+        for (PagedResponse<DataFeed> dataFeedPagedResponse : client.listDataFeeds(
+                new ListDataFeedOptions().setListDataFeedFilter(new ListDataFeedFilter()
+                    .setDataFeedGranularityType(DAILY)), Context.NONE)
+            .iterableByPage()) {
+            dataFeedPagedResponse.getValue()
+                .forEach(dataFeed -> assertEquals(DAILY, dataFeed.getGranularity().getGranularityType()));
+            pageCount[0]++;
+            if (pageCount[0] > 4) {
+                // Stop after 4 pages since there can be large number of feeds.
+                break;
+            }
+        }
     }
 
     /**
@@ -498,32 +531,6 @@ public class DataFeedClientTest extends DataFeedTestBase {
     }
 
     /**
-     * Verifies valid azure http data feed created for required data feed details.
-     */
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.metricsadvisor.TestUtils#getTestParameters")
-    public void createHttpRequestDataFeed(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
-        final AtomicReference<String> dataFeedId = new AtomicReference<>();
-        try {
-            client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion).buildClient();
-            // Arrange
-            creatDataFeedRunner(expectedDataFeed -> {
-                // Act & Assert
-                final DataFeed createdDataFeed = client.createDataFeed(expectedDataFeed);
-
-                assertNotNull(createdDataFeed);
-                dataFeedId.set(createdDataFeed.getId());
-
-                validateDataFeedResult(expectedDataFeed, createdDataFeed, HTTP_REQUEST);
-            }, HTTP_REQUEST);
-        } finally {
-            if (!CoreUtils.isNullOrEmpty(dataFeedId.get())) {
-                client.deleteDataFeed(dataFeedId.get());
-            }
-        }
-    }
-
-    /**
      * Verifies valid influx data feed created for required data feed details.
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -655,11 +662,11 @@ public class DataFeedClientTest extends DataFeedTestBase {
     }
 
     /**
-     * Verifies valid mongo db data feed created for required data feed details.
+     * Verifies valid log analytics data feed created for required data feed details.
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.metricsadvisor.TestUtils#getTestParameters")
-    public void createElasticsearchDataFeed(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
+    public void createLogAnalyticsDataFeed(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
         final AtomicReference<String> dataFeedId = new AtomicReference<>();
         try {
             // Arrange
@@ -670,9 +677,7 @@ public class DataFeedClientTest extends DataFeedTestBase {
 
                 assertNotNull(createdDataFeed);
                 dataFeedId.set(createdDataFeed.getId());
-
-                validateDataFeedResult(expectedDataFeed, createdDataFeed, ELASTIC_SEARCH);
-            }, ELASTIC_SEARCH);
+            }, AZURE_LOG_ANALYTICS);
         } finally {
             if (!CoreUtils.isNullOrEmpty(dataFeedId.get())) {
                 client.deleteDataFeed(dataFeedId.get());
@@ -706,14 +711,14 @@ public class DataFeedClientTest extends DataFeedTestBase {
                 new DataFeed()
                     .setName("name")
                     .setSource(new PostgreSqlDataFeedSource("conn-string", "query"))
-                    .setSchema(new DataFeedSchema(Collections.singletonList(new DataFeedMetric().setName("name"))))));
+                    .setSchema(new DataFeedSchema(Collections.singletonList(new DataFeedMetric("name"))))));
             assertEquals("'dataFeedGranularity.granularityType' is required and cannot be null.", ex.getMessage());
 
             ex = assertThrows(NullPointerException.class, () -> client.createDataFeed(
                 new DataFeed()
                     .setName("name")
                     .setSource(new PostgreSqlDataFeedSource("conn-string", "query"))
-                    .setSchema(new DataFeedSchema(Collections.singletonList(new DataFeedMetric().setName("name"))))
+                    .setSchema(new DataFeedSchema(Collections.singletonList(new DataFeedMetric("name"))))
                     .setGranularity(new DataFeedGranularity().setGranularityType(DAILY))));
             assertEquals("'dataFeedIngestionSettings.ingestionStartTime' is required and cannot be null.",
                 ex.getMessage());
@@ -753,10 +758,9 @@ public class DataFeedClientTest extends DataFeedTestBase {
                 client.deleteDataFeedWithResponse(createdDataFeed.getId(), Context.NONE).getStatusCode());
 
             // Act & Assert
-            ErrorCodeException exception = assertThrows(ErrorCodeException.class, () ->
+            MetricsAdvisorResponseException exception = assertThrows(MetricsAdvisorResponseException.class, () ->
                 client.getDataFeedWithResponse(createdDataFeed.getId(), Context.NONE));
-            final ErrorCode errorCode = exception.getValue();
-            assertEquals(errorCode.getCode(), "ERROR_INVALID_PARAMETER");
+            final MetricsAdvisorError errorCode = exception.getValue();
             assertEquals(errorCode.getMessage(), "datafeedId is invalid.");
         }, SQL_SERVER_DB);
     }
@@ -802,14 +806,14 @@ public class DataFeedClientTest extends DataFeedTestBase {
         try {
             // Arrange
             client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion).buildClient();
-            DataFeedMetric dataFeedMetric = new DataFeedMetric().setName("cost");
-            DataFeedMetric dataFeedMetric2 = new DataFeedMetric().setName("cost");
+            DataFeedMetric dataFeedMetric = new DataFeedMetric("cost");
+            DataFeedMetric dataFeedMetric2 = new DataFeedMetric("cost");
 
             creatDataFeedRunner(expectedDataFeed -> {
                 expectedDataFeed.setSchema(new DataFeedSchema(Arrays.asList(dataFeedMetric, dataFeedMetric2)));
                 // Act & Assert
-                final ErrorCodeException errorCodeException
-                    = assertThrows(ErrorCodeException.class, () -> client.createDataFeed(expectedDataFeed));
+                final MetricsAdvisorResponseException errorCodeException
+                    = assertThrows(MetricsAdvisorResponseException.class, () -> client.createDataFeed(expectedDataFeed));
 
                 assertEquals("The metric name 'cost' is duplicate,please remove one.",
                     errorCodeException.getValue().getMessage());

@@ -8,10 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
-/**
- * a summary of request statistics grouped by API in hour or minute aggregates
- * for blobs.
- */
+/** a summary of request statistics grouped by API in hour or minute aggregates for blobs. */
 @JacksonXmlRootElement(localName = "Metrics")
 @Fluent
 public final class BlobMetrics {
@@ -28,7 +25,8 @@ public final class BlobMetrics {
     private boolean enabled;
 
     /*
-     * The retentionPolicy property.
+     * the retention policy which determines how long the associated data
+     * should persist
      */
     @JsonProperty(value = "RetentionPolicy")
     private BlobRetentionPolicy retentionPolicy;
@@ -61,8 +59,7 @@ public final class BlobMetrics {
     }
 
     /**
-     * Get the enabled property: Indicates whether metrics are enabled for the
-     * Blob service.
+     * Get the enabled property: Indicates whether metrics are enabled for the Blob service.
      *
      * @return the enabled value.
      */
@@ -71,8 +68,7 @@ public final class BlobMetrics {
     }
 
     /**
-     * Set the enabled property: Indicates whether metrics are enabled for the
-     * Blob service.
+     * Set the enabled property: Indicates whether metrics are enabled for the Blob service.
      *
      * @param enabled the enabled value to set.
      * @return the BlobMetrics object itself.
@@ -83,7 +79,8 @@ public final class BlobMetrics {
     }
 
     /**
-     * Get the retentionPolicy property: The retentionPolicy property.
+     * Get the retentionPolicy property: the retention policy which determines how long the associated data should
+     * persist.
      *
      * @return the retentionPolicy value.
      */
@@ -92,7 +89,8 @@ public final class BlobMetrics {
     }
 
     /**
-     * Set the retentionPolicy property: The retentionPolicy property.
+     * Set the retentionPolicy property: the retention policy which determines how long the associated data should
+     * persist.
      *
      * @param retentionPolicy the retentionPolicy value to set.
      * @return the BlobMetrics object itself.
@@ -103,8 +101,8 @@ public final class BlobMetrics {
     }
 
     /**
-     * Get the includeApis property: Indicates whether metrics should generate
-     * summary statistics for called API operations.
+     * Get the includeApis property: Indicates whether metrics should generate summary statistics for called API
+     * operations.
      *
      * @return the includeApis value.
      */
@@ -113,8 +111,8 @@ public final class BlobMetrics {
     }
 
     /**
-     * Set the includeApis property: Indicates whether metrics should generate
-     * summary statistics for called API operations.
+     * Set the includeApis property: Indicates whether metrics should generate summary statistics for called API
+     * operations.
      *
      * @param includeApis the includeApis value to set.
      * @return the BlobMetrics object itself.

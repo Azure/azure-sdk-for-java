@@ -3,14 +3,14 @@
 > see https://aka.ms/autorest
 
 ### Setup
-
-Increase max memory if you're using Autorest older than 3. Set the environment variable `NODE_OPTIONS` to `--max-old-space-size=8192`.
+> see https://github.com/Azure/autorest.java
 
 ### Generation
+> see https://github.com/Azure/autorest.java/releases for the latest version of autorest
 ```ps
 cd <swagger-folder>
-# You may need to repeat this command few times if you're getting "TypeError: Cannot read property 'filename' of undefined" error
-autorest --use=@microsoft.azure/autorest.java@3.0.4 --use=jianghaolu/autorest.modeler#440af3935c504cea4410133e1fd940b78f6af749  --version=2.0.4280
+mvn install
+autorest --java --use:@autorest/java@4.0.x
 ```
 
 ### Code generation settings
@@ -20,125 +20,17 @@ java: true
 output-folder: ../
 namespace: com.azure.storage.queue
 enable-xml: true
+generate-client-as-impl: true
 generate-client-interfaces: false
+service-interface-as-public: true
 sync-methods: none
 license-header: MICROSOFT_MIT_SMALL
-add-context-parameter: true
+context-client-method-parameter: true
 models-subpackage: implementation.models
-custom-types: QueueErrorCode,QueueSignedIdentifier,SendMessageResult,QueueMessageItem,PeekedMessageItem,QueueItem,QueueServiceProperties,QueueServiceStatistics,QueueCorsRule,QueueAccessPolicy,QueueAnalyticsLogging,QueueMetrics,QueueRetentionPolicy,GeoReplicationStatus,GeoReplicationStatusType
+custom-types: QueueErrorCode,QueueSignedIdentifier,SendMessageResult,QueueMessageItem,PeekedMessageItem,QueueItem,QueueServiceProperties,QueueServiceStatistics,QueueCorsRule,QueueAccessPolicy,QueueAnalyticsLogging,QueueMetrics,QueueRetentionPolicy,GeoReplicationStatus,GeoReplicationStatusType,GeoReplication
 custom-types-subpackage: models
-```
-
-### /{queueName}
-``` yaml
-directive:
-- from: swagger-document
-  where: $["x-ms-paths"]["/{queueName}"]
-  transform: >
-    let param = $.put.parameters[0];
-    if (!param["$ref"].endsWith("QueueName")) {
-        const path = param["$ref"].replace(/[#].*$/, "#/parameters/QueueName");
-        $.put.parameters.splice(0, 0, { "$ref": path });
-        $.delete.parameters.splice(0, 0, { "$ref": path });
-    }
-```
-
-### /{queueName}?comp=metadata
-``` yaml
-directive:
-- from: swagger-document
-  where: $["x-ms-paths"]["/{queueName}?comp=metadata"]
-  transform: >
-    let param = $.put.parameters[0];
-    if (!param["$ref"].endsWith("QueueName")) {
-        const path = param["$ref"].replace(/[#].*$/, "#/parameters/QueueName");
-        $.put.parameters.splice(0, 0, { "$ref": path });
-        $.get.parameters.splice(0, 0, { "$ref": path });
-    }
-```
-
-### /{queueName}?comp=acl
-``` yaml
-directive:
-- from: swagger-document
-  where: $["x-ms-paths"]["/{queueName}?comp=acl"]
-  transform: >
-    let param = $.put.parameters[0];
-    if (!param["$ref"].endsWith("QueueName")) {
-        const path = param["$ref"].replace(/[#].*$/, "#/parameters/QueueName");
-        $.put.parameters.splice(0, 0, { "$ref": path });
-        $.get.parameters.splice(0, 0, { "$ref": path });
-    }
-```
-
-### /{queueName}/messages
-``` yaml
-directive:
-- from: swagger-document
-  where: $["x-ms-paths"]["/{queueName}/messages"]
-  transform: >
-    let param = $.get.parameters[0];
-    if (!param["$ref"].endsWith("QueueName")) {
-        const path = param["$ref"].replace(/[#].*$/, "#/parameters/QueueName");
-        $.get.parameters.splice(0, 0, { "$ref": path });
-        $.delete.parameters.splice(0, 0, { "$ref": path });
-    }
-```
-
-### /{queueName}/messages?visibilitytimeout={visibilityTimeout}&messagettl={messageTimeToLive}
-``` yaml
-directive:
-- from: swagger-document
-  where: $["x-ms-paths"]["/{queueName}/messages?visibilitytimeout={visibilityTimeout}&messagettl={messageTimeToLive}"]
-  transform: >
-    let param = $.post.parameters[0];
-    if (!param["$ref"].endsWith("QueueName")) {
-        const path = param["$ref"].replace(/[#].*$/, "#/parameters/QueueName");
-        $.post.parameters.splice(0, 0, { "$ref": path });
-    }
-```
-
-### /{queueName}/messages?peekonly=true
-``` yaml
-directive:
-- from: swagger-document
-  where: $["x-ms-paths"]["/{queueName}/messages?peekonly=true"]
-  transform: >
-    let param = $.get.parameters[0];
-    if (!param["$ref"].endsWith("QueueName")) {
-        const path = param["$ref"].replace(/[#].*$/, "#/parameters/QueueName");
-        $.get.parameters.splice(0, 0, { "$ref": path });
-    }
-```
-
-### /{queueName}/messages/{messageid}?popreceipt={popReceipt}&visibilitytimeout={visibilityTimeout}
-``` yaml
-directive:
-- from: swagger-document
-  where: $["x-ms-paths"]["/{queueName}/messages/{messageid}?popreceipt={popReceipt}&visibilitytimeout={visibilityTimeout}"]
-  transform: >
-    let param = $.put.parameters[0];
-    if (!param["$ref"].endsWith("QueueName")) {
-        const queueNamePath = param["$ref"].replace(/[#].*$/, "#/parameters/QueueName");
-        const messageIdPath = param["$ref"].replace(/[#].*$/, "#/parameters/MessageId");
-        $.put.parameters.splice(0, 0, { "$ref": queueNamePath });
-        $.put.parameters.splice(1, 0, { "$ref": messageIdPath });
-    }
-```
-
-### /{queueName}/messages/{messageid}?popreceipt={popReceipt}
-``` yaml
-directive:
-- from: swagger-document
-  where: $["x-ms-paths"]["/{queueName}/messages/{messageid}?popreceipt={popReceipt}"]
-  transform: >
-    let param = $.delete.parameters[0];
-    if (!param["$ref"].endsWith("QueueName")) {
-        const queueNamePath = param["$ref"].replace(/[#].*$/, "#/parameters/QueueName");
-        const messageIdPath = param["$ref"].replace(/[#].*$/, "#/parameters/MessageId");
-        $.delete.parameters.splice(0, 0, { "$ref": queueNamePath });
-        $.delete.parameters.splice(1, 0, { "$ref": messageIdPath });
-    }
+customization-jar-path: target/azure-storage-queue-customization-1.0.0-beta.1.jar
+customization-class: com.azure.storage.queue.customization.QueueStorageCustomization
 ```
 
 ### Rename MessageItems
@@ -147,10 +39,17 @@ directive:
 - from: swagger-document
   where: $.definitions
   transform: >
-    if (!$.QueueMessageItem) {
-        $.QueueMessageItem = $.DequeuedMessageItem;
+    if (!$.QueueMessageItemInternal) {
+        $.QueueMessageItemInternal = $.DequeuedMessageItem;
         delete $.DequeuedMessageItem;
-        $.DequeuedMessagesList.items.$ref = $.DequeuedMessagesList.items.$ref.replace("DequeuedMessageItem", "QueueMessageItem");
+        $.QueueMessageItemInternal["x-az-public"] = false
+        $.DequeuedMessagesList.items.$ref = $.DequeuedMessagesList.items.$ref.replace("DequeuedMessageItem", "QueueMessageItemInternal");
+    }
+    if (!$.PeekedMessageItemInternal) {
+        $.PeekedMessageItemInternal = $.PeekedMessageItem;
+        delete $.PeekedMessageItem;
+        $.PeekedMessageItemInternal["x-az-public"] = false
+        $.PeekedMessagesList.items.$ref = $.PeekedMessagesList.items.$ref.replace("PeekedMessageItem", "PeekedMessageItemInternal");
     }
     if (!$.SendMessageResult) {
         $.SendMessageResult = $.EnqueuedMessage;
@@ -305,68 +204,13 @@ directive:
     $.QueueSignedIdentifier.properties.AccessPolicy["$ref"] = "#/definitions/QueueAccessPolicy";
 ```
 
-### QueueServiceProperties Annotation Fix
+### ListQueuesSegment x-ms-pageable itemName
 ``` yaml
 directive:
-- from: QueueServiceProperties.java
-  where: $
+- from: swagger-document
+  where: $["x-ms-paths"]["/?comp=list"].get
   transform: >
-    return $.replace('@JsonProperty(value = "Metrics")\n    private QueueMetrics hourMetrics;', '@JsonProperty(value = "HourMetrics")\n    private QueueMetrics hourMetrics;').
-      replace('@JsonProperty(value = "Metrics")\n    private QueueMetrics minuteMetrics;', '@JsonProperty(value = "MinuteMetrics")\n    private QueueMetrics minuteMetrics;');
+    $["x-ms-pageable"].itemName = "QueueItems";
 ```
-
-### Change StorageErrorException to StorageException
-``` yaml
-directive:
-- from: ServicesImpl.java
-  where: $
-  transform: >
-    return $.
-      replace(
-        "com.azure.storage.queue.implementation.models.StorageErrorException",
-        "com.azure.storage.queue.models.QueueStorageException"
-      ).
-      replace(
-        /\@UnexpectedResponseExceptionType\(StorageErrorException\.class\)/g,
-        "@UnexpectedResponseExceptionType(QueueStorageException.class)"
-      );
-- from: QueuesImpl.java
-  where: $
-  transform: >
-    return $.
-      replace(
-        "com.azure.storage.queue.implementation.models.StorageErrorException",
-        "com.azure.storage.queue.models.QueueStorageException"
-      ).
-      replace(
-        /\@UnexpectedResponseExceptionType\(StorageErrorException\.class\)/g,
-        "@UnexpectedResponseExceptionType(QueueStorageException.class)"
-      );
-- from: MessagesImpl.java
-  where: $
-  transform: >
-    return $.
-      replace(
-        "com.azure.storage.queue.implementation.models.StorageErrorException",
-        "com.azure.storage.queue.models.QueueStorageException"
-      ).
-      replace(
-        /\@UnexpectedResponseExceptionType\(StorageErrorException\.class\)/g,
-        "@UnexpectedResponseExceptionType(QueueStorageException.class)"
-      );
-- from: MessageIdsImpl.java
-  where: $
-  transform: >
-    return $.
-      replace(
-        "com.azure.storage.queue.implementation.models.StorageErrorException",
-        "com.azure.storage.queue.models.QueueStorageException"
-      ).
-      replace(
-        /\@UnexpectedResponseExceptionType\(StorageErrorException\.class\)/g,
-        "@UnexpectedResponseExceptionType(QueueStorageException.class)"
-      );
-```
-
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fstorage%2Fazure-storage-queue%2Fswagger%2FREADME.png)

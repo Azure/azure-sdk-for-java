@@ -16,6 +16,8 @@ public class ApplicationId {
     //    sd: for Spring Data
     //    ss: for Spring Streams
     //    kv: for Key Vault
+    //    se: for Security
+    //    jca: for JCA
     //    sb: for Storage Blobs
     //    sf: for Storage Files
     //    eh: for Event Hub
@@ -38,5 +40,6 @@ public class ApplicationId {
      * 2. x-client-VER;
      */
     public static final String AZURE_SPRING_AAD = "az-sp-aad";
+    public static final String AZURE_SPRING_B2C = "az-sp-b2c";
 
 }

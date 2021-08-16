@@ -4,6 +4,7 @@ package com.azure.resourcemanager.network.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.util.CoreUtils;
 import com.azure.resourcemanager.network.NetworkManager;
 import com.azure.resourcemanager.network.fluent.ExpressRouteCrossConnectionsClient;
 import com.azure.resourcemanager.network.fluent.models.ExpressRouteCrossConnectionInner;
@@ -49,16 +50,28 @@ public class ExpressRouteCrossConnectionsImpl
 
     @Override
     public Mono<ExpressRouteCrossConnection> getByResourceGroupAsync(String resourceGroupName, String name) {
+        if (CoreUtils.isNullOrEmpty(resourceGroupName)) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter 'resourceGroupName' is required and cannot be null."));
+        }
+        if (CoreUtils.isNullOrEmpty(name)) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter 'name' is required and cannot be null."));
+        }
         return this.inner().getByResourceGroupAsync(resourceGroupName, name).map(inner -> wrapModel(inner));
     }
 
     @Override
     public PagedIterable<ExpressRouteCrossConnection> listByResourceGroup(String resourceGroupName) {
-        return wrapList(this.inner().listByResourceGroup(resourceGroupName));
+        return new PagedIterable<>(this.listByResourceGroupAsync(resourceGroupName));
     }
 
     @Override
     public PagedFlux<ExpressRouteCrossConnection> listByResourceGroupAsync(String resourceGroupName) {
+        if (CoreUtils.isNullOrEmpty(resourceGroupName)) {
+            return new PagedFlux<>(() -> Mono.error(
+                new IllegalArgumentException("Parameter 'resourceGroupName' is required and cannot be null.")));
+        }
         return wrapPageAsync(this.inner().listByResourceGroupAsync(resourceGroupName));
     }
 

@@ -7,12 +7,16 @@ import com.azure.cosmos.models.ExcludedPath;
 import com.azure.cosmos.models.IncludedPath;
 import com.azure.cosmos.models.IndexingMode;
 import com.azure.cosmos.models.IndexingPolicy;
+import com.azure.spring.data.cosmos.IntegrationTestCollectionManager;
 import com.azure.spring.data.cosmos.core.CosmosTemplate;
+import com.azure.spring.data.cosmos.domain.Address;
 import com.azure.spring.data.cosmos.domain.ComplexIndexPolicyEntity;
 import com.azure.spring.data.cosmos.domain.IndexPolicyEntity;
 import com.azure.spring.data.cosmos.repository.TestRepositoryConfig;
 import com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation;
 import com.azure.spring.data.cosmos.repository.support.SimpleCosmosRepository;
+import org.junit.Before;
+import org.junit.ClassRule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
@@ -29,6 +33,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 @ContextConfiguration(classes = TestRepositoryConfig.class)
 public class IndexPolicyUpdateIT {
 
+    @ClassRule
+    public static final IntegrationTestCollectionManager collectionManager = new IntegrationTestCollectionManager();
+
     @Autowired
     CosmosTemplate template;
 
@@ -38,6 +45,13 @@ public class IndexPolicyUpdateIT {
     CosmosEntityInformation<IndexPolicyEntity, String> defaultIndexPolicyEntityInformation = new CosmosEntityInformation<>(IndexPolicyEntity.class);
 
     CosmosEntityInformation<ComplexIndexPolicyEntity, String> complexIndexPolicyEntityInformation = new CosmosEntityInformation<>(ComplexIndexPolicyEntity.class);
+
+    CosmosEntityInformation<Address, String> addressEntityInformation = new CosmosEntityInformation<>(Address.class);
+
+    @Before
+    public void setup() {
+        collectionManager.ensureContainersCreatedAndEmpty(template, IndexPolicyEntity.class, ComplexIndexPolicyEntity.class, Address.class);
+    }
 
     @Test
     public void testIndexPolicyUpdatesOnRepoInitialization() {
@@ -91,6 +105,14 @@ public class IndexPolicyUpdateIT {
         new SimpleCosmosRepository<>(complexIndexPolicyEntityInformation, template);
         CosmosTemplate spyTemplate = Mockito.spy(template);
         new SimpleCosmosRepository<>(complexIndexPolicyEntityInformation, spyTemplate);
+        Mockito.verify(spyTemplate, Mockito.never()).replaceContainerProperties(Mockito.any(), Mockito.any());
+    }
+
+    @Test
+    public void testContainerReplaceShouldNotOccurIfIndexingPolicyIsNotSpecified() {
+        new SimpleCosmosRepository<>(addressEntityInformation, template);
+        CosmosTemplate spyTemplate = Mockito.spy(template);
+        new SimpleCosmosRepository<>(addressEntityInformation, spyTemplate);
         Mockito.verify(spyTemplate, Mockito.never()).replaceContainerProperties(Mockito.any(), Mockito.any());
     }
 }

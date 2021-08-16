@@ -7,6 +7,7 @@ package com.azure.resourcemanager.hdinsight.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
@@ -31,12 +32,13 @@ public final class VersionSpec {
      * Whether or not the version is the default version.
      */
     @JsonProperty(value = "isDefault")
-    private String isDefault;
+    private Boolean isDefault;
 
     /*
      * The component version property.
      */
     @JsonProperty(value = "componentVersions")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> componentVersions;
 
     /**
@@ -84,7 +86,7 @@ public final class VersionSpec {
      *
      * @return the isDefault value.
      */
-    public String isDefault() {
+    public Boolean isDefault() {
         return this.isDefault;
     }
 
@@ -94,7 +96,7 @@ public final class VersionSpec {
      * @param isDefault the isDefault value to set.
      * @return the VersionSpec object itself.
      */
-    public VersionSpec withIsDefault(String isDefault) {
+    public VersionSpec withIsDefault(Boolean isDefault) {
         this.isDefault = isDefault;
         return this;
     }

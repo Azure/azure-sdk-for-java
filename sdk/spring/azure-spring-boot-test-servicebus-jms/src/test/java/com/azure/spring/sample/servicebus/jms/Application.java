@@ -6,7 +6,7 @@ package com.azure.spring.sample.servicebus.jms;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.jms.annotation.EnableJms;
 
-@EnableJms
 @SpringBootApplication
+@EnableJms
 public class Application {
 }

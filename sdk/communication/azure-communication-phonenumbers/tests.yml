@@ -1,0 +1,7 @@
+trigger: none
+
+stages:
+  - template: /sdk/communication/communication-tests-template.yml
+    parameters:
+      PackageName: azure-communication-phonenumbers
+      SafeName: azurecommunicationphonenumbers

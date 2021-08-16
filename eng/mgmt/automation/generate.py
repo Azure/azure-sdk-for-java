@@ -37,6 +37,7 @@ def generate(
     use: str,
     tag: str = None,
     version: str = None,
+    autorest_options: str = '',
     **kwargs,
 ):
     module = ARTIFACT_FORMAT.format(service)
@@ -47,6 +48,7 @@ def generate(
         module,
     )
     shutil.rmtree(os.path.join(output_dir, 'src/main'), ignore_errors = True)
+    shutil.rmtree(os.path.join(output_dir, 'src/samples'), ignore_errors = True)
 
     if re.match(r'https?://', spec_root):
         readme = urllib.parse.urljoin(spec_root, readme)
@@ -62,7 +64,7 @@ def generate(
         os.path.abspath(sdk_root),
         os.path.abspath(output_dir),
         namespace,
-        ' '.join((tag_option, version_option, FLUENTLITE_ARGUMENTS, readme)),
+        ' '.join((tag_option, version_option, FLUENTLITE_ARGUMENTS, autorest_options, readme)),
     )
     logging.info(command)
     if os.system(command) != 0:
@@ -491,6 +493,11 @@ def parse_args() -> argparse.Namespace:
         default = AUTOREST_CORE_VERSION,
         help = 'Autorest version',
     )
+    parser.add_argument(
+        '--autorest-options',
+        default = '',
+        help = 'Additional autorest options',
+    )
     parser.add_argument('--suffix', help = 'Suffix for namespace and artifact')
     parser.add_argument(
         '--auto-commit-external-change',
@@ -699,8 +706,9 @@ def main():
     args['readme'] = readme
     args['spec'] = spec
 
-    update_parameters(
-        args.get('suffix') or get_suffix_from_api_specs(api_specs_file, spec))
+    # update_parameters(
+    #     args.get('suffix') or get_suffix_from_api_specs(api_specs_file, spec))
+    update_parameters(args.get('suffix'))
     service = get_and_update_service_from_api_specs(api_specs_file, spec,
                                                     args['service'])
     args['service'] = service

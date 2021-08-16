@@ -354,8 +354,7 @@ public class SkillsetManagementSyncTests extends SearchTestBase {
         client.createSkillset(skillset2);
         skillsetsToDelete.add(skillset2.getName());
 
-        PagedIterable<String> selectedFieldListResponse =
-            client.listSkillsetNames(Context.NONE);
+        PagedIterable<String> selectedFieldListResponse = client.listSkillsetNames(Context.NONE);
         List<String> result = selectedFieldListResponse.stream().collect(Collectors.toList());
 
         result.forEach(Assertions::assertNotNull);

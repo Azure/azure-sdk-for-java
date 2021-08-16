@@ -10,6 +10,7 @@ import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cdn.models.OriginResourceState;
 import com.azure.resourcemanager.cdn.models.PrivateEndpointStatus;
+import com.azure.resourcemanager.cdn.models.SystemData;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -118,6 +119,12 @@ public class OriginInner extends ProxyResource {
      */
     @JsonProperty(value = "properties.privateEndpointStatus", access = JsonProperty.Access.WRITE_ONLY)
     private PrivateEndpointStatus privateEndpointStatus;
+
+    /*
+     * Read only system data
+     */
+    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
+    private SystemData systemData;
 
     /**
      * Get the hostname property: The address of the origin. Domain names, IPv4 addresses, and IPv6 addresses are
@@ -387,10 +394,22 @@ public class OriginInner extends ProxyResource {
     }
 
     /**
+     * Get the systemData property: Read only system data.
+     *
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (systemData() != null) {
+            systemData().validate();
+        }
     }
 }

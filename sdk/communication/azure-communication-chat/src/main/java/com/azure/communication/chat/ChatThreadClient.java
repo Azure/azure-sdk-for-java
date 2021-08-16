@@ -2,16 +2,21 @@
 // Licensed under the MIT License.
 package com.azure.communication.chat;
 
-import com.azure.communication.chat.models.AddChatThreadMembersOptions;
+import com.azure.communication.chat.models.AddChatParticipantsResult;
+import com.azure.communication.chat.models.ChatErrorResponseException;
 import com.azure.communication.chat.models.ChatMessage;
+import com.azure.communication.chat.models.ChatParticipant;
+import com.azure.communication.chat.models.ChatMessageReadReceipt;
+import com.azure.communication.chat.models.ChatThreadProperties;
+import com.azure.communication.chat.models.InvalidParticipantException;
 import com.azure.communication.chat.models.ListChatMessagesOptions;
-import com.azure.communication.chat.models.ReadReceipt;
+import com.azure.communication.chat.models.ListParticipantsOptions;
+import com.azure.communication.chat.models.ListReadReceiptOptions;
 import com.azure.communication.chat.models.SendChatMessageOptions;
 import com.azure.communication.chat.models.SendChatMessageResult;
-import com.azure.communication.chat.models.ChatThreadMember;
+import com.azure.communication.chat.models.TypingNotificationOptions;
 import com.azure.communication.chat.models.UpdateChatMessageOptions;
-import com.azure.communication.chat.models.UpdateChatThreadOptions;
-import com.azure.communication.common.CommunicationUserIdentifier;
+import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
@@ -23,7 +28,7 @@ import com.azure.core.util.logging.ClientLogger;
 /**
  * Sync Client that supports chat thread operations.
  */
-@ServiceClient(builder = ChatClientBuilder.class, isAsync = false)
+@ServiceClient(builder = ChatThreadClientBuilder.class, isAsync = false)
 public final class ChatThreadClient {
     private final ClientLogger logger = new ClientLogger(ChatThreadClient.class);
 
@@ -52,98 +57,143 @@ public final class ChatThreadClient {
     }
 
     /**
-     * Updates a thread's properties.
+     * Updates a thread's topic.
      *
-     * @param options Options for updating a chat thread.
+     * @param topic The new topic.
+     * @throws ChatErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void updateChatThread(UpdateChatThreadOptions options) {
+    public void updateTopic(String topic) {
 
-        this.client.updateChatThread(options).block();
+        this.client.updateTopic(topic).block();
     }
 
     /**
-     * Updates a thread's properties.
+     * Updates a thread's topic.
      *
-     * @param options Options for updating a chat thread.
+     * @param topic The new topic.
      * @param context The context to associate with this operation.
+     * @throws ChatErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> updateChatThreadWithResponse(UpdateChatThreadOptions options, Context context) {
+    public Response<Void> updateTopicWithResponse(String topic, Context context) {
 
-        return this.client.updateChatThread(options, context).block();
+        return this.client.updateTopic(topic, context).block();
     }
 
     /**
-     * Adds thread members to a thread. If members already exist, no change occurs.
+     * Adds participants to a thread. If participants already exist, no change occurs.
      *
-     * @param options Options for adding thread members.
+     * @param participants Collection of participants to add.
+     * @throws ChatErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return AddChatParticipantsResult.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void addMembers(AddChatThreadMembersOptions options) {
-
-        this.client.addMembers(options).block();
+    public AddChatParticipantsResult addParticipants(Iterable<ChatParticipant> participants) {
+        return this.client.addParticipants(participants).block();
     }
 
     /**
-     * Adds thread members to a thread. If members already exist, no change occurs.
+     * Adds participants to a thread. If participants already exist, no change occurs.
      *
-     * @param options Options for adding thread members.
+     * @param participants Collection of participants to add.
      * @param context The context to associate with this operation.
+     * @throws ChatErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<AddChatParticipantsResult> addParticipantsWithResponse(
+        Iterable<ChatParticipant> participants, Context context) {
+        return this.client.addParticipants(participants, context).block();
+    }
+
+    /**
+     * Adds a participant to a thread. If the participant already exists, no change occurs.
+     *
+     * @param participant The new participant.
+     * @throws ChatErrorResponseException thrown if the request is rejected by server.
+     * @throws InvalidParticipantException thrown if the participant is rejected by the server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void addParticipant(ChatParticipant participant) {
+        this.client.addParticipant(participant).block();
+    }
+
+    /**
+     * Adds a participant to a thread. If the participant already exists, no change occurs.
+     *
+     * @param participant The new participant.
+     * @param context The context to associate with this operation.
+     * @throws ChatErrorResponseException thrown if the request is rejected by server.
+     * @throws InvalidParticipantException thrown if the participant is rejected by the server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> addParticipantWithResponse(ChatParticipant participant, Context context) {
+        return this.client.addParticipantWithResponse(participant, context).block();
+    }
+
+    /**
+     * Remove a participant from a thread.
+     *
+     * @param identifier Identity of the participant to remove from the thread.
+     * @param context The context to associate with this operation.
+     * @throws ChatErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> addMembersWithResponse(AddChatThreadMembersOptions options, Context context) {
+    public Response<Void> removeParticipantWithResponse(CommunicationIdentifier identifier, Context context) {
 
-        return this.client.addMembers(options, context).block();
+        return this.client.removeParticipant(identifier, context).block();
     }
 
     /**
-     * Remove a member from a thread.
+     * Remove a participant from a thread.
      *
-     * @param user User identity of the thread member to remove from the thread.
-     * @param context The context to associate with this operation.
-     * @return the completion.
+     * @param identifier Identity of the thread participant to remove from the thread.
+     * @throws ChatErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> removeMemberWithResponse(CommunicationUserIdentifier user, Context context) {
+    public void removeParticipant(CommunicationIdentifier identifier) {
 
-        return this.client.removeMember(user, context).block();
+        this.client.removeParticipant(identifier).block();
     }
 
     /**
-     * Remove a member from a thread.
+     * Gets the participants of a thread.
      *
-     * @param user User identity of the thread member to remove from the thread.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void removeMember(CommunicationUserIdentifier user) {
-
-        this.client.removeMember(user).block();
-    }
-
-    /**
-     * Gets the members of a thread.
-     *
-     * @return the members of a thread.
+     * @throws ChatErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the participants of a thread.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ChatThreadMember> listMembers() {
+    public PagedIterable<ChatParticipant> listParticipants() {
 
-        return new PagedIterable<>(this.client.listMembers());
+        return new PagedIterable<>(this.client.listParticipants());
     }
 
     /**
-     * Gets the members of a thread.
+     * Gets the participants of a thread.
      *
+     * @param listParticipantsOptions The request options.
      * @param context The context to associate with this operation.
-     * @return the members of a thread.
+     * @throws ChatErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the participants of a thread.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ChatThreadMember> listMembers(Context context) {
-
-        return new PagedIterable<>(this.client.listMembers(context));
+    public PagedIterable<ChatParticipant> listParticipants(ListParticipantsOptions listParticipantsOptions,
+                                                           Context context) {
+        return new PagedIterable<>(this.client.listParticipants(listParticipantsOptions, context));
     }
 
     /**
@@ -151,7 +201,9 @@ public final class ChatThreadClient {
      *
      * @param options Options for sending the message.
      * @param context The context to associate with this operation.
-     * @return the response.
+     * @throws ChatErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the SendChatMessageResult.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SendChatMessageResult> sendMessageWithResponse(SendChatMessageOptions options, Context context) {
@@ -163,7 +215,9 @@ public final class ChatThreadClient {
      * Sends a message to a thread.
      *
      * @param options Options for sending the message.
-     * @return the response.
+     * @throws ChatErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the SendChatMessageResult.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SendChatMessageResult sendMessage(SendChatMessageOptions options) {
@@ -176,6 +230,8 @@ public final class ChatThreadClient {
      *
      * @param chatMessageId The message id.
      * @param context The context to associate with this operation.
+     * @throws ChatErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a message by id.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -188,6 +244,8 @@ public final class ChatThreadClient {
      * Gets a message by id.
      *
      * @param chatMessageId The message id.
+     * @throws ChatErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a message by id.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -199,6 +257,8 @@ public final class ChatThreadClient {
     /**
      * Gets a list of messages from a thread.
      *
+     * @throws ChatErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of messages from a thread.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -212,6 +272,8 @@ public final class ChatThreadClient {
      *
      * @param listMessagesOptions The request options.
      * @param context The context to associate with this operation.
+     * @throws ChatErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of messages from a thread.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -226,6 +288,8 @@ public final class ChatThreadClient {
      * @param chatMessageId The message id.
      * @param options Options for updating the message.
      * @param context The context to associate with this operation.
+     * @throws ChatErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -240,6 +304,8 @@ public final class ChatThreadClient {
      *
      * @param chatMessageId The message id.
      * @param options Options for updating the message.
+     * @throws ChatErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void updateMessage(String chatMessageId, UpdateChatMessageOptions options) {
@@ -252,6 +318,8 @@ public final class ChatThreadClient {
      *
      * @param chatMessageId The message id.
      * @param context The context to associate with this operation.
+     * @throws ChatErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -264,6 +332,8 @@ public final class ChatThreadClient {
      * Deletes a message.
      *
      * @param chatMessageId The message id.
+     * @throws ChatErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteMessage(String chatMessageId) {
@@ -275,17 +345,21 @@ public final class ChatThreadClient {
      * Posts a typing event to a thread, on behalf of a user.
      *
      * @param context The context to associate with this operation.
+     * @throws ChatErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> sendTypingNotificationWithResponse(Context context) {
-
-        return this.client.sendTypingNotification(context).block();
+        TypingNotificationOptions options = new TypingNotificationOptions();
+        return this.client.sendTypingNotification(options, context).block();
     }
 
     /**
      * Posts a typing event to a thread, on behalf of a user.
      *
+     * @throws ChatErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void sendTypingNotification() {
@@ -293,10 +367,38 @@ public final class ChatThreadClient {
     }
 
     /**
+     * Posts a typing event to a thread, on behalf of a user.
+     *
+     * @param options Options for sending the typing notification.
+     * @param context The context to associate with this operation.
+     * @throws ChatErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> sendTypingNotificationWithResponse(TypingNotificationOptions options, Context context) {
+        return this.client.sendTypingNotification(options, context).block();
+    }
+
+    /**
+     * Posts a typing event to a thread, on behalf of a user.
+     *
+     * @param options Options for sending the typing notification.
+     * @throws ChatErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void sendTypingNotification(TypingNotificationOptions options) {
+        this.client.sendTypingNotification(options).block();
+    }
+
+    /**
      * Posts a read receipt event to a thread, on behalf of a user.
      *
      * @param chatMessageId The id of the chat message that was read.
      * @param context The context to associate with this operation.
+     * @throws ChatErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -309,6 +411,8 @@ public final class ChatThreadClient {
      * Posts a read receipt event to a thread, on behalf of a user.
      *
      * @param chatMessageId The id of the chat message that was read.
+     * @throws ChatErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void sendReadReceipt(String chatMessageId) {
@@ -319,10 +423,12 @@ public final class ChatThreadClient {
     /**
      * Gets read receipts for a thread.
      *
+     * @throws ChatErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return read receipts for a thread.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ReadReceipt> listReadReceipts() {
+    public PagedIterable<ChatMessageReadReceipt> listReadReceipts() {
 
         return new PagedIterable<>(this.client.listReadReceipts());
     }
@@ -330,12 +436,41 @@ public final class ChatThreadClient {
     /**
      * Gets read receipts for a thread.
      *
+     * @param listReadReceiptOptions The additional options for this operation.
      * @param context The context to associate with this operation.
+     * @throws ChatErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return read receipts for a thread.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ReadReceipt> listReadReceipts(Context context) {
-
-        return new PagedIterable<>(this.client.listReadReceipts(context));
+    public PagedIterable<ChatMessageReadReceipt> listReadReceipts(ListReadReceiptOptions listReadReceiptOptions,
+                                                                  Context context) {
+        return new PagedIterable<>(this.client.listReadReceipts(listReadReceiptOptions, context));
     }
+
+    /**
+     * Gets chat thread properties.
+     *
+     * @throws ChatErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return chat thread properties.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ChatThreadProperties getProperties() {
+        return this.client.getProperties().block();
+    }
+
+    /**
+     * Gets chat thread properties.
+     *
+     * @param context The context to associate with this operation.
+     * @throws ChatErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return chat thread properties.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<ChatThreadProperties> getPropertiesWithResponse(Context context) {
+        return this.client.getProperties(context).block();
+    }
+
 }

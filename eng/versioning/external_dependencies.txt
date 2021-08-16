@@ -1,4 +1,4 @@
-# To avoid dependency conflicts between SDK and Spring, when modify or add dependencies,
+# To avoid dependency conflicts between SDK and Spring, when modifying or adding dependencies,
 # make sure the version is same to sdk/spring/scripts/spring_managed_external_dependencies.txt.
 # If your version is different from sdk/spring/scripts/spring_managed_external_dependencies.txt,
 # please discuss with Spring Integration team members:
@@ -7,142 +7,147 @@
 
 # Format;
 # groupId:artifactId;dependency-version
-com.fasterxml.jackson.core:jackson-annotations;2.11.3
-com.fasterxml.jackson.core:jackson-core;2.11.3
-com.fasterxml.jackson.core:jackson-databind;2.11.3
-com.fasterxml.jackson.dataformat:jackson-dataformat-avro;2.11.3
-com.fasterxml.jackson.dataformat:jackson-dataformat-xml;2.11.3
-com.fasterxml.jackson.datatype:jackson-datatype-jdk8;2.11.3
-com.fasterxml.jackson.datatype:jackson-datatype-jsr310;2.11.3
-com.fasterxml.jackson.module:jackson-module-parameter-names;2.11.3
-com.github.spotbugs:spotbugs;4.0.0-beta3
-com.github.spotbugs:spotbugs-annotations;4.0.2
-com.github.spotbugs:spotbugs-maven-plugin;3.1.12.2
-com.google.code.gson:gson;2.8.6
-com.google.guava:guava;29.0-jre
+com.fasterxml.jackson.core:jackson-annotations;2.12.4
+com.fasterxml.jackson.core:jackson-core;2.12.4
+com.fasterxml.jackson.core:jackson-databind;2.12.4
+com.fasterxml.jackson.dataformat:jackson-dataformat-avro;2.12.4
+com.fasterxml.jackson.dataformat:jackson-dataformat-xml;2.12.4
+com.fasterxml.jackson.datatype:jackson-datatype-jdk8;2.12.4
+com.fasterxml.jackson.datatype:jackson-datatype-jsr310;2.12.4
+com.fasterxml.jackson.module:jackson-module-parameter-names;2.12.4
+com.github.spotbugs:spotbugs;4.2.0
+com.github.spotbugs:spotbugs-annotations;4.2.0
+com.github.spotbugs:spotbugs-maven-plugin;4.2.0
+com.google.code.gson:gson;2.8.7
+com.google.guava:guava;30.1.1-jre
 com.h3xstream.findsecbugs:findsecbugs-plugin;1.9.0
 com.microsoft.azure:azure-annotations;1.7.0
-com.microsoft.azure:azure-arm-client-runtime;1.7.3
-com.microsoft.azure:azure-client-authentication;1.7.3
-com.microsoft.azure:azure-client-runtime;1.7.3
+com.microsoft.azure:azure-arm-client-runtime;1.7.14
+com.microsoft.azure:azure-client-authentication;1.7.14
+com.microsoft.azure:azure-client-runtime;1.7.14
 com.microsoft.azure:azure-core;0.9.8
 com.microsoft.azure:azure-cosmos;3.7.3
 com.microsoft.azure:azure-keyvault-cryptography;1.2.2
 com.microsoft.azure:azure-media;0.9.8
-com.microsoft.azure:azure-servicebus;3.4.0
-com.microsoft.azure:qpid-proton-j-extensions;1.2.3
+com.microsoft.azure:azure-servicebus;3.6.1
+com.microsoft.azure:azure-servicebus-jms;0.0.7
+com.microsoft.azure:qpid-proton-j-extensions;1.2.4
+com.microsoft.azure.sdk.iot:iot-service-client;1.28.0
 com.microsoft.rest:client-runtime;1.7.4
 com.microsoft.rest.v2:client-runtime;2.1.1
-com.microsoft.sqlserver:mssql-jdbc;7.4.1.jre8
+com.microsoft.sqlserver:mssql-jdbc;9.2.1.jre8
 com.microsoft.azure:spring-data-cosmosdb;2.3.0
-com.microsoft.spring.data.gremlin:spring-data-gremlin;2.3.0
 com.squareup.okhttp3:okhttp;4.8.1
-com.zaxxer:HikariCP;3.4.5
-commons-codec:commons-codec;1.14
+com.zaxxer:HikariCP;4.0.3
+commons-codec:commons-codec;1.15
 commons-net:commons-net;3.6
-io.fabric8:kubernetes-client;4.10.3
+io.fabric8:kubernetes-client;4.13.3
 io.github.bonigarcia:webdrivermanager;4.3.1
-io.micrometer:micrometer-core;1.5.6
-io.micrometer:micrometer-registry-azure-monitor;1.5.6
-io.micrometer:micrometer-registry-graphite;1.5.6
-io.netty:netty-buffer;4.1.54.Final
-io.netty:netty-common;4.1.54.Final
-io.netty:netty-codec-http;4.1.54.Final
-io.netty:netty-codec-http2;4.1.54.Final
-io.netty:netty-transport;4.1.54.Final
-io.netty:netty-handler;4.1.54.Final
-io.netty:netty-handler-proxy;4.1.54.Final
-io.netty:netty-tcnative;2.0.35.Final
-io.netty:netty-tcnative-boringssl-static;2.0.35.Final
-io.netty:netty-transport-native-epoll;4.1.54.Final
-io.netty:netty-transport-native-unix-common;4.1.54.Final
-io.netty:netty-transport-native-kqueue;4.1.54.Final
-io.projectreactor.netty:reactor-netty;0.9.15.RELEASE
-io.projectreactor:reactor-core;3.3.12.RELEASE
+io.micrometer:micrometer-core;1.7.2
+io.micrometer:micrometer-registry-azure-monitor;1.7.2
+io.micrometer:micrometer-registry-graphite;1.7.2
+io.netty:netty-buffer;4.1.66.Final
+io.netty:netty-common;4.1.66.Final
+io.netty:netty-codec-http;4.1.66.Final
+io.netty:netty-codec-http2;4.1.66.Final
+io.netty:netty-transport;4.1.66.Final
+io.netty:netty-handler;4.1.66.Final
+io.netty:netty-handler-proxy;4.1.66.Final
+io.netty:netty-tcnative;2.0.40.Final
+io.netty:netty-tcnative-boringssl-static;2.0.40.Final
+io.netty:netty-transport-native-epoll;4.1.66.Final
+io.netty:netty-transport-native-unix-common;4.1.66.Final
+io.netty:netty-transport-native-kqueue;4.1.66.Final
+io.projectreactor.netty:reactor-netty;1.0.9
+io.projectreactor:reactor-core;3.4.8
 io.reactivex:rxjava;1.3.8
 javax.annotation:javax.annotation-api;1.3.2
+javax.json:javax.json-api;1.1.4
 javax.servlet:javax.servlet-api;4.0.1
 javax.validation:validation-api;2.0.1.Final
-mysql:mysql-connector-java;8.0.22
-net.minidev:json-smart;2.3
+javax.websocket:javax.websocket-api;1.1
+mysql:mysql-connector-java;8.0.26
+net.minidev:json-smart;2.4.7
 org.apache.ant:ant;1.9.4
-org.apache.avro:avro;1.9.2
-org.apache.avro:avro-maven-plugin;1.9.2
-org.apache.commons:commons-compress;1.20
-org.apache.commons:commons-lang3;3.10
+org.apache.avro:avro;1.10.1
+org.apache.avro:avro-maven-plugin;1.10.1
+org.apache.commons:commons-compress;1.21
+org.apache.commons:commons-lang3;3.12.0
 org.apache.httpcomponents:httpclient;4.5.13
-org.apache.httpcomponents.client5:httpclient5;5.0.3
-org.apache.logging.log4j:log4j-api;2.13.3
-org.apache.logging.log4j:log4j-core;2.13.3
-org.apache.logging.log4j:log4j-slf4j-impl;2.13.3
-org.apache.qpid:proton-j;0.33.4
+org.apache.logging.log4j:log4j-api;2.14.1
+org.apache.logging.log4j:log4j-core;2.14.1
+org.apache.logging.log4j:log4j-slf4j-impl;2.14.1
+org.apache.qpid:proton-j;0.33.8
 org.apache.qpid:qpid-jms-client;0.53.0
 org.apache.tinkerpop:gremlin-driver;3.2.4
 org.asynchttpclient:async-http-client;2.12.1
 org.codehaus.groovy:groovy-eclipse-batch;2.5.8-01
 org.codehaus.groovy:groovy-eclipse-compiler;3.4.0-01
 org.conscrypt:conscrypt-openjdk-uber;2.2.1
-org.hibernate.validator:hibernate-validator;6.1.6.Final
+org.glassfish.tyrus:tyrus-container-grizzly;1.2.1
+org.glassfish.tyrus.bundles:tyrus-standalone-client;1.16
+org.hibernate.validator:hibernate-validator;6.2.0.Final
 org.javatuples:javatuples;1.2
 org.linguafranca.pwdb:KeePassJava2;2.1.4
 org.powermock:powermock-api-mockito2;2.0.2
 org.powermock:powermock-module-junit4;2.0.2
-org.postgresql:postgresql;42.2.18
-org.slf4j:slf4j-api;1.7.30
-org.slf4j:slf4j-nop;1.7.30
-org.slf4j:slf4j-simple;1.7.30
+org.postgresql:postgresql;42.2.23
+org.slf4j:slf4j-api;1.7.32
+org.slf4j:slf4j-nop;1.7.32
+org.slf4j:slf4j-simple;1.7.32
 
 ## Spring boot dependency versions
-org.springframework.boot:spring-boot-dependencies;2.3.5.RELEASE
-org.springframework.boot:spring-boot-actuator-autoconfigure;2.3.5.RELEASE
-org.springframework.boot:spring-boot-autoconfigure-processor;2.3.5.RELEASE
-org.springframework.boot:spring-boot-autoconfigure;2.3.5.RELEASE
-org.springframework.boot:spring-boot-configuration-processor;2.3.5.RELEASE
-org.springframework.boot:spring-boot-starter-actuator;2.3.5.RELEASE
-org.springframework.boot:spring-boot-starter-aop;2.3.5.RELEASE
-org.springframework.boot:spring-boot-starter-cache;2.3.5.RELEASE
-org.springframework.boot:spring-boot-starter-data-redis;2.3.5.RELEASE
-org.springframework.boot:spring-boot-starter-logging;2.3.5.RELEASE
-org.springframework.boot:spring-boot-starter-test;2.3.5.RELEASE
-org.springframework.boot:spring-boot-starter-validation;2.3.5.RELEASE
-org.springframework.boot:spring-boot-starter-web;2.3.5.RELEASE
-org.springframework.boot:spring-boot-starter-webflux;2.3.5.RELEASE
-org.springframework.boot:spring-boot-starter;2.3.5.RELEASE
-org.springframework.boot:spring-boot;2.3.5.RELEASE
-org.springframework.data:spring-data-commons;2.3.5.RELEASE
-org.springframework.data:spring-data-mongodb;3.0.5.RELEASE
-org.springframework.data:spring-data-redis;2.3.5.RELEASE
-org.springframework.integration:spring-integration-core;5.3.3.RELEASE
-org.springframework.kafka:spring-kafka;2.5.7.RELEASE
-org.springframework.security:spring-security-config;5.3.5.RELEASE
-org.springframework.security:spring-security-core;5.3.5.RELEASE
-org.springframework.security:spring-security-oauth2-client;5.3.5.RELEASE
-org.springframework.security:spring-security-oauth2-resource-server;5.3.5.RELEASE
-org.springframework.security:spring-security-oauth2-core;5.3.5.RELEASE
-org.springframework.security:spring-security-oauth2-jose;5.3.5.RELEASE
-org.springframework.security:spring-security-web;5.3.5.RELEASE
-org.springframework:spring-beans;5.2.10.RELEASE
-org.springframework:spring-context-support;5.2.10.RELEASE
-org.springframework:spring-context;5.2.10.RELEASE
-org.springframework:spring-core;5.2.10.RELEASE
-org.springframework:spring-expression;5.2.10.RELEASE
-org.springframework:spring-jdbc;5.2.10.RELEASE
-org.springframework:spring-jms;5.2.10.RELEASE
-org.springframework:spring-messaging;5.2.10.RELEASE
-org.springframework:spring-tx;5.2.10.RELEASE
-org.springframework:spring-web;5.2.10.RELEASE
-org.springframework:spring-webmvc;5.2.10.RELEASE
+org.springframework.boot:spring-boot-dependencies;2.5.3
+org.springframework.boot:spring-boot-actuator-autoconfigure;2.5.3
+org.springframework.boot:spring-boot-autoconfigure-processor;2.5.3
+org.springframework.boot:spring-boot-autoconfigure;2.5.3
+org.springframework.boot:spring-boot-configuration-processor;2.5.3
+org.springframework.boot:spring-boot-starter-actuator;2.5.3
+org.springframework.boot:spring-boot-starter-aop;2.5.3
+org.springframework.boot:spring-boot-starter-cache;2.5.3
+org.springframework.boot:spring-boot-starter-data-redis;2.5.3
+org.springframework.boot:spring-boot-starter-logging;2.5.3
+org.springframework.boot:spring-boot-starter-test;2.5.3
+org.springframework.boot:spring-boot-starter-validation;2.5.3
+org.springframework.boot:spring-boot-starter-web;2.5.3
+org.springframework.boot:spring-boot-starter-webflux;2.5.3
+org.springframework.boot:spring-boot-starter;2.5.3
+org.springframework.boot:spring-boot;2.5.3
+org.springframework.data:spring-data-commons;2.5.3
+org.springframework.data:spring-data-mongodb;3.2.3
+org.springframework.data:spring-data-redis;2.5.3
+org.springframework.integration:spring-integration-core;5.5.2
+org.springframework.kafka:spring-kafka;2.7.4
+org.springframework.security:spring-security-config;5.5.1
+org.springframework.security:spring-security-core;5.5.1
+org.springframework.security:spring-security-oauth2-client;5.5.1
+org.springframework.security:spring-security-oauth2-resource-server;5.5.1
+org.springframework.security:spring-security-oauth2-core;5.5.1
+org.springframework.security:spring-security-oauth2-jose;5.5.1
+org.springframework.security:spring-security-web;5.5.1
+org.springframework:spring-beans;5.3.9
+org.springframework:spring-context-support;5.3.9
+org.springframework:spring-context;5.3.9
+org.springframework:spring-core;5.3.9
+org.springframework:spring-expression;5.3.9
+org.springframework:spring-jdbc;5.3.9
+org.springframework:spring-jms;5.3.9
+org.springframework:spring-messaging;5.3.9
+org.springframework:spring-tx;5.3.9
+org.springframework:spring-web;5.3.9
+org.springframework:spring-webmvc;5.3.9
+org.springframework:spring-webflux;5.3.9
 
-# spring-boot-starter-parent is not managed by spring-boot-dependencies or spring-cloud-dependencies.
-org.springframework.boot:spring-boot-starter-parent;2.3.7.RELEASE
+org.springframework.boot:spring-boot-starter-parent;2.5.3
 
 ## Spring cloud dependency versions
-org.springframework.cloud:spring-cloud-dependencies;Hoxton.SR8
-org.springframework.cloud:spring-cloud-bus;2.2.3.RELEASE
-org.springframework.cloud:spring-cloud-context;2.2.5.RELEASE
-org.springframework.cloud:spring-cloud-starter-stream-kafka;3.0.8.RELEASE
-org.springframework.cloud:spring-cloud-stream-binder-test;3.0.8.RELEASE
-org.springframework.cloud:spring-cloud-stream;3.0.8.RELEASE
+org.springframework.cloud:spring-cloud-dependencies;2020.0.3
+org.springframework.cloud:spring-cloud-starter-bootstrap;3.0.3
+org.springframework.cloud:spring-cloud-bus;3.0.3
+org.springframework.cloud:spring-cloud-context;3.0.3
+org.springframework.cloud:spring-cloud-starter-stream-kafka;3.1.3
+org.springframework.cloud:spring-cloud-stream-binder-test;3.1.3
+org.springframework.cloud:spring-cloud-stream;3.1.3
 
 pl.pragmatists:JUnitParams;1.1.1
 
@@ -153,7 +158,7 @@ com.alibaba:fastjson;1.2.61
 com.github.cverges.expect4j:expect4j;1.6
 com.github.docker-java:docker-java;3.2.1
 com.github.tomakehurst:wiremock-standalone;2.24.1
-com.jcraft:jsch;0.1.54
+com.jcraft:jsch;0.1.55
 com.microsoft.azure:adal4j;1.6.5
 com.microsoft.azure:azure;1.24.1
 com.microsoft.azure:azure-mgmt-graph-rbac;1.3.0
@@ -163,74 +168,71 @@ com.microsoft.azure:azure-mgmt-resources;1.3.0
 com.microsoft.azure:azure-mgmt-search;1.24.1
 com.microsoft.azure:azure-mgmt-storage;1.3.0
 com.microsoft.azure:azure-storage;8.0.0
-com.microsoft.azure:msal4j;1.8.1
-com.microsoft.azure:msal4j-persistence-extension;1.0.0
+com.microsoft.azure:msal4j;1.11.0
+com.microsoft.azure:msal4j-persistence-extension;1.1.0
 com.sun.activation:jakarta.activation;1.2.2
-io.opentelemetry:opentelemetry-api;0.14.1
-io.opentelemetry:opentelemetry-sdk;0.14.1
-io.opentelemetry:opentelemetry-semconv;0.14.1
-io.projectreactor:reactor-test;3.3.12.RELEASE
-junit:junit;4.13.1
+io.opentelemetry:opentelemetry-api;1.0.0
+io.opentelemetry:opentelemetry-sdk;1.0.0
+io.opentelemetry:opentelemetry-exporter-logging;1.0.0
+io.opentelemetry:opentelemetry-exporter-jaeger;1.0.0
+io.projectreactor:reactor-test;3.4.8
+junit:junit;4.13.2
 commons-cli:commons-cli;1.3
 org.apache.maven:maven-compat;3.6.2
 org.apache.maven:maven-embedder;3.6.2
 org.apache.maven.wagon:wagon-http;3.3.4
 org.apache.maven.wagon:wagon-provider-api;3.3.4
-org.assertj:assertj-core;3.16.1
+org.assertj:assertj-core;3.19.0
 org.bouncycastle:bcprov-jdk15on;1.68
 org.eclipse.aether:aether-connector-basic;1.1.0
 org.eclipse.aether:aether-transport-wagon;1.1.0
-org.eclipse.jetty:jetty-http;9.4.33.v20201020
-org.eclipse.jetty:jetty-server;9.4.33.v20201020
+org.eclipse.jetty:jetty-http;9.4.43.v20210629
+org.eclipse.jetty:jetty-server;9.4.43.v20210629
 org.eclipse.jgit:org.eclipse.jgit;4.5.7.201904151645-r
+org.glassfish:javax.json;1.1.4
 org.hamcrest:hamcrest-all;1.3
 org.hamcrest:hamcrest-library;2.2
-# https://junit.org/junit5/docs/current/user-guide/#running-tests-ide-intellij-idea
-# use 5.4.2 now since Version 5.5.2 as of 11.2019 fails to discover tests
-# https://youtrack.jetbrains.com/issue/IDEA-223700
-# org.junit:junit-bom;5.4.2 is a pom file that will add its dependencyManagement section to parent pom's which
-# effectively means that each dependency needs to be listed here.
-org.junit.jupiter:junit-jupiter;5.6.3
-org.junit.jupiter:junit-jupiter-api;5.6.3
-org.junit.jupiter:junit-jupiter-engine;5.6.3
-org.junit.jupiter:junit-jupiter-migrationsupport;5.6.3
-org.junit.jupiter:junit-jupiter-params;5.6.3
-org.junit.platform:junit-platform-commons;1.6.3
-org.junit.platform:junit-platform-console;1.6.3
-org.junit.platform:junit-platform-engine;1.6.3
-org.junit.platform:junit-platform-launcher;1.6.3
-org.junit.platform:junit-platform-reporting;1.6.3
-org.junit.platform:junit-platform-runner;1.6.3
-org.junit.platform:junit-platform-suite-api;1.6.3
-org.junit.platform:junit-platform-testkit;1.6.3
-org.junit.vintage:junit-vintage-engine;5.6.3
+org.junit.jupiter:junit-jupiter;5.7.2
+org.junit.jupiter:junit-jupiter-api;5.7.2
+org.junit.jupiter:junit-jupiter-engine;5.7.2
+org.junit.jupiter:junit-jupiter-migrationsupport;5.7.2
+org.junit.jupiter:junit-jupiter-params;5.7.2
+org.junit.platform:junit-platform-commons;1.7.2
+org.junit.platform:junit-platform-console;1.7.2
+org.junit.platform:junit-platform-engine;1.7.2
+org.junit.platform:junit-platform-launcher;1.7.2
+org.junit.platform:junit-platform-reporting;1.7.2
+org.junit.platform:junit-platform-runner;1.7.2
+org.junit.platform:junit-platform-suite-api;1.7.2
+org.junit.platform:junit-platform-testkit;1.7.2
+org.junit.vintage:junit-vintage-engine;5.7.2
 org.openjdk.jmh:jmh-core;1.22
 org.openjdk.jmh:jmh-generator-annprocess;1.22
-org.spockframework:spock-core;1.3-groovy-2.5
-org.testng:testng;6.14.3
+org.spockframework:spock-core;2.0-M4-groovy-2.5
+org.testng:testng;7.3.0
 uk.org.lidalia:slf4j-test;1.2.0
 
 ## Maven Tools versions
 com.azure:sdk-build-tools;1.0.0
 com.beust:jcommander;1.78
 com.google.code.findbugs:jsr305;3.0.2
-com.nimbusds:nimbus-jose-jwt;8.19
-com.nimbusds:oauth2-oidc-sdk;7.1.1
-com.puppycrawl.tools:checkstyle;8.37
+com.microsoft.azure:azure-webapp-maven-plugin;1.14.0
+com.nimbusds:nimbus-jose-jwt;9.10
+com.puppycrawl.tools:checkstyle;8.42
 commons-io:commons-io;2.5
 commons-validator:commons-validator;1.6
-io.dropwizard.metrics:metrics-core;4.1.14
-io.dropwizard.metrics:metrics-graphite;4.1.14
-io.dropwizard.metrics:metrics-jvm;4.1.14
-io.reactivex.rxjava2:rxjava;2.2.20
+io.dropwizard.metrics:metrics-core;4.1.25
+io.dropwizard.metrics:metrics-graphite;4.1.25
+io.dropwizard.metrics:metrics-jvm;4.1.25
+io.reactivex.rxjava2:rxjava;2.2.21
 net.java.dev.jna:jna-platform;5.6.0
-net.jonathangiles.tools:dependencyChecker-maven-plugin;1.0.4
+net.jonathangiles.tools:dependencyChecker-maven-plugin;1.0.6
 net.jonathangiles.tools:whitelistgenerator-maven-plugin;1.0.2
 org.apache.commons:commons-collections4;4.2
 org.apache.commons:commons-text;1.6
 org.apache.maven.plugins:maven-antrun-plugin;1.8
 org.apache.maven.plugins:maven-assembly-plugin;3.2.0
-org.apache.maven.plugins:maven-checkstyle-plugin;3.1.1
+org.apache.maven.plugins:maven-checkstyle-plugin;3.1.2
 org.apache.maven.plugins:maven-clean-plugin;3.0.0
 org.apache.maven.plugins:maven-compiler-plugin;3.8.1
 org.apache.maven.plugins:maven-eclipse-plugin;2.8
@@ -259,10 +261,10 @@ org.eclipse.m2e:lifecycle-mapping;1.0.0
 org.hdrhistogram:HdrHistogram;2.1.12
 org.jacoco:jacoco-maven-plugin;0.8.5
 org.jacoco:org.jacoco.agent;0.8.5
-org.mockito:mockito-core;3.3.3
+org.mockito:mockito-core;3.9.0
 org.revapi:revapi-java;0.20.0
 org.revapi:revapi-maven-plugin;0.11.2
-
+org.moditect:moditect-maven-plugin;1.0.0.RC1
 
 # External Dependency Exceptions
 # This section is for external dependencies whose versions were different than
@@ -281,14 +283,35 @@ org.revapi:revapi-maven-plugin;0.11.2
 test_jar_com.microsoft.azure:azure-mgmt-resources;1.3.1-SNAPSHOT
 
 # everything under sdk\cosmos
-cosmos_com.fasterxml.jackson.module:jackson-module-afterburner;2.11.2
+cosmos_com.fasterxml.jackson.module:jackson-module-afterburner;2.12.2
 cosmos_com.google.guava:guava;25.0-jre
+cosmos_com.microsoft.data.encryption:cryptography;0.2.2.jre8-preview
+cosmos_com.microsoft.data.encryption:azure-key-vault-keystoreprovider;0.2.2.jre8-preview
 cosmos_io.dropwizard.metrics:metrics-core;4.1.0
 cosmos_io.dropwizard.metrics:metrics-graphite;4.1.0
 cosmos_io.dropwizard.metrics:metrics-jvm;4.1.0
-cosmos_org.mockito:mockito-core;1.10.19
 cosmos_org.mpierce.metrics.reservoir:hdrhistogram-metrics-reservoir;1.1.0
 cosmos_org.hdrhistogram:HdrHistogram;2.1.12
+
+## Cosmos Spark connector under sdk\cosmos\azure-cosmos-spark_3-1_2-12\pom.xml
+# Cosmos Spark connector runtime dependencies - provided by Spark runtime/host
+cosmos_org.apache.spark:spark-sql_2.12;3.1.1
+cosmos_org.apache.spark:spark-hive_2.12;3.1.1
+cosmos_org.scala-lang:scala-library;2.12.10
+cosmos_org.scala-lang.modules:scala-java8-compat_2.12;0.8.0
+cosmos_io.projectreactor:reactor-scala-extensions_2.12;0.8.0
+cosmos_commons-io:commons-io;2.4
+
+# Cosmos Spark connector tests only
+cosmos_org.scalatest:scalatest_2.12;3.2.2
+cosmos_org.scalatest:scalatest-flatspec_2.12;3.2.3
+cosmos_org.scalactic:scalactic_2.12;3.2.3
+cosmos_org.scalamock:scalamock_2.12;5.0.0
+
+# Maven Tools for Cosmos Spark connector only
+cosmos_org.scalatest:scalatest-maven-plugin;2.0.2
+cosmos_net.alchim31.maven:scala-maven-plugin;4.4.0
+cosmos_org.scalastyle:scalastyle-maven-plugin;1.0.0
 
 # sdk\core\azure-core-serializer-avro-jackson\pom.xml
 # This dependency is needed since Jackson Avro uses an older dependency on Apache Avro which is another library.
@@ -300,9 +323,6 @@ eventgrid_commons-io:commons-io;2.6
 # sdk\eventhubs\microsoft-azure-eventhubs-eph\pom.xml
 # sdk\eventhubs\microsoft-azure-eventhubs-extensions\pom.xml
 eventhubs_com.microsoft.azure:msal4j;0.4.0-preview
-
-# sdk\eventhubs\microsoft-azure-eventhubs\pom.xml
-eventhubs_com.nimbusds:nimbus-jose-jwt;6.0.1
 
 # sdk\keyvault\microsoft-azure-keyvault-extensions\pom.xml
 keyvault_org.mockito:mockito-core;1.10.19
@@ -320,7 +340,7 @@ media_commons-logging:commons-logging;1.1.1
 media_io.jsonwebtoken:jjwt;0.5.1
 media_org.mockito:mockito-all;1.9.0
 media_com.microsoft.azure:adal4j;1.2.0
-
+spring_com.microsoft.azure:oauth2-oidc-sdk;5.64.4
 # sdk\resourcemanager\azure-resourcemanager\pom.xml
 # sdk\resourcemanager\azure-resourcemanager-compute\pom.xml
 resourcemanager_com.jcraft:jsch;0.1.55
@@ -328,5 +348,15 @@ resourcemanager_com.jcraft:jsch;0.1.55
 # sdk\storage\azure-storage-blob-cryptography\pom.xml
 storage_com.microsoft.azure:azure-storage;8.4.0
 
+# sdk\storage\microsoft-azure-storage-blob\pom.xml
+microsoft_azure_storage_blob_org.spockframework:spock-core;1.3-groovy-2.5
+
 # sdk\spring\azure-spring-boot\pom.xml
 spring_com.microsoft.azure:azure;1.34.0
+spring_org.springframework.kafka:spring-kafka;2.6.6
+
+# sdk\appconfiguration\azure-spring-cloud-appconfiguration-config\pom.xml
+# sdk\appconfiguration\azure-spring-cloud-feature-management\pom.xml
+# sdk\appconfiguration\azure-spring-cloud-feature-management-web\pom.xml
+appconfig_spring_com.fasterxml.jackson.core:jackson-annotations;2.11.4
+appconfig_spring_com.fasterxml.jackson.core:jackson-databind;2.11.4

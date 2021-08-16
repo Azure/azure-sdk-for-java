@@ -25,6 +25,7 @@ import com.azure.storage.common.implementation.connectionstring.StorageAuthentic
 import com.azure.storage.common.implementation.connectionstring.StorageConnectionString;
 import com.azure.storage.common.implementation.connectionstring.StorageEndpoint;
 import com.azure.storage.common.policy.RequestRetryOptions;
+
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -129,9 +130,8 @@ public final class BlobContainerClientBuilder {
             endpoint, retryOptions, logOptions,
             clientOptions, httpClient, perCallPolicies, perRetryPolicies, configuration, logger);
 
-        return new BlobContainerAsyncClient(pipeline, String.format("%s/%s", endpoint, blobContainerName),
-            serviceVersion, accountName, blobContainerName, customerProvidedKey, encryptionScope,
-            blobContainerEncryptionScope);
+        return new BlobContainerAsyncClient(pipeline, endpoint, serviceVersion, accountName, blobContainerName,
+            customerProvidedKey, encryptionScope, blobContainerEncryptionScope);
     }
 
     /**
@@ -241,7 +241,8 @@ public final class BlobContainerClientBuilder {
     /**
      * Sets the SAS token used to authorize requests sent to the service.
      *
-     * @param sasToken The SAS token to use for authenticating requests.
+     * @param sasToken The SAS token to use for authenticating requests. This string should only be the query parameters
+     * (with or without a leading '?') and not a full url.
      * @return the updated BlobContainerClientBuilder
      * @throws NullPointerException If {@code sasToken} is {@code null}.
      */

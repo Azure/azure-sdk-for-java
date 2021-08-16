@@ -7,7 +7,7 @@ package com.azure.messaging.eventgrid.systemevents;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The AcsSmsEventBaseProperties model. */
+/** Schema of common properties of all SMS events. */
 @Fluent
 public class AcsSmsEventBaseProperties {
     /*

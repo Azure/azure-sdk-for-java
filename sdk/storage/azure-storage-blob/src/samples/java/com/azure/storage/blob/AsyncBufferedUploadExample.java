@@ -55,7 +55,7 @@ public class AsyncBufferedUploadExample {
         impossible--the first two because retries would not work and the third one because we could not satisfy the
         argument list.
          */
-        Flux<ByteBuffer> sourceData = getSourceBlobClient(endpoint, credential, containerName).download()
+        Flux<ByteBuffer> sourceData = getSourceBlobClient(endpoint, credential, containerName).downloadStream()
             // Perform some unpredicatable transformation.
             .map(AsyncBufferedUploadExample::randomTransformation);
 

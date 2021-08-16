@@ -10,6 +10,7 @@ import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cdn.models.ManagedRuleGroupDefinition;
 import com.azure.resourcemanager.cdn.models.Sku;
+import com.azure.resourcemanager.cdn.models.SystemData;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -50,6 +51,12 @@ public class ManagedRuleSetDefinitionInner extends ProxyResource {
      */
     @JsonProperty(value = "properties.ruleGroups", access = JsonProperty.Access.WRITE_ONLY)
     private List<ManagedRuleGroupDefinition> ruleGroups;
+
+    /*
+     * Read only system data
+     */
+    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
+    private SystemData systemData;
 
     /**
      * Get the sku property: The pricing tier (defines a CDN provider, feature list and rate) of the
@@ -110,6 +117,15 @@ public class ManagedRuleSetDefinitionInner extends ProxyResource {
     }
 
     /**
+     * Get the systemData property: Read only system data.
+     *
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -120,6 +136,9 @@ public class ManagedRuleSetDefinitionInner extends ProxyResource {
         }
         if (ruleGroups() != null) {
             ruleGroups().forEach(e -> e.validate());
+        }
+        if (systemData() != null) {
+            systemData().validate();
         }
     }
 }

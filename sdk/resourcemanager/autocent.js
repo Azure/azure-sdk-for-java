@@ -14,12 +14,14 @@ const specs = {
   'eventhubs': 'eventhub',
   'loganalytics': 'operationalinsights',
   'kusto': 'azure-kusto',
-  'servicemap': 'service-map'
+  'servicemap': 'service-map',
+  'managedapplications': 'resources'
 };
 const groupUrl = 'https://repo1.maven.org/maven2/com/azure/resourcemanager/';
-const artiRegEx = />(azure-resourcemanager-.+)\/</g;
+const artiRegEx = /<a href="(azure-resourcemanager-[-\w]+)\/"/g;
 const verRegEx = /<version>(.+)<\/version>/g;
-const pkgRegEx = /Package\s+tag\s+(.+)\.\s+For/g;
+const pkgRegEx = /Package\s+tag\s+(.+)\.\s+For/;
+const pkgRegEx2 = /Package\s+tag\s+(.+)\.</;
 var startCnt = 0;
 var endCnt = 0;
 var data = {};
@@ -66,10 +68,13 @@ function readMetadata(artifact) {
 // method to read pom for each package version and get API version tag from description
 function readPom(artifact, version) {
   sendRequest(groupUrl + artifact + '/' + version + '/' + artifact + '-' + version + '.pom', function(response) {
-    var match = pkgRegEx.exec(response);
+    var match = pkgRegEx2.exec(response);
+    if (!match) {
+      match = pkgRegEx.exec(response);
+    }
     ++endCnt;
-    if (match === null) {
-      // console.log('[WARN] no package tag found in ' + artifact + '_' + version);
+    if (!match) {
+      console.log('[WARN] no package tag found in ' + artifact + '_' + version);
     } else {
       var tag = match[1];
       var service = artifact.split('-').pop();
@@ -80,12 +85,13 @@ function readPom(artifact, version) {
         data[service][tag] = [];
       }
       data[service][tag].push(version);
+      console.log('[INFO] find tag %s and version %s for service %s.', tag, version, service);
     }
     pkgRegEx.lastIndex = 0;
     if (startCnt == endCnt) {
       // update file for listing all latest releases of the packages
       var content = '# Single-Service Packages Latest Releases\n\n' +
-        'The single-service packages provide easy-to-use APIs for each Azure service following the design principals of [Azure Management Libraries for Java](https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/resourcemanager). If you have specific requirement on certain service API version, you may find appropriate package below. If not, you could always choose the latest release.\n\n' +
+        'The single-service packages provide easy-to-use APIs for each Azure service following the design principals of [Azure Management Libraries for Java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/resourcemanager). If you have specific requirement on certain service API version, you may find appropriate package below. If not, you could always choose the latest release.\n\n' +
         'According to [Azure REST API reference](https://docs.microsoft.com/rest/api/azure/), most request URIs of Azure services require `api-version` as the query-string parameter. All supported API versions for each Azure service can be found via [Azure REST API Specifications](https://github.com/Azure/azure-rest-api-specs/tree/master/specification). For your convenience, we provide more details of the published packages by format below.\n\n' +
         '```\n' +
         'service\n' +

@@ -6,7 +6,6 @@ package com.azure.resourcemanager.loganalytics.implementation;
 
 import com.azure.core.management.Region;
 import com.azure.core.util.Context;
-import com.azure.resourcemanager.loganalytics.LogAnalyticsManager;
 import com.azure.resourcemanager.loganalytics.fluent.models.ClusterInner;
 import com.azure.resourcemanager.loganalytics.models.Cluster;
 import com.azure.resourcemanager.loganalytics.models.ClusterEntityStatus;
@@ -20,7 +19,7 @@ import java.util.Map;
 public final class ClusterImpl implements Cluster, Cluster.Definition, Cluster.Update {
     private ClusterInner innerObject;
 
-    private final LogAnalyticsManager serviceManager;
+    private final com.azure.resourcemanager.loganalytics.LogAnalyticsManager serviceManager;
 
     public String id() {
         return this.innerModel().id();
@@ -83,7 +82,7 @@ public final class ClusterImpl implements Cluster, Cluster.Definition, Cluster.U
         return this.innerObject;
     }
 
-    private LogAnalyticsManager manager() {
+    private com.azure.resourcemanager.loganalytics.LogAnalyticsManager manager() {
         return this.serviceManager;
     }
 
@@ -116,7 +115,7 @@ public final class ClusterImpl implements Cluster, Cluster.Definition, Cluster.U
         return this;
     }
 
-    ClusterImpl(String name, LogAnalyticsManager serviceManager) {
+    ClusterImpl(String name, com.azure.resourcemanager.loganalytics.LogAnalyticsManager serviceManager) {
         this.innerObject = new ClusterInner();
         this.serviceManager = serviceManager;
         this.clusterName = name;
@@ -147,7 +146,7 @@ public final class ClusterImpl implements Cluster, Cluster.Definition, Cluster.U
         return this;
     }
 
-    ClusterImpl(ClusterInner innerObject, LogAnalyticsManager serviceManager) {
+    ClusterImpl(ClusterInner innerObject, com.azure.resourcemanager.loganalytics.LogAnalyticsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
         this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourcegroups");

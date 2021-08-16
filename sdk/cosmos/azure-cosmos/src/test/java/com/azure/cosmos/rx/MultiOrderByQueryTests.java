@@ -261,7 +261,7 @@ public class MultiOrderByQueryTests extends TestSuiteBase {
         }
 
         // CREATE document with numberField not set.
-        // This query would then be invalid.
+        // This query should be valid too as we now support mixed null values
         InternalObjectNode documentWithEmptyField = generateMultiOrderByDocument();
         BridgeInternal.remove(documentWithEmptyField, NUMBER_FIELD);
         documentCollection.createItem(documentWithEmptyField, new CosmosItemRequestOptions()).block();
@@ -272,7 +272,10 @@ public class MultiOrderByQueryTests extends TestSuiteBase {
                 .instanceOf(UnsupportedOperationException.class)
                 .build();
 
-        validateQueryFailure(queryObservable.byPage(), validator);
+        FeedResponseListValidator<InternalObjectNode> feedResponseValidator =
+            new FeedResponseListValidator.Builder<InternalObjectNode>().totalSize(this.documents.size() + 1).build();
+
+        validateQuerySuccess(queryObservable.byPage(), feedResponseValidator);
     }
 
     private List<InternalObjectNode> top(List<InternalObjectNode> arrayList, boolean hasTop, int topCount) {

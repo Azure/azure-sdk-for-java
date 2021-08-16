@@ -4,8 +4,9 @@ package com.azure.cosmos.models;
 
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosDiagnostics;
-import com.azure.cosmos.implementation.InternalObjectNode;
 import com.azure.cosmos.implementation.Document;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
+import com.azure.cosmos.implementation.InternalObjectNode;
 import com.azure.cosmos.implementation.ItemDeserializer;
 import com.azure.cosmos.implementation.ResourceResponse;
 import com.azure.cosmos.implementation.SerializationDiagnosticsContext;
@@ -199,5 +200,33 @@ public class CosmosItemResponse<T> {
      */
     public String getETag() {
         return resourceResponse.getETag();
+    }
+
+    ///////////////////////////////////////////////////////////////////////////////////////////
+    // the following helper/accessor only helps to access this class outside of this package.//
+    ///////////////////////////////////////////////////////////////////////////////////////////
+
+    static {
+        ImplementationBridgeHelpers.CosmosItemResponseHelper.setCosmosItemResponseBuilderAccessor(
+            new ImplementationBridgeHelpers.CosmosItemResponseHelper.CosmosItemResponseBuilderAccessor() {
+                public <T> CosmosItemResponse<T> createCosmosItemResponse(ResourceResponse<Document> response,
+                                                                          byte[] contentAsByteArray,
+                                                                          Class<T> classType,
+                                                                          ItemDeserializer itemDeserializer) {
+                    return new CosmosItemResponse<>(response, contentAsByteArray, classType, itemDeserializer);
+                }
+
+                public byte[] getByteArrayContent(CosmosItemResponse<byte[]> response) {
+                    return response.responseBodyAsByteArray;
+                }
+
+                public void setByteArrayContent(CosmosItemResponse<byte[]> response, byte[] content) {
+                    response.responseBodyAsByteArray = content;
+                }
+
+                public ResourceResponse<Document> getResourceResponse(CosmosItemResponse<byte[]> response) {
+                    return response.resourceResponse;
+                }
+            });
     }
 }

@@ -179,7 +179,7 @@ public interface DdosProtectionPlansClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param ddosProtectionPlanName The name of the DDoS protection plan.
-     * @param parameters A DDoS protection plan in a resource group.
+     * @param parameters Parameters supplied to the create or update operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -194,7 +194,7 @@ public interface DdosProtectionPlansClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param ddosProtectionPlanName The name of the DDoS protection plan.
-     * @param parameters A DDoS protection plan in a resource group.
+     * @param parameters Parameters supplied to the create or update operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -209,7 +209,7 @@ public interface DdosProtectionPlansClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param ddosProtectionPlanName The name of the DDoS protection plan.
-     * @param parameters A DDoS protection plan in a resource group.
+     * @param parameters Parameters supplied to the create or update operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -224,7 +224,7 @@ public interface DdosProtectionPlansClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param ddosProtectionPlanName The name of the DDoS protection plan.
-     * @param parameters A DDoS protection plan in a resource group.
+     * @param parameters Parameters supplied to the create or update operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -240,7 +240,7 @@ public interface DdosProtectionPlansClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param ddosProtectionPlanName The name of the DDoS protection plan.
-     * @param parameters A DDoS protection plan in a resource group.
+     * @param parameters Parameters supplied to the create or update operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -255,7 +255,7 @@ public interface DdosProtectionPlansClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param ddosProtectionPlanName The name of the DDoS protection plan.
-     * @param parameters A DDoS protection plan in a resource group.
+     * @param parameters Parameters supplied to the create or update operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -270,7 +270,7 @@ public interface DdosProtectionPlansClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param ddosProtectionPlanName The name of the DDoS protection plan.
-     * @param parameters A DDoS protection plan in a resource group.
+     * @param parameters Parameters supplied to the create or update operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.

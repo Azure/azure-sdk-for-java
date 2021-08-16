@@ -32,94 +32,297 @@ import com.azure.storage.blob.implementation.models.PageBlobsUpdateSequenceNumbe
 import com.azure.storage.blob.implementation.models.PageBlobsUploadPagesFromURLResponse;
 import com.azure.storage.blob.implementation.models.PageBlobsUploadPagesResponse;
 import com.azure.storage.blob.implementation.models.PremiumPageBlobAccessTier;
-import com.azure.storage.blob.models.BlobStorageException;
+import com.azure.storage.blob.implementation.models.StorageErrorException;
 import com.azure.storage.blob.models.BlobHttpHeaders;
+import com.azure.storage.blob.models.BlobImmutabilityPolicyMode;
 import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.blob.models.EncryptionAlgorithmType;
 import com.azure.storage.blob.models.SequenceNumberActionType;
-import java.net.URL;
 import java.nio.ByteBuffer;
 import java.time.OffsetDateTime;
 import java.util.Map;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/**
- * An instance of this class provides access to all the operations defined in
- * PageBlobs.
- */
+/** An instance of this class provides access to all the operations defined in PageBlobs. */
 public final class PageBlobsImpl {
-    /**
-     * The proxy service used to perform REST calls.
-     */
-    private PageBlobsService service;
+    /** The proxy service used to perform REST calls. */
+    private final PageBlobsService service;
 
-    /**
-     * The service client containing this operation class.
-     */
-    private AzureBlobStorageImpl client;
+    /** The service client containing this operation class. */
+    private final AzureBlobStorageImpl client;
 
     /**
      * Initializes an instance of PageBlobsImpl.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public PageBlobsImpl(AzureBlobStorageImpl client) {
-        this.service = RestProxy.create(PageBlobsService.class, client.getHttpPipeline());
+    PageBlobsImpl(AzureBlobStorageImpl client) {
+        this.service =
+                RestProxy.create(PageBlobsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for AzureBlobStoragePageBlobs to
-     * be used by the proxy service to perform REST calls.
+     * The interface defining all the services for AzureBlobStoragePageBlobs to be used by the proxy service to perform
+     * REST calls.
      */
     @Host("{url}")
-    @ServiceInterface(name = "AzureBlobStoragePageBlobs")
-    private interface PageBlobsService {
-        @Put("{containerName}/{blob}")
+    @ServiceInterface(name = "AzureBlobStoragePage")
+    public interface PageBlobsService {
+        @Put("/{containerName}/{blob}")
         @ExpectedResponses({201})
-        @UnexpectedResponseExceptionType(BlobStorageException.class)
-        Mono<PageBlobsCreateResponse> create(@PathParam("containerName") String containerName, @PathParam("blob") String blob, @HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("Content-Length") long contentLength, @HeaderParam("x-ms-access-tier") PremiumPageBlobAccessTier tier, @HeaderParam("x-ms-meta-") Map<String, String> metadata, @HeaderParam("x-ms-lease-id") String leaseId, @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch, @HeaderParam("x-ms-if-tags") String ifTags, @HeaderParam("x-ms-blob-content-length") long blobContentLength, @HeaderParam("x-ms-blob-sequence-number") Long blobSequenceNumber, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @HeaderParam("x-ms-tags") String blobTagsString, @HeaderParam("x-ms-blob-type") String blobType, @HeaderParam("x-ms-blob-content-type") String contentType, @HeaderParam("x-ms-blob-content-encoding") String contentEncoding, @HeaderParam("x-ms-blob-content-language") String contentLanguage, @HeaderParam("x-ms-blob-content-md5") String contentMd5, @HeaderParam("x-ms-blob-cache-control") String cacheControl, @HeaderParam("x-ms-blob-content-disposition") String contentDisposition, @HeaderParam("x-ms-encryption-key") String encryptionKey, @HeaderParam("x-ms-encryption-key-sha256") String encryptionKeySha256, @HeaderParam("x-ms-encryption-algorithm") EncryptionAlgorithmType encryptionAlgorithm, @HeaderParam("x-ms-encryption-scope") String encryptionScope, Context context);
+        @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
+        Mono<PageBlobsCreateResponse> create(
+                @HostParam("url") String url,
+                @PathParam("containerName") String containerName,
+                @PathParam("blob") String blob,
+                @HeaderParam("x-ms-blob-type") String blobType,
+                @QueryParam("timeout") Integer timeout,
+                @HeaderParam("Content-Length") long contentLength,
+                @HeaderParam("x-ms-access-tier") PremiumPageBlobAccessTier tier,
+                @HeaderParam("x-ms-blob-content-type") String contentType,
+                @HeaderParam("x-ms-blob-content-encoding") String contentEncoding,
+                @HeaderParam("x-ms-blob-content-language") String contentLanguage,
+                @HeaderParam("x-ms-blob-content-md5") String contentMd5,
+                @HeaderParam("x-ms-blob-cache-control") String cacheControl,
+                @HeaderParam("x-ms-meta-") Map<String, String> metadata,
+                @HeaderParam("x-ms-lease-id") String leaseId,
+                @HeaderParam("x-ms-blob-content-disposition") String contentDisposition,
+                @HeaderParam("x-ms-encryption-key") String encryptionKey,
+                @HeaderParam("x-ms-encryption-key-sha256") String encryptionKeySha256,
+                @HeaderParam("x-ms-encryption-algorithm") EncryptionAlgorithmType encryptionAlgorithm,
+                @HeaderParam("x-ms-encryption-scope") String encryptionScope,
+                @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince,
+                @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince,
+                @HeaderParam("If-Match") String ifMatch,
+                @HeaderParam("If-None-Match") String ifNoneMatch,
+                @HeaderParam("x-ms-if-tags") String ifTags,
+                @HeaderParam("x-ms-blob-content-length") long blobContentLength,
+                @HeaderParam("x-ms-blob-sequence-number") Long blobSequenceNumber,
+                @HeaderParam("x-ms-version") String version,
+                @HeaderParam("x-ms-client-request-id") String requestId,
+                @HeaderParam("x-ms-tags") String blobTagsString,
+                @HeaderParam("x-ms-immutability-policy-until-date") DateTimeRfc1123 immutabilityPolicyExpiry,
+                @HeaderParam("x-ms-immutability-policy-mode") BlobImmutabilityPolicyMode immutabilityPolicyMode,
+                @HeaderParam("x-ms-legal-hold") Boolean legalHold,
+                @HeaderParam("Accept") String accept,
+                Context context);
 
-        @Put("{containerName}/{blob}")
+        @Put("/{containerName}/{blob}")
         @ExpectedResponses({201})
-        @UnexpectedResponseExceptionType(BlobStorageException.class)
-        Mono<PageBlobsUploadPagesResponse> uploadPages(@PathParam("containerName") String containerName, @PathParam("blob") String blob, @HostParam("url") String url, @BodyParam("application/octet-stream") Flux<ByteBuffer> body, @HeaderParam("Content-Length") long contentLength, @HeaderParam("Content-MD5") String transactionalContentMD5, @HeaderParam("x-ms-content-crc64") String transactionalContentCrc64, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-range") String range, @HeaderParam("x-ms-lease-id") String leaseId, @HeaderParam("x-ms-if-sequence-number-le") Long ifSequenceNumberLessThanOrEqualTo, @HeaderParam("x-ms-if-sequence-number-lt") Long ifSequenceNumberLessThan, @HeaderParam("x-ms-if-sequence-number-eq") Long ifSequenceNumberEqualTo, @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch, @HeaderParam("x-ms-if-tags") String ifTags, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("comp") String comp, @HeaderParam("x-ms-page-write") String pageWrite, @HeaderParam("x-ms-encryption-key") String encryptionKey, @HeaderParam("x-ms-encryption-key-sha256") String encryptionKeySha256, @HeaderParam("x-ms-encryption-algorithm") EncryptionAlgorithmType encryptionAlgorithm, @HeaderParam("x-ms-encryption-scope") String encryptionScope, Context context);
+        @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
+        Mono<PageBlobsUploadPagesResponse> uploadPages(
+                @HostParam("url") String url,
+                @PathParam("containerName") String containerName,
+                @PathParam("blob") String blob,
+                @QueryParam("comp") String comp,
+                @HeaderParam("x-ms-page-write") String pageWrite,
+                @HeaderParam("Content-Length") long contentLength,
+                @HeaderParam("Content-MD5") String transactionalContentMD5,
+                @HeaderParam("x-ms-content-crc64") String transactionalContentCrc64,
+                @QueryParam("timeout") Integer timeout,
+                @HeaderParam("x-ms-range") String range,
+                @HeaderParam("x-ms-lease-id") String leaseId,
+                @HeaderParam("x-ms-encryption-key") String encryptionKey,
+                @HeaderParam("x-ms-encryption-key-sha256") String encryptionKeySha256,
+                @HeaderParam("x-ms-encryption-algorithm") EncryptionAlgorithmType encryptionAlgorithm,
+                @HeaderParam("x-ms-encryption-scope") String encryptionScope,
+                @HeaderParam("x-ms-if-sequence-number-le") Long ifSequenceNumberLessThanOrEqualTo,
+                @HeaderParam("x-ms-if-sequence-number-lt") Long ifSequenceNumberLessThan,
+                @HeaderParam("x-ms-if-sequence-number-eq") Long ifSequenceNumberEqualTo,
+                @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince,
+                @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince,
+                @HeaderParam("If-Match") String ifMatch,
+                @HeaderParam("If-None-Match") String ifNoneMatch,
+                @HeaderParam("x-ms-if-tags") String ifTags,
+                @HeaderParam("x-ms-version") String version,
+                @HeaderParam("x-ms-client-request-id") String requestId,
+                @BodyParam("application/octet-stream") Flux<ByteBuffer> body,
+                @HeaderParam("Accept") String accept,
+                Context context);
 
-        @Put("{containerName}/{blob}")
+        @Put("/{containerName}/{blob}")
         @ExpectedResponses({201})
-        @UnexpectedResponseExceptionType(BlobStorageException.class)
-        Mono<PageBlobsClearPagesResponse> clearPages(@PathParam("containerName") String containerName, @PathParam("blob") String blob, @HostParam("url") String url, @HeaderParam("Content-Length") long contentLength, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-range") String range, @HeaderParam("x-ms-lease-id") String leaseId, @HeaderParam("x-ms-if-sequence-number-le") Long ifSequenceNumberLessThanOrEqualTo, @HeaderParam("x-ms-if-sequence-number-lt") Long ifSequenceNumberLessThan, @HeaderParam("x-ms-if-sequence-number-eq") Long ifSequenceNumberEqualTo, @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch, @HeaderParam("x-ms-if-tags") String ifTags, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("comp") String comp, @HeaderParam("x-ms-page-write") String pageWrite, @HeaderParam("x-ms-encryption-key") String encryptionKey, @HeaderParam("x-ms-encryption-key-sha256") String encryptionKeySha256, @HeaderParam("x-ms-encryption-algorithm") EncryptionAlgorithmType encryptionAlgorithm, @HeaderParam("x-ms-encryption-scope") String encryptionScope, Context context);
+        @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
+        Mono<PageBlobsClearPagesResponse> clearPages(
+                @HostParam("url") String url,
+                @PathParam("containerName") String containerName,
+                @PathParam("blob") String blob,
+                @QueryParam("comp") String comp,
+                @HeaderParam("x-ms-page-write") String pageWrite,
+                @HeaderParam("Content-Length") long contentLength,
+                @QueryParam("timeout") Integer timeout,
+                @HeaderParam("x-ms-range") String range,
+                @HeaderParam("x-ms-lease-id") String leaseId,
+                @HeaderParam("x-ms-encryption-key") String encryptionKey,
+                @HeaderParam("x-ms-encryption-key-sha256") String encryptionKeySha256,
+                @HeaderParam("x-ms-encryption-algorithm") EncryptionAlgorithmType encryptionAlgorithm,
+                @HeaderParam("x-ms-encryption-scope") String encryptionScope,
+                @HeaderParam("x-ms-if-sequence-number-le") Long ifSequenceNumberLessThanOrEqualTo,
+                @HeaderParam("x-ms-if-sequence-number-lt") Long ifSequenceNumberLessThan,
+                @HeaderParam("x-ms-if-sequence-number-eq") Long ifSequenceNumberEqualTo,
+                @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince,
+                @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince,
+                @HeaderParam("If-Match") String ifMatch,
+                @HeaderParam("If-None-Match") String ifNoneMatch,
+                @HeaderParam("x-ms-if-tags") String ifTags,
+                @HeaderParam("x-ms-version") String version,
+                @HeaderParam("x-ms-client-request-id") String requestId,
+                @HeaderParam("Accept") String accept,
+                Context context);
 
-        @Put("{containerName}/{blob}")
+        @Put("/{containerName}/{blob}")
         @ExpectedResponses({201})
-        @UnexpectedResponseExceptionType(BlobStorageException.class)
-        Mono<PageBlobsUploadPagesFromURLResponse> uploadPagesFromURL(@PathParam("containerName") String containerName, @PathParam("blob") String blob, @HostParam("url") String url, @HeaderParam("x-ms-copy-source") URL copySource, @HeaderParam("x-ms-source-range") String sourceRange, @HeaderParam("x-ms-source-content-md5") String sourceContentMD5, @HeaderParam("x-ms-source-content-crc64") String sourceContentcrc64, @HeaderParam("Content-Length") long contentLength, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-range") String range, @HeaderParam("x-ms-lease-id") String leaseId, @HeaderParam("x-ms-if-sequence-number-le") Long ifSequenceNumberLessThanOrEqualTo, @HeaderParam("x-ms-if-sequence-number-lt") Long ifSequenceNumberLessThan, @HeaderParam("x-ms-if-sequence-number-eq") Long ifSequenceNumberEqualTo, @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch, @HeaderParam("x-ms-if-tags") String ifTags, @HeaderParam("x-ms-source-if-modified-since") DateTimeRfc1123 sourceIfModifiedSince, @HeaderParam("x-ms-source-if-unmodified-since") DateTimeRfc1123 sourceIfUnmodifiedSince, @HeaderParam("x-ms-source-if-match") String sourceIfMatch, @HeaderParam("x-ms-source-if-none-match") String sourceIfNoneMatch, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("comp") String comp, @HeaderParam("x-ms-page-write") String pageWrite, @HeaderParam("x-ms-encryption-key") String encryptionKey, @HeaderParam("x-ms-encryption-key-sha256") String encryptionKeySha256, @HeaderParam("x-ms-encryption-algorithm") EncryptionAlgorithmType encryptionAlgorithm, @HeaderParam("x-ms-encryption-scope") String encryptionScope, Context context);
+        @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
+        Mono<PageBlobsUploadPagesFromURLResponse> uploadPagesFromURL(
+                @HostParam("url") String url,
+                @PathParam("containerName") String containerName,
+                @PathParam("blob") String blob,
+                @QueryParam("comp") String comp,
+                @HeaderParam("x-ms-page-write") String pageWrite,
+                @HeaderParam("x-ms-copy-source") String sourceUrl,
+                @HeaderParam("x-ms-source-range") String sourceRange,
+                @HeaderParam("x-ms-source-content-md5") String sourceContentMD5,
+                @HeaderParam("x-ms-source-content-crc64") String sourceContentcrc64,
+                @HeaderParam("Content-Length") long contentLength,
+                @QueryParam("timeout") Integer timeout,
+                @HeaderParam("x-ms-range") String range,
+                @HeaderParam("x-ms-encryption-key") String encryptionKey,
+                @HeaderParam("x-ms-encryption-key-sha256") String encryptionKeySha256,
+                @HeaderParam("x-ms-encryption-algorithm") EncryptionAlgorithmType encryptionAlgorithm,
+                @HeaderParam("x-ms-encryption-scope") String encryptionScope,
+                @HeaderParam("x-ms-lease-id") String leaseId,
+                @HeaderParam("x-ms-if-sequence-number-le") Long ifSequenceNumberLessThanOrEqualTo,
+                @HeaderParam("x-ms-if-sequence-number-lt") Long ifSequenceNumberLessThan,
+                @HeaderParam("x-ms-if-sequence-number-eq") Long ifSequenceNumberEqualTo,
+                @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince,
+                @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince,
+                @HeaderParam("If-Match") String ifMatch,
+                @HeaderParam("If-None-Match") String ifNoneMatch,
+                @HeaderParam("x-ms-if-tags") String ifTags,
+                @HeaderParam("x-ms-source-if-modified-since") DateTimeRfc1123 sourceIfModifiedSince,
+                @HeaderParam("x-ms-source-if-unmodified-since") DateTimeRfc1123 sourceIfUnmodifiedSince,
+                @HeaderParam("x-ms-source-if-match") String sourceIfMatch,
+                @HeaderParam("x-ms-source-if-none-match") String sourceIfNoneMatch,
+                @HeaderParam("x-ms-version") String version,
+                @HeaderParam("x-ms-client-request-id") String requestId,
+                @HeaderParam("x-ms-copy-source-authorization") String copySourceAuthorization,
+                @HeaderParam("Accept") String accept,
+                Context context);
 
-        @Get("{containerName}/{blob}")
+        @Get("/{containerName}/{blob}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(BlobStorageException.class)
-        Mono<PageBlobsGetPageRangesResponse> getPageRanges(@PathParam("containerName") String containerName, @PathParam("blob") String blob, @HostParam("url") String url, @QueryParam("snapshot") String snapshot, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-range") String range, @HeaderParam("x-ms-lease-id") String leaseId, @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch, @HeaderParam("x-ms-if-tags") String ifTags, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("comp") String comp, Context context);
+        @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
+        Mono<PageBlobsGetPageRangesResponse> getPageRanges(
+                @HostParam("url") String url,
+                @PathParam("containerName") String containerName,
+                @PathParam("blob") String blob,
+                @QueryParam("comp") String comp,
+                @QueryParam("snapshot") String snapshot,
+                @QueryParam("timeout") Integer timeout,
+                @HeaderParam("x-ms-range") String range,
+                @HeaderParam("x-ms-lease-id") String leaseId,
+                @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince,
+                @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince,
+                @HeaderParam("If-Match") String ifMatch,
+                @HeaderParam("If-None-Match") String ifNoneMatch,
+                @HeaderParam("x-ms-if-tags") String ifTags,
+                @HeaderParam("x-ms-version") String version,
+                @HeaderParam("x-ms-client-request-id") String requestId,
+                @HeaderParam("Accept") String accept,
+                Context context);
 
-        @Get("{containerName}/{blob}")
+        @Get("/{containerName}/{blob}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(BlobStorageException.class)
-        Mono<PageBlobsGetPageRangesDiffResponse> getPageRangesDiff(@PathParam("containerName") String containerName, @PathParam("blob") String blob, @HostParam("url") String url, @QueryParam("snapshot") String snapshot, @QueryParam("timeout") Integer timeout, @QueryParam("prevsnapshot") String prevsnapshot, @HeaderParam("x-ms-previous-snapshot-url") URL prevSnapshotUrl, @HeaderParam("x-ms-range") String range, @HeaderParam("x-ms-lease-id") String leaseId, @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch, @HeaderParam("x-ms-if-tags") String ifTags, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("comp") String comp, Context context);
+        @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
+        Mono<PageBlobsGetPageRangesDiffResponse> getPageRangesDiff(
+                @HostParam("url") String url,
+                @PathParam("containerName") String containerName,
+                @PathParam("blob") String blob,
+                @QueryParam("comp") String comp,
+                @QueryParam("snapshot") String snapshot,
+                @QueryParam("timeout") Integer timeout,
+                @QueryParam("prevsnapshot") String prevsnapshot,
+                @HeaderParam("x-ms-previous-snapshot-url") String prevSnapshotUrl,
+                @HeaderParam("x-ms-range") String range,
+                @HeaderParam("x-ms-lease-id") String leaseId,
+                @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince,
+                @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince,
+                @HeaderParam("If-Match") String ifMatch,
+                @HeaderParam("If-None-Match") String ifNoneMatch,
+                @HeaderParam("x-ms-if-tags") String ifTags,
+                @HeaderParam("x-ms-version") String version,
+                @HeaderParam("x-ms-client-request-id") String requestId,
+                @HeaderParam("Accept") String accept,
+                Context context);
 
-        @Put("{containerName}/{blob}")
+        @Put("/{containerName}/{blob}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(BlobStorageException.class)
-        Mono<PageBlobsResizeResponse> resize(@PathParam("containerName") String containerName, @PathParam("blob") String blob, @HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-lease-id") String leaseId, @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch, @HeaderParam("x-ms-if-tags") String ifTags, @HeaderParam("x-ms-blob-content-length") long blobContentLength, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("comp") String comp, @HeaderParam("x-ms-encryption-key") String encryptionKey, @HeaderParam("x-ms-encryption-key-sha256") String encryptionKeySha256, @HeaderParam("x-ms-encryption-algorithm") EncryptionAlgorithmType encryptionAlgorithm, @HeaderParam("x-ms-encryption-scope") String encryptionScope, Context context);
+        @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
+        Mono<PageBlobsResizeResponse> resize(
+                @HostParam("url") String url,
+                @PathParam("containerName") String containerName,
+                @PathParam("blob") String blob,
+                @QueryParam("comp") String comp,
+                @QueryParam("timeout") Integer timeout,
+                @HeaderParam("x-ms-lease-id") String leaseId,
+                @HeaderParam("x-ms-encryption-key") String encryptionKey,
+                @HeaderParam("x-ms-encryption-key-sha256") String encryptionKeySha256,
+                @HeaderParam("x-ms-encryption-algorithm") EncryptionAlgorithmType encryptionAlgorithm,
+                @HeaderParam("x-ms-encryption-scope") String encryptionScope,
+                @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince,
+                @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince,
+                @HeaderParam("If-Match") String ifMatch,
+                @HeaderParam("If-None-Match") String ifNoneMatch,
+                @HeaderParam("x-ms-if-tags") String ifTags,
+                @HeaderParam("x-ms-blob-content-length") long blobContentLength,
+                @HeaderParam("x-ms-version") String version,
+                @HeaderParam("x-ms-client-request-id") String requestId,
+                @HeaderParam("Accept") String accept,
+                Context context);
 
-        @Put("{containerName}/{blob}")
+        @Put("/{containerName}/{blob}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(BlobStorageException.class)
-        Mono<PageBlobsUpdateSequenceNumberResponse> updateSequenceNumber(@PathParam("containerName") String containerName, @PathParam("blob") String blob, @HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-lease-id") String leaseId, @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch, @HeaderParam("x-ms-if-tags") String ifTags, @HeaderParam("x-ms-sequence-number-action") SequenceNumberActionType sequenceNumberAction, @HeaderParam("x-ms-blob-sequence-number") Long blobSequenceNumber, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("comp") String comp, Context context);
+        @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
+        Mono<PageBlobsUpdateSequenceNumberResponse> updateSequenceNumber(
+                @HostParam("url") String url,
+                @PathParam("containerName") String containerName,
+                @PathParam("blob") String blob,
+                @QueryParam("comp") String comp,
+                @QueryParam("timeout") Integer timeout,
+                @HeaderParam("x-ms-lease-id") String leaseId,
+                @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince,
+                @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince,
+                @HeaderParam("If-Match") String ifMatch,
+                @HeaderParam("If-None-Match") String ifNoneMatch,
+                @HeaderParam("x-ms-if-tags") String ifTags,
+                @HeaderParam("x-ms-sequence-number-action") SequenceNumberActionType sequenceNumberAction,
+                @HeaderParam("x-ms-blob-sequence-number") Long blobSequenceNumber,
+                @HeaderParam("x-ms-version") String version,
+                @HeaderParam("x-ms-client-request-id") String requestId,
+                @HeaderParam("Accept") String accept,
+                Context context);
 
-        @Put("{containerName}/{blob}")
+        @Put("/{containerName}/{blob}")
         @ExpectedResponses({202})
-        @UnexpectedResponseExceptionType(BlobStorageException.class)
-        Mono<PageBlobsCopyIncrementalResponse> copyIncremental(@PathParam("containerName") String containerName, @PathParam("blob") String blob, @HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch, @HeaderParam("x-ms-if-tags") String ifTags, @HeaderParam("x-ms-copy-source") URL copySource, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("comp") String comp, Context context);
+        @UnexpectedResponseExceptionType(com.azure.storage.blob.models.BlobStorageException.class)
+        Mono<PageBlobsCopyIncrementalResponse> copyIncremental(
+                @HostParam("url") String url,
+                @PathParam("containerName") String containerName,
+                @PathParam("blob") String blob,
+                @QueryParam("comp") String comp,
+                @QueryParam("timeout") Integer timeout,
+                @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince,
+                @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince,
+                @HeaderParam("If-Match") String ifMatch,
+                @HeaderParam("If-None-Match") String ifNoneMatch,
+                @HeaderParam("x-ms-if-tags") String ifTags,
+                @HeaderParam("x-ms-copy-source") String copySource,
+                @HeaderParam("x-ms-version") String version,
+                @HeaderParam("x-ms-client-request-id") String requestId,
+                @HeaderParam("Accept") String accept,
+                Context context);
     }
 
     /**
@@ -128,112 +331,162 @@ public final class PageBlobsImpl {
      * @param containerName The container name.
      * @param blob The blob name.
      * @param contentLength The length of the request.
-     * @param blobContentLength This header specifies the maximum size for the page blob, up to 1 TB. The page blob size must be aligned to a 512-byte boundary.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @return a Mono which performs the network request upon subscription.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PageBlobsCreateResponse> createWithRestResponseAsync(String containerName, String blob, long contentLength, long blobContentLength, Context context) {
-        final Integer timeout = null;
-        final PremiumPageBlobAccessTier tier = null;
-        final Map<String, String> metadata = null;
-        final String leaseId = null;
-        final String ifMatch = null;
-        final String ifNoneMatch = null;
-        final String ifTags = null;
-        final Long blobSequenceNumber = 0L;
-        final String requestId = null;
-        final String blobTagsString = null;
-        final String blobType = "PageBlob";
-        final String contentType = null;
-        final String contentEncoding = null;
-        final String contentLanguage = null;
-        final String cacheControl = null;
-        final String contentDisposition = null;
-        final String encryptionKey = null;
-        final String encryptionKeySha256 = null;
-        final EncryptionAlgorithmType encryptionAlgorithm = null;
-        final String encryptionScope = null;
-        DateTimeRfc1123 ifModifiedSinceConverted = null;
-        DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
-        String contentMd5Converted = null;
-        return service.create(containerName, blob, this.client.getUrl(), timeout, contentLength, tier, metadata, leaseId, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags, blobContentLength, blobSequenceNumber, this.client.getVersion(), requestId, blobTagsString, blobType, contentType, contentEncoding, contentLanguage, contentMd5Converted, cacheControl, contentDisposition, encryptionKey, encryptionKeySha256, encryptionAlgorithm, encryptionScope, context);
-    }
-
-    /**
-     * The Create operation creates a new page blob.
-     *
-     * @param containerName The container name.
-     * @param blob The blob name.
-     * @param contentLength The length of the request.
-     * @param blobContentLength This header specifies the maximum size for the page blob, up to 1 TB. The page blob size must be aligned to a 512-byte boundary.
-     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting Timeouts for Blob Service Operations.&lt;/a&gt;.
-     * @param tier Optional. Indicates the tier to be set on the page blob. Possible values include: 'P4', 'P6', 'P10', 'P15', 'P20', 'P30', 'P40', 'P50', 'P60', 'P70', 'P80'.
-     * @param metadata Optional. Specifies a user-defined name-value pair associated with the blob. If no name-value pairs are specified, the operation will copy the metadata from the source blob or file to the destination blob. If one or more name-value pairs are specified, the destination blob is created with the specified metadata, and metadata is not copied from the source blob or file. Note that beginning with version 2009-09-19, metadata names must adhere to the naming rules for C# identifiers. See Naming and Referencing Containers, Blobs, and Metadata for more information.
+     * @param blobContentLength This header specifies the maximum size for the page blob, up to 1 TB. The page blob size
+     *     must be aligned to a 512-byte boundary.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     *     Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param tier Optional. Indicates the tier to be set on the page blob.
+     * @param metadata Optional. Specifies a user-defined name-value pair associated with the blob. If no name-value
+     *     pairs are specified, the operation will copy the metadata from the source blob or file to the destination
+     *     blob. If one or more name-value pairs are specified, the destination blob is created with the specified
+     *     metadata, and metadata is not copied from the source blob or file. Note that beginning with version
+     *     2009-09-19, metadata names must adhere to the naming rules for C# identifiers. See Naming and Referencing
+     *     Containers, Blobs, and Metadata for more information.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
-     * @param ifModifiedSince Specify this header value to operate only on a blob if it has been modified since the specified date/time.
-     * @param ifUnmodifiedSince Specify this header value to operate only on a blob if it has not been modified since the specified date/time.
+     * @param ifModifiedSince Specify this header value to operate only on a blob if it has been modified since the
+     *     specified date/time.
+     * @param ifUnmodifiedSince Specify this header value to operate only on a blob if it has not been modified since
+     *     the specified date/time.
      * @param ifMatch Specify an ETag value to operate only on blobs with a matching value.
      * @param ifNoneMatch Specify an ETag value to operate only on blobs without a matching value.
      * @param ifTags Specify a SQL where clause on blob tags to operate only on blobs with a matching value.
-     * @param blobSequenceNumber Set for page blobs only. The sequence number is a user-controlled value that you can use to track requests. The value of the sequence number must be between 0 and 2^63 - 1.
-     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
-     * @param blobTagsString Optional.  Used to set blob tags in various blob operations.
-     * @param blobHttpHeaders Additional parameters for the operation.
-     * @param cpkInfo Additional parameters for the operation.
-     * @param encryptionScope Additional parameters for the operation.
+     * @param blobSequenceNumber Set for page blobs only. The sequence number is a user-controlled value that you can
+     *     use to track requests. The value of the sequence number must be between 0 and 2^63 - 1.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     *     analytics logs when storage analytics logging is enabled.
+     * @param blobTagsString Optional. Used to set blob tags in various blob operations.
+     * @param immutabilityPolicyExpiry Specifies the date time when the blobs immutability policy is set to expire.
+     * @param immutabilityPolicyMode Specifies the immutability policy mode to set on the blob.
+     * @param legalHold Specified if a legal hold should be set on the blob.
+     * @param blobHttpHeaders Parameter group.
+     * @param cpkInfo Parameter group.
+     * @param encryptionScope Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @return a Mono which performs the network request upon subscription.
+     * @throws StorageErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PageBlobsCreateResponse> createWithRestResponseAsync(String containerName, String blob, long contentLength, long blobContentLength, Integer timeout, PremiumPageBlobAccessTier tier, Map<String, String> metadata, String leaseId, OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String ifMatch, String ifNoneMatch, String ifTags, Long blobSequenceNumber, String requestId, String blobTagsString, BlobHttpHeaders blobHttpHeaders, CpkInfo cpkInfo, EncryptionScope encryptionScope, Context context) {
+    public Mono<PageBlobsCreateResponse> createWithResponseAsync(
+            String containerName,
+            String blob,
+            long contentLength,
+            long blobContentLength,
+            Integer timeout,
+            PremiumPageBlobAccessTier tier,
+            Map<String, String> metadata,
+            String leaseId,
+            OffsetDateTime ifModifiedSince,
+            OffsetDateTime ifUnmodifiedSince,
+            String ifMatch,
+            String ifNoneMatch,
+            String ifTags,
+            Long blobSequenceNumber,
+            String requestId,
+            String blobTagsString,
+            OffsetDateTime immutabilityPolicyExpiry,
+            BlobImmutabilityPolicyMode immutabilityPolicyMode,
+            Boolean legalHold,
+            BlobHttpHeaders blobHttpHeaders,
+            CpkInfo cpkInfo,
+            EncryptionScope encryptionScope,
+            Context context) {
         final String blobType = "PageBlob";
-        String contentType = null;
+        final String accept = "application/xml";
+        String contentTypeInternal = null;
         if (blobHttpHeaders != null) {
-            contentType = blobHttpHeaders.getContentType();
+            contentTypeInternal = blobHttpHeaders.getContentType();
         }
-        String contentEncoding = null;
+        String contentType = contentTypeInternal;
+        String contentEncodingInternal = null;
         if (blobHttpHeaders != null) {
-            contentEncoding = blobHttpHeaders.getContentEncoding();
+            contentEncodingInternal = blobHttpHeaders.getContentEncoding();
         }
-        String contentLanguage = null;
+        String contentEncoding = contentEncodingInternal;
+        String contentLanguageInternal = null;
         if (blobHttpHeaders != null) {
-            contentLanguage = blobHttpHeaders.getContentLanguage();
+            contentLanguageInternal = blobHttpHeaders.getContentLanguage();
         }
-        byte[] contentMd5 = null;
+        String contentLanguage = contentLanguageInternal;
+        byte[] contentMd5Internal = null;
         if (blobHttpHeaders != null) {
-            contentMd5 = blobHttpHeaders.getContentMd5();
+            contentMd5Internal = blobHttpHeaders.getContentMd5();
         }
-        String cacheControl = null;
+        byte[] contentMd5 = contentMd5Internal;
+        String cacheControlInternal = null;
         if (blobHttpHeaders != null) {
-            cacheControl = blobHttpHeaders.getCacheControl();
+            cacheControlInternal = blobHttpHeaders.getCacheControl();
         }
-        String contentDisposition = null;
+        String cacheControl = cacheControlInternal;
+        String contentDispositionInternal = null;
         if (blobHttpHeaders != null) {
-            contentDisposition = blobHttpHeaders.getContentDisposition();
+            contentDispositionInternal = blobHttpHeaders.getContentDisposition();
         }
-        String encryptionKey = null;
+        String contentDisposition = contentDispositionInternal;
+        String encryptionKeyInternal = null;
         if (cpkInfo != null) {
-            encryptionKey = cpkInfo.getEncryptionKey();
+            encryptionKeyInternal = cpkInfo.getEncryptionKey();
         }
-        String encryptionKeySha256 = null;
+        String encryptionKey = encryptionKeyInternal;
+        String encryptionKeySha256Internal = null;
         if (cpkInfo != null) {
-            encryptionKeySha256 = cpkInfo.getEncryptionKeySha256();
+            encryptionKeySha256Internal = cpkInfo.getEncryptionKeySha256();
         }
-        EncryptionAlgorithmType encryptionAlgorithm = null;
+        String encryptionKeySha256 = encryptionKeySha256Internal;
+        EncryptionAlgorithmType encryptionAlgorithmInternal = null;
         if (cpkInfo != null) {
-            encryptionAlgorithm = cpkInfo.getEncryptionAlgorithm();
+            encryptionAlgorithmInternal = cpkInfo.getEncryptionAlgorithm();
         }
-        String encryptionScope1 = null;
+        EncryptionAlgorithmType encryptionAlgorithm = encryptionAlgorithmInternal;
+        String encryptionScopeInternal = null;
         if (encryptionScope != null) {
-            encryptionScope1 = encryptionScope.getEncryptionScope();
+            encryptionScopeInternal = encryptionScope.getEncryptionScope();
         }
-        DateTimeRfc1123 ifModifiedSinceConverted = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
+        String encryptionScopeLocal = encryptionScopeInternal;
         String contentMd5Converted = Base64Util.encodeToString(contentMd5);
-        return service.create(containerName, blob, this.client.getUrl(), timeout, contentLength, tier, metadata, leaseId, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags, blobContentLength, blobSequenceNumber, this.client.getVersion(), requestId, blobTagsString, blobType, contentType, contentEncoding, contentLanguage, contentMd5Converted, cacheControl, contentDisposition, encryptionKey, encryptionKeySha256, encryptionAlgorithm, encryptionScope1, context);
+        DateTimeRfc1123 ifModifiedSinceConverted =
+                ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
+        DateTimeRfc1123 ifUnmodifiedSinceConverted =
+                ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
+        DateTimeRfc1123 immutabilityPolicyExpiryConverted =
+                immutabilityPolicyExpiry == null ? null : new DateTimeRfc1123(immutabilityPolicyExpiry);
+        return service.create(
+                this.client.getUrl(),
+                containerName,
+                blob,
+                blobType,
+                timeout,
+                contentLength,
+                tier,
+                contentType,
+                contentEncoding,
+                contentLanguage,
+                contentMd5Converted,
+                cacheControl,
+                metadata,
+                leaseId,
+                contentDisposition,
+                encryptionKey,
+                encryptionKeySha256,
+                encryptionAlgorithm,
+                encryptionScopeLocal,
+                ifModifiedSinceConverted,
+                ifUnmodifiedSinceConverted,
+                ifMatch,
+                ifNoneMatch,
+                ifTags,
+                blobContentLength,
+                blobSequenceNumber,
+                this.client.getVersion(),
+                requestId,
+                blobTagsString,
+                immutabilityPolicyExpiryConverted,
+                immutabilityPolicyMode,
+                legalHold,
+                accept,
+                context);
     }
 
     /**
@@ -241,89 +494,119 @@ public final class PageBlobsImpl {
      *
      * @param containerName The container name.
      * @param blob The blob name.
-     * @param body Initial data.
      * @param contentLength The length of the request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @return a Mono which performs the network request upon subscription.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PageBlobsUploadPagesResponse> uploadPagesWithRestResponseAsync(String containerName, String blob, Flux<ByteBuffer> body, long contentLength, Context context) {
-        final Integer timeout = null;
-        final String range = null;
-        final String leaseId = null;
-        final Long ifSequenceNumberLessThanOrEqualTo = null;
-        final Long ifSequenceNumberLessThan = null;
-        final Long ifSequenceNumberEqualTo = null;
-        final String ifMatch = null;
-        final String ifNoneMatch = null;
-        final String ifTags = null;
-        final String requestId = null;
-        final String comp = "page";
-        final String pageWrite = "update";
-        final String encryptionKey = null;
-        final String encryptionKeySha256 = null;
-        final EncryptionAlgorithmType encryptionAlgorithm = null;
-        final String encryptionScope = null;
-        String transactionalContentMD5Converted = null;
-        String transactionalContentCrc64Converted = null;
-        DateTimeRfc1123 ifModifiedSinceConverted = null;
-        DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
-        return service.uploadPages(containerName, blob, this.client.getUrl(), body, contentLength, transactionalContentMD5Converted, transactionalContentCrc64Converted, timeout, range, leaseId, ifSequenceNumberLessThanOrEqualTo, ifSequenceNumberLessThan, ifSequenceNumberEqualTo, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags, this.client.getVersion(), requestId, comp, pageWrite, encryptionKey, encryptionKeySha256, encryptionAlgorithm, encryptionScope, context);
-    }
-
-    /**
-     * The Upload Pages operation writes a range of pages to a page blob.
-     *
-     * @param containerName The container name.
-     * @param blob The blob name.
      * @param body Initial data.
-     * @param contentLength The length of the request.
      * @param transactionalContentMD5 Specify the transactional md5 for the body, to be validated by the service.
      * @param transactionalContentCrc64 Specify the transactional crc64 for the body, to be validated by the service.
-     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     *     Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param range Return only the bytes of the blob in the specified range.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
-     * @param ifSequenceNumberLessThanOrEqualTo Specify this header value to operate only on a blob if it has a sequence number less than or equal to the specified.
-     * @param ifSequenceNumberLessThan Specify this header value to operate only on a blob if it has a sequence number less than the specified.
-     * @param ifSequenceNumberEqualTo Specify this header value to operate only on a blob if it has the specified sequence number.
-     * @param ifModifiedSince Specify this header value to operate only on a blob if it has been modified since the specified date/time.
-     * @param ifUnmodifiedSince Specify this header value to operate only on a blob if it has not been modified since the specified date/time.
+     * @param ifSequenceNumberLessThanOrEqualTo Specify this header value to operate only on a blob if it has a sequence
+     *     number less than or equal to the specified.
+     * @param ifSequenceNumberLessThan Specify this header value to operate only on a blob if it has a sequence number
+     *     less than the specified.
+     * @param ifSequenceNumberEqualTo Specify this header value to operate only on a blob if it has the specified
+     *     sequence number.
+     * @param ifModifiedSince Specify this header value to operate only on a blob if it has been modified since the
+     *     specified date/time.
+     * @param ifUnmodifiedSince Specify this header value to operate only on a blob if it has not been modified since
+     *     the specified date/time.
      * @param ifMatch Specify an ETag value to operate only on blobs with a matching value.
      * @param ifNoneMatch Specify an ETag value to operate only on blobs without a matching value.
      * @param ifTags Specify a SQL where clause on blob tags to operate only on blobs with a matching value.
-     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
-     * @param cpkInfo Additional parameters for the operation.
-     * @param encryptionScope Additional parameters for the operation.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     *     analytics logs when storage analytics logging is enabled.
+     * @param cpkInfo Parameter group.
+     * @param encryptionScope Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @return a Mono which performs the network request upon subscription.
+     * @throws StorageErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PageBlobsUploadPagesResponse> uploadPagesWithRestResponseAsync(String containerName, String blob, Flux<ByteBuffer> body, long contentLength, byte[] transactionalContentMD5, byte[] transactionalContentCrc64, Integer timeout, String range, String leaseId, Long ifSequenceNumberLessThanOrEqualTo, Long ifSequenceNumberLessThan, Long ifSequenceNumberEqualTo, OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String ifMatch, String ifNoneMatch, String ifTags, String requestId, CpkInfo cpkInfo, EncryptionScope encryptionScope, Context context) {
+    public Mono<PageBlobsUploadPagesResponse> uploadPagesWithResponseAsync(
+            String containerName,
+            String blob,
+            long contentLength,
+            Flux<ByteBuffer> body,
+            byte[] transactionalContentMD5,
+            byte[] transactionalContentCrc64,
+            Integer timeout,
+            String range,
+            String leaseId,
+            Long ifSequenceNumberLessThanOrEqualTo,
+            Long ifSequenceNumberLessThan,
+            Long ifSequenceNumberEqualTo,
+            OffsetDateTime ifModifiedSince,
+            OffsetDateTime ifUnmodifiedSince,
+            String ifMatch,
+            String ifNoneMatch,
+            String ifTags,
+            String requestId,
+            CpkInfo cpkInfo,
+            EncryptionScope encryptionScope,
+            Context context) {
         final String comp = "page";
         final String pageWrite = "update";
-        String encryptionKey = null;
+        final String accept = "application/xml";
+        String encryptionKeyInternal = null;
         if (cpkInfo != null) {
-            encryptionKey = cpkInfo.getEncryptionKey();
+            encryptionKeyInternal = cpkInfo.getEncryptionKey();
         }
-        String encryptionKeySha256 = null;
+        String encryptionKey = encryptionKeyInternal;
+        String encryptionKeySha256Internal = null;
         if (cpkInfo != null) {
-            encryptionKeySha256 = cpkInfo.getEncryptionKeySha256();
+            encryptionKeySha256Internal = cpkInfo.getEncryptionKeySha256();
         }
-        EncryptionAlgorithmType encryptionAlgorithm = null;
+        String encryptionKeySha256 = encryptionKeySha256Internal;
+        EncryptionAlgorithmType encryptionAlgorithmInternal = null;
         if (cpkInfo != null) {
-            encryptionAlgorithm = cpkInfo.getEncryptionAlgorithm();
+            encryptionAlgorithmInternal = cpkInfo.getEncryptionAlgorithm();
         }
-        String encryptionScope1 = null;
+        EncryptionAlgorithmType encryptionAlgorithm = encryptionAlgorithmInternal;
+        String encryptionScopeInternal = null;
         if (encryptionScope != null) {
-            encryptionScope1 = encryptionScope.getEncryptionScope();
+            encryptionScopeInternal = encryptionScope.getEncryptionScope();
         }
+        String encryptionScopeLocal = encryptionScopeInternal;
         String transactionalContentMD5Converted = Base64Util.encodeToString(transactionalContentMD5);
         String transactionalContentCrc64Converted = Base64Util.encodeToString(transactionalContentCrc64);
-        DateTimeRfc1123 ifModifiedSinceConverted = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        return service.uploadPages(containerName, blob, this.client.getUrl(), body, contentLength, transactionalContentMD5Converted, transactionalContentCrc64Converted, timeout, range, leaseId, ifSequenceNumberLessThanOrEqualTo, ifSequenceNumberLessThan, ifSequenceNumberEqualTo, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags, this.client.getVersion(), requestId, comp, pageWrite, encryptionKey, encryptionKeySha256, encryptionAlgorithm, encryptionScope1, context);
+        DateTimeRfc1123 ifModifiedSinceConverted =
+                ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
+        DateTimeRfc1123 ifUnmodifiedSinceConverted =
+                ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
+        return service.uploadPages(
+                this.client.getUrl(),
+                containerName,
+                blob,
+                comp,
+                pageWrite,
+                contentLength,
+                transactionalContentMD5Converted,
+                transactionalContentCrc64Converted,
+                timeout,
+                range,
+                leaseId,
+                encryptionKey,
+                encryptionKeySha256,
+                encryptionAlgorithm,
+                encryptionScopeLocal,
+                ifSequenceNumberLessThanOrEqualTo,
+                ifSequenceNumberLessThan,
+                ifSequenceNumberEqualTo,
+                ifModifiedSinceConverted,
+                ifUnmodifiedSinceConverted,
+                ifMatch,
+                ifNoneMatch,
+                ifTags,
+                this.client.getVersion(),
+                requestId,
+                body,
+                accept,
+                context);
     }
 
     /**
@@ -332,80 +615,107 @@ public final class PageBlobsImpl {
      * @param containerName The container name.
      * @param blob The blob name.
      * @param contentLength The length of the request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @return a Mono which performs the network request upon subscription.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PageBlobsClearPagesResponse> clearPagesWithRestResponseAsync(String containerName, String blob, long contentLength, Context context) {
-        final Integer timeout = null;
-        final String range = null;
-        final String leaseId = null;
-        final Long ifSequenceNumberLessThanOrEqualTo = null;
-        final Long ifSequenceNumberLessThan = null;
-        final Long ifSequenceNumberEqualTo = null;
-        final String ifMatch = null;
-        final String ifNoneMatch = null;
-        final String ifTags = null;
-        final String requestId = null;
-        final String comp = "page";
-        final String pageWrite = "clear";
-        final String encryptionKey = null;
-        final String encryptionKeySha256 = null;
-        final EncryptionAlgorithmType encryptionAlgorithm = null;
-        final String encryptionScope = null;
-        DateTimeRfc1123 ifModifiedSinceConverted = null;
-        DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
-        return service.clearPages(containerName, blob, this.client.getUrl(), contentLength, timeout, range, leaseId, ifSequenceNumberLessThanOrEqualTo, ifSequenceNumberLessThan, ifSequenceNumberEqualTo, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags, this.client.getVersion(), requestId, comp, pageWrite, encryptionKey, encryptionKeySha256, encryptionAlgorithm, encryptionScope, context);
-    }
-
-    /**
-     * The Clear Pages operation clears a set of pages from a page blob.
-     *
-     * @param containerName The container name.
-     * @param blob The blob name.
-     * @param contentLength The length of the request.
-     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     *     Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param range Return only the bytes of the blob in the specified range.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
-     * @param ifSequenceNumberLessThanOrEqualTo Specify this header value to operate only on a blob if it has a sequence number less than or equal to the specified.
-     * @param ifSequenceNumberLessThan Specify this header value to operate only on a blob if it has a sequence number less than the specified.
-     * @param ifSequenceNumberEqualTo Specify this header value to operate only on a blob if it has the specified sequence number.
-     * @param ifModifiedSince Specify this header value to operate only on a blob if it has been modified since the specified date/time.
-     * @param ifUnmodifiedSince Specify this header value to operate only on a blob if it has not been modified since the specified date/time.
+     * @param ifSequenceNumberLessThanOrEqualTo Specify this header value to operate only on a blob if it has a sequence
+     *     number less than or equal to the specified.
+     * @param ifSequenceNumberLessThan Specify this header value to operate only on a blob if it has a sequence number
+     *     less than the specified.
+     * @param ifSequenceNumberEqualTo Specify this header value to operate only on a blob if it has the specified
+     *     sequence number.
+     * @param ifModifiedSince Specify this header value to operate only on a blob if it has been modified since the
+     *     specified date/time.
+     * @param ifUnmodifiedSince Specify this header value to operate only on a blob if it has not been modified since
+     *     the specified date/time.
      * @param ifMatch Specify an ETag value to operate only on blobs with a matching value.
      * @param ifNoneMatch Specify an ETag value to operate only on blobs without a matching value.
      * @param ifTags Specify a SQL where clause on blob tags to operate only on blobs with a matching value.
-     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
-     * @param cpkInfo Additional parameters for the operation.
-     * @param encryptionScope Additional parameters for the operation.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     *     analytics logs when storage analytics logging is enabled.
+     * @param cpkInfo Parameter group.
+     * @param encryptionScope Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @return a Mono which performs the network request upon subscription.
+     * @throws StorageErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PageBlobsClearPagesResponse> clearPagesWithRestResponseAsync(String containerName, String blob, long contentLength, Integer timeout, String range, String leaseId, Long ifSequenceNumberLessThanOrEqualTo, Long ifSequenceNumberLessThan, Long ifSequenceNumberEqualTo, OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String ifMatch, String ifNoneMatch, String ifTags, String requestId, CpkInfo cpkInfo, EncryptionScope encryptionScope, Context context) {
+    public Mono<PageBlobsClearPagesResponse> clearPagesWithResponseAsync(
+            String containerName,
+            String blob,
+            long contentLength,
+            Integer timeout,
+            String range,
+            String leaseId,
+            Long ifSequenceNumberLessThanOrEqualTo,
+            Long ifSequenceNumberLessThan,
+            Long ifSequenceNumberEqualTo,
+            OffsetDateTime ifModifiedSince,
+            OffsetDateTime ifUnmodifiedSince,
+            String ifMatch,
+            String ifNoneMatch,
+            String ifTags,
+            String requestId,
+            CpkInfo cpkInfo,
+            EncryptionScope encryptionScope,
+            Context context) {
         final String comp = "page";
         final String pageWrite = "clear";
-        String encryptionKey = null;
+        final String accept = "application/xml";
+        String encryptionKeyInternal = null;
         if (cpkInfo != null) {
-            encryptionKey = cpkInfo.getEncryptionKey();
+            encryptionKeyInternal = cpkInfo.getEncryptionKey();
         }
-        String encryptionKeySha256 = null;
+        String encryptionKey = encryptionKeyInternal;
+        String encryptionKeySha256Internal = null;
         if (cpkInfo != null) {
-            encryptionKeySha256 = cpkInfo.getEncryptionKeySha256();
+            encryptionKeySha256Internal = cpkInfo.getEncryptionKeySha256();
         }
-        EncryptionAlgorithmType encryptionAlgorithm = null;
+        String encryptionKeySha256 = encryptionKeySha256Internal;
+        EncryptionAlgorithmType encryptionAlgorithmInternal = null;
         if (cpkInfo != null) {
-            encryptionAlgorithm = cpkInfo.getEncryptionAlgorithm();
+            encryptionAlgorithmInternal = cpkInfo.getEncryptionAlgorithm();
         }
-        String encryptionScope1 = null;
+        EncryptionAlgorithmType encryptionAlgorithm = encryptionAlgorithmInternal;
+        String encryptionScopeInternal = null;
         if (encryptionScope != null) {
-            encryptionScope1 = encryptionScope.getEncryptionScope();
+            encryptionScopeInternal = encryptionScope.getEncryptionScope();
         }
-        DateTimeRfc1123 ifModifiedSinceConverted = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        return service.clearPages(containerName, blob, this.client.getUrl(), contentLength, timeout, range, leaseId, ifSequenceNumberLessThanOrEqualTo, ifSequenceNumberLessThan, ifSequenceNumberEqualTo, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags, this.client.getVersion(), requestId, comp, pageWrite, encryptionKey, encryptionKeySha256, encryptionAlgorithm, encryptionScope1, context);
+        String encryptionScopeLocal = encryptionScopeInternal;
+        DateTimeRfc1123 ifModifiedSinceConverted =
+                ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
+        DateTimeRfc1123 ifUnmodifiedSinceConverted =
+                ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
+        return service.clearPages(
+                this.client.getUrl(),
+                containerName,
+                blob,
+                comp,
+                pageWrite,
+                contentLength,
+                timeout,
+                range,
+                leaseId,
+                encryptionKey,
+                encryptionKeySha256,
+                encryptionAlgorithm,
+                encryptionScopeLocal,
+                ifSequenceNumberLessThanOrEqualTo,
+                ifSequenceNumberLessThan,
+                ifSequenceNumberEqualTo,
+                ifModifiedSinceConverted,
+                ifUnmodifiedSinceConverted,
+                ifMatch,
+                ifNoneMatch,
+                ifTags,
+                this.client.getVersion(),
+                requestId,
+                accept,
+                context);
     }
 
     /**
@@ -414,208 +724,300 @@ public final class PageBlobsImpl {
      * @param containerName The container name.
      * @param blob The blob name.
      * @param sourceUrl Specify a URL to the copy source.
-     * @param sourceRange Bytes of source data in the specified range. The length of this range should match the ContentLength header and x-ms-range/Range destination range header.
+     * @param sourceRange Bytes of source data in the specified range. The length of this range should match the
+     *     ContentLength header and x-ms-range/Range destination range header.
      * @param contentLength The length of the request.
-     * @param range The range of bytes to which the source range would be written. The range should be 512 aligned and range-end is required.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @return a Mono which performs the network request upon subscription.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PageBlobsUploadPagesFromURLResponse> uploadPagesFromURLWithRestResponseAsync(String containerName, String blob, URL sourceUrl, String sourceRange, long contentLength, String range, Context context) {
-        final Integer timeout = null;
-        final String leaseId = null;
-        final Long ifSequenceNumberLessThanOrEqualTo = null;
-        final Long ifSequenceNumberLessThan = null;
-        final Long ifSequenceNumberEqualTo = null;
-        final String ifMatch = null;
-        final String ifNoneMatch = null;
-        final String ifTags = null;
-        final String sourceIfMatch = null;
-        final String sourceIfNoneMatch = null;
-        final String requestId = null;
-        final String comp = "page";
-        final String pageWrite = "update";
-        final String encryptionKey = null;
-        final String encryptionKeySha256 = null;
-        final EncryptionAlgorithmType encryptionAlgorithm = null;
-        final String encryptionScope = null;
-        String sourceContentMD5Converted = null;
-        String sourceContentcrc64Converted = null;
-        DateTimeRfc1123 ifModifiedSinceConverted = null;
-        DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
-        DateTimeRfc1123 sourceIfModifiedSinceConverted = null;
-        DateTimeRfc1123 sourceIfUnmodifiedSinceConverted = null;
-        return service.uploadPagesFromURL(containerName, blob, this.client.getUrl(), sourceUrl, sourceRange, sourceContentMD5Converted, sourceContentcrc64Converted, contentLength, timeout, range, leaseId, ifSequenceNumberLessThanOrEqualTo, ifSequenceNumberLessThan, ifSequenceNumberEqualTo, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags, sourceIfModifiedSinceConverted, sourceIfUnmodifiedSinceConverted, sourceIfMatch, sourceIfNoneMatch, this.client.getVersion(), requestId, comp, pageWrite, encryptionKey, encryptionKeySha256, encryptionAlgorithm, encryptionScope, context);
-    }
-
-    /**
-     * The Upload Pages operation writes a range of pages to a page blob where the contents are read from a URL.
-     *
-     * @param containerName The container name.
-     * @param blob The blob name.
-     * @param sourceUrl Specify a URL to the copy source.
-     * @param sourceRange Bytes of source data in the specified range. The length of this range should match the ContentLength header and x-ms-range/Range destination range header.
-     * @param contentLength The length of the request.
-     * @param range The range of bytes to which the source range would be written. The range should be 512 aligned and range-end is required.
+     * @param range The range of bytes to which the source range would be written. The range should be 512 aligned and
+     *     range-end is required.
      * @param sourceContentMD5 Specify the md5 calculated for the range of bytes that must be read from the copy source.
-     * @param sourceContentcrc64 Specify the crc64 calculated for the range of bytes that must be read from the copy source.
-     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param sourceContentcrc64 Specify the crc64 calculated for the range of bytes that must be read from the copy
+     *     source.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     *     Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
-     * @param ifSequenceNumberLessThanOrEqualTo Specify this header value to operate only on a blob if it has a sequence number less than or equal to the specified.
-     * @param ifSequenceNumberLessThan Specify this header value to operate only on a blob if it has a sequence number less than the specified.
-     * @param ifSequenceNumberEqualTo Specify this header value to operate only on a blob if it has the specified sequence number.
-     * @param ifModifiedSince Specify this header value to operate only on a blob if it has been modified since the specified date/time.
-     * @param ifUnmodifiedSince Specify this header value to operate only on a blob if it has not been modified since the specified date/time.
+     * @param ifSequenceNumberLessThanOrEqualTo Specify this header value to operate only on a blob if it has a sequence
+     *     number less than or equal to the specified.
+     * @param ifSequenceNumberLessThan Specify this header value to operate only on a blob if it has a sequence number
+     *     less than the specified.
+     * @param ifSequenceNumberEqualTo Specify this header value to operate only on a blob if it has the specified
+     *     sequence number.
+     * @param ifModifiedSince Specify this header value to operate only on a blob if it has been modified since the
+     *     specified date/time.
+     * @param ifUnmodifiedSince Specify this header value to operate only on a blob if it has not been modified since
+     *     the specified date/time.
      * @param ifMatch Specify an ETag value to operate only on blobs with a matching value.
      * @param ifNoneMatch Specify an ETag value to operate only on blobs without a matching value.
      * @param ifTags Specify a SQL where clause on blob tags to operate only on blobs with a matching value.
-     * @param sourceIfModifiedSince Specify this header value to operate only on a blob if it has been modified since the specified date/time.
-     * @param sourceIfUnmodifiedSince Specify this header value to operate only on a blob if it has not been modified since the specified date/time.
+     * @param sourceIfModifiedSince Specify this header value to operate only on a blob if it has been modified since
+     *     the specified date/time.
+     * @param sourceIfUnmodifiedSince Specify this header value to operate only on a blob if it has not been modified
+     *     since the specified date/time.
      * @param sourceIfMatch Specify an ETag value to operate only on blobs with a matching value.
      * @param sourceIfNoneMatch Specify an ETag value to operate only on blobs without a matching value.
-     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
-     * @param cpkInfo Additional parameters for the operation.
-     * @param encryptionScope Additional parameters for the operation.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     *     analytics logs when storage analytics logging is enabled.
+     * @param copySourceAuthorization Only Bearer type is supported. Credentials should be a valid OAuth access token to
+     *     copy source.
+     * @param cpkInfo Parameter group.
+     * @param encryptionScope Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @return a Mono which performs the network request upon subscription.
+     * @throws StorageErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PageBlobsUploadPagesFromURLResponse> uploadPagesFromURLWithRestResponseAsync(String containerName, String blob, URL sourceUrl, String sourceRange, long contentLength, String range, byte[] sourceContentMD5, byte[] sourceContentcrc64, Integer timeout, String leaseId, Long ifSequenceNumberLessThanOrEqualTo, Long ifSequenceNumberLessThan, Long ifSequenceNumberEqualTo, OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String ifMatch, String ifNoneMatch, String ifTags, OffsetDateTime sourceIfModifiedSince, OffsetDateTime sourceIfUnmodifiedSince, String sourceIfMatch, String sourceIfNoneMatch, String requestId, CpkInfo cpkInfo, EncryptionScope encryptionScope, Context context) {
+    public Mono<PageBlobsUploadPagesFromURLResponse> uploadPagesFromURLWithResponseAsync(
+            String containerName,
+            String blob,
+            String sourceUrl,
+            String sourceRange,
+            long contentLength,
+            String range,
+            byte[] sourceContentMD5,
+            byte[] sourceContentcrc64,
+            Integer timeout,
+            String leaseId,
+            Long ifSequenceNumberLessThanOrEqualTo,
+            Long ifSequenceNumberLessThan,
+            Long ifSequenceNumberEqualTo,
+            OffsetDateTime ifModifiedSince,
+            OffsetDateTime ifUnmodifiedSince,
+            String ifMatch,
+            String ifNoneMatch,
+            String ifTags,
+            OffsetDateTime sourceIfModifiedSince,
+            OffsetDateTime sourceIfUnmodifiedSince,
+            String sourceIfMatch,
+            String sourceIfNoneMatch,
+            String requestId,
+            String copySourceAuthorization,
+            CpkInfo cpkInfo,
+            EncryptionScope encryptionScope,
+            Context context) {
         final String comp = "page";
         final String pageWrite = "update";
-        String encryptionKey = null;
+        final String accept = "application/xml";
+        String encryptionKeyInternal = null;
         if (cpkInfo != null) {
-            encryptionKey = cpkInfo.getEncryptionKey();
+            encryptionKeyInternal = cpkInfo.getEncryptionKey();
         }
-        String encryptionKeySha256 = null;
+        String encryptionKey = encryptionKeyInternal;
+        String encryptionKeySha256Internal = null;
         if (cpkInfo != null) {
-            encryptionKeySha256 = cpkInfo.getEncryptionKeySha256();
+            encryptionKeySha256Internal = cpkInfo.getEncryptionKeySha256();
         }
-        EncryptionAlgorithmType encryptionAlgorithm = null;
+        String encryptionKeySha256 = encryptionKeySha256Internal;
+        EncryptionAlgorithmType encryptionAlgorithmInternal = null;
         if (cpkInfo != null) {
-            encryptionAlgorithm = cpkInfo.getEncryptionAlgorithm();
+            encryptionAlgorithmInternal = cpkInfo.getEncryptionAlgorithm();
         }
-        String encryptionScope1 = null;
+        EncryptionAlgorithmType encryptionAlgorithm = encryptionAlgorithmInternal;
+        String encryptionScopeInternal = null;
         if (encryptionScope != null) {
-            encryptionScope1 = encryptionScope.getEncryptionScope();
+            encryptionScopeInternal = encryptionScope.getEncryptionScope();
         }
+        String encryptionScopeLocal = encryptionScopeInternal;
         String sourceContentMD5Converted = Base64Util.encodeToString(sourceContentMD5);
         String sourceContentcrc64Converted = Base64Util.encodeToString(sourceContentcrc64);
-        DateTimeRfc1123 ifModifiedSinceConverted = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        DateTimeRfc1123 sourceIfModifiedSinceConverted = sourceIfModifiedSince == null ? null : new DateTimeRfc1123(sourceIfModifiedSince);
-        DateTimeRfc1123 sourceIfUnmodifiedSinceConverted = sourceIfUnmodifiedSince == null ? null : new DateTimeRfc1123(sourceIfUnmodifiedSince);
-        return service.uploadPagesFromURL(containerName, blob, this.client.getUrl(), sourceUrl, sourceRange, sourceContentMD5Converted, sourceContentcrc64Converted, contentLength, timeout, range, leaseId, ifSequenceNumberLessThanOrEqualTo, ifSequenceNumberLessThan, ifSequenceNumberEqualTo, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags, sourceIfModifiedSinceConverted, sourceIfUnmodifiedSinceConverted, sourceIfMatch, sourceIfNoneMatch, this.client.getVersion(), requestId, comp, pageWrite, encryptionKey, encryptionKeySha256, encryptionAlgorithm, encryptionScope1, context);
+        DateTimeRfc1123 ifModifiedSinceConverted =
+                ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
+        DateTimeRfc1123 ifUnmodifiedSinceConverted =
+                ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
+        DateTimeRfc1123 sourceIfModifiedSinceConverted =
+                sourceIfModifiedSince == null ? null : new DateTimeRfc1123(sourceIfModifiedSince);
+        DateTimeRfc1123 sourceIfUnmodifiedSinceConverted =
+                sourceIfUnmodifiedSince == null ? null : new DateTimeRfc1123(sourceIfUnmodifiedSince);
+        return service.uploadPagesFromURL(
+                this.client.getUrl(),
+                containerName,
+                blob,
+                comp,
+                pageWrite,
+                sourceUrl,
+                sourceRange,
+                sourceContentMD5Converted,
+                sourceContentcrc64Converted,
+                contentLength,
+                timeout,
+                range,
+                encryptionKey,
+                encryptionKeySha256,
+                encryptionAlgorithm,
+                encryptionScopeLocal,
+                leaseId,
+                ifSequenceNumberLessThanOrEqualTo,
+                ifSequenceNumberLessThan,
+                ifSequenceNumberEqualTo,
+                ifModifiedSinceConverted,
+                ifUnmodifiedSinceConverted,
+                ifMatch,
+                ifNoneMatch,
+                ifTags,
+                sourceIfModifiedSinceConverted,
+                sourceIfUnmodifiedSinceConverted,
+                sourceIfMatch,
+                sourceIfNoneMatch,
+                this.client.getVersion(),
+                requestId,
+                copySourceAuthorization,
+                accept,
+                context);
     }
 
     /**
-     * The Get Page Ranges operation returns the list of valid page ranges for a page blob, version or snapshot of a page blob.
+     * The Get Page Ranges operation returns the list of valid page ranges for a page blob, version or snapshot of a
+     * page blob.
      *
      * @param containerName The container name.
      * @param blob The blob name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @return a Mono which performs the network request upon subscription.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PageBlobsGetPageRangesResponse> getPageRangesWithRestResponseAsync(String containerName, String blob, Context context) {
-        final String snapshot = null;
-        final Integer timeout = null;
-        final String range = null;
-        final String leaseId = null;
-        final String ifMatch = null;
-        final String ifNoneMatch = null;
-        final String ifTags = null;
-        final String requestId = null;
-        final String comp = "pagelist";
-        DateTimeRfc1123 ifModifiedSinceConverted = null;
-        DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
-        return service.getPageRanges(containerName, blob, this.client.getUrl(), snapshot, timeout, range, leaseId, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags, this.client.getVersion(), requestId, comp, context);
-    }
-
-    /**
-     * The Get Page Ranges operation returns the list of valid page ranges for a page blob, version or snapshot of a page blob.
-     *
-     * @param containerName The container name.
-     * @param blob The blob name.
-     * @param snapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the blob snapshot to retrieve. For more information on working with blob snapshots, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/creating-a-snapshot-of-a-blob"&gt;Creating a Snapshot of a Blob.&lt;/a&gt;.
-     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param snapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the blob
+     *     snapshot to retrieve. For more information on working with blob snapshots, see &lt;a
+     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/creating-a-snapshot-of-a-blob"&gt;Creating
+     *     a Snapshot of a Blob.&lt;/a&gt;.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     *     Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param range Return only the bytes of the blob in the specified range.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
-     * @param ifModifiedSince Specify this header value to operate only on a blob if it has been modified since the specified date/time.
-     * @param ifUnmodifiedSince Specify this header value to operate only on a blob if it has not been modified since the specified date/time.
+     * @param ifModifiedSince Specify this header value to operate only on a blob if it has been modified since the
+     *     specified date/time.
+     * @param ifUnmodifiedSince Specify this header value to operate only on a blob if it has not been modified since
+     *     the specified date/time.
      * @param ifMatch Specify an ETag value to operate only on blobs with a matching value.
      * @param ifNoneMatch Specify an ETag value to operate only on blobs without a matching value.
      * @param ifTags Specify a SQL where clause on blob tags to operate only on blobs with a matching value.
-     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     *     analytics logs when storage analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @return a Mono which performs the network request upon subscription.
+     * @throws StorageErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of pages.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PageBlobsGetPageRangesResponse> getPageRangesWithRestResponseAsync(String containerName, String blob, String snapshot, Integer timeout, String range, String leaseId, OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String ifMatch, String ifNoneMatch, String ifTags, String requestId, Context context) {
+    public Mono<PageBlobsGetPageRangesResponse> getPageRangesWithResponseAsync(
+            String containerName,
+            String blob,
+            String snapshot,
+            Integer timeout,
+            String range,
+            String leaseId,
+            OffsetDateTime ifModifiedSince,
+            OffsetDateTime ifUnmodifiedSince,
+            String ifMatch,
+            String ifNoneMatch,
+            String ifTags,
+            String requestId,
+            Context context) {
         final String comp = "pagelist";
-        DateTimeRfc1123 ifModifiedSinceConverted = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        return service.getPageRanges(containerName, blob, this.client.getUrl(), snapshot, timeout, range, leaseId, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags, this.client.getVersion(), requestId, comp, context);
+        final String accept = "application/xml";
+        DateTimeRfc1123 ifModifiedSinceConverted =
+                ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
+        DateTimeRfc1123 ifUnmodifiedSinceConverted =
+                ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
+        return service.getPageRanges(
+                this.client.getUrl(),
+                containerName,
+                blob,
+                comp,
+                snapshot,
+                timeout,
+                range,
+                leaseId,
+                ifModifiedSinceConverted,
+                ifUnmodifiedSinceConverted,
+                ifMatch,
+                ifNoneMatch,
+                ifTags,
+                this.client.getVersion(),
+                requestId,
+                accept,
+                context);
     }
 
     /**
-     * [Update] The Get Page Ranges Diff operation returns the list of valid page ranges for a page blob that were changed between target blob and previous snapshot or version.
+     * [Update] The Get Page Ranges Diff operation returns the list of valid page ranges for a page blob that were
+     * changed between target blob and previous snapshot or version.
      *
      * @param containerName The container name.
      * @param blob The blob name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @return a Mono which performs the network request upon subscription.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PageBlobsGetPageRangesDiffResponse> getPageRangesDiffWithRestResponseAsync(String containerName, String blob, Context context) {
-        final String snapshot = null;
-        final Integer timeout = null;
-        final String prevsnapshot = null;
-        final URL prevSnapshotUrl = null;
-        final String range = null;
-        final String leaseId = null;
-        final String ifMatch = null;
-        final String ifNoneMatch = null;
-        final String ifTags = null;
-        final String requestId = null;
-        final String comp = "pagelist";
-        DateTimeRfc1123 ifModifiedSinceConverted = null;
-        DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
-        return service.getPageRangesDiff(containerName, blob, this.client.getUrl(), snapshot, timeout, prevsnapshot, prevSnapshotUrl, range, leaseId, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags, this.client.getVersion(), requestId, comp, context);
-    }
-
-    /**
-     * [Update] The Get Page Ranges Diff operation returns the list of valid page ranges for a page blob that were changed between target blob and previous snapshot or version.
-     *
-     * @param containerName The container name.
-     * @param blob The blob name.
-     * @param snapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the blob snapshot to retrieve. For more information on working with blob snapshots, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/creating-a-snapshot-of-a-blob"&gt;Creating a Snapshot of a Blob.&lt;/a&gt;.
-     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting Timeouts for Blob Service Operations.&lt;/a&gt;.
-     * @param prevsnapshot Optional in version 2015-07-08 and newer. The prevsnapshot parameter is a DateTime value that specifies that the response will contain only pages that were changed between target blob and previous snapshot. Changed pages include both updated and cleared pages. The target blob may be a snapshot, as long as the snapshot specified by prevsnapshot is the older of the two. Note that incremental snapshots are currently supported only for blobs created on or after January 1, 2016.
-     * @param prevSnapshotUrl Optional. This header is only supported in service versions 2019-04-19 and after and specifies the URL of a previous snapshot of the target blob. The response will only contain pages that were changed between the target blob and its previous snapshot.
+     * @param snapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the blob
+     *     snapshot to retrieve. For more information on working with blob snapshots, see &lt;a
+     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/creating-a-snapshot-of-a-blob"&gt;Creating
+     *     a Snapshot of a Blob.&lt;/a&gt;.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     *     Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param prevsnapshot Optional in version 2015-07-08 and newer. The prevsnapshot parameter is a DateTime value that
+     *     specifies that the response will contain only pages that were changed between target blob and previous
+     *     snapshot. Changed pages include both updated and cleared pages. The target blob may be a snapshot, as long as
+     *     the snapshot specified by prevsnapshot is the older of the two. Note that incremental snapshots are currently
+     *     supported only for blobs created on or after January 1, 2016.
+     * @param prevSnapshotUrl Optional. This header is only supported in service versions 2019-04-19 and after and
+     *     specifies the URL of a previous snapshot of the target blob. The response will only contain pages that were
+     *     changed between the target blob and its previous snapshot.
      * @param range Return only the bytes of the blob in the specified range.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
-     * @param ifModifiedSince Specify this header value to operate only on a blob if it has been modified since the specified date/time.
-     * @param ifUnmodifiedSince Specify this header value to operate only on a blob if it has not been modified since the specified date/time.
+     * @param ifModifiedSince Specify this header value to operate only on a blob if it has been modified since the
+     *     specified date/time.
+     * @param ifUnmodifiedSince Specify this header value to operate only on a blob if it has not been modified since
+     *     the specified date/time.
      * @param ifMatch Specify an ETag value to operate only on blobs with a matching value.
      * @param ifNoneMatch Specify an ETag value to operate only on blobs without a matching value.
      * @param ifTags Specify a SQL where clause on blob tags to operate only on blobs with a matching value.
-     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     *     analytics logs when storage analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @return a Mono which performs the network request upon subscription.
+     * @throws StorageErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of pages.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PageBlobsGetPageRangesDiffResponse> getPageRangesDiffWithRestResponseAsync(String containerName, String blob, String snapshot, Integer timeout, String prevsnapshot, URL prevSnapshotUrl, String range, String leaseId, OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String ifMatch, String ifNoneMatch, String ifTags, String requestId, Context context) {
+    public Mono<PageBlobsGetPageRangesDiffResponse> getPageRangesDiffWithResponseAsync(
+            String containerName,
+            String blob,
+            String snapshot,
+            Integer timeout,
+            String prevsnapshot,
+            String prevSnapshotUrl,
+            String range,
+            String leaseId,
+            OffsetDateTime ifModifiedSince,
+            OffsetDateTime ifUnmodifiedSince,
+            String ifMatch,
+            String ifNoneMatch,
+            String ifTags,
+            String requestId,
+            Context context) {
         final String comp = "pagelist";
-        DateTimeRfc1123 ifModifiedSinceConverted = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        return service.getPageRangesDiff(containerName, blob, this.client.getUrl(), snapshot, timeout, prevsnapshot, prevSnapshotUrl, range, leaseId, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags, this.client.getVersion(), requestId, comp, context);
+        final String accept = "application/xml";
+        DateTimeRfc1123 ifModifiedSinceConverted =
+                ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
+        DateTimeRfc1123 ifUnmodifiedSinceConverted =
+                ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
+        return service.getPageRangesDiff(
+                this.client.getUrl(),
+                containerName,
+                blob,
+                comp,
+                snapshot,
+                timeout,
+                prevsnapshot,
+                prevSnapshotUrl,
+                range,
+                leaseId,
+                ifModifiedSinceConverted,
+                ifUnmodifiedSinceConverted,
+                ifMatch,
+                ifNoneMatch,
+                ifTags,
+                this.client.getVersion(),
+                requestId,
+                accept,
+                context);
     }
 
     /**
@@ -623,71 +1025,92 @@ public final class PageBlobsImpl {
      *
      * @param containerName The container name.
      * @param blob The blob name.
-     * @param blobContentLength This header specifies the maximum size for the page blob, up to 1 TB. The page blob size must be aligned to a 512-byte boundary.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @return a Mono which performs the network request upon subscription.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PageBlobsResizeResponse> resizeWithRestResponseAsync(String containerName, String blob, long blobContentLength, Context context) {
-        final Integer timeout = null;
-        final String leaseId = null;
-        final String ifMatch = null;
-        final String ifNoneMatch = null;
-        final String ifTags = null;
-        final String requestId = null;
-        final String comp = "properties";
-        final String encryptionKey = null;
-        final String encryptionKeySha256 = null;
-        final EncryptionAlgorithmType encryptionAlgorithm = null;
-        final String encryptionScope = null;
-        DateTimeRfc1123 ifModifiedSinceConverted = null;
-        DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
-        return service.resize(containerName, blob, this.client.getUrl(), timeout, leaseId, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags, blobContentLength, this.client.getVersion(), requestId, comp, encryptionKey, encryptionKeySha256, encryptionAlgorithm, encryptionScope, context);
-    }
-
-    /**
-     * Resize the Blob.
-     *
-     * @param containerName The container name.
-     * @param blob The blob name.
-     * @param blobContentLength This header specifies the maximum size for the page blob, up to 1 TB. The page blob size must be aligned to a 512-byte boundary.
-     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param blobContentLength This header specifies the maximum size for the page blob, up to 1 TB. The page blob size
+     *     must be aligned to a 512-byte boundary.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     *     Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
-     * @param ifModifiedSince Specify this header value to operate only on a blob if it has been modified since the specified date/time.
-     * @param ifUnmodifiedSince Specify this header value to operate only on a blob if it has not been modified since the specified date/time.
+     * @param ifModifiedSince Specify this header value to operate only on a blob if it has been modified since the
+     *     specified date/time.
+     * @param ifUnmodifiedSince Specify this header value to operate only on a blob if it has not been modified since
+     *     the specified date/time.
      * @param ifMatch Specify an ETag value to operate only on blobs with a matching value.
      * @param ifNoneMatch Specify an ETag value to operate only on blobs without a matching value.
      * @param ifTags Specify a SQL where clause on blob tags to operate only on blobs with a matching value.
-     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
-     * @param cpkInfo Additional parameters for the operation.
-     * @param encryptionScope Additional parameters for the operation.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     *     analytics logs when storage analytics logging is enabled.
+     * @param cpkInfo Parameter group.
+     * @param encryptionScope Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @return a Mono which performs the network request upon subscription.
+     * @throws StorageErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PageBlobsResizeResponse> resizeWithRestResponseAsync(String containerName, String blob, long blobContentLength, Integer timeout, String leaseId, OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String ifMatch, String ifNoneMatch, String ifTags, String requestId, CpkInfo cpkInfo, EncryptionScope encryptionScope, Context context) {
+    public Mono<PageBlobsResizeResponse> resizeWithResponseAsync(
+            String containerName,
+            String blob,
+            long blobContentLength,
+            Integer timeout,
+            String leaseId,
+            OffsetDateTime ifModifiedSince,
+            OffsetDateTime ifUnmodifiedSince,
+            String ifMatch,
+            String ifNoneMatch,
+            String ifTags,
+            String requestId,
+            CpkInfo cpkInfo,
+            EncryptionScope encryptionScope,
+            Context context) {
         final String comp = "properties";
-        String encryptionKey = null;
+        final String accept = "application/xml";
+        String encryptionKeyInternal = null;
         if (cpkInfo != null) {
-            encryptionKey = cpkInfo.getEncryptionKey();
+            encryptionKeyInternal = cpkInfo.getEncryptionKey();
         }
-        String encryptionKeySha256 = null;
+        String encryptionKey = encryptionKeyInternal;
+        String encryptionKeySha256Internal = null;
         if (cpkInfo != null) {
-            encryptionKeySha256 = cpkInfo.getEncryptionKeySha256();
+            encryptionKeySha256Internal = cpkInfo.getEncryptionKeySha256();
         }
-        EncryptionAlgorithmType encryptionAlgorithm = null;
+        String encryptionKeySha256 = encryptionKeySha256Internal;
+        EncryptionAlgorithmType encryptionAlgorithmInternal = null;
         if (cpkInfo != null) {
-            encryptionAlgorithm = cpkInfo.getEncryptionAlgorithm();
+            encryptionAlgorithmInternal = cpkInfo.getEncryptionAlgorithm();
         }
-        String encryptionScope1 = null;
+        EncryptionAlgorithmType encryptionAlgorithm = encryptionAlgorithmInternal;
+        String encryptionScopeInternal = null;
         if (encryptionScope != null) {
-            encryptionScope1 = encryptionScope.getEncryptionScope();
+            encryptionScopeInternal = encryptionScope.getEncryptionScope();
         }
-        DateTimeRfc1123 ifModifiedSinceConverted = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        return service.resize(containerName, blob, this.client.getUrl(), timeout, leaseId, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags, blobContentLength, this.client.getVersion(), requestId, comp, encryptionKey, encryptionKeySha256, encryptionAlgorithm, encryptionScope1, context);
+        String encryptionScopeLocal = encryptionScopeInternal;
+        DateTimeRfc1123 ifModifiedSinceConverted =
+                ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
+        DateTimeRfc1123 ifUnmodifiedSinceConverted =
+                ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
+        return service.resize(
+                this.client.getUrl(),
+                containerName,
+                blob,
+                comp,
+                timeout,
+                leaseId,
+                encryptionKey,
+                encryptionKeySha256,
+                encryptionAlgorithm,
+                encryptionScopeLocal,
+                ifModifiedSinceConverted,
+                ifUnmodifiedSinceConverted,
+                ifMatch,
+                ifNoneMatch,
+                ifTags,
+                blobContentLength,
+                this.client.getVersion(),
+                requestId,
+                accept,
+                context);
     }
 
     /**
@@ -695,98 +1118,134 @@ public final class PageBlobsImpl {
      *
      * @param containerName The container name.
      * @param blob The blob name.
-     * @param sequenceNumberAction Required if the x-ms-blob-sequence-number header is set for the request. This property applies to page blobs only. This property indicates how the service should modify the blob's sequence number. Possible values include: 'max', 'update', 'increment'.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @return a Mono which performs the network request upon subscription.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PageBlobsUpdateSequenceNumberResponse> updateSequenceNumberWithRestResponseAsync(String containerName, String blob, SequenceNumberActionType sequenceNumberAction, Context context) {
-        final Integer timeout = null;
-        final String leaseId = null;
-        final String ifMatch = null;
-        final String ifNoneMatch = null;
-        final String ifTags = null;
-        final Long blobSequenceNumber = 0L;
-        final String requestId = null;
-        final String comp = "properties";
-        DateTimeRfc1123 ifModifiedSinceConverted = null;
-        DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
-        return service.updateSequenceNumber(containerName, blob, this.client.getUrl(), timeout, leaseId, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags, sequenceNumberAction, blobSequenceNumber, this.client.getVersion(), requestId, comp, context);
-    }
-
-    /**
-     * Update the sequence number of the blob.
-     *
-     * @param containerName The container name.
-     * @param blob The blob name.
-     * @param sequenceNumberAction Required if the x-ms-blob-sequence-number header is set for the request. This property applies to page blobs only. This property indicates how the service should modify the blob's sequence number. Possible values include: 'max', 'update', 'increment'.
-     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param sequenceNumberAction Required if the x-ms-blob-sequence-number header is set for the request. This
+     *     property applies to page blobs only. This property indicates how the service should modify the blob's
+     *     sequence number.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     *     Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
-     * @param ifModifiedSince Specify this header value to operate only on a blob if it has been modified since the specified date/time.
-     * @param ifUnmodifiedSince Specify this header value to operate only on a blob if it has not been modified since the specified date/time.
+     * @param ifModifiedSince Specify this header value to operate only on a blob if it has been modified since the
+     *     specified date/time.
+     * @param ifUnmodifiedSince Specify this header value to operate only on a blob if it has not been modified since
+     *     the specified date/time.
      * @param ifMatch Specify an ETag value to operate only on blobs with a matching value.
      * @param ifNoneMatch Specify an ETag value to operate only on blobs without a matching value.
      * @param ifTags Specify a SQL where clause on blob tags to operate only on blobs with a matching value.
-     * @param blobSequenceNumber Set for page blobs only. The sequence number is a user-controlled value that you can use to track requests. The value of the sequence number must be between 0 and 2^63 - 1.
-     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
+     * @param blobSequenceNumber Set for page blobs only. The sequence number is a user-controlled value that you can
+     *     use to track requests. The value of the sequence number must be between 0 and 2^63 - 1.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     *     analytics logs when storage analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @return a Mono which performs the network request upon subscription.
+     * @throws StorageErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PageBlobsUpdateSequenceNumberResponse> updateSequenceNumberWithRestResponseAsync(String containerName, String blob, SequenceNumberActionType sequenceNumberAction, Integer timeout, String leaseId, OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String ifMatch, String ifNoneMatch, String ifTags, Long blobSequenceNumber, String requestId, Context context) {
+    public Mono<PageBlobsUpdateSequenceNumberResponse> updateSequenceNumberWithResponseAsync(
+            String containerName,
+            String blob,
+            SequenceNumberActionType sequenceNumberAction,
+            Integer timeout,
+            String leaseId,
+            OffsetDateTime ifModifiedSince,
+            OffsetDateTime ifUnmodifiedSince,
+            String ifMatch,
+            String ifNoneMatch,
+            String ifTags,
+            Long blobSequenceNumber,
+            String requestId,
+            Context context) {
         final String comp = "properties";
-        DateTimeRfc1123 ifModifiedSinceConverted = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        return service.updateSequenceNumber(containerName, blob, this.client.getUrl(), timeout, leaseId, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags, sequenceNumberAction, blobSequenceNumber, this.client.getVersion(), requestId, comp, context);
+        final String accept = "application/xml";
+        DateTimeRfc1123 ifModifiedSinceConverted =
+                ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
+        DateTimeRfc1123 ifUnmodifiedSinceConverted =
+                ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
+        return service.updateSequenceNumber(
+                this.client.getUrl(),
+                containerName,
+                blob,
+                comp,
+                timeout,
+                leaseId,
+                ifModifiedSinceConverted,
+                ifUnmodifiedSinceConverted,
+                ifMatch,
+                ifNoneMatch,
+                ifTags,
+                sequenceNumberAction,
+                blobSequenceNumber,
+                this.client.getVersion(),
+                requestId,
+                accept,
+                context);
     }
 
     /**
-     * The Copy Incremental operation copies a snapshot of the source page blob to a destination page blob. The snapshot is copied such that only the differential changes between the previously copied snapshot are transferred to the destination. The copied snapshots are complete copies of the original snapshot and can be read or copied from as usual. This API is supported since REST version 2016-05-31.
+     * The Copy Incremental operation copies a snapshot of the source page blob to a destination page blob. The snapshot
+     * is copied such that only the differential changes between the previously copied snapshot are transferred to the
+     * destination. The copied snapshots are complete copies of the original snapshot and can be read or copied from as
+     * usual. This API is supported since REST version 2016-05-31.
      *
      * @param containerName The container name.
      * @param blob The blob name.
-     * @param copySource Specifies the name of the source page blob snapshot. This value is a URL of up to 2 KB in length that specifies a page blob snapshot. The value should be URL-encoded as it would appear in a request URI. The source blob must either be public or must be authenticated via a shared access signature.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @return a Mono which performs the network request upon subscription.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PageBlobsCopyIncrementalResponse> copyIncrementalWithRestResponseAsync(String containerName, String blob, URL copySource, Context context) {
-        final Integer timeout = null;
-        final String ifMatch = null;
-        final String ifNoneMatch = null;
-        final String ifTags = null;
-        final String requestId = null;
-        final String comp = "incrementalcopy";
-        DateTimeRfc1123 ifModifiedSinceConverted = null;
-        DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
-        return service.copyIncremental(containerName, blob, this.client.getUrl(), timeout, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags, copySource, this.client.getVersion(), requestId, comp, context);
-    }
-
-    /**
-     * The Copy Incremental operation copies a snapshot of the source page blob to a destination page blob. The snapshot is copied such that only the differential changes between the previously copied snapshot are transferred to the destination. The copied snapshots are complete copies of the original snapshot and can be read or copied from as usual. This API is supported since REST version 2016-05-31.
-     *
-     * @param containerName The container name.
-     * @param blob The blob name.
-     * @param copySource Specifies the name of the source page blob snapshot. This value is a URL of up to 2 KB in length that specifies a page blob snapshot. The value should be URL-encoded as it would appear in a request URI. The source blob must either be public or must be authenticated via a shared access signature.
-     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting Timeouts for Blob Service Operations.&lt;/a&gt;.
-     * @param ifModifiedSince Specify this header value to operate only on a blob if it has been modified since the specified date/time.
-     * @param ifUnmodifiedSince Specify this header value to operate only on a blob if it has not been modified since the specified date/time.
+     * @param copySource Specifies the name of the source page blob snapshot. This value is a URL of up to 2 KB in
+     *     length that specifies a page blob snapshot. The value should be URL-encoded as it would appear in a request
+     *     URI. The source blob must either be public or must be authenticated via a shared access signature.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     *     Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param ifModifiedSince Specify this header value to operate only on a blob if it has been modified since the
+     *     specified date/time.
+     * @param ifUnmodifiedSince Specify this header value to operate only on a blob if it has not been modified since
+     *     the specified date/time.
      * @param ifMatch Specify an ETag value to operate only on blobs with a matching value.
      * @param ifNoneMatch Specify an ETag value to operate only on blobs without a matching value.
      * @param ifTags Specify a SQL where clause on blob tags to operate only on blobs with a matching value.
-     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     *     analytics logs when storage analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @return a Mono which performs the network request upon subscription.
+     * @throws StorageErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PageBlobsCopyIncrementalResponse> copyIncrementalWithRestResponseAsync(String containerName, String blob, URL copySource, Integer timeout, OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String ifMatch, String ifNoneMatch, String ifTags, String requestId, Context context) {
+    public Mono<PageBlobsCopyIncrementalResponse> copyIncrementalWithResponseAsync(
+            String containerName,
+            String blob,
+            String copySource,
+            Integer timeout,
+            OffsetDateTime ifModifiedSince,
+            OffsetDateTime ifUnmodifiedSince,
+            String ifMatch,
+            String ifNoneMatch,
+            String ifTags,
+            String requestId,
+            Context context) {
         final String comp = "incrementalcopy";
-        DateTimeRfc1123 ifModifiedSinceConverted = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        return service.copyIncremental(containerName, blob, this.client.getUrl(), timeout, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags, copySource, this.client.getVersion(), requestId, comp, context);
+        final String accept = "application/xml";
+        DateTimeRfc1123 ifModifiedSinceConverted =
+                ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
+        DateTimeRfc1123 ifUnmodifiedSinceConverted =
+                ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
+        return service.copyIncremental(
+                this.client.getUrl(),
+                containerName,
+                blob,
+                comp,
+                timeout,
+                ifModifiedSinceConverted,
+                ifUnmodifiedSinceConverted,
+                ifMatch,
+                ifNoneMatch,
+                ifTags,
+                copySource,
+                this.client.getVersion(),
+                requestId,
+                accept,
+                context);
     }
 }

@@ -50,11 +50,6 @@ public final class KeyOperation extends ExpandableStringEnum<KeyOperation> {
     public static final KeyOperation IMPORT = fromString("import");
 
     /**
-     * Static value Export for KeyOperation.
-     */
-    public static final KeyOperation EXPORT = fromString("export");
-
-    /**
      * Creates or finds a KeyOperation from its string representation.
      *
      * @param name a name to look for.

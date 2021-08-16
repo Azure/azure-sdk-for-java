@@ -16,8 +16,8 @@ import java.util.Map;
 @Fluent
 class KeyRequestParameters {
     /**
-     * The type of key to create. For valid values, see KeyType.
-     * Possible values include: 'EC', 'EC-HSM', 'RSA', 'RSA-HSM', 'oct', 'oct-HSM'.
+     * The type of key to create. For valid values, see KeyType. Possible values include: 'EC', 'EC-HSM', 'RSA',
+     * 'RSA-HSM', 'oct', 'oct-HSM'.
      */
     @JsonProperty(value = "kty", required = true)
     private KeyType kty;
@@ -29,13 +29,13 @@ class KeyRequestParameters {
     private Integer keySize;
 
     /**
-     * The keyOps property.
+     * The key operations.
      */
     @JsonProperty(value = "key_ops")
     private List<KeyOperation> keyOps;
 
     /**
-     * The keyAttributes property.
+     * The key attributes.
      */
     @JsonProperty(value = "attributes")
     private KeyRequestAttributes keyAttributes;
@@ -47,17 +47,11 @@ class KeyRequestParameters {
     private Map<String, String> tags;
 
     /**
-     * Elliptic curve name. For valid values, see KeyCurveName. Possible
-     * values include: 'P-256', 'P-384', 'P-521', 'P-256K'.
+     * Elliptic curve name. For valid values, see KeyCurveName. Possible values include: 'P-256', 'P-384', 'P-521',
+     * 'P-256K'.
      */
     @JsonProperty(value = "crv")
     private KeyCurveName curve;
-
-    /**
-     * The policy rules under which the key can be exported.
-     */
-    @JsonProperty(value = "release_policy")
-    private KeyReleasePolicy releasePolicy;
 
     /**
      * The public exponent for an RSA key.
@@ -65,143 +59,141 @@ class KeyRequestParameters {
     @JsonProperty(value = "public_exponent")
     private int publicExponent;
 
+    /*
+     * The policy rules under which the key can be exported.
+     */
+    @JsonProperty(value = "release_policy")
+    private KeyReleasePolicy releasePolicy;
+
     /**
-     * Get the keyType value.
+     * Get the key type.
      *
-     * @return the keyType value
+     * @return The key type.
      */
     public KeyType getKty() {
         return this.kty;
     }
 
     /**
-     * Set the keyType value.
+     * Set the key type.
      *
-     * @param kty the keyType value to set
-     * @return the KeyRequestParameters object itself.
+     * @param kty The key type to set.
+     *
+     * @return The updated {@link KeyRequestParameters} object.
      */
     public KeyRequestParameters setKty(KeyType kty) {
         this.kty = kty;
+
         return this;
     }
 
     /**
-     * Get the keySize value.
+     * Get the key size in bits.
      *
-     * @return the keySize value
+     * @return The key size.
      */
     public Integer getKeySize() {
         return this.keySize;
     }
 
     /**
-     * Set the keySize value.
+     * Set the key size in bits.
      *
-     * @param keySize the keySize value to set
-     * @return the KeyRequestParameters object itself.
+     * @param keySize The key size value to set.
+     *
+     * @return The updated {@link KeyRequestParameters} object.
      */
     public KeyRequestParameters setKeySize(Integer keySize) {
         this.keySize = keySize;
+
         return this;
     }
 
     /**
-     * Get the keyOps value.
+     * Get the key operations.
      *
-     * @return the keyOps value
+     * @return The key operations.
      */
     public List<KeyOperation> getKeyOps() {
         return this.keyOps;
     }
 
     /**
-     * Set the keyOps value.
+     * Set the key operations.
      *
-     * @param keyOps the keyOps value to set
-     * @return the KeyRequestParameters object itself.
+     * @param keyOps The key operations to set.
+     *
+     * @return The updated {@link KeyRequestParameters} object.
      */
     public KeyRequestParameters setKeyOps(List<KeyOperation> keyOps) {
         this.keyOps = keyOps;
+
         return this;
     }
 
     /**
-     * Get the keyAttributes value.
+     * Get the key attributes.
      *
-     * @return the keyAttributes value
+     * @return The key attributes.
      */
     public KeyRequestAttributes getKeyAttributes() {
         return this.keyAttributes;
     }
 
     /**
-     * Set the keyAttributes value.
+     * Set the key attributes.
      *
-     * @param keyAttributes the keyAttributes value to set
-     * @return the KeyRequestParameters object itself.
+     * @param keyAttributes The key attributes to set.
+     *
+     * @return The updated {@link KeyRequestParameters} object.
      */
     public KeyRequestParameters setKeyAttributes(KeyRequestAttributes keyAttributes) {
         this.keyAttributes = keyAttributes;
+
         return this;
     }
 
     /**
      * Get the tags value.
      *
-     * @return the tags value
+     * @return The tags value.
      */
     public Map<String, String> getTags() {
         return this.tags;
     }
 
     /**
-     * Set the tags value.
+     * Set the tags to be associated with the key.
      *
-     * @param tags the tags value to set
-     * @return the KeyRequestParameters object itself.
+     * @param tags The tags to set.
+     *
+     * @return The updated {@link KeyRequestParameters} object.
      */
     public KeyRequestParameters setTags(Map<String, String> tags) {
         this.tags = tags;
+
         return this;
     }
 
     /**
-     * Get the curve value.
+     * Get the key curve.
      *
-     * @return the curve value
+     * @return The key curve.
      */
     public KeyCurveName getCurve() {
         return this.curve;
     }
 
     /**
-     * Set the curve value.
+     * Set the key curve.
      *
-     * @param curve the curve value to set
-     * @return the KeyRequestParameters object itself.
+     * @param curve The key curve to set.
+     *
+     * @return The updated {@link KeyRequestParameters} object.
      */
     public KeyRequestParameters setCurve(KeyCurveName curve) {
         this.curve = curve;
-        return this;
-    }
 
-    /**
-     * Get the policy rules under which the key can be exported.
-     *
-     * @return The release policy.
-     */
-    public KeyReleasePolicy getReleasePolicy() {
-        return releasePolicy;
-    }
-
-    /**
-     * Set the policy rules under which the key can be exported.
-     *
-     * @param releasePolicy The release policy to set.
-     * @return The updated {@link KeyRequestParameters} object.
-     */
-    public KeyRequestParameters setReleasePolicy(KeyReleasePolicy releasePolicy) {
-        this.releasePolicy = releasePolicy;
         return this;
     }
 
@@ -218,10 +210,33 @@ class KeyRequestParameters {
      * Set the public exponent for the key.
      *
      * @param publicExponent The public exponent to set.
+     *
      * @return The updated {@link KeyRequestParameters} object.
      */
     public KeyRequestParameters setPublicExponent(int publicExponent) {
         this.publicExponent = publicExponent;
+        return this;
+    }
+
+    /**
+     * Get the policy rules under which the key can be exported.
+     *
+     * @return The policy rules under which the key can be exported.
+     */
+    public KeyReleasePolicy getReleasePolicy() {
+        return this.releasePolicy;
+    }
+
+    /**
+     * Set the policy rules under which the key can be exported.
+     *
+     * @param releasePolicy The policy rules to set.
+     * 
+     * @return The updated {@link KeyRequestParameters} object.
+     */
+    public KeyRequestParameters setReleasePolicy(KeyReleasePolicy releasePolicy) {
+        this.releasePolicy = releasePolicy;
+
         return this;
     }
 }

@@ -10,12 +10,19 @@ import java.util.List;
 
 /** The HealthcareEntity model. */
 @Fluent
-public final class HealthcareEntity extends Entity {
+public final class HealthcareEntity extends HealthcareEntityProperties {
     /*
-     * The isNegated property.
+     * The assertion property.
      */
-    @JsonProperty(value = "isNegated", required = true)
-    private boolean isNegated;
+    @JsonProperty(value = "assertion")
+    private HealthcareAssertion assertion;
+
+    /*
+     * Preferred name for the entity. Example: 'histologically' would have a
+     * 'name' of 'histologic'.
+     */
+    @JsonProperty(value = "name")
+    private String name;
 
     /*
      * Entity references in known data sources.
@@ -24,22 +31,44 @@ public final class HealthcareEntity extends Entity {
     private List<HealthcareEntityLink> links;
 
     /**
-     * Get the isNegated property: The isNegated property.
+     * Get the assertion property: The assertion property.
      *
-     * @return the isNegated value.
+     * @return the assertion value.
      */
-    public boolean isNegated() {
-        return this.isNegated;
+    public HealthcareAssertion getAssertion() {
+        return this.assertion;
     }
 
     /**
-     * Set the isNegated property: The isNegated property.
+     * Set the assertion property: The assertion property.
      *
-     * @param isNegated the isNegated value to set.
+     * @param assertion the assertion value to set.
      * @return the HealthcareEntity object itself.
      */
-    public HealthcareEntity setIsNegated(boolean isNegated) {
-        this.isNegated = isNegated;
+    public HealthcareEntity setAssertion(HealthcareAssertion assertion) {
+        this.assertion = assertion;
+        return this;
+    }
+
+    /**
+     * Get the name property: Preferred name for the entity. Example: 'histologically' would have a 'name' of
+     * 'histologic'.
+     *
+     * @return the name value.
+     */
+    public String getName() {
+        return this.name;
+    }
+
+    /**
+     * Set the name property: Preferred name for the entity. Example: 'histologically' would have a 'name' of
+     * 'histologic'.
+     *
+     * @param name the name value to set.
+     * @return the HealthcareEntity object itself.
+     */
+    public HealthcareEntity setName(String name) {
+        this.name = name;
         return this;
     }
 

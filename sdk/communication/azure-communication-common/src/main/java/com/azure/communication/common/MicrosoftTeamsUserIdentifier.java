@@ -8,26 +8,13 @@ import com.azure.core.util.CoreUtils;
 /**
  * Communication identifier for Microsoft Teams User
  */
-public class MicrosoftTeamsUserIdentifier extends CommunicationIdentifier {
+public final class MicrosoftTeamsUserIdentifier extends CommunicationIdentifier {
 
     private final String userId;
     private final boolean isAnonymous;
-    private String id;
     private CommunicationCloudEnvironment cloudEnvironment = CommunicationCloudEnvironment.PUBLIC;
 
-    /**
-     * Creates a MicrosoftTeamsUserIdentifier object
-     *
-     * @param userId Id of the Microsoft Teams user. If the user isn't anonymous, the id is the AAD object id of the user.
-     * @param isAnonymous set this to true if the user is anonymous,
-     *                    for example when joining a meeting with a share link
-     * @param cloudEnvironment the cloud environment in which this identifier is created
-     * @throws IllegalArgumentException thrown if userId parameter fail the validation.
-     */
-    public MicrosoftTeamsUserIdentifier(String userId, boolean isAnonymous, CommunicationCloudEnvironment  cloudEnvironment) {
-        this(userId, isAnonymous);
-        this.cloudEnvironment = cloudEnvironment;
-    }
+    private String rawId;
 
     /**
      * Creates a MicrosoftTeamsUserIdentifier object
@@ -71,30 +58,11 @@ public class MicrosoftTeamsUserIdentifier extends CommunicationIdentifier {
     }
 
     /**
-     * Get full id of the Microsoft Teams user
-     * @return full id of the Microsoft Teams user
-     */
-    @Override
-    public String getId() {
-        return id;
-    }
-
-    /**
-     * Set full id of the Microsoft Teams user
-     * @param id full id of the Microsoft Teams user
-     * @return the MicrosoftTeamsUserIdentifier object itself
-     */
-    public MicrosoftTeamsUserIdentifier setId(String id) {
-        this.id = id;
-        return this;
-    }
-
-    /**
      * Set cloud environment of the Teams user identifier
      * @param cloudEnvironment the cloud environment in which this identifier is created
      * @return this object
      */
-    public MicrosoftTeamsUserIdentifier setCloudEnvironment(CommunicationCloudEnvironment  cloudEnvironment) {
+    public MicrosoftTeamsUserIdentifier setCloudEnvironment(CommunicationCloudEnvironment cloudEnvironment) {
         this.cloudEnvironment = cloudEnvironment;
         return this;
     }
@@ -105,6 +73,24 @@ public class MicrosoftTeamsUserIdentifier extends CommunicationIdentifier {
      */
     public CommunicationCloudEnvironment getCloudEnvironment() {
         return cloudEnvironment;
+    }
+
+    /**
+     * Get full id of the identifier. This id is optional.
+     * @return full id of the identifier
+     */
+    public String getRawId() {
+        return rawId;
+    }
+
+    /**
+     * Set full id of the identifier
+     * @param rawId full id of the identifier
+     * @return CommunicationIdentifier object itself
+     */
+    public MicrosoftTeamsUserIdentifier setRawId(String rawId) {
+        this.rawId = rawId;
+        return this;
     }
 
     @Override
@@ -131,9 +117,9 @@ public class MicrosoftTeamsUserIdentifier extends CommunicationIdentifier {
             return false;
         }
 
-        return id == null
-            || thatId.id == null
-            || thatId.id.equals(this.id);
+        return getRawId() == null
+            || thatId.getRawId() == null
+            || thatId.getRawId().equals(this.getRawId());
     }
 
 

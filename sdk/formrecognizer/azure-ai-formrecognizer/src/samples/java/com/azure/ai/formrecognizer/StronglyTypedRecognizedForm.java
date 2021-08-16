@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.ai.formrecognizer;
 
+import com.azure.ai.formrecognizer.models.FormRecognizerLocale;
 import com.azure.ai.formrecognizer.models.FormRecognizerOperationResult;
 import com.azure.ai.formrecognizer.models.RecognizeReceiptsOptions;
 import com.azure.ai.formrecognizer.models.RecognizedForm;
@@ -17,7 +18,7 @@ import java.util.List;
  * <a href="https://aka.ms/formrecognizer/receiptfields"></a>
  * for information on the strongly typed fields returned by service when recognizing receipts.
  * More information on the Receipt used in the example below can be found
- * <a href="https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/Receipt.java">here</a>
+ * <a href="https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/resources/java/com/azure/ai/formrecognizer/Receipt.java">here</a>
  */
 public class StronglyTypedRecognizedForm {
 
@@ -33,12 +34,13 @@ public class StronglyTypedRecognizedForm {
             .endpoint("https://{endpoint}.cognitiveservices.azure.com/")
             .buildClient();
 
-        String receiptUrl = "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/master/sdk/formrecognizer"
-            + "/azure-ai-formrecognizer/src/samples/java/sample-forms/receipts/contoso-allinone.jpg";
+        String receiptUrl =
+            "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/main/sdk/formrecognizer"
+                + "/azure-ai-formrecognizer/src/samples/resources/sample-forms/receipts/contoso-allinone.jpg";
         SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> recognizeReceiptPoller =
             client.beginRecognizeReceiptsFromUrl(receiptUrl,
                 new RecognizeReceiptsOptions()
-                    .setLocale("en-US"),
+                    .setLocale(FormRecognizerLocale.EN_US),
                 Context.NONE);
 
         List<RecognizedForm> receiptPageResults = recognizeReceiptPoller.getFinalResult();

@@ -8,10 +8,8 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.rest.ResponseBase;
 
-/**
- * Contains all response data for the putBlobFromUrl operation.
- */
-public final class BlockBlobsPutBlobFromUrlResponse extends ResponseBase<BlockBlobPutBlobFromUrlHeaders, Void> {
+/** Contains all response data for the putBlobFromUrl operation. */
+public final class BlockBlobsPutBlobFromUrlResponse extends ResponseBase<BlockBlobsPutBlobFromUrlHeaders, Void> {
     /**
      * Creates an instance of BlockBlobsPutBlobFromUrlResponse.
      *
@@ -21,7 +19,12 @@ public final class BlockBlobsPutBlobFromUrlResponse extends ResponseBase<BlockBl
      * @param value the deserialized value of the HTTP response.
      * @param headers the deserialized headers of the HTTP response.
      */
-    public BlockBlobsPutBlobFromUrlResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders, Void value, BlockBlobPutBlobFromUrlHeaders headers) {
+    public BlockBlobsPutBlobFromUrlResponse(
+            HttpRequest request,
+            int statusCode,
+            HttpHeaders rawHeaders,
+            Void value,
+            BlockBlobsPutBlobFromUrlHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);
     }
 }

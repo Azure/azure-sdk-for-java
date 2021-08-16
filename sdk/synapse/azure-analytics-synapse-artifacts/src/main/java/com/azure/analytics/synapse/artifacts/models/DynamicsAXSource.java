@@ -21,6 +21,15 @@ public final class DynamicsAXSource extends TabularSource {
     @JsonProperty(value = "query")
     private Object query;
 
+    /*
+     * The timeout (TimeSpan) to get an HTTP response. It is the timeout to get
+     * a response, not the timeout to read response data. Default value:
+     * 00:05:00. Type: string (or Expression with resultType string), pattern:
+     * ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
+     */
+    @JsonProperty(value = "httpRequestTimeout")
+    private Object httpRequestTimeout;
+
     /**
      * Get the query property: A query to retrieve data from source. Type: string (or Expression with resultType
      * string).
@@ -40,6 +49,30 @@ public final class DynamicsAXSource extends TabularSource {
      */
     public DynamicsAXSource setQuery(Object query) {
         this.query = query;
+        return this;
+    }
+
+    /**
+     * Get the httpRequestTimeout property: The timeout (TimeSpan) to get an HTTP response. It is the timeout to get a
+     * response, not the timeout to read response data. Default value: 00:05:00. Type: string (or Expression with
+     * resultType string), pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
+     *
+     * @return the httpRequestTimeout value.
+     */
+    public Object getHttpRequestTimeout() {
+        return this.httpRequestTimeout;
+    }
+
+    /**
+     * Set the httpRequestTimeout property: The timeout (TimeSpan) to get an HTTP response. It is the timeout to get a
+     * response, not the timeout to read response data. Default value: 00:05:00. Type: string (or Expression with
+     * resultType string), pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
+     *
+     * @param httpRequestTimeout the httpRequestTimeout value to set.
+     * @return the DynamicsAXSource object itself.
+     */
+    public DynamicsAXSource setHttpRequestTimeout(Object httpRequestTimeout) {
+        this.httpRequestTimeout = httpRequestTimeout;
         return this;
     }
 }

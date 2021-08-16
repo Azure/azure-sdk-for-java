@@ -3,7 +3,7 @@ resources:
     - repository: azure-sdk-build-tools
       type: git
       name: internal/azure-sdk-build-tools
-      ref: refs/tags/azure-sdk-build-tools_20200916.1
+      ref: refs/tags/azure-sdk-build-tools_20210603.1
 
 parameters:
 - name: Artifacts
@@ -31,7 +31,7 @@ parameters:
 stages:
   - stage: Build
     jobs:
-      - template: ../jobs/archetype-sdk-pom-only.yml
+      - template: /eng/pipelines/templates/jobs/build-validate-pom.yml
         parameters:
           ServiceDirectory: ${{parameters.ServiceDirectory}}
           SDKType: ${{parameters.SDKType}}

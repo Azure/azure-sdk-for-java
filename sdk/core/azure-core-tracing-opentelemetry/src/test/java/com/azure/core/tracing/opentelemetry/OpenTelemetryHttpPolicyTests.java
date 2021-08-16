@@ -16,8 +16,10 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.tracing.opentelemetry.implementation.AmqpPropagationFormatUtil;
 import com.azure.core.util.Context;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.opentelemetry.api.GlobalOpenTelemetry;
 import io.opentelemetry.api.trace.Span;
 import io.opentelemetry.api.trace.SpanContext;
+import io.opentelemetry.api.trace.SpanKind;
 import io.opentelemetry.api.trace.Tracer;
 import io.opentelemetry.context.Scope;
 import io.opentelemetry.sdk.OpenTelemetrySdk;
@@ -59,6 +61,8 @@ public class OpenTelemetryHttpPolicyTests {
     @Test
     public void openTelemetryHttpPolicyTest() {
         // Arrange
+        // reset the global object before attempting to register
+        GlobalOpenTelemetry.resetForTest();
         // Get the global singleton Tracer object.
         Tracer tracer = OpenTelemetrySdk.builder().build().getTracer("TracerSdkTest");
         // Start user parent span.
@@ -70,7 +74,7 @@ public class OpenTelemetryHttpPolicyTests {
         Span expectedSpan = tracer
             .spanBuilder("/anything")
             .setParent(io.opentelemetry.context.Context.current().with(parentSpan))
-            .setSpanKind(Span.Kind.CLIENT)
+            .setSpanKind(SpanKind.CLIENT)
             .startSpan();
 
         // Act
@@ -80,8 +84,7 @@ public class OpenTelemetryHttpPolicyTests {
         // Assert
         String diagnosticId = response.headers().get("Traceparent");
         assertNotNull(diagnosticId);
-        Context updatedContext = AmqpPropagationFormatUtil.extractContext(diagnosticId, Context.NONE);
-        SpanContext returnedSpanContext = (SpanContext) updatedContext.getData(SPAN_CONTEXT_KEY).get();
+        SpanContext returnedSpanContext = getNonRemoteSpanContext(diagnosticId);
         verifySpanContextAttributes(expectedSpan.getSpanContext(), returnedSpanContext);
         scope.close();
     }
@@ -98,9 +101,16 @@ public class OpenTelemetryHttpPolicyTests {
         return httpPipeline;
     }
 
+    private static SpanContext getNonRemoteSpanContext(String diagnosticId) {
+        Context updatedContext = AmqpPropagationFormatUtil.extractContext(diagnosticId, Context.NONE);
+        SpanContext spanContext = (SpanContext) updatedContext.getData(SPAN_CONTEXT_KEY).get();
+        return SpanContext.create(spanContext.getTraceId(), spanContext.getSpanId(),
+            spanContext.getTraceFlags(), spanContext.getTraceState());
+    }
+
     private static void verifySpanContextAttributes(SpanContext expectedSpanContext, SpanContext actualSpanContext) {
-        assertEquals(expectedSpanContext.getTraceIdAsHexString(), actualSpanContext.getTraceIdAsHexString());
-        assertNotEquals(expectedSpanContext.getSpanIdAsHexString(), actualSpanContext.getSpanIdAsHexString());
+        assertEquals(expectedSpanContext.getTraceId(), actualSpanContext.getTraceId());
+        assertNotEquals(expectedSpanContext.getSpanId(), actualSpanContext.getSpanId());
         assertEquals(expectedSpanContext.getTraceFlags(), actualSpanContext.getTraceFlags());
         assertEquals(expectedSpanContext.getTraceState(), actualSpanContext.getTraceState());
         assertEquals(expectedSpanContext.isValid(), actualSpanContext.isValid());

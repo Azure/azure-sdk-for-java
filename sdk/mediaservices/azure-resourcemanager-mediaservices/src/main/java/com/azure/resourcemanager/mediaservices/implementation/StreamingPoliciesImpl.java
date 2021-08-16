@@ -9,7 +9,6 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.mediaservices.MediaservicesManager;
 import com.azure.resourcemanager.mediaservices.fluent.StreamingPoliciesClient;
 import com.azure.resourcemanager.mediaservices.fluent.models.StreamingPolicyInner;
 import com.azure.resourcemanager.mediaservices.models.StreamingPolicies;
@@ -21,23 +20,25 @@ public final class StreamingPoliciesImpl implements StreamingPolicies {
 
     private final StreamingPoliciesClient innerClient;
 
-    private final MediaservicesManager serviceManager;
+    private final com.azure.resourcemanager.mediaservices.MediaServicesManager serviceManager;
 
-    public StreamingPoliciesImpl(StreamingPoliciesClient innerClient, MediaservicesManager serviceManager) {
+    public StreamingPoliciesImpl(
+        StreamingPoliciesClient innerClient,
+        com.azure.resourcemanager.mediaservices.MediaServicesManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<StreamingPolicy> list(String resourceGroupName, String accountName) {
         PagedIterable<StreamingPolicyInner> inner = this.serviceClient().list(resourceGroupName, accountName);
-        return inner.mapPage(inner1 -> new StreamingPolicyImpl(inner1, this.manager()));
+        return Utils.mapPage(inner, inner1 -> new StreamingPolicyImpl(inner1, this.manager()));
     }
 
     public PagedIterable<StreamingPolicy> list(
         String resourceGroupName, String accountName, String filter, Integer top, String orderby, Context context) {
         PagedIterable<StreamingPolicyInner> inner =
             this.serviceClient().list(resourceGroupName, accountName, filter, top, orderby, context);
-        return inner.mapPage(inner1 -> new StreamingPolicyImpl(inner1, this.manager()));
+        return Utils.mapPage(inner, inner1 -> new StreamingPolicyImpl(inner1, this.manager()));
     }
 
     public StreamingPolicy get(String resourceGroupName, String accountName, String streamingPolicyName) {
@@ -189,7 +190,7 @@ public final class StreamingPoliciesImpl implements StreamingPolicies {
         return this.innerClient;
     }
 
-    private MediaservicesManager manager() {
+    private com.azure.resourcemanager.mediaservices.MediaServicesManager manager() {
         return this.serviceManager;
     }
 

@@ -11,6 +11,7 @@ import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Map;
 
@@ -62,6 +63,13 @@ public class ReadmeSamples {
             .sasToken(SAS_TOKEN).shareName(shareName).buildClient();
     }
 
+    public void createShareClientWithConnectionString() {
+        String shareName = "testshare";
+        String shareURL = String.format("https://%s.file.core.windows.net", ACCOUNT_NAME);
+        ShareClient shareClient = new ShareClientBuilder().endpoint(shareURL)
+            .connectionString(CONNECTION_STRING).shareName(shareName).buildClient();
+    }
+    
     public void createDirectoryClient() {
         String shareName = "testshare";
         String directoryPath = "directoryPath";
@@ -224,6 +232,34 @@ public class ReadmeSamples {
             shareServiceClient.createShare("myShare");
         } catch (ShareStorageException e) {
             logger.error("Failed to create a share with error code: " + e.getErrorCode());
+        }
+    }
+
+    public void uploadDataToStorageBiggerThan4MB() {
+        byte[] data = "Hello, data sample!".getBytes(StandardCharsets.UTF_8);
+
+        long chunkSize = ShareFileAsyncClient.FILE_DEFAULT_BLOCK_SIZE;
+        if (data.length > chunkSize) {
+            for (int offset = 0; offset < data.length; offset += chunkSize) {
+                try {
+                    // the last chunk size is smaller than the others
+                    chunkSize = Math.min(data.length - offset, chunkSize);
+
+                    // select the chunk in the byte array
+                    byte[] subArray = Arrays.copyOfRange(data, offset, (int) (offset + chunkSize));
+
+                    // upload the chunk
+                    fileClient.uploadWithResponse(new ByteArrayInputStream(subArray), chunkSize, (long) offset, null, Context.NONE);
+                } catch (RuntimeException e) {
+                    logger.error("Failed to upload the file", e);
+                    if (Boolean.TRUE.equals(fileClient.exists())) {
+                        fileClient.delete();
+                    }
+                    throw e;
+                }
+            }
+        } else {
+            fileClient.upload(new ByteArrayInputStream(data), data.length);
         }
     }
 }

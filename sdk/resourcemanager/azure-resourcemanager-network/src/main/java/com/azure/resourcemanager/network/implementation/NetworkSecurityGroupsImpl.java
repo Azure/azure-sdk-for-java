@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.resourcemanager.network.implementation;
 
+import com.azure.core.util.CoreUtils;
 import com.azure.resourcemanager.network.NetworkManager;
 import com.azure.resourcemanager.network.fluent.NetworkSecurityGroupsClient;
 import com.azure.resourcemanager.network.fluent.models.NetworkSecurityGroupInner;
@@ -26,9 +27,17 @@ public class NetworkSecurityGroupsImpl
     }
 
     @Override
-    public Mono<Void> deleteByResourceGroupAsync(String groupName, String name) {
+    public Mono<Void> deleteByResourceGroupAsync(String resourceGroupName, String name) {
+        if (CoreUtils.isNullOrEmpty(resourceGroupName)) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter 'resourceGroupName' is required and cannot be null."));
+        }
+        if (CoreUtils.isNullOrEmpty(name)) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter 'name' is required and cannot be null."));
+        }
         // Clear NIC references if any
-        NetworkSecurityGroupImpl nsg = (NetworkSecurityGroupImpl) getByResourceGroup(groupName, name);
+        NetworkSecurityGroupImpl nsg = (NetworkSecurityGroupImpl) getByResourceGroup(resourceGroupName, name);
         if (nsg != null) {
             for (String nicRef : nsg.networkInterfaceIds()) {
                 NetworkInterface nic = this.manager().networkInterfaces().getById(nicRef);
@@ -42,7 +51,7 @@ public class NetworkSecurityGroupsImpl
             }
         }
 
-        return this.deleteInnerAsync(groupName, name);
+        return this.deleteInnerAsync(resourceGroupName, name);
     }
 
     @Override

@@ -13,13 +13,21 @@ import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
+import java.util.logging.Logger;
 import javax.net.ssl.SSLEngine;
 import javax.net.ssl.X509ExtendedTrustManager;
+
+import static java.util.logging.Level.WARNING;
 
 /**
  * The Azure Key Vault variant of the X509TrustManager.
  */
-public class KeyVaultTrustManager extends X509ExtendedTrustManager {
+public final class KeyVaultTrustManager extends X509ExtendedTrustManager {
+
+    /**
+     * Stores the logger.
+     */
+    private static final Logger LOGGER = Logger.getLogger(KeyVaultTrustManager.class.getName());
 
     /**
      * Stores the default trust manager.
@@ -33,6 +41,13 @@ public class KeyVaultTrustManager extends X509ExtendedTrustManager {
 
     /**
      * Constructor.
+     */
+    public KeyVaultTrustManager() {
+        this(null);
+    }
+
+    /**
+     * Constructor.
      *
      * @param keyStore the keystore.
      */
@@ -40,10 +55,10 @@ public class KeyVaultTrustManager extends X509ExtendedTrustManager {
         this.keyStore = keyStore;
         if (this.keyStore == null) {
             try {
-                this.keyStore = KeyStore.getInstance("AzureKeyVault");
+                this.keyStore = KeyStore.getInstance(KeyVaultKeyStore.KEY_STORE_TYPE);
                 this.keyStore.load(null, null);
             } catch (KeyStoreException | IOException | NoSuchAlgorithmException | CertificateException ex) {
-                ex.printStackTrace();
+                LOGGER.log(WARNING, "Unable to get AzureKeyVault keystore.", ex);
             }
         }
         try {
@@ -51,7 +66,7 @@ public class KeyVaultTrustManager extends X509ExtendedTrustManager {
             factory.init(keyStore);
             defaultTrustManager = (X509TrustManager) factory.getTrustManagers()[0];
         } catch (NoSuchAlgorithmException | NoSuchProviderException | KeyStoreException ex) {
-            ex.printStackTrace();
+            LOGGER.log(WARNING, "Unable to get the trust manager factory.", ex);
         }
         if (defaultTrustManager == null) {
             try {
@@ -59,7 +74,7 @@ public class KeyVaultTrustManager extends X509ExtendedTrustManager {
                 factory.init(keyStore);
                 defaultTrustManager = (X509TrustManager) factory.getTrustManagers()[0];
             } catch (NoSuchAlgorithmException | NoSuchProviderException | KeyStoreException ex) {
-                ex.printStackTrace();
+                LOGGER.log(WARNING, "Unable to get the trust manager factory.", ex);
             }
         }
     }
@@ -87,7 +102,7 @@ public class KeyVaultTrustManager extends X509ExtendedTrustManager {
             try {
                 alias = keyStore.getCertificateAlias(chain[0]);
             } catch (KeyStoreException kse) {
-                kse.printStackTrace();
+                LOGGER.log(WARNING, "Unable to get the certificate in AzureKeyVault keystore.", kse);
             }
             if (alias == null) {
                 throw new CertificateException("Unable to verify in keystore");
@@ -118,7 +133,7 @@ public class KeyVaultTrustManager extends X509ExtendedTrustManager {
             try {
                 alias = keyStore.getCertificateAlias(chain[0]);
             } catch (KeyStoreException kse) {
-                kse.printStackTrace();
+                LOGGER.log(WARNING, "Unable to get the certificate in AzureKeyVault keystore.", kse);
             }
             if (alias == null) {
                 throw new CertificateException("Unable to verify in keystore");

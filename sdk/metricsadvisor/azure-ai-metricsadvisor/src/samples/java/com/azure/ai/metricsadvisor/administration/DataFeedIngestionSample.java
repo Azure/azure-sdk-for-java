@@ -3,9 +3,9 @@
 
 package com.azure.ai.metricsadvisor.administration;
 
-import com.azure.ai.metricsadvisor.models.DataFeedIngestionProgress;
-import com.azure.ai.metricsadvisor.models.DataFeedIngestionStatus;
-import com.azure.ai.metricsadvisor.models.ListDataFeedIngestionOptions;
+import com.azure.ai.metricsadvisor.administration.models.DataFeedIngestionProgress;
+import com.azure.ai.metricsadvisor.administration.models.DataFeedIngestionStatus;
+import com.azure.ai.metricsadvisor.administration.models.ListDataFeedIngestionOptions;
 import com.azure.ai.metricsadvisor.models.MetricsAdvisorKeyCredential;
 import com.azure.core.http.rest.PagedIterable;
 

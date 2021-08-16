@@ -73,7 +73,7 @@ public class ReturnRequestIdHeaderPolicy implements HttpPipelinePolicy {
         final String clientRequestId = request.getHeaders().getValue(NAME_CLIENT_REQUEST_ID);
 
         if (request.getHeaders().getValue(NAME_RETURN_CLIENT_REQUEST_ID) == null) {
-            request.getHeaders().put(NAME_RETURN_CLIENT_REQUEST_ID, "true");
+            request.getHeaders().set(NAME_RETURN_CLIENT_REQUEST_ID, "true");
         }
 
         Mono<HttpResponse> responseMono = next.process();
@@ -81,7 +81,7 @@ public class ReturnRequestIdHeaderPolicy implements HttpPipelinePolicy {
             responseMono = responseMono.map(response -> {
                 if (response.getHeaderValue(NAME_CLIENT_REQUEST_ID) == null) {
                     response = new BufferedHttpHeaderResponse(response);
-                    response.getHeaders().put(NAME_CLIENT_REQUEST_ID, clientRequestId);
+                    response.getHeaders().set(NAME_CLIENT_REQUEST_ID, clientRequestId);
                 }
                 return response;
             });

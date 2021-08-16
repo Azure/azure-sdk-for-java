@@ -10,6 +10,7 @@ import com.azure.resourcemanager.compute.models.VirtualMachines;
 import com.azure.resourcemanager.network.models.PublicIpAddress;
 import com.azure.resourcemanager.network.models.PublicIpAddresses;
 import com.azure.core.management.Region;
+import com.azure.resourcemanager.test.ResourceManagerTestBase;
 import com.jcraft.jsch.ChannelExec;
 import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.Session;
@@ -31,6 +32,7 @@ public class TestVirtualMachineCustomData extends TestTemplate<VirtualMachine, V
     public VirtualMachine createResource(VirtualMachines virtualMachines) throws Exception {
         final String vmName = virtualMachines.manager().resourceManager().internalContext().randomResourceName("vm", 10);
         final String publicIpDnsLabel = virtualMachines.manager().resourceManager().internalContext().randomResourceName("abc", 16);
+        final String password = ResourceManagerTestBase.password();
 
         // Prepare the custom data
         //
@@ -58,7 +60,7 @@ public class TestVirtualMachineCustomData extends TestTemplate<VirtualMachine, V
                 .withExistingPrimaryPublicIPAddress(pip)
                 .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                 .withRootUsername("testuser")
-                .withRootPassword("12NewPA$$w0rd!")
+                .withRootPassword(password)
                 .withCustomData(cloudInitEncodedString)
                 .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
                 .create();
@@ -74,7 +76,7 @@ public class TestVirtualMachineCustomData extends TestTemplate<VirtualMachine, V
                 java.util.Properties config = new java.util.Properties();
                 config.put("StrictHostKeyChecking", "no");
                 session = jsch.getSession("testuser", publicIpDnsLabel + "." + "eastus.cloudapp.azure.com", 22);
-                session.setPassword("12NewPA$$w0rd!");
+                session.setPassword(password);
                 session.setConfig(config);
                 session.connect();
 

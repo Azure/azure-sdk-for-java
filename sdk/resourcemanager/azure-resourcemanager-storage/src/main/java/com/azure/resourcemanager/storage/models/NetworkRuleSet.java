@@ -25,6 +25,12 @@ public final class NetworkRuleSet {
     private Bypass bypass;
 
     /*
+     * Sets the resource access rules
+     */
+    @JsonProperty(value = "resourceAccessRules")
+    private List<ResourceAccessRule> resourceAccessRules;
+
+    /*
      * Sets the virtual network rules
      */
     @JsonProperty(value = "virtualNetworkRules")
@@ -63,6 +69,26 @@ public final class NetworkRuleSet {
      */
     public NetworkRuleSet withBypass(Bypass bypass) {
         this.bypass = bypass;
+        return this;
+    }
+
+    /**
+     * Get the resourceAccessRules property: Sets the resource access rules.
+     *
+     * @return the resourceAccessRules value.
+     */
+    public List<ResourceAccessRule> resourceAccessRules() {
+        return this.resourceAccessRules;
+    }
+
+    /**
+     * Set the resourceAccessRules property: Sets the resource access rules.
+     *
+     * @param resourceAccessRules the resourceAccessRules value to set.
+     * @return the NetworkRuleSet object itself.
+     */
+    public NetworkRuleSet withResourceAccessRules(List<ResourceAccessRule> resourceAccessRules) {
+        this.resourceAccessRules = resourceAccessRules;
         return this;
     }
 
@@ -132,6 +158,9 @@ public final class NetworkRuleSet {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (resourceAccessRules() != null) {
+            resourceAccessRules().forEach(e -> e.validate());
+        }
         if (virtualNetworkRules() != null) {
             virtualNetworkRules().forEach(e -> e.validate());
         }

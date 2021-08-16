@@ -37,16 +37,6 @@ public final class SearchFieldDataType extends ExpandableStringEnum<SearchFieldD
     public static final SearchFieldDataType COMPLEX = fromString("Edm.ComplexType");
 
     /**
-     * Returns a collection of a specific SearchFieldDataType
-     * @param dataType the corresponding SearchFieldDataType
-     * @return a Collection of the corresponding SearchFieldDataType
-     */
-    @JsonCreator
-    public static SearchFieldDataType collection(SearchFieldDataType dataType) {
-        return fromString(String.format("Collection(%s)", dataType.toString()));
-    }
-
-    /**
      * Creates or finds a SearchFieldDataType from its string representation.
      *
      * @param name a name to look for.
@@ -60,5 +50,16 @@ public final class SearchFieldDataType extends ExpandableStringEnum<SearchFieldD
     /** @return known SearchFieldDataType values. */
     public static Collection<SearchFieldDataType> values() {
         return values(SearchFieldDataType.class);
+    }
+
+    /**
+     * Returns a collection of a specific SearchFieldDataType
+     *
+     * @param dataType the corresponding SearchFieldDataType
+     * @return a Collection of the corresponding SearchFieldDataType
+     */
+    @JsonCreator
+    public static SearchFieldDataType collection(SearchFieldDataType dataType) {
+        return fromString(String.format("Collection(%s)", dataType.toString()));
     }
 }

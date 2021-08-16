@@ -10,9 +10,11 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.models.AutomaticOSUpgradeProperties;
 import com.azure.resourcemanager.compute.models.DataDiskImage;
 import com.azure.resourcemanager.compute.models.DisallowedConfiguration;
+import com.azure.resourcemanager.compute.models.ExtendedLocation;
 import com.azure.resourcemanager.compute.models.HyperVGenerationTypes;
 import com.azure.resourcemanager.compute.models.OSDiskImage;
 import com.azure.resourcemanager.compute.models.PurchasePlan;
+import com.azure.resourcemanager.compute.models.VirtualMachineImageFeature;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -61,6 +63,12 @@ public class VirtualMachineImageInner extends VirtualMachineImageResourceInner {
      */
     @JsonProperty(value = "properties.disallowed")
     private DisallowedConfiguration disallowed;
+
+    /*
+     * The features property.
+     */
+    @JsonProperty(value = "properties.features")
+    private List<VirtualMachineImageFeature> features;
 
     /**
      * Get the plan property: Used for establishing the purchase context of any 3rd Party artifact through MarketPlace.
@@ -183,6 +191,26 @@ public class VirtualMachineImageInner extends VirtualMachineImageResourceInner {
         return this;
     }
 
+    /**
+     * Get the features property: The features property.
+     *
+     * @return the features value.
+     */
+    public List<VirtualMachineImageFeature> features() {
+        return this.features;
+    }
+
+    /**
+     * Set the features property: The features property.
+     *
+     * @param features the features value to set.
+     * @return the VirtualMachineImageInner object itself.
+     */
+    public VirtualMachineImageInner withFeatures(List<VirtualMachineImageFeature> features) {
+        this.features = features;
+        return this;
+    }
+
     /** {@inheritDoc} */
     @Override
     public VirtualMachineImageInner withName(String name) {
@@ -201,6 +229,13 @@ public class VirtualMachineImageInner extends VirtualMachineImageResourceInner {
     @Override
     public VirtualMachineImageInner withTags(Map<String, String> tags) {
         super.withTags(tags);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public VirtualMachineImageInner withExtendedLocation(ExtendedLocation extendedLocation) {
+        super.withExtendedLocation(extendedLocation);
         return this;
     }
 
@@ -233,6 +268,9 @@ public class VirtualMachineImageInner extends VirtualMachineImageResourceInner {
         }
         if (disallowed() != null) {
             disallowed().validate();
+        }
+        if (features() != null) {
+            features().forEach(e -> e.validate());
         }
     }
 }

@@ -8,7 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** The AccessPolicy model. */
+/** An Access policy. */
 @Fluent
 public final class AccessPolicy {
     /*

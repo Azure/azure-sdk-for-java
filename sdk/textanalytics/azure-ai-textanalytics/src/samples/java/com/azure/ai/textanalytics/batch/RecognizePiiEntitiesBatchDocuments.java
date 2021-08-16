@@ -5,9 +5,10 @@ package com.azure.ai.textanalytics.batch;
 
 import com.azure.ai.textanalytics.TextAnalyticsClient;
 import com.azure.ai.textanalytics.TextAnalyticsClientBuilder;
+import com.azure.ai.textanalytics.models.PiiEntityCategory;
 import com.azure.ai.textanalytics.models.PiiEntityCollection;
+import com.azure.ai.textanalytics.models.RecognizePiiEntitiesOptions;
 import com.azure.ai.textanalytics.models.RecognizePiiEntitiesResult;
-import com.azure.ai.textanalytics.models.RecognizePiiEntityOptions;
 import com.azure.ai.textanalytics.models.TextDocumentBatchStatistics;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.ai.textanalytics.util.RecognizePiiEntitiesResultCollection;
@@ -38,12 +39,17 @@ public class RecognizePiiEntitiesBatchDocuments {
 
         // The texts that need be analyzed.
         List<TextDocumentInput> documents = Arrays.asList(
-            new TextDocumentInput("1", "My SSN is 859-98-0987").setLanguage("en"),
+            new TextDocumentInput("1", "My name is Joe and SSN is 859-98-0987").setLanguage("en"),
             new TextDocumentInput("2", "Visa card 4111 1111 1111 1111").setLanguage("en")
         );
 
-        // Show statistics and model version
-        RecognizePiiEntityOptions options = new RecognizePiiEntityOptions().setIncludeStatistics(true).setModelVersion("latest");
+        // Show statistics, model version, and PII entities that only related to the given Pii entity categories.
+        RecognizePiiEntitiesOptions options = new RecognizePiiEntitiesOptions()
+                                                  .setCategoriesFilter(
+                                                      PiiEntityCategory.US_SOCIAL_SECURITY_NUMBER,
+                                                      PiiEntityCategory.CREDIT_CARD_NUMBER)
+                                                  .setIncludeStatistics(true)
+                                                  .setModelVersion("latest");
 
         // Recognizing Personally Identifiable Information entities for each document in a batch of documents
         Response<RecognizePiiEntitiesResultCollection> piiEntitiesBatchResultResponse =

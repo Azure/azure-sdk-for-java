@@ -4,7 +4,7 @@
 package com.azure.ai.formrecognizer;
 
 import com.azure.ai.formrecognizer.implementation.Utility;
-import com.azure.ai.formrecognizer.implementation.models.ContentType1;
+import com.azure.ai.formrecognizer.implementation.models.ContentType;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
 
@@ -33,7 +33,7 @@ public class ContentTypeDetectionTest {
     public void jpgContentDetectionTest() throws IOException {
         File sourceFile = new File("src/test/resources/sample_files/Test/contoso-allinone.jpg");
         Flux<ByteBuffer> buffer = toFluxByteBuffer(new ByteArrayInputStream(Files.readAllBytes(sourceFile.toPath())));
-        assertEquals(ContentType1.IMAGE_JPEG, detectContentType(buffer).block());
+        assertEquals(ContentType.IMAGE_JPEG, detectContentType(buffer).block());
     }
 
     /**
@@ -45,7 +45,7 @@ public class ContentTypeDetectionTest {
     public void pdfContentDetectionTest() throws IOException {
         File sourceFile = new File("src/test/resources/sample_files/Test/Invoice_6.pdf");
         Flux<ByteBuffer> buffer = toFluxByteBuffer(new ByteArrayInputStream(Files.readAllBytes(sourceFile.toPath())));
-        assertEquals(ContentType1.APPLICATION_PDF, detectContentType(buffer).block());
+        assertEquals(ContentType.APPLICATION_PDF, detectContentType(buffer).block());
     }
 
     /**
@@ -57,7 +57,7 @@ public class ContentTypeDetectionTest {
     public void pngContentDetectionTest() throws IOException {
         File sourceFile = new File("src/test/resources/sample_files/Test/pngFile.png");
         Flux<ByteBuffer> buffer = toFluxByteBuffer(new ByteArrayInputStream(Files.readAllBytes(sourceFile.toPath())));
-        assertEquals(ContentType1.IMAGE_PNG, detectContentType(buffer).block());
+        assertEquals(ContentType.IMAGE_PNG, detectContentType(buffer).block());
     }
 
     /**
@@ -69,7 +69,7 @@ public class ContentTypeDetectionTest {
     public void tiffLittleEndianContentDetectionTest() throws IOException {
         File sourceFile = new File("src/test/resources/sample_files/Test/cell.tif");
         Flux<ByteBuffer> buffer = toFluxByteBuffer(new ByteArrayInputStream(Files.readAllBytes(sourceFile.toPath())));
-        assertEquals(ContentType1.IMAGE_TIFF, detectContentType(buffer).block());
+        assertEquals(ContentType.IMAGE_TIFF, detectContentType(buffer).block());
     }
 
     /**
@@ -79,7 +79,7 @@ public class ContentTypeDetectionTest {
     @Test
     public void tiffBigEndianContentDetectionTest() {
         Flux<ByteBuffer> buffer = toFluxByteBuffer(new ByteArrayInputStream(new byte[]{0x4D, 0x4D, 0x00, 0x2A}));
-        assertEquals(ContentType1.IMAGE_TIFF, detectContentType(buffer).block());
+        assertEquals(ContentType.IMAGE_TIFF, detectContentType(buffer).block());
     }
 
     /**
@@ -103,6 +103,6 @@ public class ContentTypeDetectionTest {
     public void bmpContentDetectionTest() throws IOException {
         File sourceFile = new File("src/test/resources/sample_files/Test/sample_bmp.bmp");
         Flux<ByteBuffer> buffer = toFluxByteBuffer(new ByteArrayInputStream(Files.readAllBytes(sourceFile.toPath())));
-        assertEquals(ContentType1.IMAGE_BMP, detectContentType(buffer).block());
+        assertEquals(ContentType.IMAGE_BMP, detectContentType(buffer).block());
     }
 }

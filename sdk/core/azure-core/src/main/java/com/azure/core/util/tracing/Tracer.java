@@ -5,6 +5,9 @@ package com.azure.core.util.tracing;
 
 import com.azure.core.util.Context;
 
+import java.time.OffsetDateTime;
+import java.util.Map;
+
 /**
  * Contract that all tracers must implement to be pluggable into the SDK.
  *
@@ -15,7 +18,7 @@ public interface Tracer {
      * Key for {@link Context} which indicates that the context contains parent span data. This span will be used
      * as the parent span for all spans the SDK creates.
      * <p>
-     * If no span data is listed when the SDK creates its first span, this span key will be used as the parent span.
+     * If no span data is listed when the span is created it will default to using this span key as the parent span.
      */
     String PARENT_SPAN_KEY = "parent-span";
 
@@ -45,7 +48,7 @@ public interface Tracer {
     /**
      * Key for {@link Context} which indicates that the context contains a "Diagnostic Id" for the service call.
      */
-    String DIAGNOSTIC_ID_KEY = "diagnostic-id";
+    String DIAGNOSTIC_ID_KEY = "Diagnostic-Id";
 
     /**
      * Key for {@link Context} the scope of code where the given Span is in the current Context.
@@ -63,9 +66,14 @@ public interface Tracer {
     String SPAN_BUILDER_KEY = "builder";
 
     /**
-     * Key for {@link Context} which indicates the the time of the last enqueued message in the partition's stream.
+     * Key for {@link Context} which indicates the time of the last enqueued message in the partition's stream.
      */
     String MESSAGE_ENQUEUED_TIME = "x-opt-enqueued-time";
+
+    /**
+     * Key for {@link Context} which disables tracing for the request associated with the current context.
+     */
+    String DISABLE_TRACING_KEY = "disable-tracing";
 
     /**
      * Creates a new tracing span.
@@ -81,11 +89,33 @@ public interface Tracer {
      *
      * @param methodName Name of the method triggering the span creation.
      * @param context Additional metadata that is passed through the call stack.
-     *
      * @return The updated {@link Context} object containing the returned span.
      * @throws NullPointerException if {@code methodName} or {@code context} is {@code null}.
      */
     Context start(String methodName, Context context);
+
+    /**
+     * Creates a new tracing span.
+     * <p>
+     * The {@code context} will be checked for information about a parent span. If a parent span is found, the new span
+     * will be added as a child. Otherwise, the parent span will be created and added to the {@code context} and any
+     * downstream {@code start()} calls will use the created span as the parent.
+     *
+     * <p><strong>Code samples</strong></p>
+     *
+     * <p>Starts a tracing span with provided method name and explicit parent span</p>
+     * {@codesnippet com.azure.core.util.tracing.start#options-context}
+     *
+     * @param methodName Name of the method triggering the span creation.
+     * @param options span creation options.
+     * @param context Additional metadata that is passed through the call stack.
+     * @return The updated {@link Context} object containing the returned span.
+     * @throws NullPointerException if {@code options} or {@code context} is {@code null}.
+     */
+    default Context start(String methodName, StartSpanOptions options, Context context) {
+        // fall back to old API if not overridden.
+        return start(methodName, context);
+    }
 
     /**
      * Creates a new tracing span for AMQP calls.
@@ -121,7 +151,6 @@ public interface Tracer {
      * @param methodName Name of the method triggering the span creation.
      * @param context Additional metadata that is passed through the call stack.
      * @param processKind AMQP operation kind.
-     *
      * @return The updated {@link Context} object containing the returned span.
      * @throws NullPointerException if {@code methodName} or {@code context} or {@code processKind} is {@code null}.
      */
@@ -136,7 +165,7 @@ public interface Tracer {
      * response status code</p>
      * {@codesnippet com.azure.core.util.tracing.end#int-throwable-context}
      *
-     * @param responseCode Response status code if the span is in a HTTP call context.
+     * @param responseCode Response status code if the span is in an HTTP call context.
      * @param error {@link Throwable} that happened during the span or {@code null} if no exception occurred.
      * @param context Additional metadata that is passed through the call stack.
      * @throws NullPointerException if {@code context} is {@code null}.
@@ -179,7 +208,6 @@ public interface Tracer {
      *
      * @param spanName Name to give the next span.
      * @param context Additional metadata that is passed through the call stack.
-     *
      * @return The updated {@link Context} object containing the name of the returned span.
      * @throws NullPointerException if {@code spanName} or {@code context} is {@code null}.
      */
@@ -209,7 +237,6 @@ public interface Tracer {
      *
      * @param diagnosticId Unique identifier for the trace information of the span.
      * @param context Additional metadata that is passed through the call stack.
-     *
      * @return The updated {@link Context} object containing the span context.
      * @throws NullPointerException if {@code diagnosticId} or {@code context} is {@code null}.
      */
@@ -225,12 +252,63 @@ public interface Tracer {
      *
      * @param spanName Name to give the span for the created builder.
      * @param context Additional metadata that is passed through the call stack.
-     *
      * @return The updated {@link Context} object containing the span builder.
      * @throws NullPointerException if {@code context} or {@code spanName} is {@code null}.
      */
     default Context getSharedSpanBuilder(String spanName, Context context) {
         // no-op
         return Context.NONE;
+    }
+
+    /**
+     * Adds an event to the current span with the provided {@code timestamp} and {@code attributes}.
+     * <p>This API does not provide any normalization if provided timestamps are out of range of the current
+     * span timeline</p>
+     * <p>Supported attribute values include String, double, boolean, long, String [], double [], long [].
+     * Any other Object value type and null values will be silently ignored.</p>
+     *
+     * @param name the name of the event.
+     * @param attributes the additional attributes to be set for the event.
+     * @param timestamp The instant, in UTC, at which the event will be associated to the span.
+     * @throws NullPointerException if {@code eventName} is {@code null}.
+     * @deprecated Use {@link #addEvent(String, Map, OffsetDateTime, Context)}
+     */
+    @Deprecated
+    default void addEvent(String name, Map<String, Object> attributes, OffsetDateTime timestamp) {
+    }
+
+    /**
+     * Adds an event to the span present in the {@code Context} with the provided {@code timestamp}
+     * and {@code attributes}.
+     * <p>This API does not provide any normalization if provided timestamps are out of range of the current
+     * span timeline</p>
+     * <p>Supported attribute values include String, double, boolean, long, String [], double [], long [].
+     * Any other Object value type and null values will be silently ignored.</p>
+     *
+     * @param name the name of the event.
+     * @param attributes the additional attributes to be set for the event.
+     * @param timestamp The instant, in UTC, at which the event will be associated to the span.
+     * @param context the call metadata containing information of the span to which the event should be associated with.
+     * @throws NullPointerException if {@code eventName} is {@code null}.
+     */
+    default void addEvent(String name, Map<String, Object> attributes, OffsetDateTime timestamp,
+                          Context context) {
+
+    }
+
+    /**
+     * Makes span current. Implementations may put it on ThreadLocal.
+     * Make sure to always use try-with-resource statement with makeSpanCurrent
+     * @param context Context with span.
+     *
+     * <p><strong>Code samples</strong></p>
+     *
+     * <p>Starts a tracing span, makes it current and ends it</p>
+     * {@codesnippet com.azure.core.util.tracing.makeSpanCurrent#context}
+     *
+     * @return Closeable that should be closed in the same thread with try-with-resource statement.
+     */
+    default AutoCloseable makeSpanCurrent(Context context) {
+        return TracerProxy.NOOP_AUTOCLOSEABLE;
     }
 }

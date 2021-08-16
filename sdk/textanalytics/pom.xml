@@ -1,7 +1,8 @@
 <!-- Copyright (c) Microsoft Corporation. All rights reserved.
      Licensed under the MIT License. -->
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.azure</groupId>
   <artifactId>azure-textanalytics-service</artifactId>
@@ -19,7 +20,7 @@
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-ai-textanalytics</artifactId>
-          <version>5.1.0-beta.4</version> <!-- {x-version-update;com.azure:azure-ai-textanalytics;current} -->
+          <version>5.2.0-beta.2</version> <!-- {x-version-update;com.azure:azure-ai-textanalytics;current} -->
         </dependency>
       </dependencies>
 
@@ -52,6 +53,7 @@
       </activation>
       <modules>
         <module>azure-ai-textanalytics</module>
+        <module>azure-ai-textanalytics-perf</module>
       </modules>
     </profile>
   </profiles>

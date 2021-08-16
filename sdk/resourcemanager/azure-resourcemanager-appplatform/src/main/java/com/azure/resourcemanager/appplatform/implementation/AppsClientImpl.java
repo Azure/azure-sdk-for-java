@@ -8,6 +8,7 @@ import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
+import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
@@ -70,7 +71,7 @@ public final class AppsClientImpl implements AppsClient {
     @Host("{$host}")
     @ServiceInterface(name = "AppPlatformManagemen")
     private interface AppsService {
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring"
                 + "/{serviceName}/apps/{appName}")
@@ -84,9 +85,10 @@ public final class AppsClientImpl implements AppsClient {
             @PathParam("serviceName") String serviceName,
             @PathParam("appName") String appName,
             @QueryParam("syncStatus") String syncStatus,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Put(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring"
                 + "/{serviceName}/apps/{appName}")
@@ -100,9 +102,10 @@ public final class AppsClientImpl implements AppsClient {
             @PathParam("serviceName") String serviceName,
             @PathParam("appName") String appName,
             @BodyParam("application/json") AppResourceInner appResource,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Delete(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring"
                 + "/{serviceName}/apps/{appName}")
@@ -115,9 +118,10 @@ public final class AppsClientImpl implements AppsClient {
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("serviceName") String serviceName,
             @PathParam("appName") String appName,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Patch(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring"
                 + "/{serviceName}/apps/{appName}")
@@ -131,9 +135,10 @@ public final class AppsClientImpl implements AppsClient {
             @PathParam("serviceName") String serviceName,
             @PathParam("appName") String appName,
             @BodyParam("application/json") AppResourceInner appResource,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring"
                 + "/{serviceName}/apps")
@@ -145,9 +150,10 @@ public final class AppsClientImpl implements AppsClient {
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("serviceName") String serviceName,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Post(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring"
                 + "/{serviceName}/apps/{appName}/getResourceUploadUrl")
@@ -160,9 +166,10 @@ public final class AppsClientImpl implements AppsClient {
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("serviceName") String serviceName,
             @PathParam("appName") String appName,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Post(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring"
                 + "/{serviceName}/apps/{appName}/validateDomain")
@@ -176,14 +183,18 @@ public final class AppsClientImpl implements AppsClient {
             @PathParam("serviceName") String serviceName,
             @PathParam("appName") String appName,
             @BodyParam("application/json") CustomDomainValidatePayload validatePayload,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<AppResourceCollection>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept,
+            Context context);
     }
 
     /**
@@ -224,6 +235,7 @@ public final class AppsClientImpl implements AppsClient {
         if (appName == null) {
             return Mono.error(new IllegalArgumentException("Parameter appName is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -236,6 +248,7 @@ public final class AppsClientImpl implements AppsClient {
                             serviceName,
                             appName,
                             syncStatus,
+                            accept,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
@@ -279,6 +292,7 @@ public final class AppsClientImpl implements AppsClient {
         if (appName == null) {
             return Mono.error(new IllegalArgumentException("Parameter appName is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .get(
@@ -289,6 +303,7 @@ public final class AppsClientImpl implements AppsClient {
                 serviceName,
                 appName,
                 syncStatus,
+                accept,
                 context);
     }
 
@@ -390,7 +405,7 @@ public final class AppsClientImpl implements AppsClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
-     * @param appResource App resource payload.
+     * @param appResource Parameters for the create or update operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -426,6 +441,7 @@ public final class AppsClientImpl implements AppsClient {
         } else {
             appResource.validate();
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -438,6 +454,7 @@ public final class AppsClientImpl implements AppsClient {
                             serviceName,
                             appName,
                             appResource,
+                            accept,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
@@ -449,7 +466,7 @@ public final class AppsClientImpl implements AppsClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
-     * @param appResource App resource payload.
+     * @param appResource Parameters for the create or update operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -486,6 +503,7 @@ public final class AppsClientImpl implements AppsClient {
         } else {
             appResource.validate();
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .createOrUpdate(
@@ -496,6 +514,7 @@ public final class AppsClientImpl implements AppsClient {
                 serviceName,
                 appName,
                 appResource,
+                accept,
                 context);
     }
 
@@ -506,7 +525,7 @@ public final class AppsClientImpl implements AppsClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
-     * @param appResource App resource payload.
+     * @param appResource Parameters for the create or update operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -530,7 +549,7 @@ public final class AppsClientImpl implements AppsClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
-     * @param appResource App resource payload.
+     * @param appResource Parameters for the create or update operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -556,7 +575,7 @@ public final class AppsClientImpl implements AppsClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
-     * @param appResource App resource payload.
+     * @param appResource Parameters for the create or update operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -575,7 +594,7 @@ public final class AppsClientImpl implements AppsClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
-     * @param appResource App resource payload.
+     * @param appResource Parameters for the create or update operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -595,7 +614,7 @@ public final class AppsClientImpl implements AppsClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
-     * @param appResource App resource payload.
+     * @param appResource Parameters for the create or update operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -616,7 +635,7 @@ public final class AppsClientImpl implements AppsClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
-     * @param appResource App resource payload.
+     * @param appResource Parameters for the create or update operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -638,7 +657,7 @@ public final class AppsClientImpl implements AppsClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
-     * @param appResource App resource payload.
+     * @param appResource Parameters for the create or update operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -657,7 +676,7 @@ public final class AppsClientImpl implements AppsClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
-     * @param appResource App resource payload.
+     * @param appResource Parameters for the create or update operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -707,6 +726,7 @@ public final class AppsClientImpl implements AppsClient {
         if (appName == null) {
             return Mono.error(new IllegalArgumentException("Parameter appName is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -718,6 +738,7 @@ public final class AppsClientImpl implements AppsClient {
                             resourceGroupName,
                             serviceName,
                             appName,
+                            accept,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
@@ -760,6 +781,7 @@ public final class AppsClientImpl implements AppsClient {
         if (appName == null) {
             return Mono.error(new IllegalArgumentException("Parameter appName is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .delete(
@@ -769,6 +791,7 @@ public final class AppsClientImpl implements AppsClient {
                 resourceGroupName,
                 serviceName,
                 appName,
+                accept,
                 context);
     }
 
@@ -933,7 +956,7 @@ public final class AppsClientImpl implements AppsClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
-     * @param appResource App resource payload.
+     * @param appResource Parameters for the update operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -969,6 +992,7 @@ public final class AppsClientImpl implements AppsClient {
         } else {
             appResource.validate();
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -981,6 +1005,7 @@ public final class AppsClientImpl implements AppsClient {
                             serviceName,
                             appName,
                             appResource,
+                            accept,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
@@ -992,7 +1017,7 @@ public final class AppsClientImpl implements AppsClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
-     * @param appResource App resource payload.
+     * @param appResource Parameters for the update operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1029,6 +1054,7 @@ public final class AppsClientImpl implements AppsClient {
         } else {
             appResource.validate();
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .update(
@@ -1039,6 +1065,7 @@ public final class AppsClientImpl implements AppsClient {
                 serviceName,
                 appName,
                 appResource,
+                accept,
                 context);
     }
 
@@ -1049,7 +1076,7 @@ public final class AppsClientImpl implements AppsClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
-     * @param appResource App resource payload.
+     * @param appResource Parameters for the update operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1073,7 +1100,7 @@ public final class AppsClientImpl implements AppsClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
-     * @param appResource App resource payload.
+     * @param appResource Parameters for the update operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1099,7 +1126,7 @@ public final class AppsClientImpl implements AppsClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
-     * @param appResource App resource payload.
+     * @param appResource Parameters for the update operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1118,7 +1145,7 @@ public final class AppsClientImpl implements AppsClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
-     * @param appResource App resource payload.
+     * @param appResource Parameters for the update operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1138,7 +1165,7 @@ public final class AppsClientImpl implements AppsClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
-     * @param appResource App resource payload.
+     * @param appResource Parameters for the update operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1159,7 +1186,7 @@ public final class AppsClientImpl implements AppsClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
-     * @param appResource App resource payload.
+     * @param appResource Parameters for the update operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1181,7 +1208,7 @@ public final class AppsClientImpl implements AppsClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
-     * @param appResource App resource payload.
+     * @param appResource Parameters for the update operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1200,7 +1227,7 @@ public final class AppsClientImpl implements AppsClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
-     * @param appResource App resource payload.
+     * @param appResource Parameters for the update operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1245,6 +1272,7 @@ public final class AppsClientImpl implements AppsClient {
         if (serviceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter serviceName is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -1255,6 +1283,7 @@ public final class AppsClientImpl implements AppsClient {
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             serviceName,
+                            accept,
                             context))
             .<PagedResponse<AppResourceInner>>map(
                 res ->
@@ -1302,6 +1331,7 @@ public final class AppsClientImpl implements AppsClient {
         if (serviceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter serviceName is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .list(
@@ -1310,6 +1340,7 @@ public final class AppsClientImpl implements AppsClient {
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 serviceName,
+                accept,
                 context)
             .map(
                 res ->
@@ -1428,6 +1459,7 @@ public final class AppsClientImpl implements AppsClient {
         if (appName == null) {
             return Mono.error(new IllegalArgumentException("Parameter appName is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -1439,6 +1471,7 @@ public final class AppsClientImpl implements AppsClient {
                             resourceGroupName,
                             serviceName,
                             appName,
+                            accept,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
@@ -1481,6 +1514,7 @@ public final class AppsClientImpl implements AppsClient {
         if (appName == null) {
             return Mono.error(new IllegalArgumentException("Parameter appName is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .getResourceUploadUrl(
@@ -1490,6 +1524,7 @@ public final class AppsClientImpl implements AppsClient {
                 resourceGroupName,
                 serviceName,
                 appName,
+                accept,
                 context);
     }
 
@@ -1596,6 +1631,7 @@ public final class AppsClientImpl implements AppsClient {
         if (name == null) {
             return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
         }
+        final String accept = "application/json";
         CustomDomainValidatePayload validatePayload = new CustomDomainValidatePayload();
         validatePayload.withName(name);
         return FluxUtil
@@ -1610,6 +1646,7 @@ public final class AppsClientImpl implements AppsClient {
                             serviceName,
                             appName,
                             validatePayload,
+                            accept,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
@@ -1656,6 +1693,7 @@ public final class AppsClientImpl implements AppsClient {
         if (name == null) {
             return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
         }
+        final String accept = "application/json";
         CustomDomainValidatePayload validatePayload = new CustomDomainValidatePayload();
         validatePayload.withName(name);
         context = this.client.mergeContext(context);
@@ -1668,6 +1706,7 @@ public final class AppsClientImpl implements AppsClient {
                 serviceName,
                 appName,
                 validatePayload,
+                accept,
                 context);
     }
 
@@ -1751,8 +1790,15 @@ public final class AppsClientImpl implements AppsClient {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listNext(nextLink, context))
+            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
             .<PagedResponse<AppResourceInner>>map(
                 res ->
                     new PagedResponseBase<>(
@@ -1780,9 +1826,16 @@ public final class AppsClientImpl implements AppsClient {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listNext(nextLink, context)
+            .listNext(nextLink, this.client.getEndpoint(), accept, context)
             .map(
                 res ->
                     new PagedResponseBase<>(

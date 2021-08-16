@@ -3,31 +3,35 @@
 trigger:
   branches:
     include:
-      - master
+      - main
       - hotfix/*
       - release/*
   paths:
     include:
-      - sdk/attestation/
+      - sdk/attestation/ci.yml
+      - sdk/attestation/azure-resourcemanager-attestation/
+      - sdk/attestation/azure-security-attestation/
     exclude:
-      - sdk/attestation/mgmt-v2020_10_01
+      - sdk/attestation/pom.xml
+      - sdk/attestation/azure-resourcemanager-attestation/pom.xml
+      - sdk/attestation/azure-security-attestation/pom.xml
 
 pr:
   branches:
     include:
-      - master
+      - main
       - feature/*
       - hotfix/*
       - release/*
   paths:
     include:
       - sdk/attestation/ci.yml
-      - sdk/attestation/pom.xml
-      - sdk/attestation/test-resources.json
-      - sdk/attestation/tests.yml
-      - sdk/attestation/azure-security-attestation
+      - sdk/attestation/azure-resourcemanager-attestation/
+      - sdk/attestation/azure-security-attestation/
     exclude:
-      - sdk/attestation/mgmt-v2020_10_01
+      - sdk/attestation/pom.xml
+      - sdk/attestation/azure-resourcemanager-attestation/pom.xml
+      - sdk/attestation/azure-security-attestation/pom.xml
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
@@ -38,4 +42,6 @@ extends:
       - name: azure-security-attestation
         groupId: com.azure
         safeName: azuresecurityattestation
-        
+      - name: azure-resourcemanager-attestation
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagerattestation

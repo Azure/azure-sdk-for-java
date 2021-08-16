@@ -157,7 +157,7 @@ public final class VirtualMachineScaleSetRollingUpgradesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-06-01";
+        final String apiVersion = "2021-04-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -169,7 +169,7 @@ public final class VirtualMachineScaleSetRollingUpgradesClientImpl
                             apiVersion,
                             this.client.getSubscriptionId(),
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -205,7 +205,7 @@ public final class VirtualMachineScaleSetRollingUpgradesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-06-01";
+        final String apiVersion = "2021-04-01";
         context = this.client.mergeContext(context);
         return service
             .cancel(
@@ -385,7 +385,7 @@ public final class VirtualMachineScaleSetRollingUpgradesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-06-01";
+        final String apiVersion = "2021-04-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -397,7 +397,7 @@ public final class VirtualMachineScaleSetRollingUpgradesClientImpl
                             apiVersion,
                             this.client.getSubscriptionId(),
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -434,7 +434,7 @@ public final class VirtualMachineScaleSetRollingUpgradesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-06-01";
+        final String apiVersion = "2021-04-01";
         context = this.client.mergeContext(context);
         return service
             .startOSUpgrade(
@@ -624,7 +624,7 @@ public final class VirtualMachineScaleSetRollingUpgradesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-06-01";
+        final String apiVersion = "2021-04-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -636,7 +636,7 @@ public final class VirtualMachineScaleSetRollingUpgradesClientImpl
                             apiVersion,
                             this.client.getSubscriptionId(),
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -673,7 +673,7 @@ public final class VirtualMachineScaleSetRollingUpgradesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-06-01";
+        final String apiVersion = "2021-04-01";
         context = this.client.mergeContext(context);
         return service
             .startExtensionUpgrade(
@@ -864,7 +864,7 @@ public final class VirtualMachineScaleSetRollingUpgradesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-06-01";
+        final String apiVersion = "2021-04-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -878,7 +878,7 @@ public final class VirtualMachineScaleSetRollingUpgradesClientImpl
                             this.client.getSubscriptionId(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -914,7 +914,7 @@ public final class VirtualMachineScaleSetRollingUpgradesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-06-01";
+        final String apiVersion = "2021-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service

@@ -8,20 +8,18 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
-/**
- * The QuerySerialization model.
- */
+/** The QuerySerialization model. */
 @JacksonXmlRootElement(localName = "QuerySerialization")
 @Fluent
 public final class QuerySerialization {
     /*
-     * The format property.
+     * The Format property.
      */
     @JsonProperty(value = "Format", required = true)
     private QueryFormat format;
 
     /**
-     * Get the format property: The format property.
+     * Get the format property: The Format property.
      *
      * @return the format value.
      */
@@ -30,7 +28,7 @@ public final class QuerySerialization {
     }
 
     /**
-     * Set the format property: The format property.
+     * Set the format property: The Format property.
      *
      * @param format the format value to set.
      * @return the QuerySerialization object itself.

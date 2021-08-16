@@ -32,7 +32,8 @@ public class JobInputClip extends JobInput {
 
     /*
      * List of files. Required for JobInputHttp. Maximum of 4000 characters
-     * each.
+     * each. Query strings will not be returned in service responses to prevent
+     * sensitive data exposure.
      */
     @JsonProperty(value = "files")
     private List<String> files;
@@ -62,8 +63,16 @@ public class JobInputClip extends JobInput {
     @JsonProperty(value = "label")
     private String label;
 
+    /*
+     * Defines a list of InputDefinitions. For each InputDefinition, it defines
+     * a list of track selections and related metadata.
+     */
+    @JsonProperty(value = "inputDefinitions")
+    private List<InputDefinition> inputDefinitions;
+
     /**
-     * Get the files property: List of files. Required for JobInputHttp. Maximum of 4000 characters each.
+     * Get the files property: List of files. Required for JobInputHttp. Maximum of 4000 characters each. Query strings
+     * will not be returned in service responses to prevent sensitive data exposure.
      *
      * @return the files value.
      */
@@ -72,7 +81,8 @@ public class JobInputClip extends JobInput {
     }
 
     /**
-     * Set the files property: List of files. Required for JobInputHttp. Maximum of 4000 characters each.
+     * Set the files property: List of files. Required for JobInputHttp. Maximum of 4000 characters each. Query strings
+     * will not be returned in service responses to prevent sensitive data exposure.
      *
      * @param files the files value to set.
      * @return the JobInputClip object itself.
@@ -153,6 +163,28 @@ public class JobInputClip extends JobInput {
     }
 
     /**
+     * Get the inputDefinitions property: Defines a list of InputDefinitions. For each InputDefinition, it defines a
+     * list of track selections and related metadata.
+     *
+     * @return the inputDefinitions value.
+     */
+    public List<InputDefinition> inputDefinitions() {
+        return this.inputDefinitions;
+    }
+
+    /**
+     * Set the inputDefinitions property: Defines a list of InputDefinitions. For each InputDefinition, it defines a
+     * list of track selections and related metadata.
+     *
+     * @param inputDefinitions the inputDefinitions value to set.
+     * @return the JobInputClip object itself.
+     */
+    public JobInputClip withInputDefinitions(List<InputDefinition> inputDefinitions) {
+        this.inputDefinitions = inputDefinitions;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -165,6 +197,9 @@ public class JobInputClip extends JobInput {
         }
         if (end() != null) {
             end().validate();
+        }
+        if (inputDefinitions() != null) {
+            inputDefinitions().forEach(e -> e.validate());
         }
     }
 }

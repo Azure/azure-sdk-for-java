@@ -10,12 +10,14 @@ import com.azure.core.management.Resource;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.DdosSettings;
+import com.azure.resourcemanager.network.models.DeleteOptions;
 import com.azure.resourcemanager.network.models.ExtendedLocation;
 import com.azure.resourcemanager.network.models.IpAllocationMethod;
 import com.azure.resourcemanager.network.models.IpTag;
 import com.azure.resourcemanager.network.models.IpVersion;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.PublicIpAddressDnsSettings;
+import com.azure.resourcemanager.network.models.PublicIpAddressMigrationPhase;
 import com.azure.resourcemanager.network.models.PublicIpAddressSku;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -118,6 +120,37 @@ public class PublicIpAddressInner extends Resource {
      */
     @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
+
+    /*
+     * The service public IP address of the public IP address resource.
+     */
+    @JsonProperty(value = "properties.servicePublicIPAddress")
+    private PublicIpAddressInner servicePublicIpAddress;
+
+    /*
+     * The NatGateway for the Public IP address.
+     */
+    @JsonProperty(value = "properties.natGateway")
+    private NatGatewayInner natGateway;
+
+    /*
+     * Migration phase of Public IP Address.
+     */
+    @JsonProperty(value = "properties.migrationPhase")
+    private PublicIpAddressMigrationPhase migrationPhase;
+
+    /*
+     * The linked public IP address of the public IP address resource.
+     */
+    @JsonProperty(value = "properties.linkedPublicIPAddress")
+    private PublicIpAddressInner linkedPublicIpAddress;
+
+    /*
+     * Specify what happens to the public IP address when the VM using it is
+     * deleted
+     */
+    @JsonProperty(value = "properties.deleteOption")
+    private DeleteOptions deleteOption;
 
     /*
      * Resource ID.
@@ -384,6 +417,106 @@ public class PublicIpAddressInner extends Resource {
     }
 
     /**
+     * Get the servicePublicIpAddress property: The service public IP address of the public IP address resource.
+     *
+     * @return the servicePublicIpAddress value.
+     */
+    public PublicIpAddressInner servicePublicIpAddress() {
+        return this.servicePublicIpAddress;
+    }
+
+    /**
+     * Set the servicePublicIpAddress property: The service public IP address of the public IP address resource.
+     *
+     * @param servicePublicIpAddress the servicePublicIpAddress value to set.
+     * @return the PublicIpAddressInner object itself.
+     */
+    public PublicIpAddressInner withServicePublicIpAddress(PublicIpAddressInner servicePublicIpAddress) {
+        this.servicePublicIpAddress = servicePublicIpAddress;
+        return this;
+    }
+
+    /**
+     * Get the natGateway property: The NatGateway for the Public IP address.
+     *
+     * @return the natGateway value.
+     */
+    public NatGatewayInner natGateway() {
+        return this.natGateway;
+    }
+
+    /**
+     * Set the natGateway property: The NatGateway for the Public IP address.
+     *
+     * @param natGateway the natGateway value to set.
+     * @return the PublicIpAddressInner object itself.
+     */
+    public PublicIpAddressInner withNatGateway(NatGatewayInner natGateway) {
+        this.natGateway = natGateway;
+        return this;
+    }
+
+    /**
+     * Get the migrationPhase property: Migration phase of Public IP Address.
+     *
+     * @return the migrationPhase value.
+     */
+    public PublicIpAddressMigrationPhase migrationPhase() {
+        return this.migrationPhase;
+    }
+
+    /**
+     * Set the migrationPhase property: Migration phase of Public IP Address.
+     *
+     * @param migrationPhase the migrationPhase value to set.
+     * @return the PublicIpAddressInner object itself.
+     */
+    public PublicIpAddressInner withMigrationPhase(PublicIpAddressMigrationPhase migrationPhase) {
+        this.migrationPhase = migrationPhase;
+        return this;
+    }
+
+    /**
+     * Get the linkedPublicIpAddress property: The linked public IP address of the public IP address resource.
+     *
+     * @return the linkedPublicIpAddress value.
+     */
+    public PublicIpAddressInner linkedPublicIpAddress() {
+        return this.linkedPublicIpAddress;
+    }
+
+    /**
+     * Set the linkedPublicIpAddress property: The linked public IP address of the public IP address resource.
+     *
+     * @param linkedPublicIpAddress the linkedPublicIpAddress value to set.
+     * @return the PublicIpAddressInner object itself.
+     */
+    public PublicIpAddressInner withLinkedPublicIpAddress(PublicIpAddressInner linkedPublicIpAddress) {
+        this.linkedPublicIpAddress = linkedPublicIpAddress;
+        return this;
+    }
+
+    /**
+     * Get the deleteOption property: Specify what happens to the public IP address when the VM using it is deleted.
+     *
+     * @return the deleteOption value.
+     */
+    public DeleteOptions deleteOption() {
+        return this.deleteOption;
+    }
+
+    /**
+     * Set the deleteOption property: Specify what happens to the public IP address when the VM using it is deleted.
+     *
+     * @param deleteOption the deleteOption value to set.
+     * @return the PublicIpAddressInner object itself.
+     */
+    public PublicIpAddressInner withDeleteOption(DeleteOptions deleteOption) {
+        this.deleteOption = deleteOption;
+        return this;
+    }
+
+    /**
      * Get the id property: Resource ID.
      *
      * @return the id value.
@@ -440,6 +573,15 @@ public class PublicIpAddressInner extends Resource {
         }
         if (ipTags() != null) {
             ipTags().forEach(e -> e.validate());
+        }
+        if (servicePublicIpAddress() != null) {
+            servicePublicIpAddress().validate();
+        }
+        if (natGateway() != null) {
+            natGateway().validate();
+        }
+        if (linkedPublicIpAddress() != null) {
+            linkedPublicIpAddress().validate();
         }
     }
 }

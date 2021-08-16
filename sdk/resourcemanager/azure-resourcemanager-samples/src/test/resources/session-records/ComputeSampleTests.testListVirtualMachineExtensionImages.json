@@ -1,7 +1,7 @@
 {
   "networkCallRecords" : [ {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers?api-version=2020-06-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers?api-version=2021-04-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "67236e5e-1404-44d7-bd9c-3a3e1910d1c9",
@@ -30,7 +30,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.Azure.Extensions/artifacttypes/vmextension/types?api-version=2020-06-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.Azure.Extensions/artifacttypes/vmextension/types?api-version=2021-04-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "1850f035-716d-4e7a-8454-54cda147b7ff",
@@ -59,7 +59,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.Azure.Extensions/artifacttypes/vmextension/types/CustomScript/versions?api-version=2020-06-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.Azure.Extensions/artifacttypes/vmextension/types/CustomScript/versions?api-version=2021-04-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "94c3b741-c04f-43b4-b2d3-9cc94abe947e",
@@ -88,7 +88,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.Azure.Extensions/artifacttypes/vmextension/types/CustomScript/versions/2.0.0?api-version=2020-06-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.Azure.Extensions/artifacttypes/vmextension/types/CustomScript/versions/2.0.0?api-version=2021-04-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "40fd6e95-ca9b-45b0-841e-02fa0c6dc656",
@@ -117,7 +117,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.Azure.Extensions/artifacttypes/vmextension/types/CustomScript/versions/2.0.1?api-version=2020-06-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.Azure.Extensions/artifacttypes/vmextension/types/CustomScript/versions/2.0.1?api-version=2021-04-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "b4794e82-7089-4ea4-9af5-5c14f4b5d0bd",
@@ -146,7 +146,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.Azure.Extensions/artifacttypes/vmextension/types/CustomScript/versions/2.0.2?api-version=2020-06-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.Azure.Extensions/artifacttypes/vmextension/types/CustomScript/versions/2.0.2?api-version=2021-04-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "6fed2af6-2665-4e0d-99a2-c3f81f7942ff",
@@ -175,7 +175,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.Azure.Extensions/artifacttypes/vmextension/types/CustomScript/versions/2.0.3?api-version=2020-06-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.Azure.Extensions/artifacttypes/vmextension/types/CustomScript/versions/2.0.3?api-version=2021-04-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "9e27adba-46e9-409b-89b6-4e5c890de68f",
@@ -204,7 +204,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.Azure.Extensions/artifacttypes/vmextension/types/CustomScript/versions/2.0.4?api-version=2020-06-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.Azure.Extensions/artifacttypes/vmextension/types/CustomScript/versions/2.0.4?api-version=2021-04-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "10e7c30d-b57f-43a0-90a0-949040692a86",
@@ -233,7 +233,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.Azure.Extensions/artifacttypes/vmextension/types/CustomScript/versions/2.0.5?api-version=2020-06-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.Azure.Extensions/artifacttypes/vmextension/types/CustomScript/versions/2.0.5?api-version=2021-04-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "ae9e06df-0727-4c43-9811-b1f0defb267f",
@@ -262,7 +262,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.Azure.Extensions/artifacttypes/vmextension/types/CustomScript/versions/2.0.6?api-version=2020-06-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.Azure.Extensions/artifacttypes/vmextension/types/CustomScript/versions/2.0.6?api-version=2021-04-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "45b1d9b3-50f9-4950-b452-9918ab066791",
@@ -291,7 +291,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.Azure.Extensions/artifacttypes/vmextension/types/CustomScript/versions/2.0.7?api-version=2020-06-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.Azure.Extensions/artifacttypes/vmextension/types/CustomScript/versions/2.0.7?api-version=2021-04-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "53042c5b-7481-4d4a-8006-0ed19c5fc8a1",
@@ -320,7 +320,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.Azure.Extensions/artifacttypes/vmextension/types/CustomScript/versions/2.1.1?api-version=2020-06-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.Azure.Extensions/artifacttypes/vmextension/types/CustomScript/versions/2.1.1?api-version=2021-04-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "20bebf7e-74b0-4784-bbbd-2e4d6c9cd2a1",
@@ -349,7 +349,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.Azure.Extensions/artifacttypes/vmextension/types/CustomScript/versions/2.1.2?api-version=2020-06-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.Azure.Extensions/artifacttypes/vmextension/types/CustomScript/versions/2.1.2?api-version=2021-04-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "a1a11a2d-91a3-4359-b88b-d09ad14f911e",
@@ -378,7 +378,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.Azure.Extensions/artifacttypes/vmextension/types/CustomScript/versions/2.1.3?api-version=2020-06-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.Azure.Extensions/artifacttypes/vmextension/types/CustomScript/versions/2.1.3?api-version=2021-04-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "f93174fa-b7e3-4c59-b616-844f82e99d28",
@@ -407,7 +407,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.Azure.Extensions/artifacttypes/vmextension/types/DockerExtension/versions?api-version=2020-06-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.Azure.Extensions/artifacttypes/vmextension/types/DockerExtension/versions?api-version=2021-04-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "408aa439-0423-4299-b988-e8b3b27a7ea8",
@@ -436,7 +436,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.Azure.Extensions/artifacttypes/vmextension/types/DockerExtension/versions/1.0.1512030601?api-version=2020-06-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.Azure.Extensions/artifacttypes/vmextension/types/DockerExtension/versions/1.0.1512030601?api-version=2021-04-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "b259a2f7-5222-4359-a26b-a86740f32a44",
@@ -465,7 +465,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.Azure.Extensions/artifacttypes/vmextension/types/DockerExtension/versions/1.1.1512090359?api-version=2020-06-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.Azure.Extensions/artifacttypes/vmextension/types/DockerExtension/versions/1.1.1512090359?api-version=2021-04-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "56df1e51-0363-4996-b640-44529115c532",
@@ -494,7 +494,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.Azure.Extensions/artifacttypes/vmextension/types/DockerExtension/versions/1.1.1512180541?api-version=2020-06-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.Azure.Extensions/artifacttypes/vmextension/types/DockerExtension/versions/1.1.1512180541?api-version=2021-04-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "ef63bfee-ea9c-4d45-88dc-e0fd0b712fc4",
@@ -523,7 +523,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.Azure.Extensions/artifacttypes/vmextension/types/DockerExtension/versions/1.1.1601070410?api-version=2020-06-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.Azure.Extensions/artifacttypes/vmextension/types/DockerExtension/versions/1.1.1601070410?api-version=2021-04-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "55be6f9c-5adf-4818-a10c-4e188a4d76a3",
@@ -552,7 +552,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.Azure.Extensions/artifacttypes/vmextension/types/DockerExtension/versions/1.1.1601140348?api-version=2020-06-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.Azure.Extensions/artifacttypes/vmextension/types/DockerExtension/versions/1.1.1601140348?api-version=2021-04-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "abdaf518-1007-42e8-93a3-e343897bf549",
@@ -581,7 +581,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.Azure.Extensions/artifacttypes/vmextension/types/DockerExtension/versions/1.1.1602270800?api-version=2020-06-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.Azure.Extensions/artifacttypes/vmextension/types/DockerExtension/versions/1.1.1602270800?api-version=2021-04-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "0651e1af-0cd4-4b92-a33c-917e79731702",
@@ -610,7 +610,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.Azure.Extensions/artifacttypes/vmextension/types/DockerExtension/versions/1.1.1604142300?api-version=2020-06-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.Azure.Extensions/artifacttypes/vmextension/types/DockerExtension/versions/1.1.1604142300?api-version=2021-04-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "2d65e8d8-51ab-46dd-a417-3879850fd1a5",
@@ -639,7 +639,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.Azure.Extensions/artifacttypes/vmextension/types/DockerExtension/versions/1.1.1606092330?api-version=2020-06-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.Azure.Extensions/artifacttypes/vmextension/types/DockerExtension/versions/1.1.1606092330?api-version=2021-04-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "5362ace7-3f80-43c5-a018-cf6ac3a54101",
@@ -668,7 +668,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.Azure.Extensions/artifacttypes/vmextension/types/DockerExtension/versions/1.2.0?api-version=2020-06-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.Azure.Extensions/artifacttypes/vmextension/types/DockerExtension/versions/1.2.0?api-version=2021-04-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "8083fb63-5270-470d-aa9a-e615daeda9b3",
@@ -697,7 +697,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.Azure.Extensions/artifacttypes/vmextension/types/DockerExtension/versions/1.2.2?api-version=2020-06-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.Azure.Extensions/artifacttypes/vmextension/types/DockerExtension/versions/1.2.2?api-version=2021-04-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "3567af61-85e8-400e-b824-2a32e6d8283c",
@@ -726,7 +726,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.Azure.Extensions/artifacttypes/vmextension/types/FixEmulatedIO/versions?api-version=2020-06-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.Azure.Extensions/artifacttypes/vmextension/types/FixEmulatedIO/versions?api-version=2021-04-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "8e42da05-1f9c-485e-b53b-39df43fa0316",
@@ -755,7 +755,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.Azure.Extensions/artifacttypes/vmextension/types/FixEmulatedIO/versions/1.0.0?api-version=2020-06-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.Azure.Extensions/artifacttypes/vmextension/types/FixEmulatedIO/versions/1.0.0?api-version=2021-04-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "3e6480a2-0741-4e67-837a-6c86be52cf5c",
@@ -784,7 +784,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.Azure.Extensions/artifacttypes/vmextension/types/FixLinuxDiagnostic/versions?api-version=2020-06-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.Azure.Extensions/artifacttypes/vmextension/types/FixLinuxDiagnostic/versions?api-version=2021-04-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "fb8bc8ff-5a13-4030-91fb-0b6ed6a5a1be",
@@ -813,7 +813,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.Azure.Extensions/artifacttypes/vmextension/types/FixLinuxDiagnostic/versions/1.0.0?api-version=2020-06-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.Azure.Extensions/artifacttypes/vmextension/types/FixLinuxDiagnostic/versions/1.0.0?api-version=2021-04-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "f32db267-e118-4301-8c08-66d1183049c4",
@@ -842,7 +842,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.Azure.Extensions/artifacttypes/vmextension/types/GuestActionForLinux/versions?api-version=2020-06-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.Azure.Extensions/artifacttypes/vmextension/types/GuestActionForLinux/versions?api-version=2021-04-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "4af83760-ae72-413f-9eec-861b6f2a0058",
@@ -871,7 +871,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.Azure.Extensions/artifacttypes/vmextension/types/GuestActionForLinux/versions/1.0.0?api-version=2020-06-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.Azure.Extensions/artifacttypes/vmextension/types/GuestActionForLinux/versions/1.0.0?api-version=2021-04-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "b69d2708-07b4-4a02-93bf-142f3039feba",
@@ -900,7 +900,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.Azure.Extensions/artifacttypes/vmextension/types/GuestActionForWindows/versions?api-version=2020-06-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.Azure.Extensions/artifacttypes/vmextension/types/GuestActionForWindows/versions?api-version=2021-04-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "8dfe197d-4cc1-41e3-b494-21cd3048a6a4",
@@ -929,7 +929,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.Azure.Extensions/artifacttypes/vmextension/types/GuestActionForWindows/versions/1.0.0?api-version=2020-06-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.Azure.Extensions/artifacttypes/vmextension/types/GuestActionForWindows/versions/1.0.0?api-version=2021-04-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "4206a6ed-1599-424e-85d4-c0b0cb22d742",
@@ -958,7 +958,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.Azure.Extensions/artifacttypes/vmextension/types/LinuxAsm/versions?api-version=2020-06-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.Azure.Extensions/artifacttypes/vmextension/types/LinuxAsm/versions?api-version=2021-04-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "bff4ca1d-c92c-4672-8ff5-95e08c116a08",
@@ -987,7 +987,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.Azure.Extensions/artifacttypes/vmextension/types/LinuxAsm/versions/2.0.1?api-version=2020-06-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.Azure.Extensions/artifacttypes/vmextension/types/LinuxAsm/versions/2.0.1?api-version=2021-04-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "5040c3f5-42cf-4177-a257-ce5a450d90da",
@@ -1016,7 +1016,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.Azure.Extensions/artifacttypes/vmextension/types/LinuxAsm/versions/2.1.0?api-version=2020-06-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.Azure.Extensions/artifacttypes/vmextension/types/LinuxAsm/versions/2.1.0?api-version=2021-04-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "fb7aa674-7628-4300-9744-b3dc2133e2b7",
@@ -1045,7 +1045,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.Azure.Extensions/artifacttypes/vmextension/types/LinuxAsm/versions/2.1.1?api-version=2020-06-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.Azure.Extensions/artifacttypes/vmextension/types/LinuxAsm/versions/2.1.1?api-version=2021-04-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "d9454494-4e3f-4087-a60b-261141164e4a",
@@ -1074,7 +1074,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.Azure.Extensions/artifacttypes/vmextension/types/LinuxAsm/versions/2.2.0?api-version=2020-06-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.Azure.Extensions/artifacttypes/vmextension/types/LinuxAsm/versions/2.2.0?api-version=2021-04-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "6673f800-26cc-4819-9959-a38df2de76e8",
@@ -1103,7 +1103,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.Azure.Extensions/artifacttypes/vmextension/types/LinuxAsm/versions/2.2.1?api-version=2020-06-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.Azure.Extensions/artifacttypes/vmextension/types/LinuxAsm/versions/2.2.1?api-version=2021-04-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "6eb26ba1-6e7f-471c-bb2a-ea96c47d8c2f",
@@ -1132,7 +1132,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.Azure.Extensions/artifacttypes/vmextension/types/LinuxAsm/versions/2.2.2?api-version=2020-06-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.Azure.Extensions/artifacttypes/vmextension/types/LinuxAsm/versions/2.2.2?api-version=2021-04-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "b58c6d75-e22a-40a2-a8b4-9aeda0dcd37c",
@@ -1161,7 +1161,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.Azure.Extensions/artifacttypes/vmextension/types/LinuxAsm/versions/2.2.3?api-version=2020-06-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.Azure.Extensions/artifacttypes/vmextension/types/LinuxAsm/versions/2.2.3?api-version=2021-04-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "6a442616-af26-4f06-a3a2-65ae81f58d5f",
@@ -1190,7 +1190,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.Azure.Extensions/artifacttypes/vmextension/types/LinuxAsm/versions/2.2.4?api-version=2020-06-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.Azure.Extensions/artifacttypes/vmextension/types/LinuxAsm/versions/2.2.4?api-version=2021-04-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "13701d83-cb84-44de-a0b0-e0a576b96075",
@@ -1219,7 +1219,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.Azure.Extensions/artifacttypes/vmextension/types/LinuxAsm/versions/2.2.5?api-version=2020-06-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.Azure.Extensions/artifacttypes/vmextension/types/LinuxAsm/versions/2.2.5?api-version=2021-04-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "cc93b4d7-a512-4c74-abd6-eaec243a7f52",
@@ -1248,7 +1248,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types?api-version=2020-06-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types?api-version=2021-04-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "d331f014-9c47-4b55-9bbd-00db72766ce8",
@@ -1277,7 +1277,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/AzureDiskEncryptionForLinux/versions?api-version=2020-06-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/AzureDiskEncryptionForLinux/versions?api-version=2021-04-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "1ddf3856-5047-4217-bc42-6c24b921f2d8",
@@ -1306,7 +1306,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/AzureDiskEncryptionForLinux/versions/0.1.0.999105?api-version=2020-06-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/AzureDiskEncryptionForLinux/versions/0.1.0.999105?api-version=2021-04-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "9b29a7eb-04cb-4c1b-9ea9-cc6447b4df91",
@@ -1335,7 +1335,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/AzureEnhancedMonitorForLinux/versions?api-version=2020-06-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/AzureEnhancedMonitorForLinux/versions?api-version=2021-04-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "74359cf8-c32d-4cbf-8c0d-78c5cbaefb76",
@@ -1364,7 +1364,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/AzureEnhancedMonitorForLinux/versions/2.0.0.2?api-version=2020-06-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/AzureEnhancedMonitorForLinux/versions/2.0.0.2?api-version=2021-04-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "6ec7b4c3-e976-4ee7-968d-be034b4d8374",
@@ -1393,7 +1393,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/AzureEnhancedMonitorForLinux/versions/3.0.0.1?api-version=2020-06-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/AzureEnhancedMonitorForLinux/versions/3.0.0.1?api-version=2021-04-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "e423bd2d-39e0-431d-87ab-4a083f4e2b29",
@@ -1422,7 +1422,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/AzureEnhancedMonitorForLinux/versions/3.0.0.5?api-version=2020-06-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/AzureEnhancedMonitorForLinux/versions/3.0.0.5?api-version=2021-04-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "0ae80f2a-2ce0-4cdf-8d97-c28eb7bf4ad8",
@@ -1451,7 +1451,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/AzureEnhancedMonitorForLinux/versions/3.0.0.97?api-version=2020-06-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/AzureEnhancedMonitorForLinux/versions/3.0.0.97?api-version=2021-04-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "9da334e6-dc9d-4ff9-87e6-6de41da5634d",
@@ -1480,7 +1480,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/AzureEnhancedMonitorForLinux/versions/3.0.0.98?api-version=2020-06-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/AzureEnhancedMonitorForLinux/versions/3.0.0.98?api-version=2021-04-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "dd9cf744-1e73-43c5-b9c2-47ba301b0014",
@@ -1509,7 +1509,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/AzureEnhancedMonitorForLinux/versions/3.0.0.99?api-version=2020-06-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/AzureEnhancedMonitorForLinux/versions/3.0.0.99?api-version=2021-04-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "698bad77-4e5b-40d4-a22e-19992e77ad85",
@@ -1538,7 +1538,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/AzureEnhancedMonitorForLinux/versions/3.0.1.0?api-version=2020-06-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/AzureEnhancedMonitorForLinux/versions/3.0.1.0?api-version=2021-04-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "13f957a6-9e0a-4f8c-9fa4-33f7df60cf4a",
@@ -1567,7 +1567,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/CustomScriptForLinux/versions?api-version=2020-06-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/CustomScriptForLinux/versions?api-version=2021-04-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "046ad1f3-ef79-4463-82f5-cf6672ac03f4",
@@ -1596,7 +1596,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/CustomScriptForLinux/versions/1.0?api-version=2020-06-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/CustomScriptForLinux/versions/1.0?api-version=2021-04-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "1c7b66e6-75fa-4efd-8937-9a00f4124944",
@@ -1625,7 +1625,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/CustomScriptForLinux/versions/1.0.1?api-version=2020-06-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/CustomScriptForLinux/versions/1.0.1?api-version=2021-04-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "9e54ae2e-94e0-4876-b074-da20cb125a0c",
@@ -1654,7 +1654,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/CustomScriptForLinux/versions/1.1?api-version=2020-06-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/CustomScriptForLinux/versions/1.1?api-version=2021-04-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "2db2eba1-e9b9-43e4-b19e-6f8fdf8e771d",
@@ -1683,7 +1683,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/CustomScriptForLinux/versions/1.1.1?api-version=2020-06-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/CustomScriptForLinux/versions/1.1.1?api-version=2021-04-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "6cbcc45f-90f4-4ddc-8ba6-877658c25862",
@@ -1712,7 +1712,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/CustomScriptForLinux/versions/1.2.2.0?api-version=2020-06-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/CustomScriptForLinux/versions/1.2.2.0?api-version=2021-04-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "6cead413-b2fb-42dc-828d-2bb3413cb2fe",
@@ -1741,7 +1741,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/CustomScriptForLinux/versions/1.3.0.0?api-version=2020-06-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/CustomScriptForLinux/versions/1.3.0.0?api-version=2021-04-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "652780cb-226d-4c75-b375-03afe9b0356d",
@@ -1770,7 +1770,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/CustomScriptForLinux/versions/1.3.0.1?api-version=2020-06-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/CustomScriptForLinux/versions/1.3.0.1?api-version=2021-04-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "3de395b7-8b02-4bfc-8adf-912fde63499b",
@@ -1799,7 +1799,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/CustomScriptForLinux/versions/1.3.0.2?api-version=2020-06-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/CustomScriptForLinux/versions/1.3.0.2?api-version=2021-04-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "f72ec87c-1205-4c6e-9ed1-2535eec28b6a",
@@ -1828,7 +1828,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/CustomScriptForLinux/versions/1.4.0.0?api-version=2020-06-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/CustomScriptForLinux/versions/1.4.0.0?api-version=2021-04-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "ab15b1e1-b8bb-4fa3-8b67-bf875fc5c9d1",
@@ -1857,7 +1857,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/CustomScriptForLinux/versions/1.4.1.0?api-version=2020-06-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/CustomScriptForLinux/versions/1.4.1.0?api-version=2021-04-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "ad434c64-c81e-486f-923c-c110272e8710",
@@ -1886,7 +1886,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/CustomScriptForLinux/versions/1.5.2.0?api-version=2020-06-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/CustomScriptForLinux/versions/1.5.2.0?api-version=2021-04-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "5cd74b16-26a6-4244-bd07-c4a86d1f8c71",
@@ -1915,7 +1915,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/CustomScriptForLinux/versions/1.5.2.1?api-version=2020-06-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/CustomScriptForLinux/versions/1.5.2.1?api-version=2021-04-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "8a35fe9b-4354-4b81-b0f3-f8dbd23cf725",
@@ -1944,7 +1944,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/CustomScriptForLinux/versions/1.5.2.2?api-version=2020-06-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/CustomScriptForLinux/versions/1.5.2.2?api-version=2021-04-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "ddb7da9c-0a80-403e-be4e-34e65680bcb7",
@@ -1973,7 +1973,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/CustomScriptForLinux/versions/1.5.3?api-version=2020-06-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/CustomScriptForLinux/versions/1.5.3?api-version=2021-04-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "91c184ca-a2db-46aa-8683-8f7931cfac5b",
@@ -2002,7 +2002,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/CustomScriptForLinux/versions/1.5.4?api-version=2020-06-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/CustomScriptForLinux/versions/1.5.4?api-version=2021-04-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "2d210152-39f3-4cb5-a645-8216c23a80dd",
@@ -2031,7 +2031,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/CustomScriptForLinux/versions/1.5.5?api-version=2020-06-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/CustomScriptForLinux/versions/1.5.5?api-version=2021-04-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "aef8b578-80a1-47d5-9a2f-2a261e8d6068",
@@ -2060,7 +2060,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/DSCForLinux/versions?api-version=2020-06-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/DSCForLinux/versions?api-version=2021-04-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "b90c6ae9-0dad-44ae-aef8-e2bfe02f15f5",
@@ -2089,7 +2089,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/DSCForLinux/versions/1.0.0.0?api-version=2020-06-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/DSCForLinux/versions/1.0.0.0?api-version=2021-04-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "b0f182e0-7eef-4fb2-a1f2-102753f46cfb",
@@ -2118,7 +2118,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/DSCForLinux/versions/2.0.0.0?api-version=2020-06-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/DSCForLinux/versions/2.0.0.0?api-version=2021-04-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "146075e4-a2a7-48a2-b147-0ac5bcde18f1",
@@ -2147,7 +2147,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/DSCForLinux/versions/2.1.0.0?api-version=2020-06-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/DSCForLinux/versions/2.1.0.0?api-version=2021-04-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "a2c13a39-cf6d-428e-930e-c79d73812350",
@@ -2176,7 +2176,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/DSCForLinux/versions/2.2.0.0?api-version=2020-06-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/DSCForLinux/versions/2.2.0.0?api-version=2021-04-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "d3697c71-92ca-48d5-aaa7-73492bb1ddbb",
@@ -2205,7 +2205,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/DSCForLinux/versions/2.3.0.0?api-version=2020-06-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/DSCForLinux/versions/2.3.0.0?api-version=2021-04-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "4df525bc-53d0-4bad-b07d-fde8263efdf2",
@@ -2234,7 +2234,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/DSCForLinux/versions/2.4.0.0?api-version=2020-06-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/DSCForLinux/versions/2.4.0.0?api-version=2021-04-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "727e8386-f413-43f1-9f9b-eac84921846e",
@@ -2263,7 +2263,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/DSCForLinux/versions/2.5.0.0?api-version=2020-06-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/DSCForLinux/versions/2.5.0.0?api-version=2021-04-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "6908cd7d-636a-469f-bd1c-9400fb0b6a01",
@@ -2292,7 +2292,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/DSCForLinux/versions/2.6.0.0?api-version=2020-06-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/DSCForLinux/versions/2.6.0.0?api-version=2021-04-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "74b33b9b-46b0-4198-b5ae-614daf7c9e31",
@@ -2321,7 +2321,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/DSCForLinux/versions/2.70.0.1?api-version=2020-06-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/DSCForLinux/versions/2.70.0.1?api-version=2021-04-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "77dee390-ace7-4fb1-af08-5bda6a5e8204",
@@ -2350,7 +2350,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/DSCForLinux/versions/2.70.0.10?api-version=2020-06-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/DSCForLinux/versions/2.70.0.10?api-version=2021-04-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "babbbfb7-de95-4f27-9cfa-51ad65b44e3a",
@@ -2379,7 +2379,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/DSCForLinux/versions/2.70.0.12?api-version=2020-06-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/DSCForLinux/versions/2.70.0.12?api-version=2021-04-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "1035c0bf-9375-48bb-a3a5-0cdb56d6c350",
@@ -2408,7 +2408,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/DSCForLinux/versions/2.70.0.2?api-version=2020-06-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/DSCForLinux/versions/2.70.0.2?api-version=2021-04-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "3dd1fe41-35d4-4839-9369-e4fc97652c48",
@@ -2437,7 +2437,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/DSCForLinux/versions/2.70.0.3?api-version=2020-06-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/DSCForLinux/versions/2.70.0.3?api-version=2021-04-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "6eb52d9f-5d5f-41b4-9332-ec3d510590e7",
@@ -2466,7 +2466,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/DSCForLinux/versions/2.70.0.4?api-version=2020-06-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/DSCForLinux/versions/2.70.0.4?api-version=2021-04-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "9cb2e520-0a0f-4522-b66b-7957edd304d8",
@@ -2495,7 +2495,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/DSCForLinux/versions/2.70.0.7?api-version=2020-06-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/DSCForLinux/versions/2.70.0.7?api-version=2021-04-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "ecdb43f9-490e-424d-ad5a-38241bfe6eed",
@@ -2524,7 +2524,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/DSCForLinux/versions/2.70.0.8?api-version=2020-06-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/DSCForLinux/versions/2.70.0.8?api-version=2021-04-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "d3388c1d-f338-4426-b4cd-63b7bcf1c434",
@@ -2553,7 +2553,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/DSCForLinux/versions/2.71.0.0?api-version=2020-06-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/DSCForLinux/versions/2.71.0.0?api-version=2021-04-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "6171454b-50aa-4d29-9fe6-df005039a7f2",
@@ -2582,7 +2582,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/DSCForLinux/versions/2.71.1.0?api-version=2020-06-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/DSCForLinux/versions/2.71.1.0?api-version=2021-04-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "8a8566a6-66db-4f59-8b43-9bd0c0144672",
@@ -2611,7 +2611,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/LinuxDiagnostic/versions?api-version=2020-06-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/LinuxDiagnostic/versions?api-version=2021-04-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "8a94ee8b-38dc-4931-b861-810b11ad0f59",
@@ -2640,7 +2640,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/LinuxDiagnostic/versions/2.0.9023?api-version=2020-06-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/LinuxDiagnostic/versions/2.0.9023?api-version=2021-04-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "e1c7784b-f1d0-4605-98a9-18fcc0a5ce27",
@@ -2669,7 +2669,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/LinuxDiagnostic/versions/2.1.9023?api-version=2020-06-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/LinuxDiagnostic/versions/2.1.9023?api-version=2021-04-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "a97b126d-cff5-4344-8798-02fe6a6041dc",
@@ -2698,7 +2698,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/LinuxDiagnostic/versions/2.2.9023?api-version=2020-06-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/LinuxDiagnostic/versions/2.2.9023?api-version=2021-04-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "334a4853-7b5d-47fc-a48f-3274b041802d",
@@ -2727,7 +2727,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/LinuxDiagnostic/versions/2.3.9023?api-version=2020-06-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/LinuxDiagnostic/versions/2.3.9023?api-version=2021-04-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "5dceddf5-2099-46ce-b622-78f574fd6328",
@@ -2756,7 +2756,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/LinuxDiagnostic/versions/2.3.9025?api-version=2020-06-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/LinuxDiagnostic/versions/2.3.9025?api-version=2021-04-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "8ada519c-af34-4d26-99de-8a9593c3dc67",
@@ -2785,7 +2785,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/LinuxDiagnostic/versions/2.3.9027?api-version=2020-06-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/LinuxDiagnostic/versions/2.3.9027?api-version=2021-04-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "555a9c6e-0407-4832-8b26-68786b93fcac",
@@ -2814,7 +2814,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/LinuxDiagnostic/versions/2.3.9029?api-version=2020-06-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/LinuxDiagnostic/versions/2.3.9029?api-version=2021-04-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "09a8127d-aedd-438f-a0a8-eda9ef16d9e1",
@@ -2843,7 +2843,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/Null/versions?api-version=2020-06-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/Null/versions?api-version=2021-04-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "60fc8abe-8737-4540-9d5d-072c90c3f088",
@@ -2872,7 +2872,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/Null/versions/1.0.0.0?api-version=2020-06-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/Null/versions/1.0.0.0?api-version=2021-04-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "5f5b7051-c535-469d-8bf9-7c975db0578b",
@@ -2901,7 +2901,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/Null/versions/1.0.0.3?api-version=2020-06-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/Null/versions/1.0.0.3?api-version=2021-04-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "bc41d491-7b15-45ad-a725-c4f2b88cf3f2",
@@ -2930,7 +2930,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/Null/versions/1.0.1.0?api-version=2020-06-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/Null/versions/1.0.1.0?api-version=2021-04-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "0e52639e-fd2a-4fe2-9d3a-5b3e71199917",
@@ -2959,7 +2959,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/Null/versions/1.0.2.0?api-version=2020-06-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/Null/versions/1.0.2.0?api-version=2021-04-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "5424a0df-47e6-4870-8d06-24049cf5db2b",
@@ -2988,7 +2988,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/Null/versions/1.0.3.0?api-version=2020-06-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/Null/versions/1.0.3.0?api-version=2021-04-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "2a9371a8-6577-40de-8ef3-895257a15100",
@@ -3017,7 +3017,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/Null/versions/1.1.0.0?api-version=2020-06-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/Null/versions/1.1.0.0?api-version=2021-04-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "0e240385-959b-4583-8fb9-4c6821925c8b",
@@ -3046,7 +3046,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/Null/versions/1.2.0.0?api-version=2020-06-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/Null/versions/1.2.0.0?api-version=2021-04-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "da62526f-0a75-48b6-80c7-eea7fdd028cf",
@@ -3075,7 +3075,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/Null/versions/1.3.0.0?api-version=2020-06-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/Null/versions/1.3.0.0?api-version=2021-04-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "b75826da-3823-4d5f-b823-4ace9bd93e3c",
@@ -3104,7 +3104,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/Null/versions/2.0.0.0?api-version=2020-06-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/Null/versions/2.0.0.0?api-version=2021-04-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "f0987d8d-b914-490e-99fb-33cfd62adb76",
@@ -3133,7 +3133,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/Null/versions/2.1.0.0?api-version=2020-06-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/Null/versions/2.1.0.0?api-version=2021-04-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "b4c9c3e3-5856-4c88-ac70-1fba0af4b05c",
@@ -3162,7 +3162,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/OSPatchingForLinux/versions?api-version=2020-06-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/OSPatchingForLinux/versions?api-version=2021-04-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "709cdb89-2957-4e84-8956-e2734d4c630a",
@@ -3191,7 +3191,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/OSPatchingForLinux/versions/1.0?api-version=2020-06-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/OSPatchingForLinux/versions/1.0?api-version=2021-04-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "cec80e79-7625-48ec-8bee-ed805d1c3ba2",
@@ -3220,7 +3220,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/OSPatchingForLinux/versions/1.0.1.1?api-version=2020-06-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/OSPatchingForLinux/versions/1.0.1.1?api-version=2021-04-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "9cb77e38-f73f-4e0c-9d26-deea11c6f52a",
@@ -3249,7 +3249,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/OSPatchingForLinux/versions/2.0.0.0?api-version=2020-06-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/OSPatchingForLinux/versions/2.0.0.0?api-version=2021-04-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "7e6be48a-eca1-4d9a-b5c9-05738944bc6a",
@@ -3278,7 +3278,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/OSPatchingForLinux/versions/2.0.0.1?api-version=2020-06-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/OSPatchingForLinux/versions/2.0.0.1?api-version=2021-04-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "4fc8f0ea-62a9-437c-bae7-541b2042a5b3",
@@ -3307,7 +3307,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/OSPatchingForLinux/versions/2.0.0.2?api-version=2020-06-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/OSPatchingForLinux/versions/2.0.0.2?api-version=2021-04-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "72903f8a-38cf-43a5-998b-5b8660d8f3d1",
@@ -3336,7 +3336,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/OSPatchingForLinux/versions/2.0.0.5?api-version=2020-06-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/OSPatchingForLinux/versions/2.0.0.5?api-version=2021-04-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "cbc3839b-7b4a-4be2-b116-41b55730a273",
@@ -3365,7 +3365,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/OSPatchingForLinux/versions/2.1.0.0?api-version=2020-06-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/OSPatchingForLinux/versions/2.1.0.0?api-version=2021-04-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "ca44c6e1-9006-4d1e-8731-977152d5c8b7",
@@ -3394,7 +3394,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/OSPatchingForLinux/versions/2.2.0.0?api-version=2020-06-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/OSPatchingForLinux/versions/2.2.0.0?api-version=2021-04-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "9437d1fa-6aa1-49d0-a76b-00f0dd144dac",
@@ -3423,7 +3423,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/OSPatchingForLinux/versions/2.3.0.1?api-version=2020-06-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/OSPatchingForLinux/versions/2.3.0.1?api-version=2021-04-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "840d831e-b324-4df7-9148-07612ddddee3",
@@ -3452,7 +3452,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/OSPatchingForLinux/versions/2.3.1.0?api-version=2020-06-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/OSPatchingForLinux/versions/2.3.1.0?api-version=2021-04-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "aea81f47-3b16-4f48-8e18-b4db05329d7b",
@@ -3481,7 +3481,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/RDMAUpdateForLinux/versions?api-version=2020-06-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/RDMAUpdateForLinux/versions?api-version=2021-04-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "0adc917e-09bb-497e-961f-f38a744e4b96",
@@ -3510,7 +3510,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/RDMAUpdateForLinux/versions/0.1.0.9?api-version=2020-06-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/RDMAUpdateForLinux/versions/0.1.0.9?api-version=2021-04-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "9b850631-32fb-49a4-b21d-15d3ce71af32",
@@ -3539,7 +3539,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/VMAccessForLinux/versions?api-version=2020-06-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/VMAccessForLinux/versions?api-version=2021-04-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "644b7968-eaf5-4b5a-841d-62fb55be9d96",
@@ -3568,7 +3568,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/VMAccessForLinux/versions/1.0?api-version=2020-06-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/VMAccessForLinux/versions/1.0?api-version=2021-04-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "61a72d25-8e61-492b-8b49-dc6b8ba676de",
@@ -3597,7 +3597,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/VMAccessForLinux/versions/1.1?api-version=2020-06-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/VMAccessForLinux/versions/1.1?api-version=2021-04-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "eeffab82-cf8f-4486-a216-feefc756ec1d",
@@ -3626,7 +3626,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/VMAccessForLinux/versions/1.2?api-version=2020-06-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/VMAccessForLinux/versions/1.2?api-version=2021-04-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "a6eb2b76-b927-4038-aaa4-cc40a0572f6a",
@@ -3655,7 +3655,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/VMAccessForLinux/versions/1.3.0.1?api-version=2020-06-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/VMAccessForLinux/versions/1.3.0.1?api-version=2021-04-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "5eee0499-1b23-400f-ad23-45790303115d",
@@ -3684,7 +3684,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/VMAccessForLinux/versions/1.4.0.0?api-version=2020-06-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/VMAccessForLinux/versions/1.4.0.0?api-version=2021-04-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "46285c80-63c2-49cf-8a80-148d29868ea7",
@@ -3713,7 +3713,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/VMAccessForLinux/versions/1.4.1.0?api-version=2020-06-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/VMAccessForLinux/versions/1.4.1.0?api-version=2021-04-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "4acdcbe2-7a93-45f4-a7b1-57283eba68b5",
@@ -3742,7 +3742,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/VMAccessForLinux/versions/1.4.2.0?api-version=2020-06-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/VMAccessForLinux/versions/1.4.2.0?api-version=2021-04-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "319d1e6e-626b-4028-89ab-6777072f57ed",
@@ -3771,7 +3771,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/VMAccessForLinux/versions/1.4.3.0?api-version=2020-06-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/VMAccessForLinux/versions/1.4.3.0?api-version=2021-04-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "83390b68-b450-4799-9253-364185e13280",
@@ -3800,7 +3800,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/VMAccessForLinux/versions/1.4.4.0?api-version=2020-06-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/VMAccessForLinux/versions/1.4.4.0?api-version=2021-04-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "1764db7d-72da-442a-888c-157bdb7cdbff",
@@ -3829,7 +3829,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/VMAccessForLinux/versions/1.4.5.0?api-version=2020-06-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/VMAccessForLinux/versions/1.4.5.0?api-version=2021-04-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "5859124c-a2dd-4701-8019-2fa430244a28",
@@ -3858,7 +3858,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/VMAccessForLinux/versions/1.4.6.0?api-version=2020-06-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/VMAccessForLinux/versions/1.4.6.0?api-version=2021-04-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "f08bd695-1d0a-4e6a-9617-e3e6013bc8be",
@@ -3887,7 +3887,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/VMAccessForLinux/versions/1.4.7.0?api-version=2020-06-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/VMAccessForLinux/versions/1.4.7.0?api-version=2021-04-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "8bf6e2aa-3d90-4c7a-97f2-46fd739d81ce",
@@ -3916,7 +3916,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/VMAccessForLinux/versions/1.4.7.1?api-version=2020-06-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/VMAccessForLinux/versions/1.4.7.1?api-version=2021-04-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "371282a4-8f42-4a82-8770-55dac964d7a6",
@@ -3945,7 +3945,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/VMAccessForLinux/versions/1.5.0?api-version=2020-06-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/VMAccessForLinux/versions/1.5.0?api-version=2021-04-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "fe2bac92-2d75-49f1-8e82-5a2361e4435b",
@@ -3974,7 +3974,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/VMAccessForLinux/versions/1.5.1?api-version=2020-06-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/VMAccessForLinux/versions/1.5.1?api-version=2021-04-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "0f6e3403-79c4-43f8-84e3-136b31e13791",
@@ -4003,7 +4003,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/VMAccessForLinux/versions/1.5.10?api-version=2020-06-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/VMAccessForLinux/versions/1.5.10?api-version=2021-04-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "fae1dd63-88a1-4b64-9c5d-c19b2ea968ef",
@@ -4032,7 +4032,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/VMAccessForLinux/versions/1.5.2?api-version=2020-06-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/VMAccessForLinux/versions/1.5.2?api-version=2021-04-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "adaa07f4-a9fe-4a32-ae44-66ac1ae01758",
@@ -4061,7 +4061,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/VMAccessForLinux/versions/1.5.3?api-version=2020-06-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/VMAccessForLinux/versions/1.5.3?api-version=2021-04-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "a1d1a472-9b37-48d7-b615-fa31ed715818",
@@ -4090,7 +4090,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/VMAccessForLinux/versions/1.5.4?api-version=2020-06-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/VMAccessForLinux/versions/1.5.4?api-version=2021-04-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "fe506b22-631d-446f-962c-02705b0067cb",
@@ -4119,7 +4119,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/VMAccessForLinux/versions/1.5.6?api-version=2020-06-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/VMAccessForLinux/versions/1.5.6?api-version=2021-04-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "5ab4aef2-e7da-4289-9f95-7901ae69e9d5",
@@ -4148,7 +4148,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/VMAccessForLinux/versions/1.5.8?api-version=2020-06-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/VMAccessForLinux/versions/1.5.8?api-version=2021-04-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "c7947041-eaff-41e5-9159-4be21e89dae0",
@@ -4177,7 +4177,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/VMBackupForLinuxExtension/versions?api-version=2020-06-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/VMBackupForLinuxExtension/versions?api-version=2021-04-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "8c7e52c2-ba64-4c4c-9670-698c69dc3e94",
@@ -4206,7 +4206,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/VMBackupForLinuxExtension/versions/0.1.0.993?api-version=2020-06-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westcentralus/publishers/Microsoft.OSTCExtensions/artifacttypes/vmextension/types/VMBackupForLinuxExtension/versions/0.1.0.993?api-version=2021-04-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "3921c62c-34ec-4559-bbe7-3aeb8deed40a",

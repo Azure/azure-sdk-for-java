@@ -6,6 +6,7 @@ package com.azure.resourcemanager.resources.implementation;
 
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
+import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
@@ -59,7 +60,7 @@ public final class ProvidersClientImpl implements ProvidersClient {
     @Host("{$host}")
     @ServiceInterface(name = "ResourceManagementCl")
     private interface ProvidersService {
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Post("/subscriptions/{subscriptionId}/providers/{resourceProviderNamespace}/unregister")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -68,9 +69,23 @@ public final class ProvidersClientImpl implements ProvidersClient {
             @PathParam("resourceProviderNamespace") String resourceProviderNamespace,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
+        @Post(
+            "/providers/Microsoft.Management/managementGroups/{groupId}/providers/{resourceProviderNamespace}/register")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Void>> registerAtManagementGroupScope(
+            @HostParam("$host") String endpoint,
+            @PathParam("resourceProviderNamespace") String resourceProviderNamespace,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("groupId") String groupId,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({"Content-Type: application/json"})
         @Post("/subscriptions/{subscriptionId}/providers/{resourceProviderNamespace}/register")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -79,9 +94,10 @@ public final class ProvidersClientImpl implements ProvidersClient {
             @PathParam("resourceProviderNamespace") String resourceProviderNamespace,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/providers")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -91,9 +107,10 @@ public final class ProvidersClientImpl implements ProvidersClient {
             @QueryParam("$expand") String expand,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get("/providers")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -102,9 +119,10 @@ public final class ProvidersClientImpl implements ProvidersClient {
             @QueryParam("$top") Integer top,
             @QueryParam("$expand") String expand,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/providers/{resourceProviderNamespace}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -114,9 +132,10 @@ public final class ProvidersClientImpl implements ProvidersClient {
             @PathParam("resourceProviderNamespace") String resourceProviderNamespace,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get("/providers/{resourceProviderNamespace}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -125,21 +144,28 @@ public final class ProvidersClientImpl implements ProvidersClient {
             @QueryParam("$expand") String expand,
             @PathParam("resourceProviderNamespace") String resourceProviderNamespace,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ProviderListResult>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ProviderListResult>> listAtTenantScopeNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept,
+            Context context);
     }
 
     /**
@@ -171,6 +197,7 @@ public final class ProvidersClientImpl implements ProvidersClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -180,8 +207,9 @@ public final class ProvidersClientImpl implements ProvidersClient {
                             resourceProviderNamespace,
                             this.client.getApiVersion(),
                             this.client.getSubscriptionId(),
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -215,6 +243,7 @@ public final class ProvidersClientImpl implements ProvidersClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .unregister(
@@ -222,6 +251,7 @@ public final class ProvidersClientImpl implements ProvidersClient {
                 resourceProviderNamespace,
                 this.client.getApiVersion(),
                 this.client.getSubscriptionId(),
+                accept,
                 context);
     }
 
@@ -277,6 +307,137 @@ public final class ProvidersClientImpl implements ProvidersClient {
     }
 
     /**
+     * Registers a management group with a resource provider.
+     *
+     * @param resourceProviderNamespace The namespace of the resource provider to register.
+     * @param groupId The management group ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> registerAtManagementGroupScopeWithResponseAsync(
+        String resourceProviderNamespace, String groupId) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceProviderNamespace == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter resourceProviderNamespace is required and cannot be null."));
+        }
+        if (groupId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter groupId is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .registerAtManagementGroupScope(
+                            this.client.getEndpoint(),
+                            resourceProviderNamespace,
+                            this.client.getApiVersion(),
+                            groupId,
+                            accept,
+                            context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Registers a management group with a resource provider.
+     *
+     * @param resourceProviderNamespace The namespace of the resource provider to register.
+     * @param groupId The management group ID.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Void>> registerAtManagementGroupScopeWithResponseAsync(
+        String resourceProviderNamespace, String groupId, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceProviderNamespace == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter resourceProviderNamespace is required and cannot be null."));
+        }
+        if (groupId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter groupId is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .registerAtManagementGroupScope(
+                this.client.getEndpoint(),
+                resourceProviderNamespace,
+                this.client.getApiVersion(),
+                groupId,
+                accept,
+                context);
+    }
+
+    /**
+     * Registers a management group with a resource provider.
+     *
+     * @param resourceProviderNamespace The namespace of the resource provider to register.
+     * @param groupId The management group ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> registerAtManagementGroupScopeAsync(String resourceProviderNamespace, String groupId) {
+        return registerAtManagementGroupScopeWithResponseAsync(resourceProviderNamespace, groupId)
+            .flatMap((Response<Void> res) -> Mono.empty());
+    }
+
+    /**
+     * Registers a management group with a resource provider.
+     *
+     * @param resourceProviderNamespace The namespace of the resource provider to register.
+     * @param groupId The management group ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void registerAtManagementGroupScope(String resourceProviderNamespace, String groupId) {
+        registerAtManagementGroupScopeAsync(resourceProviderNamespace, groupId).block();
+    }
+
+    /**
+     * Registers a management group with a resource provider.
+     *
+     * @param resourceProviderNamespace The namespace of the resource provider to register.
+     * @param groupId The management group ID.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> registerAtManagementGroupScopeWithResponse(
+        String resourceProviderNamespace, String groupId, Context context) {
+        return registerAtManagementGroupScopeWithResponseAsync(resourceProviderNamespace, groupId, context).block();
+    }
+
+    /**
      * Registers a subscription with a resource provider.
      *
      * @param resourceProviderNamespace The namespace of the resource provider to register.
@@ -305,6 +466,7 @@ public final class ProvidersClientImpl implements ProvidersClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -314,8 +476,9 @@ public final class ProvidersClientImpl implements ProvidersClient {
                             resourceProviderNamespace,
                             this.client.getApiVersion(),
                             this.client.getSubscriptionId(),
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -348,6 +511,7 @@ public final class ProvidersClientImpl implements ProvidersClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .register(
@@ -355,6 +519,7 @@ public final class ProvidersClientImpl implements ProvidersClient {
                 resourceProviderNamespace,
                 this.client.getApiVersion(),
                 this.client.getSubscriptionId(),
+                accept,
                 context);
     }
 
@@ -435,6 +600,7 @@ public final class ProvidersClientImpl implements ProvidersClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -445,6 +611,7 @@ public final class ProvidersClientImpl implements ProvidersClient {
                             expand,
                             this.client.getApiVersion(),
                             this.client.getSubscriptionId(),
+                            accept,
                             context))
             .<PagedResponse<ProviderInner>>map(
                 res ->
@@ -455,7 +622,7 @@ public final class ProvidersClientImpl implements ProvidersClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -485,6 +652,7 @@ public final class ProvidersClientImpl implements ProvidersClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .list(
@@ -493,6 +661,7 @@ public final class ProvidersClientImpl implements ProvidersClient {
                 expand,
                 this.client.getApiVersion(),
                 this.client.getSubscriptionId(),
+                accept,
                 context)
             .map(
                 res ->
@@ -558,6 +727,20 @@ public final class ProvidersClientImpl implements ProvidersClient {
     /**
      * Gets all resource providers for a subscription.
      *
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all resource providers for a subscription.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<ProviderInner> list() {
+        final Integer top = null;
+        final String expand = null;
+        return new PagedIterable<>(listAsync(top, expand));
+    }
+
+    /**
+     * Gets all resource providers for a subscription.
+     *
      * @param top The number of results to return. If null is passed returns all deployments.
      * @param expand The properties to include in the results. For example, use &amp;$expand=metadata in the query
      *     string to retrieve resource provider metadata. To include property aliases in response, use
@@ -571,20 +754,6 @@ public final class ProvidersClientImpl implements ProvidersClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ProviderInner> list(Integer top, String expand, Context context) {
         return new PagedIterable<>(listAsync(top, expand, context));
-    }
-
-    /**
-     * Gets all resource providers for a subscription.
-     *
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all resource providers for a subscription.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ProviderInner> list() {
-        final Integer top = null;
-        final String expand = null;
-        return new PagedIterable<>(listAsync(top, expand));
     }
 
     /**
@@ -607,12 +776,13 @@ public final class ProvidersClientImpl implements ProvidersClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
                     service
                         .listAtTenantScope(
-                            this.client.getEndpoint(), top, expand, this.client.getApiVersion(), context))
+                            this.client.getEndpoint(), top, expand, this.client.getApiVersion(), accept, context))
             .<PagedResponse<ProviderInner>>map(
                 res ->
                     new PagedResponseBase<>(
@@ -622,7 +792,7 @@ public final class ProvidersClientImpl implements ProvidersClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -647,9 +817,10 @@ public final class ProvidersClientImpl implements ProvidersClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listAtTenantScope(this.client.getEndpoint(), top, expand, this.client.getApiVersion(), context)
+            .listAtTenantScope(this.client.getEndpoint(), top, expand, this.client.getApiVersion(), accept, context)
             .map(
                 res ->
                     new PagedResponseBase<>(
@@ -719,6 +890,20 @@ public final class ProvidersClientImpl implements ProvidersClient {
     /**
      * Gets all resource providers for the tenant.
      *
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all resource providers for the tenant.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<ProviderInner> listAtTenantScope() {
+        final Integer top = null;
+        final String expand = null;
+        return new PagedIterable<>(listAtTenantScopeAsync(top, expand));
+    }
+
+    /**
+     * Gets all resource providers for the tenant.
+     *
      * @param top The number of results to return. If null is passed returns all providers.
      * @param expand The properties to include in the results. For example, use &amp;$expand=metadata in the query
      *     string to retrieve resource provider metadata. To include property aliases in response, use
@@ -732,20 +917,6 @@ public final class ProvidersClientImpl implements ProvidersClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ProviderInner> listAtTenantScope(Integer top, String expand, Context context) {
         return new PagedIterable<>(listAtTenantScopeAsync(top, expand, context));
-    }
-
-    /**
-     * Gets all resource providers for the tenant.
-     *
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all resource providers for the tenant.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ProviderInner> listAtTenantScope() {
-        final Integer top = null;
-        final String expand = null;
-        return new PagedIterable<>(listAtTenantScopeAsync(top, expand));
     }
 
     /**
@@ -779,6 +950,7 @@ public final class ProvidersClientImpl implements ProvidersClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -789,8 +961,9 @@ public final class ProvidersClientImpl implements ProvidersClient {
                             resourceProviderNamespace,
                             this.client.getApiVersion(),
                             this.client.getSubscriptionId(),
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -826,6 +999,7 @@ public final class ProvidersClientImpl implements ProvidersClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .get(
@@ -834,6 +1008,7 @@ public final class ProvidersClientImpl implements ProvidersClient {
                 resourceProviderNamespace,
                 this.client.getApiVersion(),
                 this.client.getSubscriptionId(),
+                accept,
                 context);
     }
 
@@ -942,6 +1117,7 @@ public final class ProvidersClientImpl implements ProvidersClient {
                     new IllegalArgumentException(
                         "Parameter resourceProviderNamespace is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -951,8 +1127,9 @@ public final class ProvidersClientImpl implements ProvidersClient {
                             expand,
                             resourceProviderNamespace,
                             this.client.getApiVersion(),
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -982,10 +1159,16 @@ public final class ProvidersClientImpl implements ProvidersClient {
                     new IllegalArgumentException(
                         "Parameter resourceProviderNamespace is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .getAtTenantScope(
-                this.client.getEndpoint(), expand, resourceProviderNamespace, this.client.getApiVersion(), context);
+                this.client.getEndpoint(),
+                expand,
+                resourceProviderNamespace,
+                this.client.getApiVersion(),
+                accept,
+                context);
     }
 
     /**
@@ -1082,8 +1265,15 @@ public final class ProvidersClientImpl implements ProvidersClient {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listNext(nextLink, context))
+            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
             .<PagedResponse<ProviderInner>>map(
                 res ->
                     new PagedResponseBase<>(
@@ -1093,7 +1283,7 @@ public final class ProvidersClientImpl implements ProvidersClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1111,9 +1301,16 @@ public final class ProvidersClientImpl implements ProvidersClient {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listNext(nextLink, context)
+            .listNext(nextLink, this.client.getEndpoint(), accept, context)
             .map(
                 res ->
                     new PagedResponseBase<>(
@@ -1139,8 +1336,15 @@ public final class ProvidersClientImpl implements ProvidersClient {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listAtTenantScopeNext(nextLink, context))
+            .withContext(context -> service.listAtTenantScopeNext(nextLink, this.client.getEndpoint(), accept, context))
             .<PagedResponse<ProviderInner>>map(
                 res ->
                     new PagedResponseBase<>(
@@ -1150,7 +1354,7 @@ public final class ProvidersClientImpl implements ProvidersClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1168,9 +1372,16 @@ public final class ProvidersClientImpl implements ProvidersClient {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listAtTenantScopeNext(nextLink, context)
+            .listAtTenantScopeNext(nextLink, this.client.getEndpoint(), accept, context)
             .map(
                 res ->
                     new PagedResponseBase<>(

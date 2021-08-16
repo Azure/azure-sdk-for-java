@@ -3,6 +3,7 @@
 
 package com.azure.core.http.rest;
 
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.paging.ContinuablePagedFluxCore;
 import com.azure.core.util.paging.PageRetriever;
 import reactor.core.CoreSubscriber;
@@ -74,10 +75,11 @@ public class PagedFluxBase<T, P extends PagedResponse<T>> extends ContinuablePag
      * Create PagedFlux backed by Page Retriever Function Supplier.
      *
      * @param provider the Page Retrieval Provider
-     * @param ignored ignored
+     * @param ignored An additional ignored parameter as generic types are erased and this would conflict with
+     * {@link #PagedFluxBase(Supplier)} without it.
      */
     PagedFluxBase(Supplier<PageRetriever<String, P>> provider, boolean ignored) {
-        super(provider);
+        super(provider, null, token -> !CoreUtils.isNullOrEmpty(token));
     }
 
     /**

@@ -3,7 +3,7 @@ Azure Key Vault Managed HSM is a fully-managed, highly-available, single-tenant,
 
 The Azure Key Vault Administration library clients support administrative tasks such as full backup/restore and key-level role-based access control (RBAC).
 
-[Source code][source_code] | [API reference documentation][api_documentation] | [Product documentation][azkeyvault_docs] | [Samples][keys_samples]
+[Source code][source_code] | [API reference documentation][api_documentation] | [Product documentation][azkeyvault_docs] | [Samples][administration_samples]
 
 ## Getting started
 ### Adding the package to your project
@@ -14,7 +14,7 @@ Maven dependency for the Azure Key Vault Administration library. Add it to your 
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-security-keyvault-administration</artifactId>
-    <version>4.0.0-beta.3</version>
+    <version>4.0.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -22,19 +22,19 @@ Maven dependency for the Azure Key Vault Administration library. Add it to your 
 ### Prerequisites
 - A [Java Development Kit (JDK)][jdk_link], version 8 or later.
 - [Azure Subscription][azure_subscription]
-- An existing [Azure Key Vault][azure_keyvault]. If you need to create a Key Vault, you can use the [Azure Cloud Shell][azure_cloud_shell] to create one with this Azure CLI command. Replace `<your-resource-group-name>` and `<your-key-vault-name>` with your own, unique names:
+- An existing [Azure Key Vault Managed HSM][azure_keyvault_mhsm]. If you need to create a Managed HSM, you can use the [Azure Cloud Shell][azure_cloud_shell] to create one with this Azure CLI command. Replace `<your-resource-group-name>` and `<your-key-vault-mhsm-name>` with your own, unique names:
 
     ```Bash
-    az keyvault create --resource-group <your-resource-group-name> --name <your-key-vault-name>
+    az keyvault create --hsm-name <your-key-vault-mhsm-name> --resource-group <your-resource-group-name> --administrators <your-service-principal-object-id> --location <your-azure-location>
     ```
 
 ### Authenticate the client
-In order to interact with the Azure Key Vault service, you'll need to either create an instance of the [KeyVaultAccessControlClient](#create-access-control-client) or an instance of the class [KeyVaultBackupClient](#create-backup-client). You would need a **vault url** and **client secret credentials (client id, client secret, tenant id)** to instantiate a client object using the default `DefaultAzureCredential` examples shown in this document.
+In order to interact with the Azure Key Vault service, you'll need to either create an instance of the [KeyVaultAccessControlClient](#create-an-access-control-client) or an instance of the class [KeyVaultBackupClient](#create-a-backup-client). You would need a **vault url**, which you may see as "DNS Name" in the portal, and **client secret credentials (client id, client secret, tenant id)** to instantiate a client object using the default `DefaultAzureCredential` examples shown in this document.
 
 The `DefaultAzureCredential` way of authentication by providing client secret credentials is being used in this getting started section but you can find more ways to authenticate with [azure-identity][azure_identity].
 
 #### Create/Get credentials
-To create/get client secret credentials you can use the [Azure Portal][azure_create_application_in_portal], [Azure CLI][azure_keyvault_cli_full] or [Azure Cloud Shell][azure_cloud_shell]
+To create/get client secret credentials you can use the [Azure Portal][azure_create_application_in_portal], [Azure CLI][azure_keyvault_cli_full] or [Azure Cloud Shell][azure_cloud_shell].
 
 Here is an [Azure Cloud Shell][azure_cloud_shell] snippet below to
 
@@ -49,14 +49,24 @@ Here is an [Azure Cloud Shell][azure_cloud_shell] snippet below to
     ```json
     {
         "appId": "generated-app-ID",
-        "displayName": "dummy-app-name",
-        "name": "http://dummy-app-name",
+        "displayName": "some-app-name",
+        "name": "https://some-app-name",
         "password": "random-password",
         "tenant": "tenant-ID"
     }
     ```
 
-* Use the above returned credentials information to set the **AZURE_CLIENT_ID** (appId), **AZURE_CLIENT_SECRET** (password), and **AZURE_TENANT_ID** (tenantId) environment variables. The following example shows a way to do this in Bash:
+* Take note of the service principal objectId
+    ```Bash
+    az ad sp show --id <appId> --query objectId
+    ```
+
+  Output:
+    ```
+    "<your-service-principal-object-id>"
+    ```
+
+* Use the returned credentials above to set the **AZURE_CLIENT_ID** (appId), **AZURE_CLIENT_SECRET** (password), and **AZURE_TENANT_ID** (tenantId) environment variables. The following example shows a way to do this in Bash:
 
     ```Bash
     export AZURE_CLIENT_ID="generated-app-ID"
@@ -64,21 +74,55 @@ Here is an [Azure Cloud Shell][azure_cloud_shell] snippet below to
     export AZURE_TENANT_ID="tenant-ID"
     ```
 
-* Take note of the service principal objectId
-    ```Bash
-    az ad sp show --id <appId> --query objectId
+* Create the Managed HSM and grant the above mentioned service principal authorization to perform administrative operations on the Managed HSM (replace `<your-resource-group-name>` and `<your-key-vault-mhsm-name>` with your own, unique names and `<your-service-principal-object-id>` with the value from above):
+    
+    ```bash
+    az keyvault create --hsm-name <your-key-vault-mhsm-name> --resource-group <your-resource-group-name> --administrators <your-service-principal-object-id> --location <your-azure-location>
     ```
   
-    Output:
-    ```
-    "<your-service-principal-object-id>"
-    ```
+  This service principal is automatically added to the "Managed HSM Administrators" [built-in role][built_in_roles].
 
-* Use the aforementioned Key Vault name to retrieve details of your Key Vault, which also contain your Key Vault URL:
+* Use the aforementioned Azure Key Vault name to retrieve details of your Key Vault, which also contain your Azure Key Vault URL:
 
     ```Bash
-    az keyvault show --name <your-key-vault-name>
+    az keyvault show --name <your-key-vault-mhsm-name>
     ```
+
+#### Activate your managed HSM
+All data plane commands are disabled until the HSM is activated. You will not be able to create keys or assign roles. Only the designated administrators that were assigned during the create command can activate the HSM. To activate the HSM you must download the security domain.
+
+To activate your HSM you need:
+- Minimum 3 RSA key-pairs (maximum 10).
+- Specify minimum number of keys required to decrypt the security domain (quorum).
+
+To activate the HSM you send at least 3 (maximum 10) RSA public keys to the HSM, the HSM encrypts the security domain with these keys and sends it back. Once this security domain is successfully downloaded, your HSM is ready to use. You also need to specify quorum, which is the minimum number of private keys required to decrypt the security domain.
+
+The example below shows how to use openssl to generate 3 self signed certificate.
+
+```bash
+openssl req -newkey rsa:2048 -nodes -keyout cert_0.key -x509 -days 365 -out cert_0.cer
+openssl req -newkey rsa:2048 -nodes -keyout cert_1.key -x509 -days 365 -out cert_1.cer
+openssl req -newkey rsa:2048 -nodes -keyout cert_2.key -x509 -days 365 -out cert_2.cer
+```
+
+Use the `az keyvault security-domain download` command to download the security domain and activate your managed HSM.
+
+The example below, uses 3 RSA key pairs (only public keys are needed for this command) and sets the quorum to 2.
+
+```bash
+az keyvault security-domain download --hsm-name <your-key-vault-mhsm-name> --sd-wrapping-keys ./certs/cert_0.cer ./certs/cert_1.cer ./certs/cert_2.cer --sd-quorum 2 --security-domain-file ContosoMHSM-SD.json
+```
+
+#### Controlling access to your managed HSM
+The designated administrators assigned during creation are automatically added to the "Managed HSM Administrators" [built-in role][built_in_roles], who are able to download a security domain and [manage roles for data plane access][access_control], among other limited permissions.
+
+To perform other actions on keys, you need to assign principals to other roles such as "Managed HSM Crypto User", which can perform non-destructive key operations:
+
+```PowerShell
+az keyvault role assignment create --hsm-name <your-key-vault-mhsm-name> --role "Managed HSM Crypto User" --scope / --assignee-object-id <principal-or-user-object-ID> --assignee-principal-type <principal-type>
+```
+
+Please read [best practices][best_practices] for properly securing your managed HSM.
 
 ## Key concepts
 ### Key Vault Access Control client:
@@ -104,58 +148,93 @@ A backup operation represents a long running operation for a full key backup.
 A restore operation represents a long running operation for both a full key and selective key restore.
 
 ## Create an Access Control client
-Once you've populated the **AZURE_CLIENT_ID**, **AZURE_CLIENT_SECRET**, and **AZURE_TENANT_ID** environment variables and replaced **your-key-vault-url** with the URI returned above, you can create the KeyVaultAccessControlClient:
+Once you've populated the **AZURE_CLIENT_ID**, **AZURE_CLIENT_SECRET**, and **AZURE_TENANT_ID** environment variables and replaced **your-key-vault-url** with the URI returned above, you can create the `KeyVaultAccessControlClient`:
 
-```Java
-import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.azure.security.keyvault.administration.KeyVaultAccessControlClient;
-import com.azure.security.keyvault.administration.KeyVaultAccessControlClientBuilder;
-
+<!-- embedme ./src/samples/java/com/azure/security/keyvault/administration/ReadmeSamples.java#40-L43 -->
+```java
 KeyVaultAccessControlClient accessControlClient = new KeyVaultAccessControlClientBuilder()
     .vaultUrl("<your-key-vault-url>")
     .credential(new DefaultAzureCredentialBuilder().build())
     .buildClient();
 ```
 
-> NOTE: For using an asynchronous client use KeyVaultAccessControlAsyncClient instead of KeyVaultAccessControlClient and call `buildAsyncClient()`
+> NOTE: For using an asynchronous client use `KeyVaultAccessControlAsyncClient` instead of `KeyVaultAccessControlClient` and call `buildAsyncClient()`
 
 ## Examples
 ### Sync API
 The following sections provide several code snippets covering some of the most common Azure Key Vault Access Control service tasks, including:
 - [List role definitions](#list-role-definitions)
+- [Create or update a role definition](#create-or-update-a-role-definition)
+- [Retrieve a role definition](#retrieve-a-role-definition)
 - [List role assignments](#list-role-assignments)
 - [Create a role assignment](#create-a-role-assignment)
 - [Retrieve a role assignment](#retrieve-a-role-assignment)
 - [Delete a role assignment](#delete-a-role-assignment)
 
 ### List role definitions
-List the role definitions in the key vault by calling `listRoleDefinitions`.
+List the role definitions in the key vault by calling `listRoleDefinitions()`.
 
+<!-- embedme ./src/samples/java/com/azure/security/keyvault/administration/ReadmeSamples.java#50-L54 -->
 ```java
-KeyVaultRoleAssignmentScope roleAssignmentScope = KeyVaultRoleAssignmentScope.GLOBAL;
+PagedIterable<KeyVaultRoleDefinition> roleDefinitions =
+    keyVaultAccessControlClient.listRoleDefinitions(KeyVaultRoleScope.GLOBAL);
 
-for (KeyVaultRoleDefinition roleDefinition : accessControlClient.listRoleDefinitions(roleAssignmentScope)) {
-    System.out.printf("Retrieved role definition with name \"%s\" and type \"%s\"%n", roleDefinition.getName(),
-        roleDefinition.getType());
-}
+roleDefinitions.forEach(roleDefinition ->
+    System.out.printf("Retrieved role definition with name '%s'.%n", roleDefinition.getName()));
+```
+
+### Create or update a role definition
+Create or update a role definition in the key vault. The following example shows how to create a role definition with a randomly generated name.
+
+<!-- embedme ./src/samples/java/com/azure/security/keyvault/administration/ReadmeSamples.java#L61-L64 -->
+```java
+KeyVaultRoleDefinition roleDefinition = keyVaultAccessControlClient.setRoleDefinition(KeyVaultRoleScope.GLOBAL);
+
+System.out.printf("Created role definition with randomly generated name '%s' and role name '%s'.%n",
+    roleDefinition.getName(), roleDefinition.getRoleName());
+```
+
+### Retrieve a role definition
+Get an existing role definition. To do this, the scope and 'name' property from an existing role definition are required.
+
+<!-- embedme ./src/samples/java/com/azure/security/keyvault/administration/ReadmeSamples.java#L71-76 -->
+```java
+String roleDefinitionName = "<role-definition-name>";
+KeyVaultRoleDefinition roleDefinition =
+    keyVaultAccessControlClient.getRoleDefinition(KeyVaultRoleScope.GLOBAL, roleDefinitionName);
+
+System.out.printf("Retrieved role definition with name '%s' and role name '%s'.%n", roleDefinition.getName(),
+    roleDefinition.getRoleName());
+```
+
+### Delete a role definition
+Delete a role definition. To do this, the scope and 'name' property property from an existing role definition are required.
+
+<!-- embedme ./src/samples/java/com/azure/security/keyvault/administration/ReadmeSamples.java#83-87 -->
+```java
+String roleDefinitionName = "<role-definition-name>";
+
+keyVaultAccessControlClient.deleteRoleDefinition(KeyVaultRoleScope.GLOBAL, roleDefinitionName);
+
+System.out.printf("Deleted role definition with name '%s'.%n", roleDefinitionName);
 ```
 
 ### List role assignments
-List the role assignments in the key vault by calling `listRoleAssignments`.
+List the role assignments in the key vault by calling `listRoleAssignments()`.
 
+<!-- embedme ./src/samples/java/com/azure/security/keyvault/administration/ReadmeSamples.java#94-98 -->
 ```java
-KeyVaultRoleAssignmentScope roleAssignmentScope = KeyVaultRoleAssignmentScope.GLOBAL;
+PagedIterable<KeyVaultRoleAssignment> roleAssignments =
+    keyVaultAccessControlClient.listRoleAssignments(KeyVaultRoleScope.GLOBAL);
 
-for (KeyVaultRoleAssignment roleAssignment : accessControlClient.listRoleAssignments(roleAssignmentScope)) {
-    System.out.printf("Retrieved role assignment with name \"%s\" and type \"%s\"%n", roleAssignment.getName(),
-        roleAssignment.getType());
-}
+roleAssignments.forEach(roleAssignment ->
+    System.out.printf("Retrieved role assignment with name '%s'.%n", roleAssignment.getName()));
 ```
 
 ### Create a role assignment
-Create a role assignment to in the Azure Key Vault. To do this a role definition ID and a service principal object ID are required.
+Create a role assignment in the key vault. To do this a role definition ID and a service principal object ID are required.
 
-A role definition ID can be obtained from the 'id' property of one of the role definitions returned from `listRoleDefinitions`.
+A role definition ID can be obtained from the 'id' property of one of the role definitions returned from `listRoleDefinitions()`.
 
 See the [Create/Get Credentials section](#createget-credentials) for links and instructions on how to generate a new service principal and obtain it's object ID. You can also get the object ID for your currently signed in account by running the following Azure CLI command:
 
@@ -163,43 +242,47 @@ See the [Create/Get Credentials section](#createget-credentials) for links and i
 az ad signed-in-user show --query objectId
 ```
 
+<!-- embedme ./src/samples/java/com/azure/security/keyvault/administration/ReadmeSamples.java#105-112 -->
 ```java
-String roleDefinitionIdToAssign = "<role-definition-id>";
-String servicePrincipalObjectId = "<object-id>";
+String roleDefinitionId = "<role-definition-id>";
+String servicePrincipalId = "<service-principal-id>";
+KeyVaultRoleAssignment roleAssignment =
+    keyVaultAccessControlClient.createRoleAssignment(KeyVaultRoleScope.GLOBAL, roleDefinitionId,
+        servicePrincipalId);
 
-KeyVaultRoleAssignmentProperties properties =
-    new KeyVaultRoleAssignmentProperties(roleDefinitionIdToAssign, servicePrincipalObjectId);
-KeyVaultRoleAssignment createdAssignment =
-    accessControlClient.createRoleAssignment(KeyVaultRoleAssignmentScope.GLOBAL, properties);
-
-System.out.printf("Created role assignment with name \"%s\" and type \"%s\"%n", createdAssignment.getName(),
-    createdAssignment.getType());
+System.out.printf("Created role assignment with randomly generated name '%s' for principal with id '%s'.%n",
+    roleAssignment.getName(), roleAssignment.getProperties().getPrincipalId());
 ```
 
 ### Retrieve a role assignment
-Get an existing role assignment. To do this, the 'name' property from an existing role assignment is required. Let's use the `createdAssignment` from the previous example.
+Get an existing role assignment. To do this, the 'name' property from an existing role assignment is required.
 
+<!-- embedme ./src/samples/java/com/azure/security/keyvault/administration/ReadmeSamples.java#119-123 -->
 ```java
-KeyVaultRoleAssignment retrievedAssignment =
-    accessControlClient.getRoleAssignment(KeyVaultRoleAssignmentScope.GLOBAL, createdAssignment.getName());
+String roleAssignmentName = "<role-assignment-name>";
+KeyVaultRoleAssignment roleAssignment =
+    keyVaultAccessControlClient.getRoleAssignment(KeyVaultRoleScope.GLOBAL, roleAssignmentName);
 
-System.out.printf("Retrieved role assignment with name \"%s\" and type \"%s\"%n", retrievedAssignment.getName(),
-    retrievedAssignment.getType());
+System.out.printf("Retrieved role assignment with name '%s'.%n", roleAssignment.getName());
 ```
 ### Delete a role assignment
-To remove a role assignment from a service principal, the role assignment must be deleted. Let's delete the `createdAssignment` from the previous example.
+To remove a role assignment from a service principal, the role assignment must be deleted. To do this, the 'name' property from an existing role assignment is required.
 
+<!-- embedme ./src/samples/java/com/azure/security/keyvault/administration/ReadmeSamples.java#130-134 -->
 ```java
-KeyVaultRoleAssignment deletedAssignment =
-    accessControlClient.deleteRoleAssignment(KeyVaultRoleAssignmentScope.GLOBAL, createdAssignment.getName());
+String roleAssignmentName = "<role-assignment-name>";
 
-System.out.printf("Deleted role assignment with name \"%s\" and type \"%s\"%n", deletedAssignment.getName(),
-    deletedAssignment.getType());
+keyVaultAccessControlClient.deleteRoleAssignment(KeyVaultRoleScope.GLOBAL, roleAssignmentName);
+
+System.out.printf("Deleted role assignment with name '%s'.%n", roleAssignmentName);
 ```
 
 ### Async API
 The following sections provide several code snippets covering some of the most common asynchronous Azure Key Vault Access Control service tasks, including:
 - [List role definitions asynchronously](#list-role-definitions-asynchronously)
+- [Create or update a role definition asynchronously](#create-or-update-a-role-definition-asynchronously)
+- [Retrieve a role definition asynchronously](#retrieve-a-role-definition-asynchronously)
+- [Delete a role definition asynchronously](#delete-a-role-definition-asynchronously)
 - [List role assignments asynchronously](#list-role-assignments-asynchronously)
 - [Create a role assignment asynchronously](#create-a-role-assignment-asynchronously)
 - [Retrieve a role assignment asynchronously](#retrieve-a-role-assignment-asynchronously)
@@ -208,33 +291,64 @@ The following sections provide several code snippets covering some of the most c
 > Note : You should add `System.in.read()` or `Thread.sleep()` after the function calls in the main class/thread to allow async functions/operations to execute and finish before the main application/thread exits.
 
 ### List role definitions asynchronously
-List the role definitions in the key vault by calling `listRoleDefinitions`.
+List the role definitions in the key vault by calling `listRoleDefinitions()`.
 
+<!-- embedme ./src/samples/java/com/azure/security/keyvault/administration/ReadmeSamples.java#141-143 -->
 ```java
-KeyVaultRoleAssignmentScope roleAssignmentScope = KeyVaultRoleAssignmentScope.GLOBAL;
-
-accessControlAsyncClient.listRoleDefinitions(roleAssignmentScope))
+keyVaultAccessControlAsyncClient.listRoleDefinitions(KeyVaultRoleScope.GLOBAL)
     .subscribe(roleDefinition ->
-        System.out.printf("Retrieved role definition with name \"%s\" and type \"%s\"%n", roleDefinition.getName(),
-                roleDefinition.getType()));
+        System.out.printf("Retrieved role definition with name '%s'.%n", roleDefinition.getName()));
+```
+
+### Create or update a role definition asynchronously
+Create or update a role definition in the key vault. The following example shows how to create a role definition with a randomly generated name.
+
+<!-- embedme ./src/samples/java/com/azure/security/keyvault/administration/ReadmeSamples.java#150-153 -->
+```java
+keyVaultAccessControlAsyncClient.setRoleDefinition(KeyVaultRoleScope.GLOBAL)
+    .subscribe(roleDefinition ->
+        System.out.printf("Created role definition with randomly generated name '%s' and role name '%s'.%n",
+            roleDefinition.getName(), roleDefinition.getRoleName()));
+```
+
+### Retrieve a role definition asynchronously
+Get an existing role definition. To do this, the 'name' property from an existing role definition is required.
+
+<!-- embedme ./src/samples/java/com/azure/security/keyvault/administration/ReadmeSamples.java#160-165 -->
+```java
+String roleDefinitionName = "<role-definition-name>";
+
+keyVaultAccessControlAsyncClient.getRoleDefinition(KeyVaultRoleScope.GLOBAL, roleDefinitionName)
+    .subscribe(roleDefinition ->
+        System.out.printf("Retrieved role definition with name '%s' and role name '%s'.%n",
+            roleDefinition.getName(), roleDefinition.getRoleName()));
+```
+
+### Delete a role definition asynchronously
+Delete a role definition. To do this, the 'name' property from an existing role definition is required.
+
+<!-- embedme ./src/samples/java/com/azure/security/keyvault/administration/ReadmeSamples.java#172-175 -->
+```java
+String roleDefinitionName = "<role-definition-name>";
+
+keyVaultAccessControlAsyncClient.deleteRoleDefinition(KeyVaultRoleScope.GLOBAL, roleDefinitionName)
+    .subscribe(unused -> System.out.printf("Deleted role definition with name '%s'.%n", roleDefinitionName));
 ```
 
 ### List role assignments asynchronously
-List the role assignments in the key vault by calling `listRoleAssignments`.
+List the role assignments in the key vault by calling `listRoleAssignments()`.
 
+<!-- embedme ./src/samples/java/com/azure/security/keyvault/administration/ReadmeSamples.java#182-184 -->
 ```java
-KeyVaultRoleAssignmentScope roleAssignmentScope = KeyVaultRoleAssignmentScope.GLOBAL;
-
-accessControlAsyncClient.listRoleAssignments(roleAssignmentScope))
+keyVaultAccessControlAsyncClient.listRoleAssignments(KeyVaultRoleScope.GLOBAL)
     .subscribe(roleAssignment ->
-        System.out.printf("Retrieved role assignment with name \"%s\" and type \"%s\"%n", roleAssignment.getName(),
-            roleAssignment.getType()));
+        System.out.printf("Retrieved role assignment with name '%s'.%n", roleAssignment.getName()));
 ```
 
 ### Create a role assignment asynchronously
-Create a role assignment to in the Azure Key Vault. To do this a role definition ID and a service principal object ID are required.
+Create a role assignment in the key vault. To do this a role definition ID and a service principal object ID are required.
 
-A role definition ID can be obtained from the 'id' property of one of the role definitions returned from `listRoleDefinitions`.
+A role definition ID can be obtained from the 'id' property of one of the role definitions returned from `listRoleDefinitions()`.
 
 See the [Create/Get Credentials section](#createget-credentials) for links and instructions on how to generate a new service principal and obtain it's object ID. You can also get the object ID for your currently signed in account by running the following Azure CLI command:
 
@@ -242,53 +356,53 @@ See the [Create/Get Credentials section](#createget-credentials) for links and i
 az ad signed-in-user show --query objectId
 ```
 
+<!-- embedme ./src/samples/java/com/azure/security/keyvault/administration/ReadmeSamples.java#191-197 -->
 ```java
-String roleDefinitionIdToAssign = "<role-definition-id>";
-String servicePrincipalObjectId = "<object-id>";
+String roleDefinitionId = "<role-definition-id>";
+String servicePrincipalId = "<service-principal-id>";
 
-KeyVaultRoleAssignmentProperties properties =
-    new KeyVaultRoleAssignmentProperties(roleDefinitionIdToAssign, servicePrincipalObjectId);
-
-accessControlAsyncClient.createRoleAssignment(KeyVaultRoleAssignmentScope.GLOBAL, properties)
-    .subscribe(createdAssignment ->
-        System.out.printf("Created role assignment with name \"%s\" and type \"%s\"%n", createdAssignment.getName(),
-            createdAssignment.getType()));
+keyVaultAccessControlAsyncClient.createRoleAssignment(KeyVaultRoleScope.GLOBAL, roleDefinitionId,
+    servicePrincipalId).subscribe(roleAssignment ->
+        System.out.printf("Created role assignment with randomly generated name '%s' for principal with id"
+            + "'%s'.%n", roleAssignment.getName(), roleAssignment.getProperties().getPrincipalId()));
 ```
 
 ### Retrieve a role assignment asynchronously
-Get an existing role assignment. To do this, the 'name' property from an existing role assignment is required. Let's use the `createdAssignment` from the previous example.
+Get an existing role assignment. To do this, the 'name' property from an existing role assignment is required.
 
+<!-- embedme ./src/samples/java/com/azure/security/keyvault/administration/ReadmeSamples.java#204-208 -->
 ```java
-accessControlAsyncClient.getRoleAssignment(KeyVaultRoleAssignmentScope.GLOBAL, createdAssignment.getName())
-    .subscribe(retrievedAssignment ->
-        System.out.printf("Retrieved role assignment with name \"%s\" and type \"%s\"%n", retrievedAssignment.getName(),
-            retrievedAssignment.getType()));
+String roleAssignmentName = "<role-assignment-name>";
+
+keyVaultAccessControlAsyncClient.getRoleAssignment(KeyVaultRoleScope.GLOBAL, roleAssignmentName)
+    .subscribe(roleAssignment ->
+        System.out.printf("Retrieved role assignment with name '%s'.%n", roleAssignment.getName()));
 ```
-### Delete a role assignment asynchronously
-To remove a role assignment from a service principal, the role assignment must be deleted. Let's delete the `createdAssignment` from the previous example.
 
+### Delete a role assignment asynchronously
+To remove a role assignment from a service principal, the role assignment must be deleted. To do this, the 'name' property from an existing role assignment is required.
+
+<!-- embedme ./src/samples/java/com/azure/security/keyvault/administration/ReadmeSamples.java#215-219 -->
 ```java
-accessControlAsyncClient.deleteRoleAssignment(KeyVaultRoleAssignmentScope.GLOBAL, createdAssignment.getName())
-    .subscribe(deletedAssignment ->
-        System.out.printf("Deleted role assignment with name \"%s\" and type \"%s\"%n", deletedAssignment.getName(),
-            deletedAssignment.getType()));
+String roleAssignmentName = "<role-assignment-name>";
+
+keyVaultAccessControlAsyncClient.deleteRoleAssignment(KeyVaultRoleScope.GLOBAL, roleAssignmentName)
+    .subscribe(unused ->
+        System.out.printf("Deleted role assignment with name '%s'.%n", roleAssignmentName));
 ```
 
 ### Create a Backup client
-Once you've populated the **AZURE_CLIENT_ID**, **AZURE_CLIENT_SECRET**, and **AZURE_TENANT_ID** environment variables and replaced **your-key-vault-url** with the URI returned above, you can create the KeyVaultBackupClient:
+Once you've populated the **AZURE_CLIENT_ID**, **AZURE_CLIENT_SECRET**, and **AZURE_TENANT_ID** environment variables and replaced **your-key-vault-url** with the URI returned above, you can create the `KeyVaultBackupClient`:
 
-```Java
-import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.azure.security.keyvault.administration.KeyVaultBackupClient;
-import com.azure.security.keyvault.administration.KeyVaultBackupClientBuilder;
-
-KeyVaultBackupClient backupClient = new KeyVaultBackupClientBuilder()
+<!-- embedme ./src/samples/java/com/azure/security/keyvault/administration/ReadmeSamples.java#226-229 -->
+```java
+KeyVaultBackupClient keyVaultBackupClient = new KeyVaultBackupClientBuilder()
     .vaultUrl("<your-key-vault-url>")
     .credential(new DefaultAzureCredentialBuilder().build())
     .buildClient();
 ```
 
-> NOTE: For using an asynchronous client use KeyVaultBackupAsyncClient instead of KeyVaultBackupClient and call `buildAsyncClient()`
+> NOTE: For using an asynchronous client use `KeyVaultBackupAsyncClient`  instead of `KeyVaultBackupClient` and call `buildAsyncClient()`
 
 ## Examples
 ### Sync API
@@ -298,42 +412,84 @@ The following sections provide several code snippets covering some of the most c
 - [Restore a key](#selectively-restore-a-key)
 
 ### Backup a collection of keys
-Back up an entire collection of keys using `beginBackup`.
+Back up an entire collection of keys using `beginBackup()`.
 
+<!-- embedme ./src/samples/java/com/azure/security/keyvault/administration/ReadmeSamples.java#236-256 -->
 ```java
-SyncPoller<KeyVaultBackupOperation, Void> backupPoller =
-    backupClient.beginBackup("<blob-storage-url-to-save-backup>", "<sas-token>");
+String blobStorageUrl = "https://myaccount.blob.core.windows.net/myContainer";
+String sasToken = "sv=2020-02-10&ss=b&srt=o&sp=rwdlactfx&se=2021-06-17T07:13:07Z&st=2021-06-16T23:13:07Z&spr=https&sig=n5V6fnlkViEF9b7ij%2FttTHNwO2BdFIHKHppRxGAyJdc%3D";
 
-backupPoller.waitForCompletion();
+SyncPoller<KeyVaultBackupOperation, String> backupPoller =
+    keyVaultBackupClient.beginBackup(blobStorageUrl, sasToken);
 
-System.out.printf("Backup created");
+PollResponse<KeyVaultBackupOperation> pollResponse = backupPoller.poll();
+
+System.out.printf("The current status of the operation is: %s.%n", pollResponse.getStatus());
+
+PollResponse<KeyVaultBackupOperation> finalPollResponse = backupPoller.waitForCompletion();
+
+if (finalPollResponse.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED) {
+    String folderUrl = backupPoller.getFinalResult();
+
+    System.out.printf("Backup completed. The storage location of this backup is: %s.%n", folderUrl);
+} else {
+    KeyVaultBackupOperation operation = backupPoller.poll().getValue();
+
+    System.out.printf("Backup failed with error: %s.%n", operation.getError().getMessage());
+}
 ```
 
 ### Restore a collection of keys
-Restore an entire collection of keys from a backup using `beginRestore`.
+Restore an entire collection of keys from a backup using `beginRestore()`.
 
+<!-- embedme ./src/samples/java/com/azure/security/keyvault/administration/ReadmeSamples.java#263-281 -->
 ```java
-SyncPoller<KeyVaultBackupOperation, String restorePoller =
-    backupClient.beginRestore("<blob-storage-url-to-backup>", "<sas-token>", "<folder-name>");
+String folderUrl = "https://myaccount.blob.core.windows.net/myContainer/mhsm-myaccount-2020090117323313";
+String sasToken = "sv=2020-02-10&ss=b&srt=o&sp=rwdlactfx&se=2021-06-17T07:13:07Z&st=2021-06-16T23:13:07Z&spr=https&sig=n5V6fnlkViEF9b7ij%2FttTHNwO2BdFIHKHppRxGAyJdc%3D";
 
-restorePoller.waitForCompletion();
-String blobUri = restorePoller.getFinalResult();
+SyncPoller<KeyVaultRestoreOperation, KeyVaultRestoreResult> backupPoller =
+    keyVaultBackupClient.beginRestore(folderUrl, sasToken);
 
-System.out.printf("Backup restored from: %s%n", blobUri);
+PollResponse<KeyVaultRestoreOperation> pollResponse = backupPoller.poll();
+
+System.out.printf("The current status of the operation is: %s.%n", pollResponse.getStatus());
+
+PollResponse<KeyVaultRestoreOperation> finalPollResponse = backupPoller.waitForCompletion();
+
+if (finalPollResponse.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED) {
+    System.out.printf("Backup restored successfully.%n");
+} else {
+    KeyVaultRestoreOperation operation = backupPoller.poll().getValue();
+
+    System.out.printf("Restore failed with error: %s.%n", operation.getError().getMessage());
+}
 ```
 
 ### Selectively restore a key
-Restore a specific key from a backup using `beginSelectiveRestore`.
+Restore a specific key from a backup using `beginSelectiveRestore()`.
 
+<!-- embedme ./src/samples/java/com/azure/security/keyvault/administration/ReadmeSamples.java#288-307 -->
 ```java
-SyncPoller<KeyVaultBackupOperation, String> selectiveRestorePoller =
-    backupClient.beginSelectiveRestore("<name-of-key-to-restore>", "<blob-storage-url-to-backup>", "<sas-token>",
-        "<folder-name>");
+String folderUrl = "https://myaccount.blob.core.windows.net/myContainer/mhsm-myaccount-2020090117323313";
+String sasToken = "sv=2020-02-10&ss=b&srt=o&sp=rwdlactfx&se=2021-06-17T07:13:07Z&st=2021-06-16T23:13:07Z&spr=https&sig=n5V6fnlkViEF9b7ij%2FttTHNwO2BdFIHKHppRxGAyJdc%3D";
+String keyName = "myKey";
 
-selectiveRestorePoller.waitForCompletion();
-String blobUri = selectiveRestorePoller.getFinalResult();
+SyncPoller<KeyVaultSelectiveKeyRestoreOperation, KeyVaultSelectiveKeyRestoreResult> backupPoller =
+    keyVaultBackupClient.beginSelectiveKeyRestore(folderUrl, sasToken, keyName);
 
-System.out.printf("Key backup restored from: %s%n", blobUri);
+PollResponse<KeyVaultSelectiveKeyRestoreOperation> pollResponse = backupPoller.poll();
+
+System.out.printf("The current status of the operation is: %s.%n", pollResponse.getStatus());
+
+PollResponse<KeyVaultSelectiveKeyRestoreOperation> finalPollResponse = backupPoller.waitForCompletion();
+
+if (finalPollResponse.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED) {
+    System.out.printf("Key restored successfully.%n");
+} else {
+    KeyVaultSelectiveKeyRestoreOperation operation = backupPoller.poll().getValue();
+
+    System.out.printf("Key restore failed with error: %s.%n", operation.getError().getMessage());
+}
 ```
 
 ### Async API
@@ -345,70 +501,59 @@ The following sections provide several code snippets covering some of the most c
 > Note : You should add `System.in.read()` or `Thread.sleep()` after the function calls in the main class/thread to allow async functions/operations to execute and finish before the main application/thread exits.
 
 ### Backup a collection of keys asynchronously
-Back up an entire collection of keys using `beginBackup`.
+Back up an entire collection of keys using `beginBackup()`.
 
+<!-- embedme ./src/samples/java/com/azure/security/keyvault/administration/ReadmeSamples.java#314-325 -->
 ```java
-asyncClient.beginBackup(blobStorageUrl, sasToken)
-    .subscribe(
-        pollResponse -> {
-            System.out.println("---------------------------------------------------------------------------------");
-            System.out.println(pollResponse.getStatus());
-            System.out.println(pollResponse.getValue().getStatus());
-            System.out.println(pollResponse.getValue().getStatusDetails());
-    
-            if (pollResponse.getStatus().isComplete()) {
-                pollResponse.getFinalResult().subscribe(result -> System.out.println("Backup location: " + result));
-            }
-        }, errorResponse -> {
-            System.out.println("---------------------------------------------------------------------------------");
-            System.out.println("Error found: " + errorResponse.getMessage());
-            errorResponse.printStackTrace();
-        }, () -> {
-            System.out.println("---------------------------------------------------------------------------------");
-            System.out.println("Backup complete");
-        });
+String blobStorageUrl = "https://myaccount.blob.core.windows.net/myContainer";
+String sasToken = "sv=2020-02-10&ss=b&srt=o&sp=rwdlactfx&se=2021-06-17T07:13:07Z&st=2021-06-16T23:13:07Z&spr=https&sig=n5V6fnlkViEF9b7ij%2FttTHNwO2BdFIHKHppRxGAyJdc%3D";
+
+keyVaultBackupAsyncClient.beginBackup(blobStorageUrl, sasToken)
+    .setPollInterval(Duration.ofSeconds(1)) // You can set a custom polling interval.
+    .doOnError(e -> System.out.printf("Backup failed with error: %s.%n", e.getMessage()))
+    .doOnNext(pollResponse ->
+        System.out.printf("The current status of the operation is: %s.%n", pollResponse.getStatus()))
+    .filter(pollResponse -> pollResponse.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED)
+    .flatMap(AsyncPollResponse::getFinalResult)
+    .subscribe(folderUrl ->
+        System.out.printf("Backup completed. The storage location of this backup is: %s.%n", folderUrl));
 ```
 
 ### Restore a collection of keys asynchronously
-Restore an entire collection of keys from a backup using `beginRestore`.
+Restore an entire collection of keys from a backup using `beginRestore()`.
 
+<!-- embedme ./src/samples/java/com/azure/security/keyvault/administration/ReadmeSamples.java#332-342 -->
 ```java
-backupAsyncClient.beginRestore("<blob-storage-url-to-backup>", "<sas-token>", "<folder-name>")
-    .subscribe(
-        pollResponse -> {
-            System.out.println("---------------------------------------------------------------------------------");
-            System.out.println(pollResponse.getStatus());
-            System.out.println(pollResponse.getValue().getStatus());
-            System.out.println(pollResponse.getValue().getStatusDetails());
-        }, errorResponse -> {
-            System.out.println("---------------------------------------------------------------------------------");
-            System.out.println("Error found: " + errorResponse.getMessage());
-            errorResponse.printStackTrace();
-        }, () -> {
-            System.out.println("---------------------------------------------------------------------------------");
-            System.out.println("Restore operation complete");
-        });
+String folderUrl = "https://myaccount.blob.core.windows.net/myContainer/mhsm-myaccount-2020090117323313";
+String sasToken = "sv=2020-02-10&ss=b&srt=o&sp=rwdlactfx&se=2021-06-17T07:13:07Z&st=2021-06-16T23:13:07Z&spr=https&sig=n5V6fnlkViEF9b7ij%2FttTHNwO2BdFIHKHppRxGAyJdc%3D";
+
+keyVaultBackupAsyncClient.beginRestore(folderUrl, sasToken)
+    .setPollInterval(Duration.ofSeconds(1)) // You can set a custom polling interval.
+    .doOnError(e -> System.out.printf("Restore failed with error: %s.%n", e.getMessage()))
+    .doOnNext(pollResponse ->
+        System.out.printf("The current status of the operation is: %s.%n", pollResponse.getStatus()))
+    .filter(pollResponse -> pollResponse.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED)
+    .flatMap(AsyncPollResponse::getFinalResult)
+    .subscribe(unused -> System.out.printf("Backup restored successfully.%n"));
 ```
 
 ### Selectively restore a key asynchronously
-Restore an entire collection of keys from a backup using `beginSelectiveRestore`.
+Restore an entire collection of keys from a backup using `beginSelectiveRestore()`.
 
+<!-- embedme ./src/samples/java/com/azure/security/keyvault/administration/ReadmeSamples.java#350-361 -->
 ```java
-backupAsyncClient.beginSelectiveRestore("<name-of-key-to-restore>", "<blob-storage-url-to-backup>", "<sas-token>",
-    .subscribe(
-        pollResponse -> {
-            System.out.println("---------------------------------------------------------------------------------");
-            System.out.println(pollResponse.getStatus());
-            System.out.println(pollResponse.getValue().getStatus());
-            System.out.println(pollResponse.getValue().getStatusDetails());
-        }, errorResponse -> {
-            System.out.println("---------------------------------------------------------------------------------");
-            System.out.println("Error found: " + errorResponse.getMessage());
-            errorResponse.printStackTrace();
-        }, () -> {
-            System.out.println("---------------------------------------------------------------------------------");
-            System.out.println("Selective restore operation complete");
-        });
+String folderUrl = "https://myaccount.blob.core.windows.net/myContainer/mhsm-myaccount-2020090117323313";
+String sasToken = "sv=2020-02-10&ss=b&srt=o&sp=rwdlactfx&se=2021-06-17T07:13:07Z&st=2021-06-16T23:13:07Z&spr=https&sig=n5V6fnlkViEF9b7ij%2FttTHNwO2BdFIHKHppRxGAyJdc%3D";
+String keyName = "myKey";
+
+keyVaultBackupAsyncClient.beginSelectiveKeyRestore(folderUrl, sasToken, keyName)
+    .setPollInterval(Duration.ofSeconds(1)) // You can set a custom polling interval.
+    .doOnError(e -> System.out.printf("Key restoration failed with error: %s.%n", e.getMessage()))
+    .doOnNext(pollResponse ->
+        System.out.printf("The current status of the operation is: %s.%n", pollResponse.getStatus()))
+    .filter(pollResponse -> pollResponse.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED)
+    .flatMap(AsyncPollResponse::getFinalResult)
+    .subscribe(unused -> System.out.printf("Key restored successfully.%n"));
 ```
 
 ## Troubleshooting
@@ -443,21 +588,25 @@ When you submit a pull request, a CLA-bot will automatically determine whether y
 This project has adopted the [Microsoft Open Source Code of Conduct][microsoft_code_of_conduct]. For more information see the Code of Conduct FAQ or contact <opencode@microsoft.com> with any additional questions or comments.
 
 <!-- LINKS -->
-[source_code]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/keyvault/azure-security-keyvault-administration/src
+[source_code]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/keyvault/azure-security-keyvault-administration/src
 [api_documentation]: https://azure.github.io/azure-sdk-for-java
 [azkeyvault_docs]: https://docs.microsoft.com/azure/key-vault/
-[azure_identity]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/identity/azure-identity
+[azure_identity]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/identity/azure-identity
 [maven]: https://maven.apache.org/
 [azure_subscription]: https://azure.microsoft.com/
 [azure_keyvault]: https://docs.microsoft.com/azure/key-vault/quick-create-portal
+[azure_keyvault_mhsm]: https://docs.microsoft.com/azure/key-vault/managed-hsm/quick-create-cli
 [azure_cli]: https://docs.microsoft.com/cli/azure
 [rest_api]: https://docs.microsoft.com/rest/api/keyvault/
 [azkeyvault_rest]: https://docs.microsoft.com/rest/api/keyvault/
 [azure_create_application_in_portal]: https://docs.microsoft.com/azure/active-directory/develop/howto-create-service-principal-portal
 [azure_keyvault_cli]: https://docs.microsoft.com/azure/key-vault/quick-create-cli
 [azure_keyvault_cli_full]: https://docs.microsoft.com/cli/azure/keyvault?view=azure-cli-latest
-[administration_samples]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/keyvault/azure-security-keyvault-administration/src/samples/java/com/azure/security/keyvault/administration
-[storage_readme_sas_token]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/storage/azure-storage-blob#get-credentials
+[administration_samples]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/keyvault/azure-security-keyvault-administration/src/samples/java/com/azure/security/keyvault/administration
+[access_control]: https://docs.microsoft.com/azure/key-vault/managed-hsm/access-control
+[best_practices]: https://docs.microsoft.com/azure/key-vault/managed-hsm/best-practices
+[built_in_roles]: https://docs.microsoft.com/azure/key-vault/managed-hsm/built-in-roles
+[storage_readme_sas_token]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/storage/azure-storage-blob#get-credentials
 [portal_sas_token]: https://docs.microsoft.com/azure/vs-azure-tools-storage-manage-with-storage-explorer?tabs=windows#generate-a-shared-access-signature-in-storage-explorer
 [performance_tuning]: https://github.com/Azure/azure-sdk-for-java/wiki/Performance-Tuning
 [jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable

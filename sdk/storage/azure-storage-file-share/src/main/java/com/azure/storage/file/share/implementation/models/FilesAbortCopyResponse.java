@@ -8,10 +8,8 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.rest.ResponseBase;
 
-/**
- * Contains all response data for the abortCopy operation.
- */
-public final class FilesAbortCopyResponse extends ResponseBase<FileAbortCopyHeaders, Void> {
+/** Contains all response data for the abortCopy operation. */
+public final class FilesAbortCopyResponse extends ResponseBase<FilesAbortCopyHeaders, Void> {
     /**
      * Creates an instance of FilesAbortCopyResponse.
      *
@@ -21,7 +19,8 @@ public final class FilesAbortCopyResponse extends ResponseBase<FileAbortCopyHead
      * @param value the deserialized value of the HTTP response.
      * @param headers the deserialized headers of the HTTP response.
      */
-    public FilesAbortCopyResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders, Void value, FileAbortCopyHeaders headers) {
+    public FilesAbortCopyResponse(
+            HttpRequest request, int statusCode, HttpHeaders rawHeaders, Void value, FilesAbortCopyHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);
     }
 }

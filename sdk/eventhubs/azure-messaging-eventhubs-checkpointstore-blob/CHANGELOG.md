@@ -1,22 +1,73 @@
 # Release History
 
-## 1.5.0-beta.1 (Unreleased)
+## 1.9.0-beta.1 (Unreleased)
 
+
+## 1.8.1 (2021-07-09)
+### Dependency Updates
+
+- Update `azure-messaging-eventhubs` dependency to `5.9.0`.
+
+## 1.8.0 (2021-06-14)
+
+### Dependency Updates
+
+- Update `azure-messaging-eventhubs` dependency to `5.8.0`.
+- Update `azure-storage-blob` to `12.12.0`.
+
+## 1.7.1 (2021-06-01)
+
+### Dependency Updates
+
+- Update `azure-storage-blob` to `12.11.1`.
+
+## 1.7.0 (2021-05-10)
+
+### Dependency Updates
+
+- Update `azure-messaging-eventhubs` dependency to `5.7.1`.
+
+## 1.6.0 (2021-04-12)
+
+### Dependency Updates
+
+- Update `azure-messaging-eventhubs` dependency to `5.7.0`.
+
+## 1.5.1 (2021-03-10)
+
+### Dependency Updates
+
+- Update `azure-messaging-eventhubs` dependency to `5.5.1`.
+
+## 1.5.0 (2021-02-15)
+
+### Dependency Updates
+
+- Update `azure-messaging-eventhubs` dependency to `5.5.0`.
+- Update `azure-storage-blob` dependency to `12.10.0`.
 
 ## 1.4.0 (2021-01-14)
+
 ### Dependency Updates
+
 - Update `azure-messaging-eventhubs` dependency to `5.4.0`.
 
 ## 1.4.0-beta.1 (2020-11-12)
+
 ### Dependency Updates
+
 - Update `azure-messaging-eventhubs` dependency to `5.4.0-beta.1`.
 
 ## 1.3.1 (2020-10-30)
+
 ### Dependency Updates
+
 - Update `azure-messaging-eventhubs` dependency to `5.3.1`.
 
 ## 1.3.0 (2020-10-12)
+
 ### Dependency Updates
+
 - Update `azure-messaging-eventhubs` dependency to `5.3.0`.
 
 ## 1.2.0 (2020-09-11)
@@ -44,6 +95,7 @@
 - Dependency fixed so `EventProcessor` consumers can use blocking method calls in their code.
 
 ## 1.0.1 (2020-02-11)
+- Dependency updates.
 
 ## 1.0.0-beta.4 (2019-12-02)
 - Artifact name changed from `preview` to `beta`.

@@ -9,7 +9,6 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.loganalytics.LogAnalyticsManager;
 import com.azure.resourcemanager.loganalytics.fluent.StorageInsightConfigsClient;
 import com.azure.resourcemanager.loganalytics.fluent.models.StorageInsightInner;
 import com.azure.resourcemanager.loganalytics.models.StorageInsight;
@@ -21,9 +20,11 @@ public final class StorageInsightConfigsImpl implements StorageInsightConfigs {
 
     private final StorageInsightConfigsClient innerClient;
 
-    private final LogAnalyticsManager serviceManager;
+    private final com.azure.resourcemanager.loganalytics.LogAnalyticsManager serviceManager;
 
-    public StorageInsightConfigsImpl(StorageInsightConfigsClient innerClient, LogAnalyticsManager serviceManager) {
+    public StorageInsightConfigsImpl(
+        StorageInsightConfigsClient innerClient,
+        com.azure.resourcemanager.loganalytics.LogAnalyticsManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
@@ -64,14 +65,14 @@ public final class StorageInsightConfigsImpl implements StorageInsightConfigs {
     public PagedIterable<StorageInsight> listByWorkspace(String resourceGroupName, String workspaceName) {
         PagedIterable<StorageInsightInner> inner =
             this.serviceClient().listByWorkspace(resourceGroupName, workspaceName);
-        return inner.mapPage(inner1 -> new StorageInsightImpl(inner1, this.manager()));
+        return Utils.mapPage(inner, inner1 -> new StorageInsightImpl(inner1, this.manager()));
     }
 
     public PagedIterable<StorageInsight> listByWorkspace(
         String resourceGroupName, String workspaceName, Context context) {
         PagedIterable<StorageInsightInner> inner =
             this.serviceClient().listByWorkspace(resourceGroupName, workspaceName, context);
-        return inner.mapPage(inner1 -> new StorageInsightImpl(inner1, this.manager()));
+        return Utils.mapPage(inner, inner1 -> new StorageInsightImpl(inner1, this.manager()));
     }
 
     public StorageInsight getById(String id) {
@@ -194,7 +195,7 @@ public final class StorageInsightConfigsImpl implements StorageInsightConfigs {
         return this.innerClient;
     }
 
-    private LogAnalyticsManager manager() {
+    private com.azure.resourcemanager.loganalytics.LogAnalyticsManager manager() {
         return this.serviceManager;
     }
 

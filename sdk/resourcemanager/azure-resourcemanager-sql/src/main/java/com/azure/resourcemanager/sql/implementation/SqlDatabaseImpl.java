@@ -66,6 +66,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
 
 /** Implementation for SqlDatabase and its parent interfaces. */
 class SqlDatabaseImpl extends ExternalChildResourceImpl<SqlDatabase, DatabaseInner, SqlServerImpl, SqlServer>
@@ -286,12 +287,11 @@ class SqlDatabaseImpl extends ExternalChildResourceImpl<SqlDatabase, DatabaseInn
     @Override
     public PagedFlux<RestorePoint> listRestorePointsAsync() {
         final SqlDatabaseImpl self = this;
-        return this
+        return PagedConverter.mapPage(this
             .sqlServerManager
             .serviceClient()
             .getRestorePoints()
-            .listByDatabaseAsync(this.resourceGroupName, this.sqlServerName, this.name())
-            .mapPage(
+            .listByDatabaseAsync(this.resourceGroupName, this.sqlServerName, this.name()),
                 restorePointInner ->
                     new RestorePointImpl(self.resourceGroupName, self.sqlServerName, restorePointInner));
     }
@@ -317,12 +317,11 @@ class SqlDatabaseImpl extends ExternalChildResourceImpl<SqlDatabase, DatabaseInn
     @Override
     public PagedFlux<ReplicationLink> listReplicationLinksAsync() {
         final SqlDatabaseImpl self = this;
-        return this
+        return PagedConverter.mapPage(this
             .sqlServerManager
             .serviceClient()
             .getReplicationLinks()
-            .listByDatabaseAsync(this.resourceGroupName, this.sqlServerName, this.name())
-            .mapPage(
+            .listByDatabaseAsync(this.resourceGroupName, this.sqlServerName, this.name()),
                 replicationLinkInner ->
                     new ReplicationLinkImpl(
                         self.resourceGroupName, self.sqlServerName, replicationLinkInner, self.sqlServerManager));
@@ -410,12 +409,12 @@ class SqlDatabaseImpl extends ExternalChildResourceImpl<SqlDatabase, DatabaseInn
 
     @Override
     public PagedFlux<SqlDatabaseUsageMetric> listUsageMetricsAsync() {
-        return this
+        return PagedConverter.mapPage(this
             .sqlServerManager
             .serviceClient()
             .getDatabaseUsages()
-            .listByDatabaseAsync(this.resourceGroupName, this.sqlServerName, this.name())
-            .mapPage(SqlDatabaseUsageMetricImpl::new);
+            .listByDatabaseAsync(this.resourceGroupName, this.sqlServerName, this.name()),
+            SqlDatabaseUsageMetricImpl::new);
     }
 
     @Override
@@ -470,12 +469,12 @@ class SqlDatabaseImpl extends ExternalChildResourceImpl<SqlDatabase, DatabaseInn
 
     @Override
     public PagedFlux<SqlDatabaseMetric> listMetricsAsync(final String filter) {
-        return this
+        return PagedConverter.mapPage(this
             .sqlServerManager
             .serviceClient()
             .getDatabases()
-            .listMetricsAsync(this.resourceGroupName, this.sqlServerName, this.name(), filter)
-            .mapPage(SqlDatabaseMetricImpl::new);
+            .listMetricsAsync(this.resourceGroupName, this.sqlServerName, this.name(), filter),
+            SqlDatabaseMetricImpl::new);
     }
 
     @Override
@@ -496,12 +495,12 @@ class SqlDatabaseImpl extends ExternalChildResourceImpl<SqlDatabase, DatabaseInn
 
     @Override
     public PagedFlux<SqlDatabaseMetricDefinition> listMetricDefinitionsAsync() {
-        return this
+        return PagedConverter.mapPage(this
             .sqlServerManager
             .serviceClient()
             .getDatabases()
-            .listMetricDefinitionsAsync(this.resourceGroupName, this.sqlServerName, this.name())
-            .mapPage(SqlDatabaseMetricDefinitionImpl::new);
+            .listMetricDefinitionsAsync(this.resourceGroupName, this.sqlServerName, this.name()),
+            SqlDatabaseMetricDefinitionImpl::new);
     }
 
     @Override
@@ -557,12 +556,11 @@ class SqlDatabaseImpl extends ExternalChildResourceImpl<SqlDatabase, DatabaseInn
     @Override
     public PagedFlux<ServiceTierAdvisor> listServiceTierAdvisorsAsync() {
         final SqlDatabaseImpl self = this;
-        return this
+        return PagedConverter.mapPage(this
             .sqlServerManager
             .serviceClient()
             .getServiceTierAdvisors()
-            .listByDatabaseAsync(this.resourceGroupName, this.sqlServerName, this.name())
-            .mapPage(
+            .listByDatabaseAsync(this.resourceGroupName, this.sqlServerName, this.name()),
                 serviceTierAdvisorInner ->
                     new ServiceTierAdvisorImpl(
                         self.resourceGroupName, self.sqlServerName, serviceTierAdvisorInner, self.sqlServerManager));

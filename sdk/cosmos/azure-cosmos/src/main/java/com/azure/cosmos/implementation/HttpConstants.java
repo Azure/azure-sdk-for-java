@@ -83,6 +83,7 @@ public class HttpConstants {
         public static final String IS_QUERY_PLAN_REQUEST = "x-ms-cosmos-is-query-plan-request";
         public static final String SUPPORTED_QUERY_FEATURES = "x-ms-cosmos-supported-query-features";
         public static final String QUERY_VERSION = "x-ms-cosmos-query-version";
+        public static final String CORRELATED_ACTIVITY_ID = "x-ms-cosmos-correlated-activityid";
 
         // Our custom DocDB headers
         public static final String CONTINUATION = "x-ms-continuation";
@@ -254,6 +255,16 @@ public class HttpConstants {
         public static final String IS_BATCH_ORDERED = "x-ms-cosmos-batch-ordered";
         public static final String IS_BATCH_REQUEST = "x-ms-cosmos-is-batch-request";
         public static final String SHOULD_BATCH_CONTINUE_ON_ERROR = "x-ms-cosmos-batch-continue-on-error";
+
+        // Client telemetry header
+        public static final String DATABASE_ACCOUNT_NAME = "x-ms-databaseaccount-name";
+        public static final String ENVIRONMENT_NAME = "x-ms-environment-name";
+
+        // Backend request duration header
+        public static final String BACKEND_REQUEST_DURATION_MILLISECONDS = "x-ms-request-duration-ms";
+
+        // Dedicated Gateway Headers
+        public static final String DEDICATED_GATEWAY_PER_REQUEST_CACHE_STALENESS = "x-ms-dedicatedgateway-max-age";
     }
 
     public static class A_IMHeaderValues {
@@ -262,7 +273,7 @@ public class HttpConstants {
     }
 
     public static class Versions {
-        public static final String CURRENT_VERSION = "2018-12-31";
+        public static final String CURRENT_VERSION = "2020-07-15";
         public static final String QUERY_VERSION = "1.0";
         public static final String AZURE_COSMOS_PROPERTIES_FILE_NAME = "azure-cosmos.properties";
 
@@ -316,12 +327,22 @@ public class HttpConstants {
 
         // 404: LSN in session token is higher
         public static final int READ_SESSION_NOT_AVAILABLE = 1002;
+        public static final int OWNER_RESOURCE_NOT_EXISTS = 1003;
 
         // Client generated gateway network error substatus
         public static final int GATEWAY_ENDPOINT_UNAVAILABLE = 10001;
 
         // Client generated gateway network error on ReadTimeoutException
         public static final int GATEWAY_ENDPOINT_READ_TIMEOUT = 10002;
+
+        // Client generated request rate too large exception
+        public static final int THROUGHPUT_CONTROL_REQUEST_RATE_TOO_LARGE = 10003;
+
+        // Client generated offer not configured exception
+        public static final int OFFER_NOT_CONFIGURED = 10004;
+
+        // Client generated request rate too large exception
+        public static final int THROUGHPUT_CONTROL_BULK_REQUEST_RATE_TOO_LARGE = 10005;
     }
 
     public static class HeaderValues {

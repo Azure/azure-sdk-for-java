@@ -65,7 +65,7 @@ public final class IndexersImpl {
                 @PathParam("indexerName") String indexerName,
                 @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
                 @QueryParam("api-version") String apiVersion,
-                @HeaderParam("accept") String accept,
+                @HeaderParam("Accept") String accept,
                 Context context);
 
         @Post("/indexers('{indexerName}')/search.run")
@@ -76,7 +76,7 @@ public final class IndexersImpl {
                 @PathParam("indexerName") String indexerName,
                 @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
                 @QueryParam("api-version") String apiVersion,
-                @HeaderParam("accept") String accept,
+                @HeaderParam("Accept") String accept,
                 Context context);
 
         @Put("/indexers('{indexerName}')")
@@ -90,7 +90,9 @@ public final class IndexersImpl {
                 @HeaderParam("If-None-Match") String ifNoneMatch,
                 @HeaderParam("Prefer") String prefer,
                 @QueryParam("api-version") String apiVersion,
-                @HeaderParam("accept") String accept,
+                @QueryParam("disableCacheReprocessingChangeDetection") Boolean disableCacheReprocessingChangeDetection,
+                @QueryParam("ignoreResetRequirements") Boolean ignoreResetRequirements,
+                @HeaderParam("Accept") String accept,
                 @BodyParam("application/json") SearchIndexer indexer,
                 Context context);
 
@@ -104,7 +106,7 @@ public final class IndexersImpl {
                 @HeaderParam("If-Match") String ifMatch,
                 @HeaderParam("If-None-Match") String ifNoneMatch,
                 @QueryParam("api-version") String apiVersion,
-                @HeaderParam("accept") String accept,
+                @HeaderParam("Accept") String accept,
                 Context context);
 
         @Get("/indexers('{indexerName}')")
@@ -115,7 +117,7 @@ public final class IndexersImpl {
                 @PathParam("indexerName") String indexerName,
                 @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
                 @QueryParam("api-version") String apiVersion,
-                @HeaderParam("accept") String accept,
+                @HeaderParam("Accept") String accept,
                 Context context);
 
         @Get("/indexers")
@@ -126,7 +128,7 @@ public final class IndexersImpl {
                 @QueryParam("$select") String select,
                 @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
                 @QueryParam("api-version") String apiVersion,
-                @HeaderParam("accept") String accept,
+                @HeaderParam("Accept") String accept,
                 Context context);
 
         @Post("/indexers")
@@ -136,7 +138,7 @@ public final class IndexersImpl {
                 @HostParam("endpoint") String endpoint,
                 @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
                 @QueryParam("api-version") String apiVersion,
-                @HeaderParam("accept") String accept,
+                @HeaderParam("Accept") String accept,
                 @BodyParam("application/json") SearchIndexer indexer,
                 Context context);
 
@@ -148,7 +150,7 @@ public final class IndexersImpl {
                 @PathParam("indexerName") String indexerName,
                 @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
                 @QueryParam("api-version") String apiVersion,
-                @HeaderParam("accept") String accept,
+                @HeaderParam("Accept") String accept,
                 Context context);
     }
 
@@ -214,11 +216,13 @@ public final class IndexersImpl {
      * Creates a new indexer or updates an indexer if it already exists.
      *
      * @param indexerName The name of the indexer to create or update.
-     * @param indexer Represents an indexer.
+     * @param indexer The definition of the indexer to create or update.
      * @param ifMatch Defines the If-Match condition. The operation will be performed only if the ETag on the server
      *     matches this value.
      * @param ifNoneMatch Defines the If-None-Match condition. The operation will be performed only if the ETag on the
      *     server does not match this value.
+     * @param disableCacheReprocessingChangeDetection Disables cache reprocessing change detection.
+     * @param ignoreResetRequirements Ignores cache reset requirements.
      * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -232,6 +236,8 @@ public final class IndexersImpl {
             SearchIndexer indexer,
             String ifMatch,
             String ifNoneMatch,
+            Boolean disableCacheReprocessingChangeDetection,
+            Boolean ignoreResetRequirements,
             RequestOptions requestOptions,
             Context context) {
         final String prefer = "return=representation";
@@ -249,6 +255,8 @@ public final class IndexersImpl {
                 ifNoneMatch,
                 prefer,
                 this.client.getApiVersion(),
+                disableCacheReprocessingChangeDetection,
+                ignoreResetRequirements,
                 accept,
                 indexer,
                 context);
@@ -346,7 +354,7 @@ public final class IndexersImpl {
     /**
      * Creates a new indexer.
      *
-     * @param indexer Represents an indexer.
+     * @param indexer The definition of the indexer to create.
      * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

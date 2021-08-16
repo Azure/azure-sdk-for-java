@@ -1,31 +1,49 @@
 # This job template uses the artifact list in the ci.yml file
 # to generate a variable at build time that can be passed into
 # the Maven -pl command-line switch to constrain what subset of
-# projects are targetted based on the artifacts this pipeline
+# projects are targeted based on the artifacts this pipeline
 # produces. The -am and -amd switches are then applied as
 # appropriate to constrain the full graph that is built depending
 # on whether we are doing a recorded test play back or a full live
 # test.
 
+parameters:
+  - name: Artifacts
+    type: object
+    default: []
+  - name: AdditionalModules
+    type: object
+    default: []
+  - name: JobType
+    type: string
+    default: test
+  - name: SDKType
+    type: string
+    default: client
+  - name: ServiceDirectory
+    type: string
+    default: 'not-specified' # Set a default that breaks in obvious ways.
+
 steps:
+- template: ../steps/cache-maven-repository.yml
+  parameters:
+    JobType: ${{ parameters.JobType }}
+    SDKType: ${{ parameters.SDKType }}
+    ServiceDirectory: ${{ parameters.ServiceDirectory }}
+
 - pwsh: |
-    Write-Host "##vso[task.setvariable variable=ProjectList;]"
+    $artifacts = '${{ convertToJson(parameters.Artifacts) }}' | ConvertFrom-Json
+    $additionalModules = '${{ convertToJson(parameters.AdditionalModules) }}' | ConvertFrom-Json
+
+    $projectList = @()
+    foreach ($artifact in $artifacts) {
+      $projectList += "$($artifact.groupId):$($artifact.name)"
+    }
+    foreach ($artifact in $additionalModules) {
+      $projectList += "$($artifact.groupId):$($artifact.name)"
+    }
+    $projects = $projectList -join ','
+
+    Write-Host "ProjectList = $projects"
+    Write-Host "##vso[task.setvariable variable=ProjectList;]$projects"
   displayName: Initialize project list variable
-
-# These artifacts are the principal outputs of the build. We source
-# them from the artifact list.
-- ${{each artifact in parameters.Artifacts }}:
-  - pwsh: |
-      Write-Host "##vso[task.setvariable variable=ProjectList;]$(ProjectList),${{artifact.groupId}}:${{artifact.name}}"
-    displayName: Append ${{artifact.groupId}}:${{artifact.name}} to project list
-
-# From time to time we might need to also build another module which
-# we don't actually want to ship, so we list that here. We can't rely
-# on the -amd switch to do this since is doesn't resolve dependencies
-# AFTER dependents have been resolved, which means some projects might
-# be missing from the resulting build graph. This works around that
-# limitation in Maven.
-- ${{each artifact in parameters.AdditionalModules }}:
-  - pwsh: |
-      Write-Host "##vso[task.setvariable variable=ProjectList;]$(ProjectList),${{artifact.groupId}}:${{artifact.name}}"
-    displayName: Append ${{artifact.groupId}}:${{artifact.name}} to project list

@@ -176,7 +176,7 @@ public interface AzureFirewallsClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param azureFirewallName The name of the Azure Firewall.
-     * @param parameters Azure Firewall resource.
+     * @param parameters Parameters supplied to the create or update Azure Firewall operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -191,7 +191,7 @@ public interface AzureFirewallsClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param azureFirewallName The name of the Azure Firewall.
-     * @param parameters Azure Firewall resource.
+     * @param parameters Parameters supplied to the create or update Azure Firewall operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -206,7 +206,7 @@ public interface AzureFirewallsClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param azureFirewallName The name of the Azure Firewall.
-     * @param parameters Azure Firewall resource.
+     * @param parameters Parameters supplied to the create or update Azure Firewall operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -221,7 +221,7 @@ public interface AzureFirewallsClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param azureFirewallName The name of the Azure Firewall.
-     * @param parameters Azure Firewall resource.
+     * @param parameters Parameters supplied to the create or update Azure Firewall operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -237,7 +237,7 @@ public interface AzureFirewallsClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param azureFirewallName The name of the Azure Firewall.
-     * @param parameters Azure Firewall resource.
+     * @param parameters Parameters supplied to the create or update Azure Firewall operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -252,7 +252,7 @@ public interface AzureFirewallsClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param azureFirewallName The name of the Azure Firewall.
-     * @param parameters Azure Firewall resource.
+     * @param parameters Parameters supplied to the create or update Azure Firewall operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -267,7 +267,7 @@ public interface AzureFirewallsClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param azureFirewallName The name of the Azure Firewall.
-     * @param parameters Azure Firewall resource.
+     * @param parameters Parameters supplied to the create or update Azure Firewall operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.

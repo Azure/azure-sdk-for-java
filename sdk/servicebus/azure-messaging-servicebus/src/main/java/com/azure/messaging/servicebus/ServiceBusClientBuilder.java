@@ -8,7 +8,6 @@ import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.amqp.ProxyAuthenticationType;
 import com.azure.core.amqp.ProxyOptions;
 import com.azure.core.amqp.implementation.AzureTokenManagerProvider;
-import com.azure.core.amqp.implementation.CbsAuthorizationType;
 import com.azure.core.amqp.implementation.ConnectionOptions;
 import com.azure.core.amqp.implementation.ConnectionStringProperties;
 import com.azure.core.amqp.implementation.MessageSerializer;
@@ -17,8 +16,11 @@ import com.azure.core.amqp.implementation.ReactorProvider;
 import com.azure.core.amqp.implementation.StringUtil;
 import com.azure.core.amqp.implementation.TokenManagerProvider;
 import com.azure.core.amqp.implementation.TracerProvider;
+import com.azure.core.amqp.models.CbsAuthorizationType;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.annotation.ServiceClientProtocol;
+import com.azure.core.credential.AzureNamedKeyCredential;
+import com.azure.core.credential.AzureSasCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.exception.AzureException;
 import com.azure.core.util.ClientOptions;
@@ -55,6 +57,24 @@ import java.util.regex.Pattern;
 
 /**
  * The builder to create Service Bus clients:
+ *
+ * <p><strong>Instantiate a synchronous sender</strong></p>
+ * {@codesnippet com.azure.messaging.servicebus.sender.sync.client.instantiation}
+ *
+ * <p><strong>Instantiate an asynchronous receiver</strong></p>
+ * {@codesnippet com.azure.messaging.servicebus.receiver.async.client.instantiation}
+ *
+ * <p><strong>Instantiate an asynchronous session receiver</strong></p>
+ * {@codesnippet com.azure.messaging.servicebus.session.receiver.async.client.instantiation}
+ *
+ * <p><strong>Instantiate the processor</strong></p>
+ * {@codesnippet com.azure.messaging.servicebus.processor.client.instantiation}
+
+ * <p><strong>Sharing a connection between clients</strong></p>
+ * The creation of physical connection to Service Bus requires resources. If your architecture allows, an application
+ * should share connection between clients which can be achieved by sharing the top level builder as shown below.
+ *
+ * {@codesnippet com.azure.messaging.servicebus.connection.sharing}
  *
  * <p><strong>Clients for sending messages</strong></p>
  * <ul>
@@ -116,6 +136,7 @@ public final class ServiceBusClientBuilder {
     private Scheduler scheduler;
     private AmqpTransportType transport = AmqpTransportType.AMQP;
     private SslDomain.VerifyMode verifyMode;
+    private boolean crossEntityTransactions;
 
     /**
      * Keeps track of the open clients that were created from this builder when there is a shared connection.
@@ -169,6 +190,38 @@ public final class ServiceBusClientBuilder {
         return credential(properties.getEndpoint().getHost(), tokenCredential);
     }
 
+    /**
+     * Enable cross entity transaction on the connection to Service bus. Use this feature only when your transaction
+     * scope spans across different Service Bus entities. This feature is achieved by routing all the messages through
+     * one 'send-via' entity on server side as explained next.
+     * Once clients are created for multiple entities, the first entity that an operation occurs on becomes the
+     * entity through which all subsequent sends will be routed through ('send-via' entity). This enables the service to
+     * perform a transaction that is meant to span multiple entities. This means that subsequent entities that perform
+     * their first operation need to either be senders, or if they are receivers they need to be on the same entity as
+     * the initial entity through which all sends are routed through (otherwise the service would not be able to ensure
+     * that the transaction is committed because it cannot route a receive operation through a different entity). For
+     * instance, if you have SenderA (For entity A) and ReceiverB (For entity B) that are created from a client with
+     * cross-entity transactions enabled, you would need to receive first with ReceiverB to allow this to work. If you
+     * first send to entity A, and then attempted to receive from entity B, an exception would be thrown.
+     *
+     * <p><strong>Avoid using non-transaction API on this client</strong></p>
+     * Since this feature will set up connection to Service Bus optimised to enable this feature. Once all the clients
+     * have been setup, the first receiver or sender used will initialize 'send-via' queue as a single message transfer
+     * entity. All the messages will flow via this queue. Thus this client is not suitable for any non-transaction API.
+     *
+     * <p><strong>When not to enable this feature</strong></p>
+     * If your transaction is involved in one Service bus entity only. For example you are receiving from one
+     * queue/subscription and you want to settle your own messages which are part of one transaction.
+     *
+     * @return The updated {@link ServiceBusSenderClientBuilder} object.
+     *
+     * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/service-bus-transactions#transfers-and-send-via">Service Bus transactions</a>
+     */
+    public ServiceBusClientBuilder enableCrossEntityTransactions() {
+        this.crossEntityTransactions = true;
+        return this;
+    }
+
     private TokenCredential getTokenCredential(ConnectionStringProperties properties) {
         TokenCredential tokenCredential;
         if (properties.getSharedAccessSignature() == null) {
@@ -196,10 +249,14 @@ public final class ServiceBusClientBuilder {
     }
 
     /**
-     * Sets the credential for the Service Bus resource.
+     * Sets the credential by using a {@link TokenCredential} for the Service Bus resource.
+     * <a href="https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/identity/azure-identity">
+     *     azure-identity</a> has multiple {@link TokenCredential} implementations that can be used to authenticate
+     *     the access to the Service Bus resource.
      *
-     * @param fullyQualifiedNamespace for the Service Bus.
-     * @param credential {@link TokenCredential} to be used for authentication.
+     * @param fullyQualifiedNamespace The fully-qualified namespace for the Service Bus.
+     * @param credential The token credential to use for authentication. Access controls may be specified by the
+     * ServiceBus namespace or the requested Service Bus entity, depending on Azure configuration.
      *
      * @return The updated {@link ServiceBusClientBuilder} object.
      */
@@ -213,6 +270,62 @@ public final class ServiceBusClientBuilder {
             throw logger.logExceptionAsError(
                 new IllegalArgumentException("'fullyQualifiedNamespace' cannot be an empty string."));
         }
+
+        return this;
+    }
+
+    /**
+     * Sets the credential with the shared access policies for the Service Bus resource.
+     * You can find the shared access policies on the azure portal or Azure CLI.
+     * For instance, on the portal, "Shared Access policies" has 'policy' and its 'Primary Key' and 'Secondary Key'.
+     * The 'name' attribute of the {@link AzureNamedKeyCredential} is the 'policy' on portal and the 'key' attribute
+     * can be either 'Primary Key' or 'Secondary Key'.
+     * This method and {@link #connectionString(String)} take the same information in different forms. But it allows
+     * you to update the name and key.
+     *
+     * @param fullyQualifiedNamespace The fully-qualified namespace for the Service Bus.
+     * @param credential {@link AzureNamedKeyCredential} to be used for authentication.
+     *
+     * @return The updated {@link ServiceBusClientBuilder} object.
+     */
+    public ServiceBusClientBuilder credential(String fullyQualifiedNamespace, AzureNamedKeyCredential credential) {
+
+        this.fullyQualifiedNamespace = Objects.requireNonNull(fullyQualifiedNamespace,
+            "'fullyQualifiedNamespace' cannot be null.");
+        Objects.requireNonNull(credential, "'credential' cannot be null.");
+        if (CoreUtils.isNullOrEmpty(fullyQualifiedNamespace)) {
+            throw logger.logExceptionAsError(
+                new IllegalArgumentException("'fullyQualifiedNamespace' cannot be an empty string."));
+        }
+
+        this.credentials = new ServiceBusSharedKeyCredential(credential.getAzureNamedKey().getName(),
+            credential.getAzureNamedKey().getKey(), ServiceBusConstants.TOKEN_VALIDITY);
+
+        return this;
+    }
+
+    /**
+     * Sets the credential with Shared Access Signature for the Service Bus resource.
+     * Refer to <a href="https://docs.microsoft.com/azure/service-bus-messaging/service-bus-sas">
+     *     Service Bus access control with Shared Access Signatures</a>.
+     *
+     * @param fullyQualifiedNamespace The fully-qualified namespace for the Service Bus.
+     * @param credential {@link AzureSasCredential} to be used for authentication.
+     *
+     * @return The updated {@link ServiceBusClientBuilder} object.
+     */
+    public ServiceBusClientBuilder credential(String fullyQualifiedNamespace, AzureSasCredential credential) {
+
+        this.fullyQualifiedNamespace = Objects.requireNonNull(fullyQualifiedNamespace,
+            "'fullyQualifiedNamespace' cannot be null.");
+        Objects.requireNonNull(credential, "'credential' cannot be null.");
+
+        if (CoreUtils.isNullOrEmpty(fullyQualifiedNamespace)) {
+            throw logger.logExceptionAsError(
+                new IllegalArgumentException("'fullyQualifiedNamespace' cannot be an empty string."));
+        }
+
+        this.credentials = new ServiceBusSharedKeyCredential(credential.getSignature());
 
         return this;
     }
@@ -363,22 +476,18 @@ public final class ServiceBusClientBuilder {
         synchronized (connectionLock) {
             if (sharedConnection == null) {
                 final ConnectionOptions connectionOptions = getConnectionOptions();
-                final TokenManagerProvider tokenManagerProvider = new AzureTokenManagerProvider(
-                    connectionOptions.getAuthorizationType(), connectionOptions.getFullyQualifiedNamespace(),
-                    ServiceBusConstants.AZURE_ACTIVE_DIRECTORY_SCOPE);
-                final ReactorProvider provider = new ReactorProvider();
-                final ReactorHandlerProvider handlerProvider = new ReactorHandlerProvider(provider);
-
-                final Map<String, String> properties = CoreUtils.getProperties(SERVICE_BUS_PROPERTIES_FILE);
-                final String product = properties.getOrDefault(NAME_KEY, UNKNOWN);
-                final String clientVersion = properties.getOrDefault(VERSION_KEY, UNKNOWN);
 
                 final Flux<ServiceBusAmqpConnection> connectionFlux = Mono.fromCallable(() -> {
                     final String connectionId = StringUtil.getRandomString("MF");
+                    final ReactorProvider provider = new ReactorProvider();
+                    final ReactorHandlerProvider handlerProvider = new ReactorHandlerProvider(provider);
+                    final TokenManagerProvider tokenManagerProvider = new AzureTokenManagerProvider(
+                        connectionOptions.getAuthorizationType(), connectionOptions.getFullyQualifiedNamespace(),
+                        connectionOptions.getAuthorizationScope());
 
                     return (ServiceBusAmqpConnection) new ServiceBusReactorAmqpConnection(connectionId,
-                        connectionOptions, provider, handlerProvider, tokenManagerProvider, serializer, product,
-                        clientVersion);
+                        connectionOptions, provider, handlerProvider, tokenManagerProvider, serializer,
+                        crossEntityTransactions);
                 }).repeat();
 
                 sharedConnection = connectionFlux.subscribeWith(new ServiceBusConnectionProcessor(
@@ -416,14 +525,19 @@ public final class ServiceBusClientBuilder {
         final CbsAuthorizationType authorizationType = credentials instanceof ServiceBusSharedKeyCredential
             ? CbsAuthorizationType.SHARED_ACCESS_SIGNATURE
             : CbsAuthorizationType.JSON_WEB_TOKEN;
-        final ClientOptions options = clientOptions != null ? clientOptions : new ClientOptions();
 
         final SslDomain.VerifyMode verificationMode = verifyMode != null
             ? verifyMode
             : SslDomain.VerifyMode.VERIFY_PEER_NAME;
 
-        return new ConnectionOptions(fullyQualifiedNamespace, credentials, authorizationType, transport, retryOptions,
-            proxyOptions, scheduler, options, verificationMode);
+        final ClientOptions options = clientOptions != null ? clientOptions : new ClientOptions();
+        final Map<String, String> properties = CoreUtils.getProperties(SERVICE_BUS_PROPERTIES_FILE);
+        final String product = properties.getOrDefault(NAME_KEY, UNKNOWN);
+        final String clientVersion = properties.getOrDefault(VERSION_KEY, UNKNOWN);
+
+        return new ConnectionOptions(fullyQualifiedNamespace, credentials, authorizationType,
+            ServiceBusConstants.AZURE_ACTIVE_DIRECTORY_SCOPE, transport, retryOptions, proxyOptions, scheduler,
+            options, verificationMode, product, clientVersion);
     }
 
     private ProxyOptions getDefaultProxyConfiguration(Configuration configuration) {
@@ -672,6 +786,23 @@ public final class ServiceBusClientBuilder {
         }
 
         /**
+         * Sets the amount of time to continue auto-renewing the lock. Setting {@link Duration#ZERO} or {@code null}
+         * disables auto-renewal. For {@link ServiceBusReceiveMode#RECEIVE_AND_DELETE RECEIVE_AND_DELETE} mode,
+         * auto-renewal is disabled.
+         *
+         * @param maxAutoLockRenewDuration the amount of time to continue auto-renewing the lock. {@link Duration#ZERO}
+         * or {@code null} indicates that auto-renewal is disabled.
+         *
+         * @return The updated {@link ServiceBusSessionProcessorClientBuilder} object.
+         * @throws IllegalArgumentException If {code maxAutoLockRenewDuration} is negative.
+         */
+        public ServiceBusSessionProcessorClientBuilder maxAutoLockRenewDuration(Duration maxAutoLockRenewDuration) {
+            validateAndThrow(maxAutoLockRenewDuration);
+            sessionReceiverClientBuilder.maxAutoLockRenewDuration(maxAutoLockRenewDuration);
+            return this;
+        }
+
+        /**
          * Enables session processing roll-over by processing at most {@code maxConcurrentSessions}.
          *
          * @param maxConcurrentSessions Maximum number of concurrent sessions to process at any given time.
@@ -726,6 +857,21 @@ public final class ServiceBusClientBuilder {
          */
         public ServiceBusSessionProcessorClientBuilder receiveMode(ServiceBusReceiveMode receiveMode) {
             sessionReceiverClientBuilder.receiveMode(receiveMode);
+            return this;
+        }
+
+        /**
+         * Sets the type of the {@link SubQueue} to connect to. Azure Service Bus queues and subscriptions provide a
+         * secondary sub-queue, called a dead-letter queue (DLQ).
+         *
+         * @param subQueue The type of the sub queue.
+         *
+         * @return The modified {@link ServiceBusSessionProcessorClientBuilder} object.
+         * @see #queueName A queuename or #topicName A topic name should be set as well.
+         * @see SubQueue
+         */
+        public ServiceBusSessionProcessorClientBuilder subQueue(SubQueue subQueue) {
+            this.sessionReceiverClientBuilder.subQueue(subQueue);
             return this;
         }
 
@@ -848,6 +994,7 @@ public final class ServiceBusClientBuilder {
         private String subscriptionName;
         private String topicName;
         private Duration maxAutoLockRenewDuration = MAX_LOCK_RENEW_DEFAULT_DURATION;
+        private SubQueue subQueue = SubQueue.NONE;
 
         private ServiceBusSessionReceiverClientBuilder() {
         }
@@ -945,6 +1092,21 @@ public final class ServiceBusClientBuilder {
         }
 
         /**
+         * Sets the type of the {@link SubQueue} to connect to. Azure Service Bus queues and subscriptions provide a
+         * secondary sub-queue, called a dead-letter queue (DLQ).
+         *
+         * @param subQueue The type of the sub queue.
+         *
+         * @return The modified {@link ServiceBusSessionReceiverClientBuilder} object.
+         * @see #queueName A queuename or #topicName A topic name should be set as well.
+         * @see SubQueue
+         */
+        public ServiceBusSessionReceiverClientBuilder subQueue(SubQueue subQueue) {
+            this.subQueue = subQueue;
+            return this;
+        }
+
+        /**
          * Sets the name of the subscription in the topic to listen to. <b>{@link #topicName(String)} must also be set.
          * </b>
          *
@@ -988,7 +1150,7 @@ public final class ServiceBusClientBuilder {
             final MessagingEntityType entityType = validateEntityPaths(logger, connectionStringEntityName, topicName,
                 queueName);
             final String entityPath = getEntityPath(logger, entityType, queueName, topicName, subscriptionName,
-                SubQueue.NONE);
+                subQueue);
 
             if (enableAutoComplete && receiveMode == ServiceBusReceiveMode.RECEIVE_AND_DELETE) {
                 logger.warning("'enableAutoComplete' is not needed in for RECEIVE_AND_DELETE mode.");
@@ -1143,6 +1305,21 @@ public final class ServiceBusClientBuilder {
         }
 
         /**
+         * Sets the type of the {@link SubQueue} to connect to. Azure Service Bus queues and subscriptions provide a
+         * secondary sub-queue, called a dead-letter queue (DLQ).
+         *
+         * @param subQueue The type of the sub queue.
+         *
+         * @return The modified {@link ServiceBusProcessorClientBuilder} object.
+         * @see #queueName A queuename or #topicName A topic name should be set as well.
+         * @see SubQueue
+         */
+        public ServiceBusProcessorClientBuilder subQueue(SubQueue subQueue) {
+            serviceBusReceiverClientBuilder.subQueue(subQueue);
+            return this;
+        }
+
+        /**
          * Sets the name of the subscription in the topic to listen to. <b>{@link #topicName(String)} must also be set.
          * </b>
          * @param subscriptionName Name of the subscription.
@@ -1187,6 +1364,23 @@ public final class ServiceBusClientBuilder {
          */
         public ServiceBusProcessorClientBuilder processError(Consumer<ServiceBusErrorContext> processError) {
             this.processError = processError;
+            return this;
+        }
+
+        /**
+         * Sets the amount of time to continue auto-renewing the lock. Setting {@link Duration#ZERO} or {@code null}
+         * disables auto-renewal. For {@link ServiceBusReceiveMode#RECEIVE_AND_DELETE RECEIVE_AND_DELETE} mode,
+         * auto-renewal is disabled.
+         *
+         * @param maxAutoLockRenewDuration the amount of time to continue auto-renewing the lock. {@link Duration#ZERO}
+         * or {@code null} indicates that auto-renewal is disabled.
+         *
+         * @return The updated {@link ServiceBusProcessorClientBuilder} object.
+         * @throws IllegalArgumentException If {code maxAutoLockRenewDuration} is negative.
+         */
+        public ServiceBusProcessorClientBuilder maxAutoLockRenewDuration(Duration maxAutoLockRenewDuration) {
+            validateAndThrow(maxAutoLockRenewDuration);
+            serviceBusReceiverClientBuilder.maxAutoLockRenewDuration(maxAutoLockRenewDuration);
             return this;
         }
 

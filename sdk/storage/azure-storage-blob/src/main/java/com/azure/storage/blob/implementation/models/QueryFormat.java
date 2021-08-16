@@ -8,39 +8,44 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
-/**
- * The QueryFormat model.
- */
+/** The QueryFormat model. */
 @JacksonXmlRootElement(localName = "QueryFormat")
 @Fluent
 public final class QueryFormat {
     /*
-     * Possible values include: 'delimited', 'json', 'arrow'
+     * The quick query format type.
      */
-    @JsonProperty(value = "Type")
+    @JsonProperty(value = "Type", required = true)
     private QueryFormatType type;
 
     /*
-     * The delimitedTextConfiguration property.
+     * Groups the settings used for interpreting the blob data if the blob is
+     * delimited text formatted.
      */
     @JsonProperty(value = "DelimitedTextConfiguration")
     private DelimitedTextConfiguration delimitedTextConfiguration;
 
     /*
-     * The jsonTextConfiguration property.
+     * json text configuration
      */
     @JsonProperty(value = "JsonTextConfiguration")
     private JsonTextConfiguration jsonTextConfiguration;
 
     /*
-     * The arrowConfiguration property.
+     * Groups the settings used for formatting the response if the response
+     * should be Arrow formatted.
      */
     @JsonProperty(value = "ArrowConfiguration")
     private ArrowConfiguration arrowConfiguration;
 
+    /*
+     * Any object
+     */
+    @JsonProperty(value = "ParquetTextConfiguration")
+    private Object parquetTextConfiguration;
+
     /**
-     * Get the type property: Possible values include: 'delimited', 'json',
-     * 'arrow'.
+     * Get the type property: The quick query format type.
      *
      * @return the type value.
      */
@@ -49,8 +54,7 @@ public final class QueryFormat {
     }
 
     /**
-     * Set the type property: Possible values include: 'delimited', 'json',
-     * 'arrow'.
+     * Set the type property: The quick query format type.
      *
      * @param type the type value to set.
      * @return the QueryFormat object itself.
@@ -61,8 +65,8 @@ public final class QueryFormat {
     }
 
     /**
-     * Get the delimitedTextConfiguration property: The
-     * delimitedTextConfiguration property.
+     * Get the delimitedTextConfiguration property: Groups the settings used for interpreting the blob data if the blob
+     * is delimited text formatted.
      *
      * @return the delimitedTextConfiguration value.
      */
@@ -71,11 +75,10 @@ public final class QueryFormat {
     }
 
     /**
-     * Set the delimitedTextConfiguration property: The
-     * delimitedTextConfiguration property.
+     * Set the delimitedTextConfiguration property: Groups the settings used for interpreting the blob data if the blob
+     * is delimited text formatted.
      *
-     * @param delimitedTextConfiguration the delimitedTextConfiguration value
-     * to set.
+     * @param delimitedTextConfiguration the delimitedTextConfiguration value to set.
      * @return the QueryFormat object itself.
      */
     public QueryFormat setDelimitedTextConfiguration(DelimitedTextConfiguration delimitedTextConfiguration) {
@@ -84,8 +87,7 @@ public final class QueryFormat {
     }
 
     /**
-     * Get the jsonTextConfiguration property: The jsonTextConfiguration
-     * property.
+     * Get the jsonTextConfiguration property: json text configuration.
      *
      * @return the jsonTextConfiguration value.
      */
@@ -94,8 +96,7 @@ public final class QueryFormat {
     }
 
     /**
-     * Set the jsonTextConfiguration property: The jsonTextConfiguration
-     * property.
+     * Set the jsonTextConfiguration property: json text configuration.
      *
      * @param jsonTextConfiguration the jsonTextConfiguration value to set.
      * @return the QueryFormat object itself.
@@ -106,7 +107,8 @@ public final class QueryFormat {
     }
 
     /**
-     * Get the arrowConfiguration property: The arrowConfiguration property.
+     * Get the arrowConfiguration property: Groups the settings used for formatting the response if the response should
+     * be Arrow formatted.
      *
      * @return the arrowConfiguration value.
      */
@@ -115,13 +117,34 @@ public final class QueryFormat {
     }
 
     /**
-     * Set the arrowConfiguration property: The arrowConfiguration property.
+     * Set the arrowConfiguration property: Groups the settings used for formatting the response if the response should
+     * be Arrow formatted.
      *
      * @param arrowConfiguration the arrowConfiguration value to set.
      * @return the QueryFormat object itself.
      */
     public QueryFormat setArrowConfiguration(ArrowConfiguration arrowConfiguration) {
         this.arrowConfiguration = arrowConfiguration;
+        return this;
+    }
+
+    /**
+     * Get the parquetTextConfiguration property: Any object.
+     *
+     * @return the parquetTextConfiguration value.
+     */
+    public Object getParquetTextConfiguration() {
+        return this.parquetTextConfiguration;
+    }
+
+    /**
+     * Set the parquetTextConfiguration property: Any object.
+     *
+     * @param parquetTextConfiguration the parquetTextConfiguration value to set.
+     * @return the QueryFormat object itself.
+     */
+    public QueryFormat setParquetTextConfiguration(Object parquetTextConfiguration) {
+        this.parquetTextConfiguration = parquetTextConfiguration;
         return this;
     }
 }

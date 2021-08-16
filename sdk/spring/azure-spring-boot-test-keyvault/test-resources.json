@@ -8,6 +8,12 @@
     "tenantId": {
       "type": "String"
     },
+    "testApplicationId": {
+      "type": "String"
+    },
+    "testApplicationSecret": {
+      "type": "String"
+    },
     "testApplicationOid": {
       "type": "String"
     },
@@ -315,6 +321,26 @@
     "AZURE_KEYVAULT_URI": {
       "type": "string",
       "value": "[variables('azureKeyVaultUri')]"
+    },
+    "SPRING_TENANT_ID": {
+      "type": "string",
+      "value": "[parameters('tenantId')]"
+    },
+    "SPRING_CLIENT_ID": {
+      "type": "string",
+      "value": "[parameters('testApplicationId')]"
+    },
+    "SPRING_CLIENT_SECRET": {
+      "type": "string",
+      "value": "[parameters('testApplicationSecret')]"
+    },
+    "KEY_VAULT_SPRING_RESOURCE_GROUP": {
+      "type": "string",
+      "value": "[resourceGroup().name]"
+    },
+    "SPRING_SUBSCRIPTION_ID": {
+      "type": "string",
+      "value": "[subscription().subscriptionId]"
     },
     "KEY_VAULT_SECRET_NAME": {
       "type": "string",

@@ -22,10 +22,12 @@ import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.SasImplUtils;
 import com.azure.storage.common.implementation.StorageImplUtils;
-import com.azure.storage.file.datalake.implementation.DataLakeStorageClientBuilder;
-import com.azure.storage.file.datalake.implementation.DataLakeStorageClientImpl;
+import com.azure.storage.file.datalake.implementation.AzureDataLakeStorageRestAPIImpl;
+import com.azure.storage.file.datalake.implementation.AzureDataLakeStorageRestAPIImplBuilder;
+import com.azure.storage.file.datalake.implementation.models.FileSystemsListBlobHierarchySegmentResponse;
 import com.azure.storage.file.datalake.implementation.models.FileSystemsListPathsResponse;
-import com.azure.storage.file.datalake.implementation.models.Path;
+import com.azure.storage.file.datalake.implementation.models.ListBlobsShowOnly;
+import com.azure.storage.file.datalake.implementation.models.PathResourceType;
 import com.azure.storage.file.datalake.implementation.util.DataLakeImplUtils;
 import com.azure.storage.file.datalake.implementation.util.DataLakeSasImplUtil;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
@@ -33,6 +35,7 @@ import com.azure.storage.file.datalake.models.DataLakeSignedIdentifier;
 import com.azure.storage.file.datalake.models.FileSystemAccessPolicies;
 import com.azure.storage.file.datalake.models.FileSystemProperties;
 import com.azure.storage.file.datalake.models.ListPathsOptions;
+import com.azure.storage.file.datalake.models.PathDeletedItem;
 import com.azure.storage.file.datalake.models.PathHttpHeaders;
 import com.azure.storage.file.datalake.models.PathItem;
 import com.azure.storage.file.datalake.models.PublicAccessType;
@@ -42,13 +45,19 @@ import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 import java.time.OffsetDateTime;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.function.Function;
+import java.util.function.BiFunction;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.pagedFluxError;
+import static com.azure.core.util.FluxUtil.withContext;
+import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
+import static com.azure.storage.common.Utility.STORAGE_TRACING_NAMESPACE_VALUE;
 
 /**
  * Client to a file system. It may only be instantiated through a {@link DataLakeFileSystemClientBuilder} or via the
@@ -82,7 +91,8 @@ public class DataLakeFileSystemAsyncClient {
     private static final String ROOT_DIRECTORY_NAME = "";
 
     private final ClientLogger logger = new ClientLogger(DataLakeFileSystemAsyncClient.class);
-    private final DataLakeStorageClientImpl azureDataLakeStorage;
+    private final AzureDataLakeStorageRestAPIImpl azureDataLakeStorage;
+    private final AzureDataLakeStorageRestAPIImpl blobDataLakeStorageFs; // Just for list deleted paths
     private final BlobContainerAsyncClient blobContainerAsyncClient;
 
     private final String accountName;
@@ -101,11 +111,20 @@ public class DataLakeFileSystemAsyncClient {
      */
     DataLakeFileSystemAsyncClient(HttpPipeline pipeline, String url, DataLakeServiceVersion serviceVersion,
         String accountName, String fileSystemName, BlobContainerAsyncClient blobContainerAsyncClient) {
-        this.azureDataLakeStorage = new DataLakeStorageClientBuilder()
+        this.azureDataLakeStorage = new AzureDataLakeStorageRestAPIImplBuilder()
             .pipeline(pipeline)
             .url(url)
+            .fileSystem(fileSystemName)
             .version(serviceVersion.getVersion())
-            .build();
+            .buildClient();
+        String blobUrl = DataLakeImplUtils.endpointToDesiredEndpoint(url, "blob", "dfs");
+        this.blobDataLakeStorageFs = new AzureDataLakeStorageRestAPIImplBuilder()
+            .pipeline(pipeline)
+            .url(blobUrl)
+            .fileSystem(fileSystemName)
+            .version(serviceVersion.getVersion())
+            .buildClient();
+
         this.serviceVersion = serviceVersion;
 
         this.accountName = accountName;
@@ -133,10 +152,8 @@ public class DataLakeFileSystemAsyncClient {
         BlockBlobAsyncClient blockBlobAsyncClient = blobContainerAsyncClient.getBlobAsyncClient(fileName,
             null).getBlockBlobAsyncClient();
 
-        return new DataLakeFileAsyncClient(getHttpPipeline(),
-            StorageImplUtils.appendToUrlPath(getFileSystemUrl(), Utility.urlEncode(Utility.urlDecode(fileName)))
-                .toString(), getServiceVersion(), getAccountName(), getFileSystemName(), fileName,
-            blockBlobAsyncClient);
+        return new DataLakeFileAsyncClient(getHttpPipeline(), getAccountUrl(), getServiceVersion(), getAccountName(),
+            getFileSystemName(), fileName, blockBlobAsyncClient);
     }
 
     /**
@@ -158,10 +175,8 @@ public class DataLakeFileSystemAsyncClient {
 
         BlockBlobAsyncClient blockBlobAsyncClient = blobContainerAsyncClient.getBlobAsyncClient(directoryName,
             null).getBlockBlobAsyncClient();
-        return new DataLakeDirectoryAsyncClient(getHttpPipeline(),
-            StorageImplUtils.appendToUrlPath(getFileSystemUrl(), Utility.urlEncode(Utility.urlDecode(directoryName)))
-                .toString(), getServiceVersion(), getAccountName(), getFileSystemName(), directoryName,
-            blockBlobAsyncClient);
+        return new DataLakeDirectoryAsyncClient(getHttpPipeline(), getAccountUrl(), getServiceVersion(),
+            getAccountName(), getFileSystemName(), directoryName, blockBlobAsyncClient);
     }
 
     /**
@@ -181,12 +196,21 @@ public class DataLakeFileSystemAsyncClient {
     }
 
     /**
+     * Get the url of the storage account.
+     *
+     * @return the URL of the storage account
+     */
+    public String getAccountUrl() {
+        return azureDataLakeStorage.getUrl();
+    }
+
+    /**
      * Gets the URL of the file system represented by this client.
      *
      * @return the URL.
      */
     public String getFileSystemUrl() {
-        return azureDataLakeStorage.getUrl();
+        return azureDataLakeStorage.getUrl() + "/" + fileSystemName;
     }
 
     /**
@@ -449,17 +473,40 @@ public class DataLakeFileSystemAsyncClient {
 
     PagedFlux<PathItem> listPathsWithOptionalTimeout(ListPathsOptions options,
         Duration timeout) {
-        Function<String, Mono<PagedResponse<Path>>> func =
-            marker -> listPathsSegment(marker, options, timeout)
-                .map(response -> new PagedResponseBase<>(
-                    response.getRequest(),
-                    response.getStatusCode(),
-                    response.getHeaders(),
-                    response.getValue().getPaths(),
-                    response.getDeserializedHeaders().getContinuation(),
-                    response.getDeserializedHeaders()));
+        BiFunction<String, Integer, Mono<PagedResponse<PathItem>>> func =
+            (marker, pageSize) -> {
+                ListPathsOptions finalOptions;
+                if (pageSize != null) {
+                    if (options == null) {
+                        finalOptions = new ListPathsOptions().setMaxResults(pageSize);
+                    } else {
+                        finalOptions = new ListPathsOptions()
+                            .setMaxResults(pageSize)
+                            .setPath(options.getPath())
+                            .setRecursive(options.isRecursive())
+                            .setUserPrincipalNameReturned(options.isUserPrincipalNameReturned());
+                    }
+                } else {
+                    finalOptions = options;
+                }
+                return listPathsSegment(marker, finalOptions, timeout)
+                    .map(response -> {
+                        List<PathItem> value = response.getValue() == null
+                            ? Collections.emptyList()
+                            : response.getValue().getPaths().stream()
+                            .map(Transforms::toPathItem)
+                            .collect(Collectors.toList());
 
-        return new PagedFlux<>(() -> func.apply(null), func).mapPage(Transforms::toPathItem);
+                        return new PagedResponseBase<>(
+                            response.getRequest(),
+                            response.getStatusCode(),
+                            response.getHeaders(),
+                            value,
+                            response.getDeserializedHeaders().getXMsContinuation(),
+                            response.getDeserializedHeaders());
+                    });
+            };
+        return new PagedFlux<>(pageSize -> func.apply(null, pageSize), func);
     }
 
     private Mono<FileSystemsListPathsResponse> listPathsSegment(String marker,
@@ -467,9 +514,92 @@ public class DataLakeFileSystemAsyncClient {
         options = options == null ? new ListPathsOptions() : options;
 
         return StorageImplUtils.applyOptionalTimeout(
-            this.azureDataLakeStorage.fileSystems().listPathsWithRestResponseAsync(
-                options.isRecursive(), marker, options.getPath(), options.getMaxResults(),
-                options.isUserPrincipalNameReturned(), null, null, Context.NONE), timeout);
+            this.azureDataLakeStorage.getFileSystems().listPathsWithResponseAsync(options.isRecursive(), null, null,
+                marker, options.getPath(), options.getMaxResults(),
+                options.isUserPrincipalNameReturned(),  Context.NONE), timeout);
+    }
+
+    /**
+     * Returns a reactive Publisher emitting all the files/directories in this filesystem that have been recently soft
+     * deleted lazily as needed. For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/list-blobs">Azure Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.listDeletedPaths}
+     *
+     * @return A reactive response emitting the list of files/directories.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<PathDeletedItem> listDeletedPaths() {
+        try {
+            return this.listDeletedPaths(null);
+        } catch (RuntimeException ex) {
+            return pagedFluxError(logger, ex);
+        }
+    }
+
+    /**
+     * Returns a reactive Publisher emitting all the files/directories in this account lazily as needed. For more
+     * information, see the <a href="https://docs.microsoft.com/rest/api/storageservices/list-blobs">Azure Docs</a>.
+     *
+     * Note: You can specify the page size by using byPaged methods that accept an integer such as
+     * {@link PagedFlux#byPage(int)}. Please refer to the REST docs above for limitations on page size
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.listDeletedPaths#String}
+     *
+     * @param prefix Specifies the path to filter the results to.
+     * @return A reactive response emitting the list of files/directories.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<PathDeletedItem> listDeletedPaths(String prefix) {
+        try {
+            return new PagedFlux<>(pageSize -> withContext(context -> listDeletedPaths(null, pageSize, prefix,
+                null, context)),
+                (marker, pageSize) -> withContext(context -> listDeletedPaths(marker, pageSize, prefix, null,
+                    context)));
+        } catch (RuntimeException ex) {
+            return pagedFluxError(logger, ex);
+        }
+    }
+
+    PagedFlux<PathDeletedItem> listDeletedPathsWithOptionalTimeout(String prefix, Duration timeout, Context context) {
+        return new PagedFlux<>(pageSize -> listDeletedPaths(null, pageSize, prefix, timeout, context),
+            (marker, pageSize) -> listDeletedPaths(marker, pageSize, prefix, timeout, context));
+    }
+
+    private Mono<PagedResponse<PathDeletedItem>> listDeletedPaths(String marker, Integer pageSize,
+        String prefix, Duration timeout, Context context) {
+        return listDeletedPathsSegment(marker, prefix, pageSize, timeout, context)
+            .map(response -> {
+                List<PathDeletedItem> value = response.getValue().getSegment() == null
+                    ? Collections.emptyList()
+                    : Stream.concat(
+                    response.getValue().getSegment().getBlobItems().stream().map(Transforms::toPathDeletedItem),
+                    response.getValue().getSegment().getBlobPrefixes().stream()
+                        .map(Transforms::toPathDeletedItem)
+                ).collect(Collectors.toList());
+                return new PagedResponseBase<>(
+                    response.getRequest(),
+                    response.getStatusCode(),
+                    response.getHeaders(),
+                    value,
+                    response.getValue().getNextMarker(),
+                    response.getDeserializedHeaders());
+            });
+    }
+
+    private Mono<FileSystemsListBlobHierarchySegmentResponse> listDeletedPathsSegment(String marker,
+        String prefix, Integer maxResults, Duration timeout, Context context) {
+        context = context == null ? Context.NONE : context;
+
+        return StorageImplUtils.applyOptionalTimeout(
+            this.blobDataLakeStorageFs.getFileSystems().listBlobHierarchySegmentWithResponseAsync(
+                prefix, null, marker, maxResults,
+                null, ListBlobsShowOnly.DELETED, null, null,
+                context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE)), timeout);
     }
 
     /**
@@ -712,6 +842,92 @@ public class DataLakeFileSystemAsyncClient {
     public Mono<Response<Void>> deleteDirectoryWithResponse(String directoryName, boolean recursive,
         DataLakeRequestConditions requestConditions) {
         return getDirectoryAsyncClient(directoryName).deleteWithResponse(recursive, requestConditions);
+    }
+
+    /**
+     * Restores a soft deleted path in the file system. For more information see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/delete">Azure
+     * Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.undeletePath#String-String}
+     *
+     * @param deletedPath The deleted path
+     * @param deletionId deletion ID associated with the soft deleted path that uniquely identifies a resource if
+     * multiple have been soft deleted at this location.
+     * You can get soft deleted paths and their associated deletion IDs with {@link #listDeletedPaths()}.
+     * @return A reactive response signalling completion.
+     * @throws NullPointerException if deletedPath or deletionId is null.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<DataLakePathAsyncClient> undeletePath(String deletedPath, String deletionId) {
+        return undeletePathWithResponse(deletedPath, deletionId).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Restores a soft deleted path in the file system. For more information see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/delete">Azure
+     * Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.undeletePathWithResponse#String-String}
+     *
+     * @param deletedPath The deleted path
+     * @param deletionId deletion ID associated with the soft deleted path that uniquely identifies a resource if
+     * multiple have been soft deleted at this location.
+     * You can get soft deleted paths and their associated deletion IDs with {@link #listDeletedPaths()}.
+     * @return A reactive response signalling completion.
+     * @throws NullPointerException if deletedPath or deletionId is null.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<DataLakePathAsyncClient>> undeletePathWithResponse(String deletedPath, String deletionId) {
+        try {
+            return withContext(context -> undeletePathWithResponse(deletedPath, deletionId, context));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    Mono<Response<DataLakePathAsyncClient>> undeletePathWithResponse(String deletedPath, String deletionId,
+        Context context) {
+        Objects.requireNonNull(deletedPath);
+        Objects.requireNonNull(deletionId);
+
+        context = context == null ? Context.NONE : context;
+        String blobUrl = DataLakeImplUtils.endpointToDesiredEndpoint(blobDataLakeStorageFs.getUrl(), "blob", "dfs");
+
+        // This instance is to have a datalake impl that points to the blob endpoint
+        AzureDataLakeStorageRestAPIImpl blobDataLakeStoragePath = new AzureDataLakeStorageRestAPIImplBuilder()
+            .pipeline(blobDataLakeStorageFs.getHttpPipeline())
+            .url(blobUrl)
+            .fileSystem(blobDataLakeStorageFs.getFileSystem())
+            .path(Utility.urlDecode(deletedPath))
+            .version(serviceVersion.getVersion())
+            .buildClient();
+
+        // Initial rest call
+        return blobDataLakeStoragePath.getPaths().undeleteWithResponseAsync(null,
+            String.format("?%s=%s", Constants.UrlConstants.DELETIONID_QUERY_PARAMETER, deletionId), null,
+            context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
+                .onErrorMap(DataLakeImplUtils::transformBlobStorageException)
+                // Construct the new client and final response from the undelete + getProperties responses
+                .map(response -> {
+                    DataLakePathAsyncClient client = new DataLakePathAsyncClient(getHttpPipeline(), getAccountUrl(),
+                        serviceVersion, accountName, fileSystemName, deletedPath,
+                        PathResourceType.fromString(response.getDeserializedHeaders().getXMsResourceType()),
+                        blobContainerAsyncClient.getBlobAsyncClient(deletedPath, null)
+                            .getBlockBlobAsyncClient());
+                    if (PathResourceType.DIRECTORY.equals(client.pathResourceType)) {
+                        return new SimpleResponse<>(response, new DataLakeDirectoryAsyncClient(client));
+                    } else if (PathResourceType.FILE.equals(client.pathResourceType)) {
+                        return new SimpleResponse<>(response, new DataLakeFileAsyncClient(client));
+                    } else {
+                        throw logger.logExceptionAsError(new IllegalStateException("'pathClient' expected to be either "
+                            + "a file or directory client."));
+                    }
+                });
     }
 
     /**

@@ -1,17 +1,15 @@
 org.springframework.boot.env.EnvironmentPostProcessor=com.azure.spring.cloudfoundry.environment.VcapProcessor
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-com.azure.spring.aad.webapi.AADResourceServerConfiguration, \
-com.azure.spring.aad.webapi.AADResourceServerOboConfiguration,\
-com.azure.spring.aad.webapp.AADWebAppConfiguration, \
+com.azure.spring.autoconfigure.aad.AADAutoConfiguration,\
 com.azure.spring.autoconfigure.aad.AADAuthenticationFilterAutoConfiguration,\
 com.azure.spring.autoconfigure.b2c.AADB2CAutoConfiguration,\
+com.azure.spring.autoconfigure.b2c.AADB2CResourceServerAutoConfiguration,\
 com.azure.spring.autoconfigure.cosmos.CosmosAutoConfiguration,\
 com.azure.spring.autoconfigure.cosmos.CosmosHealthConfiguration,\
 com.azure.spring.autoconfigure.cosmos.CosmosReactiveRepositoriesAutoConfiguration,\
 com.azure.spring.autoconfigure.cosmos.CosmosRepositoriesAutoConfiguration,\
-com.azure.spring.autoconfigure.gremlin.GremlinAutoConfiguration,\
-com.azure.spring.autoconfigure.gremlin.GremlinRepositoriesAutoConfiguration,\
-com.azure.spring.autoconfigure.jms.ServiceBusJMSAutoConfiguration,\
+com.azure.spring.autoconfigure.jms.NonPremiumServiceBusJMSAutoConfiguration,\
+com.azure.spring.autoconfigure.jms.PremiumServiceBusJMSAutoConfiguration,\
 com.azure.spring.autoconfigure.storage.StorageAutoConfiguration,\
 com.azure.spring.autoconfigure.storage.StorageHealthConfiguration,\
 com.azure.spring.keyvault.KeyVaultHealthConfiguration

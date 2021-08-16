@@ -39,6 +39,12 @@ public class VirtualMachineScaleSetUpdateNetworkConfiguration extends SubResourc
     private Boolean enableAcceleratedNetworking;
 
     /*
+     * Specifies whether the network interface is FPGA networking-enabled.
+     */
+    @JsonProperty(value = "properties.enableFpga")
+    private Boolean enableFpga;
+
+    /*
      * The network security group.
      */
     @JsonProperty(value = "properties.networkSecurityGroup")
@@ -61,6 +67,12 @@ public class VirtualMachineScaleSetUpdateNetworkConfiguration extends SubResourc
      */
     @JsonProperty(value = "properties.enableIPForwarding")
     private Boolean enableIpForwarding;
+
+    /*
+     * Specify what happens to the network interface when the VM is deleted
+     */
+    @JsonProperty(value = "properties.deleteOption")
+    private DeleteOptions deleteOption;
 
     /**
      * Get the name property: The network configuration name.
@@ -122,6 +134,26 @@ public class VirtualMachineScaleSetUpdateNetworkConfiguration extends SubResourc
     public VirtualMachineScaleSetUpdateNetworkConfiguration withEnableAcceleratedNetworking(
         Boolean enableAcceleratedNetworking) {
         this.enableAcceleratedNetworking = enableAcceleratedNetworking;
+        return this;
+    }
+
+    /**
+     * Get the enableFpga property: Specifies whether the network interface is FPGA networking-enabled.
+     *
+     * @return the enableFpga value.
+     */
+    public Boolean enableFpga() {
+        return this.enableFpga;
+    }
+
+    /**
+     * Set the enableFpga property: Specifies whether the network interface is FPGA networking-enabled.
+     *
+     * @param enableFpga the enableFpga value to set.
+     * @return the VirtualMachineScaleSetUpdateNetworkConfiguration object itself.
+     */
+    public VirtualMachineScaleSetUpdateNetworkConfiguration withEnableFpga(Boolean enableFpga) {
+        this.enableFpga = enableFpga;
         return this;
     }
 
@@ -204,6 +236,26 @@ public class VirtualMachineScaleSetUpdateNetworkConfiguration extends SubResourc
      */
     public VirtualMachineScaleSetUpdateNetworkConfiguration withEnableIpForwarding(Boolean enableIpForwarding) {
         this.enableIpForwarding = enableIpForwarding;
+        return this;
+    }
+
+    /**
+     * Get the deleteOption property: Specify what happens to the network interface when the VM is deleted.
+     *
+     * @return the deleteOption value.
+     */
+    public DeleteOptions deleteOption() {
+        return this.deleteOption;
+    }
+
+    /**
+     * Set the deleteOption property: Specify what happens to the network interface when the VM is deleted.
+     *
+     * @param deleteOption the deleteOption value to set.
+     * @return the VirtualMachineScaleSetUpdateNetworkConfiguration object itself.
+     */
+    public VirtualMachineScaleSetUpdateNetworkConfiguration withDeleteOption(DeleteOptions deleteOption) {
+        this.deleteOption = deleteOption;
         return this;
     }
 

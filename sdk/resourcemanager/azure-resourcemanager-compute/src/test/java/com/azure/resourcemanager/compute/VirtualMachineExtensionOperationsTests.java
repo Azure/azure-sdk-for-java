@@ -14,16 +14,14 @@ import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.storage.models.StorageAccount;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.Base64;
-import java.util.List;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 public class VirtualMachineExtensionOperationsTests extends ComputeManagementTest {
     private String rgName = "";
-    private Region region = Region.US_SOUTH_CENTRAL;
+    private Region region = Region.US_EAST;
 
     @Override
     protected void initializeClients(HttpPipeline httpPipeline, AzureProfile profile) {
@@ -63,7 +61,7 @@ public class VirtualMachineExtensionOperationsTests extends ComputeManagementTes
                 .withoutPrimaryPublicIPAddress()
                 .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_18_04_LTS)
                 .withRootUsername("Foo12")
-                .withRootPassword("BaR@12abc!")
+                .withSsh(sshPublicKey())
                 .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
                 .withExistingStorageAccount(storageAccount)
                 .create();
@@ -123,7 +121,7 @@ public class VirtualMachineExtensionOperationsTests extends ComputeManagementTes
                 .withoutPrimaryPublicIPAddress()
                 .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                 .withRootUsername("Foo12")
-                .withRootPassword("BaR@12abc!")
+                .withSsh(sshPublicKey())
                 .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
                 .create();
 
@@ -161,11 +159,7 @@ public class VirtualMachineExtensionOperationsTests extends ComputeManagementTes
     public void canInstallUninstallCustomExtension() throws Exception {
         final String vmName = "javavm3";
 
-        final String mySqlInstallScript =
-            "https://raw.githubusercontent.com/Azure/azure-quickstart-templates/4397e808d07df60ff3cdfd1ae40999f0130eb1b3/mysql-standalone-server-ubuntu/scripts/install_mysql_server_5.6.sh";
-        final String installCommand = "bash install_mysql_server_5.6.sh Abc.123x(";
-        List<String> fileUris = new ArrayList<>();
-        fileUris.add(mySqlInstallScript);
+        final String installCommand = "sudo -- sh -c 'apt-get update && apt-get -y install mysql-server'";
 
         // Create Linux VM with a custom extension to install MySQL
         //
@@ -178,17 +172,15 @@ public class VirtualMachineExtensionOperationsTests extends ComputeManagementTes
                 .withNewPrimaryNetwork("10.0.0.0/28")
                 .withPrimaryPrivateIPAddressDynamic()
                 .withoutPrimaryPublicIPAddress()
-                // mysql-server-5.6 not available for Ubuntu 16 and 18
-                .withLatestLinuxImage("Canonical", "UbuntuServer", "14.04.4-LTS")
+                .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_18_04_LTS)
                 .withRootUsername("Foo12")
-                .withRootPassword("BaR@12abc!")
+                .withSsh(sshPublicKey())
                 .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
                 .defineNewExtension("CustomScriptForLinux")
                 .withPublisher("Microsoft.OSTCExtensions")
                 .withType("CustomScriptForLinux")
                 .withVersion("1.4")
                 .withMinorVersionAutoUpgrade()
-                .withPublicSetting("fileUris", fileUris)
                 .withPublicSetting("commandToExecute", installCommand)
                 .attach()
                 .create();
@@ -198,16 +190,16 @@ public class VirtualMachineExtensionOperationsTests extends ComputeManagementTes
         VirtualMachineExtension customScriptExtension = vm.listExtensions().get("CustomScriptForLinux");
         Assertions.assertEquals(customScriptExtension.publisherName(), "Microsoft.OSTCExtensions");
         Assertions.assertEquals(customScriptExtension.typeName(), "CustomScriptForLinux");
-        Assertions.assertEquals(customScriptExtension.autoUpgradeMinorVersionEnabled(), true);
+        Assertions.assertTrue(customScriptExtension.autoUpgradeMinorVersionEnabled());
 
         // Remove the custom extension
         //
         vm.update().withoutExtension("CustomScriptForLinux").apply();
 
-        Assertions.assertTrue(vm.listExtensions().size() == 0);
+        Assertions.assertTrue(vm.listExtensions().isEmpty());
 
         vm.refresh();
-        Assertions.assertTrue(vm.listExtensions().size() == 0);
+        Assertions.assertTrue(vm.listExtensions().isEmpty());
     }
 
     @Test
@@ -227,7 +219,7 @@ public class VirtualMachineExtensionOperationsTests extends ComputeManagementTes
                 .withoutPrimaryPublicIPAddress()
                 .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_18_04_LTS)
                 .withRootUsername("Foo12")
-                .withRootPassword("BaR@12abc!")
+                .withSsh(sshPublicKey())
                 .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
                 .defineNewExtension("VMAccessForLinux")
                 .withPublisher("Microsoft.OSTCExtensions")

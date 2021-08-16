@@ -5,6 +5,7 @@ package com.azure.resourcemanager.keyvault.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.util.CoreUtils;
 import com.azure.resourcemanager.authorization.AuthorizationManager;
 import com.azure.resourcemanager.keyvault.KeyVaultManager;
 import com.azure.resourcemanager.keyvault.fluent.VaultsClient;
@@ -24,6 +25,7 @@ import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementat
 import reactor.core.publisher.Mono;
 
 import java.util.UUID;
+import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
 
 /** The implementation of Vaults and its parent interfaces. */
 public class VaultsImpl extends GroupableResourcesImpl<Vault, VaultImpl, VaultInner, VaultsClient, KeyVaultManager>
@@ -45,6 +47,10 @@ public class VaultsImpl extends GroupableResourcesImpl<Vault, VaultImpl, VaultIn
 
     @Override
     public PagedFlux<Vault> listByResourceGroupAsync(String resourceGroupName) {
+        if (CoreUtils.isNullOrEmpty(resourceGroupName)) {
+            return new PagedFlux<>(() -> Mono.error(
+                new IllegalArgumentException("Parameter 'resourceGroupName' is required and cannot be null.")));
+        }
         return wrapPageAsync(this.inner().listByResourceGroupAsync(resourceGroupName, null));
     }
 
@@ -59,8 +65,16 @@ public class VaultsImpl extends GroupableResourcesImpl<Vault, VaultImpl, VaultIn
     }
 
     @Override
-    public Mono<Void> deleteByResourceGroupAsync(String groupName, String name) {
-        return this.inner().deleteAsync(groupName, name);
+    public Mono<Void> deleteByResourceGroupAsync(String resourceGroupName, String name) {
+        if (CoreUtils.isNullOrEmpty(resourceGroupName)) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter 'resourceGroupName' is required and cannot be null."));
+        }
+        if (CoreUtils.isNullOrEmpty(name)) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter 'name' is required and cannot be null."));
+        }
+        return this.inner().deleteAsync(resourceGroupName, name);
     }
 
     @Override
@@ -85,7 +99,7 @@ public class VaultsImpl extends GroupableResourcesImpl<Vault, VaultImpl, VaultIn
 
     @Override
     public PagedIterable<DeletedVault> listDeleted() {
-        return this.inner().listDeleted().mapPage(DeletedVaultImpl::new);
+        return PagedConverter.mapPage(this.inner().listDeleted(), DeletedVaultImpl::new);
     }
 
     @Override
@@ -114,7 +128,7 @@ public class VaultsImpl extends GroupableResourcesImpl<Vault, VaultImpl, VaultIn
 
     @Override
     public PagedFlux<DeletedVault> listDeletedAsync() {
-        return this.inner().listDeletedAsync().mapPage(DeletedVaultImpl::new);
+        return PagedConverter.mapPage(this.inner().listDeletedAsync(), DeletedVaultImpl::new);
     }
 
     @Override

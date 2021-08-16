@@ -8,6 +8,7 @@ import com.azure.resourcemanager.storage.StorageManager;
 import com.azure.resourcemanager.storage.fluent.StorageAccountsClient;
 import com.azure.resourcemanager.storage.fluent.models.ListServiceSasResponseInner;
 import com.azure.resourcemanager.storage.models.CheckNameAvailabilityResult;
+import com.azure.resourcemanager.storage.models.MinimumTlsVersion;
 import com.azure.resourcemanager.storage.models.ServiceSasParameters;
 import com.azure.resourcemanager.storage.models.StorageAccount;
 import com.azure.resourcemanager.storage.models.StorageAccountSkuType;
@@ -40,7 +41,13 @@ public class StorageAccountsImpl
 
     @Override
     public StorageAccountImpl define(String name) {
-        return wrapModel(name).withSku(StorageAccountSkuType.STANDARD_RAGRS).withGeneralPurposeAccountKindV2();
+        return wrapModel(name)
+            .withSku(StorageAccountSkuType.STANDARD_RAGRS)
+            .withGeneralPurposeAccountKindV2()
+            .withOnlyHttpsTraffic()
+            .withMinimumTlsVersion(MinimumTlsVersion.TLS1_2)
+            .withBlobEncryption()
+            .withFileEncryption();
     }
 
     @Override

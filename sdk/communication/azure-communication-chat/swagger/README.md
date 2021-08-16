@@ -21,23 +21,25 @@ There is one swagger for Chat management APIs.
 
 ```ps
 cd <swagger-folder>
-autorest README.md --java --v4 --use=@autorest/java@4.0.2
+autorest README.md --java --v4 --use=@autorest/java@4.0.20 --use=@autorest/modelerfour@4.15.442
 ```
 
 ## Update generated files for chat service
 To update generated files for chat service, run the following command
 
-> autorest README.md --java --v4 --use=@autorest/java@4.0.2
+> autorest README.md --java --v4 --use=@autorest/java@4.0.20 --use=@autorest/modelerfour@4.15.442
 
 ### Code generation settings
 ``` yaml
-input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/838c5092f11e8ca26e262b1f1099d5c5cdfedc3f/specification/communication/data-plane/Microsoft.CommunicationServicesChat/preview/2020-09-21-preview2/communicationserviceschat.json
+tag: package-chat-2021-04-05-preview6
+require:
+    - https://raw.githubusercontent.com/Azure/azure-rest-api-specs/29e0c9624a8e60138127457f2e863bb4a9ba1419/specification/communication/data-plane/Chat/readme.md
 java: true
 output-folder: ..\
 license-header: MICROSOFT_MIT_SMALL
 namespace: com.azure.communication.chat
 generate-client-as-impl: true
-custom-types: ChatMessagePriority,ChatThreadInfo,CreateChatThreadResult,PostReadReceiptOptions,SendChatMessageOptions,SendChatMessageResult,UpdateChatMessageOptions,UpdateChatThreadOptions,Error,ErrorException
+custom-types: ChatMessagePriority,ChatThreadItem,PostReadReceiptOptions,SendChatMessageOptions,UpdateChatMessageOptions,UpdateChatThreadOptions,ChatMessageType,SendChatMessageResult,TypingNotificationOptions
 custom-types-subpackage: models
 models-subpackage: implementation.models
 generate-client-interfaces: false
@@ -49,21 +51,21 @@ enable-xml: false
 required-parameter-client-methods: true
 ```
 
-### Rename AddChatThreadMembersRequest to AddChatThreadMembersOptions
+### Rename AddChatParticipantsRequest to AddChatParticipantsOptions
 ``` yaml
 directive:
 - from: swagger-document
   where: $.definitions
   transform: >
-    if (!$.AddChatThreadMembersOptions) {
-      $.AddChatThreadMembersOptions = $.AddChatThreadMembersRequest;
-      delete $.AddChatThreadMembersRequest;
+    if (!$.AddChatParticipantsOptions) {
+      $.AddChatParticipantsOptions = $.AddChatParticipantsRequest;
+      delete $.AddChatParticipantsRequest;
     }
 - from: swagger-document
-  where: $["paths"]["/chat/threads/{chatThreadId}/members"].post.parameters[2]
+  where: $["paths"]["/chat/threads/{chatThreadId}/participants/:add"].post.parameters[2]
   transform: >
-    if ($.schema && $.schema.$ref && $.schema.$ref.endsWith("AddChatThreadMembersRequest")) {
-        const path = $.schema.$ref.replace(/[#].*$/, "#/definitions/AddChatThreadMembersOptions");
+    if ($.schema && $.schema.$ref && $.schema.$ref.endsWith("AddChatParticipantsRequest")) {
+        const path = $.schema.$ref.replace(/[#].*$/, "#/definitions/AddChatParticipantsOptions");
         $.schema = { "$ref": path };
     }
 ```
@@ -79,7 +81,7 @@ directive:
       delete $.CreateChatThreadRequest;
     }
 - from: swagger-document
-  where: $["paths"]["/chat/threads"].post.parameters[1]
+  where: $["paths"]["/chat/threads"].post.parameters[2]
   transform: >
     if ($.schema && $.schema.$ref && $.schema.$ref.endsWith("CreateChatThreadRequest")) {
         const path = $.schema.$ref.replace(/[#].*$/, "#/definitions/CreateChatThreadOptions");
@@ -140,6 +142,25 @@ directive:
   transform: >
     if ($.schema && $.schema.$ref && $.schema.$ref.endsWith("UpdateChatThreadRequest")) {
         const path = $.schema.$ref.replace(/[#].*$/, "#/definitions/UpdateChatThreadOptions");
+        $.schema = { "$ref": path };
+    }
+```
+
+### Rename SendTypingNotificationRequest to TypingNotificationOptions
+``` yaml
+directive:
+- from: swagger-document
+  where: $.definitions
+  transform: >
+    if (!$.TypingNotificationOptions) {
+      $.TypingNotificationOptions = $.SendTypingNotificationRequest;
+      delete $.TypingNotificationRequest;
+    }
+- from: swagger-document
+  where: $["paths"]["/chat/threads/{chatThreadId}/typing"].post.parameters[2]
+  transform: >
+    if ($.schema && $.schema.$ref && $.schema.$ref.endsWith("SendTypingNotificationRequest")) {
+        const path = $.schema.$ref.replace(/[#].*$/, "#/definitions/TypingNotificationOptions");
         $.schema = { "$ref": path };
     }
 ```

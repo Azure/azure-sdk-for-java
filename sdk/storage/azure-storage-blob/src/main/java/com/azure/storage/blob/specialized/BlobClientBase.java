@@ -10,6 +10,7 @@ import com.azure.core.http.RequestConditions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.SimpleResponse;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
@@ -17,7 +18,12 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.BlobServiceClient;
 import com.azure.storage.blob.implementation.util.ModelHelper;
+import com.azure.storage.blob.models.BlobDownloadContentAsyncResponse;
+import com.azure.storage.blob.models.BlobDownloadContentResponse;
+import com.azure.storage.blob.models.BlobImmutabilityPolicy;
+import com.azure.storage.blob.models.BlobLegalHoldResult;
 import com.azure.storage.blob.models.ConsistentReadControl;
+import com.azure.storage.blob.models.CustomerProvidedKey;
 import com.azure.storage.blob.options.BlobBeginCopyOptions;
 import com.azure.storage.blob.options.BlobCopyFromUrlOptions;
 import com.azure.storage.blob.models.BlobProperties;
@@ -108,6 +114,36 @@ public class BlobClientBase {
      */
     public BlobClientBase getVersionClient(String versionId) {
         return new BlobClientBase(client.getVersionClient(versionId));
+    }
+
+    /**
+     * Creates a new {@link BlobClientBase} with the specified {@code encryptionScope}.
+     *
+     * @param encryptionScope the encryption scope for the blob, pass {@code null} to use no encryption scope.
+     * @return a {@link BlobClientBase} with the specified {@code encryptionScope}.
+     */
+    public BlobClientBase getEncryptionScopeClient(String encryptionScope) {
+        return new BlobClientBase(client.getEncryptionScopeAsyncClient(encryptionScope));
+    }
+
+    /**
+     * Creates a new {@link BlobClientBase} with the specified {@code customerProvidedKey}.
+     *
+     * @param customerProvidedKey the {@link CustomerProvidedKey} for the blob,
+     * pass {@code null} to use no customer provided key.
+     * @return a {@link BlobClientBase} with the specified {@code customerProvidedKey}.
+     */
+    public BlobClientBase getCustomerProvidedKeyClient(CustomerProvidedKey customerProvidedKey) {
+        return new BlobClientBase(client.getCustomerProvidedKeyAsyncClient(customerProvidedKey));
+    }
+
+    /**
+     * Get the url of the storage account.
+     *
+     * @return the URL of the storage account
+     */
+    public String getAccountUrl() {
+        return client.getAccountUrl();
     }
 
     /**
@@ -569,13 +605,57 @@ public class BlobClientBase {
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/get-blob">Azure Docs</a></p>
      *
+     * <p>This method will be deprecated in the future. Use {@link #downloadStream(OutputStream)} instead.
+     *
      * @param stream A non-null {@link OutputStream} instance where the downloaded data will be written.
      * @throws UncheckedIOException If an I/O error occurs.
      * @throws NullPointerException if {@code stream} is null
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void download(OutputStream stream) {
+        downloadStream(stream);
+    }
+
+    /**
+     * Downloads the entire blob into an output stream. Uploading data must be done from the {@link BlockBlobClient},
+     * {@link PageBlobClient}, or {@link AppendBlobClient}.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.downloadStream#OutputStream}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/get-blob">Azure Docs</a></p>
+     *
+     * @param stream A non-null {@link OutputStream} instance where the downloaded data will be written.
+     * @throws UncheckedIOException If an I/O error occurs.
+     * @throws NullPointerException if {@code stream} is null
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void downloadStream(OutputStream stream) {
         downloadWithResponse(stream, null, null, null, false, null, Context.NONE);
+    }
+
+    /**
+     * Downloads the entire blob. Uploading data must be done from the {@link BlockBlobClient},
+     * {@link PageBlobClient}, or {@link AppendBlobClient}.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.BlobClient.downloadContent}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/get-blob">Azure Docs</a></p>
+     *
+     * <p>This method supports downloads up to 2GB of data.
+     * Use {@link #downloadStream(OutputStream)} to download larger blobs.</p>
+     *
+     * @return The content of the blob.
+     * @throws UncheckedIOException If an I/O error occurs.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public BinaryData downloadContent() {
+        return blockWithOptionalTimeout(client.downloadContent(), null);
     }
 
     /**
@@ -588,6 +668,10 @@ public class BlobClientBase {
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/get-blob">Azure Docs</a></p>
+     *
+     * <p>This method will be deprecated in the future.
+     * Use {@link #downloadStreamWithResponse(OutputStream, BlobRange, DownloadRetryOptions,
+     * BlobRequestConditions, boolean, Duration, Context)} instead.
      *
      * @param stream A non-null {@link OutputStream} instance where the downloaded data will be written.
      * @param range {@link BlobRange}
@@ -604,9 +688,39 @@ public class BlobClientBase {
     public BlobDownloadResponse downloadWithResponse(OutputStream stream, BlobRange range,
         DownloadRetryOptions options, BlobRequestConditions requestConditions, boolean getRangeContentMd5,
         Duration timeout, Context context) {
+        return downloadStreamWithResponse(stream, range,
+            options, requestConditions, getRangeContentMd5, timeout, context);
+    }
+
+    /**
+     * Downloads a range of bytes from a blob into an output stream. Uploading data must be done from the {@link
+     * BlockBlobClient}, {@link PageBlobClient}, or {@link AppendBlobClient}.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.downloadStreamWithResponse#OutputStream-BlobRange-DownloadRetryOptions-BlobRequestConditions-boolean-Duration-Context}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/get-blob">Azure Docs</a></p>
+     *
+     * @param stream A non-null {@link OutputStream} instance where the downloaded data will be written.
+     * @param range {@link BlobRange}
+     * @param options {@link DownloadRetryOptions}
+     * @param requestConditions {@link BlobRequestConditions}
+     * @param getRangeContentMd5 Whether the contentMD5 for the specified blob range should be returned.
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A response containing status code and HTTP headers.
+     * @throws UncheckedIOException If an I/O error occurs.
+     * @throws NullPointerException if {@code stream} is null
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public BlobDownloadResponse downloadStreamWithResponse(OutputStream stream, BlobRange range,
+        DownloadRetryOptions options, BlobRequestConditions requestConditions, boolean getRangeContentMd5,
+        Duration timeout, Context context) {
         StorageImplUtils.assertNotNull("stream", stream);
         Mono<BlobDownloadResponse> download = client
-            .downloadWithResponse(range, options, requestConditions, getRangeContentMd5, context)
+            .downloadStreamWithResponse(range, options, requestConditions, getRangeContentMd5, context)
             .flatMap(response -> response.getValue().reduce(stream, (outputStream, buffer) -> {
                 try {
                     outputStream.write(FluxUtil.byteBufferToArray(buffer));
@@ -615,6 +729,45 @@ public class BlobClientBase {
                     throw logger.logExceptionAsError(Exceptions.propagate(new UncheckedIOException(ex)));
                 }
             }).thenReturn(new BlobDownloadResponse(response)));
+
+        return blockWithOptionalTimeout(download, timeout);
+    }
+
+    /**
+     * Downloads a range of bytes from a blob into an output stream. Uploading data must be done from the {@link
+     * BlockBlobClient}, {@link PageBlobClient}, or {@link AppendBlobClient}.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.downloadContentWithResponse#DownloadRetryOptions-BlobRequestConditions-Duration-Context}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/get-blob">Azure Docs</a></p>
+     *
+     * <p>This method supports downloads up to 2GB of data.
+     * Use {@link #downloadStreamWithResponse(OutputStream, BlobRange,
+     * DownloadRetryOptions, BlobRequestConditions, boolean, Duration, Context)}  to download larger blobs.</p>
+     *
+     * @param options {@link DownloadRetryOptions}
+     * @param requestConditions {@link BlobRequestConditions}
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A response containing status code and HTTP headers.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public BlobDownloadContentResponse downloadContentWithResponse(
+        DownloadRetryOptions options, BlobRequestConditions requestConditions, Duration timeout, Context context) {
+        Mono<BlobDownloadContentResponse> download = client
+            .downloadStreamWithResponse(null, options, requestConditions, false, context)
+            .flatMap(r ->
+                BinaryData.fromFlux(r.getValue())
+                    .map(data ->
+                        new BlobDownloadContentAsyncResponse(
+                            r.getRequest(), r.getStatusCode(),
+                            r.getHeaders(), data,
+                            r.getDeserializedHeaders())
+                    ))
+            .map(BlobDownloadContentResponse::new);
 
         return blockWithOptionalTimeout(download, timeout);
     }
@@ -775,7 +928,9 @@ public class BlobClientBase {
     }
 
     /**
-     * Deletes the specified blob or snapshot. Note that deleting a blob also deletes all its snapshots.
+     * Deletes the specified blob or snapshot. To delete a blob with its snapshots use
+     * {@link #deleteWithResponse(DeleteSnapshotsOptionType, BlobRequestConditions, Duration, Context)} and set
+     * {@code DeleteSnapshotsOptionType} to INCLUDE.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -790,7 +945,9 @@ public class BlobClientBase {
     }
 
     /**
-     * Deletes the specified blob or snapshot. Note that deleting a blob also deletes all its snapshots.
+     * Deletes the specified blob or snapshot. To delete a blob with its snapshots use
+     * {@link #deleteWithResponse(DeleteSnapshotsOptionType, BlobRequestConditions, Duration, Context)} and set
+     * {@code DeleteSnapshotsOptionType} to INCLUDE.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -1393,5 +1550,119 @@ public class BlobClientBase {
             }).thenReturn(new BlobQueryResponse(response)));
 
         return blockWithOptionalTimeout(download, timeout);
+    }
+
+    /**
+     * Sets the immutability policy on a blob, blob snapshot or blob version.
+     * <p> NOTE: Blob Versioning must be enabled on your storage account and the blob must be in a container with
+     * immutable storage with versioning enabled to call this API.</p>
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.setImmutabilityPolicy#BlobImmutabilityPolicy}
+     *
+     * @param immutabilityPolicy {@link BlobImmutabilityPolicy The immutability policy}.
+     * @return The immutability policy.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public BlobImmutabilityPolicy setImmutabilityPolicy(BlobImmutabilityPolicy immutabilityPolicy) {
+        return setImmutabilityPolicyWithResponse(immutabilityPolicy, null, null, Context.NONE).getValue();
+    }
+
+    /**
+     * Sets the immutability policy on a blob, blob snapshot or blob version.
+     * <p> NOTE: Blob Versioning must be enabled on your storage account and the blob must be in a container with
+     * immutable storage with versioning enabled to call this API.</p>
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.setImmutabilityPolicyWithResponse#BlobImmutabilityPolicy-BlobRequestConditions-Duration-Context}
+     *
+     * @param immutabilityPolicy {@link BlobImmutabilityPolicy The immutability policy}.
+     * @param requestConditions {@link BlobRequestConditions}
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A response containing the immutability policy.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BlobImmutabilityPolicy> setImmutabilityPolicyWithResponse(BlobImmutabilityPolicy immutabilityPolicy,
+        BlobRequestConditions requestConditions, Duration timeout, Context context) {
+        Mono<Response<BlobImmutabilityPolicy>> response = client.setImmutabilityPolicyWithResponse(immutabilityPolicy,
+            requestConditions, context);
+
+        return blockWithOptionalTimeout(response, timeout);
+    }
+
+    /**
+     * Delete the immutability policy on a blob, blob snapshot or blob version.
+     * <p> NOTE: Blob Versioning must be enabled on your storage account and the blob must be in a container with
+     * immutable storage with versioning enabled to call this API.</p>
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.deleteImmutabilityPolicy}
+     *
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void deleteImmutabilityPolicy() {
+        deleteImmutabilityPolicyWithResponse(null, Context.NONE).getValue();
+    }
+
+    /**
+     * Delete the immutability policy on a blob, blob snapshot or blob version.
+     * <p> NOTE: Blob Versioning must be enabled on your storage account and the blob must be in a container with
+     * immutable storage with versioning enabled to call this API.</p>
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.deleteImmutabilityPolicyWithResponse#Duration-Context}
+     *
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A response containing the immutability policy.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> deleteImmutabilityPolicyWithResponse(Duration timeout, Context context) {
+        Mono<Response<Void>> response = client.deleteImmutabilityPolicyWithResponse(context);
+
+        return blockWithOptionalTimeout(response, timeout);
+    }
+
+    /**
+     * Sets a legal hold on the blob.
+     * <p> NOTE: Blob Versioning must be enabled on your storage account and the blob must be in a container with
+     * immutable storage with versioning enabled to call this API.</p>
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.setLegalHold#boolean}
+     *
+     * @param legalHold Whether or not you want a legal hold on the blob.
+     * @return The legal hold result.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public BlobLegalHoldResult setLegalHold(boolean legalHold) {
+        return setLegalHoldWithResponse(legalHold, null, Context.NONE).getValue();
+    }
+
+    /**
+     * Sets a legal hold on the blob.
+     * <p> NOTE: Blob Versioning must be enabled on your storage account and the blob must be in a container with
+     * immutable storage with versioning enabled to call this API.</p>
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.setLegalHoldWithResponse#boolean-Duration-Context}
+     *
+     * @param legalHold Whether or not you want a legal hold on the blob.
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A response containing the legal hold result.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BlobLegalHoldResult> setLegalHoldWithResponse(boolean legalHold, Duration timeout, Context context) {
+        Mono<Response<BlobLegalHoldResult>> response = client.setLegalHoldWithResponse(legalHold, context);
+
+        return blockWithOptionalTimeout(response, timeout);
     }
 }

@@ -28,6 +28,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
 
 /**
  * Implementation for {@link CdnEndpoint}.
@@ -200,11 +201,11 @@ class CdnEndpointImpl
 
     @Override
     public PagedIterable<ResourceUsage> listResourceUsage() {
-        return this.parent().manager().serviceClient().getEndpoints().listResourceUsage(
+        return PagedConverter.mapPage(this.parent().manager().serviceClient().getEndpoints().listResourceUsage(
             this.parent().resourceGroupName(),
             this.parent().name(),
-            this.name())
-            .mapPage(ResourceUsage::new);
+            this.name()),
+            ResourceUsage::new);
     }
 
     @Override

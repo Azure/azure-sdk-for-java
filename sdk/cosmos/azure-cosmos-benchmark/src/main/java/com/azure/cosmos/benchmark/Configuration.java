@@ -5,7 +5,6 @@ package com.azure.cosmos.benchmark;
 
 import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.ConsistencyLevel;
-import com.azure.cosmos.benchmark.Configuration.Operation.OperationTypeConverter;
 import com.beust.jcommander.IStringConverter;
 import com.beust.jcommander.Parameter;
 import com.beust.jcommander.ParameterException;
@@ -28,7 +27,9 @@ import java.io.File;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class Configuration {
 
@@ -89,6 +90,24 @@ public class Configuration {
     @Parameter(names = "-readWriteQueryPct", description = "Comma separated read write query workload percent")
     private String readWriteQueryPct = "90,9,1";
 
+    @Parameter(names = "-manageDatabase", description = "Control switch for creating/deleting underlying database resource")
+    private boolean manageDatabase = false;
+
+    @Parameter(names = "-preferredRegionsList", description = "Comma separated preferred regions list")
+    private String preferredRegionsList;
+
+    @Parameter(names = "-encryptedStringFieldCount", description = "Number of string field that need to be encrypted")
+    private int encryptedStringFieldCount = 1;
+
+    @Parameter(names = "-encryptedLongFieldCount", description = "Number of long field that need to be encrypted")
+    private int encryptedLongFieldCount = 0;
+
+    @Parameter(names = "-encryptedDoubleFieldCount", description = "Number of double field that need to be encrypted")
+    private int encryptedDoubleFieldCount = 0;
+
+    @Parameter(names = "-encryptionEnabled", description = "Control switch to enable the encryption operation")
+    private boolean encryptionEnabled = false;
+
     @Parameter(names = "-operation", description = "Type of Workload:\n"
         + "\tReadThroughput- run a READ workload that prints only throughput *\n"
         + "\tReadThroughputWithMultipleClients - run a READ workload that prints throughput and latency for multiple client read.*\n"
@@ -110,7 +129,7 @@ public class Configuration {
         + "\tReadAllItemsOfLogicalPartition - run a workload that uses readAllItems for a logical partition and prints throughput\n"
         + "\n\t* writes 10k documents initially, which are used in the reads"
         + "\tLinkedInCtlWorkload - ctl for LinkedIn workload.*\n",
-        converter = OperationTypeConverter.class)
+        converter = Operation.OperationTypeConverter.class)
     private Operation operation = Operation.WriteThroughput;
 
     @Parameter(names = "-concurrency", description = "Degree of Concurrency in Inserting Documents."
@@ -157,6 +176,35 @@ public class Configuration {
 
     @Parameter(names = "-contentResponseOnWriteEnabled", description = "if set to false, does not returns content response on document write operations")
     private String contentResponseOnWriteEnabled = String.valueOf(true);
+
+    @Parameter(names = "-bulkloadBatchSize", description = "Control the number of documents uploaded in each BulkExecutor load iteration (Only supported for the LinkedInCtlWorkload)")
+    private int bulkloadBatchSize = 200000;
+
+    @Parameter(names = "-testScenario", description = "The test scenario (GET, QUERY) for the LinkedInCtlWorkload")
+    private String testScenario = "GET";
+
+    @Parameter(names = "-accountNameInGraphiteReporter", description = "if set, account name with be appended in graphite reporter")
+    private boolean accountNameInGraphiteReporter = false;
+
+    public enum Environment {
+        Daily,   // This is the CTL environment where we run the workload for a fixed number of hours
+        Staging; // This is the CTL environment where the worload runs as a long running job
+
+        static class EnvironmentConverter implements IStringConverter<Environment> {
+            @Override
+            public Environment convert(String value) {
+                if (value == null) {
+                    return Environment.Daily;
+                }
+
+                return Environment.valueOf(value);
+            }
+        }
+    }
+
+    @Parameter(names = "-environment", description = "The CTL Environment we are validating the workload",
+        converter = Environment.EnvironmentConverter.class)
+    private Environment environment = Environment.Daily;
 
     @Parameter(names = {"-h", "-help", "--help"}, description = "Help", help = true)
     private boolean help = false;
@@ -253,6 +301,10 @@ public class Configuration {
 
     public boolean isSync() {
         return useSync;
+    }
+
+    public boolean isAccountNameInGraphiteReporter() {
+        return accountNameInGraphiteReporter;
     }
 
     public Duration getMaxRunningTimeDuration() {
@@ -390,8 +442,51 @@ public class Configuration {
         return this.readWriteQueryPct;
     }
 
+    public boolean shouldManageDatabase() {
+        return this.manageDatabase;
+    }
+
+    public int getBulkloadBatchSize() {
+        return this.bulkloadBatchSize;
+    }
+
+    public String getTestScenario() {
+        return this.testScenario;
+    }
+
+    public Environment getEnvironment() {
+        return this.environment;
+    }
+
     public String toString() {
         return ToStringBuilder.reflectionToString(this, ToStringStyle.MULTI_LINE_STYLE);
+    }
+
+    public List<String> getPreferredRegionsList() {
+        List<String> preferredRegions = null;
+        if (StringUtils.isNotEmpty(preferredRegionsList)) {
+            String[] preferredArray = preferredRegionsList.split(",");
+            if (preferredArray != null && preferredArray.length > 0) {
+                preferredRegions = new ArrayList<>(Arrays.asList(preferredArray));
+            }
+        }
+        return preferredRegions;
+    }
+
+    public int getEncryptedStringFieldCount() {
+        return encryptedStringFieldCount;
+    }
+
+    public int getEncryptedLongFieldCount() {
+        return encryptedLongFieldCount;
+    }
+
+    public int getEncryptedDoubleFieldCount() {
+        return encryptedDoubleFieldCount;
+    }
+
+    public boolean isEncryptionEnabled() {
+        return encryptionEnabled;
     }
 
     public void tryGetValuesFromSystem() {
@@ -417,7 +512,7 @@ public class Configuration {
         consistencyLevel = consistencyLevelConverter.convert(StringUtils
                                                                      .defaultString(Strings.emptyToNull(System.getenv().get("CONSISTENCY_LEVEL")), consistencyLevel.name()));
 
-        OperationTypeConverter operationTypeConverter = new OperationTypeConverter();
+        Operation.OperationTypeConverter operationTypeConverter = new Operation.OperationTypeConverter();
         operation = operationTypeConverter.convert(
                 StringUtils.defaultString(Strings.emptyToNull(System.getenv().get("OPERATION")), operation.name()));
 
@@ -432,6 +527,25 @@ public class Configuration {
         String throughputValue = StringUtils.defaultString(
                 Strings.emptyToNull(System.getenv().get("THROUGHPUT")), Integer.toString(throughput));
         throughput = Integer.parseInt(throughputValue);
+
+        preferredRegionsList = StringUtils.defaultString(Strings.emptyToNull(System.getenv().get(
+            "PREFERRED_REGIONS_LIST")), preferredRegionsList);
+
+        encryptedStringFieldCount = Integer.parseInt(
+            StringUtils.defaultString(Strings.emptyToNull(System.getenv().get("ENCRYPTED_STRING_FIELD_COUNT")),
+                Integer.toString(encryptedStringFieldCount)));
+
+        encryptedLongFieldCount = Integer.parseInt(
+            StringUtils.defaultString(Strings.emptyToNull(System.getenv().get("ENCRYPTED_LONG_FIELD_COUNT")),
+                Integer.toString(encryptedLongFieldCount)));
+
+        encryptedDoubleFieldCount = Integer.parseInt(
+            StringUtils.defaultString(Strings.emptyToNull(System.getenv().get("ENCRYPTED_DOUBLE_FIELD_COUNT")),
+                Integer.toString(encryptedDoubleFieldCount)));
+
+        encryptionEnabled = Boolean.parseBoolean(StringUtils.defaultString(Strings.emptyToNull(System.getenv().get(
+            "ENCRYPTED_ENABLED")),
+            Boolean.toString(encryptionEnabled)));
     }
 
     private synchronized MeterRegistry azureMonitorMeterRegistry(String instrumentationKey) {

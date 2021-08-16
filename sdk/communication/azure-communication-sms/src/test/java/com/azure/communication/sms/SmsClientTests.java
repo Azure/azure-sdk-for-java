@@ -1,167 +1,190 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
+
 package com.azure.communication.sms;
 
-import com.azure.communication.common.PhoneNumberIdentifier;
-import com.azure.communication.common.implementation.HmacAuthenticationPolicy;
-import com.azure.communication.sms.models.SendSmsOptions;
-import com.azure.core.credential.AzureKeyCredential;
+import com.azure.communication.sms.models.SmsSendOptions;
+import com.azure.communication.sms.models.SmsSendResult;
+import com.azure.core.credential.TokenCredential;
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.HttpPipelineBuilder;
-import com.azure.core.http.HttpPipelineCallContext;
-import com.azure.core.http.HttpPipelineNextPolicy;
-import com.azure.core.http.HttpResponse;
-import com.azure.core.http.policy.HttpPipelinePolicy;
-import com.azure.core.http.policy.UserAgentPolicy;
+import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-
-import reactor.core.publisher.Mono;
+import com.azure.identity.DefaultAzureCredentialBuilder;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
+import java.util.Arrays;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assumptions.assumeTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 public class SmsClientTests extends SmsTestBase {
+    private SmsClient client;
 
-    private List<PhoneNumberIdentifier> to;
-    private PhoneNumberIdentifier from;
-    private String body;
-    private SendSmsOptions smsOptions;
-
-    @BeforeEach
-    public void beforeEach() {
-        to = new ArrayList<PhoneNumberIdentifier>();
-        body = "Hello";
-        from = new PhoneNumberIdentifier("+18443394604");
-        to.add(new PhoneNumberIdentifier("+18006427676"));
-        smsOptions = new SendSmsOptions();
-        smsOptions.setEnableDeliveryReport(true);
+    @Override
+    protected void beforeTest() {
+        super.beforeTest();
+        assumeTrue(shouldEnableSmsTests());
     }
 
-    @Test
-    public void sendSmsRequestWithHttpPipeline() {
-        smsOptions.setEnableDeliveryReport(true);
-
-        HttpClient httpClient = getHttpClient(from, to, body, smsOptions);
-        SmsClientBuilder builder = new SmsClientBuilder();
-        AzureKeyCredential credential = new AzureKeyCredential(ACCESSKEY);
-        HttpPipelinePolicy[] policies = new HttpPipelinePolicy[2];
-        policies[0] = new HmacAuthenticationPolicy(credential);
-        policies[1] = new UserAgentPolicy();
-
-        HttpPipeline pipeline = new HttpPipelineBuilder()
-            .policies(policies)
-            .httpClient(httpClient)
-            .build();
-
-        builder.endpoint(PROTOCOL + ENDPOINT);
-        builder.pipeline(pipeline);
-        builder.buildClient()
-            .sendMessage(from, to, body, smsOptions);
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void sendSmsUsingConnectionString(HttpClient httpClient) {
+        SmsClientBuilder builder = getSmsClientUsingConnectionString(httpClient);
+        client = setupSyncClient(builder, "sendSmsUsingConnectionStringSync");
+        SmsSendResult sendResult = client.send(FROM_PHONE_NUMBER, TO_PHONE_NUMBER, MESSAGE);
+        assertHappyPath(sendResult);
     }
 
-    @Test
-    public void sendSmsRequest() {
-        getTestSmsClient(from, to, body, smsOptions, null)
-            .sendMessage(from, to, body, smsOptions);
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void sendSmsUsingTokenCredential(HttpClient httpClient) {
+        TokenCredential tokenCredential = new DefaultAzureCredentialBuilder().build();
+        SmsClientBuilder  builder = getSmsClientWithToken(httpClient, tokenCredential);
+        client = setupSyncClient(builder, "sendSmsUsingTokenCredentialSync");
+        SmsSendResult sendResult = client.send(FROM_PHONE_NUMBER, TO_PHONE_NUMBER, MESSAGE);
+        assertHappyPath(sendResult);
     }
 
-    @Test
-    public void sendSmsMessageWithResponse() {
-        getTestSmsClient(from, to, body, smsOptions, null)
-            .sendMessageWithResponse(from, to, body, smsOptions, Context.NONE);
-    }
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void sendSmsToGroup(HttpClient httpClient) {
+        // Arrange
+        SmsClientBuilder builder = getSmsClientUsingConnectionString(httpClient);
+        client = setupSyncClient(builder, "sendSmsToGroupSync");
 
-    @Test
-    public void sendSmsMessageWithResponseNullContext() {
-        getTestSmsClient(from, to, body, smsOptions, null)
-            .sendMessageWithResponse(from, to, body, smsOptions, null);
-    }
-
-    @Test
-    public void sendSmsRequestAdditionalPolicy() {
-        HttpPipelinePolicy policy = new HttpPipelinePolicy() {
-            @Override
-            public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-                assertNotNull(next);
-                return next.process();
-            }
-        };
-
-        getTestSmsClient(from, to, body, smsOptions, policy)
-            .sendMessage(from, to, body, smsOptions);
-    }
-
-    @Test
-    public void sendSmsRequestNoDeliverReport() {
-        smsOptions.setEnableDeliveryReport(false);
-
-        getTestSmsClient(from, to, body, smsOptions, null)
-            .sendMessage(from, to, body);
-    }
-
-    @Test
-    public void sendSmsRequestSingleNumberNoDeliverReport() {
-        smsOptions.setEnableDeliveryReport(false);
-
-        getTestSmsClient(from, to, body, smsOptions, null)
-            .sendMessage(from, to.get(0), body);
-    }
-
-    @Test
-    public void sendSmsRequestNoDeliverReportExplicit() {
-        smsOptions.setEnableDeliveryReport(false);
-
-        getTestSmsClient(from, to, body, smsOptions, null)
-            .sendMessage(from, to, body, smsOptions);
-    }
-
-    @Test
-    public void sendSmsRequestComplicated() {
-        body = "今日は"; // "Hello" - Japanese
-
-        getTestSmsClient(from, to, body, smsOptions, null)
-            .sendMessage(from, to, body, smsOptions);
-    }
-
-    @Test
-    public void sendSmsRequestNullFrom() {
-        boolean threwException = false;
-
-        try {
-            getTestSmsClient(null, to, body, smsOptions, null)
-                .sendMessage(null, to, body, smsOptions);
-        } catch (NullPointerException e) {
-            threwException = true;
+        // Action & Assert
+        Iterable<SmsSendResult> sendResults = client.send(FROM_PHONE_NUMBER, Arrays.asList(TO_PHONE_NUMBER, TO_PHONE_NUMBER), MESSAGE);
+        for (SmsSendResult result : sendResults) {
+            assertHappyPath(result);
         }
-
-        assertTrue(threwException);
     }
 
-    @Test
-    public void sendSmsRequestNullTo() {
-        boolean threwException = false;
-        PhoneNumberIdentifier toNull = null;
-
-        try {
-            getTestSmsClient(from, to, body, smsOptions, null)
-                .sendMessage(from, toNull, body);
-        } catch (NullPointerException e) {
-            threwException = true;
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void sendSmsToGroupWithOptions(HttpClient httpClient) {
+        // Arrange
+        SmsClientBuilder builder = getSmsClientUsingConnectionString(httpClient);
+        client = setupSyncClient(builder, "sendSmsToGroupWithOptionsSync");
+        SmsSendOptions options = new SmsSendOptions();
+        options.setDeliveryReportEnabled(true);
+        options.setTag("New Tag");
+        // Action & Assert
+        Response<Iterable<SmsSendResult>> sendResults = client.sendWithResponse(FROM_PHONE_NUMBER, Arrays.asList(TO_PHONE_NUMBER, TO_PHONE_NUMBER), MESSAGE, options, Context.NONE);
+        for (SmsSendResult result : sendResults.getValue()) {
+            assertHappyPath(result);
         }
-
-        assertTrue(threwException);
     }
 
-    private SmsClient getTestSmsClient(PhoneNumberIdentifier from, List<PhoneNumberIdentifier> to, String body, SendSmsOptions smsOptions,
-            HttpPipelinePolicy policy) {
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void sendSmsToSingleNumber(HttpClient httpClient) {
+        // Arrange
+        SmsClientBuilder builder = getSmsClientUsingConnectionString(httpClient);
+        client = setupSyncClient(builder, "sendSmsToSingleNumberSync");
 
-        return getTestSmsClientBuilder(from, to, body, smsOptions, policy)
-            .buildClient();
+        // Action & Assert
+        SmsSendResult sendResult = client.send(FROM_PHONE_NUMBER, TO_PHONE_NUMBER, MESSAGE);
+        assertHappyPath(sendResult);
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void sendSmsToSingleNumberWithOptions(HttpClient httpClient) {
+        // Arrange
+        SmsClientBuilder builder = getSmsClientUsingConnectionString(httpClient);
+        client = setupSyncClient(builder, "sendSmsToSingleNumberWithOptionsSync");
+        SmsSendOptions options = new SmsSendOptions();
+        options.setDeliveryReportEnabled(true);
+        options.setTag("New Tag");
+
+        // Action & Assert
+        SmsSendResult sendResult = client.send(FROM_PHONE_NUMBER, TO_PHONE_NUMBER, MESSAGE, options);
+        assertHappyPath(sendResult);
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void sendFromFakeNumber(HttpClient httpClient) {
+        // Arrange
+        SmsClientBuilder builder = getSmsClientUsingConnectionString(httpClient);
+        client = setupSyncClient(builder, "sendFromFakeNumberSync");
+
+        // Action & Assert
+        try {
+            client.send("+15550000000", TO_PHONE_NUMBER, MESSAGE);
+        } catch (Exception exception) {
+            assertEquals(400, ((HttpResponseException) exception).getResponse().getStatusCode());
+        }
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void sendFromUnauthorizedNumber(HttpClient httpClient) {
+        // Arrange
+        SmsClientBuilder builder = getSmsClientUsingConnectionString(httpClient);
+        client = setupSyncClient(builder, "sendFromUnauthorizedNumberSync");
+
+        // Action & Assert
+        try {
+            SmsSendResult response = client.send("+18007342577", TO_PHONE_NUMBER, MESSAGE);
+        } catch (Exception exception) {
+            assertNotNull(((HttpResponseException) exception).getResponse().getStatusCode());
+            assertEquals(401, ((HttpResponseException) exception).getResponse().getStatusCode());
+        }
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void sendToFakePhoneNumber(HttpClient httpClient) {
+        // Arrange
+        SmsClientBuilder builder = getSmsClientUsingConnectionString(httpClient);
+        client = setupSyncClient(builder, "sendToFakePhoneNumberSync");
+
+        // Action & Assert
+        SmsSendResult sendResult = client.send(FROM_PHONE_NUMBER, "+15550000000", MESSAGE);
+        assertFalse(sendResult.isSuccessful());
+        assertEquals(sendResult.getHttpStatusCode(), 400);
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void sendTwoMessages(HttpClient httpClient) {
+        // Arrange
+        SmsClientBuilder builder = getSmsClientUsingConnectionString(httpClient);
+        client = setupSyncClient(builder, "sendTwoMessagesSync");
+
+        // Action & Assert
+        SmsSendResult firstResponse = client.send(FROM_PHONE_NUMBER, TO_PHONE_NUMBER, MESSAGE);
+        SmsSendResult secondResponse = client.send(FROM_PHONE_NUMBER, TO_PHONE_NUMBER, MESSAGE);
+        assertNotEquals(firstResponse.getMessageId(), secondResponse.getMessageId());
+        assertHappyPath(firstResponse);
+        assertHappyPath(secondResponse);
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void checkForRepeatabilityOptions(HttpClient httpClient) {
+        // Arrange
+        SmsClientBuilder builder = getSmsClientUsingConnectionString(httpClient);
+        client = setupSyncClient(builder, "checkForRepeatabilityOptions");
+        // Action & Assert
+        Response<Iterable<SmsSendResult>> response = client.sendWithResponse(FROM_PHONE_NUMBER, Arrays.asList(TO_PHONE_NUMBER, TO_PHONE_NUMBER), MESSAGE, null, Context.NONE);
+        String bodyRequest = new String(response.getRequest().getBody().blockLast().array());
+        assertTrue(bodyRequest.contains("repeatabilityRequestId"));
+        assertTrue(bodyRequest.contains("repeatabilityFirstSent"));
+    }
+
+    private SmsClient setupSyncClient(SmsClientBuilder builder, String testName) {
+        return addLoggingPolicy(builder, testName).buildClient();
+    }
+
+    private void assertHappyPath(SmsSendResult sendResult) {
+        assertTrue(sendResult.isSuccessful());
+        assertEquals(sendResult.getHttpStatusCode(), 202);
+        assertNotNull(sendResult.getMessageId());
     }
 }

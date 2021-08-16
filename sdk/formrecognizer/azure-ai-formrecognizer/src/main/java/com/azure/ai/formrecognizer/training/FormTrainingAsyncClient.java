@@ -241,7 +241,7 @@ public final class FormTrainingAsyncClient {
                 + " be null or empty"));
         }
         return service.getCustomModelWithResponseAsync(UUID.fromString(modelId), true, context)
-            .onErrorMap(Utility::mapToHttpResponseExceptionIfExist)
+            .onErrorMap(Utility::mapToHttpResponseExceptionIfExists)
             .map(response -> new SimpleResponse<>(response, toCustomFormModel(response.getValue())));
     }
 
@@ -277,7 +277,7 @@ public final class FormTrainingAsyncClient {
 
     Mono<Response<AccountProperties>> getAccountPropertiesWithResponse(Context context) {
         return service.getCustomModelsWithResponseAsync(context)
-            .onErrorMap(Utility::mapToHttpResponseExceptionIfExist)
+            .onErrorMap(Utility::mapToHttpResponseExceptionIfExists)
             .map(response -> new SimpleResponse<>(response,
                 new AccountProperties(response.getValue().getSummary().getCount(),
                     response.getValue().getSummary().getLimit())));
@@ -325,7 +325,7 @@ public final class FormTrainingAsyncClient {
                 + " be null or empty"));
         }
         return service.deleteCustomModelWithResponseAsync(UUID.fromString(modelId), context)
-            .onErrorMap(Utility::mapToHttpResponseExceptionIfExist)
+            .onErrorMap(Utility::mapToHttpResponseExceptionIfExists)
             .map(response -> new SimpleResponse<>(response, null));
     }
 
@@ -545,7 +545,7 @@ public final class FormTrainingAsyncClient {
                 .setModelName(creatComposeModelOptions.getModelName());
 
             return new PollerFlux<FormRecognizerOperationResult, CustomFormModel>(
-                creatComposeModelOptions.getPollInterval(),
+                DEFAULT_POLL_INTERVAL,
                 urlActivationOperation(() -> service.composeCustomModelsAsyncWithResponseAsync(composeRequest, context)
                     .map(response -> {
                         final String composeModelOperationId
@@ -566,7 +566,7 @@ public final class FormTrainingAsyncClient {
         Objects.requireNonNull(resourceId, "'resourceId' cannot be null");
         Objects.requireNonNull(resourceRegion, "'resourceRegion' cannot be null");
         return service.generateModelCopyAuthorizationWithResponseAsync(context)
-            .onErrorMap(Utility::mapToHttpResponseExceptionIfExist)
+            .onErrorMap(Utility::mapToHttpResponseExceptionIfExists)
             .map(response -> {
                 CopyAuthorizationResult copyAuthorizationResult = response.getValue();
                 return new SimpleResponse<>(response, new CopyAuthorization(copyAuthorizationResult.getModelId(),
@@ -580,7 +580,7 @@ public final class FormTrainingAsyncClient {
             .doOnRequest(ignoredValue -> logger.info("Listing information for all models"))
             .doOnSuccess(response -> logger.info("Listed all models"))
             .doOnError(error -> logger.warning("Failed to list all models information", error))
-            .onErrorMap(Utility::mapToHttpResponseExceptionIfExist)
+            .onErrorMap(Utility::mapToHttpResponseExceptionIfExists)
             .map(res -> new PagedResponseBase<>(
                 res.getRequest(),
                 res.getStatusCode(),
@@ -599,7 +599,7 @@ public final class FormTrainingAsyncClient {
             .doOnSuccess(response -> logger.info("Retrieved the next listing page - Page {}", nextPageLink))
             .doOnError(error -> logger.warning("Failed to retrieve the next listing page - Page {}", nextPageLink,
                 error))
-            .onErrorMap(Utility::mapToHttpResponseExceptionIfExist)
+            .onErrorMap(Utility::mapToHttpResponseExceptionIfExists)
             .map(res -> new PagedResponseBase<>(
                 res.getRequest(),
                 res.getStatusCode(),
@@ -626,7 +626,7 @@ public final class FormTrainingAsyncClient {
                             copyOperationResult.getCreatedDateTime(),
                             copyOperationResult.getLastUpdatedDateTime());
                     })
-                    .onErrorMap(Utility::mapToHttpResponseExceptionIfExist);
+                    .onErrorMap(Utility::mapToHttpResponseExceptionIfExists);
             } catch (RuntimeException ex) {
                 return monoError(logger, ex);
             }
@@ -643,7 +643,7 @@ public final class FormTrainingAsyncClient {
                 return service.getCustomModelCopyResultWithResponseAsync(UUID.fromString(modelId), targetId, context)
                     .flatMap(modelSimpleResponse ->
                         processCopyModelResponse(modelSimpleResponse, operationResultPollResponse))
-                    .onErrorMap(Utility::mapToHttpResponseExceptionIfExist);
+                    .onErrorMap(Utility::mapToHttpResponseExceptionIfExists);
             } catch (HttpResponseException ex) {
                 return monoError(logger, ex);
             }
@@ -668,7 +668,7 @@ public final class FormTrainingAsyncClient {
                     .map(response ->
                         new FormRecognizerOperationResult(
                             parseModelId(response.getDeserializedHeaders().getOperationLocation())))
-                    .onErrorMap(Utility::mapToHttpResponseExceptionIfExist);
+                    .onErrorMap(Utility::mapToHttpResponseExceptionIfExists);
             } catch (RuntimeException ex) {
                 return monoError(logger, ex);
             }
@@ -708,7 +708,7 @@ public final class FormTrainingAsyncClient {
                 final UUID modelUid = UUID.fromString(pollingContext.getLatestResponse().getValue().getResultId());
                 return service.getCustomModelWithResponseAsync(modelUid, true, context)
                     .map(modelSimpleResponse -> toCustomFormModel(modelSimpleResponse.getValue()))
-                    .onErrorMap(Utility::mapToHttpResponseExceptionIfExist);
+                    .onErrorMap(Utility::mapToHttpResponseExceptionIfExists);
             } catch (RuntimeException ex) {
                 return monoError(logger, ex);
             }
@@ -725,7 +725,7 @@ public final class FormTrainingAsyncClient {
                 return service.getCustomModelWithResponseAsync(modelUid, true, context)
                     .flatMap(modelSimpleResponse ->
                         processTrainingModelResponse(modelSimpleResponse, operationResultPollResponse))
-                    .onErrorMap(Utility::mapToHttpResponseExceptionIfExist);
+                    .onErrorMap(Utility::mapToHttpResponseExceptionIfExists);
             }  catch (HttpResponseException ex) {
                 return monoError(logger, ex);
             }
@@ -751,7 +751,7 @@ public final class FormTrainingAsyncClient {
                     .map(response ->
                         new FormRecognizerOperationResult(
                         parseModelId(response.getDeserializedHeaders().getLocation())))
-                    .onErrorMap(Utility::mapToHttpResponseExceptionIfExist);
+                    .onErrorMap(Utility::mapToHttpResponseExceptionIfExists);
             } catch (RuntimeException ex) {
                 return monoError(logger, ex);
             }

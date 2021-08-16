@@ -2,24 +2,32 @@
 trigger:
   branches:
     include:
-      - master
+      - main
       - feature/*
       - hotfix/*
       - release/*
   paths:
     include:
-      - sdk/labservices/
+      - sdk/labservices/ci.mgmt.yml
+      - sdk/labservices/mgmt-v2018_10_15/
+    exclude:
+      - sdk/labservices/pom.xml
+      - sdk/labservices/mgmt-v2018_10_15/pom.xml
 
 pr:
   branches:
     include:
-      - master
+      - main
       - feature/*
       - hotfix/*
       - release/*
   paths:
     include:
-      - sdk/labservices/
+      - sdk/labservices/ci.mgmt.yml
+      - sdk/labservices/mgmt-v2018_10_15/
+    exclude:
+      - sdk/labservices/pom.xml
+      - sdk/labservices/mgmt-v2018_10_15/pom.xml
 
 stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-management.yml

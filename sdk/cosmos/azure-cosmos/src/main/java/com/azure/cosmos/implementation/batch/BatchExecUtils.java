@@ -52,6 +52,27 @@ public final class BatchExecUtils {
         return null;
     }
 
+    public static int getResponseLength(Map<String, String> responseHeaders) {
+        int responseLength = 0;
+        if (responseHeaders != null) {
+
+            String contentLength = responseHeaders.get(HttpConstants.HttpHeaders.CONTENT_LENGTH);
+            if(contentLength == null || StringUtils.isEmpty(contentLength))
+            {
+                return 0;
+            }
+
+            try {
+                responseLength = Integer.parseInt(contentLength);
+            } catch(NumberFormatException ex) {
+                logger.warn("INVALID Content-Length value {}.", contentLength);
+                return 0;
+            }
+        }
+
+        return responseLength;
+    }
+
     public static double getRequestCharge(Map<String, String> responseHeaders) {
         if (responseHeaders == null) {
             return 0;

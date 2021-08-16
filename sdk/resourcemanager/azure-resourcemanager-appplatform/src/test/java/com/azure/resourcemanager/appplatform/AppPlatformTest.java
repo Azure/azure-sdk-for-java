@@ -96,6 +96,7 @@ public class AppPlatformTest extends ResourceManagerTestBase {
             try {
                 connection.connect();
                 if (connection.getResponseCode() == 200) {
+                    System.out.printf("Request to %s succeeded%n", url);
                     connection.getInputStream().close();
                     return true;
                 }

@@ -15,7 +15,7 @@ import com.azure.storage.blob.models.DeleteSnapshotsOptionType;
  * Code snippets for {@link BlobBatch}
  */
 public class BlobBatchJavaDocCodeSnippets {
-    private static final String ENDPOINT = Configuration.getGlobalConfiguration().get("AZURE_STORAGE_FILE_ENDPOINT");
+    private static final String ENDPOINT = Configuration.getGlobalConfiguration().get("PRIMARY_STORAGE_BLOB_ENDPOINT");
     private static final String SASTOKEN = Configuration.getGlobalConfiguration().get("SAS_TOKEN");
 
     private BlobBatch batch = new BlobBatchClientBuilder(new BlobServiceClientBuilder()

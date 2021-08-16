@@ -27,7 +27,8 @@ import java.util.Map;
     @JsonSubTypes.Type(name = "AzureBlobStorageWriteSettings", value = AzureBlobStorageWriteSettings.class),
     @JsonSubTypes.Type(name = "AzureBlobFSWriteSettings", value = AzureBlobFSWriteSettings.class),
     @JsonSubTypes.Type(name = "AzureDataLakeStoreWriteSettings", value = AzureDataLakeStoreWriteSettings.class),
-    @JsonSubTypes.Type(name = "FileServerWriteSettings", value = FileServerWriteSettings.class)
+    @JsonSubTypes.Type(name = "FileServerWriteSettings", value = FileServerWriteSettings.class),
+    @JsonSubTypes.Type(name = "AzureFileStorageWriteSettings", value = AzureFileStorageWriteSettings.class)
 })
 @Fluent
 public class StoreWriteSettings {

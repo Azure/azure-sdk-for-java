@@ -6,6 +6,7 @@ package com.azure.cosmos.implementation.batch;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosItemOperation;
 import com.azure.cosmos.CosmosItemOperationType;
+import com.azure.cosmos.CosmosPatchOperations;
 import com.azure.cosmos.implementation.JsonSerializable;
 import com.azure.cosmos.implementation.RequestOptions;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
@@ -20,10 +21,10 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
  *
  * @param <TInternal> The type of item.
  */
-public final class ItemBulkOperation<TInternal> implements CosmosItemOperation {
+public final class ItemBulkOperation<TInternal, TContext> implements CosmosItemOperation {
 
-    private TInternal item;
-
+    private final TInternal item;
+    private final TContext context;
     private final String id;
     private final PartitionKey partitionKey;
     private final CosmosItemOperationType operationType;
@@ -36,7 +37,8 @@ public final class ItemBulkOperation<TInternal> implements CosmosItemOperation {
         String id,
         PartitionKey partitionKey,
         RequestOptions requestOptions,
-        TInternal item) {
+        TInternal item,
+        TContext context) {
 
         checkNotNull(operationType, "expected non-null operationType");
 
@@ -44,6 +46,7 @@ public final class ItemBulkOperation<TInternal> implements CosmosItemOperation {
         this.partitionKey = partitionKey;
         this.id = id;
         this.item = item;
+        this.context = context;
         this.requestOptions = requestOptions;
     }
 
@@ -72,7 +75,7 @@ public final class ItemBulkOperation<TInternal> implements CosmosItemOperation {
         if (this.getItemInternal() != null) {
             if (this.getOperationType() == CosmosItemOperationType.PATCH) {
                 jsonSerializable.set(BatchRequestResponseConstants.FIELD_RESOURCE_BODY,
-                    PatchUtil.serializableBatchPatchOperation(this.getItemInternal()));
+                    PatchUtil.serializableBatchPatchOperation((CosmosPatchOperations)this.getItemInternal(), this.getRequestOptions()));
             } else {
                 jsonSerializable.set(BatchRequestResponseConstants.FIELD_RESOURCE_BODY, this.getItemInternal());
             }
@@ -109,6 +112,11 @@ public final class ItemBulkOperation<TInternal> implements CosmosItemOperation {
     @SuppressWarnings("unchecked")
     public <T> T getItem() {
         return (T)this.item;
+    }
+
+    @SuppressWarnings("unchecked")
+    public <T> T getContext() {
+        return (T)this.context;
     }
 
     public String getId() {

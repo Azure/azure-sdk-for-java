@@ -6,8 +6,6 @@ package com.azure.ai.formrecognizer;
 import com.azure.ai.formrecognizer.training.models.CopyAuthorization;
 import org.junit.jupiter.api.Test;
 
-import java.io.IOException;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -49,7 +47,7 @@ public class CopyAuthorizationSerializerTest {
      * Test for {@link CopyAuthorization#toJson()}.
      */
     @Test
-    public void toJson() throws IOException {
+    public void toJson() {
         CopyAuthorization copyAuthorization = new CopyAuthorization(MODEL_ID, ACCESS_TOKEN, RESOURCE_ID, REGION,
             EXPIRES_ON);
         String copyAuthorizationString = copyAuthorization.toJson();

@@ -39,7 +39,6 @@ public class RecognizeLinkedEntitiesBatchDocumentsAsync {
             new TextDocumentInput("B", "Mount Shasta has lenticular clouds.").setLanguage("en")
         );
 
-        // Request options: show statistics and model version
         TextAnalyticsRequestOptions requestOptions = new TextAnalyticsRequestOptions().setIncludeStatistics(true).setModelVersion("latest");
 
         // Recognizing linked entities for each document in a batch of documents

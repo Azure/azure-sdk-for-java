@@ -3,39 +3,55 @@
 trigger:
   branches:
     include:
-      - master
+      - main
       - hotfix/*
       - release/*
   paths:
     include:
       - sdk/keyvault/ci.data.yml
+      - sdk/keyvault/microsoft-azure-keyvault/
+      - sdk/keyvault/microsoft-azure-keyvault-complete/
+      - sdk/keyvault/microsoft-azure-keyvault-core/
+      - sdk/keyvault/microsoft-azure-keyvault-cryptography/
+      - sdk/keyvault/microsoft-azure-keyvault-extensions/
+      - sdk/keyvault/microsoft-azure-keyvault-test/
+      - sdk/keyvault/microsoft-azure-keyvault-webkey/
+    exclude:
       - sdk/keyvault/pom.xml
-      - sdk/keyvault/microsoft-azure-keyvault
-      - sdk/keyvault/microsoft-azure-keyvault-complete
-      - sdk/keyvault/microsoft-azure-keyvault-core
-      - sdk/keyvault/microsoft-azure-keyvault-cryptography
-      - sdk/keyvault/microsoft-azure-keyvault-extensions
-      - sdk/keyvault/microsoft-azure-keyvault-test
-      - sdk/keyvault/microsoft-azure-keyvault-webkey
+      - sdk/keyvault/microsoft-azure-keyvault/pom.xml
+      - sdk/keyvault/microsoft-azure-keyvault-complete/pom.xml
+      - sdk/keyvault/microsoft-azure-keyvault-core/pom.xml
+      - sdk/keyvault/microsoft-azure-keyvault-cryptography/pom.xml
+      - sdk/keyvault/microsoft-azure-keyvault-extensions/pom.xml
+      - sdk/keyvault/microsoft-azure-keyvault-test/pom.xml
+      - sdk/keyvault/microsoft-azure-keyvault-webkey/pom.xml
 
 pr:
   branches:
     include:
-      - master
+      - main
       - feature/*
       - hotfix/*
       - release/*
   paths:
     include:
       - sdk/keyvault/ci.data.yml
+      - sdk/keyvault/microsoft-azure-keyvault/
+      - sdk/keyvault/microsoft-azure-keyvault-complete/
+      - sdk/keyvault/microsoft-azure-keyvault-core/
+      - sdk/keyvault/microsoft-azure-keyvault-cryptography/
+      - sdk/keyvault/microsoft-azure-keyvault-extensions/
+      - sdk/keyvault/microsoft-azure-keyvault-test/
+      - sdk/keyvault/microsoft-azure-keyvault-webkey/
+    exclude:
       - sdk/keyvault/pom.xml
-      - sdk/keyvault/microsoft-azure-keyvault
-      - sdk/keyvault/microsoft-azure-keyvault-complete
-      - sdk/keyvault/microsoft-azure-keyvault-core
-      - sdk/keyvault/microsoft-azure-keyvault-cryptography
-      - sdk/keyvault/microsoft-azure-keyvault-extensions
-      - sdk/keyvault/microsoft-azure-keyvault-test
-      - sdk/keyvault/microsoft-azure-keyvault-webkey
+      - sdk/keyvault/microsoft-azure-keyvault/pom.xml
+      - sdk/keyvault/microsoft-azure-keyvault-complete/pom.xml
+      - sdk/keyvault/microsoft-azure-keyvault-core/pom.xml
+      - sdk/keyvault/microsoft-azure-keyvault-cryptography/pom.xml
+      - sdk/keyvault/microsoft-azure-keyvault-extensions/pom.xml
+      - sdk/keyvault/microsoft-azure-keyvault-test/pom.xml
+      - sdk/keyvault/microsoft-azure-keyvault-webkey/pom.xml
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml

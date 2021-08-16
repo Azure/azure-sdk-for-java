@@ -5,13 +5,14 @@ package com.azure.ai.metricsadvisor;
 
 import com.azure.ai.metricsadvisor.models.DimensionKey;
 import com.azure.ai.metricsadvisor.models.MetricEnrichedSeriesData;
-import com.azure.ai.metricsadvisor.models.MetricsAdvisorServiceVersion;
 import com.azure.core.http.HttpClient;
 import org.junit.jupiter.api.Assertions;
 
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.azure.ai.metricsadvisor.AnomalyAlertTestBase.DETECTION_CONFIGURATION_ID;
 
 public abstract class MetricEnrichedSeriesDataTestBase extends MetricsAdvisorClientTestBase {
     public abstract void getEnrichedSeriesData(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion);
@@ -22,7 +23,7 @@ public abstract class MetricEnrichedSeriesDataTestBase extends MetricsAdvisorCli
         final DimensionKey seriesKey = new DimensionKey()
             .put("city", "Miami")
             .put("category", "Health & Personal Care");
-        final String detectionConfigurationId = "e17f32d4-3ddf-4dc7-84ee-b4130c7e1777";
+        final String detectionConfigurationId = DETECTION_CONFIGURATION_ID;
         final OffsetDateTime startTime = OffsetDateTime.parse("2020-09-22T00:00:00Z");
         final OffsetDateTime endTime = OffsetDateTime.parse("2020-10-22T00:00:00Z");
 

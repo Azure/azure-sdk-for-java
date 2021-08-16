@@ -1,0 +1,39 @@
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+
+trigger:
+  branches:
+    include:
+      - main
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/mariadb/ci.yml
+      - sdk/mariadb/azure-resourcemanager-mariadb/
+    exclude:
+      - sdk/mariadb/pom.xml
+      - sdk/mariadb/azure-resourcemanager-mariadb/pom.xml
+
+pr:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/mariadb/ci.yml
+      - sdk/mariadb/azure-resourcemanager-mariadb/
+    exclude:
+      - sdk/mariadb/pom.xml
+      - sdk/mariadb/azure-resourcemanager-mariadb/pom.xml
+
+extends:
+  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: mariadb
+    Artifacts:
+      - name: azure-resourcemanager-mariadb
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagermariadb

@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.benchmark.linkedin.impl.keyextractor;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.google.common.base.Preconditions;
 import java.util.Objects;
@@ -43,8 +44,8 @@ public interface KeyExtractor<K> {
      * @return the document's id
      */
     default String getId(@Nonnull final ObjectNode document) {
-        return Preconditions.checkNotNull(getField(document, ID),
-            "The document must have the id defined");
+        return getField(document, ID)
+            .orElseThrow(() -> new IllegalArgumentException("The document must have the id defined"));
     }
 
     /**
@@ -54,22 +55,20 @@ public interface KeyExtractor<K> {
      * @return the document's partitioningKey
      */
     default String getPartitioningKey(@Nonnull final ObjectNode document) {
-        return Preconditions.checkNotNull(
-            getField(document, PARTITION_KEY),
-            "partitioningKey not present in the document %s", getField(document, ID));
+        return getField(document, PARTITION_KEY)
+            .orElseThrow(() -> new IllegalArgumentException(String.format("partitioningKey not present in the document %s",
+                getField(document, ID))));
     }
 
+
     /**
-     *
      * @param document ObjectNode modeling the document in CosmosDB
      * @param fieldName the fieldName to retrieve from the ObjectNode
      * @return String representation of the field value if found, else Null
      */
-    @Nullable
-    default String getField(@Nonnull final ObjectNode document, @Nonnull final String fieldName) {
+    default Optional<String> getField(@Nonnull final ObjectNode document, @Nonnull final String fieldName) {
         return Optional.ofNullable(document.get(fieldName))
-            .map(Object::toString)
-            .orElse(null);
+            .map(JsonNode::asText);
     }
 
     /**

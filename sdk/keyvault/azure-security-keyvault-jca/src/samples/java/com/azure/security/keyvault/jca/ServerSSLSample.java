@@ -13,26 +13,21 @@ import java.security.Security;
  * The ServerSSL sample.
  */
 public class ServerSSLSample {
-    public void serverSSLSample() throws Exception {
+
+    public static void main(String[] args) throws Exception {
         KeyVaultJcaProvider provider = new KeyVaultJcaProvider();
         Security.addProvider(provider);
 
-        KeyStore ks = KeyStore.getInstance("AzureKeyVault");
-        KeyVaultLoadStoreParameter parameter = new KeyVaultLoadStoreParameter(
-            System.getProperty("azure.keyvault.uri"),
-            System.getProperty("azure.keyvault.aad-authentication-url"),
-            System.getProperty("azure.keyvault.tenant-id"),
-            System.getProperty("azure.keyvault.client-id"),
-            System.getProperty("azure.keyvault.client-secret"));
-        ks.load(parameter);
+        KeyStore keyStore = KeyVaultKeyStore.getKeyVaultKeyStoreBySystemProperty();
 
-        KeyManagerFactory kmf = KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm());
-        kmf.init(ks, "".toCharArray());
+        KeyManagerFactory managerFactory = KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm());
+        managerFactory.init(keyStore, "".toCharArray());
 
         SSLContext context = SSLContext.getInstance("TLS");
-        context.init(kmf.getKeyManagers(), null, null);
+        context.init(managerFactory.getKeyManagers(), null, null);
 
-        SSLServerSocketFactory factory = context.getServerSocketFactory();
-        SSLServerSocket serverSocket = (SSLServerSocket) factory.createServerSocket(8765);
+        SSLServerSocketFactory socketFactory = context.getServerSocketFactory();
+        SSLServerSocket serverSocket = (SSLServerSocket) socketFactory.createServerSocket(8765);
     }
+
 }

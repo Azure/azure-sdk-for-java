@@ -2,16 +2,16 @@
 // Licensed under the MIT License.
 package com.azure.spring.data.cosmos.repository.integration;
 
+import com.azure.spring.data.cosmos.IntegrationTestCollectionManager;
 import com.azure.spring.data.cosmos.core.CosmosTemplate;
 import com.azure.spring.data.cosmos.core.query.CosmosPageRequest;
 import com.azure.spring.data.cosmos.domain.Address;
 import com.azure.spring.data.cosmos.domain.PageablePerson;
 import com.azure.spring.data.cosmos.repository.TestRepositoryConfig;
 import com.azure.spring.data.cosmos.repository.repository.PageablePersonRepository;
-import com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation;
 import org.apache.commons.lang3.StringUtils;
-import org.junit.AfterClass;
 import org.junit.Before;
+import org.junit.ClassRule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,10 +35,8 @@ public class PageablePersonRepositoryIT {
     private static final int TOTAL_CONTENT_SIZE = 25;
     public static final int ONE_KB = 1024;
 
-    private static final CosmosEntityInformation<PageablePerson, String> entityInformation =
-        new CosmosEntityInformation<>(PageablePerson.class);
-
-    private static CosmosTemplate staticTemplate;
+    @ClassRule
+    public static final IntegrationTestCollectionManager collectionManager = new IntegrationTestCollectionManager();
 
     @Autowired
     private CosmosTemplate template;
@@ -52,12 +50,12 @@ public class PageablePersonRepositoryIT {
 
     @Before
     public void setUp() {
+        collectionManager.ensureContainersCreated(template, PageablePerson.class);
+
         if (isSetupDone) {
             return;
         }
         personSet = new HashSet<>();
-        template.createContainerIfNotExists(entityInformation);
-        staticTemplate = template;
 
         //  Create larger documents with size more than 10 kb
         for (int i = 0; i < TOTAL_CONTENT_SIZE; i++) {
@@ -75,11 +73,6 @@ public class PageablePersonRepositoryIT {
             personSet.add(person);
         }
         isSetupDone = true;
-    }
-
-    @AfterClass
-    public static void afterClassCleanup() {
-        staticTemplate.deleteContainer(entityInformation.getContainerName());
     }
 
     //  Cosmos DB can return any number of documents less than or equal to requested page size

@@ -16,6 +16,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import reactor.core.publisher.Mono;
+import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
 
 /** Implementation for SQL Server DNS alias operations. */
 public class SqlServerDnsAliasOperationsImpl extends SqlChildrenOperationsImpl<SqlServerDnsAlias>
@@ -117,12 +118,11 @@ public class SqlServerDnsAliasOperationsImpl extends SqlChildrenOperationsImpl<S
     public PagedFlux<SqlServerDnsAlias> listBySqlServerAsync(
         final String resourceGroupName, final String sqlServerName) {
         final SqlServerDnsAliasOperationsImpl self = this;
-        return this
+        return PagedConverter.mapPage(this
             .sqlServerManager
             .serviceClient()
             .getServerDnsAliases()
-            .listByServerAsync(resourceGroupName, sqlServerName)
-            .mapPage(
+            .listByServerAsync(resourceGroupName, sqlServerName),
                 serverDnsAliasInner ->
                     new SqlServerDnsAliasImpl(
                         resourceGroupName,
@@ -150,12 +150,11 @@ public class SqlServerDnsAliasOperationsImpl extends SqlChildrenOperationsImpl<S
 
     @Override
     public PagedFlux<SqlServerDnsAlias> listBySqlServerAsync(final SqlServer sqlServer) {
-        return sqlServer
+        return PagedConverter.mapPage(sqlServer
             .manager()
             .serviceClient()
             .getServerDnsAliases()
-            .listByServerAsync(sqlServer.resourceGroupName(), sqlServer.name())
-            .mapPage(
+            .listByServerAsync(sqlServer.resourceGroupName(), sqlServer.name()),
                 serverDnsAliasInner ->
                     new SqlServerDnsAliasImpl(
                         serverDnsAliasInner.name(),

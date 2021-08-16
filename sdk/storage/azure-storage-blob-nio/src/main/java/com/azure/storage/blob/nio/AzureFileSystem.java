@@ -3,6 +3,7 @@
 
 package com.azure.storage.blob.nio;
 
+import com.azure.core.credential.AzureSasCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpPipelinePolicy;
@@ -10,6 +11,7 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobServiceClient;
 import com.azure.storage.blob.BlobServiceClientBuilder;
+import com.azure.storage.blob.implementation.util.BlobUserAgentModificationPolicy;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.policy.RequestRetryOptions;
 import com.azure.storage.common.policy.RetryPolicyType;
@@ -25,7 +27,6 @@ import java.nio.file.attribute.BasicFileAttributeView;
 import java.nio.file.attribute.FileAttributeView;
 import java.nio.file.attribute.UserPrincipalLookupService;
 import java.nio.file.spi.FileSystemProvider;
-
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -59,12 +60,12 @@ public final class AzureFileSystem extends FileSystem {
     /**
      * Expected type: String
      */
-    public static final String AZURE_STORAGE_ACCOUNT_KEY = "AzureStorageAccountKey";
+    public static final String AZURE_STORAGE_SHARED_KEY_CREDENTIAL = "AzureStorageSharedKeyCredential";
 
     /**
      * Expected type: String
      */
-    public static final String AZURE_STORAGE_SAS_TOKEN = "AzureStorageSasToken";
+    public static final String AZURE_STORAGE_SAS_TOKEN_CREDENTIAL = "AzureStorageSasTokenCredential";
 
     /**
      * Expected type: com.azure.core.http.policy.HttpLogLevelDetail
@@ -121,11 +122,6 @@ public final class AzureFileSystem extends FileSystem {
      */
     public static final String AZURE_STORAGE_DOWNLOAD_RESUME_RETRIES = "AzureStorageDownloadResumeRetries";
 
-    /**
-     * Expected type: Boolean
-     */
-    public static final String AZURE_STORAGE_USE_HTTPS = "AzureStorageUseHttps";
-
     static final String AZURE_STORAGE_HTTP_CLIENT = "AzureStorageHttpClient"; // undocumented; for test.
     static final String AZURE_STORAGE_HTTP_POLICIES = "AzureStorageHttpPolicies"; // undocumented; for test.
 
@@ -136,7 +132,12 @@ public final class AzureFileSystem extends FileSystem {
 
     static final String PATH_SEPARATOR = "/";
 
-    private static final String AZURE_STORAGE_BLOB_ENDPOINT_TEMPLATE = "%s://%s.blob.core.windows.net";
+    private static final Map<String, String> PROPERTIES =
+        CoreUtils.getProperties("azure-storage-blob-nio.properties");
+    private static final String SDK_NAME = "name";
+    private static final String SDK_VERSION = "version";
+    private static final String CLIENT_NAME = PROPERTIES.getOrDefault(SDK_NAME, "UnknownName");
+    private static final String CLIENT_VERSION = PROPERTIES.getOrDefault(SDK_VERSION, "UnknownVersion");
 
     static final Map<Class<? extends FileAttributeView>, String> SUPPORTED_ATTRIBUTE_VIEWS;
     static {
@@ -157,7 +158,7 @@ public final class AzureFileSystem extends FileSystem {
     private FileStore defaultFileStore;
     private boolean closed;
 
-    AzureFileSystem(AzureFileSystemProvider parentFileSystemProvider, String accountName, Map<String, ?> config)
+    AzureFileSystem(AzureFileSystemProvider parentFileSystemProvider, String endpoint, Map<String, ?> config)
             throws IOException {
         // A FileSystem should only ever be instantiated by a provider.
         if (Objects.isNull(parentFileSystemProvider)) {
@@ -168,7 +169,7 @@ public final class AzureFileSystem extends FileSystem {
 
         // Read configurations and build client.
         try {
-            this.blobServiceClient = this.buildBlobServiceClient(accountName, config);
+            this.blobServiceClient = this.buildBlobServiceClient(endpoint, config);
             this.blockSize = (Long) config.get(AZURE_STORAGE_UPLOAD_BLOCK_SIZE);
             this.putBlobThreshold = (Long) config.get(AZURE_STORAGE_PUT_BLOB_THRESHOLD);
             this.maxConcurrencyPerRequest = (Integer) config.get(AZURE_STORAGE_MAX_CONCURRENCY_PER_REQUEST);
@@ -215,7 +216,7 @@ public final class AzureFileSystem extends FileSystem {
     @Override
     public void close() throws IOException {
         this.closed = true;
-        this.parentFileSystemProvider.closeFileSystem(this.getFileSystemName());
+        this.parentFileSystemProvider.closeFileSystem(this.getFileSystemUrl());
     }
 
     /**
@@ -374,32 +375,27 @@ public final class AzureFileSystem extends FileSystem {
         throw LoggingUtility.logError(logger, new UnsupportedOperationException());
     }
 
-    String getFileSystemName() {
-        return this.blobServiceClient.getAccountName();
+    String getFileSystemUrl() {
+        return this.blobServiceClient.getAccountUrl();
     }
 
     BlobServiceClient getBlobServiceClient() {
         return this.blobServiceClient;
     }
 
-    private BlobServiceClient buildBlobServiceClient(String accountName, Map<String, ?> config) {
-        // Build the endpoint.
-        String scheme = !config.containsKey(AZURE_STORAGE_USE_HTTPS)
-                || (Boolean) config.get(AZURE_STORAGE_USE_HTTPS)
-                ? "https" : "http";
+    private BlobServiceClient buildBlobServiceClient(String endpoint, Map<String, ?> config) {
         BlobServiceClientBuilder builder = new BlobServiceClientBuilder()
-                .endpoint(String.format(AZURE_STORAGE_BLOB_ENDPOINT_TEMPLATE, scheme, accountName));
+                .endpoint(endpoint);
 
         // Set the credentials.
-        if (config.containsKey(AZURE_STORAGE_ACCOUNT_KEY)) {
-            builder.credential(new StorageSharedKeyCredential(accountName,
-                    (String) config.get(AZURE_STORAGE_ACCOUNT_KEY)));
-        } else if (config.containsKey(AZURE_STORAGE_SAS_TOKEN)) {
-            builder.sasToken((String) config.get(AZURE_STORAGE_SAS_TOKEN));
+        if (config.containsKey(AZURE_STORAGE_SHARED_KEY_CREDENTIAL)) {
+            builder.credential((StorageSharedKeyCredential) config.get(AZURE_STORAGE_SHARED_KEY_CREDENTIAL));
+        } else if (config.containsKey(AZURE_STORAGE_SAS_TOKEN_CREDENTIAL)) {
+            builder.credential((AzureSasCredential) config.get(AZURE_STORAGE_SAS_TOKEN_CREDENTIAL));
         } else {
             throw LoggingUtility.logError(logger, new IllegalArgumentException(String.format("No credentials were "
                     + "provided. Please specify one of the following when constructing an AzureFileSystem: %s, %s.",
-                AZURE_STORAGE_ACCOUNT_KEY, AZURE_STORAGE_SAS_TOKEN)));
+                AZURE_STORAGE_SHARED_KEY_CREDENTIAL, AZURE_STORAGE_SAS_TOKEN_CREDENTIAL)));
         }
 
         // Configure options and client.
@@ -416,6 +412,10 @@ public final class AzureFileSystem extends FileSystem {
         builder.retryOptions(retryOptions);
 
         builder.httpClient((HttpClient) config.get(AZURE_STORAGE_HTTP_CLIENT));
+
+        // Add BlobUserAgentModificationPolicy
+        builder.addPolicy(new BlobUserAgentModificationPolicy(CLIENT_NAME, CLIENT_VERSION));
+
         if (config.containsKey(AZURE_STORAGE_HTTP_POLICIES)) {
             for (HttpPipelinePolicy policy : (HttpPipelinePolicy[]) config.get(AZURE_STORAGE_HTTP_POLICIES)) {
                 builder.addPolicy(policy);
@@ -452,12 +452,12 @@ public final class AzureFileSystem extends FileSystem {
             return false;
         }
         AzureFileSystem that = (AzureFileSystem) o;
-        return Objects.equals(this.getFileSystemName(), that.getFileSystemName());
+        return Objects.equals(this.getFileSystemUrl(), that.getFileSystemUrl());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(this.getFileSystemName());
+        return Objects.hash(this.getFileSystemUrl());
     }
 
     Path getDefaultDirectory() {

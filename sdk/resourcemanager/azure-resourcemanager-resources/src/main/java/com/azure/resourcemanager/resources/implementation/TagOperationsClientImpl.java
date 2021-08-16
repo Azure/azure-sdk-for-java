@@ -8,6 +8,7 @@ import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
+import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
@@ -66,7 +67,7 @@ public final class TagOperationsClientImpl implements TagOperationsClient {
     @Host("{$host}")
     @ServiceInterface(name = "ResourceManagementCl")
     private interface TagOperationsService {
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Delete("/subscriptions/{subscriptionId}/tagNames/{tagName}/tagValues/{tagValue}")
         @ExpectedResponses({200, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -76,9 +77,10 @@ public final class TagOperationsClientImpl implements TagOperationsClient {
             @PathParam("tagValue") String tagValue,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Put("/subscriptions/{subscriptionId}/tagNames/{tagName}/tagValues/{tagValue}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -88,9 +90,10 @@ public final class TagOperationsClientImpl implements TagOperationsClient {
             @PathParam("tagValue") String tagValue,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Put("/subscriptions/{subscriptionId}/tagNames/{tagName}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -99,9 +102,10 @@ public final class TagOperationsClientImpl implements TagOperationsClient {
             @PathParam("tagName") String tagName,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Delete("/subscriptions/{subscriptionId}/tagNames/{tagName}")
         @ExpectedResponses({200, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -110,9 +114,10 @@ public final class TagOperationsClientImpl implements TagOperationsClient {
             @PathParam("tagName") String tagName,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/tagNames")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -120,9 +125,10 @@ public final class TagOperationsClientImpl implements TagOperationsClient {
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Put("/{scope}/providers/Microsoft.Resources/tags/default")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -131,9 +137,10 @@ public final class TagOperationsClientImpl implements TagOperationsClient {
             @PathParam(value = "scope", encoded = true) String scope,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") TagsResourceInner parameters,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Patch("/{scope}/providers/Microsoft.Resources/tags/default")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -142,9 +149,10 @@ public final class TagOperationsClientImpl implements TagOperationsClient {
             @PathParam(value = "scope", encoded = true) String scope,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") TagsPatchResource parameters,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get("/{scope}/providers/Microsoft.Resources/tags/default")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -152,9 +160,10 @@ public final class TagOperationsClientImpl implements TagOperationsClient {
             @HostParam("$host") String endpoint,
             @PathParam(value = "scope", encoded = true) String scope,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Delete("/{scope}/providers/Microsoft.Resources/tags/default")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -162,14 +171,18 @@ public final class TagOperationsClientImpl implements TagOperationsClient {
             @HostParam("$host") String endpoint,
             @PathParam(value = "scope", encoded = true) String scope,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<TagsListResult>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept,
+            Context context);
     }
 
     /**
@@ -203,6 +216,7 @@ public final class TagOperationsClientImpl implements TagOperationsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -213,8 +227,9 @@ public final class TagOperationsClientImpl implements TagOperationsClient {
                             tagValue,
                             this.client.getApiVersion(),
                             this.client.getSubscriptionId(),
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -249,6 +264,7 @@ public final class TagOperationsClientImpl implements TagOperationsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .deleteValue(
@@ -257,6 +273,7 @@ public final class TagOperationsClientImpl implements TagOperationsClient {
                 tagValue,
                 this.client.getApiVersion(),
                 this.client.getSubscriptionId(),
+                accept,
                 context);
     }
 
@@ -339,6 +356,7 @@ public final class TagOperationsClientImpl implements TagOperationsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -349,8 +367,9 @@ public final class TagOperationsClientImpl implements TagOperationsClient {
                             tagValue,
                             this.client.getApiVersion(),
                             this.client.getSubscriptionId(),
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -386,6 +405,7 @@ public final class TagOperationsClientImpl implements TagOperationsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .createOrUpdateValue(
@@ -394,6 +414,7 @@ public final class TagOperationsClientImpl implements TagOperationsClient {
                 tagValue,
                 this.client.getApiVersion(),
                 this.client.getSubscriptionId(),
+                accept,
                 context);
     }
 
@@ -482,6 +503,7 @@ public final class TagOperationsClientImpl implements TagOperationsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -491,8 +513,9 @@ public final class TagOperationsClientImpl implements TagOperationsClient {
                             tagName,
                             this.client.getApiVersion(),
                             this.client.getSubscriptionId(),
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -524,6 +547,7 @@ public final class TagOperationsClientImpl implements TagOperationsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .createOrUpdate(
@@ -531,6 +555,7 @@ public final class TagOperationsClientImpl implements TagOperationsClient {
                 tagName,
                 this.client.getApiVersion(),
                 this.client.getSubscriptionId(),
+                accept,
                 context);
     }
 
@@ -619,6 +644,7 @@ public final class TagOperationsClientImpl implements TagOperationsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -628,8 +654,9 @@ public final class TagOperationsClientImpl implements TagOperationsClient {
                             tagName,
                             this.client.getApiVersion(),
                             this.client.getSubscriptionId(),
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -661,6 +688,7 @@ public final class TagOperationsClientImpl implements TagOperationsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .delete(
@@ -668,6 +696,7 @@ public final class TagOperationsClientImpl implements TagOperationsClient {
                 tagName,
                 this.client.getApiVersion(),
                 this.client.getSubscriptionId(),
+                accept,
                 context);
     }
 
@@ -742,6 +771,7 @@ public final class TagOperationsClientImpl implements TagOperationsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -750,6 +780,7 @@ public final class TagOperationsClientImpl implements TagOperationsClient {
                             this.client.getEndpoint(),
                             this.client.getApiVersion(),
                             this.client.getSubscriptionId(),
+                            accept,
                             context))
             .<PagedResponse<TagDetailsInner>>map(
                 res ->
@@ -760,7 +791,7 @@ public final class TagOperationsClientImpl implements TagOperationsClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -788,9 +819,15 @@ public final class TagOperationsClientImpl implements TagOperationsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(), context)
+            .list(
+                this.client.getEndpoint(),
+                this.client.getApiVersion(),
+                this.client.getSubscriptionId(),
+                accept,
+                context)
             .map(
                 res ->
                     new PagedResponseBase<>(
@@ -868,7 +905,7 @@ public final class TagOperationsClientImpl implements TagOperationsClient {
      * specified entity can have a maximum of 50 tags.
      *
      * @param scope The resource scope.
-     * @param properties A dictionary of name and value pairs.
+     * @param properties The set of tags.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -890,6 +927,7 @@ public final class TagOperationsClientImpl implements TagOperationsClient {
         } else {
             properties.validate();
         }
+        final String accept = "application/json";
         TagsResourceInner parameters = new TagsResourceInner();
         parameters.withProperties(properties);
         return FluxUtil
@@ -897,8 +935,8 @@ public final class TagOperationsClientImpl implements TagOperationsClient {
                 context ->
                     service
                         .createOrUpdateAtScope(
-                            this.client.getEndpoint(), scope, this.client.getApiVersion(), parameters, context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+                            this.client.getEndpoint(), scope, this.client.getApiVersion(), parameters, accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -906,7 +944,7 @@ public final class TagOperationsClientImpl implements TagOperationsClient {
      * specified entity can have a maximum of 50 tags.
      *
      * @param scope The resource scope.
-     * @param properties A dictionary of name and value pairs.
+     * @param properties The set of tags.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -930,11 +968,13 @@ public final class TagOperationsClientImpl implements TagOperationsClient {
         } else {
             properties.validate();
         }
+        final String accept = "application/json";
         TagsResourceInner parameters = new TagsResourceInner();
         parameters.withProperties(properties);
         context = this.client.mergeContext(context);
         return service
-            .createOrUpdateAtScope(this.client.getEndpoint(), scope, this.client.getApiVersion(), parameters, context);
+            .createOrUpdateAtScope(
+                this.client.getEndpoint(), scope, this.client.getApiVersion(), parameters, accept, context);
     }
 
     /**
@@ -942,7 +982,7 @@ public final class TagOperationsClientImpl implements TagOperationsClient {
      * specified entity can have a maximum of 50 tags.
      *
      * @param scope The resource scope.
-     * @param properties A dictionary of name and value pairs.
+     * @param properties The set of tags.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -966,7 +1006,7 @@ public final class TagOperationsClientImpl implements TagOperationsClient {
      * specified entity can have a maximum of 50 tags.
      *
      * @param scope The resource scope.
-     * @param properties A dictionary of name and value pairs.
+     * @param properties The set of tags.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -982,7 +1022,7 @@ public final class TagOperationsClientImpl implements TagOperationsClient {
      * specified entity can have a maximum of 50 tags.
      *
      * @param scope The resource scope.
-     * @param properties A dictionary of name and value pairs.
+     * @param properties The set of tags.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1026,13 +1066,14 @@ public final class TagOperationsClientImpl implements TagOperationsClient {
         } else {
             parameters.validate();
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
                     service
                         .updateAtScope(
-                            this.client.getEndpoint(), scope, this.client.getApiVersion(), parameters, context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+                            this.client.getEndpoint(), scope, this.client.getApiVersion(), parameters, accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1067,9 +1108,10 @@ public final class TagOperationsClientImpl implements TagOperationsClient {
         } else {
             parameters.validate();
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .updateAtScope(this.client.getEndpoint(), scope, this.client.getApiVersion(), parameters, context);
+            .updateAtScope(this.client.getEndpoint(), scope, this.client.getApiVersion(), parameters, accept, context);
     }
 
     /**
@@ -1159,10 +1201,12 @@ public final class TagOperationsClientImpl implements TagOperationsClient {
         if (scope == null) {
             return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context -> service.getAtScope(this.client.getEndpoint(), scope, this.client.getApiVersion(), context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+                context ->
+                    service.getAtScope(this.client.getEndpoint(), scope, this.client.getApiVersion(), accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1186,8 +1230,9 @@ public final class TagOperationsClientImpl implements TagOperationsClient {
         if (scope == null) {
             return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.getAtScope(this.client.getEndpoint(), scope, this.client.getApiVersion(), context);
+        return service.getAtScope(this.client.getEndpoint(), scope, this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -1261,11 +1306,13 @@ public final class TagOperationsClientImpl implements TagOperationsClient {
         if (scope == null) {
             return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
-                    service.deleteAtScope(this.client.getEndpoint(), scope, this.client.getApiVersion(), context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+                    service
+                        .deleteAtScope(this.client.getEndpoint(), scope, this.client.getApiVersion(), accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1289,8 +1336,9 @@ public final class TagOperationsClientImpl implements TagOperationsClient {
         if (scope == null) {
             return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.deleteAtScope(this.client.getEndpoint(), scope, this.client.getApiVersion(), context);
+        return service.deleteAtScope(this.client.getEndpoint(), scope, this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -1349,8 +1397,15 @@ public final class TagOperationsClientImpl implements TagOperationsClient {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listNext(nextLink, context))
+            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
             .<PagedResponse<TagDetailsInner>>map(
                 res ->
                     new PagedResponseBase<>(
@@ -1360,7 +1415,7 @@ public final class TagOperationsClientImpl implements TagOperationsClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1378,9 +1433,16 @@ public final class TagOperationsClientImpl implements TagOperationsClient {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listNext(nextLink, context)
+            .listNext(nextLink, this.client.getEndpoint(), accept, context)
             .map(
                 res ->
                     new PagedResponseBase<>(

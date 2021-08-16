@@ -5,15 +5,19 @@ package com.azure.cosmos;
 import com.azure.core.util.Context;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.Offer;
 import com.azure.cosmos.implementation.Paths;
 import com.azure.cosmos.implementation.TracerProvider;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.models.CosmosClientEncryptionKeyProperties;
+import com.azure.cosmos.models.CosmosClientEncryptionKeyResponse;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosContainerRequestOptions;
 import com.azure.cosmos.models.CosmosContainerResponse;
 import com.azure.cosmos.models.CosmosDatabaseRequestOptions;
 import com.azure.cosmos.models.CosmosDatabaseResponse;
+import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.CosmosUserProperties;
 import com.azure.cosmos.models.CosmosUserResponse;
@@ -22,6 +26,7 @@ import com.azure.cosmos.models.SqlParameter;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.models.ThroughputProperties;
 import com.azure.cosmos.models.ThroughputResponse;
+import com.azure.cosmos.util.Beta;
 import com.azure.cosmos.util.CosmosPagedFlux;
 import com.azure.cosmos.util.UtilBridgeInternal;
 import reactor.core.Exceptions;
@@ -29,6 +34,7 @@ import reactor.core.publisher.Mono;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 import static com.azure.core.util.FluxUtil.withContext;
 import static com.azure.cosmos.implementation.Utils.setContinuationTokenAndMaxItemCount;
@@ -533,6 +539,21 @@ public class CosmosAsyncDatabase {
     }
 
     /**
+     * Creates a client encryption key after subscription the operation will be performed. The
+     * {@link Mono} upon successful completion will contain a single resource
+     * response with the created client encryption key. In case of failure the {@link Mono} will
+     * error.
+     *
+     * @param keyProperties the cosmos client encryption key properties
+     * @return an {@link Mono} containing the single resource response with the
+     * created cosmos client encryption key or an error.
+     */
+    @Beta(value = Beta.SinceVersion.V4_14_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public Mono<CosmosClientEncryptionKeyResponse> createClientEncryptionKey(CosmosClientEncryptionKeyProperties keyProperties) {
+        return withContext(context -> createClientEncryptionKeyInternal(keyProperties, context));
+    }
+
+    /**
      * Upsert a user. Upsert will create a new user if it doesn't exist, or replace
      * the existing one if it does. After subscription the operation will be
      * performed. The {@link Mono} upon successful completion will contain a single
@@ -582,6 +603,149 @@ public class CosmosAsyncDatabase {
                 .map(response -> BridgeInternal.createFeedResponse(
                     ModelBridgeInternal.getCosmosUserPropertiesFromV2Results(response.getResults()), response
                         .getResponseHeaders()));
+        });
+    }
+
+    /**
+     * Gets a CosmosAsyncClientEncryptionKey object without making a service call
+     *
+     * @param id id of the clientEncryptionKey
+     * @return Cosmos ClientEncryptionKey
+     */
+    @Beta(value = Beta.SinceVersion.V4_14_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public CosmosAsyncClientEncryptionKey getClientEncryptionKey(String id) {
+        return new CosmosAsyncClientEncryptionKey(id, this);
+    }
+
+    /**
+     * Reads all cosmos client encryption keys in a database.
+     * <p>
+     * After subscription the operation will be performed. The {@link CosmosPagedFlux} will
+     * contain one or several feed response of the read cosmos client encryption keys. In case of
+     * failure the {@link CosmosPagedFlux} will error.
+     *
+     * @return a {@link CosmosPagedFlux} containing one or several feed response pages of the
+     * read cosmos client encryption keys or an error.
+     */
+    @Beta(value = Beta.SinceVersion.V4_14_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public CosmosPagedFlux<CosmosClientEncryptionKeyProperties> readAllClientEncryptionKeys() {
+        return readAllClientEncryptionKeys(new CosmosQueryRequestOptions());
+    }
+
+    /**
+     * Reads all cosmos client encryption keys in a database.
+     * <p>
+     * After subscription the operation will be performed. The {@link CosmosPagedFlux} will
+     * contain one or several feed response of the read cosmos client encryption keys. In case of
+     * failure the {@link CosmosPagedFlux} will error.
+     *
+     * @param options the query request options.
+     * @return a {@link CosmosPagedFlux} containing one or several feed response pages of the
+     * read cosmos client encryption keys or an error.
+     */
+    @Beta(value = Beta.SinceVersion.V4_14_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public CosmosPagedFlux<CosmosClientEncryptionKeyProperties> readAllClientEncryptionKeys(CosmosQueryRequestOptions options) {
+        return UtilBridgeInternal.createCosmosPagedFlux(pagedFluxOptions -> {
+            String spanName = "readAllClientEncryptionKeys." + this.getId();
+            pagedFluxOptions.setTracerInformation(this.getClient().getTracerProvider(), spanName,
+                this.getClient().getServiceEndpoint(), getId());
+            setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
+            return getDocClientWrapper().readClientEncryptionKeys(getLink(), options)
+                .map(response -> BridgeInternal.createFeedResponse(
+                    ModelBridgeInternal.getClientEncryptionKeyPropertiesList(response.getResults()), response
+                        .getResponseHeaders()));
+        });
+    }
+
+    /**
+     * Query for cosmos client encryption keys in a database.
+     * <p>
+     * After subscription the operation will be performed. The {@link CosmosPagedFlux} will
+     * contain one or several feed response of the obtained client encryption keys. In case of
+     * failure the {@link CosmosPagedFlux} will error.
+     *
+     * @param query query as string.
+     * @return a {@link CosmosPagedFlux} containing one or several feed response pages of the
+     * obtained client encryption keys or an error.
+     */
+    @Beta(value = Beta.SinceVersion.V4_14_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public CosmosPagedFlux<CosmosClientEncryptionKeyProperties> queryClientEncryptionKeys(String query) {
+        return queryClientEncryptionKeys(query, new CosmosQueryRequestOptions());
+    }
+
+    /**
+     * Query for cosmos client encryption keys in a database.
+     * <p>
+     * After subscription the operation will be performed. The {@link CosmosPagedFlux} will
+     * contain one or several feed response of the obtained client encryption keys. In case of
+     * failure the {@link CosmosPagedFlux} will error.
+     *
+     * @param query query as string.
+     * @param options the query request options.
+     * @return a {@link CosmosPagedFlux} containing one or several feed response pages of the
+     * obtained client encryption keys or an error.
+     */
+    @Beta(value = Beta.SinceVersion.V4_14_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public CosmosPagedFlux<CosmosClientEncryptionKeyProperties> queryClientEncryptionKeys(String query, CosmosQueryRequestOptions options) {
+        if (options == null) {
+            options = new CosmosQueryRequestOptions();
+        }
+
+        return queryClientEncryptionKeysInternal(new SqlQuerySpec(query), options);
+    }
+
+    /**
+     * Query for cosmos client encryption keys in a database.
+     * <p>
+     * After subscription the operation will be performed. The {@link CosmosPagedFlux} will
+     * contain one or several feed response of the obtained client encryption keys. In case of
+     * failure the {@link CosmosPagedFlux} will error.
+     *
+     * @param querySpec the SQL query specification.
+     * @return a {@link CosmosPagedFlux} containing one or several feed response pages of the
+     * obtained client encryption keys or an error.
+     */
+    @Beta(value = Beta.SinceVersion.V4_14_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public CosmosPagedFlux<CosmosClientEncryptionKeyProperties> queryClientEncryptionKeys(SqlQuerySpec querySpec) {
+        return queryClientEncryptionKeysInternal(querySpec, new CosmosQueryRequestOptions());
+    }
+
+    /**
+     * Query for cosmos client encryption keys in a database.
+     * <p>
+     * After subscription the operation will be performed. The {@link CosmosPagedFlux} will
+     * contain one or several feed response of the obtained client encryption keys. In case of
+     * failure the {@link CosmosPagedFlux} will error.
+     *
+     * @param querySpec the SQL query specification.
+     * @param options the query request options.
+     * @return a {@link CosmosPagedFlux} containing one or several feed response pages of the
+     * obtained client encryption keys or an error.
+     */
+    @Beta(value = Beta.SinceVersion.V4_14_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public CosmosPagedFlux<CosmosClientEncryptionKeyProperties> queryClientEncryptionKeys(SqlQuerySpec querySpec, CosmosQueryRequestOptions options) {
+        if (options == null) {
+            options = new CosmosQueryRequestOptions();
+        }
+
+        return queryClientEncryptionKeysInternal(querySpec, options);
+    }
+
+    private CosmosPagedFlux<CosmosClientEncryptionKeyProperties> queryClientEncryptionKeysInternal(SqlQuerySpec querySpec, CosmosQueryRequestOptions options) {
+        return UtilBridgeInternal.createCosmosPagedFlux(pagedFluxOptions -> {
+            String spanName = "queryClientEncryptionKeys." + this.getId();
+            pagedFluxOptions.setTracerInformation(this.getClient().getTracerProvider(), spanName,
+                this.getClient().getServiceEndpoint(), getId());
+            setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
+            return getDocClientWrapper().queryClientEncryptionKeys(getLink(), querySpec, options)
+                .map(response -> BridgeInternal.createFeedResponseWithQueryMetrics(
+                    ModelBridgeInternal.getClientEncryptionKeyPropertiesList(response.getResults()),
+                    response.getResponseHeaders(),
+                    ModelBridgeInternal.queryMetrics(response),
+                    ModelBridgeInternal.getQueryPlanDiagnosticsContext(response),
+                    false,
+                    false,
+                    response.getCosmosDiagnostics()));
         });
     }
 
@@ -741,7 +905,8 @@ public class CosmosAsyncDatabase {
                     ModelBridgeInternal.queryMetrics(response),
                     ModelBridgeInternal.getQueryPlanDiagnosticsContext(response),
                     false,
-                    false));
+                    false,
+                    response.getCosmosDiagnostics()));
         });
     }
 
@@ -826,6 +991,18 @@ public class CosmosAsyncDatabase {
             spanName, getId(), getClient().getServiceEndpoint());
     }
 
+    private Mono<CosmosClientEncryptionKeyResponse> createClientEncryptionKeyInternal(CosmosClientEncryptionKeyProperties keyProperties, Context context) {
+        String spanName = "createClientEncryptionKey." + this.getId();
+        Mono<CosmosClientEncryptionKeyResponse> responseMono =
+            getDocClientWrapper().createClientEncryptionKey(this.getLink(),
+                ModelBridgeInternal.getClientEncryptionKey(keyProperties), null)
+            .map(response -> ModelBridgeInternal.createCosmosClientEncryptionKeyResponse(response)).single();
+        return this.client.getTracerProvider().traceEnabledCosmosResponsePublisher(responseMono, context,
+            spanName,
+            getId(),
+            getClient().getServiceEndpoint());
+    }
+
     private Mono<ThroughputResponse> replaceThroughputInternal(ThroughputProperties throughputProperties, Context context){
         String spanName = "replaceThroughput." + this.getId();
         Context nestedContext = context.addData(TracerProvider.COSMOS_CALL_DEPTH, TracerProvider.COSMOS_CALL_DEPTH_VAL);
@@ -896,5 +1073,20 @@ public class CosmosAsyncDatabase {
                         .single();
                 })
                 .map(ModelBridgeInternal::createThroughputRespose));
+    }
+
+    ///////////////////////////////////////////////////////////////////////////////////////////
+    // the following helper/accessor only helps to access this class outside of this package.//
+    ///////////////////////////////////////////////////////////////////////////////////////////
+
+    static {
+        ImplementationBridgeHelpers.CosmosAsyncDatabaseHelper.setCosmosAsyncDatabaseAccessor(
+            new ImplementationBridgeHelpers.CosmosAsyncDatabaseHelper.CosmosAsyncDatabaseAccessor() {
+
+                @Override
+                public CosmosAsyncClient getCosmosAsyncClient(CosmosAsyncDatabase cosmosAsyncDatabase) {
+                    return cosmosAsyncDatabase.getClient();
+                }
+            });
     }
 }

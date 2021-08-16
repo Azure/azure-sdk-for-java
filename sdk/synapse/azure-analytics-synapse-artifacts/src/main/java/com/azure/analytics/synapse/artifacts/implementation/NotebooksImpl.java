@@ -63,13 +63,19 @@ public final class NotebooksImpl {
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudErrorException.class)
         Mono<Response<NotebookListResponse>> getNotebooksByWorkspace(
-                @HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion, Context context);
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
+                Context context);
 
-        @Get("/notebooks/summary")
+        @Get("/notebooksSummary")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudErrorException.class)
         Mono<Response<NotebookListResponse>> getNotebookSummaryByWorkSpace(
-                @HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion, Context context);
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
+                Context context);
 
         @Put("/notebooks/{notebookName}")
         @ExpectedResponses({200, 202})
@@ -80,6 +86,7 @@ public final class NotebooksImpl {
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("If-Match") String ifMatch,
                 @BodyParam("application/json") NotebookResource notebook,
+                @HeaderParam("Accept") String accept,
                 Context context);
 
         @Get("/notebooks/{notebookName}")
@@ -90,6 +97,7 @@ public final class NotebooksImpl {
                 @PathParam("notebookName") String notebookName,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("If-None-Match") String ifNoneMatch,
+                @HeaderParam("Accept") String accept,
                 Context context);
 
         @Delete("/notebooks/{notebookName}")
@@ -99,6 +107,7 @@ public final class NotebooksImpl {
                 @HostParam("endpoint") String endpoint,
                 @PathParam("notebookName") String notebookName,
                 @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
                 Context context);
 
         @Post("/notebooks/{notebookName}/rename")
@@ -109,6 +118,7 @@ public final class NotebooksImpl {
                 @PathParam("notebookName") String notebookName,
                 @QueryParam("api-version") String apiVersion,
                 @BodyParam("application/json") ArtifactRenameRequest request,
+                @HeaderParam("Accept") String accept,
                 Context context);
 
         @Get("{nextLink}")
@@ -117,6 +127,7 @@ public final class NotebooksImpl {
         Mono<Response<NotebookListResponse>> getNotebooksByWorkspaceNext(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
                 @HostParam("endpoint") String endpoint,
+                @HeaderParam("Accept") String accept,
                 Context context);
 
         @Get("{nextLink}")
@@ -125,6 +136,7 @@ public final class NotebooksImpl {
         Mono<Response<NotebookListResponse>> getNotebookSummaryByWorkSpaceNext(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
                 @HostParam("endpoint") String endpoint,
+                @HeaderParam("Accept") String accept,
                 Context context);
     }
 
@@ -137,10 +149,11 @@ public final class NotebooksImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<NotebookResource>> getNotebooksByWorkspaceSinglePageAsync() {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                         context ->
                                 service.getNotebooksByWorkspace(
-                                        this.client.getEndpoint(), this.client.getApiVersion(), context))
+                                        this.client.getEndpoint(), this.client.getApiVersion(), accept, context))
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -163,7 +176,8 @@ public final class NotebooksImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<NotebookResource>> getNotebooksByWorkspaceSinglePageAsync(Context context) {
-        return service.getNotebooksByWorkspace(this.client.getEndpoint(), this.client.getApiVersion(), context)
+        final String accept = "application/json";
+        return service.getNotebooksByWorkspace(this.client.getEndpoint(), this.client.getApiVersion(), accept, context)
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -240,10 +254,11 @@ public final class NotebooksImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<NotebookResource>> getNotebookSummaryByWorkSpaceSinglePageAsync() {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                         context ->
                                 service.getNotebookSummaryByWorkSpace(
-                                        this.client.getEndpoint(), this.client.getApiVersion(), context))
+                                        this.client.getEndpoint(), this.client.getApiVersion(), accept, context))
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -266,7 +281,9 @@ public final class NotebooksImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<NotebookResource>> getNotebookSummaryByWorkSpaceSinglePageAsync(Context context) {
-        return service.getNotebookSummaryByWorkSpace(this.client.getEndpoint(), this.client.getApiVersion(), context)
+        final String accept = "application/json";
+        return service.getNotebookSummaryByWorkSpace(
+                        this.client.getEndpoint(), this.client.getApiVersion(), accept, context)
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -349,6 +366,7 @@ public final class NotebooksImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<NotebookResource>> createOrUpdateNotebookWithResponseAsync(
             String notebookName, NotebookResource notebook, String ifMatch) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.createOrUpdateNotebook(
@@ -357,6 +375,7 @@ public final class NotebooksImpl {
                                 this.client.getApiVersion(),
                                 ifMatch,
                                 notebook,
+                                accept,
                                 context));
     }
 
@@ -376,8 +395,15 @@ public final class NotebooksImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<NotebookResource>> createOrUpdateNotebookWithResponseAsync(
             String notebookName, NotebookResource notebook, String ifMatch, Context context) {
+        final String accept = "application/json";
         return service.createOrUpdateNotebook(
-                this.client.getEndpoint(), notebookName, this.client.getApiVersion(), ifMatch, notebook, context);
+                this.client.getEndpoint(),
+                notebookName,
+                this.client.getApiVersion(),
+                ifMatch,
+                notebook,
+                accept,
+                context);
     }
 
     /**
@@ -522,6 +548,7 @@ public final class NotebooksImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<NotebookResource>> getNotebookWithResponseAsync(String notebookName, String ifNoneMatch) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.getNotebook(
@@ -529,6 +556,7 @@ public final class NotebooksImpl {
                                 notebookName,
                                 this.client.getApiVersion(),
                                 ifNoneMatch,
+                                accept,
                                 context));
     }
 
@@ -547,8 +575,9 @@ public final class NotebooksImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<NotebookResource>> getNotebookWithResponseAsync(
             String notebookName, String ifNoneMatch, Context context) {
+        final String accept = "application/json";
         return service.getNotebook(
-                this.client.getEndpoint(), notebookName, this.client.getApiVersion(), ifNoneMatch, context);
+                this.client.getEndpoint(), notebookName, this.client.getApiVersion(), ifNoneMatch, accept, context);
     }
 
     /**
@@ -683,10 +712,11 @@ public final class NotebooksImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteNotebookWithResponseAsync(String notebookName) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.deleteNotebook(
-                                this.client.getEndpoint(), notebookName, this.client.getApiVersion(), context));
+                                this.client.getEndpoint(), notebookName, this.client.getApiVersion(), accept, context));
     }
 
     /**
@@ -701,7 +731,9 @@ public final class NotebooksImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteNotebookWithResponseAsync(String notebookName, Context context) {
-        return service.deleteNotebook(this.client.getEndpoint(), notebookName, this.client.getApiVersion(), context);
+        final String accept = "application/json";
+        return service.deleteNotebook(
+                this.client.getEndpoint(), notebookName, this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -773,6 +805,7 @@ public final class NotebooksImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> renameNotebookWithResponseAsync(String notebookName, ArtifactRenameRequest request) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.renameNotebook(
@@ -780,6 +813,7 @@ public final class NotebooksImpl {
                                 notebookName,
                                 this.client.getApiVersion(),
                                 request,
+                                accept,
                                 context));
     }
 
@@ -797,8 +831,9 @@ public final class NotebooksImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> renameNotebookWithResponseAsync(
             String notebookName, ArtifactRenameRequest request, Context context) {
+        final String accept = "application/json";
         return service.renameNotebook(
-                this.client.getEndpoint(), notebookName, this.client.getApiVersion(), request, context);
+                this.client.getEndpoint(), notebookName, this.client.getApiVersion(), request, accept, context);
     }
 
     /**
@@ -875,8 +910,11 @@ public final class NotebooksImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<NotebookResource>> getNotebooksByWorkspaceNextSinglePageAsync(String nextLink) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
-                        context -> service.getNotebooksByWorkspaceNext(nextLink, this.client.getEndpoint(), context))
+                        context ->
+                                service.getNotebooksByWorkspaceNext(
+                                        nextLink, this.client.getEndpoint(), accept, context))
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -901,7 +939,8 @@ public final class NotebooksImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<NotebookResource>> getNotebooksByWorkspaceNextSinglePageAsync(
             String nextLink, Context context) {
-        return service.getNotebooksByWorkspaceNext(nextLink, this.client.getEndpoint(), context)
+        final String accept = "application/json";
+        return service.getNotebooksByWorkspaceNext(nextLink, this.client.getEndpoint(), accept, context)
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -924,9 +963,11 @@ public final class NotebooksImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<NotebookResource>> getNotebookSummaryByWorkSpaceNextSinglePageAsync(String nextLink) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                         context ->
-                                service.getNotebookSummaryByWorkSpaceNext(nextLink, this.client.getEndpoint(), context))
+                                service.getNotebookSummaryByWorkSpaceNext(
+                                        nextLink, this.client.getEndpoint(), accept, context))
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -951,7 +992,8 @@ public final class NotebooksImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<NotebookResource>> getNotebookSummaryByWorkSpaceNextSinglePageAsync(
             String nextLink, Context context) {
-        return service.getNotebookSummaryByWorkSpaceNext(nextLink, this.client.getEndpoint(), context)
+        final String accept = "application/json";
+        return service.getNotebookSummaryByWorkSpaceNext(nextLink, this.client.getEndpoint(), accept, context)
                 .map(
                         res ->
                                 new PagedResponseBase<>(

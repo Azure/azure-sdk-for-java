@@ -5,7 +5,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.azure</groupId>
-  <artifactId>azure-opentelemetry-exporter-azuremonitor-service</artifactId>
+  <artifactId>azure-monitor-opentelemetry-exporter-service</artifactId>
   <packaging>pom</packaging>
   <version>1.0.0</version><!-- Need not change for every release-->
 
@@ -13,14 +13,20 @@
     <profile>
       <id>coverage</id>
       <modules>
-        <module>azure-opentelemetry-exporter-azuremonitor</module>
+        <module>azure-monitor-opentelemetry-exporter</module>
+        <module>azure-monitor-query</module>
       </modules>
 
       <dependencies>
         <dependency>
           <groupId>com.azure</groupId>
-          <artifactId>azure-opentelemetry-exporter-azuremonitor</artifactId>
-          <version>1.0.0-beta.3</version> <!-- {x-version-update;com.azure:azure-opentelemetry-exporter-azuremonitor;current} -->
+          <artifactId>azure-monitor-opentelemetry-exporter</artifactId>
+          <version>1.0.0-beta.5</version> <!-- {x-version-update;com.azure:azure-monitor-opentelemetry-exporter;current} -->
+        </dependency>
+        <dependency>
+          <groupId>com.azure</groupId>
+          <artifactId>azure-monitor-query</artifactId>
+          <version>1.0.0-beta.4</version> <!-- {x-version-update;com.azure:azure-monitor-query;current} -->
         </dependency>
       </dependencies>
 
@@ -52,7 +58,9 @@
         <activeByDefault>true</activeByDefault>
       </activation>
       <modules>
-        <module>azure-opentelemetry-exporter-azuremonitor</module>
+        <module>azure-monitor-opentelemetry-exporter</module>
+        <module>azure-monitor-query</module>
+        <module>azure-monitor-query-perf</module>
       </modules>
     </profile>
   </profiles>

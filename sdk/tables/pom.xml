@@ -20,7 +20,7 @@
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-data-tables</artifactId>
-          <version>12.0.0-beta.4</version> <!-- {x-version-update;com.azure:azure-data-tables;current} -->
+          <version>12.2.0-beta.1</version> <!-- {x-version-update;com.azure:azure-data-tables;current} -->
         </dependency>
       </dependencies>
 
@@ -53,6 +53,7 @@
       </activation>
       <modules>
         <module>azure-data-tables</module>
+        <module>azure-data-tables-perf</module>
       </modules>
     </profile>
   </profiles>

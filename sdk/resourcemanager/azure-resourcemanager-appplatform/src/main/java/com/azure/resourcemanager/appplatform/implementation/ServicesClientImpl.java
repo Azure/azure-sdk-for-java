@@ -8,6 +8,7 @@ import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
+import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
@@ -79,7 +80,7 @@ public final class ServicesClientImpl
     @Host("{$host}")
     @ServiceInterface(name = "AppPlatformManagemen")
     private interface ServicesService {
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring"
                 + "/{serviceName}")
@@ -91,9 +92,10 @@ public final class ServicesClientImpl
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("serviceName") String serviceName,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Put(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring"
                 + "/{serviceName}")
@@ -106,9 +108,10 @@ public final class ServicesClientImpl
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("serviceName") String serviceName,
             @BodyParam("application/json") ServiceResourceInner resource,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Delete(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring"
                 + "/{serviceName}")
@@ -120,9 +123,10 @@ public final class ServicesClientImpl
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("serviceName") String serviceName,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Patch(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring"
                 + "/{serviceName}")
@@ -135,9 +139,10 @@ public final class ServicesClientImpl
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("serviceName") String serviceName,
             @BodyParam("application/json") ServiceResourceInner resource,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Post(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring"
                 + "/{serviceName}/listTestKeys")
@@ -149,9 +154,10 @@ public final class ServicesClientImpl
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("serviceName") String serviceName,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Post(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring"
                 + "/{serviceName}/regenerateTestKey")
@@ -164,9 +170,10 @@ public final class ServicesClientImpl
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("serviceName") String serviceName,
             @BodyParam("application/json") RegenerateTestKeyRequestPayload regenerateTestKeyRequest,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Post(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring"
                 + "/{serviceName}/disableTestEndpoint")
@@ -178,9 +185,10 @@ public final class ServicesClientImpl
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("serviceName") String serviceName,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Post(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring"
                 + "/{serviceName}/enableTestEndpoint")
@@ -192,9 +200,10 @@ public final class ServicesClientImpl
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("serviceName") String serviceName,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Post(
             "/subscriptions/{subscriptionId}/providers/Microsoft.AppPlatform/locations/{location}"
                 + "/checkNameAvailability")
@@ -206,9 +215,10 @@ public final class ServicesClientImpl
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("location") String location,
             @BodyParam("application/json") NameAvailabilityParameters availabilityParameters,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.AppPlatform/Spring")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -216,9 +226,10 @@ public final class ServicesClientImpl
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring")
         @ExpectedResponses({200})
@@ -228,21 +239,28 @@ public final class ServicesClientImpl
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ServiceResourceList>> listBySubscriptionNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ServiceResourceList>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept,
+            Context context);
     }
 
     /**
@@ -278,6 +296,7 @@ public final class ServicesClientImpl
         if (serviceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter serviceName is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -288,6 +307,7 @@ public final class ServicesClientImpl
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             serviceName,
+                            accept,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
@@ -326,6 +346,7 @@ public final class ServicesClientImpl
         if (serviceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter serviceName is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .getByResourceGroup(
@@ -334,6 +355,7 @@ public final class ServicesClientImpl
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 serviceName,
+                accept,
                 context);
     }
 
@@ -401,7 +423,7 @@ public final class ServicesClientImpl
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
-     * @param resource Service resource.
+     * @param resource Parameters for the create or update operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -434,6 +456,7 @@ public final class ServicesClientImpl
         } else {
             resource.validate();
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -445,6 +468,7 @@ public final class ServicesClientImpl
                             resourceGroupName,
                             serviceName,
                             resource,
+                            accept,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
@@ -455,7 +479,7 @@ public final class ServicesClientImpl
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
-     * @param resource Service resource.
+     * @param resource Parameters for the create or update operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -489,6 +513,7 @@ public final class ServicesClientImpl
         } else {
             resource.validate();
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .createOrUpdate(
@@ -498,6 +523,7 @@ public final class ServicesClientImpl
                 resourceGroupName,
                 serviceName,
                 resource,
+                accept,
                 context);
     }
 
@@ -507,7 +533,7 @@ public final class ServicesClientImpl
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
-     * @param resource Service resource.
+     * @param resource Parameters for the create or update operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -534,7 +560,7 @@ public final class ServicesClientImpl
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
-     * @param resource Service resource.
+     * @param resource Parameters for the create or update operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -559,7 +585,7 @@ public final class ServicesClientImpl
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
-     * @param resource Service resource.
+     * @param resource Parameters for the create or update operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -577,7 +603,7 @@ public final class ServicesClientImpl
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
-     * @param resource Service resource.
+     * @param resource Parameters for the create or update operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -596,7 +622,7 @@ public final class ServicesClientImpl
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
-     * @param resource Service resource.
+     * @param resource Parameters for the create or update operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -616,7 +642,7 @@ public final class ServicesClientImpl
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
-     * @param resource Service resource.
+     * @param resource Parameters for the create or update operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -637,7 +663,7 @@ public final class ServicesClientImpl
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
-     * @param resource Service resource.
+     * @param resource Parameters for the create or update operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -655,7 +681,7 @@ public final class ServicesClientImpl
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
-     * @param resource Service resource.
+     * @param resource Parameters for the create or update operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -700,6 +726,7 @@ public final class ServicesClientImpl
         if (serviceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter serviceName is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -710,6 +737,7 @@ public final class ServicesClientImpl
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             serviceName,
+                            accept,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
@@ -748,6 +776,7 @@ public final class ServicesClientImpl
         if (serviceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter serviceName is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .delete(
@@ -756,6 +785,7 @@ public final class ServicesClientImpl
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 serviceName,
+                accept,
                 context);
     }
 
@@ -906,7 +936,7 @@ public final class ServicesClientImpl
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
-     * @param resource Service resource.
+     * @param resource Parameters for the update operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -939,6 +969,7 @@ public final class ServicesClientImpl
         } else {
             resource.validate();
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -950,6 +981,7 @@ public final class ServicesClientImpl
                             resourceGroupName,
                             serviceName,
                             resource,
+                            accept,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
@@ -960,7 +992,7 @@ public final class ServicesClientImpl
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
-     * @param resource Service resource.
+     * @param resource Parameters for the update operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -994,6 +1026,7 @@ public final class ServicesClientImpl
         } else {
             resource.validate();
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .update(
@@ -1003,6 +1036,7 @@ public final class ServicesClientImpl
                 resourceGroupName,
                 serviceName,
                 resource,
+                accept,
                 context);
     }
 
@@ -1012,7 +1046,7 @@ public final class ServicesClientImpl
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
-     * @param resource Service resource.
+     * @param resource Parameters for the update operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1038,7 +1072,7 @@ public final class ServicesClientImpl
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
-     * @param resource Service resource.
+     * @param resource Parameters for the update operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1063,7 +1097,7 @@ public final class ServicesClientImpl
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
-     * @param resource Service resource.
+     * @param resource Parameters for the update operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1081,7 +1115,7 @@ public final class ServicesClientImpl
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
-     * @param resource Service resource.
+     * @param resource Parameters for the update operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1100,7 +1134,7 @@ public final class ServicesClientImpl
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
-     * @param resource Service resource.
+     * @param resource Parameters for the update operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1120,7 +1154,7 @@ public final class ServicesClientImpl
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
-     * @param resource Service resource.
+     * @param resource Parameters for the update operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1141,7 +1175,7 @@ public final class ServicesClientImpl
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
-     * @param resource Service resource.
+     * @param resource Parameters for the update operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1158,7 +1192,7 @@ public final class ServicesClientImpl
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
-     * @param resource Service resource.
+     * @param resource Parameters for the update operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1203,6 +1237,7 @@ public final class ServicesClientImpl
         if (serviceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter serviceName is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -1213,6 +1248,7 @@ public final class ServicesClientImpl
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             serviceName,
+                            accept,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
@@ -1251,6 +1287,7 @@ public final class ServicesClientImpl
         if (serviceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter serviceName is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listTestKeys(
@@ -1259,6 +1296,7 @@ public final class ServicesClientImpl
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 serviceName,
+                accept,
                 context);
     }
 
@@ -1356,6 +1394,7 @@ public final class ServicesClientImpl
         if (keyType == null) {
             return Mono.error(new IllegalArgumentException("Parameter keyType is required and cannot be null."));
         }
+        final String accept = "application/json";
         RegenerateTestKeyRequestPayload regenerateTestKeyRequest = new RegenerateTestKeyRequestPayload();
         regenerateTestKeyRequest.withKeyType(keyType);
         return FluxUtil
@@ -1369,6 +1408,7 @@ public final class ServicesClientImpl
                             resourceGroupName,
                             serviceName,
                             regenerateTestKeyRequest,
+                            accept,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
@@ -1411,6 +1451,7 @@ public final class ServicesClientImpl
         if (keyType == null) {
             return Mono.error(new IllegalArgumentException("Parameter keyType is required and cannot be null."));
         }
+        final String accept = "application/json";
         RegenerateTestKeyRequestPayload regenerateTestKeyRequest = new RegenerateTestKeyRequestPayload();
         regenerateTestKeyRequest.withKeyType(keyType);
         context = this.client.mergeContext(context);
@@ -1422,6 +1463,7 @@ public final class ServicesClientImpl
                 resourceGroupName,
                 serviceName,
                 regenerateTestKeyRequest,
+                accept,
                 context);
     }
 
@@ -1518,6 +1560,7 @@ public final class ServicesClientImpl
         if (serviceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter serviceName is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -1528,6 +1571,7 @@ public final class ServicesClientImpl
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             serviceName,
+                            accept,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
@@ -1566,6 +1610,7 @@ public final class ServicesClientImpl
         if (serviceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter serviceName is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .disableTestEndpoint(
@@ -1574,6 +1619,7 @@ public final class ServicesClientImpl
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 serviceName,
+                accept,
                 context);
     }
 
@@ -1659,6 +1705,7 @@ public final class ServicesClientImpl
         if (serviceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter serviceName is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -1669,6 +1716,7 @@ public final class ServicesClientImpl
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             serviceName,
+                            accept,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
@@ -1707,6 +1755,7 @@ public final class ServicesClientImpl
         if (serviceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter serviceName is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .enableTestEndpoint(
@@ -1715,6 +1764,7 @@ public final class ServicesClientImpl
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 serviceName,
+                accept,
                 context);
     }
 
@@ -1780,7 +1830,7 @@ public final class ServicesClientImpl
      * Checks that the resource name is valid and is not already in use.
      *
      * @param location the region.
-     * @param availabilityParameters Name availability parameters payload.
+     * @param availabilityParameters Parameters supplied to the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1811,6 +1861,7 @@ public final class ServicesClientImpl
         } else {
             availabilityParameters.validate();
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -1821,6 +1872,7 @@ public final class ServicesClientImpl
                             this.client.getSubscriptionId(),
                             location,
                             availabilityParameters,
+                            accept,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
@@ -1829,7 +1881,7 @@ public final class ServicesClientImpl
      * Checks that the resource name is valid and is not already in use.
      *
      * @param location the region.
-     * @param availabilityParameters Name availability parameters payload.
+     * @param availabilityParameters Parameters supplied to the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1861,6 +1913,7 @@ public final class ServicesClientImpl
         } else {
             availabilityParameters.validate();
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .checkNameAvailability(
@@ -1869,6 +1922,7 @@ public final class ServicesClientImpl
                 this.client.getSubscriptionId(),
                 location,
                 availabilityParameters,
+                accept,
                 context);
     }
 
@@ -1876,7 +1930,7 @@ public final class ServicesClientImpl
      * Checks that the resource name is valid and is not already in use.
      *
      * @param location the region.
-     * @param availabilityParameters Name availability parameters payload.
+     * @param availabilityParameters Parameters supplied to the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1900,7 +1954,7 @@ public final class ServicesClientImpl
      * Checks that the resource name is valid and is not already in use.
      *
      * @param location the region.
-     * @param availabilityParameters Name availability parameters payload.
+     * @param availabilityParameters Parameters supplied to the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1915,7 +1969,7 @@ public final class ServicesClientImpl
      * Checks that the resource name is valid and is not already in use.
      *
      * @param location the region.
-     * @param availabilityParameters Name availability parameters payload.
+     * @param availabilityParameters Parameters supplied to the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1949,6 +2003,7 @@ public final class ServicesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -1957,6 +2012,7 @@ public final class ServicesClientImpl
                             this.client.getEndpoint(),
                             this.client.getApiVersion(),
                             this.client.getSubscriptionId(),
+                            accept,
                             context))
             .<PagedResponse<ServiceResourceInner>>map(
                 res ->
@@ -1993,9 +2049,15 @@ public final class ServicesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(), context)
+            .list(
+                this.client.getEndpoint(),
+                this.client.getApiVersion(),
+                this.client.getSubscriptionId(),
+                accept,
+                context)
             .map(
                 res ->
                     new PagedResponseBase<>(
@@ -2089,6 +2151,7 @@ public final class ServicesClientImpl
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -2098,6 +2161,7 @@ public final class ServicesClientImpl
                             this.client.getApiVersion(),
                             this.client.getSubscriptionId(),
                             resourceGroupName,
+                            accept,
                             context))
             .<PagedResponse<ServiceResourceInner>>map(
                 res ->
@@ -2141,6 +2205,7 @@ public final class ServicesClientImpl
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listByResourceGroup(
@@ -2148,6 +2213,7 @@ public final class ServicesClientImpl
                 this.client.getApiVersion(),
                 this.client.getSubscriptionId(),
                 resourceGroupName,
+                accept,
                 context)
             .map(
                 res ->
@@ -2239,8 +2305,16 @@ public final class ServicesClientImpl
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listBySubscriptionNext(nextLink, context))
+            .withContext(
+                context -> service.listBySubscriptionNext(nextLink, this.client.getEndpoint(), accept, context))
             .<PagedResponse<ServiceResourceInner>>map(
                 res ->
                     new PagedResponseBase<>(
@@ -2269,9 +2343,16 @@ public final class ServicesClientImpl
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listBySubscriptionNext(nextLink, context)
+            .listBySubscriptionNext(nextLink, this.client.getEndpoint(), accept, context)
             .map(
                 res ->
                     new PagedResponseBase<>(
@@ -2297,8 +2378,15 @@ public final class ServicesClientImpl
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listNext(nextLink, context))
+            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
             .<PagedResponse<ServiceResourceInner>>map(
                 res ->
                     new PagedResponseBase<>(
@@ -2326,9 +2414,16 @@ public final class ServicesClientImpl
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listNext(nextLink, context)
+            .listNext(nextLink, this.client.getEndpoint(), accept, context)
             .map(
                 res ->
                     new PagedResponseBase<>(

@@ -131,7 +131,7 @@ public interface ApplicationGatewayPrivateEndpointConnectionsClient {
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @param connectionName The name of the application gateway private endpoint connection.
-     * @param parameters Private Endpoint connection on an application gateway.
+     * @param parameters Parameters supplied to update application gateway private endpoint connection operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -150,7 +150,7 @@ public interface ApplicationGatewayPrivateEndpointConnectionsClient {
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @param connectionName The name of the application gateway private endpoint connection.
-     * @param parameters Private Endpoint connection on an application gateway.
+     * @param parameters Parameters supplied to update application gateway private endpoint connection operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -172,7 +172,7 @@ public interface ApplicationGatewayPrivateEndpointConnectionsClient {
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @param connectionName The name of the application gateway private endpoint connection.
-     * @param parameters Private Endpoint connection on an application gateway.
+     * @param parameters Parameters supplied to update application gateway private endpoint connection operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -194,7 +194,7 @@ public interface ApplicationGatewayPrivateEndpointConnectionsClient {
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @param connectionName The name of the application gateway private endpoint connection.
-     * @param parameters Private Endpoint connection on an application gateway.
+     * @param parameters Parameters supplied to update application gateway private endpoint connection operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -218,7 +218,7 @@ public interface ApplicationGatewayPrivateEndpointConnectionsClient {
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @param connectionName The name of the application gateway private endpoint connection.
-     * @param parameters Private Endpoint connection on an application gateway.
+     * @param parameters Parameters supplied to update application gateway private endpoint connection operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -237,7 +237,7 @@ public interface ApplicationGatewayPrivateEndpointConnectionsClient {
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @param connectionName The name of the application gateway private endpoint connection.
-     * @param parameters Private Endpoint connection on an application gateway.
+     * @param parameters Parameters supplied to update application gateway private endpoint connection operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -256,7 +256,7 @@ public interface ApplicationGatewayPrivateEndpointConnectionsClient {
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @param connectionName The name of the application gateway private endpoint connection.
-     * @param parameters Private Endpoint connection on an application gateway.
+     * @param parameters Parameters supplied to update application gateway private endpoint connection operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.

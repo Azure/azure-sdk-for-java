@@ -38,8 +38,8 @@ public final class VirtualMachineSoftwarePatchProperties {
     /*
      * The KBID of the patch. Only applies to Windows patches.
      */
-    @JsonProperty(value = "kbid", access = JsonProperty.Access.WRITE_ONLY)
-    private String kbid;
+    @JsonProperty(value = "kbId", access = JsonProperty.Access.WRITE_ONLY)
+    private String kbId;
 
     /*
      * The classification(s) of the patch as provided by the patch publisher.
@@ -51,7 +51,7 @@ public final class VirtualMachineSoftwarePatchProperties {
      * Describes the reboot requirements of the patch.
      */
     @JsonProperty(value = "rebootBehavior", access = JsonProperty.Access.WRITE_ONLY)
-    private SoftwareUpdateRebootBehavior rebootBehavior;
+    private VMGuestPatchRebootBehavior rebootBehavior;
 
     /*
      * The activity ID of the operation that produced this result. It is used
@@ -73,7 +73,7 @@ public final class VirtualMachineSoftwarePatchProperties {
     private OffsetDateTime lastModifiedDateTime;
 
     /*
-     * Describes the outcome of an install operation for a given patch.
+     * Describes the availability of a given patch.
      */
     @JsonProperty(value = "assessmentState", access = JsonProperty.Access.WRITE_ONLY)
     private PatchAssessmentState assessmentState;
@@ -106,12 +106,12 @@ public final class VirtualMachineSoftwarePatchProperties {
     }
 
     /**
-     * Get the kbid property: The KBID of the patch. Only applies to Windows patches.
+     * Get the kbId property: The KBID of the patch. Only applies to Windows patches.
      *
-     * @return the kbid value.
+     * @return the kbId value.
      */
-    public String kbid() {
-        return this.kbid;
+    public String kbId() {
+        return this.kbId;
     }
 
     /**
@@ -128,7 +128,7 @@ public final class VirtualMachineSoftwarePatchProperties {
      *
      * @return the rebootBehavior value.
      */
-    public SoftwareUpdateRebootBehavior rebootBehavior() {
+    public VMGuestPatchRebootBehavior rebootBehavior() {
         return this.rebootBehavior;
     }
 
@@ -161,7 +161,7 @@ public final class VirtualMachineSoftwarePatchProperties {
     }
 
     /**
-     * Get the assessmentState property: Describes the outcome of an install operation for a given patch.
+     * Get the assessmentState property: Describes the availability of a given patch.
      *
      * @return the assessmentState value.
      */

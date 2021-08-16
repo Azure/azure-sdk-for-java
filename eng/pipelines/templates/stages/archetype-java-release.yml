@@ -1,6 +1,6 @@
 parameters:
   - name: DependsOn
-    type: string
+    type: object
   - name: ServiceDirectory
     type: string
   - name: SDKType
@@ -23,12 +23,6 @@ parameters:
   - name: EnableIntegrationStage
     type: boolean
     default: true
-  - name: WindowsPool
-    type: string
-    default: azsdk-pool-mms-win-2019-general
-  - name: LinuxPool
-    type: string
-    default: azsdk-pool-mms-ubuntu-1804-general  
 
 stages:
   # The signing stage is responsible for submitting binaries to ESRP for our official signing
@@ -44,8 +38,8 @@ stages:
         variables:
           - template: ../variables/globals.yml
         pool:
-          name: azsdk-pool-mms-ubuntu-1804-general
-          vmImage: MMSUbuntu18.04
+          name: azsdk-pool-mms-ubuntu-2004-general
+          vmImage: MMSUbuntu20.04
         strategy:
           runOnce:
             deploy:
@@ -84,24 +78,28 @@ stages:
             variables:
               - template: ../variables/globals.yml
             pool:
-              name: azsdk-pool-mms-ubuntu-1804-general
-              vmImage: MMSUbuntu18.04
+              name: azsdk-pool-mms-ubuntu-2004-general
+              vmImage: MMSUbuntu20.04
 
             steps:
-              - ${{if eq(parameters.TestPipeline, 'true')}}:
-                - task: PowerShell@2
-                  displayName: Prep template pipeline for release
-                  condition: succeeded()
-                  inputs:
-                    pwsh: true
-                    workingDirectory: $(Build.SourcesDirectory)
-                    filePath: eng/scripts/SetTestPipelineVersion.ps1
-                    arguments: '-BuildID $(Build.BuildId)'
+              - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
+                parameters:
+                  Paths:
+                    - '${{ parameters.ServiceDirectory }}'
+                    - '**/*.xml'
+                    - '!sdk/**/test-recordings'
+                    - '!sdk/**/session-records'
 
               - task: UsePythonVersion@0
                 displayName: 'Use Python 3.6'
                 inputs:
                   versionSpec: '3.6'
+
+              - template: /eng/common/pipelines/templates/steps/set-test-pipeline-version.yml
+                parameters:
+                  PackageName: "azure-sdk-template"
+                  ServiceDirectory: "template"
+                  TestPipeline: ${{ parameters.TestPipeline }}
 
               - script: |
                   python --version
@@ -134,7 +132,8 @@ stages:
               runOnce:
                 deploy:
                   steps:
-                    - checkout: self
+                    - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
+                    - template: /eng/common/pipelines/templates/steps/retain-run.yml
                     - template: /eng/common/pipelines/templates/steps/create-tags-and-git-release.yml
                       parameters:
                         ArtifactLocation: $(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed/${{artifact.groupId}}/${{artifact.name}}
@@ -156,10 +155,15 @@ stages:
                 runOnce:
                   deploy:
                     steps:
-                      - checkout: self
-                        path: azure-sdk-for-java
                       - checkout: azure-sdk-build-tools
                         path: azure-sdk-build-tools
+                      - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
+                        parameters:
+                          SkipDefaultCheckout: true
+                          Repositories:
+                            - Name: Azure/azure-sdk-for-java
+                              Commitish: $(Build.SourceVersion)
+                              WorkingDirectory: $(Pipeline.Workspace)/azure-sdk-for-java
                       - template: tools/gpg/gpg.yml@azure-sdk-build-tools
                       - template: /eng/pipelines/templates/steps/java-publishing.yml
                         parameters:
@@ -198,7 +202,10 @@ stages:
                 runOnce:
                   deploy:
                     steps:
-                      - checkout: self
+                      - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
+                        parameters:
+                          paths:
+                            - .github/CODEOWNERS
                       - template: /eng/common/pipelines/templates/steps/get-pr-owners.yml
                         parameters:
                           TargetVariable: "OwningGHUser"
@@ -219,6 +226,8 @@ stages:
                           CIConfigs: $(CIConfigs)
                           CloseAfterOpenForTesting: '${{ parameters.TestPipeline }}'
                           SkipPackageJson: ${{artifact.skipUpdatePackageJson}}
+                          SparseCheckoutPaths:
+                            - docs-ref-services
 
           - ${{if ne(artifact.skipPublishDocGithubIo, 'true')}}:
             - deployment: PublishDocs
@@ -235,7 +244,7 @@ stages:
                 runOnce:
                   deploy:
                     steps:
-                      - checkout: self
+                      - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
                       - pwsh: |
                           Get-ChildItem -Recurse $(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed/${{artifact.groupId}}/${{artifact.name}}
                         workingDirectory: $(Pipeline.Workspace)
@@ -265,7 +274,13 @@ stages:
                 runOnce:
                   deploy:
                     steps:
-                      - checkout: self
+                      - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
+                        parameters:
+                          Paths:
+                            - '${{ parameters.ServiceDirectory }}'
+                            - '**/*.xml'
+                            - '!sdk/**/test-recordings'
+                            - '!sdk/**/session-records'
 
                       - task: UsePythonVersion@0
                         displayName: 'Use Python 3.6'
@@ -287,6 +302,7 @@ stages:
                           PRBranchName: increment-package-version-${{ parameters.ServiceDirectory }}-$(Build.BuildId)
                           CommitMsg: "Increment package version after release of ${{ artifact.groupId }} ${{ artifact.name }}"
                           PRTitle: "Increment version for ${{ parameters.ServiceDirectory }} releases"
+                          PRLabels: "auto-merge"
                           CloseAfterOpenForTesting: '${{ parameters.TestPipeline }}'
 
   - ${{if ne(parameters.EnableIntegrationStage, false)}}:
@@ -305,10 +321,15 @@ stages:
           name: Azure Pipelines
           vmImage: vs2017-win2016
         steps:
-        - checkout: self
-          path: azure-sdk-for-java
         - checkout: azure-sdk-build-tools
           path: azure-sdk-build-tools
+        - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
+          parameters:
+            SkipDefaultCheckout: true
+            Repositories:
+              - Name: Azure/azure-sdk-for-java
+                Commitish: $(Build.SourceVersion)
+                WorkingDirectory: $(Pipeline.Workspace)/azure-sdk-for-java
 
         - download: current
           artifact: ${{parameters.ArtifactName}}-signed

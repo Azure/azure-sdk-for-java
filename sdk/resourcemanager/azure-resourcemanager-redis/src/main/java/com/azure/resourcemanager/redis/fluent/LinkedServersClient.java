@@ -27,7 +27,7 @@ public interface LinkedServersClient {
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the Redis cache.
      * @param linkedServerName The name of the linked server that is being added to the Redis cache.
-     * @param parameters Parameter required for creating a linked server to redis cache.
+     * @param parameters Parameters supplied to the Create Linked server operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -43,7 +43,7 @@ public interface LinkedServersClient {
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the Redis cache.
      * @param linkedServerName The name of the linked server that is being added to the Redis cache.
-     * @param parameters Parameter required for creating a linked server to redis cache.
+     * @param parameters Parameters supplied to the Create Linked server operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -59,7 +59,7 @@ public interface LinkedServersClient {
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the Redis cache.
      * @param linkedServerName The name of the linked server that is being added to the Redis cache.
-     * @param parameters Parameter required for creating a linked server to redis cache.
+     * @param parameters Parameters supplied to the Create Linked server operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -75,7 +75,7 @@ public interface LinkedServersClient {
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the Redis cache.
      * @param linkedServerName The name of the linked server that is being added to the Redis cache.
-     * @param parameters Parameter required for creating a linked server to redis cache.
+     * @param parameters Parameters supplied to the Create Linked server operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -96,7 +96,7 @@ public interface LinkedServersClient {
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the Redis cache.
      * @param linkedServerName The name of the linked server that is being added to the Redis cache.
-     * @param parameters Parameter required for creating a linked server to redis cache.
+     * @param parameters Parameters supplied to the Create Linked server operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -112,7 +112,7 @@ public interface LinkedServersClient {
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the Redis cache.
      * @param linkedServerName The name of the linked server that is being added to the Redis cache.
-     * @param parameters Parameter required for creating a linked server to redis cache.
+     * @param parameters Parameters supplied to the Create Linked server operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -128,7 +128,7 @@ public interface LinkedServersClient {
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the Redis cache.
      * @param linkedServerName The name of the linked server that is being added to the Redis cache.
-     * @param parameters Parameter required for creating a linked server to redis cache.
+     * @param parameters Parameters supplied to the Create Linked server operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.

@@ -55,6 +55,13 @@ public class EncryptionScopeInner extends ProxyResource {
     @JsonProperty(value = "properties.keyVaultProperties")
     private EncryptionScopeKeyVaultProperties keyVaultProperties;
 
+    /*
+     * A boolean indicating whether or not the service applies a secondary
+     * layer of encryption with platform managed keys for data at rest.
+     */
+    @JsonProperty(value = "properties.requireInfrastructureEncryption")
+    private Boolean requireInfrastructureEncryption;
+
     /**
      * Get the source property: The provider for the encryption scope. Possible values (case-insensitive):
      * Microsoft.Storage, Microsoft.KeyVault.
@@ -134,6 +141,28 @@ public class EncryptionScopeInner extends ProxyResource {
      */
     public EncryptionScopeInner withKeyVaultProperties(EncryptionScopeKeyVaultProperties keyVaultProperties) {
         this.keyVaultProperties = keyVaultProperties;
+        return this;
+    }
+
+    /**
+     * Get the requireInfrastructureEncryption property: A boolean indicating whether or not the service applies a
+     * secondary layer of encryption with platform managed keys for data at rest.
+     *
+     * @return the requireInfrastructureEncryption value.
+     */
+    public Boolean requireInfrastructureEncryption() {
+        return this.requireInfrastructureEncryption;
+    }
+
+    /**
+     * Set the requireInfrastructureEncryption property: A boolean indicating whether or not the service applies a
+     * secondary layer of encryption with platform managed keys for data at rest.
+     *
+     * @param requireInfrastructureEncryption the requireInfrastructureEncryption value to set.
+     * @return the EncryptionScopeInner object itself.
+     */
+    public EncryptionScopeInner withRequireInfrastructureEncryption(Boolean requireInfrastructureEncryption) {
+        this.requireInfrastructureEncryption = requireInfrastructureEncryption;
         return this;
     }
 

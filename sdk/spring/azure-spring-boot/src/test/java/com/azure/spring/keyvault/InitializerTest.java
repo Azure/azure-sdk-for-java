@@ -4,18 +4,19 @@
 package com.azure.spring.keyvault;
 
 import com.azure.spring.utils.Constants;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.core.env.MutablePropertySources;
 import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import static org.junit.Assert.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
-@RunWith(SpringJUnit4ClassRunner.class)
+@ExtendWith(SpringExtension.class)
 @TestPropertySource(locations = "classpath:application.properties")
 public class InitializerTest {
 
@@ -25,9 +26,9 @@ public class InitializerTest {
     @Test
     public void testAzureKvPropertySourceNotInitialized() {
         final MutablePropertySources sources =
-                ((ConfigurableEnvironment) context.getEnvironment()).getPropertySources();
+            ((ConfigurableEnvironment) context.getEnvironment()).getPropertySources();
 
-        assertFalse("PropertySources should not contains azurekv when enabled=false",
-                sources.contains(Constants.AZURE_KEYVAULT_PROPERTYSOURCE_NAME));
+        assertFalse(sources.contains(Constants.AZURE_KEYVAULT_PROPERTYSOURCE_NAME), "PropertySources should not "
+            + "contains azurekv when enabled=false");
     }
 }

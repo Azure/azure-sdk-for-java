@@ -23,6 +23,7 @@ public class Paths {
     public static final String CONFLICTS_PATH_SEGMENT = "conflicts";
     public static final String DOCUMENTS_PATH_SEGMENT = "docs";
     public static final String ATTACHMENTS_PATH_SEGMENT = "attachments";
+    public static final String CLIENT_ENCRYPTION_KEY_PATH_SEGMENT = "clientencryptionkeys";
 
     // /offers
     public static final String OFFERS_PATH_SEGMENT = "offers";

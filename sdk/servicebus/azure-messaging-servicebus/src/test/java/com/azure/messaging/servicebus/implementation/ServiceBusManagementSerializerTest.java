@@ -79,8 +79,8 @@ class ServiceBusManagementSerializerTest {
         // Arrange
         final String contents = getContents("CreateQueueEntry.xml");
         final AuthorizationRule rule = new SharedAccessAuthorizationRule("test-name",
-            "/4jWkzKBFwO0VemXmUYtBnXJ3Me+saF8hQPE5HzJ/hg=",
-            "NsNSEwj//k4ShF7wHsRHj54HsjnyWvyjmfCd3tfXR2Y=",
+            "fakePrimaryKey",
+            "fakeSecondaryKey",
             Collections.singletonList(AccessRights.SEND));
         final CreateQueueOptions expected = new CreateQueueOptions()
             .setAutoDeleteOnIdle(null)

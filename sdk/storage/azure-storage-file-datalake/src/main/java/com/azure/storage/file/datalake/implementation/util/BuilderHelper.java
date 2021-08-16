@@ -24,6 +24,7 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobUrlParts;
+import com.azure.storage.blob.implementation.util.BlobUserAgentModificationPolicy;
 import com.azure.storage.blob.implementation.util.ModelHelper;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.Constants;
@@ -50,6 +51,8 @@ public final class BuilderHelper {
         CoreUtils.getProperties("azure-storage-file-datalake.properties");
     private static final String SDK_NAME = "name";
     private static final String SDK_VERSION = "version";
+    private static final String CLIENT_NAME = PROPERTIES.getOrDefault(SDK_NAME, "UnknownName");
+    private static final String CLIENT_VERSION = PROPERTIES.getOrDefault(SDK_VERSION, "UnknownVersion");
 
     /**
      * Constructs a {@link HttpPipeline} from values passed from a builder.
@@ -172,12 +175,9 @@ public final class BuilderHelper {
     private static UserAgentPolicy getUserAgentPolicy(Configuration configuration, HttpLogOptions logOptions,
         ClientOptions clientOptions) {
         configuration = (configuration == null) ? Configuration.NONE : configuration;
-
-        String clientName = PROPERTIES.getOrDefault(SDK_NAME, "UnknownName");
-        String clientVersion = PROPERTIES.getOrDefault(SDK_VERSION, "UnknownVersion");
         String applicationId = clientOptions.getApplicationId() != null ? clientOptions.getApplicationId()
             : logOptions.getApplicationId();
-        return new UserAgentPolicy(applicationId, clientName, clientVersion, configuration);
+        return new UserAgentPolicy(applicationId, CLIENT_NAME, CLIENT_VERSION, configuration);
     }
 
     /*
@@ -191,5 +191,14 @@ public final class BuilderHelper {
             .addOptionalEcho(Constants.HeaderConstants.CLIENT_REQUEST_ID)
             .addOptionalEcho(Constants.HeaderConstants.ENCRYPTION_KEY_SHA256)
             .build();
+    }
+
+    /**
+     * Gets a BlobUserAgentModificationPolicy with the correct clientName and clientVersion.
+     *
+     * @return {@link BlobUserAgentModificationPolicy}
+     */
+    public static BlobUserAgentModificationPolicy getBlobUserAgentModificationPolicy() {
+        return new BlobUserAgentModificationPolicy(CLIENT_NAME, CLIENT_VERSION);
     }
 }

@@ -68,6 +68,7 @@ public final class DataFlowsImpl {
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("If-Match") String ifMatch,
                 @BodyParam("application/json") DataFlowResource dataFlow,
+                @HeaderParam("Accept") String accept,
                 Context context);
 
         @Get("/dataflows/{dataFlowName}")
@@ -78,6 +79,7 @@ public final class DataFlowsImpl {
                 @PathParam("dataFlowName") String dataFlowName,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("If-None-Match") String ifNoneMatch,
+                @HeaderParam("Accept") String accept,
                 Context context);
 
         @Delete("/dataflows/{dataFlowName}")
@@ -87,6 +89,7 @@ public final class DataFlowsImpl {
                 @HostParam("endpoint") String endpoint,
                 @PathParam("dataFlowName") String dataFlowName,
                 @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
                 Context context);
 
         @Post("/dataflows/{dataFlowName}/rename")
@@ -97,13 +100,17 @@ public final class DataFlowsImpl {
                 @PathParam("dataFlowName") String dataFlowName,
                 @QueryParam("api-version") String apiVersion,
                 @BodyParam("application/json") ArtifactRenameRequest request,
+                @HeaderParam("Accept") String accept,
                 Context context);
 
         @Get("/dataflows")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudErrorException.class)
         Mono<Response<DataFlowListResponse>> getDataFlowsByWorkspace(
-                @HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion, Context context);
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
+                Context context);
 
         @Get("{nextLink}")
         @ExpectedResponses({200})
@@ -111,6 +118,7 @@ public final class DataFlowsImpl {
         Mono<Response<DataFlowListResponse>> getDataFlowsByWorkspaceNext(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
                 @HostParam("endpoint") String endpoint,
+                @HeaderParam("Accept") String accept,
                 Context context);
     }
 
@@ -129,6 +137,7 @@ public final class DataFlowsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DataFlowResource>> createOrUpdateDataFlowWithResponseAsync(
             String dataFlowName, DataFlowResource dataFlow, String ifMatch) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.createOrUpdateDataFlow(
@@ -137,6 +146,7 @@ public final class DataFlowsImpl {
                                 this.client.getApiVersion(),
                                 ifMatch,
                                 dataFlow,
+                                accept,
                                 context));
     }
 
@@ -156,8 +166,15 @@ public final class DataFlowsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DataFlowResource>> createOrUpdateDataFlowWithResponseAsync(
             String dataFlowName, DataFlowResource dataFlow, String ifMatch, Context context) {
+        final String accept = "application/json";
         return service.createOrUpdateDataFlow(
-                this.client.getEndpoint(), dataFlowName, this.client.getApiVersion(), ifMatch, dataFlow, context);
+                this.client.getEndpoint(),
+                dataFlowName,
+                this.client.getApiVersion(),
+                ifMatch,
+                dataFlow,
+                accept,
+                context);
     }
 
     /**
@@ -302,6 +319,7 @@ public final class DataFlowsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DataFlowResource>> getDataFlowWithResponseAsync(String dataFlowName, String ifNoneMatch) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.getDataFlow(
@@ -309,6 +327,7 @@ public final class DataFlowsImpl {
                                 dataFlowName,
                                 this.client.getApiVersion(),
                                 ifNoneMatch,
+                                accept,
                                 context));
     }
 
@@ -327,8 +346,9 @@ public final class DataFlowsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DataFlowResource>> getDataFlowWithResponseAsync(
             String dataFlowName, String ifNoneMatch, Context context) {
+        final String accept = "application/json";
         return service.getDataFlow(
-                this.client.getEndpoint(), dataFlowName, this.client.getApiVersion(), ifNoneMatch, context);
+                this.client.getEndpoint(), dataFlowName, this.client.getApiVersion(), ifNoneMatch, accept, context);
     }
 
     /**
@@ -463,10 +483,11 @@ public final class DataFlowsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteDataFlowWithResponseAsync(String dataFlowName) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.deleteDataFlow(
-                                this.client.getEndpoint(), dataFlowName, this.client.getApiVersion(), context));
+                                this.client.getEndpoint(), dataFlowName, this.client.getApiVersion(), accept, context));
     }
 
     /**
@@ -481,7 +502,9 @@ public final class DataFlowsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteDataFlowWithResponseAsync(String dataFlowName, Context context) {
-        return service.deleteDataFlow(this.client.getEndpoint(), dataFlowName, this.client.getApiVersion(), context);
+        final String accept = "application/json";
+        return service.deleteDataFlow(
+                this.client.getEndpoint(), dataFlowName, this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -553,6 +576,7 @@ public final class DataFlowsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> renameDataFlowWithResponseAsync(String dataFlowName, ArtifactRenameRequest request) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.renameDataFlow(
@@ -560,6 +584,7 @@ public final class DataFlowsImpl {
                                 dataFlowName,
                                 this.client.getApiVersion(),
                                 request,
+                                accept,
                                 context));
     }
 
@@ -577,8 +602,9 @@ public final class DataFlowsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> renameDataFlowWithResponseAsync(
             String dataFlowName, ArtifactRenameRequest request, Context context) {
+        final String accept = "application/json";
         return service.renameDataFlow(
-                this.client.getEndpoint(), dataFlowName, this.client.getApiVersion(), request, context);
+                this.client.getEndpoint(), dataFlowName, this.client.getApiVersion(), request, accept, context);
     }
 
     /**
@@ -653,10 +679,11 @@ public final class DataFlowsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<DataFlowResource>> getDataFlowsByWorkspaceSinglePageAsync() {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                         context ->
                                 service.getDataFlowsByWorkspace(
-                                        this.client.getEndpoint(), this.client.getApiVersion(), context))
+                                        this.client.getEndpoint(), this.client.getApiVersion(), accept, context))
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -679,7 +706,8 @@ public final class DataFlowsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<DataFlowResource>> getDataFlowsByWorkspaceSinglePageAsync(Context context) {
-        return service.getDataFlowsByWorkspace(this.client.getEndpoint(), this.client.getApiVersion(), context)
+        final String accept = "application/json";
+        return service.getDataFlowsByWorkspace(this.client.getEndpoint(), this.client.getApiVersion(), accept, context)
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -758,8 +786,11 @@ public final class DataFlowsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<DataFlowResource>> getDataFlowsByWorkspaceNextSinglePageAsync(String nextLink) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
-                        context -> service.getDataFlowsByWorkspaceNext(nextLink, this.client.getEndpoint(), context))
+                        context ->
+                                service.getDataFlowsByWorkspaceNext(
+                                        nextLink, this.client.getEndpoint(), accept, context))
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -784,7 +815,8 @@ public final class DataFlowsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<DataFlowResource>> getDataFlowsByWorkspaceNextSinglePageAsync(
             String nextLink, Context context) {
-        return service.getDataFlowsByWorkspaceNext(nextLink, this.client.getEndpoint(), context)
+        final String accept = "application/json";
+        return service.getDataFlowsByWorkspaceNext(nextLink, this.client.getEndpoint(), accept, context)
                 .map(
                         res ->
                                 new PagedResponseBase<>(

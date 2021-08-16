@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.mysql.implementation;
 
-import com.azure.resourcemanager.mysql.MySqlManager;
 import com.azure.resourcemanager.mysql.fluent.models.WaitStatisticInner;
 import com.azure.resourcemanager.mysql.models.WaitStatistic;
 import java.time.OffsetDateTime;
@@ -12,9 +11,9 @@ import java.time.OffsetDateTime;
 public final class WaitStatisticImpl implements WaitStatistic {
     private WaitStatisticInner innerObject;
 
-    private final MySqlManager serviceManager;
+    private final com.azure.resourcemanager.mysql.MySqlManager serviceManager;
 
-    WaitStatisticImpl(WaitStatisticInner innerObject, MySqlManager serviceManager) {
+    WaitStatisticImpl(WaitStatisticInner innerObject, com.azure.resourcemanager.mysql.MySqlManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -71,7 +70,7 @@ public final class WaitStatisticImpl implements WaitStatistic {
         return this.innerObject;
     }
 
-    private MySqlManager manager() {
+    private com.azure.resourcemanager.mysql.MySqlManager manager() {
         return this.serviceManager;
     }
 }

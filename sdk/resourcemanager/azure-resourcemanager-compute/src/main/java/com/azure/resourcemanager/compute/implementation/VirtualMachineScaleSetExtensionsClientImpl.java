@@ -173,7 +173,7 @@ public final class VirtualMachineScaleSetExtensionsClientImpl implements Virtual
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set where the extension should be create or updated.
      * @param vmssExtensionName The name of the VM scale set extension.
-     * @param extensionParameters Describes a Virtual Machine Scale Set Extension.
+     * @param extensionParameters Parameters supplied to the Create VM scale set Extension operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -214,7 +214,7 @@ public final class VirtualMachineScaleSetExtensionsClientImpl implements Virtual
         } else {
             extensionParameters.validate();
         }
-        final String apiVersion = "2020-06-01";
+        final String apiVersion = "2021-04-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -230,7 +230,7 @@ public final class VirtualMachineScaleSetExtensionsClientImpl implements Virtual
                             extensionParameters,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -239,7 +239,7 @@ public final class VirtualMachineScaleSetExtensionsClientImpl implements Virtual
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set where the extension should be create or updated.
      * @param vmssExtensionName The name of the VM scale set extension.
-     * @param extensionParameters Describes a Virtual Machine Scale Set Extension.
+     * @param extensionParameters Parameters supplied to the Create VM scale set Extension operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -282,7 +282,7 @@ public final class VirtualMachineScaleSetExtensionsClientImpl implements Virtual
         } else {
             extensionParameters.validate();
         }
-        final String apiVersion = "2020-06-01";
+        final String apiVersion = "2021-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -304,7 +304,7 @@ public final class VirtualMachineScaleSetExtensionsClientImpl implements Virtual
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set where the extension should be create or updated.
      * @param vmssExtensionName The name of the VM scale set extension.
-     * @param extensionParameters Describes a Virtual Machine Scale Set Extension.
+     * @param extensionParameters Parameters supplied to the Create VM scale set Extension operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -335,7 +335,7 @@ public final class VirtualMachineScaleSetExtensionsClientImpl implements Virtual
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set where the extension should be create or updated.
      * @param vmssExtensionName The name of the VM scale set extension.
-     * @param extensionParameters Describes a Virtual Machine Scale Set Extension.
+     * @param extensionParameters Parameters supplied to the Create VM scale set Extension operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -370,7 +370,7 @@ public final class VirtualMachineScaleSetExtensionsClientImpl implements Virtual
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set where the extension should be create or updated.
      * @param vmssExtensionName The name of the VM scale set extension.
-     * @param extensionParameters Describes a Virtual Machine Scale Set Extension.
+     * @param extensionParameters Parameters supplied to the Create VM scale set Extension operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -393,7 +393,7 @@ public final class VirtualMachineScaleSetExtensionsClientImpl implements Virtual
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set where the extension should be create or updated.
      * @param vmssExtensionName The name of the VM scale set extension.
-     * @param extensionParameters Describes a Virtual Machine Scale Set Extension.
+     * @param extensionParameters Parameters supplied to the Create VM scale set Extension operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -419,7 +419,7 @@ public final class VirtualMachineScaleSetExtensionsClientImpl implements Virtual
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set where the extension should be create or updated.
      * @param vmssExtensionName The name of the VM scale set extension.
-     * @param extensionParameters Describes a Virtual Machine Scale Set Extension.
+     * @param extensionParameters Parameters supplied to the Create VM scale set Extension operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -442,7 +442,7 @@ public final class VirtualMachineScaleSetExtensionsClientImpl implements Virtual
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set where the extension should be create or updated.
      * @param vmssExtensionName The name of the VM scale set extension.
-     * @param extensionParameters Describes a Virtual Machine Scale Set Extension.
+     * @param extensionParameters Parameters supplied to the Create VM scale set Extension operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -468,7 +468,7 @@ public final class VirtualMachineScaleSetExtensionsClientImpl implements Virtual
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set where the extension should be create or updated.
      * @param vmssExtensionName The name of the VM scale set extension.
-     * @param extensionParameters Describes a Virtual Machine Scale Set Extension.
+     * @param extensionParameters Parameters supplied to the Create VM scale set Extension operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -489,7 +489,7 @@ public final class VirtualMachineScaleSetExtensionsClientImpl implements Virtual
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set where the extension should be create or updated.
      * @param vmssExtensionName The name of the VM scale set extension.
-     * @param extensionParameters Describes a Virtual Machine Scale Set Extension.
+     * @param extensionParameters Parameters supplied to the Create VM scale set Extension operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -513,7 +513,7 @@ public final class VirtualMachineScaleSetExtensionsClientImpl implements Virtual
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set where the extension should be updated.
      * @param vmssExtensionName The name of the VM scale set extension.
-     * @param extensionParameters Describes a Virtual Machine Scale Set Extension.
+     * @param extensionParameters Parameters supplied to the Update VM scale set Extension operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -554,7 +554,7 @@ public final class VirtualMachineScaleSetExtensionsClientImpl implements Virtual
         } else {
             extensionParameters.validate();
         }
-        final String apiVersion = "2020-06-01";
+        final String apiVersion = "2021-04-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -570,7 +570,7 @@ public final class VirtualMachineScaleSetExtensionsClientImpl implements Virtual
                             extensionParameters,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -579,7 +579,7 @@ public final class VirtualMachineScaleSetExtensionsClientImpl implements Virtual
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set where the extension should be updated.
      * @param vmssExtensionName The name of the VM scale set extension.
-     * @param extensionParameters Describes a Virtual Machine Scale Set Extension.
+     * @param extensionParameters Parameters supplied to the Update VM scale set Extension operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -622,7 +622,7 @@ public final class VirtualMachineScaleSetExtensionsClientImpl implements Virtual
         } else {
             extensionParameters.validate();
         }
-        final String apiVersion = "2020-06-01";
+        final String apiVersion = "2021-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -644,7 +644,7 @@ public final class VirtualMachineScaleSetExtensionsClientImpl implements Virtual
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set where the extension should be updated.
      * @param vmssExtensionName The name of the VM scale set extension.
-     * @param extensionParameters Describes a Virtual Machine Scale Set Extension.
+     * @param extensionParameters Parameters supplied to the Update VM scale set Extension operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -675,7 +675,7 @@ public final class VirtualMachineScaleSetExtensionsClientImpl implements Virtual
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set where the extension should be updated.
      * @param vmssExtensionName The name of the VM scale set extension.
-     * @param extensionParameters Describes a Virtual Machine Scale Set Extension.
+     * @param extensionParameters Parameters supplied to the Update VM scale set Extension operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -709,7 +709,7 @@ public final class VirtualMachineScaleSetExtensionsClientImpl implements Virtual
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set where the extension should be updated.
      * @param vmssExtensionName The name of the VM scale set extension.
-     * @param extensionParameters Describes a Virtual Machine Scale Set Extension.
+     * @param extensionParameters Parameters supplied to the Update VM scale set Extension operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -732,7 +732,7 @@ public final class VirtualMachineScaleSetExtensionsClientImpl implements Virtual
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set where the extension should be updated.
      * @param vmssExtensionName The name of the VM scale set extension.
-     * @param extensionParameters Describes a Virtual Machine Scale Set Extension.
+     * @param extensionParameters Parameters supplied to the Update VM scale set Extension operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -757,7 +757,7 @@ public final class VirtualMachineScaleSetExtensionsClientImpl implements Virtual
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set where the extension should be updated.
      * @param vmssExtensionName The name of the VM scale set extension.
-     * @param extensionParameters Describes a Virtual Machine Scale Set Extension.
+     * @param extensionParameters Parameters supplied to the Update VM scale set Extension operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -780,7 +780,7 @@ public final class VirtualMachineScaleSetExtensionsClientImpl implements Virtual
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set where the extension should be updated.
      * @param vmssExtensionName The name of the VM scale set extension.
-     * @param extensionParameters Describes a Virtual Machine Scale Set Extension.
+     * @param extensionParameters Parameters supplied to the Update VM scale set Extension operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -805,7 +805,7 @@ public final class VirtualMachineScaleSetExtensionsClientImpl implements Virtual
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set where the extension should be updated.
      * @param vmssExtensionName The name of the VM scale set extension.
-     * @param extensionParameters Describes a Virtual Machine Scale Set Extension.
+     * @param extensionParameters Parameters supplied to the Update VM scale set Extension operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -826,7 +826,7 @@ public final class VirtualMachineScaleSetExtensionsClientImpl implements Virtual
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set where the extension should be updated.
      * @param vmssExtensionName The name of the VM scale set extension.
-     * @param extensionParameters Describes a Virtual Machine Scale Set Extension.
+     * @param extensionParameters Parameters supplied to the Update VM scale set Extension operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -880,7 +880,7 @@ public final class VirtualMachineScaleSetExtensionsClientImpl implements Virtual
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-06-01";
+        final String apiVersion = "2021-04-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -893,7 +893,7 @@ public final class VirtualMachineScaleSetExtensionsClientImpl implements Virtual
                             apiVersion,
                             this.client.getSubscriptionId(),
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -934,7 +934,7 @@ public final class VirtualMachineScaleSetExtensionsClientImpl implements Virtual
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-06-01";
+        final String apiVersion = "2021-04-01";
         context = this.client.mergeContext(context);
         return service
             .delete(
@@ -1133,7 +1133,7 @@ public final class VirtualMachineScaleSetExtensionsClientImpl implements Virtual
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-06-01";
+        final String apiVersion = "2021-04-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1149,7 +1149,7 @@ public final class VirtualMachineScaleSetExtensionsClientImpl implements Virtual
                             this.client.getSubscriptionId(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1191,7 +1191,7 @@ public final class VirtualMachineScaleSetExtensionsClientImpl implements Virtual
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-06-01";
+        final String apiVersion = "2021-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1328,7 +1328,7 @@ public final class VirtualMachineScaleSetExtensionsClientImpl implements Virtual
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-06-01";
+        final String apiVersion = "2021-04-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1351,7 +1351,7 @@ public final class VirtualMachineScaleSetExtensionsClientImpl implements Virtual
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1387,7 +1387,7 @@ public final class VirtualMachineScaleSetExtensionsClientImpl implements Virtual
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-06-01";
+        final String apiVersion = "2021-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1510,7 +1510,7 @@ public final class VirtualMachineScaleSetExtensionsClientImpl implements Virtual
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**

@@ -3,23 +3,31 @@
 trigger:
   branches:
     include:
-      - master
+      - main
       - hotfix/*
       - release/*
   paths:
     include:
-      - sdk/recoveryservices/
+      - sdk/recoveryservices/ci.yml
+      - sdk/recoveryservices/azure-resourcemanager-recoveryservices/
+    exclude:
+      - sdk/recoveryservices/pom.xml
+      - sdk/recoveryservices/azure-resourcemanager-recoveryservices/pom.xml
 
 pr:
   branches:
     include:
-      - master
+      - main
       - feature/*
       - hotfix/*
       - release/*
   paths:
     include:
-      - sdk/recoveryservices/
+      - sdk/recoveryservices/ci.yml
+      - sdk/recoveryservices/azure-resourcemanager-recoveryservices/
+    exclude:
+      - sdk/recoveryservices/pom.xml
+      - sdk/recoveryservices/azure-resourcemanager-recoveryservices/pom.xml
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml

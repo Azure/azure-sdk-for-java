@@ -3,6 +3,7 @@
 package com.azure.cosmos.implementation.changefeed.implementation;
 
 import com.azure.cosmos.CosmosException;
+import com.azure.cosmos.implementation.CosmosSchedulers;
 import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
 import com.azure.cosmos.implementation.feedranges.FeedRangePartitionKeyRangeImpl;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
@@ -80,7 +81,7 @@ class PartitionProcessorImpl implements PartitionProcessor {
 
                 Instant stopTimer = Instant.now().plus(this.settings.getFeedPollDelay());
                 return Mono.just(value)
-                    .delayElement(Duration.ofMillis(100))
+                    .delayElement(Duration.ofMillis(100), CosmosSchedulers.COSMOS_PARALLEL)
                     .repeat( () -> {
                         Instant currentTime = Instant.now();
                         return !cancellationToken.isCancellationRequested() && currentTime.isBefore(stopTimer);
@@ -95,7 +96,7 @@ class PartitionProcessorImpl implements PartitionProcessor {
                 if (cancellationToken.isCancellationRequested()) return Flux.error(new TaskCancelledException());
 
                 final String continuationToken = documentFeedResponse.getContinuationToken();
-                final ChangeFeedState continuationState = ChangeFeedState.fromString(documentFeedResponse.getContinuationToken());
+                final ChangeFeedState continuationState = ChangeFeedState.fromString(continuationToken);
                 checkNotNull(continuationState, "Argument 'continuationState' must not be null.");
                 checkArgument(
                     continuationState
@@ -184,7 +185,7 @@ class PartitionProcessorImpl implements PartitionProcessor {
                                 Instant stopTimer = Instant.now().plus(clientException.getRetryAfterDuration().toMillis(), MILLIS);
                                 return Mono.just(clientException.getRetryAfterDuration().toMillis()) // set some seed value to be able to run
                                            // the repeat loop
-                                           .delayElement(Duration.ofMillis(100))
+                                           .delayElement(Duration.ofMillis(100), CosmosSchedulers.COSMOS_PARALLEL)
                                            .repeat(() -> {
                                                Instant currentTime = Instant.now();
                                         return !cancellationToken.isCancellationRequested() && currentTime.isBefore(stopTimer);

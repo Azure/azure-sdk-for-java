@@ -68,6 +68,18 @@ public interface ResourcesClient extends InnerSupportsListing<GenericResourceExp
      * Get all the resources for a resource group.
      *
      * @param resourceGroupName The resource group with the resources to get.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all the resources for a resource group.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<GenericResourceExpandedInner> listByResourceGroup(String resourceGroupName);
+
+    /**
+     * Get all the resources for a resource group.
+     *
+     * @param resourceGroupName The resource group with the resources to get.
      * @param filter The filter to apply on the operation.&lt;br&gt;&lt;br&gt;The properties you can use for eq (equals)
      *     or ne (not equals) are: location, resourceType, name, resourceGroup, identity, identity/principalId, plan,
      *     plan/publisher, plan/product, plan/name, plan/version, and plan/promotionCode.&lt;br&gt;&lt;br&gt;For
@@ -95,24 +107,12 @@ public interface ResourcesClient extends InnerSupportsListing<GenericResourceExp
         String resourceGroupName, String filter, String expand, Integer top, Context context);
 
     /**
-     * Get all the resources for a resource group.
-     *
-     * @param resourceGroupName The resource group with the resources to get.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the resources for a resource group.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<GenericResourceExpandedInner> listByResourceGroup(String resourceGroupName);
-
-    /**
      * The resources to move must be in the same source resource group. The target resource group may be in a different
      * subscription. When moving resources, both the source group and the target group are locked for the duration of
      * the operation. Write and delete operations are blocked on the groups until the move completes.
      *
      * @param sourceResourceGroupName The name of the resource group containing the resources to move.
-     * @param parameters Parameters of move resources.
+     * @param parameters Parameters for moving resources.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -128,7 +128,7 @@ public interface ResourcesClient extends InnerSupportsListing<GenericResourceExp
      * the operation. Write and delete operations are blocked on the groups until the move completes.
      *
      * @param sourceResourceGroupName The name of the resource group containing the resources to move.
-     * @param parameters Parameters of move resources.
+     * @param parameters Parameters for moving resources.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -144,7 +144,7 @@ public interface ResourcesClient extends InnerSupportsListing<GenericResourceExp
      * the operation. Write and delete operations are blocked on the groups until the move completes.
      *
      * @param sourceResourceGroupName The name of the resource group containing the resources to move.
-     * @param parameters Parameters of move resources.
+     * @param parameters Parameters for moving resources.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -159,7 +159,7 @@ public interface ResourcesClient extends InnerSupportsListing<GenericResourceExp
      * the operation. Write and delete operations are blocked on the groups until the move completes.
      *
      * @param sourceResourceGroupName The name of the resource group containing the resources to move.
-     * @param parameters Parameters of move resources.
+     * @param parameters Parameters for moving resources.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -176,7 +176,7 @@ public interface ResourcesClient extends InnerSupportsListing<GenericResourceExp
      * the operation. Write and delete operations are blocked on the groups until the move completes.
      *
      * @param sourceResourceGroupName The name of the resource group containing the resources to move.
-     * @param parameters Parameters of move resources.
+     * @param parameters Parameters for moving resources.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -191,7 +191,7 @@ public interface ResourcesClient extends InnerSupportsListing<GenericResourceExp
      * the operation. Write and delete operations are blocked on the groups until the move completes.
      *
      * @param sourceResourceGroupName The name of the resource group containing the resources to move.
-     * @param parameters Parameters of move resources.
+     * @param parameters Parameters for moving resources.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -205,7 +205,7 @@ public interface ResourcesClient extends InnerSupportsListing<GenericResourceExp
      * the operation. Write and delete operations are blocked on the groups until the move completes.
      *
      * @param sourceResourceGroupName The name of the resource group containing the resources to move.
-     * @param parameters Parameters of move resources.
+     * @param parameters Parameters for moving resources.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -222,7 +222,7 @@ public interface ResourcesClient extends InnerSupportsListing<GenericResourceExp
      * long-running operation.
      *
      * @param sourceResourceGroupName The name of the resource group containing the resources to validate for move.
-     * @param parameters Parameters of move resources.
+     * @param parameters Parameters for moving resources.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -240,7 +240,7 @@ public interface ResourcesClient extends InnerSupportsListing<GenericResourceExp
      * long-running operation.
      *
      * @param sourceResourceGroupName The name of the resource group containing the resources to validate for move.
-     * @param parameters Parameters of move resources.
+     * @param parameters Parameters for moving resources.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -258,7 +258,7 @@ public interface ResourcesClient extends InnerSupportsListing<GenericResourceExp
      * long-running operation.
      *
      * @param sourceResourceGroupName The name of the resource group containing the resources to validate for move.
-     * @param parameters Parameters of move resources.
+     * @param parameters Parameters for moving resources.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -276,7 +276,7 @@ public interface ResourcesClient extends InnerSupportsListing<GenericResourceExp
      * long-running operation.
      *
      * @param sourceResourceGroupName The name of the resource group containing the resources to validate for move.
-     * @param parameters Parameters of move resources.
+     * @param parameters Parameters for moving resources.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -295,7 +295,7 @@ public interface ResourcesClient extends InnerSupportsListing<GenericResourceExp
      * long-running operation.
      *
      * @param sourceResourceGroupName The name of the resource group containing the resources to validate for move.
-     * @param parameters Parameters of move resources.
+     * @param parameters Parameters for moving resources.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -312,7 +312,7 @@ public interface ResourcesClient extends InnerSupportsListing<GenericResourceExp
      * long-running operation.
      *
      * @param sourceResourceGroupName The name of the resource group containing the resources to validate for move.
-     * @param parameters Parameters of move resources.
+     * @param parameters Parameters for moving resources.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -328,7 +328,7 @@ public interface ResourcesClient extends InnerSupportsListing<GenericResourceExp
      * long-running operation.
      *
      * @param sourceResourceGroupName The name of the resource group containing the resources to validate for move.
-     * @param parameters Parameters of move resources.
+     * @param parameters Parameters for moving resources.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -377,6 +377,16 @@ public interface ResourcesClient extends InnerSupportsListing<GenericResourceExp
     /**
      * Get all the resources in a subscription.
      *
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all the resources in a subscription.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<GenericResourceExpandedInner> list();
+
+    /**
+     * Get all the resources in a subscription.
+     *
      * @param filter The filter to apply on the operation.&lt;br&gt;&lt;br&gt;The properties you can use for eq (equals)
      *     or ne (not equals) are: location, resourceType, name, resourceGroup, identity, identity/principalId, plan,
      *     plan/publisher, plan/product, plan/name, plan/version, and plan/promotionCode.&lt;br&gt;&lt;br&gt;For
@@ -401,16 +411,6 @@ public interface ResourcesClient extends InnerSupportsListing<GenericResourceExp
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<GenericResourceExpandedInner> list(String filter, String expand, Integer top, Context context);
-
-    /**
-     * Get all the resources in a subscription.
-     *
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the resources in a subscription.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<GenericResourceExpandedInner> list();
 
     /**
      * Checks whether a resource exists.
@@ -689,7 +689,7 @@ public interface ResourcesClient extends InnerSupportsListing<GenericResourceExp
      * @param resourceType The resource type of the resource to create.
      * @param resourceName The name of the resource to create.
      * @param apiVersion The API version to use for the operation.
-     * @param parameters Resource information.
+     * @param parameters Parameters for creating or updating the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -714,7 +714,7 @@ public interface ResourcesClient extends InnerSupportsListing<GenericResourceExp
      * @param resourceType The resource type of the resource to create.
      * @param resourceName The name of the resource to create.
      * @param apiVersion The API version to use for the operation.
-     * @param parameters Resource information.
+     * @param parameters Parameters for creating or updating the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -739,7 +739,7 @@ public interface ResourcesClient extends InnerSupportsListing<GenericResourceExp
      * @param resourceType The resource type of the resource to create.
      * @param resourceName The name of the resource to create.
      * @param apiVersion The API version to use for the operation.
-     * @param parameters Resource information.
+     * @param parameters Parameters for creating or updating the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -764,7 +764,7 @@ public interface ResourcesClient extends InnerSupportsListing<GenericResourceExp
      * @param resourceType The resource type of the resource to create.
      * @param resourceName The name of the resource to create.
      * @param apiVersion The API version to use for the operation.
-     * @param parameters Resource information.
+     * @param parameters Parameters for creating or updating the resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -791,7 +791,7 @@ public interface ResourcesClient extends InnerSupportsListing<GenericResourceExp
      * @param resourceType The resource type of the resource to create.
      * @param resourceName The name of the resource to create.
      * @param apiVersion The API version to use for the operation.
-     * @param parameters Resource information.
+     * @param parameters Parameters for creating or updating the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -816,7 +816,7 @@ public interface ResourcesClient extends InnerSupportsListing<GenericResourceExp
      * @param resourceType The resource type of the resource to create.
      * @param resourceName The name of the resource to create.
      * @param apiVersion The API version to use for the operation.
-     * @param parameters Resource information.
+     * @param parameters Parameters for creating or updating the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -841,7 +841,7 @@ public interface ResourcesClient extends InnerSupportsListing<GenericResourceExp
      * @param resourceType The resource type of the resource to create.
      * @param resourceName The name of the resource to create.
      * @param apiVersion The API version to use for the operation.
-     * @param parameters Resource information.
+     * @param parameters Parameters for creating or updating the resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -868,7 +868,7 @@ public interface ResourcesClient extends InnerSupportsListing<GenericResourceExp
      * @param resourceType The resource type of the resource to update.
      * @param resourceName The name of the resource to update.
      * @param apiVersion The API version to use for the operation.
-     * @param parameters Resource information.
+     * @param parameters Parameters for updating the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -893,7 +893,7 @@ public interface ResourcesClient extends InnerSupportsListing<GenericResourceExp
      * @param resourceType The resource type of the resource to update.
      * @param resourceName The name of the resource to update.
      * @param apiVersion The API version to use for the operation.
-     * @param parameters Resource information.
+     * @param parameters Parameters for updating the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -918,7 +918,7 @@ public interface ResourcesClient extends InnerSupportsListing<GenericResourceExp
      * @param resourceType The resource type of the resource to update.
      * @param resourceName The name of the resource to update.
      * @param apiVersion The API version to use for the operation.
-     * @param parameters Resource information.
+     * @param parameters Parameters for updating the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -943,7 +943,7 @@ public interface ResourcesClient extends InnerSupportsListing<GenericResourceExp
      * @param resourceType The resource type of the resource to update.
      * @param resourceName The name of the resource to update.
      * @param apiVersion The API version to use for the operation.
-     * @param parameters Resource information.
+     * @param parameters Parameters for updating the resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -970,7 +970,7 @@ public interface ResourcesClient extends InnerSupportsListing<GenericResourceExp
      * @param resourceType The resource type of the resource to update.
      * @param resourceName The name of the resource to update.
      * @param apiVersion The API version to use for the operation.
-     * @param parameters Resource information.
+     * @param parameters Parameters for updating the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -995,7 +995,7 @@ public interface ResourcesClient extends InnerSupportsListing<GenericResourceExp
      * @param resourceType The resource type of the resource to update.
      * @param resourceName The name of the resource to update.
      * @param apiVersion The API version to use for the operation.
-     * @param parameters Resource information.
+     * @param parameters Parameters for updating the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1020,7 +1020,7 @@ public interface ResourcesClient extends InnerSupportsListing<GenericResourceExp
      * @param resourceType The resource type of the resource to update.
      * @param resourceName The name of the resource to update.
      * @param apiVersion The API version to use for the operation.
-     * @param parameters Resource information.
+     * @param parameters Parameters for updating the resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -1309,7 +1309,7 @@ public interface ResourcesClient extends InnerSupportsListing<GenericResourceExp
      *     format,
      *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}.
      * @param apiVersion The API version to use for the operation.
-     * @param parameters Resource information.
+     * @param parameters Create or update resource parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1326,7 +1326,7 @@ public interface ResourcesClient extends InnerSupportsListing<GenericResourceExp
      *     format,
      *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}.
      * @param apiVersion The API version to use for the operation.
-     * @param parameters Resource information.
+     * @param parameters Create or update resource parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1343,7 +1343,7 @@ public interface ResourcesClient extends InnerSupportsListing<GenericResourceExp
      *     format,
      *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}.
      * @param apiVersion The API version to use for the operation.
-     * @param parameters Resource information.
+     * @param parameters Create or update resource parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1360,7 +1360,7 @@ public interface ResourcesClient extends InnerSupportsListing<GenericResourceExp
      *     format,
      *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}.
      * @param apiVersion The API version to use for the operation.
-     * @param parameters Resource information.
+     * @param parameters Create or update resource parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -1378,7 +1378,7 @@ public interface ResourcesClient extends InnerSupportsListing<GenericResourceExp
      *     format,
      *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}.
      * @param apiVersion The API version to use for the operation.
-     * @param parameters Resource information.
+     * @param parameters Create or update resource parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1395,7 +1395,7 @@ public interface ResourcesClient extends InnerSupportsListing<GenericResourceExp
      *     format,
      *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}.
      * @param apiVersion The API version to use for the operation.
-     * @param parameters Resource information.
+     * @param parameters Create or update resource parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1411,7 +1411,7 @@ public interface ResourcesClient extends InnerSupportsListing<GenericResourceExp
      *     format,
      *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}.
      * @param apiVersion The API version to use for the operation.
-     * @param parameters Resource information.
+     * @param parameters Create or update resource parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -1429,7 +1429,7 @@ public interface ResourcesClient extends InnerSupportsListing<GenericResourceExp
      *     format,
      *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}.
      * @param apiVersion The API version to use for the operation.
-     * @param parameters Resource information.
+     * @param parameters Update resource parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1446,7 +1446,7 @@ public interface ResourcesClient extends InnerSupportsListing<GenericResourceExp
      *     format,
      *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}.
      * @param apiVersion The API version to use for the operation.
-     * @param parameters Resource information.
+     * @param parameters Update resource parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1463,7 +1463,7 @@ public interface ResourcesClient extends InnerSupportsListing<GenericResourceExp
      *     format,
      *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}.
      * @param apiVersion The API version to use for the operation.
-     * @param parameters Resource information.
+     * @param parameters Update resource parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1480,7 +1480,7 @@ public interface ResourcesClient extends InnerSupportsListing<GenericResourceExp
      *     format,
      *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}.
      * @param apiVersion The API version to use for the operation.
-     * @param parameters Resource information.
+     * @param parameters Update resource parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -1498,7 +1498,7 @@ public interface ResourcesClient extends InnerSupportsListing<GenericResourceExp
      *     format,
      *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}.
      * @param apiVersion The API version to use for the operation.
-     * @param parameters Resource information.
+     * @param parameters Update resource parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1514,7 +1514,7 @@ public interface ResourcesClient extends InnerSupportsListing<GenericResourceExp
      *     format,
      *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}.
      * @param apiVersion The API version to use for the operation.
-     * @param parameters Resource information.
+     * @param parameters Update resource parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1530,7 +1530,7 @@ public interface ResourcesClient extends InnerSupportsListing<GenericResourceExp
      *     format,
      *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}.
      * @param apiVersion The API version to use for the operation.
-     * @param parameters Resource information.
+     * @param parameters Update resource parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.

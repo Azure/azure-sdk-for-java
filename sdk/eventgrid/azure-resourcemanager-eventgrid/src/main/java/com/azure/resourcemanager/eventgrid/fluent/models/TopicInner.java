@@ -7,11 +7,16 @@ package com.azure.resourcemanager.eventgrid.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.eventgrid.models.ExtendedLocation;
+import com.azure.resourcemanager.eventgrid.models.IdentityInfo;
 import com.azure.resourcemanager.eventgrid.models.InboundIpRule;
 import com.azure.resourcemanager.eventgrid.models.InputSchema;
 import com.azure.resourcemanager.eventgrid.models.InputSchemaMapping;
 import com.azure.resourcemanager.eventgrid.models.PublicNetworkAccess;
+import com.azure.resourcemanager.eventgrid.models.ResourceKind;
+import com.azure.resourcemanager.eventgrid.models.ResourceSku;
 import com.azure.resourcemanager.eventgrid.models.TopicProvisioningState;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -25,9 +30,39 @@ public class TopicInner extends Resource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(TopicInner.class);
 
     /*
+     * The Sku pricing tier for the topic.
+     */
+    @JsonProperty(value = "sku")
+    private ResourceSku sku;
+
+    /*
+     * Identity information for the resource.
+     */
+    @JsonProperty(value = "identity")
+    private IdentityInfo identity;
+
+    /*
+     * Kind of the resource.
+     */
+    @JsonProperty(value = "kind")
+    private ResourceKind kind;
+
+    /*
+     * Extended location of the resource.
+     */
+    @JsonProperty(value = "extendedLocation")
+    private ExtendedLocation extendedLocation;
+
+    /*
+     * The system metadata relating to Topic resource.
+     */
+    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
+    private SystemData systemData;
+
+    /*
      * The privateEndpointConnections property.
      */
-    @JsonProperty(value = "properties.privateEndpointConnections")
+    @JsonProperty(value = "properties.privateEndpointConnections", access = JsonProperty.Access.WRITE_ONLY)
     private List<PrivateEndpointConnectionInner> privateEndpointConnections;
 
     /*
@@ -81,6 +116,103 @@ public class TopicInner extends Resource {
     @JsonProperty(value = "properties.inboundIpRules")
     private List<InboundIpRule> inboundIpRules;
 
+    /*
+     * This boolean is used to enable or disable local auth. Default value is
+     * false. When the property is set to true, only AAD token will be used to
+     * authenticate if user is allowed to publish to the topic.
+     */
+    @JsonProperty(value = "properties.disableLocalAuth")
+    private Boolean disableLocalAuth;
+
+    /**
+     * Get the sku property: The Sku pricing tier for the topic.
+     *
+     * @return the sku value.
+     */
+    public ResourceSku sku() {
+        return this.sku;
+    }
+
+    /**
+     * Set the sku property: The Sku pricing tier for the topic.
+     *
+     * @param sku the sku value to set.
+     * @return the TopicInner object itself.
+     */
+    public TopicInner withSku(ResourceSku sku) {
+        this.sku = sku;
+        return this;
+    }
+
+    /**
+     * Get the identity property: Identity information for the resource.
+     *
+     * @return the identity value.
+     */
+    public IdentityInfo identity() {
+        return this.identity;
+    }
+
+    /**
+     * Set the identity property: Identity information for the resource.
+     *
+     * @param identity the identity value to set.
+     * @return the TopicInner object itself.
+     */
+    public TopicInner withIdentity(IdentityInfo identity) {
+        this.identity = identity;
+        return this;
+    }
+
+    /**
+     * Get the kind property: Kind of the resource.
+     *
+     * @return the kind value.
+     */
+    public ResourceKind kind() {
+        return this.kind;
+    }
+
+    /**
+     * Set the kind property: Kind of the resource.
+     *
+     * @param kind the kind value to set.
+     * @return the TopicInner object itself.
+     */
+    public TopicInner withKind(ResourceKind kind) {
+        this.kind = kind;
+        return this;
+    }
+
+    /**
+     * Get the extendedLocation property: Extended location of the resource.
+     *
+     * @return the extendedLocation value.
+     */
+    public ExtendedLocation extendedLocation() {
+        return this.extendedLocation;
+    }
+
+    /**
+     * Set the extendedLocation property: Extended location of the resource.
+     *
+     * @param extendedLocation the extendedLocation value to set.
+     * @return the TopicInner object itself.
+     */
+    public TopicInner withExtendedLocation(ExtendedLocation extendedLocation) {
+        this.extendedLocation = extendedLocation;
+        return this;
+    }
+
+    /**
+     * Get the systemData property: The system metadata relating to Topic resource.
+     *
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
+    }
+
     /**
      * Get the privateEndpointConnections property: The privateEndpointConnections property.
      *
@@ -88,17 +220,6 @@ public class TopicInner extends Resource {
      */
     public List<PrivateEndpointConnectionInner> privateEndpointConnections() {
         return this.privateEndpointConnections;
-    }
-
-    /**
-     * Set the privateEndpointConnections property: The privateEndpointConnections property.
-     *
-     * @param privateEndpointConnections the privateEndpointConnections value to set.
-     * @return the TopicInner object itself.
-     */
-    public TopicInner withPrivateEndpointConnections(List<PrivateEndpointConnectionInner> privateEndpointConnections) {
-        this.privateEndpointConnections = privateEndpointConnections;
-        return this;
     }
 
     /**
@@ -220,6 +341,30 @@ public class TopicInner extends Resource {
         return this;
     }
 
+    /**
+     * Get the disableLocalAuth property: This boolean is used to enable or disable local auth. Default value is false.
+     * When the property is set to true, only AAD token will be used to authenticate if user is allowed to publish to
+     * the topic.
+     *
+     * @return the disableLocalAuth value.
+     */
+    public Boolean disableLocalAuth() {
+        return this.disableLocalAuth;
+    }
+
+    /**
+     * Set the disableLocalAuth property: This boolean is used to enable or disable local auth. Default value is false.
+     * When the property is set to true, only AAD token will be used to authenticate if user is allowed to publish to
+     * the topic.
+     *
+     * @param disableLocalAuth the disableLocalAuth value to set.
+     * @return the TopicInner object itself.
+     */
+    public TopicInner withDisableLocalAuth(Boolean disableLocalAuth) {
+        this.disableLocalAuth = disableLocalAuth;
+        return this;
+    }
+
     /** {@inheritDoc} */
     @Override
     public TopicInner withLocation(String location) {
@@ -240,6 +385,15 @@ public class TopicInner extends Resource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (sku() != null) {
+            sku().validate();
+        }
+        if (identity() != null) {
+            identity().validate();
+        }
+        if (extendedLocation() != null) {
+            extendedLocation().validate();
+        }
         if (privateEndpointConnections() != null) {
             privateEndpointConnections().forEach(e -> e.validate());
         }

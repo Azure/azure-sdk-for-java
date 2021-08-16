@@ -136,6 +136,20 @@ public interface NetworkManagementClient {
     BastionHostsClient getBastionHosts();
 
     /**
+     * Gets the NetworkInterfacesClient object to access its operations.
+     *
+     * @return the NetworkInterfacesClient object.
+     */
+    NetworkInterfacesClient getNetworkInterfaces();
+
+    /**
+     * Gets the PublicIpAddressesClient object to access its operations.
+     *
+     * @return the PublicIpAddressesClient object.
+     */
+    PublicIpAddressesClient getPublicIpAddresses();
+
+    /**
      * Gets the CustomIpPrefixesClient object to access its operations.
      *
      * @return the CustomIpPrefixesClient object.
@@ -339,13 +353,6 @@ public interface NetworkManagementClient {
     NatGatewaysClient getNatGateways();
 
     /**
-     * Gets the NetworkInterfacesClient object to access its operations.
-     *
-     * @return the NetworkInterfacesClient object.
-     */
-    NetworkInterfacesClient getNetworkInterfaces();
-
-    /**
      * Gets the NetworkInterfaceIpConfigurationsClient object to access its operations.
      *
      * @return the NetworkInterfaceIpConfigurationsClient object.
@@ -486,13 +493,6 @@ public interface NetworkManagementClient {
     PrivateLinkServicesClient getPrivateLinkServices();
 
     /**
-     * Gets the PublicIpAddressesClient object to access its operations.
-     *
-     * @return the PublicIpAddressesClient object.
-     */
-    PublicIpAddressesClient getPublicIpAddresses();
-
-    /**
      * Gets the PublicIpPrefixesClient object to access its operations.
      *
      * @return the PublicIpPrefixesClient object.
@@ -626,6 +626,13 @@ public interface NetworkManagementClient {
     LocalNetworkGatewaysClient getLocalNetworkGateways();
 
     /**
+     * Gets the VirtualNetworkGatewayNatRulesClient object to access its operations.
+     *
+     * @return the VirtualNetworkGatewayNatRulesClient object.
+     */
+    VirtualNetworkGatewayNatRulesClient getVirtualNetworkGatewayNatRules();
+
+    /**
      * Gets the VirtualNetworkTapsClient object to access its operations.
      *
      * @return the VirtualNetworkTapsClient object.
@@ -703,6 +710,13 @@ public interface NetworkManagementClient {
     VpnGatewaysClient getVpnGateways();
 
     /**
+     * Gets the VpnLinkConnectionsClient object to access its operations.
+     *
+     * @return the VpnLinkConnectionsClient object.
+     */
+    VpnLinkConnectionsClient getVpnLinkConnections();
+
+    /**
      * Gets the VpnConnectionsClient object to access its operations.
      *
      * @return the VpnConnectionsClient object.
@@ -717,11 +731,11 @@ public interface NetworkManagementClient {
     VpnSiteLinkConnectionsClient getVpnSiteLinkConnections();
 
     /**
-     * Gets the VpnLinkConnectionsClient object to access its operations.
+     * Gets the NatRulesClient object to access its operations.
      *
-     * @return the VpnLinkConnectionsClient object.
+     * @return the NatRulesClient object.
      */
-    VpnLinkConnectionsClient getVpnLinkConnections();
+    NatRulesClient getNatRules();
 
     /**
      * Gets the P2SVpnGatewaysClient object to access its operations.
@@ -1249,7 +1263,7 @@ public interface NetworkManagementClient {
      *
      * @param resourceGroupName The resource group name.
      * @param virtualWanName The name of the VirtualWAN whose associated VpnServerConfigurations is needed.
-     * @param vpnClientParams Virtual Wan Vpn profile parameters Vpn profile generation.
+     * @param vpnClientParams Parameters supplied to the generate VirtualWan VPN profile generation operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1265,7 +1279,7 @@ public interface NetworkManagementClient {
      *
      * @param resourceGroupName The resource group name.
      * @param virtualWanName The name of the VirtualWAN whose associated VpnServerConfigurations is needed.
-     * @param vpnClientParams Virtual Wan Vpn profile parameters Vpn profile generation.
+     * @param vpnClientParams Parameters supplied to the generate VirtualWan VPN profile generation operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1282,7 +1296,7 @@ public interface NetworkManagementClient {
      *
      * @param resourceGroupName The resource group name.
      * @param virtualWanName The name of the VirtualWAN whose associated VpnServerConfigurations is needed.
-     * @param vpnClientParams Virtual Wan Vpn profile parameters Vpn profile generation.
+     * @param vpnClientParams Parameters supplied to the generate VirtualWan VPN profile generation operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1299,7 +1313,7 @@ public interface NetworkManagementClient {
      *
      * @param resourceGroupName The resource group name.
      * @param virtualWanName The name of the VirtualWAN whose associated VpnServerConfigurations is needed.
-     * @param vpnClientParams Virtual Wan Vpn profile parameters Vpn profile generation.
+     * @param vpnClientParams Parameters supplied to the generate VirtualWan VPN profile generation operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -1320,7 +1334,7 @@ public interface NetworkManagementClient {
      *
      * @param resourceGroupName The resource group name.
      * @param virtualWanName The name of the VirtualWAN whose associated VpnServerConfigurations is needed.
-     * @param vpnClientParams Virtual Wan Vpn profile parameters Vpn profile generation.
+     * @param vpnClientParams Parameters supplied to the generate VirtualWan VPN profile generation operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1336,7 +1350,7 @@ public interface NetworkManagementClient {
      *
      * @param resourceGroupName The resource group name.
      * @param virtualWanName The name of the VirtualWAN whose associated VpnServerConfigurations is needed.
-     * @param vpnClientParams Virtual Wan Vpn profile parameters Vpn profile generation.
+     * @param vpnClientParams Parameters supplied to the generate VirtualWan VPN profile generation operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1352,7 +1366,7 @@ public interface NetworkManagementClient {
      *
      * @param resourceGroupName The resource group name.
      * @param virtualWanName The name of the VirtualWAN whose associated VpnServerConfigurations is needed.
-     * @param vpnClientParams Virtual Wan Vpn profile parameters Vpn profile generation.
+     * @param vpnClientParams Parameters supplied to the generate VirtualWan VPN profile generation operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.

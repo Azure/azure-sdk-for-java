@@ -5,11 +5,20 @@ package com.azure.storage.blob.batch;
 
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.HttpPipelineBuilder;
+import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.http.policy.UserAgentPolicy;
+import com.azure.core.util.CoreUtils;
 import com.azure.storage.blob.BlobContainerAsyncClient;
 import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.BlobServiceAsyncClient;
 import com.azure.storage.blob.BlobServiceClient;
 import com.azure.storage.blob.BlobServiceVersion;
+import com.azure.storage.blob.implementation.util.BlobUserAgentModificationPolicy;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * This class provides a fluent builder API to help aid the configuration and instantiation of {@link BlobBatchClient
@@ -18,6 +27,13 @@ import com.azure.storage.blob.BlobServiceVersion;
  */
 @ServiceClientBuilder(serviceClients = {BlobBatchClient.class, BlobBatchAsyncClient.class})
 public final class BlobBatchClientBuilder {
+    private static final Map<String, String> PROPERTIES =
+        CoreUtils.getProperties("azure-storage-blob-batch.properties");
+    private static final String SDK_NAME = "name";
+    private static final String SDK_VERSION = "version";
+    private static final String CLIENT_NAME = PROPERTIES.getOrDefault(SDK_NAME, "UnknownName");
+    private static final String CLIENT_VERSION = PROPERTIES.getOrDefault(SDK_VERSION, "UnknownVersion");
+
     private final String clientUrl;
     private final HttpPipeline pipeline;
     private final BlobServiceVersion version;
@@ -102,6 +118,24 @@ public final class BlobBatchClientBuilder {
      */
     public BlobBatchAsyncClient buildAsyncClient() {
         BlobServiceVersion serviceVersion = version != null ? version : BlobServiceVersion.getLatest();
-        return new BlobBatchAsyncClient(clientUrl, pipeline, serviceVersion, containerScoped);
+        return new BlobBatchAsyncClient(clientUrl, addBlobUserAgentModificationPolicy(pipeline), serviceVersion,
+            containerScoped);
+    }
+
+    private HttpPipeline addBlobUserAgentModificationPolicy(HttpPipeline pipeline) {
+        List<HttpPipelinePolicy> policies = new ArrayList<>();
+
+        for (int i = 0; i < pipeline.getPolicyCount(); i++) {
+            HttpPipelinePolicy currPolicy = pipeline.getPolicy(i);
+            policies.add(currPolicy);
+            if (currPolicy instanceof UserAgentPolicy) {
+                policies.add(new BlobUserAgentModificationPolicy(CLIENT_NAME, CLIENT_VERSION));
+            }
+        }
+
+        return new HttpPipelineBuilder()
+            .httpClient(pipeline.getHttpClient())
+            .policies(policies.toArray(new HttpPipelinePolicy[0]))
+            .build();
     }
 }

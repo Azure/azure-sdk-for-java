@@ -4,17 +4,16 @@
 package com.azure.ai.textanalytics;
 
 import com.azure.ai.textanalytics.implementation.TextAnalyticsClientImpl;
+import com.azure.ai.textanalytics.implementation.Utility;
 import com.azure.ai.textanalytics.implementation.models.DocumentError;
 import com.azure.ai.textanalytics.implementation.models.DocumentLanguage;
 import com.azure.ai.textanalytics.implementation.models.LanguageBatchInput;
 import com.azure.ai.textanalytics.implementation.models.LanguageResult;
-import com.azure.ai.textanalytics.implementation.models.WarningCodeValue;
 import com.azure.ai.textanalytics.models.DetectLanguageInput;
 import com.azure.ai.textanalytics.models.DetectLanguageResult;
 import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextAnalyticsWarning;
-import com.azure.ai.textanalytics.models.WarningCode;
 import com.azure.ai.textanalytics.util.DetectLanguageResultCollection;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
@@ -28,11 +27,12 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static com.azure.ai.textanalytics.TextAnalyticsAsyncClient.COGNITIVE_TRACING_NAMESPACE_VALUE;
+import static com.azure.ai.textanalytics.implementation.Utility.getDocumentCount;
 import static com.azure.ai.textanalytics.implementation.Utility.inputDocumentsValidation;
-import static com.azure.ai.textanalytics.implementation.Utility.mapToHttpResponseExceptionIfExist;
 import static com.azure.ai.textanalytics.implementation.Utility.toBatchStatistics;
 import static com.azure.ai.textanalytics.implementation.Utility.toLanguageInput;
 import static com.azure.ai.textanalytics.implementation.Utility.toTextAnalyticsError;
+import static com.azure.ai.textanalytics.implementation.Utility.toTextAnalyticsWarning;
 import static com.azure.ai.textanalytics.implementation.Utility.toTextDocumentStatistics;
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
@@ -110,12 +110,7 @@ class DetectLanguageAsyncClient {
 
             // warnings
             final List<TextAnalyticsWarning> warnings = documentLanguage.getWarnings().stream()
-                .map(warning -> {
-                    final WarningCodeValue warningCodeValue = warning.getCode();
-                    return new TextAnalyticsWarning(
-                        WarningCode.fromString(warningCodeValue == null ? null : warningCodeValue.toString()),
-                        warning.getMessage());
-                }).collect(Collectors.toList());
+                .map(warning -> toTextAnalyticsWarning(warning)).collect(Collectors.toList());
 
             detectLanguageResults.add(new DetectLanguageResult(
                 documentLanguage.getId(),
@@ -149,16 +144,19 @@ class DetectLanguageAsyncClient {
      */
     private Mono<Response<DetectLanguageResultCollection>> getDetectedLanguageResponse(
         Iterable<DetectLanguageInput> documents, TextAnalyticsRequestOptions options, Context context) {
+        options = options == null ? new TextAnalyticsRequestOptions() : options;
         return service.languagesWithResponseAsync(
             new LanguageBatchInput().setDocuments(toLanguageInput(documents)),
-            options == null ? null : options.getModelVersion(),
-            options == null ? null : options.isIncludeStatistics(),
+            options.getModelVersion(),
+            options.isIncludeStatistics(),
+            options.isServiceLogsDisabled(),
             context.addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE))
-            .doOnSubscribe(ignoredValue -> logger.info("A batch of documents - {}", documents.toString()))
+            .doOnSubscribe(ignoredValue -> logger.info("A batch of documents with count - {}",
+                getDocumentCount(documents)))
             .doOnSuccess(response -> logger.info("Detected languages for a batch of documents - {}",
                 response.getValue()))
             .doOnError(error -> logger.warning("Failed to detect language - {}", error))
             .map(this::toTextAnalyticsResultDocumentResponse)
-            .onErrorMap(throwable -> mapToHttpResponseExceptionIfExist(throwable));
+            .onErrorMap(Utility::mapToHttpResponseExceptionIfExists);
     }
 }

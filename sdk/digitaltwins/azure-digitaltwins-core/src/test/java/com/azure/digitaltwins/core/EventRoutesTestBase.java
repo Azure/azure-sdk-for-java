@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.digitaltwins.core;
 
 import com.azure.core.http.HttpClient;
@@ -24,7 +27,7 @@ public abstract class EventRoutesTestBase extends DigitalTwinsTestBase {
     static final String FILTER = "$eventType = 'DigitalTwinTelemetryMessages' or $eventType = 'DigitalTwinLifecycleNotification'";
 
     @Test
-    public abstract void eventRouteLifecycleTest(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion);
+    public abstract void eventRouteLifecycleTest(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion) throws InterruptedException;
 
     @Test
     public abstract void getEventRouteThrowsIfEventRouteDoesNotExist(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion);

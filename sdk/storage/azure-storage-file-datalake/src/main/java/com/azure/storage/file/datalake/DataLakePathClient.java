@@ -62,6 +62,15 @@ public class DataLakePathClient {
     }
 
     /**
+     * Gets the URL of the storage account.
+     *
+     * @return the URL.
+     */
+    String getAccountUrl() {
+        return dataLakePathAsyncClient.getAccountUrl();
+    }
+
+    /**
      * Gets the URL of the object represented by this client on the Data Lake service.
      *
      * @return the URL.
@@ -701,10 +710,11 @@ public class DataLakePathClient {
         String renameSource = "/" + dataLakePathAsyncClient.getFileSystemName() + "/"
             + Utility.urlEncode(dataLakePathAsyncClient.getObjectPath());
 
-        return dataLakePathClient.dataLakePathAsyncClient.dataLakeStorage.paths().createWithRestResponseAsync(
-            null /* pathResourceType */, null /* continuation */, PathRenameMode.LEGACY, renameSource,
+        return dataLakePathClient.dataLakePathAsyncClient.dataLakeStorage.getPaths().createWithResponseAsync(
+            null /* requestId */, null /* timeout */, null /* pathResourceType */,
+            null /* continuation */, PathRenameMode.LEGACY, renameSource,
             sourceRequestConditions.getLeaseId(), null /* properties */, null /* permissions */, null /* umask */,
-            null /* request id */, null /* timeout */, null /* headers */, destLac, destMac, sourceConditions, context)
+            null /* headers */, destLac, destMac, sourceConditions, context)
             .map(response -> new SimpleResponse<>(response, dataLakePathClient));
     }
 

@@ -85,7 +85,7 @@ public class VirtualMachineEMSILMSIOperationsTests extends ComputeManagementTest
                 .withoutPrimaryPublicIPAddress()
                 .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                 .withRootUsername("Foo12")
-                .withRootPassword(password())
+                .withSsh(sshPublicKey())
                 .withExistingUserAssignedManagedServiceIdentity(createdIdentity)
                 .withNewUserAssignedManagedServiceIdentity(creatableIdentity)
                 .create();
@@ -294,7 +294,7 @@ public class VirtualMachineEMSILMSIOperationsTests extends ComputeManagementTest
                 .withoutPrimaryPublicIPAddress()
                 .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                 .withRootUsername("Foo12")
-                .withRootPassword(password())
+                .withSsh(sshPublicKey())
                 .withSystemAssignedManagedServiceIdentity()
                 .withSystemAssignedIdentityBasedAccessTo(network.id(), BuiltInRole.CONTRIBUTOR)
                 .withNewUserAssignedManagedServiceIdentity(creatableIdentity)
@@ -397,7 +397,7 @@ public class VirtualMachineEMSILMSIOperationsTests extends ComputeManagementTest
                 .withoutPrimaryPublicIPAddress()
                 .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                 .withRootUsername("Foo12")
-                .withRootPassword(password())
+                .withSsh(sshPublicKey())
                 .create();
 
         // Prepare a definition for yet-to-be-created "User Assigned (External) MSI" with contributor access to the
@@ -425,6 +425,14 @@ public class VirtualMachineEMSILMSIOperationsTests extends ComputeManagementTest
         Identity identity = msiManager.identities().getById(emsiIds.iterator().next());
         Assertions.assertNotNull(identity);
         Assertions.assertTrue(identity.name().equalsIgnoreCase(identityName1));
+
+        // Update VM without modify MSI
+        virtualMachine.update()
+            .withNewDataDisk(10)
+            .apply();
+        emsiIds = virtualMachine.userAssignedManagedServiceIdentityIds();
+        Assertions.assertNotNull(emsiIds);
+        Assertions.assertEquals(1, emsiIds.size());
 
         // Creates an EMSI
         //

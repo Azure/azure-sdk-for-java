@@ -34,6 +34,7 @@ public final class SearchServiceClientImplBuilder {
 
     private final Map<String, String> properties = new HashMap<>();
 
+    /** Create an instance of the SearchServiceClientImplBuilder. */
     public SearchServiceClientImplBuilder() {
         this.pipelinePolicies = new ArrayList<>();
     }
@@ -51,6 +52,22 @@ public final class SearchServiceClientImplBuilder {
      */
     public SearchServiceClientImplBuilder endpoint(String endpoint) {
         this.endpoint = endpoint;
+        return this;
+    }
+
+    /*
+     * Api Version
+     */
+    private String apiVersion;
+
+    /**
+     * Sets Api Version.
+     *
+     * @param apiVersion the apiVersion value.
+     * @return the SearchServiceClientImplBuilder.
+     */
+    public SearchServiceClientImplBuilder apiVersion(String apiVersion) {
+        this.apiVersion = apiVersion;
         return this;
     }
 
@@ -155,7 +172,7 @@ public final class SearchServiceClientImplBuilder {
     /*
      * The list of Http pipeline policies to add.
      */
-    private List<HttpPipelinePolicy> pipelinePolicies;
+    private final List<HttpPipelinePolicy> pipelinePolicies;
 
     /**
      * Adds a custom Http pipeline policy.
@@ -174,13 +191,16 @@ public final class SearchServiceClientImplBuilder {
      * @return an instance of SearchServiceClientImpl.
      */
     public SearchServiceClientImpl buildClient() {
+        if (apiVersion == null) {
+            this.apiVersion = "2021-04-30-Preview";
+        }
         if (pipeline == null) {
             this.pipeline = createHttpPipeline();
         }
         if (serializerAdapter == null) {
             this.serializerAdapter = JacksonAdapter.createDefaultSerializerAdapter();
         }
-        SearchServiceClientImpl client = new SearchServiceClientImpl(pipeline, serializerAdapter, endpoint);
+        SearchServiceClientImpl client = new SearchServiceClientImpl(pipeline, serializerAdapter, endpoint, apiVersion);
         return client;
     }
 

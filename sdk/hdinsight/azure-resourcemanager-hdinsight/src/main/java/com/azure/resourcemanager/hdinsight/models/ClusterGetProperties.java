@@ -22,6 +22,12 @@ public final class ClusterGetProperties {
     private String clusterVersion;
 
     /*
+     * The hdp version of the cluster.
+     */
+    @JsonProperty(value = "clusterHdpVersion")
+    private String clusterHdpVersion;
+
+    /*
      * The type of operating system.
      */
     @JsonProperty(value = "osType")
@@ -112,10 +118,22 @@ public final class ClusterGetProperties {
     private EncryptionInTransitProperties encryptionInTransitProperties;
 
     /*
+     * The storage profile.
+     */
+    @JsonProperty(value = "storageProfile")
+    private StorageProfile storageProfile;
+
+    /*
      * The minimal supported tls version.
      */
     @JsonProperty(value = "minSupportedTlsVersion")
     private String minSupportedTlsVersion;
+
+    /*
+     * The excluded services config.
+     */
+    @JsonProperty(value = "excludedServicesConfig")
+    private ExcludedServicesConfig excludedServicesConfig;
 
     /*
      * The network properties.
@@ -146,6 +164,26 @@ public final class ClusterGetProperties {
      */
     public ClusterGetProperties withClusterVersion(String clusterVersion) {
         this.clusterVersion = clusterVersion;
+        return this;
+    }
+
+    /**
+     * Get the clusterHdpVersion property: The hdp version of the cluster.
+     *
+     * @return the clusterHdpVersion value.
+     */
+    public String clusterHdpVersion() {
+        return this.clusterHdpVersion;
+    }
+
+    /**
+     * Set the clusterHdpVersion property: The hdp version of the cluster.
+     *
+     * @param clusterHdpVersion the clusterHdpVersion value to set.
+     * @return the ClusterGetProperties object itself.
+     */
+    public ClusterGetProperties withClusterHdpVersion(String clusterHdpVersion) {
+        this.clusterHdpVersion = clusterHdpVersion;
         return this;
     }
 
@@ -451,6 +489,26 @@ public final class ClusterGetProperties {
     }
 
     /**
+     * Get the storageProfile property: The storage profile.
+     *
+     * @return the storageProfile value.
+     */
+    public StorageProfile storageProfile() {
+        return this.storageProfile;
+    }
+
+    /**
+     * Set the storageProfile property: The storage profile.
+     *
+     * @param storageProfile the storageProfile value to set.
+     * @return the ClusterGetProperties object itself.
+     */
+    public ClusterGetProperties withStorageProfile(StorageProfile storageProfile) {
+        this.storageProfile = storageProfile;
+        return this;
+    }
+
+    /**
      * Get the minSupportedTlsVersion property: The minimal supported tls version.
      *
      * @return the minSupportedTlsVersion value.
@@ -467,6 +525,26 @@ public final class ClusterGetProperties {
      */
     public ClusterGetProperties withMinSupportedTlsVersion(String minSupportedTlsVersion) {
         this.minSupportedTlsVersion = minSupportedTlsVersion;
+        return this;
+    }
+
+    /**
+     * Get the excludedServicesConfig property: The excluded services config.
+     *
+     * @return the excludedServicesConfig value.
+     */
+    public ExcludedServicesConfig excludedServicesConfig() {
+        return this.excludedServicesConfig;
+    }
+
+    /**
+     * Set the excludedServicesConfig property: The excluded services config.
+     *
+     * @param excludedServicesConfig the excludedServicesConfig value to set.
+     * @return the ClusterGetProperties object itself.
+     */
+    public ClusterGetProperties withExcludedServicesConfig(ExcludedServicesConfig excludedServicesConfig) {
+        this.excludedServicesConfig = excludedServicesConfig;
         return this;
     }
 
@@ -547,6 +625,12 @@ public final class ClusterGetProperties {
         }
         if (encryptionInTransitProperties() != null) {
             encryptionInTransitProperties().validate();
+        }
+        if (storageProfile() != null) {
+            storageProfile().validate();
+        }
+        if (excludedServicesConfig() != null) {
+            excludedServicesConfig().validate();
         }
         if (networkProperties() != null) {
             networkProperties().validate();

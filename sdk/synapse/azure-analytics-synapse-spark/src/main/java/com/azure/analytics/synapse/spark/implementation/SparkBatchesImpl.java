@@ -11,6 +11,7 @@ import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
+import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
 import com.azure.core.annotation.PathParam;
@@ -50,50 +51,53 @@ public final class SparkBatchesImpl {
      * The interface defining all the services for SparkClientSparkBatches to be used by the proxy service to perform
      * REST calls.
      */
-    @Host("{endpoint}/livyApi/versions/{livyApiVersion}/sparkPools/{sparkPoolName}")
+    @Host("{endpoint}")
     @ServiceInterface(name = "SparkClientSparkBatc")
     private interface SparkBatchesService {
-        @Get("/batches")
+        @Get("/livyApi/versions/{livyApiVersion}/sparkPools/{sparkPoolName}/batches")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<SparkBatchJobCollection>> getSparkBatchJobs(
                 @HostParam("endpoint") String endpoint,
-                @HostParam("livyApiVersion") String livyApiVersion,
-                @HostParam("sparkPoolName") String sparkPoolName,
+                @PathParam(value = "livyApiVersion", encoded = true) String livyApiVersion,
+                @PathParam(value = "sparkPoolName", encoded = true) String sparkPoolName,
                 @QueryParam("from") Integer from,
                 @QueryParam("size") Integer size,
                 @QueryParam("detailed") Boolean detailed,
+                @HeaderParam("Accept") String accept,
                 Context context);
 
-        @Post("/batches")
+        @Post("/livyApi/versions/{livyApiVersion}/sparkPools/{sparkPoolName}/batches")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<SparkBatchJob>> createSparkBatchJob(
                 @HostParam("endpoint") String endpoint,
-                @HostParam("livyApiVersion") String livyApiVersion,
-                @HostParam("sparkPoolName") String sparkPoolName,
+                @PathParam(value = "livyApiVersion", encoded = true) String livyApiVersion,
+                @PathParam(value = "sparkPoolName", encoded = true) String sparkPoolName,
                 @QueryParam("detailed") Boolean detailed,
                 @BodyParam("application/json") SparkBatchJobOptions sparkBatchJobOptions,
+                @HeaderParam("Accept") String accept,
                 Context context);
 
-        @Get("/batches/{batchId}")
+        @Get("/livyApi/versions/{livyApiVersion}/sparkPools/{sparkPoolName}/batches/{batchId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<SparkBatchJob>> getSparkBatchJob(
                 @HostParam("endpoint") String endpoint,
-                @HostParam("livyApiVersion") String livyApiVersion,
-                @HostParam("sparkPoolName") String sparkPoolName,
+                @PathParam(value = "livyApiVersion", encoded = true) String livyApiVersion,
+                @PathParam(value = "sparkPoolName", encoded = true) String sparkPoolName,
                 @PathParam("batchId") int batchId,
                 @QueryParam("detailed") Boolean detailed,
+                @HeaderParam("Accept") String accept,
                 Context context);
 
-        @Delete("/batches/{batchId}")
+        @Delete("/livyApi/versions/{livyApiVersion}/sparkPools/{sparkPoolName}/batches/{batchId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> cancelSparkBatchJob(
                 @HostParam("endpoint") String endpoint,
-                @HostParam("livyApiVersion") String livyApiVersion,
-                @HostParam("sparkPoolName") String sparkPoolName,
+                @PathParam(value = "livyApiVersion", encoded = true) String livyApiVersion,
+                @PathParam(value = "sparkPoolName", encoded = true) String sparkPoolName,
                 @PathParam("batchId") int batchId,
                 Context context);
     }
@@ -112,6 +116,7 @@ public final class SparkBatchesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SparkBatchJobCollection>> getSparkBatchJobsWithResponseAsync(
             Integer from, Integer size, Boolean detailed) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.getSparkBatchJobs(
@@ -121,6 +126,7 @@ public final class SparkBatchesImpl {
                                 from,
                                 size,
                                 detailed,
+                                accept,
                                 context));
     }
 
@@ -139,6 +145,7 @@ public final class SparkBatchesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SparkBatchJobCollection>> getSparkBatchJobsWithResponseAsync(
             Integer from, Integer size, Boolean detailed, Context context) {
+        final String accept = "application/json";
         return service.getSparkBatchJobs(
                 this.client.getEndpoint(),
                 this.client.getLivyApiVersion(),
@@ -146,6 +153,7 @@ public final class SparkBatchesImpl {
                 from,
                 size,
                 detailed,
+                accept,
                 context);
     }
 
@@ -284,6 +292,7 @@ public final class SparkBatchesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SparkBatchJob>> createSparkBatchJobWithResponseAsync(
             SparkBatchJobOptions sparkBatchJobOptions, Boolean detailed) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.createSparkBatchJob(
@@ -292,6 +301,7 @@ public final class SparkBatchesImpl {
                                 this.client.getSparkPoolName(),
                                 detailed,
                                 sparkBatchJobOptions,
+                                accept,
                                 context));
     }
 
@@ -309,12 +319,14 @@ public final class SparkBatchesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SparkBatchJob>> createSparkBatchJobWithResponseAsync(
             SparkBatchJobOptions sparkBatchJobOptions, Boolean detailed, Context context) {
+        final String accept = "application/json";
         return service.createSparkBatchJob(
                 this.client.getEndpoint(),
                 this.client.getLivyApiVersion(),
                 this.client.getSparkPoolName(),
                 detailed,
                 sparkBatchJobOptions,
+                accept,
                 context);
     }
 
@@ -448,6 +460,7 @@ public final class SparkBatchesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SparkBatchJob>> getSparkBatchJobWithResponseAsync(int batchId, Boolean detailed) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.getSparkBatchJob(
@@ -456,6 +469,7 @@ public final class SparkBatchesImpl {
                                 this.client.getSparkPoolName(),
                                 batchId,
                                 detailed,
+                                accept,
                                 context));
     }
 
@@ -473,12 +487,14 @@ public final class SparkBatchesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SparkBatchJob>> getSparkBatchJobWithResponseAsync(
             int batchId, Boolean detailed, Context context) {
+        final String accept = "application/json";
         return service.getSparkBatchJob(
                 this.client.getEndpoint(),
                 this.client.getLivyApiVersion(),
                 this.client.getSparkPoolName(),
                 batchId,
                 detailed,
+                accept,
                 context);
     }
 

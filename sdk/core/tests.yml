@@ -1,7 +1,7 @@
 trigger: none
 
 stages:
-  - template: ../../eng/pipelines/templates/stages/archetype-sdk-tests.yml
+  - template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
     parameters:
       ServiceDirectory: core
       Artifacts:
@@ -44,3 +44,18 @@ stages:
         - name: azure-core-tracing-opentelemetry
           groupId: com.azure
           safeName: azurecoretracingopentelemetry
+  - template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
+    parameters:
+      ServiceDirectory: core
+      TestName: 'jackson_versions'
+      MatrixConfigs:
+        - Name: jackson_version_tests
+          Path: sdk/core/version-matrix.json
+          Selection: sparse
+          NonSparseParameters:
+            - AZURE_CORE_TEST_JACKSON_VERSION
+          GenerateVMJobs: true
+      Artifacts:
+        - name: azure-core-jackson-tests
+          groupId: com.azure
+          safeName: azurecorejacksontests

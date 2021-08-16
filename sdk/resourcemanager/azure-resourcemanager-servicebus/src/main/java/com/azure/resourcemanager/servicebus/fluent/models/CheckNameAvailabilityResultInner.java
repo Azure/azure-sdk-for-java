@@ -16,6 +16,12 @@ public final class CheckNameAvailabilityResultInner {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(CheckNameAvailabilityResultInner.class);
 
     /*
+     * The detailed info regarding the reason associated with the namespace.
+     */
+    @JsonProperty(value = "message", access = JsonProperty.Access.WRITE_ONLY)
+    private String message;
+
+    /*
      * Value indicating namespace is availability, true if the namespace is
      * available; otherwise, false.
      */
@@ -28,11 +34,14 @@ public final class CheckNameAvailabilityResultInner {
     @JsonProperty(value = "reason")
     private UnavailableReason reason;
 
-    /*
-     * The detailed info regarding the reason associated with the namespace.
+    /**
+     * Get the message property: The detailed info regarding the reason associated with the namespace.
+     *
+     * @return the message value.
      */
-    @JsonProperty(value = "message", access = JsonProperty.Access.WRITE_ONLY)
-    private String message;
+    public String message() {
+        return this.message;
+    }
 
     /**
      * Get the nameAvailable property: Value indicating namespace is availability, true if the namespace is available;
@@ -74,15 +83,6 @@ public final class CheckNameAvailabilityResultInner {
     public CheckNameAvailabilityResultInner withReason(UnavailableReason reason) {
         this.reason = reason;
         return this;
-    }
-
-    /**
-     * Get the message property: The detailed info regarding the reason associated with the namespace.
-     *
-     * @return the message value.
-     */
-    public String message() {
-        return this.message;
     }
 
     /**

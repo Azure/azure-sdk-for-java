@@ -108,7 +108,8 @@ public class DistinctDocumentQueryExecutionContext<T extends Resource> implement
                 BridgeInternal.queryMetricsFromFeedResponse(tFeedResponse),
                 ModelBridgeInternal.getQueryPlanDiagnosticsContext(tFeedResponse),
                 false,
-                false);
+                false,
+                tFeedResponse.getCosmosDiagnostics());
         });
 
     }

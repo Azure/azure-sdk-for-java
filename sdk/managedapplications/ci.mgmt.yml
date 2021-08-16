@@ -2,24 +2,32 @@
 trigger:
   branches:
     include:
-      - master
+      - main
       - feature/*
       - hotfix/*
       - release/*
   paths:
     include:
-      - sdk/managedapplications/
+      - sdk/managedapplications/ci.mgmt.yml
+      - sdk/managedapplications/mgmt-v2019_07_01/
+    exclude:
+      - sdk/managedapplications/pom.xml
+      - sdk/managedapplications/mgmt-v2019_07_01/pom.xml
 
 pr:
   branches:
     include:
-      - master
+      - main
       - feature/*
       - hotfix/*
       - release/*
   paths:
     include:
-      - sdk/managedapplications/
+      - sdk/managedapplications/ci.mgmt.yml
+      - sdk/managedapplications/mgmt-v2019_07_01/
+    exclude:
+      - sdk/managedapplications/pom.xml
+      - sdk/managedapplications/mgmt-v2019_07_01/pom.xml
 
 stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-management.yml

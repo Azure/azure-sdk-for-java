@@ -3,6 +3,8 @@
 
 package com.azure.resourcemanager.resources.fluentcore.model.implementation;
 
+import com.azure.core.util.Context;
+import com.azure.core.util.FluxUtil;
 import com.azure.resourcemanager.resources.fluentcore.dag.FunctionalTaskItem;
 import com.azure.resourcemanager.resources.fluentcore.dag.TaskGroup;
 import com.azure.resourcemanager.resources.fluentcore.exception.AggregatedManagementException;
@@ -216,9 +218,27 @@ public abstract class CreatableUpdatableImpl<
         return createOrUpdateAsync();
     }
 
+    @Override
+    public Mono<FluentModelT> createAsync(Context context) {
+        return invokeTaskGroupAsync(context);
+    }
+
+    @Override
+    public Mono<FluentModelT> applyAsync(Context context) {
+        return invokeTaskGroupAsync(context);
+    }
+
     @SuppressWarnings("unchecked")
     public Mono<FluentModelT> createOrUpdateAsync() {
         return taskGroup.invokeAsync()
+            .map(indexable -> (FluentModelT) indexable)
+            .onErrorMap(AggregatedManagementException::convertToManagementException);
+    }
+
+    @SuppressWarnings("unchecked")
+    private Mono<FluentModelT> invokeTaskGroupAsync(Context context) {
+        return taskGroup().invokeAsync()
+            .contextWrite(c -> c.putAll(FluxUtil.toReactorContext(context).readOnly()))
             .map(indexable -> (FluentModelT) indexable)
             .onErrorMap(AggregatedManagementException::convertToManagementException);
     }
@@ -238,6 +258,16 @@ public abstract class CreatableUpdatableImpl<
     @Override
     public FluentModelT apply() {
         return applyAsync().block();
+    }
+
+    @Override
+    public FluentModelT create(Context context) {
+        return createAsync(context).block();
+    }
+
+    @Override
+    public FluentModelT apply(Context context) {
+        return applyAsync(context).block();
     }
 
     /**

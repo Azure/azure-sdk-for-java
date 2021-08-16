@@ -6,6 +6,27 @@ package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Immutable;
 
-/** The IotHubDeviceDeletedEventData model. */
+/** Event data for Microsoft.Devices.DeviceDeleted event. */
 @Immutable
-public final class IotHubDeviceDeletedEventData extends DeviceLifeCycleEventProperties {}
+public final class IotHubDeviceDeletedEventData extends DeviceLifeCycleEventProperties {
+    /** {@inheritDoc} */
+    @Override
+    public IotHubDeviceDeletedEventData setDeviceId(String deviceId) {
+        super.setDeviceId(deviceId);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public IotHubDeviceDeletedEventData setHubName(String hubName) {
+        super.setHubName(hubName);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public IotHubDeviceDeletedEventData setTwin(DeviceTwinInfo twin) {
+        super.setTwin(twin);
+        return this;
+    }
+}

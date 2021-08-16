@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.digitaltwins.core;
 
 import com.azure.core.http.HttpClient;
@@ -26,7 +29,7 @@ public class EventRoutesAsyncTest extends EventRoutesTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.digitaltwins.core.TestHelper#getTestParameters")
     @Override
-    public void eventRouteLifecycleTest(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion) {
+    public void eventRouteLifecycleTest(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion) throws InterruptedException {
         DigitalTwinsAsyncClient asyncClient = getAsyncClient(httpClient, serviceVersion);
         String eventRouteId = testResourceNamer.randomUuid();
 
@@ -35,6 +38,8 @@ public class EventRoutesAsyncTest extends EventRoutesTestBase {
         eventRouteToCreate.setFilter(FILTER);
         StepVerifier.create(asyncClient.createOrReplaceEventRoute(eventRouteId, eventRouteToCreate))
             .verifyComplete();
+
+        waitIfLive();
 
         try {
             // GET

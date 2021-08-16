@@ -3,6 +3,7 @@
 package com.azure.storage.blob.nio;
 
 import com.azure.storage.blob.models.BlobHttpHeaders;
+import com.azure.storage.common.StorageSharedKeyCredential;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -37,10 +38,11 @@ public class ReadmeSamples {
 
     public void createAFileSystem() throws URISyntaxException, IOException {
         Map<String, Object> config = new HashMap<>();
-        String stores = "<your_container_name>,<another_container_name>"; // A comma separated list of container names
-        config.put(AzureFileSystem.AZURE_STORAGE_ACCOUNT_KEY, "<your_account_key>");
+        String stores = "<container_name>,<another_container_name>"; // A comma separated list of container names
+        StorageSharedKeyCredential credential = new StorageSharedKeyCredential("<account_name", "account_key");
+        config.put(AzureFileSystem.AZURE_STORAGE_SHARED_KEY_CREDENTIAL, credential);
         config.put(AzureFileSystem.AZURE_STORAGE_FILE_STORES, stores);
-        FileSystem myFs = FileSystems.newFileSystem(new URI("azb://?account=<your_account_name"), config);
+        FileSystem myFs = FileSystems.newFileSystem(new URI("azb://?endpoint=<account_endpoint"), config);
     }
 
     public void createADirectory() throws IOException {

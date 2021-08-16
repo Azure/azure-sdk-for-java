@@ -2,24 +2,32 @@
 trigger:
   branches:
     include:
-      - master
+      - main
       - feature/*
       - hotfix/*
       - release/*
   paths:
     include:
-      - sdk/sqlvirtualmachine/
+      - sdk/sqlvirtualmachine/ci.mgmt.yml
+      - sdk/sqlvirtualmachine/mgmt-v2017_03_01_preview/
+    exclude:
+      - sdk/sqlvirtualmachine/pom.xml
+      - sdk/sqlvirtualmachine/mgmt-v2017_03_01_preview/pom.xml
 
 pr:
   branches:
     include:
-      - master
+      - main
       - feature/*
       - hotfix/*
       - release/*
   paths:
     include:
-      - sdk/sqlvirtualmachine/
+      - sdk/sqlvirtualmachine/ci.mgmt.yml
+      - sdk/sqlvirtualmachine/mgmt-v2017_03_01_preview/
+    exclude:
+      - sdk/sqlvirtualmachine/pom.xml
+      - sdk/sqlvirtualmachine/mgmt-v2017_03_01_preview/pom.xml
 
 stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-management.yml

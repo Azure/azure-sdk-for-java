@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.postgresql.implementation;
 
-import com.azure.resourcemanager.postgresql.PostgreSqlManager;
 import com.azure.resourcemanager.postgresql.fluent.models.ConfigurationInner;
 import com.azure.resourcemanager.postgresql.fluent.models.ConfigurationListResultInner;
 import com.azure.resourcemanager.postgresql.models.Configuration;
@@ -16,9 +15,11 @@ import java.util.stream.Collectors;
 public final class ConfigurationListResultImpl implements ConfigurationListResult {
     private ConfigurationListResultInner innerObject;
 
-    private final PostgreSqlManager serviceManager;
+    private final com.azure.resourcemanager.postgresql.PostgreSqlManager serviceManager;
 
-    ConfigurationListResultImpl(ConfigurationListResultInner innerObject, PostgreSqlManager serviceManager) {
+    ConfigurationListResultImpl(
+        ConfigurationListResultInner innerObject,
+        com.azure.resourcemanager.postgresql.PostgreSqlManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -41,7 +42,7 @@ public final class ConfigurationListResultImpl implements ConfigurationListResul
         return this.innerObject;
     }
 
-    private PostgreSqlManager manager() {
+    private com.azure.resourcemanager.postgresql.PostgreSqlManager manager() {
         return this.serviceManager;
     }
 }

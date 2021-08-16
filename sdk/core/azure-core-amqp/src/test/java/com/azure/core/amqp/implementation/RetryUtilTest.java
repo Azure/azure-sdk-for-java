@@ -87,6 +87,38 @@ public class RetryUtilTest {
     }
 
     /**
+     * Tests a retry that times out on a Flux.
+     */
+    @Test
+    void withRetryFluxEmitsItemsLaterThanTimeout() {
+        // Arrange
+        final String timeoutMessage = "Operation timed out.";
+        final Duration timeout = Duration.ofMillis(500);
+        final AmqpRetryOptions options = new AmqpRetryOptions()
+            .setDelay(Duration.ofSeconds(1))
+            .setMaxRetries(2)
+            .setTryTimeout(timeout);
+        final Duration totalWaitTime = Duration.ofSeconds(options.getMaxRetries() * options.getDelay().getSeconds());
+
+        final AtomicInteger resubscribe = new AtomicInteger();
+        final TestPublisher<AmqpTransportType> singleItem = TestPublisher.create();
+
+        final Flux<AmqpTransportType> flux = singleItem.flux()
+            .doOnSubscribe(s -> resubscribe.incrementAndGet());
+
+        // Act & Assert
+        StepVerifier.create(RetryUtil.withRetry(flux, options, timeoutMessage))
+            .expectSubscription()
+            .then(() -> singleItem.next(AmqpTransportType.AMQP_WEB_SOCKETS))
+            .expectNext(AmqpTransportType.AMQP_WEB_SOCKETS)
+            .expectNoEvent(totalWaitTime)
+            .thenCancel()
+            .verify();
+
+        assertEquals(1, resubscribe.get());
+    }
+
+    /**
      * Tests a retry that times out on a Mono.
      */
     @Test

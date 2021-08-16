@@ -6,8 +6,9 @@ package com.azure.communication.chat.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Map;
 
-/** The UpdateChatMessageOptions model. */
+/** Request payload for updating a chat message. */
 @Fluent
 public final class UpdateChatMessageOptions {
     /*
@@ -17,10 +18,10 @@ public final class UpdateChatMessageOptions {
     private String content;
 
     /*
-     * The chat message priority.
+     * Message metadata.
      */
-    @JsonProperty(value = "priority")
-    private ChatMessagePriority priority;
+    @JsonProperty(value = "metadata")
+    private Map<String, String> metadata;
 
     /**
      * Get the content property: Chat message content.
@@ -43,22 +44,22 @@ public final class UpdateChatMessageOptions {
     }
 
     /**
-     * Get the priority property: The chat message priority.
+     * Get the metadata property: Message metadata.
      *
-     * @return the priority value.
+     * @return the metadata value.
      */
-    public ChatMessagePriority getPriority() {
-        return this.priority;
+    public Map<String, String> getMetadata() {
+        return this.metadata;
     }
 
     /**
-     * Set the priority property: The chat message priority.
+     * Set the metadata property: Message metadata.
      *
-     * @param priority the priority value to set.
+     * @param metadata the metadata value to set.
      * @return the UpdateChatMessageOptions object itself.
      */
-    public UpdateChatMessageOptions setPriority(ChatMessagePriority priority) {
-        this.priority = priority;
+    public UpdateChatMessageOptions setMetadata(Map<String, String> metadata) {
+        this.metadata = metadata;
         return this;
     }
 }

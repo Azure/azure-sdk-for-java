@@ -16,6 +16,7 @@ import com.azure.resourcemanager.cdn.models.PolicySettings;
 import com.azure.resourcemanager.cdn.models.ProvisioningState;
 import com.azure.resourcemanager.cdn.models.RateLimitRuleList;
 import com.azure.resourcemanager.cdn.models.Sku;
+import com.azure.resourcemanager.cdn.models.SystemData;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -83,6 +84,12 @@ public class CdnWebApplicationFirewallPolicyInner extends Resource {
      */
     @JsonProperty(value = "properties.resourceState", access = JsonProperty.Access.WRITE_ONLY)
     private PolicyResourceState resourceState;
+
+    /*
+     * Read only system data
+     */
+    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
+    private SystemData systemData;
 
     /**
      * Get the etag property: Gets a unique read-only string that changes whenever the resource is updated.
@@ -234,6 +241,15 @@ public class CdnWebApplicationFirewallPolicyInner extends Resource {
         return this.resourceState;
     }
 
+    /**
+     * Get the systemData property: Read only system data.
+     *
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
+    }
+
     /** {@inheritDoc} */
     @Override
     public CdnWebApplicationFirewallPolicyInner withLocation(String location) {
@@ -276,6 +292,9 @@ public class CdnWebApplicationFirewallPolicyInner extends Resource {
         }
         if (endpointLinks() != null) {
             endpointLinks().forEach(e -> e.validate());
+        }
+        if (systemData() != null) {
+            systemData().validate();
         }
     }
 }

@@ -6,6 +6,7 @@ import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.spring.data.cosmos.CosmosFactory;
+import com.azure.spring.data.cosmos.ReactiveIntegrationTestCollectionManager;
 import com.azure.spring.data.cosmos.common.TestConstants;
 import com.azure.spring.data.cosmos.config.CosmosConfig;
 import com.azure.spring.data.cosmos.core.convert.MappingCosmosConverter;
@@ -16,10 +17,9 @@ import com.azure.spring.data.cosmos.core.query.CriteriaType;
 import com.azure.spring.data.cosmos.domain.PartitionPerson;
 import com.azure.spring.data.cosmos.repository.TestRepositoryConfig;
 import com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation;
-import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.ClassRule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,11 +51,12 @@ public class ReactiveCosmosTemplatePartitionIT {
         TestConstants.NEW_FIRST_NAME,
         TEST_PERSON.getZipCode(), TestConstants.HOBBIES, TestConstants.ADDRESSES);
 
+    @ClassRule
+    public static final ReactiveIntegrationTestCollectionManager collectionManager = new ReactiveIntegrationTestCollectionManager();
+
     private static ReactiveCosmosTemplate cosmosTemplate;
     private static String containerName;
     private static CosmosEntityInformation<PartitionPerson, String> personInfo;
-
-    private static boolean initialized;
 
     @Autowired
     private ApplicationContext applicationContext;
@@ -66,7 +67,7 @@ public class ReactiveCosmosTemplatePartitionIT {
 
     @Before
     public void setUp() throws ClassNotFoundException {
-        if (!initialized) {
+        if (cosmosTemplate == null) {
             CosmosAsyncClient client = CosmosFactory.createCosmosAsyncClient(cosmosClientBuilder);
             final CosmosFactory dbFactory = new CosmosFactory(client, TestConstants.DB_NAME);
 
@@ -80,21 +81,9 @@ public class ReactiveCosmosTemplatePartitionIT {
             final MappingCosmosConverter dbConverter = new MappingCosmosConverter(mappingContext,
                 null);
             cosmosTemplate = new ReactiveCosmosTemplate(dbFactory, cosmosConfig, dbConverter);
-            cosmosTemplate.createContainerIfNotExists(personInfo).block();
-
-            initialized = true;
         }
+        collectionManager.ensureContainersCreatedAndEmpty(cosmosTemplate, PartitionPerson.class);
         cosmosTemplate.insert(TEST_PERSON).block();
-    }
-
-    @After
-    public void cleanup() {
-        cosmosTemplate.deleteAll(PartitionPerson.class.getSimpleName(), PartitionPerson.class).block();
-    }
-
-    @AfterClass
-    public static void afterClassCleanup() {
-        cosmosTemplate.deleteContainer(personInfo.getContainerName());
     }
 
     @Test

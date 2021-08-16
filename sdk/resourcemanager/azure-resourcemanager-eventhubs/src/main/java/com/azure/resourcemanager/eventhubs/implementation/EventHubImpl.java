@@ -517,7 +517,7 @@ class EventHubImpl
                 .onErrorResume(throwable -> storageManager.blobContainers()
                     .defineContainer(containerName)
                     .withExistingBlobService(storageAccount.resourceGroupName(), storageAccount.name())
-                    .withPublicAccess(PublicAccess.CONTAINER)
+                    .withPublicAccess(PublicAccess.NONE)
                     .createAsync());
         }
 

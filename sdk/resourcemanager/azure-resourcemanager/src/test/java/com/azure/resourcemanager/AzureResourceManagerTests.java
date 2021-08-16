@@ -308,7 +308,7 @@ public class AzureResourceManagerTests extends ResourceManagerTestBase {
     @Test
     public void testManagementLocks() throws Exception {
         // Prepare a VM
-        final String password = generateRandomResourceName("P@s", 14);
+        final String password = ResourceManagerTestBase.password();
         final String rgName = generateRandomResourceName("rg", 15);
         final String vmName = generateRandomResourceName("vm", 15);
         final String storageName = generateRandomResourceName("st", 15);
@@ -633,7 +633,7 @@ public class AzureResourceManagerTests extends ResourceManagerTestBase {
                 .withNewPrimaryPublicIPAddress(linuxVM2Pip)
                 .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                 .withRootUsername("tester")
-                .withRootPassword("Abcdef.123456!")
+                .withRootPassword(password())
                 // Begin: Managed data disks
                 .withNewDataDisk(100)
                 .withNewDataDisk(100, 1, CachingTypes.READ_WRITE)
@@ -1122,11 +1122,11 @@ public class AzureResourceManagerTests extends ResourceManagerTestBase {
         new TestRedis().runTest(azureResourceManager.redisCaches(), azureResourceManager.resourceGroups());
     }
 
-    //    @Test
-    //    public void testCdnManager() throws Exception {
-    //        new TestCdn()
-    //                .runTest(azure.cdnProfiles(), azure.resourceGroups());
-    //    }
+    @Test
+    public void testCdnManager() throws Exception {
+        new TestCdn()
+                .runTest(azureResourceManager.cdnProfiles(), azureResourceManager.resourceGroups());
+    }
 
     @Test
     public void testDnsZones() throws Exception {
@@ -1329,10 +1329,12 @@ public class AzureResourceManagerTests extends ResourceManagerTestBase {
 
         StringBuilder sb = new StringBuilder();
 
-        PagedIterable<Location> locations =
+        List<Location> locations =
             azureResourceManager
                 .getCurrentSubscription()
-                .listLocations(); // note the region is not complete since it depends on current subscription
+                .listLocations()
+                .stream().collect(Collectors.toList());
+        // note the region is not complete since it depends on current subscription
 
         List<Location> locationGroupByGeography = new ArrayList<>();
         List<String> geographies = Arrays.asList(

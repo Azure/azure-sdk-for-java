@@ -9,9 +9,8 @@ import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.AzureResourceManager;
-import com.azure.security.keyvault.secrets.SecretClient;
-import com.azure.security.keyvault.secrets.SecretClientBuilder;
-import com.azure.security.keyvault.secrets.models.KeyVaultSecret;
+import com.azure.resourcemanager.appservice.models.DeployType;
+import com.azure.resourcemanager.authorization.models.BuiltInRole;
 import com.azure.resourcemanager.appservice.models.JavaVersion;
 import com.azure.resourcemanager.appservice.models.PricingTier;
 import com.azure.resourcemanager.appservice.models.WebApp;
@@ -24,7 +23,12 @@ import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils
 import com.azure.resourcemanager.samples.Utils;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.time.Duration;
+import java.util.UUID;
 
 /**
  * Azure App Service basic sample for managing web apps.
@@ -40,11 +44,10 @@ public final class ManageWebAppCosmosDbByMsi {
     /**
      * Main function which runs the actual sample.
      * @param azureResourceManager instance of the azure client
-     * @param credential the credential to use
      * @param clientId the client ID
      * @return true if sample runs successfully
      */
-    public static boolean runSample(AzureResourceManager azureResourceManager, TokenCredential credential, String clientId) {
+    public static boolean runSample(AzureResourceManager azureResourceManager, String clientId) throws IOException {
         // New resources
         final Region region         = Region.US_WEST;
         final String appName        = Utils.randomResourceName(azureResourceManager, "webapp1-", 20);
@@ -59,13 +62,13 @@ public final class ManageWebAppCosmosDbByMsi {
 
             System.out.println("Creating a CosmosDB...");
             CosmosDBAccount cosmosDBAccount = azureResourceManager.cosmosDBAccounts().define(cosmosName)
-                    .withRegion(region)
-                    .withNewResourceGroup(rgName)
-                    .withKind(DatabaseAccountKind.GLOBAL_DOCUMENT_DB)
-                    .withEventualConsistency()
-                    .withWriteReplication(Region.US_EAST)
-                    .withReadReplication(Region.US_CENTRAL)
-                    .create();
+                .withRegion(region)
+                .withNewResourceGroup(rgName)
+                .withKind(DatabaseAccountKind.GLOBAL_DOCUMENT_DB)
+                .withEventualConsistency()
+                .withWriteReplication(Region.US_EAST)
+                .withReadReplication(Region.US_CENTRAL)
+                .create();
 
             System.out.println("Created CosmosDB");
             Utils.print(cosmosDBAccount);
@@ -74,29 +77,36 @@ public final class ManageWebAppCosmosDbByMsi {
             // Create a key vault
 
             Vault vault = azureResourceManager.vaults()
-                    .define(vaultName)
-                    .withRegion(region)
-                    .withExistingResourceGroup(rgName)
-                    .defineAccessPolicy()
-                        .forServicePrincipal(clientId)
-                        .allowSecretAllPermissions()
-                        .attach()
-                    .create();
+                .define(vaultName)
+                .withRegion(region)
+                .withExistingResourceGroup(rgName)
+                .withRoleBasedAccessControl()
+                .create();
 
+            //============================================================
+            // Allow the sample to store secret in the Key Vault
+
+            azureResourceManager.accessManagement().roleAssignments().define(UUID.randomUUID().toString())
+                .forServicePrincipal(clientId)
+                .withBuiltInRole(BuiltInRole.KEY_VAULT_SECRETS_OFFICER)
+                .withScope(vault.id())
+                .create();
+
+            // wait a bit for rbac
             ResourceManagerUtils.sleep(Duration.ofSeconds(10));
-
-            SecretClient client = new SecretClientBuilder()
-                    .vaultUrl(vault.vaultUri())
-                    .credential(credential)
-                    .httpClient(vault.manager().httpPipeline().getHttpClient())
-                    .buildClient();
 
             //============================================================
             // Store Cosmos DB credentials in Key Vault
 
-            client.setSecret(new KeyVaultSecret("azure-documentdb-uri", cosmosDBAccount.documentEndpoint()));
-            client.setSecret(new KeyVaultSecret("azure-documentdb-key", cosmosDBAccount.listKeys().primaryMasterKey()));
-            client.setSecret(new KeyVaultSecret("azure-documentdb-database", "tododb"));
+            vault.secrets().define("azure-documentdb-uri")
+                .withValue(cosmosDBAccount.documentEndpoint())
+                .create();
+            vault.secrets().define("azure-documentdb-key")
+                .withValue(cosmosDBAccount.listKeys().primaryMasterKey())
+                .create();
+            vault.secrets().define("azure-documentdb-database")
+                .withValue("tododb")
+                .create();
 
             //============================================================
             // Create a web app with a new app service plan
@@ -104,47 +114,50 @@ public final class ManageWebAppCosmosDbByMsi {
             System.out.println("Creating web app " + appName + " in resource group " + rgName + "...");
 
             WebApp app = azureResourceManager.webApps()
-                    .define(appName)
-                    .withRegion(Region.US_WEST)
-                    .withNewResourceGroup(rgName)
-                    .withNewWindowsPlan(PricingTier.STANDARD_S1)
-                    .withJavaVersion(JavaVersion.JAVA_8_NEWEST)
-                    .withWebContainer(WebContainer.TOMCAT_8_5_NEWEST)
-                    .withAppSetting("AZURE_KEYVAULT_URI", vault.vaultUri())
-                    .withSystemAssignedManagedServiceIdentity()
-                    .create();
+                .define(appName)
+                .withRegion(Region.US_WEST)
+                .withExistingResourceGroup(rgName)
+                .withNewWindowsPlan(PricingTier.STANDARD_S1)
+                .withHttpsOnly(true)
+                .withJavaVersion(JavaVersion.JAVA_8_NEWEST)
+                .withWebContainer(WebContainer.JAVA_8)
+                .withAppSetting("AZURE_KEYVAULT_URI", vault.vaultUri())
+                .withSystemAssignedManagedServiceIdentity()
+                .withSystemAssignedIdentityBasedAccessTo(vault.id(), BuiltInRole.KEY_VAULT_SECRETS_USER)    // allow web app access Key Vault secret
+                .create();
 
             System.out.println("Created web app " + app.name());
             Utils.print(app);
 
             //============================================================
-            // Update vault to allow the web app to access
-
-            vault.update()
-                    .defineAccessPolicy()
-                        .forObjectId(app.systemAssignedManagedServiceIdentityPrincipalId())
-                        .allowSecretAllPermissions()
-                        .attach()
-                    .apply();
-
-            //============================================================
             // Deploy to app through FTP
 
-            System.out.println("Deploying a spring boot app to " + appName + " through FTP...");
+            System.out.println("Deploying a spring boot app to " + appName + " through OneDeploy...");
 
-            Utils.uploadFileViaFtp(app.getPublishingProfile(), "ROOT.jar", ManageWebAppCosmosDbByMsi.class.getResourceAsStream("/todo-app-java-on-azure-1.0-SNAPSHOT.jar"));
-            Utils.uploadFileViaFtp(app.getPublishingProfile(), "web.config", ManageWebAppCosmosDbByMsi.class.getResourceAsStream("/web.config"));
+            try (InputStream is = ManageWebAppCosmosDbByMsi.class.getResourceAsStream("/todo-app-java-on-azure-1.0-SNAPSHOT.jar")) {
+                byte[] buff = new byte[8192];
+                int bytesRead;
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                while ((bytesRead = is.read(buff)) != -1) {
+                    baos.write(buff, 0, bytesRead);
+                }
+
+                byte[] data = baos.toByteArray();
+                ByteArrayInputStream bais = new ByteArrayInputStream(data);
+
+                app.deploy(DeployType.JAR, bais, data.length);
+            }
 
             System.out.println("Deployment to web app " + app.name() + " completed");
             Utils.print(app);
 
             // warm up
             System.out.println("Warming up " + appUrl + "...");
-            Utils.sendGetRequest("http://" + appUrl);
+            Utils.sendGetRequest("https://" + appUrl);
             ResourceManagerUtils.sleep(Duration.ofSeconds(10));
             System.out.println("CURLing " + appUrl);
-            System.out.println(Utils.sendGetRequest("http://" + appUrl));
-
+            System.out.println(Utils.sendGetRequest("https://" + appUrl));
+            // it might take more time for web app start up
 
             return true;
         } finally {
@@ -184,7 +197,7 @@ public final class ManageWebAppCosmosDbByMsi {
 
             // Print selected subscription
             System.out.println("Selected subscription: " + azureResourceManager.subscriptionId());
-            runSample(azureResourceManager, credential, configuration.get(Configuration.PROPERTY_AZURE_CLIENT_ID));
+            runSample(azureResourceManager, configuration.get(Configuration.PROPERTY_AZURE_CLIENT_ID));
 
         } catch (Exception e) {
             System.out.println(e.getMessage());

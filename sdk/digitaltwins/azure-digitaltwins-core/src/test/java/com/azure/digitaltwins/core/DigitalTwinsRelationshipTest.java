@@ -5,11 +5,16 @@ package com.azure.digitaltwins.core;
 
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.util.Context;
 import com.azure.core.models.JsonPatchDocument;
+import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.digitaltwins.core.implementation.models.ErrorResponseException;
-import com.azure.digitaltwins.core.models.*;
+import com.azure.digitaltwins.core.models.CreateOrReplaceRelationshipOptions;
+import com.azure.digitaltwins.core.models.DeleteRelationshipOptions;
+import com.azure.digitaltwins.core.models.DigitalTwinsModelData;
+import com.azure.digitaltwins.core.models.DigitalTwinsResponse;
+import com.azure.digitaltwins.core.models.IncomingRelationship;
+import com.azure.digitaltwins.core.models.UpdateRelationshipOptions;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -19,17 +24,16 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import static com.azure.digitaltwins.core.TestAssetDefaults.*;
-import static com.azure.digitaltwins.core.TestAssetsHelper.*;
 import static com.azure.digitaltwins.core.TestHelper.DISPLAY_NAME_WITH_ARGUMENTS;
 import static com.azure.digitaltwins.core.TestHelper.assertRestException;
 import static com.azure.digitaltwins.core.helpers.UniqueIdHelper.getUniqueDigitalTwinId;
 import static com.azure.digitaltwins.core.helpers.UniqueIdHelper.getUniqueModelId;
-import static java.net.HttpURLConnection.*;
+import static java.net.HttpURLConnection.HTTP_NOT_FOUND;
+import static java.net.HttpURLConnection.HTTP_NO_CONTENT;
+import static java.net.HttpURLConnection.HTTP_PRECON_FAILED;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class DigitalTwinsRelationshipTest extends DigitalTwinsRelationshipTestBase {
     private final ClientLogger logger = new ClientLogger(DigitalTwinsRelationshipTest.class);
@@ -40,24 +44,24 @@ public class DigitalTwinsRelationshipTest extends DigitalTwinsRelationshipTestBa
     public void relationshipLifecycleTest(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion) throws JsonProcessingException {
         DigitalTwinsClient client = getClient(httpClient, serviceVersion);
 
-        String floorModelId = getUniqueModelId(FLOOR_MODEL_ID_PREFIX, client, randomIntegerStringGenerator);
-        String roomModelId = getUniqueModelId(ROOM_MODEL_ID_PREFIX, client, randomIntegerStringGenerator);
-        String hvacModelId = getUniqueModelId(HVAC_MODEL_ID_PREFIX, client, randomIntegerStringGenerator);
+        String floorModelId = getUniqueModelId(TestAssetDefaults.FLOOR_MODEL_ID_PREFIX, client, getRandomIntegerStringGenerator());
+        String roomModelId = getUniqueModelId(TestAssetDefaults.ROOM_MODEL_ID_PREFIX, client, getRandomIntegerStringGenerator());
+        String hvacModelId = getUniqueModelId(TestAssetDefaults.HVAC_MODEL_ID_PREFIX, client, getRandomIntegerStringGenerator());
 
-        String floorTwinId = getUniqueDigitalTwinId(FLOOR_TWIN_ID_PREFIX, client, randomIntegerStringGenerator);
-        String roomTwinId = getUniqueDigitalTwinId(ROOM_TWIN_ID_PREFIX, client, randomIntegerStringGenerator);
-        String hvacTwinId = getUniqueDigitalTwinId(HVAC_TWIN_ID_PREFIX, client, randomIntegerStringGenerator);
+        String floorTwinId = getUniqueDigitalTwinId(TestAssetDefaults.FLOOR_TWIN_ID_PREFIX, client, getRandomIntegerStringGenerator());
+        String roomTwinId = getUniqueDigitalTwinId(TestAssetDefaults.ROOM_TWIN_ID_PREFIX, client, getRandomIntegerStringGenerator());
+        String hvacTwinId = getUniqueDigitalTwinId(TestAssetDefaults.HVAC_TWIN_ID_PREFIX, client, getRandomIntegerStringGenerator());
 
         try {
             // Create floor, room and hvac model
             createModelsAndTwins(client, floorModelId, roomModelId, hvacModelId, floorTwinId, roomTwinId, hvacTwinId);
 
             // Connect the created twins via relationships
-            String floorContainsRoomPayload = getRelationshipWithPropertyPayload(roomTwinId, CONTAINS_RELATIONSHIP, "isAccessRestricted", true);
-            String floorTwinCoolsRelationshipPayload = getRelationshipPayload(floorTwinId, COOLS_RELATIONSHIP);
-            String floorTwinContainedInRelationshipPayload = getRelationshipPayload(floorTwinId, CONTAINED_IN_RELATIONSHIP);
-            String floorCooledByHvacPayload = getRelationshipPayload(hvacTwinId, COOLED_BY_RELATIONSHIP);
-            JsonPatchDocument floorContainsRoomUpdatePayload = getRelationshipUpdatePayload("/isAccessRestricted", false);
+            String floorContainsRoomPayload = TestAssetsHelper.getRelationshipWithPropertyPayload(roomTwinId, CONTAINS_RELATIONSHIP, "isAccessRestricted", true);
+            String floorTwinCoolsRelationshipPayload = TestAssetsHelper.getRelationshipPayload(floorTwinId, COOLS_RELATIONSHIP);
+            String floorTwinContainedInRelationshipPayload = TestAssetsHelper.getRelationshipPayload(floorTwinId, CONTAINED_IN_RELATIONSHIP);
+            String floorCooledByHvacPayload = TestAssetsHelper.getRelationshipPayload(hvacTwinId, COOLED_BY_RELATIONSHIP);
+            JsonPatchDocument floorContainsRoomUpdatePayload = TestAssetsHelper.getRelationshipUpdatePayload("/isAccessRestricted", false);
 
             // Create relationship from Floor -> Room
             BasicRelationship floorRoomRelationship = client.createOrReplaceRelationship(floorTwinId, FLOOR_CONTAINS_ROOM_RELATIONSHIP_ID, deserializeJsonString(floorContainsRoomPayload, BasicRelationship.class), BasicRelationship.class);
@@ -201,16 +205,16 @@ public class DigitalTwinsRelationshipTest extends DigitalTwinsRelationshipTestBa
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.digitaltwins.core.TestHelper#getTestParameters")
     @Override
-    public void relationshipListOperationWithMultiplePages(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion) throws JsonProcessingException {
+    public void relationshipListOperationWithMultiplePages(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion) throws JsonProcessingException, InterruptedException {
         DigitalTwinsClient client = getClient(httpClient, serviceVersion);
 
-        String floorModelId = getUniqueModelId(FLOOR_MODEL_ID_PREFIX, client, randomIntegerStringGenerator);
-        String roomModelId = getUniqueModelId(ROOM_MODEL_ID_PREFIX, client, randomIntegerStringGenerator);
-        String hvacModelId = getUniqueModelId(HVAC_MODEL_ID_PREFIX, client, randomIntegerStringGenerator);
+        String floorModelId = getUniqueModelId(TestAssetDefaults.FLOOR_MODEL_ID_PREFIX, client, getRandomIntegerStringGenerator());
+        String roomModelId = getUniqueModelId(TestAssetDefaults.ROOM_MODEL_ID_PREFIX, client, getRandomIntegerStringGenerator());
+        String hvacModelId = getUniqueModelId(TestAssetDefaults.HVAC_MODEL_ID_PREFIX, client, getRandomIntegerStringGenerator());
 
-        String floorTwinId = getUniqueDigitalTwinId(FLOOR_TWIN_ID_PREFIX, client, randomIntegerStringGenerator);
-        String roomTwinId = getUniqueDigitalTwinId(ROOM_TWIN_ID_PREFIX, client, randomIntegerStringGenerator);
-        String hvacTwinId = getUniqueDigitalTwinId(HVAC_TWIN_ID_PREFIX, client, randomIntegerStringGenerator);
+        String floorTwinId = getUniqueDigitalTwinId(TestAssetDefaults.FLOOR_TWIN_ID_PREFIX, client, getRandomIntegerStringGenerator());
+        String roomTwinId = getUniqueDigitalTwinId(TestAssetDefaults.ROOM_TWIN_ID_PREFIX, client, getRandomIntegerStringGenerator());
+        String hvacTwinId = getUniqueDigitalTwinId(TestAssetDefaults.HVAC_TWIN_ID_PREFIX, client, getRandomIntegerStringGenerator());
 
         List<String> createdOutgoingRelationshipIds = new ArrayList<>();
         List<String> createdIncomingRelationshipIds = new ArrayList<>();
@@ -219,8 +223,8 @@ public class DigitalTwinsRelationshipTest extends DigitalTwinsRelationshipTestBa
             createModelsAndTwins(client, floorModelId, roomModelId, hvacModelId, floorTwinId, roomTwinId, hvacTwinId);
 
             // Connect the created twins via relationships
-            String floorContainsRoomPayload = getRelationshipWithPropertyPayload(roomTwinId, CONTAINS_RELATIONSHIP, "isAccessRestricted", true);
-            String roomContainedInFloorPayload = getRelationshipPayload(floorTwinId, CONTAINED_IN_RELATIONSHIP);
+            String floorContainsRoomPayload = TestAssetsHelper.getRelationshipWithPropertyPayload(roomTwinId, CONTAINS_RELATIONSHIP, "isAccessRestricted", true);
+            String roomContainedInFloorPayload = TestAssetsHelper.getRelationshipPayload(floorTwinId, CONTAINED_IN_RELATIONSHIP);
 
             // Create large number of relationships to test paging functionality
             // Relationship list api does not have max item count request option so we have to create a large number of them to trigger paging functionality from the service.
@@ -231,6 +235,8 @@ public class DigitalTwinsRelationshipTest extends DigitalTwinsRelationshipTestBa
                 createdOutgoingRelationshipIds.add(relationshipId);
             }
 
+            waitIfLive();
+
             // Create multiple incoming relationships to the floor. Typically a room would have relationships to multiple
             // different floors, but for the sake of test simplicity, we'll just add multiple relationships from the same room
             // to the same floor.
@@ -239,6 +245,8 @@ public class DigitalTwinsRelationshipTest extends DigitalTwinsRelationshipTestBa
                 client.createOrReplaceRelationship(roomTwinId, relationshipId, deserializeJsonString(roomContainedInFloorPayload, BasicRelationship.class), BasicRelationship.class);
                 createdIncomingRelationshipIds.add(relationshipId);
             }
+
+            waitIfLive();
 
             // LIST relationships
             PagedIterable<BasicRelationship> listOutgoingRelationships = client.listRelationships(floorTwinId, BasicRelationship.class);
@@ -307,20 +315,20 @@ public class DigitalTwinsRelationshipTest extends DigitalTwinsRelationshipTestBa
     public void createOrReplaceRelationshipFailsWhenIfNoneMatchStar(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion) throws JsonProcessingException {
         DigitalTwinsClient client = getClient(httpClient, serviceVersion);
 
-        String floorModelId = getUniqueModelId(FLOOR_MODEL_ID_PREFIX, client, randomIntegerStringGenerator);
-        String roomModelId = getUniqueModelId(ROOM_MODEL_ID_PREFIX, client, randomIntegerStringGenerator);
-        String hvacModelId = getUniqueModelId(HVAC_MODEL_ID_PREFIX, client, randomIntegerStringGenerator);
+        String floorModelId = getUniqueModelId(TestAssetDefaults.FLOOR_MODEL_ID_PREFIX, client, getRandomIntegerStringGenerator());
+        String roomModelId = getUniqueModelId(TestAssetDefaults.ROOM_MODEL_ID_PREFIX, client, getRandomIntegerStringGenerator());
+        String hvacModelId = getUniqueModelId(TestAssetDefaults.HVAC_MODEL_ID_PREFIX, client, getRandomIntegerStringGenerator());
 
-        String floorTwinId = getUniqueDigitalTwinId(FLOOR_TWIN_ID_PREFIX, client, randomIntegerStringGenerator);
-        String roomTwinId = getUniqueDigitalTwinId(ROOM_TWIN_ID_PREFIX, client, randomIntegerStringGenerator);
-        String hvacTwinId = getUniqueDigitalTwinId(HVAC_TWIN_ID_PREFIX, client, randomIntegerStringGenerator);
+        String floorTwinId = getUniqueDigitalTwinId(TestAssetDefaults.FLOOR_TWIN_ID_PREFIX, client, getRandomIntegerStringGenerator());
+        String roomTwinId = getUniqueDigitalTwinId(TestAssetDefaults.ROOM_TWIN_ID_PREFIX, client, getRandomIntegerStringGenerator());
+        String hvacTwinId = getUniqueDigitalTwinId(TestAssetDefaults.HVAC_TWIN_ID_PREFIX, client, getRandomIntegerStringGenerator());
 
         try {
             // Create floor, room and hvac model
             createModelsAndTwins(client, floorModelId, roomModelId, hvacModelId, floorTwinId, roomTwinId, hvacTwinId);
 
             // Connect the created twins via relationships
-            String floorContainsRoomPayload = getRelationshipWithPropertyPayload(roomTwinId, CONTAINS_RELATIONSHIP, "isAccessRestricted", true);
+            String floorContainsRoomPayload = TestAssetsHelper.getRelationshipWithPropertyPayload(roomTwinId, CONTAINS_RELATIONSHIP, "isAccessRestricted", true);
             BasicRelationship floorContainsRoomRelationship = deserializeJsonString(floorContainsRoomPayload, BasicRelationship.class);
 
             // Create relationship from Floor -> Room
@@ -381,21 +389,21 @@ public class DigitalTwinsRelationshipTest extends DigitalTwinsRelationshipTestBa
     public void createOrReplaceRelationshipSucceedsWhenNoIfNoneHeader(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion) throws JsonProcessingException {
         DigitalTwinsClient client = getClient(httpClient, serviceVersion);
 
-        String floorModelId = getUniqueModelId(FLOOR_MODEL_ID_PREFIX, client, randomIntegerStringGenerator);
-        String roomModelId = getUniqueModelId(ROOM_MODEL_ID_PREFIX, client, randomIntegerStringGenerator);
-        String hvacModelId = getUniqueModelId(HVAC_MODEL_ID_PREFIX, client, randomIntegerStringGenerator);
+        String floorModelId = getUniqueModelId(TestAssetDefaults.FLOOR_MODEL_ID_PREFIX, client, getRandomIntegerStringGenerator());
+        String roomModelId = getUniqueModelId(TestAssetDefaults.ROOM_MODEL_ID_PREFIX, client, getRandomIntegerStringGenerator());
+        String hvacModelId = getUniqueModelId(TestAssetDefaults.HVAC_MODEL_ID_PREFIX, client, getRandomIntegerStringGenerator());
 
-        String floorTwinId = getUniqueDigitalTwinId(FLOOR_TWIN_ID_PREFIX, client, randomIntegerStringGenerator);
-        String roomTwinId = getUniqueDigitalTwinId(ROOM_TWIN_ID_PREFIX, client, randomIntegerStringGenerator);
-        String hvacTwinId = getUniqueDigitalTwinId(HVAC_TWIN_ID_PREFIX, client, randomIntegerStringGenerator);
+        String floorTwinId = getUniqueDigitalTwinId(TestAssetDefaults.FLOOR_TWIN_ID_PREFIX, client, getRandomIntegerStringGenerator());
+        String roomTwinId = getUniqueDigitalTwinId(TestAssetDefaults.ROOM_TWIN_ID_PREFIX, client, getRandomIntegerStringGenerator());
+        String hvacTwinId = getUniqueDigitalTwinId(TestAssetDefaults.HVAC_TWIN_ID_PREFIX, client, getRandomIntegerStringGenerator());
 
         try {
             // Create floor, room and hvac model
             createModelsAndTwins(client, floorModelId, roomModelId, hvacModelId, floorTwinId, roomTwinId, hvacTwinId);
 
             // Connect the created twins via relationships
-            String floorContainsRoomPayload = getRelationshipWithPropertyPayload(roomTwinId, CONTAINS_RELATIONSHIP, "isAccessRestricted", true);
-            String floorTwinContainedInRelationshipPayload = getRelationshipPayload(floorTwinId, CONTAINED_IN_RELATIONSHIP);
+            String floorContainsRoomPayload = TestAssetsHelper.getRelationshipWithPropertyPayload(roomTwinId, CONTAINS_RELATIONSHIP, "isAccessRestricted", true);
+            String floorTwinContainedInRelationshipPayload = TestAssetsHelper.getRelationshipPayload(floorTwinId, CONTAINED_IN_RELATIONSHIP);
 
             // Create relationship from Floor -> Room
             BasicRelationship floorRoomRelationship = client.createOrReplaceRelationship(floorTwinId, FLOOR_CONTAINS_ROOM_RELATIONSHIP_ID, deserializeJsonString(floorContainsRoomPayload, BasicRelationship.class), BasicRelationship.class);
@@ -460,21 +468,21 @@ public class DigitalTwinsRelationshipTest extends DigitalTwinsRelationshipTestBa
     public void patchRelationshipFailsWhenETagDoesNotMatch(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion) throws JsonProcessingException {
         DigitalTwinsClient client = getClient(httpClient, serviceVersion);
 
-        String floorModelId = getUniqueModelId(FLOOR_MODEL_ID_PREFIX, client, randomIntegerStringGenerator);
-        String roomModelId = getUniqueModelId(ROOM_MODEL_ID_PREFIX, client, randomIntegerStringGenerator);
-        String hvacModelId = getUniqueModelId(HVAC_MODEL_ID_PREFIX, client, randomIntegerStringGenerator);
+        String floorModelId = getUniqueModelId(TestAssetDefaults.FLOOR_MODEL_ID_PREFIX, client, getRandomIntegerStringGenerator());
+        String roomModelId = getUniqueModelId(TestAssetDefaults.ROOM_MODEL_ID_PREFIX, client, getRandomIntegerStringGenerator());
+        String hvacModelId = getUniqueModelId(TestAssetDefaults.HVAC_MODEL_ID_PREFIX, client, getRandomIntegerStringGenerator());
 
-        String floorTwinId = getUniqueDigitalTwinId(FLOOR_TWIN_ID_PREFIX, client, randomIntegerStringGenerator);
-        String roomTwinId = getUniqueDigitalTwinId(ROOM_TWIN_ID_PREFIX, client, randomIntegerStringGenerator);
-        String hvacTwinId = getUniqueDigitalTwinId(HVAC_TWIN_ID_PREFIX, client, randomIntegerStringGenerator);
+        String floorTwinId = getUniqueDigitalTwinId(TestAssetDefaults.FLOOR_TWIN_ID_PREFIX, client, getRandomIntegerStringGenerator());
+        String roomTwinId = getUniqueDigitalTwinId(TestAssetDefaults.ROOM_TWIN_ID_PREFIX, client, getRandomIntegerStringGenerator());
+        String hvacTwinId = getUniqueDigitalTwinId(TestAssetDefaults.HVAC_TWIN_ID_PREFIX, client, getRandomIntegerStringGenerator());
 
         try {
             // Create floor, room and hvac model
             createModelsAndTwins(client, floorModelId, roomModelId, hvacModelId, floorTwinId, roomTwinId, hvacTwinId);
 
             // Connect the created twins via relationships
-            String floorContainsRoomPayload = getRelationshipWithPropertyPayload(roomTwinId, CONTAINS_RELATIONSHIP, "isAccessRestricted", true);
-            JsonPatchDocument floorContainsRoomUpdatePayload = getRelationshipUpdatePayload("/isAccessRestricted", false);
+            String floorContainsRoomPayload = TestAssetsHelper.getRelationshipWithPropertyPayload(roomTwinId, CONTAINS_RELATIONSHIP, "isAccessRestricted", true);
+            JsonPatchDocument floorContainsRoomUpdatePayload = TestAssetsHelper.getRelationshipUpdatePayload("/isAccessRestricted", false);
 
             // Create relationship from Floor -> Room
             DigitalTwinsResponse<BasicRelationship> floorRoomRelationship = client.createOrReplaceRelationshipWithResponse(
@@ -496,7 +504,7 @@ public class DigitalTwinsRelationshipTest extends DigitalTwinsRelationshipTestBa
             client.updateRelationshipWithResponse(floorTwinId, FLOOR_CONTAINS_ROOM_RELATIONSHIP_ID, floorContainsRoomUpdatePayload, null, Context.NONE);
 
             // Update the relationship again, but with the out of date etag
-            JsonPatchDocument floorContainsRoomSecondUpdatePayload = getRelationshipUpdatePayload("/isAccessRestricted", true);
+            JsonPatchDocument floorContainsRoomSecondUpdatePayload = TestAssetsHelper.getRelationshipUpdatePayload("/isAccessRestricted", true);
 
             assertRestException(
                 () -> client.updateRelationshipWithResponse(
@@ -552,21 +560,21 @@ public class DigitalTwinsRelationshipTest extends DigitalTwinsRelationshipTestBa
     public void patchRelationshipSucceedsWhenETagMatches(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion) throws JsonProcessingException {
         DigitalTwinsClient client = getClient(httpClient, serviceVersion);
 
-        String floorModelId = getUniqueModelId(FLOOR_MODEL_ID_PREFIX, client, randomIntegerStringGenerator);
-        String roomModelId = getUniqueModelId(ROOM_MODEL_ID_PREFIX, client, randomIntegerStringGenerator);
-        String hvacModelId = getUniqueModelId(HVAC_MODEL_ID_PREFIX, client, randomIntegerStringGenerator);
+        String floorModelId = getUniqueModelId(TestAssetDefaults.FLOOR_MODEL_ID_PREFIX, client, getRandomIntegerStringGenerator());
+        String roomModelId = getUniqueModelId(TestAssetDefaults.ROOM_MODEL_ID_PREFIX, client, getRandomIntegerStringGenerator());
+        String hvacModelId = getUniqueModelId(TestAssetDefaults.HVAC_MODEL_ID_PREFIX, client, getRandomIntegerStringGenerator());
 
-        String floorTwinId = getUniqueDigitalTwinId(FLOOR_TWIN_ID_PREFIX, client, randomIntegerStringGenerator);
-        String roomTwinId = getUniqueDigitalTwinId(ROOM_TWIN_ID_PREFIX, client, randomIntegerStringGenerator);
-        String hvacTwinId = getUniqueDigitalTwinId(HVAC_TWIN_ID_PREFIX, client, randomIntegerStringGenerator);
+        String floorTwinId = getUniqueDigitalTwinId(TestAssetDefaults.FLOOR_TWIN_ID_PREFIX, client, getRandomIntegerStringGenerator());
+        String roomTwinId = getUniqueDigitalTwinId(TestAssetDefaults.ROOM_TWIN_ID_PREFIX, client, getRandomIntegerStringGenerator());
+        String hvacTwinId = getUniqueDigitalTwinId(TestAssetDefaults.HVAC_TWIN_ID_PREFIX, client, getRandomIntegerStringGenerator());
 
         try {
             // Create floor, room and hvac model
             createModelsAndTwins(client, floorModelId, roomModelId, hvacModelId, floorTwinId, roomTwinId, hvacTwinId);
 
             // Connect the created twins via relationships
-            String floorContainsRoomPayload = getRelationshipWithPropertyPayload(roomTwinId, CONTAINS_RELATIONSHIP, "isAccessRestricted", true);
-            JsonPatchDocument floorContainsRoomUpdatePayload = getRelationshipUpdatePayload("/isAccessRestricted", false);
+            String floorContainsRoomPayload = TestAssetsHelper.getRelationshipWithPropertyPayload(roomTwinId, CONTAINS_RELATIONSHIP, "isAccessRestricted", true);
+            JsonPatchDocument floorContainsRoomUpdatePayload = TestAssetsHelper.getRelationshipUpdatePayload("/isAccessRestricted", false);
 
             // Create relationship from Floor -> Room
             DigitalTwinsResponse<BasicRelationship> floorRoomRelationship = client.createOrReplaceRelationshipWithResponse(
@@ -593,7 +601,7 @@ public class DigitalTwinsRelationshipTest extends DigitalTwinsRelationshipTestBa
             String upToDateETag = updateResponse.getDeserializedHeaders().getETag();
 
             // Update the relationship again, but with the up to date etag
-            JsonPatchDocument floorContainsRoomSecondUpdatePayload = getRelationshipUpdatePayload("/isAccessRestricted", true);
+            JsonPatchDocument floorContainsRoomSecondUpdatePayload = TestAssetsHelper.getRelationshipUpdatePayload("/isAccessRestricted", true);
 
             try {
                 client.updateRelationshipWithResponse(
@@ -654,21 +662,21 @@ public class DigitalTwinsRelationshipTest extends DigitalTwinsRelationshipTestBa
     public void deleteRelationshipFailsWhenETagDoesNotMatch(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion) throws JsonProcessingException {
         DigitalTwinsClient client = getClient(httpClient, serviceVersion);
 
-        String floorModelId = getUniqueModelId(FLOOR_MODEL_ID_PREFIX, client, randomIntegerStringGenerator);
-        String roomModelId = getUniqueModelId(ROOM_MODEL_ID_PREFIX, client, randomIntegerStringGenerator);
-        String hvacModelId = getUniqueModelId(HVAC_MODEL_ID_PREFIX, client, randomIntegerStringGenerator);
+        String floorModelId = getUniqueModelId(TestAssetDefaults.FLOOR_MODEL_ID_PREFIX, client, getRandomIntegerStringGenerator());
+        String roomModelId = getUniqueModelId(TestAssetDefaults.ROOM_MODEL_ID_PREFIX, client, getRandomIntegerStringGenerator());
+        String hvacModelId = getUniqueModelId(TestAssetDefaults.HVAC_MODEL_ID_PREFIX, client, getRandomIntegerStringGenerator());
 
-        String floorTwinId = getUniqueDigitalTwinId(FLOOR_TWIN_ID_PREFIX, client, randomIntegerStringGenerator);
-        String roomTwinId = getUniqueDigitalTwinId(ROOM_TWIN_ID_PREFIX, client, randomIntegerStringGenerator);
-        String hvacTwinId = getUniqueDigitalTwinId(HVAC_TWIN_ID_PREFIX, client, randomIntegerStringGenerator);
+        String floorTwinId = getUniqueDigitalTwinId(TestAssetDefaults.FLOOR_TWIN_ID_PREFIX, client, getRandomIntegerStringGenerator());
+        String roomTwinId = getUniqueDigitalTwinId(TestAssetDefaults.ROOM_TWIN_ID_PREFIX, client, getRandomIntegerStringGenerator());
+        String hvacTwinId = getUniqueDigitalTwinId(TestAssetDefaults.HVAC_TWIN_ID_PREFIX, client, getRandomIntegerStringGenerator());
 
         try {
             // Create floor, room and hvac model
             createModelsAndTwins(client, floorModelId, roomModelId, hvacModelId, floorTwinId, roomTwinId, hvacTwinId);
 
             // Connect the created twins via relationships
-            String floorContainsRoomPayload = getRelationshipWithPropertyPayload(roomTwinId, CONTAINS_RELATIONSHIP, "isAccessRestricted", true);
-            JsonPatchDocument floorContainsRoomUpdatePayload = getRelationshipUpdatePayload("/isAccessRestricted", false);
+            String floorContainsRoomPayload = TestAssetsHelper.getRelationshipWithPropertyPayload(roomTwinId, CONTAINS_RELATIONSHIP, "isAccessRestricted", true);
+            JsonPatchDocument floorContainsRoomUpdatePayload = TestAssetsHelper.getRelationshipUpdatePayload("/isAccessRestricted", false);
 
             // Create relationship from Floor -> Room
             DigitalTwinsResponse<BasicRelationship> floorRoomRelationship = client.createOrReplaceRelationshipWithResponse(
@@ -743,21 +751,21 @@ public class DigitalTwinsRelationshipTest extends DigitalTwinsRelationshipTestBa
     public void deleteRelationshipSucceedsWhenETagMatches(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion) throws JsonProcessingException {
         DigitalTwinsClient client = getClient(httpClient, serviceVersion);
 
-        String floorModelId = getUniqueModelId(FLOOR_MODEL_ID_PREFIX, client, randomIntegerStringGenerator);
-        String roomModelId = getUniqueModelId(ROOM_MODEL_ID_PREFIX, client, randomIntegerStringGenerator);
-        String hvacModelId = getUniqueModelId(HVAC_MODEL_ID_PREFIX, client, randomIntegerStringGenerator);
+        String floorModelId = getUniqueModelId(TestAssetDefaults.FLOOR_MODEL_ID_PREFIX, client, getRandomIntegerStringGenerator());
+        String roomModelId = getUniqueModelId(TestAssetDefaults.ROOM_MODEL_ID_PREFIX, client, getRandomIntegerStringGenerator());
+        String hvacModelId = getUniqueModelId(TestAssetDefaults.HVAC_MODEL_ID_PREFIX, client, getRandomIntegerStringGenerator());
 
-        String floorTwinId = getUniqueDigitalTwinId(FLOOR_TWIN_ID_PREFIX, client, randomIntegerStringGenerator);
-        String roomTwinId = getUniqueDigitalTwinId(ROOM_TWIN_ID_PREFIX, client, randomIntegerStringGenerator);
-        String hvacTwinId = getUniqueDigitalTwinId(HVAC_TWIN_ID_PREFIX, client, randomIntegerStringGenerator);
+        String floorTwinId = getUniqueDigitalTwinId(TestAssetDefaults.FLOOR_TWIN_ID_PREFIX, client, getRandomIntegerStringGenerator());
+        String roomTwinId = getUniqueDigitalTwinId(TestAssetDefaults.ROOM_TWIN_ID_PREFIX, client, getRandomIntegerStringGenerator());
+        String hvacTwinId = getUniqueDigitalTwinId(TestAssetDefaults.HVAC_TWIN_ID_PREFIX, client, getRandomIntegerStringGenerator());
 
         try {
             // Create floor, room and hvac model
             createModelsAndTwins(client, floorModelId, roomModelId, hvacModelId, floorTwinId, roomTwinId, hvacTwinId);
 
             // Connect the created twins via relationships
-            String floorContainsRoomPayload = getRelationshipWithPropertyPayload(roomTwinId, CONTAINS_RELATIONSHIP, "isAccessRestricted", true);
-            JsonPatchDocument floorContainsRoomUpdatePayload = getRelationshipUpdatePayload("/isAccessRestricted", false);
+            String floorContainsRoomPayload = TestAssetsHelper.getRelationshipWithPropertyPayload(roomTwinId, CONTAINS_RELATIONSHIP, "isAccessRestricted", true);
+            JsonPatchDocument floorContainsRoomUpdatePayload = TestAssetsHelper.getRelationshipUpdatePayload("/isAccessRestricted", false);
 
             // Create relationship from Floor -> Room
             DigitalTwinsResponse<BasicRelationship> floorRoomRelationship = client.createOrReplaceRelationshipWithResponse(

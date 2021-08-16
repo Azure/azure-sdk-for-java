@@ -3,16 +3,15 @@
 
 package com.azure.ai.metricsadvisor;
 
-import com.azure.ai.metricsadvisor.models.AzureBlobDataFeedSource;
-import com.azure.ai.metricsadvisor.models.DataFeed;
-import com.azure.ai.metricsadvisor.models.DataFeedDimension;
-import com.azure.ai.metricsadvisor.models.DataFeedGranularity;
-import com.azure.ai.metricsadvisor.models.DataFeedGranularityType;
-import com.azure.ai.metricsadvisor.models.DataFeedIngestionSettings;
-import com.azure.ai.metricsadvisor.models.DataFeedMetric;
-import com.azure.ai.metricsadvisor.models.DataFeedSchema;
-import com.azure.ai.metricsadvisor.models.MetricsAdvisorServiceVersion;
-import com.azure.ai.metricsadvisor.models.SQLServerDataFeedSource;
+import com.azure.ai.metricsadvisor.administration.models.AzureBlobDataFeedSource;
+import com.azure.ai.metricsadvisor.administration.models.DataFeed;
+import com.azure.ai.metricsadvisor.administration.models.DataFeedDimension;
+import com.azure.ai.metricsadvisor.administration.models.DataFeedGranularity;
+import com.azure.ai.metricsadvisor.administration.models.DataFeedGranularityType;
+import com.azure.ai.metricsadvisor.administration.models.DataFeedIngestionSettings;
+import com.azure.ai.metricsadvisor.administration.models.DataFeedMetric;
+import com.azure.ai.metricsadvisor.administration.models.DataFeedSchema;
+import com.azure.ai.metricsadvisor.administration.models.SqlServerDataFeedSource;
 import com.azure.core.http.HttpClient;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
@@ -53,6 +52,8 @@ public final class TestUtils {
         + "let endtime=starttime + gran; requests | where timestamp >= starttime and timestamp < endtime "
         + "| summarize request_count = count(), duration_avg_ms = avg(duration), duration_95th_ms = percentile"
         + "(duration, 95), duration_max_ms = max(duration) by resultCode";
+    static final String LOG_ANALYTICS_QUERY = "where StartTime >=datetime(@StartTime) and EndTime <datetime(@EndTime)"
+        + "| summarize count_per_type=count() by DataType";
     static final String MONGO_COMMAND = "{\"find\": \"adsample\",\"filter\": { Timestamp: { $eq: @StartTime }}"
         + "\"batchSize\": 2000,}";
     static final String TEST_DB_NAME = "adsample";
@@ -109,21 +110,25 @@ public final class TestUtils {
         .getGlobalConfiguration()
         .get("AZURE_METRICS_ADVISOR_INFLUX_DB_PASSWORD", "testPassword");
 
-    static final String HTTP_URL = Configuration
-        .getGlobalConfiguration()
-        .get("AZURE_METRICS_ADVISOR_HTTP_GET_URL", "httpUrl");
-
-    static final String ELASTIC_SEARCH_HOST = Configuration
-        .getGlobalConfiguration()
-        .get("AZURE_METRICS_ADVISOR_ELASTIC_SEARCH_HOST", "elasticsearchHost");
-
-    static final String ELASTIC_SEARCH_AUTH_HEADER = Configuration
-        .getGlobalConfiguration()
-        .get("AZURE_METRICS_ADVISOR_ELASTICSEARCH_AUTH_HEADER", "authHeader");
-
     static final String AZURE_DATALAKEGEN2_ACCOUNT_KEY = Configuration
         .getGlobalConfiguration()
         .get("AZURE_METRICS_ADVISOR_AZURE_DATALAKE_ACCOUNT_KEY", "azDataLakeAccountKey");
+
+    static final String AZURE_METRICS_ADVISOR_TENANT_ID = Configuration
+        .getGlobalConfiguration()
+        .get("AZURE_CLIENT_ID", "azTenantId");
+
+    static final String AZURE_METRICS_ADVISOR_LOG_ANALYTICS_CLIENT_ID = Configuration
+        .getGlobalConfiguration()
+        .get("AZURE_METRICS_ADVISOR_LOG_ANALYTICS_CLIENT_ID", "azClientId");
+
+    static final String AZURE_METRICS_ADVISOR_LOG_ANALYTICS_CLIENT_SECRET = Configuration
+        .getGlobalConfiguration()
+        .get("AZURE_METRICS_ADVISOR_LOG_ANALYTICS_CLIENT_SECRET", "azClientSecret");
+
+    static final String AZURE_METRICS_ADVISOR_LOG_ANALYTICS_WORKSPACE_ID = Configuration
+        .getGlobalConfiguration()
+        .get("AZURE_METRICS_ADVISOR_LOG_ANALYTICS_WORKSPACE_ID", "azWorkspaceId");
 
     static final long DEFAULT_SUBSCRIBER_TIMEOUT_SECONDS = 60;
 
@@ -131,26 +136,26 @@ public final class TestUtils {
     }
 
     static DataFeed getSQLDataFeedSample() {
-        return new DataFeed().setSource(new SQLServerDataFeedSource(SQL_SERVER_CONNECTION_STRING,
+        return new DataFeed().setSource(SqlServerDataFeedSource.fromBasicCredential(SQL_SERVER_CONNECTION_STRING,
             TEMPLATE_QUERY)).setSchema(new DataFeedSchema(Arrays.asList(
-            new DataFeedMetric().setName("cost"),
-            new DataFeedMetric().setName("revenue")))
+                new DataFeedMetric("cost"),
+                new DataFeedMetric("revenue")))
             .setDimensions(Arrays.asList(
-                new DataFeedDimension().setName("city"),
-                new DataFeedDimension().setName("category"))))
+                new DataFeedDimension("city"),
+                new DataFeedDimension("category"))))
             .setName("java_SQL_create_data_feed_test_sample" + UUID.randomUUID())
             .setGranularity(new DataFeedGranularity().setGranularityType(DataFeedGranularityType.DAILY))
             .setIngestionSettings(new DataFeedIngestionSettings(INGESTION_START_TIME));
     }
 
     static DataFeed getAzureBlobDataFeedSample() {
-        return new DataFeed().setSource(new AzureBlobDataFeedSource(BLOB_CONNECTION_STRING,
+        return new DataFeed().setSource(AzureBlobDataFeedSource.fromBasicCredential(BLOB_CONNECTION_STRING,
             "BLOB_CONTAINER", "BLOB_TEMPLATE_NAME")).setSchema(new DataFeedSchema(Arrays.asList(
-            new DataFeedMetric().setName("cost"),
-            new DataFeedMetric().setName("revenue")))
+                new DataFeedMetric("cost"),
+                new DataFeedMetric("revenue")))
             .setDimensions(Arrays.asList(
-                new DataFeedDimension().setName("city"),
-                new DataFeedDimension().setName("category"))))
+                new DataFeedDimension("city"),
+                new DataFeedDimension("category"))))
             .setName("java_BLOB_create_data_feed_test_sample" + UUID.randomUUID())
             .setGranularity(new DataFeedGranularity().setGranularityType(DataFeedGranularityType.DAILY))
             .setIngestionSettings(new DataFeedIngestionSettings(INGESTION_START_TIME));

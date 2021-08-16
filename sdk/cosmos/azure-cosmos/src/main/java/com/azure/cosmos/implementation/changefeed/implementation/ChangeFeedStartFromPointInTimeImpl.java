@@ -49,15 +49,17 @@ class ChangeFeedStartFromPointInTimeImpl extends ChangeFeedStartFromInternal {
 
         super.populatePropertyBag();
 
-        setProperty(
-            this,
-            com.azure.cosmos.implementation.Constants.Properties.CHANGE_FEED_START_FROM_TYPE,
-            ChangeFeedStartFromTypes.POINT_IN_TIME);
+        synchronized(this) {
+            setProperty(
+                this,
+                com.azure.cosmos.implementation.Constants.Properties.CHANGE_FEED_START_FROM_TYPE,
+                ChangeFeedStartFromTypes.POINT_IN_TIME);
 
-        setProperty(
-            this,
-            Constants.Properties.CHANGE_FEED_START_FROM_POINT_IN_TIME_MS,
-            this.pointInTime.toEpochMilli());
+            setProperty(
+                this,
+                Constants.Properties.CHANGE_FEED_START_FROM_POINT_IN_TIME_MS,
+                this.pointInTime.toEpochMilli());
+        }
     }
 
     @Override

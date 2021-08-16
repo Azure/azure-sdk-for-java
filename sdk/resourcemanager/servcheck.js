@@ -22,7 +22,7 @@ function readPom(callback) {
             process.exit(1);
         }
         console.log('[INFO] reading modules from pom...');
-        readProjSpecs(response.pomObject.project.modules.module);
+        readProjSpecs(response.pomObject.project.profiles.profile[0].modules.module);
     });
 }
 
@@ -32,6 +32,10 @@ function readProjSpecs(modules) {
     console.log('[INFO] reading specs in project...');
     var map = {};
     Object.keys(mappings).forEach(key => {
+        // skip graphrbac as it moves to MSGraph now
+        if (key == 'graphrbac') {
+            return;
+		}
         if (modules.includes(mappings[key].dir)) {
             var val = getCurrentApiVersion(mappings[key].args);
             if (val !== undefined) {

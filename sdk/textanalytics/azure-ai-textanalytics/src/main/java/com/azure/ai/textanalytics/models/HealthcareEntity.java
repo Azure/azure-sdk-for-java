@@ -4,20 +4,23 @@
 package com.azure.ai.textanalytics.models;
 
 import com.azure.ai.textanalytics.implementation.HealthcareEntityPropertiesHelper;
-
-import java.util.List;
+import com.azure.core.annotation.Immutable;
+import com.azure.core.util.IterableStream;
 
 /**
  * The {@link HealthcareEntity} model.
  */
+@Immutable
 public final class HealthcareEntity {
     private String text;
-    private EntityCategory category;
+    private String normalizedText;
+    private HealthcareEntityCategory category;
     private String subcategory;
     private double confidenceScore;
     private int offset;
-    private boolean negated;
-    private List<HealthcareEntityLink> healthcareEntityLinks;
+    private int length;
+    private IterableStream<EntityDataSource> dataSources;
+    private HealthcareEntityAssertion assertion;
 
     static {
         HealthcareEntityPropertiesHelper.setAccessor(new HealthcareEntityPropertiesHelper.HealthcareEntityAccessor() {
@@ -27,7 +30,12 @@ public final class HealthcareEntity {
             }
 
             @Override
-            public void setCategory(HealthcareEntity healthcareEntity, EntityCategory category) {
+            public void setNormalizedText(HealthcareEntity healthcareEntity, String normalizedText) {
+                healthcareEntity.setNormalizedText(normalizedText);
+            }
+
+            @Override
+            public void setCategory(HealthcareEntity healthcareEntity, HealthcareEntityCategory category) {
                 healthcareEntity.setCategory(category);
             }
 
@@ -47,20 +55,25 @@ public final class HealthcareEntity {
             }
 
             @Override
-            public void setNegated(HealthcareEntity healthcareEntity, boolean negated) {
-                healthcareEntity.setNegated(negated);
+            public void setLength(HealthcareEntity healthcareEntity, int length) {
+                healthcareEntity.setLength(length);
             }
 
             @Override
-            public void setHealthcareEntityLinks(HealthcareEntity healthcareEntity,
-                List<HealthcareEntityLink> healthcareEntityLinks) {
-                healthcareEntity.setHealthcareEntityLinks(healthcareEntityLinks);
+            public void setDataSources(HealthcareEntity healthcareEntity,
+                IterableStream<EntityDataSource> dataSources) {
+                healthcareEntity.setDataSources(dataSources);
+            }
+
+            @Override
+            public void setAssertion(HealthcareEntity healthcareEntity, HealthcareEntityAssertion assertion) {
+                healthcareEntity.setAssertion(assertion);
             }
         });
     }
 
     /**
-     * Get the text property: Healthcare entity text as appears in the request.
+     * Gets the text property: Healthcare entity text as appears in the request.
      *
      * @return The text value.
      */
@@ -69,16 +82,26 @@ public final class HealthcareEntity {
     }
 
     /**
-     * Get the category property: Healthcare entity category, such as Person/Location/Org/SSN etc.
+     * Gets the normalized text property: The normalized text is preferred name for the entity.
+     * Example: 'histologically' would have a 'name' of 'histologic'.
+     *
+     * @return The normalized text value.
+     */
+    public String getNormalizedText() {
+        return this.normalizedText;
+    }
+
+    /**
+     * Gets the category property: Healthcare entity category, such as Person/Location/Org/SSN etc.
      *
      * @return The category value.
      */
-    public EntityCategory getCategory() {
+    public HealthcareEntityCategory getCategory() {
         return this.category;
     }
 
     /**
-     * Get the subcategory property: Healthcare entity sub category, such as Age/Year/TimeRange etc.
+     * Gets the subcategory property: Healthcare entity subcategory, such as DateTime etc.
      *
      * @return The subcategory value.
      */
@@ -87,7 +110,7 @@ public final class HealthcareEntity {
     }
 
     /**
-     * Get the score property: If a well-known item is recognized, a decimal
+     * Gets the score property: If a well-known item is recognized, a decimal
      * number denoting the confidence level between 0 and 1 will be returned.
      *
      * @return The score value.
@@ -97,7 +120,7 @@ public final class HealthcareEntity {
     }
 
     /**
-     * Get the offset of entity text. The start position for the entity text in a document.
+     * Gets the offset of entity text. The start position for the entity text in a document.
      *
      * @return The offset of entity text.
      */
@@ -106,28 +129,41 @@ public final class HealthcareEntity {
     }
 
     /**
-     * Get the isNegated property: The isNegated property.
+     * Gets the length of entity text.
      *
-     * @return the isNegated value.
+     * @return The length of entity text.
      */
-    public boolean isNegated() {
-        return this.negated;
+    public int getLength() {
+        return length;
     }
 
     /**
-     * Get the links property: Entity references in known data sources.
+     * Gets the healthcare entity data sources property: Entity references in known data sources.
      *
-     * @return the links value.
+     * @return the dataSources value.
      */
-    public List<HealthcareEntityLink> getDataSourceEntityLinks() {
-        return this.healthcareEntityLinks;
+    public IterableStream<EntityDataSource> getDataSources() {
+        return this.dataSources;
+    }
+
+    /**
+     * Gets the assertion property.
+     *
+     * @return the assertion property.
+     */
+    public HealthcareEntityAssertion getAssertion() {
+        return this.assertion;
     }
 
     private void setText(String text) {
         this.text = text;
     }
 
-    private void setCategory(EntityCategory category) {
+    private void setNormalizedText(String normalizedText) {
+        this.normalizedText = normalizedText;
+    }
+
+    private void setCategory(HealthcareEntityCategory category) {
         this.category = category;
     }
 
@@ -143,11 +179,15 @@ public final class HealthcareEntity {
         this.offset = offset;
     }
 
-    private void setNegated(boolean negated) {
-        this.negated = negated;
+    private void setLength(int length) {
+        this.length = length;
     }
 
-    private void setHealthcareEntityLinks(List<HealthcareEntityLink> healthcareEntityLinks) {
-        this.healthcareEntityLinks = healthcareEntityLinks;
+    private void setDataSources(IterableStream<EntityDataSource> dataSources) {
+        this.dataSources = dataSources;
+    }
+
+    private void setAssertion(HealthcareEntityAssertion assertion) {
+        this.assertion = assertion;
     }
 }

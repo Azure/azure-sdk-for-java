@@ -13,38 +13,44 @@
     <profile>
       <id>coverage</id>
       <modules>
+        <module>azure-communication-callingserver</module>
+        <module>azure-communication-chat</module>
         <module>azure-communication-common</module>
         <module>azure-communication-identity</module>
         <module>azure-communication-sms</module>
-        <module>azure-communication-chat</module>
-        <module>azure-communication-administration</module>
+        <module>azure-communication-phonenumbers</module>
       </modules>
 
       <dependencies>
         <dependency>
           <groupId>com.azure</groupId>
-          <artifactId>azure-communication-administration</artifactId>
-          <version>1.0.0-beta.4</version> <!-- {x-version-update;com.azure:azure-communication-administration;current} -->
+          <artifactId>azure-communication-callingserver</artifactId>
+          <version>1.0.0-beta.4</version> <!-- {x-version-update;com.azure:azure-communication-callingserver;current} -->
         </dependency>
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-communication-chat</artifactId>
-          <version>1.0.0-beta.4</version> <!-- {x-version-update;com.azure:azure-communication-chat;current} -->
+          <version>1.1.0-beta.2</version> <!-- {x-version-update;com.azure:azure-communication-chat;current} -->
         </dependency>
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-communication-common</artifactId>
-          <version>1.0.0-beta.4</version> <!-- {x-version-update;com.azure:azure-communication-common;current} -->
-        </dependency>
-        <dependency>
-          <groupId>com.azure</groupId>
-          <artifactId>azure-communication-sms</artifactId>
-          <version>1.0.0-beta.4</version> <!-- {x-version-update;com.azure:azure-communication-sms;current} -->
+          <version>1.0.3</version> <!-- {x-version-update;com.azure:azure-communication-common;current} -->
         </dependency>
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-communication-identity</artifactId>
-          <version>1.0.0-beta.4</version> <!-- {x-version-update;com.azure:azure-communication-identity;current} -->
+          <version>1.1.1</version> <!-- {x-version-update;com.azure:azure-communication-identity;current} -->
+        </dependency>
+        <dependency>
+          <groupId>com.azure</groupId>
+          <artifactId>azure-communication-phonenumbers</artifactId>
+          <version>1.1.0-beta.1</version> <!-- {x-version-update;com.azure:azure-communication-phonenumbers;current} -->
+        </dependency>
+        <dependency>
+          <groupId>com.azure</groupId>
+          <artifactId>azure-communication-sms</artifactId>
+          <version>1.1.0-beta.1</version> <!-- {x-version-update;com.azure:azure-communication-sms;current} -->
         </dependency>
       </dependencies>
 
@@ -53,14 +59,15 @@
           <plugin>
             <groupId>org.jacoco</groupId>
             <artifactId>jacoco-maven-plugin</artifactId>
-            <version>0.8.5</version>
+            <version>0.8.5</version> <!-- {x-version-update;org.jacoco:jacoco-maven-plugin;external_dependency} -->
             <configuration>
               <includes>
+                <include>com/azure/communication/callingserver/*.class</include>
                 <include>com/azure/communication/chat/*.class</include>
                 <include>com/azure/communication/sms/*.class</include>
-                <include>com/azure/communication/administration/*.class</include>
+                <include>com/azure/communication/phonenumbers/*.class</include>
               </includes>
-            </configuration> <!-- {x-version-update;org.jacoco:jacoco-maven-plugin;external_dependency} -->
+            </configuration>
             <executions>
               <execution>
                 <id>report-aggregate</id>
@@ -83,11 +90,13 @@
         <activeByDefault>true</activeByDefault>
       </activation>
       <modules>
+        <module>azure-communication-callingserver</module>
+        <module>azure-communication-chat</module>
         <module>azure-communication-common</module>
         <module>azure-communication-identity</module>
+        <module>azure-communication-phonenumbers</module>
         <module>azure-communication-sms</module>
-        <module>azure-communication-chat</module>
-        <module>azure-communication-administration</module>
+        <module>azure-resourcemanager-communication</module>
       </modules>
     </profile>
   </profiles>

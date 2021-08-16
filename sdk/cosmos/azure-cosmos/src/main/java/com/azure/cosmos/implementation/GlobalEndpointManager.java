@@ -240,7 +240,7 @@ public class GlobalEndpointManager implements AutoCloseable {
 
         this.refreshInBackground.set(true);
 
-        return Mono.delay(Duration.ofMillis(delayInMillis))
+        return Mono.delay(Duration.ofMillis(delayInMillis), CosmosSchedulers.COSMOS_PARALLEL)
                 .flatMap(
                         t -> {
                             if (this.isClosed) {

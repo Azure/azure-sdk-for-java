@@ -41,6 +41,8 @@ public class StoreResult {
     final public boolean isNotFoundException;
     final public boolean isInvalidPartitionException;
     final public Uri storePhysicalAddress;
+    final public boolean isThroughputControlRequestRateTooLargeException;
+    final public Double backendLatencyInMs;
 
     public StoreResult(
             StoreResponse storeResponse,
@@ -56,7 +58,8 @@ public class StoreResult {
             long globalCommittedLSN,
             int numberOfReadRegions,
             long itemLSN,
-            ISessionToken sessionToken) {
+            ISessionToken sessionToken,
+            Double backendLatencyInMs) {
         this.storeResponse = storeResponse;
         this.exception = exception;
         this.partitionKeyRangeId = partitionKeyRangeId;
@@ -75,6 +78,8 @@ public class StoreResult {
         this.numberOfReadRegions = numberOfReadRegions;
         this.itemLSN = itemLSN;
         this.sessionToken = sessionToken;
+        this.isThroughputControlRequestRateTooLargeException = this.exception != null && Exceptions.isThroughputControlRequestRateTooLargeException(this.exception);
+        this.backendLatencyInMs = backendLatencyInMs;
     }
 
     public CosmosException getException() throws InternalServerErrorException {
@@ -153,10 +158,12 @@ public class StoreResult {
                 ", subStatusCode: " + subStatusCode +
                 ", isGone: " + this.isGoneException +
                 ", isNotFound: " + this.isNotFoundException +
+                ", isThroughputControlRequestRateTooLarge: " + this.isThroughputControlRequestRateTooLargeException +
                 ", isInvalidPartition: " + this.isInvalidPartitionException +
                 ", requestCharge: " + this.requestCharge +
                 ", itemLSN: " + this.itemLSN +
                 ", sessionToken: " + (this.sessionToken != null ? this.sessionToken.convertToString() : null) +
+                ", backendLatencyInMs: " + this.backendLatencyInMs +
                 ", exception: " + BridgeInternal.getInnerErrorMessage(this.exception);
     }
     public static class StoreResultSerializer extends StdSerializer<StoreResult> {
@@ -192,13 +199,22 @@ public class StoreResult {
             jsonGenerator.writeBooleanField("isGone", storeResult.isGoneException);
             jsonGenerator.writeBooleanField("isNotFound", storeResult.isNotFoundException);
             jsonGenerator.writeBooleanField("isInvalidPartition", storeResult.isInvalidPartitionException);
+            jsonGenerator.writeBooleanField("isThroughputControlRequestRateTooLarge", storeResult.isThroughputControlRequestRateTooLargeException);
             jsonGenerator.writeNumberField("requestCharge", storeResult.requestCharge);
             jsonGenerator.writeNumberField("itemLSN", storeResult.itemLSN);
             jsonGenerator.writeStringField("sessionToken", (storeResult.sessionToken != null ? storeResult.sessionToken.convertToString() : null));
+            jsonGenerator.writeObjectField("backendLatencyInMs", storeResult.backendLatencyInMs);
             jsonGenerator.writeStringField("exception", BridgeInternal.getInnerErrorMessage(storeResult.exception));
             jsonGenerator.writeObjectField("transportRequestTimeline", storeResult.storeResponse != null ?
                 storeResult.storeResponse.getRequestTimeline() :
                 storeResult.exception != null ? BridgeInternal.getRequestTimeline(storeResult.exception) : null);
+
+            this.writeNonNullObjectField(
+                jsonGenerator,
+                "transportRequestChannelAcquisitionContext",
+                storeResult.storeResponse != null ? storeResult.storeResponse.getChannelAcquisitionTimeline() :
+                    storeResult.exception != null? BridgeInternal.getChannelAcqusitionTimeline(storeResult.exception) : null);
+
             jsonGenerator.writeObjectField("rntbdRequestLengthInBytes", storeResult.storeResponse != null ?
                 storeResult.storeResponse.getRntbdRequestLength() : BridgeInternal.getRntbdRequestLength(storeResult.exception));
             jsonGenerator.writeObjectField("rntbdResponseLengthInBytes", storeResult.storeResponse != null ?
@@ -215,6 +231,14 @@ public class StoreResult {
                 storeResult.exception != null ? BridgeInternal.getServiceEndpointStatistics(storeResult.exception) : null);
 
             jsonGenerator.writeEndObject();
+        }
+
+        private void writeNonNullObjectField(JsonGenerator jsonGenerator, String fieldName, Object object) throws IOException {
+             if (object == null) {
+                 return;
+             }
+
+             jsonGenerator.writeObjectField(fieldName, object);
         }
     }
 }

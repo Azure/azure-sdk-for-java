@@ -4,10 +4,6 @@ package com.azure.cosmos.implementation.query;
 
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosException;
-import com.azure.cosmos.models.CosmosQueryRequestOptions;
-import com.azure.cosmos.models.FeedResponse;
-import com.azure.cosmos.models.ModelBridgeInternal;
-import com.azure.cosmos.implementation.Resource;
 import com.azure.cosmos.implementation.DocumentClientRetryPolicy;
 import com.azure.cosmos.implementation.Exceptions;
 import com.azure.cosmos.implementation.HttpConstants;
@@ -15,15 +11,21 @@ import com.azure.cosmos.implementation.ObservableHelper;
 import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.QueryMetrics;
 import com.azure.cosmos.implementation.QueryMetricsConstants;
+import com.azure.cosmos.implementation.Resource;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.implementation.apachecommons.lang.tuple.ImmutablePair;
+import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
 import com.azure.cosmos.implementation.query.metrics.ClientSideMetrics;
 import com.azure.cosmos.implementation.query.metrics.FetchExecutionRangeAccumulator;
 import com.azure.cosmos.implementation.query.metrics.SchedulingStopwatch;
 import com.azure.cosmos.implementation.query.metrics.SchedulingTimeSpan;
 import com.azure.cosmos.implementation.routing.Range;
-import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
-import com.azure.cosmos.implementation.apachecommons.lang.tuple.ImmutablePair;
+import com.azure.cosmos.models.CosmosQueryRequestOptions;
+import com.azure.cosmos.models.FeedRange;
+import com.azure.cosmos.models.FeedResponse;
+import com.azure.cosmos.models.ModelBridgeInternal;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
@@ -49,17 +51,17 @@ class DocumentProducer<T extends Resource> {
 
     class DocumentProducerFeedResponse {
         FeedResponse<T> pageResult;
-        PartitionKeyRange sourcePartitionKeyRange;
+        FeedRangeEpkImpl sourceFeedRange;
 
         DocumentProducerFeedResponse(FeedResponse<T> pageResult) {
             this.pageResult = pageResult;
-            this.sourcePartitionKeyRange = DocumentProducer.this.targetRange;
+            this.sourceFeedRange = DocumentProducer.this.feedRange;
             populatePartitionedQueryMetrics();
         }
 
-        DocumentProducerFeedResponse(FeedResponse<T> pageResult, PartitionKeyRange pkr) {
+        DocumentProducerFeedResponse(FeedResponse<T> pageResult, FeedRange feedRange) {
             this.pageResult = pageResult;
-            this.sourcePartitionKeyRange = pkr;
+            this.sourceFeedRange = (FeedRangeEpkImpl) feedRange;
             populatePartitionedQueryMetrics();
         }
 
@@ -71,7 +73,7 @@ class DocumentProducer<T extends Resource> {
                                                              QueryMetricsConstants.RequestCharge,
                                                              pageResult.getRequestCharge());
                 ImmutablePair<String, SchedulingTimeSpan> schedulingTimeSpanMap =
-                        new ImmutablePair<>(targetRange.getId(), fetchSchedulingMetrics.getElapsedTime());
+                        new ImmutablePair<>(feedRange.getRange().toString(), fetchSchedulingMetrics.getElapsedTime());
 
                 QueryMetrics qm =BridgeInternal.createQueryMetricsFromDelimitedStringAndClientSideMetrics(queryMetricsDelimitedString,
                         new ClientSideMetrics(retries,
@@ -79,7 +81,9 @@ class DocumentProducer<T extends Resource> {
                                 fetchExecutionRangeAccumulator.getExecutionRanges(),
                                 Arrays.asList(schedulingTimeSpanMap)
                         ), pageResult.getActivityId());
-                BridgeInternal.putQueryMetricsIntoMap(pageResult, targetRange.getId(), qm);
+                String pkrId = pageResult.getResponseHeaders().get(HttpConstants.HttpHeaders.PARTITION_KEY_RANGE_ID);
+                String queryMetricKey = feedRange.getRange().toString() + ",pkrId:" + pkrId;
+                BridgeInternal.putQueryMetricsIntoMap(pageResult, queryMetricKey, qm);
             }
         }
     }
@@ -88,9 +92,9 @@ class DocumentProducer<T extends Resource> {
     protected final String collectionRid;
     protected final CosmosQueryRequestOptions cosmosQueryRequestOptions;
     protected final Class<T> resourceType;
-    protected final PartitionKeyRange targetRange;
+    protected PartitionKeyRange targetRange;
     protected final String collectionLink;
-    protected final TriFunction<PartitionKeyRange, String, Integer, RxDocumentServiceRequest> createRequestFunc;
+    protected final TriFunction<FeedRangeEpkImpl, String, Integer, RxDocumentServiceRequest> createRequestFunc;
     protected final Function<RxDocumentServiceRequest, Mono<FeedResponse<T>>> executeRequestFuncWithRetries;
     protected final Callable<DocumentClientRetryPolicy> createRetryPolicyFunc;
     protected final int pageSize;
@@ -100,12 +104,13 @@ class DocumentProducer<T extends Resource> {
     private final SchedulingStopwatch fetchSchedulingMetrics;
     private SchedulingStopwatch moveNextSchedulingMetrics;
     private final FetchExecutionRangeAccumulator fetchExecutionRangeAccumulator;
+    protected FeedRangeEpkImpl feedRange;
 
     public DocumentProducer(
             IDocumentQueryClient client,
             String collectionResourceId,
             CosmosQueryRequestOptions cosmosQueryRequestOptions,
-            TriFunction<PartitionKeyRange, String, Integer, RxDocumentServiceRequest> createRequestFunc,
+            TriFunction<FeedRangeEpkImpl, String, Integer, RxDocumentServiceRequest> createRequestFunc,
             Function<RxDocumentServiceRequest, Mono<FeedResponse<T>>> executeRequestFunc,
             PartitionKeyRange targetRange,
             String collectionLink,
@@ -114,7 +119,8 @@ class DocumentProducer<T extends Resource> {
             UUID correlatedActivityId,
             int initialPageSize, // = -1,
             String initialContinuationToken,
-            int top) {
+            int top,
+            FeedRangeEpkImpl feedRange) {
 
         this.client = client;
         this.collectionRid = collectionResourceId;
@@ -123,7 +129,7 @@ class DocumentProducer<T extends Resource> {
 
         this.fetchSchedulingMetrics = new SchedulingStopwatch();
         this.fetchSchedulingMetrics.ready();
-        this.fetchExecutionRangeAccumulator = new FetchExecutionRangeAccumulator(targetRange.getId());
+        this.fetchExecutionRangeAccumulator = new FetchExecutionRangeAccumulator(feedRange.getRange().toString());
 
         this.executeRequestFuncWithRetries = request -> {
             retries = -1;
@@ -163,11 +169,12 @@ class DocumentProducer<T extends Resource> {
         this.createRetryPolicyFunc = createRetryPolicyFunc;
         this.pageSize = initialPageSize;
         this.top = top;
+        this.feedRange = feedRange;
     }
 
     public Flux<DocumentProducerFeedResponse> produceAsync() {
         BiFunction<String, Integer, RxDocumentServiceRequest> sourcePartitionCreateRequestFunc =
-                (token, maxItemCount) -> createRequestFunc.apply(targetRange, token, maxItemCount);
+                (token, maxItemCount) -> createRequestFunc.apply(feedRange, token, maxItemCount);
         Flux<FeedResponse<T>> obs = Paginator
                 .getPaginatedQueryResultAsObservable(
                         ModelBridgeInternal.getRequestContinuationFromQueryRequestOptions(cosmosQueryRequestOptions),
@@ -196,8 +203,8 @@ class DocumentProducer<T extends Resource> {
             }
 
             // we are dealing with Split
-            logger.info("DocumentProducer handling a partition split in [{}], detail:[{}]", targetRange, dce);
-            Mono<Utils.ValueHolder<List<PartitionKeyRange>>> replacementRangesObs = getReplacementRanges(targetRange.toRange());
+            logger.info("DocumentProducer handling a partition split in [{}], detail:[{}]", feedRange, dce);
+            Mono<Utils.ValueHolder<List<PartitionKeyRange>>> replacementRangesObs = getReplacementRanges(feedRange.getRange());
 
             // Since new DocumentProducers are instantiated for the new replacement ranges, if for the new
             // replacement partitions split happens the corresponding DocumentProducer can recursively handle splits.
@@ -207,7 +214,7 @@ class DocumentProducer<T extends Resource> {
                         if (logger.isDebugEnabled()) {
                             logger.info("Cross Partition Query Execution detected partition [{}] split into [{}] partitions,"
                                     + " last continuation token is [{}].",
-                                    targetRange.toJson(),
+                                    feedRange,
                                     partitionKeyRangesValueHolder.v.stream()
                                                                    .map(ModelBridgeInternal::toJsonFromJsonSerializable)
                                                                    .collect(Collectors.joining(", ")),
@@ -232,7 +239,6 @@ class DocumentProducer<T extends Resource> {
         }
         return replacingDocumentProducers;
     }
-
     protected DocumentProducer<T> createChildDocumentProducerOnSplit(
             PartitionKeyRange targetRange,
             String initialContinuationToken) {
@@ -250,7 +256,8 @@ class DocumentProducer<T extends Resource> {
                 correlatedActivityId,
                 pageSize,
                 initialContinuationToken,
-                top);
+                top,
+                new FeedRangeEpkImpl(targetRange.toRange()));
     }
 
     private Mono<Utils.ValueHolder<List<PartitionKeyRange>>> getReplacementRanges(Range<String> range) {

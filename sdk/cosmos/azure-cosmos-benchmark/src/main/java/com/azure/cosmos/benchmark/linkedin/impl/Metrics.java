@@ -9,9 +9,17 @@ package com.azure.cosmos.benchmark.linkedin.impl;
 public interface Metrics {
 
     /**
-     * @param metricName metric for this operation e.g. CallCount, NotFound
+     * Metric types we are tracking
      */
-    void logCounterMetric(final String metricName);
+    enum Type {
+        CALL_COUNT,
+        NOT_FOUND
+    }
+
+    /**
+     * @param metricType metric for this operation e.g. CallCount, NotFound
+     */
+    void logCounterMetric(final Type metricType);
 
     /**
      * Track successful completion of the operation

@@ -3,9 +3,9 @@
 
 package com.azure.spring.aad.webapp;
 
+import com.azure.spring.aad.AADClientRegistrationRepository;
 import com.azure.spring.autoconfigure.aad.AADAuthenticationProperties;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.converter.FormHttpMessageConverter;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.oauth2.client.endpoint.DefaultAuthorizationCodeTokenResponseClient;
@@ -14,25 +14,20 @@ import org.springframework.security.oauth2.client.endpoint.OAuth2AuthorizationCo
 import org.springframework.security.oauth2.client.oidc.userinfo.OidcUserRequest;
 import org.springframework.security.oauth2.client.oidc.web.logout.OidcClientInitiatedLogoutSuccessHandler;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
+import org.springframework.security.oauth2.client.web.OAuth2AuthorizationRequestRedirectFilter;
 import org.springframework.security.oauth2.client.web.OAuth2AuthorizationRequestResolver;
-import org.springframework.security.oauth2.core.http.converter.OAuth2AccessTokenResponseHttpMessageConverter;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
-import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 import org.springframework.util.StringUtils;
-import org.springframework.web.client.RestTemplate;
-
-import java.net.URI;
-import java.util.Arrays;
 
 /**
- * Abstract configuration class, used to make AzureClientRegistrationRepository
- * and AuthzCodeGrantRequestEntityConverter take effect.
+ * Abstract configuration class, used to make AzureClientRegistrationRepository and AuthzCodeGrantRequestEntityConverter
+ * take effect.
  */
 public abstract class AADWebSecurityConfigurerAdapter extends WebSecurityConfigurerAdapter {
 
     @Autowired
-    private AADWebAppClientRegistrationRepository repo;
+    private AADClientRegistrationRepository repo;
     @Autowired
     private OAuth2UserService<OidcUserRequest, OidcUser> oidcUserService;
     @Autowired
@@ -41,11 +36,10 @@ public abstract class AADWebSecurityConfigurerAdapter extends WebSecurityConfigu
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         // @formatter:off
-        http.authorizeRequests()
-                .antMatchers("/login").permitAll()
-                .anyRequest().authenticated()
-                .and()
-            .oauth2Login()
+        http.oauth2Login()
+                .authorizationEndpoint()
+                    .authorizationRequestResolver(requestResolver())
+                    .and()
                 .tokenEndpoint()
                     .accessTokenResponseClient(accessTokenResponseClient())
                     .and()
@@ -55,7 +49,8 @@ public abstract class AADWebSecurityConfigurerAdapter extends WebSecurityConfigu
                 .and()
             .logout()
                 .logoutSuccessHandler(oidcLogoutSuccessHandler())
-                .and();
+                .and()
+            .addFilterAfter(new AADHandleConditionalAccessFilter(), OAuth2AuthorizationRequestRedirectFilter.class);
         // @formatter:off
     }
 
@@ -64,28 +59,19 @@ public abstract class AADWebSecurityConfigurerAdapter extends WebSecurityConfigu
             new OidcClientInitiatedLogoutSuccessHandler(this.repo);
         String uri = this.properties.getPostLogoutRedirectUri();
         if (StringUtils.hasText(uri)) {
-            // TODO (jack) Remove deprecated method after we do not need to support spring-boot-2.2.x
-            oidcLogoutSuccessHandler.setPostLogoutRedirectUri(URI.create(uri));
+            oidcLogoutSuccessHandler.setPostLogoutRedirectUri(uri);
         }
         return oidcLogoutSuccessHandler;
     }
 
     protected OAuth2AccessTokenResponseClient<OAuth2AuthorizationCodeGrantRequest> accessTokenResponseClient() {
         DefaultAuthorizationCodeTokenResponseClient result = new DefaultAuthorizationCodeTokenResponseClient();
-        RestTemplate restTemplate = new RestTemplate(Arrays.asList(
-            new FormHttpMessageConverter(), new OAuth2AccessTokenResponseHttpMessageConverter()));
-        restTemplate.setErrorHandler(new ConditionalAccessResponseErrorHandler());
-        result.setRestOperations(restTemplate);
         result.setRequestEntityConverter(
-            new AADOAuth2AuthorizationCodeGrantRequestEntityConverter(repo.getAzureClient()));
+            new AADOAuth2AuthorizationCodeGrantRequestEntityConverter(repo.getAzureClientAccessTokenScopes()));
         return result;
     }
 
     protected OAuth2AuthorizationRequestResolver requestResolver() {
-        return new AADOAuth2AuthorizationRequestResolver(this.repo);
-    }
-
-    protected AuthenticationFailureHandler failureHandler() {
-        return new AADAuthenticationFailureHandler();
+        return new AADOAuth2AuthorizationRequestResolver(this.repo, properties);
     }
 }

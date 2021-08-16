@@ -22,6 +22,12 @@ public final class DiskStorageAccountTypes extends ExpandableStringEnum<DiskStor
     /** Static value UltraSSD_LRS for DiskStorageAccountTypes. */
     public static final DiskStorageAccountTypes ULTRA_SSD_LRS = fromString("UltraSSD_LRS");
 
+    /** Static value Premium_ZRS for DiskStorageAccountTypes. */
+    public static final DiskStorageAccountTypes PREMIUM_ZRS = fromString("Premium_ZRS");
+
+    /** Static value StandardSSD_ZRS for DiskStorageAccountTypes. */
+    public static final DiskStorageAccountTypes STANDARD_SSD_ZRS = fromString("StandardSSD_ZRS");
+
     /**
      * Creates or finds a DiskStorageAccountTypes from its string representation.
      *

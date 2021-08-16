@@ -8,14 +8,14 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** The AcsChatThreadWithUserDeletedEventData model. */
+/** Schema of the Data property of an EventGridEvent for a Microsoft.Communication.ChatThreadWithUserDeleted event. */
 @Fluent
 public final class AcsChatThreadWithUserDeletedEventData extends AcsChatThreadEventBaseProperties {
     /*
-     * The MRI of the user who deleted the thread
+     * The communication identifier of the user who deleted the thread
      */
-    @JsonProperty(value = "deletedBy")
-    private String deletedBy;
+    @JsonProperty(value = "deletedByCommunicationIdentifier")
+    private CommunicationIdentifierModel deletedByCommunicationIdentifier;
 
     /*
      * The deletion time of the thread
@@ -24,22 +24,25 @@ public final class AcsChatThreadWithUserDeletedEventData extends AcsChatThreadEv
     private OffsetDateTime deleteTime;
 
     /**
-     * Get the deletedBy property: The MRI of the user who deleted the thread.
+     * Get the deletedByCommunicationIdentifier property: The communication identifier of the user who deleted the
+     * thread.
      *
-     * @return the deletedBy value.
+     * @return the deletedByCommunicationIdentifier value.
      */
-    public String getDeletedBy() {
-        return this.deletedBy;
+    public CommunicationIdentifierModel getDeletedByCommunicationIdentifier() {
+        return this.deletedByCommunicationIdentifier;
     }
 
     /**
-     * Set the deletedBy property: The MRI of the user who deleted the thread.
+     * Set the deletedByCommunicationIdentifier property: The communication identifier of the user who deleted the
+     * thread.
      *
-     * @param deletedBy the deletedBy value to set.
+     * @param deletedByCommunicationIdentifier the deletedByCommunicationIdentifier value to set.
      * @return the AcsChatThreadWithUserDeletedEventData object itself.
      */
-    public AcsChatThreadWithUserDeletedEventData setDeletedBy(String deletedBy) {
-        this.deletedBy = deletedBy;
+    public AcsChatThreadWithUserDeletedEventData setDeletedByCommunicationIdentifier(
+            CommunicationIdentifierModel deletedByCommunicationIdentifier) {
+        this.deletedByCommunicationIdentifier = deletedByCommunicationIdentifier;
         return this;
     }
 
@@ -60,6 +63,42 @@ public final class AcsChatThreadWithUserDeletedEventData extends AcsChatThreadEv
      */
     public AcsChatThreadWithUserDeletedEventData setDeleteTime(OffsetDateTime deleteTime) {
         this.deleteTime = deleteTime;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AcsChatThreadWithUserDeletedEventData setCreateTime(OffsetDateTime createTime) {
+        super.setCreateTime(createTime);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AcsChatThreadWithUserDeletedEventData setVersion(Long version) {
+        super.setVersion(version);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AcsChatThreadWithUserDeletedEventData setRecipientCommunicationIdentifier(
+            CommunicationIdentifierModel recipientCommunicationIdentifier) {
+        super.setRecipientCommunicationIdentifier(recipientCommunicationIdentifier);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AcsChatThreadWithUserDeletedEventData setTransactionId(String transactionId) {
+        super.setTransactionId(transactionId);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AcsChatThreadWithUserDeletedEventData setThreadId(String threadId) {
+        super.setThreadId(threadId);
         return this;
     }
 }

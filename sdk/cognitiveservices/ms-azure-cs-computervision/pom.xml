@@ -15,7 +15,7 @@
     </parent>
     <artifactId>azure-cognitiveservices-computervision</artifactId>
     <groupId>com.microsoft.azure.cognitiveservices</groupId>
-    <version>1.0.6-beta</version> <!-- {x-version-update;com.microsoft.azure.cognitiveservices:azure-cognitiveservices-computervision;current} -->
+    <version>1.0.8-beta</version> <!-- {x-version-update;com.microsoft.azure.cognitiveservices:azure-cognitiveservices-computervision;current} -->
     <packaging>jar</packaging>
     <name>Microsoft Azure SDK for Cognitive Service Computer Vision</name>
     <description>This package contains Microsoft Cognitive Service Computer Vision SDK.</description>
@@ -50,7 +50,7 @@
     <dependency>
       <groupId>com.microsoft.azure</groupId>
       <artifactId>azure-client-runtime</artifactId>
-      <version>1.7.3</version> <!-- {x-version-update;com.microsoft.azure:azure-client-runtime;external_dependency} -->
+      <version>1.7.14</version> <!-- {x-version-update;com.microsoft.azure:azure-client-runtime;external_dependency} -->
     </dependency>
   </dependencies>
   <build>

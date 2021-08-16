@@ -4,12 +4,17 @@
 package com.azure.storage.blob.specialized;
 
 import com.azure.core.http.RequestConditions;
+import com.azure.core.http.rest.Response;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.storage.blob.BlobServiceClientBuilder;
 import com.azure.storage.blob.models.BlobBeginCopySourceRequestConditions;
+import com.azure.storage.blob.models.BlobDownloadContentResponse;
+import com.azure.storage.blob.models.BlobImmutabilityPolicy;
+import com.azure.storage.blob.models.BlobImmutabilityPolicyMode;
 import com.azure.storage.blob.options.BlobBeginCopyOptions;
 import com.azure.storage.blob.options.BlobCopyFromUrlOptions;
 import com.azure.storage.blob.models.BlobProperties;
@@ -119,6 +124,16 @@ public class BlobClientBaseJavaDocCodeSnippets {
         client.download(new ByteArrayOutputStream());
         System.out.println("Download completed.");
         // END: com.azure.storage.blob.specialized.BlobClientBase.download#OutputStream
+    }
+
+    /**
+     * Code snippets for {@link BlobClientBase#downloadStream(OutputStream)}
+     */
+    public void downloadStream() {
+        // BEGIN: com.azure.storage.blob.specialized.BlobClientBase.downloadStream#OutputStream
+        client.downloadStream(new ByteArrayOutputStream());
+        System.out.println("Download completed.");
+        // END: com.azure.storage.blob.specialized.BlobClientBase.downloadStream#OutputStream
     }
 
     /**
@@ -381,6 +396,39 @@ public class BlobClientBaseJavaDocCodeSnippets {
                 timeout, new Context(key2, value2)).getStatusCode());
         // END: com.azure.storage.blob.specialized.BlobClientBase.downloadWithResponse#OutputStream-BlobRange-DownloadRetryOptions-BlobRequestConditions-boolean-Duration-Context
 
+    }
+
+    /**
+     * Code snippets for {@link BlobClientBase#downloadStreamWithResponse(OutputStream, BlobRange, DownloadRetryOptions,
+     * BlobRequestConditions, boolean, Duration, Context)}
+     * @throws UncheckedIOException If an I/O error occurs
+     */
+    public void downloadStreamWithResponseCodeSnippets() {
+        // BEGIN: com.azure.storage.blob.specialized.BlobClientBase.downloadStreamWithResponse#OutputStream-BlobRange-DownloadRetryOptions-BlobRequestConditions-boolean-Duration-Context
+        BlobRange range = new BlobRange(1024, 2048L);
+        DownloadRetryOptions options = new DownloadRetryOptions().setMaxRetryRequests(5);
+
+        System.out.printf("Download completed with status %d%n",
+            client.downloadStreamWithResponse(new ByteArrayOutputStream(), range, options, null, false,
+                timeout, new Context(key2, value2)).getStatusCode());
+        // END: com.azure.storage.blob.specialized.BlobClientBase.downloadStreamWithResponse#OutputStream-BlobRange-DownloadRetryOptions-BlobRequestConditions-boolean-Duration-Context
+    }
+
+    /**
+     * Code snippets for {@link BlobClientBase#downloadContentWithResponse(DownloadRetryOptions,
+     * BlobRequestConditions, Duration, Context)}
+     * @throws UncheckedIOException If an I/O error occurs
+     */
+    public void downloadContentWithResponseCodeSnippets() {
+        // BEGIN: com.azure.storage.blob.specialized.BlobClientBase.downloadContentWithResponse#DownloadRetryOptions-BlobRequestConditions-Duration-Context
+        DownloadRetryOptions options = new DownloadRetryOptions().setMaxRetryRequests(5);
+
+        BlobDownloadContentResponse contentResponse = client.downloadContentWithResponse(options, null,
+            timeout, new Context(key2, value2));
+        BinaryData content = contentResponse.getValue();
+        System.out.printf("Download completed with status %d and content%s%n",
+            contentResponse.getStatusCode(), content.toString());
+        // END: com.azure.storage.blob.specialized.BlobClientBase.downloadContentWithResponse#DownloadRetryOptions-BlobRequestConditions-Duration-Context
     }
 
     /**
@@ -659,5 +707,61 @@ public class BlobClientBaseJavaDocCodeSnippets {
             client.queryWithResponse(queryOptions, timeout, new Context(key1, value1))
                 .getStatusCode());
         // END: com.azure.storage.blob.specialized.BlobClientBase.queryWithResponse#BlobQueryOptions-Duration-Context
+    }
+
+    /**
+     * Code snippet for {@link BlobClientBase#setImmutabilityPolicy(BlobImmutabilityPolicy)} and
+     * {@link BlobClientBase#setImmutabilityPolicyWithResponse(BlobImmutabilityPolicy, BlobRequestConditions, Duration, Context)}
+     */
+    public void setImmutabilityPolicy() {
+        // BEGIN: com.azure.storage.blob.specialized.BlobClientBase.setImmutabilityPolicy#BlobImmutabilityPolicy
+        BlobImmutabilityPolicy policy = new BlobImmutabilityPolicy()
+            .setPolicyMode(BlobImmutabilityPolicyMode.LOCKED)
+            .setExpiryTime(OffsetDateTime.now().plusDays(1));
+        BlobImmutabilityPolicy setPolicy = client.setImmutabilityPolicy(policy);
+        System.out.println("Successfully completed setting the immutability policy");
+        // END: com.azure.storage.blob.specialized.BlobClientBase.setImmutabilityPolicy#BlobImmutabilityPolicy
+
+        // BEGIN: com.azure.storage.blob.specialized.BlobClientBase.setImmutabilityPolicyWithResponse#BlobImmutabilityPolicy-BlobRequestConditions-Duration-Context
+        BlobImmutabilityPolicy immutabilityPolicy = new BlobImmutabilityPolicy()
+            .setPolicyMode(BlobImmutabilityPolicyMode.LOCKED)
+            .setExpiryTime(OffsetDateTime.now().plusDays(1));
+        BlobRequestConditions requestConditions = new BlobRequestConditions()
+            .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(1));
+        Response<BlobImmutabilityPolicy> response = client.setImmutabilityPolicyWithResponse(immutabilityPolicy,
+            requestConditions, timeout, new Context(key1, value1));
+        System.out.println("Successfully completed setting the immutability policy");
+        // END: com.azure.storage.blob.specialized.BlobClientBase.setImmutabilityPolicyWithResponse#BlobImmutabilityPolicy-BlobRequestConditions-Duration-Context
+    }
+
+    /**
+     * Code snippet for {@link BlobClientBase#deleteImmutabilityPolicy()} and
+     * {@link BlobClientBase#deleteImmutabilityPolicyWithResponse(Duration, Context)}
+     */
+    public void deleteImmutabilityPolicy() {
+        // BEGIN: com.azure.storage.blob.specialized.BlobClientBase.deleteImmutabilityPolicy
+        client.deleteImmutabilityPolicy();
+        System.out.println("Completed immutability policy deletion.");
+        // END: com.azure.storage.blob.specialized.BlobClientBase.deleteImmutabilityPolicy
+
+        // BEGIN: com.azure.storage.blob.specialized.BlobClientBase.deleteImmutabilityPolicyWithResponse#Duration-Context
+        System.out.println("Delete immutability policy completed with status: "
+            + client.deleteImmutabilityPolicyWithResponse(timeout, new Context(key1, value1)).getStatusCode());
+        // END: com.azure.storage.blob.specialized.BlobClientBase.deleteImmutabilityPolicyWithResponse#Duration-Context
+    }
+
+    /**
+     * Code snippet for {@link BlobClientBase#setLegalHold(boolean)} and
+     * {@link BlobClientBase#setLegalHoldWithResponse(boolean, Duration, Context)}
+     */
+    public void setLegalHold() {
+        // BEGIN: com.azure.storage.blob.specialized.BlobClientBase.setLegalHold#boolean
+        System.out.println("Legal hold status: " + client.setLegalHold(true));
+        // END: com.azure.storage.blob.specialized.BlobClientBase.setLegalHold#boolean
+
+        // BEGIN: com.azure.storage.blob.specialized.BlobClientBase.setLegalHoldWithResponse#boolean-Duration-Context
+        System.out.println("Legal hold status: " + client.setLegalHoldWithResponse(true, timeout,
+            new Context(key1, value1)));
+        // END: com.azure.storage.blob.specialized.BlobClientBase.setLegalHoldWithResponse#boolean-Duration-Context
     }
 }

@@ -63,10 +63,13 @@ public final class SqlScriptsImpl {
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudErrorException.class)
         Mono<Response<SqlScriptsListResponse>> getSqlScriptsByWorkspace(
-                @HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion, Context context);
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
+                Context context);
 
         @Put("/sqlScripts/{sqlScriptName}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(CloudErrorException.class)
         Mono<Response<SqlScriptResource>> createOrUpdateSqlScript(
                 @HostParam("endpoint") String endpoint,
@@ -74,6 +77,7 @@ public final class SqlScriptsImpl {
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("If-Match") String ifMatch,
                 @BodyParam("application/json") SqlScriptResource sqlScript,
+                @HeaderParam("Accept") String accept,
                 Context context);
 
         @Get("/sqlScripts/{sqlScriptName}")
@@ -84,15 +88,17 @@ public final class SqlScriptsImpl {
                 @PathParam("sqlScriptName") String sqlScriptName,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("If-None-Match") String ifNoneMatch,
+                @HeaderParam("Accept") String accept,
                 Context context);
 
         @Delete("/sqlScripts/{sqlScriptName}")
-        @ExpectedResponses({200, 204})
+        @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(CloudErrorException.class)
         Mono<Response<Void>> deleteSqlScript(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("sqlScriptName") String sqlScriptName,
                 @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
                 Context context);
 
         @Post("/sqlScripts/{sqlScriptName}/rename")
@@ -103,6 +109,7 @@ public final class SqlScriptsImpl {
                 @PathParam("sqlScriptName") String sqlScriptName,
                 @QueryParam("api-version") String apiVersion,
                 @BodyParam("application/json") ArtifactRenameRequest request,
+                @HeaderParam("Accept") String accept,
                 Context context);
 
         @Get("{nextLink}")
@@ -111,6 +118,7 @@ public final class SqlScriptsImpl {
         Mono<Response<SqlScriptsListResponse>> getSqlScriptsByWorkspaceNext(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
                 @HostParam("endpoint") String endpoint,
+                @HeaderParam("Accept") String accept,
                 Context context);
     }
 
@@ -123,10 +131,11 @@ public final class SqlScriptsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<SqlScriptResource>> getSqlScriptsByWorkspaceSinglePageAsync() {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                         context ->
                                 service.getSqlScriptsByWorkspace(
-                                        this.client.getEndpoint(), this.client.getApiVersion(), context))
+                                        this.client.getEndpoint(), this.client.getApiVersion(), accept, context))
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -149,7 +158,8 @@ public final class SqlScriptsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<SqlScriptResource>> getSqlScriptsByWorkspaceSinglePageAsync(Context context) {
-        return service.getSqlScriptsByWorkspace(this.client.getEndpoint(), this.client.getApiVersion(), context)
+        final String accept = "application/json";
+        return service.getSqlScriptsByWorkspace(this.client.getEndpoint(), this.client.getApiVersion(), accept, context)
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -232,6 +242,7 @@ public final class SqlScriptsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SqlScriptResource>> createOrUpdateSqlScriptWithResponseAsync(
             String sqlScriptName, SqlScriptResource sqlScript, String ifMatch) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.createOrUpdateSqlScript(
@@ -240,6 +251,7 @@ public final class SqlScriptsImpl {
                                 this.client.getApiVersion(),
                                 ifMatch,
                                 sqlScript,
+                                accept,
                                 context));
     }
 
@@ -259,8 +271,15 @@ public final class SqlScriptsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SqlScriptResource>> createOrUpdateSqlScriptWithResponseAsync(
             String sqlScriptName, SqlScriptResource sqlScript, String ifMatch, Context context) {
+        final String accept = "application/json";
         return service.createOrUpdateSqlScript(
-                this.client.getEndpoint(), sqlScriptName, this.client.getApiVersion(), ifMatch, sqlScript, context);
+                this.client.getEndpoint(),
+                sqlScriptName,
+                this.client.getApiVersion(),
+                ifMatch,
+                sqlScript,
+                accept,
+                context);
     }
 
     /**
@@ -406,6 +425,7 @@ public final class SqlScriptsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SqlScriptResource>> getSqlScriptWithResponseAsync(String sqlScriptName, String ifNoneMatch) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.getSqlScript(
@@ -413,6 +433,7 @@ public final class SqlScriptsImpl {
                                 sqlScriptName,
                                 this.client.getApiVersion(),
                                 ifNoneMatch,
+                                accept,
                                 context));
     }
 
@@ -431,8 +452,9 @@ public final class SqlScriptsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SqlScriptResource>> getSqlScriptWithResponseAsync(
             String sqlScriptName, String ifNoneMatch, Context context) {
+        final String accept = "application/json";
         return service.getSqlScript(
-                this.client.getEndpoint(), sqlScriptName, this.client.getApiVersion(), ifNoneMatch, context);
+                this.client.getEndpoint(), sqlScriptName, this.client.getApiVersion(), ifNoneMatch, accept, context);
     }
 
     /**
@@ -567,10 +589,15 @@ public final class SqlScriptsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteSqlScriptWithResponseAsync(String sqlScriptName) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.deleteSqlScript(
-                                this.client.getEndpoint(), sqlScriptName, this.client.getApiVersion(), context));
+                                this.client.getEndpoint(),
+                                sqlScriptName,
+                                this.client.getApiVersion(),
+                                accept,
+                                context));
     }
 
     /**
@@ -585,7 +612,9 @@ public final class SqlScriptsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteSqlScriptWithResponseAsync(String sqlScriptName, Context context) {
-        return service.deleteSqlScript(this.client.getEndpoint(), sqlScriptName, this.client.getApiVersion(), context);
+        final String accept = "application/json";
+        return service.deleteSqlScript(
+                this.client.getEndpoint(), sqlScriptName, this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -657,6 +686,7 @@ public final class SqlScriptsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> renameSqlScriptWithResponseAsync(String sqlScriptName, ArtifactRenameRequest request) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.renameSqlScript(
@@ -664,6 +694,7 @@ public final class SqlScriptsImpl {
                                 sqlScriptName,
                                 this.client.getApiVersion(),
                                 request,
+                                accept,
                                 context));
     }
 
@@ -681,8 +712,9 @@ public final class SqlScriptsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> renameSqlScriptWithResponseAsync(
             String sqlScriptName, ArtifactRenameRequest request, Context context) {
+        final String accept = "application/json";
         return service.renameSqlScript(
-                this.client.getEndpoint(), sqlScriptName, this.client.getApiVersion(), request, context);
+                this.client.getEndpoint(), sqlScriptName, this.client.getApiVersion(), request, accept, context);
     }
 
     /**
@@ -759,8 +791,11 @@ public final class SqlScriptsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<SqlScriptResource>> getSqlScriptsByWorkspaceNextSinglePageAsync(String nextLink) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
-                        context -> service.getSqlScriptsByWorkspaceNext(nextLink, this.client.getEndpoint(), context))
+                        context ->
+                                service.getSqlScriptsByWorkspaceNext(
+                                        nextLink, this.client.getEndpoint(), accept, context))
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -785,7 +820,8 @@ public final class SqlScriptsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<SqlScriptResource>> getSqlScriptsByWorkspaceNextSinglePageAsync(
             String nextLink, Context context) {
-        return service.getSqlScriptsByWorkspaceNext(nextLink, this.client.getEndpoint(), context)
+        final String accept = "application/json";
+        return service.getSqlScriptsByWorkspaceNext(nextLink, this.client.getEndpoint(), accept, context)
                 .map(
                         res ->
                                 new PagedResponseBase<>(

@@ -4,6 +4,7 @@ package com.azure.resourcemanager.resources.fluentcore.arm.collection.implementa
 
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
 
 /**
  * Base class for readable wrapper collections, i.e. those whose models can only be read, not created.
@@ -24,11 +25,11 @@ public abstract class ReadableWrappersImpl<
     protected abstract ImplT wrapModel(InnerT inner);
 
     protected PagedIterable<T> wrapList(PagedIterable<InnerT> pagedList) {
-        return pagedList.mapPage(innerT -> wrapModel(innerT));
+        return PagedConverter.mapPage(pagedList, innerT -> wrapModel(innerT));
     }
 
     protected PagedFlux<T> wrapPageAsync(PagedFlux<InnerT> innerPage) {
-        return innerPage.mapPage(innerT -> wrapModel(innerT));
+        return PagedConverter.mapPage(innerPage, innerT -> wrapModel(innerT));
     }
 
 //    protected PagedIterable<T> wrapList(List<InnerT> list) {

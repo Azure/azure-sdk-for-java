@@ -11,21 +11,16 @@ import java.util.Map;
  * The Resource model.
  */
 public class Resource extends ProxyResource {
-    /**
-     * Resource location.
-     */
+
     @JsonProperty(required = true)
     private String location;
 
-    /**
-     * Resource tags.
-     */
     private Map<String, String> tags;
 
     /**
      * Get the location value.
      *
-     * @return the location value
+     * @return the geo-location where the resource live.
      */
     public String location() {
         return this.location;
@@ -34,8 +29,8 @@ public class Resource extends ProxyResource {
     /**
      * Set the location value.
      *
-     * @param location the location value to set
-     * @return the resource itself
+     * @param location the geo-location where the resource live.
+     * @return the resource itself.
      */
     public Resource withLocation(String location) {
         this.location = location;
@@ -45,7 +40,7 @@ public class Resource extends ProxyResource {
     /**
      * Get the tags value.
      *
-     * @return the tags value
+     * @return the tags of the resource.
      */
     public Map<String, String> tags() {
         return this.tags;
@@ -54,8 +49,8 @@ public class Resource extends ProxyResource {
     /**
      * Set the tags value.
      *
-     * @param tags the tags value to set
-     * @return the resource itself
+     * @param tags the tags of the resource.
+     * @return the resource itself.
      */
     public Resource withTags(Map<String, String> tags) {
         this.tags = tags;

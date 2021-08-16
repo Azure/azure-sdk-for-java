@@ -1,0 +1,47 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.blob.core.windows.net/f2d6e5cd1f2d6e5cd68a9056228065f7f09ca441481a?restype=container&sv=2020-06-12&ss=b&srt=c&se=2021-05-07T14%3A20%3A46Z&sp=d&sig=REDACTED",
+    "Headers" : {
+      "x-ms-version" : "2020-06-12",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.12.0-beta.1 azsdk-java-azure-storage-blob-nio/12.0.0-beta.7 (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "79529175-5956-4155-9246-d42254afde6f"
+    },
+    "Response" : {
+      "content-length" : "279",
+      "x-ms-version" : "2020-06-12",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "AuthorizationPermissionMismatch",
+      "retry-after" : "0",
+      "StatusCode" : "403",
+      "x-ms-request-id" : "ce08a8b3-501e-0036-35b9-4147c1000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>AuthorizationPermissionMismatch</Code><Message>This request is not authorized to perform this operation using this permission.\nRequestId:ce08a8b3-501e-0036-35b9-4147c1000000\nTime:2021-05-05T14:20:49.3127726Z</Message></Error>",
+      "x-ms-client-request-id" : "79529175-5956-4155-9246-d42254afde6f",
+      "Date" : "Wed, 05 May 2021 14:20:48 GMT",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.blob.core.windows.net?comp=list&prefix=f2d6e5cd",
+    "Headers" : {
+      "x-ms-version" : "2020-06-12",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.12.0-beta.1 (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "e837a168-8274-4d87-b842-bf130fd93ba1"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2020-06-12",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-request-id" : "b0bde2a8-901e-0074-0bb9-41fe41000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://kasobolcanadacentral.blob.core.windows.net/\"><Prefix>f2d6e5cd</Prefix><Containers /><NextMarker /></EnumerationResults>",
+      "x-ms-client-request-id" : "e837a168-8274-4d87-b842-bf130fd93ba1",
+      "Date" : "Wed, 05 May 2021 14:20:48 GMT",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "f2d6e5cd0f2d6e5cd68a55219c1d5cc75ffc2421990e", "f2d6e5cd1f2d6e5cd68a9056228065f7f09ca441481a" ]
+}

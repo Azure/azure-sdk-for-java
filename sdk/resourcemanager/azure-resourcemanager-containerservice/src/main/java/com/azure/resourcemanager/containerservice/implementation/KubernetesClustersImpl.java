@@ -4,11 +4,14 @@ package com.azure.resourcemanager.containerservice.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.http.rest.PagedResponseBase;
+import com.azure.core.util.CoreUtils;
 import com.azure.resourcemanager.containerservice.ContainerServiceManager;
 import com.azure.resourcemanager.containerservice.fluent.ManagedClustersClient;
 import com.azure.resourcemanager.containerservice.fluent.models.CredentialResultsInner;
 import com.azure.resourcemanager.containerservice.fluent.models.ManagedClusterInner;
 import com.azure.resourcemanager.containerservice.fluent.models.OrchestratorVersionProfileListResultInner;
+import com.azure.resourcemanager.containerservice.models.ContainerServiceResourceTypes;
 import com.azure.resourcemanager.containerservice.models.CredentialResult;
 import com.azure.resourcemanager.containerservice.models.KubernetesCluster;
 import com.azure.resourcemanager.containerservice.models.KubernetesClusters;
@@ -21,6 +24,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
+import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
 
 /** The implementation for KubernetesClusters. */
 public class KubernetesClustersImpl
@@ -39,16 +43,20 @@ public class KubernetesClustersImpl
 
     @Override
     public PagedFlux<KubernetesCluster> listAsync() {
-        return this.inner().listAsync().mapPage(inner -> new KubernetesClusterImpl(inner.name(), inner, manager()));
+        return PagedConverter.mapPage(this.inner().listAsync(), inner -> new KubernetesClusterImpl(inner.name(), inner, manager()));
     }
 
     @Override
     public PagedIterable<KubernetesCluster> listByResourceGroup(String resourceGroupName) {
-        return wrapList(this.inner().listByResourceGroup(resourceGroupName));
+        return new PagedIterable<>(this.listByResourceGroupAsync(resourceGroupName));
     }
 
     @Override
     public PagedFlux<KubernetesCluster> listByResourceGroupAsync(String resourceGroupName) {
+        if (CoreUtils.isNullOrEmpty(resourceGroupName)) {
+            return new PagedFlux<>(() -> Mono.error(
+                new IllegalArgumentException("Parameter 'resourceGroupName' is required and cannot be null.")));
+        }
         return wrapPageAsync(this.inner().listByResourceGroupAsync(resourceGroupName));
     }
 
@@ -124,6 +132,29 @@ public class KubernetesClustersImpl
     }
 
     @Override
+    public PagedIterable<OrchestratorVersionProfile> listOrchestrators(Region region,
+                                                                       ContainerServiceResourceTypes resourceTypes) {
+        return new PagedIterable<>(this.listOrchestratorsAsync(region, resourceTypes));
+    }
+
+    @Override
+    public PagedFlux<OrchestratorVersionProfile> listOrchestratorsAsync(Region region,
+                                                                         ContainerServiceResourceTypes resourceTypes) {
+        return new PagedFlux<>(() -> this.manager().serviceClient().getContainerServices()
+            .listOrchestratorsWithResponseAsync(region.name(), resourceTypes.toString())
+            .map(response -> new PagedResponseBase<Void, OrchestratorVersionProfile>(
+                response.getRequest(),
+                response.getStatusCode(),
+                response.getHeaders(),
+                (response.getValue() == null || response.getValue().orchestrators() == null)
+                    ? Collections.emptyList()
+                    : response.getValue().orchestrators(),
+                null,
+                null
+            )));
+    }
+
+    @Override
     public List<CredentialResult> listAdminKubeConfigContent(String resourceGroupName, String kubernetesClusterName) {
         return listAdminKubeConfigContentAsync(resourceGroupName, kubernetesClusterName).block();
     }
@@ -153,5 +184,27 @@ public class KubernetesClustersImpl
             .getManagedClusters()
             .listClusterUserCredentialsAsync(resourceGroupName, kubernetesClusterName)
             .map(CredentialResultsInner::kubeconfigs);
+    }
+
+    @Override
+    public void start(String resourceGroupName, String kubernetesClusterName) {
+        this.startAsync(resourceGroupName, kubernetesClusterName).block();
+    }
+
+    @Override
+    public Mono<Void> startAsync(String resourceGroupName, String kubernetesClusterName) {
+        return this.manager().serviceClient().getManagedClusters()
+            .startAsync(resourceGroupName, kubernetesClusterName);
+    }
+
+    @Override
+    public void stop(String resourceGroupName, String kubernetesClusterName) {
+        this.stopAsync(resourceGroupName, kubernetesClusterName).block();
+    }
+
+    @Override
+    public Mono<Void> stopAsync(String resourceGroupName, String kubernetesClusterName) {
+        return this.manager().serviceClient().getManagedClusters()
+            .stopAsync(resourceGroupName, kubernetesClusterName);
     }
 }

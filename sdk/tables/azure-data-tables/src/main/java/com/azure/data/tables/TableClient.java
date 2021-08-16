@@ -5,31 +5,47 @@ package com.azure.data.tables;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.credential.AzureNamedKeyCredential;
+import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
-import com.azure.data.tables.implementation.models.TableServiceErrorException;
 import com.azure.data.tables.models.ListEntitiesOptions;
+import com.azure.data.tables.models.TableAccessPolicies;
 import com.azure.data.tables.models.TableEntity;
-import com.azure.data.tables.models.UpdateMode;
+import com.azure.data.tables.models.TableEntityUpdateMode;
+import com.azure.data.tables.models.TableItem;
+import com.azure.data.tables.models.TableServiceException;
+import com.azure.data.tables.models.TableSignedIdentifier;
+import com.azure.data.tables.models.TableTransactionAction;
+import com.azure.data.tables.models.TableTransactionActionResponse;
+import com.azure.data.tables.models.TableTransactionFailedException;
+import com.azure.data.tables.models.TableTransactionResult;
+import com.azure.data.tables.sas.TableSasSignatureValues;
 
 import java.time.Duration;
+import java.util.List;
 
-import static com.azure.storage.common.implementation.StorageImplUtils.blockWithOptionalTimeout;
+import static com.azure.data.tables.implementation.TableUtils.blockWithOptionalTimeout;
 
 /**
  * Provides a synchronous service client for accessing a table in the Azure Tables service.
  *
- * The client encapsulates the URL for the table within the Tables service endpoint, the name of the table, and the
+ * <p>The client encapsulates the URL for the table within the Tables service endpoint, the name of the table, and the
  * credentials for accessing the storage or CosmosDB table API account. It provides methods to create and delete the
  * table itself, as well as methods to create, upsert, update, delete, list, and get entities within the table. These
- * methods invoke REST API operations to make the requests and obtain the results that are returned.
+ * methods invoke REST API operations to make the requests and obtain the results that are returned.</p>
  *
- * Instances of this client are obtained by calling the {@link TableClientBuilder#buildClient()} method on a
- * {@link TableClientBuilder} object.
+ * <p>Instances of this client are obtained by calling the {@link TableClientBuilder#buildClient()} method on a
+ * {@link TableClientBuilder} object.</p>
+ *
+ * <p><strong>Samples to construct a sync client</strong></p>
+ * {@codesnippet com.azure.data.tables.tableClient.instantiation}
+ *
+ * @see TableClientBuilder
  */
 @ServiceClient(builder = TableClientBuilder.class)
-public class TableClient {
+public final class TableClient {
     final TableAsyncClient client;
 
     TableClient(TableAsyncClient client) {
@@ -55,12 +71,12 @@ public class TableClient {
     }
 
     /**
-     * Gets the absolute URL for this table.
+     * Gets the endpoint for this table.
      *
-     * @return The absolute URL for this table.
+     * @return The endpoint for this table.
      */
-    public String getTableUrl() {
-        return this.client.getTableUrl();
+    public String getTableEndpoint() {
+        return this.client.getTableEndpoint();
     }
 
     /**
@@ -68,70 +84,110 @@ public class TableClient {
      *
      * @return The REST API version used by this client.
      */
-    public TablesServiceVersion getApiVersion() {
-        return this.client.getApiVersion();
+    public TableServiceVersion getServiceVersion() {
+        return this.client.getServiceVersion();
     }
 
     /**
-     * Creates a new {@link TableBatch} object. Batch objects allow you to enqueue multiple create, update, upsert,
-     * and/or delete operations on entities that share the same partition key. When the batch is executed, all of the
-     * operations will be performed as part of a single transaction. As a result, either all operations in the batch
-     * will succeed, or if a failure occurs, all operations in the batch will be rolled back. Each operation in a batch
-     * must operate on a distinct row key. Attempting to add multiple operations to a batch that share the same row key
-     * will cause an exception to be thrown.
+     * Generates a service SAS for the table using the specified {@link TableSasSignatureValues}.
      *
-     * @param partitionKey The partition key shared by all operations in the batch.
+     * <p><strong>Note:</strong> The client must be authenticated via {@link AzureNamedKeyCredential}.</p>
+     * <p>See {@link TableSasSignatureValues} for more information on how to construct a service SAS.</p>
      *
-     * @return An object representing the batch, to which operations can be added.
-     * @throws IllegalArgumentException if the provided partition key is {@code null} or empty.
+     * @param tableSasSignatureValues {@link TableSasSignatureValues}.
+     *
+     * @return A {@code String} representing the SAS query parameters.
+     *
+     * @throws IllegalStateException If this {@link TableClient} is not authenticated with an
+     * {@link AzureNamedKeyCredential}.
      */
-    public TableBatch createBatch(String partitionKey) {
-        return new TableBatch(this.client.createBatch(partitionKey));
+    public String generateSas(TableSasSignatureValues tableSasSignatureValues) {
+        return client.generateSas(tableSasSignatureValues);
     }
 
     /**
      * Creates the table within the Tables service.
      *
-     * @throws TableServiceErrorException if a table with the same name already exists within the service.
+     * <p><strong>Code Samples</strong></p>
+     * <p>Creates a table. Prints out the details of the created table.</p>
+     * {@codesnippet com.azure.data.tables.tableClient.createTable}
+     *
+     * @return A {@link TableItem} that represents the table.
+     *
+     * @throws TableServiceException If a table with the same name already exists within the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void create() {
-        client.create().block();
+    public TableItem createTable() {
+        return client.createTable().block();
     }
 
     /**
      * Creates the table within the Tables service.
      *
-     * @param timeout Duration to wait for the operation to complete.
-     * @throws TableServiceErrorException if a table with the same name already exists within the service.
-     * @throws RuntimeException if the provided timeout expires.
+     * <p><strong>Code Samples</strong></p>
+     * <p>Creates a table. Prints out the details of the {@link Response HTTP response} and the created table.</p>
+     * {@codesnippet com.azure.data.tables.tableClient.createTableWithResponse#Duration-Context}
+     *
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional {@link Context} that is passed through the {@link HttpPipeline HTTP pipeline} during
+     * the service call.
+     *
+     * @return The {@link Response HTTP response} containing a {@link TableItem} that represents the table.
+     *
+     * @throws TableServiceException If a table with the same name already exists within the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void create(Duration timeout) {
-        blockWithOptionalTimeout(client.create(), timeout);
+    public Response<TableItem> createTableWithResponse(Duration timeout, Context context) {
+        return blockWithOptionalTimeout(client.createTableWithResponse(context), timeout);
     }
 
     /**
-     * Creates the table within the Tables service.
+     * Deletes the table within the Tables service.
      *
-     * @param timeout Duration to wait for the operation to complete.
-     * @param context Additional context that is passed through the HTTP pipeline during the service call.
-     * @return The HTTP response.
-     * @throws TableServiceErrorException if a table with the same name already exists within the service.
-     * @throws RuntimeException if the provided timeout expires.
+     * <p><strong>Code Samples</strong></p>
+     * <p>Deletes a table.</p>
+     * {@codesnippet com.azure.data.tables.tableClient.deleteTable}
+     *
+     * @throws TableServiceException If the request is rejected by the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> createWithResponse(Duration timeout, Context context) {
-        return blockWithOptionalTimeout(client.createWithResponse(context), timeout);
+    public void deleteTable() {
+        client.deleteTable().block();
     }
 
     /**
-     * Inserts an entity into the table.
+     * Deletes the table within the Tables service.
      *
-     * @param entity The entity to insert.
-     * @throws TableServiceErrorException if an entity with the same partition key and row key already exists within the
-     *                                    table.
-     * @throws IllegalArgumentException if the provided entity is invalid.
+     * <p><strong>Code Samples</strong></p>
+     * <p>Deletes a table. Prints out the details of the {@link Response HTTP response}.</p>
+     * {@codesnippet com.azure.data.tables.tableClient.deleteTableWithResponse#Duration-Context}
+     *
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional {@link Context} that is passed through the {@link HttpPipeline HTTP pipeline} during
+     * the service call.
+     *
+     * @return The {@link Response HTTP response}.
+     *
+     * @throws TableServiceException If the request is rejected by the service.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> deleteTableWithResponse(Duration timeout, Context context) {
+        return blockWithOptionalTimeout(client.deleteTableWithResponse(context), timeout);
+    }
+
+    /**
+     * Inserts an {@link TableEntity entity} into the table.
+     *
+     * <p><strong>Code Samples</strong></p>
+     * <p>Inserts an {@link TableEntity entity} into the table. Prints out the details of the created
+     * {@link TableEntity entity}.</p>
+     * {@codesnippet com.azure.data.tables.tableClient.createEntity#TableEntity}
+     *
+     * @param entity The {@link TableEntity entity} to insert.
+     *
+     * @throws TableServiceException If an {@link TableEntity entity} with the same partition key and row key already
+     * exists within the table.
+     * @throws IllegalArgumentException If the provided {@link TableEntity entity} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void createEntity(TableEntity entity) {
@@ -139,43 +195,42 @@ public class TableClient {
     }
 
     /**
-     * Inserts an entity into the table.
+     * Inserts an {@link TableEntity entity} into the table.
      *
-     * @param entity The entity to insert.
-     * @param timeout Duration to wait for the operation to complete.
-     * @throws TableServiceErrorException if an entity with the same partition key and row key already exists within the
-     *                                    table, or if the provided timeout expires.
-     * @throws IllegalArgumentException if the provided entity is invalid.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void createEntity(TableEntity entity, Duration timeout) {
-        createEntityWithResponse(entity, timeout, null);
-    }
-
-    /**
-     * Inserts an entity into the table.
+     * <p><strong>Code Samples</strong></p>
+     * <p>Inserts an {@link TableEntity entity} into the table. Prints out the details of the
+     * {@link Response HTTP response} and the created {@link TableEntity entity}.</p>
+     * {@codesnippet com.azure.data.tables.tableClient.createEntityWithResponse#TableEntity-Duration-Context}
      *
-     * @param entity The entity to insert.
-     * @param timeout Duration to wait for the operation to complete.
-     * @param context Additional context that is passed through the HTTP pipeline during the service call.
-     * @return The HTTP response.
-     * @throws TableServiceErrorException if an entity with the same partition key and row key already exists within the
-     *                                    table, or if the provided timeout expires.
-     * @throws IllegalArgumentException if the provided entity is invalid.
+     * @param entity The {@link TableEntity entity} to insert.
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional {@link Context} that is passed through the {@link HttpPipeline HTTP pipeline} during
+     * the service call.
+     *
+     * @return The {@link Response HTTP response}.
+     *
+     * @throws TableServiceException If an {@link TableEntity entity} with the same partition key and row key already
+     * exists within the table.
+     * @throws IllegalArgumentException If the provided {@link TableEntity entity} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> createEntityWithResponse(TableEntity entity, Duration timeout, Context context) {
-        return client.createEntityWithResponse(entity, timeout, context).block();
+        return blockWithOptionalTimeout(client.createEntityWithResponse(entity, context), timeout);
     }
 
     /**
-     * Inserts an entity into the table if it does not exist, or merges the entity with the existing entity otherwise.
+     * Inserts an {@link TableEntity entity} into the table if it does not exist, or merges the
+     * {@link TableEntity entity} with the existing {@link TableEntity entity} otherwise.
      *
-     * If no entity exists within the table having the same partition key and row key as the provided entity, it will
-     * be inserted. Otherwise, the provided entity's properties will be merged into the existing entity.
+     * <p><strong>Code Samples</strong></p>
+     * <p>Upserts an {@link TableEntity entity} into the table. Prints out the details of the upserted
+     * {@link TableEntity entity}.</p>
+     * {@codesnippet com.azure.data.tables.tableClient.upsertEntity#TableEntity}
      *
-     * @param entity The entity to upsert.
-     * @throws IllegalArgumentException if the provided entity is invalid.
+     * @param entity The {@link TableEntity entity} to upsert.
+     *
+     * @throws IllegalArgumentException If the provided {@link TableEntity entity} is {@code null}.
+     * @throws TableServiceException If the request is rejected by the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void upsertEntity(TableEntity entity) {
@@ -183,78 +238,53 @@ public class TableClient {
     }
 
     /**
-     * Inserts an entity into the table if it does not exist, or updates the existing entity using the specified update
-     * mode otherwise.
+     * Inserts an {@link TableEntity entity} into the table if it does not exist, or updates the existing
+     * {@link TableEntity entity} using the specified {@link TableEntityUpdateMode update mode} otherwise. The default
+     * {@link TableEntityUpdateMode update mode} is {@link TableEntityUpdateMode#MERGE MERGE}.
      *
-     * If no entity exists within the table having the same partition key and row key as the provided entity, it will
-     * be inserted. Otherwise, the existing entity will be updated according to the specified update mode.
+     * <p>When the {@link TableEntityUpdateMode update mode} is {@link TableEntityUpdateMode#MERGE MERGE}, the provided
+     * {@link TableEntity entity}'s properties will be merged into the existing {@link TableEntity entity}. When the
+     * {@link TableEntityUpdateMode update mode} is {@link TableEntityUpdateMode#REPLACE REPLACE}, the provided
+     * {@link TableEntity entity}'s properties will completely replace those in the existing {@link TableEntity
+     * entity}.</p>
      *
-     * When the update mode is 'MERGE', the provided entity's properties will be merged into the existing entity. When
-     * the update mode is 'REPLACE', the provided entity's properties will completely replace those in the existing
-     * entity.
+     * <p><strong>Code Samples</strong></p>
+     * <p>Upserts an {@link TableEntity entity} into the table with the specified
+     * {@link TableEntityUpdateMode update mode} if said {@link TableEntity entity} already exists. Prints out the
+     * details of the {@link Response HTTP response} and the upserted {@link TableEntity entity}.</p>
+     * {@codesnippet com.azure.data.tables.tableClient.upsertEntityWithResponse#TableEntity-TableEntityUpdateMode-Duration-Context}
      *
-     * @param entity The entity to upsert.
-     * @param updateMode The type of update to perform if the entity already exits.
-     * @throws IllegalArgumentException if the provided entity is invalid.
+     * @param entity The {@link TableEntity entity} to upsert.
+     * @param updateMode The type of update to perform if the {@link TableEntity entity} already exits.
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional {@link Context} that is passed through the {@link HttpPipeline HTTP pipeline} during
+     * the service call.
+     *
+     * @return The {@link Response HTTP response}.
+     *
+     * @throws IllegalArgumentException If the provided {@link TableEntity entity} is {@code null}.
+     * @throws TableServiceException If the request is rejected by the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void upsertEntity(TableEntity entity, UpdateMode updateMode) {
-        client.upsertEntity(entity, updateMode).block();
+    public Response<Void> upsertEntityWithResponse(TableEntity entity, TableEntityUpdateMode updateMode,
+                                                   Duration timeout, Context context) {
+        return blockWithOptionalTimeout(client.upsertEntityWithResponse(entity, updateMode, context), timeout);
     }
 
     /**
-     * Inserts an entity into the table if it does not exist, or updates the existing entity using the specified update
-     * mode otherwise.
+     * Updates an existing {@link TableEntity entity} by merging the provided {@link TableEntity entity} with the
+     * existing {@link TableEntity entity}.
      *
-     * If no entity exists within the table having the same partition key and row key as the provided entity, it will
-     * be inserted. Otherwise, the existing entity will be updated according to the specified update mode.
+     * <p><strong>Code Samples</strong></p>
+     * <p>Updates a {@link TableEntity entity} on the table. Prints out the details of the updated
+     * {@link TableEntity entity}.</p>
+     * {@codesnippet com.azure.data.tables.tableClient.updateEntity#TableEntity}
      *
-     * When the update mode is 'MERGE', the provided entity's properties will be merged into the existing entity. When
-     * the update mode is 'REPLACE', the provided entity's properties will completely replace those in the existing
-     * entity.
+     * @param entity The {@link TableEntity entity} to update.
      *
-     * @param entity The entity to upsert.
-     * @param updateMode The type of update to perform if the entity already exits.
-     * @param timeout Duration to wait for the operation to complete.
-     * @throws TableServiceErrorException if the provided timeout expires.
-     * @throws IllegalArgumentException if the provided entity is invalid.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void upsertEntity(TableEntity entity, UpdateMode updateMode, Duration timeout) {
-        upsertEntityWithResponse(entity, updateMode, timeout, null);
-    }
-
-    /**
-     * Inserts an entity into the table if it does not exist, or updates the existing entity using the specified update
-     * mode otherwise.
-     *
-     * If no entity exists within the table having the same partition key and row key as the provided entity, it will
-     * be inserted. Otherwise, the existing entity will be updated according to the specified update mode.
-     *
-     * When the update mode is 'MERGE', the provided entity's properties will be merged into the existing entity. When
-     * the update mode is 'REPLACE', the provided entity's properties will completely replace those in the existing
-     * entity.
-     *
-     * @param entity The entity to upsert.
-     * @param updateMode The type of update to perform if the entity already exits.
-     * @param timeout Duration to wait for the operation to complete.
-     * @param context Additional context that is passed through the HTTP pipeline during the service call.
-     * @return The HTTP response.
-     * @throws TableServiceErrorException if the provided timeout expires.
-     * @throws IllegalArgumentException if the provided entity is invalid.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> upsertEntityWithResponse(TableEntity entity, UpdateMode updateMode, Duration timeout,
-                                                   Context context) {
-        return client.upsertEntityWithResponse(entity, updateMode, timeout, context).block();
-    }
-
-    /**
-     * Updates an existing entity by merging the provided entity with the existing entity.
-     *
-     * @param entity The entity to update.
-     * @throws TableServiceErrorException if no entity with the same partition key and row key exists within the table.
-     * @throws IllegalArgumentException if the provided entity is invalid.
+     * @throws IllegalArgumentException If the provided {@link TableEntity entity} is {@code null}.
+     * @throws TableServiceException If no {@link TableEntity entity} with the same partition key and row key exists
+     * within the table.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void updateEntity(TableEntity entity) {
@@ -262,137 +292,86 @@ public class TableClient {
     }
 
     /**
-     * Updates an existing entity using the specified update mode.
+     * Updates an existing {@link TableEntity entity} using the specified {@link TableEntityUpdateMode update mode}.
+     * The default {@link TableEntityUpdateMode update mode} is {@link TableEntityUpdateMode#MERGE MERGE}.
      *
-     * When the update mode is 'MERGE', the provided entity's properties will be merged into the existing entity. When
-     * the update mode is 'REPLACE', the provided entity's properties will completely replace those in the existing
-     * entity.
+     * <p>When the {@link TableEntityUpdateMode update mode} is {@link TableEntityUpdateMode#MERGE MERGE}, the provided
+     * {@link TableEntity entity}'s properties will be merged into the existing {@link TableEntity entity}. When the
+     * {@link TableEntityUpdateMode update mode} is {@link TableEntityUpdateMode#REPLACE REPLACE}, the provided
+     * {@link TableEntity entity}'s properties will completely replace those in the existing {@link TableEntity entity}.
+     * </p>
      *
-     * @param entity The entity to update.
-     * @param updateMode which type of mode to execute
-     * @throws TableServiceErrorException if no entity with the same partition key and row key exists within the table.
-     * @throws IllegalArgumentException if the provided entity is invalid.
+     * <p><strong>Code Samples</strong></p>
+     * <p>Updates a {@link TableEntity entity} on the table with the specified
+     * {@link TableEntityUpdateMode update mode}. Prints out the details of the updated {@link TableEntity entity}.</p>
+     * {@codesnippet com.azure.data.tables.tableClient.updateEntity#TableEntity-TableEntityUpdateMode}
+     *
+     * @param entity The {@link TableEntity entity} to update.
+     * @param updateMode The type of update to perform.
+     *
+     * @throws IllegalArgumentException If the provided {@link TableEntity entity} is {@code null}.
+     * @throws TableServiceException If no {@link TableEntity entity} with the same partition key and row key exists
+     * within the table.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void updateEntity(TableEntity entity, UpdateMode updateMode) {
+    public void updateEntity(TableEntity entity, TableEntityUpdateMode updateMode) {
         client.updateEntity(entity, updateMode).block();
     }
 
     /**
-     * Updates an existing entity using the specified update mode.
+     * Updates an existing {@link TableEntity entity} using the specified {@link TableEntityUpdateMode update mode}.
+     * The default {@link TableEntityUpdateMode update mode} is {@link TableEntityUpdateMode#MERGE MERGE}.
      *
-     * When the update mode is 'MERGE', the provided entity's properties will be merged into the existing entity. When
-     * the update mode is 'REPLACE', the provided entity's properties will completely replace those in the existing
-     * entity.
+     * <p>When the {@link TableEntityUpdateMode update mode} is {@link TableEntityUpdateMode#MERGE MERGE}, the provided
+     * {@link TableEntity entity}'s properties will be merged into the existing {@link TableEntity entity}. When the
+     * {@link TableEntityUpdateMode update mode} is {@link TableEntityUpdateMode#REPLACE REPLACE}, the provided
+     * {@link TableEntity entity}'s properties will completely replace those in the existing {@link TableEntity entity}.
+     * </p>
      *
-     * @param entity The entity to update.
+     * <p><strong>Code Samples</strong></p>
+     * <p>Updates a {@link TableEntity entity} on the table with the specified {@link TableEntityUpdateMode update
+     * mode}
+     * if the {@code ETags} on both {@link TableEntity entities} match. Prints out the details of the
+     * {@link Response HTTP response} updated {@link TableEntity entity}.</p>
+     * {@codesnippet com.azure.data.tables.tableClient.updateEntityWithResponse#TableEntity-TableEntityUpdateMode-boolean-Duration-Context}
+     *
+     * @param entity The {@link TableEntity entity} to update.
      * @param updateMode The type of update to perform.
-     * @param ifUnchanged When true, the eTag of the provided entity must match the eTag of the entity in the Table
-     *                    service. If the values do not match, the update will not occur and an exception will be
-     *                    thrown.
-     * @throws TableServiceErrorException if no entity with the same partition key and row key exists within the table,
-     *                                    or if {@code ifUnchanged} is {@code true} and the existing entity's eTag does
-     *                                    not match that of the provided entity.
-     * @throws IllegalArgumentException if the provided entity is invalid.
+     * @param ifUnchanged When true, the ETag of the provided {@link TableEntity entity} must match the ETag of the
+     * {@link TableEntity entity} in the Table service. If the values do not match, the update will not occur and an
+     * exception will be thrown.
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional {@link Context} that is passed through the {@link HttpPipeline HTTP pipeline} during
+     * the service call.
+     *
+     * @return The {@link Response HTTP response}.
+     *
+     * @throws IllegalArgumentException If the provided {@link TableEntity entity} is {@code null}.
+     * @throws TableServiceException If no {@link TableEntity entity} with the same partition key and row key exists
+     * within the table, or if {@code ifUnchanged} is {@code true} and the existing {@link TableEntity entity}'s ETag
+     * does not match that of the provided {@link TableEntity entity}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void updateEntity(TableEntity entity, UpdateMode updateMode, boolean ifUnchanged) {
-        client.updateEntity(entity, updateMode, ifUnchanged).block();
+    public Response<Void> updateEntityWithResponse(TableEntity entity, TableEntityUpdateMode updateMode,
+                                                   boolean ifUnchanged, Duration timeout, Context context) {
+        return blockWithOptionalTimeout(
+            client.updateEntityWithResponse(entity, updateMode, ifUnchanged, context), timeout);
     }
 
     /**
-     * Updates an existing entity using the specified update mode.
+     * Deletes an {@link TableEntity entity} from the table.
      *
-     * When the update mode is 'MERGE', the provided entity's properties will be merged into the existing entity. When
-     * the update mode is 'REPLACE', the provided entity's properties will completely replace those in the existing
-     * entity.
+     * <p><strong>Code Samples</strong></p>
+     * <p>Deletes an {@link TableEntity entity} on the table. Prints out the entity's {@code partitionKey} and
+     * {@code rowKey}.</p>
+     * {@codesnippet com.azure.data.tables.tableClient.deleteEntity#String-String}
      *
-     * @param entity The entity to update.
-     * @param updateMode The type of update to perform.
-     * @param ifUnchanged When true, the eTag of the provided entity must match the eTag of the entity in the Table
-     *                    service. If the values do not match, the update will not occur and an exception will be
-     *                    thrown.
-     * @param timeout Duration to wait for the operation to complete.
-     * @throws TableServiceErrorException if no entity with the same partition key and row key exists within the table,
-     *                                    or if {@code ifUnchanged} is {@code true} and the existing entity's eTag does
-     *                                    not match that of the provided entity, or if the provided timeout expires.
-     * @throws IllegalArgumentException if the provided entity is invalid.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void updateEntity(TableEntity entity, UpdateMode updateMode, boolean ifUnchanged, Duration timeout) {
-        updateEntityWithResponse(entity, updateMode, ifUnchanged, timeout, null);
-    }
-
-    /**
-     * Updates an existing entity using the specified update mode.
+     * @param partitionKey The partition key of the {@link TableEntity entity}.
+     * @param rowKey The row key of the {@link TableEntity entity}.
      *
-     * When the update mode is 'MERGE', the provided entity's properties will be merged into the existing entity. When
-     * the update mode is 'REPLACE', the provided entity's properties will completely replace those in the existing
-     * entity.
-     *
-     * @param entity The entity to update.
-     * @param updateMode The type of update to perform.
-     * @param ifUnchanged When true, the eTag of the provided entity must match the eTag of the entity in the Table
-     *                    service. If the values do not match, the update will not occur and an exception will be
-     *                    thrown.
-     * @param timeout Duration to wait for the operation to complete.
-     * @param context Additional context that is passed through the HTTP pipeline during the service call.
-     * @return The HTTP response.
-     * @throws TableServiceErrorException if no entity with the same partition key and row key exists within the table,
-     *                                    or if {@code ifUnchanged} is {@code true} and the existing entity's eTag does
-     *                                    not match that of the provided entity, or if the provided timeout expires.
-     * @throws IllegalArgumentException if the provided entity is invalid.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> updateEntityWithResponse(TableEntity entity, UpdateMode updateMode, boolean ifUnchanged,
-                                                   Duration timeout, Context context) {
-        return client.updateEntityWithResponse(entity, updateMode, ifUnchanged, timeout, context).block();
-    }
-
-    /**
-     * Deletes the table within the Tables service.
-     *
-     * @throws TableServiceErrorException if no table with this name exists within the service.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete() {
-        client.delete().block();
-    }
-
-    /**
-     * Deletes the table within the Tables service.
-     *
-     * @param timeout Duration to wait for the operation to complete.
-     * @throws TableServiceErrorException if no table with this name exists within the service.
-     * @throws RuntimeException if the provided timeout expires.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(Duration timeout) {
-        blockWithOptionalTimeout(client.delete(), timeout);
-    }
-
-    /**
-     * Deletes the table within the Tables service.
-     *
-     * @param timeout Duration to wait for the operation to complete.
-     * @param context Additional context that is passed through the HTTP pipeline during the service call.
-     * @return The HTTP response.
-     * @throws TableServiceErrorException if no table with this name exists within the service.
-     * @throws RuntimeException if the provided timeout expires.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(Duration timeout, Context context) {
-        return blockWithOptionalTimeout(client.deleteWithResponse(context), timeout);
-    }
-
-    /**
-     * Deletes an entity from the table.
-     *
-     * @param partitionKey The partition key of the entity.
-     * @param rowKey The row key of the entity.
-     * @throws TableServiceErrorException if no entity with the provided partition key and row key exists within the
-     *                                    table.
-     * @throws IllegalArgumentException if the provided partition key or row key are {@code null} or empty.
+     * @throws IllegalArgumentException If the provided {@code partitionKey} or {@code rowKey} are {@code null} or
+     * empty.
+     * @throws TableServiceException If the request is rejected by the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteEntity(String partitionKey, String rowKey) {
@@ -400,67 +379,60 @@ public class TableClient {
     }
 
     /**
-     * Deletes an entity from the table.
+     * Deletes an {@link TableEntity entity} from the table.
      *
-     * @param partitionKey The partition key of the entity.
-     * @param rowKey The row key of the entity.
-     * @param eTag The value to compare with the eTag of the entity in the Tables service. If the values do not match,
-     *             the delete will not occur and an exception will be thrown.
-     * @throws TableServiceErrorException if no entity with the provided partition key and row key exists within the
-     *                                    table, or if {@code eTag} is not {@code null} and the existing entity's eTag
-     *                                    does not match that of the provided entity.
-     * @throws IllegalArgumentException if the provided partition key or row key are {@code null} or empty.
+     * <p><strong>Code Samples</strong></p>
+     * <p>Deletes a {@link TableEntity entity} on the table. Prints out the details of the deleted
+     * {@link TableEntity entity}.</p>
+     * {@codesnippet com.azure.data.tables.tableClient.deleteEntity#TableEntity}
+     *
+     * @param entity The {@link TableEntity entity} to delete.
+     *
+     * @throws TableServiceException If the request is rejected by the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteEntity(String partitionKey, String rowKey, String eTag) {
-        client.deleteEntity(partitionKey, rowKey, eTag).block();
+    public void deleteEntity(TableEntity entity) {
+        client.deleteEntity(entity).block();
     }
 
     /**
-     * Deletes an entity from the table.
+     * Deletes an {@link TableEntity entity} from the table.
      *
-     * @param partitionKey The partition key of the entity.
-     * @param rowKey The row key of the entity.
-     * @param eTag The value to compare with the eTag of the entity in the Tables service. If the values do not match,
-     *             the delete will not occur and an exception will be thrown.
-     * @param timeout Duration to wait for the operation to complete.
-     * @throws TableServiceErrorException if no entity with the provided partition key and row key exists within the
-     *                                    table, or if {@code eTag} is not {@code null} and the existing entity's eTag
-     *                                    does not match that of the provided entity, or if the provided timeout
-     *                                    expires.
-     * @throws IllegalArgumentException if the provided partition key or row key are {@code null} or empty.
+     * <p><strong>Code Samples</strong></p>
+     * <p>Deletes a {@link TableEntity entity} on the table. Prints out the details of the
+     * {@link Response HTTP response} and the deleted {@link TableEntity entity}.</p>
+     * {@codesnippet com.azure.data.tables.tableClient.deleteEntityWithResponse#TableEntity-Duration-Context}
+     *
+     * @param entity The table {@link TableEntity entity} to delete.
+     * @param ifUnchanged When true, the ETag of the provided {@link TableEntity entity} must match the ETag of the
+     * {@link TableEntity entity} in the Table service. If the values do not match, the update will not occur and an
+     * exception will be thrown.
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional {@link Context} that is passed through the {@link HttpPipeline HTTP pipeline} during
+     * the service call.
+     *
+     * @return The {@link Response HTTP response}.
+     *
+     * @throws TableServiceException If the request is rejected by the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteEntity(String partitionKey, String rowKey, String eTag, Duration timeout) {
-        deleteEntityWithResponse(partitionKey, rowKey, eTag, timeout, null);
-    }
-
-    /**
-     * Deletes an entity from the table.
-     *
-     * @param partitionKey The partition key of the entity.
-     * @param rowKey The row key of the entity.
-     * @param eTag The value to compare with the eTag of the entity in the Tables service. If the values do not match,
-     *             the delete will not occur and an exception will be thrown.
-     * @param timeout Duration to wait for the operation to complete.
-     * @param context Additional context that is passed through the HTTP pipeline during the service call.
-     * @return The HTTP response.
-     * @throws TableServiceErrorException if no entity with the provided partition key and row key exists within the
-     *                                    table, or if {@code eTag} is not {@code null} and the existing entity's eTag
-     *                                    does not match that of the provided entity, or if the provided timeout
-     *                                    expires.
-     * @throws IllegalArgumentException if the provided partition key or row key are {@code null} or empty.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteEntityWithResponse(String partitionKey, String rowKey, String eTag, Duration timeout,
+    public Response<Void> deleteEntityWithResponse(TableEntity entity, boolean ifUnchanged, Duration timeout,
                                                    Context context) {
-        return client.deleteEntityWithResponse(partitionKey, rowKey, eTag, timeout, context).block();
+        return blockWithOptionalTimeout(client.deleteEntityWithResponse(entity.getPartitionKey(),
+            entity.getRowKey(), entity.getETag(), ifUnchanged, context), timeout);
     }
 
     /**
-     * Lists all entities within the table.
+     * Lists all {@link TableEntity entities} within the table.
      *
-     * @return A paged iterable containing all entities within the table.
+     * <p><strong>Code Samples</strong></p>
+     * <p>Lists all {@link TableEntity entities} on the table. Prints out the details of the
+     * retrieved {@link TableEntity entities}.</p>
+     * {@codesnippet com.azure.data.tables.tableClient.listEntities}
+     *
+     * @return A {@link PagedIterable} containing all {@link TableEntity entities} within the table.
+     *
+     * @throws TableServiceException If the request is rejected by the service.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<TableEntity> listEntities() {
@@ -468,66 +440,51 @@ public class TableClient {
     }
 
     /**
-     * Lists entities using the parameters in the provided options.
+     * Lists {@link TableEntity entities} using the parameters in the provided options.
      *
-     * If the `filter` parameter in the options is set, only entities matching the filter will be returned. If the
-     * `select` parameter is set, only the properties included in the select parameter will be returned for each entity.
-     * If the `top` parameter is set, the number of returned entities will be limited to that value.
+     * <p>If the {@code filter} parameter in the options is set, only {@link TableEntity entities} matching the filter
+     * will be returned. If the {@code select} parameter is set, only the properties included in the select parameter
+     * will be returned for each {@link TableEntity entity}. If the {@code top} parameter is set, the maximum number of
+     * returned {@link TableEntity entities} per page will be limited to that value.</p>
      *
-     * @param options The `filter`, `select`, and `top` OData query options to apply to this operation.
+     * <p><strong>Code Samples</strong></p>
+     * <p>Lists all {@link TableEntity entities} on the table. Prints out the details of the
+     * {@link Response HTTP response} and all the retrieved {@link TableEntity entities}.</p>
+     * {@codesnippet com.azure.data.tables.tableClient.listEntities#ListEntitiesOptions-Duration-Context}
      *
-     * @return A paged iterable containing matching entities within the table.
-     * @throws IllegalArgumentException if one or more of the OData query options in {@code options} is malformed.
+     * @param options The {@code filter}, {@code select}, and {@code top} OData query options to apply to this
+     * operation.
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional {@link Context} that is passed through the {@link HttpPipeline HTTP pipeline} during
+     * the service call.
+     *
+     * @return A {@link PagedIterable} containing matching {@link TableEntity entities} within the table.
+     *
+     * @throws IllegalArgumentException If one or more of the OData query options in {@code options} is malformed.
+     * @throws TableServiceException If the request is rejected by the service.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<TableEntity> listEntities(ListEntitiesOptions options) {
-        return new PagedIterable<>(client.listEntities(options));
+    public PagedIterable<TableEntity> listEntities(ListEntitiesOptions options, Duration timeout, Context context) {
+        return new PagedIterable<>(client.listEntities(options, context, timeout));
     }
 
     /**
-     * Lists all entities within the table.
+     * Gets a single {@link TableEntity entity} from the table.
      *
-     * @param <T> The type of the result value, which must be a subclass of TableEntity.
-     * @param resultType The type of the result value, which must be a subclass of TableEntity.
+     * <p><strong>Code Samples</strong></p>
+     * <p>Gets an {@link TableEntity entity} on the table. Prints out the details of the retrieved
+     * {@link TableEntity entity}.</p>
+     * {@codesnippet com.azure.data.tables.tableClient.getEntity#String-String}
      *
-     * @return A paged iterable containing all entities within the table.
-     * @throws IllegalArgumentException if an instance of the provided {@code resultType} can't be created.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public <T extends TableEntity> PagedIterable<T> listEntities(Class<T> resultType) {
-        return new PagedIterable<>(client.listEntities(resultType));
-    }
-
-    /**
-     * Lists entities using the parameters in the provided options.
+     * @param partitionKey The partition key of the {@link TableEntity entity}.
+     * @param rowKey The partition key of the {@link TableEntity entity}.
      *
-     * If the `filter` parameter in the options is set, only entities matching the filter will be returned. If the
-     * `select` parameter is set, only the properties included in the select parameter will be returned for each entity.
-     * If the `top` parameter is set, the number of returned entities will be limited to that value.
+     * @return The {@link TableEntity entity}.
      *
-     * @param <T> The type of the result value, which must be a subclass of TableEntity.
-     * @param options The `filter`, `select`, and `top` OData query options to apply to this operation.
-     * @param resultType The type of the result value, which must be a subclass of TableEntity.
-     *
-     * @return A paged iterable containing matching entities within the table.
-     * @throws IllegalArgumentException if one or more of the OData query options in {@code options} is malformed, or if
-     *                                  an instance of the provided {@code resultType} can't be created.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public <T extends TableEntity> PagedIterable<T> listEntities(ListEntitiesOptions options, Class<T> resultType) {
-        return new PagedIterable<>(client.listEntities(options, resultType));
-    }
-
-    /**
-     * Gets a single entity from the table.
-     *
-     * @param partitionKey The partition key of the entity.
-     * @param rowKey The partition key of the entity.
-     *
-     * @return The entity.
-     * @throws TableServiceErrorException if no entity with the provided partition key and row key exists within the
-     *                                    table.
-     * @throws IllegalArgumentException if the provided partition key or row key are {@code null} or empty.
+     * @throws IllegalArgumentException If the provided {@code partitionKey} or {@code rowKey} are {@code null} or
+     * empty.
+     * @throws TableServiceException If no {@link TableEntity entity} with the provided {@code partitionKey} and
+     * {@code rowKey} exists within the table.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public TableEntity getEntity(String partitionKey, String rowKey) {
@@ -535,148 +492,195 @@ public class TableClient {
     }
 
     /**
-     * Gets a single entity from the table.
+     * Gets a single {@link TableEntity entity} from the table.
      *
-     * @param partitionKey The partition key of the entity.
-     * @param rowKey The partition key of the entity.
-     * @param select An OData `select` expression to limit the set of properties included in the returned entity.
+     * <p><strong>Code Samples</strong></p>
+     * <p>Gets an {@link TableEntity entity} on the table. Prints out the details of the {@link Response HTTP response}
+     * retrieved {@link TableEntity entity}.</p>
+     * {@codesnippet com.azure.data.tables.tableClient.getEntityWithResponse#String-String-ListEntitiesOptions-Duration-Context}
      *
-     * @return The entity.
-     * @throws TableServiceErrorException if no entity with the provided partition key and row key exists within the
-     *                                    table.
-     * @throws IllegalArgumentException if the provided partition key or row key are {@code null} or empty, or if the
-     *                                  {@code select} OData query option is malformed.
+     * @param partitionKey The partition key of the {@link TableEntity entity}.
+     * @param rowKey The partition key of the {@link TableEntity entity}.
+     * @param select A list of properties to select on the {@link TableEntity entity}.
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional {@link Context} that is passed through the {@link HttpPipeline HTTP pipeline} during
+     * the service call.
+     *
+     * @return The {@link Response HTTP response} containing the {@link TableEntity entity}.
+     *
+     * @throws IllegalArgumentException If the provided {@code partitionKey} or {@code rowKey} are {@code null} or
+     * empty, or if the {@code select} OData query option is malformed.
+     * @throws TableServiceException If no {@link TableEntity entity} with the provided {@code partitionKey} and
+     * {@code rowKey} exists within the table.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public TableEntity getEntity(String partitionKey, String rowKey, String select) {
-        return client.getEntity(partitionKey, rowKey, select).block();
-    }
-
-    /**
-     * Gets a single entity from the table.
-     *
-     * @param <T> The type of the result value, which must be a subclass of TableEntity.
-     * @param partitionKey The partition key of the entity.
-     * @param rowKey The partition key of the entity.
-     * @param resultType The type of the result value, which must be a subclass of TableEntity.
-     *
-     * @return The entity.
-     * @throws TableServiceErrorException if no entity with the provided partition key and row key exists within the
-     *                                    table.
-     * @throws IllegalArgumentException if the provided partition key or row key are {@code null} or empty, or if an
-     *                                  instance of the provided {@code resultType} can't be created.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public <T extends TableEntity> T getEntity(String partitionKey, String rowKey, Class<T> resultType) {
-        return client.getEntity(partitionKey, rowKey, resultType).block();
-    }
-
-    /**
-     * Gets a single entity from the table.
-     *
-     * @param <T> The type of the result value, which must be a subclass of TableEntity.
-     * @param partitionKey The partition key of the entity.
-     * @param rowKey The partition key of the entity.
-     * @param select An OData `select` expression to limit the set of properties included in the returned entity.
-     * @param resultType The type of the result value, which must be a subclass of TableEntity.
-     *
-     * @return The entity.
-     * @throws TableServiceErrorException if no entity with the provided partition key and row key exists within the
-     *                                    table.
-     * @throws IllegalArgumentException if the provided partition key or row key are {@code null} or empty, if the
-     *                                  {@code select} OData query option is malformed, or if an instance of the
-     *                                  provided {@code resultType} can't be created.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public <T extends TableEntity> T getEntity(String partitionKey, String rowKey, String select, Class<T> resultType) {
-        return client.getEntity(partitionKey, rowKey, select, resultType).block();
-    }
-
-    /**
-     * Gets a single entity from the table.
-     *
-     * @param partitionKey The partition key of the entity.
-     * @param rowKey The partition key of the entity.
-     * @param select An OData `select` expression to limit the set of properties included in the returned entity.
-     * @param timeout Duration to wait for the operation to complete.
-     *
-     * @return The entity.
-     * @throws TableServiceErrorException if no entity with the provided partition key and row key exists within the
-     *                                    table, or if the provided timeout expires.
-     * @throws IllegalArgumentException if the provided partition key or row key are {@code null} or empty, or if the
-     *                                  {@code select} OData query option is malformed.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public TableEntity getEntity(String partitionKey, String rowKey, String select, Duration timeout) {
-        return getEntityWithResponse(partitionKey, rowKey, select, TableEntity.class, timeout, null).getValue();
-    }
-
-    /**
-     * Gets a single entity from the table.
-     *
-     * @param <T> The type of the result value, which must be a subclass of TableEntity.
-     * @param partitionKey The partition key of the entity.
-     * @param rowKey The partition key of the entity.
-     * @param select An OData `select` expression to limit the set of properties included in the returned entity.
-     * @param resultType The type of the result value, which must be a subclass of TableEntity.
-     * @param timeout Duration to wait for the operation to complete.
-     *
-     * @return The entity.
-     * @throws TableServiceErrorException if no entity with the provided partition key and row key exists within the
-     *                                    table, or if the provided timeout expires.
-     * @throws IllegalArgumentException if the provided partition key or row key are {@code null} or empty, if the
-     *                                  {@code select} OData query option is malformed, or if an instance of the
-     *                                  provided {@code resultType} can't be created.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public <T extends TableEntity> T getEntity(String partitionKey, String rowKey, String select, Class<T> resultType,
-                                               Duration timeout) {
-        return getEntityWithResponse(partitionKey, rowKey, select, resultType, timeout, null).getValue();
-    }
-
-    /**
-     * Gets a single entity from the table.
-     *
-     * @param partitionKey The partition key of the entity.
-     * @param rowKey The partition key of the entity.
-     * @param select An OData `select` expression to limit the set of properties included in the returned entity.
-     * @param timeout Duration to wait for the operation to complete.
-     * @param context Additional context that is passed through the HTTP pipeline during the service call.
-     *
-     * @return The HTTP response containing the entity.
-     * @throws TableServiceErrorException if no entity with the provided partition key and row key exists within the
-     *                                    table, or if the provided timeout expires.
-     * @throws IllegalArgumentException if the provided partition key or row key are {@code null} or empty, or if the
-     *                                  {@code select} OData query option is malformed.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<TableEntity> getEntityWithResponse(String partitionKey, String rowKey, String select,
+    public Response<TableEntity> getEntityWithResponse(String partitionKey, String rowKey, List<String> select,
                                                        Duration timeout, Context context) {
-        return client.getEntityWithResponse(partitionKey, rowKey, select, TableEntity.class, timeout, context).block();
+        return blockWithOptionalTimeout(
+            client.getEntityWithResponse(partitionKey, rowKey, select, TableEntity.class, context), timeout);
     }
 
     /**
-     * Gets a single entity from the table.
+     * Retrieves details about any stored {@link TableAccessPolicies access policies} specified on the table that may
+     * be used with Shared Access Signatures.
      *
-     * @param <T> The type of the result value, which must be a subclass of TableEntity.
-     * @param partitionKey The partition key of the entity.
-     * @param rowKey The partition key of the entity.
-     * @param select An OData `select` expression to limit the set of properties included in the returned entity.
-     * @param resultType The type of the result value, which must be a subclass of TableEntity.
-     * @param timeout Duration to wait for the operation to complete.
-     * @param context Additional context that is passed through the HTTP pipeline during the service call.
+     * <p>This operation is only supported on Azure Storage endpoints.</p>
      *
-     * @return The HTTP response containing the entity.
-     * @throws TableServiceErrorException if no entity with the provided partition key and row key exists within the
-     *                                    table, or if the provided timeout expires.
-     * @throws IllegalArgumentException if the provided partition key or row key are {@code null} or empty, if the
-     *                                  {@code select} OData query option is malformed, or if an instance of the
-     *                                  provided {@code resultType} can't be created.
+     * <p><strong>Code Samples</strong></p>
+     * <p>Gets a table's {@link TableAccessPolicies access policies}. Prints out the details of the retrieved
+     * {@link TableAccessPolicies access policies}.</p>
+     * {@codesnippet com.azure.data.tables.tableClient.getAccessPolicies}
+     *
+     * @return The table's {@link TableAccessPolicies access policies}.
+     *
+     * @throws TableServiceException If the request is rejected by the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public <T extends TableEntity> Response<T> getEntityWithResponse(String partitionKey, String rowKey, String select,
-                                                                     Class<T> resultType, Duration timeout,
-                                                                     Context context) {
-        return client.getEntityWithResponse(partitionKey, rowKey, select, resultType, timeout, context).block();
+    public TableAccessPolicies getAccessPolicies() {
+        return client.getAccessPolicies().block();
+    }
+
+    /**
+     * Retrieves details about any stored {@link TableAccessPolicies access policies} specified on the table that may be
+     * used with Shared Access Signatures.
+     *
+     * <p>This operation is only supported on Azure Storage endpoints.</p>
+     *
+     * <p><strong>Code Samples</strong></p>
+     * <p>Gets a table's {@link TableAccessPolicies access policies}. Prints out the details of the
+     * {@link Response HTTP response} and the retrieved {@link TableAccessPolicies access policies}.</p>
+     * {@codesnippet com.azure.data.tables.tableClient.getAccessPoliciesWithResponse#Duration-Context}
+     *
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional {@link Context} that is passed through the {@link HttpPipeline HTTP pipeline} during
+     * the service call.
+     *
+     * @return An {@link Response HTTP response} containing the table's {@link TableAccessPolicies access policies}.
+     *
+     * @throws TableServiceException If the request is rejected by the service.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<TableAccessPolicies> getAccessPoliciesWithResponse(Duration timeout, Context context) {
+        return blockWithOptionalTimeout(client.getAccessPoliciesWithResponse(context), timeout);
+    }
+
+    /**
+     * Sets stored {@link TableAccessPolicies access policies} for the table that may be used with Shared Access
+     * Signatures.
+     *
+     * <p>This operation is only supported on Azure Storage endpoints.</p>
+     *
+     * <p><strong>Code Samples</strong></p>
+     * <p>Sets stored {@link TableAccessPolicies access policies} on a table.</p>
+     * {@codesnippet com.azure.data.tables.tableClient.setAccessPolicies#List}
+     *
+     * @param tableSignedIdentifiers The {@link TableSignedIdentifier access policies} for the table.
+     *
+     * @throws TableServiceException If the request is rejected by the service.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void setAccessPolicies(List<TableSignedIdentifier> tableSignedIdentifiers) {
+        client.setAccessPolicies(tableSignedIdentifiers).block();
+    }
+
+    /**
+     * Sets stored {@link TableAccessPolicies access policies} for the table that may be used with Shared Access
+     * Signatures.
+     *
+     * <p>This operation is only supported on Azure Storage endpoints.</p>
+     *
+     * <p><strong>Code Samples</strong></p>
+     * <p>Sets stored {@link TableAccessPolicies access policies} on a table. Prints out details of the
+     * {@link Response HTTP response}.</p>
+     * {@codesnippet com.azure.data.tables.tableClient.setAccessPoliciesWithResponse#List-Duration-Context}
+     *
+     * @param tableSignedIdentifiers The {@link TableSignedIdentifier access policies} for the table.
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional {@link Context} that is passed through the {@link HttpPipeline HTTP pipeline} during
+     * the service call.
+     *
+     * @return The {@link Response HTTP response}.
+     *
+     * @throws TableServiceException If the request is rejected by the service.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> setAccessPoliciesWithResponse(List<TableSignedIdentifier> tableSignedIdentifiers,
+                                                        Duration timeout, Context context) {
+        return blockWithOptionalTimeout(client.setAccessPoliciesWithResponse(tableSignedIdentifiers, context), timeout);
+    }
+
+    /**
+     * Executes all {@link TableTransactionAction actions} within the list inside a transaction. When the call
+     * completes, either all {@link TableTransactionAction actions} in the transaction will succeed, or if a failure
+     * occurs, all {@link TableTransactionAction actions} in the transaction will be rolled back.
+     * {@link TableTransactionAction Actions} are executed sequantially. Each {@link TableTransactionAction action}
+     * must operate on a distinct row key. Attempting to pass multiple {@link TableTransactionAction actions} that
+     * share the same row key will cause an error.
+     *
+     * <p><strong>Code Samples</strong></p>
+     * <p>Submits a transaction that contains multiple {@link TableTransactionAction actions} to be applied to
+     * {@link TableEntity entities} on a table. Prints out details of each {@link TableTransactionAction action}'s
+     * {@link Response HTTP response}.</p>
+     * {@codesnippet com.azure.data.tables.tableClient.submitTransaction#List}
+     * <p>Shows how to handle a transaction with a failing {@link TableTransactionAction action} via the provided
+     * {@link TableTransactionFailedException exception}, which contains the index of the first failing action in the
+     * transaction.</p>
+     * {@codesnippet com.azure.data.tables.tableAsyncClient.submitTransactionWithError#List}
+     *
+     * @param transactionActions A {@link List} of {@link TableTransactionAction actions} to perform on
+     * {@link TableEntity entities} in a table.
+     *
+     * @return A {@link List} of {@link TableTransactionActionResponse sub-responses} that correspond to each
+     * {@link TableTransactionResult action} in the transaction.
+     *
+     * @throws IllegalArgumentException If no {@link TableTransactionAction actions} have been added to the list.
+     * @throws TableServiceException If the request is rejected by the service.
+     * @throws TableTransactionFailedException If any {@link TableTransactionResult action} within the transaction
+     * fails. See the documentation for the client methods in {@link TableClient} to understand the conditions that
+     * may cause a given {@link TableTransactionAction action} to fail.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public TableTransactionResult submitTransaction(List<TableTransactionAction> transactionActions) {
+        return client.submitTransaction(transactionActions).block();
+    }
+
+    /**
+     * Executes all {@link TableTransactionAction actions} within the list inside a transaction. When the call
+     * completes, either all {@link TableTransactionAction actions} in the transaction will succeed, or if a failure
+     * occurs, all {@link TableTransactionAction actions} in the transaction will be rolled back.
+     * {@link TableTransactionAction Actions} are executed sequantially. Each {@link TableTransactionAction action}
+     * must operate on a distinct row key. Attempting to pass multiple {@link TableTransactionAction actions} that
+     * share the same row key will cause an error.
+     *
+     * <p><strong>Code Samples</strong></p>
+     * <p>Submits a transaction that contains multiple {@link TableTransactionAction actions} to be applied to
+     * {@link TableEntity entities} on a table. Prints out details of the {@link Response HTTP response} for the
+     * operation, as well as each {@link TableTransactionAction action}'s corresponding {@link Response HTTP
+     * response}.</p>
+     * {@codesnippet com.azure.data.tables.tableClient.submitTransactionWithResponse#List-Duration-Context}
+     * <p>Shows how to handle a transaction with a failing {@link TableTransactionAction action} via the provided
+     * {@link TableTransactionFailedException exception}, which contains the index of the first failing action in the
+     * transaction.</p>
+     * {@codesnippet com.azure.data.tables.tableClient.submitTransactionWithResponseWithError#List-Duration-Context}
+     *
+     * @param transactionActions A {@link List} of {@link TableTransactionAction transaction actions} to perform on
+     * {@link TableEntity entities} in a table.
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional {@link Context} that is passed through the {@link HttpPipeline HTTP pipeline} during
+     * the service call.
+     *
+     * @return An {@link Response HTTP response} produced for the transaction itself. The response's value will contain
+     * a {@link List} of {@link TableTransactionActionResponse sub-responses} that correspond to each
+     * {@link TableTransactionAction action} in the transaction.
+     *
+     * @throws IllegalArgumentException If no {@link TableTransactionAction actions} have been added to the list.
+     * @throws TableServiceException If the request is rejected by the service.
+     * @throws TableTransactionFailedException If any {@link TableTransactionAction action} within the transaction
+     * fails. See the documentation for the client methods in {@link TableClient} to understand the conditions that
+     * may cause a given {@link TableTransactionAction action} to fail.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<TableTransactionResult> submitTransactionWithResponse(List<TableTransactionAction> transactionActions, Duration timeout, Context context) {
+        return blockWithOptionalTimeout(client.submitTransactionWithResponse(transactionActions, context), timeout);
     }
 }

@@ -4,16 +4,17 @@
 
 package com.azure.resourcemanager.postgresql.implementation;
 
-import com.azure.resourcemanager.postgresql.PostgreSqlManager;
 import com.azure.resourcemanager.postgresql.fluent.models.RecoverableServerResourceInner;
 import com.azure.resourcemanager.postgresql.models.RecoverableServerResource;
 
 public final class RecoverableServerResourceImpl implements RecoverableServerResource {
     private RecoverableServerResourceInner innerObject;
 
-    private final PostgreSqlManager serviceManager;
+    private final com.azure.resourcemanager.postgresql.PostgreSqlManager serviceManager;
 
-    RecoverableServerResourceImpl(RecoverableServerResourceInner innerObject, PostgreSqlManager serviceManager) {
+    RecoverableServerResourceImpl(
+        RecoverableServerResourceInner innerObject,
+        com.azure.resourcemanager.postgresql.PostgreSqlManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -58,7 +59,7 @@ public final class RecoverableServerResourceImpl implements RecoverableServerRes
         return this.innerObject;
     }
 
-    private PostgreSqlManager manager() {
+    private com.azure.resourcemanager.postgresql.PostgreSqlManager manager() {
         return this.serviceManager;
     }
 }

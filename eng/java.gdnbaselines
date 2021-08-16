@@ -3,8 +3,8 @@
   "baselines": {
     "baseline": {
       "name": "baseline",
-      "createdDate": "2021-01-22 03:39:03Z",
-      "lastUpdatedDate": "2021-01-22 03:39:03Z"
+      "createdDate": "2021-01-29 02:05:08Z",
+      "lastUpdatedDate": "2021-01-29 02:05:08Z"
     }
   },
   "results": {
@@ -17,7 +17,7 @@
       "tool": "CredentialScanner",
       "ruleId": "CSCAN-GENERAL0060",
       "justification": null,
-      "createdDate": "2021-01-22 03:39:03Z",
+      "createdDate": "2021-01-29 02:05:08Z",
       "expirationDate": null,
       "type": null
     },
@@ -30,7 +30,7 @@
       "tool": "CredentialScanner",
       "ruleId": "CSCAN-GENERAL0130",
       "justification": null,
-      "createdDate": "2021-01-22 03:39:03Z",
+      "createdDate": "2021-01-29 02:05:08Z",
       "expirationDate": null,
       "type": null
     },
@@ -43,7 +43,7 @@
       "tool": "CredentialScanner",
       "ruleId": "CSCAN-GENERAL0060",
       "justification": null,
-      "createdDate": "2021-01-22 03:39:03Z",
+      "createdDate": "2021-01-29 02:05:08Z",
       "expirationDate": null,
       "type": null
     },
@@ -56,7 +56,85 @@
       "tool": "CredentialScanner",
       "ruleId": "CSCAN-GENERAL0130",
       "justification": null,
-      "createdDate": "2021-01-22 03:39:03Z",
+      "createdDate": "2021-01-29 02:05:08Z",
+      "expirationDate": null,
+      "type": null
+    },
+    "ebc7add88a0ff715bb5de4237ae211316a4f671e98334eb4c3d3fad5133fbb81": {
+      "signature": "ebc7add88a0ff715bb5de4237ae211316a4f671e98334eb4c3d3fad5133fbb81",
+      "target": "sdk/cosmos/azure-cosmos/target/test-classes/client.jks",
+      "memberOf": [
+        "baseline"
+      ],
+      "tool": "CredentialScanner",
+      "ruleId": "CSCAN-GENERAL0020",
+      "justification": null,
+      "createdDate": "2021-01-29 02:05:08Z",
+      "expirationDate": null,
+      "type": null
+    },
+    "bfab44fc6fe922fa67c25752cd58fecfd6ecdb51053516e849b5aab30cafcfe3": {
+      "signature": "bfab44fc6fe922fa67c25752cd58fecfd6ecdb51053516e849b5aab30cafcfe3",
+      "target": "sdk/cosmos/azure-cosmos/target/test-classes/server.jks",
+      "memberOf": [
+        "baseline"
+      ],
+      "tool": "CredentialScanner",
+      "ruleId": "CSCAN-GENERAL0020",
+      "justification": null,
+      "createdDate": "2021-01-29 02:05:08Z",
+      "expirationDate": null,
+      "type": null
+    },
+    "5678e77875a429cbf95a97bc06f9d7119f8f0988da3c199d3a8981a914dc1ec1": {
+      "signature": "5678e77875a429cbf95a97bc06f9d7119f8f0988da3c199d3a8981a914dc1ec1",
+      "target": "sdk/identity/azure-identity/target/test-classes/cert-chain.pem",
+      "memberOf": [
+        "baseline"
+      ],
+      "tool": "CredentialScanner",
+      "ruleId": "CSCAN-GENERAL0020",
+      "justification": null,
+      "createdDate": "2021-01-29 02:05:08Z",
+      "expirationDate": null,
+      "type": null
+    },
+    "8e9c9564e63b6000be332898be6a6d40ca922d0bd0d4f545b901d7169dab367c": {
+      "signature": "8e9c9564e63b6000be332898be6a6d40ca922d0bd0d4f545b901d7169dab367c",
+      "target": "sdk/identity/azure-identity/target/test-classes/key.pem",
+      "memberOf": [
+        "baseline"
+      ],
+      "tool": "CredentialScanner",
+      "ruleId": "CSCAN-GENERAL0020",
+      "justification": null,
+      "createdDate": "2021-01-29 02:05:08Z",
+      "expirationDate": null,
+      "type": null
+    },
+    "71477ba14fdf49a87badd49a1399dc60e299d6dd21bfe1b53b77744006e15c24": {
+      "signature": "71477ba14fdf49a87badd49a1399dc60e299d6dd21bfe1b53b77744006e15c24",
+      "target": "sdk/identity/azure-identity/target/test-classes/keyStore.pfx",
+      "memberOf": [
+        "baseline"
+      ],
+      "tool": "CredentialScanner",
+      "ruleId": "CSCAN-GENERAL0020",
+      "justification": null,
+      "createdDate": "2021-01-29 02:05:08Z",
+      "expirationDate": null,
+      "type": null
+    },
+    "95373c754bb5a5625983fcd229cf8f2943c66410439ce35b187676b707f44feb": {
+      "signature": "95373c754bb5a5625983fcd229cf8f2943c66410439ce35b187676b707f44feb",
+      "target": "sdk/keyvault/azure-security-keyvault-certificates/target/test-classes/pemCert.pem",
+      "memberOf": [
+        "baseline"
+      ],
+      "tool": "CredentialScanner",
+      "ruleId": "CSCAN-GENERAL0020",
+      "justification": null,
+      "createdDate": "2021-01-29 02:05:08Z",
       "expirationDate": null,
       "type": null
     },
@@ -69,7 +147,7 @@
       "tool": "CredentialScanner",
       "ruleId": "CSCAN-GENERAL0020",
       "justification": null,
-      "createdDate": "2021-01-22 03:39:03Z",
+      "createdDate": "2021-01-29 02:05:08Z",
       "expirationDate": null,
       "type": null
     },
@@ -82,7 +160,7 @@
       "tool": "CredentialScanner",
       "ruleId": "CSCAN-GENERAL0020",
       "justification": null,
-      "createdDate": "2021-01-22 03:39:03Z",
+      "createdDate": "2021-01-29 02:05:08Z",
       "expirationDate": null,
       "type": null
     },
@@ -95,7 +173,7 @@
       "tool": "CredentialScanner",
       "ruleId": "CSCAN-GENERAL0020",
       "justification": null,
-      "createdDate": "2021-01-22 03:39:03Z",
+      "createdDate": "2021-01-29 02:05:08Z",
       "expirationDate": null,
       "type": null
     },
@@ -108,7 +186,7 @@
       "tool": "CredentialScanner",
       "ruleId": "CSCAN-GENERAL0020",
       "justification": null,
-      "createdDate": "2021-01-22 03:39:03Z",
+      "createdDate": "2021-01-29 02:05:08Z",
       "expirationDate": null,
       "type": null
     },
@@ -121,7 +199,7 @@
       "tool": "CredentialScanner",
       "ruleId": "CSCAN-GENERAL0020",
       "justification": null,
-      "createdDate": "2021-01-22 03:39:03Z",
+      "createdDate": "2021-01-29 02:05:08Z",
       "expirationDate": null,
       "type": null
     },
@@ -134,7 +212,7 @@
       "tool": "CredentialScanner",
       "ruleId": "CSCAN-GENERAL0020",
       "justification": null,
-      "createdDate": "2021-01-22 03:39:03Z",
+      "createdDate": "2021-01-29 02:05:08Z",
       "expirationDate": null,
       "type": null
     },
@@ -147,7 +225,7 @@
       "tool": "CredentialScanner",
       "ruleId": "CSCAN-GENERAL0020",
       "justification": null,
-      "createdDate": "2021-01-22 03:39:03Z",
+      "createdDate": "2021-01-29 02:05:08Z",
       "expirationDate": null,
       "type": null
     },
@@ -160,7 +238,7 @@
       "tool": "CredentialScanner",
       "ruleId": "CSCAN-GENERAL0020",
       "justification": null,
-      "createdDate": "2021-01-22 03:39:03Z",
+      "createdDate": "2021-01-29 02:05:08Z",
       "expirationDate": null,
       "type": null
     },
@@ -173,7 +251,7 @@
       "tool": "CredentialScanner",
       "ruleId": "CSCAN-GENERAL0020",
       "justification": null,
-      "createdDate": "2021-01-22 03:39:03Z",
+      "createdDate": "2021-01-29 02:05:08Z",
       "expirationDate": null,
       "type": null
     },
@@ -186,7 +264,7 @@
       "tool": "CredentialScanner",
       "ruleId": "CSCAN-GENERAL0020",
       "justification": null,
-      "createdDate": "2021-01-22 03:39:03Z",
+      "createdDate": "2021-01-29 02:05:08Z",
       "expirationDate": null,
       "type": null
     },
@@ -199,7 +277,7 @@
       "tool": "CredentialScanner",
       "ruleId": "CSCAN-GENERAL0020",
       "justification": null,
-      "createdDate": "2021-01-22 03:39:03Z",
+      "createdDate": "2021-01-29 02:05:08Z",
       "expirationDate": null,
       "type": null
     },
@@ -212,7 +290,7 @@
       "tool": "CredentialScanner",
       "ruleId": "CSCAN-GENERAL0020",
       "justification": null,
-      "createdDate": "2021-01-22 03:39:03Z",
+      "createdDate": "2021-01-29 02:05:08Z",
       "expirationDate": null,
       "type": null
     },
@@ -225,7 +303,7 @@
       "tool": "CredentialScanner",
       "ruleId": "CSCAN-GENERAL0020",
       "justification": null,
-      "createdDate": "2021-01-22 03:39:03Z",
+      "createdDate": "2021-01-29 02:05:08Z",
       "expirationDate": null,
       "type": null
     },
@@ -238,7 +316,7 @@
       "tool": "CredentialScanner",
       "ruleId": "CSCAN-GENERAL0020",
       "justification": null,
-      "createdDate": "2021-01-22 03:39:03Z",
+      "createdDate": "2021-01-29 02:05:08Z",
       "expirationDate": null,
       "type": null
     },
@@ -251,7 +329,7 @@
       "tool": "CredentialScanner",
       "ruleId": "CSCAN-GENERAL0020",
       "justification": null,
-      "createdDate": "2021-01-22 03:39:03Z",
+      "createdDate": "2021-01-29 02:05:08Z",
       "expirationDate": null,
       "type": null
     },
@@ -264,7 +342,46 @@
       "tool": "CredentialScanner",
       "ruleId": "CSCAN-GENERAL0020",
       "justification": null,
-      "createdDate": "2021-01-22 03:39:03Z",
+      "createdDate": "2021-01-29 02:05:08Z",
+      "expirationDate": null,
+      "type": null
+    },
+    "ba48400ea1151b9904f60dfe64603baf7462baad45fdd2e88be0e25e2cf068d7": {
+      "signature": "ba48400ea1151b9904f60dfe64603baf7462baad45fdd2e88be0e25e2cf068d7",
+      "target": "sdk/servicebus/azure-messaging-servicebus/target/test-classes/session-records/createQueueAuthorizationRules.json",
+      "memberOf": [
+        "baseline"
+      ],
+      "tool": "CredentialScanner",
+      "ruleId": "CSCAN-AZURE0130",
+      "justification": null,
+      "createdDate": "2021-01-29 02:05:08Z",
+      "expirationDate": null,
+      "type": null
+    },
+    "7611cc935c619884d5a8c0be23f63e787a75988b9dcd89c5a2d187dcf15e8cda": {
+      "signature": "7611cc935c619884d5a8c0be23f63e787a75988b9dcd89c5a2d187dcf15e8cda",
+      "target": "sdk/servicebus/azure-messaging-servicebus/target/test-classes/xml/CreateQueueEntry.xml",
+      "memberOf": [
+        "baseline"
+      ],
+      "tool": "CredentialScanner",
+      "ruleId": "CSCAN-AZURE0130",
+      "justification": null,
+      "createdDate": "2021-01-29 02:05:08Z",
+      "expirationDate": null,
+      "type": null
+    },
+    "7320c1a908b35825cbb07fe5c8d89bf417a2f9cf64fb31684d0a887c4b19a2d7": {
+      "signature": "7320c1a908b35825cbb07fe5c8d89bf417a2f9cf64fb31684d0a887c4b19a2d7",
+      "target": "sdk/servicebus/azure-messaging-servicebus/target/test-classes/xml/CreateQueueEntry.xml",
+      "memberOf": [
+        "baseline"
+      ],
+      "tool": "CredentialScanner",
+      "ruleId": "CSCAN-AZURE0130",
+      "justification": null,
+      "createdDate": "2021-01-29 02:05:08Z",
       "expirationDate": null,
       "type": null
     },
@@ -277,7 +394,7 @@
       "tool": "CredentialScanner",
       "ruleId": "CSCAN-GENERAL0020",
       "justification": null,
-      "createdDate": "2021-01-22 03:39:03Z",
+      "createdDate": "2021-01-29 02:05:08Z",
       "expirationDate": null,
       "type": null
     },
@@ -290,7 +407,696 @@
       "tool": "CredentialScanner",
       "ruleId": "CSCAN-GENERAL0020",
       "justification": null,
-      "createdDate": "2021-01-22 03:39:03Z",
+      "createdDate": "2021-01-29 02:05:08Z",
+      "expirationDate": null,
+      "type": null
+    },
+    "06df3efd503d6c45fe4b7ad6142264d341f0a587f4e3ed699ae9127fc916fad0": {
+      "signature": "06df3efd503d6c45fe4b7ad6142264d341f0a587f4e3ed699ae9127fc916fad0",
+      "target": "sdk/storage/azure-storage-blob-cryptography/target/test-classes/session-records/BlobCryptographyBuilderTestcustomerprovidedkey.json",
+      "memberOf": [
+        "baseline"
+      ],
+      "tool": "CredentialScanner",
+      "ruleId": "CSCAN-GENERAL0140",
+      "justification": null,
+      "createdDate": "2021-01-29 02:05:08Z",
+      "expirationDate": null,
+      "type": null
+    },
+    "d86cc1ecaa3351a9d2dfb7cd73161f17b03f7124f8905c360b91f0ecf81246bf": {
+      "signature": "d86cc1ecaa3351a9d2dfb7cd73161f17b03f7124f8905c360b91f0ecf81246bf",
+      "target": "sdk/storage/azure-storage-blob-cryptography/target/test-classes/session-records/BlobCryptographyBuilderTestencryptedclientintegrity.json",
+      "memberOf": [
+        "baseline"
+      ],
+      "tool": "CredentialScanner",
+      "ruleId": "CSCAN-GENERAL0140",
+      "justification": null,
+      "createdDate": "2021-01-29 02:05:08Z",
+      "expirationDate": null,
+      "type": null
+    },
+    "22f9df792822f52f9a4e93f98fa2c37b40f8d7ca15f259cf97b094b1bec2e428": {
+      "signature": "22f9df792822f52f9a4e93f98fa2c37b40f8d7ca15f259cf97b094b1bec2e428",
+      "target": "sdk/storage/azure-storage-blob-cryptography/target/test-classes/session-records/EncyptedBlockBlobAPITestbuffereduploadnonmarkablestream.json",
+      "memberOf": [
+        "baseline"
+      ],
+      "tool": "CredentialScanner",
+      "ruleId": "CSCAN-GENERAL0140",
+      "justification": null,
+      "createdDate": "2021-01-29 02:05:08Z",
+      "expirationDate": null,
+      "type": null
+    },
+    "e788ce8606793faf940d98cc4e01f31beea82444191ad196d4da4e9765906cdd": {
+      "signature": "e788ce8606793faf940d98cc4e01f31beea82444191ad196d4da4e9765906cdd",
+      "target": "file:///D:/a/1/s/sdk/storage/azure-storage-blob-cryptography/target/test-classes/session-records/EncyptedBlockBlobAPITestdownloadacfail[3].json",
+      "memberOf": [
+        "baseline"
+      ],
+      "tool": "CredentialScanner",
+      "ruleId": "CSCAN-GENERAL0140",
+      "justification": null,
+      "createdDate": "2021-01-29 02:05:08Z",
+      "expirationDate": null,
+      "type": null
+    },
+    "ff47a3ac5b8e083364de71c523b6b9a0a79bc1ed81316bd81badeee54d9d3d6e": {
+      "signature": "ff47a3ac5b8e083364de71c523b6b9a0a79bc1ed81316bd81badeee54d9d3d6e",
+      "target": "file:///D:/a/1/s/sdk/storage/azure-storage-blob-cryptography/target/test-classes/session-records/EncyptedBlockBlobAPITestdownloadac[0].json",
+      "memberOf": [
+        "baseline"
+      ],
+      "tool": "CredentialScanner",
+      "ruleId": "CSCAN-GENERAL0140",
+      "justification": null,
+      "createdDate": "2021-01-29 02:05:08Z",
+      "expirationDate": null,
+      "type": null
+    },
+    "038b640eb4e43c57b145c3f2d25eef48e7a63d0d128ada75f2af57a96ebbb5f8": {
+      "signature": "038b640eb4e43c57b145c3f2d25eef48e7a63d0d128ada75f2af57a96ebbb5f8",
+      "target": "file:///D:/a/1/s/sdk/storage/azure-storage-blob-cryptography/target/test-classes/session-records/EncyptedBlockBlobAPITestdownloadac[1].json",
+      "memberOf": [
+        "baseline"
+      ],
+      "tool": "CredentialScanner",
+      "ruleId": "CSCAN-GENERAL0140",
+      "justification": null,
+      "createdDate": "2021-01-29 02:05:08Z",
+      "expirationDate": null,
+      "type": null
+    },
+    "7bf50b8e086225986daacb7248e1d2fc99763809afccad2ec499f36ae88f179a": {
+      "signature": "7bf50b8e086225986daacb7248e1d2fc99763809afccad2ec499f36ae88f179a",
+      "target": "file:///D:/a/1/s/sdk/storage/azure-storage-blob-cryptography/target/test-classes/session-records/EncyptedBlockBlobAPITestdownloadac[2].json",
+      "memberOf": [
+        "baseline"
+      ],
+      "tool": "CredentialScanner",
+      "ruleId": "CSCAN-GENERAL0140",
+      "justification": null,
+      "createdDate": "2021-01-29 02:05:08Z",
+      "expirationDate": null,
+      "type": null
+    },
+    "60c0f8704274591c5b102876668040b639cacd8fe399b24d0ffb0481215693a6": {
+      "signature": "60c0f8704274591c5b102876668040b639cacd8fe399b24d0ffb0481215693a6",
+      "target": "file:///D:/a/1/s/sdk/storage/azure-storage-blob-cryptography/target/test-classes/session-records/EncyptedBlockBlobAPITestdownloadac[3].json",
+      "memberOf": [
+        "baseline"
+      ],
+      "tool": "CredentialScanner",
+      "ruleId": "CSCAN-GENERAL0140",
+      "justification": null,
+      "createdDate": "2021-01-29 02:05:08Z",
+      "expirationDate": null,
+      "type": null
+    },
+    "9c318193fa610421515513c5fbc3e266e357da5eb7b31aef43a1f8fc5ae0ed87": {
+      "signature": "9c318193fa610421515513c5fbc3e266e357da5eb7b31aef43a1f8fc5ae0ed87",
+      "target": "file:///D:/a/1/s/sdk/storage/azure-storage-blob-cryptography/target/test-classes/session-records/EncyptedBlockBlobAPITestdownloadac[4].json",
+      "memberOf": [
+        "baseline"
+      ],
+      "tool": "CredentialScanner",
+      "ruleId": "CSCAN-GENERAL0140",
+      "justification": null,
+      "createdDate": "2021-01-29 02:05:08Z",
+      "expirationDate": null,
+      "type": null
+    },
+    "1276ac317f3f8dadbefbc5f4958365d9ac22cfe9fdd4af8641bc3e6fe8ac9e44": {
+      "signature": "1276ac317f3f8dadbefbc5f4958365d9ac22cfe9fdd4af8641bc3e6fe8ac9e44",
+      "target": "file:///D:/a/1/s/sdk/storage/azure-storage-blob-cryptography/target/test-classes/session-records/EncyptedBlockBlobAPITestdownloadac[5].json",
+      "memberOf": [
+        "baseline"
+      ],
+      "tool": "CredentialScanner",
+      "ruleId": "CSCAN-GENERAL0140",
+      "justification": null,
+      "createdDate": "2021-01-29 02:05:08Z",
+      "expirationDate": null,
+      "type": null
+    },
+    "5d900daa15eaa3d728b9ea7a57cf586b83894b5664fd5d08be0a50cc6aab3a04": {
+      "signature": "5d900daa15eaa3d728b9ea7a57cf586b83894b5664fd5d08be0a50cc6aab3a04",
+      "target": "sdk/storage/azure-storage-blob-cryptography/target/test-classes/session-records/EncyptedBlockBlobAPITestdownloadallnull.json",
+      "memberOf": [
+        "baseline"
+      ],
+      "tool": "CredentialScanner",
+      "ruleId": "CSCAN-GENERAL0140",
+      "justification": null,
+      "createdDate": "2021-01-29 02:05:08Z",
+      "expirationDate": null,
+      "type": null
+    },
+    "dc4ba8fac59d15eb92846734e6bfe5d02529bf79f94dbb70baa730811402bd76": {
+      "signature": "dc4ba8fac59d15eb92846734e6bfe5d02529bf79f94dbb70baa730811402bd76",
+      "target": "sdk/storage/azure-storage-blob-cryptography/target/test-classes/session-records/EncyptedBlockBlobAPITestdownloadfiledoesnotexistopenoptions.json",
+      "memberOf": [
+        "baseline"
+      ],
+      "tool": "CredentialScanner",
+      "ruleId": "CSCAN-GENERAL0140",
+      "justification": null,
+      "createdDate": "2021-01-29 02:05:08Z",
+      "expirationDate": null,
+      "type": null
+    },
+    "0ff323bb04185f36952fdb6bd15666e25368176363ec9512f6454fdce873d867": {
+      "signature": "0ff323bb04185f36952fdb6bd15666e25368176363ec9512f6454fdce873d867",
+      "target": "sdk/storage/azure-storage-blob-cryptography/target/test-classes/session-records/EncyptedBlockBlobAPITestdownloadfileexistopenoptions.json",
+      "memberOf": [
+        "baseline"
+      ],
+      "tool": "CredentialScanner",
+      "ruleId": "CSCAN-GENERAL0140",
+      "justification": null,
+      "createdDate": "2021-01-29 02:05:08Z",
+      "expirationDate": null,
+      "type": null
+    },
+    "767f4d37b1ddf542be108566a20a54531f428a478d6c2540733e3f5cde6d087b": {
+      "signature": "767f4d37b1ddf542be108566a20a54531f428a478d6c2540733e3f5cde6d087b",
+      "target": "sdk/storage/azure-storage-blob-cryptography/target/test-classes/session-records/EncyptedBlockBlobAPITestdownloadmin.json",
+      "memberOf": [
+        "baseline"
+      ],
+      "tool": "CredentialScanner",
+      "ruleId": "CSCAN-GENERAL0140",
+      "justification": null,
+      "createdDate": "2021-01-29 02:05:08Z",
+      "expirationDate": null,
+      "type": null
+    },
+    "3a9b62d290dbad90a555f3a2f161013559158296845891eb2ccf80f0e842ab70": {
+      "signature": "3a9b62d290dbad90a555f3a2f161013559158296845891eb2ccf80f0e842ab70",
+      "target": "file:///D:/a/1/s/sdk/storage/azure-storage-blob-cryptography/target/test-classes/session-records/EncyptedBlockBlobAPITestdownloadrange[0].json",
+      "memberOf": [
+        "baseline"
+      ],
+      "tool": "CredentialScanner",
+      "ruleId": "CSCAN-GENERAL0140",
+      "justification": null,
+      "createdDate": "2021-01-29 02:05:08Z",
+      "expirationDate": null,
+      "type": null
+    },
+    "4ccdd58358a89bd37da8a47d1b86e047102bbb9886c7cbaab8809cd00756237a": {
+      "signature": "4ccdd58358a89bd37da8a47d1b86e047102bbb9886c7cbaab8809cd00756237a",
+      "target": "file:///D:/a/1/s/sdk/storage/azure-storage-blob-cryptography/target/test-classes/session-records/EncyptedBlockBlobAPITestdownloadrange[1].json",
+      "memberOf": [
+        "baseline"
+      ],
+      "tool": "CredentialScanner",
+      "ruleId": "CSCAN-GENERAL0140",
+      "justification": null,
+      "createdDate": "2021-01-29 02:05:08Z",
+      "expirationDate": null,
+      "type": null
+    },
+    "052e5dca83a8183aa02434ea04f76d17a33bdec30791a404201c9f8be149eb6b": {
+      "signature": "052e5dca83a8183aa02434ea04f76d17a33bdec30791a404201c9f8be149eb6b",
+      "target": "file:///D:/a/1/s/sdk/storage/azure-storage-blob-cryptography/target/test-classes/session-records/EncyptedBlockBlobAPITestdownloadrange[2].json",
+      "memberOf": [
+        "baseline"
+      ],
+      "tool": "CredentialScanner",
+      "ruleId": "CSCAN-GENERAL0140",
+      "justification": null,
+      "createdDate": "2021-01-29 02:05:08Z",
+      "expirationDate": null,
+      "type": null
+    },
+    "499be5ab949d3c4ae49fc2ea5b4ded97a2a805f41bf3f761c70ae26ade78332e": {
+      "signature": "499be5ab949d3c4ae49fc2ea5b4ded97a2a805f41bf3f761c70ae26ade78332e",
+      "target": "sdk/storage/azure-storage-blob-cryptography/target/test-classes/session-records/EncyptedBlockBlobAPITestdownloadsnapshot.json",
+      "memberOf": [
+        "baseline"
+      ],
+      "tool": "CredentialScanner",
+      "ruleId": "CSCAN-GENERAL0140",
+      "justification": null,
+      "createdDate": "2021-01-29 02:05:08Z",
+      "expirationDate": null,
+      "type": null
+    },
+    "97571fedf60e66eb4873f4487580a8a1c5a95af64b6d1ae01b1003e3a1513c10": {
+      "signature": "97571fedf60e66eb4873f4487580a8a1c5a95af64b6d1ae01b1003e3a1513c10",
+      "target": "sdk/storage/azure-storage-blob-cryptography/target/test-classes/session-records/EncyptedBlockBlobAPITestdownloadtofiledoesnotexist.json",
+      "memberOf": [
+        "baseline"
+      ],
+      "tool": "CredentialScanner",
+      "ruleId": "CSCAN-GENERAL0140",
+      "justification": null,
+      "createdDate": "2021-01-29 02:05:08Z",
+      "expirationDate": null,
+      "type": null
+    },
+    "25c579aedd4292ae20e2919e3ea23936355d7ad8317c2c45849b7c7bbf464be2": {
+      "signature": "25c579aedd4292ae20e2919e3ea23936355d7ad8317c2c45849b7c7bbf464be2",
+      "target": "sdk/storage/azure-storage-blob-cryptography/target/test-classes/session-records/EncyptedBlockBlobAPITestdownloadtofileexistssucceeds.json",
+      "memberOf": [
+        "baseline"
+      ],
+      "tool": "CredentialScanner",
+      "ruleId": "CSCAN-GENERAL0140",
+      "justification": null,
+      "createdDate": "2021-01-29 02:05:08Z",
+      "expirationDate": null,
+      "type": null
+    },
+    "6fd07e922d17712291572bc14a9d0f877a6e9ce614aed44992b6778c039e3c23": {
+      "signature": "6fd07e922d17712291572bc14a9d0f877a6e9ce614aed44992b6778c039e3c23",
+      "target": "sdk/storage/azure-storage-blob-cryptography/target/test-classes/session-records/EncyptedBlockBlobAPITestdownloadwithretryrange.json",
+      "memberOf": [
+        "baseline"
+      ],
+      "tool": "CredentialScanner",
+      "ruleId": "CSCAN-GENERAL0140",
+      "justification": null,
+      "createdDate": "2021-01-29 02:05:08Z",
+      "expirationDate": null,
+      "type": null
+    },
+    "8857db436dff7a462c7de722ee9bc7ee8d68df1dd0640eb0f1a0116429b8d151": {
+      "signature": "8857db436dff7a462c7de722ee9bc7ee8d68df1dd0640eb0f1a0116429b8d151",
+      "target": "sdk/storage/azure-storage-blob-cryptography/target/test-classes/session-records/EncyptedBlockBlobAPITestencryptedclientfileuploadoverwritefalse.json",
+      "memberOf": [
+        "baseline"
+      ],
+      "tool": "CredentialScanner",
+      "ruleId": "CSCAN-GENERAL0140",
+      "justification": null,
+      "createdDate": "2021-01-29 02:05:08Z",
+      "expirationDate": null,
+      "type": null
+    },
+    "6043a71275ee4d03807b3afa64215de7c661c48e48599a3595bf3a716fb90cb5": {
+      "signature": "6043a71275ee4d03807b3afa64215de7c661c48e48599a3595bf3a716fb90cb5",
+      "target": "sdk/storage/azure-storage-blob-cryptography/target/test-classes/session-records/EncyptedBlockBlobAPITestencryptedclientuploadoverwritefalse.json",
+      "memberOf": [
+        "baseline"
+      ],
+      "tool": "CredentialScanner",
+      "ruleId": "CSCAN-GENERAL0140",
+      "justification": null,
+      "createdDate": "2021-01-29 02:05:08Z",
+      "expirationDate": null,
+      "type": null
+    },
+    "8772a4e22ccda140689ed351b7119eefb69e7e79217f027026d25ced55a35d4a": {
+      "signature": "8772a4e22ccda140689ed351b7119eefb69e7e79217f027026d25ced55a35d4a",
+      "target": "sdk/storage/azure-storage-blob-cryptography/target/test-classes/session-records/EncyptedBlockBlobAPITestencrypteddownloadfile.json",
+      "memberOf": [
+        "baseline"
+      ],
+      "tool": "CredentialScanner",
+      "ruleId": "CSCAN-GENERAL0140",
+      "justification": null,
+      "createdDate": "2021-01-29 02:05:08Z",
+      "expirationDate": null,
+      "type": null
+    },
+    "b92cb3be0d9ca3ca009a3ab377e598438d75558a414c19faca7cd73b2761d37d": {
+      "signature": "b92cb3be0d9ca3ca009a3ab377e598438d75558a414c19faca7cd73b2761d37d",
+      "target": "file:///D:/a/1/s/sdk/storage/azure-storage-blob-cryptography/target/test-classes/session-records/EncyptedBlockBlobAPITestencryptionacfail[3].json",
+      "memberOf": [
+        "baseline"
+      ],
+      "tool": "CredentialScanner",
+      "ruleId": "CSCAN-GENERAL0140",
+      "justification": null,
+      "createdDate": "2021-01-29 02:05:08Z",
+      "expirationDate": null,
+      "type": null
+    },
+    "721cf9c57267bcf8c24e42269789f3e042a041075c2ce00ceef8630560ee0682": {
+      "signature": "721cf9c57267bcf8c24e42269789f3e042a041075c2ce00ceef8630560ee0682",
+      "target": "file:///D:/a/1/s/sdk/storage/azure-storage-blob-cryptography/target/test-classes/session-records/EncyptedBlockBlobAPITestencryptionac[3].json",
+      "memberOf": [
+        "baseline"
+      ],
+      "tool": "CredentialScanner",
+      "ruleId": "CSCAN-GENERAL0140",
+      "justification": null,
+      "createdDate": "2021-01-29 02:05:08Z",
+      "expirationDate": null,
+      "type": null
+    },
+    "0f462af9334471b41b2d8504e3c49b8fd0cfa6d43328c8b69c546dcc7a235088": {
+      "signature": "0f462af9334471b41b2d8504e3c49b8fd0cfa6d43328c8b69c546dcc7a235088",
+      "target": "file:///D:/a/1/s/sdk/storage/azure-storage-blob-cryptography/target/test-classes/session-records/EncyptedBlockBlobAPITestencryptionhttpheaders[0].json",
+      "memberOf": [
+        "baseline"
+      ],
+      "tool": "CredentialScanner",
+      "ruleId": "CSCAN-GENERAL0140",
+      "justification": null,
+      "createdDate": "2021-01-29 02:05:08Z",
+      "expirationDate": null,
+      "type": null
+    },
+    "656e0c5e1a4c101dee53002aff2280745128aa82a793a50e232605114cb4e8ae": {
+      "signature": "656e0c5e1a4c101dee53002aff2280745128aa82a793a50e232605114cb4e8ae",
+      "target": "file:///D:/a/1/s/sdk/storage/azure-storage-blob-cryptography/target/test-classes/session-records/EncyptedBlockBlobAPITestencryptionhttpheaders[1].json",
+      "memberOf": [
+        "baseline"
+      ],
+      "tool": "CredentialScanner",
+      "ruleId": "CSCAN-GENERAL0140",
+      "justification": null,
+      "createdDate": "2021-01-29 02:05:08Z",
+      "expirationDate": null,
+      "type": null
+    },
+    "738d7b4146a870ac8caab5e5b5c68340c4d52a1b741549a9406ebbe0bb23c0b8": {
+      "signature": "738d7b4146a870ac8caab5e5b5c68340c4d52a1b741549a9406ebbe0bb23c0b8",
+      "target": "sdk/storage/azure-storage-blob-cryptography/target/test-classes/session-records/EncyptedBlockBlobAPITestencryptionnotano-op.json",
+      "memberOf": [
+        "baseline"
+      ],
+      "tool": "CredentialScanner",
+      "ruleId": "CSCAN-GENERAL0140",
+      "justification": null,
+      "createdDate": "2021-01-29 02:05:08Z",
+      "expirationDate": null,
+      "type": null
+    },
+    "b4f18c72622b82d4d58cc8625d53049ee7eb3c45cd2a5b411bac308fd6289ad9": {
+      "signature": "b4f18c72622b82d4d58cc8625d53049ee7eb3c45cd2a5b411bac308fd6289ad9",
+      "target": "sdk/storage/azure-storage-blob-cryptography/target/test-classes/session-records/EncyptedBlockBlobAPITestencryptionuploadisoverwrite.json",
+      "memberOf": [
+        "baseline"
+      ],
+      "tool": "CredentialScanner",
+      "ruleId": "CSCAN-GENERAL0140",
+      "justification": null,
+      "createdDate": "2021-01-29 02:05:08Z",
+      "expirationDate": null,
+      "type": null
+    },
+    "8bd8e7fc298397229125eb1963ae6670fe46b6ce34210f153e161cdf2b9f1efa": {
+      "signature": "8bd8e7fc298397229125eb1963ae6670fe46b6ce34210f153e161cdf2b9f1efa",
+      "target": "sdk/storage/azure-storage-blob-cryptography/target/test-classes/session-records/EncyptedBlockBlobAPITestencryptionuploadissyncnotano-op.json",
+      "memberOf": [
+        "baseline"
+      ],
+      "tool": "CredentialScanner",
+      "ruleId": "CSCAN-GENERAL0140",
+      "justification": null,
+      "createdDate": "2021-01-29 02:05:08Z",
+      "expirationDate": null,
+      "type": null
+    },
+    "50b4d85fc3b403f74f1d3e0d9c8e548edc331539c62b5f1ff8631b44500bbf12": {
+      "signature": "50b4d85fc3b403f74f1d3e0d9c8e548edc331539c62b5f1ff8631b44500bbf12",
+      "target": "file:///D:/a/1/s/sdk/storage/azure-storage-blob-cryptography/target/test-classes/session-records/EncyptedBlockBlobAPITestencryption[0].json",
+      "memberOf": [
+        "baseline"
+      ],
+      "tool": "CredentialScanner",
+      "ruleId": "CSCAN-GENERAL0140",
+      "justification": null,
+      "createdDate": "2021-01-29 02:05:08Z",
+      "expirationDate": null,
+      "type": null
+    },
+    "fc0f7bd0a11ec77c5910c7b46412504d3dcc3634f4d1178909fa1e2056c6e5a2": {
+      "signature": "fc0f7bd0a11ec77c5910c7b46412504d3dcc3634f4d1178909fa1e2056c6e5a2",
+      "target": "file:///D:/a/1/s/sdk/storage/azure-storage-blob-cryptography/target/test-classes/session-records/EncyptedBlockBlobAPITestencryption[1].json",
+      "memberOf": [
+        "baseline"
+      ],
+      "tool": "CredentialScanner",
+      "ruleId": "CSCAN-GENERAL0140",
+      "justification": null,
+      "createdDate": "2021-01-29 02:05:08Z",
+      "expirationDate": null,
+      "type": null
+    },
+    "20566364dcd04563861c05ef0a61c00bd212dad630fdc7cc3fafc8608125d368": {
+      "signature": "20566364dcd04563861c05ef0a61c00bd212dad630fdc7cc3fafc8608125d368",
+      "target": "file:///D:/a/1/s/sdk/storage/azure-storage-blob-cryptography/target/test-classes/session-records/EncyptedBlockBlobAPITestencryption[2].json",
+      "memberOf": [
+        "baseline"
+      ],
+      "tool": "CredentialScanner",
+      "ruleId": "CSCAN-GENERAL0140",
+      "justification": null,
+      "createdDate": "2021-01-29 02:05:08Z",
+      "expirationDate": null,
+      "type": null
+    },
+    "a74b615825ad8cc7afd1f7f09d43d7da54c9d2f5e9b9c3ec326d8861816432e0": {
+      "signature": "a74b615825ad8cc7afd1f7f09d43d7da54c9d2f5e9b9c3ec326d8861816432e0",
+      "target": "file:///D:/a/1/s/sdk/storage/azure-storage-blob-cryptography/target/test-classes/session-records/EncyptedBlockBlobAPITestencryption[3].json",
+      "memberOf": [
+        "baseline"
+      ],
+      "tool": "CredentialScanner",
+      "ruleId": "CSCAN-GENERAL0140",
+      "justification": null,
+      "createdDate": "2021-01-29 02:05:08Z",
+      "expirationDate": null,
+      "type": null
+    },
+    "28e4ccf71318d0c5c8e7e45ac6bc1c49675f095802db7654ff5a348160418df6": {
+      "signature": "28e4ccf71318d0c5c8e7e45ac6bc1c49675f095802db7654ff5a348160418df6",
+      "target": "file:///D:/a/1/s/sdk/storage/azure-storage-blob-cryptography/target/test-classes/session-records/EncyptedBlockBlobAPITestencryption[4].json",
+      "memberOf": [
+        "baseline"
+      ],
+      "tool": "CredentialScanner",
+      "ruleId": "CSCAN-GENERAL0140",
+      "justification": null,
+      "createdDate": "2021-01-29 02:05:08Z",
+      "expirationDate": null,
+      "type": null
+    },
+    "bb6aaa26a0b725a3d663caec87310f4ce14dbd6c46a8bdfeac127c1e9e14a033": {
+      "signature": "bb6aaa26a0b725a3d663caec87310f4ce14dbd6c46a8bdfeac127c1e9e14a033",
+      "target": "file:///D:/a/1/s/sdk/storage/azure-storage-blob-cryptography/target/test-classes/session-records/EncyptedBlockBlobAPITestencryption[5].json",
+      "memberOf": [
+        "baseline"
+      ],
+      "tool": "CredentialScanner",
+      "ruleId": "CSCAN-GENERAL0140",
+      "justification": null,
+      "createdDate": "2021-01-29 02:05:08Z",
+      "expirationDate": null,
+      "type": null
+    },
+    "f412a62b17b2bd84cb93691b891e3f366feb47490c81a3f552b060aa22b85373": {
+      "signature": "f412a62b17b2bd84cb93691b891e3f366feb47490c81a3f552b060aa22b85373",
+      "target": "file:///D:/a/1/s/sdk/storage/azure-storage-blob-cryptography/target/test-classes/session-records/EncyptedBlockBlobAPITestencryption[6].json",
+      "memberOf": [
+        "baseline"
+      ],
+      "tool": "CredentialScanner",
+      "ruleId": "CSCAN-GENERAL0140",
+      "justification": null,
+      "createdDate": "2021-01-29 02:05:08Z",
+      "expirationDate": null,
+      "type": null
+    },
+    "7e6596ee5dc4fcc9e3769cb6417ae807f00418533ee389dbacd03db36ab75949": {
+      "signature": "7e6596ee5dc4fcc9e3769cb6417ae807f00418533ee389dbacd03db36ab75949",
+      "target": "file:///D:/a/1/s/sdk/storage/azure-storage-blob-cryptography/target/test-classes/session-records/EncyptedBlockBlobAPITestencryption[7].json",
+      "memberOf": [
+        "baseline"
+      ],
+      "tool": "CredentialScanner",
+      "ruleId": "CSCAN-GENERAL0140",
+      "justification": null,
+      "createdDate": "2021-01-29 02:05:08Z",
+      "expirationDate": null,
+      "type": null
+    },
+    "c8c783e4a65091b8836af4c82f469e1feac60b4e07ccb3f636f94e41094cec48": {
+      "signature": "c8c783e4a65091b8836af4c82f469e1feac60b4e07ccb3f636f94e41094cec48",
+      "target": "file:///D:/a/1/s/sdk/storage/azure-storage-blob-cryptography/target/test-classes/session-records/EncyptedBlockBlobAPITestencryption[8].json",
+      "memberOf": [
+        "baseline"
+      ],
+      "tool": "CredentialScanner",
+      "ruleId": "CSCAN-GENERAL0140",
+      "justification": null,
+      "createdDate": "2021-01-29 02:05:08Z",
+      "expirationDate": null,
+      "type": null
+    },
+    "d9b08cc1ff6bb38219d8f791a384ec8ad8a5286fc187b9dde32540081f1c7481": {
+      "signature": "d9b08cc1ff6bb38219d8f791a384ec8ad8a5286fc187b9dde32540081f1c7481",
+      "target": "file:///D:/a/1/s/sdk/storage/azure-storage-blob-cryptography/target/test-classes/session-records/EncyptedBlockBlobAPITestkeyresolverusedtodecryptdata[0].json",
+      "memberOf": [
+        "baseline"
+      ],
+      "tool": "CredentialScanner",
+      "ruleId": "CSCAN-GENERAL0140",
+      "justification": null,
+      "createdDate": "2021-01-29 02:05:08Z",
+      "expirationDate": null,
+      "type": null
+    },
+    "36b20123a0452a95fe193f923aaa1ad6bb366aaa2698b8eef307f96eea0fbace": {
+      "signature": "36b20123a0452a95fe193f923aaa1ad6bb366aaa2698b8eef307f96eea0fbace",
+      "target": "file:///D:/a/1/s/sdk/storage/azure-storage-blob-cryptography/target/test-classes/session-records/EncyptedBlockBlobAPITestkeyresolverusedtodecryptdata[1].json",
+      "memberOf": [
+        "baseline"
+      ],
+      "tool": "CredentialScanner",
+      "ruleId": "CSCAN-GENERAL0140",
+      "justification": null,
+      "createdDate": "2021-01-29 02:05:08Z",
+      "expirationDate": null,
+      "type": null
+    },
+    "16835830205cd2fd26f81ffba94e09aeaa5f57d8a2062326e95cb0375a5a5290": {
+      "signature": "16835830205cd2fd26f81ffba94e09aeaa5f57d8a2062326e95cb0375a5a5290",
+      "target": "file:///D:/a/1/s/sdk/storage/azure-storage-blob-cryptography/target/test-classes/session-records/EncyptedBlockBlobAPITestkeyresolverusedtodecryptdata[2].json",
+      "memberOf": [
+        "baseline"
+      ],
+      "tool": "CredentialScanner",
+      "ruleId": "CSCAN-GENERAL0140",
+      "justification": null,
+      "createdDate": "2021-01-29 02:05:08Z",
+      "expirationDate": null,
+      "type": null
+    },
+    "dc135671f8d0db7d81050f9a6e13ea13e41a8e3dcd2003a91fb1dd490dcb9851": {
+      "signature": "dc135671f8d0db7d81050f9a6e13ea13e41a8e3dcd2003a91fb1dd490dcb9851",
+      "target": "file:///D:/a/1/s/sdk/storage/azure-storage-blob-cryptography/target/test-classes/session-records/EncyptedBlockBlobAPITestkeyresolverusedtodecryptdata[3].json",
+      "memberOf": [
+        "baseline"
+      ],
+      "tool": "CredentialScanner",
+      "ruleId": "CSCAN-GENERAL0140",
+      "justification": null,
+      "createdDate": "2021-01-29 02:05:08Z",
+      "expirationDate": null,
+      "type": null
+    },
+    "a11be80335ef668f515d628c9e89d58099bf6f94a145c10bcca865a44a981b02": {
+      "signature": "a11be80335ef668f515d628c9e89d58099bf6f94a145c10bcca865a44a981b02",
+      "target": "file:///D:/a/1/s/sdk/storage/azure-storage-blob-cryptography/target/test-classes/session-records/EncyptedBlockBlobAPITestkeyresolverusedtodecryptdata[4].json",
+      "memberOf": [
+        "baseline"
+      ],
+      "tool": "CredentialScanner",
+      "ruleId": "CSCAN-GENERAL0140",
+      "justification": null,
+      "createdDate": "2021-01-29 02:05:08Z",
+      "expirationDate": null,
+      "type": null
+    },
+    "7509157e666b392104193f79b65556a6a440b7f8fb4a8d7655968b2707a683c3": {
+      "signature": "7509157e666b392104193f79b65556a6a440b7f8fb4a8d7655968b2707a683c3",
+      "target": "file:///D:/a/1/s/sdk/storage/azure-storage-blob-cryptography/target/test-classes/session-records/EncyptedBlockBlobAPITestkeyresolverusedtodecryptdata[5].json",
+      "memberOf": [
+        "baseline"
+      ],
+      "tool": "CredentialScanner",
+      "ruleId": "CSCAN-GENERAL0140",
+      "justification": null,
+      "createdDate": "2021-01-29 02:05:08Z",
+      "expirationDate": null,
+      "type": null
+    },
+    "6e3e81b01c011891c6e58784b55b781ae199abb01b71a1b992e160093906ab81": {
+      "signature": "6e3e81b01c011891c6e58784b55b781ae199abb01b71a1b992e160093906ab81",
+      "target": "file:///D:/a/1/s/sdk/storage/azure-storage-blob-cryptography/target/test-classes/session-records/EncyptedBlockBlobAPITestkeyresolverusedtodecryptdata[6].json",
+      "memberOf": [
+        "baseline"
+      ],
+      "tool": "CredentialScanner",
+      "ruleId": "CSCAN-GENERAL0140",
+      "justification": null,
+      "createdDate": "2021-01-29 02:05:08Z",
+      "expirationDate": null,
+      "type": null
+    },
+    "f37793484386e63d51ed8f504818aaf70156cf7669cc0411ad81456921e57cd7": {
+      "signature": "f37793484386e63d51ed8f504818aaf70156cf7669cc0411ad81456921e57cd7",
+      "target": "file:///D:/a/1/s/sdk/storage/azure-storage-blob-cryptography/target/test-classes/session-records/EncyptedBlockBlobAPITestkeyresolverusedtodecryptdata[7].json",
+      "memberOf": [
+        "baseline"
+      ],
+      "tool": "CredentialScanner",
+      "ruleId": "CSCAN-GENERAL0140",
+      "justification": null,
+      "createdDate": "2021-01-29 02:05:08Z",
+      "expirationDate": null,
+      "type": null
+    },
+    "299556e0573d5f854de849256f838323524f788c4c104351f2b5d00aae37d4c2": {
+      "signature": "299556e0573d5f854de849256f838323524f788c4c104351f2b5d00aae37d4c2",
+      "target": "file:///D:/a/1/s/sdk/storage/azure-storage-blob-cryptography/target/test-classes/session-records/EncyptedBlockBlobAPITestkeyresolverusedtodecryptdata[8].json",
+      "memberOf": [
+        "baseline"
+      ],
+      "tool": "CredentialScanner",
+      "ruleId": "CSCAN-GENERAL0140",
+      "justification": null,
+      "createdDate": "2021-01-29 02:05:08Z",
+      "expirationDate": null,
+      "type": null
+    },
+    "aaa0fc10d77ecca851a0afa123f5cebbaaafc5bbbd6fec145352bfbfcaeab570": {
+      "signature": "aaa0fc10d77ecca851a0afa123f5cebbaaafc5bbbd6fec145352bfbfcaeab570",
+      "target": "sdk/storage/azure-storage-blob-cryptography/target/test-classes/session-records/EncyptedBlockBlobAPITestpercallpolicy.json",
+      "memberOf": [
+        "baseline"
+      ],
+      "tool": "CredentialScanner",
+      "ruleId": "CSCAN-GENERAL0140",
+      "justification": null,
+      "createdDate": "2021-01-29 02:05:08Z",
+      "expirationDate": null,
+      "type": null
+    },
+    "9bf17f07c353d6eb44febc83db4a8f8381256c20b19fb0df238386b572681281": {
+      "signature": "9bf17f07c353d6eb44febc83db4a8f8381256c20b19fb0df238386b572681281",
+      "target": "sdk/storage/azure-storage-blob-cryptography/target/test-classes/session-records/EncyptedBlockBlobAPITesttestasyncandsyncencryptedblockblobclienttoblockblobclient.json",
+      "memberOf": [
+        "baseline"
+      ],
+      "tool": "CredentialScanner",
+      "ruleId": "CSCAN-GENERAL0140",
+      "justification": null,
+      "createdDate": "2021-01-29 02:05:08Z",
+      "expirationDate": null,
+      "type": null
+    },
+    "5e7ed15972ad7afda28534ee8d058119f6590190e999d794d022102ec0034302": {
+      "signature": "5e7ed15972ad7afda28534ee8d058119f6590190e999d794d022102ec0034302",
+      "target": "sdk/storage/azure-storage-blob-cryptography/target/test-classes/session-records/EncyptedBlockBlobAPITesttestasyncandsyncencryptedblockblobclienttoblockblobclient.json",
+      "memberOf": [
+        "baseline"
+      ],
+      "tool": "CredentialScanner",
+      "ruleId": "CSCAN-GENERAL0140",
+      "justification": null,
+      "createdDate": "2021-01-29 02:05:08Z",
+      "expirationDate": null,
+      "type": null
+    },
+    "d5049c18ccd14fa5c80f582262518270c43be17ff93aa08eb1979d922180c9fe": {
+      "signature": "d5049c18ccd14fa5c80f582262518270c43be17ff93aa08eb1979d922180c9fe",
+      "target": "sdk/storage/azure-storage-blob-cryptography/target/test-classes/testfiles/EncyptedBlockBlobAPITestbuffereduploadnonmarkablestream.json",
+      "memberOf": [
+        "baseline"
+      ],
+      "tool": "CredentialScanner",
+      "ruleId": "CSCAN-GENERAL0140",
+      "justification": null,
+      "createdDate": "2021-01-29 02:05:08Z",
       "expirationDate": null,
       "type": null
     },
@@ -303,7 +1109,7 @@
       "tool": "CredentialScanner",
       "ruleId": "CSCAN-AZURE0070",
       "justification": null,
-      "createdDate": "2021-01-22 03:39:03Z",
+      "createdDate": "2021-01-29 02:05:08Z",
       "expirationDate": null,
       "type": null
     },
@@ -316,7 +1122,7 @@
       "tool": "CredentialScanner",
       "ruleId": "CSCAN-AZURE0070",
       "justification": null,
-      "createdDate": "2021-01-22 03:39:03Z",
+      "createdDate": "2021-01-29 02:05:08Z",
       "expirationDate": null,
       "type": null
     },
@@ -329,7 +1135,7 @@
       "tool": "CredentialScanner",
       "ruleId": "CSCAN-AZURE0070",
       "justification": null,
-      "createdDate": "2021-01-22 03:39:03Z",
+      "createdDate": "2021-01-29 02:05:08Z",
       "expirationDate": null,
       "type": null
     },
@@ -342,7 +1148,7 @@
       "tool": "CredentialScanner",
       "ruleId": "CSCAN-AZURE0070",
       "justification": null,
-      "createdDate": "2021-01-22 03:39:03Z",
+      "createdDate": "2021-01-29 02:05:08Z",
       "expirationDate": null,
       "type": null
     },
@@ -355,7 +1161,7 @@
       "tool": "CredentialScanner",
       "ruleId": "CSCAN-AZURE0070",
       "justification": null,
-      "createdDate": "2021-01-22 03:39:03Z",
+      "createdDate": "2021-01-29 02:05:08Z",
       "expirationDate": null,
       "type": null
     },
@@ -368,7 +1174,7 @@
       "tool": "CredentialScanner",
       "ruleId": "CSCAN-AZURE0070",
       "justification": null,
-      "createdDate": "2021-01-22 03:39:03Z",
+      "createdDate": "2021-01-29 02:05:08Z",
       "expirationDate": null,
       "type": null
     },
@@ -381,7 +1187,7 @@
       "tool": "CredentialScanner",
       "ruleId": "CSCAN-AZURE0070",
       "justification": null,
-      "createdDate": "2021-01-22 03:39:03Z",
+      "createdDate": "2021-01-29 02:05:08Z",
       "expirationDate": null,
       "type": null
     },
@@ -394,7 +1200,7 @@
       "tool": "CredentialScanner",
       "ruleId": "CSCAN-AZURE0070",
       "justification": null,
-      "createdDate": "2021-01-22 03:39:03Z",
+      "createdDate": "2021-01-29 02:05:08Z",
       "expirationDate": null,
       "type": null
     },
@@ -407,7 +1213,7 @@
       "tool": "CredentialScanner",
       "ruleId": "CSCAN-AZURE0070",
       "justification": null,
-      "createdDate": "2021-01-22 03:39:03Z",
+      "createdDate": "2021-01-29 02:05:08Z",
       "expirationDate": null,
       "type": null
     },
@@ -420,7 +1226,7 @@
       "tool": "CredentialScanner",
       "ruleId": "CSCAN-AZURE0070",
       "justification": null,
-      "createdDate": "2021-01-22 03:39:03Z",
+      "createdDate": "2021-01-29 02:05:08Z",
       "expirationDate": null,
       "type": null
     },
@@ -433,7 +1239,7 @@
       "tool": "CredentialScanner",
       "ruleId": "CSCAN-AZURE0070",
       "justification": null,
-      "createdDate": "2021-01-22 03:39:03Z",
+      "createdDate": "2021-01-29 02:05:08Z",
       "expirationDate": null,
       "type": null
     },
@@ -446,7 +1252,7 @@
       "tool": "CredentialScanner",
       "ruleId": "CSCAN-AZURE0070",
       "justification": null,
-      "createdDate": "2021-01-22 03:39:03Z",
+      "createdDate": "2021-01-29 02:05:08Z",
       "expirationDate": null,
       "type": null
     },
@@ -459,7 +1265,7 @@
       "tool": "CredentialScanner",
       "ruleId": "CSCAN-AZURE0070",
       "justification": null,
-      "createdDate": "2021-01-22 03:39:03Z",
+      "createdDate": "2021-01-29 02:05:08Z",
       "expirationDate": null,
       "type": null
     },
@@ -472,7 +1278,7 @@
       "tool": "CredentialScanner",
       "ruleId": "CSCAN-GENERAL0060",
       "justification": null,
-      "createdDate": "2021-01-22 03:39:03Z",
+      "createdDate": "2021-01-29 02:05:08Z",
       "expirationDate": null,
       "type": null
     },
@@ -485,7 +1291,7 @@
       "tool": "CredentialScanner",
       "ruleId": "CSCAN-AZURE0070",
       "justification": null,
-      "createdDate": "2021-01-22 03:39:03Z",
+      "createdDate": "2021-01-29 02:05:08Z",
       "expirationDate": null,
       "type": null
     },
@@ -498,7 +1304,7 @@
       "tool": "CredentialScanner",
       "ruleId": "CSCAN-GENERAL0060",
       "justification": null,
-      "createdDate": "2021-01-22 03:39:03Z",
+      "createdDate": "2021-01-29 02:05:08Z",
       "expirationDate": null,
       "type": null
     },
@@ -511,7 +1317,7 @@
       "tool": "CredentialScanner",
       "ruleId": "CSCAN-GENERAL0060",
       "justification": null,
-      "createdDate": "2021-01-22 03:39:03Z",
+      "createdDate": "2021-01-29 02:05:08Z",
       "expirationDate": null,
       "type": null
     },
@@ -524,7 +1330,7 @@
       "tool": "CredentialScanner",
       "ruleId": "CSCAN-AZURE0070",
       "justification": null,
-      "createdDate": "2021-01-22 03:39:03Z",
+      "createdDate": "2021-01-29 02:05:08Z",
       "expirationDate": null,
       "type": null
     },
@@ -537,7 +1343,7 @@
       "tool": "CredentialScanner",
       "ruleId": "CSCAN-AZURE0070",
       "justification": null,
-      "createdDate": "2021-01-22 03:39:03Z",
+      "createdDate": "2021-01-29 02:05:08Z",
       "expirationDate": null,
       "type": null
     },
@@ -550,7 +1356,7 @@
       "tool": "CredentialScanner",
       "ruleId": "CSCAN-AZURE0070",
       "justification": null,
-      "createdDate": "2021-01-22 03:39:03Z",
+      "createdDate": "2021-01-29 02:05:08Z",
       "expirationDate": null,
       "type": null
     },
@@ -563,7 +1369,7 @@
       "tool": "CredentialScanner",
       "ruleId": "CSCAN-AZURE0070",
       "justification": null,
-      "createdDate": "2021-01-22 03:39:03Z",
+      "createdDate": "2021-01-29 02:05:08Z",
       "expirationDate": null,
       "type": null
     },
@@ -576,7 +1382,7 @@
       "tool": "CredentialScanner",
       "ruleId": "CSCAN-AZURE0070",
       "justification": null,
-      "createdDate": "2021-01-22 03:39:03Z",
+      "createdDate": "2021-01-29 02:05:08Z",
       "expirationDate": null,
       "type": null
     },
@@ -589,7 +1395,7 @@
       "tool": "CredentialScanner",
       "ruleId": "CSCAN-GENERAL0020",
       "justification": null,
-      "createdDate": "2021-01-22 03:39:03Z",
+      "createdDate": "2021-01-29 02:05:08Z",
       "expirationDate": null,
       "type": null
     },
@@ -602,7 +1408,7 @@
       "tool": "CredentialScanner",
       "ruleId": "CSCAN-AZURE0061",
       "justification": null,
-      "createdDate": "2021-01-22 03:39:03Z",
+      "createdDate": "2021-01-29 02:05:08Z",
       "expirationDate": null,
       "type": null
     },
@@ -615,7 +1421,7 @@
       "tool": "CredentialScanner",
       "ruleId": "CSCAN-AZURE0061",
       "justification": null,
-      "createdDate": "2021-01-22 03:39:03Z",
+      "createdDate": "2021-01-29 02:05:08Z",
       "expirationDate": null,
       "type": null
     },
@@ -628,7 +1434,7 @@
       "tool": "CredentialScanner",
       "ruleId": "CSCAN-AZURE0061",
       "justification": null,
-      "createdDate": "2021-01-22 03:39:03Z",
+      "createdDate": "2021-01-29 02:05:08Z",
       "expirationDate": null,
       "type": null
     },
@@ -641,7 +1447,7 @@
       "tool": "CredentialScanner",
       "ruleId": "CSCAN-AZURE0061",
       "justification": null,
-      "createdDate": "2021-01-22 03:39:03Z",
+      "createdDate": "2021-01-29 02:05:08Z",
       "expirationDate": null,
       "type": null
     },
@@ -654,7 +1460,7 @@
       "tool": "CredentialScanner",
       "ruleId": "CSCAN-GENERAL0060",
       "justification": null,
-      "createdDate": "2021-01-22 03:39:03Z",
+      "createdDate": "2021-01-29 02:05:08Z",
       "expirationDate": null,
       "type": null
     },
@@ -667,7 +1473,7 @@
       "tool": "CredentialScanner",
       "ruleId": "CSCAN-AZURE0061",
       "justification": null,
-      "createdDate": "2021-01-22 03:39:03Z",
+      "createdDate": "2021-01-29 02:05:08Z",
       "expirationDate": null,
       "type": null
     },
@@ -680,7 +1486,7 @@
       "tool": "CredentialScanner",
       "ruleId": "CSCAN-AZURE0061",
       "justification": null,
-      "createdDate": "2021-01-22 03:39:03Z",
+      "createdDate": "2021-01-29 02:05:08Z",
       "expirationDate": null,
       "type": null
     },
@@ -693,7 +1499,7 @@
       "tool": "CredentialScanner",
       "ruleId": "CSCAN-AZURE0061",
       "justification": null,
-      "createdDate": "2021-01-22 03:39:03Z",
+      "createdDate": "2021-01-29 02:05:08Z",
       "expirationDate": null,
       "type": null
     },
@@ -706,7 +1512,7 @@
       "tool": "CredentialScanner",
       "ruleId": "CSCAN-AZURE0061",
       "justification": null,
-      "createdDate": "2021-01-22 03:39:03Z",
+      "createdDate": "2021-01-29 02:05:08Z",
       "expirationDate": null,
       "type": null
     },
@@ -719,7 +1525,7 @@
       "tool": "CredentialScanner",
       "ruleId": "CSCAN-AZURE0061",
       "justification": null,
-      "createdDate": "2021-01-22 03:39:03Z",
+      "createdDate": "2021-01-29 02:05:08Z",
       "expirationDate": null,
       "type": null
     },
@@ -732,7 +1538,7 @@
       "tool": "CredentialScanner",
       "ruleId": "CSCAN-AZURE0061",
       "justification": null,
-      "createdDate": "2021-01-22 03:39:03Z",
+      "createdDate": "2021-01-29 02:05:08Z",
       "expirationDate": null,
       "type": null
     },
@@ -745,7 +1551,7 @@
       "tool": "CredentialScanner",
       "ruleId": "CSCAN-AZURE0061",
       "justification": null,
-      "createdDate": "2021-01-22 03:39:03Z",
+      "createdDate": "2021-01-29 02:05:08Z",
       "expirationDate": null,
       "type": null
     },
@@ -758,7 +1564,7 @@
       "tool": "CredentialScanner",
       "ruleId": "CSCAN-AZURE0061",
       "justification": null,
-      "createdDate": "2021-01-22 03:39:03Z",
+      "createdDate": "2021-01-29 02:05:08Z",
       "expirationDate": null,
       "type": null
     },
@@ -771,7 +1577,7 @@
       "tool": "CredentialScanner",
       "ruleId": "CSCAN-AZURE0061",
       "justification": null,
-      "createdDate": "2021-01-22 03:39:03Z",
+      "createdDate": "2021-01-29 02:05:08Z",
       "expirationDate": null,
       "type": null
     },
@@ -784,7 +1590,7 @@
       "tool": "CredentialScanner",
       "ruleId": "CSCAN-AZURE0061",
       "justification": null,
-      "createdDate": "2021-01-22 03:39:03Z",
+      "createdDate": "2021-01-29 02:05:08Z",
       "expirationDate": null,
       "type": null
     },
@@ -797,7 +1603,7 @@
       "tool": "CredentialScanner",
       "ruleId": "CSCAN-AZURE0061",
       "justification": null,
-      "createdDate": "2021-01-22 03:39:03Z",
+      "createdDate": "2021-01-29 02:05:08Z",
       "expirationDate": null,
       "type": null
     },
@@ -810,7 +1616,7 @@
       "tool": "CredentialScanner",
       "ruleId": "CSCAN-AZURE0061",
       "justification": null,
-      "createdDate": "2021-01-22 03:39:03Z",
+      "createdDate": "2021-01-29 02:05:08Z",
       "expirationDate": null,
       "type": null
     },
@@ -823,7 +1629,7 @@
       "tool": "CredentialScanner",
       "ruleId": "CSCAN-AZURE0061",
       "justification": null,
-      "createdDate": "2021-01-22 03:39:03Z",
+      "createdDate": "2021-01-29 02:05:08Z",
       "expirationDate": null,
       "type": null
     },
@@ -836,7 +1642,7 @@
       "tool": "CredentialScanner",
       "ruleId": "CSCAN-AZURE0061",
       "justification": null,
-      "createdDate": "2021-01-22 03:39:03Z",
+      "createdDate": "2021-01-29 02:05:08Z",
       "expirationDate": null,
       "type": null
     },
@@ -849,7 +1655,7 @@
       "tool": "CredentialScanner",
       "ruleId": "CSCAN-AZURE0061",
       "justification": null,
-      "createdDate": "2021-01-22 03:39:03Z",
+      "createdDate": "2021-01-29 02:05:08Z",
       "expirationDate": null,
       "type": null
     },
@@ -862,7 +1668,7 @@
       "tool": "CredentialScanner",
       "ruleId": "CSCAN-AZURE0061",
       "justification": null,
-      "createdDate": "2021-01-22 03:39:03Z",
+      "createdDate": "2021-01-29 02:05:08Z",
       "expirationDate": null,
       "type": null
     },
@@ -875,7 +1681,7 @@
       "tool": "CredentialScanner",
       "ruleId": "CSCAN-AZURE0061",
       "justification": null,
-      "createdDate": "2021-01-22 03:39:03Z",
+      "createdDate": "2021-01-29 02:05:08Z",
       "expirationDate": null,
       "type": null
     },
@@ -888,7 +1694,7 @@
       "tool": "CredentialScanner",
       "ruleId": "CSCAN-AZURE0061",
       "justification": null,
-      "createdDate": "2021-01-22 03:39:03Z",
+      "createdDate": "2021-01-29 02:05:08Z",
       "expirationDate": null,
       "type": null
     },
@@ -901,7 +1707,7 @@
       "tool": "CredentialScanner",
       "ruleId": "CSCAN-AZURE0061",
       "justification": null,
-      "createdDate": "2021-01-22 03:39:03Z",
+      "createdDate": "2021-01-29 02:05:08Z",
       "expirationDate": null,
       "type": null
     },
@@ -914,7 +1720,7 @@
       "tool": "CredentialScanner",
       "ruleId": "CSCAN-AZURE0061",
       "justification": null,
-      "createdDate": "2021-01-22 03:39:03Z",
+      "createdDate": "2021-01-29 02:05:08Z",
       "expirationDate": null,
       "type": null
     },
@@ -927,7 +1733,7 @@
       "tool": "CredentialScanner",
       "ruleId": "CSCAN-GENERAL0030",
       "justification": null,
-      "createdDate": "2021-01-22 03:39:03Z",
+      "createdDate": "2021-01-29 02:05:08Z",
       "expirationDate": null,
       "type": null
     },
@@ -940,7 +1746,7 @@
       "tool": "CredentialScanner",
       "ruleId": "CSCAN-AZURE0130",
       "justification": null,
-      "createdDate": "2021-01-22 03:39:03Z",
+      "createdDate": "2021-01-29 02:05:08Z",
       "expirationDate": null,
       "type": null
     },
@@ -953,7 +1759,7 @@
       "tool": "CredentialScanner",
       "ruleId": "CSCAN-AZURE0130",
       "justification": null,
-      "createdDate": "2021-01-22 03:39:03Z",
+      "createdDate": "2021-01-29 02:05:08Z",
       "expirationDate": null,
       "type": null
     },
@@ -966,7 +1772,7 @@
       "tool": "CredentialScanner",
       "ruleId": "CSCAN-AZURE0130",
       "justification": null,
-      "createdDate": "2021-01-22 03:39:03Z",
+      "createdDate": "2021-01-29 02:05:08Z",
       "expirationDate": null,
       "type": null
     },
@@ -979,7 +1785,7 @@
       "tool": "CredentialScanner",
       "ruleId": "CSCAN-GENERAL0140",
       "justification": null,
-      "createdDate": "2021-01-22 03:39:03Z",
+      "createdDate": "2021-01-29 02:05:08Z",
       "expirationDate": null,
       "type": null
     },
@@ -992,7 +1798,7 @@
       "tool": "CredentialScanner",
       "ruleId": "CSCAN-GENERAL0140",
       "justification": null,
-      "createdDate": "2021-01-22 03:39:03Z",
+      "createdDate": "2021-01-29 02:05:08Z",
       "expirationDate": null,
       "type": null
     },
@@ -1005,7 +1811,7 @@
       "tool": "CredentialScanner",
       "ruleId": "CSCAN-GENERAL0140",
       "justification": null,
-      "createdDate": "2021-01-22 03:39:03Z",
+      "createdDate": "2021-01-29 02:05:08Z",
       "expirationDate": null,
       "type": null
     },
@@ -1018,7 +1824,7 @@
       "tool": "CredentialScanner",
       "ruleId": "CSCAN-GENERAL0140",
       "justification": null,
-      "createdDate": "2021-01-22 03:39:03Z",
+      "createdDate": "2021-01-29 02:05:08Z",
       "expirationDate": null,
       "type": null
     },
@@ -1031,7 +1837,7 @@
       "tool": "CredentialScanner",
       "ruleId": "CSCAN-GENERAL0140",
       "justification": null,
-      "createdDate": "2021-01-22 03:39:03Z",
+      "createdDate": "2021-01-29 02:05:08Z",
       "expirationDate": null,
       "type": null
     },
@@ -1044,7 +1850,7 @@
       "tool": "CredentialScanner",
       "ruleId": "CSCAN-GENERAL0140",
       "justification": null,
-      "createdDate": "2021-01-22 03:39:03Z",
+      "createdDate": "2021-01-29 02:05:08Z",
       "expirationDate": null,
       "type": null
     },
@@ -1057,7 +1863,7 @@
       "tool": "CredentialScanner",
       "ruleId": "CSCAN-GENERAL0140",
       "justification": null,
-      "createdDate": "2021-01-22 03:39:03Z",
+      "createdDate": "2021-01-29 02:05:08Z",
       "expirationDate": null,
       "type": null
     },
@@ -1070,7 +1876,7 @@
       "tool": "CredentialScanner",
       "ruleId": "CSCAN-GENERAL0140",
       "justification": null,
-      "createdDate": "2021-01-22 03:39:03Z",
+      "createdDate": "2021-01-29 02:05:08Z",
       "expirationDate": null,
       "type": null
     },
@@ -1083,7 +1889,7 @@
       "tool": "CredentialScanner",
       "ruleId": "CSCAN-GENERAL0140",
       "justification": null,
-      "createdDate": "2021-01-22 03:39:03Z",
+      "createdDate": "2021-01-29 02:05:08Z",
       "expirationDate": null,
       "type": null
     },
@@ -1096,7 +1902,7 @@
       "tool": "CredentialScanner",
       "ruleId": "CSCAN-GENERAL0140",
       "justification": null,
-      "createdDate": "2021-01-22 03:39:03Z",
+      "createdDate": "2021-01-29 02:05:08Z",
       "expirationDate": null,
       "type": null
     },
@@ -1109,7 +1915,7 @@
       "tool": "CredentialScanner",
       "ruleId": "CSCAN-GENERAL0140",
       "justification": null,
-      "createdDate": "2021-01-22 03:39:03Z",
+      "createdDate": "2021-01-29 02:05:08Z",
       "expirationDate": null,
       "type": null
     },
@@ -1122,7 +1928,7 @@
       "tool": "CredentialScanner",
       "ruleId": "CSCAN-GENERAL0140",
       "justification": null,
-      "createdDate": "2021-01-22 03:39:03Z",
+      "createdDate": "2021-01-29 02:05:08Z",
       "expirationDate": null,
       "type": null
     },
@@ -1135,7 +1941,7 @@
       "tool": "CredentialScanner",
       "ruleId": "CSCAN-GENERAL0140",
       "justification": null,
-      "createdDate": "2021-01-22 03:39:03Z",
+      "createdDate": "2021-01-29 02:05:08Z",
       "expirationDate": null,
       "type": null
     },
@@ -1148,7 +1954,7 @@
       "tool": "CredentialScanner",
       "ruleId": "CSCAN-GENERAL0140",
       "justification": null,
-      "createdDate": "2021-01-22 03:39:03Z",
+      "createdDate": "2021-01-29 02:05:08Z",
       "expirationDate": null,
       "type": null
     },
@@ -1161,7 +1967,7 @@
       "tool": "CredentialScanner",
       "ruleId": "CSCAN-GENERAL0140",
       "justification": null,
-      "createdDate": "2021-01-22 03:39:03Z",
+      "createdDate": "2021-01-29 02:05:08Z",
       "expirationDate": null,
       "type": null
     },
@@ -1174,7 +1980,7 @@
       "tool": "CredentialScanner",
       "ruleId": "CSCAN-GENERAL0140",
       "justification": null,
-      "createdDate": "2021-01-22 03:39:03Z",
+      "createdDate": "2021-01-29 02:05:08Z",
       "expirationDate": null,
       "type": null
     },
@@ -1187,7 +1993,7 @@
       "tool": "CredentialScanner",
       "ruleId": "CSCAN-GENERAL0140",
       "justification": null,
-      "createdDate": "2021-01-22 03:39:03Z",
+      "createdDate": "2021-01-29 02:05:08Z",
       "expirationDate": null,
       "type": null
     },
@@ -1200,7 +2006,7 @@
       "tool": "CredentialScanner",
       "ruleId": "CSCAN-GENERAL0140",
       "justification": null,
-      "createdDate": "2021-01-22 03:39:03Z",
+      "createdDate": "2021-01-29 02:05:08Z",
       "expirationDate": null,
       "type": null
     },
@@ -1213,7 +2019,7 @@
       "tool": "CredentialScanner",
       "ruleId": "CSCAN-GENERAL0140",
       "justification": null,
-      "createdDate": "2021-01-22 03:39:03Z",
+      "createdDate": "2021-01-29 02:05:08Z",
       "expirationDate": null,
       "type": null
     },
@@ -1226,7 +2032,7 @@
       "tool": "CredentialScanner",
       "ruleId": "CSCAN-GENERAL0140",
       "justification": null,
-      "createdDate": "2021-01-22 03:39:03Z",
+      "createdDate": "2021-01-29 02:05:08Z",
       "expirationDate": null,
       "type": null
     },
@@ -1239,7 +2045,7 @@
       "tool": "CredentialScanner",
       "ruleId": "CSCAN-GENERAL0140",
       "justification": null,
-      "createdDate": "2021-01-22 03:39:03Z",
+      "createdDate": "2021-01-29 02:05:08Z",
       "expirationDate": null,
       "type": null
     },
@@ -1252,7 +2058,7 @@
       "tool": "CredentialScanner",
       "ruleId": "CSCAN-GENERAL0140",
       "justification": null,
-      "createdDate": "2021-01-22 03:39:03Z",
+      "createdDate": "2021-01-29 02:05:08Z",
       "expirationDate": null,
       "type": null
     },
@@ -1265,7 +2071,7 @@
       "tool": "CredentialScanner",
       "ruleId": "CSCAN-GENERAL0140",
       "justification": null,
-      "createdDate": "2021-01-22 03:39:03Z",
+      "createdDate": "2021-01-29 02:05:08Z",
       "expirationDate": null,
       "type": null
     },
@@ -1278,7 +2084,7 @@
       "tool": "CredentialScanner",
       "ruleId": "CSCAN-GENERAL0140",
       "justification": null,
-      "createdDate": "2021-01-22 03:39:03Z",
+      "createdDate": "2021-01-29 02:05:08Z",
       "expirationDate": null,
       "type": null
     },
@@ -1291,7 +2097,7 @@
       "tool": "CredentialScanner",
       "ruleId": "CSCAN-GENERAL0140",
       "justification": null,
-      "createdDate": "2021-01-22 03:39:03Z",
+      "createdDate": "2021-01-29 02:05:08Z",
       "expirationDate": null,
       "type": null
     },
@@ -1304,7 +2110,7 @@
       "tool": "CredentialScanner",
       "ruleId": "CSCAN-GENERAL0140",
       "justification": null,
-      "createdDate": "2021-01-22 03:39:03Z",
+      "createdDate": "2021-01-29 02:05:08Z",
       "expirationDate": null,
       "type": null
     },
@@ -1317,7 +2123,7 @@
       "tool": "CredentialScanner",
       "ruleId": "CSCAN-GENERAL0140",
       "justification": null,
-      "createdDate": "2021-01-22 03:39:03Z",
+      "createdDate": "2021-01-29 02:05:08Z",
       "expirationDate": null,
       "type": null
     },
@@ -1330,7 +2136,7 @@
       "tool": "CredentialScanner",
       "ruleId": "CSCAN-GENERAL0140",
       "justification": null,
-      "createdDate": "2021-01-22 03:39:03Z",
+      "createdDate": "2021-01-29 02:05:08Z",
       "expirationDate": null,
       "type": null
     },
@@ -1343,7 +2149,7 @@
       "tool": "CredentialScanner",
       "ruleId": "CSCAN-GENERAL0140",
       "justification": null,
-      "createdDate": "2021-01-22 03:39:03Z",
+      "createdDate": "2021-01-29 02:05:08Z",
       "expirationDate": null,
       "type": null
     },
@@ -1356,7 +2162,7 @@
       "tool": "CredentialScanner",
       "ruleId": "CSCAN-GENERAL0140",
       "justification": null,
-      "createdDate": "2021-01-22 03:39:03Z",
+      "createdDate": "2021-01-29 02:05:08Z",
       "expirationDate": null,
       "type": null
     },
@@ -1369,7 +2175,7 @@
       "tool": "CredentialScanner",
       "ruleId": "CSCAN-GENERAL0140",
       "justification": null,
-      "createdDate": "2021-01-22 03:39:03Z",
+      "createdDate": "2021-01-29 02:05:08Z",
       "expirationDate": null,
       "type": null
     },
@@ -1382,7 +2188,7 @@
       "tool": "CredentialScanner",
       "ruleId": "CSCAN-GENERAL0140",
       "justification": null,
-      "createdDate": "2021-01-22 03:39:03Z",
+      "createdDate": "2021-01-29 02:05:08Z",
       "expirationDate": null,
       "type": null
     },
@@ -1395,7 +2201,7 @@
       "tool": "CredentialScanner",
       "ruleId": "CSCAN-GENERAL0140",
       "justification": null,
-      "createdDate": "2021-01-22 03:39:03Z",
+      "createdDate": "2021-01-29 02:05:08Z",
       "expirationDate": null,
       "type": null
     },
@@ -1408,7 +2214,7 @@
       "tool": "CredentialScanner",
       "ruleId": "CSCAN-GENERAL0140",
       "justification": null,
-      "createdDate": "2021-01-22 03:39:03Z",
+      "createdDate": "2021-01-29 02:05:08Z",
       "expirationDate": null,
       "type": null
     },
@@ -1421,7 +2227,7 @@
       "tool": "CredentialScanner",
       "ruleId": "CSCAN-GENERAL0140",
       "justification": null,
-      "createdDate": "2021-01-22 03:39:03Z",
+      "createdDate": "2021-01-29 02:05:08Z",
       "expirationDate": null,
       "type": null
     },
@@ -1434,7 +2240,7 @@
       "tool": "CredentialScanner",
       "ruleId": "CSCAN-GENERAL0140",
       "justification": null,
-      "createdDate": "2021-01-22 03:39:03Z",
+      "createdDate": "2021-01-29 02:05:08Z",
       "expirationDate": null,
       "type": null
     },
@@ -1447,7 +2253,7 @@
       "tool": "CredentialScanner",
       "ruleId": "CSCAN-GENERAL0140",
       "justification": null,
-      "createdDate": "2021-01-22 03:39:03Z",
+      "createdDate": "2021-01-29 02:05:08Z",
       "expirationDate": null,
       "type": null
     },
@@ -1460,7 +2266,7 @@
       "tool": "CredentialScanner",
       "ruleId": "CSCAN-GENERAL0140",
       "justification": null,
-      "createdDate": "2021-01-22 03:39:03Z",
+      "createdDate": "2021-01-29 02:05:08Z",
       "expirationDate": null,
       "type": null
     },
@@ -1473,7 +2279,7 @@
       "tool": "CredentialScanner",
       "ruleId": "CSCAN-GENERAL0140",
       "justification": null,
-      "createdDate": "2021-01-22 03:39:03Z",
+      "createdDate": "2021-01-29 02:05:08Z",
       "expirationDate": null,
       "type": null
     },
@@ -1486,7 +2292,7 @@
       "tool": "CredentialScanner",
       "ruleId": "CSCAN-GENERAL0140",
       "justification": null,
-      "createdDate": "2021-01-22 03:39:03Z",
+      "createdDate": "2021-01-29 02:05:08Z",
       "expirationDate": null,
       "type": null
     },
@@ -1499,7 +2305,7 @@
       "tool": "CredentialScanner",
       "ruleId": "CSCAN-GENERAL0140",
       "justification": null,
-      "createdDate": "2021-01-22 03:39:03Z",
+      "createdDate": "2021-01-29 02:05:08Z",
       "expirationDate": null,
       "type": null
     },
@@ -1512,7 +2318,7 @@
       "tool": "CredentialScanner",
       "ruleId": "CSCAN-GENERAL0140",
       "justification": null,
-      "createdDate": "2021-01-22 03:39:03Z",
+      "createdDate": "2021-01-29 02:05:08Z",
       "expirationDate": null,
       "type": null
     },
@@ -1525,7 +2331,7 @@
       "tool": "CredentialScanner",
       "ruleId": "CSCAN-GENERAL0140",
       "justification": null,
-      "createdDate": "2021-01-22 03:39:03Z",
+      "createdDate": "2021-01-29 02:05:08Z",
       "expirationDate": null,
       "type": null
     },
@@ -1538,7 +2344,7 @@
       "tool": "CredentialScanner",
       "ruleId": "CSCAN-GENERAL0140",
       "justification": null,
-      "createdDate": "2021-01-22 03:39:03Z",
+      "createdDate": "2021-01-29 02:05:08Z",
       "expirationDate": null,
       "type": null
     },
@@ -1551,7 +2357,7 @@
       "tool": "CredentialScanner",
       "ruleId": "CSCAN-GENERAL0140",
       "justification": null,
-      "createdDate": "2021-01-22 03:39:03Z",
+      "createdDate": "2021-01-29 02:05:08Z",
       "expirationDate": null,
       "type": null
     },
@@ -1564,7 +2370,7 @@
       "tool": "CredentialScanner",
       "ruleId": "CSCAN-GENERAL0140",
       "justification": null,
-      "createdDate": "2021-01-22 03:39:03Z",
+      "createdDate": "2021-01-29 02:05:08Z",
       "expirationDate": null,
       "type": null
     },
@@ -1577,7 +2383,7 @@
       "tool": "CredentialScanner",
       "ruleId": "CSCAN-GENERAL0140",
       "justification": null,
-      "createdDate": "2021-01-22 03:39:03Z",
+      "createdDate": "2021-01-29 02:05:08Z",
       "expirationDate": null,
       "type": null
     },
@@ -1590,7 +2396,7 @@
       "tool": "CredentialScanner",
       "ruleId": "CSCAN-GENERAL0140",
       "justification": null,
-      "createdDate": "2021-01-22 03:39:03Z",
+      "createdDate": "2021-01-29 02:05:08Z",
       "expirationDate": null,
       "type": null
     },
@@ -1603,7 +2409,7 @@
       "tool": "CredentialScanner",
       "ruleId": "CSCAN-GENERAL0140",
       "justification": null,
-      "createdDate": "2021-01-22 03:39:03Z",
+      "createdDate": "2021-01-29 02:05:08Z",
       "expirationDate": null,
       "type": null
     },
@@ -1616,7 +2422,7 @@
       "tool": "CredentialScanner",
       "ruleId": "CSCAN-GENERAL0140",
       "justification": null,
-      "createdDate": "2021-01-22 03:39:03Z",
+      "createdDate": "2021-01-29 02:05:08Z",
       "expirationDate": null,
       "type": null
     },
@@ -1629,7 +2435,7 @@
       "tool": "CredentialScanner",
       "ruleId": "CSCAN-GENERAL0140",
       "justification": null,
-      "createdDate": "2021-01-22 03:39:03Z",
+      "createdDate": "2021-01-29 02:05:08Z",
       "expirationDate": null,
       "type": null
     },
@@ -1642,7 +2448,7 @@
       "tool": "CredentialScanner",
       "ruleId": "CSCAN-GENERAL0140",
       "justification": null,
-      "createdDate": "2021-01-22 03:39:03Z",
+      "createdDate": "2021-01-29 02:05:08Z",
       "expirationDate": null,
       "type": null
     },
@@ -1655,7 +2461,7 @@
       "tool": "CredentialScanner",
       "ruleId": "CSCAN-GENERAL0140",
       "justification": null,
-      "createdDate": "2021-01-22 03:39:03Z",
+      "createdDate": "2021-01-29 02:05:08Z",
       "expirationDate": null,
       "type": null
     },
@@ -1668,7 +2474,7 @@
       "tool": "CredentialScanner",
       "ruleId": "CSCAN-GENERAL0140",
       "justification": null,
-      "createdDate": "2021-01-22 03:39:03Z",
+      "createdDate": "2021-01-29 02:05:08Z",
       "expirationDate": null,
       "type": null
     },
@@ -1681,7 +2487,7 @@
       "tool": "CredentialScanner",
       "ruleId": "CSCAN-GENERAL0140",
       "justification": null,
-      "createdDate": "2021-01-22 03:39:03Z",
+      "createdDate": "2021-01-29 02:05:08Z",
       "expirationDate": null,
       "type": null
     },
@@ -1694,7 +2500,7 @@
       "tool": "CredentialScanner",
       "ruleId": "CSCAN-GENERAL0030",
       "justification": null,
-      "createdDate": "2021-01-22 03:39:03Z",
+      "createdDate": "2021-01-29 02:05:08Z",
       "expirationDate": null,
       "type": null
     },
@@ -1707,7 +2513,7 @@
       "tool": "CredentialScanner",
       "ruleId": "CSCAN-GENERAL0060",
       "justification": null,
-      "createdDate": "2021-01-22 03:39:03Z",
+      "createdDate": "2021-01-29 02:05:08Z",
       "expirationDate": null,
       "type": null
     },
@@ -1720,7 +2526,7 @@
       "tool": "CredentialScanner",
       "ruleId": "CSCAN-GENERAL0060",
       "justification": null,
-      "createdDate": "2021-01-22 03:39:03Z",
+      "createdDate": "2021-01-29 02:05:08Z",
       "expirationDate": null,
       "type": null
     },
@@ -1733,7 +2539,7 @@
       "tool": "CredentialScanner",
       "ruleId": "CSCAN-GENERAL0130",
       "justification": null,
-      "createdDate": "2021-01-22 03:39:03Z",
+      "createdDate": "2021-01-29 02:05:08Z",
       "expirationDate": null,
       "type": null
     },
@@ -1746,7 +2552,7 @@
       "tool": "CredentialScanner",
       "ruleId": "CSCAN-GENERAL0030",
       "justification": null,
-      "createdDate": "2021-01-22 03:39:03Z",
+      "createdDate": "2021-01-29 02:05:08Z",
       "expirationDate": null,
       "type": null
     },
@@ -1759,7 +2565,7 @@
       "tool": "CredentialScanner",
       "ruleId": "CSCAN-GENERAL0030",
       "justification": null,
-      "createdDate": "2021-01-22 03:39:03Z",
+      "createdDate": "2021-01-29 02:05:08Z",
       "expirationDate": null,
       "type": null
     },
@@ -1772,7 +2578,7 @@
       "tool": "CredentialScanner",
       "ruleId": "CSCAN-AZURE0030",
       "justification": null,
-      "createdDate": "2021-01-22 03:39:03Z",
+      "createdDate": "2021-01-29 02:05:08Z",
       "expirationDate": null,
       "type": null
     },
@@ -1785,7 +2591,7 @@
       "tool": "CredentialScanner",
       "ruleId": "CSCAN-AZURE0030",
       "justification": null,
-      "createdDate": "2021-01-22 03:39:03Z",
+      "createdDate": "2021-01-29 02:05:08Z",
       "expirationDate": null,
       "type": null
     },
@@ -1798,7 +2604,7 @@
       "tool": "CredentialScanner",
       "ruleId": "CSCAN-AZURE0030",
       "justification": null,
-      "createdDate": "2021-01-22 03:39:03Z",
+      "createdDate": "2021-01-29 02:05:08Z",
       "expirationDate": null,
       "type": null
     },
@@ -1811,7 +2617,7 @@
       "tool": "CredentialScanner",
       "ruleId": "CSCAN-GENERAL0030",
       "justification": null,
-      "createdDate": "2021-01-22 03:39:03Z",
+      "createdDate": "2021-01-29 02:05:08Z",
       "expirationDate": null,
       "type": null
     },
@@ -1824,7 +2630,7 @@
       "tool": "CredentialScanner",
       "ruleId": "CSCAN-GENERAL0030",
       "justification": null,
-      "createdDate": "2021-01-22 03:39:03Z",
+      "createdDate": "2021-01-29 02:05:08Z",
       "expirationDate": null,
       "type": null
     },
@@ -1837,7 +2643,7 @@
       "tool": "CredentialScanner",
       "ruleId": "CSCAN-GENERAL0130",
       "justification": null,
-      "createdDate": "2021-01-22 03:39:03Z",
+      "createdDate": "2021-01-29 02:05:08Z",
       "expirationDate": null,
       "type": null
     },
@@ -1850,7 +2656,7 @@
       "tool": "CredentialScanner",
       "ruleId": "CSCAN-GENERAL0130",
       "justification": null,
-      "createdDate": "2021-01-22 03:39:03Z",
+      "createdDate": "2021-01-29 02:05:08Z",
       "expirationDate": null,
       "type": null
     },
@@ -1863,7 +2669,7 @@
       "tool": "CredentialScanner",
       "ruleId": "CSCAN-GENERAL0060",
       "justification": null,
-      "createdDate": "2021-01-22 03:39:03Z",
+      "createdDate": "2021-01-29 02:05:08Z",
       "expirationDate": null,
       "type": null
     },
@@ -1876,7 +2682,7 @@
       "tool": "CredentialScanner",
       "ruleId": "CSCAN-GENERAL0030",
       "justification": null,
-      "createdDate": "2021-01-22 03:39:03Z",
+      "createdDate": "2021-01-29 02:05:08Z",
       "expirationDate": null,
       "type": null
     },
@@ -1889,7 +2695,7 @@
       "tool": "CredentialScanner",
       "ruleId": "CSCAN-GENERAL0060",
       "justification": null,
-      "createdDate": "2021-01-22 03:39:03Z",
+      "createdDate": "2021-01-29 02:05:08Z",
       "expirationDate": null,
       "type": null
     },
@@ -1902,7 +2708,7 @@
       "tool": "CredentialScanner",
       "ruleId": "CSCAN-GENERAL0020",
       "justification": null,
-      "createdDate": "2021-01-22 03:39:03Z",
+      "createdDate": "2021-01-29 02:05:08Z",
       "expirationDate": null,
       "type": null
     },
@@ -1915,7 +2721,7 @@
       "tool": "CredentialScanner",
       "ruleId": "CSCAN-GENERAL0060",
       "justification": null,
-      "createdDate": "2021-01-22 03:39:03Z",
+      "createdDate": "2021-01-29 02:05:08Z",
       "expirationDate": null,
       "type": null
     },
@@ -1928,7 +2734,7 @@
       "tool": "CredentialScanner",
       "ruleId": "CSCAN-GENERAL0060",
       "justification": null,
-      "createdDate": "2021-01-22 03:39:03Z",
+      "createdDate": "2021-01-29 02:05:08Z",
       "expirationDate": null,
       "type": null
     },
@@ -1941,7 +2747,7 @@
       "tool": "CredentialScanner",
       "ruleId": "CSCAN-GENERAL0060",
       "justification": null,
-      "createdDate": "2021-01-22 03:39:03Z",
+      "createdDate": "2021-01-29 02:05:08Z",
       "expirationDate": null,
       "type": null
     },
@@ -1954,7 +2760,7 @@
       "tool": "CredentialScanner",
       "ruleId": "CSCAN-GENERAL0060",
       "justification": null,
-      "createdDate": "2021-01-22 03:39:03Z",
+      "createdDate": "2021-01-29 02:05:08Z",
       "expirationDate": null,
       "type": null
     },
@@ -1967,7 +2773,7 @@
       "tool": "CredentialScanner",
       "ruleId": "CSCAN-GENERAL0020",
       "justification": null,
-      "createdDate": "2021-01-22 03:39:03Z",
+      "createdDate": "2021-01-29 02:05:08Z",
       "expirationDate": null,
       "type": null
     },
@@ -1980,7 +2786,7 @@
       "tool": "CredentialScanner",
       "ruleId": "CSCAN-GENERAL0060",
       "justification": null,
-      "createdDate": "2021-01-22 03:39:03Z",
+      "createdDate": "2021-01-29 02:05:08Z",
       "expirationDate": null,
       "type": null
     },
@@ -1993,7 +2799,7 @@
       "tool": "CredentialScanner",
       "ruleId": "CSCAN-GENERAL0060",
       "justification": null,
-      "createdDate": "2021-01-22 03:39:03Z",
+      "createdDate": "2021-01-29 02:05:08Z",
       "expirationDate": null,
       "type": null
     },
@@ -2006,7 +2812,7 @@
       "tool": "CredentialScanner",
       "ruleId": "CSCAN-GENERAL0060",
       "justification": null,
-      "createdDate": "2021-01-22 03:39:03Z",
+      "createdDate": "2021-01-29 02:05:08Z",
       "expirationDate": null,
       "type": null
     },
@@ -2019,7 +2825,7 @@
       "tool": "CredentialScanner",
       "ruleId": "CSCAN-AZURE0070",
       "justification": null,
-      "createdDate": "2021-01-22 03:39:03Z",
+      "createdDate": "2021-01-29 02:05:08Z",
       "expirationDate": null,
       "type": null
     },
@@ -2032,7 +2838,7 @@
       "tool": "CredentialScanner",
       "ruleId": "CSCAN-GENERAL0140",
       "justification": null,
-      "createdDate": "2021-01-22 03:39:03Z",
+      "createdDate": "2021-01-29 02:05:08Z",
       "expirationDate": null,
       "type": null
     },
@@ -2045,7 +2851,7 @@
       "tool": "CredentialScanner",
       "ruleId": "CSCAN-AZURE0060",
       "justification": null,
-      "createdDate": "2021-01-22 03:39:03Z",
+      "createdDate": "2021-01-29 02:05:08Z",
       "expirationDate": null,
       "type": null
     },
@@ -2058,7 +2864,7 @@
       "tool": "CredentialScanner",
       "ruleId": "CSCAN-GENERAL0060",
       "justification": null,
-      "createdDate": "2021-01-22 03:39:03Z",
+      "createdDate": "2021-01-29 02:05:08Z",
       "expirationDate": null,
       "type": null
     },
@@ -2071,7 +2877,7 @@
       "tool": "CredentialScanner",
       "ruleId": "CSCAN-GENERAL0130",
       "justification": null,
-      "createdDate": "2021-01-22 03:39:03Z",
+      "createdDate": "2021-01-29 02:05:08Z",
       "expirationDate": null,
       "type": null
     },
@@ -2084,7 +2890,7 @@
       "tool": "CredentialScanner",
       "ruleId": "CSCAN-AZURE0070",
       "justification": null,
-      "createdDate": "2021-01-22 03:39:03Z",
+      "createdDate": "2021-01-29 02:05:08Z",
       "expirationDate": null,
       "type": null
     },
@@ -2097,7 +2903,7 @@
       "tool": "CredentialScanner",
       "ruleId": "CSCAN-GENERAL0060",
       "justification": null,
-      "createdDate": "2021-01-22 03:39:03Z",
+      "createdDate": "2021-01-29 02:05:08Z",
       "expirationDate": null,
       "type": null
     },
@@ -2110,7 +2916,7 @@
       "tool": "CredentialScanner",
       "ruleId": "CSCAN-GENERAL0140",
       "justification": null,
-      "createdDate": "2021-01-22 03:39:03Z",
+      "createdDate": "2021-01-29 02:05:08Z",
       "expirationDate": null,
       "type": null
     },
@@ -2123,7 +2929,7 @@
       "tool": "CredentialScanner",
       "ruleId": "CSCAN-GENERAL0140",
       "justification": null,
-      "createdDate": "2021-01-22 03:39:03Z",
+      "createdDate": "2021-01-29 02:05:08Z",
       "expirationDate": null,
       "type": null
     },
@@ -2136,7 +2942,7 @@
       "tool": "CredentialScanner",
       "ruleId": "CSCAN-GENERAL0140",
       "justification": null,
-      "createdDate": "2021-01-22 03:39:03Z",
+      "createdDate": "2021-01-29 02:05:08Z",
       "expirationDate": null,
       "type": null
     },
@@ -2149,7 +2955,7 @@
       "tool": "CredentialScanner",
       "ruleId": "CSCAN-GENERAL0140",
       "justification": null,
-      "createdDate": "2021-01-22 03:39:03Z",
+      "createdDate": "2021-01-29 02:05:08Z",
       "expirationDate": null,
       "type": null
     },
@@ -2162,7 +2968,7 @@
       "tool": "CredentialScanner",
       "ruleId": "CSCAN-GENERAL0140",
       "justification": null,
-      "createdDate": "2021-01-22 03:39:03Z",
+      "createdDate": "2021-01-29 02:05:08Z",
       "expirationDate": null,
       "type": null
     },
@@ -2175,7 +2981,449 @@
       "tool": "CredentialScanner",
       "ruleId": "CSCAN-GENERAL0140",
       "justification": null,
-      "createdDate": "2021-01-22 03:39:03Z",
+      "createdDate": "2021-01-29 02:05:08Z",
+      "expirationDate": null,
+      "type": null
+    },
+    "d1fd105dd5fd404a29405d09ae69fc0c057a362782c99011f852b7b5b3346544": {
+      "signature": "d1fd105dd5fd404a29405d09ae69fc0c057a362782c99011f852b7b5b3346544",
+      "target": "sdk/storage/azure-storage-blob-cryptography/src/test/resources/session-records/EncyptedBlockBlobAPITestdownloadacfail[3].json",
+      "memberOf": [
+        "baseline"
+      ],
+      "tool": "CredentialScanner",
+      "ruleId": "CSCAN-GENERAL0140",
+      "justification": null,
+      "createdDate": "2021-04-24 01:27:17Z",
+      "expirationDate": null,
+      "type": null
+    },
+    "c9188b449c96b9167bc18e83580a09a163a63cb99dbde143c0db7c8a41496ba9": {
+      "signature": "c9188b449c96b9167bc18e83580a09a163a63cb99dbde143c0db7c8a41496ba9",
+      "target": "sdk/storage/azure-storage-blob-cryptography/src/test/resources/session-records/EncyptedBlockBlobAPITestdownloadac[0].json",
+      "memberOf": [
+        "baseline"
+      ],
+      "tool": "CredentialScanner",
+      "ruleId": "CSCAN-GENERAL0140",
+      "justification": null,
+      "createdDate": "2021-04-24 01:27:17Z",
+      "expirationDate": null,
+      "type": null
+    },
+    "4bad8b275d47d6e1098c475a6c8f260413a98c6e862b078320d724bace053722": {
+      "signature": "4bad8b275d47d6e1098c475a6c8f260413a98c6e862b078320d724bace053722",
+      "target": "sdk/storage/azure-storage-blob-cryptography/src/test/resources/session-records/EncyptedBlockBlobAPITestdownloadac[1].json",
+      "memberOf": [
+        "baseline"
+      ],
+      "tool": "CredentialScanner",
+      "ruleId": "CSCAN-GENERAL0140",
+      "justification": null,
+      "createdDate": "2021-04-24 01:27:17Z",
+      "expirationDate": null,
+      "type": null
+    },
+    "6b7591ed61ab544b35267263d230b844894cb53d511de7a3ca4511bba7fa04fb": {
+      "signature": "6b7591ed61ab544b35267263d230b844894cb53d511de7a3ca4511bba7fa04fb",
+      "target": "sdk/storage/azure-storage-blob-cryptography/src/test/resources/session-records/EncyptedBlockBlobAPITestdownloadac[2].json",
+      "memberOf": [
+        "baseline"
+      ],
+      "tool": "CredentialScanner",
+      "ruleId": "CSCAN-GENERAL0140",
+      "justification": null,
+      "createdDate": "2021-04-24 01:27:17Z",
+      "expirationDate": null,
+      "type": null
+    },
+    "6506a12097bb15fff7b73658f5b5804c4a47603971b61fe1db4ea0fd5ab0f715": {
+      "signature": "6506a12097bb15fff7b73658f5b5804c4a47603971b61fe1db4ea0fd5ab0f715",
+      "target": "sdk/storage/azure-storage-blob-cryptography/src/test/resources/session-records/EncyptedBlockBlobAPITestdownloadac[3].json",
+      "memberOf": [
+        "baseline"
+      ],
+      "tool": "CredentialScanner",
+      "ruleId": "CSCAN-GENERAL0140",
+      "justification": null,
+      "createdDate": "2021-04-24 01:27:17Z",
+      "expirationDate": null,
+      "type": null
+    },
+    "a8ea893ce995038a4c5e1bbd91e7227b1701eafd0aeeec509bfb1ac4874390b4": {
+      "signature": "a8ea893ce995038a4c5e1bbd91e7227b1701eafd0aeeec509bfb1ac4874390b4",
+      "target": "sdk/storage/azure-storage-blob-cryptography/src/test/resources/session-records/EncyptedBlockBlobAPITestdownloadac[4].json",
+      "memberOf": [
+        "baseline"
+      ],
+      "tool": "CredentialScanner",
+      "ruleId": "CSCAN-GENERAL0140",
+      "justification": null,
+      "createdDate": "2021-04-24 01:27:17Z",
+      "expirationDate": null,
+      "type": null
+    },
+    "6ccdbb1f7cad63f3e84afbb39d67e03b98fda63220ce13c813dea840ba94e6a0": {
+      "signature": "6ccdbb1f7cad63f3e84afbb39d67e03b98fda63220ce13c813dea840ba94e6a0",
+      "target": "sdk/storage/azure-storage-blob-cryptography/src/test/resources/session-records/EncyptedBlockBlobAPITestdownloadac[5].json",
+      "memberOf": [
+        "baseline"
+      ],
+      "tool": "CredentialScanner",
+      "ruleId": "CSCAN-GENERAL0140",
+      "justification": null,
+      "createdDate": "2021-04-24 01:27:17Z",
+      "expirationDate": null,
+      "type": null
+    },
+    "a0c9d515fafe9df83d1e4620e6013e2b14cfb6749e6a922152c8c7e3d01856d8": {
+      "signature": "a0c9d515fafe9df83d1e4620e6013e2b14cfb6749e6a922152c8c7e3d01856d8",
+      "target": "sdk/storage/azure-storage-blob-cryptography/src/test/resources/session-records/EncyptedBlockBlobAPITestdownloadrange[0].json",
+      "memberOf": [
+        "baseline"
+      ],
+      "tool": "CredentialScanner",
+      "ruleId": "CSCAN-GENERAL0140",
+      "justification": null,
+      "createdDate": "2021-04-24 01:27:17Z",
+      "expirationDate": null,
+      "type": null
+    },
+    "fe1b6c025d6cebfd009299f3de3047c9fefef7bbff648c6fbf69c23d89a508d1": {
+      "signature": "fe1b6c025d6cebfd009299f3de3047c9fefef7bbff648c6fbf69c23d89a508d1",
+      "target": "sdk/storage/azure-storage-blob-cryptography/src/test/resources/session-records/EncyptedBlockBlobAPITestdownloadrange[1].json",
+      "memberOf": [
+        "baseline"
+      ],
+      "tool": "CredentialScanner",
+      "ruleId": "CSCAN-GENERAL0140",
+      "justification": null,
+      "createdDate": "2021-04-24 01:27:17Z",
+      "expirationDate": null,
+      "type": null
+    },
+    "4524641b4f5b2ee53b881ac15589e8a73a9aaa21417b4c256ccd96817355cc0a": {
+      "signature": "4524641b4f5b2ee53b881ac15589e8a73a9aaa21417b4c256ccd96817355cc0a",
+      "target": "sdk/storage/azure-storage-blob-cryptography/src/test/resources/session-records/EncyptedBlockBlobAPITestdownloadrange[2].json",
+      "memberOf": [
+        "baseline"
+      ],
+      "tool": "CredentialScanner",
+      "ruleId": "CSCAN-GENERAL0140",
+      "justification": null,
+      "createdDate": "2021-04-24 01:27:17Z",
+      "expirationDate": null,
+      "type": null
+    },
+    "16843d324269d1ba510e3ea44b6bb88c8aaa6d40603c5545415ce66a7c5195eb": {
+      "signature": "16843d324269d1ba510e3ea44b6bb88c8aaa6d40603c5545415ce66a7c5195eb",
+      "target": "sdk/storage/azure-storage-blob-cryptography/src/test/resources/session-records/EncyptedBlockBlobAPITestencryptionacfail[3].json",
+      "memberOf": [
+        "baseline"
+      ],
+      "tool": "CredentialScanner",
+      "ruleId": "CSCAN-GENERAL0140",
+      "justification": null,
+      "createdDate": "2021-04-24 01:27:17Z",
+      "expirationDate": null,
+      "type": null
+    },
+    "e1ce279e3e2ff0d8fbd0677e12a0d4b460c62ff0ca68dd336d44ffa68e30cb3f": {
+      "signature": "e1ce279e3e2ff0d8fbd0677e12a0d4b460c62ff0ca68dd336d44ffa68e30cb3f",
+      "target": "sdk/storage/azure-storage-blob-cryptography/src/test/resources/session-records/EncyptedBlockBlobAPITestencryptionac[3].json",
+      "memberOf": [
+        "baseline"
+      ],
+      "tool": "CredentialScanner",
+      "ruleId": "CSCAN-GENERAL0140",
+      "justification": null,
+      "createdDate": "2021-04-24 01:27:17Z",
+      "expirationDate": null,
+      "type": null
+    },
+    "15608f16cb8016f27fb3f8039c0aea8391973df4df3df76b418d09a43bd34df8": {
+      "signature": "15608f16cb8016f27fb3f8039c0aea8391973df4df3df76b418d09a43bd34df8",
+      "target": "sdk/storage/azure-storage-blob-cryptography/src/test/resources/session-records/EncyptedBlockBlobAPITestencryptionac[3].json",
+      "memberOf": [
+        "baseline"
+      ],
+      "tool": "CredentialScanner",
+      "ruleId": "CSCAN-GENERAL0140",
+      "justification": null,
+      "createdDate": "2021-04-24 01:27:17Z",
+      "expirationDate": null,
+      "type": null
+    },
+    "64cc7b771de2c2bbd557954259ce30cb85bd62da73e35822f2070cb54bc474a8": {
+      "signature": "64cc7b771de2c2bbd557954259ce30cb85bd62da73e35822f2070cb54bc474a8",
+      "target": "sdk/storage/azure-storage-blob-cryptography/src/test/resources/session-records/EncyptedBlockBlobAPITestencryptionhttpheaders[0].json",
+      "memberOf": [
+        "baseline"
+      ],
+      "tool": "CredentialScanner",
+      "ruleId": "CSCAN-GENERAL0140",
+      "justification": null,
+      "createdDate": "2021-04-24 01:27:17Z",
+      "expirationDate": null,
+      "type": null
+    },
+    "b403e1e3304c90c5424b12619e16f7df0df82bc58a9484c3827df9bbeb682668": {
+      "signature": "b403e1e3304c90c5424b12619e16f7df0df82bc58a9484c3827df9bbeb682668",
+      "target": "sdk/storage/azure-storage-blob-cryptography/src/test/resources/session-records/EncyptedBlockBlobAPITestencryptionhttpheaders[1].json",
+      "memberOf": [
+        "baseline"
+      ],
+      "tool": "CredentialScanner",
+      "ruleId": "CSCAN-GENERAL0140",
+      "justification": null,
+      "createdDate": "2021-04-24 01:27:17Z",
+      "expirationDate": null,
+      "type": null
+    },
+    "8890f535b983e95786f64f93a405fe0e37bc3f1cff49ef4e07f0dd417b220d54": {
+      "signature": "8890f535b983e95786f64f93a405fe0e37bc3f1cff49ef4e07f0dd417b220d54",
+      "target": "sdk/storage/azure-storage-blob-cryptography/src/test/resources/session-records/EncyptedBlockBlobAPITestencryption[0].json",
+      "memberOf": [
+        "baseline"
+      ],
+      "tool": "CredentialScanner",
+      "ruleId": "CSCAN-GENERAL0140",
+      "justification": null,
+      "createdDate": "2021-04-24 01:27:17Z",
+      "expirationDate": null,
+      "type": null
+    },
+    "c8202cb60c2abf6314becf47896bdf717174153bde5a6a7877e94bc16d763f58": {
+      "signature": "c8202cb60c2abf6314becf47896bdf717174153bde5a6a7877e94bc16d763f58",
+      "target": "sdk/storage/azure-storage-blob-cryptography/src/test/resources/session-records/EncyptedBlockBlobAPITestencryption[1].json",
+      "memberOf": [
+        "baseline"
+      ],
+      "tool": "CredentialScanner",
+      "ruleId": "CSCAN-GENERAL0140",
+      "justification": null,
+      "createdDate": "2021-04-24 01:27:17Z",
+      "expirationDate": null,
+      "type": null
+    },
+    "77efed38467a9bfa402e5efcac6ac596c385d958fdc3b1f07f592a8555c27254": {
+      "signature": "77efed38467a9bfa402e5efcac6ac596c385d958fdc3b1f07f592a8555c27254",
+      "target": "sdk/storage/azure-storage-blob-cryptography/src/test/resources/session-records/EncyptedBlockBlobAPITestencryption[2].json",
+      "memberOf": [
+        "baseline"
+      ],
+      "tool": "CredentialScanner",
+      "ruleId": "CSCAN-GENERAL0140",
+      "justification": null,
+      "createdDate": "2021-04-24 01:27:17Z",
+      "expirationDate": null,
+      "type": null
+    },
+    "90ba7fe2536ca5fb1ec7e2450258b7f3d91c923d5465acce3396c88915150658": {
+      "signature": "90ba7fe2536ca5fb1ec7e2450258b7f3d91c923d5465acce3396c88915150658",
+      "target": "sdk/storage/azure-storage-blob-cryptography/src/test/resources/session-records/EncyptedBlockBlobAPITestencryption[3].json",
+      "memberOf": [
+        "baseline"
+      ],
+      "tool": "CredentialScanner",
+      "ruleId": "CSCAN-GENERAL0140",
+      "justification": null,
+      "createdDate": "2021-04-24 01:27:17Z",
+      "expirationDate": null,
+      "type": null
+    },
+    "7cec01570d861a0ad5d612dbc2253ef77d2919996ae4ce27f99ec5082f19e01a": {
+      "signature": "7cec01570d861a0ad5d612dbc2253ef77d2919996ae4ce27f99ec5082f19e01a",
+      "target": "sdk/storage/azure-storage-blob-cryptography/src/test/resources/session-records/EncyptedBlockBlobAPITestencryption[4].json",
+      "memberOf": [
+        "baseline"
+      ],
+      "tool": "CredentialScanner",
+      "ruleId": "CSCAN-GENERAL0140",
+      "justification": null,
+      "createdDate": "2021-04-24 01:27:17Z",
+      "expirationDate": null,
+      "type": null
+    },
+    "847ad7dca45b88447ab150453c15d6d000614bd1b63e4aa3216d3f64d84f933c": {
+      "signature": "847ad7dca45b88447ab150453c15d6d000614bd1b63e4aa3216d3f64d84f933c",
+      "target": "sdk/storage/azure-storage-blob-cryptography/src/test/resources/session-records/EncyptedBlockBlobAPITestencryption[5].json",
+      "memberOf": [
+        "baseline"
+      ],
+      "tool": "CredentialScanner",
+      "ruleId": "CSCAN-GENERAL0140",
+      "justification": null,
+      "createdDate": "2021-04-24 01:27:17Z",
+      "expirationDate": null,
+      "type": null
+    },
+    "62625f1e953d9a38ea81c3456243b5de38880643c9bccb56d3b35d2c0351e551": {
+      "signature": "62625f1e953d9a38ea81c3456243b5de38880643c9bccb56d3b35d2c0351e551",
+      "target": "sdk/storage/azure-storage-blob-cryptography/src/test/resources/session-records/EncyptedBlockBlobAPITestencryption[6].json",
+      "memberOf": [
+        "baseline"
+      ],
+      "tool": "CredentialScanner",
+      "ruleId": "CSCAN-GENERAL0140",
+      "justification": null,
+      "createdDate": "2021-04-24 01:27:17Z",
+      "expirationDate": null,
+      "type": null
+    },
+    "9dfef2ca71985d68e80823c7539eb269068f02cafe39ca823842dd3c13bcb3f7": {
+      "signature": "9dfef2ca71985d68e80823c7539eb269068f02cafe39ca823842dd3c13bcb3f7",
+      "target": "sdk/storage/azure-storage-blob-cryptography/src/test/resources/session-records/EncyptedBlockBlobAPITestencryption[7].json",
+      "memberOf": [
+        "baseline"
+      ],
+      "tool": "CredentialScanner",
+      "ruleId": "CSCAN-GENERAL0140",
+      "justification": null,
+      "createdDate": "2021-04-24 01:27:17Z",
+      "expirationDate": null,
+      "type": null
+    },
+    "3eb92e900f2cd3a2f97cb0ca18bf70440ca231ab4d272439c96a70092e2c082f": {
+      "signature": "3eb92e900f2cd3a2f97cb0ca18bf70440ca231ab4d272439c96a70092e2c082f",
+      "target": "sdk/storage/azure-storage-blob-cryptography/src/test/resources/session-records/EncyptedBlockBlobAPITestencryption[8].json",
+      "memberOf": [
+        "baseline"
+      ],
+      "tool": "CredentialScanner",
+      "ruleId": "CSCAN-GENERAL0140",
+      "justification": null,
+      "createdDate": "2021-04-24 01:27:17Z",
+      "expirationDate": null,
+      "type": null
+    },
+    "554c4928e7c14c1bff3674ec0e5795e2459b680ca02a3e37b374557fe69b6905": {
+      "signature": "554c4928e7c14c1bff3674ec0e5795e2459b680ca02a3e37b374557fe69b6905",
+      "target": "sdk/storage/azure-storage-blob-cryptography/src/test/resources/session-records/EncyptedBlockBlobAPITestkeyresolverusedtodecryptdata[0].json",
+      "memberOf": [
+        "baseline"
+      ],
+      "tool": "CredentialScanner",
+      "ruleId": "CSCAN-GENERAL0140",
+      "justification": null,
+      "createdDate": "2021-04-24 01:27:17Z",
+      "expirationDate": null,
+      "type": null
+    },
+    "b101fbb2fe89dbe2bdb7bce5d1f4d08e180d182b0f97af9b49c88e524790db3f": {
+      "signature": "b101fbb2fe89dbe2bdb7bce5d1f4d08e180d182b0f97af9b49c88e524790db3f",
+      "target": "sdk/storage/azure-storage-blob-cryptography/src/test/resources/session-records/EncyptedBlockBlobAPITestkeyresolverusedtodecryptdata[1].json",
+      "memberOf": [
+        "baseline"
+      ],
+      "tool": "CredentialScanner",
+      "ruleId": "CSCAN-GENERAL0140",
+      "justification": null,
+      "createdDate": "2021-04-24 01:27:17Z",
+      "expirationDate": null,
+      "type": null
+    },
+    "42473b74d499ffd1afcb10999d5cb814eaa8fb2b7ba0a192366804ab419e7c47": {
+      "signature": "42473b74d499ffd1afcb10999d5cb814eaa8fb2b7ba0a192366804ab419e7c47",
+      "target": "sdk/storage/azure-storage-blob-cryptography/src/test/resources/session-records/EncyptedBlockBlobAPITestkeyresolverusedtodecryptdata[2].json",
+      "memberOf": [
+        "baseline"
+      ],
+      "tool": "CredentialScanner",
+      "ruleId": "CSCAN-GENERAL0140",
+      "justification": null,
+      "createdDate": "2021-04-24 01:27:17Z",
+      "expirationDate": null,
+      "type": null
+    },
+    "35988c4af10138a8746fb74c0470a8c7d5306bfeec152fbc837557a32cc87703": {
+      "signature": "35988c4af10138a8746fb74c0470a8c7d5306bfeec152fbc837557a32cc87703",
+      "target": "sdk/storage/azure-storage-blob-cryptography/src/test/resources/session-records/EncyptedBlockBlobAPITestkeyresolverusedtodecryptdata[3].json",
+      "memberOf": [
+        "baseline"
+      ],
+      "tool": "CredentialScanner",
+      "ruleId": "CSCAN-GENERAL0140",
+      "justification": null,
+      "createdDate": "2021-04-24 01:27:17Z",
+      "expirationDate": null,
+      "type": null
+    },
+    "4339c99b7243e08b759fa67989491c7eb45773b4b5ffc36021f4fd751c28b782": {
+      "signature": "4339c99b7243e08b759fa67989491c7eb45773b4b5ffc36021f4fd751c28b782",
+      "target": "sdk/storage/azure-storage-blob-cryptography/src/test/resources/session-records/EncyptedBlockBlobAPITestkeyresolverusedtodecryptdata[4].json",
+      "memberOf": [
+        "baseline"
+      ],
+      "tool": "CredentialScanner",
+      "ruleId": "CSCAN-GENERAL0140",
+      "justification": null,
+      "createdDate": "2021-04-24 01:27:17Z",
+      "expirationDate": null,
+      "type": null
+    },
+    "2c0b216728ad9a79131b753c8388b374e3265b97fa32370ff19a62465b1541dd": {
+      "signature": "2c0b216728ad9a79131b753c8388b374e3265b97fa32370ff19a62465b1541dd",
+      "target": "sdk/storage/azure-storage-blob-cryptography/src/test/resources/session-records/EncyptedBlockBlobAPITestkeyresolverusedtodecryptdata[5].json",
+      "memberOf": [
+        "baseline"
+      ],
+      "tool": "CredentialScanner",
+      "ruleId": "CSCAN-GENERAL0140",
+      "justification": null,
+      "createdDate": "2021-04-24 01:27:17Z",
+      "expirationDate": null,
+      "type": null
+    },
+    "6133165e8e37edcb4b01eb120d23c4b1920e1079f4e98c74fe023caa1370e351": {
+      "signature": "6133165e8e37edcb4b01eb120d23c4b1920e1079f4e98c74fe023caa1370e351",
+      "target": "sdk/storage/azure-storage-blob-cryptography/src/test/resources/session-records/EncyptedBlockBlobAPITestkeyresolverusedtodecryptdata[6].json",
+      "memberOf": [
+        "baseline"
+      ],
+      "tool": "CredentialScanner",
+      "ruleId": "CSCAN-GENERAL0140",
+      "justification": null,
+      "createdDate": "2021-04-24 01:27:17Z",
+      "expirationDate": null,
+      "type": null
+    },
+    "0ed53a4da31083af9f86cc52d0781b15ed8233439f74d55ada679b249c371edf": {
+      "signature": "0ed53a4da31083af9f86cc52d0781b15ed8233439f74d55ada679b249c371edf",
+      "target": "sdk/storage/azure-storage-blob-cryptography/src/test/resources/session-records/EncyptedBlockBlobAPITestkeyresolverusedtodecryptdata[7].json",
+      "memberOf": [
+        "baseline"
+      ],
+      "tool": "CredentialScanner",
+      "ruleId": "CSCAN-GENERAL0140",
+      "justification": null,
+      "createdDate": "2021-04-24 01:27:17Z",
+      "expirationDate": null,
+      "type": null
+    },
+    "3b07c1c024ef430ee78e5d0e91a457bb29c34e8735961fb5dede900541b0e93f": {
+      "signature": "3b07c1c024ef430ee78e5d0e91a457bb29c34e8735961fb5dede900541b0e93f",
+      "target": "sdk/storage/azure-storage-blob-cryptography/src/test/resources/session-records/EncyptedBlockBlobAPITestkeyresolverusedtodecryptdata[8].json",
+      "memberOf": [
+        "baseline"
+      ],
+      "tool": "CredentialScanner",
+      "ruleId": "CSCAN-GENERAL0140",
+      "justification": null,
+      "createdDate": "2021-04-24 01:27:17Z",
+      "expirationDate": null,
+      "type": null
+    },
+    "51cd2b9309075e5ad6d5c191a453e77dbbf3746bfc1960ea9660c602e4edf870": {
+      "signature": "51cd2b9309075e5ad6d5c191a453e77dbbf3746bfc1960ea9660c602e4edf870",
+      "target": "sdk/cosmos/azure-cosmos-encryption/src/test/java/com/azure/cosmos/encryption/implementation/EncryptionProcessorAndSettingsTest.java",
+      "memberOf": [
+        "baseline"
+      ],
+      "tool": "CredentialScanner",
+      "ruleId": "CSCAN-GENERAL0130",
+      "justification": null,
+      "createdDate": "2021-04-24 01:27:17Z",
       "expirationDate": null,
       "type": null
     }

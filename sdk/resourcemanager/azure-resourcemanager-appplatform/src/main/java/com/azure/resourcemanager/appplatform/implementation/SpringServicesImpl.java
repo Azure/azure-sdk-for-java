@@ -5,6 +5,7 @@ package com.azure.resourcemanager.appplatform.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.util.CoreUtils;
 import com.azure.resourcemanager.appplatform.AppPlatformManager;
 import com.azure.resourcemanager.appplatform.fluent.ServicesClient;
 import com.azure.resourcemanager.appplatform.fluent.models.ServiceResourceInner;
@@ -16,6 +17,7 @@ import com.azure.resourcemanager.appplatform.models.SpringServices;
 import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
 import reactor.core.publisher.Mono;
+import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
 
 public class SpringServicesImpl
     extends GroupableResourcesImpl<
@@ -75,7 +77,11 @@ public class SpringServicesImpl
 
     @Override
     public PagedFlux<SpringService> listByResourceGroupAsync(String resourceGroupName) {
-        return inner().listByResourceGroupAsync(resourceGroupName).mapPage(this::wrapModel);
+        if (CoreUtils.isNullOrEmpty(resourceGroupName)) {
+            return new PagedFlux<>(() -> Mono.error(
+                new IllegalArgumentException("Parameter 'resourceGroupName' is required and cannot be null.")));
+        }
+        return PagedConverter.mapPage(inner().listByResourceGroupAsync(resourceGroupName), this::wrapModel);
     }
 
     @Override
@@ -90,6 +96,6 @@ public class SpringServicesImpl
 
     @Override
     public PagedFlux<SpringService> listAsync() {
-        return inner().listAsync().mapPage(this::wrapModel);
+        return PagedConverter.mapPage(inner().listAsync(), this::wrapModel);
     }
 }

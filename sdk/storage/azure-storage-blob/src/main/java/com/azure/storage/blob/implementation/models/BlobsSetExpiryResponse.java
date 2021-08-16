@@ -8,10 +8,8 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.rest.ResponseBase;
 
-/**
- * Contains all response data for the setExpiry operation.
- */
-public final class BlobsSetExpiryResponse extends ResponseBase<BlobSetExpiryHeaders, Void> {
+/** Contains all response data for the setExpiry operation. */
+public final class BlobsSetExpiryResponse extends ResponseBase<BlobsSetExpiryHeaders, Void> {
     /**
      * Creates an instance of BlobsSetExpiryResponse.
      *
@@ -21,7 +19,8 @@ public final class BlobsSetExpiryResponse extends ResponseBase<BlobSetExpiryHead
      * @param value the deserialized value of the HTTP response.
      * @param headers the deserialized headers of the HTTP response.
      */
-    public BlobsSetExpiryResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders, Void value, BlobSetExpiryHeaders headers) {
+    public BlobsSetExpiryResponse(
+            HttpRequest request, int statusCode, HttpHeaders rawHeaders, Void value, BlobsSetExpiryHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);
     }
 }

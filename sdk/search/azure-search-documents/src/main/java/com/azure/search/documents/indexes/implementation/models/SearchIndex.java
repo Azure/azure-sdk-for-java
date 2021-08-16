@@ -7,7 +7,15 @@
 package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.search.documents.indexes.models.CharFilter;
 import com.azure.search.documents.indexes.models.CorsOptions;
+import com.azure.search.documents.indexes.models.LexicalAnalyzer;
+import com.azure.search.documents.indexes.models.LexicalNormalizer;
+import com.azure.search.documents.indexes.models.ScoringProfile;
+import com.azure.search.documents.indexes.models.SearchField;
+import com.azure.search.documents.indexes.models.SearchResourceEncryptionKey;
+import com.azure.search.documents.indexes.models.SearchSuggester;
+import com.azure.search.documents.indexes.models.SimilarityAlgorithm;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -50,7 +58,7 @@ public final class SearchIndex {
      * The suggesters for the index.
      */
     @JsonProperty(value = "suggesters")
-    private List<Suggester> suggesters;
+    private List<SearchSuggester> suggesters;
 
     /*
      * The analyzers for the index.
@@ -77,6 +85,12 @@ public final class SearchIndex {
     private List<CharFilter> charFilters;
 
     /*
+     * The normalizers for the index.
+     */
+    @JsonProperty(value = "normalizers")
+    private List<LexicalNormalizer> normalizers;
+
+    /*
      * A description of an encryption key that you create in Azure Key Vault.
      * This key is used to provide an additional level of encryption-at-rest
      * for your data when you want full assurance that no one, not even
@@ -98,7 +112,7 @@ public final class SearchIndex {
      * indexes. If null, the ClassicSimilarity algorithm is used.
      */
     @JsonProperty(value = "similarity")
-    private Similarity similarity;
+    private SimilarityAlgorithm similarity;
 
     /*
      * The ETag of the index.
@@ -215,7 +229,7 @@ public final class SearchIndex {
      *
      * @return the suggesters value.
      */
-    public List<Suggester> getSuggesters() {
+    public List<SearchSuggester> getSuggesters() {
         return this.suggesters;
     }
 
@@ -225,7 +239,7 @@ public final class SearchIndex {
      * @param suggesters the suggesters value to set.
      * @return the SearchIndex object itself.
      */
-    public SearchIndex setSuggesters(List<Suggester> suggesters) {
+    public SearchIndex setSuggesters(List<SearchSuggester> suggesters) {
         this.suggesters = suggesters;
         return this;
     }
@@ -311,6 +325,26 @@ public final class SearchIndex {
     }
 
     /**
+     * Get the normalizers property: The normalizers for the index.
+     *
+     * @return the normalizers value.
+     */
+    public List<LexicalNormalizer> getNormalizers() {
+        return this.normalizers;
+    }
+
+    /**
+     * Set the normalizers property: The normalizers for the index.
+     *
+     * @param normalizers the normalizers value to set.
+     * @return the SearchIndex object itself.
+     */
+    public SearchIndex setNormalizers(List<LexicalNormalizer> normalizers) {
+        this.normalizers = normalizers;
+        return this;
+    }
+
+    /**
      * Get the encryptionKey property: A description of an encryption key that you create in Azure Key Vault. This key
      * is used to provide an additional level of encryption-at-rest for your data when you want full assurance that no
      * one, not even Microsoft, can decrypt your data in Azure Cognitive Search. Once you have encrypted your data, it
@@ -349,7 +383,7 @@ public final class SearchIndex {
      *
      * @return the similarity value.
      */
-    public Similarity getSimilarity() {
+    public SimilarityAlgorithm getSimilarity() {
         return this.similarity;
     }
 
@@ -361,7 +395,7 @@ public final class SearchIndex {
      * @param similarity the similarity value to set.
      * @return the SearchIndex object itself.
      */
-    public SearchIndex setSimilarity(Similarity similarity) {
+    public SearchIndex setSimilarity(SimilarityAlgorithm similarity) {
         this.similarity = similarity;
         return this;
     }

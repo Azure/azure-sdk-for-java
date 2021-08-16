@@ -31,6 +31,29 @@ public final class SkuName extends ExpandableStringEnum<SkuName> {
     /** Static value Premium_ChinaCdn for SkuName. */
     public static final SkuName PREMIUM_CHINA_CDN = fromString("Premium_ChinaCdn");
 
+    /** Static value Standard_AzureFrontDoor for SkuName. */
+    public static final SkuName STANDARD_AZURE_FRONT_DOOR = fromString("Standard_AzureFrontDoor");
+
+    /** Static value Premium_AzureFrontDoor for SkuName. */
+    public static final SkuName PREMIUM_AZURE_FRONT_DOOR = fromString("Premium_AzureFrontDoor");
+
+    /** Static value Standard_955BandWidth_ChinaCdn for SkuName. */
+    public static final SkuName STANDARD_955BAND_WIDTH_CHINA_CDN = fromString("Standard_955BandWidth_ChinaCdn");
+
+    /** Static value Standard_AvgBandWidth_ChinaCdn for SkuName. */
+    public static final SkuName STANDARD_AVG_BAND_WIDTH_CHINA_CDN = fromString("Standard_AvgBandWidth_ChinaCdn");
+
+    /** Static value StandardPlus_ChinaCdn for SkuName. */
+    public static final SkuName STANDARD_PLUS_CHINA_CDN = fromString("StandardPlus_ChinaCdn");
+
+    /** Static value StandardPlus_955BandWidth_ChinaCdn for SkuName. */
+    public static final SkuName STANDARD_PLUS_955BAND_WIDTH_CHINA_CDN =
+        fromString("StandardPlus_955BandWidth_ChinaCdn");
+
+    /** Static value StandardPlus_AvgBandWidth_ChinaCdn for SkuName. */
+    public static final SkuName STANDARD_PLUS_AVG_BAND_WIDTH_CHINA_CDN =
+        fromString("StandardPlus_AvgBandWidth_ChinaCdn");
+
     /**
      * Creates or finds a SkuName from its string representation.
      *

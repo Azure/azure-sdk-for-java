@@ -37,6 +37,9 @@ public final class RequestUriOperator extends ExpandableStringEnum<RequestUriOpe
     /** Static value GreaterThanOrEqual for RequestUriOperator. */
     public static final RequestUriOperator GREATER_THAN_OR_EQUAL = fromString("GreaterThanOrEqual");
 
+    /** Static value RegEx for RequestUriOperator. */
+    public static final RequestUriOperator REG_EX = fromString("RegEx");
+
     /**
      * Creates or finds a RequestUriOperator from its string representation.
      *

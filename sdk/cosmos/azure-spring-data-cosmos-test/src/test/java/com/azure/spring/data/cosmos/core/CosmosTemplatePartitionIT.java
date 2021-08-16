@@ -7,6 +7,7 @@ import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.spring.data.cosmos.CosmosFactory;
+import com.azure.spring.data.cosmos.IntegrationTestCollectionManager;
 import com.azure.spring.data.cosmos.common.PageTestUtils;
 import com.azure.spring.data.cosmos.common.TestConstants;
 import com.azure.spring.data.cosmos.common.TestUtils;
@@ -20,9 +21,8 @@ import com.azure.spring.data.cosmos.core.query.CriteriaType;
 import com.azure.spring.data.cosmos.domain.PartitionPerson;
 import com.azure.spring.data.cosmos.repository.TestRepositoryConfig;
 import com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation;
-import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Before;
+import org.junit.ClassRule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,10 +65,12 @@ public class CosmosTemplatePartitionIT {
     private static final PartitionPerson TEST_PERSON_2 = new PartitionPerson(ID_2, NEW_FIRST_NAME,
         TEST_PERSON.getZipCode(), HOBBIES, ADDRESSES);
 
+    @ClassRule
+    public static final IntegrationTestCollectionManager collectionManager = new IntegrationTestCollectionManager();
+
     private static CosmosTemplate cosmosTemplate;
     private static String containerName;
     private static CosmosEntityInformation<PartitionPerson, String> personInfo;
-    private static boolean initialized;
 
     @Autowired
     private ApplicationContext applicationContext;
@@ -79,35 +81,23 @@ public class CosmosTemplatePartitionIT {
 
     @Before
     public void setUp() throws ClassNotFoundException {
-        if (!initialized) {
+        if (cosmosTemplate == null) {
             CosmosAsyncClient client = CosmosFactory.createCosmosAsyncClient(cosmosClientBuilder);
             final CosmosFactory cosmosFactory = new CosmosFactory(client, TestConstants.DB_NAME);
             final CosmosMappingContext mappingContext = new CosmosMappingContext();
 
             personInfo = new CosmosEntityInformation<>(PartitionPerson.class);
+            containerName = personInfo.getContainerName();
             mappingContext.setInitialEntitySet(new EntityScanner(this.applicationContext).scan(Persistent.class));
 
             final MappingCosmosConverter dbConverter = new MappingCosmosConverter(mappingContext, null);
 
             cosmosTemplate = new CosmosTemplate(cosmosFactory, cosmosConfig, dbConverter);
-            containerName = personInfo.getContainerName();
-
-            cosmosTemplate.createContainerIfNotExists(personInfo);
-            initialized = true;
         }
 
+        collectionManager.ensureContainersCreatedAndEmpty(cosmosTemplate, PartitionPerson.class);
         cosmosTemplate.insert(PartitionPerson.class.getSimpleName(), TEST_PERSON,
             new PartitionKey(TEST_PERSON.getZipCode()));
-    }
-
-    @After
-    public void cleanup() {
-        cosmosTemplate.deleteAll(personInfo.getContainerName(), PartitionPerson.class);
-    }
-
-    @AfterClass
-    public static void afterClassCleanup() {
-        cosmosTemplate.deleteContainer(personInfo.getContainerName());
     }
 
     @Test
@@ -271,7 +261,7 @@ public class CosmosTemplatePartitionIT {
         assertThat(page1.getContent().size()).isEqualTo(PAGE_SIZE_1);
         PageTestUtils.validateNonLastPage(page1, PAGE_SIZE_1);
 
-        final Page<PartitionPerson> page2 = cosmosTemplate.findAll(page1.getPageable(),
+        final Page<PartitionPerson> page2 = cosmosTemplate.findAll(page1.nextPageable(),
             PartitionPerson.class, containerName);
         assertThat(page2.getContent().size()).isEqualTo(1);
         PageTestUtils.validateLastPage(page2, PAGE_SIZE_1);

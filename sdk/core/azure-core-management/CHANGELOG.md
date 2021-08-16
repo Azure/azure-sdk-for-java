@@ -1,6 +1,57 @@
 # Release History
 
-## 1.2.0-beta.1 (Unreleased)
+## 1.5.0-beta.1 (Unreleased)
+
+
+## 1.4.0 (2021-08-06)
+
+### Features Added
+
+- Added new Azure region `Region.US_WEST3`.
+
+## 1.3.1 (2021-07-01)
+
+### Dependency Updates
+
+- Upgraded `azure-core` from `1.17.0` to `1.18.0`.
+
+## 1.3.0 (2021-06-07)
+
+### Features Added
+
+- Added Support for Challenge Based Authentication in `ArmChallengeAuthenticationPolicy`.
+  
+### Fixed
+
+- Fixed bug in `ManagementErrorDeserializer`. ([#21615](https://github.com/Azure/azure-sdk-for-java/issues/21615))
+
+### Dependency Updates
+
+- Upgraded `azure-core` from `1.16.0` to `1.17.0`.
+
+## 1.2.2 (2021-05-07)
+
+### Dependency Updates
+
+- Upgraded `azure-core` from `1.15.0` to `1.16.0`.
+
+## 1.2.1 (2021-04-02)
+
+### Dependency Updates
+
+- Upgraded `azure-core` from `1.14.0` to `1.15.0`.
+
+## 1.2.0 (2021-03-08)
+
+### New Features
+
+- Added `SystemData`.
+
+### Dependency Updates
+
+- Upgraded `azure-core` from `1.13.0` to `1.14.0`.
+
+## 1.1.1 (2021-02-05)
 
 - Fixed long-running operation, PUT method, response 200 and Azure-AsyncOperation.
 

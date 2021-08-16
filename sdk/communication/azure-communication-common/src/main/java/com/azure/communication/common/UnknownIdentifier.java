@@ -7,7 +7,7 @@ import com.azure.core.util.CoreUtils;
 /**
  * Catch-all for all other Communication identifiers for Communication Services
  */
-public class UnknownIdentifier extends CommunicationIdentifier {
+public final class UnknownIdentifier extends CommunicationIdentifier {
 
     private final String id;
 
@@ -24,7 +24,10 @@ public class UnknownIdentifier extends CommunicationIdentifier {
         this.id = id;
     }
 
-    @Override
+    /**
+     * Get id of this identifier
+     * @return id of this identifier
+     */
     public String getId() {
         return id;
     }

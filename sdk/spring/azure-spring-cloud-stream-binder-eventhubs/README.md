@@ -6,21 +6,19 @@ microservice using **Spring Cloud Stream** based on [Azure Event Hub][azure_even
 [Source code][src] | [Package (Maven)][package] | [API reference documentation][refdocs] | [Product documentation][docs] | [Samples][sample]
 
 ## Getting started
+
 ### Prerequisites
-- [Java Development Kit (JDK)][jdk_link] with version 8 or above
-- [Azure Subscription][azure_subscription]
-- [Maven][maven] 3.0 and above
+- [Environment checklist][environment_checklist]
 
 ### Include the package
-[//]: # ({x-version-update-start;com.azure.spring:azure-spring-cloud-stream-binder-eventhubs;current})
+1. [Add azure-spring-cloud-dependencies].
+1. Add dependency. `<version>` can be skipped because we already add `azure-spring-cloud-dependencies`.
 ```xml
 <dependency>
-    <groupId>com.azure.spring</groupId>
-    <artifactId>azure-spring-cloud-stream-binder-eventhubs</artifactId>
-    <version>2.2.0-beta.1</version>
+  <groupId>com.azure.spring</groupId>
+  <artifactId>azure-spring-cloud-stream-binder-eventhubs</artifactId>
 </dependency>
 ```
-[//]: # ({x-version-update-end})
 
 ## Key concepts
 
@@ -39,10 +37,8 @@ that's why you have to fill `spring.cloud.stream.eventhub.checkpoint-storage-acc
 
 #### Partitioning Support
 
-Event Hub provides similar concept of physical partition as Kafka. But unlike Kafka's auto rebalancing between 
-consumers and partitions, Event Hub provides a kind of preemptive mode. Storage account acts as lease to 
-determine which partition is owned by which consumer. When a new consumer starts, it will try to steal some partitions 
-from most heavy-loaded consumer to achieve workload balancing.
+Event Hub provides a similar concept of physical partition as Kafka. But unlike Kafka's auto rebalancing between consumers and partitions, Event Hub provides a kind of preemptive mode. The storage account acts as a lease to determine which partition is owned by which consumer. When a new consumer starts, it will try to steal some partitions
+from most heavy-loaded consumers to achieve the workload balancing.
 
 ## Examples 
 
@@ -56,67 +52,102 @@ The binder provides the following configuration options in `application.properti
 
 Name | Description | Required | Default 
 ---|---|---|---
- spring.cloud.azure.credential-file-path | Location of azure credential file | Yes |
  spring.cloud.azure.resource-group | Name of Azure resource group | Yes |
  spring.cloud.azure.region | Region name of the Azure resource group, e.g. westus | Yes | 
  spring.cloud.azure.eventhub.namespace | Event Hub Namespace. Auto creating if missing | Yes |
  spring.cloud.azure.eventhub.checkpoint-storage-account | StorageAccount name for checkpoint message successfully consumed | Yes
 
- #### Event Hub Producer Properties ####
+#### Common Producer Properties ####
 
- It supports the following configurations with the format of `spring.cloud.stream.eventhub.bindings.<channelName>.producer`.
+You can use the producer configurations of **Spring Cloud Stream**, 
+it uses the configuration with the format of `spring.cloud.stream.bindings.<channelName>.producer`.
+
+##### Partition configuration
+
+The system will obtain the parameter `PartitionSupply` to send the message, 
+the following is the process of obtaining the priority of the partition ID and key:
+
+![Create PartitionSupply parameter process](resource/create-partition-supply-process.png)
+
+The following are configuration items related to the producer:
+
+**_partition-count_**
+
+The number of target partitions for the data, if partitioning is enabled.
+
+Default: 1
+
+**_partition-key-extractor-name_**
+
+The name of the bean that implements `PartitionKeyExtractorStrategy`. 
+The partition handler will first use the `PartitionKeyExtractorStrategy#extractKey` method to obtain the partition key value.
+
+Default: null
+
+**_partition-key-expression_**
+
+A SpEL expression that determines how to partition outbound data. 
+When interface `PartitionKeyExtractorStrategy` is not implemented, it will be called in the method `PartitionHandler#extractKey`.
+
+Default: null
+
+For more information about setting partition for the producer properties, please refer to the [Producer Properties of Spring Cloud Stream][spring_cloud_stream_current_producer_properties].
+
+#### Event Hub Producer Properties ####
+
+It supports the following configurations with the format of `spring.cloud.stream.eventhub.bindings.<channelName>.producer`.
  
- **_sync_**
- 
- Whether the producer should act in a synchronous manner with respect to writing messages into a stream. If true, the 
- producer will wait for a response from Event Hub after a send operation.
+**_sync_**
 
- Default: `false`
+Whether the producer should act in a synchronous manner with respect to writing messages into a stream. If true, the 
+producer will wait for a response from Event Hub after a send operation.
 
- **_send-timeout_**
+Default: `false`
 
- Effective only if `sync` is set to true. The amount of time to wait for a response from Event Hub after a send operation, in milliseconds.
+**_send-timeout_**
 
- Default: `10000`
- 
- #### Event Hub Consumer Properties ####
+Effective only if `sync` is set to true. The amount of time to wait for a response from Event Hub after a send operation, in milliseconds.
 
-  It supports the following configurations with the format of `spring.cloud.stream.eventhub.bindings.<channelName>.consumer`.
+Default: `10000`
 
-  **_start-position_**
+#### Event Hub Consumer Properties ####
 
-  Whether the consumer receives messages from the beginning or end of event hub. if `EARLIEST`, from beginning. If 
-  `LATEST`, from end.
+It supports the following configurations with the format of `spring.cloud.stream.eventhub.bindings.<channelName>.consumer`.
 
-  Default: `LATEST`
+**_start-position_**
 
-  **_checkpoint-mode_**
+Whether the consumer receives messages from the beginning or end of event hub. if `EARLIEST`, from beginning. If 
+`LATEST`, from end.
 
-  The mode in which checkpoints are updated.
-  
-  `RECORD`, checkpoints occur after each record is successfully processed by user-defined message handler without any exception. If you use `StorageAccount` as checkpoint store, this might become botterneck. 
-  
-  `BATCH`, checkpoints occur after each batch of messages successfully processed by user-defined message handler without any exception. `default` mode. You may experience reprocessing at most one batch of messages when message processing fails. Be aware that batch size could be any value.
-  
-  `MANUAL`, checkpoints occur on demand by the user via the `Checkpointer`. You can do checkpoints after the message has been successfully processed. `Message.getHeaders.get(AzureHeaders.CHECKPOINTER)`callback can get you the `Checkpointer` you need. Please be aware all messages in the corresponding Event Hub partition before this message will be considered as successfully processed.
-  
-  `PARTITION_COUNT`, checkpoints occur after the count of messages defined by `checkpoint_count` successfully processed for each partition. You may experience reprocessing at most `checkpoint_count` of  when message processing fails.
-  
-  `Time`, checkpoints occur at fixed time inerval specified by `checkpoint_interval`. You may experience reprocessing of messages during this time interval when message processing fails.
+Default: `LATEST`
 
-  Default: `BATCH`
+**_checkpoint-mode_**
 
-  **_checkpoint-count_**
+The mode in which checkpoints are updated.
 
-  Effectively only when `checkpoint-mode` is `PARTITION_COUNT`. Decides the amount of message for each partition to do one checkpoint.
+`RECORD`, checkpoints occur after each record is successfully processed by user-defined message handler without any exception. If you use `StorageAccount` as checkpoint store, this might become botterneck. 
 
-  Default: `10`
-  
-  **_checkpoint-interval_**
+`BATCH`, checkpoints occur after each batch of messages successfully processed by user-defined message handler without any exception. `default` mode. You may experience reprocessing at most one batch of messages when message processing fails. Be aware that batch size could be any value.
 
-  Effectively only when `checkpoint-mode` is `Time`. Decides The time interval to do one checkpoint.
+`MANUAL`, checkpoints occur on demand by the user via the `Checkpointer`. You can do checkpoints after the message has been successfully processed. `Message.getHeaders.get(AzureHeaders.CHECKPOINTER)`callback can get you the `Checkpointer` you need. Please be aware all messages in the corresponding Event Hub partition before this message will be considered as successfully processed.
 
-  Default: `5s`
+`PARTITION_COUNT`, checkpoints occur after the count of messages defined by `checkpoint_count` successfully processed for each partition. You may experience reprocessing at most `checkpoint_count` of  when message processing fails.
+
+`Time`, checkpoints occur at fixed time inerval specified by `checkpoint_interval`. You may experience reprocessing of messages during this time interval when message processing fails.
+
+Default: `BATCH`
+
+**_checkpoint-count_**
+
+Effectively only when `checkpoint-mode` is `PARTITION_COUNT`. Decides the amount of message for each partition to do one checkpoint.
+
+Default: `10`
+
+**_checkpoint-interval_**
+
+Effectively only when `checkpoint-mode` is `Time`. Decides The time interval to do one checkpoint.
+
+Default: `5s`
 
 ### Error Channels
 **_consumer error channel_**
@@ -127,7 +158,7 @@ this channel is open by default, you can handle the error message in this way:
     // Replace group with spring.cloud.stream.bindings.input.group
     @ServiceActivator(inputChannel = "{destination}.{group}.errors")
     public void consumerError(Message<?> message) {
-        System.out.println("Handling customer ERROR: " + message);
+        LOGGER.error("Handling customer ERROR: " + message);
     }
 ```
 
@@ -143,7 +174,7 @@ you can handle the error message in this way:
     // Replace destination with spring.cloud.stream.bindings.output.destination
     @ServiceActivator(inputChannel = "{destination}.errors")
     public void producerError(Message<?> message) {
-        System.out.println("Handling Producer ERROR: " + message);
+        LOGGER.error("Handling Producer ERROR: " + message);
     }
 ```
 
@@ -178,16 +209,16 @@ This project welcomes contributions and suggestions.  Most contributions require
 Please follow [instructions here][contributing_md] to build from source or contribute.
 
 <!-- Link -->
-[src]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-cloud-stream-binder-eventhubs/src
-[package]: https://mvnrepository.com/artifact/com.microsoft.azure/spring-cloud-azure-eventhubs-stream-binder
+[src]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/azure-spring-cloud-stream-binder-eventhubs/src
+[package]: https://mvnrepository.com/artifact/com.azure.spring/azure-spring-cloud-stream-binder-eventhubs
 [refdocs]: https://azure.github.io/azure-sdk-for-java/springcloud.html#azure-spring-cloud-stream-binder-eventhubs
 [docs]: https://docs.microsoft.com/azure/developer/java/spring-framework/configure-spring-cloud-stream-binder-java-app-azure-event-hub
-[sample]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-samples/azure-spring-cloud-sample-eventhubs-binder
+[sample]: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/tag_azure-spring-boot_3.6.0/eventhubs/azure-spring-cloud-sample-eventhubs-binder
 [logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK#use-logback-logging-framework-in-a-spring-boot-application
-[azure_subscription]: https://azure.microsoft.com/free
-[logging_doc]: https://docs.spring.io/spring-boot/docs/current/reference/html/spring-boot-features.html#boot-features-logging
-[eventhubs_multibinders_sample]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-samples/azure-spring-cloud-sample-eventhubs-multibinders
-[contributing_md]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/CONTRIBUTING.md
-[maven]: https://maven.apache.org/
+[logging_doc]: https://docs.spring.io/spring-boot/docs/current/reference/html/features.html#boot-features-logging
+[eventhubs_multibinders_sample]: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/tag_azure-spring-boot_3.6.0/eventhubs/azure-spring-cloud-sample-eventhubs-multibinders
+[contributing_md]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/CONTRIBUTING.md
 [azure_event_hub]: https://azure.microsoft.com/services/event-hubs/
-[jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
+[environment_checklist]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/ENVIRONMENT_CHECKLIST.md#ready-to-run-checklist
+[spring_cloud_stream_current_producer_properties]: https://docs.spring.io/spring-cloud-stream/docs/current/reference/html/spring-cloud-stream.html#_producer_properties
+[Add azure-spring-cloud-dependencies]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/AZURE_SPRING_BOMS_USAGE.md#add-azure-spring-cloud-dependencies

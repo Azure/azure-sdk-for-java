@@ -8,6 +8,8 @@
 
 package com.microsoft.azure.management.iotcentral.v2018_09_01.implementation;
 
+import java.util.List;
+import com.microsoft.azure.management.iotcentral.v2018_09_01.AppTemplateLocations;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -49,6 +51,18 @@ public class AppTemplateInner {
      */
     @JsonProperty(value = "description", access = JsonProperty.Access.WRITE_ONLY)
     private String description;
+
+    /**
+     * The industry of the template.
+     */
+    @JsonProperty(value = "industry", access = JsonProperty.Access.WRITE_ONLY)
+    private String industry;
+
+    /**
+     * A list of locations that support the template.
+     */
+    @JsonProperty(value = "locations", access = JsonProperty.Access.WRITE_ONLY)
+    private List<AppTemplateLocations> locations;
 
     /**
      * Get the ID of the template.
@@ -102,6 +116,24 @@ public class AppTemplateInner {
      */
     public String description() {
         return this.description;
+    }
+
+    /**
+     * Get the industry of the template.
+     *
+     * @return the industry value
+     */
+    public String industry() {
+        return this.industry;
+    }
+
+    /**
+     * Get a list of locations that support the template.
+     *
+     * @return the locations value
+     */
+    public List<AppTemplateLocations> locations() {
+        return this.locations;
     }
 
 }

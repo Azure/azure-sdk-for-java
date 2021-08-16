@@ -4,12 +4,22 @@
 package com.azure.ai.metricsadvisor.models;
 
 import com.azure.ai.metricsadvisor.implementation.util.MetricFeedbackHelper;
+import com.azure.core.annotation.Fluent;
 
 import java.time.OffsetDateTime;
 
 /**
- * The abstract MetricFeedback class.
+ * Users can submit various feedback for the anomaly detection that the service
+ * performed. The {@link MetricFeedback} represents the base type for different
+ * feedback. The feedback will be applied for the future anomaly detection
+ * processing of the same time series.
+ *
+ * @see MetricAnomalyFeedback
+ * @see MetricChangePointFeedback
+ * @see MetricCommentFeedback
+ * @see MetricPeriodFeedback
  */
+@Fluent
 public abstract class MetricFeedback {
     private String id;
     private String metricId;

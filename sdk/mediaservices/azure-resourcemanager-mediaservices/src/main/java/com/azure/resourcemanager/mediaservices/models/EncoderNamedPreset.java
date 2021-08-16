@@ -45,6 +45,21 @@ public final class EncoderNamedPreset extends ExpandableStringEnum<EncoderNamedP
     /** Static value H264MultipleBitrateSD for EncoderNamedPreset. */
     public static final EncoderNamedPreset H264MULTIPLE_BITRATE_SD = fromString("H264MultipleBitrateSD");
 
+    /** Static value H265ContentAwareEncoding for EncoderNamedPreset. */
+    public static final EncoderNamedPreset H265CONTENT_AWARE_ENCODING = fromString("H265ContentAwareEncoding");
+
+    /** Static value H265AdaptiveStreaming for EncoderNamedPreset. */
+    public static final EncoderNamedPreset H265ADAPTIVE_STREAMING = fromString("H265AdaptiveStreaming");
+
+    /** Static value H265SingleBitrate720p for EncoderNamedPreset. */
+    public static final EncoderNamedPreset H265SINGLE_BITRATE720P = fromString("H265SingleBitrate720p");
+
+    /** Static value H265SingleBitrate1080p for EncoderNamedPreset. */
+    public static final EncoderNamedPreset H265SINGLE_BITRATE1080P = fromString("H265SingleBitrate1080p");
+
+    /** Static value H265SingleBitrate4K for EncoderNamedPreset. */
+    public static final EncoderNamedPreset H265SINGLE_BITRATE4K = fromString("H265SingleBitrate4K");
+
     /**
      * Creates or finds a EncoderNamedPreset from its string representation.
      *

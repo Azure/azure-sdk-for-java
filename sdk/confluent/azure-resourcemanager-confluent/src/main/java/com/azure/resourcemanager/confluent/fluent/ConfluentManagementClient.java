@@ -64,4 +64,11 @@ public interface ConfluentManagementClient {
      * @return the OrganizationsClient object.
      */
     OrganizationsClient getOrganizations();
+
+    /**
+     * Gets the ValidationsClient object to access its operations.
+     *
+     * @return the ValidationsClient object.
+     */
+    ValidationsClient getValidations();
 }

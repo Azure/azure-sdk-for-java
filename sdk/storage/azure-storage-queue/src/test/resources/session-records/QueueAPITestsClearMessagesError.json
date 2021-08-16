@@ -1,26 +1,26 @@
 {
   "networkCallRecords" : [ {
     "Method" : "DELETE",
-    "Uri" : "https://REDACTED.queue.core.windows.net/queueapitestsclearmessageserror31492f471b99c5c51/messages",
+    "Uri" : "https://REDACTED.queue.core.windows.net/1bf942281bf942286bc950230f29d326e33e465487/messages",
     "Headers" : {
-      "x-ms-version" : "2019-12-12",
-      "User-Agent" : "azsdk-java-azure-storage-queue/12.6.0-beta.1 (11.0.6; Windows 10 10.0)",
-      "x-ms-client-request-id" : "15fde8be-64fe-4acb-865d-a7e4b354163d"
+      "x-ms-version" : "2020-06-12",
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.10.0-beta.1 (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "d72b5429-7aa5-46f9-be2f-be92db33022b"
     },
     "Response" : {
-      "x-ms-version" : "2019-12-12",
+      "content-length" : "217",
+      "x-ms-version" : "2020-06-12",
       "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
       "x-ms-error-code" : "QueueNotFound",
       "retry-after" : "0",
-      "Content-Length" : "217",
       "StatusCode" : "404",
-      "x-ms-request-id" : "37a39f35-3003-009b-0203-3a8ca5000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>QueueNotFound</Code><Message>The specified queue does not exist.\nRequestId:37a39f35-3003-009b-0203-3a8ca5000000\nTime:2020-06-04T00:05:06.8169902Z</Message></Error>",
-      "Date" : "Thu, 04 Jun 2020 00:05:06 GMT",
-      "x-ms-client-request-id" : "15fde8be-64fe-4acb-865d-a7e4b354163d",
+      "x-ms-request-id" : "d9b89a07-f003-0012-5109-418df1000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>QueueNotFound</Code><Message>The specified queue does not exist.\nRequestId:d9b89a07-f003-0012-5109-418df1000000\nTime:2021-05-04T17:18:39.3074762Z</Message></Error>",
+      "x-ms-client-request-id" : "d72b5429-7aa5-46f9-be2f-be92db33022b",
+      "Date" : "Tue, 04 May 2021 17:18:38 GMT",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   } ],
-  "variables" : [ "queueapitestsclearmessageserror31492f471b99c5c51" ]
+  "variables" : [ "1bf942281bf942286bc950230f29d326e33e465487" ]
 }

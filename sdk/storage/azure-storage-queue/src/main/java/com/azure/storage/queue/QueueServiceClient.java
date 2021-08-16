@@ -69,6 +69,15 @@ public final class QueueServiceClient {
     }
 
     /**
+     * Gets the message encoding the client is using.
+     *
+     * @return the message encoding the client is using.
+     */
+    public QueueMessageEncoding getMessageEncoding() {
+        return client.getMessageEncoding();
+    }
+
+    /**
      * Constructs a QueueClient that interacts with the specified queue.
      *
      * This will not create the queue in the storage account if it doesn't exist.
@@ -201,7 +210,8 @@ public final class QueueServiceClient {
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/list-queues1">Azure Docs</a>.</p>
      *
-     * @param options Options for listing queues
+     * @param options Options for listing queues. If iterating by page, the page size passed to byPage methods such as
+     *      * {@link PagedIterable#iterableByPage(int)} will be preferred over the value set on these options.
      * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
      * concludes a {@link RuntimeException} will be thrown.
      * @param context Additional context that is passed through the Http pipeline during the service call.
@@ -220,7 +230,8 @@ public final class QueueServiceClient {
      * for the queues.
      *
      * @param marker Starting point to list the queues
-     * @param options Options for listing queues
+     * @param options Options for listing queues. If iterating by page, the page size passed to byPage methods such as
+     * {@link PagedIterable#iterableByPage(int)} will be preferred over the value set on these options.S
      * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
      * concludes a {@link RuntimeException} will be thrown.
      * @param context Additional context that is passed through the Http pipeline during the service call.

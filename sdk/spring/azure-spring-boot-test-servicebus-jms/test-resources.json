@@ -8,14 +8,15 @@
     }
   },
   "variables": {
-    "namespaces_name": "[parameters('baseName')]",
+    "namespaces_name_standard": "[concat(parameters('baseName'), '-Standard')]",
+    "namespaces_name_premium": "[concat(parameters('baseName'), '-Premium')]",
     "location": "[resourceGroup().location]"
   },
   "resources": [
     {
       "type": "Microsoft.ServiceBus/namespaces",
       "apiVersion": "2018-01-01-preview",
-      "name": "[variables('namespaces_name')]",
+      "name": "[variables('namespaces_name_standard')]",
       "location": "[variables('location')]",
       "sku": {
         "name": "Standard",
@@ -26,12 +27,41 @@
       }
     },
     {
+      "type": "Microsoft.ServiceBus/namespaces",
+      "apiVersion": "2018-01-01-preview",
+      "name": "[variables('namespaces_name_premium')]",
+      "location": "[variables('location')]",
+      "sku": {
+        "name": "Premium",
+        "tier": "Premium"
+      },
+      "properties": {
+        "zoneRedundant": false
+      }
+    },
+    {
       "type": "Microsoft.ServiceBus/namespaces/AuthorizationRules",
       "apiVersion": "2017-04-01",
-      "name": "[concat(variables('namespaces_name'), '/RootManageSharedAccessKey')]",
+      "name": "[concat(variables('namespaces_name_standard'), '/RootManageSharedAccessKey')]",
       "location": "[variables('location')]",
       "dependsOn": [
-        "[resourceId('Microsoft.ServiceBus/namespaces', variables('namespaces_name'))]"
+        "[resourceId('Microsoft.ServiceBus/namespaces', variables('namespaces_name_standard'))]"
+      ],
+      "properties": {
+        "rights": [
+          "Listen",
+          "Manage",
+          "Send"
+        ]
+      }
+    },
+    {
+      "type": "Microsoft.ServiceBus/namespaces/AuthorizationRules",
+      "apiVersion": "2017-04-01",
+      "name": "[concat(variables('namespaces_name_premium'), '/RootManageSharedAccessKey')]",
+      "location": "[variables('location')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.ServiceBus/namespaces', variables('namespaces_name_premium'))]"
       ],
       "properties": {
         "rights": [
@@ -44,10 +74,34 @@
     {
       "type": "Microsoft.ServiceBus/namespaces/queues",
       "apiVersion": "2017-04-01",
-      "name": "[concat(variables('namespaces_name'), '/que001')]",
+      "name": "[concat(variables('namespaces_name_standard'), '/que001')]",
       "location": "[variables('location')]",
       "dependsOn": [
-        "[resourceId('Microsoft.ServiceBus/namespaces', variables('namespaces_name'))]"
+        "[resourceId('Microsoft.ServiceBus/namespaces', variables('namespaces_name_standard'))]"
+      ],
+      "properties": {
+        "lockDuration": "PT30S",
+        "maxSizeInMegabytes": 1024,
+        "requiresDuplicateDetection": false,
+        "requiresSession": false,
+        "defaultMessageTimeToLive": "P14D",
+        "deadLetteringOnMessageExpiration": false,
+        "enableBatchedOperations": true,
+        "duplicateDetectionHistoryTimeWindow": "PT10M",
+        "maxDeliveryCount": 10,
+        "status": "Active",
+        "autoDeleteOnIdle": "P10675199DT2H48M5.4775807S",
+        "enablePartitioning": false,
+        "enableExpress": false
+      }
+    },
+    {
+      "type": "Microsoft.ServiceBus/namespaces/queues",
+      "apiVersion": "2017-04-01",
+      "name": "[concat(variables('namespaces_name_premium'), '/que001')]",
+      "location": "[variables('location')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.ServiceBus/namespaces', variables('namespaces_name_premium'))]"
       ],
       "properties": {
         "lockDuration": "PT30S",
@@ -67,9 +121,13 @@
     }
   ],
   "outputs": {
-    "SPRING_JMS_SERVICEBUS_CONNECTION_STRING": {
+    "SPRING_JMS_STANDARD_SERVICEBUS_CONNECTION_STRING": {
       "type": "string",
-      "value": "[listKeys(resourceId('Microsoft.ServiceBus/namespaces/authorizationRules', variables('namespaces_name'), 'RootManageSharedAccessKey'), '2017-04-01').primaryConnectionString]"
+      "value": "[listKeys(resourceId('Microsoft.ServiceBus/namespaces/authorizationRules', variables('namespaces_name_standard'), 'RootManageSharedAccessKey'), '2017-04-01').primaryConnectionString]"
+    },
+    "SPRING_JMS_PREMIUM_SERVICEBUS_CONNECTION_STRING": {
+      "type": "string",
+      "value": "[listKeys(resourceId('Microsoft.ServiceBus/namespaces/authorizationRules', variables('namespaces_name_premium'), 'RootManageSharedAccessKey'), '2017-04-01').primaryConnectionString]"
     }
   }
 }

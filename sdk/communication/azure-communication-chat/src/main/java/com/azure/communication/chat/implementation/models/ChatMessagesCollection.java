@@ -4,17 +4,17 @@
 
 package com.azure.communication.chat.implementation.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The ChatMessagesCollection model. */
-@Immutable
+/** Collection of chat messages for a particular chat thread. */
+@Fluent
 public final class ChatMessagesCollection {
     /*
      * Collection of chat messages.
      */
-    @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "value", required = true)
     private List<ChatMessage> value;
 
     /*
@@ -31,6 +31,17 @@ public final class ChatMessagesCollection {
      */
     public List<ChatMessage> getValue() {
         return this.value;
+    }
+
+    /**
+     * Set the value property: Collection of chat messages.
+     *
+     * @param value the value value to set.
+     * @return the ChatMessagesCollection object itself.
+     */
+    public ChatMessagesCollection setValue(List<ChatMessage> value) {
+        this.value = value;
+        return this;
     }
 
     /**

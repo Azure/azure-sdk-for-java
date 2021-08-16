@@ -81,6 +81,7 @@ jacoco.exec
 
 # Generated client pom file
 ClientAggregatePom.xml
+ClientFromSourcePom.xml
 
 # Anaconda virtual env
 venv
@@ -88,6 +89,9 @@ venv
 # NetBeans
 nbproject
 nb-configuration.xml
+
+# Scala Stylecheck
+scalastyle-output.xml
 
 # Emacs #
 

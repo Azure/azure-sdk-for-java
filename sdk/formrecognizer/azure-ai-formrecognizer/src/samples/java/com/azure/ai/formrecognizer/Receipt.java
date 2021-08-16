@@ -76,6 +76,10 @@ public final class Receipt {
      */
     private TypedFormField<LocalTime> transactionTime;
 
+    /**
+     * Constructs a receipt object from the provided recognized form.
+     * @param recognizedForm the recognized form object.
+     */
     public Receipt(RecognizedForm recognizedForm) {
         for (Map.Entry<String, FormField> entry : recognizedForm.getFields().entrySet()) {
             String key = entry.getKey();
@@ -112,7 +116,7 @@ public final class Receipt {
                     transactionTime = new TypedFormField<>(formField, LocalTime.class);
                     break;
                 case "Items":
-                    receiptItems = Collections.unmodifiableList(toReceiptItems(formField));
+                    receiptItems = toReceiptItems(formField);
                     break;
                 default:
                     break;
@@ -277,6 +281,7 @@ public final class Receipt {
          * Get the strongly typed value of the recognized field.
          *
          * @return the strongly typed value of the recognized field.
+         * @throws IllegalStateException when a type mismatch occurs.
          */
         @SuppressWarnings("unchecked")
         public T getValue() {

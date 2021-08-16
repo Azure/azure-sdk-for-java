@@ -404,6 +404,9 @@ public class HttpTransportClient extends TransportClient {
         HttpTransportClient.addHeader(httpRequestHeaders, HttpConstants.HttpHeaders.ACTIVITY_ID, activityId);
         HttpTransportClient.addHeader(httpRequestHeaders, HttpConstants.HttpHeaders.PARTITION_KEY, request);
         HttpTransportClient.addHeader(httpRequestHeaders, HttpConstants.HttpHeaders.PARTITION_KEY_RANGE_ID, request);
+        HttpTransportClient.addHeader(httpRequestHeaders, HttpConstants.HttpHeaders.READ_FEED_KEY_TYPE, request);
+        HttpTransportClient.addHeader(httpRequestHeaders, HttpConstants.HttpHeaders.START_EPK, request);
+        HttpTransportClient.addHeader(httpRequestHeaders, HttpConstants.HttpHeaders.END_EPK, request);
 
         String dateHeader = HttpUtils.getDateHeader(documentServiceRequestHeaders);
         HttpTransportClient.addHeader(httpRequestHeaders, HttpConstants.HttpHeaders.X_DATE, dateHeader);

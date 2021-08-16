@@ -31,7 +31,7 @@ The latest dependencies for resource management libraries are [available here](h
 
 The latest Azure Java SDK for management libraries is a result of our efforts to create a resource management client library that is user-friendly and idiomatic to the Java ecosystem.
 
-Apart from redesigns resulting from the [new Azure SDK Design Guidelines for Java](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/resourcemanager/docs/DESIGN.md), the latest version improves on several areas from old version.
+Apart from redesigns resulting from the [new Azure SDK Design Guidelines for Java](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/resourcemanager/docs/DESIGN.md), the latest version improves on several areas from old version.
 
 While conforming to the new guideline, we have tried our best to minimize the breaking changes. Most of the interfaces / classes / methods have stayed the same to offer user an easier migration experience.
 
@@ -73,7 +73,7 @@ Azure azure = Azure.authenticate(new File("my.azureauth")).withDefaultSubscripti
 ```
 **In new version, this feature has been removed.** If this creates concern on your side, please file an issue to let us know.
 
-For detailed information on the benefits of using the new authentication classes, please refer to [this page](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/resourcemanager/docs/AUTH.md)
+For detailed information on the benefits of using the new authentication classes, please refer to [this page](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/resourcemanager/docs/AUTH.md)
 
 ## AzureResourceManager Class
 
@@ -286,8 +286,8 @@ Flux.merge(
 
 More samples can be found at :
 - [README for new version of SDK](https://aka.ms/azsdk/java/mgmt)
-- [Code Samples for Resource Management Libraries](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/resourcemanager/docs/SAMPLE.md)
-- [Authentication Documentation](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/resourcemanager/docs/AUTH.md)
+- [Code Samples for Resource Management Libraries](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/resourcemanager/docs/SAMPLE.md)
+- [Authentication Documentation](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/resourcemanager/docs/AUTH.md)
 
 ## Need help?
 

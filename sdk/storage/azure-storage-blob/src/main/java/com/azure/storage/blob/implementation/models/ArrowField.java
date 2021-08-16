@@ -8,38 +8,36 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
-/**
- * field of an arrow schema.
- */
+/** Groups settings regarding specific field of an arrow schema. */
 @JacksonXmlRootElement(localName = "Field")
 @Fluent
 public final class ArrowField {
     /*
-     * The type property.
+     * The Type property.
      */
     @JsonProperty(value = "Type", required = true)
     private String type;
 
     /*
-     * The name property.
+     * The Name property.
      */
     @JsonProperty(value = "Name")
     private String name;
 
     /*
-     * The precision property.
+     * The Precision property.
      */
     @JsonProperty(value = "Precision")
     private Integer precision;
 
     /*
-     * The scale property.
+     * The Scale property.
      */
     @JsonProperty(value = "Scale")
     private Integer scale;
 
     /**
-     * Get the type property: The type property.
+     * Get the type property: The Type property.
      *
      * @return the type value.
      */
@@ -48,7 +46,7 @@ public final class ArrowField {
     }
 
     /**
-     * Set the type property: The type property.
+     * Set the type property: The Type property.
      *
      * @param type the type value to set.
      * @return the ArrowField object itself.
@@ -59,7 +57,7 @@ public final class ArrowField {
     }
 
     /**
-     * Get the name property: The name property.
+     * Get the name property: The Name property.
      *
      * @return the name value.
      */
@@ -68,7 +66,7 @@ public final class ArrowField {
     }
 
     /**
-     * Set the name property: The name property.
+     * Set the name property: The Name property.
      *
      * @param name the name value to set.
      * @return the ArrowField object itself.
@@ -79,7 +77,7 @@ public final class ArrowField {
     }
 
     /**
-     * Get the precision property: The precision property.
+     * Get the precision property: The Precision property.
      *
      * @return the precision value.
      */
@@ -88,7 +86,7 @@ public final class ArrowField {
     }
 
     /**
-     * Set the precision property: The precision property.
+     * Set the precision property: The Precision property.
      *
      * @param precision the precision value to set.
      * @return the ArrowField object itself.
@@ -99,7 +97,7 @@ public final class ArrowField {
     }
 
     /**
-     * Get the scale property: The scale property.
+     * Get the scale property: The Scale property.
      *
      * @return the scale value.
      */
@@ -108,7 +106,7 @@ public final class ArrowField {
     }
 
     /**
-     * Set the scale property: The scale property.
+     * Set the scale property: The Scale property.
      *
      * @param scale the scale value to set.
      * @return the ArrowField object itself.

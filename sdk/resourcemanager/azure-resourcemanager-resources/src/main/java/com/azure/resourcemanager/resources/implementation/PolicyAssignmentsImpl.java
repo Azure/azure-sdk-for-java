@@ -5,6 +5,7 @@ package com.azure.resourcemanager.resources.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.util.CoreUtils;
 import com.azure.resourcemanager.resources.models.PolicyAssignment;
 import com.azure.resourcemanager.resources.models.PolicyAssignments;
 import com.azure.resourcemanager.resources.models.ResourceGroups;
@@ -33,7 +34,7 @@ public final class PolicyAssignmentsImpl
 
     @Override
     public PagedIterable<PolicyAssignment> list() {
-        return wrapList(client.list());
+        return new PagedIterable<>(this.listAsync());
     }
 
     @Override
@@ -85,7 +86,7 @@ public final class PolicyAssignmentsImpl
 
     @Override
     public PagedIterable<PolicyAssignment> listByResourceGroup(String resourceGroupName) {
-        return wrapList(client.listByResourceGroup(resourceGroupName));
+        return new PagedIterable<>(this.listByResourceGroupAsync(resourceGroupName));
     }
 
     @Override
@@ -95,6 +96,10 @@ public final class PolicyAssignmentsImpl
 
     @Override
     public PagedFlux<PolicyAssignment> listByResourceGroupAsync(String resourceGroupName) {
+        if (CoreUtils.isNullOrEmpty(resourceGroupName)) {
+            return new PagedFlux<>(() -> Mono.error(
+                new IllegalArgumentException("Parameter 'resourceGroupName' is required and cannot be null.")));
+        }
         return wrapPageAsync(this.client.listByResourceGroupAsync(resourceGroupName));
     }
 }

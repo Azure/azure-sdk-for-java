@@ -3,9 +3,12 @@
 
 package com.azure.resourcemanager.redis.implementation;
 
+import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.redis.RedisManager;
+import com.azure.resourcemanager.redis.fluent.models.PrivateEndpointConnectionInner;
+import com.azure.resourcemanager.redis.fluent.models.PrivateLinkResourceInner;
 import com.azure.resourcemanager.redis.fluent.models.RedisAccessKeysInner;
 import com.azure.resourcemanager.redis.fluent.models.RedisLinkedServerWithPropertiesInner;
 import com.azure.resourcemanager.redis.fluent.models.RedisResourceInner;
@@ -31,7 +34,12 @@ import com.azure.resourcemanager.redis.models.SkuName;
 import com.azure.resourcemanager.redis.models.TlsVersion;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasId;
+import com.azure.resourcemanager.resources.fluentcore.arm.models.PrivateEndpoint;
+import com.azure.resourcemanager.resources.fluentcore.arm.models.PrivateEndpointConnection;
+import com.azure.resourcemanager.resources.fluentcore.arm.models.PrivateEndpointConnectionProvisioningState;
+import com.azure.resourcemanager.resources.fluentcore.arm.models.PrivateLinkResource;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
+import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import reactor.core.publisher.Mono;
 
@@ -640,5 +648,142 @@ class RedisCacheImpl extends GroupableResourceImpl<RedisCache, RedisResourceInne
             result.put(linkedServer.name(), linkedServer.serverRole());
         }
         return result;
+    }
+
+    @Override
+    public PagedIterable<PrivateLinkResource> listPrivateLinkResources() {
+        return new PagedIterable<>(listPrivateLinkResourcesAsync());
+    }
+
+    @Override
+    public PagedFlux<PrivateLinkResource> listPrivateLinkResourcesAsync() {
+        return PagedConverter.mapPage(this.manager().serviceClient().getPrivateLinkResources()
+            .listByRedisCacheAsync(this.resourceGroupName(), this.name()), PrivateLinkResourceImpl::new);
+    }
+
+    @Override
+    public PagedIterable<PrivateEndpointConnection> listPrivateEndpointConnections() {
+        return new PagedIterable<>(listPrivateEndpointConnectionsAsync());
+    }
+
+    @Override
+    public PagedFlux<PrivateEndpointConnection> listPrivateEndpointConnectionsAsync() {
+        return PagedConverter.mapPage(this.manager().serviceClient().getPrivateEndpointConnections()
+            .listAsync(this.resourceGroupName(), this.name()), PrivateEndpointConnectionImpl::new);
+    }
+
+    @Override
+    public void approvePrivateEndpointConnection(String privateEndpointConnectionName) {
+        approvePrivateEndpointConnectionAsync(privateEndpointConnectionName).block();
+    }
+
+    @Override
+    public Mono<Void> approvePrivateEndpointConnectionAsync(String privateEndpointConnectionName) {
+        return this.manager().serviceClient().getPrivateEndpointConnections()
+            .putWithResponseAsync(this.resourceGroupName(), this.name(), privateEndpointConnectionName,
+                new PrivateEndpointConnectionInner().withPrivateLinkServiceConnectionState(
+                    new com.azure.resourcemanager.redis.models.PrivateLinkServiceConnectionState()
+                        .withStatus(
+                            com.azure.resourcemanager.redis.models.PrivateEndpointServiceConnectionStatus.APPROVED)))
+            .then();
+    }
+
+    @Override
+    public void rejectPrivateEndpointConnection(String privateEndpointConnectionName) {
+        rejectPrivateEndpointConnectionAsync(privateEndpointConnectionName).block();
+    }
+
+    @Override
+    public Mono<Void> rejectPrivateEndpointConnectionAsync(String privateEndpointConnectionName) {
+        return this.manager().serviceClient().getPrivateEndpointConnections()
+            .putWithResponseAsync(this.resourceGroupName(), this.name(), privateEndpointConnectionName,
+                new PrivateEndpointConnectionInner().withPrivateLinkServiceConnectionState(
+                    new com.azure.resourcemanager.redis.models.PrivateLinkServiceConnectionState()
+                        .withStatus(
+                            com.azure.resourcemanager.redis.models.PrivateEndpointServiceConnectionStatus.REJECTED)))
+            .then();
+    }
+
+    private static final class PrivateLinkResourceImpl implements PrivateLinkResource {
+        private final PrivateLinkResourceInner innerModel;
+
+        private PrivateLinkResourceImpl(PrivateLinkResourceInner innerModel) {
+            this.innerModel = innerModel;
+        }
+
+        @Override
+        public String groupId() {
+            return innerModel.groupId();
+        }
+
+        @Override
+        public List<String> requiredMemberNames() {
+            return Collections.unmodifiableList(innerModel.requiredMembers());
+        }
+
+        @Override
+        public List<String> requiredDnsZoneNames() {
+            return Collections.unmodifiableList(innerModel.requiredZoneNames());
+        }
+    }
+
+    private static final class PrivateEndpointConnectionImpl implements PrivateEndpointConnection {
+        private final PrivateEndpointConnectionInner innerModel;
+
+        private final PrivateEndpoint privateEndpoint;
+        private final com.azure.resourcemanager.resources.fluentcore.arm.models.PrivateLinkServiceConnectionState
+            privateLinkServiceConnectionState;
+        private final PrivateEndpointConnectionProvisioningState provisioningState;
+
+        private PrivateEndpointConnectionImpl(PrivateEndpointConnectionInner innerModel) {
+            this.innerModel = innerModel;
+
+            this.privateEndpoint = innerModel.privateEndpoint() == null
+                ? null
+                : new PrivateEndpoint(innerModel.privateEndpoint().id());
+            this.privateLinkServiceConnectionState = innerModel.privateLinkServiceConnectionState() == null
+                ? null
+                : new com.azure.resourcemanager.resources.fluentcore.arm.models.PrivateLinkServiceConnectionState(
+                innerModel.privateLinkServiceConnectionState().status() == null
+                    ? null
+                    : com.azure.resourcemanager.resources.fluentcore.arm.models.PrivateEndpointServiceConnectionStatus
+                    .fromString(innerModel.privateLinkServiceConnectionState().status().toString()),
+                innerModel.privateLinkServiceConnectionState().description(),
+                innerModel.privateLinkServiceConnectionState().actionsRequired());
+            this.provisioningState = innerModel.provisioningState() == null
+                ? null
+                : PrivateEndpointConnectionProvisioningState.fromString(innerModel.provisioningState().toString());
+        }
+
+        @Override
+        public String id() {
+            return innerModel.id();
+        }
+
+        @Override
+        public String name() {
+            return innerModel.name();
+        }
+
+        @Override
+        public String type() {
+            return innerModel.type();
+        }
+
+        @Override
+        public PrivateEndpoint privateEndpoint() {
+            return privateEndpoint;
+        }
+
+        @Override
+        public com.azure.resourcemanager.resources.fluentcore.arm.models.PrivateLinkServiceConnectionState
+            privateLinkServiceConnectionState() {
+            return privateLinkServiceConnectionState;
+        }
+
+        @Override
+        public PrivateEndpointConnectionProvisioningState provisioningState() {
+            return provisioningState;
+        }
     }
 }

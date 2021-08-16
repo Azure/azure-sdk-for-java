@@ -42,6 +42,18 @@ public interface MetricDefinitionsClient {
      * Lists the metric definitions for the resource.
      *
      * @param resourceUri The identifier of the resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents collection of metric definitions.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<MetricDefinitionInner> list(String resourceUri);
+
+    /**
+     * Lists the metric definitions for the resource.
+     *
+     * @param resourceUri The identifier of the resource.
      * @param metricnamespace Metric namespace to query metric definitions for.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -51,16 +63,4 @@ public interface MetricDefinitionsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<MetricDefinitionInner> list(String resourceUri, String metricnamespace, Context context);
-
-    /**
-     * Lists the metric definitions for the resource.
-     *
-     * @param resourceUri The identifier of the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents collection of metric definitions.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<MetricDefinitionInner> list(String resourceUri);
 }

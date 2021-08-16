@@ -1,0 +1,26 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/text/analytics/v3.2-preview.1/keyPhrases?showStats=false&loggingOptOut=false",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.2.0-beta.1 (11.0.10; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "3a5bdc2f-f482-4a0b-82e6-a91125ff566e",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-envoy-upstream-service-time" : "70",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "csp-billing-usage" : "CognitiveServices.TextAnalytics.BatchScoring=1,CognitiveServices.TextAnalytics.TextRecords=1",
+      "apim-request-id" : "1dafa179-d407-49b2-8a38-2d8d6f83ec8e",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Body" : "{\"documents\":[{\"id\":\"0\",\"keyPhrases\":[\"Thisisaveryveryverylongtextwhichgoesonforalongtimeandwhichalmostdoesn\",\"ThereasonforthistestistotryandseewhathappenswhenwesubmitaveryveryverylongtexttoLanguage\",\"Thisshouldworkjustfinebutjustincaseitisalwaysgoodtohaveatestcase\",\"ThisallowsustotestwhathappensifitisnotOK\",\"Ofcourseitisgoingtobeokbutthenagainitisalsobettertobesure\"],\"warnings\":[]}],\"errors\":[],\"modelVersion\":\"2021-06-01\"}",
+      "Date" : "Fri, 30 Jul 2021 18:03:17 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

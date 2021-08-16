@@ -8,7 +8,6 @@ import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
 import reactor.core.publisher.Mono;
 
-import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
 import java.util.function.Function;
@@ -34,9 +33,7 @@ public class PagedIterableJavaDocCodeSnippets {
         pagedIterableResponse.streamByPage().forEach(resp -> {
             System.out.printf("Response headers are %s. Url %s  and status code %d %n", resp.getHeaders(),
                 resp.getRequest().getUrl(), resp.getStatusCode());
-            resp.getItems().forEach(value -> {
-                System.out.printf("Response value is %d %n", value);
-            });
+            resp.getElements().forEach(value -> System.out.printf("Response value is %d %n", value));
         });
 
         // END: com.azure.core.http.rest.pagedIterable.streamByPage
@@ -55,9 +52,7 @@ public class PagedIterableJavaDocCodeSnippets {
         pagedIterableResponse.iterableByPage().forEach(resp -> {
             System.out.printf("Response headers are %s. Url %s  and status code %d %n", resp.getHeaders(),
                 resp.getRequest().getUrl(), resp.getStatusCode());
-            resp.getItems().forEach(value -> {
-                System.out.printf("Response value is %d %n", value);
-            });
+            resp.getElements().forEach(value -> System.out.printf("Response value is %d %n", value));
         });
         // END: com.azure.core.http.rest.pagedIterable.iterableByPage
     }
@@ -72,14 +67,10 @@ public class PagedIterableJavaDocCodeSnippets {
 
         // BEGIN: com.azure.core.http.rest.pagedIterable.iterableByPage.while
         // iterate over each page
-        Iterator<PagedResponse<Integer>> ite = pagedIterableResponse.iterableByPage().iterator();
-        while (ite.hasNext()) {
-            PagedResponse<Integer> resp = ite.next();
+        for (PagedResponse<Integer> resp : pagedIterableResponse.iterableByPage()) {
             System.out.printf("Response headers are %s. Url %s  and status code %d %n", resp.getHeaders(),
                 resp.getRequest().getUrl(), resp.getStatusCode());
-            resp.getItems().forEach(value -> {
-                System.out.printf("Response value is %d %n", value);
-            });
+            resp.getElements().forEach(value -> System.out.printf("Response value is %d %n", value));
         }
         // END: com.azure.core.http.rest.pagedIterable.iterableByPage.while
     }

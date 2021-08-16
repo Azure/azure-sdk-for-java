@@ -181,7 +181,7 @@ public interface SecurityPartnerProvidersClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param securityPartnerProviderName The name of the Security Partner Provider.
-     * @param parameters Security Partner Provider resource.
+     * @param parameters Parameters supplied to the create or update Security Partner Provider operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -196,7 +196,7 @@ public interface SecurityPartnerProvidersClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param securityPartnerProviderName The name of the Security Partner Provider.
-     * @param parameters Security Partner Provider resource.
+     * @param parameters Parameters supplied to the create or update Security Partner Provider operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -211,7 +211,7 @@ public interface SecurityPartnerProvidersClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param securityPartnerProviderName The name of the Security Partner Provider.
-     * @param parameters Security Partner Provider resource.
+     * @param parameters Parameters supplied to the create or update Security Partner Provider operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -226,7 +226,7 @@ public interface SecurityPartnerProvidersClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param securityPartnerProviderName The name of the Security Partner Provider.
-     * @param parameters Security Partner Provider resource.
+     * @param parameters Parameters supplied to the create or update Security Partner Provider operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -245,7 +245,7 @@ public interface SecurityPartnerProvidersClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param securityPartnerProviderName The name of the Security Partner Provider.
-     * @param parameters Security Partner Provider resource.
+     * @param parameters Parameters supplied to the create or update Security Partner Provider operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -260,7 +260,7 @@ public interface SecurityPartnerProvidersClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param securityPartnerProviderName The name of the Security Partner Provider.
-     * @param parameters Security Partner Provider resource.
+     * @param parameters Parameters supplied to the create or update Security Partner Provider operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -275,7 +275,7 @@ public interface SecurityPartnerProvidersClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param securityPartnerProviderName The name of the Security Partner Provider.
-     * @param parameters Security Partner Provider resource.
+     * @param parameters Parameters supplied to the create or update Security Partner Provider operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.

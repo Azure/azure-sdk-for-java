@@ -8,10 +8,8 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.rest.ResponseBase;
 
-/**
- * Contains all response data for the setTags operation.
- */
-public final class BlobsSetTagsResponse extends ResponseBase<BlobSetTagsHeaders, Void> {
+/** Contains all response data for the setTags operation. */
+public final class BlobsSetTagsResponse extends ResponseBase<BlobsSetTagsHeaders, Void> {
     /**
      * Creates an instance of BlobsSetTagsResponse.
      *
@@ -21,7 +19,8 @@ public final class BlobsSetTagsResponse extends ResponseBase<BlobSetTagsHeaders,
      * @param value the deserialized value of the HTTP response.
      * @param headers the deserialized headers of the HTTP response.
      */
-    public BlobsSetTagsResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders, Void value, BlobSetTagsHeaders headers) {
+    public BlobsSetTagsResponse(
+            HttpRequest request, int statusCode, HttpHeaders rawHeaders, Void value, BlobsSetTagsHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);
     }
 }

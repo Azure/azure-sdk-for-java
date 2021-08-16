@@ -3,8 +3,11 @@
 
 package com.azure.cosmos.implementation.query;
 
+import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.implementation.DiagnosticsClientContext;
+import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import com.azure.cosmos.models.ModelBridgeInternal;
+import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.implementation.BackoffRetryUtility;
 import com.azure.cosmos.implementation.DocumentClientRetryPolicy;
@@ -35,12 +38,18 @@ class QueryPlanRetriever {
     static Mono<PartitionedQueryExecutionInfo> getQueryPlanThroughGatewayAsync(DiagnosticsClientContext diagnosticsClientContext,
                                                                                IDocumentQueryClient queryClient,
                                                                                SqlQuerySpec sqlQuerySpec,
-                                                                               String resourceLink) {
+                                                                               String resourceLink,
+                                                                               PartitionKey partitionKey) {
         final Map<String, String> requestHeaders = new HashMap<>();
         requestHeaders.put(HttpConstants.HttpHeaders.CONTENT_TYPE, RuntimeConstants.MediaTypes.JSON);
         requestHeaders.put(HttpConstants.HttpHeaders.IS_QUERY_PLAN_REQUEST, TRUE);
         requestHeaders.put(HttpConstants.HttpHeaders.SUPPORTED_QUERY_FEATURES, SUPPORTED_QUERY_FEATURES);
         requestHeaders.put(HttpConstants.HttpHeaders.QUERY_VERSION, HttpConstants.Versions.QUERY_VERSION);
+
+        if (partitionKey != null && partitionKey != PartitionKey.NONE) {
+            PartitionKeyInternal partitionKeyInternal = BridgeInternal.getPartitionKeyInternal(partitionKey);
+            requestHeaders.put(HttpConstants.HttpHeaders.PARTITION_KEY, partitionKeyInternal.toJson());
+        }
 
         final RxDocumentServiceRequest request = RxDocumentServiceRequest.create(diagnosticsClientContext,
                                                                                  OperationType.QueryPlan,
@@ -58,7 +67,7 @@ class QueryPlanRetriever {
                 retryPolicyInstance.onBeforeSendRequest(req);
                 return queryClient.executeQueryAsync(request).flatMap(rxDocumentServiceResponse -> {
                     PartitionedQueryExecutionInfo partitionedQueryExecutionInfo =
-                        new PartitionedQueryExecutionInfo(rxDocumentServiceResponse.getResponseBodyAsByteArray());
+                        new PartitionedQueryExecutionInfo(rxDocumentServiceResponse.getResponseBodyAsByteArray(), rxDocumentServiceResponse.getGatewayHttpRequestTimeline());
                     return Mono.just(partitionedQueryExecutionInfo);
 
                 });

@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.kusto.implementation;
 
 import com.azure.core.util.Context;
-import com.azure.resourcemanager.kusto.KustoManager;
 import com.azure.resourcemanager.kusto.fluent.models.DatabasePrincipalAssignmentInner;
 import com.azure.resourcemanager.kusto.models.DatabasePrincipalAssignment;
 import com.azure.resourcemanager.kusto.models.DatabasePrincipalRole;
@@ -16,7 +15,7 @@ public final class DatabasePrincipalAssignmentImpl
     implements DatabasePrincipalAssignment, DatabasePrincipalAssignment.Definition, DatabasePrincipalAssignment.Update {
     private DatabasePrincipalAssignmentInner innerObject;
 
-    private final KustoManager serviceManager;
+    private final com.azure.resourcemanager.kusto.KustoManager serviceManager;
 
     public String id() {
         return this.innerModel().id();
@@ -62,7 +61,7 @@ public final class DatabasePrincipalAssignmentImpl
         return this.innerObject;
     }
 
-    private KustoManager manager() {
+    private com.azure.resourcemanager.kusto.KustoManager manager() {
         return this.serviceManager;
     }
 
@@ -107,7 +106,7 @@ public final class DatabasePrincipalAssignmentImpl
         return this;
     }
 
-    DatabasePrincipalAssignmentImpl(String name, KustoManager serviceManager) {
+    DatabasePrincipalAssignmentImpl(String name, com.azure.resourcemanager.kusto.KustoManager serviceManager) {
         this.innerObject = new DatabasePrincipalAssignmentInner();
         this.serviceManager = serviceManager;
         this.principalAssignmentName = name;
@@ -142,7 +141,8 @@ public final class DatabasePrincipalAssignmentImpl
         return this;
     }
 
-    DatabasePrincipalAssignmentImpl(DatabasePrincipalAssignmentInner innerObject, KustoManager serviceManager) {
+    DatabasePrincipalAssignmentImpl(
+        DatabasePrincipalAssignmentInner innerObject, com.azure.resourcemanager.kusto.KustoManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
         this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");

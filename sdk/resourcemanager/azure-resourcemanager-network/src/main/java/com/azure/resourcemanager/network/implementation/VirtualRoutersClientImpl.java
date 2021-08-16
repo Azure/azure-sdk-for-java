@@ -200,7 +200,7 @@ public final class VirtualRoutersClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-07-01";
+        final String apiVersion = "2021-02-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -214,7 +214,7 @@ public final class VirtualRoutersClientImpl
                             this.client.getSubscriptionId(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -251,7 +251,7 @@ public final class VirtualRoutersClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-07-01";
+        final String apiVersion = "2021-02-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -434,7 +434,7 @@ public final class VirtualRoutersClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-07-01";
+        final String apiVersion = "2021-02-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -449,7 +449,7 @@ public final class VirtualRoutersClientImpl
                             expand,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -487,7 +487,7 @@ public final class VirtualRoutersClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-07-01";
+        final String apiVersion = "2021-02-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -590,7 +590,7 @@ public final class VirtualRoutersClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualRouterName The name of the Virtual Router.
-     * @param parameters VirtualRouter Resource.
+     * @param parameters Parameters supplied to the create or update Virtual Router.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -624,7 +624,7 @@ public final class VirtualRoutersClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2020-07-01";
+        final String apiVersion = "2021-02-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -639,7 +639,7 @@ public final class VirtualRoutersClientImpl
                             parameters,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -647,7 +647,7 @@ public final class VirtualRoutersClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualRouterName The name of the Virtual Router.
-     * @param parameters VirtualRouter Resource.
+     * @param parameters Parameters supplied to the create or update Virtual Router.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
@@ -682,7 +682,7 @@ public final class VirtualRoutersClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2020-07-01";
+        final String apiVersion = "2021-02-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -702,7 +702,7 @@ public final class VirtualRoutersClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualRouterName The name of the Virtual Router.
-     * @param parameters VirtualRouter Resource.
+     * @param parameters Parameters supplied to the create or update Virtual Router.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -724,7 +724,7 @@ public final class VirtualRoutersClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualRouterName The name of the Virtual Router.
-     * @param parameters VirtualRouter Resource.
+     * @param parameters Parameters supplied to the create or update Virtual Router.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
@@ -748,7 +748,7 @@ public final class VirtualRoutersClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualRouterName The name of the Virtual Router.
-     * @param parameters VirtualRouter Resource.
+     * @param parameters Parameters supplied to the create or update Virtual Router.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -765,7 +765,7 @@ public final class VirtualRoutersClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualRouterName The name of the Virtual Router.
-     * @param parameters VirtualRouter Resource.
+     * @param parameters Parameters supplied to the create or update Virtual Router.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
@@ -783,7 +783,7 @@ public final class VirtualRoutersClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualRouterName The name of the Virtual Router.
-     * @param parameters VirtualRouter Resource.
+     * @param parameters Parameters supplied to the create or update Virtual Router.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -802,7 +802,7 @@ public final class VirtualRoutersClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualRouterName The name of the Virtual Router.
-     * @param parameters VirtualRouter Resource.
+     * @param parameters Parameters supplied to the create or update Virtual Router.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
@@ -822,7 +822,7 @@ public final class VirtualRoutersClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualRouterName The name of the Virtual Router.
-     * @param parameters VirtualRouter Resource.
+     * @param parameters Parameters supplied to the create or update Virtual Router.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -839,7 +839,7 @@ public final class VirtualRoutersClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualRouterName The name of the Virtual Router.
-     * @param parameters VirtualRouter Resource.
+     * @param parameters Parameters supplied to the create or update Virtual Router.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
@@ -879,7 +879,7 @@ public final class VirtualRoutersClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-07-01";
+        final String apiVersion = "2021-02-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -901,7 +901,7 @@ public final class VirtualRoutersClientImpl
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -933,7 +933,7 @@ public final class VirtualRoutersClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-07-01";
+        final String apiVersion = "2021-02-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1038,7 +1038,7 @@ public final class VirtualRoutersClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-07-01";
+        final String apiVersion = "2021-02-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1054,7 +1054,7 @@ public final class VirtualRoutersClientImpl
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1080,7 +1080,7 @@ public final class VirtualRoutersClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-07-01";
+        final String apiVersion = "2021-02-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1182,7 +1182,7 @@ public final class VirtualRoutersClientImpl
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1254,7 +1254,7 @@ public final class VirtualRoutersClientImpl
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**

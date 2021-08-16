@@ -3,24 +3,118 @@
 trigger:
   branches:
     include:
-      - master
+      - main
       - feature/*
       - hotfix/*
       - release/*
   paths:
     include:
       - sdk/spring/
+    exclude:
+      - sdk/spring/pom.xml
+      - sdk/spring/azure-identity-spring/pom.xml
+      - sdk/spring/azure-spring-boot/pom.xml
+      - sdk/spring/azure-spring-boot-starter/pom.xml
+      - sdk/spring/azure-spring-boot-starter-active-directory/pom.xml
+      - sdk/spring/azure-spring-boot-starter-active-directory-b2c/pom.xml
+      - sdk/spring/azure-spring-boot-starter-cosmos/pom.xml
+      - sdk/spring/azure-spring-boot-starter-keyvault-certificates/pom.xml
+      - sdk/spring/azure-spring-boot-starter-keyvault-secrets/pom.xml
+      - sdk/spring/azure-spring-boot-starter-servicebus-jms/pom.xml
+      - sdk/spring/azure-spring-boot-starter-storage/pom.xml
+      - sdk/spring/azure-spring-boot-test-aad/pom.xml
+      - sdk/spring/azure-spring-boot-test-aad-b2c/pom.xml
+      - sdk/spring/azure-spring-boot-test-aad-resource-server/pom.xml
+      - sdk/spring/azure-spring-boot-test-aad-resource-server-by-filter/pom.xml
+      - sdk/spring/azure-spring-boot-test-aad-webapp-and-resource-server-with-obo/pom.xml
+      - sdk/spring/azure-spring-boot-test-application/pom.xml
+      - sdk/spring/azure-spring-boot-test-core/pom.xml
+      - sdk/spring/azure-spring-boot-test-cosmos/pom.xml
+      - sdk/spring/azure-spring-boot-test-keyvault/pom.xml
+      - sdk/spring/azure-spring-boot-test-keyvault-certificate/pom.xml
+      - sdk/spring/azure-spring-boot-test-parent/pom.xml
+      - sdk/spring/azure-spring-boot-test-selenium-common/pom.xml
+      - sdk/spring/azure-spring-boot-test-servicebus-jms/pom.xml
+      - sdk/spring/azure-spring-boot-test-storage/pom.xml
+      - sdk/spring/azure-spring-cloud-autoconfigure/pom.xml
+      - sdk/spring/azure-spring-cloud-context/pom.xml
+      - sdk/spring/azure-spring-cloud-messaging/pom.xml
+      - sdk/spring/azure-spring-cloud-starter-cache/pom.xml
+      - sdk/spring/azure-spring-cloud-starter-eventhubs/pom.xml
+      - sdk/spring/azure-spring-cloud-starter-eventhubs-kafka/pom.xml
+      - sdk/spring/azure-spring-cloud-starter-servicebus/pom.xml
+      - sdk/spring/azure-spring-cloud-starter-storage-queue/pom.xml
+      - sdk/spring/azure-spring-cloud-storage/pom.xml
+      - sdk/spring/azure-spring-cloud-stream-binder-eventhubs/pom.xml
+      - sdk/spring/azure-spring-cloud-stream-binder-servicebus-core/pom.xml
+      - sdk/spring/azure-spring-cloud-stream-binder-servicebus-queue/pom.xml
+      - sdk/spring/azure-spring-cloud-stream-binder-servicebus-topic/pom.xml
+      - sdk/spring/azure-spring-cloud-stream-binder-test/pom.xml
+      - sdk/spring/azure-spring-cloud-test-eventhubs/pom.xml
+      - sdk/spring/azure-spring-cloud-test-servicebus-binder/pom.xml
+      - sdk/spring/azure-spring-integration-core/pom.xml
+      - sdk/spring/azure-spring-integration-eventhubs/pom.xml
+      - sdk/spring/azure-spring-integration-servicebus/pom.xml
+      - sdk/spring/azure-spring-integration-storage-queue/pom.xml
+      - sdk/spring/azure-spring-integration-test/pom.xml
 
 pr:
   branches:
     include:
-      - master
+      - main
       - feature/*
       - hotfix/*
       - release/*
   paths:
     include:
       - sdk/spring/
+    exclude:
+      - sdk/spring/pom.xml
+      - sdk/spring/azure-identity-spring/pom.xml
+      - sdk/spring/azure-spring-boot/pom.xml
+      - sdk/spring/azure-spring-boot-starter/pom.xml
+      - sdk/spring/azure-spring-boot-starter-active-directory/pom.xml
+      - sdk/spring/azure-spring-boot-starter-active-directory-b2c/pom.xml
+      - sdk/spring/azure-spring-boot-starter-cosmos/pom.xml
+      - sdk/spring/azure-spring-boot-starter-keyvault-certificates/pom.xml
+      - sdk/spring/azure-spring-boot-starter-keyvault-secrets/pom.xml
+      - sdk/spring/azure-spring-boot-starter-servicebus-jms/pom.xml
+      - sdk/spring/azure-spring-boot-starter-storage/pom.xml
+      - sdk/spring/azure-spring-boot-test-aad/pom.xml
+      - sdk/spring/azure-spring-boot-test-aad-b2c/pom.xml
+      - sdk/spring/azure-spring-boot-test-aad-resource-server/pom.xml
+      - sdk/spring/azure-spring-boot-test-aad-resource-server-by-filter/pom.xml
+      - sdk/spring/azure-spring-boot-test-aad-webapp-and-resource-server-with-obo/pom.xml
+      - sdk/spring/azure-spring-boot-test-application/pom.xml
+      - sdk/spring/azure-spring-boot-test-core/pom.xml
+      - sdk/spring/azure-spring-boot-test-cosmos/pom.xml
+      - sdk/spring/azure-spring-boot-test-keyvault/pom.xml
+      - sdk/spring/azure-spring-boot-test-keyvault-certificate/pom.xml
+      - sdk/spring/azure-spring-boot-test-parent/pom.xml
+      - sdk/spring/azure-spring-boot-test-selenium-common/pom.xml
+      - sdk/spring/azure-spring-boot-test-servicebus-jms/pom.xml
+      - sdk/spring/azure-spring-boot-test-storage/pom.xml
+      - sdk/spring/azure-spring-cloud-autoconfigure/pom.xml
+      - sdk/spring/azure-spring-cloud-context/pom.xml
+      - sdk/spring/azure-spring-cloud-messaging/pom.xml
+      - sdk/spring/azure-spring-cloud-starter-cache/pom.xml
+      - sdk/spring/azure-spring-cloud-starter-eventhubs/pom.xml
+      - sdk/spring/azure-spring-cloud-starter-eventhubs-kafka/pom.xml
+      - sdk/spring/azure-spring-cloud-starter-servicebus/pom.xml
+      - sdk/spring/azure-spring-cloud-starter-storage-queue/pom.xml
+      - sdk/spring/azure-spring-cloud-storage/pom.xml
+      - sdk/spring/azure-spring-cloud-stream-binder-eventhubs/pom.xml
+      - sdk/spring/azure-spring-cloud-stream-binder-servicebus-core/pom.xml
+      - sdk/spring/azure-spring-cloud-stream-binder-servicebus-queue/pom.xml
+      - sdk/spring/azure-spring-cloud-stream-binder-servicebus-topic/pom.xml
+      - sdk/spring/azure-spring-cloud-stream-binder-test/pom.xml
+      - sdk/spring/azure-spring-cloud-test-eventhubs/pom.xml
+      - sdk/spring/azure-spring-cloud-test-servicebus-binder/pom.xml
+      - sdk/spring/azure-spring-integration-core/pom.xml
+      - sdk/spring/azure-spring-integration-eventhubs/pom.xml
+      - sdk/spring/azure-spring-integration-servicebus/pom.xml
+      - sdk/spring/azure-spring-integration-storage-queue/pom.xml
+      - sdk/spring/azure-spring-integration-test/pom.xml
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
@@ -30,9 +124,6 @@ extends:
       - name: azure-identity-spring
         groupId: com.azure.spring
         safeName: azureidentityspring
-      - name: azure-spring-data-gremlin
-        groupId: com.azure.spring
-        safeName: azurespringdatagremlin
       - name: azure-spring-boot
         groupId: com.azure.spring
         safeName: azurespringboot
@@ -51,10 +142,6 @@ extends:
       - name: azure-spring-boot-starter-cosmos
         groupId: com.azure.spring
         safeName: azurespringbootstartercosmos
-        skipUpdatePackageJson: true
-      - name: azure-spring-boot-starter-data-gremlin
-        groupId: com.azure.spring
-        safeName: azurespringbootstarterdatagremlin
         skipUpdatePackageJson: true
       - name: azure-spring-boot-starter-keyvault-certificates
         groupId: com.azure.spring
@@ -75,9 +162,6 @@ extends:
       - name: azure-spring-cloud-context
         groupId: com.azure.spring
         safeName: azurespringcloudcontext
-      - name: azure-spring-cloud-telemetry
-        groupId: com.azure.spring
-        safeName: azurespringcloudtelemetry
       - name: azure-spring-integration-core
         groupId: com.azure.spring
         safeName: azurespringintegrationcore
@@ -137,66 +221,3 @@ extends:
       - name: azure-spring-cloud-stream-binder-eventhubs
         groupId: com.azure.spring
         safeName: azurespringcloudeventhubsstreambinder
-    AdditionalModules:
-      - name: azure-spring-boot-sample-active-directory-resource-server
-        groupId: com.azure.spring
-      - name: azure-spring-boot-sample-active-directory-resource-server-by-filter
-        groupId: com.azure.spring
-      - name: azure-spring-boot-sample-active-directory-b2c-oidc
-        groupId: com.azure.spring
-      - name: azure-spring-boot-sample-active-directory-webapp
-        groupId: com.azure.spring
-      - name: azure-spring-boot-sample-active-directory-resource-server-obo
-        groupId: com.azure.spring
-      - name: azure-spring-boot-sample-active-directory-resource-server-by-filter-stateless
-        groupId: com.azure.spring
-      - name: azure-spring-boot-sample-cosmos
-        groupId: com.azure.spring
-      - name: azure-spring-boot-sample-data-gremlin
-        groupId: com.azure.spring
-      - name: azure-spring-boot-sample-keyvault-secrets
-        groupId: com.azure.spring
-      - name: azure-spring-boot-sample-mediaservices
-        groupId: com.azure.spring
-      - name: azure-spring-boot-sample-servicebus
-        groupId: com.azure.spring
-      - name: azure-spring-boot-sample-servicebus-jms-queue
-        groupId: com.azure.spring
-      - name: azure-spring-boot-sample-servicebus-jms-topic
-        groupId: com.azure.spring
-      - name: azure-spring-boot-sample-storage-resource
-        groupId: com.azure.spring
-      - name: azure-spring-data-sample-gremlin
-        groupId: com.azure.spring
-      - name: azure-spring-data-sample-gremlin-web-service
-        groupId: com.azure.spring
-      - name: azure-spring-cloud-sample-cache
-        groupId: com.azure.spring
-      - name: azure-spring-cloud-sample-eventhubs-binder
-        groupId: com.azure.spring
-      - name: azure-spring-integration-sample-eventhubs
-        groupId: com.azure.spring
-      - name: azure-spring-cloud-sample-eventhubs-kafka
-        groupId: com.azure.spring
-      - name: azure-spring-cloud-sample-eventhubs-multibinders
-        groupId: com.azure.spring
-      - name: azure-spring-cloud-sample-eventhubs-operation
-        groupId: com.azure.spring
-      - name: azure-spring-cloud-sample-messaging
-        groupId: com.azure.spring
-      - name: azure-spring-cloud-sample-eventhubs-multibinders
-        groupId: com.azure.spring
-      - name: azure-spring-integration-sample-servicebus
-        groupId: com.azure.spring
-      - name: azure-spring-cloud-sample-servicebus-operation
-        groupId: com.azure.spring
-      - name: azure-spring-cloud-sample-servicebus-queue-binder
-        groupId: com.azure.spring
-      - name: azure-spring-cloud-sample-servicebus-queue-multibinders
-        groupId: com.azure.spring
-      - name: azure-spring-cloud-sample-servicebus-topic-binder
-        groupId: com.azure.spring
-      - name: azure-spring-integration-sample-storage-queue
-        groupId: com.azure.spring
-      - name: azure-spring-cloud-sample-storage-queue-operation
-        groupId: com.azure.spring

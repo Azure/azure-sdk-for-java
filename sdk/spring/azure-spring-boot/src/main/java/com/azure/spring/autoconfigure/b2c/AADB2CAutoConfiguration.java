@@ -2,62 +2,29 @@
 // Licensed under the MIT License.
 package com.azure.spring.autoconfigure.b2c;
 
-import com.azure.spring.telemetry.TelemetrySender;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnResource;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Conditional;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.lang.NonNull;
-import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
-import org.springframework.security.oauth2.client.registration.InMemoryClientRegistrationRepository;
-import org.springframework.security.oauth2.core.AuthorizationGrantType;
-import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
-import org.springframework.util.Assert;
-import org.springframework.util.ClassUtils;
-import org.springframework.util.StringUtils;
-
-import javax.annotation.PostConstruct;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import static com.azure.spring.telemetry.TelemetryData.SERVICE_NAME;
-import static com.azure.spring.telemetry.TelemetryData.TENANT_NAME;
-import static com.azure.spring.telemetry.TelemetryData.getClassPackageSimpleName;
 
 /**
- * {@link EnableAutoConfiguration Auto-configuration} for AAD B2C Authentication.
- * <p>
- * The configuration will not be activated if no {@literal azure.activedirectory.b2c.tenant-id, client-id,
- * client-secret, reply-url and sign-up-or-sign-in} property provided.
- * <p>
- * A client registration repository service {@link InMemoryClientRegistrationRepository} will be auto-configured by
- * specifying {@literal azure.activedirectory.b2c.oidc-enabled} property as true or ignore it.
+ * When the configuration matches the {@link AADB2CConditions.CommonCondition.WebAppMode} condition,
+ * configure the necessary beans for AAD B2C authentication and authorization,
+ * and import {@link AADB2COAuth2ClientConfiguration} class for AAD B2C OAuth2 client support.
  */
 @Configuration
-@ConditionalOnWebApplication
 @ConditionalOnResource(resources = "classpath:aadb2c.enable.config")
-@ConditionalOnProperty(
-    prefix = AADB2CProperties.PREFIX,
-    value = {
-        "tenant",
-        "client-id",
-        "client-secret",
-        "reply-url",
-        AADB2CProperties.USER_FLOW_SIGN_UP_OR_SIGN_IN
-    }
-)
+@Conditional({ AADB2CConditions.CommonCondition.class, AADB2CConditions.UserFlowCondition.class })
 @EnableConfigurationProperties(AADB2CProperties.class)
+@Import(AADB2COAuth2ClientConfiguration.class)
 public class AADB2CAutoConfiguration {
 
     private final ClientRegistrationRepository repository;
-
     private final AADB2CProperties properties;
 
     public AADB2CAutoConfiguration(@NonNull ClientRegistrationRepository repository,
@@ -82,76 +49,6 @@ public class AADB2CAutoConfiguration {
     @ConditionalOnMissingBean
     public AADB2COidcLoginConfigurer b2cLoginConfigurer(AADB2CLogoutSuccessHandler handler,
                                                         AADB2CAuthorizationRequestResolver resolver) {
-        return new AADB2COidcLoginConfigurer(properties, handler, resolver);
-    }
-
-    @PostConstruct
-    private void sendTelemetry() {
-        if (properties.isAllowTelemetry()) {
-            final Map<String, String> events = new HashMap<>();
-            final TelemetrySender sender = new TelemetrySender();
-
-            events.put(SERVICE_NAME, getClassPackageSimpleName(AADB2CAutoConfiguration.class));
-            events.put(TENANT_NAME, properties.getTenant());
-
-            sender.send(ClassUtils.getUserClass(getClass()).getSimpleName(), events);
-        }
-    }
-
-    /**
-     * Automatic configuration class of AADB2COidc
-     */
-    @Configuration
-    @ConditionalOnResource(resources = "classpath:aadb2c.enable.config")
-    @ConditionalOnProperty(prefix = AADB2CProperties.PREFIX,
-                           value = "oidc-enabled",
-                           havingValue = "true",
-                           matchIfMissing = true)
-    public static class AADB2COidcAutoConfiguration {
-
-        private final AADB2CProperties properties;
-
-        public AADB2COidcAutoConfiguration(@NonNull AADB2CProperties properties) {
-            this.properties = properties;
-        }
-
-        private void addB2CClientRegistration(@NonNull List<ClientRegistration> registrations, String userFlow) {
-            if (StringUtils.hasText(userFlow)) {
-                registrations.add(b2cClientRegistration(userFlow));
-            }
-        }
-
-        @Bean
-        @ConditionalOnMissingBean
-        public ClientRegistrationRepository clientRegistrationRepository() {
-            final List<ClientRegistration> signUpOrSignInRegistrations = new ArrayList<>(3);
-            final List<ClientRegistration> otherRegistrations = new ArrayList<>();
-
-            addB2CClientRegistration(signUpOrSignInRegistrations, properties.getUserFlows().getSignUpOrSignIn());
-            addB2CClientRegistration(signUpOrSignInRegistrations, properties.getUserFlows().getSignIn());
-            addB2CClientRegistration(signUpOrSignInRegistrations, properties.getUserFlows().getSignUp());
-            addB2CClientRegistration(otherRegistrations, properties.getUserFlows().getProfileEdit());
-            addB2CClientRegistration(otherRegistrations, properties.getUserFlows().getPasswordReset());
-
-            return new AADB2CClientRegistrationRepository(signUpOrSignInRegistrations, otherRegistrations);
-        }
-
-        private ClientRegistration b2cClientRegistration(String userFlow) {
-            Assert.hasText(userFlow, "User flow should contains text.");
-
-            return ClientRegistration.withRegistrationId(userFlow) // Use flow as registration Id.
-                .clientId(properties.getClientId())
-                .clientSecret(properties.getClientSecret())
-                .clientAuthenticationMethod(ClientAuthenticationMethod.POST)
-                .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
-                .redirectUriTemplate(properties.getReplyUrl())
-                .scope(properties.getClientId(), "openid")
-                .authorizationUri(AADB2CURL.getAuthorizationUrl(properties.getTenant()))
-                .tokenUri(AADB2CURL.getTokenUrl(properties.getTenant(), userFlow))
-                .jwkSetUri(AADB2CURL.getJwkSetUrl(properties.getTenant(), userFlow))
-                .userNameAttributeName(properties.getUserNameAttributeName())
-                .clientName(userFlow)
-                .build();
-        }
+        return new AADB2COidcLoginConfigurer(handler, resolver);
     }
 }

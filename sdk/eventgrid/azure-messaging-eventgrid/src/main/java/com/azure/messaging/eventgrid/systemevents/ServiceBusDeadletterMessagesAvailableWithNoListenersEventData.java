@@ -7,7 +7,10 @@ package com.azure.messaging.eventgrid.systemevents;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The ServiceBusDeadletterMessagesAvailableWithNoListenersEventData model. */
+/**
+ * Schema of the Data property of an EventGridEvent for a
+ * Microsoft.ServiceBus.DeadletterMessagesAvailableWithNoListeners event.
+ */
 @Fluent
 public final class ServiceBusDeadletterMessagesAvailableWithNoListenersEventData {
     /*

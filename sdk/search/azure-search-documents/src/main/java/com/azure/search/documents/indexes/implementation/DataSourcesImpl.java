@@ -68,7 +68,8 @@ public final class DataSourcesImpl {
                 @HeaderParam("If-None-Match") String ifNoneMatch,
                 @HeaderParam("Prefer") String prefer,
                 @QueryParam("api-version") String apiVersion,
-                @HeaderParam("accept") String accept,
+                @QueryParam("ignoreResetRequirements") Boolean ignoreResetRequirements,
+                @HeaderParam("Accept") String accept,
                 @BodyParam("application/json") SearchIndexerDataSource dataSource,
                 Context context);
 
@@ -82,7 +83,7 @@ public final class DataSourcesImpl {
                 @HeaderParam("If-Match") String ifMatch,
                 @HeaderParam("If-None-Match") String ifNoneMatch,
                 @QueryParam("api-version") String apiVersion,
-                @HeaderParam("accept") String accept,
+                @HeaderParam("Accept") String accept,
                 Context context);
 
         @Get("/datasources('{dataSourceName}')")
@@ -93,7 +94,7 @@ public final class DataSourcesImpl {
                 @PathParam("dataSourceName") String dataSourceName,
                 @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
                 @QueryParam("api-version") String apiVersion,
-                @HeaderParam("accept") String accept,
+                @HeaderParam("Accept") String accept,
                 Context context);
 
         @Get("/datasources")
@@ -104,7 +105,7 @@ public final class DataSourcesImpl {
                 @QueryParam("$select") String select,
                 @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
                 @QueryParam("api-version") String apiVersion,
-                @HeaderParam("accept") String accept,
+                @HeaderParam("Accept") String accept,
                 Context context);
 
         @Post("/datasources")
@@ -114,7 +115,7 @@ public final class DataSourcesImpl {
                 @HostParam("endpoint") String endpoint,
                 @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
                 @QueryParam("api-version") String apiVersion,
-                @HeaderParam("accept") String accept,
+                @HeaderParam("Accept") String accept,
                 @BodyParam("application/json") SearchIndexerDataSource dataSource,
                 Context context);
     }
@@ -123,11 +124,12 @@ public final class DataSourcesImpl {
      * Creates a new datasource or updates a datasource if it already exists.
      *
      * @param dataSourceName The name of the datasource to create or update.
-     * @param dataSource Represents a datasource definition, which can be used to configure an indexer.
+     * @param dataSource The definition of the datasource to create or update.
      * @param ifMatch Defines the If-Match condition. The operation will be performed only if the ETag on the server
      *     matches this value.
      * @param ifNoneMatch Defines the If-None-Match condition. The operation will be performed only if the ETag on the
      *     server does not match this value.
+     * @param ignoreResetRequirements Ignores cache reset requirements.
      * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -141,6 +143,7 @@ public final class DataSourcesImpl {
             SearchIndexerDataSource dataSource,
             String ifMatch,
             String ifNoneMatch,
+            Boolean ignoreResetRequirements,
             RequestOptions requestOptions,
             Context context) {
         final String prefer = "return=representation";
@@ -158,6 +161,7 @@ public final class DataSourcesImpl {
                 ifNoneMatch,
                 prefer,
                 this.client.getApiVersion(),
+                ignoreResetRequirements,
                 accept,
                 dataSource,
                 context);
@@ -255,7 +259,7 @@ public final class DataSourcesImpl {
     /**
      * Creates a new datasource.
      *
-     * @param dataSource Represents a datasource definition, which can be used to configure an indexer.
+     * @param dataSource The definition of the datasource to create.
      * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

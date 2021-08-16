@@ -8,6 +8,7 @@ import com.azure.ai.formrecognizer.models.FormField;
 import com.azure.ai.formrecognizer.models.FormRecognizerOperationResult;
 import com.azure.ai.formrecognizer.models.RecognizedForm;
 import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollerFlux;
 import reactor.core.publisher.Mono;
 
@@ -31,18 +32,17 @@ public class RecognizeBusinessCardAsync {
      * Main method to invoke this demo.
      *
      * @param args Unused. Arguments to the program.
-     *
      * @throws IOException Exception thrown when there is an error in reading all the bytes from the File.
      */
     public static void main(final String[] args) throws IOException {
         // Instantiate a client that will be used to call the service.
         FormRecognizerAsyncClient client = new FormRecognizerClientBuilder()
-                                               .credential(new AzureKeyCredential("{key}"))
-                                               .endpoint("https://{endpoint}.cognitiveservices.azure.com/")
-                                               .buildAsyncClient();
+            .credential(new AzureKeyCredential("{key}"))
+            .endpoint("https://{endpoint}.cognitiveservices.azure.com/")
+            .buildAsyncClient();
 
-        File sourceFile = new File("../formrecognizer/azure-ai-formrecognizer/src/samples/java/sample-forms/"
-                                       + "businessCards/businessCard.jpg");
+        File sourceFile = new File("../formrecognizer/azure-ai-formrecognizer/src/samples/resources/"
+            + "sample-forms/businessCards/businessCard.jpg");
         byte[] fileContent = Files.readAllBytes(sourceFile.toPath());
         InputStream targetStream = new ByteArrayInputStream(fileContent);
 
@@ -53,13 +53,13 @@ public class RecognizeBusinessCardAsync {
             recognizeBusinessCardPoller
                 .last()
                 .flatMap(pollResponse -> {
-                    if (pollResponse.getStatus().isComplete()) {
+                    if (LongRunningOperationStatus.SUCCESSFULLY_COMPLETED.equals(pollResponse.getStatus())) {
                         System.out.println("Polling completed successfully");
-                        // training completed successfully, retrieving final result.
                         return pollResponse.getFinalResult();
                     } else {
                         return Mono.error(
-                            new RuntimeException("Polling completed unsuccessfully with status:" + pollResponse.getStatus()));
+                            new RuntimeException(
+                                "Polling completed unsuccessfully with status:" + pollResponse.getStatus()));
                     }
                 });
 
@@ -101,7 +101,7 @@ public class RecognizeBusinessCardAsync {
                 if (jobTitles != null) {
                     if (FieldValueType.LIST == jobTitles.getValue().getValueType()) {
                         List<FormField> jobTitlesItems = jobTitles.getValue().asList();
-                        jobTitlesItems.stream().forEach(jobTitlesItem -> {
+                        jobTitlesItems.forEach(jobTitlesItem -> {
                             if (FieldValueType.STRING == jobTitlesItem.getValue().getValueType()) {
                                 String jobTitle = jobTitlesItem.getValue().asString();
                                 System.out.printf("Job Title: %s, confidence: %.2f%n",
@@ -115,7 +115,7 @@ public class RecognizeBusinessCardAsync {
                 if (departments != null) {
                     if (FieldValueType.LIST == departments.getValue().getValueType()) {
                         List<FormField> departmentsItems = departments.getValue().asList();
-                        departmentsItems.stream().forEach(departmentsItem -> {
+                        departmentsItems.forEach(departmentsItem -> {
                             if (FieldValueType.STRING == departmentsItem.getValue().getValueType()) {
                                 String department = departmentsItem.getValue().asString();
                                 System.out.printf("Department: %s, confidence: %.2f%n",
@@ -129,7 +129,7 @@ public class RecognizeBusinessCardAsync {
                 if (emails != null) {
                     if (FieldValueType.LIST == emails.getValue().getValueType()) {
                         List<FormField> emailsItems = emails.getValue().asList();
-                        emailsItems.stream().forEach(emailsItem -> {
+                        emailsItems.forEach(emailsItem -> {
                             if (FieldValueType.STRING == emailsItem.getValue().getValueType()) {
                                 String email = emailsItem.getValue().asString();
                                 System.out.printf("Email: %s, confidence: %.2f%n", email, emailsItem.getConfidence());
@@ -142,7 +142,7 @@ public class RecognizeBusinessCardAsync {
                 if (websites != null) {
                     if (FieldValueType.LIST == websites.getValue().getValueType()) {
                         List<FormField> websitesItems = websites.getValue().asList();
-                        websitesItems.stream().forEach(websitesItem -> {
+                        websitesItems.forEach(websitesItem -> {
                             if (FieldValueType.STRING == websitesItem.getValue().getValueType()) {
                                 String website = websitesItem.getValue().asString();
                                 System.out.printf("Web site: %s, confidence: %.2f%n",
@@ -156,7 +156,7 @@ public class RecognizeBusinessCardAsync {
                 if (mobilePhones != null) {
                     if (FieldValueType.LIST == mobilePhones.getValue().getValueType()) {
                         List<FormField> mobilePhonesItems = mobilePhones.getValue().asList();
-                        mobilePhonesItems.stream().forEach(mobilePhonesItem -> {
+                        mobilePhonesItems.forEach(mobilePhonesItem -> {
                             if (FieldValueType.PHONE_NUMBER == mobilePhonesItem.getValue().getValueType()) {
                                 String mobilePhoneNumber = mobilePhonesItem.getValue().asPhoneNumber();
                                 System.out.printf("Mobile phone number: %s, confidence: %.2f%n",
@@ -170,7 +170,7 @@ public class RecognizeBusinessCardAsync {
                 if (otherPhones != null) {
                     if (FieldValueType.LIST == otherPhones.getValue().getValueType()) {
                         List<FormField> otherPhonesItems = otherPhones.getValue().asList();
-                        otherPhonesItems.stream().forEach(otherPhonesItem -> {
+                        otherPhonesItems.forEach(otherPhonesItem -> {
                             if (FieldValueType.PHONE_NUMBER == otherPhonesItem.getValue().getValueType()) {
                                 String otherPhoneNumber = otherPhonesItem.getValue().asPhoneNumber();
                                 System.out.printf("Other phone number: %s, confidence: %.2f%n",
@@ -184,7 +184,7 @@ public class RecognizeBusinessCardAsync {
                 if (faxes != null) {
                     if (FieldValueType.LIST == faxes.getValue().getValueType()) {
                         List<FormField> faxesItems = faxes.getValue().asList();
-                        faxesItems.stream().forEach(faxesItem -> {
+                        faxesItems.forEach(faxesItem -> {
                             if (FieldValueType.PHONE_NUMBER == faxesItem.getValue().getValueType()) {
                                 String faxPhoneNumber = faxesItem.getValue().asPhoneNumber();
                                 System.out.printf("Fax phone number: %s, confidence: %.2f%n",
@@ -198,10 +198,11 @@ public class RecognizeBusinessCardAsync {
                 if (addresses != null) {
                     if (FieldValueType.LIST == addresses.getValue().getValueType()) {
                         List<FormField> addressesItems = addresses.getValue().asList();
-                        addressesItems.stream().forEach(addressesItem -> {
+                        addressesItems.forEach(addressesItem -> {
                             if (FieldValueType.STRING == addressesItem.getValue().getValueType()) {
                                 String address = addressesItem.getValue().asString();
-                                System.out.printf("Address: %s, confidence: %.2f%n", address, addressesItem.getConfidence());
+                                System.out
+                                    .printf("Address: %s, confidence: %.2f%n", address, addressesItem.getConfidence());
                             }
                         });
                     }
@@ -211,10 +212,11 @@ public class RecognizeBusinessCardAsync {
                 if (companyName != null) {
                     if (FieldValueType.LIST == companyName.getValue().getValueType()) {
                         List<FormField> companyNameItems = companyName.getValue().asList();
-                        companyNameItems.stream().forEach(companyNameItem -> {
+                        companyNameItems.forEach(companyNameItem -> {
                             if (FieldValueType.STRING == companyNameItem.getValue().getValueType()) {
                                 String companyNameValue = companyNameItem.getValue().asString();
-                                System.out.printf("Company name: %s, confidence: %.2f%n", companyNameValue, companyNameItem.getConfidence());
+                                System.out.printf("Company name: %s, confidence: %.2f%n", companyNameValue,
+                                    companyNameItem.getConfidence());
                             }
                         });
                     }

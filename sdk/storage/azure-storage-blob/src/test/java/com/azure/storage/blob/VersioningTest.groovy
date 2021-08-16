@@ -3,6 +3,7 @@
 
 package com.azure.storage.blob
 
+import com.azure.core.util.BinaryData
 import com.azure.core.util.Context
 import com.azure.storage.blob.models.AccessTier
 import com.azure.storage.blob.models.BlobListDetails
@@ -15,10 +16,12 @@ import com.azure.storage.common.sas.AccountSasPermission
 import com.azure.storage.common.sas.AccountSasResourceType
 import com.azure.storage.common.sas.AccountSasService
 import com.azure.storage.common.sas.AccountSasSignatureValues
+import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion
 import org.apache.commons.lang3.StringUtils
 
 import java.nio.charset.StandardCharsets
 
+@RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
 class VersioningTest extends APISpec {
 
     BlobContainerClient blobContainerClient
@@ -41,8 +44,8 @@ class VersioningTest extends APISpec {
 
     def "Create Block Blob with Version"() {
         when:
-        def blobItemV1 = blobClient.getBlockBlobClient().upload(defaultInputStream.get(), defaultDataSize)
-        def blobItemV2 = blobClient.getBlockBlobClient().upload(defaultInputStream.get(), defaultDataSize, true)
+        def blobItemV1 = blobClient.getBlockBlobClient().upload(data.defaultInputStream, data.defaultDataSize)
+        def blobItemV2 = blobClient.getBlockBlobClient().upload(data.defaultInputStream, data.defaultDataSize, true)
 
         then:
         blobItemV1.getVersionId() != null
@@ -90,6 +93,40 @@ class VersioningTest extends APISpec {
         outputV2.toByteArray() == contentV2.getBytes(StandardCharsets.UTF_8)
     }
 
+    def "Download Blob by Version Streaming"() {
+        given:
+        def inputV1 = new ByteArrayInputStream(contentV1.getBytes(StandardCharsets.UTF_8))
+        def inputV2 = new ByteArrayInputStream(contentV2.getBytes(StandardCharsets.UTF_8))
+        def blobItemV1 = blobClient.getBlockBlobClient().upload(inputV1, inputV1.available())
+        def blobItemV2 = blobClient.getBlockBlobClient().upload(inputV2, inputV2.available(), true)
+
+        when:
+        def outputV1 = new ByteArrayOutputStream()
+        def outputV2 = new ByteArrayOutputStream()
+        blobClient.getVersionClient(blobItemV1.getVersionId()).downloadStream(outputV1)
+        blobClient.getVersionClient(blobItemV2.getVersionId()).downloadStream(outputV2)
+
+        then:
+        outputV1.toByteArray() == contentV1.getBytes(StandardCharsets.UTF_8)
+        outputV2.toByteArray() == contentV2.getBytes(StandardCharsets.UTF_8)
+    }
+
+    def "Download Blob by Version Binary Data"() {
+        given:
+        def inputV1 = new ByteArrayInputStream(contentV1.getBytes(StandardCharsets.UTF_8))
+        def inputV2 = new ByteArrayInputStream(contentV2.getBytes(StandardCharsets.UTF_8))
+        def blobItemV1 = blobClient.getBlockBlobClient().upload(inputV1, inputV1.available())
+        def blobItemV2 = blobClient.getBlockBlobClient().upload(inputV2, inputV2.available(), true)
+
+        when:
+        def outputV1 = blobClient.getVersionClient(blobItemV1.getVersionId()).downloadContent()
+        def outputV2 = blobClient.getVersionClient(blobItemV2.getVersionId()).downloadContent()
+
+        then:
+        outputV1.toString() == contentV1
+        outputV2.toString() == contentV2
+    }
+
     def "Delete Blob by Version"() {
         given:
         def inputV1 = new ByteArrayInputStream(contentV1.getBytes(StandardCharsets.UTF_8))
@@ -115,7 +152,7 @@ class VersioningTest extends APISpec {
         def permission = new BlobSasPermission()
             .setDeleteVersionPermission(true)
         def sasToken = blobClient.getVersionClient(blobItemV1.getVersionId())
-            .generateSas(new BlobServiceSasSignatureValues(getUTCNow().plusDays(1), permission))
+            .generateSas(new BlobServiceSasSignatureValues(namer.getUtcNow().plusDays(1), permission))
 
         def sasClient = getBlobClient(blobClient.getVersionClient(blobItemV1.getVersionId()).getBlobUrl(), sasToken)
 
@@ -137,7 +174,7 @@ class VersioningTest extends APISpec {
         def permission = new BlobSasPermission()
             .setDeleteVersionPermission(true)
         def sasToken = blobContainerClient
-            .generateSas(new BlobServiceSasSignatureValues(getUTCNow().plusDays(1), permission))
+            .generateSas(new BlobServiceSasSignatureValues(namer.getUtcNow().plusDays(1), permission))
 
         def sasClient = getBlobClient(blobClient.getVersionClient(blobItemV1.getVersionId()).getBlobUrl(), sasToken)
 
@@ -159,7 +196,7 @@ class VersioningTest extends APISpec {
         def permission = new AccountSasPermission()
            .setDeleteVersionPermission(true)
         def sasToken = versionedBlobServiceClient.generateAccountSas(new AccountSasSignatureValues(
-            getUTCNow().plusDays(1), permission, new AccountSasService().setBlobAccess(true),
+            namer.getUtcNow().plusDays(1), permission, new AccountSasService().setBlobAccess(true),
             new AccountSasResourceType().setObject(true)
         ))
 
@@ -178,7 +215,7 @@ class VersioningTest extends APISpec {
         def key = "key"
         def valV2 = "val2"
         def valV3 = "val3"
-        def blobItemV1 = blobClient.getBlockBlobClient().upload(defaultInputStream.get(), defaultDataSize)
+        def blobItemV1 = blobClient.getBlockBlobClient().upload(data.defaultInputStream, data.defaultDataSize)
         def responseV2 = blobClient.getBlockBlobClient().setMetadataWithResponse(Collections.singletonMap(key, valV2), null, null, Context.NONE)
         def responseV3 = blobClient.getBlockBlobClient().setMetadataWithResponse(Collections.singletonMap(key, valV3), null, null, Context.NONE)
         def versionId1 = blobItemV1.getVersionId()
@@ -198,9 +235,9 @@ class VersioningTest extends APISpec {
 
     def "List Blobs with Version"() {
         given:
-        def blobItemV1 = blobClient.getBlockBlobClient().upload(defaultInputStream.get(), defaultDataSize)
-        def blobItemV2 = blobClient.getBlockBlobClient().upload(defaultInputStream.get(), defaultDataSize, true)
-        def blobItemV3 = blobClient.getBlockBlobClient().upload(defaultInputStream.get(), defaultDataSize, true)
+        def blobItemV1 = blobClient.getBlockBlobClient().upload(data.defaultInputStream, data.defaultDataSize)
+        def blobItemV2 = blobClient.getBlockBlobClient().upload(data.defaultInputStream, data.defaultDataSize, true)
+        def blobItemV3 = blobClient.getBlockBlobClient().upload(data.defaultInputStream, data.defaultDataSize, true)
 
         when:
         def blobs = blobContainerClient.listBlobs(new ListBlobsOptions().setDetails(new BlobListDetails().setRetrieveVersions(true)), null)
@@ -217,9 +254,9 @@ class VersioningTest extends APISpec {
 
     def "List Blobs without Version"() {
         given:
-        blobClient.getBlockBlobClient().upload(defaultInputStream.get(), defaultDataSize)
-        blobClient.getBlockBlobClient().upload(defaultInputStream.get(), defaultDataSize, true)
-        def blobItemV3 = blobClient.getBlockBlobClient().upload(defaultInputStream.get(), defaultDataSize, true)
+        blobClient.getBlockBlobClient().upload(data.defaultInputStream, data.defaultDataSize)
+        blobClient.getBlockBlobClient().upload(data.defaultInputStream, data.defaultDataSize, true)
+        def blobItemV3 = blobClient.getBlockBlobClient().upload(data.defaultInputStream, data.defaultDataSize, true)
 
         when:
         def blobs = blobContainerClient.listBlobs(new ListBlobsOptions().setDetails(new BlobListDetails().setRetrieveVersions(false)), null)
@@ -231,9 +268,9 @@ class VersioningTest extends APISpec {
 
     def "Begin Copy Blobs with Version"() {
         given:
-        def blobItemV1 = blobClient.getBlockBlobClient().upload(defaultInputStream.get(), defaultDataSize)
+        def blobItemV1 = blobClient.getBlockBlobClient().upload(data.defaultInputStream, data.defaultDataSize)
         def sourceBlob = blobContainerClient.getBlobClient(generateBlobName())
-        sourceBlob.getBlockBlobClient().upload(defaultInputStream.get(), defaultDataSize)
+        sourceBlob.getBlockBlobClient().upload(data.defaultInputStream, data.defaultDataSize)
 
         when:
         def poller = blobClient.beginCopy(sourceBlob.getBlobUrl(), getPollingDuration(1000))
@@ -247,9 +284,9 @@ class VersioningTest extends APISpec {
     def "Copy From Url Blobs with Version"() {
         given:
         blobContainerClient.setAccessPolicy(PublicAccessType.CONTAINER, null)
-        def blobItemV1 = blobClient.getBlockBlobClient().upload(defaultInputStream.get(), defaultDataSize)
+        def blobItemV1 = blobClient.getBlockBlobClient().upload(data.defaultInputStream, data.defaultDataSize)
         def sourceBlob = blobContainerClient.getBlobClient(generateBlobName())
-        sourceBlob.getBlockBlobClient().upload(defaultInputStream.get(), defaultDataSize)
+        sourceBlob.getBlockBlobClient().upload(data.defaultInputStream, data.defaultDataSize)
 
         when:
         def response = blobClient.copyFromUrlWithResponse(sourceBlob.getBlobUrl(), null, null, null, null, null, Context.NONE)
@@ -290,8 +327,8 @@ class VersioningTest extends APISpec {
 
     def "Blob Properties should contain Version information"() {
         given:
-        def blobItemV1 = blobClient.getBlockBlobClient().upload(defaultInputStream.get(), defaultDataSize)
-        def blobItemV2 = blobClient.getBlockBlobClient().upload(defaultInputStream.get(), defaultDataSize, true)
+        def blobItemV1 = blobClient.getBlockBlobClient().upload(data.defaultInputStream, data.defaultDataSize)
+        def blobItemV2 = blobClient.getBlockBlobClient().upload(data.defaultInputStream, data.defaultDataSize, true)
 
         when:
         def propertiesV1 = blobClient.getVersionClient(blobItemV1.getVersionId()).getProperties()
@@ -306,7 +343,7 @@ class VersioningTest extends APISpec {
 
     def "Do not look for snapshot of version"() {
         given:
-        blobClient.getBlockBlobClient().upload(defaultInputStream.get(), defaultDataSize)
+        blobClient.getBlockBlobClient().upload(data.defaultInputStream, data.defaultDataSize)
 
         when:
         blobClient.getVersionClient("a").getSnapshotClient("b")
@@ -317,7 +354,7 @@ class VersioningTest extends APISpec {
 
     def "Do not look for version of snapshot"() {
         given:
-        blobClient.getBlockBlobClient().upload(defaultInputStream.get(), defaultDataSize)
+        blobClient.getBlockBlobClient().upload(data.defaultInputStream, data.defaultDataSize)
 
         when:
         blobClient.getSnapshotClient("a").getVersionClient("b")
@@ -328,7 +365,7 @@ class VersioningTest extends APISpec {
 
     def "Snapshot creates new Version"() {
         given:
-        def blobItemV1 = blobClient.getBlockBlobClient().upload(defaultInputStream.get(), defaultDataSize)
+        def blobItemV1 = blobClient.getBlockBlobClient().upload(data.defaultInputStream, data.defaultDataSize)
 
         when:
         def versionIdAfterSnapshot = blobClient.createSnapshotWithResponse(null, null, null, Context.NONE)
@@ -341,7 +378,7 @@ class VersioningTest extends APISpec {
 
     def "Versioned Blob URL contains Version"() {
         given:
-        def blobItem = blobClient.getBlockBlobClient().upload(defaultInputStream.get(), defaultDataSize)
+        def blobItem = blobClient.getBlockBlobClient().upload(data.defaultInputStream, data.defaultDataSize)
 
         when:
         def blobUrl = blobClient.getVersionClient(blobItem.getVersionId()).getBlobUrl()

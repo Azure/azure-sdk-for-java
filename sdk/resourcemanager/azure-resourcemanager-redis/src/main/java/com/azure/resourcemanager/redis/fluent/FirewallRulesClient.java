@@ -27,7 +27,7 @@ public interface FirewallRulesClient {
      * @return all firewall rules in the specified redis cache.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<RedisFirewallRuleInner> listByRedisResourceAsync(String resourceGroupName, String cacheName);
+    PagedFlux<RedisFirewallRuleInner> listAsync(String resourceGroupName, String cacheName);
 
     /**
      * Gets all firewall rules in the specified redis cache.
@@ -40,7 +40,7 @@ public interface FirewallRulesClient {
      * @return all firewall rules in the specified redis cache.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<RedisFirewallRuleInner> listByRedisResource(String resourceGroupName, String cacheName);
+    PagedIterable<RedisFirewallRuleInner> list(String resourceGroupName, String cacheName);
 
     /**
      * Gets all firewall rules in the specified redis cache.
@@ -54,8 +54,7 @@ public interface FirewallRulesClient {
      * @return all firewall rules in the specified redis cache.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<RedisFirewallRuleInner> listByRedisResource(
-        String resourceGroupName, String cacheName, Context context);
+    PagedIterable<RedisFirewallRuleInner> list(String resourceGroupName, String cacheName, Context context);
 
     /**
      * Create or update a redis cache firewall rule.
@@ -63,7 +62,7 @@ public interface FirewallRulesClient {
      * @param resourceGroupName The name of the resource group.
      * @param cacheName The name of the Redis cache.
      * @param ruleName The name of the firewall rule.
-     * @param parameters Parameters required for creating a firewall rule on redis cache.
+     * @param parameters Parameters supplied to the create or update redis firewall rule operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -80,7 +79,7 @@ public interface FirewallRulesClient {
      * @param resourceGroupName The name of the resource group.
      * @param cacheName The name of the Redis cache.
      * @param ruleName The name of the firewall rule.
-     * @param parameters Parameters required for creating a firewall rule on redis cache.
+     * @param parameters Parameters supplied to the create or update redis firewall rule operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -97,7 +96,7 @@ public interface FirewallRulesClient {
      * @param resourceGroupName The name of the resource group.
      * @param cacheName The name of the Redis cache.
      * @param ruleName The name of the firewall rule.
-     * @param parameters Parameters required for creating a firewall rule on redis cache.
+     * @param parameters Parameters supplied to the create or update redis firewall rule operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -114,7 +113,7 @@ public interface FirewallRulesClient {
      * @param resourceGroupName The name of the resource group.
      * @param cacheName The name of the Redis cache.
      * @param ruleName The name of the firewall rule.
-     * @param parameters Parameters required for creating a firewall rule on redis cache.
+     * @param parameters Parameters supplied to the create or update redis firewall rule operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.

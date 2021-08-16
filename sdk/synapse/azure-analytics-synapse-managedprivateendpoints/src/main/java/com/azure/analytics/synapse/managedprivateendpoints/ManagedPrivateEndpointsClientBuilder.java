@@ -60,6 +60,22 @@ public final class ManagedPrivateEndpointsClientBuilder {
     }
 
     /*
+     * Api Version
+     */
+    private String apiVersion;
+
+    /**
+     * Sets Api Version.
+     *
+     * @param apiVersion the apiVersion value.
+     * @return the ManagedPrivateEndpointsClientBuilder.
+     */
+    public ManagedPrivateEndpointsClientBuilder apiVersion(String apiVersion) {
+        this.apiVersion = apiVersion;
+        return this;
+    }
+
+    /*
      * The HTTP pipeline to send requests through
      */
     private HttpPipeline pipeline;
@@ -195,6 +211,9 @@ public final class ManagedPrivateEndpointsClientBuilder {
      * @return an instance of ManagedPrivateEndpointsClientImpl.
      */
     private ManagedPrivateEndpointsClientImpl buildInnerClient() {
+        if (apiVersion == null) {
+            this.apiVersion = "2021-06-01-preview";
+        }
         if (pipeline == null) {
             this.pipeline = createHttpPipeline();
         }
@@ -202,7 +221,7 @@ public final class ManagedPrivateEndpointsClientBuilder {
             this.serializerAdapter = JacksonAdapter.createDefaultSerializerAdapter();
         }
         ManagedPrivateEndpointsClientImpl client =
-                new ManagedPrivateEndpointsClientImpl(pipeline, serializerAdapter, endpoint);
+                new ManagedPrivateEndpointsClientImpl(pipeline, serializerAdapter, endpoint, apiVersion);
         return client;
     }
 
@@ -213,9 +232,6 @@ public final class ManagedPrivateEndpointsClientBuilder {
             httpLogOptions = new HttpLogOptions();
         }
         List<HttpPipelinePolicy> policies = new ArrayList<>();
-        if (tokenCredential != null) {
-            policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, DEFAULT_SCOPES));
-        }
         String clientName = properties.getOrDefault(SDK_NAME, "UnknownName");
         String clientVersion = properties.getOrDefault(SDK_VERSION, "UnknownVersion");
         policies.add(
@@ -223,6 +239,9 @@ public final class ManagedPrivateEndpointsClientBuilder {
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
         policies.add(retryPolicy == null ? new RetryPolicy() : retryPolicy);
         policies.add(new CookiePolicy());
+        if (tokenCredential != null) {
+            policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, DEFAULT_SCOPES));
+        }
         policies.addAll(this.pipelinePolicies);
         HttpPolicyProviders.addAfterRetryPolicies(policies);
         policies.add(new HttpLoggingPolicy(httpLogOptions));

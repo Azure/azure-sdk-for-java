@@ -4,6 +4,7 @@ package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosDiagnostics;
+import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
 import com.azure.cosmos.implementation.directconnectivity.TimeoutHelper;
 import org.mockito.Mockito;
 
@@ -36,7 +37,6 @@ public class TestUtils {
     }
 
     public static String getUserNameLink(String databaseId, String userId) {
-        
         return DATABASES_PATH_SEGMENT + "/" + databaseId + "/" + USERS_PATH_SEGMENT + "/" + userId;
     }
 
@@ -51,8 +51,8 @@ public class TestUtils {
     public static RxDocumentServiceRequest mockDocumentServiceRequest(DiagnosticsClientContext clientContext) {
         RxDocumentServiceRequest dsr = Mockito.mock(RxDocumentServiceRequest.class);
         dsr.requestContext = Mockito.mock(DocumentServiceRequestContext.class);
+        dsr.requestContext.cosmosDiagnostics = clientContext.createDiagnostics();
         Mockito.doReturn(clientContext.createDiagnostics()).when(dsr).createCosmosDiagnostics();
-
         return dsr;
     }
 

@@ -12,8 +12,9 @@ import com.azure.core.util.polling.SyncPoller;
 
 import java.util.List;
 import java.util.Map;
+
 /**
- * Sample for recognizing business card information from an URL.
+ * Sample for recognizing business card information from a URL.
  */
 public class RecognizeBusinessCardFromUrl {
     /**
@@ -24,12 +25,13 @@ public class RecognizeBusinessCardFromUrl {
     public static void main(final String[] args) {
         // Instantiate a client that will be used to call the service.
         FormRecognizerClient client = new FormRecognizerClientBuilder()
-                                          .credential(new AzureKeyCredential("{key}"))
-                                          .endpoint("https://{endpoint}.cognitiveservices.azure.com/")
-                                          .buildClient();
+            .credential(new AzureKeyCredential("{key}"))
+            .endpoint("https://{endpoint}.cognitiveservices.azure.com/")
+            .buildClient();
 
-        String businessCardUrl = "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/master/sdk/formrecognizer"
-                                     + "/azure-ai-formrecognizer/src/samples/java/sample-forms/businessCards/businessCard.jpg";
+        String businessCardUrl =
+            "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/main/sdk/formrecognizer"
+                + "/azure-ai-formrecognizer/src/samples/resources/sample-forms/businessCards/businessCard.jpg";
 
         SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> recognizeBusinessCardPoller =
             client.beginRecognizeBusinessCardsFromUrl(businessCardUrl);
@@ -73,7 +75,7 @@ public class RecognizeBusinessCardFromUrl {
             if (jobTitles != null) {
                 if (FieldValueType.LIST == jobTitles.getValue().getValueType()) {
                     List<FormField> jobTitlesItems = jobTitles.getValue().asList();
-                    jobTitlesItems.stream().forEach(jobTitlesItem -> {
+                    jobTitlesItems.forEach(jobTitlesItem -> {
                         if (FieldValueType.STRING == jobTitlesItem.getValue().getValueType()) {
                             String jobTitle = jobTitlesItem.getValue().asString();
                             System.out.printf("Job Title: %s, confidence: %.2f%n",
@@ -87,7 +89,7 @@ public class RecognizeBusinessCardFromUrl {
             if (departments != null) {
                 if (FieldValueType.LIST == departments.getValue().getValueType()) {
                     List<FormField> departmentsItems = departments.getValue().asList();
-                    departmentsItems.stream().forEach(departmentsItem -> {
+                    departmentsItems.forEach(departmentsItem -> {
                         if (FieldValueType.STRING == departmentsItem.getValue().getValueType()) {
                             String department = departmentsItem.getValue().asString();
                             System.out.printf("Department: %s, confidence: %.2f%n",
@@ -101,7 +103,7 @@ public class RecognizeBusinessCardFromUrl {
             if (emails != null) {
                 if (FieldValueType.LIST == emails.getValue().getValueType()) {
                     List<FormField> emailsItems = emails.getValue().asList();
-                    emailsItems.stream().forEach(emailsItem -> {
+                    emailsItems.forEach(emailsItem -> {
                         if (FieldValueType.STRING == emailsItem.getValue().getValueType()) {
                             String email = emailsItem.getValue().asString();
                             System.out.printf("Email: %s, confidence: %.2f%n", email, emailsItem.getConfidence());
@@ -114,7 +116,7 @@ public class RecognizeBusinessCardFromUrl {
             if (websites != null) {
                 if (FieldValueType.LIST == websites.getValue().getValueType()) {
                     List<FormField> websitesItems = websites.getValue().asList();
-                    websitesItems.stream().forEach(websitesItem -> {
+                    websitesItems.forEach(websitesItem -> {
                         if (FieldValueType.STRING == websitesItem.getValue().getValueType()) {
                             String website = websitesItem.getValue().asString();
                             System.out.printf("Web site: %s, confidence: %.2f%n",
@@ -128,7 +130,7 @@ public class RecognizeBusinessCardFromUrl {
             if (mobilePhones != null) {
                 if (FieldValueType.LIST == mobilePhones.getValue().getValueType()) {
                     List<FormField> mobilePhonesItems = mobilePhones.getValue().asList();
-                    mobilePhonesItems.stream().forEach(mobilePhonesItem -> {
+                    mobilePhonesItems.forEach(mobilePhonesItem -> {
                         if (FieldValueType.PHONE_NUMBER == mobilePhonesItem.getValue().getValueType()) {
                             String mobilePhoneNumber = mobilePhonesItem.getValue().asPhoneNumber();
                             System.out.printf("Mobile phone number: %s, confidence: %.2f%n",
@@ -142,7 +144,7 @@ public class RecognizeBusinessCardFromUrl {
             if (otherPhones != null) {
                 if (FieldValueType.LIST == otherPhones.getValue().getValueType()) {
                     List<FormField> otherPhonesItems = otherPhones.getValue().asList();
-                    otherPhonesItems.stream().forEach(otherPhonesItem -> {
+                    otherPhonesItems.forEach(otherPhonesItem -> {
                         if (FieldValueType.PHONE_NUMBER == otherPhonesItem.getValue().getValueType()) {
                             String otherPhoneNumber = otherPhonesItem.getValue().asPhoneNumber();
                             System.out.printf("Other phone number: %s, confidence: %.2f%n",
@@ -156,7 +158,7 @@ public class RecognizeBusinessCardFromUrl {
             if (faxes != null) {
                 if (FieldValueType.LIST == faxes.getValue().getValueType()) {
                     List<FormField> faxesItems = faxes.getValue().asList();
-                    faxesItems.stream().forEach(faxesItem -> {
+                    faxesItems.forEach(faxesItem -> {
                         if (FieldValueType.PHONE_NUMBER == faxesItem.getValue().getValueType()) {
                             String faxPhoneNumber = faxesItem.getValue().asPhoneNumber();
                             System.out.printf("Fax phone number: %s, confidence: %.2f%n",
@@ -170,10 +172,11 @@ public class RecognizeBusinessCardFromUrl {
             if (addresses != null) {
                 if (FieldValueType.LIST == addresses.getValue().getValueType()) {
                     List<FormField> addressesItems = addresses.getValue().asList();
-                    addressesItems.stream().forEach(addressesItem -> {
+                    addressesItems.forEach(addressesItem -> {
                         if (FieldValueType.STRING == addressesItem.getValue().getValueType()) {
                             String address = addressesItem.getValue().asString();
-                            System.out.printf("Address: %s, confidence: %.2f%n", address, addressesItem.getConfidence());
+                            System.out
+                                .printf("Address: %s, confidence: %.2f%n", address, addressesItem.getConfidence());
                         }
                     });
                 }
@@ -183,10 +186,11 @@ public class RecognizeBusinessCardFromUrl {
             if (companyName != null) {
                 if (FieldValueType.LIST == companyName.getValue().getValueType()) {
                     List<FormField> companyNameItems = companyName.getValue().asList();
-                    companyNameItems.stream().forEach(companyNameItem -> {
+                    companyNameItems.forEach(companyNameItem -> {
                         if (FieldValueType.STRING == companyNameItem.getValue().getValueType()) {
                             String companyNameValue = companyNameItem.getValue().asString();
-                            System.out.printf("Company name: %s, confidence: %.2f%n", companyNameValue, companyNameItem.getConfidence());
+                            System.out.printf("Company name: %s, confidence: %.2f%n", companyNameValue,
+                                companyNameItem.getConfidence());
                         }
                     });
                 }

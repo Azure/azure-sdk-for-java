@@ -8,6 +8,8 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.resourcemanager.appservice.models.AppServicePlan;
 import com.azure.resourcemanager.appservice.models.FunctionApp;
 import com.azure.resourcemanager.appservice.models.FunctionAppBasic;
+import com.azure.resourcemanager.appservice.models.IpFilterTag;
+import com.azure.resourcemanager.appservice.models.IpSecurityRestriction;
 import com.azure.resourcemanager.appservice.models.LogLevel;
 import com.azure.resourcemanager.appservice.models.NetFrameworkVersion;
 import com.azure.resourcemanager.appservice.models.OperatingSystem;
@@ -225,5 +227,62 @@ public class WebAppsTests extends AppServiceTest {
         Assertions.assertEquals(webappName1, webApps.iterator().next().name());
 
         Assertions.assertEquals(webappName2, functionApps.iterator().next().name());
+    }
+
+    @Test
+    public void canUpdateIpRestriction() {
+        WebApp webApp2 =
+            appServiceManager
+                .webApps()
+                .define(webappName2)
+                .withRegion(Region.US_WEST)
+                .withNewResourceGroup(rgName2)
+                .withNewWindowsPlan(appServicePlanName1, PricingTier.BASIC_B1)
+                .create();
+        webApp2.refresh();
+
+        Assertions.assertEquals(1, webApp2.ipSecurityRules().size());
+        Assertions.assertEquals("Allow", webApp2.ipSecurityRules().iterator().next().action());
+        Assertions.assertEquals("Any", webApp2.ipSecurityRules().iterator().next().ipAddress());
+
+        WebApp webApp1 =
+            appServiceManager
+                .webApps()
+                .define(webappName1)
+                .withRegion(Region.US_WEST)
+                .withNewResourceGroup(rgName1)
+                .withNewWindowsPlan(appServicePlanName1, PricingTier.BASIC_B1)
+                .withAccessFromIpAddressRange("167.220.0.0/16", 300)
+                .withAccessFromIpAddress("167.220.0.1", 400)
+                .withAccessRule(new IpSecurityRestriction()
+                    .withAction("Allow")
+                    .withPriority(500)
+                    .withTag(IpFilterTag.SERVICE_TAG)
+                    .withIpAddress("AzureFrontDoor.Backend"))
+                .create();
+
+        Assertions.assertEquals(3 + 1, webApp1.ipSecurityRules().size());
+        Assertions.assertTrue(webApp1.ipSecurityRules().stream().anyMatch(r -> "Deny".equals(r.action()) && "Any".equals(r.ipAddress())));
+
+        IpSecurityRestriction serviceTagRule = webApp1.ipSecurityRules().stream()
+            .filter(r -> r.tag() == IpFilterTag.SERVICE_TAG)
+            .findFirst().get();
+
+        webApp1.update()
+            .withoutIpAddressAccess("167.220.0.1")
+            .withoutIpAddressRangeAccess("167.220.0.0/16")
+            .withoutAccessRule(serviceTagRule)
+            .withAccessFromIpAddressRange("167.220.0.0/24", 300)
+            .apply();
+
+        Assertions.assertEquals(1 + 1, webApp1.ipSecurityRules().size());
+
+        webApp1.update()
+            .withAccessFromAllNetworks()
+            .apply();
+
+        Assertions.assertEquals(1, webApp1.ipSecurityRules().size());
+        Assertions.assertEquals("Allow", webApp1.ipSecurityRules().iterator().next().action());
+        Assertions.assertEquals("Any", webApp1.ipSecurityRules().iterator().next().ipAddress());
     }
 }

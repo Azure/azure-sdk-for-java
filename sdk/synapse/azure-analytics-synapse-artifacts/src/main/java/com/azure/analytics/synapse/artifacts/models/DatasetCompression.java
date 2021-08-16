@@ -25,7 +25,9 @@ import java.util.Map;
     @JsonSubTypes.Type(name = "BZip2", value = DatasetBZip2Compression.class),
     @JsonSubTypes.Type(name = "GZip", value = DatasetGZipCompression.class),
     @JsonSubTypes.Type(name = "Deflate", value = DatasetDeflateCompression.class),
-    @JsonSubTypes.Type(name = "ZipDeflate", value = DatasetZipDeflateCompression.class)
+    @JsonSubTypes.Type(name = "ZipDeflate", value = DatasetZipDeflateCompression.class),
+    @JsonSubTypes.Type(name = "Tar", value = DatasetTarCompression.class),
+    @JsonSubTypes.Type(name = "TarGZip", value = DatasetTarGZipCompression.class)
 })
 @Fluent
 public class DatasetCompression {

@@ -18,7 +18,7 @@ import static com.azure.cosmos.BridgeInternal.setProperty;
  * While this class is public, but it is not part of our published public APIs.
  * This is meant to be internally used only by our sdk.
  */
-public final class CompositeContinuationToken extends JsonSerializable {
+public final class CompositeContinuationToken extends JsonSerializable implements IPartitionedToken {
     private static final String TokenPropertyName = "token";
     private static final String RangePropertyName = "range";
     private static final Logger logger = LoggerFactory.getLogger(CompositeContinuationToken.class);

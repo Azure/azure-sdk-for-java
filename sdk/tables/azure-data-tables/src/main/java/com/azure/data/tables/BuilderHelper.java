@@ -3,9 +3,11 @@
 
 package com.azure.data.tables;
 
+import com.azure.core.credential.AzureNamedKeyCredential;
 import com.azure.core.credential.AzureSasCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
@@ -18,91 +20,101 @@ import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RequestIdPolicy;
+import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
+import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.UrlBuilder;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.data.tables.implementation.CosmosPatchTransformPolicy;
 import com.azure.data.tables.implementation.NullHttpClient;
-import com.azure.storage.common.implementation.Constants;
-import com.azure.storage.common.policy.RequestRetryOptions;
-import com.azure.storage.common.policy.RequestRetryPolicy;
-import com.azure.storage.common.policy.ResponseValidationPolicyBuilder;
-import com.azure.storage.common.policy.ScrubEtagPolicy;
+import com.azure.data.tables.implementation.StorageAuthenticationSettings;
+import com.azure.data.tables.implementation.StorageConnectionString;
+import com.azure.data.tables.implementation.StorageConstants;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.StringJoiner;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 final class BuilderHelper {
     private static final Map<String, String> PROPERTIES =
         CoreUtils.getProperties("azure-data-tables.properties");
-    private static final String SDK_NAME = "name";
-    private static final String SDK_VERSION = "version";
+    private static final String CLIENT_NAME = PROPERTIES.getOrDefault("name", "UnknownName");
+    private static final String CLIENT_VERSION = PROPERTIES.getOrDefault("version", "UnknownVersion");
+    private static final String COSMOS_ENDPOINT_SUFFIX = "cosmos.azure.com";
 
-    static HttpPipeline buildPipeline(
-        TablesSharedKeyCredential tablesSharedKeyCredential,
-        TokenCredential tokenCredential, AzureSasCredential azureSasCredential, String sasToken,
-        String endpoint, RequestRetryOptions retryOptions, HttpLogOptions logOptions,
-        HttpClient httpClient, List<HttpPipelinePolicy> additionalPolicies,
-        Configuration configuration, ClientLogger logger) {
+    static HttpPipeline buildPipeline(AzureNamedKeyCredential azureNamedKeyCredential,
+                                      AzureSasCredential azureSasCredential, TokenCredential tokenCredential,
+                                      String sasToken, String endpoint, RetryPolicy retryPolicy,
+                                      HttpLogOptions logOptions, ClientOptions clientOptions, HttpClient httpClient,
+                                      List<HttpPipelinePolicy> perCallAdditionalPolicies,
+                                      List<HttpPipelinePolicy> perRetryAdditionalPolicies, Configuration configuration,
+                                      ClientLogger logger) {
+        configuration = (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
+        retryPolicy = (retryPolicy == null) ? new RetryPolicy() : retryPolicy;
+        logOptions = (logOptions == null) ? new HttpLogOptions() : logOptions;
 
-        validateSingleCredentialIsPresent(
-            tablesSharedKeyCredential, tokenCredential, azureSasCredential, sasToken, logger);
-
-        //1
+        // Closest to API goes first, closest to wire goes last.
         List<HttpPipelinePolicy> policies = new ArrayList<>();
-        policies.add(getUserAgentPolicy(configuration));
+
+        if (endpoint == null) {
+            throw logger.logExceptionAsError(
+                new IllegalStateException("An 'endpoint' is required to create a client. Use builders' 'endpoint()' or"
+                    + " 'connectionString()' methods to set this value."));
+        } else if (endpoint.contains(COSMOS_ENDPOINT_SUFFIX)) {
+            policies.add(new CosmosPatchTransformPolicy());
+        }
+
+        policies.add(new UserAgentPolicy(
+            CoreUtils.getApplicationId(clientOptions, logOptions), CLIENT_NAME, CLIENT_VERSION, configuration));
         policies.add(new RequestIdPolicy());
 
-        // Add Accept header so we don't get back XML.
-        // Can be removed when this is fixed. https://github.com/Azure/autorest.modelerfour/issues/324
-        policies.add(new AddHeadersPolicy(new HttpHeaders().put("Accept", "application/json")));
+        if (clientOptions != null) {
+            List<HttpHeader> httpHeaderList = new ArrayList<>();
 
-        //2
+            clientOptions.getHeaders().forEach(header ->
+                httpHeaderList.add(new HttpHeader(header.getName(), header.getValue())));
+
+            policies.add(new AddHeadersPolicy(new HttpHeaders(httpHeaderList)));
+        }
+
+        // Add per call additional policies.
+        policies.addAll(perCallAdditionalPolicies);
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
-        policies.add(new RequestRetryPolicy(retryOptions));
 
-        //3
+        // Add retry policy.
+        policies.add(retryPolicy);
+
         policies.add(new AddDatePolicy());
+
         HttpPipelinePolicy credentialPolicy;
-        if (tablesSharedKeyCredential != null) {
-            credentialPolicy = new TablesSharedKeyCredentialPolicy(tablesSharedKeyCredential);
-        } else if (tokenCredential != null) {
-            UrlBuilder endpointParts = UrlBuilder.parse(endpoint);
-            if (!endpointParts.getScheme().equals(Constants.HTTPS)) {
-                throw logger.logExceptionAsError(new IllegalArgumentException(String.format(
-                    "HTTPS is required when using a %s credential.", tokenCredential.getClass().getName())));
-            }
-            credentialPolicy = new BearerTokenAuthenticationPolicy(tokenCredential, getBearerTokenScope(endpointParts));
+
+        if (azureNamedKeyCredential != null) {
+            credentialPolicy = new TableAzureNamedKeyCredentialPolicy(azureNamedKeyCredential);
         } else if (azureSasCredential != null) {
             credentialPolicy = new AzureSasCredentialPolicy(azureSasCredential, false);
         } else if (sasToken != null) {
             credentialPolicy = new AzureSasCredentialPolicy(new AzureSasCredential(sasToken), false);
+        } else if (tokenCredential != null) {
+            credentialPolicy =  new BearerTokenAuthenticationPolicy(tokenCredential, StorageConstants.STORAGE_SCOPE);
         } else {
-            credentialPolicy = null;
+            throw logger.logExceptionAsError(
+                new IllegalStateException("A form of authentication is required to create a client. Use a builder's "
+                    + "'credential()', 'sasToken()' or 'connectionString()' methods to set a form of authentication."));
         }
 
-        if (credentialPolicy != null) {
-            policies.add(credentialPolicy);
-        }
+        policies.add(credentialPolicy);
 
-        //4
-        policies.addAll(additionalPolicies);
+        // Add per retry additional policies.
+        policies.addAll(perRetryAdditionalPolicies);
         HttpPolicyProviders.addAfterRetryPolicies(policies); //should this be between 3/4?
 
-        //5
-        policies.add(getResponseValidationPolicy());
-
-        //6
         policies.add(new HttpLoggingPolicy(logOptions));
-
-        //hm what is this and why here not 5?
-        policies.add(new ScrubEtagPolicy());
-
-        //where is #7, transport policy
+        policies.add(new TableScrubEtagPolicy());
 
         return new HttpPipelineBuilder()
             .policies(policies.toArray(new HttpPipelinePolicy[0]))
@@ -121,73 +133,63 @@ final class BuilderHelper {
             .build();
     }
 
-    private static void validateSingleCredentialIsPresent(
-        TablesSharedKeyCredential storageSharedKeyCredential,
-        TokenCredential tokenCredential, AzureSasCredential azureSasCredential, String sasToken, ClientLogger logger) {
-        List<Object> usedCredentials = Stream.of(
-            storageSharedKeyCredential, tokenCredential, azureSasCredential, sasToken)
-            .filter(Objects::nonNull).collect(Collectors.toList());
+    static void validateCredentials(AzureNamedKeyCredential azureNamedKeyCredential,
+                                    AzureSasCredential azureSasCredential, TokenCredential tokenCredential,
+                                    String sasToken, String connectionString, ClientLogger logger) {
+        List<Object> usedCredentials =
+            Stream.of(azureNamedKeyCredential, azureSasCredential, tokenCredential, sasToken, connectionString)
+                .filter(Objects::nonNull)
+                .collect(Collectors.toList());
+
+        // Only allow two forms of authentication when 'connectionString' and 'sasToken' are provided. Validate that
+        // both contain the same SAS settings.
+        if (usedCredentials.size() == 2 && connectionString != null && sasToken != null) {
+            StorageConnectionString storageConnectionString =
+                StorageConnectionString.create(connectionString, logger);
+            StorageAuthenticationSettings authSettings = storageConnectionString.getStorageAuthSettings();
+
+            if (authSettings.getType() == StorageAuthenticationSettings.Type.SAS_TOKEN) {
+                if (sasToken.equals(authSettings.getSasToken())) {
+                    return;
+                } else {
+                    throw logger.logExceptionAsError(new IllegalStateException("'connectionString' contains a SAS token"
+                        + " with different settings than the one provided using the builder's 'sasToken()' method."));
+                }
+            } else if (authSettings.getType() == StorageAuthenticationSettings.Type.ACCOUNT_NAME_KEY) {
+                throw logger.logExceptionAsError(new IllegalStateException("A 'connectionString' containing an account"
+                    + "name and key cannot be provided alongside a 'sasToken'."));
+            }
+
+            // If the 'connectionString' auth type is not SAS_TOKEN and a 'sasToken' was provided, then multiple
+            // incompatible forms of authentication were specified in the client builder.
+        }
+
         if (usedCredentials.size() > 1) {
+            StringJoiner usedCredentialsStringBuilder = new StringJoiner(", ");
+
+            if (azureNamedKeyCredential != null) {
+                usedCredentialsStringBuilder.add("azureNamedKeyCredential");
+            }
+
+            if (azureSasCredential != null) {
+                usedCredentialsStringBuilder.add("azureSasCredential");
+            }
+
+            if (tokenCredential != null) {
+                usedCredentialsStringBuilder.add("tokenCredential");
+            }
+
+            if (sasToken != null) {
+                usedCredentialsStringBuilder.add("sasToken");
+            }
+
+            if (connectionString != null) {
+                usedCredentialsStringBuilder.add("connectionString");
+            }
+
             throw logger.logExceptionAsError(new IllegalStateException(
-                "Only one credential should be used. Credentials present: "
-                    + usedCredentials.stream().map(c -> c instanceof String ? "sasToken" : c.getClass().getName())
-                    .collect(Collectors.joining(","))
-            ));
+                "Only one form of authentication should be used. The authentication forms present are: "
+                    + usedCredentialsStringBuilder + "."));
         }
-    }
-
-    /*
-     * Creates a {@link UserAgentPolicy} using the default blob module name and version.
-     *
-     * @param configuration Configuration store used to determine whether telemetry information should be included.
-     * @return The default {@link UserAgentPolicy} for the module.
-     */
-    private static UserAgentPolicy getUserAgentPolicy(Configuration configuration) {
-        configuration = (configuration == null) ? Configuration.NONE : configuration;
-
-        String clientName = PROPERTIES.getOrDefault(SDK_NAME, "UnknownName");
-        String clientVersion = PROPERTIES.getOrDefault(SDK_VERSION, "UnknownVersion");
-        return new UserAgentPolicy(getDefaultHttpLogOptions().getApplicationId(), clientName, clientVersion,
-            configuration);
-    }
-
-    /**
-     * @param endpoint The endpoint passed by the customer.
-     * @return The bearer token scope for the primary endpoint for the account. It may be the same endpoint passed if it
-     * is already a primary or it may have had "-secondary" stripped from the end of the account name.
-     */
-    private static String getBearerTokenScope(UrlBuilder endpoint) {
-        String[] hostParts = endpoint.getHost().split("\\.");
-        if (hostParts[0].endsWith("-secondary")) {
-            hostParts[0] = hostParts[0].substring(0, hostParts[0].length() - 10); // Strip off the '-secondary' suffix
-            endpoint.setHost(String.join(".", hostParts));
-        }
-        return String.format("%s/.default", endpoint.toString());
-    }
-
-    /**
-     * Gets the default http log option for Storage Blob.
-     *
-     * @return the default http log options.
-     */
-    private static HttpLogOptions getDefaultHttpLogOptions() {
-        HttpLogOptions defaultOptions = new HttpLogOptions();
-        // TODO
-        //BlobHeadersAndQueryParameters.getBlobHeaders().forEach(defaultOptions::addAllowedHeaderName);
-        //BlobHeadersAndQueryParameters.getBlobQueryParameters().forEach(defaultOptions::addAllowedQueryParamName);
-        return defaultOptions;
-    }
-
-    /*
-     * Creates a {@link ResponseValidationPolicyBuilder.ResponseValidationPolicy} used to validate response data from
-     * the service.
-     *
-     * @return The {@link ResponseValidationPolicyBuilder.ResponseValidationPolicy} for the module.
-     */
-    private static HttpPipelinePolicy getResponseValidationPolicy() {
-        return new ResponseValidationPolicyBuilder()
-            .addOptionalEcho(Constants.HeaderConstants.CLIENT_REQUEST_ID)
-            .addOptionalEcho(Constants.HeaderConstants.ENCRYPTION_KEY_SHA256)
-            .build();
     }
 }

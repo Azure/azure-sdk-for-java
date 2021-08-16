@@ -145,7 +145,7 @@ public interface PrivateEndpointConnectionsClient {
      *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
      *     resource.
-     * @param privateEndpoint The Private Endpoint resource.
+     * @param privateEndpoint The resource of private end point.
      * @param privateLinkServiceConnectionState A collection of information about the state of the connection between
      *     service consumer and provider.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -170,7 +170,7 @@ public interface PrivateEndpointConnectionsClient {
      *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
      *     resource.
-     * @param privateEndpoint The Private Endpoint resource.
+     * @param privateEndpoint The resource of private end point.
      * @param privateLinkServiceConnectionState A collection of information about the state of the connection between
      *     service consumer and provider.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -231,7 +231,7 @@ public interface PrivateEndpointConnectionsClient {
      *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
      *     resource.
-     * @param privateEndpoint The Private Endpoint resource.
+     * @param privateEndpoint The resource of private end point.
      * @param privateLinkServiceConnectionState A collection of information about the state of the connection between
      *     service consumer and provider.
      * @param context The context to associate with this operation.

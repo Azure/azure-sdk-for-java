@@ -3,23 +3,31 @@
 trigger:
   branches:
     include:
-      - master
+      - main
       - hotfix/*
       - release/*
   paths:
     include:
-      - sdk/relay/
+      - sdk/relay/ci.yml
+      - sdk/relay/azure-resourcemanager-relay/
+    exclude:
+      - sdk/relay/pom.xml
+      - sdk/relay/azure-resourcemanager-relay/pom.xml
 
 pr:
   branches:
     include:
-      - master
+      - main
       - feature/*
       - hotfix/*
       - release/*
   paths:
     include:
-      - sdk/relay/
+      - sdk/relay/ci.yml
+      - sdk/relay/azure-resourcemanager-relay/
+    exclude:
+      - sdk/relay/pom.xml
+      - sdk/relay/azure-resourcemanager-relay/pom.xml
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml

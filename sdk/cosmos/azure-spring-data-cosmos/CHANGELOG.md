@@ -1,9 +1,64 @@
 ## Release History
 
-## 3.4.0-beta.1 (Unreleased)
+## 3.10.0-beta.1 (Unreleased)
 
 
-### 3.3.0 (2020-01-15)
+### 3.9.0 (2021-07-08)
+#### New Features
+* Added `PartitionKey` support to spring data single partition queries.
+* Updated `Spring Boot` to version 2.5.2.
+* Updated `azure-cosmos` to version 4.17.0.
+
+### 3.8.0 (2021-06-11)
+#### New Features
+* Updated `Spring Boot` to version 2.5.0.
+* Updated `azure-cosmos` to version 4.16.0.
+* Added Autoscale RU support feature.
+* Added support for `countBy*` methods on `Repository` and `@Query` annotation.
+
+#### Key Bug Fixes
+* Fixed an issue with `MappingCosmosConverter` handling query with value types.
+* Fixed an issue with `CosmosIndexingPolicy` getting reset on application bootup.
+
+### 3.7.0 (2021-05-12)
+#### New Features
+* Updated Spring Boot to [spring-boot-dependencies:2.4.5](https://repo.maven.apache.org/maven2/org/springframework/boot/spring-boot-dependencies/2.4.5/).
+* Updated Spring Cloud to [spring-cloud-dependencies:2020.0.2](https://repo.maven.apache.org/maven2/org/springframework/cloud/spring-cloud-dependencies/2020.0.2/).
+* Added `slice` support for queries that do not require page count.
+* Updated `azure-cosmos` to version 4.15.0.
+
+### 3.6.0 (2021-04-06)
+#### New Features
+* Updated `azure-cosmos` to version 4.14.0.
+
+### 3.5.1 (2021-03-24)
+#### Key Bug Fixes
+* Updated `azure-cosmos` to hotfix version 4.13.1.
+
+### 3.5.0 (2021-03-11)
+> [!IMPORTANT] 
+> This release supports spring boot 2.4.3 and above.
+#### New Features
+* Updated `spring-boot` to major version 2.4.3.
+* Updated `spring-core` to major version 5.3.4.
+* Updated `spring-data-commons` to major version 2.4.5.
+* Updated `azure-cosmos` version to 4.13.0.
+* Added support for `org.springframework.data.domain.Persistable` entity type.
+* Added support to log SQL Queries.
+* Added support for `Pageable` and `Sort` for `@query` annotated queries.
+
+#### Key Bug Fixes
+* Fixed issue when using automatic id generation with the auditable framework.
+* Fixed query deserialization issue with `@query` annotated queries.
+
+### 3.4.0 (2021-02-09)
+#### New Features
+* Updated `azure-cosmos` version to 4.12.0.
+
+#### Key Bug Fixes
+* Fixed `@EnableAuditing` for Java 11 modules.
+
+### 3.3.0 (2021-01-15)
 #### New Features
 * Support for composite indexes in `CosmosIndexPolicy` annotation.
 * Support for changes in `CosmosIndexPolicy` annotation.
@@ -33,7 +88,7 @@
 #### New Features
 * Updated azure-cosmos dependency to `4.6.0`
 
-## 3.0.0-beta.2 (2020-09-17)
+### 3.0.0-beta.2 (2020-09-17)
 #### New Features
 * Updated artifact id to `azure-spring-data-cosmos`.
 * Updated azure-cosmos dependency to `4.5.0`.

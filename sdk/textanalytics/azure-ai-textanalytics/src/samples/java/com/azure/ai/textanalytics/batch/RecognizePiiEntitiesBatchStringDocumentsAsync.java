@@ -5,9 +5,10 @@ package com.azure.ai.textanalytics.batch;
 
 import com.azure.ai.textanalytics.TextAnalyticsAsyncClient;
 import com.azure.ai.textanalytics.TextAnalyticsClientBuilder;
+import com.azure.ai.textanalytics.models.PiiEntityCategory;
 import com.azure.ai.textanalytics.models.PiiEntityCollection;
 import com.azure.ai.textanalytics.models.RecognizePiiEntitiesResult;
-import com.azure.ai.textanalytics.models.RecognizePiiEntityOptions;
+import com.azure.ai.textanalytics.models.RecognizePiiEntitiesOptions;
 import com.azure.ai.textanalytics.models.TextDocumentBatchStatistics;
 import com.azure.core.credential.AzureKeyCredential;
 
@@ -35,12 +36,17 @@ public class RecognizePiiEntitiesBatchStringDocumentsAsync {
 
         // The texts that need be analyzed.
         List<String> documents = Arrays.asList(
-            "My SSN is 859-98-0987",
+            "My name is Joe and SSN is 859-98-0987",
             "Visa card 4111 1111 1111 1111"
         );
 
-        // Show statistics and model version
-        RecognizePiiEntityOptions options = new RecognizePiiEntityOptions().setIncludeStatistics(true).setModelVersion("latest");
+        // Show statistics, model version, and PII entities that only related to the given Pii entity categories.
+        RecognizePiiEntitiesOptions options = new RecognizePiiEntitiesOptions()
+                                                  .setCategoriesFilter(
+                                                      PiiEntityCategory.US_SOCIAL_SECURITY_NUMBER,
+                                                      PiiEntityCategory.CREDIT_CARD_NUMBER)
+                                                  .setIncludeStatistics(true)
+                                                  .setModelVersion("latest");
 
         // Recognizing Personally Identifiable Information entities for each document in a batch of documents
         AtomicInteger counter = new AtomicInteger();

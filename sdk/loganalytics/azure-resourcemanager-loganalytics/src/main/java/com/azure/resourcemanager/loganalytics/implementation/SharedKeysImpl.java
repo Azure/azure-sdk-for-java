@@ -4,16 +4,16 @@
 
 package com.azure.resourcemanager.loganalytics.implementation;
 
-import com.azure.resourcemanager.loganalytics.LogAnalyticsManager;
 import com.azure.resourcemanager.loganalytics.fluent.models.SharedKeysInner;
 import com.azure.resourcemanager.loganalytics.models.SharedKeys;
 
 public final class SharedKeysImpl implements SharedKeys {
     private SharedKeysInner innerObject;
 
-    private final LogAnalyticsManager serviceManager;
+    private final com.azure.resourcemanager.loganalytics.LogAnalyticsManager serviceManager;
 
-    SharedKeysImpl(SharedKeysInner innerObject, LogAnalyticsManager serviceManager) {
+    SharedKeysImpl(
+        SharedKeysInner innerObject, com.azure.resourcemanager.loganalytics.LogAnalyticsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -30,7 +30,7 @@ public final class SharedKeysImpl implements SharedKeys {
         return this.innerObject;
     }
 
-    private LogAnalyticsManager manager() {
+    private com.azure.resourcemanager.loganalytics.LogAnalyticsManager manager() {
         return this.serviceManager;
     }
 }

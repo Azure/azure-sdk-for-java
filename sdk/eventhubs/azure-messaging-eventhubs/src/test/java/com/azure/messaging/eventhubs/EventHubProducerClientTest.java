@@ -11,10 +11,10 @@ import com.azure.core.amqp.exception.AmqpErrorCondition;
 import com.azure.core.amqp.exception.AmqpErrorContext;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.implementation.AmqpSendLink;
-import com.azure.core.amqp.implementation.CbsAuthorizationType;
 import com.azure.core.amqp.implementation.ConnectionOptions;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.amqp.implementation.TracerProvider;
+import com.azure.core.amqp.models.CbsAuthorizationType;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Context;
@@ -62,7 +62,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyZeroInteractions;
+import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 
 /**
@@ -71,6 +71,8 @@ import static org.mockito.Mockito.when;
 public class EventHubProducerClientTest {
     private static final String HOSTNAME = "my-host-name";
     private static final String EVENT_HUB_NAME = "my-event-hub-name";
+    private final AmqpRetryOptions retryOptions = new AmqpRetryOptions().setTryTimeout(Duration.ofSeconds(30));
+    private final MessageSerializer messageSerializer = new EventHubMessageSerializer();
 
     @Mock
     private AmqpSendLink sendLink;
@@ -86,8 +88,6 @@ public class EventHubProducerClientTest {
     private ArgumentCaptor<List<Message>> messagesCaptor;
 
     private EventHubProducerAsyncClient asyncProducer;
-    private AmqpRetryOptions retryOptions = new AmqpRetryOptions().setTryTimeout(Duration.ofSeconds(30));
-    private MessageSerializer messageSerializer = new EventHubMessageSerializer();
     private EventHubConnectionProcessor connectionProcessor;
 
     @BeforeEach
@@ -101,9 +101,10 @@ public class EventHubProducerClientTest {
         final TracerProvider tracerProvider = new TracerProvider(Collections.emptyList());
 
         ConnectionOptions connectionOptions = new ConnectionOptions(HOSTNAME, tokenCredential,
-            CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, AmqpTransportType.AMQP_WEB_SOCKETS, retryOptions,
-            ProxyOptions.SYSTEM_DEFAULTS, Schedulers.parallel(), new ClientOptions(),
-            SslDomain.VerifyMode.ANONYMOUS_PEER);
+            CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, ClientConstants.AZURE_ACTIVE_DIRECTORY_SCOPE,
+            AmqpTransportType.AMQP_WEB_SOCKETS, retryOptions, ProxyOptions.SYSTEM_DEFAULTS, Schedulers.parallel(),
+            new ClientOptions(), SslDomain.VerifyMode.ANONYMOUS_PEER, "test-product",
+            "test-client-version");
         connectionProcessor = Flux.<EventHubAmqpConnection>create(sink -> sink.next(connection))
             .subscribeWith(new EventHubConnectionProcessor(connectionOptions.getFullyQualifiedNamespace(),
                 "event-hub-path", connectionOptions.getRetry()));
@@ -111,6 +112,7 @@ public class EventHubProducerClientTest {
             tracerProvider, messageSerializer, Schedulers.parallel(), false, onClientClosed);
 
         when(connection.getEndpointStates()).thenReturn(Flux.create(sink -> sink.next(AmqpEndpointState.ACTIVE)));
+        when(connection.closeAsync()).thenReturn(Mono.empty());
     }
 
     @AfterEach
@@ -204,7 +206,7 @@ public class EventHubProducerClientTest {
             .start(eq("EventHubs.message"), any(), eq(ProcessKind.MESSAGE));
         verify(tracer1, times(2)).end(eq("success"), isNull(), any());
 
-        verifyZeroInteractions(onClientClosed);
+        verifyNoInteractions(onClientClosed);
     }
 
     /**
@@ -255,7 +257,7 @@ public class EventHubProducerClientTest {
         verify(tracer1, times(1)).addLink(any());
         verify(tracer1, times(1)).end(eq("success"), isNull(), any());
 
-        verifyZeroInteractions(onClientClosed);
+        verifyNoInteractions(onClientClosed);
     }
 
     /**
@@ -320,7 +322,7 @@ public class EventHubProducerClientTest {
 
         messagesSent.forEach(message -> Assertions.assertEquals(Section.SectionType.Data, message.getBody().getType()));
 
-        verifyZeroInteractions(onClientClosed);
+        verifyNoInteractions(onClientClosed);
     }
 
     /**
@@ -404,7 +406,7 @@ public class EventHubProducerClientTest {
             .start(eq("EventHubs.message"), any(), eq(ProcessKind.MESSAGE));
         verify(tracer1, times(2)).end(eq("success"), isNull(), any());
 
-        verifyZeroInteractions(onClientClosed);
+        verifyNoInteractions(onClientClosed);
     }
 
     /**

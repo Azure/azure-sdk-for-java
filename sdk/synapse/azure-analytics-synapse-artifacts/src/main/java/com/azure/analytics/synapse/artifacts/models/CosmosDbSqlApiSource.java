@@ -34,6 +34,21 @@ public final class CosmosDbSqlApiSource extends CopySource {
     @JsonProperty(value = "preferredRegions")
     private Object preferredRegions;
 
+    /*
+     * Whether detect primitive values as datetime values. Type: boolean (or
+     * Expression with resultType boolean).
+     */
+    @JsonProperty(value = "detectDatetime")
+    private Object detectDatetime;
+
+    /*
+     * Specifies the additional columns to be added to source data. Type: array
+     * of objects(AdditionalColumns) (or Expression with resultType array of
+     * objects).
+     */
+    @JsonProperty(value = "additionalColumns")
+    private Object additionalColumns;
+
     /**
      * Get the query property: SQL API query. Type: string (or Expression with resultType string).
      *
@@ -93,6 +108,50 @@ public final class CosmosDbSqlApiSource extends CopySource {
      */
     public CosmosDbSqlApiSource setPreferredRegions(Object preferredRegions) {
         this.preferredRegions = preferredRegions;
+        return this;
+    }
+
+    /**
+     * Get the detectDatetime property: Whether detect primitive values as datetime values. Type: boolean (or Expression
+     * with resultType boolean).
+     *
+     * @return the detectDatetime value.
+     */
+    public Object getDetectDatetime() {
+        return this.detectDatetime;
+    }
+
+    /**
+     * Set the detectDatetime property: Whether detect primitive values as datetime values. Type: boolean (or Expression
+     * with resultType boolean).
+     *
+     * @param detectDatetime the detectDatetime value to set.
+     * @return the CosmosDbSqlApiSource object itself.
+     */
+    public CosmosDbSqlApiSource setDetectDatetime(Object detectDatetime) {
+        this.detectDatetime = detectDatetime;
+        return this;
+    }
+
+    /**
+     * Get the additionalColumns property: Specifies the additional columns to be added to source data. Type: array of
+     * objects(AdditionalColumns) (or Expression with resultType array of objects).
+     *
+     * @return the additionalColumns value.
+     */
+    public Object getAdditionalColumns() {
+        return this.additionalColumns;
+    }
+
+    /**
+     * Set the additionalColumns property: Specifies the additional columns to be added to source data. Type: array of
+     * objects(AdditionalColumns) (or Expression with resultType array of objects).
+     *
+     * @param additionalColumns the additionalColumns value to set.
+     * @return the CosmosDbSqlApiSource object itself.
+     */
+    public CosmosDbSqlApiSource setAdditionalColumns(Object additionalColumns) {
+        this.additionalColumns = additionalColumns;
         return this;
     }
 }

@@ -3,7 +3,6 @@
 package com.azure.communication.common;
 
 import org.junit.jupiter.api.Test;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
@@ -13,28 +12,28 @@ public class CommunicationIdentifierTests {
     final String fullId = "some lengthy id string";
 
     @Test
-    public void equalityOnlyTestIdIfPresentOnBothSide() {
-        assertEquals(new MicrosoftTeamsUserIdentifier(userId, true).setId(fullId),
+    public void equalityOnlyTestRawIdIfPresentOnBothSide() {
+        assertEquals(new MicrosoftTeamsUserIdentifier(userId, true).setRawId(fullId),
             new MicrosoftTeamsUserIdentifier(userId, true));
         assertEquals(new MicrosoftTeamsUserIdentifier(userId, true),
             new MicrosoftTeamsUserIdentifier(userId, true));
         assertEquals(new MicrosoftTeamsUserIdentifier(userId, true),
-            new MicrosoftTeamsUserIdentifier(userId, true).setId(fullId));
-        assertNotEquals(new MicrosoftTeamsUserIdentifier(userId, true).setId(fullId),
-            new MicrosoftTeamsUserIdentifier(userId, true).setId("another id"));
+            new MicrosoftTeamsUserIdentifier(userId, true).setRawId(fullId));
+        assertNotEquals(new MicrosoftTeamsUserIdentifier(userId, true).setRawId(fullId),
+            new MicrosoftTeamsUserIdentifier(userId, true).setRawId("another id"));
 
-        assertEquals(new PhoneNumberIdentifier("+12223334444").setId(fullId),
+        assertEquals(new PhoneNumberIdentifier("+12223334444").setRawId(fullId),
             new PhoneNumberIdentifier("+12223334444"));
         assertEquals(new PhoneNumberIdentifier("+12223334444"), new PhoneNumberIdentifier("+12223334444"));
         assertEquals(new PhoneNumberIdentifier("+12223334444"),
-            new PhoneNumberIdentifier("+12223334444").setId(fullId));
-        assertNotEquals(new PhoneNumberIdentifier("+12223334444").setId(fullId),
-            new PhoneNumberIdentifier("+12223334444").setId("another id"));
+            new PhoneNumberIdentifier("+12223334444").setRawId(fullId));
+        assertNotEquals(new PhoneNumberIdentifier("+12223334444").setRawId(fullId),
+            new PhoneNumberIdentifier("+12223334444").setRawId("another id"));
     }
 
     @Test
     public void defaultCloudIsPublicForMicrosoftTeamsUserIdentifier() {
         assertEquals(CommunicationCloudEnvironment.PUBLIC,
-            new MicrosoftTeamsUserIdentifier(userId, true).setId(fullId).getCloudEnvironment());
+            new MicrosoftTeamsUserIdentifier(userId, true).setRawId(fullId).getCloudEnvironment());
     }
 }

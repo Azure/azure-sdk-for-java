@@ -15,6 +15,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import reactor.core.publisher.Mono;
+import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
 
 /** Implementation for SQL Failover Group operations. */
 public class SqlFailoverGroupOperationsImpl extends SqlChildrenOperationsImpl<SqlFailoverGroup>
@@ -106,12 +107,11 @@ public class SqlFailoverGroupOperationsImpl extends SqlChildrenOperationsImpl<Sq
     public PagedFlux<SqlFailoverGroup> listBySqlServerAsync(
         final String resourceGroupName, final String sqlServerName) {
         final SqlFailoverGroupOperationsImpl self = this;
-        return this
+        return PagedConverter.mapPage(this
             .sqlServerManager
             .serviceClient()
             .getFailoverGroups()
-            .listByServerAsync(resourceGroupName, sqlServerName)
-            .mapPage(
+            .listByServerAsync(resourceGroupName, sqlServerName),
                 failoverGroupInner ->
                     new SqlFailoverGroupImpl(failoverGroupInner.name(), failoverGroupInner, self.sqlServerManager));
     }
@@ -134,12 +134,11 @@ public class SqlFailoverGroupOperationsImpl extends SqlChildrenOperationsImpl<Sq
 
     @Override
     public PagedFlux<SqlFailoverGroup> listBySqlServerAsync(final SqlServer sqlServer) {
-        return sqlServer
+        return PagedConverter.mapPage(sqlServer
             .manager()
             .serviceClient()
             .getFailoverGroups()
-            .listByServerAsync(sqlServer.resourceGroupName(), sqlServer.name())
-            .mapPage(
+            .listByServerAsync(sqlServer.resourceGroupName(), sqlServer.name()),
                 failoverGroupInner ->
                     new SqlFailoverGroupImpl(
                         failoverGroupInner.name(), (SqlServerImpl) sqlServer, failoverGroupInner, sqlServer.manager()));

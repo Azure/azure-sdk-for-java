@@ -3,6 +3,8 @@
 
 package com.azure.core.util.serializer;
 
+import com.azure.core.implementation.serializer.DefaultJsonSerializer;
+
 import java.util.Iterator;
 import java.util.ServiceLoader;
 
@@ -17,7 +19,7 @@ public final class JsonSerializerProviders {
         + "Additionally, refer to https://aka.ms/azsdk/java/docs/custom-jsonserializer to learn about writing your own "
         + "implementation.";
 
-    private static JsonSerializerProvider defaultProvider;
+    private static JsonSerializerProvider jsonSerializerProvider;
     private static boolean attemptedLoad;
 
     /**
@@ -25,28 +27,54 @@ public final class JsonSerializerProviders {
      * classpath.
      *
      * @return A new instance of {@link JsonSerializer}.
+     * @throws IllegalStateException if a {@link JsonSerializerProvider} is not found in the classpath.
      */
     public static JsonSerializer createInstance() {
-        if (defaultProvider == null) {
-            loadFromClasspath();
-        }
-
-        return defaultProvider.createInstance();
+        return createInstance(false);
     }
 
-    private static synchronized void loadFromClasspath() {
-        if (attemptedLoad && defaultProvider != null) {
+    /**
+     * Creates an instance of {@link JsonSerializer} using the first {@link JsonSerializerProvider} found in the
+     * classpath. If no provider is found in classpath, a default provider will be included if {@code useDefaultIfAbsent}
+     * is set to true.
+     *
+     * @param useDefaultIfAbsent If no provider is found in classpath, a default provider will be used.
+     * if {@code useDefaultIfAbsent} is set to true.
+     * @return A new instance of {@link JsonSerializer}.
+     * @throws IllegalStateException if a {@link JsonSerializerProvider} is not found in the classpath and
+     * {@code useDefaultIfAbsent} is set to false.
+     */
+    public static JsonSerializer createInstance(boolean useDefaultIfAbsent) {
+        if (jsonSerializerProvider == null) {
+            loadDefaultSerializer();
+        }
+
+        if (jsonSerializerProvider != null) {
+            return jsonSerializerProvider.createInstance();
+        }
+
+        if (useDefaultIfAbsent) {
+            return new DefaultJsonSerializer();
+        }
+        throw new IllegalStateException(CANNOT_FIND_JSON_SERIALIZER_PROVIDER);
+    }
+
+    private static synchronized void loadDefaultSerializer() {
+        if (attemptedLoad) {
             return;
-        } else if (attemptedLoad) {
-            throw new IllegalStateException(CANNOT_FIND_JSON_SERIALIZER_PROVIDER);
         }
 
         attemptedLoad = true;
-        Iterator<JsonSerializerProvider> iterator = ServiceLoader.load(JsonSerializerProvider.class).iterator();
+        // Use as classloader to load provider-configuration files and provider classes the classloader
+        // that loaded this class. In most cases this will be the System classloader.
+        // But this choice here provides additional flexibility in managed environments that control
+        // classloading differently (OSGi, Spring and others) and don't/ depend on the
+        // System classloader to load JsonSerializerProviders classes.
+        Iterator<JsonSerializerProvider> iterator =
+            ServiceLoader.load(JsonSerializerProvider.class, JsonSerializerProviders.class.getClassLoader())
+                .iterator();
         if (iterator.hasNext()) {
-            defaultProvider = iterator.next();
-        } else {
-            throw new IllegalStateException(CANNOT_FIND_JSON_SERIALIZER_PROVIDER);
+            jsonSerializerProvider = iterator.next();
         }
     }
 

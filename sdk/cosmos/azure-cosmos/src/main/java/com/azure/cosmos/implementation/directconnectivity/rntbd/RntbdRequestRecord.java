@@ -4,8 +4,10 @@
 package com.azure.cosmos.implementation.directconnectivity.rntbd;
 
 import com.azure.cosmos.BridgeInternal;
+import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.GoneException;
 import com.azure.cosmos.implementation.RequestTimeline;
+import com.azure.cosmos.implementation.RequestTimeoutException;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;
@@ -63,6 +65,8 @@ public abstract class RntbdRequestRecord extends CompletableFuture<StoreResponse
     private volatile Instant timeSent;
     private volatile Instant timeReceived;
     private volatile boolean sendingRequestHasStarted;
+    private volatile RntbdChannelAcquisitionTimeline channelAcquisitionTimeline;
+    private volatile boolean channelAcquisitionContextEnabled;
 
     protected RntbdRequestRecord(final RntbdRequestArgs args) {
 
@@ -107,6 +111,10 @@ public abstract class RntbdRequestRecord extends CompletableFuture<StoreResponse
         return this;
     }
 
+    public void channelAcquisitionContextEnabled(boolean channelAcquisitionContextEnabled) {
+        this.channelAcquisitionContextEnabled = channelAcquisitionContextEnabled;
+    }
+
     public Stage stage() {
         return this.stage;
     }
@@ -124,6 +132,9 @@ public abstract class RntbdRequestRecord extends CompletableFuture<StoreResponse
                         break;
                     }
                     this.timeChannelAcquisitionStarted = time;
+                    if (this.channelAcquisitionContextEnabled) {
+                        this.channelAcquisitionTimeline = new RntbdChannelAcquisitionTimeline();
+                    }
                     break;
                 case PIPELINED:
                     if (current != Stage.CHANNEL_ACQUISITION_STARTED) {
@@ -221,14 +232,27 @@ public abstract class RntbdRequestRecord extends CompletableFuture<StoreResponse
         return this.args.transportRequestId();
     }
 
+    public RntbdChannelAcquisitionTimeline getChannelAcquisitionTimeline() {
+        return this.channelAcquisitionTimeline;
+    }
+
     // endregion
 
     // region Methods
 
     public boolean expire() {
-        final GoneException error = new GoneException(this.toString(), null, this.args.physicalAddress());
-        BridgeInternal.setRequestHeaders(error, this.args.serviceRequest().getHeaders());
+        final CosmosException error;
+        if (this.args.serviceRequest().isReadOnly() || !this.hasSendingRequestStarted()) {
+            // Convert from requestTimeoutException to GoneException for the following two scenarios so they can be safely retried:
+            // 1. RequestOnly request
+            // 2. Write request but not sent yet
+            error = new GoneException(this.toString(), null, this.args.physicalAddress());
+        } else {
+            // For sent write request, converting to requestTimeout, will not be retried.
+            error = new RequestTimeoutException(this.toString(), this.args.physicalAddress());
+        }
 
+        BridgeInternal.setRequestHeaders(error, this.args.serviceRequest().getHeaders());
         return this.completeExceptionally(error);
     }
 

@@ -10,6 +10,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.resources.models.DeploymentPropertiesExtended;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Map;
 
 /** Deployment information. */
 @Fluent
@@ -39,6 +40,20 @@ public final class DeploymentExtendedInner extends Resource {
      */
     public DeploymentExtendedInner withProperties(DeploymentPropertiesExtended properties) {
         this.properties = properties;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public DeploymentExtendedInner withLocation(String location) {
+        super.withLocation(location);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public DeploymentExtendedInner withTags(Map<String, String> tags) {
+        super.withTags(tags);
         return this;
     }
 

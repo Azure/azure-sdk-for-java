@@ -7,8 +7,11 @@ package com.azure.messaging.eventgrid.systemevents;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
+import java.util.Map;
 
-/** The MediaJobCanceledEventData model. */
+/**
+ * Job canceled event data. Schema of the data property of an EventGridEvent for a Microsoft.Media.JobCanceled event.
+ */
 @Fluent
 public final class MediaJobCanceledEventData extends MediaJobStateChangeEventData {
     /*
@@ -34,6 +37,13 @@ public final class MediaJobCanceledEventData extends MediaJobStateChangeEventDat
      */
     public MediaJobCanceledEventData setOutputs(List<MediaJobOutput> outputs) {
         this.outputs = outputs;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public MediaJobCanceledEventData setCorrelationData(Map<String, String> correlationData) {
+        super.setCorrelationData(correlationData);
         return this;
     }
 }

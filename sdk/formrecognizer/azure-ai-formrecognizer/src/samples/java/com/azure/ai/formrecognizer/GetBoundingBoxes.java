@@ -15,7 +15,7 @@ import com.azure.core.util.polling.SyncPoller;
 
 import java.util.List;
 
-/*
+/**
  * Sample to get detailed information to visualize the outlines of form content and fields,
  * which can be used for manual validation and drawing UI as part of an application.
  */

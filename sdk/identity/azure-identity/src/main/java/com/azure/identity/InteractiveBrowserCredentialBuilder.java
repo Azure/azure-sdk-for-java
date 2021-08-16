@@ -5,10 +5,7 @@ package com.azure.identity;
 
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.identity.implementation.util.IdentityConstants;
-import com.azure.identity.implementation.AuthenticationRecord;
 import com.azure.identity.implementation.util.ValidationUtil;
-
-import java.util.HashMap;
 
 /**
  * Fluent credential builder for instantiating a {@link InteractiveBrowserCredential}.
@@ -19,7 +16,7 @@ public class InteractiveBrowserCredentialBuilder extends AadCredentialBuilderBas
     private Integer port;
     private boolean automaticAuthentication = true;
     private String redirectUrl;
-    String clientId = IdentityConstants.DEVELOPER_SINGLE_SIGN_ON_ID;
+    private String loginHint;
 
     /**
      * Sets the port for the local HTTP server, for which {@code http://localhost:{port}} must be
@@ -68,8 +65,22 @@ public class InteractiveBrowserCredentialBuilder extends AadCredentialBuilderBas
      *
      * @return An updated instance of this builder with the configured authentication record.
      */
-    InteractiveBrowserCredentialBuilder authenticationRecord(AuthenticationRecord authenticationRecord) {
+    public InteractiveBrowserCredentialBuilder authenticationRecord(AuthenticationRecord authenticationRecord) {
         this.identityClientOptions.setAuthenticationRecord(authenticationRecord);
+        return this;
+    }
+
+    /**
+     * Configures the persistent shared token cache options and enables the persistent token cache which is disabled
+     * by default. If configured, the credential will store tokens in a cache persisted to the machine, protected to
+     * the current user, which can be shared by other credentials and processes.
+     *
+     * @param tokenCachePersistenceOptions the token cache configuration options
+     * @return An updated instance of this builder with the token cache options configured.
+     */
+    public InteractiveBrowserCredentialBuilder tokenCachePersistenceOptions(TokenCachePersistenceOptions
+                                                                          tokenCachePersistenceOptions) {
+        this.identityClientOptions.setTokenCacheOptions(tokenCachePersistenceOptions);
         return this;
     }
 
@@ -98,8 +109,21 @@ public class InteractiveBrowserCredentialBuilder extends AadCredentialBuilderBas
      *
      * @return An updated instance of this builder with automatic authentication disabled.
      */
-    InteractiveBrowserCredentialBuilder disableAutomaticAuthentication() {
+    public InteractiveBrowserCredentialBuilder disableAutomaticAuthentication() {
         this.automaticAuthentication = false;
+        return this;
+    }
+
+    /**
+     * Sets the username suggestion to pre-fill the login page's username/email address field. A user may still log in
+     * with a different username.
+     *
+     * @param loginHint the username suggestion to pre-fill the login page's username/email address field.
+     *
+     * @return An updated instance of this builder with login hint configured.
+     */
+    public InteractiveBrowserCredentialBuilder loginHint(String loginHint) {
+        this.loginHint = loginHint;
         return this;
     }
 
@@ -110,10 +134,9 @@ public class InteractiveBrowserCredentialBuilder extends AadCredentialBuilderBas
      */
     public InteractiveBrowserCredential build() {
         ValidationUtil.validateInteractiveBrowserRedirectUrlSetup(getClass().getSimpleName(), port, redirectUrl);
-        ValidationUtil.validate(getClass().getSimpleName(), new HashMap<String, Object>() {{
-                put("clientId", clientId);
-            }});
+
+        String clientId = this.clientId != null ? this.clientId : IdentityConstants.DEVELOPER_SINGLE_SIGN_ON_ID;
         return new InteractiveBrowserCredential(clientId, tenantId, port, redirectUrl, automaticAuthentication,
-            identityClientOptions);
+            loginHint, identityClientOptions);
     }
 }

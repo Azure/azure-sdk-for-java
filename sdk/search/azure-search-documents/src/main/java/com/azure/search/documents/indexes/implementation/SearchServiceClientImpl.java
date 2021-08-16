@@ -149,14 +149,16 @@ public final class SearchServiceClientImpl {
      * Initializes an instance of SearchServiceClient client.
      *
      * @param endpoint The endpoint URL of the search service.
+     * @param apiVersion Api Version.
      */
-    SearchServiceClientImpl(String endpoint) {
+    SearchServiceClientImpl(String endpoint, String apiVersion) {
         this(
                 new HttpPipelineBuilder()
                         .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
                         .build(),
                 JacksonAdapter.createDefaultSerializerAdapter(),
-                endpoint);
+                endpoint,
+                apiVersion);
     }
 
     /**
@@ -164,9 +166,10 @@ public final class SearchServiceClientImpl {
      *
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param endpoint The endpoint URL of the search service.
+     * @param apiVersion Api Version.
      */
-    SearchServiceClientImpl(HttpPipeline httpPipeline, String endpoint) {
-        this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), endpoint);
+    SearchServiceClientImpl(HttpPipeline httpPipeline, String endpoint, String apiVersion) {
+        this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), endpoint, apiVersion);
     }
 
     /**
@@ -175,12 +178,14 @@ public final class SearchServiceClientImpl {
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param endpoint The endpoint URL of the search service.
+     * @param apiVersion Api Version.
      */
-    SearchServiceClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String endpoint) {
+    SearchServiceClientImpl(
+            HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String endpoint, String apiVersion) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
         this.endpoint = endpoint;
-        this.apiVersion = "2020-06-30";
+        this.apiVersion = apiVersion;
         this.dataSources = new DataSourcesImpl(this);
         this.indexers = new IndexersImpl(this);
         this.skillsets = new SkillsetsImpl(this);
@@ -204,7 +209,7 @@ public final class SearchServiceClientImpl {
                 @HostParam("endpoint") String endpoint,
                 @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
                 @QueryParam("api-version") String apiVersion,
-                @HeaderParam("accept") String accept,
+                @HeaderParam("Accept") String accept,
                 Context context);
     }
 

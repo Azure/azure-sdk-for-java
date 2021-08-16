@@ -11,6 +11,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 import java.util.Locale;
 import java.util.stream.Stream;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class ConnectionStringPropertiesTest {
@@ -60,6 +61,42 @@ public class ConnectionStringPropertiesTest {
 
         // Act & Assert
         assertThrows(IllegalArgumentException.class, () -> new ConnectionStringProperties(connectionString));
+    }
+
+    /**
+     * Verifies sdk do not expose secret in exception string when SharedAccessKeyName is not present.
+     */
+    @Test
+    public void invalidConnectionStringNoSecretExposed() {
+        // Arrange
+        final String invalidConnectionString = getConnectionString(HOSTNAME_URI, EVENT_HUB, SAS_KEY, SAS_VALUE)
+            .replace(String.format(Locale.US, "SharedAccessKeyName=%s;", SAS_KEY), "");
+
+        // Act & Assert
+        final Exception exception = assertThrows(IllegalArgumentException.class, () -> new ConnectionStringProperties(invalidConnectionString));
+
+        final String actualMessage = exception.getMessage();
+
+        assertFalse(actualMessage.contains(SAS_VALUE));
+        assertFalse(actualMessage.contains(HOSTNAME_URI));
+    }
+
+    /**
+     * Verifies sdk do not expose secret in exception string when 'Endpoint' is not present.
+     */
+    @Test
+    public void invalidEndpointNoSecretExposed() {
+        // Arrange
+        final String invalidConnectionString = getConnectionString(HOSTNAME_URI, EVENT_HUB, SAS_KEY, SAS_VALUE)
+            .replace(String.format(Locale.US, "Endpoint=%s;", HOSTNAME_URI), "");
+
+        // Act & Assert
+        final Exception exception = assertThrows(IllegalArgumentException.class, () -> new ConnectionStringProperties(invalidConnectionString));
+
+        final String actualMessage = exception.getMessage();
+
+        assertFalse(actualMessage.contains(SAS_VALUE));
+        assertFalse(actualMessage.contains(SAS_KEY));
     }
 
     @Test

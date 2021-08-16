@@ -12,32 +12,30 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * An enumeration of shares.
- */
+/** An enumeration of shares. */
 @JacksonXmlRootElement(localName = "EnumerationResults")
 @Fluent
 public final class ListSharesResponse {
     /*
-     * The serviceEndpoint property.
+     * The ServiceEndpoint property.
      */
     @JacksonXmlProperty(localName = "ServiceEndpoint", isAttribute = true)
     private String serviceEndpoint;
 
     /*
-     * The prefix property.
+     * The Prefix property.
      */
     @JsonProperty(value = "Prefix")
     private String prefix;
 
     /*
-     * The marker property.
+     * The Marker property.
      */
     @JsonProperty(value = "Marker")
     private String marker;
 
     /*
-     * The maxResults property.
+     * The MaxResults property.
      */
     @JsonProperty(value = "MaxResults")
     private Integer maxResults;
@@ -53,19 +51,19 @@ public final class ListSharesResponse {
     }
 
     /*
-     * The shareItems property.
+     * The ShareItems property.
      */
     @JsonProperty(value = "Shares")
     private SharesWrapper shareItems;
 
     /*
-     * The nextMarker property.
+     * The NextMarker property.
      */
     @JsonProperty(value = "NextMarker", required = true)
     private String nextMarker;
 
     /**
-     * Get the serviceEndpoint property: The serviceEndpoint property.
+     * Get the serviceEndpoint property: The ServiceEndpoint property.
      *
      * @return the serviceEndpoint value.
      */
@@ -74,7 +72,7 @@ public final class ListSharesResponse {
     }
 
     /**
-     * Set the serviceEndpoint property: The serviceEndpoint property.
+     * Set the serviceEndpoint property: The ServiceEndpoint property.
      *
      * @param serviceEndpoint the serviceEndpoint value to set.
      * @return the ListSharesResponse object itself.
@@ -85,7 +83,7 @@ public final class ListSharesResponse {
     }
 
     /**
-     * Get the prefix property: The prefix property.
+     * Get the prefix property: The Prefix property.
      *
      * @return the prefix value.
      */
@@ -94,7 +92,7 @@ public final class ListSharesResponse {
     }
 
     /**
-     * Set the prefix property: The prefix property.
+     * Set the prefix property: The Prefix property.
      *
      * @param prefix the prefix value to set.
      * @return the ListSharesResponse object itself.
@@ -105,7 +103,7 @@ public final class ListSharesResponse {
     }
 
     /**
-     * Get the marker property: The marker property.
+     * Get the marker property: The Marker property.
      *
      * @return the marker value.
      */
@@ -114,7 +112,7 @@ public final class ListSharesResponse {
     }
 
     /**
-     * Set the marker property: The marker property.
+     * Set the marker property: The Marker property.
      *
      * @param marker the marker value to set.
      * @return the ListSharesResponse object itself.
@@ -125,7 +123,7 @@ public final class ListSharesResponse {
     }
 
     /**
-     * Get the maxResults property: The maxResults property.
+     * Get the maxResults property: The MaxResults property.
      *
      * @return the maxResults value.
      */
@@ -134,7 +132,7 @@ public final class ListSharesResponse {
     }
 
     /**
-     * Set the maxResults property: The maxResults property.
+     * Set the maxResults property: The MaxResults property.
      *
      * @param maxResults the maxResults value to set.
      * @return the ListSharesResponse object itself.
@@ -145,7 +143,7 @@ public final class ListSharesResponse {
     }
 
     /**
-     * Get the shareItems property: The shareItems property.
+     * Get the shareItems property: The ShareItems property.
      *
      * @return the shareItems value.
      */
@@ -157,7 +155,7 @@ public final class ListSharesResponse {
     }
 
     /**
-     * Set the shareItems property: The shareItems property.
+     * Set the shareItems property: The ShareItems property.
      *
      * @param shareItems the shareItems value to set.
      * @return the ListSharesResponse object itself.
@@ -168,7 +166,7 @@ public final class ListSharesResponse {
     }
 
     /**
-     * Get the nextMarker property: The nextMarker property.
+     * Get the nextMarker property: The NextMarker property.
      *
      * @return the nextMarker value.
      */
@@ -177,7 +175,7 @@ public final class ListSharesResponse {
     }
 
     /**
-     * Set the nextMarker property: The nextMarker property.
+     * Set the nextMarker property: The NextMarker property.
      *
      * @param nextMarker the nextMarker value to set.
      * @return the ListSharesResponse object itself.

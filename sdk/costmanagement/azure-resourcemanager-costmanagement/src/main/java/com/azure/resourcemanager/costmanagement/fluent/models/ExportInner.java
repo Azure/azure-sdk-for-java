@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.costmanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.costmanagement.models.ExportDefinition;
@@ -14,51 +13,17 @@ import com.azure.resourcemanager.costmanagement.models.ExportSchedule;
 import com.azure.resourcemanager.costmanagement.models.FormatType;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.time.OffsetDateTime;
 
-/** An export resource. */
-@JsonFlatten
+/** A export resource. */
 @Fluent
-public class ExportInner extends ProxyResource {
+public final class ExportInner extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ExportInner.class);
 
     /*
-     * The format of the export being delivered. Currently only 'Csv' is
-     * supported.
+     * The properties of the export.
      */
-    @JsonProperty(value = "properties.format")
-    private FormatType format;
-
-    /*
-     * Has delivery information for the export.
-     */
-    @JsonProperty(value = "properties.deliveryInfo")
-    private ExportDeliveryInfo deliveryInfo;
-
-    /*
-     * Has the definition for the export.
-     */
-    @JsonProperty(value = "properties.definition")
-    private ExportDefinition definition;
-
-    /*
-     * If requested, has the most recent execution history for the export.
-     */
-    @JsonProperty(value = "properties.runHistory")
-    private ExportExecutionListResultInner runHistory;
-
-    /*
-     * If the export has an active schedule, provides an estimate of the next
-     * execution time.
-     */
-    @JsonProperty(value = "properties.nextRunTimeEstimate", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime nextRunTimeEstimate;
-
-    /*
-     * Has schedule information for the export.
-     */
-    @JsonProperty(value = "properties.schedule")
-    private ExportSchedule schedule;
+    @JsonProperty(value = "properties")
+    private ExportProperties innerProperties;
 
     /*
      * eTag of the resource. To handle concurrent update scenario, this field
@@ -69,113 +34,12 @@ public class ExportInner extends ProxyResource {
     private String etag;
 
     /**
-     * Get the format property: The format of the export being delivered. Currently only 'Csv' is supported.
+     * Get the innerProperties property: The properties of the export.
      *
-     * @return the format value.
+     * @return the innerProperties value.
      */
-    public FormatType format() {
-        return this.format;
-    }
-
-    /**
-     * Set the format property: The format of the export being delivered. Currently only 'Csv' is supported.
-     *
-     * @param format the format value to set.
-     * @return the ExportInner object itself.
-     */
-    public ExportInner withFormat(FormatType format) {
-        this.format = format;
-        return this;
-    }
-
-    /**
-     * Get the deliveryInfo property: Has delivery information for the export.
-     *
-     * @return the deliveryInfo value.
-     */
-    public ExportDeliveryInfo deliveryInfo() {
-        return this.deliveryInfo;
-    }
-
-    /**
-     * Set the deliveryInfo property: Has delivery information for the export.
-     *
-     * @param deliveryInfo the deliveryInfo value to set.
-     * @return the ExportInner object itself.
-     */
-    public ExportInner withDeliveryInfo(ExportDeliveryInfo deliveryInfo) {
-        this.deliveryInfo = deliveryInfo;
-        return this;
-    }
-
-    /**
-     * Get the definition property: Has the definition for the export.
-     *
-     * @return the definition value.
-     */
-    public ExportDefinition definition() {
-        return this.definition;
-    }
-
-    /**
-     * Set the definition property: Has the definition for the export.
-     *
-     * @param definition the definition value to set.
-     * @return the ExportInner object itself.
-     */
-    public ExportInner withDefinition(ExportDefinition definition) {
-        this.definition = definition;
-        return this;
-    }
-
-    /**
-     * Get the runHistory property: If requested, has the most recent execution history for the export.
-     *
-     * @return the runHistory value.
-     */
-    public ExportExecutionListResultInner runHistory() {
-        return this.runHistory;
-    }
-
-    /**
-     * Set the runHistory property: If requested, has the most recent execution history for the export.
-     *
-     * @param runHistory the runHistory value to set.
-     * @return the ExportInner object itself.
-     */
-    public ExportInner withRunHistory(ExportExecutionListResultInner runHistory) {
-        this.runHistory = runHistory;
-        return this;
-    }
-
-    /**
-     * Get the nextRunTimeEstimate property: If the export has an active schedule, provides an estimate of the next
-     * execution time.
-     *
-     * @return the nextRunTimeEstimate value.
-     */
-    public OffsetDateTime nextRunTimeEstimate() {
-        return this.nextRunTimeEstimate;
-    }
-
-    /**
-     * Get the schedule property: Has schedule information for the export.
-     *
-     * @return the schedule value.
-     */
-    public ExportSchedule schedule() {
-        return this.schedule;
-    }
-
-    /**
-     * Set the schedule property: Has schedule information for the export.
-     *
-     * @param schedule the schedule value to set.
-     * @return the ExportInner object itself.
-     */
-    public ExportInner withSchedule(ExportSchedule schedule) {
-        this.schedule = schedule;
-        return this;
+    private ExportProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /**
@@ -201,22 +65,105 @@ public class ExportInner extends ProxyResource {
     }
 
     /**
+     * Get the schedule property: Has schedule information for the export.
+     *
+     * @return the schedule value.
+     */
+    public ExportSchedule schedule() {
+        return this.innerProperties() == null ? null : this.innerProperties().schedule();
+    }
+
+    /**
+     * Set the schedule property: Has schedule information for the export.
+     *
+     * @param schedule the schedule value to set.
+     * @return the ExportInner object itself.
+     */
+    public ExportInner withSchedule(ExportSchedule schedule) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ExportProperties();
+        }
+        this.innerProperties().withSchedule(schedule);
+        return this;
+    }
+
+    /**
+     * Get the format property: The format of the export being delivered.
+     *
+     * @return the format value.
+     */
+    public FormatType format() {
+        return this.innerProperties() == null ? null : this.innerProperties().format();
+    }
+
+    /**
+     * Set the format property: The format of the export being delivered.
+     *
+     * @param format the format value to set.
+     * @return the ExportInner object itself.
+     */
+    public ExportInner withFormat(FormatType format) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ExportProperties();
+        }
+        this.innerProperties().withFormat(format);
+        return this;
+    }
+
+    /**
+     * Get the deliveryInfo property: Has delivery information for the export.
+     *
+     * @return the deliveryInfo value.
+     */
+    public ExportDeliveryInfo deliveryInfo() {
+        return this.innerProperties() == null ? null : this.innerProperties().deliveryInfo();
+    }
+
+    /**
+     * Set the deliveryInfo property: Has delivery information for the export.
+     *
+     * @param deliveryInfo the deliveryInfo value to set.
+     * @return the ExportInner object itself.
+     */
+    public ExportInner withDeliveryInfo(ExportDeliveryInfo deliveryInfo) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ExportProperties();
+        }
+        this.innerProperties().withDeliveryInfo(deliveryInfo);
+        return this;
+    }
+
+    /**
+     * Get the definition property: Has definition for the export.
+     *
+     * @return the definition value.
+     */
+    public ExportDefinition definition() {
+        return this.innerProperties() == null ? null : this.innerProperties().definition();
+    }
+
+    /**
+     * Set the definition property: Has definition for the export.
+     *
+     * @param definition the definition value to set.
+     * @return the ExportInner object itself.
+     */
+    public ExportInner withDefinition(ExportDefinition definition) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ExportProperties();
+        }
+        this.innerProperties().withDefinition(definition);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (deliveryInfo() != null) {
-            deliveryInfo().validate();
-        }
-        if (definition() != null) {
-            definition().validate();
-        }
-        if (runHistory() != null) {
-            runHistory().validate();
-        }
-        if (schedule() != null) {
-            schedule().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

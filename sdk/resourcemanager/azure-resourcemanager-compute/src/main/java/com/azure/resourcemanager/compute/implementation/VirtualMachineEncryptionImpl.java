@@ -30,18 +30,24 @@ class VirtualMachineEncryptionImpl implements VirtualMachineEncryption {
     @Override
     public Mono<DiskVolumeEncryptionMonitor> enableAsync(String keyVaultId, String aadClientId, String aadSecret) {
         if (this.virtualMachine.osType() == OperatingSystemTypes.LINUX) {
-            return enableAsync(new LinuxVMDiskEncryptionConfiguration(keyVaultId, aadClientId, aadSecret));
+            return enableAsync(
+                new LinuxVMDiskEncryptionConfiguration(keyVaultId, aadClientId, aadSecret,
+                    virtualMachine.manager().environment()));
         } else {
-            return enableAsync(new WindowsVMDiskEncryptionConfiguration(keyVaultId, aadClientId, aadSecret));
+            return enableAsync(
+                new WindowsVMDiskEncryptionConfiguration(keyVaultId, aadClientId, aadSecret,
+                    virtualMachine.manager().environment()));
         }
     }
 
     @Override
     public Mono<DiskVolumeEncryptionMonitor> enableAsync(String keyVaultId) {
         if (this.virtualMachine.osType() == OperatingSystemTypes.LINUX) {
-            return enableAsync(new LinuxVMDiskEncryptionConfiguration(keyVaultId));
+            return enableAsync(
+                new LinuxVMDiskEncryptionConfiguration(keyVaultId, virtualMachine.manager().environment()));
         } else {
-            return enableAsync(new WindowsVMDiskEncryptionConfiguration(keyVaultId));
+            return enableAsync(
+                new WindowsVMDiskEncryptionConfiguration(keyVaultId, virtualMachine.manager().environment()));
         }
     }
 
@@ -68,6 +74,11 @@ class VirtualMachineEncryptionImpl implements VirtualMachineEncryption {
     @Override
     public DiskVolumeEncryptionMonitor enable(String keyVaultId, String aadClientId, String aadSecret) {
         return enableAsync(keyVaultId, aadClientId, aadSecret).block();
+    }
+
+    @Override
+    public DiskVolumeEncryptionMonitor enable(String keyVaultId) {
+        return enableAsync(keyVaultId).block();
     }
 
     @Override

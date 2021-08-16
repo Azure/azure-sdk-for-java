@@ -27,7 +27,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-import reactor.netty.channel.BootstrapHandlers;
 import reactor.netty.http.client.HttpClient;
 import reactor.netty.resources.ConnectionProvider;
 import reactor.test.StepVerifier;
@@ -60,7 +59,7 @@ public class NettyAsyncHttpClientBuilderTests {
     private static final String COOKIE_NAME = "test";
     private static final String COOKIE_VALUE = "success";
 
-    private static final String JAVA_PROXY_PREREQUISITE = "java.net.useSystemProxies";
+    private static final String JAVA_SYSTEM_PROXY_PREREQUISITE = "java.net.useSystemProxies";
     private static final String JAVA_NON_PROXY_HOSTS = "http.nonProxyHosts";
 
     private static final String JAVA_HTTP_PROXY_HOST = "http.proxyHost";
@@ -71,6 +70,9 @@ public class NettyAsyncHttpClientBuilderTests {
     private static WireMockServer server;
     private static String defaultUrl;
     private static String prebuiltClientUrl;
+
+    private static final Exception EXPECTED_EXCEPTION = new IOException("This is a local test so we "
+        + "cannot connect to remote hosts eagerly. This is exception is expected.");
 
     @BeforeAll
     public static void setupWireMock() {
@@ -125,7 +127,8 @@ public class NettyAsyncHttpClientBuilderTests {
      */
     @Test
     public void buildWithConnectionProvider() {
-        ConnectionProvider connectionProvider = bootstrap -> {
+        ConnectionProvider connectionProvider = (transportConfig, connectionObserver, supplier,
+            addressResolverGroup) -> {
             throw new UnsupportedOperationException("Bad connection provider");
         };
 
@@ -152,7 +155,7 @@ public class NettyAsyncHttpClientBuilderTests {
             .build();
 
         StepVerifier.create(nettyClient.send(new HttpRequest(HttpMethod.GET, requestUrl)))
-            .verifyErrorMatches(throwable -> throwable == TestProxyValidator.EXPECTED_EXCEPTION);
+            .verifyErrorMatches(throwable -> throwable == EXPECTED_EXCEPTION);
     }
 
     private static Stream<Arguments> buildWithProxySupplier() {
@@ -184,11 +187,11 @@ public class NettyAsyncHttpClientBuilderTests {
          */
         String rawNonProxyHosts = String.join("|", "localhost", "127.0.0.1", "*.microsoft.com", "*.linkedin.com");
 
-        String[] requestUrlsWithoutProxying = new String[] {
+        String[] requestUrlsWithoutProxying = new String[]{
             "http://localhost", "http://127.0.0.1", "http://azure.microsoft.com", "http://careers.linkedin.com"
         };
 
-        String[] requestUrlsWithProxying = new String[] {
+        String[] requestUrlsWithProxying = new String[]{
             "http://portal.azure.com", "http://linkedin.com", "http://8.8.8.8"
         };
 
@@ -248,12 +251,11 @@ public class NettyAsyncHttpClientBuilderTests {
             .build();
 
         StepVerifier.create(nettyClient.send(new HttpRequest(HttpMethod.GET, requestUrl)))
-            .verifyErrorMatches(throwable -> throwable == TestProxyValidator.EXPECTED_EXCEPTION);
+            .verifyErrorMatches(throwable -> throwable == EXPECTED_EXCEPTION);
     }
 
     private static Stream<Arguments> buildWithConfigurationProxySupplier() {
         Supplier<Configuration> baseJavaProxyConfigurationSupplier = () -> new Configuration()
-            .put(JAVA_PROXY_PREREQUISITE, "true")
             .put(JAVA_HTTP_PROXY_HOST, "localhost")
             .put(JAVA_HTTP_PROXY_PORT, "12345");
 
@@ -265,7 +267,8 @@ public class NettyAsyncHttpClientBuilderTests {
         arguments.add(Arguments.of(true, false, baseJavaProxyConfigurationSupplier.get(), defaultUrl));
 
         Configuration simpleEnvProxy = new Configuration()
-            .put(Configuration.PROPERTY_HTTP_PROXY, "http://localhost:12345");
+            .put(Configuration.PROPERTY_HTTP_PROXY, "http://localhost:12345")
+            .put(JAVA_SYSTEM_PROXY_PREREQUISITE, "true");
         arguments.add(Arguments.of(true, false, simpleEnvProxy, defaultUrl));
 
         /*
@@ -277,7 +280,8 @@ public class NettyAsyncHttpClientBuilderTests {
         arguments.add(Arguments.of(true, true, javaProxyWithAuthentication, defaultUrl));
 
         Configuration envProxyWithAuthentication = new Configuration()
-            .put(Configuration.PROPERTY_HTTP_PROXY, "http://1:1@localhost:12345");
+            .put(Configuration.PROPERTY_HTTP_PROXY, "http://1:1@localhost:12345")
+            .put(JAVA_SYSTEM_PROXY_PREREQUISITE, "true");
         arguments.add(Arguments.of(true, true, envProxyWithAuthentication, defaultUrl));
 
         /*
@@ -286,11 +290,11 @@ public class NettyAsyncHttpClientBuilderTests {
         String rawJavaNonProxyHosts = String.join("|", "localhost", "127.0.0.1", "*.microsoft.com", "*.linkedin.com");
         String rawEnvNonProxyHosts = String.join(",", "localhost", "127.0.0.1", "*.microsoft.com", "*.linkedin.com");
 
-        String[] requestUrlsWithoutProxying = new String[] {
+        String[] requestUrlsWithoutProxying = new String[]{
             "http://localhost", "http://127.0.0.1", "http://azure.microsoft.com", "http://careers.linkedin.com"
         };
 
-        String[] requestUrlsWithProxying = new String[] {
+        String[] requestUrlsWithProxying = new String[]{
             "http://portal.azure.com", "http://linkedin.com", "http://8.8.8.8"
         };
 
@@ -301,7 +305,8 @@ public class NettyAsyncHttpClientBuilderTests {
             .put(JAVA_NON_PROXY_HOSTS, rawJavaNonProxyHosts);
         Supplier<Configuration> envNonProxyHostsSupplier = () -> new Configuration()
             .put(Configuration.PROPERTY_HTTP_PROXY, "http://localhost:12345")
-            .put(Configuration.PROPERTY_NO_PROXY, rawEnvNonProxyHosts);
+            .put(Configuration.PROPERTY_NO_PROXY, rawEnvNonProxyHosts)
+            .put(JAVA_SYSTEM_PROXY_PREREQUISITE, "true");
 
         List<Supplier<Configuration>> nonProxyHostsSuppliers = Arrays.asList(javaNonProxyHostsSupplier,
             envNonProxyHostsSupplier);
@@ -324,7 +329,8 @@ public class NettyAsyncHttpClientBuilderTests {
             .put(JAVA_HTTP_PROXY_PASSWORD, "1");
         Supplier<Configuration> authenticatedEnvNonProxyHostsSupplier = () -> new Configuration()
             .put(Configuration.PROPERTY_HTTP_PROXY, "http://1:1@localhost:12345")
-            .put(Configuration.PROPERTY_NO_PROXY, rawEnvNonProxyHosts);
+            .put(Configuration.PROPERTY_NO_PROXY, rawEnvNonProxyHosts)
+            .put(JAVA_SYSTEM_PROXY_PREREQUISITE, "true");
 
         List<Supplier<Configuration>> authenticatedNonProxyHostsSuppliers = Arrays.asList(
             authenticatedJavaNonProxyHostsSupplier, authenticatedEnvNonProxyHostsSupplier);
@@ -344,17 +350,12 @@ public class NettyAsyncHttpClientBuilderTests {
 
     private static HttpClient nettyHttpClientWithProxyValidation(boolean shouldHaveProxy, ProxyOptions.Type proxyType,
         boolean isAuthenticated) {
-        TestProxyValidator validator = new TestProxyValidator(shouldHaveProxy, proxyType, isAuthenticated);
-
-        return HttpClient.create().tcpConfiguration(tcpClient -> tcpClient
-            .bootstrap(bootstrap -> BootstrapHandlers.updateConfiguration(bootstrap, "TestProxyHandler",
-                (connectionObserver, channel) -> channel.pipeline().addFirst("TestProxyHandler", validator))));
+        return HttpClient.create().doOnChannelInit((connectionObserver, channel, socketAddress) ->
+            channel.pipeline().addFirst("TestProxyHandler",
+                new TestProxyValidator(shouldHaveProxy, proxyType, isAuthenticated)));
     }
 
     private static final class TestProxyValidator extends ChannelDuplexHandler {
-        private static final Throwable EXPECTED_EXCEPTION = new IOException("This is a local test so we "
-            + "cannot connect to remote hosts eagerly. This is exception is expected.");
-
         private final boolean shouldHaveProxy;
         private final ProxyOptions.Type proxyType;
         private final boolean usesAzureHttpProxyHandler;
@@ -416,7 +417,7 @@ public class NettyAsyncHttpClientBuilderTests {
      */
     @Test
     public void buildWiretappedClient() {
-        HttpClient validatorClient = HttpClient.create().doAfterResponse((response, connection) ->
+        HttpClient validatorClient = HttpClient.create().doAfterResponseSuccess((response, connection) ->
             assertNotNull(connection.channel().pipeline().get(LoggingHandler.class)));
 
         NettyAsyncHttpClient nettyClient = (NettyAsyncHttpClient) new NettyAsyncHttpClientBuilder(validatorClient)
@@ -449,7 +450,7 @@ public class NettyAsyncHttpClientBuilderTests {
     @Test
     public void buildEventLoopClient() {
         String expectedThreadName = "testEventLoop";
-        HttpClient validatorClient = HttpClient.create().doAfterResponse((response, connection) -> {
+        HttpClient validatorClient = HttpClient.create().doAfterResponseSuccess((response, connection) -> {
             // Validate that the EventLoop being used is a NioEventLoop.
             NioEventLoop eventLoop = (NioEventLoop) connection.channel().eventLoop();
             assertNotNull(eventLoop);
@@ -471,7 +472,7 @@ public class NettyAsyncHttpClientBuilderTests {
     @ParameterizedTest
     @MethodSource("getTimeoutMillisSupplier")
     public void getTimeoutMillis(Duration timeout, long expected) {
-        assertEquals(expected, NettyAsyncHttpClientBuilder.getTimeoutMillis(timeout));
+        assertEquals(expected, NettyAsyncHttpClientBuilder.getTimeoutMillis(timeout, 60000));
     }
 
     private static Stream<Arguments> getTimeoutMillisSupplier() {

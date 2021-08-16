@@ -11,9 +11,12 @@ import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.models.AdditionalCapabilities;
 import com.azure.resourcemanager.compute.models.AutomaticRepairsPolicy;
+import com.azure.resourcemanager.compute.models.ExtendedLocation;
+import com.azure.resourcemanager.compute.models.OrchestrationMode;
 import com.azure.resourcemanager.compute.models.Plan;
 import com.azure.resourcemanager.compute.models.ScaleInPolicy;
 import com.azure.resourcemanager.compute.models.Sku;
+import com.azure.resourcemanager.compute.models.SpotRestorePolicy;
 import com.azure.resourcemanager.compute.models.UpgradePolicy;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetIdentity;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetVMProfile;
@@ -58,6 +61,12 @@ public class VirtualMachineScaleSetInner extends Resource {
      */
     @JsonProperty(value = "zones")
     private List<String> zones;
+
+    /*
+     * The extended location of the Virtual Machine Scale Set.
+     */
+    @JsonProperty(value = "extendedLocation")
+    private ExtendedLocation extendedLocation;
 
     /*
      * The upgrade policy.
@@ -115,7 +124,10 @@ public class VirtualMachineScaleSetInner extends Resource {
 
     /*
      * Whether to force strictly even Virtual Machine distribution cross
-     * x-zones in case there is zone outage.
+     * x-zones in case there is zone outage. zoneBalance property can only be
+     * set if the zones property of the scale set contains more than one zone.
+     * If there are no zones or only one zone specified, then zoneBalance
+     * property should not be set.
      */
     @JsonProperty(value = "properties.zoneBalance")
     private Boolean zoneBalance;
@@ -156,6 +168,18 @@ public class VirtualMachineScaleSetInner extends Resource {
      */
     @JsonProperty(value = "properties.scaleInPolicy")
     private ScaleInPolicy scaleInPolicy;
+
+    /*
+     * Specifies the orchestration mode for the virtual machine scale set.
+     */
+    @JsonProperty(value = "properties.orchestrationMode")
+    private OrchestrationMode orchestrationMode;
+
+    /*
+     * Specifies the Spot Restore properties for the virtual machine scale set.
+     */
+    @JsonProperty(value = "properties.spotRestorePolicy")
+    private SpotRestorePolicy spotRestorePolicy;
 
     /**
      * Get the sku property: The virtual machine scale set sku.
@@ -244,6 +268,26 @@ public class VirtualMachineScaleSetInner extends Resource {
      */
     public VirtualMachineScaleSetInner withZones(List<String> zones) {
         this.zones = zones;
+        return this;
+    }
+
+    /**
+     * Get the extendedLocation property: The extended location of the Virtual Machine Scale Set.
+     *
+     * @return the extendedLocation value.
+     */
+    public ExtendedLocation extendedLocation() {
+        return this.extendedLocation;
+    }
+
+    /**
+     * Set the extendedLocation property: The extended location of the Virtual Machine Scale Set.
+     *
+     * @param extendedLocation the extendedLocation value to set.
+     * @return the VirtualMachineScaleSetInner object itself.
+     */
+    public VirtualMachineScaleSetInner withExtendedLocation(ExtendedLocation extendedLocation) {
+        this.extendedLocation = extendedLocation;
         return this;
     }
 
@@ -397,7 +441,8 @@ public class VirtualMachineScaleSetInner extends Resource {
 
     /**
      * Get the zoneBalance property: Whether to force strictly even Virtual Machine distribution cross x-zones in case
-     * there is zone outage.
+     * there is zone outage. zoneBalance property can only be set if the zones property of the scale set contains more
+     * than one zone. If there are no zones or only one zone specified, then zoneBalance property should not be set.
      *
      * @return the zoneBalance value.
      */
@@ -407,7 +452,8 @@ public class VirtualMachineScaleSetInner extends Resource {
 
     /**
      * Set the zoneBalance property: Whether to force strictly even Virtual Machine distribution cross x-zones in case
-     * there is zone outage.
+     * there is zone outage. zoneBalance property can only be set if the zones property of the scale set contains more
+     * than one zone. If there are no zones or only one zone specified, then zoneBalance property should not be set.
      *
      * @param zoneBalance the zoneBalance value to set.
      * @return the VirtualMachineScaleSetInner object itself.
@@ -527,6 +573,46 @@ public class VirtualMachineScaleSetInner extends Resource {
         return this;
     }
 
+    /**
+     * Get the orchestrationMode property: Specifies the orchestration mode for the virtual machine scale set.
+     *
+     * @return the orchestrationMode value.
+     */
+    public OrchestrationMode orchestrationMode() {
+        return this.orchestrationMode;
+    }
+
+    /**
+     * Set the orchestrationMode property: Specifies the orchestration mode for the virtual machine scale set.
+     *
+     * @param orchestrationMode the orchestrationMode value to set.
+     * @return the VirtualMachineScaleSetInner object itself.
+     */
+    public VirtualMachineScaleSetInner withOrchestrationMode(OrchestrationMode orchestrationMode) {
+        this.orchestrationMode = orchestrationMode;
+        return this;
+    }
+
+    /**
+     * Get the spotRestorePolicy property: Specifies the Spot Restore properties for the virtual machine scale set.
+     *
+     * @return the spotRestorePolicy value.
+     */
+    public SpotRestorePolicy spotRestorePolicy() {
+        return this.spotRestorePolicy;
+    }
+
+    /**
+     * Set the spotRestorePolicy property: Specifies the Spot Restore properties for the virtual machine scale set.
+     *
+     * @param spotRestorePolicy the spotRestorePolicy value to set.
+     * @return the VirtualMachineScaleSetInner object itself.
+     */
+    public VirtualMachineScaleSetInner withSpotRestorePolicy(SpotRestorePolicy spotRestorePolicy) {
+        this.spotRestorePolicy = spotRestorePolicy;
+        return this;
+    }
+
     /** {@inheritDoc} */
     @Override
     public VirtualMachineScaleSetInner withLocation(String location) {
@@ -556,6 +642,9 @@ public class VirtualMachineScaleSetInner extends Resource {
         if (identity() != null) {
             identity().validate();
         }
+        if (extendedLocation() != null) {
+            extendedLocation().validate();
+        }
         if (upgradePolicy() != null) {
             upgradePolicy().validate();
         }
@@ -570,6 +659,9 @@ public class VirtualMachineScaleSetInner extends Resource {
         }
         if (scaleInPolicy() != null) {
             scaleInPolicy().validate();
+        }
+        if (spotRestorePolicy() != null) {
+            spotRestorePolicy().validate();
         }
     }
 }

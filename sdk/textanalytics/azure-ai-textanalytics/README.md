@@ -1,15 +1,16 @@
 # Azure Text Analytics client library for Java
 Text Analytics is a cloud-based service that provides advanced natural language processing over raw text, 
-and includes six main functions:
+and includes the main features below:
 
 - Sentiment Analysis
 - Language Detection
 - Key Phrase Extraction
 - Named Entity Recognition
-- Personally Identifiable Information Entity Recognition 
+- Personally Identifiable Information (PII) Entity Recognition 
 - Linked Entity Recognition
-- Healthcare Recognition <sup>beta</sup>
-- Analyze Operation <sup>beta</sup>
+- Healthcare Entity Recognition
+- Multiple Actions Analysis Per Document
+- Extractive Text Summarization
 
 [Source code][source_code] | [Package (Maven)][package] | [API reference documentation][api_reference_doc] | [Product Documentation][product_documentation] | [Samples][samples_readme]
 
@@ -19,6 +20,60 @@ and includes six main functions:
 - A [Java Development Kit (JDK)][jdk_link], version 8 or later.
 - [Azure Subscription][azure_subscription]
 - [Cognitive Services or Text Analytics account][text_analytics_account] to use this package.
+
+### Include the Package
+
+#### Include the BOM file
+
+Please include the azure-sdk-bom to your project to take dependency on GA version of the library. In the following snippet, replace the {bom_version_to_target} placeholder with the version number.
+To learn more about the BOM, see the [AZURE SDK BOM README](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/boms/azure-sdk-bom/README.md).
+
+```xml
+<dependencyManagement>
+    <dependencies>
+        <dependency>
+            <groupId>com.azure</groupId>
+            <artifactId>azure-sdk-bom</artifactId>
+            <version>{bom_version_to_target}</version>
+            <type>pom</type>
+            <scope>import</scope>
+        </dependency>
+    </dependencies>
+</dependencyManagement>
+```
+and then include the direct dependency in the dependencies section without the version tag.
+
+```xml
+<dependencies>
+  <dependency>
+    <groupId>com.azure</groupId>
+    <artifactId>azure-ai-textanalytics</artifactId>
+  </dependency>
+</dependencies>
+```
+
+#### Include direct dependency
+If you want to take dependency on a particular version of the library that is not present in the BOM,
+add the direct dependency to your project as follows.
+
+[//]: # ({x-version-update-start;com.azure:azure-ai-textanalytics;current})
+```xml
+<dependency>
+    <groupId>com.azure</groupId>
+    <artifactId>azure-ai-textanalytics</artifactId>
+    <version>5.2.0-beta.1</version>
+</dependency>
+```
+[//]: # ({x-version-update-end})
+**Note:** This version of the client library defaults to the `v3.2-preview.1` version of the service.
+
+This table shows the relationship between SDK services and supported API versions of the service:
+
+|SDK version|Supported API version of service
+|-|-
+|5.2.x | 3.0, 3.1, 3.2-preview.1 (default)
+|5.1.x | 3.0, 3.1 
+|5.0.x | 3.0
 
 #### Create a Cognitive Services or Text Analytics resource
 Text Analytics supports both [multi-service and single-service access][service_access]. Create a Cognitive Services 
@@ -36,32 +91,20 @@ Below is an example of how you can create a Text Analytics resource using the CL
 ```bash
 # Create a new resource group to hold the text analytics resource -
 # if using an existing resource group, skip this step
-az group create --name my-resource-group --location westus2
+az group create --name <your-resource-group> --location <location>
 ```
 
 ```bash
 # Create text analytics
 az cognitiveservices account create \
-    --name text-analytics-resource \
-    --resource-group my-resource-group \
+    --name <your-resource-name> \
+    --resource-group <your-resource-group-name> \
     --kind TextAnalytics \
-    --sku F0 \
-    --location westus2 \
+    --sku <sku> \
+    --location <location> \
     --yes
 ```
-
-### Include the Package
-**Note:** This version targets Azure Text Analytics service API version v3.0.
-
-[//]: # ({x-version-update-start;com.azure:azure-ai-textanalytics;current})
-```xml
-<dependency>
-    <groupId>com.azure</groupId>
-    <artifactId>azure-ai-textanalytics</artifactId>
-    <version>5.1.0-beta.4</version>
-</dependency>
-```
-[//]: # ({x-version-update-end})
+For more information about creating the resource or how to get the location and sku information see [here][azure_cli]
 
 ### Authenticate the client
 In order to interact with the Text Analytics service, you will need to create an instance of the Text Analytics client,
@@ -119,7 +162,7 @@ Authentication with AAD requires some initial setup:
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity</artifactId>
-    <version>1.2.2</version>
+    <version>1.3.5</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -191,6 +234,8 @@ The following sections provide several code snippets covering some of the most c
 * [Recognize Entities](#recognize-entities "Recognize entities")
 * [Recognize Personally Identifiable Information Entities](#recognize-personally-identifiable-information-entities "Recognize Personally Identifiable Information entities")
 * [Recognize Linked Entities](#recognize-linked-entities "Recognize linked entities")
+* [Analyze Healthcare Entities](#analyze-healthcare-entities "Analyze healthcare entities")
+* [Analyze Multiple Actions](#analyze-multiple-actions "Analyze multiple actions")
 
 ### Text Analytics Client
 Text analytics support both synchronous and asynchronous client creation by using
@@ -310,72 +355,68 @@ textAnalyticsClient.recognizeLinkedEntities(document).forEach(linkedEntity -> {
 For samples on using the production recommended option `RecognizeLinkedEntitiesBatch` see [here][recognize_linked_entities_sample].
 Please refer to the service documentation for a conceptual discussion of [entity linking][named_entity_recognition].
 
-### Recognize healthcare entities
+### Analyze healthcare entities
 Text Analytics for health is a containerized service that extracts and labels relevant medical information from 
 unstructured texts such as doctor's notes, discharge summaries, clinical documents, and electronic health records.
-Currently, Azure Active Directory (AAD) is not supported in the Healthcare recognition feature. In order to use this 
-functionality, request to access public preview is required. For more information see [How to: Use Text Analytics for health][healthcare].
-<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L189-L232 -->
+For more information see [How to: Use Text Analytics for health][healthcare].
+<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L189-L236 -->
 ```java
 List<TextDocumentInput> documents = Arrays.asList(new TextDocumentInput("0",
     "RECORD #333582770390100 | MH | 85986313 | | 054351 | 2/14/2001 12:00:00 AM | "
         + "CORONARY ARTERY DISEASE | Signed | DIS | Admission Date: 5/22/2001 "
         + "Report Status: Signed Discharge Date: 4/24/2001 ADMISSION DIAGNOSIS: "
         + "CORONARY ARTERY DISEASE. HISTORY OF PRESENT ILLNESS: "
-        + "The patient is a 54-year-old gentleman with a history of progressive angina over the past several months. "
-        + "The patient had a cardiac catheterization in July of this year revealing total occlusion of the RCA and "
-        + "50% left main disease , with a strong family history of coronary artery disease with a brother dying at "
-        + "the age of 52 from a myocardial infarction and another brother who is status post coronary artery bypass grafting. "
-        + "The patient had a stress echocardiogram done on July , 2001 , which showed no wall motion abnormalities ,"
-        + "but this was a difficult study due to body habitus. The patient went for six minutes with minimal ST depressions "
-        + "in the anterior lateral leads , thought due to fatigue and wrist pain , his anginal equivalent. Due to the patient's "
-        + "increased symptoms and family history and history left main disease with total occasional of his RCA was referred "
-        + "for revascularization with open heart surgery."
+        + "The patient is a 54-year-old gentleman with a history of progressive angina over the past"
+        + " several months. The patient had a cardiac catheterization in July of this year revealing total"
+        + " occlusion of the RCA and 50% left main disease , with a strong family history of coronary"
+        + " artery disease with a brother dying at the age of 52 from a myocardial infarction and another"
+        + " brother who is status post coronary artery bypass grafting. The patient had a stress"
+        + " echocardiogram done on July , 2001 , which showed no wall motion abnormalities,"
+        + " but this was a difficult study due to body habitus. The patient went for six minutes with"
+        + " minimal ST depressions in the anterior lateral leads , thought due to fatigue and wrist pain,"
+        + " his anginal equivalent. Due to the patient's increased symptoms and family history and"
+        + " history left main disease with total occasional of his RCA was referred"
+        + " for revascularization with open heart surgery."
 ));
-RecognizeHealthcareEntityOptions options = new RecognizeHealthcareEntityOptions().setIncludeStatistics(true);
-SyncPoller<TextAnalyticsOperationResult, PagedIterable<HealthcareTaskResult>> syncPoller =
-    textAnalyticsClient.beginAnalyzeHealthcare(documents, options, Context.NONE);
+AnalyzeHealthcareEntitiesOptions options = new AnalyzeHealthcareEntitiesOptions().setIncludeStatistics(true);
+SyncPoller<AnalyzeHealthcareEntitiesOperationDetail, AnalyzeHealthcareEntitiesPagedIterable>
+    syncPoller = textAnalyticsClient.beginAnalyzeHealthcareEntities(documents, options, Context.NONE);
 syncPoller.waitForCompletion();
-syncPoller.getFinalResult().forEach(healthcareTaskResult ->
-    healthcareTaskResult.getResult().forEach(healthcareEntitiesResult -> {
-        System.out.println("Document entities: ");
-        HealthcareEntityCollection healthcareEntities = healthcareEntitiesResult.getEntities();
-        AtomicInteger ct = new AtomicInteger();
-        healthcareEntities.forEach(healthcareEntity -> {
-            System.out.printf("i = %d, Text: %s, category: %s, subcategory: %s, confidence score: %f.%n",
-                ct.getAndIncrement(),
-                healthcareEntity.getText(), healthcareEntity.getCategory(), healthcareEntity.getSubcategory(),
-                healthcareEntity.getConfidenceScore());
-            List<HealthcareEntityLink> links = healthcareEntity.getDataSourceEntityLinks();
-            if (links != null) {
-                links.forEach(healthcareEntityLink ->
-                    System.out.printf("\tHealthcare data source ID: %s, data source: %s.%n",
-                        healthcareEntityLink.getDataSourceId(), healthcareEntityLink.getDataSource()));
-            }
-        });
-        healthcareEntities.getEntityRelations().forEach(
-            healthcareEntityRelation ->
-                System.out.printf("Is bidirectional: %s, target: %s, source: %s, relation type: %s.%n",
-                    healthcareEntityRelation.isBidirectional(),
-                    healthcareEntityRelation.getTargetLink(),
-                    healthcareEntityRelation.getSourceLink(),
-                    healthcareEntityRelation.getRelationType()));
-    }));
+syncPoller.getFinalResult().forEach(
+    analyzeHealthcareEntitiesResultCollection -> analyzeHealthcareEntitiesResultCollection.forEach(
+        healthcareEntitiesResult -> {
+            System.out.println("Document entities: ");
+            AtomicInteger ct = new AtomicInteger();
+            healthcareEntitiesResult.getEntities().forEach(healthcareEntity -> {
+                System.out.printf("\ti = %d, Text: %s, category: %s, subcategory: %s, confidence score: %f.%n",
+                    ct.getAndIncrement(), healthcareEntity.getText(), healthcareEntity.getCategory(),
+                    healthcareEntity.getSubcategory(), healthcareEntity.getConfidenceScore());
+                IterableStream<EntityDataSource> healthcareEntityDataSources =
+                    healthcareEntity.getDataSources();
+                if (healthcareEntityDataSources != null) {
+                    healthcareEntityDataSources.forEach(healthcareEntityLink -> System.out.printf(
+                        "\t\tEntity ID in data source: %s, data source: %s.%n",
+                        healthcareEntityLink.getEntityId(), healthcareEntityLink.getName()));
+                }
+            });
+            // Healthcare entity relation groups
+            healthcareEntitiesResult.getEntityRelations().forEach(entityRelation -> {
+                System.out.printf("\tRelation type: %s.%n", entityRelation.getRelationType());
+                entityRelation.getRoles().forEach(role -> {
+                    final HealthcareEntity entity = role.getEntity();
+                    System.out.printf("\t\tEntity text: %s, category: %s, role: %s.%n",
+                        entity.getText(), entity.getCategory(), role.getName());
+                });
+            });
+        }));
 ```
-To cancel a long-running healthcare task,
-<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L239-L243 -->
-```java
-SyncPoller<TextAnalyticsOperationResult, Void> textAnalyticsOperationResultVoidSyncPoller
-    = textAnalyticsClient.beginCancelHealthcareTask("{healthcare_task_id}",
-    new RecognizeHealthcareEntityOptions().setPollInterval(Duration.ofSeconds(10)), Context.NONE);
-PollResponse<TextAnalyticsOperationResult> poll = textAnalyticsOperationResultVoidSyncPoller.poll();
-System.out.printf("Task status: %s.%n", poll.getStatus());
-```
-### Analyze multiple tasks
-The `Analyze` functionality allows to choose which of the supported Text Analytics features to execute in the same 
-set of documents. Currently, the supported features are: `entity recognition`, `key phrase extraction`, and 
-`Personally Identifiable Information (PII) recognition`. 
-<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L250-L290 -->
+
+### Analyze multiple actions
+The `Analyze` functionality allows to choose which of the supported Text Analytics features to execute in the same
+set of documents. Currently, the supported features are: `entity recognition`, `linked entity recognition`,
+`Personally Identifiable Information (PII) entity recognition`, `key phrase extraction`, `sentiment analysis`, and
+`extractive summarization`(see sample [here][extractive_summarization_sample]). 
+<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L243-L291 -->
 ```java
 List<TextDocumentInput> documents = Arrays.asList(
     new TextDocumentInput("0",
@@ -387,34 +428,42 @@ List<TextDocumentInput> documents = Arrays.asList(
             + " www.contososteakhouse.com, call 312-555-0176 or send email to order@contososteakhouse.com! The"
             + " only complaint I have is the food didn't come fast enough. Overall I highly recommend it!")
 );
-SyncPoller<TextAnalyticsOperationResult, PagedIterable<AnalyzeTasksResult>> syncPoller =
-    textAnalyticsClient.beginAnalyzeTasks(documents,
-        new AnalyzeTasksOptions().setDisplayName("{tasks_display_name}")
-            .setKeyPhrasesExtractionTasks(Arrays.asList(new KeyPhrasesTask()))
-            .setPiiEntitiesRecognitionTasks(Arrays.asList(new PiiTask())),
+
+SyncPoller<AnalyzeActionsOperationDetail, AnalyzeActionsResultPagedIterable> syncPoller =
+    textAnalyticsClient.beginAnalyzeActions(documents,
+        new TextAnalyticsActions().setDisplayName("{tasks_display_name}")
+            .setExtractKeyPhrasesActions(new ExtractKeyPhrasesAction())
+            .setRecognizePiiEntitiesActions(new RecognizePiiEntitiesAction()),
+        new AnalyzeActionsOptions().setIncludeStatistics(false),
         Context.NONE);
 syncPoller.waitForCompletion();
-syncPoller.getFinalResult().forEach(analyzeJobState -> {
-    analyzeJobState.getKeyPhraseExtractionTasks().forEach(taskResult -> {
+syncPoller.getFinalResult().forEach(analyzeActionsResult -> {
+    System.out.println("Key phrases extraction action results:");
+    analyzeActionsResult.getExtractKeyPhrasesResults().forEach(actionResult -> {
         AtomicInteger counter = new AtomicInteger();
-        for (ExtractKeyPhraseResult extractKeyPhraseResult : taskResult) {
-            System.out.printf("%n%s%n", documents.get(counter.getAndIncrement()));
-            System.out.println("Extracted phrases:");
-            extractKeyPhraseResult.getKeyPhrases()
-                .forEach(keyPhrases -> System.out.printf("\t%s.%n", keyPhrases));
+        if (!actionResult.isError()) {
+            for (ExtractKeyPhraseResult extractKeyPhraseResult : actionResult.getDocumentsResults()) {
+                System.out.printf("%n%s%n", documents.get(counter.getAndIncrement()));
+                System.out.println("Extracted phrases:");
+                extractKeyPhraseResult.getKeyPhrases()
+                    .forEach(keyPhrases -> System.out.printf("\t%s.%n", keyPhrases));
+            }
         }
     });
-    analyzeJobState.getEntityRecognitionPiiTasks().forEach(taskResult -> {
+    System.out.println("PII entities recognition action results:");
+    analyzeActionsResult.getRecognizePiiEntitiesResults().forEach(actionResult -> {
         AtomicInteger counter = new AtomicInteger();
-        for (RecognizePiiEntitiesResult entitiesResult : taskResult) {
-            System.out.printf("%n%s%n", documents.get(counter.getAndIncrement()));
-            PiiEntityCollection piiEntityCollection = entitiesResult.getEntities();
-            System.out.printf("Redacted Text: %s%n", piiEntityCollection.getRedactedText());
-            piiEntityCollection.forEach(entity -> System.out.printf(
-                "Recognized Personally Identifiable Information entity: %s, entity category: %s, "
-                    + "entity subcategory: %s, offset: %s, confidence score: %f.%n",
-                entity.getText(), entity.getCategory(), entity.getSubcategory(), entity.getOffset(),
-                entity.getConfidenceScore()));
+        if (!actionResult.isError()) {
+            for (RecognizePiiEntitiesResult entitiesResult : actionResult.getDocumentsResults()) {
+                System.out.printf("%n%s%n", documents.get(counter.getAndIncrement()));
+                PiiEntityCollection piiEntityCollection = entitiesResult.getEntities();
+                System.out.printf("Redacted Text: %s%n", piiEntityCollection.getRedactedText());
+                piiEntityCollection.forEach(entity -> System.out.printf(
+                    "Recognized Personally Identifiable Information entity: %s, entity category: %s, "
+                        + "entity subcategory: %s, offset: %s, confidence score: %f.%n",
+                    entity.getText(), entity.getCategory(), entity.getSubcategory(), entity.getOffset(),
+                    entity.getConfidenceScore()));
+            }
         }
     });
 });
@@ -475,9 +524,9 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [authentication]: https://docs.microsoft.com/azure/cognitive-services/authentication
 [azure_cli]: https://docs.microsoft.com/azure/cognitive-services/cognitive-services-apis-create-account-cli?tabs=windows
 [azure_cli_endpoint]: https://docs.microsoft.com/cli/azure/cognitiveservices/account?view=azure-cli-latest#az-cognitiveservices-account-show
-[azure_identity]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/identity/azure-identity
-[azure_identity_credential_type]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/identity/azure-identity#credentials
-[azure_key_credential]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/core/azure-core/src/main/java/com/azure/core/credential/AzureKeyCredential.java
+[azure_identity]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/identity/azure-identity
+[azure_identity_credential_type]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/identity/azure-identity#credentials
+[azure_key_credential]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core/src/main/java/com/azure/core/credential/AzureKeyCredential.java
 [azure_portal]: https://ms.portal.azure.com
 [azure_subscription]: https://azure.microsoft.com/free
 [cla]: https://cla.microsoft.com
@@ -504,21 +553,22 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [service_access]: https://docs.microsoft.com/azure/cognitive-services/cognitive-services-apis-create-account?tabs=multiservice%2Cwindows
 [service_input_limitation]: https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits
 [sentiment_analysis]: https://docs.microsoft.com/azure/cognitive-services/text-analytics/how-tos/text-analytics-how-to-sentiment-analysis
-[source_code]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/textanalytics/azure-ai-textanalytics/src
+[source_code]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/textanalytics/azure-ai-textanalytics/src
 [supported_languages]: https://docs.microsoft.com/azure/cognitive-services/text-analytics/language-support#language-detection
 [text_analytics_account]: https://docs.microsoft.com/azure/cognitive-services/cognitive-services-apis-create-account?tabs=multiservice%2Cwindows
-[text_analytics_async_client]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/textanalytics/azure-ai-textanalytics/src/main/java/com/azure/ai/textanalytics/TextAnalyticsAsyncClient.java
-[text_analytics_sync_client]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/textanalytics/azure-ai-textanalytics/src/main/java/com/azure/ai/textanalytics/TextAnalyticsClient.java
+[text_analytics_async_client]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/textanalytics/azure-ai-textanalytics/src/main/java/com/azure/ai/textanalytics/TextAnalyticsAsyncClient.java
+[text_analytics_sync_client]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/textanalytics/azure-ai-textanalytics/src/main/java/com/azure/ai/textanalytics/TextAnalyticsClient.java
 [wiki_identity]: https://github.com/Azure/azure-sdk-for-java/wiki/Identity-and-Authentication
-[LogLevels]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/core/azure-core/src/main/java/com/azure/core/util/logging/ClientLogger.java
+[LogLevels]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core/src/main/java/com/azure/core/util/logging/ClientLogger.java
 
-[samples_readme]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/textanalytics/azure-ai-textanalytics/src/samples/README.md
-[detect_language_sample]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/batch/DetectLanguageBatchDocuments.java
-[analyze_sentiment_sample]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/batch/AnalyzeSentimentBatchDocuments.java
-[analyze_sentiment_with_opinion_mining_sample]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/AnalyzeSentimentWithOpinionMining.java
-[extract_key_phrases_sample]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/batch/ExtractKeyPhrasesBatchDocuments.java
-[recognize_entities_sample]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/batch/RecognizeEntitiesBatchDocuments.java
-[recognize_pii_entities_sample]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/batch/RecognizePiiEntitiesBatchDocuments.java
-[recognize_linked_entities_sample]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/batch/RecognizeLinkedEntitiesBatchDocuments.java
+[samples_readme]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/textanalytics/azure-ai-textanalytics/src/samples/README.md
+[detect_language_sample]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/batch/DetectLanguageBatchDocuments.java
+[analyze_sentiment_sample]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/batch/AnalyzeSentimentBatchDocuments.java
+[analyze_sentiment_with_opinion_mining_sample]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/AnalyzeSentimentWithOpinionMining.java
+[extract_key_phrases_sample]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/batch/ExtractKeyPhrasesBatchDocuments.java
+[recognize_entities_sample]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/batch/RecognizeEntitiesBatchDocuments.java
+[recognize_pii_entities_sample]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/batch/RecognizePiiEntitiesBatchDocuments.java
+[recognize_linked_entities_sample]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/batch/RecognizeLinkedEntitiesBatchDocuments.java
+[extractive_summarization_sample]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/lro/AnalyzeExtractiveSummarization.java
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Ftextanalytics%2Fazure-ai-textanalytics%2FREADME.png)

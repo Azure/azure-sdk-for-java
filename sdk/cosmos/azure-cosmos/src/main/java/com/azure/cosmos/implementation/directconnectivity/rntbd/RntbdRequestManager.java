@@ -568,10 +568,18 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
         return this.contextFuture.getNow(null) != null;
     }
 
-    boolean isServiceable(final int demand) {
+    RntbdChannelState getChannelState(final int demand) {
         reportIssueUnless(this.hasRequestedRntbdContext(), this, "Direct TCP context request was not issued");
+
         final int limit = this.hasRntbdContext() ? this.pendingRequestLimit : Math.min(this.pendingRequestLimit, demand);
-        return this.pendingRequests.size() < limit;
+        if (this.pendingRequests.size() < limit) {
+            return RntbdChannelState.ok(this.pendingRequests.size());
+        }
+        if (this.hasRntbdContext()) {
+            return RntbdChannelState.pendingLimit(this.pendingRequests.size());
+        } else {
+            return RntbdChannelState.contextNegotiationPending((this.pendingRequests.size()));
+        }
     }
 
     void pendWrite(final ByteBuf out, final ChannelPromise promise) {
@@ -729,7 +737,8 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
         final UUID activityId = response.getActivityId();
         final int statusCode = status.code();
 
-        if (HttpResponseStatus.OK.code() <= statusCode && statusCode < HttpResponseStatus.MULTIPLE_CHOICES.code()) {
+        if ((HttpResponseStatus.OK.code() <= statusCode && statusCode < HttpResponseStatus.MULTIPLE_CHOICES.code()) ||
+            statusCode == HttpResponseStatus.NOT_MODIFIED.code()) {
 
             final StoreResponse storeResponse = response.toStoreResponse(this.contextFuture.getNow(null));
             requestRecord.complete(storeResponse);

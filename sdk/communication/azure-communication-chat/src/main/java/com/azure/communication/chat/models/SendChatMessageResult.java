@@ -4,16 +4,16 @@
 
 package com.azure.communication.chat.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The SendChatMessageResult model. */
-@Immutable
+/** Result of the send message operation. */
+@Fluent
 public final class SendChatMessageResult {
     /*
      * A server-generated message id.
      */
-    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "id", required = true)
     private String id;
 
     /**
@@ -23,5 +23,16 @@ public final class SendChatMessageResult {
      */
     public String getId() {
         return this.id;
+    }
+
+    /**
+     * Set the id property: A server-generated message id.
+     *
+     * @param id the id value to set.
+     * @return the SendChatMessageResult object itself.
+     */
+    public SendChatMessageResult setId(String id) {
+        this.id = id;
+        return this;
     }
 }

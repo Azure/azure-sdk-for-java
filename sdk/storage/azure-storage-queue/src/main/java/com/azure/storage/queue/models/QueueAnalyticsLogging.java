@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
-/**
- * Azure Analytics Logging settings.
- */
+/** Azure Analytics Logging settings. */
 @JacksonXmlRootElement(localName = "Logging")
 @Fluent
 public final class QueueAnalyticsLogging {
@@ -39,7 +37,7 @@ public final class QueueAnalyticsLogging {
     private boolean write;
 
     /*
-     * The retentionPolicy property.
+     * the retention policy
      */
     @JsonProperty(value = "RetentionPolicy", required = true)
     private QueueRetentionPolicy retentionPolicy;
@@ -65,8 +63,7 @@ public final class QueueAnalyticsLogging {
     }
 
     /**
-     * Get the delete property: Indicates whether all delete requests should be
-     * logged.
+     * Get the delete property: Indicates whether all delete requests should be logged.
      *
      * @return the delete value.
      */
@@ -75,8 +72,7 @@ public final class QueueAnalyticsLogging {
     }
 
     /**
-     * Set the delete property: Indicates whether all delete requests should be
-     * logged.
+     * Set the delete property: Indicates whether all delete requests should be logged.
      *
      * @param delete the delete value to set.
      * @return the QueueAnalyticsLogging object itself.
@@ -87,8 +83,7 @@ public final class QueueAnalyticsLogging {
     }
 
     /**
-     * Get the read property: Indicates whether all read requests should be
-     * logged.
+     * Get the read property: Indicates whether all read requests should be logged.
      *
      * @return the read value.
      */
@@ -97,8 +92,7 @@ public final class QueueAnalyticsLogging {
     }
 
     /**
-     * Set the read property: Indicates whether all read requests should be
-     * logged.
+     * Set the read property: Indicates whether all read requests should be logged.
      *
      * @param read the read value to set.
      * @return the QueueAnalyticsLogging object itself.
@@ -109,8 +103,7 @@ public final class QueueAnalyticsLogging {
     }
 
     /**
-     * Get the write property: Indicates whether all write requests should be
-     * logged.
+     * Get the write property: Indicates whether all write requests should be logged.
      *
      * @return the write value.
      */
@@ -119,8 +112,7 @@ public final class QueueAnalyticsLogging {
     }
 
     /**
-     * Set the write property: Indicates whether all write requests should be
-     * logged.
+     * Set the write property: Indicates whether all write requests should be logged.
      *
      * @param write the write value to set.
      * @return the QueueAnalyticsLogging object itself.
@@ -131,7 +123,7 @@ public final class QueueAnalyticsLogging {
     }
 
     /**
-     * Get the retentionPolicy property: The retentionPolicy property.
+     * Get the retentionPolicy property: the retention policy.
      *
      * @return the retentionPolicy value.
      */
@@ -140,7 +132,7 @@ public final class QueueAnalyticsLogging {
     }
 
     /**
-     * Set the retentionPolicy property: The retentionPolicy property.
+     * Set the retentionPolicy property: the retention policy.
      *
      * @param retentionPolicy the retentionPolicy value to set.
      * @return the QueueAnalyticsLogging object itself.

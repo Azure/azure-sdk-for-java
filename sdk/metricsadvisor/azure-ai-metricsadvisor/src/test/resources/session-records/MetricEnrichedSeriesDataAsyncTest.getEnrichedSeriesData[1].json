@@ -1,0 +1,26 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/metricsadvisor/v1.0/enrichment/anomalyDetection/configurations/fb5a6ed6-2b9e-4b72-8b0c-0046ead1c15c/series/query",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "c84b2c4b-2fc4-4af4-b4a8-896e52ced866",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "x-request-id" : "f364cb2e-30e7-4b31-b0c7-8540938c3d10",
+      "content-length" : "1630",
+      "x-envoy-upstream-service-time" : "5966",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "f364cb2e-30e7-4b31-b0c7-8540938c3d10",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Body" : "{\"value\":[{\"series\":{\"dimension\":{\"city\":\"Miami\",\"category\":\"Health & Personal Care\"}},\"timestampList\":[\"2020-09-22T00:00:00Z\",\"2020-09-23T00:00:00Z\",\"2020-09-24T00:00:00Z\",\"2020-09-25T00:00:00Z\",\"2020-09-26T00:00:00Z\",\"2020-09-27T00:00:00Z\",\"2020-09-28T00:00:00Z\",\"2020-09-29T00:00:00Z\",\"2020-09-30T00:00:00Z\",\"2020-10-01T00:00:00Z\",\"2020-10-02T00:00:00Z\",\"2020-10-03T00:00:00Z\",\"2020-10-04T00:00:00Z\",\"2020-10-05T00:00:00Z\",\"2020-10-06T00:00:00Z\",\"2020-10-07T00:00:00Z\",\"2020-10-08T00:00:00Z\",\"2020-10-09T00:00:00Z\",\"2020-10-10T00:00:00Z\",\"2020-10-11T00:00:00Z\",\"2020-10-12T00:00:00Z\",\"2020-10-13T00:00:00Z\",\"2020-10-14T00:00:00Z\",\"2020-10-15T00:00:00Z\",\"2020-10-16T00:00:00Z\",\"2020-10-17T00:00:00Z\",\"2020-10-18T00:00:00Z\",\"2020-10-19T00:00:00Z\",\"2020-10-20T00:00:00Z\",\"2020-10-21T00:00:00Z\"],\"valueList\":[0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0],\"isAnomalyList\":[false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false],\"periodList\":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],\"expectedValueList\":[0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0],\"lowerBoundaryList\":[0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0],\"upperBoundaryList\":[0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0]}]}",
+      "Date" : "Tue, 03 Aug 2021 19:53:58 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

@@ -12,12 +12,6 @@ import java.util.List;
 @Fluent
 public final class TasksStateTasks {
     /*
-     * The details property.
-     */
-    @JsonProperty(value = "details")
-    private TaskState details;
-
-    /*
      * The completed property.
      */
     @JsonProperty(value = "completed", required = true)
@@ -59,25 +53,23 @@ public final class TasksStateTasks {
     @JsonProperty(value = "keyPhraseExtractionTasks")
     private List<TasksStateTasksKeyPhraseExtractionTasksItem> keyPhraseExtractionTasks;
 
-    /**
-     * Get the details property: The details property.
-     *
-     * @return the details value.
+    /*
+     * The entityLinkingTasks property.
      */
-    public TaskState getDetails() {
-        return this.details;
-    }
+    @JsonProperty(value = "entityLinkingTasks")
+    private List<TasksStateTasksEntityLinkingTasksItem> entityLinkingTasks;
 
-    /**
-     * Set the details property: The details property.
-     *
-     * @param details the details value to set.
-     * @return the TasksStateTasks object itself.
+    /*
+     * The sentimentAnalysisTasks property.
      */
-    public TasksStateTasks setDetails(TaskState details) {
-        this.details = details;
-        return this;
-    }
+    @JsonProperty(value = "sentimentAnalysisTasks")
+    private List<TasksStateTasksSentimentAnalysisTasksItem> sentimentAnalysisTasks;
+
+    /*
+     * The extractiveSummarizationTasks property.
+     */
+    @JsonProperty(value = "extractiveSummarizationTasks")
+    private List<TasksStateTasksExtractiveSummarizationTasksItem> extractiveSummarizationTasks;
 
     /**
      * Get the completed property: The completed property.
@@ -219,6 +211,68 @@ public final class TasksStateTasks {
     public TasksStateTasks setKeyPhraseExtractionTasks(
             List<TasksStateTasksKeyPhraseExtractionTasksItem> keyPhraseExtractionTasks) {
         this.keyPhraseExtractionTasks = keyPhraseExtractionTasks;
+        return this;
+    }
+
+    /**
+     * Get the entityLinkingTasks property: The entityLinkingTasks property.
+     *
+     * @return the entityLinkingTasks value.
+     */
+    public List<TasksStateTasksEntityLinkingTasksItem> getEntityLinkingTasks() {
+        return this.entityLinkingTasks;
+    }
+
+    /**
+     * Set the entityLinkingTasks property: The entityLinkingTasks property.
+     *
+     * @param entityLinkingTasks the entityLinkingTasks value to set.
+     * @return the TasksStateTasks object itself.
+     */
+    public TasksStateTasks setEntityLinkingTasks(List<TasksStateTasksEntityLinkingTasksItem> entityLinkingTasks) {
+        this.entityLinkingTasks = entityLinkingTasks;
+        return this;
+    }
+
+    /**
+     * Get the sentimentAnalysisTasks property: The sentimentAnalysisTasks property.
+     *
+     * @return the sentimentAnalysisTasks value.
+     */
+    public List<TasksStateTasksSentimentAnalysisTasksItem> getSentimentAnalysisTasks() {
+        return this.sentimentAnalysisTasks;
+    }
+
+    /**
+     * Set the sentimentAnalysisTasks property: The sentimentAnalysisTasks property.
+     *
+     * @param sentimentAnalysisTasks the sentimentAnalysisTasks value to set.
+     * @return the TasksStateTasks object itself.
+     */
+    public TasksStateTasks setSentimentAnalysisTasks(
+            List<TasksStateTasksSentimentAnalysisTasksItem> sentimentAnalysisTasks) {
+        this.sentimentAnalysisTasks = sentimentAnalysisTasks;
+        return this;
+    }
+
+    /**
+     * Get the extractiveSummarizationTasks property: The extractiveSummarizationTasks property.
+     *
+     * @return the extractiveSummarizationTasks value.
+     */
+    public List<TasksStateTasksExtractiveSummarizationTasksItem> getExtractiveSummarizationTasks() {
+        return this.extractiveSummarizationTasks;
+    }
+
+    /**
+     * Set the extractiveSummarizationTasks property: The extractiveSummarizationTasks property.
+     *
+     * @param extractiveSummarizationTasks the extractiveSummarizationTasks value to set.
+     * @return the TasksStateTasks object itself.
+     */
+    public TasksStateTasks setExtractiveSummarizationTasks(
+            List<TasksStateTasksExtractiveSummarizationTasksItem> extractiveSummarizationTasks) {
+        this.extractiveSummarizationTasks = extractiveSummarizationTasks;
         return this;
     }
 }

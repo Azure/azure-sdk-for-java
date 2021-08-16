@@ -8,7 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** The ContainerRegistryEventData model. */
+/** The content of the event request message. */
 @Fluent
 public class ContainerRegistryEventData {
     /*

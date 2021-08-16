@@ -3,21 +3,15 @@
 
 package com.azure.resourcemanager.appservice.implementation;
 
-import com.azure.core.annotation.Get;
-import com.azure.core.annotation.Host;
-import com.azure.core.annotation.HostParam;
-import com.azure.core.annotation.PathParam;
-import com.azure.core.annotation.ServiceInterface;
+import com.azure.core.exception.HttpResponseException;
+import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.rest.RestProxy;
-import com.azure.core.http.rest.SimpleResponse;
-import com.azure.core.util.FluxUtil;
-import reactor.core.publisher.Flux;
+import com.azure.core.http.HttpRequest;
+import com.azure.core.http.HttpResponse;
 import reactor.core.publisher.Mono;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.nio.ByteBuffer;
 import java.util.regex.Pattern;
 
 /** Utilities for AppService implementation. */
@@ -111,54 +105,15 @@ class Utils {
      * @return an Observable pointing to the content of the file
      */
     static Mono<byte[]> downloadFileAsync(String url, HttpPipeline httpPipeline) {
-        FileService service = RestProxy.create(FileService.class, httpPipeline);
-        try {
-            return service.download(getHost(url), getPathAndQuery(url))
-                .flatMap(response -> FluxUtil.collectBytesInByteBufferStream(response.getValue()));
-        } catch (MalformedURLException ex) {
-            return Mono.error(() -> ex);
-        }
-    }
-
-    /**
-     * Get host from url.
-     *
-     * @param urlString the url string
-     * @return the host
-     * @throws MalformedURLException when url is invalid format
-     */
-    private static String getHost(String urlString) throws MalformedURLException {
-        URL url = new URL(urlString);
-        String protocol = url.getProtocol();
-        String host = url.getAuthority();
-        return protocol + "://" + host;
-    }
-
-    /**
-     * Get path from url.
-     *
-     * @param urlString the url string
-     * @return the path
-     * @throws MalformedURLException when the url is invalid format
-     */
-    private static String getPathAndQuery(String urlString) throws MalformedURLException {
-        URL url = new URL(urlString);
-        String path = url.getPath();
-        String query = url.getQuery();
-        if (query != null && !query.isEmpty()) {
-            path = path + "?" + query;
-        }
-        return path;
-    }
-
-    /**
-     * A Retrofit service used to download a file.
-     */
-    @Host("{$host}")
-    @ServiceInterface(name = "FileService")
-    private interface FileService {
-        @Get("{path}")
-        Mono<SimpleResponse<Flux<ByteBuffer>>> download(
-            @HostParam("$host") String host, @PathParam(value = "path", encoded = true) String path);
+        HttpRequest request = new HttpRequest(HttpMethod.GET, url);
+        return httpPipeline.send(request)
+            .flatMap(response1 -> {
+                int code = response1.getStatusCode();
+                if (code == 200) {
+                    return Mono.just(response1);
+                } else {
+                    return Mono.error(new HttpResponseException(response1));
+                }
+            }).flatMap(HttpResponse::getBodyAsByteArray);
     }
 }

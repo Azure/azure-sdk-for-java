@@ -3,17 +3,21 @@
 
 package com.azure.resourcemanager.resources.implementation;
 
+import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.resources.ResourceManager;
 import com.azure.resourcemanager.resources.fluentcore.model.Accepted;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.AcceptedImpl;
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.resources.models.GenericResource;
+import com.azure.resourcemanager.resources.models.Identity;
 import com.azure.resourcemanager.resources.models.Plan;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.azure.resourcemanager.resources.fluent.models.GenericResourceInner;
 import com.azure.resourcemanager.resources.fluent.ResourcesClient;
+import com.azure.resourcemanager.resources.models.ResourceIdentityType;
+import com.azure.resourcemanager.resources.models.Sku;
 import reactor.core.publisher.Mono;
 
 /**
@@ -85,6 +89,26 @@ final class GenericResourceImpl
     }
 
     @Override
+    public String kind() {
+        return innerModel().kind();
+    }
+
+    @Override
+    public Sku sku() {
+        return innerModel().sku();
+    }
+
+    @Override
+    public Identity identity() {
+        return innerModel().identity();
+    }
+
+    @Override
+    public String managedBy() {
+        return innerModel().managedBy();
+    }
+
+    @Override
     protected Mono<GenericResourceInner> getInnerAsync() {
         return this.manager().serviceClient().getResources().getAsync(
                 resourceGroupName(),
@@ -97,6 +121,30 @@ final class GenericResourceImpl
 
     public GenericResourceImpl withProperties(Object properties) {
         innerModel().withProperties(properties);
+        return this;
+    }
+
+    @Override
+    public GenericResourceImpl withKind(String kind) {
+        innerModel().withKind(kind);
+        return this;
+    }
+
+    @Override
+    public GenericResourceImpl withSku(Sku sku) {
+        innerModel().withSku(sku);
+        return this;
+    }
+
+    @Override
+    public GenericResourceImpl withIdentity(Identity identity) {
+        innerModel().withIdentity(identity);
+        return this;
+    }
+
+    @Override
+    public GenericResourceImpl withoutIdentity() {
+        innerModel().withIdentity(new Identity().withType(ResourceIdentityType.NONE));
         return this;
     }
 
@@ -118,6 +166,11 @@ final class GenericResourceImpl
                 .withPublisher(publisher)
                 .withProduct(product)
                 .withPromotionCode(promotionCode));
+        return this;
+    }
+
+    public GenericResourceImpl withPlan(Plan plan) {
+        innerModel().withPlan(plan);
         return this;
     }
 
@@ -165,7 +218,8 @@ final class GenericResourceImpl
             inner -> new GenericResourceImpl(inner.id(), inner, this.manager()),
             GenericResourceInner.class,
             null,
-            this::setInner);
+            this::setInner,
+            Context.NONE);
     }
 
     // CreateUpdateTaskGroup.ResourceCreator implementation

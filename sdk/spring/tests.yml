@@ -1,125 +1,44 @@
 trigger: none
 
 stages:
-    - template: ../../eng/pipelines/templates/stages/archetype-sdk-tests.yml
-      parameters:
-        TimeoutInMinutes: 240
-        ServiceDirectory: spring
-        TestStepMavenInputs:
-          options: '-Dmaven.wagon.http.pool=false $(DefaultOptions) -Dmaven.javadoc.skip=true -Drevapi.skip=true -DskipSpringITs=false -pl $(ProjectList)'
-          goals: "verify"
+    - template: spring-test-template.yml
 
+    - template: spring-test-template.yml
+      parameters:
+        TestName: LiveTestInAzureChina
+        Clouds: China
+        TestResourceDirectories:
+          - spring/azure-spring-boot-test-aad
         Artifacts:
-          - name: azure-spring-boot-test-application
-            groupId: com.azure.spring
-            safeName: azurespringboottestapplication
-          - name: azure-spring-boot-test-core
-            groupId: com.azure.spring
-            safeName: azurespringboottestcore
-          - name: azure-spring-boot-test-cosmos
-            groupId: com.azure.spring
-            safeName: azurespringboottestcosmos
           - name: azure-spring-boot-test-aad
             groupId: com.azure.spring
             safeName: azurespringboottestaad
           - name: azure-spring-boot-test-aad-b2c
             groupId: com.azure.spring
             safeName: azurespringboottestaadb2c
-          - name: azure-spring-boot-test-aad-obo
-            groupId: com.azure.spring
-            safeName: azurespringboottestaadobo
-          - name: azure-spring-boot-test-aad-resource-server
-            groupId: com.azure.spring
-            safeName: azurespringboottestaadresourceserver
-          - name: azure-spring-boot-test-aad-resource-server-by-filter
-            groupId: com.azure.spring
-            safeName: azurespringboottestaadresourceserverbyfilter
-          - name: azure-spring-boot-test-keyvault
-            groupId: com.azure.spring
-            safeName: azurespringboottestkeyvault
-          - name: azure-spring-boot-test-keyvault-reactive
-            groupId: com.azure.spring
-            safeName: azurespringboottestkeyvaultreactive
-          - name: azure-spring-boot-test-parent
-            groupId: com.azure.spring
-            safeName: azurespringboottestparent
-          - name: azure-spring-boot-test-servicebus-jms
-            groupId: com.azure.spring
-            safeName: azurespringboottestservicebusjms
-          - name: azure-spring-cloud-test-eventhubs
-            groupId: com.azure.spring
-            safeName: azurespringcloudtesteventhubs
-          - name: azure-spring-boot-test-storage
-            groupId: com.azure.spring
-            safeName: azurespringbootteststorage
-
         EnvVars:
-          AZURE_TEST_MODE: LIVE
-          AAD_TENANT_ID_1: $(java-spring-aad-tenant-id-1)
-          AAD_USER_NAME_1: $(java-spring-aad-user-name-1)
-          AAD_USER_PASSWORD_1: $(java-spring-aad-user-password-1)
-          AAD_TENANT_ID_2: $(java-spring-aad-tenant-id-2)
-          AAD_USER_NAME_2: $(java-spring-aad-user-name-2)
-          AAD_USER_PASSWORD_2: $(java-spring-aad-user-password-2)
-          AAD_MULTI_TENANT_CLIENT_ID: $(java-spring-aad-multi-tenant-client-id)
-          AAD_MULTI_TENANT_CLIENT_SECRET: $(java-spring-aad-multi-tenant-client-secret)
-          AAD_SINGLE_TENANT_CLIENT_ID: $(java-spring-aad-single-tenant-id)
-          AAD_SINGLE_TENANT_CLIENT_SECRET: $(java-spring-aad-single-tenant-secret)
-          AAD_SINGLE_TENANT_CLIENT_ID_WITH_ROLE: $(java-spring-aad-single-tenant-id-with-role)
-          AAD_SINGLE_TENANT_CLIENT_SECRET_WITH_ROLE: $(java-spring-aad-single-tenant-secret-with-role)
-          AAD_B2C_USER_EMAIL: "chrisgreen@abc.com"
-          AAD_B2C_TENANT: "B2CITTest1"
-          AAD_B2C_REPLY_URL: "http://localhost:8080/home"
+          AAD_TENANT_ID_1: $(java-spring-aad-tenant-id-1-cn)
+          AAD_USER_NAME_1: $(java-spring-aad-user-name-1-cn)
+          AAD_USER_PASSWORD_1: $(java-spring-aad-user-password-1-cn)
+          AAD_TENANT_ID_2: $(java-spring-aad-tenant-id-2-cn)
+          AAD_USER_NAME_2: $(java-spring-aad-user-name-2-cn)
+          AAD_USER_PASSWORD_2: $(java-spring-aad-user-password-2-cn)
+          AAD_MULTI_TENANT_CLIENT_ID: $(java-spring-aad-multi-tenant-client-id-cn)
+          AAD_MULTI_TENANT_CLIENT_SECRET: $(java-spring-aad-multi-tenant-client-secret-cn)
+          AAD_SINGLE_TENANT_CLIENT_ID: $(java-spring-aad-single-tenant-id-cn)
+          AAD_SINGLE_TENANT_CLIENT_SECRET: $(java-spring-aad-single-tenant-secret-cn)
+          AAD_SINGLE_TENANT_CLIENT_ID_WITH_ROLE: $(java-spring-aad-single-tenant-id-with-role-cn)
+          AAD_SINGLE_TENANT_CLIENT_SECRET_WITH_ROLE: $(java-spring-aad-single-tenant-secret-with-role-cn)
+          AAD_USER_NAME_ON_DEMAND: "user$(System.JobId)-$(Build.BuildId)@cnaadittest1.partner.onmschina.cn"
+          AAD_USER_PASSWORD_ON_DEMAND: $(java-spring-aad-user-password-1-cn)
+          AAD_SERVICE_PRICIPAL_CLIENT_ID: $(java-spring-aad-service-principal-client-id-cn)
+          AAD_SERVICE_PRICIPAL_CLIENT_SECRET: $(java-spring-aad-service-principal-client-secret-cn)
+          AAD_B2C_USER_EMAIL: "moary@126.com"
+          AAD_B2C_BASE_URI: "https://moaryb2c.b2clogin.cn/moaryb2c.partner.onmschina.cn"
+          AAD_B2C_REPLY_URL: "http://localhost:8080/login/oauth2/code/"
           AAD_B2C_SIGN_UP_OR_SIGN_IN: "B2C_1_signupsignin1"
           AAD_B2C_PROFILE_EDIT: "B2C_1_profileediting1"
-          AAD_B2C_USER_PASSWORD: $(java-spring-aad-b2c-user-password)
-          AAD_B2C_CLIENT_ID: $(java-spring-aad-b2c-client-id)
-          AAD_B2C_CLIENT_SECRET: $(java-spring-aad-b2c-client-secret)
-
-        PostRunSteps:
-          - script: |
-              python --version
-              python -m pip install setuptools termcolor in_place
-              python sdk/spring/scripts/replace_util.py --module spring --log debug --color false
-            displayName: 'Run replace_util.py'
-
-          - task: Maven@3
-            displayName: 'Build and Install again, JDK Version: $(JavaBuildVersion)'
-            inputs:
-              mavenPomFile: pom.xml
-              goals: 'install'
-              options: '$(DefaultOptions) -DskipTests -Dgpg.skip -Dmaven.javadoc.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Drevapi.skip=true -pl $(ProjectList) -am'
-              mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
-              javaHomeOption: 'JDKVersion'
-              jdkVersionOption: $(JavaBuildVersion)
-              jdkArchitectureOption: 'x64'
-              publishJUnitResults: false
-
-          - task: Maven@3
-            displayName: 'Run tests again, JDK Version: $(JavaBuildVersion)'
-            inputs:
-              mavenPomFile: pom.xml
-              goals: verify
-              options: '-Dmaven.wagon.http.pool=false $(DefaultOptions) -Dmaven.javadoc.skip=true -Drevapi.skip=true -DskipSpringITs=false -pl $(ProjectList)'
-            env:
-              AZURE_TEST_MODE: LIVE
-              AAD_TENANT_ID_1: $(java-spring-aad-tenant-id-1)
-              AAD_USER_NAME_1: $(java-spring-aad-user-name-1)
-              AAD_USER_PASSWORD_1: $(java-spring-aad-user-password-1)
-              AAD_TENANT_ID_2: $(java-spring-aad-tenant-id-2)
-              AAD_USER_NAME_2: $(java-spring-aad-user-name-2)
-              AAD_USER_PASSWORD_2: $(java-spring-aad-user-password-2)
-              AAD_MULTI_TENANT_CLIENT_ID: $(java-spring-aad-multi-tenant-client-id)
-              AAD_MULTI_TENANT_CLIENT_SECRET: $(java-spring-aad-multi-tenant-client-secret)
-              AAD_SINGLE_TENANT_CLIENT_ID: $(java-spring-aad-single-tenant-id)
-              AAD_SINGLE_TENANT_CLIENT_SECRET: $(java-spring-aad-single-tenant-secret)
-              AAD_SINGLE_TENANT_CLIENT_ID_WITH_ROLE: $(java-spring-aad-single-tenant-id-with-role)
-              AAD_SINGLE_TENANT_CLIENT_SECRET_WITH_ROLE: $(java-spring-aad-single-tenant-secret-with-role)
-              AAD_B2C_USER_EMAIL: "chrisgreen@abc.com"
-              AAD_B2C_TENANT: "B2CITTest1"
-              AAD_B2C_REPLY_URL: "http://localhost:8080/home"
-              AAD_B2C_SIGN_UP_OR_SIGN_IN: "B2C_1_signupsignin1"
-              AAD_B2C_PROFILE_EDIT: "B2C_1_profileediting1"
-              AAD_B2C_USER_PASSWORD: $(java-spring-aad-b2c-user-password)
-              AAD_B2C_CLIENT_ID: $(java-spring-aad-b2c-client-id)
-              AAD_B2C_CLIENT_SECRET: $(java-spring-aad-b2c-client-secret)
+          AAD_B2C_USER_PASSWORD: $(java-spring-aad-b2c-user-password-cn)
+          AAD_B2C_CLIENT_ID: $(java-spring-aad-b2c-client-id-cn)
+          AAD_B2C_CLIENT_SECRET: $(java-spring-aad-b2c-client-secret-cn)
+          AZURE_CLOUD_TYPE: "China"

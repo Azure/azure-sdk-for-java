@@ -4,6 +4,7 @@ package com.azure.resourcemanager.compute.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.util.CoreUtils;
 import com.azure.resourcemanager.compute.ComputeManager;
 import com.azure.resourcemanager.compute.models.AvailabilitySet;
 import com.azure.resourcemanager.compute.models.AvailabilitySetSkuTypes;
@@ -12,6 +13,7 @@ import com.azure.resourcemanager.compute.fluent.models.AvailabilitySetInner;
 import com.azure.resourcemanager.compute.fluent.AvailabilitySetsClient;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
 import reactor.core.publisher.Mono;
+import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
 
 /** The implementation for AvailabilitySets. */
 public class AvailabilitySetsImpl
@@ -25,21 +27,25 @@ public class AvailabilitySetsImpl
 
     @Override
     public PagedIterable<AvailabilitySet> list() {
-        return manager().serviceClient().getAvailabilitySets().list().mapPage(this::wrapModel);
+        return new PagedIterable<>(this.listAsync());
     }
 
     @Override
     public PagedFlux<AvailabilitySet> listAsync() {
-        return this.manager().serviceClient().getAvailabilitySets().listAsync().mapPage(this::wrapModel);
+        return PagedConverter.mapPage(this.manager().serviceClient().getAvailabilitySets().listAsync(), this::wrapModel);
     }
 
     @Override
     public PagedIterable<AvailabilitySet> listByResourceGroup(String groupName) {
-        return wrapList(this.inner().listByResourceGroup(groupName));
+        return new PagedIterable<>(this.listByResourceGroupAsync(groupName));
     }
 
     @Override
     public PagedFlux<AvailabilitySet> listByResourceGroupAsync(String resourceGroupName) {
+        if (CoreUtils.isNullOrEmpty(resourceGroupName)) {
+            return new PagedFlux<>(() -> Mono.error(
+                new IllegalArgumentException("Parameter 'resourceGroupName' is required and cannot be null.")));
+        }
         return wrapPageAsync(this.inner().listByResourceGroupAsync(resourceGroupName));
     }
 

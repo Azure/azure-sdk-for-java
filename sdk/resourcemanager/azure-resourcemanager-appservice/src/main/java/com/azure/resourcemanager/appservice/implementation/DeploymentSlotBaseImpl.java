@@ -31,7 +31,9 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+
 import reactor.core.publisher.Mono;
+import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
 
 /** The implementation for DeploymentSlot. */
 abstract class DeploymentSlotBaseImpl<
@@ -72,12 +74,11 @@ abstract class DeploymentSlotBaseImpl<
     @Override
     @SuppressWarnings("unchecked")
     public Mono<Map<String, HostnameBinding>> getHostnameBindingsAsync() {
-        return this
+        return PagedConverter.mapPage(this
             .manager()
             .serviceClient()
             .getWebApps()
-            .listHostnameBindingsSlotAsync(resourceGroupName(), parent().name(), name())
-            .mapPage(
+            .listHostnameBindingsSlotAsync(resourceGroupName(), parent().name(), name()),
                 hostNameBindingInner ->
                     new HostnameBindingImpl<FluentT, FluentImplT>(
                         hostNameBindingInner, (FluentImplT) DeploymentSlotBaseImpl.this))

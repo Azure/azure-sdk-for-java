@@ -2,24 +2,32 @@
 trigger:
   branches:
     include:
-      - master
+      - main
       - feature/*
       - hotfix/*
       - release/*
   paths:
     include:
-      - sdk/servicefabric/
+      - sdk/servicefabric/ci.mgmt.yml
+      - sdk/servicefabric/mgmt-v2018_02_01/
+    exclude:
+      - sdk/servicefabric/pom.xml
+      - sdk/servicefabric/mgmt-v2018_02_01/pom.xml
 
 pr:
   branches:
     include:
-      - master
+      - main
       - feature/*
       - hotfix/*
       - release/*
   paths:
     include:
-      - sdk/servicefabric/
+      - sdk/servicefabric/ci.mgmt.yml
+      - sdk/servicefabric/mgmt-v2018_02_01/
+    exclude:
+      - sdk/servicefabric/pom.xml
+      - sdk/servicefabric/mgmt-v2018_02_01/pom.xml
 
 stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-management.yml

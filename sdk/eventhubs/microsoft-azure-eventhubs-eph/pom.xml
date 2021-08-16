@@ -14,14 +14,10 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.microsoft.azure</groupId>
   <artifactId>azure-eventhubs-eph</artifactId>
-  <version>3.3.0-beta.1</version> <!-- {x-version-update;com.microsoft.azure:azure-eventhubs-eph;current} -->
+  <version>3.3.0</version> <!-- {x-version-update;com.microsoft.azure:azure-eventhubs-eph;current} -->
 
   <name>Microsoft Azure SDK for Event Hubs Event Processor Host(EPH)</name>
-  <description>EPH is built on top of the Azure Event Hubs Client and provides a number of features not present in that lower layer.${line.separator}
-    This library has been replaced by new Azure SDKs, you can read about them at https://aka.ms/azsdkvalueprop. The latest libraries to interact with the Azure Event Hubs service are:${line.separator}
-    1. https://search.maven.org/artifact/com.azure/azure-messaging-eventhubs${line.separator}
-    2. https://search.maven.org/artifact/com.azure/azure-messaging-eventhubs-checkpointstore-blob${line.separator}
-    It is recommended that you move to the new package.
+  <description>Please note, a newer package azure-messaging-eventhubs for Azure Event Hubs is available at https://search.maven.org/artifact/com.azure/azure-messaging-eventhubs as of February 2020. While this package will continue to receive critical bug fixes, we strongly encourage you to upgrade. Read the migration guide at https://aka.ms/azsdk/java/migrate/eh for more details.
   </description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
@@ -40,7 +36,7 @@
     <dependency>
       <groupId>com.microsoft.azure</groupId>
       <artifactId>azure-eventhubs</artifactId>
-      <version>3.3.0-beta.1</version> <!-- {x-version-update;com.microsoft.azure:azure-eventhubs;current} -->
+      <version>3.3.0</version> <!-- {x-version-update;com.microsoft.azure:azure-eventhubs;current} -->
     </dependency>
     <dependency>
       <groupId>com.microsoft.azure</groupId>
@@ -50,19 +46,19 @@
     <dependency>
       <groupId>com.google.code.gson</groupId>
       <artifactId>gson</artifactId>
-      <version>2.8.6</version> <!-- {x-version-update;com.google.code.gson:gson;external_dependency} -->
+      <version>2.8.7</version> <!-- {x-version-update;com.google.code.gson:gson;external_dependency} -->
     </dependency>
 
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <version>4.13.1</version> <!-- {x-version-update;junit:junit;external_dependency} -->
+      <version>4.13.2</version> <!-- {x-version-update;junit:junit;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-simple</artifactId>
-      <version>1.7.30</version> <!-- {x-version-update;org.slf4j:slf4j-simple;external_dependency} -->
+      <version>1.7.32</version> <!-- {x-version-update;org.slf4j:slf4j-simple;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -86,7 +82,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-checkstyle-plugin</artifactId>
-        <version>3.1.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-checkstyle-plugin;external_dependency} -->
+        <version>3.1.2</version> <!-- {x-version-update;org.apache.maven.plugins:maven-checkstyle-plugin;external_dependency} -->
         <configuration>
           <failsOnError>true</failsOnError>
           <failOnViolation>true</failOnViolation>

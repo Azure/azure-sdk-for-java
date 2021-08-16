@@ -70,6 +70,13 @@ public class CertificateEmailInner extends ProxyOnlyResource {
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public CertificateEmailInner withKind(String kind) {
+        super.withKind(kind);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

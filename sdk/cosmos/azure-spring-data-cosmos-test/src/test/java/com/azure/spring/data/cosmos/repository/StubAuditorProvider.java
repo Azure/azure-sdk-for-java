@@ -8,7 +8,7 @@ import java.util.Optional;
 
 public class StubAuditorProvider implements AuditorAware<String> {
 
-    private String currentAuditor;
+    private String currentAuditor = "auditor";
 
     @Override
     public Optional<String> getCurrentAuditor() {

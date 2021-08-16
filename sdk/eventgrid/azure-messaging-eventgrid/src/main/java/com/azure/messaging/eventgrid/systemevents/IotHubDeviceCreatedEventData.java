@@ -6,6 +6,27 @@ package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Immutable;
 
-/** The IotHubDeviceCreatedEventData model. */
+/** Event data for Microsoft.Devices.DeviceCreated event. */
 @Immutable
-public final class IotHubDeviceCreatedEventData extends DeviceLifeCycleEventProperties {}
+public final class IotHubDeviceCreatedEventData extends DeviceLifeCycleEventProperties {
+    /** {@inheritDoc} */
+    @Override
+    public IotHubDeviceCreatedEventData setDeviceId(String deviceId) {
+        super.setDeviceId(deviceId);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public IotHubDeviceCreatedEventData setHubName(String hubName) {
+        super.setHubName(hubName);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public IotHubDeviceCreatedEventData setTwin(DeviceTwinInfo twin) {
+        super.setTwin(twin);
+        return this;
+    }
+}

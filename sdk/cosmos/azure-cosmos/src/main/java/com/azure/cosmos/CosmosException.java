@@ -11,6 +11,7 @@ import com.azure.cosmos.implementation.RequestTimeline;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.directconnectivity.Uri;
+import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdChannelAcquisitionTimeline;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdEndpointStatistics;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -44,13 +45,14 @@ import static com.azure.cosmos.CosmosDiagnostics.USER_AGENT_KEY;
 public class CosmosException extends AzureException {
     private static final long serialVersionUID = 1L;
 
-    private static final ObjectMapper mapper = Utils.getSimpleObjectMapper();
+    private static final ObjectMapper mapper = new ObjectMapper();
     private final static String USER_AGENT = Utils.getUserAgent();
     private final int statusCode;
     private final Map<String, String> responseHeaders;
 
     private CosmosDiagnostics cosmosDiagnostics;
     private RequestTimeline requestTimeline;
+    private RntbdChannelAcquisitionTimeline channelAcquisitionTimeline;
     private CosmosError cosmosError;
     private int rntbdChannelTaskQueueSize;
 
@@ -309,7 +311,7 @@ public class CosmosException extends AzureException {
         if (StringUtils.isEmpty(value)) {
             return 0;
         }
-        return Double.valueOf(value);
+        return Double.parseDouble(value);
     }
 
     @Override
@@ -383,6 +385,14 @@ public class CosmosException extends AzureException {
 
     void setRequestTimeline(RequestTimeline requestTimeline) {
         this.requestTimeline = requestTimeline;
+    }
+
+    RntbdChannelAcquisitionTimeline getChannelAcquisitionTimeline() {
+        return this.channelAcquisitionTimeline;
+    }
+
+    void setChannelAcquisitionTimeline(RntbdChannelAcquisitionTimeline channelAcquisitionTimeline) {
+        this.channelAcquisitionTimeline = channelAcquisitionTimeline;
     }
 
     void setResourceAddress(String resourceAddress) {

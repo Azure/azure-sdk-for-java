@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.implementation.directconnectivity;
 
+import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.BackoffRetryUtility;
@@ -233,7 +234,7 @@ public class ConsistencyReader {
                 if (targetConsistencyLevel.v == ConsistencyLevel.SESSION) {
                     return BackoffRetryUtility.executeRetry(
                         () -> this.readSessionAsync(entity, desiredReadMode),
-                        new SessionTokenMismatchRetryPolicy());
+                        new SessionTokenMismatchRetryPolicy(BridgeInternal.getRetryContext(entity.requestContext.cosmosDiagnostics)));
                 } else {
                     return this.readAnyAsync(entity, desiredReadMode);
                 }

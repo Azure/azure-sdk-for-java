@@ -10,13 +10,14 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 import static java.lang.annotation.ElementType.CONSTRUCTOR;
+import static java.lang.annotation.ElementType.FIELD;
 import static java.lang.annotation.ElementType.METHOD;
 import static java.lang.annotation.ElementType.PARAMETER;
 import static java.lang.annotation.ElementType.TYPE;
 
 @Documented
 @Retention(RetentionPolicy.CLASS)
-@Target({ TYPE, METHOD, PARAMETER, CONSTRUCTOR })
+@Target({ TYPE, METHOD, PARAMETER, CONSTRUCTOR, FIELD })
 @Inherited
 /**
  * Indicates functionality that is in preview and as such is subject to change in non-backwards compatible ways in future releases,
@@ -36,7 +37,7 @@ public @interface Beta {
     /**
      * Azure library version numbers
      */
-    public enum SinceVersion {
+    enum SinceVersion {
         /** v4.3.0 */
         V4_3_0,
         /** v4.4.0 */
@@ -56,6 +57,18 @@ public @interface Beta {
         /** v4.11.0 */
         V4_11_0,
         /** v4.12.0 */
-        V4_12_0
+        V4_12_0,
+        /** v4.13.0 */
+        V4_13_0,
+        /** v4.14.0 */
+        V4_14_0,
+        /** v4.15.0 */
+        V4_15_0,
+        /** v4.16.0 */
+        V4_16_0,
+        /** v4.17.0 */
+        V4_17_0,
+        /** v4.18.0 */
+        V4_18_0
     }
 }

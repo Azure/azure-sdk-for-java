@@ -4,13 +4,15 @@
 package com.azure.ai.formrecognizer.models;
 
 import com.azure.ai.formrecognizer.implementation.FormLineHelper;
+import com.azure.core.annotation.Immutable;
 
 import java.util.Collections;
 import java.util.List;
 
 /**
- * The FormLine model.
+ * Represents a line of text and its appearance.
  */
+@Immutable
 public final class FormLine extends FormElement {
 
     /*

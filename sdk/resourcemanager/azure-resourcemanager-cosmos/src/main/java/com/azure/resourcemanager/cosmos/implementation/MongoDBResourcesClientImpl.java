@@ -378,7 +378,6 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
         if (accountName == null) {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
-        final String apiVersion = "2020-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -389,14 +388,14 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             accountName,
-                            apiVersion,
+                            this.client.getApiVersion(),
                             accept,
                             context))
             .<PagedResponse<MongoDBDatabaseGetResultsInner>>map(
                 res ->
                     new PagedResponseBase<>(
                         res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -432,7 +431,6 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
         if (accountName == null) {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
-        final String apiVersion = "2020-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -441,7 +439,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 accountName,
-                apiVersion,
+                this.client.getApiVersion(),
                 accept,
                 context)
             .map(
@@ -552,7 +550,6 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
         if (databaseName == null) {
             return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
         }
-        final String apiVersion = "2020-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -564,10 +561,10 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
                             resourceGroupName,
                             accountName,
                             databaseName,
-                            apiVersion,
+                            this.client.getApiVersion(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -607,7 +604,6 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
         if (databaseName == null) {
             return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
         }
-        final String apiVersion = "2020-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -617,7 +613,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
                 resourceGroupName,
                 accountName,
                 databaseName,
-                apiVersion,
+                this.client.getApiVersion(),
                 accept,
                 context);
     }
@@ -688,7 +684,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
-     * @param createUpdateMongoDBDatabaseParameters Parameters to create and update Cosmos DB MongoDB database.
+     * @param createUpdateMongoDBDatabaseParameters The parameters to provide for the current MongoDB database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -730,7 +726,6 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
         } else {
             createUpdateMongoDBDatabaseParameters.validate();
         }
-        final String apiVersion = "2020-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -742,11 +737,11 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
                             resourceGroupName,
                             accountName,
                             databaseName,
-                            apiVersion,
+                            this.client.getApiVersion(),
                             createUpdateMongoDBDatabaseParameters,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -755,7 +750,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
-     * @param createUpdateMongoDBDatabaseParameters Parameters to create and update Cosmos DB MongoDB database.
+     * @param createUpdateMongoDBDatabaseParameters The parameters to provide for the current MongoDB database.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -799,7 +794,6 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
         } else {
             createUpdateMongoDBDatabaseParameters.validate();
         }
-        final String apiVersion = "2020-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -809,7 +803,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
                 resourceGroupName,
                 accountName,
                 databaseName,
-                apiVersion,
+                this.client.getApiVersion(),
                 createUpdateMongoDBDatabaseParameters,
                 accept,
                 context);
@@ -821,7 +815,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
-     * @param createUpdateMongoDBDatabaseParameters Parameters to create and update Cosmos DB MongoDB database.
+     * @param createUpdateMongoDBDatabaseParameters The parameters to provide for the current MongoDB database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -853,7 +847,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
-     * @param createUpdateMongoDBDatabaseParameters Parameters to create and update Cosmos DB MongoDB database.
+     * @param createUpdateMongoDBDatabaseParameters The parameters to provide for the current MongoDB database.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -888,7 +882,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
-     * @param createUpdateMongoDBDatabaseParameters Parameters to create and update Cosmos DB MongoDB database.
+     * @param createUpdateMongoDBDatabaseParameters The parameters to provide for the current MongoDB database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -912,7 +906,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
-     * @param createUpdateMongoDBDatabaseParameters Parameters to create and update Cosmos DB MongoDB database.
+     * @param createUpdateMongoDBDatabaseParameters The parameters to provide for the current MongoDB database.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -938,7 +932,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
-     * @param createUpdateMongoDBDatabaseParameters Parameters to create and update Cosmos DB MongoDB database.
+     * @param createUpdateMongoDBDatabaseParameters The parameters to provide for the current MongoDB database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -962,7 +956,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
-     * @param createUpdateMongoDBDatabaseParameters Parameters to create and update Cosmos DB MongoDB database.
+     * @param createUpdateMongoDBDatabaseParameters The parameters to provide for the current MongoDB database.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -988,7 +982,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
-     * @param createUpdateMongoDBDatabaseParameters Parameters to create and update Cosmos DB MongoDB database.
+     * @param createUpdateMongoDBDatabaseParameters The parameters to provide for the current MongoDB database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1011,7 +1005,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
-     * @param createUpdateMongoDBDatabaseParameters Parameters to create and update Cosmos DB MongoDB database.
+     * @param createUpdateMongoDBDatabaseParameters The parameters to provide for the current MongoDB database.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1066,7 +1060,6 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
         if (databaseName == null) {
             return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
         }
-        final String apiVersion = "2020-09-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -1077,9 +1070,9 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
                             resourceGroupName,
                             accountName,
                             databaseName,
-                            apiVersion,
+                            this.client.getApiVersion(),
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1119,7 +1112,6 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
         if (databaseName == null) {
             return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
         }
-        final String apiVersion = "2020-09-01";
         context = this.client.mergeContext(context);
         return service
             .deleteMongoDBDatabase(
@@ -1128,7 +1120,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
                 resourceGroupName,
                 accountName,
                 databaseName,
-                apiVersion,
+                this.client.getApiVersion(),
                 context);
     }
 
@@ -1319,7 +1311,6 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
         if (databaseName == null) {
             return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
         }
-        final String apiVersion = "2020-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1331,10 +1322,10 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
                             resourceGroupName,
                             accountName,
                             databaseName,
-                            apiVersion,
+                            this.client.getApiVersion(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1376,7 +1367,6 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
         if (databaseName == null) {
             return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
         }
-        final String apiVersion = "2020-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1386,7 +1376,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
                 resourceGroupName,
                 accountName,
                 databaseName,
-                apiVersion,
+                this.client.getApiVersion(),
                 accept,
                 context);
     }
@@ -1464,7 +1454,8 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
-     * @param updateThroughputParameters Parameters to update Cosmos DB resource throughput.
+     * @param updateThroughputParameters The RUs per second of the parameters to provide for the current MongoDB
+     *     database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1506,7 +1497,6 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
         } else {
             updateThroughputParameters.validate();
         }
-        final String apiVersion = "2020-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1518,11 +1508,11 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
                             resourceGroupName,
                             accountName,
                             databaseName,
-                            apiVersion,
+                            this.client.getApiVersion(),
                             updateThroughputParameters,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1531,7 +1521,8 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
-     * @param updateThroughputParameters Parameters to update Cosmos DB resource throughput.
+     * @param updateThroughputParameters The RUs per second of the parameters to provide for the current MongoDB
+     *     database.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1575,7 +1566,6 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
         } else {
             updateThroughputParameters.validate();
         }
-        final String apiVersion = "2020-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1585,7 +1575,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
                 resourceGroupName,
                 accountName,
                 databaseName,
-                apiVersion,
+                this.client.getApiVersion(),
                 updateThroughputParameters,
                 accept,
                 context);
@@ -1597,7 +1587,8 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
-     * @param updateThroughputParameters Parameters to update Cosmos DB resource throughput.
+     * @param updateThroughputParameters The RUs per second of the parameters to provide for the current MongoDB
+     *     database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1629,7 +1620,8 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
-     * @param updateThroughputParameters Parameters to update Cosmos DB resource throughput.
+     * @param updateThroughputParameters The RUs per second of the parameters to provide for the current MongoDB
+     *     database.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1664,7 +1656,8 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
-     * @param updateThroughputParameters Parameters to update Cosmos DB resource throughput.
+     * @param updateThroughputParameters The RUs per second of the parameters to provide for the current MongoDB
+     *     database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1688,7 +1681,8 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
-     * @param updateThroughputParameters Parameters to update Cosmos DB resource throughput.
+     * @param updateThroughputParameters The RUs per second of the parameters to provide for the current MongoDB
+     *     database.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1714,7 +1708,8 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
-     * @param updateThroughputParameters Parameters to update Cosmos DB resource throughput.
+     * @param updateThroughputParameters The RUs per second of the parameters to provide for the current MongoDB
+     *     database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1738,7 +1733,8 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
-     * @param updateThroughputParameters Parameters to update Cosmos DB resource throughput.
+     * @param updateThroughputParameters The RUs per second of the parameters to provide for the current MongoDB
+     *     database.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1764,7 +1760,8 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
-     * @param updateThroughputParameters Parameters to update Cosmos DB resource throughput.
+     * @param updateThroughputParameters The RUs per second of the parameters to provide for the current MongoDB
+     *     database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1787,7 +1784,8 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
-     * @param updateThroughputParameters Parameters to update Cosmos DB resource throughput.
+     * @param updateThroughputParameters The RUs per second of the parameters to provide for the current MongoDB
+     *     database.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1842,7 +1840,6 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
         if (databaseName == null) {
             return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
         }
-        final String apiVersion = "2020-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1854,10 +1851,10 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
                             resourceGroupName,
                             accountName,
                             databaseName,
-                            apiVersion,
+                            this.client.getApiVersion(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1897,7 +1894,6 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
         if (databaseName == null) {
             return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
         }
-        final String apiVersion = "2020-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1907,7 +1903,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
                 resourceGroupName,
                 accountName,
                 databaseName,
-                apiVersion,
+                this.client.getApiVersion(),
                 accept,
                 context);
     }
@@ -2115,7 +2111,6 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
         if (databaseName == null) {
             return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
         }
-        final String apiVersion = "2020-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -2127,10 +2122,10 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
                             resourceGroupName,
                             accountName,
                             databaseName,
-                            apiVersion,
+                            this.client.getApiVersion(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -2170,7 +2165,6 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
         if (databaseName == null) {
             return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
         }
-        final String apiVersion = "2020-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -2180,7 +2174,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
                 resourceGroupName,
                 accountName,
                 databaseName,
-                apiVersion,
+                this.client.getApiVersion(),
                 accept,
                 context);
     }
@@ -2392,7 +2386,6 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
         if (databaseName == null) {
             return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
         }
-        final String apiVersion = "2020-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -2404,14 +2397,14 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
                             resourceGroupName,
                             accountName,
                             databaseName,
-                            apiVersion,
+                            this.client.getApiVersion(),
                             accept,
                             context))
             .<PagedResponse<MongoDBCollectionGetResultsInner>>map(
                 res ->
                     new PagedResponseBase<>(
                         res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -2451,7 +2444,6 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
         if (databaseName == null) {
             return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
         }
-        final String apiVersion = "2020-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -2461,7 +2453,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
                 resourceGroupName,
                 accountName,
                 databaseName,
-                apiVersion,
+                this.client.getApiVersion(),
                 accept,
                 context)
             .map(
@@ -2582,7 +2574,6 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
         if (collectionName == null) {
             return Mono.error(new IllegalArgumentException("Parameter collectionName is required and cannot be null."));
         }
-        final String apiVersion = "2020-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -2595,10 +2586,10 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
                             accountName,
                             databaseName,
                             collectionName,
-                            apiVersion,
+                            this.client.getApiVersion(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -2642,7 +2633,6 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
         if (collectionName == null) {
             return Mono.error(new IllegalArgumentException("Parameter collectionName is required and cannot be null."));
         }
-        final String apiVersion = "2020-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -2653,7 +2643,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
                 accountName,
                 databaseName,
                 collectionName,
-                apiVersion,
+                this.client.getApiVersion(),
                 accept,
                 context);
     }
@@ -2730,7 +2720,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param collectionName Cosmos DB collection name.
-     * @param createUpdateMongoDBCollectionParameters Parameters to create and update Cosmos DB MongoDB collection.
+     * @param createUpdateMongoDBCollectionParameters The parameters to provide for the current MongoDB Collection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2776,7 +2766,6 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
         } else {
             createUpdateMongoDBCollectionParameters.validate();
         }
-        final String apiVersion = "2020-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -2789,11 +2778,11 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
                             accountName,
                             databaseName,
                             collectionName,
-                            apiVersion,
+                            this.client.getApiVersion(),
                             createUpdateMongoDBCollectionParameters,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -2803,7 +2792,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param collectionName Cosmos DB collection name.
-     * @param createUpdateMongoDBCollectionParameters Parameters to create and update Cosmos DB MongoDB collection.
+     * @param createUpdateMongoDBCollectionParameters The parameters to provide for the current MongoDB Collection.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2851,7 +2840,6 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
         } else {
             createUpdateMongoDBCollectionParameters.validate();
         }
-        final String apiVersion = "2020-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -2862,7 +2850,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
                 accountName,
                 databaseName,
                 collectionName,
-                apiVersion,
+                this.client.getApiVersion(),
                 createUpdateMongoDBCollectionParameters,
                 accept,
                 context);
@@ -2875,7 +2863,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param collectionName Cosmos DB collection name.
-     * @param createUpdateMongoDBCollectionParameters Parameters to create and update Cosmos DB MongoDB collection.
+     * @param createUpdateMongoDBCollectionParameters The parameters to provide for the current MongoDB Collection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2909,7 +2897,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param collectionName Cosmos DB collection name.
-     * @param createUpdateMongoDBCollectionParameters Parameters to create and update Cosmos DB MongoDB collection.
+     * @param createUpdateMongoDBCollectionParameters The parameters to provide for the current MongoDB Collection.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2951,7 +2939,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param collectionName Cosmos DB collection name.
-     * @param createUpdateMongoDBCollectionParameters Parameters to create and update Cosmos DB MongoDB collection.
+     * @param createUpdateMongoDBCollectionParameters The parameters to provide for the current MongoDB Collection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2977,7 +2965,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param collectionName Cosmos DB collection name.
-     * @param createUpdateMongoDBCollectionParameters Parameters to create and update Cosmos DB MongoDB collection.
+     * @param createUpdateMongoDBCollectionParameters The parameters to provide for the current MongoDB Collection.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -3010,7 +2998,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param collectionName Cosmos DB collection name.
-     * @param createUpdateMongoDBCollectionParameters Parameters to create and update Cosmos DB MongoDB collection.
+     * @param createUpdateMongoDBCollectionParameters The parameters to provide for the current MongoDB Collection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3036,7 +3024,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param collectionName Cosmos DB collection name.
-     * @param createUpdateMongoDBCollectionParameters Parameters to create and update Cosmos DB MongoDB collection.
+     * @param createUpdateMongoDBCollectionParameters The parameters to provide for the current MongoDB Collection.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -3069,7 +3057,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param collectionName Cosmos DB collection name.
-     * @param createUpdateMongoDBCollectionParameters Parameters to create and update Cosmos DB MongoDB collection.
+     * @param createUpdateMongoDBCollectionParameters The parameters to provide for the current MongoDB Collection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3094,7 +3082,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param collectionName Cosmos DB collection name.
-     * @param createUpdateMongoDBCollectionParameters Parameters to create and update Cosmos DB MongoDB collection.
+     * @param createUpdateMongoDBCollectionParameters The parameters to provide for the current MongoDB Collection.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -3159,7 +3147,6 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
         if (collectionName == null) {
             return Mono.error(new IllegalArgumentException("Parameter collectionName is required and cannot be null."));
         }
-        final String apiVersion = "2020-09-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -3171,9 +3158,9 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
                             accountName,
                             databaseName,
                             collectionName,
-                            apiVersion,
+                            this.client.getApiVersion(),
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -3217,7 +3204,6 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
         if (collectionName == null) {
             return Mono.error(new IllegalArgumentException("Parameter collectionName is required and cannot be null."));
         }
-        final String apiVersion = "2020-09-01";
         context = this.client.mergeContext(context);
         return service
             .deleteMongoDBCollection(
@@ -3227,7 +3213,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
                 accountName,
                 databaseName,
                 collectionName,
-                apiVersion,
+                this.client.getApiVersion(),
                 context);
     }
 
@@ -3435,7 +3421,6 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
         if (collectionName == null) {
             return Mono.error(new IllegalArgumentException("Parameter collectionName is required and cannot be null."));
         }
-        final String apiVersion = "2020-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -3448,10 +3433,10 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
                             accountName,
                             databaseName,
                             collectionName,
-                            apiVersion,
+                            this.client.getApiVersion(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -3497,7 +3482,6 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
         if (collectionName == null) {
             return Mono.error(new IllegalArgumentException("Parameter collectionName is required and cannot be null."));
         }
-        final String apiVersion = "2020-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -3508,7 +3492,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
                 accountName,
                 databaseName,
                 collectionName,
-                apiVersion,
+                this.client.getApiVersion(),
                 accept,
                 context);
     }
@@ -3593,7 +3577,8 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param collectionName Cosmos DB collection name.
-     * @param updateThroughputParameters Parameters to update Cosmos DB resource throughput.
+     * @param updateThroughputParameters The RUs per second of the parameters to provide for the current MongoDB
+     *     collection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3639,7 +3624,6 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
         } else {
             updateThroughputParameters.validate();
         }
-        final String apiVersion = "2020-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -3652,11 +3636,11 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
                             accountName,
                             databaseName,
                             collectionName,
-                            apiVersion,
+                            this.client.getApiVersion(),
                             updateThroughputParameters,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -3666,7 +3650,8 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param collectionName Cosmos DB collection name.
-     * @param updateThroughputParameters Parameters to update Cosmos DB resource throughput.
+     * @param updateThroughputParameters The RUs per second of the parameters to provide for the current MongoDB
+     *     collection.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -3714,7 +3699,6 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
         } else {
             updateThroughputParameters.validate();
         }
-        final String apiVersion = "2020-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -3725,7 +3709,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
                 accountName,
                 databaseName,
                 collectionName,
-                apiVersion,
+                this.client.getApiVersion(),
                 updateThroughputParameters,
                 accept,
                 context);
@@ -3738,7 +3722,8 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param collectionName Cosmos DB collection name.
-     * @param updateThroughputParameters Parameters to update Cosmos DB resource throughput.
+     * @param updateThroughputParameters The RUs per second of the parameters to provide for the current MongoDB
+     *     collection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3772,7 +3757,8 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param collectionName Cosmos DB collection name.
-     * @param updateThroughputParameters Parameters to update Cosmos DB resource throughput.
+     * @param updateThroughputParameters The RUs per second of the parameters to provide for the current MongoDB
+     *     collection.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -3809,7 +3795,8 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param collectionName Cosmos DB collection name.
-     * @param updateThroughputParameters Parameters to update Cosmos DB resource throughput.
+     * @param updateThroughputParameters The RUs per second of the parameters to provide for the current MongoDB
+     *     collection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3835,7 +3822,8 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param collectionName Cosmos DB collection name.
-     * @param updateThroughputParameters Parameters to update Cosmos DB resource throughput.
+     * @param updateThroughputParameters The RUs per second of the parameters to provide for the current MongoDB
+     *     collection.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -3863,7 +3851,8 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param collectionName Cosmos DB collection name.
-     * @param updateThroughputParameters Parameters to update Cosmos DB resource throughput.
+     * @param updateThroughputParameters The RUs per second of the parameters to provide for the current MongoDB
+     *     collection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3889,7 +3878,8 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param collectionName Cosmos DB collection name.
-     * @param updateThroughputParameters Parameters to update Cosmos DB resource throughput.
+     * @param updateThroughputParameters The RUs per second of the parameters to provide for the current MongoDB
+     *     collection.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -3917,7 +3907,8 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param collectionName Cosmos DB collection name.
-     * @param updateThroughputParameters Parameters to update Cosmos DB resource throughput.
+     * @param updateThroughputParameters The RUs per second of the parameters to provide for the current MongoDB
+     *     collection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3942,7 +3933,8 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param collectionName Cosmos DB collection name.
-     * @param updateThroughputParameters Parameters to update Cosmos DB resource throughput.
+     * @param updateThroughputParameters The RUs per second of the parameters to provide for the current MongoDB
+     *     collection.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -4002,7 +3994,6 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
         if (collectionName == null) {
             return Mono.error(new IllegalArgumentException("Parameter collectionName is required and cannot be null."));
         }
-        final String apiVersion = "2020-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -4015,10 +4006,10 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
                             accountName,
                             databaseName,
                             collectionName,
-                            apiVersion,
+                            this.client.getApiVersion(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -4062,7 +4053,6 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
         if (collectionName == null) {
             return Mono.error(new IllegalArgumentException("Parameter collectionName is required and cannot be null."));
         }
-        final String apiVersion = "2020-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -4073,7 +4063,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
                 accountName,
                 databaseName,
                 collectionName,
-                apiVersion,
+                this.client.getApiVersion(),
                 accept,
                 context);
     }
@@ -4304,7 +4294,6 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
         if (collectionName == null) {
             return Mono.error(new IllegalArgumentException("Parameter collectionName is required and cannot be null."));
         }
-        final String apiVersion = "2020-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -4317,10 +4306,10 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
                             accountName,
                             databaseName,
                             collectionName,
-                            apiVersion,
+                            this.client.getApiVersion(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -4364,7 +4353,6 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
         if (collectionName == null) {
             return Mono.error(new IllegalArgumentException("Parameter collectionName is required and cannot be null."));
         }
-        final String apiVersion = "2020-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -4375,7 +4363,7 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
                 accountName,
                 databaseName,
                 collectionName,
-                apiVersion,
+                this.client.getApiVersion(),
                 accept,
                 context);
     }

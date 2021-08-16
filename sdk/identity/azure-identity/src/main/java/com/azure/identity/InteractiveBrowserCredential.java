@@ -8,7 +8,6 @@ import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.identity.implementation.AuthenticationRecord;
 import com.azure.identity.implementation.IdentityClient;
 import com.azure.identity.implementation.IdentityClientBuilder;
 import com.azure.identity.implementation.IdentityClientOptions;
@@ -36,6 +35,7 @@ public class InteractiveBrowserCredential implements TokenCredential {
     private final boolean automaticAuthentication;
     private final String authorityHost;
     private final String redirectUrl;
+    private final String loginHint;
     private final ClientLogger logger = new ClientLogger(InteractiveBrowserCredential.class);
 
 
@@ -51,7 +51,8 @@ public class InteractiveBrowserCredential implements TokenCredential {
      * @param identityClientOptions the options for configuring the identity client
      */
     InteractiveBrowserCredential(String clientId, String tenantId, Integer port, String redirectUrl,
-                                 boolean automaticAuthentication, IdentityClientOptions identityClientOptions) {
+                                 boolean automaticAuthentication, String loginHint,
+                                 IdentityClientOptions identityClientOptions) {
         this.port = port;
         this.redirectUrl = redirectUrl;
         identityClient = new IdentityClientBuilder()
@@ -62,6 +63,7 @@ public class InteractiveBrowserCredential implements TokenCredential {
         cachedToken = new AtomicReference<>();
         this.authorityHost = identityClientOptions.getAuthorityHost();
         this.automaticAuthentication = automaticAuthentication;
+        this.loginHint = loginHint;
         if (identityClientOptions.getAuthenticationRecord() != null) {
             cachedToken.set(new MsalAuthenticationAccount(identityClientOptions.getAuthenticationRecord()));
         }
@@ -82,7 +84,7 @@ public class InteractiveBrowserCredential implements TokenCredential {
                              + "authentication is needed to acquire token. Call Authenticate to initiate the device "
                              + "code authentication.", request)));
             }
-            return identityClient.authenticateWithBrowserInteraction(request, port, redirectUrl);
+            return identityClient.authenticateWithBrowserInteraction(request, port, redirectUrl, loginHint);
         })).map(this::updateCache)
             .doOnNext(token -> LoggingUtil.logTokenSuccess(logger, request))
             .doOnError(error -> LoggingUtil.logTokenError(logger, request, error));
@@ -94,13 +96,15 @@ public class InteractiveBrowserCredential implements TokenCredential {
      * @param request The details of the authentication request.
      *
      * @return The {@link AuthenticationRecord} which can be used to silently authenticate the account
-     * on future execution if persistent caching was enabled via
-     * {@link InteractiveBrowserCredentialBuilder#enablePersistentCache()} when credential was instantiated.
+     * on future execution if persistent caching was configured via
+     * {@link InteractiveBrowserCredentialBuilder#tokenCachePersistenceOptions(TokenCachePersistenceOptions)}
+     * when credential was instantiated.
      */
-    Mono<AuthenticationRecord> authenticate(TokenRequestContext request) {
-        return Mono.defer(() -> identityClient.authenticateWithBrowserInteraction(request, port, redirectUrl))
-                .map(this::updateCache)
-                .map(msalToken -> cachedToken.get().getAuthenticationRecord());
+    public Mono<AuthenticationRecord> authenticate(TokenRequestContext request) {
+        return Mono.defer(() -> identityClient.authenticateWithBrowserInteraction(
+                request, port, redirectUrl, loginHint))
+            .map(this::updateCache)
+            .map(msalToken -> cachedToken.get().getAuthenticationRecord());
     }
 
     /**
@@ -108,9 +112,10 @@ public class InteractiveBrowserCredential implements TokenCredential {
      *
      * @return The {@link AuthenticationRecord} which can be used to silently authenticate the account
      * on future execution if persistent caching was enabled via
-     * {@link InteractiveBrowserCredentialBuilder#enablePersistentCache()} when credential was instantiated.
+     * {@link InteractiveBrowserCredentialBuilder#tokenCachePersistenceOptions(TokenCachePersistenceOptions)}
+     * when credential was instantiated.
      */
-    Mono<AuthenticationRecord> authenticate() {
+    public Mono<AuthenticationRecord> authenticate() {
         String defaultScope = AzureAuthorityHosts.getDefaultScope(authorityHost);
         if (defaultScope == null) {
             return Mono.error(logger.logExceptionAsError(new CredentialUnavailableException("Authenticating in this "

@@ -9,6 +9,7 @@ import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
 import com.azure.core.annotation.Head;
+import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
@@ -72,7 +73,7 @@ public final class ResourceGroupsClientImpl implements ResourceGroupsClient {
     @Host("{$host}")
     @ServiceInterface(name = "ResourceManagementCl")
     private interface ResourceGroupsService {
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Head("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}")
         @ExpectedResponses({204, 404})
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -81,9 +82,10 @@ public final class ResourceGroupsClientImpl implements ResourceGroupsClient {
             @PathParam("resourceGroupName") String resourceGroupName,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Put("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -93,20 +95,23 @@ public final class ResourceGroupsClientImpl implements ResourceGroupsClient {
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @BodyParam("application/json") ResourceGroupInner parameters,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Delete("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
+            @QueryParam("forceDeletionTypes") String forceDeletionTypes,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -115,9 +120,10 @@ public final class ResourceGroupsClientImpl implements ResourceGroupsClient {
             @PathParam("resourceGroupName") String resourceGroupName,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Patch("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -127,9 +133,10 @@ public final class ResourceGroupsClientImpl implements ResourceGroupsClient {
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @BodyParam("application/json") ResourceGroupPatchable parameters,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Post("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/exportTemplate")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -139,9 +146,10 @@ public final class ResourceGroupsClientImpl implements ResourceGroupsClient {
             @PathParam("resourceGroupName") String resourceGroupName,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") ExportTemplateRequest parameters,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/resourcegroups")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -151,14 +159,18 @@ public final class ResourceGroupsClientImpl implements ResourceGroupsClient {
             @QueryParam("$top") Integer top,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ResourceGroupListResult>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept,
+            Context context);
     }
 
     /**
@@ -188,6 +200,7 @@ public final class ResourceGroupsClientImpl implements ResourceGroupsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -197,8 +210,9 @@ public final class ResourceGroupsClientImpl implements ResourceGroupsClient {
                             resourceGroupName,
                             this.client.getApiVersion(),
                             this.client.getSubscriptionId(),
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -229,6 +243,7 @@ public final class ResourceGroupsClientImpl implements ResourceGroupsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .checkExistence(
@@ -236,6 +251,7 @@ public final class ResourceGroupsClientImpl implements ResourceGroupsClient {
                 resourceGroupName,
                 this.client.getApiVersion(),
                 this.client.getSubscriptionId(),
+                accept,
                 context);
     }
 
@@ -301,7 +317,7 @@ public final class ResourceGroupsClientImpl implements ResourceGroupsClient {
      * @param resourceGroupName The name of the resource group to create or update. Can include alphanumeric,
      *     underscore, parentheses, hyphen, period (except at end), and Unicode characters that match the allowed
      *     characters.
-     * @param parameters Resource group information.
+     * @param parameters Parameters supplied to the create or update a resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -331,6 +347,7 @@ public final class ResourceGroupsClientImpl implements ResourceGroupsClient {
         } else {
             parameters.validate();
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -341,8 +358,9 @@ public final class ResourceGroupsClientImpl implements ResourceGroupsClient {
                             this.client.getApiVersion(),
                             this.client.getSubscriptionId(),
                             parameters,
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -351,7 +369,7 @@ public final class ResourceGroupsClientImpl implements ResourceGroupsClient {
      * @param resourceGroupName The name of the resource group to create or update. Can include alphanumeric,
      *     underscore, parentheses, hyphen, period (except at end), and Unicode characters that match the allowed
      *     characters.
-     * @param parameters Resource group information.
+     * @param parameters Parameters supplied to the create or update a resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -382,6 +400,7 @@ public final class ResourceGroupsClientImpl implements ResourceGroupsClient {
         } else {
             parameters.validate();
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .createOrUpdate(
@@ -390,6 +409,7 @@ public final class ResourceGroupsClientImpl implements ResourceGroupsClient {
                 this.client.getApiVersion(),
                 this.client.getSubscriptionId(),
                 parameters,
+                accept,
                 context);
     }
 
@@ -399,7 +419,7 @@ public final class ResourceGroupsClientImpl implements ResourceGroupsClient {
      * @param resourceGroupName The name of the resource group to create or update. Can include alphanumeric,
      *     underscore, parentheses, hyphen, period (except at end), and Unicode characters that match the allowed
      *     characters.
-     * @param parameters Resource group information.
+     * @param parameters Parameters supplied to the create or update a resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -424,7 +444,7 @@ public final class ResourceGroupsClientImpl implements ResourceGroupsClient {
      * @param resourceGroupName The name of the resource group to create or update. Can include alphanumeric,
      *     underscore, parentheses, hyphen, period (except at end), and Unicode characters that match the allowed
      *     characters.
-     * @param parameters Resource group information.
+     * @param parameters Parameters supplied to the create or update a resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -441,7 +461,7 @@ public final class ResourceGroupsClientImpl implements ResourceGroupsClient {
      * @param resourceGroupName The name of the resource group to create or update. Can include alphanumeric,
      *     underscore, parentheses, hyphen, period (except at end), and Unicode characters that match the allowed
      *     characters.
-     * @param parameters Resource group information.
+     * @param parameters Parameters supplied to the create or update a resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -459,13 +479,16 @@ public final class ResourceGroupsClientImpl implements ResourceGroupsClient {
      * its template deployments and currently stored operations.
      *
      * @param resourceGroupName The name of the resource group to delete. The name is case insensitive.
+     * @param forceDeletionTypes The resource types you want to force delete. Currently, only the following is
+     *     supported: forceDeletionTypes=Microsoft.Compute/virtualMachines,Microsoft.Compute/virtualMachineScaleSets.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName) {
+    public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
+        String resourceGroupName, String forceDeletionTypes) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -482,6 +505,7 @@ public final class ResourceGroupsClientImpl implements ResourceGroupsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -489,10 +513,12 @@ public final class ResourceGroupsClientImpl implements ResourceGroupsClient {
                         .delete(
                             this.client.getEndpoint(),
                             resourceGroupName,
+                            forceDeletionTypes,
                             this.client.getApiVersion(),
                             this.client.getSubscriptionId(),
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -500,6 +526,8 @@ public final class ResourceGroupsClientImpl implements ResourceGroupsClient {
      * its template deployments and currently stored operations.
      *
      * @param resourceGroupName The name of the resource group to delete. The name is case insensitive.
+     * @param forceDeletionTypes The resource types you want to force delete. Currently, only the following is
+     *     supported: forceDeletionTypes=Microsoft.Compute/virtualMachines,Microsoft.Compute/virtualMachineScaleSets.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -507,7 +535,8 @@ public final class ResourceGroupsClientImpl implements ResourceGroupsClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
+        String resourceGroupName, String forceDeletionTypes, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -524,13 +553,16 @@ public final class ResourceGroupsClientImpl implements ResourceGroupsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .delete(
                 this.client.getEndpoint(),
                 resourceGroupName,
+                forceDeletionTypes,
                 this.client.getApiVersion(),
                 this.client.getSubscriptionId(),
+                accept,
                 context);
     }
 
@@ -539,14 +571,16 @@ public final class ResourceGroupsClientImpl implements ResourceGroupsClient {
      * its template deployments and currently stored operations.
      *
      * @param resourceGroupName The name of the resource group to delete. The name is case insensitive.
+     * @param forceDeletionTypes The resource types you want to force delete. Currently, only the following is
+     *     supported: forceDeletionTypes=Microsoft.Compute/virtualMachines,Microsoft.Compute/virtualMachineScaleSets.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName) {
-        Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName);
+    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String forceDeletionTypes) {
+        Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, forceDeletionTypes);
         return this
             .client
             .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
@@ -557,6 +591,8 @@ public final class ResourceGroupsClientImpl implements ResourceGroupsClient {
      * its template deployments and currently stored operations.
      *
      * @param resourceGroupName The name of the resource group to delete. The name is case insensitive.
+     * @param forceDeletionTypes The resource types you want to force delete. Currently, only the following is
+     *     supported: forceDeletionTypes=Microsoft.Compute/virtualMachines,Microsoft.Compute/virtualMachineScaleSets.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -564,9 +600,10 @@ public final class ResourceGroupsClientImpl implements ResourceGroupsClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
+        String resourceGroupName, String forceDeletionTypes, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, context);
+        Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, forceDeletionTypes, context);
         return this
             .client
             .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
@@ -577,14 +614,16 @@ public final class ResourceGroupsClientImpl implements ResourceGroupsClient {
      * its template deployments and currently stored operations.
      *
      * @param resourceGroupName The name of the resource group to delete. The name is case insensitive.
+     * @param forceDeletionTypes The resource types you want to force delete. Currently, only the following is
+     *     supported: forceDeletionTypes=Microsoft.Compute/virtualMachines,Microsoft.Compute/virtualMachineScaleSets.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName) {
-        return beginDeleteAsync(resourceGroupName).getSyncPoller();
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String forceDeletionTypes) {
+        return beginDeleteAsync(resourceGroupName, forceDeletionTypes).getSyncPoller();
     }
 
     /**
@@ -592,6 +631,8 @@ public final class ResourceGroupsClientImpl implements ResourceGroupsClient {
      * its template deployments and currently stored operations.
      *
      * @param resourceGroupName The name of the resource group to delete. The name is case insensitive.
+     * @param forceDeletionTypes The resource types you want to force delete. Currently, only the following is
+     *     supported: forceDeletionTypes=Microsoft.Compute/virtualMachines,Microsoft.Compute/virtualMachineScaleSets.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -599,8 +640,28 @@ public final class ResourceGroupsClientImpl implements ResourceGroupsClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, Context context) {
-        return beginDeleteAsync(resourceGroupName, context).getSyncPoller();
+    public SyncPoller<PollResult<Void>, Void> beginDelete(
+        String resourceGroupName, String forceDeletionTypes, Context context) {
+        return beginDeleteAsync(resourceGroupName, forceDeletionTypes, context).getSyncPoller();
+    }
+
+    /**
+     * When you delete a resource group, all of its resources are also deleted. Deleting a resource group deletes all of
+     * its template deployments and currently stored operations.
+     *
+     * @param resourceGroupName The name of the resource group to delete. The name is case insensitive.
+     * @param forceDeletionTypes The resource types you want to force delete. Currently, only the following is
+     *     supported: forceDeletionTypes=Microsoft.Compute/virtualMachines,Microsoft.Compute/virtualMachineScaleSets.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> deleteAsync(String resourceGroupName, String forceDeletionTypes) {
+        return beginDeleteAsync(resourceGroupName, forceDeletionTypes)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -615,7 +676,10 @@ public final class ResourceGroupsClientImpl implements ResourceGroupsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName) {
-        return beginDeleteAsync(resourceGroupName).last().flatMap(this.client::getLroFinalResultOrError);
+        final String forceDeletionTypes = null;
+        return beginDeleteAsync(resourceGroupName, forceDeletionTypes)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -623,6 +687,8 @@ public final class ResourceGroupsClientImpl implements ResourceGroupsClient {
      * its template deployments and currently stored operations.
      *
      * @param resourceGroupName The name of the resource group to delete. The name is case insensitive.
+     * @param forceDeletionTypes The resource types you want to force delete. Currently, only the following is
+     *     supported: forceDeletionTypes=Microsoft.Compute/virtualMachines,Microsoft.Compute/virtualMachineScaleSets.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -630,8 +696,26 @@ public final class ResourceGroupsClientImpl implements ResourceGroupsClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(String resourceGroupName, Context context) {
-        return beginDeleteAsync(resourceGroupName, context).last().flatMap(this.client::getLroFinalResultOrError);
+    private Mono<Void> deleteAsync(String resourceGroupName, String forceDeletionTypes, Context context) {
+        return beginDeleteAsync(resourceGroupName, forceDeletionTypes, context)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * When you delete a resource group, all of its resources are also deleted. Deleting a resource group deletes all of
+     * its template deployments and currently stored operations.
+     *
+     * @param resourceGroupName The name of the resource group to delete. The name is case insensitive.
+     * @param forceDeletionTypes The resource types you want to force delete. Currently, only the following is
+     *     supported: forceDeletionTypes=Microsoft.Compute/virtualMachines,Microsoft.Compute/virtualMachineScaleSets.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void delete(String resourceGroupName, String forceDeletionTypes) {
+        deleteAsync(resourceGroupName, forceDeletionTypes).block();
     }
 
     /**
@@ -645,7 +729,8 @@ public final class ResourceGroupsClientImpl implements ResourceGroupsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName) {
-        deleteAsync(resourceGroupName).block();
+        final String forceDeletionTypes = null;
+        deleteAsync(resourceGroupName, forceDeletionTypes).block();
     }
 
     /**
@@ -653,14 +738,16 @@ public final class ResourceGroupsClientImpl implements ResourceGroupsClient {
      * its template deployments and currently stored operations.
      *
      * @param resourceGroupName The name of the resource group to delete. The name is case insensitive.
+     * @param forceDeletionTypes The resource types you want to force delete. Currently, only the following is
+     *     supported: forceDeletionTypes=Microsoft.Compute/virtualMachines,Microsoft.Compute/virtualMachineScaleSets.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, Context context) {
-        deleteAsync(resourceGroupName, context).block();
+    public void delete(String resourceGroupName, String forceDeletionTypes, Context context) {
+        deleteAsync(resourceGroupName, forceDeletionTypes, context).block();
     }
 
     /**
@@ -690,6 +777,7 @@ public final class ResourceGroupsClientImpl implements ResourceGroupsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -699,8 +787,9 @@ public final class ResourceGroupsClientImpl implements ResourceGroupsClient {
                             resourceGroupName,
                             this.client.getApiVersion(),
                             this.client.getSubscriptionId(),
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -731,6 +820,7 @@ public final class ResourceGroupsClientImpl implements ResourceGroupsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .get(
@@ -738,6 +828,7 @@ public final class ResourceGroupsClientImpl implements ResourceGroupsClient {
                 resourceGroupName,
                 this.client.getApiVersion(),
                 this.client.getSubscriptionId(),
+                accept,
                 context);
     }
 
@@ -797,7 +888,7 @@ public final class ResourceGroupsClientImpl implements ResourceGroupsClient {
      * the same as that for creating a resource group. If a field is unspecified, the current value is retained.
      *
      * @param resourceGroupName The name of the resource group to update. The name is case insensitive.
-     * @param parameters Resource group information.
+     * @param parameters Parameters supplied to update a resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -827,6 +918,7 @@ public final class ResourceGroupsClientImpl implements ResourceGroupsClient {
         } else {
             parameters.validate();
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -837,8 +929,9 @@ public final class ResourceGroupsClientImpl implements ResourceGroupsClient {
                             this.client.getApiVersion(),
                             this.client.getSubscriptionId(),
                             parameters,
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -846,7 +939,7 @@ public final class ResourceGroupsClientImpl implements ResourceGroupsClient {
      * the same as that for creating a resource group. If a field is unspecified, the current value is retained.
      *
      * @param resourceGroupName The name of the resource group to update. The name is case insensitive.
-     * @param parameters Resource group information.
+     * @param parameters Parameters supplied to update a resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -877,6 +970,7 @@ public final class ResourceGroupsClientImpl implements ResourceGroupsClient {
         } else {
             parameters.validate();
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .update(
@@ -885,6 +979,7 @@ public final class ResourceGroupsClientImpl implements ResourceGroupsClient {
                 this.client.getApiVersion(),
                 this.client.getSubscriptionId(),
                 parameters,
+                accept,
                 context);
     }
 
@@ -893,7 +988,7 @@ public final class ResourceGroupsClientImpl implements ResourceGroupsClient {
      * the same as that for creating a resource group. If a field is unspecified, the current value is retained.
      *
      * @param resourceGroupName The name of the resource group to update. The name is case insensitive.
-     * @param parameters Resource group information.
+     * @param parameters Parameters supplied to update a resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -917,7 +1012,7 @@ public final class ResourceGroupsClientImpl implements ResourceGroupsClient {
      * the same as that for creating a resource group. If a field is unspecified, the current value is retained.
      *
      * @param resourceGroupName The name of the resource group to update. The name is case insensitive.
-     * @param parameters Resource group information.
+     * @param parameters Parameters supplied to update a resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -933,7 +1028,7 @@ public final class ResourceGroupsClientImpl implements ResourceGroupsClient {
      * the same as that for creating a resource group. If a field is unspecified, the current value is retained.
      *
      * @param resourceGroupName The name of the resource group to update. The name is case insensitive.
-     * @param parameters Resource group information.
+     * @param parameters Parameters supplied to update a resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -950,7 +1045,7 @@ public final class ResourceGroupsClientImpl implements ResourceGroupsClient {
      * Captures the specified resource group as a template.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param parameters Export resource group template request parameters.
+     * @param parameters Parameters for exporting the template.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -980,6 +1075,7 @@ public final class ResourceGroupsClientImpl implements ResourceGroupsClient {
         } else {
             parameters.validate();
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -990,15 +1086,16 @@ public final class ResourceGroupsClientImpl implements ResourceGroupsClient {
                             resourceGroupName,
                             this.client.getApiVersion(),
                             parameters,
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Captures the specified resource group as a template.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param parameters Export resource group template request parameters.
+     * @param parameters Parameters for exporting the template.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1029,6 +1126,7 @@ public final class ResourceGroupsClientImpl implements ResourceGroupsClient {
         } else {
             parameters.validate();
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .exportTemplate(
@@ -1037,6 +1135,7 @@ public final class ResourceGroupsClientImpl implements ResourceGroupsClient {
                 resourceGroupName,
                 this.client.getApiVersion(),
                 parameters,
+                accept,
                 context);
     }
 
@@ -1044,7 +1143,7 @@ public final class ResourceGroupsClientImpl implements ResourceGroupsClient {
      * Captures the specified resource group as a template.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param parameters Export resource group template request parameters.
+     * @param parameters Parameters for exporting the template.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1068,7 +1167,7 @@ public final class ResourceGroupsClientImpl implements ResourceGroupsClient {
      * Captures the specified resource group as a template.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param parameters Export resource group template request parameters.
+     * @param parameters Parameters for exporting the template.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1094,7 +1193,7 @@ public final class ResourceGroupsClientImpl implements ResourceGroupsClient {
      * Captures the specified resource group as a template.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param parameters Export resource group template request parameters.
+     * @param parameters Parameters for exporting the template.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1110,7 +1209,7 @@ public final class ResourceGroupsClientImpl implements ResourceGroupsClient {
      * Captures the specified resource group as a template.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param parameters Export resource group template request parameters.
+     * @param parameters Parameters for exporting the template.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1127,7 +1226,7 @@ public final class ResourceGroupsClientImpl implements ResourceGroupsClient {
      * Captures the specified resource group as a template.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param parameters Export resource group template request parameters.
+     * @param parameters Parameters for exporting the template.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1145,7 +1244,7 @@ public final class ResourceGroupsClientImpl implements ResourceGroupsClient {
      * Captures the specified resource group as a template.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param parameters Export resource group template request parameters.
+     * @param parameters Parameters for exporting the template.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1164,7 +1263,7 @@ public final class ResourceGroupsClientImpl implements ResourceGroupsClient {
      * Captures the specified resource group as a template.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param parameters Export resource group template request parameters.
+     * @param parameters Parameters for exporting the template.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1179,7 +1278,7 @@ public final class ResourceGroupsClientImpl implements ResourceGroupsClient {
      * Captures the specified resource group as a template.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param parameters Export resource group template request parameters.
+     * @param parameters Parameters for exporting the template.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1217,6 +1316,7 @@ public final class ResourceGroupsClientImpl implements ResourceGroupsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -1227,6 +1327,7 @@ public final class ResourceGroupsClientImpl implements ResourceGroupsClient {
                             top,
                             this.client.getApiVersion(),
                             this.client.getSubscriptionId(),
+                            accept,
                             context))
             .<PagedResponse<ResourceGroupInner>>map(
                 res ->
@@ -1237,7 +1338,7 @@ public final class ResourceGroupsClientImpl implements ResourceGroupsClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1266,6 +1367,7 @@ public final class ResourceGroupsClientImpl implements ResourceGroupsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .list(
@@ -1274,6 +1376,7 @@ public final class ResourceGroupsClientImpl implements ResourceGroupsClient {
                 top,
                 this.client.getApiVersion(),
                 this.client.getSubscriptionId(),
+                accept,
                 context)
             .map(
                 res ->
@@ -1337,6 +1440,20 @@ public final class ResourceGroupsClientImpl implements ResourceGroupsClient {
     /**
      * Gets all the resource groups for a subscription.
      *
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all the resource groups for a subscription.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<ResourceGroupInner> list() {
+        final String filter = null;
+        final Integer top = null;
+        return new PagedIterable<>(listAsync(filter, top));
+    }
+
+    /**
+     * Gets all the resource groups for a subscription.
+     *
      * @param filter The filter to apply on the operation.&lt;br&gt;&lt;br&gt;You can filter by tag names and values.
      *     For example, to filter for a tag name and value, use $filter=tagName eq 'tag1' and tagValue eq 'Value1'.
      * @param top The number of results to return. If null is passed, returns all resource groups.
@@ -1349,20 +1466,6 @@ public final class ResourceGroupsClientImpl implements ResourceGroupsClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ResourceGroupInner> list(String filter, Integer top, Context context) {
         return new PagedIterable<>(listAsync(filter, top, context));
-    }
-
-    /**
-     * Gets all the resource groups for a subscription.
-     *
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the resource groups for a subscription.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ResourceGroupInner> list() {
-        final String filter = null;
-        final Integer top = null;
-        return new PagedIterable<>(listAsync(filter, top));
     }
 
     /**
@@ -1379,8 +1482,15 @@ public final class ResourceGroupsClientImpl implements ResourceGroupsClient {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listNext(nextLink, context))
+            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
             .<PagedResponse<ResourceGroupInner>>map(
                 res ->
                     new PagedResponseBase<>(
@@ -1390,7 +1500,7 @@ public final class ResourceGroupsClientImpl implements ResourceGroupsClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1408,9 +1518,16 @@ public final class ResourceGroupsClientImpl implements ResourceGroupsClient {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listNext(nextLink, context)
+            .listNext(nextLink, this.client.getEndpoint(), accept, context)
             .map(
                 res ->
                     new PagedResponseBase<>(

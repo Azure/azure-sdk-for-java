@@ -2,24 +2,32 @@
 trigger:
   branches:
     include:
-      - master
+      - main
       - feature/*
       - hotfix/*
       - release/*
   paths:
     include:
-      - sdk/recoveryservices/
+      - sdk/recoveryservices/ci.mgmt.yml
+      - sdk/recoveryservices/mgmt-v2016_06_01/
+    exclude:
+      - sdk/recoveryservices/pom.xml
+      - sdk/recoveryservices/mgmt-v2016_06_01/pom.xml
 
 pr:
   branches:
     include:
-      - master
+      - main
       - feature/*
       - hotfix/*
       - release/*
   paths:
     include:
-      - sdk/recoveryservices/
+      - sdk/recoveryservices/ci.mgmt.yml
+      - sdk/recoveryservices/mgmt-v2016_06_01/
+    exclude:
+      - sdk/recoveryservices/pom.xml
+      - sdk/recoveryservices/mgmt-v2016_06_01/pom.xml
 
 stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-management.yml

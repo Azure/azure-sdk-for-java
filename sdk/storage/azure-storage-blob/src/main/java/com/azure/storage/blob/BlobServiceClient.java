@@ -197,6 +197,8 @@ public final class BlobServiceClient {
      * {@codesnippet com.azure.storage.blob.BlobServiceClient.listBlobContainers#ListBlobContainersOptions-Duration}
      *
      * @param options A {@link ListBlobContainersOptions} which specifies what data should be returned by the service.
+     * If iterating by page, the page size passed to byPage methods such as
+     * {@link PagedIterable#iterableByPage(int)} will be preferred over the value set on these options.
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @return The list of containers.
      */
@@ -231,7 +233,8 @@ public final class BlobServiceClient {
      *
      * {@codesnippet com.azure.storage.blob.BlobServiceClient.findBlobsByTag#FindBlobsOptions-Duration}
      *
-     * @param options {@link FindBlobsOptions}
+     * @param options {@link FindBlobsOptions}. If iterating by page, the page size passed to byPage methods such as
+     * {@link PagedIterable#iterableByPage(int)} will be preferred over the value set on these options.
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return The list of blobs.

@@ -22,6 +22,7 @@ import com.azure.storage.common.policy.RequestRetryOptions;
 import com.azure.storage.file.datalake.implementation.util.BuilderHelper;
 import com.azure.storage.file.datalake.implementation.util.DataLakeImplUtils;
 import com.azure.storage.file.datalake.implementation.util.TransformUtils;
+
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -74,6 +75,7 @@ public class DataLakeServiceClientBuilder {
     public DataLakeServiceClientBuilder() {
         logOptions = getDefaultHttpLogOptions();
         blobServiceClientBuilder = new BlobServiceClientBuilder();
+        blobServiceClientBuilder.addPolicy(BuilderHelper.getBlobUserAgentModificationPolicy());
     }
 
     /**
@@ -167,7 +169,8 @@ public class DataLakeServiceClientBuilder {
     /**
      * Sets the SAS token used to authorize requests sent to the service.
      *
-     * @param sasToken The SAS token to use for authenticating requests.
+     * @param sasToken The SAS token to use for authenticating requests. This string should only be the query parameters
+     * (with or without a leading '?') and not a full url.
      * @return the updated DataLakeServiceClientBuilder
      * @throws NullPointerException If {@code sasToken} is {@code null}.
      */

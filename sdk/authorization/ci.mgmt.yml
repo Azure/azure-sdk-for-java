@@ -2,28 +2,44 @@
 trigger:
   branches:
     include:
-      - master
+      - main
       - feature/*
       - hotfix/*
       - release/*
   paths:
     include:
-      - sdk/authorization/
+      - sdk/authorization/ci.mgmt.yml
+      - sdk/authorization/mgmt-v2015_06_01/
+      - sdk/authorization/mgmt-v2015_07_01/
+      - sdk/authorization/mgmt-v2018_07_01_preview/
+      - sdk/authorization/mgmt-v2018_09_01_preview/
     exclude:
-      - sdk/authorization/microsoft-azure-authentication-msi-token-provider
+      - sdk/authorization/pom.xml
+      - sdk/authorization/mgmt-v2015_06_01/pom.xml
+      - sdk/authorization/mgmt-v2015_07_01/pom.xml
+      - sdk/authorization/mgmt-v2018_07_01_preview/pom.xml
+      - sdk/authorization/mgmt-v2018_09_01_preview/pom.xml
 
 pr:
   branches:
     include:
-      - master
+      - main
       - feature/*
       - hotfix/*
       - release/*
   paths:
     include:
-      - sdk/authorization/
+      - sdk/authorization/ci.mgmt.yml
+      - sdk/authorization/mgmt-v2015_06_01/
+      - sdk/authorization/mgmt-v2015_07_01/
+      - sdk/authorization/mgmt-v2018_07_01_preview/
+      - sdk/authorization/mgmt-v2018_09_01_preview/
     exclude:
-      - sdk/authorization/microsoft-azure-authentication-msi-token-provider
+      - sdk/authorization/pom.xml
+      - sdk/authorization/mgmt-v2015_06_01/pom.xml
+      - sdk/authorization/mgmt-v2015_07_01/pom.xml
+      - sdk/authorization/mgmt-v2018_07_01_preview/pom.xml
+      - sdk/authorization/mgmt-v2018_09_01_preview/pom.xml
 
 stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-management.yml

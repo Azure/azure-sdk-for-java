@@ -1,7 +1,165 @@
 # Release History
 
-## 1.13.0-beta.1 (Unreleased)
+## 1.20.0-beta.1 (Unreleased)
 
+
+## 1.19.0 (2021-08-06)
+
+### Feature Added
+
+- Added `HttpRequestLogger`, `HttpResponseLogger`, and correlating context classes to enable support for custom
+  logging in `HttpLoggingPolicy`. ([#16088](https://github.com/Azure/azure-sdk-for-java/pull/16088))
+- Added new constructor overload to `AzureSasCredential` to enable passing a `Function` which encodes the SAS
+  credential. ([#23033](https://github.com/Azure/azure-sdk-for-java/pull/23033))
+- Added a new constructor `HttpHeaders(int initialCapacity)` which allows configuration of the initial backing map 
+  capacity may allow short-circuiting scenarios where the map would need to be resized and copied in memory.
+- Added Maven profiles to enable the creation of an uber JAR with OS specific dependencies of
+  `netty-tcnative-boringssl-static` instead of including all OS dependencies. ([#21223](https://github.com/Azure/azure-sdk-for-java/pull/21223))
+- Added support to `@QueryParam` to support "exploded" query parameters. ([#21203](https://github.com/Azure/azure-sdk-for-java/pull/21203))
+- Added support to create tracing spans with customizations. ([#23159](https://github.com/Azure/azure-sdk-for-java/pull/23159))
+
+### Fixed
+
+- Fixed a bug where `Tracer.DIAGNOSTIC_ID_KEY`'s value was spelt incorrect.
+- Fixed a bug where loading system and Java proxies used `java.net.useSystemProxies` incorrectly. ([#23151](https://github.com/Azure/azure-sdk-for-java/pull/23151))
+- Fixed a bug with context propagation through EventHub and ServiceBus between Java and other languages.
+- Fixed a bug where classes annotated with `@JsonFlatten` would incorrectly split `Map` keys on `.` and flatten them. ([#22591](https://github.com/Azure/azure-sdk-for-java/pull/22591))
+- Fixed a bug where creating a `ClientLogger` would throw `InvalidPathException` when constructing a `DefaultLogger`
+  with a name that contained illegal path characters on Windows.
+- Fixed a bug where `FluxUtil.writeFile` would attempt to write to `ByteBuffer`s to the same location in file.
+
+### Dependency Updates
+
+- Upgraded Jackson from `2.12.3` to `2.12.4`.
+- Upgraded Reactor from `3.4.6` to `3.4.8`.
+- Upgraded SLF4J from `1.7.30` to `1.7.32`.
+
+## 1.19.0-beta.1 (2021-07-07)
+
+### Features Added
+
+ - Added `RequestOptions` for protocol methods
+ - Added support for `BinaryData` type as the request body or response body in `RestProxy`
+
+## 1.18.0 (2021-07-01)
+
+### Features Added
+
+- Added additional configurations of `maximumConnectionPoolSize` and `connectionIdleTimeout` to `HttpClientOptions`.
+- Added new `addEvent` overload to `Tracer`. 
+- Added new constants to `Configuration`.
+
+### Fixed
+
+- Fixed a bug where a negative delay could be used when retrying a request with a delay.
+- Fixed a bug where `JsonFlatten` on a property didn't flatten properties annotated with `JsonFlatten`.
+- Fixed error messages that didn't properly format format-able message strings.
+
+## 1.17.0 (2021-06-07)
+
+### Features Added
+
+- Added `AsyncCloseable` interface to support closing resources asynchronously.
+- Added GeoJSON classes to the models package.
+- Added `createRetriableDownloadFlux` to `FluxUtil`.
+- Added `HttpRange` to the http package.
+- Added the ability to terminate paging using a custom predicate in `ContinuablePagedFlux`.
+- Added `getPollInterval` to `PollerFlux`.
+- Added `setResponseTimeout` and `setReadTimeout` to `HttpClientOptions`.
+- Added support for the `JsonFlatten` annotation to target fields.
+
+### Dependency Updates
+
+- Upgraded Jackson from `2.12.2` to `2.12.3`.
+- Upgraded Reactor from `3.4.5` to `3.4.6`.
+
+## 1.16.0 (2021-05-07)
+
+### Features Added
+
+- Added Support for Challenge Based Authentication in `BearerTokenAuthenticationPolicy`.
+
+### Key Bugs Fixed
+
+- Updated logic to eagerly read response bodies to include return types `void` and `Void`. ([#21091](https://github.com/Azure/azure-sdk-for-java/issues/21091))
+- Updated URL path appending logic to prevent double slashes (`//`) from occurring. ([#21138](https://github.com/Azure/azure-sdk-for-java/issues/21138))
+
+### Fixed
+
+- Updated `ServiceLoader`s to use the class loader that loaded the class instead of system class loader. (Thank you @ueisele)
+- Changed an instance `Map` to static `Map` for resources that are static for the lifetime of an application.
+
+### Dependency Updates
+
+- Upgraded Reactor from `3.4.3` to `3.4.5`.
+
+## 1.15.0 (2021-04-02)
+
+### New Features
+
+- Added `Binary.toByteBuffer` which returns a read-only view of the `BinaryData`.
+- Added `ProxyOptions.fromConfiguration(Configuration, boolean)` which allows for configuring if the returned proxy
+  is resolved.
+- Added a default `JsonSerializer` implementation which is optionally used when creating a `JsonSerializer` with
+  `JsonSerializerProviders` by passing the flag `useDefaultIfAbset`.
+- Added the ability to configure HTTP logging level without making code changes by configuring environment property
+  `AZURE_HTTP_LOG_DETAIL_LEVEL`.
+- Added constructor overloads to `PagedFlux` which allows for the paging implements to consume the `byPage` page size value.
+- Added `AzureNamedKey` and `AzureNamedKeyCredential` to support authentication using a named key.
+- Added overloads to `SerializerAdapter` which use `byte[]` instead of `String` or `InputStream`/`OutputStream`.
+
+### Bug Fixes
+
+- Fixed a bug where Unix timestamps were not being properly deserialized to `OffsetDateTime`.
+- Fixed edge cases where response bodies would be eagerly read into a `byte[]` when they shouldn't.
+
+### Dependency Updates
+
+- Upgraded Jackson from `2.12.1` to `2.12.2`.
+- Upgraded Netty from `4.1.59.Final` to `4.1.60.Final`.
+
+## 1.14.1 (2021-03-19)
+
+### Bug Fixes
+
+- Fix a bug where `ClassNotFoundException` or `MethodNotFoundException` was thrown when Jackson 2.11 is resolved
+  instead of Jackson 2.12. [#19897](https://github.com/Azure/azure-sdk-for-java/issues/19897)
+
+## 1.14.0 (2021-03-08)
+
+### New Features
+
+- Added `Class<T>` overloads of `BinaryData.toObject` and `BinaryData.toObjectAsync`.
+- Added defaulted interface API `Tracer.addEvent`.
+- Added `FluxUtil.collectBytesInByteBufferStream(Flux, int)` and `FluxUtil.collectBytesFromNetworkResponse(Flux, HttpHeaders)`
+  to allow for performance optimizations when the resulting `byte[]` size in known.
+- Added handling to collect a `Flux<ByteBuffer>` into a `byte[]` with less array duplications.
+- Added default interface API overloads to `ObjectSerializer` which take or return `byte[]` instead of `InputStream` or
+  `OutputStream` allowing for performance optimizations by removing array copies.
+- Added default interface API `SerializerAdapter.serializeIterable` which handles serializing generic collections.
+- Added `CloudEvent` model which conforms to the [Cloud Event Specification](https://github.com/cloudevents/spec/blob/v1.0.1/spec.md).
+
+### Dependency Updates
+
+- Upgraded Jackson from `2.11.3` to `2.12.1`.
+- Upgraded Netty from `4.1.54.Final` to `4.1.59.Final`.
+- Upgraded Reactor from `3.3.12.RELEASE` to `3.4.3`.
+- Upgraded Reactor Netty from `0.9.15.RELEASE` to `1.0.4`.
+
+## 1.13.0 (2021-02-05)
+
+### New Features
+
+- Added `setPollInterval` to `PollerFlux` and `SyncPoller` to allow mutating how often a long-running request is polled.
+- Added `HttpClientOptions` to allow for reusable `HttpClient` configurations to be passed into SPIs and client builders.
+- Added `CoreUtils.getApplicationId` as a convenience method to determine application ID from `ClientOptions` or `HttpLogOptions`.
+- Added additional convenience methods to `HttpHeaders` and `HttpHeader` to better support multi-value headers.
+- Added support for claims in `TokenRequestContext`.
+- Added the ability to disable tracing for individual network requests.
+
+### Deprecations
+
+- Deprecated `HttpHeaders.put` and replaced with `HttpHeaders.set`.
 
 ## 1.12.0 (2021-01-11)
 
@@ -163,8 +321,8 @@
 ## 1.0.0 (2019-10-29)
 
 This package's
-[documentation](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/core/azure-core/README.md)
+[documentation](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core/README.md)
 and
-[samples](https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/core/azure-core/src/samples/java/com/azure/core)
+[samples](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/core/azure-core/src/samples/java/com/azure/core)
 
 - Initial release. Please see the README and wiki for information on the new design.

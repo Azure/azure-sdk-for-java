@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.loganalytics.implementation;
 
-import com.azure.resourcemanager.loganalytics.LogAnalyticsManager;
 import com.azure.resourcemanager.loganalytics.fluent.models.AvailableServiceTierInner;
 import com.azure.resourcemanager.loganalytics.models.AvailableServiceTier;
 import com.azure.resourcemanager.loganalytics.models.SkuNameEnum;
@@ -12,9 +11,11 @@ import com.azure.resourcemanager.loganalytics.models.SkuNameEnum;
 public final class AvailableServiceTierImpl implements AvailableServiceTier {
     private AvailableServiceTierInner innerObject;
 
-    private final LogAnalyticsManager serviceManager;
+    private final com.azure.resourcemanager.loganalytics.LogAnalyticsManager serviceManager;
 
-    AvailableServiceTierImpl(AvailableServiceTierInner innerObject, LogAnalyticsManager serviceManager) {
+    AvailableServiceTierImpl(
+        AvailableServiceTierInner innerObject,
+        com.azure.resourcemanager.loganalytics.LogAnalyticsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -51,7 +52,7 @@ public final class AvailableServiceTierImpl implements AvailableServiceTier {
         return this.innerObject;
     }
 
-    private LogAnalyticsManager manager() {
+    private com.azure.resourcemanager.loganalytics.LogAnalyticsManager manager() {
         return this.serviceManager;
     }
 }

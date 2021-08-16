@@ -33,7 +33,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.fluent.ProximityPlacementGroupsClient;
 import com.azure.resourcemanager.compute.fluent.models.ProximityPlacementGroupInner;
 import com.azure.resourcemanager.compute.models.ProximityPlacementGroupListResult;
-import com.azure.resourcemanager.compute.models.UpdateResource;
+import com.azure.resourcemanager.compute.models.ProximityPlacementGroupUpdate;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
@@ -101,7 +101,7 @@ public final class ProximityPlacementGroupsClientImpl
             @PathParam("proximityPlacementGroupName") String proximityPlacementGroupName,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
-            @BodyParam("application/json") UpdateResource parameters,
+            @BodyParam("application/json") ProximityPlacementGroupUpdate parameters,
             @HeaderParam("Accept") String accept,
             Context context);
 
@@ -186,7 +186,7 @@ public final class ProximityPlacementGroupsClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param proximityPlacementGroupName The name of the proximity placement group.
-     * @param parameters Specifies information about the proximity placement group.
+     * @param parameters Parameters supplied to the Create Proximity Placement Group operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -222,7 +222,7 @@ public final class ProximityPlacementGroupsClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2020-06-01";
+        final String apiVersion = "2021-04-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -237,7 +237,7 @@ public final class ProximityPlacementGroupsClientImpl
                             parameters,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -245,7 +245,7 @@ public final class ProximityPlacementGroupsClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param proximityPlacementGroupName The name of the proximity placement group.
-     * @param parameters Specifies information about the proximity placement group.
+     * @param parameters Parameters supplied to the Create Proximity Placement Group operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -285,7 +285,7 @@ public final class ProximityPlacementGroupsClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2020-06-01";
+        final String apiVersion = "2021-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -305,7 +305,7 @@ public final class ProximityPlacementGroupsClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param proximityPlacementGroupName The name of the proximity placement group.
-     * @param parameters Specifies information about the proximity placement group.
+     * @param parameters Parameters supplied to the Create Proximity Placement Group operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -330,7 +330,7 @@ public final class ProximityPlacementGroupsClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param proximityPlacementGroupName The name of the proximity placement group.
-     * @param parameters Specifies information about the proximity placement group.
+     * @param parameters Parameters supplied to the Create Proximity Placement Group operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -347,7 +347,7 @@ public final class ProximityPlacementGroupsClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param proximityPlacementGroupName The name of the proximity placement group.
-     * @param parameters Specifies information about the proximity placement group.
+     * @param parameters Parameters supplied to the Create Proximity Placement Group operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -400,9 +400,9 @@ public final class ProximityPlacementGroupsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-06-01";
+        final String apiVersion = "2021-04-01";
         final String accept = "application/json";
-        UpdateResource parameters = new UpdateResource();
+        ProximityPlacementGroupUpdate parameters = new ProximityPlacementGroupUpdate();
         parameters.withTags(tags);
         return FluxUtil
             .withContext(
@@ -417,7 +417,7 @@ public final class ProximityPlacementGroupsClientImpl
                             parameters,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -457,9 +457,9 @@ public final class ProximityPlacementGroupsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-06-01";
+        final String apiVersion = "2021-04-01";
         final String accept = "application/json";
-        UpdateResource parameters = new UpdateResource();
+        ProximityPlacementGroupUpdate parameters = new ProximityPlacementGroupUpdate();
         parameters.withTags(tags);
         context = this.client.mergeContext(context);
         return service
@@ -592,7 +592,7 @@ public final class ProximityPlacementGroupsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-06-01";
+        final String apiVersion = "2021-04-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -604,7 +604,7 @@ public final class ProximityPlacementGroupsClientImpl
                             apiVersion,
                             this.client.getSubscriptionId(),
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -643,7 +643,7 @@ public final class ProximityPlacementGroupsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-06-01";
+        final String apiVersion = "2021-04-01";
         context = this.client.mergeContext(context);
         return service
             .delete(
@@ -739,7 +739,7 @@ public final class ProximityPlacementGroupsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-06-01";
+        final String apiVersion = "2021-04-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -754,7 +754,7 @@ public final class ProximityPlacementGroupsClientImpl
                             this.client.getSubscriptionId(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -795,7 +795,7 @@ public final class ProximityPlacementGroupsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-06-01";
+        final String apiVersion = "2021-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -922,7 +922,7 @@ public final class ProximityPlacementGroupsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-06-01";
+        final String apiVersion = "2021-04-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -938,7 +938,7 @@ public final class ProximityPlacementGroupsClientImpl
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -964,7 +964,7 @@ public final class ProximityPlacementGroupsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-06-01";
+        final String apiVersion = "2021-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1062,7 +1062,7 @@ public final class ProximityPlacementGroupsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-06-01";
+        final String apiVersion = "2021-04-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1084,7 +1084,7 @@ public final class ProximityPlacementGroupsClientImpl
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1116,7 +1116,7 @@ public final class ProximityPlacementGroupsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-06-01";
+        final String apiVersion = "2021-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1234,7 +1234,7 @@ public final class ProximityPlacementGroupsClientImpl
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1307,7 +1307,7 @@ public final class ProximityPlacementGroupsClientImpl
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**

@@ -37,9 +37,9 @@ public final class WindowsConfiguration {
     /*
      * Specifies the time zone of the virtual machine. e.g. "Pacific Standard
      * Time". <br><br> Possible values can be
-     * [TimeZoneInfo.Id](https://docs.microsoft.com/en-us/dotnet/api/system.timezoneinfo.id?#System_TimeZoneInfo_Id)
+     * [TimeZoneInfo.Id](https://docs.microsoft.com/dotnet/api/system.timezoneinfo.id?#System_TimeZoneInfo_Id)
      * value from time zones returned by
-     * [TimeZoneInfo.GetSystemTimeZones](https://docs.microsoft.com/en-us/dotnet/api/system.timezoneinfo.getsystemtimezones).
+     * [TimeZoneInfo.GetSystemTimeZones](https://docs.microsoft.com/dotnet/api/system.timezoneinfo.getsystemtimezones).
      */
     @JsonProperty(value = "timeZone")
     private String timeZone;
@@ -52,7 +52,8 @@ public final class WindowsConfiguration {
     private List<AdditionalUnattendContent> additionalUnattendContent;
 
     /*
-     * Specifies settings related to in-guest patching (KBs).
+     * [Preview Feature] Specifies settings related to VM Guest Patching on
+     * Windows.
      */
     @JsonProperty(value = "patchSettings")
     private PatchSettings patchSettings;
@@ -117,9 +118,9 @@ public final class WindowsConfiguration {
     /**
      * Get the timeZone property: Specifies the time zone of the virtual machine. e.g. "Pacific Standard Time".
      * &lt;br&gt;&lt;br&gt; Possible values can be
-     * [TimeZoneInfo.Id](https://docs.microsoft.com/en-us/dotnet/api/system.timezoneinfo.id?#System_TimeZoneInfo_Id)
-     * value from time zones returned by
-     * [TimeZoneInfo.GetSystemTimeZones](https://docs.microsoft.com/en-us/dotnet/api/system.timezoneinfo.getsystemtimezones).
+     * [TimeZoneInfo.Id](https://docs.microsoft.com/dotnet/api/system.timezoneinfo.id?#System_TimeZoneInfo_Id) value
+     * from time zones returned by
+     * [TimeZoneInfo.GetSystemTimeZones](https://docs.microsoft.com/dotnet/api/system.timezoneinfo.getsystemtimezones).
      *
      * @return the timeZone value.
      */
@@ -130,9 +131,9 @@ public final class WindowsConfiguration {
     /**
      * Set the timeZone property: Specifies the time zone of the virtual machine. e.g. "Pacific Standard Time".
      * &lt;br&gt;&lt;br&gt; Possible values can be
-     * [TimeZoneInfo.Id](https://docs.microsoft.com/en-us/dotnet/api/system.timezoneinfo.id?#System_TimeZoneInfo_Id)
-     * value from time zones returned by
-     * [TimeZoneInfo.GetSystemTimeZones](https://docs.microsoft.com/en-us/dotnet/api/system.timezoneinfo.getsystemtimezones).
+     * [TimeZoneInfo.Id](https://docs.microsoft.com/dotnet/api/system.timezoneinfo.id?#System_TimeZoneInfo_Id) value
+     * from time zones returned by
+     * [TimeZoneInfo.GetSystemTimeZones](https://docs.microsoft.com/dotnet/api/system.timezoneinfo.getsystemtimezones).
      *
      * @param timeZone the timeZone value to set.
      * @return the WindowsConfiguration object itself.
@@ -166,7 +167,7 @@ public final class WindowsConfiguration {
     }
 
     /**
-     * Get the patchSettings property: Specifies settings related to in-guest patching (KBs).
+     * Get the patchSettings property: [Preview Feature] Specifies settings related to VM Guest Patching on Windows.
      *
      * @return the patchSettings value.
      */
@@ -175,7 +176,7 @@ public final class WindowsConfiguration {
     }
 
     /**
-     * Set the patchSettings property: Specifies settings related to in-guest patching (KBs).
+     * Set the patchSettings property: [Preview Feature] Specifies settings related to VM Guest Patching on Windows.
      *
      * @param patchSettings the patchSettings value to set.
      * @return the WindowsConfiguration object itself.

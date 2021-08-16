@@ -10,17 +10,14 @@ import java.util.*;
 public class ChatOptionsProvider {
 
     public static CreateChatThreadOptions createThreadOptions(String userId1, String userId2) {
-        List<ChatThreadMember> members = new ArrayList<ChatThreadMember>();
-        members.add(generateThreadMember(
+        CreateChatThreadOptions options = new CreateChatThreadOptions("Test");
+
+        options.addParticipant(generateParticipant(
             userId1,
             "Tester 1"));
-        members.add(generateThreadMember(
+        options.addParticipant(generateParticipant(
             userId2,
             "Tester 2"));
-
-        CreateChatThreadOptions options = new CreateChatThreadOptions()
-            .setTopic("Test")
-            .setMembers(members);
 
         return options;
     }
@@ -32,25 +29,28 @@ public class ChatOptionsProvider {
         return options;
     }
 
-    public static AddChatThreadMembersOptions addThreadMembersOptions(String userId1, String userId2) {
-        List<ChatThreadMember> members = new ArrayList<ChatThreadMember>();
-        members.add(generateThreadMember(
+    public static Iterable<ChatParticipant> addParticipantsOptions(String userId1, String userId2) {
+        List<ChatParticipant> participants = new ArrayList<ChatParticipant>();
+        participants.add(generateParticipant(
             userId1,
             "Added Tester 1"));
-        members.add(generateThreadMember(
+        participants.add(generateParticipant(
             userId2,
             "Added Tester 2"));
 
-        AddChatThreadMembersOptions options = new AddChatThreadMembersOptions();
-        options.setMembers(members);
-        return options;
+        return participants;
     }
 
     public static SendChatMessageOptions sendMessageOptions() {
+        return sendMessageOptions(ChatMessageType.TEXT, "Content");
+    }
+
+    public static SendChatMessageOptions sendMessageOptions(ChatMessageType type, String content) {
         SendChatMessageOptions options = new SendChatMessageOptions();
-        options.setPriority(ChatMessagePriority.NORMAL);
-        options.setContent("Content");
+        options.setContent(content);
         options.setSenderDisplayName("Tester");
+        options.setType(type);
+        options.setMetadata(generateMessageMetadata());
 
         return options;
     }
@@ -58,15 +58,39 @@ public class ChatOptionsProvider {
     public static UpdateChatMessageOptions updateMessageOptions() {
         UpdateChatMessageOptions options = new UpdateChatMessageOptions();
         options.setContent("Update Test");
+        options.setMetadata(generateUpdatedMessageMetadata());
 
         return options;
     }
 
-    private static ChatThreadMember generateThreadMember(String id, String displayName) {
-        ChatThreadMember threadMember = new ChatThreadMember();
-        threadMember.setUser(new CommunicationUserIdentifier(id));
-        threadMember.setDisplayName(displayName);
+    private static ChatParticipant generateParticipant(String id, String displayName) {
+        ChatParticipant chatParticipant = new ChatParticipant();
+        chatParticipant.setCommunicationIdentifier(new CommunicationUserIdentifier(id));
+        chatParticipant.setDisplayName(displayName);
 
-        return threadMember;
+        return chatParticipant;
+    }
+
+    private static Map<String, String> generateMessageMetadata() {
+        return new HashMap<String, String>() {
+            {
+                put("tags", "tags value");
+                put("deliveryMode", "deliveryMode value");
+                put("onedriveReferences", "onedriveReferences");
+                put("amsreferences", "[\\\"test url file 3\\\"]");
+                put("key", "value key");
+            }
+        };
+    }
+
+    private static Map<String, String> generateUpdatedMessageMetadata() {
+        return new HashMap<String, String>() {
+            {
+                put("tags", "");
+                put("deliveryMode", "deliveryMode value - updated");
+                put("onedriveReferences", "onedriveReferences - updated");
+                put("amsreferences", "[\\\"test url file 3\\\"]");
+            }
+        };
     }
 }

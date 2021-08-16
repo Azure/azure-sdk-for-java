@@ -40,6 +40,14 @@ public class StorageAccountCreateParameters {
     private String location;
 
     /*
+     * Optional. Set the extended location of the resource. If not set, the
+     * storage account will be created in Azure main region. Otherwise it will
+     * be created in the specified extended location
+     */
+    @JsonProperty(value = "extendedLocation")
+    private ExtendedLocation extendedLocation;
+
+    /*
      * Gets or sets a list of key value pairs that describe the resource. These
      * tags can be used for viewing and grouping this resource (across resource
      * groups). A maximum of 15 tags can be provided for a resource. Each tag
@@ -54,6 +62,18 @@ public class StorageAccountCreateParameters {
      */
     @JsonProperty(value = "identity")
     private Identity identity;
+
+    /*
+     * SasPolicy assigned to the storage account.
+     */
+    @JsonProperty(value = "properties.sasPolicy")
+    private SasPolicy sasPolicy;
+
+    /*
+     * KeyPolicy assigned to the storage account.
+     */
+    @JsonProperty(value = "properties.keyPolicy")
+    private KeyPolicy keyPolicy;
 
     /*
      * User domain assigned to the storage account. Name is the CNAME source.
@@ -131,6 +151,22 @@ public class StorageAccountCreateParameters {
     @JsonProperty(value = "properties.minimumTlsVersion")
     private MinimumTlsVersion minimumTlsVersion;
 
+    /*
+     * Indicates whether the storage account permits requests to be authorized
+     * with the account access key via Shared Key. If false, then all requests,
+     * including shared access signatures, must be authorized with Azure Active
+     * Directory (Azure AD). The default value is null, which is equivalent to
+     * true.
+     */
+    @JsonProperty(value = "properties.allowSharedKeyAccess")
+    private Boolean allowSharedKeyAccess;
+
+    /*
+     * NFS 3.0 protocol support enabled if set to true.
+     */
+    @JsonProperty(value = "properties.isNfsV3Enabled")
+    private Boolean enableNfsV3;
+
     /**
      * Get the sku property: Required. Gets or sets the SKU name.
      *
@@ -198,6 +234,28 @@ public class StorageAccountCreateParameters {
     }
 
     /**
+     * Get the extendedLocation property: Optional. Set the extended location of the resource. If not set, the storage
+     * account will be created in Azure main region. Otherwise it will be created in the specified extended location.
+     *
+     * @return the extendedLocation value.
+     */
+    public ExtendedLocation extendedLocation() {
+        return this.extendedLocation;
+    }
+
+    /**
+     * Set the extendedLocation property: Optional. Set the extended location of the resource. If not set, the storage
+     * account will be created in Azure main region. Otherwise it will be created in the specified extended location.
+     *
+     * @param extendedLocation the extendedLocation value to set.
+     * @return the StorageAccountCreateParameters object itself.
+     */
+    public StorageAccountCreateParameters withExtendedLocation(ExtendedLocation extendedLocation) {
+        this.extendedLocation = extendedLocation;
+        return this;
+    }
+
+    /**
      * Get the tags property: Gets or sets a list of key value pairs that describe the resource. These tags can be used
      * for viewing and grouping this resource (across resource groups). A maximum of 15 tags can be provided for a
      * resource. Each tag must have a key with a length no greater than 128 characters and a value with a length no
@@ -240,6 +298,46 @@ public class StorageAccountCreateParameters {
      */
     public StorageAccountCreateParameters withIdentity(Identity identity) {
         this.identity = identity;
+        return this;
+    }
+
+    /**
+     * Get the sasPolicy property: SasPolicy assigned to the storage account.
+     *
+     * @return the sasPolicy value.
+     */
+    public SasPolicy sasPolicy() {
+        return this.sasPolicy;
+    }
+
+    /**
+     * Set the sasPolicy property: SasPolicy assigned to the storage account.
+     *
+     * @param sasPolicy the sasPolicy value to set.
+     * @return the StorageAccountCreateParameters object itself.
+     */
+    public StorageAccountCreateParameters withSasPolicy(SasPolicy sasPolicy) {
+        this.sasPolicy = sasPolicy;
+        return this;
+    }
+
+    /**
+     * Get the keyPolicy property: KeyPolicy assigned to the storage account.
+     *
+     * @return the keyPolicy value.
+     */
+    public KeyPolicy keyPolicy() {
+        return this.keyPolicy;
+    }
+
+    /**
+     * Set the keyPolicy property: KeyPolicy assigned to the storage account.
+     *
+     * @param keyPolicy the keyPolicy value to set.
+     * @return the StorageAccountCreateParameters object itself.
+     */
+    public StorageAccountCreateParameters withKeyPolicy(KeyPolicy keyPolicy) {
+        this.keyPolicy = keyPolicy;
         return this;
     }
 
@@ -485,6 +583,50 @@ public class StorageAccountCreateParameters {
     }
 
     /**
+     * Get the allowSharedKeyAccess property: Indicates whether the storage account permits requests to be authorized
+     * with the account access key via Shared Key. If false, then all requests, including shared access signatures, must
+     * be authorized with Azure Active Directory (Azure AD). The default value is null, which is equivalent to true.
+     *
+     * @return the allowSharedKeyAccess value.
+     */
+    public Boolean allowSharedKeyAccess() {
+        return this.allowSharedKeyAccess;
+    }
+
+    /**
+     * Set the allowSharedKeyAccess property: Indicates whether the storage account permits requests to be authorized
+     * with the account access key via Shared Key. If false, then all requests, including shared access signatures, must
+     * be authorized with Azure Active Directory (Azure AD). The default value is null, which is equivalent to true.
+     *
+     * @param allowSharedKeyAccess the allowSharedKeyAccess value to set.
+     * @return the StorageAccountCreateParameters object itself.
+     */
+    public StorageAccountCreateParameters withAllowSharedKeyAccess(Boolean allowSharedKeyAccess) {
+        this.allowSharedKeyAccess = allowSharedKeyAccess;
+        return this;
+    }
+
+    /**
+     * Get the enableNfsV3 property: NFS 3.0 protocol support enabled if set to true.
+     *
+     * @return the enableNfsV3 value.
+     */
+    public Boolean enableNfsV3() {
+        return this.enableNfsV3;
+    }
+
+    /**
+     * Set the enableNfsV3 property: NFS 3.0 protocol support enabled if set to true.
+     *
+     * @param enableNfsV3 the enableNfsV3 value to set.
+     * @return the StorageAccountCreateParameters object itself.
+     */
+    public StorageAccountCreateParameters withEnableNfsV3(Boolean enableNfsV3) {
+        this.enableNfsV3 = enableNfsV3;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -510,8 +652,17 @@ public class StorageAccountCreateParameters {
                     new IllegalArgumentException(
                         "Missing required property location in model StorageAccountCreateParameters"));
         }
+        if (extendedLocation() != null) {
+            extendedLocation().validate();
+        }
         if (identity() != null) {
             identity().validate();
+        }
+        if (sasPolicy() != null) {
+            sasPolicy().validate();
+        }
+        if (keyPolicy() != null) {
+            keyPolicy().validate();
         }
         if (customDomain() != null) {
             customDomain().validate();

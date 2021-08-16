@@ -17,8 +17,15 @@ public final class HttpPolicyProviders {
     private static final List<AfterRetryPolicyProvider> AFTER_PROVIDER = new ArrayList<>();
 
     static {
-        ServiceLoader.load(BeforeRetryPolicyProvider.class).forEach(BEFORE_PROVIDER::add);
-        ServiceLoader.load(AfterRetryPolicyProvider.class).forEach(AFTER_PROVIDER::add);
+        // Use as classloader to load provider-configuration files and provider classes the classloader
+        // that loaded this class. In most cases this will be the System classloader.
+        // But this choice here provides additional flexibility in managed environments that control
+        // classloading differently (OSGi, Spring and others) and don't/ depend on the
+        // System classloader to load BeforeRetryPolicyProvider and AfterRetryPolicyProvider classes.
+        ServiceLoader.load(BeforeRetryPolicyProvider.class, HttpPolicyProviders.class.getClassLoader())
+            .forEach(BEFORE_PROVIDER::add);
+        ServiceLoader.load(AfterRetryPolicyProvider.class, HttpPolicyProviders.class.getClassLoader())
+            .forEach(AFTER_PROVIDER::add);
     }
 
     private HttpPolicyProviders() {

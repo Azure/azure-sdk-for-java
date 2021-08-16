@@ -16,7 +16,10 @@ import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.resources.models.GenericResource;
 import com.azure.resourcemanager.resources.models.GenericResources;
+import com.azure.resourcemanager.resources.models.Identity;
 import com.azure.resourcemanager.resources.models.ResourceGroups;
+import com.azure.resourcemanager.resources.models.ResourceIdentityType;
+import com.azure.resourcemanager.resources.models.Sku;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -144,5 +147,44 @@ public class GenericResourcesTests extends ResourceManagementTest {
         PagedIterable<GenericResource> resourcesAfterDelete = genericResources.listByResourceGroup(rgName);
         boolean deleted = resourcesAfterDelete.stream().noneMatch(r -> resourceName.equals(r.name()));
         Assertions.assertTrue(deleted);
+    }
+
+    @Test
+    public void canCreateUpdateKindSkuIdentity() throws Exception {
+        final String resourceName = "rs" + testId;
+        final String apiVersion = "2021-01-01";
+
+        GenericResource storageResource = resourceClient.genericResources().define(resourceName)
+            .withRegion(Region.US_WEST)
+            .withExistingResourceGroup(rgName)
+            .withResourceType("storageAccounts")
+            .withProviderNamespace("Microsoft.Storage")
+            .withoutPlan()
+            .withKind("Storage")
+            .withSku(new Sku().withName("Standard_LRS"))
+            .withIdentity(new Identity().withType(ResourceIdentityType.SYSTEM_ASSIGNED))
+            .withProperties(new ObjectMapper().readTree("{\"minimumTlsVersion\": \"TLS1_2\", \"supportsHttpsTrafficOnly\": true}"))
+            .withApiVersion(apiVersion)
+            .create();
+        Assertions.assertEquals("Storage", storageResource.kind());
+        Assertions.assertEquals("Standard_LRS", storageResource.sku().name());
+        Assertions.assertNotNull(storageResource.identity());
+        Assertions.assertEquals(ResourceIdentityType.SYSTEM_ASSIGNED, storageResource.identity().type());
+        Assertions.assertNotNull(storageResource.identity().principalId());
+        Assertions.assertNotNull(storageResource.identity().tenantId());
+
+        storageResource.update()
+            .withKind("StorageV2")
+            .withoutIdentity()
+            .withApiVersion(apiVersion)
+            .apply();
+        Assertions.assertEquals("StorageV2", storageResource.kind());
+        Assertions.assertEquals(ResourceIdentityType.NONE, storageResource.identity().type());
+
+        storageResource.update()
+            .withSku(new Sku().withName("Standard_RAGRS"))
+            .withApiVersion(apiVersion)
+            .apply();
+        Assertions.assertEquals("Standard_RAGRS", storageResource.sku().name());
     }
 }

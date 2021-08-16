@@ -7,7 +7,7 @@ package com.azure.messaging.eventgrid.systemevents;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The AppConfigurationKeyValueDeletedEventData model. */
+/** Schema of the Data property of an EventGridEvent for a Microsoft.AppConfiguration.KeyValueDeleted event. */
 @Fluent
 public final class AppConfigurationKeyValueDeletedEventData {
     /*
@@ -27,6 +27,12 @@ public final class AppConfigurationKeyValueDeletedEventData {
      */
     @JsonProperty(value = "etag")
     private String etag;
+
+    /*
+     * The sync token representing the server state after the event.
+     */
+    @JsonProperty(value = "syncToken")
+    private String syncToken;
 
     /**
      * Get the key property: The key used to identify the key-value that was deleted.
@@ -85,6 +91,26 @@ public final class AppConfigurationKeyValueDeletedEventData {
      */
     public AppConfigurationKeyValueDeletedEventData setEtag(String etag) {
         this.etag = etag;
+        return this;
+    }
+
+    /**
+     * Get the syncToken property: The sync token representing the server state after the event.
+     *
+     * @return the syncToken value.
+     */
+    public String getSyncToken() {
+        return this.syncToken;
+    }
+
+    /**
+     * Set the syncToken property: The sync token representing the server state after the event.
+     *
+     * @param syncToken the syncToken value to set.
+     * @return the AppConfigurationKeyValueDeletedEventData object itself.
+     */
+    public AppConfigurationKeyValueDeletedEventData setSyncToken(String syncToken) {
+        this.syncToken = syncToken;
         return this;
     }
 }

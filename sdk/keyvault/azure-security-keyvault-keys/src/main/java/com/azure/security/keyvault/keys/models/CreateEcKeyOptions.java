@@ -9,13 +9,12 @@ import java.time.OffsetDateTime;
 import java.util.Map;
 
 /**
- * Represents the configurable options to create an Ec key.
+ * Represents the configurable options to create an EC key.
  */
 @Fluent
 public class CreateEcKeyOptions extends CreateKeyOptions {
-
     /**
-     * The Ec key curve.
+     * The EC key curve.
      */
     private KeyCurveName curveName;
 
@@ -25,8 +24,9 @@ public class CreateEcKeyOptions extends CreateKeyOptions {
     private boolean hardwareProtected;
 
     /**
-     * Creates a EcKeyCreateOptions with {@code name} as name of the Ec key.
-     * @param name The name of the Ec key.
+     * Creates a {@link CreateEcKeyOptions} with {@code name} as name of the EC key.
+     *
+     * @param name The name of the EC key.
      */
     public CreateEcKeyOptions(String name) {
         super(name, KeyType.EC);
@@ -35,28 +35,56 @@ public class CreateEcKeyOptions extends CreateKeyOptions {
     /**
      * Get the curve.
      *
-     * @return the curve.
+     * @return The curve name.
      */
     public KeyCurveName getCurveName() {
         return this.curveName;
     }
 
     /**
-     * Set the curve.
+     * Set the curve name.
      *
-     * @param curveName The curve to set
-     * @return the EcKeyCreateOptions object itself.
+     * @param curveName The curve name to set.
+     *
+     * @return The {@link CreateEcKeyOptions} object.
      */
     public CreateEcKeyOptions setCurveName(KeyCurveName curveName) {
         this.curveName = curveName;
+
         return this;
     }
 
     /**
-     * Set the key operations value.
+     * Get the HSM value of the key being created.
      *
-     * @param keyOperations The key operations value to set
-     * @return the EcKeyCreateOptions object itself.
+     * @return The HSM value.
+     */
+    public Boolean isHardwareProtected() {
+        return this.hardwareProtected;
+    }
+
+    /**
+     * Set whether the key being created is of HSM type or not.
+     *
+     * @param hardwareProtected The HSM value to set.
+     *
+     * @return The {@link CreateEcKeyOptions} object.
+     */
+    public CreateEcKeyOptions setHardwareProtected(Boolean hardwareProtected) {
+        this.hardwareProtected = hardwareProtected;
+        KeyType keyType = hardwareProtected ? KeyType.EC_HSM : KeyType.EC;
+
+        setKeyType(keyType);
+
+        return this;
+    }
+
+    /**
+     * Set the key operations.
+     *
+     * @param keyOperations The key operations to set.
+     *
+     * @return The {@link CreateEcKeyOptions} object.
      */
     @Override
     public CreateEcKeyOptions setKeyOperations(KeyOperation... keyOperations) {
@@ -67,12 +95,14 @@ public class CreateEcKeyOptions extends CreateKeyOptions {
     /**
      * Set the {@link OffsetDateTime notBefore} UTC time.
      *
-     * @param notBefore The notBefore UTC time to set
-     * @return the EcKeyCreateOptions object itself.
+     * @param notBefore The notBefore UTC time to set.
+     *
+     * @return The {@link CreateEcKeyOptions} object.
      */
     @Override
     public CreateEcKeyOptions setNotBefore(OffsetDateTime notBefore) {
         super.setNotBefore(notBefore);
+
         return this;
     }
 
@@ -80,55 +110,67 @@ public class CreateEcKeyOptions extends CreateKeyOptions {
      * Set the {@link OffsetDateTime expires} UTC time.
      *
      * @param expiresOn The expiry time to set for the key.
-     * @return the EcKeyCreateOptions object itself.
+     *
+     * @return The {@link CreateEcKeyOptions} object.
      */
     @Override
     public CreateEcKeyOptions setExpiresOn(OffsetDateTime expiresOn) {
         super.setExpiresOn(expiresOn);
+
         return this;
     }
 
     /**
      * Set the tags to be associated with the key.
      *
-     * @param tags The tags to set
-     * @return the EcKeyCreateOptions object itself.
+     * @param tags The tags to set.
+     *
+     * @return The {@link CreateEcKeyOptions} object.
      */
     @Override
     public CreateEcKeyOptions setTags(Map<String, String> tags) {
         super.setTags(tags);
+
         return this;
     }
 
     /**
-     * Set the enabled value.
+     * Set a value that indicates if the key is enabled.
      *
-     * @param enabled The enabled value to set
-     * @return the EcKeyCreateOptions object itself.
+     * @param enabled The enabled value to set.
+     *
+     * @return The {@link CreateEcKeyOptions} object.
      */
     @Override
     public CreateEcKeyOptions setEnabled(Boolean enabled) {
         super.setEnabled(enabled);
+
         return this;
     }
 
     /**
-     * Set whether the key being created is of hsm type or not.
-     * @param hardwareProtected The hsm value to set.
-     * @return the EcKeyCreateOptions object itself.
+     * Set a flag that indicates if the private key can be exported.
+     *
+     * @param exportable A flag that indicates if the private key can be exported.
+     *
+     * @return The updated {@link CreateEcKeyOptions} object.
      */
-    public CreateEcKeyOptions setHardwareProtected(Boolean hardwareProtected) {
-        this.hardwareProtected = hardwareProtected;
-        KeyType keyType = hardwareProtected ? KeyType.EC_HSM : KeyType.EC;
-        setKeyType(keyType);
+    public CreateEcKeyOptions setExportable(Boolean exportable) {
+        super.setExportable(exportable);
+
         return this;
     }
 
     /**
-     * Get the hsm value of the key being created.
-     * @return the hsm value.
+     * Set the policy rules under which the key can be exported.
+     *
+     * @param releasePolicy The policy rules to set.
+     *
+     * @return The updated {@link CreateEcKeyOptions} object.
      */
-    public Boolean isHardwareProtected() {
-        return this.hardwareProtected;
+    public CreateEcKeyOptions setReleasePolicy(KeyReleasePolicy releasePolicy) {
+        super.setReleasePolicy(releasePolicy);
+
+        return this;
     }
 }

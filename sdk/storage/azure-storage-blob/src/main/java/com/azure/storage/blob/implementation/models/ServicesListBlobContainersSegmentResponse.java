@@ -8,10 +8,9 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.rest.ResponseBase;
 
-/**
- * Contains all response data for the listBlobContainersSegment operation.
- */
-public final class ServicesListBlobContainersSegmentResponse extends ResponseBase<ServiceListBlobContainersSegmentHeaders, BlobContainersSegment> {
+/** Contains all response data for the listBlobContainersSegment operation. */
+public final class ServicesListBlobContainersSegmentResponse
+        extends ResponseBase<ServicesListBlobContainersSegmentHeaders, BlobContainersSegment> {
     /**
      * Creates an instance of ServicesListBlobContainersSegmentResponse.
      *
@@ -21,13 +20,16 @@ public final class ServicesListBlobContainersSegmentResponse extends ResponseBas
      * @param value the deserialized value of the HTTP response.
      * @param headers the deserialized headers of the HTTP response.
      */
-    public ServicesListBlobContainersSegmentResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders, BlobContainersSegment value, ServiceListBlobContainersSegmentHeaders headers) {
+    public ServicesListBlobContainersSegmentResponse(
+            HttpRequest request,
+            int statusCode,
+            HttpHeaders rawHeaders,
+            BlobContainersSegment value,
+            ServicesListBlobContainersSegmentHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);
     }
 
-    /**
-     * @return the deserialized response body.
-     */
+    /** @return the deserialized response body. */
     @Override
     public BlobContainersSegment getValue() {
         return super.getValue();

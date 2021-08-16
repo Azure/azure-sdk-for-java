@@ -4,10 +4,12 @@
 package com.azure.storage.queue;
 
 import com.azure.core.http.rest.Response;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.queue.models.PeekedMessageItem;
 import com.azure.storage.queue.models.QueueAccessPolicy;
+import com.azure.storage.queue.models.QueueMessageDecodingError;
 import com.azure.storage.queue.models.QueueMessageItem;
 import com.azure.storage.queue.models.QueueProperties;
 import com.azure.storage.queue.models.QueueSignedIdentifier;
@@ -15,6 +17,7 @@ import com.azure.storage.queue.models.SendMessageResult;
 import com.azure.storage.queue.models.UpdateMessageResult;
 import com.azure.storage.queue.sas.QueueSasPermission;
 import com.azure.storage.queue.sas.QueueServiceSasSignatureValues;
+import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 import java.time.OffsetDateTime;
@@ -22,6 +25,8 @@ import java.time.ZoneOffset;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
+import java.util.function.Function;
 
 /**
  * Contains code snippets when generating javadocs through doclets for {@link QueueClient}.
@@ -93,6 +98,83 @@ public class QueueJavaDocCodeSamples {
     }
 
     /**
+     * Generates code sample for creating a {@link QueueClient}
+     * with {@link QueueServiceClientBuilder#processMessageDecodingErrorAsync(Function)}.
+     *
+     * @return An instance of {@link QueueClient}
+     */
+    public QueueClient createClientWithDecodingFailedAsyncHandler() {
+        // BEGIN: com.azure.storage.queue.QueueClientBuilder#processMessageDecodingErrorAsyncHandler
+        String connectionString = "DefaultEndpointsProtocol=https;AccountName={name};"
+            + "AccountKey={key};EndpointSuffix={core.windows.net}";
+
+        Function<QueueMessageDecodingError, Mono<Void>> processMessageDecodingErrorHandler =
+            (queueMessageDecodingFailure) -> {
+                QueueMessageItem queueMessageItem = queueMessageDecodingFailure.getQueueMessageItem();
+                PeekedMessageItem peekedMessageItem = queueMessageDecodingFailure.getPeekedMessageItem();
+                if (queueMessageItem != null) {
+                    System.out.printf("Received badly encoded message, messageId=%s, messageBody=%s",
+                        queueMessageItem.getMessageId(),
+                        queueMessageItem.getBody().toString());
+                    return queueMessageDecodingFailure
+                        .getQueueAsyncClient()
+                        .deleteMessage(queueMessageItem.getMessageId(), queueMessageItem.getPopReceipt());
+                } else if (peekedMessageItem != null) {
+                    System.out.printf("Peeked badly encoded message, messageId=%s, messageBody=%s",
+                        peekedMessageItem.getMessageId(),
+                        peekedMessageItem.getBody().toString());
+                    return Mono.empty();
+                } else {
+                    return Mono.empty();
+                }
+            };
+
+        QueueClient client = new QueueClientBuilder()
+            .connectionString(connectionString)
+            .processMessageDecodingErrorAsync(processMessageDecodingErrorHandler)
+            .buildClient();
+        // END: com.azure.storage.queue.QueueClientBuilder#processMessageDecodingErrorAsyncHandler
+        return client;
+    }
+
+    /**
+     * Generates code sample for creating a {@link QueueClient}
+     * with {@link QueueServiceClientBuilder#processMessageDecodingError(Consumer)}.
+     *
+     * @return An instance of {@link QueueClient}
+     */
+    public QueueClient createClientWithDecodingFailedHandler() {
+        // BEGIN: com.azure.storage.queue.QueueClientBuilder#processMessageDecodingErrorHandler
+        String connectionString = "DefaultEndpointsProtocol=https;AccountName={name};"
+            + "AccountKey={key};EndpointSuffix={core.windows.net}";
+
+        Consumer<QueueMessageDecodingError> processMessageDecodingErrorHandler =
+            (queueMessageDecodingFailure) -> {
+                QueueMessageItem queueMessageItem = queueMessageDecodingFailure.getQueueMessageItem();
+                PeekedMessageItem peekedMessageItem = queueMessageDecodingFailure.getPeekedMessageItem();
+                if (queueMessageItem != null) {
+                    System.out.printf("Received badly encoded message, messageId=%s, messageBody=%s",
+                        queueMessageItem.getMessageId(),
+                        queueMessageItem.getBody().toString());
+                    queueMessageDecodingFailure
+                        .getQueueClient()
+                        .deleteMessage(queueMessageItem.getMessageId(), queueMessageItem.getPopReceipt());
+                } else if (peekedMessageItem != null) {
+                    System.out.printf("Peeked badly encoded message, messageId=%s, messageBody=%s",
+                        peekedMessageItem.getMessageId(),
+                        peekedMessageItem.getBody().toString());
+                }
+            };
+
+        QueueClient client = new QueueClientBuilder()
+            .connectionString(connectionString)
+            .processMessageDecodingError(processMessageDecodingErrorHandler)
+            .buildClient();
+        // END: com.azure.storage.queue.QueueClientBuilder#processMessageDecodingErrorHandler
+        return client;
+    }
+
+    /**
      * Generates a code sample for using {@link QueueClient#create()}
      */
     public void createQueue() {
@@ -126,6 +208,17 @@ public class QueueJavaDocCodeSamples {
     }
 
     /**
+     * Generates a code sample for using {@link QueueClient#sendMessage(BinaryData)}
+     */
+    public void sendMessageBinaryData() {
+
+        // BEGIN: com.azure.storage.queue.queueClient.sendMessage#BinaryData
+        SendMessageResult response = client.sendMessage(BinaryData.fromString("Hello msg"));
+        System.out.println("Complete enqueuing the message with message Id" + response.getMessageId());
+        // END: com.azure.storage.queue.queueClient.sendMessage#BinaryData
+    }
+
+    /**
      * Generates a code sample for using {@link QueueClient#sendMessageWithResponse(String, Duration, Duration,
      * Duration, Context)}
      */
@@ -143,6 +236,20 @@ public class QueueJavaDocCodeSamples {
      * Generates a code sample for using {@link QueueClient#sendMessageWithResponse(String, Duration, Duration,
      * Duration, Context)}
      */
+    public void enqueueMessageBinaryDataWithTimeoutOverload() {
+
+        // BEGIN: com.azure.storage.queue.QueueClient.sendMessageWithResponse#BinaryData-Duration-Duration-Duration-Context1
+        SendMessageResult sentMessageItem = client.sendMessageWithResponse(BinaryData.fromString("Hello, Azure"),
+            Duration.ofSeconds(5), null, Duration.ofSeconds(1), new Context(key1, value1)).getValue();
+        System.out.printf("Message %s expires at %s", sentMessageItem.getMessageId(),
+            sentMessageItem.getExpirationTime());
+        // END: com.azure.storage.queue.QueueClient.sendMessageWithResponse#BinaryData-Duration-Duration-Duration-Context1
+    }
+
+    /**
+     * Generates a code sample for using {@link QueueClient#sendMessageWithResponse(String, Duration, Duration,
+     * Duration, Context)}
+     */
     public void sendMessageWithLiveTimeOverload() {
         // BEGIN: com.azure.storage.queue.QueueClient.sendMessageWithResponse#String-Duration-Duration-Duration-Context2
         SendMessageResult enqueuedMessage = client.sendMessageWithResponse("Goodbye, Azure",
@@ -150,6 +257,19 @@ public class QueueJavaDocCodeSamples {
         System.out.printf("Message %s expires at %s", enqueuedMessage.getMessageId(),
             enqueuedMessage.getExpirationTime());
         // END: com.azure.storage.queue.QueueClient.sendMessageWithResponse#String-Duration-Duration-Duration-Context2
+    }
+
+    /**
+     * Generates a code sample for using {@link QueueClient#sendMessageWithResponse(String, Duration, Duration,
+     * Duration, Context)}
+     */
+    public void sendMessageBinaryDataWithLiveTimeOverload() {
+        // BEGIN: com.azure.storage.queue.QueueClient.sendMessageWithResponse#BinaryData-Duration-Duration-Duration-Context2
+        SendMessageResult enqueuedMessage = client.sendMessageWithResponse(BinaryData.fromString("Goodbye, Azure"),
+            null, Duration.ofSeconds(5), Duration.ofSeconds(1), new Context(key1, value1)).getValue();
+        System.out.printf("Message %s expires at %s", enqueuedMessage.getMessageId(),
+            enqueuedMessage.getExpirationTime());
+        // END: com.azure.storage.queue.QueueClient.sendMessageWithResponse#BinaryData-Duration-Duration-Duration-Context2
     }
 
     /**
@@ -197,7 +317,7 @@ public class QueueJavaDocCodeSamples {
 
         // BEGIN: com.azure.storage.queue.queueClient.peekMessage
         PeekedMessageItem peekedMessageItem = client.peekMessage();
-        System.out.println("Complete peeking the message: " + peekedMessageItem.getMessageText());
+        System.out.println("Complete peeking the message: " + peekedMessageItem.getBody().toString());
         // END: com.azure.storage.queue.queueClient.peekMessage
     }
 

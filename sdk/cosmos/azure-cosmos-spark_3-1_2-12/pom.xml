@@ -1,0 +1,707 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>com.azure</groupId>
+    <artifactId>azure-client-sdk-parent</artifactId>
+    <version>1.7.0</version> <!-- {x-version-update;com.azure:azure-client-sdk-parent;current} -->
+    <relativePath>../../parents/azure-client-sdk-parent</relativePath>
+  </parent>
+
+  <groupId>com.azure.cosmos.spark</groupId>
+  <artifactId>azure-cosmos-spark_3-1_2-12</artifactId>
+  <version>4.4.0-beta.1</version> <!-- {x-version-update;com.azure.cosmos.spark:azure-cosmos-spark_3-1_2-12;current} -->
+  <packaging>jar</packaging>
+  <name>OLTP Spark Connector for Azure Cosmos DB SQL API</name>
+  <description>OLTP Spark Connector for Azure Cosmos DB SQL API</description>
+  <url>https://github.com/Azure/azure-sdk-for-java/tree/feature/cosmos/spark30/sdk/cosmos/azure-cosmos-spark_3-1_2-12</url>
+
+  <properties>
+    <maven.build.timestamp.format>MM-dd-HH-mm-ss</maven.build.timestamp.format>
+    <jacoco.min.branchcoverage>0.17</jacoco.min.branchcoverage>
+    <jacoco.min.linecoverage>0.18</jacoco.min.linecoverage>
+    <maven.compiler.source>11</maven.compiler.source>
+    <maven.compiler.target>11</maven.compiler.target>
+    <jacoco.skip.coverage.check>true</jacoco.skip.coverage.check>
+    <shadingPrefix>azure_cosmos_spark</shadingPrefix>
+    <legal>
+      <![CDATA[[INFO] Any downloads listed may be third party software.  Microsoft grants you no rights for third party software.]]>
+    </legal>
+  </properties>
+
+  <developers>
+    <developer>
+      <id>microsoft</id>
+      <name>Microsoft</name>
+    </developer>
+  </developers>
+
+
+  <dependencies>
+    <dependency>
+      <groupId>org.scala-lang</groupId>
+      <artifactId>scala-library</artifactId>
+      <version>2.12.10</version> <!-- {x-version-update;cosmos_org.scala-lang:scala-library;external_dependency} -->
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.spark</groupId>
+      <artifactId>spark-sql_2.12</artifactId>
+      <version>3.1.1</version> <!-- {x-version-update;cosmos_org.apache.spark:spark-sql_2.12;external_dependency} -->
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>commons-io</groupId>
+      <artifactId>commons-io</artifactId>
+      <version>2.4</version> <!-- {x-version-update;cosmos_commons-io:commons-io;external_dependency} -->
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-cosmos</artifactId>
+      <version>4.18.0-beta.2</version> <!-- {x-version-update;com.azure:azure-cosmos;current} -->
+    </dependency>
+    <dependency>
+      <groupId>org.scala-lang.modules</groupId>
+      <artifactId>scala-java8-compat_2.12</artifactId>
+      <version>0.8.0</version> <!-- {x-version-update;cosmos_org.scala-lang.modules:scala-java8-compat_2.12;external_dependency} -->
+    </dependency>
+    <dependency>
+      <groupId>io.projectreactor</groupId>
+      <artifactId>reactor-scala-extensions_2.12</artifactId>
+      <version>0.8.0</version> <!-- {x-version-update;cosmos_io.projectreactor:reactor-scala-extensions_2.12;external_dependency} -->
+      <exclusions>
+        <exclusion>
+          <groupId>io.projectreactor</groupId>
+          <artifactId>reactor-core</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+
+    <!-- Test -->
+    <dependency>
+      <groupId>org.mockito</groupId>
+      <artifactId>mockito-core</artifactId>
+      <version>3.9.0</version> <!-- {x-version-update;org.mockito:mockito-core;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>io.projectreactor</groupId>
+      <artifactId>reactor-test</artifactId>
+      <version>3.4.8</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-simple</artifactId>
+      <version>1.7.32</version> <!-- {x-version-update;org.slf4j:slf4j-simple;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.assertj</groupId>
+      <artifactId>assertj-core</artifactId>
+      <version>3.19.0</version> <!-- {x-version-update;org.assertj:assertj-core;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.apache.spark</groupId>
+      <artifactId>spark-hive_2.12</artifactId>
+      <version>3.1.1</version> <!-- {x-version-update;cosmos_org.apache.spark:spark-hive_2.12;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.scalatest</groupId>
+      <artifactId>scalatest_2.12</artifactId>
+      <version>3.2.2</version> <!-- {x-version-update;cosmos_org.scalatest:scalatest_2.12;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.scalatest</groupId>
+      <artifactId>scalatest-flatspec_2.12</artifactId>
+      <version>3.2.3</version> <!-- {x-version-update;cosmos_org.scalatest:scalatest-flatspec_2.12;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.scalactic</groupId>
+      <artifactId>scalactic_2.12</artifactId>
+      <version>3.2.3</version> <!-- {x-version-update;cosmos_org.scalactic:scalactic_2.12;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.scalamock</groupId>
+      <artifactId>scalamock_2.12</artifactId>
+      <version>5.0.0</version> <!-- {x-version-update;cosmos_org.scalamock:scalamock_2.12;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+
+    <!-- Added this provided dependency to include necessary annotations used by "reactor-core".
+         Without this dependency, javadoc throws a warning as it cannot find enum When.MAYBE
+         which is used in @Nullable annotation in reactor core classes.
+
+         Similar provided dependency exits for "azure-core" as well.
+    -->
+    <dependency>
+      <groupId>com.google.code.findbugs</groupId>
+      <artifactId>jsr305</artifactId>
+      <version>3.0.2</version> <!-- {x-version-update;com.google.code.findbugs:jsr305;external_dependency} -->
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-api</artifactId>
+      <version>1.7.32</version> <!-- {x-version-update;org.slf4j:slf4j-api;external_dependency} -->
+    </dependency>
+  </dependencies>
+
+  <build>
+    <resources>
+      <resource>
+        <directory>src/main/resources</directory>
+        <filtering>true</filtering>
+        <includes>
+          <include>META-INF/project.properties</include>
+          <include>META-INF/services/org.apache.spark.sql.sources.DataSourceRegister</include>
+          <include>azure-cosmos-spark.properties</include>
+        </includes>
+      </resource>
+    </resources>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.8.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
+        <configuration>
+          <source>11</source>
+          <target>11</target>
+          <failOnWarning>false</failOnWarning>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <version>3.1.2</version> <!-- {x-version-update;org.apache.maven.plugins:maven-jar-plugin;external_dependency} -->
+        <executions>
+          <execution>
+            <id>empty-javadoc-jar</id>
+            <phase>package</phase>
+            <goals>
+              <goal>jar</goal>
+            </goals>
+            <configuration>
+              <classifier>javadoc</classifier>
+              <classesDirectory>${basedir}/javadoc</classesDirectory>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>net.alchim31.maven</groupId>
+        <artifactId>scala-maven-plugin</artifactId>
+        <version>4.4.0</version> <!-- {x-version-update;cosmos_net.alchim31.maven:scala-maven-plugin;external_dependency} -->
+        <configuration>
+          <source>11</source>
+          <target>11</target>
+          <failOnWarning>false</failOnWarning>
+        </configuration>
+        <executions>
+          <execution>
+          <goals>
+            <goal>compile</goal>
+            <goal>testCompile</goal>
+          </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-enforcer-plugin</artifactId>
+        <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
+        <configuration>
+          <rules>
+            <bannedDependencies>
+              <includes>
+                <include>org.javatuples:javatuples:[1.2]</include> <!-- {x-include-update;org.javatuples:javatuples;external_dependency} -->
+                <include>javax.annotation:javax.annotation-api:[1.3.2]</include> <!-- {x-include-update;javax.annotation:javax.annotation-api;external_dependency} -->
+                <include>org.apache.commons:commons-lang3:[3.12.0]</include> <!-- {x-include-update;org.apache.commons:commons-lang3;external_dependency} -->
+                <include>org.slf4j:slf4j-api:[1.7.32]</include> <!-- {x-include-update;org.slf4j:slf4j-api;external_dependency} -->
+                <include>org.apache.spark:spark-sql_2.12:[3.1.1]</include> <!-- {x-include-update;cosmos_org.apache.spark:spark-sql_2.12;external_dependency} -->
+                <include>commons-io:commons-io:[2.4]</include> <!-- {x-include-update;cosmos_commons-io:commons-io;external_dependency} -->
+                <include>org.scala-lang:scala-library:[2.12.10]</include> <!-- {x-include-update;cosmos_org.scala-lang:scala-library;external_dependency} -->
+                <include>org.scala-lang.modules:scala-java8-compat_2.12:[0.8.0]</include> <!-- {x-include-update;cosmos_org.scala-lang.modules:scala-java8-compat_2.12;external_dependency} -->
+                <include>io.projectreactor:reactor-scala-extensions_2.12:[0.8.0]</include> <!-- {x-include-update;cosmos_io.projectreactor:reactor-scala-extensions_2.12;external_dependency} -->
+                <include>org.scalatest:scalatest_2.12:[3.2.2]</include> <!-- {x-include-update;cosmos_org.scalatest:scalatest_2.12;external_dependency} -->
+                <include>net.alchim31.maven:scala-maven-plugin:[4.4.0]</include> <!-- {x-include-update;cosmos_net.alchim31.maven:scala-maven-plugin;external_dependency} -->
+                <include>org.scalastyle:scalastyle-maven-plugin:[1.0.0]</include> <!-- {x-include-update;cosmos_org.scalastyle:scalastyle-maven-plugin;external_dependency} -->
+              </includes>
+            </bannedDependencies>
+          </rules>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <version>3.1.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
+        <configuration>
+          <sourceFileExcludes>
+            <sourceFileExclude>com/azure/spring/data/cosmos/core/mapping/BasicCosmosPersistentProperty.java</sourceFileExclude>
+          </sourceFileExcludes>
+          <additionalDependencies>
+            <additionalDependency>
+              <groupId>org.projectlombok</groupId>
+              <artifactId>lombok</artifactId>
+              <version>1.18.6</version>
+            </additionalDependency>
+          </additionalDependencies>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.scalastyle</groupId>
+        <artifactId>scalastyle-maven-plugin</artifactId>
+        <version>1.0.0</version> <!-- {x-version-update;cosmos_org.scalastyle:scalastyle-maven-plugin;external_dependency} -->
+        <configuration>
+          <verbose>false</verbose>
+          <failOnViolation>true</failOnViolation>
+          <includeTestSourceDirectory>true</includeTestSourceDirectory>
+          <failOnWarning>true</failOnWarning>
+          <sourceDirectory>${project.basedir}/src/main/scala</sourceDirectory>
+          <testSourceDirectory>${project.basedir}/src/test/scala</testSourceDirectory>
+          <configLocation>${project.basedir}/scalastyle_config.xml</configLocation>
+          <outputFile>${project.basedir}/scalastyle-output.xml</outputFile>
+          <outputEncoding>UTF-8</outputEncoding>
+        </configuration>
+        <executions>
+          <execution>
+            <id>validate-style</id>
+            <phase>validate</phase>
+            <goals>
+              <goal>check</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>verify-style</id>
+            <phase>verify</phase>
+            <goals>
+              <goal>check</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-checkstyle-plugin</artifactId>
+        <version>3.1.2</version> <!-- {x-version-update;org.apache.maven.plugins:maven-checkstyle-plugin;external_dependency} -->
+        <configuration>
+          <skip>true</skip>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>com.github.spotbugs</groupId>
+        <artifactId>spotbugs-maven-plugin</artifactId>
+        <version>4.2.0</version> <!-- {x-version-update;com.github.spotbugs:spotbugs-maven-plugin;external_dependency} -->
+        <configuration>
+          <skip>true</skip>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.revapi</groupId>
+        <artifactId>revapi-maven-plugin</artifactId>
+        <version>0.11.2</version> <!-- {x-version-update;org.revapi:revapi-maven-plugin;external_dependency} -->
+        <configuration>
+          <skip>true</skip>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.jacoco</groupId>
+        <artifactId>jacoco-maven-plugin</artifactId>
+        <version>0.8.5</version> <!-- {x-version-update;org.jacoco:jacoco-maven-plugin;external_dependency} -->
+        <configuration>
+          <skip>true</skip>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-shade-plugin</artifactId>
+        <version>3.2.4</version> <!-- {x-version-update;org.apache.maven.plugins:maven-shade-plugin;external_dependency} -->
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>shade</goal>
+            </goals>
+            <configuration>
+              <relocations>
+                <relocation>
+                  <pattern>com.azure</pattern>
+                  <shadedPattern>${shadingPrefix}.com.azure</shadedPattern>
+                  <excludes>
+                    <exclude>com.azure.cosmos.spark.*</exclude>
+                    <exclude>com.azure.cosmos.implementation.SparkBridgeInternal</exclude>
+                    <exclude>com.azure.cosmos.models.CosmosParameterizedQuery</exclude>
+                  </excludes>
+                </relocation>
+                <relocation>
+                  <pattern>scala.compat.java8</pattern>
+                  <shadedPattern>${shadingPrefix}.scala.compat.java8</shadedPattern>
+                </relocation>
+                <relocation>
+                  <pattern>scala.concurrent.java8</pattern>
+                  <shadedPattern>${shadingPrefix}.scala.concurrent.java8</shadedPattern>
+                </relocation>
+                <relocation>
+                  <pattern>io.netty</pattern>
+                  <shadedPattern>${shadingPrefix}.io.netty</shadedPattern>
+                </relocation>
+                <relocation>
+                  <pattern>com.codahale</pattern>
+                  <shadedPattern>${shadingPrefix}.com.codahale</shadedPattern>
+                </relocation>
+                <relocation>
+                  <pattern>org.codehaus</pattern>
+                  <shadedPattern>${shadingPrefix}.org.codehaus</shadedPattern>
+                </relocation>
+                <relocation>
+                  <pattern>com.fasterxml</pattern>
+                  <shadedPattern>${shadingPrefix}.com.fasterxml</shadedPattern>
+                </relocation>
+                <relocation>
+                  <pattern>io.micrometer</pattern>
+                  <shadedPattern>${shadingPrefix}.io.micrometer</shadedPattern>
+                </relocation>
+                <relocation>
+                  <pattern>org.HdrHistogram</pattern>
+                  <shadedPattern>${shadingPrefix}.org.HdrHistogram</shadedPattern>
+                </relocation>
+                <relocation>
+                  <pattern>org.LatencyUtils</pattern>
+                  <shadedPattern>${shadingPrefix}.org.LatencyUtils</shadedPattern>
+                </relocation>
+                <relocation>
+                  <pattern>org.reactivestreams</pattern>
+                  <shadedPattern>${shadingPrefix}.org.reactivestreams</shadedPattern>
+                </relocation>
+                <relocation>
+                  <pattern>reactor</pattern>
+                  <shadedPattern>${shadingPrefix}.reactor</shadedPattern>
+                </relocation>
+                <relocation>
+                  <pattern>javax.activation</pattern>
+                  <shadedPattern>${shadingPrefix}.javax.activation</shadedPattern>
+                </relocation>
+                <relocation>
+                  <pattern>javax.xml</pattern>
+                  <shadedPattern>${shadingPrefix}.javax.xml</shadedPattern>
+                </relocation>
+             </relocations>
+              <filters>
+                <filter>
+                  <artifact>*:*</artifact>
+                  <excludes>
+                    <!-- suppress warning: Discovered module-info.class. Shading will break its strong encapsulation. -->
+                    <!-- https://stackoverflow.com/questions/56063566/maven-how-to-remove-module-info-class-warning-for-shaded-jar -->
+                    <exclude>module-info.class</exclude>
+                    <!-- remove the dependencies signature as not relevant-->
+                    <exclude>META-INF/*.MF</exclude>
+                    <exclude>META-INF/*.SF</exclude>
+                    <exclude>META-INF/*.DSA</exclude>
+                    <exclude>META-INF/*.RSA</exclude>
+                  </excludes>
+                </filter>
+              </filters>
+              <artifactSet>
+                <excludes>
+                  <exclude>org.slf4j</exclude>
+                  <exclude>org.apache.hadoop:*</exclude>
+                  <exclude>org.apache.spark:*</exclude>
+                  <exclude>org.scala-lang:*</exclude>
+                </excludes>
+              </artifactSet>
+              <minimizeJar>true</minimizeJar>
+              <transformers>
+                <!-- prevents apache license duplication -->
+                <transformer implementation="org.apache.maven.plugins.shade.resource.ApacheLicenseResourceTransformer">
+                </transformer>
+
+                <!-- Some licenses (including the Apache License, Version 2)
+                 require that notices are preserved by downstream distributors.
+                  ApacheNoticeResourceTransformer automates the assembly of an appropriate NOTICE. -->
+                <transformer implementation="org.apache.maven.plugins.shade.resource.ApacheNoticeResourceTransformer">
+                  <addHeader>false</addHeader>
+                </transformer>
+
+                <!-- The PropertiesTransformer allows a set of properties files to be merged
+                 and to resolve conflicts based on an ordinal giving the priority of each file.
+                 An optional alreadyMergedKey enables to have a boolean flag in the file which,
+                 if set to true, request to use the file as it as the result of the merge.
+                 If two files are considered complete in the merge process then the shade will fail.-->
+                <transformer implementation="org.apache.maven.plugins.shade.resource.properties.PropertiesTransformer">
+                  <!-- required configuration -->
+                  <!-- merges all netty lib version files into one file -->
+                  <resource>META-INF/io.netty.versions.properties</resource>
+                  <ordinalKey>ordinal</ordinalKey>
+                  <!-- optional configuration -->
+
+                  <alreadyMergedKey>already_merged</alreadyMergedKey>
+                  <defaultOrdinal>0</defaultOrdinal>
+                  <reverseOrder>false</reverseOrder>
+                </transformer>
+
+                <!-- this handles and properly merges the content of META-INF/services in the dependencies -->
+                <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
+
+                <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
+                  <!-- once 3.3.0 shade plugin is release upgrade the maven plugin and remove AppendingTransformer
+                    https://issues.apache.org/jira/browse/MSHADE-371 -->
+                  <resource>META-INF/NOTICE.md</resource>
+                </transformer>
+
+                <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
+                  <!-- once 3.3.0 shade plugin is release upgrade the maven plugin and remove AppendingTransformer
+                    https://issues.apache.org/jira/browse/MSHADE-371 -->
+                  <resource>META-INF/LICENSE.md</resource>
+                </transformer>
+
+                <!-- TODO moderakh validate that netty native libs e.g, boringssl actually is used. -->
+              </transformers>
+
+              <!-- When true, it will attempt to shade the contents of the java source files when creating the sources jar. -->
+              <shadeSourcesContent>true</shadeSourcesContent>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+    </plugins>
+  </build>
+
+  <profiles>
+    <profile>
+      <id>unit</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
+            <configuration>
+              <includes>
+                <include>**/*.*</include>
+                <include>**/*Test.*</include>
+                <include>**/*Suite.*</include>
+                <include>**/*Spec.*</include>
+              </includes>
+              <skipTests>true</skipTests>
+            </configuration>
+          </plugin>
+          <!-- To use the ScalaTest Maven plugin, SureFire needs to be disabled and ScalaTest enabled -->
+          <!-- enable scalatest -->
+          <plugin>
+            <groupId>org.scalatest</groupId>
+            <artifactId>scalatest-maven-plugin</artifactId>
+            <version>2.0.2</version> <!-- {x-version-update;cosmos_org.scalatest:scalatest-maven-plugin;external_dependency} -->
+            <configuration>
+              <reportsDirectory>${project.build.directory}/surefire-reports</reportsDirectory>
+              <junitxml>.</junitxml>
+              <filereports>SparkTestSuite.txt</filereports>
+              <suffixes>(Spec|[^I]Test|Suite)</suffixes> <!-- unit tests which do not require cosmos db -->
+            </configuration>
+            <executions>
+              <execution>
+                <id>test</id>
+                <goals>
+                  <goal>test</goal>
+                </goals>
+              </execution>
+              <execution>
+                <id>scala-test</id>
+                <goals>
+                  <goal>test</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <profile>
+      <!-- integration tests, requires Cosmos DB Emulator Endpoint -->
+      <id>sparkE2E</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
+            <configuration>
+              <includes>
+                <include>**/*.*</include>
+                <include>**/*Test.*</include>
+                <include>**/*Suite.*</include>
+                <include>**/*Spec.*</include>
+              </includes>
+              <skipTests>true</skipTests>
+            </configuration>
+          </plugin>
+          <plugin>
+            <groupId>org.scalatest</groupId>
+            <artifactId>scalatest-maven-plugin</artifactId>
+            <version>2.0.2</version> <!-- {x-version-update;cosmos_org.scalatest:scalatest-maven-plugin;external_dependency} -->
+            <configuration>
+              <reportsDirectory>${project.build.directory}/surefire-reports</reportsDirectory>
+              <junitxml>.</junitxml>
+              <filereports>SparkTestSuite.txt</filereports>
+              <suffixes>(ITest|Test|Spec|Suite)</suffixes> <!-- every test -->
+            </configuration>
+            <executions>
+              <execution>
+                <id>test</id>
+                <goals>
+                  <goal>test</goal>
+                </goals>
+              </execution>
+              <execution>
+                <id>scala-test</id>
+                <goals>
+                  <goal>test</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
+
+    <!-- Library cannot build for Java 10 and below -->
+    <profile>
+      <id>java8</id>
+      <activation>
+        <jdk>[,11)</jdk>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.jacoco</groupId>
+            <artifactId>jacoco-maven-plugin</artifactId>
+            <version>0.8.5</version> <!-- {x-version-update;org.jacoco:jacoco-maven-plugin;external_dependency} -->
+            <configuration>
+              <skip>true</skip>
+            </configuration>
+          </plugin>
+
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <version>3.8.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
+            <configuration>
+              <skipMain>true</skipMain>
+            </configuration>
+          </plugin>
+
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-javadoc-plugin</artifactId>
+            <version>3.1.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
+            <configuration>
+              <skip>true</skip>
+            </configuration>
+          </plugin>
+
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-jar-plugin</artifactId>
+            <version>3.1.2</version> <!-- {x-version-update;org.apache.maven.plugins:maven-jar-plugin;external_dependency} -->
+            <configuration>
+              <skip>true</skip>
+            </configuration>
+          </plugin>
+
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-checkstyle-plugin</artifactId>
+            <version>3.1.2</version> <!-- {x-version-update;org.apache.maven.plugins:maven-checkstyle-plugin;external_dependency} -->
+            <configuration>
+              <skip>true</skip>
+            </configuration>
+          </plugin>
+
+          <plugin>
+            <groupId>com.github.spotbugs</groupId>
+            <artifactId>spotbugs-maven-plugin</artifactId>
+            <version>4.2.0</version> <!-- {x-version-update;com.github.spotbugs:spotbugs-maven-plugin;external_dependency} -->
+            <configuration>
+              <skip>true</skip>
+            </configuration>
+          </plugin>
+
+          <plugin>
+            <groupId>org.revapi</groupId>
+            <artifactId>revapi-maven-plugin</artifactId>
+            <version>0.11.2</version> <!-- {x-version-update;org.revapi:revapi-maven-plugin;external_dependency} -->
+            <configuration>
+              <skip>true</skip>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
+    <!-- Override the parent client.pom.xml's java11+ profile to override target of base-compile execution from 1.8 to 11-->
+    <profile>
+      <id>java-lts</id>
+      <activation>
+        <jdk>[11,)</jdk>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <version>3.8.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
+            <configuration>
+              <testRelease>11</testRelease>
+            </configuration>
+            <executions>
+              <execution>
+                <id>default-compile</id>
+                <configuration>
+                  <release>11</release>
+                </configuration>
+              </execution>
+              <!-- Here the 'base-compile' execution section of java-lts profile defined in parent pom.client.xml is
+              overridden. In parent pom, this execution entry enforces java8 release compatibility. The Spark
+              connectors for Spark 3.0 and above not available in Java8, hence here in this pom we override that
+              release compact to 11.
+              -->
+              <execution>
+                <id>base-compile</id>
+                <goals>
+                  <goal>compile</goal>
+                </goals>
+                <configuration combine.self="override">
+                  <release>11</release>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+
+    </profile>
+  </profiles>
+
+</project>

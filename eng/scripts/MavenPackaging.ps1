@@ -82,6 +82,7 @@ function Get-SonaTypeProfileID([string]$GroupID) {
     "com.microsoft.servicefabric*"   { "8acff2e04dc15e" }
     "com.microsoft.spring*"          { "615994e851c580" }
     "com.microsoft.sqlserver*"       { "2bafd8aecdb240" }
+    "com.windowsazure*"              { "222b383b84716"  }
     default {
       throw "Profile ID for group ID $GroupID was not found."
     }

@@ -4,16 +4,16 @@
 
 package com.azure.resourcemanager.postgresql.implementation;
 
-import com.azure.resourcemanager.postgresql.PostgreSqlManager;
 import com.azure.resourcemanager.postgresql.fluent.models.NameAvailabilityInner;
 import com.azure.resourcemanager.postgresql.models.NameAvailability;
 
 public final class NameAvailabilityImpl implements NameAvailability {
     private NameAvailabilityInner innerObject;
 
-    private final PostgreSqlManager serviceManager;
+    private final com.azure.resourcemanager.postgresql.PostgreSqlManager serviceManager;
 
-    NameAvailabilityImpl(NameAvailabilityInner innerObject, PostgreSqlManager serviceManager) {
+    NameAvailabilityImpl(
+        NameAvailabilityInner innerObject, com.azure.resourcemanager.postgresql.PostgreSqlManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -34,7 +34,7 @@ public final class NameAvailabilityImpl implements NameAvailability {
         return this.innerObject;
     }
 
-    private PostgreSqlManager manager() {
+    private com.azure.resourcemanager.postgresql.PostgreSqlManager manager() {
         return this.serviceManager;
     }
 }

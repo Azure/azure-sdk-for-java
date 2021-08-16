@@ -50,6 +50,18 @@ public final class AzureTableImpl {
         return this.httpPipeline;
     }
 
+    /** The serializer to serialize an object into a string. */
+    private final SerializerAdapter serializerAdapter;
+
+    /**
+     * Gets The serializer to serialize an object into a string.
+     *
+     * @return the serializerAdapter value.
+     */
+    public SerializerAdapter getSerializerAdapter() {
+        return this.serializerAdapter;
+    }
+
     /** The TablesImpl object to access its operations. */
     private final TablesImpl tables;
 
@@ -74,34 +86,47 @@ public final class AzureTableImpl {
         return this.services;
     }
 
-    /** Initializes an instance of AzureTable client. */
+    /**
+     * Initializes an instance of AzureTable client.
+     *
+     * @param url The URL of the service account or table that is the target of the desired operation.
+     * @param version Specifies the version of the operation to use for this request.
+     */
     AzureTableImpl(String url, String version) {
         this(
                 new HttpPipelineBuilder()
                         .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
                         .build(),
-                url, version);
+                JacksonAdapter.createDefaultSerializerAdapter(),
+                url,
+                version);
     }
 
     /**
      * Initializes an instance of AzureTable client.
      *
      * @param httpPipeline The HTTP pipeline to send requests through.
+     * @param url The URL of the service account or table that is the target of the desired operation.
+     * @param version Specifies the version of the operation to use for this request.
      */
     AzureTableImpl(HttpPipeline httpPipeline, String url, String version) {
-        this(httpPipeline, url, version, JacksonAdapter.createDefaultSerializerAdapter());
+        this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), url, version);
     }
 
     /**
      * Initializes an instance of AzureTable client.
      *
      * @param httpPipeline The HTTP pipeline to send requests through.
+     * @param serializerAdapter The serializer to serialize an object into a string.
+     * @param url The URL of the service account or table that is the target of the desired operation.
+     * @param version Specifies the version of the operation to use for this request.
      */
-    AzureTableImpl(HttpPipeline httpPipeline, String url, String version, SerializerAdapter serializerAdapter) {
+    AzureTableImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String url, String version) {
         this.httpPipeline = httpPipeline;
+        this.serializerAdapter = serializerAdapter;
         this.url = url;
         this.version = version;
-        this.tables = new TablesImpl(this, serializerAdapter);
-        this.services = new ServicesImpl(this, serializerAdapter);
+        this.tables = new TablesImpl(this);
+        this.services = new ServicesImpl(this);
     }
 }

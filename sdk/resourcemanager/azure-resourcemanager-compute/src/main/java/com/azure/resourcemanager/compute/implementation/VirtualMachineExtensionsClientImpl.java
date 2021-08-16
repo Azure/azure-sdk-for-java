@@ -155,7 +155,7 @@ public final class VirtualMachineExtensionsClientImpl implements VirtualMachineE
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine where the extension should be created or updated.
      * @param vmExtensionName The name of the virtual machine extension.
-     * @param extensionParameters Describes a Virtual Machine Extension.
+     * @param extensionParameters Parameters supplied to the Create Virtual Machine Extension operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -196,7 +196,7 @@ public final class VirtualMachineExtensionsClientImpl implements VirtualMachineE
         } else {
             extensionParameters.validate();
         }
-        final String apiVersion = "2020-06-01";
+        final String apiVersion = "2021-04-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -212,7 +212,7 @@ public final class VirtualMachineExtensionsClientImpl implements VirtualMachineE
                             extensionParameters,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -221,7 +221,7 @@ public final class VirtualMachineExtensionsClientImpl implements VirtualMachineE
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine where the extension should be created or updated.
      * @param vmExtensionName The name of the virtual machine extension.
-     * @param extensionParameters Describes a Virtual Machine Extension.
+     * @param extensionParameters Parameters supplied to the Create Virtual Machine Extension operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -264,7 +264,7 @@ public final class VirtualMachineExtensionsClientImpl implements VirtualMachineE
         } else {
             extensionParameters.validate();
         }
-        final String apiVersion = "2020-06-01";
+        final String apiVersion = "2021-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -286,7 +286,7 @@ public final class VirtualMachineExtensionsClientImpl implements VirtualMachineE
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine where the extension should be created or updated.
      * @param vmExtensionName The name of the virtual machine extension.
-     * @param extensionParameters Describes a Virtual Machine Extension.
+     * @param extensionParameters Parameters supplied to the Create Virtual Machine Extension operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -316,7 +316,7 @@ public final class VirtualMachineExtensionsClientImpl implements VirtualMachineE
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine where the extension should be created or updated.
      * @param vmExtensionName The name of the virtual machine extension.
-     * @param extensionParameters Describes a Virtual Machine Extension.
+     * @param extensionParameters Parameters supplied to the Create Virtual Machine Extension operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -349,7 +349,7 @@ public final class VirtualMachineExtensionsClientImpl implements VirtualMachineE
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine where the extension should be created or updated.
      * @param vmExtensionName The name of the virtual machine extension.
-     * @param extensionParameters Describes a Virtual Machine Extension.
+     * @param extensionParameters Parameters supplied to the Create Virtual Machine Extension operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -371,7 +371,7 @@ public final class VirtualMachineExtensionsClientImpl implements VirtualMachineE
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine where the extension should be created or updated.
      * @param vmExtensionName The name of the virtual machine extension.
-     * @param extensionParameters Describes a Virtual Machine Extension.
+     * @param extensionParameters Parameters supplied to the Create Virtual Machine Extension operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -395,7 +395,7 @@ public final class VirtualMachineExtensionsClientImpl implements VirtualMachineE
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine where the extension should be created or updated.
      * @param vmExtensionName The name of the virtual machine extension.
-     * @param extensionParameters Describes a Virtual Machine Extension.
+     * @param extensionParameters Parameters supplied to the Create Virtual Machine Extension operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -418,7 +418,7 @@ public final class VirtualMachineExtensionsClientImpl implements VirtualMachineE
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine where the extension should be created or updated.
      * @param vmExtensionName The name of the virtual machine extension.
-     * @param extensionParameters Describes a Virtual Machine Extension.
+     * @param extensionParameters Parameters supplied to the Create Virtual Machine Extension operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -443,7 +443,7 @@ public final class VirtualMachineExtensionsClientImpl implements VirtualMachineE
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine where the extension should be created or updated.
      * @param vmExtensionName The name of the virtual machine extension.
-     * @param extensionParameters Describes a Virtual Machine Extension.
+     * @param extensionParameters Parameters supplied to the Create Virtual Machine Extension operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -464,7 +464,7 @@ public final class VirtualMachineExtensionsClientImpl implements VirtualMachineE
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine where the extension should be created or updated.
      * @param vmExtensionName The name of the virtual machine extension.
-     * @param extensionParameters Describes a Virtual Machine Extension.
+     * @param extensionParameters Parameters supplied to the Create Virtual Machine Extension operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -487,7 +487,7 @@ public final class VirtualMachineExtensionsClientImpl implements VirtualMachineE
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine where the extension should be updated.
      * @param vmExtensionName The name of the virtual machine extension.
-     * @param extensionParameters Describes a Virtual Machine Extension.
+     * @param extensionParameters Parameters supplied to the Update Virtual Machine Extension operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -528,7 +528,7 @@ public final class VirtualMachineExtensionsClientImpl implements VirtualMachineE
         } else {
             extensionParameters.validate();
         }
-        final String apiVersion = "2020-06-01";
+        final String apiVersion = "2021-04-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -544,7 +544,7 @@ public final class VirtualMachineExtensionsClientImpl implements VirtualMachineE
                             extensionParameters,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -553,7 +553,7 @@ public final class VirtualMachineExtensionsClientImpl implements VirtualMachineE
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine where the extension should be updated.
      * @param vmExtensionName The name of the virtual machine extension.
-     * @param extensionParameters Describes a Virtual Machine Extension.
+     * @param extensionParameters Parameters supplied to the Update Virtual Machine Extension operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -596,7 +596,7 @@ public final class VirtualMachineExtensionsClientImpl implements VirtualMachineE
         } else {
             extensionParameters.validate();
         }
-        final String apiVersion = "2020-06-01";
+        final String apiVersion = "2021-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -618,7 +618,7 @@ public final class VirtualMachineExtensionsClientImpl implements VirtualMachineE
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine where the extension should be updated.
      * @param vmExtensionName The name of the virtual machine extension.
-     * @param extensionParameters Describes a Virtual Machine Extension.
+     * @param extensionParameters Parameters supplied to the Update Virtual Machine Extension operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -648,7 +648,7 @@ public final class VirtualMachineExtensionsClientImpl implements VirtualMachineE
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine where the extension should be updated.
      * @param vmExtensionName The name of the virtual machine extension.
-     * @param extensionParameters Describes a Virtual Machine Extension.
+     * @param extensionParameters Parameters supplied to the Update Virtual Machine Extension operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -681,7 +681,7 @@ public final class VirtualMachineExtensionsClientImpl implements VirtualMachineE
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine where the extension should be updated.
      * @param vmExtensionName The name of the virtual machine extension.
-     * @param extensionParameters Describes a Virtual Machine Extension.
+     * @param extensionParameters Parameters supplied to the Update Virtual Machine Extension operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -702,7 +702,7 @@ public final class VirtualMachineExtensionsClientImpl implements VirtualMachineE
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine where the extension should be updated.
      * @param vmExtensionName The name of the virtual machine extension.
-     * @param extensionParameters Describes a Virtual Machine Extension.
+     * @param extensionParameters Parameters supplied to the Update Virtual Machine Extension operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -726,7 +726,7 @@ public final class VirtualMachineExtensionsClientImpl implements VirtualMachineE
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine where the extension should be updated.
      * @param vmExtensionName The name of the virtual machine extension.
-     * @param extensionParameters Describes a Virtual Machine Extension.
+     * @param extensionParameters Parameters supplied to the Update Virtual Machine Extension operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -749,7 +749,7 @@ public final class VirtualMachineExtensionsClientImpl implements VirtualMachineE
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine where the extension should be updated.
      * @param vmExtensionName The name of the virtual machine extension.
-     * @param extensionParameters Describes a Virtual Machine Extension.
+     * @param extensionParameters Parameters supplied to the Update Virtual Machine Extension operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -774,7 +774,7 @@ public final class VirtualMachineExtensionsClientImpl implements VirtualMachineE
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine where the extension should be updated.
      * @param vmExtensionName The name of the virtual machine extension.
-     * @param extensionParameters Describes a Virtual Machine Extension.
+     * @param extensionParameters Parameters supplied to the Update Virtual Machine Extension operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -795,7 +795,7 @@ public final class VirtualMachineExtensionsClientImpl implements VirtualMachineE
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine where the extension should be updated.
      * @param vmExtensionName The name of the virtual machine extension.
-     * @param extensionParameters Describes a Virtual Machine Extension.
+     * @param extensionParameters Parameters supplied to the Update Virtual Machine Extension operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -849,7 +849,7 @@ public final class VirtualMachineExtensionsClientImpl implements VirtualMachineE
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-06-01";
+        final String apiVersion = "2021-04-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -862,7 +862,7 @@ public final class VirtualMachineExtensionsClientImpl implements VirtualMachineE
                             apiVersion,
                             this.client.getSubscriptionId(),
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -903,7 +903,7 @@ public final class VirtualMachineExtensionsClientImpl implements VirtualMachineE
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-06-01";
+        final String apiVersion = "2021-04-01";
         context = this.client.mergeContext(context);
         return service
             .delete(
@@ -1100,7 +1100,7 @@ public final class VirtualMachineExtensionsClientImpl implements VirtualMachineE
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-06-01";
+        final String apiVersion = "2021-04-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1116,7 +1116,7 @@ public final class VirtualMachineExtensionsClientImpl implements VirtualMachineE
                             this.client.getSubscriptionId(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1158,7 +1158,7 @@ public final class VirtualMachineExtensionsClientImpl implements VirtualMachineE
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-06-01";
+        final String apiVersion = "2021-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1295,7 +1295,7 @@ public final class VirtualMachineExtensionsClientImpl implements VirtualMachineE
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-06-01";
+        final String apiVersion = "2021-04-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1310,7 +1310,7 @@ public final class VirtualMachineExtensionsClientImpl implements VirtualMachineE
                             this.client.getSubscriptionId(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1347,7 +1347,7 @@ public final class VirtualMachineExtensionsClientImpl implements VirtualMachineE
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-06-01";
+        final String apiVersion = "2021-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service

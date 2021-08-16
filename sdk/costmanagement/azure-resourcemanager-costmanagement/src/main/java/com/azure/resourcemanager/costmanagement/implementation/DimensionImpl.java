@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.costmanagement.implementation;
 
-import com.azure.resourcemanager.costmanagement.CostManagementManager;
 import com.azure.resourcemanager.costmanagement.fluent.models.DimensionInner;
 import com.azure.resourcemanager.costmanagement.models.Dimension;
 import java.time.OffsetDateTime;
@@ -15,9 +14,10 @@ import java.util.Map;
 public final class DimensionImpl implements Dimension {
     private DimensionInner innerObject;
 
-    private final CostManagementManager serviceManager;
+    private final com.azure.resourcemanager.costmanagement.CostManagementManager serviceManager;
 
-    DimensionImpl(DimensionInner innerObject, CostManagementManager serviceManager) {
+    DimensionImpl(
+        DimensionInner innerObject, com.azure.resourcemanager.costmanagement.CostManagementManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -32,6 +32,15 @@ public final class DimensionImpl implements Dimension {
 
     public String type() {
         return this.innerModel().type();
+    }
+
+    public Map<String, String> tags() {
+        Map<String, String> inner = this.innerModel().tags();
+        if (inner != null) {
+            return Collections.unmodifiableMap(inner);
+        } else {
+            return Collections.emptyMap();
+        }
     }
 
     public String description() {
@@ -75,20 +84,11 @@ public final class DimensionImpl implements Dimension {
         return this.innerModel().nextLink();
     }
 
-    public Map<String, String> tags() {
-        Map<String, String> inner = this.innerModel().tags();
-        if (inner != null) {
-            return Collections.unmodifiableMap(inner);
-        } else {
-            return Collections.emptyMap();
-        }
-    }
-
     public DimensionInner innerModel() {
         return this.innerObject;
     }
 
-    private CostManagementManager manager() {
+    private com.azure.resourcemanager.costmanagement.CostManagementManager manager() {
         return this.serviceManager;
     }
 }

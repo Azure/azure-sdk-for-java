@@ -15,6 +15,7 @@ import com.azure.resourcemanager.resources.fluentcore.arm.models.HasManager;
 import reactor.core.publisher.Mono;
 
 import java.util.UUID;
+import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
 
 /** The implementation of Applications and its parent interfaces. */
 public class ActiveDirectoryApplicationsImpl
@@ -36,7 +37,7 @@ public class ActiveDirectoryApplicationsImpl
 
     @Override
     public PagedFlux<ActiveDirectoryApplication> listAsync() {
-        return inner().listApplicationAsync().mapPage(this::wrapModel);
+        return PagedConverter.mapPage(inner().listApplicationAsync(), this::wrapModel);
     }
 
     @Override
@@ -112,7 +113,7 @@ public class ActiveDirectoryApplicationsImpl
 
     @Override
     public PagedFlux<ActiveDirectoryApplication> listByFilterAsync(String filter) {
-        return inner().listApplicationAsync(null, null, null, null, filter, null, null, null, null)
-            .mapPage(this::wrapModel);
+        return PagedConverter.mapPage(inner().listApplicationAsync(null, null, null, null, filter, null, null, null, null),
+            this::wrapModel);
     }
 }

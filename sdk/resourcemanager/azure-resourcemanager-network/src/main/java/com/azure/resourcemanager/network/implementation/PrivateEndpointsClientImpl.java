@@ -200,7 +200,7 @@ public final class PrivateEndpointsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-07-01";
+        final String apiVersion = "2021-02-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -214,7 +214,7 @@ public final class PrivateEndpointsClientImpl
                             this.client.getSubscriptionId(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -251,7 +251,7 @@ public final class PrivateEndpointsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-07-01";
+        final String apiVersion = "2021-02-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -435,7 +435,7 @@ public final class PrivateEndpointsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-07-01";
+        final String apiVersion = "2021-02-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -450,7 +450,7 @@ public final class PrivateEndpointsClientImpl
                             expand,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -488,7 +488,7 @@ public final class PrivateEndpointsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-07-01";
+        final String apiVersion = "2021-02-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -591,7 +591,7 @@ public final class PrivateEndpointsClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param privateEndpointName The name of the private endpoint.
-     * @param parameters Private endpoint resource.
+     * @param parameters Parameters supplied to the create or update private endpoint operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -625,7 +625,7 @@ public final class PrivateEndpointsClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2020-07-01";
+        final String apiVersion = "2021-02-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -640,7 +640,7 @@ public final class PrivateEndpointsClientImpl
                             parameters,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -648,7 +648,7 @@ public final class PrivateEndpointsClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param privateEndpointName The name of the private endpoint.
-     * @param parameters Private endpoint resource.
+     * @param parameters Parameters supplied to the create or update private endpoint operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
@@ -683,7 +683,7 @@ public final class PrivateEndpointsClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2020-07-01";
+        final String apiVersion = "2021-02-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -703,7 +703,7 @@ public final class PrivateEndpointsClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param privateEndpointName The name of the private endpoint.
-     * @param parameters Private endpoint resource.
+     * @param parameters Parameters supplied to the create or update private endpoint operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -729,7 +729,7 @@ public final class PrivateEndpointsClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param privateEndpointName The name of the private endpoint.
-     * @param parameters Private endpoint resource.
+     * @param parameters Parameters supplied to the create or update private endpoint operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
@@ -753,7 +753,7 @@ public final class PrivateEndpointsClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param privateEndpointName The name of the private endpoint.
-     * @param parameters Private endpoint resource.
+     * @param parameters Parameters supplied to the create or update private endpoint operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -770,7 +770,7 @@ public final class PrivateEndpointsClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param privateEndpointName The name of the private endpoint.
-     * @param parameters Private endpoint resource.
+     * @param parameters Parameters supplied to the create or update private endpoint operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
@@ -788,7 +788,7 @@ public final class PrivateEndpointsClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param privateEndpointName The name of the private endpoint.
-     * @param parameters Private endpoint resource.
+     * @param parameters Parameters supplied to the create or update private endpoint operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -807,7 +807,7 @@ public final class PrivateEndpointsClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param privateEndpointName The name of the private endpoint.
-     * @param parameters Private endpoint resource.
+     * @param parameters Parameters supplied to the create or update private endpoint operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
@@ -827,7 +827,7 @@ public final class PrivateEndpointsClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param privateEndpointName The name of the private endpoint.
-     * @param parameters Private endpoint resource.
+     * @param parameters Parameters supplied to the create or update private endpoint operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -844,7 +844,7 @@ public final class PrivateEndpointsClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param privateEndpointName The name of the private endpoint.
-     * @param parameters Private endpoint resource.
+     * @param parameters Parameters supplied to the create or update private endpoint operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
@@ -884,7 +884,7 @@ public final class PrivateEndpointsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-07-01";
+        final String apiVersion = "2021-02-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -906,7 +906,7 @@ public final class PrivateEndpointsClientImpl
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -938,7 +938,7 @@ public final class PrivateEndpointsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-07-01";
+        final String apiVersion = "2021-02-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1042,7 +1042,7 @@ public final class PrivateEndpointsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-07-01";
+        final String apiVersion = "2021-02-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1058,7 +1058,7 @@ public final class PrivateEndpointsClientImpl
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1084,7 +1084,7 @@ public final class PrivateEndpointsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-07-01";
+        final String apiVersion = "2021-02-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1186,7 +1186,7 @@ public final class PrivateEndpointsClientImpl
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1258,7 +1258,7 @@ public final class PrivateEndpointsClientImpl
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**

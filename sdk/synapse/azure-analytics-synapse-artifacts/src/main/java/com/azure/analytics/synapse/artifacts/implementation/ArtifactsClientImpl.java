@@ -194,28 +194,28 @@ public final class ArtifactsClientImpl {
         return this.notebooks;
     }
 
-    /** The WorkspacesImpl object to access its operations. */
-    private final WorkspacesImpl workspaces;
+    /** The NotebookOperationResultsImpl object to access its operations. */
+    private final NotebookOperationResultsImpl notebookOperationResults;
 
     /**
-     * Gets the WorkspacesImpl object to access its operations.
+     * Gets the NotebookOperationResultsImpl object to access its operations.
      *
-     * @return the WorkspacesImpl object.
+     * @return the NotebookOperationResultsImpl object.
      */
-    public WorkspacesImpl getWorkspaces() {
-        return this.workspaces;
+    public NotebookOperationResultsImpl getNotebookOperationResults() {
+        return this.notebookOperationResults;
     }
 
-    /** The SqlPoolsImpl object to access its operations. */
-    private final SqlPoolsImpl sqlPools;
+    /** The SparkConfigurationsImpl object to access its operations. */
+    private final SparkConfigurationsImpl sparkConfigurations;
 
     /**
-     * Gets the SqlPoolsImpl object to access its operations.
+     * Gets the SparkConfigurationsImpl object to access its operations.
      *
-     * @return the SqlPoolsImpl object.
+     * @return the SparkConfigurationsImpl object.
      */
-    public SqlPoolsImpl getSqlPools() {
-        return this.sqlPools;
+    public SparkConfigurationsImpl getSparkConfigurations() {
+        return this.sparkConfigurations;
     }
 
     /** The BigDataPoolsImpl object to access its operations. */
@@ -230,18 +230,6 @@ public final class ArtifactsClientImpl {
         return this.bigDataPools;
     }
 
-    /** The IntegrationRuntimesImpl object to access its operations. */
-    private final IntegrationRuntimesImpl integrationRuntimes;
-
-    /**
-     * Gets the IntegrationRuntimesImpl object to access its operations.
-     *
-     * @return the IntegrationRuntimesImpl object.
-     */
-    public IntegrationRuntimesImpl getIntegrationRuntimes() {
-        return this.integrationRuntimes;
-    }
-
     /** The WorkspaceGitRepoManagementsImpl object to access its operations. */
     private final WorkspaceGitRepoManagementsImpl workspaceGitRepoManagements;
 
@@ -254,18 +242,92 @@ public final class ArtifactsClientImpl {
         return this.workspaceGitRepoManagements;
     }
 
+    /** The IntegrationRuntimesImpl object to access its operations. */
+    private final IntegrationRuntimesImpl integrationRuntimes;
+
+    /**
+     * Gets the IntegrationRuntimesImpl object to access its operations.
+     *
+     * @return the IntegrationRuntimesImpl object.
+     */
+    public IntegrationRuntimesImpl getIntegrationRuntimes() {
+        return this.integrationRuntimes;
+    }
+
+    /** The LibrariesImpl object to access its operations. */
+    private final LibrariesImpl libraries;
+
+    /**
+     * Gets the LibrariesImpl object to access its operations.
+     *
+     * @return the LibrariesImpl object.
+     */
+    public LibrariesImpl getLibraries() {
+        return this.libraries;
+    }
+
+    /** The OperationResultsImpl object to access its operations. */
+    private final OperationResultsImpl operationResults;
+
+    /**
+     * Gets the OperationResultsImpl object to access its operations.
+     *
+     * @return the OperationResultsImpl object.
+     */
+    public OperationResultsImpl getOperationResults() {
+        return this.operationResults;
+    }
+
+    /** The OperationStatusImpl object to access its operations. */
+    private final OperationStatusImpl operationStatus;
+
+    /**
+     * Gets the OperationStatusImpl object to access its operations.
+     *
+     * @return the OperationStatusImpl object.
+     */
+    public OperationStatusImpl getOperationStatus() {
+        return this.operationStatus;
+    }
+
+    /** The SqlPoolsImpl object to access its operations. */
+    private final SqlPoolsImpl sqlPools;
+
+    /**
+     * Gets the SqlPoolsImpl object to access its operations.
+     *
+     * @return the SqlPoolsImpl object.
+     */
+    public SqlPoolsImpl getSqlPools() {
+        return this.sqlPools;
+    }
+
+    /** The WorkspacesImpl object to access its operations. */
+    private final WorkspacesImpl workspaces;
+
+    /**
+     * Gets the WorkspacesImpl object to access its operations.
+     *
+     * @return the WorkspacesImpl object.
+     */
+    public WorkspacesImpl getWorkspaces() {
+        return this.workspaces;
+    }
+
     /**
      * Initializes an instance of ArtifactsClient client.
      *
      * @param endpoint The workspace development endpoint, for example https://myworkspace.dev.azuresynapse.net.
+     * @param apiVersion Api Version.
      */
-    public ArtifactsClientImpl(String endpoint) {
+    public ArtifactsClientImpl(String endpoint, String apiVersion) {
         this(
                 new HttpPipelineBuilder()
                         .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
                         .build(),
                 JacksonAdapter.createDefaultSerializerAdapter(),
-                endpoint);
+                endpoint,
+                apiVersion);
     }
 
     /**
@@ -273,9 +335,10 @@ public final class ArtifactsClientImpl {
      *
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param endpoint The workspace development endpoint, for example https://myworkspace.dev.azuresynapse.net.
+     * @param apiVersion Api Version.
      */
-    public ArtifactsClientImpl(HttpPipeline httpPipeline, String endpoint) {
-        this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), endpoint);
+    public ArtifactsClientImpl(HttpPipeline httpPipeline, String endpoint, String apiVersion) {
+        this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), endpoint, apiVersion);
     }
 
     /**
@@ -284,12 +347,14 @@ public final class ArtifactsClientImpl {
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param endpoint The workspace development endpoint, for example https://myworkspace.dev.azuresynapse.net.
+     * @param apiVersion Api Version.
      */
-    public ArtifactsClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String endpoint) {
+    public ArtifactsClientImpl(
+            HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String endpoint, String apiVersion) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
         this.endpoint = endpoint;
-        this.apiVersion = "2019-06-01-preview";
+        this.apiVersion = apiVersion;
         this.linkedServices = new LinkedServicesImpl(this);
         this.datasets = new DatasetsImpl(this);
         this.pipelines = new PipelinesImpl(this);
@@ -301,10 +366,15 @@ public final class ArtifactsClientImpl {
         this.sqlScripts = new SqlScriptsImpl(this);
         this.sparkJobDefinitions = new SparkJobDefinitionsImpl(this);
         this.notebooks = new NotebooksImpl(this);
-        this.workspaces = new WorkspacesImpl(this);
-        this.sqlPools = new SqlPoolsImpl(this);
+        this.notebookOperationResults = new NotebookOperationResultsImpl(this);
+        this.sparkConfigurations = new SparkConfigurationsImpl(this);
         this.bigDataPools = new BigDataPoolsImpl(this);
-        this.integrationRuntimes = new IntegrationRuntimesImpl(this);
         this.workspaceGitRepoManagements = new WorkspaceGitRepoManagementsImpl(this);
+        this.integrationRuntimes = new IntegrationRuntimesImpl(this);
+        this.libraries = new LibrariesImpl(this);
+        this.operationResults = new OperationResultsImpl(this);
+        this.operationStatus = new OperationStatusImpl(this);
+        this.sqlPools = new SqlPoolsImpl(this);
+        this.workspaces = new WorkspacesImpl(this);
     }
 }

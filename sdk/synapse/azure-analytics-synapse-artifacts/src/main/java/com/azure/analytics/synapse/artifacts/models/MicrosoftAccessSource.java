@@ -20,6 +20,14 @@ public final class MicrosoftAccessSource extends CopySource {
     @JsonProperty(value = "query")
     private Object query;
 
+    /*
+     * Specifies the additional columns to be added to source data. Type: array
+     * of objects(AdditionalColumns) (or Expression with resultType array of
+     * objects).
+     */
+    @JsonProperty(value = "additionalColumns")
+    private Object additionalColumns;
+
     /**
      * Get the query property: Database query. Type: string (or Expression with resultType string).
      *
@@ -37,6 +45,28 @@ public final class MicrosoftAccessSource extends CopySource {
      */
     public MicrosoftAccessSource setQuery(Object query) {
         this.query = query;
+        return this;
+    }
+
+    /**
+     * Get the additionalColumns property: Specifies the additional columns to be added to source data. Type: array of
+     * objects(AdditionalColumns) (or Expression with resultType array of objects).
+     *
+     * @return the additionalColumns value.
+     */
+    public Object getAdditionalColumns() {
+        return this.additionalColumns;
+    }
+
+    /**
+     * Set the additionalColumns property: Specifies the additional columns to be added to source data. Type: array of
+     * objects(AdditionalColumns) (or Expression with resultType array of objects).
+     *
+     * @param additionalColumns the additionalColumns value to set.
+     * @return the MicrosoftAccessSource object itself.
+     */
+    public MicrosoftAccessSource setAdditionalColumns(Object additionalColumns) {
+        this.additionalColumns = additionalColumns;
         return this;
     }
 }

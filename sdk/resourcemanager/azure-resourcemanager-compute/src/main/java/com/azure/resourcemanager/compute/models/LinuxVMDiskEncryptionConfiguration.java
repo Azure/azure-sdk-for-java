@@ -3,18 +3,54 @@
 
 package com.azure.resourcemanager.compute.models;
 
+import com.azure.core.management.AzureEnvironment;
+
 /** Type representing encryption settings to be applied to a Linux virtual machine. */
 public class LinuxVMDiskEncryptionConfiguration
     extends VirtualMachineEncryptionConfiguration<LinuxVMDiskEncryptionConfiguration> {
     /**
      * Creates LinuxVMDiskEncryptionSettings.
      *
+     * Recommend to use the alternative constructor to provide vaultUri.
+     *
      * @param keyVaultId the resource ID of the KeyVault to store the disk encryption key
      * @param aadClientId client ID of an AAD application which has permission to the KeyVault
      * @param aadSecret client secret corresponding to the client ID
      */
     public LinuxVMDiskEncryptionConfiguration(String keyVaultId, String aadClientId, String aadSecret) {
-        super(keyVaultId, aadClientId, aadSecret);
+        super(keyVaultId, null, aadClientId, aadSecret, null);
+    }
+
+    /**
+     * Creates LinuxVMDiskEncryptionSettings.
+     *
+     * @param keyVaultId the resource ID of the KeyVault to store the disk encryption key
+     * @param vaultUri URI of the key vault data-plane endpoint
+     * @param aadClientId client ID of an AAD application which has permission to the KeyVault
+     * @param aadSecret client secret corresponding to the client ID
+     */
+    public LinuxVMDiskEncryptionConfiguration(String keyVaultId,
+                                              String vaultUri,
+                                              String aadClientId,
+                                              String aadSecret) {
+        super(keyVaultId, vaultUri, aadClientId, aadSecret, null);
+    }
+
+    /**
+     * Creates LinuxVMDiskEncryptionSettings.
+     *
+     * Recommend to use the alternative constructor to provide vaultUri.
+     *
+     * @param keyVaultId the resource ID of the KeyVault to store the disk encryption key
+     * @param aadClientId client ID of an AAD application which has permission to the KeyVault
+     * @param aadSecret client secret corresponding to the client ID
+     * @param azureEnvironment Azure environment
+     */
+    public LinuxVMDiskEncryptionConfiguration(String keyVaultId,
+                                              String aadClientId,
+                                              String aadSecret,
+                                              AzureEnvironment azureEnvironment) {
+        super(keyVaultId, null, aadClientId, aadSecret, azureEnvironment);
     }
 
     /**
@@ -23,7 +59,29 @@ public class LinuxVMDiskEncryptionConfiguration
      * @param keyVaultId the resource ID of the KeyVault to store the disk encryption key
      */
     public LinuxVMDiskEncryptionConfiguration(String keyVaultId) {
-        super(keyVaultId);
+        super(keyVaultId, null, null);
+    }
+
+    /**
+     * Creates LinuxVMDiskEncryptionSettings.
+     *
+     * @param keyVaultId the resource ID of the KeyVault to store the disk encryption key
+     * @param vaultUri URI of the key vault data-plane endpoint
+     */
+    public LinuxVMDiskEncryptionConfiguration(String keyVaultId, String vaultUri) {
+        super(keyVaultId, vaultUri, null);
+    }
+
+    /**
+     * Creates LinuxVMDiskEncryptionSettings.
+     *
+     * Recommend to use the alternative constructor to provide vaultUri.
+     *
+     * @param keyVaultId the resource ID of the KeyVault to store the disk encryption key
+     * @param azureEnvironment Azure environment
+     */
+    public LinuxVMDiskEncryptionConfiguration(String keyVaultId, AzureEnvironment azureEnvironment) {
+        super(keyVaultId, null, azureEnvironment);
     }
 
     @Override

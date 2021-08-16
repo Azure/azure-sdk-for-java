@@ -52,27 +52,27 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-test</artifactId>
-      <version>1.5.2</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
+      <version>1.7.0</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.12.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+      <version>1.19.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-management</artifactId>
-      <version>1.2.0-beta.1</version> <!-- {x-version-update;unreleased_com.azure:azure-core-management;dependency} -->
+      <version>1.4.0</version> <!-- {x-version-update;com.azure:azure-core-management;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.2.2</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <version>1.3.5</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-netty</artifactId>
-      <version>1.7.1</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
+      <version>1.10.2</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
     </dependency>
   </dependencies>
   <build>
@@ -98,7 +98,7 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>com.github.spotbugs:spotbugs-annotations:[4.0.2]</include> <!-- {x-include-update;com.github.spotbugs:spotbugs-annotations;external_dependency} -->
+                <include>com.github.spotbugs:spotbugs-annotations:[4.2.0]</include> <!-- {x-include-update;com.github.spotbugs:spotbugs-annotations;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>

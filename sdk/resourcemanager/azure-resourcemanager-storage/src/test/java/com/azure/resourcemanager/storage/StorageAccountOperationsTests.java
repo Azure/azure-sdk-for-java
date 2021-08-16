@@ -7,9 +7,10 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.management.Region;
+import com.azure.resourcemanager.storage.models.Kind;
+import com.azure.resourcemanager.storage.models.MinimumTlsVersion;
 import com.azure.resourcemanager.storage.models.SkuName;
 import com.azure.resourcemanager.storage.models.StorageAccount;
-import com.azure.resourcemanager.storage.models.StorageAccountEncryptionKeySource;
 import com.azure.resourcemanager.storage.models.StorageAccountEncryptionStatus;
 import com.azure.resourcemanager.storage.models.StorageAccountKey;
 import com.azure.resourcemanager.storage.models.StorageAccountSkuType;
@@ -35,7 +36,7 @@ public class StorageAccountOperationsTests extends StorageManagementTest {
 
     @Override
     protected void cleanUpResources() {
-        resourceManager.resourceGroups().deleteByName(rgName);
+        resourceManager.resourceGroups().beginDeleteByName(rgName);
     }
 
     @Test
@@ -60,7 +61,7 @@ public class StorageAccountOperationsTests extends StorageManagementTest {
                 .createAsync();
         StorageAccount storageAccount = resourceStream.block();
         Assertions.assertEquals(rgName, storageAccount.resourceGroupName());
-        Assertions.assertEquals(SkuName.STANDARD_GRS, storageAccount.skuType().name());
+        Assertions.assertEquals(SkuName.STANDARD_RAGRS, storageAccount.skuType().name());
         Assertions.assertTrue(storageAccount.isHnsEnabled());
         // Assertions.assertFalse(storageAccount.isAzureFilesAadIntegrationEnabled());
         // List
@@ -117,42 +118,6 @@ public class StorageAccountOperationsTests extends StorageManagementTest {
     }
 
     @Test
-    public void canEnableDisableEncryptionOnStorageAccount() throws Exception {
-        StorageAccount storageAccount =
-            storageManager
-                .storageAccounts()
-                .define(saName)
-                .withRegion(Region.US_EAST2)
-                .withNewResourceGroup(rgName)
-                .withBlobEncryption()
-                .create();
-
-        Map<StorageService, StorageAccountEncryptionStatus> statuses = storageAccount.encryptionStatuses();
-        Assertions.assertNotNull(statuses);
-        Assertions.assertTrue(statuses.size() > 0);
-        StorageAccountEncryptionStatus blobServiceEncryptionStatus = statuses.get(StorageService.BLOB);
-        Assertions.assertNotNull(blobServiceEncryptionStatus);
-        Assertions.assertTrue(blobServiceEncryptionStatus.isEnabled());
-        Assertions.assertNotNull(blobServiceEncryptionStatus.lastEnabledTime());
-        Assertions.assertNotNull(storageAccount.encryptionKeySource());
-        Assertions
-            .assertTrue(
-                storageAccount.encryptionKeySource().equals(StorageAccountEncryptionKeySource.MICROSOFT_STORAGE));
-
-        //        Storage no-longer support disabling encryption
-        //
-        //        storageAccount = storageAccount.update()
-        //                .withoutBlobEncryption()
-        //                .apply();
-        //        statuses = storageAccount.encryptionStatuses();
-        //        Assertions.assertNotNull(statuses);
-        //        Assertions.assertTrue(statuses.size() > 0);
-        //        blobServiceEncryptionStatus = statuses.get(StorageService.BLOB);
-        //        Assertions.assertNotNull(blobServiceEncryptionStatus);
-        //        Assertions.assertFalse(blobServiceEncryptionStatus.isEnabled());
-    }
-
-    @Test
     public void canEnableLargeFileSharesOnStorageAccount() throws Exception {
         StorageAccount storageAccount =
             storageManager
@@ -168,41 +133,52 @@ public class StorageAccountOperationsTests extends StorageManagementTest {
     }
 
     @Test
-    public void canEnableDisableFileEncryptionOnStorageAccount() throws Exception {
-        StorageAccount storageAccount =
-            storageManager
-                .storageAccounts()
-                .define(saName)
-                .withRegion(Region.US_EAST2)
-                .withNewResourceGroup(rgName)
-                .withFileEncryption()
-                .create();
+    public void storageAccountDefault() {
+        String saName2 = generateRandomResourceName("javacsmsa", 15);
 
-        Map<StorageService, StorageAccountEncryptionStatus> statuses = storageAccount.encryptionStatuses();
-        Assertions.assertNotNull(statuses);
-        Assertions.assertTrue(statuses.size() > 0);
+        // default
+        StorageAccount storageAccountDefault = storageManager.storageAccounts().define(saName)
+            .withRegion(Region.US_EAST)
+            .withNewResourceGroup(rgName)
+            .create();
 
-        Assertions.assertTrue(statuses.containsKey(StorageService.BLOB));
-        StorageAccountEncryptionStatus blobServiceEncryptionStatus = statuses.get(StorageService.BLOB);
-        Assertions.assertNotNull(blobServiceEncryptionStatus);
-        Assertions.assertTrue(blobServiceEncryptionStatus.isEnabled()); // Enabled by default by default
+        Assertions.assertEquals(Kind.STORAGE_V2, storageAccountDefault.kind());
+        Assertions.assertEquals(SkuName.STANDARD_RAGRS, storageAccountDefault.skuType().name());
+        Assertions.assertTrue(storageAccountDefault.isHttpsTrafficOnly());
+        Assertions.assertEquals(MinimumTlsVersion.TLS1_2, storageAccountDefault.minimumTlsVersion());
+        Assertions.assertTrue(storageAccountDefault.isBlobPublicAccessAllowed());
+        Assertions.assertTrue(storageAccountDefault.isSharedKeyAccessAllowed());
 
-        Assertions.assertTrue(statuses.containsKey(StorageService.FILE));
-        StorageAccountEncryptionStatus fileServiceEncryptionStatus = statuses.get(StorageService.FILE);
-        Assertions.assertNotNull(fileServiceEncryptionStatus);
-        Assertions.assertTrue(fileServiceEncryptionStatus.isEnabled());
+        // update to non-default
+        StorageAccount storageAccount = storageAccountDefault.update()
+            .withHttpAndHttpsTraffic()
+            .withMinimumTlsVersion(MinimumTlsVersion.TLS1_1)
+            .disableBlobPublicAccess()
+            .disableSharedKeyAccess()
+            .apply();
 
-        // Service no longer support disabling file encryption
-        //        storageAccount.update()
-        //                .withoutFileEncryption()
-        //                .apply();
-        //
-        //        statuses = storageAccount.encryptionStatuses();
-        //
-        //        Assertions.assertTrue(statuses.containsKey(StorageService.FILE));
-        //        fileServiceEncryptionStatus = statuses.get(StorageService.FILE);
-        //        Assertions.assertNotNull(fileServiceEncryptionStatus);
-        //        Assertions.assertFalse(fileServiceEncryptionStatus.isEnabled());
+        Assertions.assertFalse(storageAccount.isHttpsTrafficOnly());
+        Assertions.assertEquals(MinimumTlsVersion.TLS1_1, storageAccount.minimumTlsVersion());
+        Assertions.assertFalse(storageAccount.isBlobPublicAccessAllowed());
+        Assertions.assertFalse(storageAccount.isSharedKeyAccessAllowed());
 
+        // new storage account configured as non-default
+        storageAccount = storageManager.storageAccounts().define(saName2)
+            .withRegion(Region.US_EAST)
+            .withNewResourceGroup(rgName)
+            .withSku(StorageAccountSkuType.STANDARD_LRS)
+            .withGeneralPurposeAccountKind()
+            .withHttpAndHttpsTraffic()
+            .withMinimumTlsVersion(MinimumTlsVersion.TLS1_1)
+            .disableBlobPublicAccess()
+            .disableSharedKeyAccess()
+            .create();
+
+        Assertions.assertEquals(Kind.STORAGE, storageAccount.kind());
+        Assertions.assertEquals(SkuName.STANDARD_LRS, storageAccount.skuType().name());
+        Assertions.assertFalse(storageAccount.isHttpsTrafficOnly());
+        Assertions.assertEquals(MinimumTlsVersion.TLS1_1, storageAccount.minimumTlsVersion());
+        Assertions.assertFalse(storageAccount.isBlobPublicAccessAllowed());
+        Assertions.assertFalse(storageAccount.isSharedKeyAccessAllowed());
     }
 }

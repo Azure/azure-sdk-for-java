@@ -98,7 +98,7 @@ public interface DeploymentsClient {
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param deploymentName The name of the Deployment resource.
-     * @param deploymentResource Deployment resource payload.
+     * @param deploymentResource Parameters for the create or update operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -120,7 +120,7 @@ public interface DeploymentsClient {
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param deploymentName The name of the Deployment resource.
-     * @param deploymentResource Deployment resource payload.
+     * @param deploymentResource Parameters for the create or update operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -142,7 +142,7 @@ public interface DeploymentsClient {
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param deploymentName The name of the Deployment resource.
-     * @param deploymentResource Deployment resource payload.
+     * @param deploymentResource Parameters for the create or update operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -164,7 +164,7 @@ public interface DeploymentsClient {
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param deploymentName The name of the Deployment resource.
-     * @param deploymentResource Deployment resource payload.
+     * @param deploymentResource Parameters for the create or update operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -188,7 +188,7 @@ public interface DeploymentsClient {
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param deploymentName The name of the Deployment resource.
-     * @param deploymentResource Deployment resource payload.
+     * @param deploymentResource Parameters for the create or update operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -210,7 +210,7 @@ public interface DeploymentsClient {
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param deploymentName The name of the Deployment resource.
-     * @param deploymentResource Deployment resource payload.
+     * @param deploymentResource Parameters for the create or update operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -232,7 +232,7 @@ public interface DeploymentsClient {
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param deploymentName The name of the Deployment resource.
-     * @param deploymentResource Deployment resource payload.
+     * @param deploymentResource Parameters for the create or update operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -372,7 +372,7 @@ public interface DeploymentsClient {
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param deploymentName The name of the Deployment resource.
-     * @param deploymentResource Deployment resource payload.
+     * @param deploymentResource Parameters for the update operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -394,7 +394,7 @@ public interface DeploymentsClient {
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param deploymentName The name of the Deployment resource.
-     * @param deploymentResource Deployment resource payload.
+     * @param deploymentResource Parameters for the update operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -416,7 +416,7 @@ public interface DeploymentsClient {
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param deploymentName The name of the Deployment resource.
-     * @param deploymentResource Deployment resource payload.
+     * @param deploymentResource Parameters for the update operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -438,7 +438,7 @@ public interface DeploymentsClient {
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param deploymentName The name of the Deployment resource.
-     * @param deploymentResource Deployment resource payload.
+     * @param deploymentResource Parameters for the update operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -462,7 +462,7 @@ public interface DeploymentsClient {
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param deploymentName The name of the Deployment resource.
-     * @param deploymentResource Deployment resource payload.
+     * @param deploymentResource Parameters for the update operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -484,7 +484,7 @@ public interface DeploymentsClient {
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param deploymentName The name of the Deployment resource.
-     * @param deploymentResource Deployment resource payload.
+     * @param deploymentResource Parameters for the update operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -506,7 +506,7 @@ public interface DeploymentsClient {
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param deploymentName The name of the Deployment resource.
-     * @param deploymentResource Deployment resource payload.
+     * @param deploymentResource Parameters for the update operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -529,7 +529,7 @@ public interface DeploymentsClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
-     * @param version Array of Get5ItemsItem.
+     * @param version Version of the deployments to be listed.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -561,7 +561,22 @@ public interface DeploymentsClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
-     * @param version Array of Get5ItemsItem.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return object that includes an array of App resources and a possible link for next set.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<DeploymentResourceInner> list(String resourceGroupName, String serviceName, String appName);
+
+    /**
+     * Handles requests to list all resources in an App.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param appName The name of the App resource.
+     * @param version Version of the deployments to be listed.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -573,27 +588,12 @@ public interface DeploymentsClient {
         String resourceGroupName, String serviceName, String appName, List<String> version, Context context);
 
     /**
-     * Handles requests to list all resources in an App.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param appName The name of the App resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object that includes an array of App resources and a possible link for next set.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<DeploymentResourceInner> list(String resourceGroupName, String serviceName, String appName);
-
-    /**
      * List deployments for a certain service.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
-     * @param version Array of Get4ItemsItem.
+     * @param version Version of the deployments to be listed.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -623,7 +623,21 @@ public interface DeploymentsClient {
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
-     * @param version Array of Get4ItemsItem.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return object that includes an array of App resources and a possible link for next set.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<DeploymentResourceInner> listForCluster(String resourceGroupName, String serviceName);
+
+    /**
+     * List deployments for a certain service.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param version Version of the deployments to be listed.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -633,20 +647,6 @@ public interface DeploymentsClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<DeploymentResourceInner> listForCluster(
         String resourceGroupName, String serviceName, List<String> version, Context context);
-
-    /**
-     * List deployments for a certain service.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object that includes an array of App resources and a possible link for next set.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<DeploymentResourceInner> listForCluster(String resourceGroupName, String serviceName);
 
     /**
      * Start the deployment.

@@ -2,27 +2,35 @@
 trigger:
   branches:
     include:
-      - master
+      - main
       - hotfix/*
       - release/*
   paths:
     include:
-      - sdk/search/
+      - sdk/search/ci.yml
+      - sdk/search/azure-search-documents/
+      - sdk/search/azure-search-perf/
     exclude:
-      - sdk/search/mgmt-v2015_02_28
+      - sdk/search/pom.xml
+      - sdk/search/azure-search-documents/pom.xml
+      - sdk/search/azure-search-perf/pom.xml
 
 pr:
   branches:
     include:
-      - master
+      - main
       - feature/*
       - hotfix/*
       - release/*
   paths:
     include:
-      - sdk/search/
+      - sdk/search/ci.yml
+      - sdk/search/azure-search-documents/
+      - sdk/search/azure-search-perf/
     exclude:
-      - sdk/search/mgmt-v2015_02_28
+      - sdk/search/pom.xml
+      - sdk/search/azure-search-documents/pom.xml
+      - sdk/search/azure-search-perf/pom.xml
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml

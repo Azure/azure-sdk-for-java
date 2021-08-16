@@ -4,109 +4,246 @@
 
 package com.azure.resourcemanager.costmanagement.models;
 
-import com.azure.core.management.exception.ManagementError;
-import com.azure.resourcemanager.costmanagement.fluent.models.ExportExecutionInner;
+import com.azure.core.annotation.Fluent;
+import com.azure.core.management.ProxyResource;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.costmanagement.fluent.models.ExportExecutionProperties;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
+import java.util.Map;
 
-/** An immutable client-side representation of ExportExecution. */
-public interface ExportExecution {
-    /**
-     * Gets the id property: Fully qualified resource Id for the resource.
-     *
-     * @return the id value.
+/** A export execution. */
+@Fluent
+public final class ExportExecution extends ProxyResource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ExportExecution.class);
+
+    /*
+     * The properties of the export execution.
      */
-    String id();
+    @JsonProperty(value = "properties")
+    private ExportExecutionProperties innerProperties;
 
-    /**
-     * Gets the name property: The name of the resource.
-     *
-     * @return the name value.
+    /*
+     * Resource tags.
      */
-    String name();
+    @JsonProperty(value = "tags", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
+    private Map<String, String> tags;
 
     /**
-     * Gets the type property: The type of the resource.
+     * Get the innerProperties property: The properties of the export execution.
      *
-     * @return the type value.
+     * @return the innerProperties value.
      */
-    String type();
+    private ExportExecutionProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
-     * Gets the executionType property: The type of the export execution.
+     * Get the tags property: Resource tags.
+     *
+     * @return the tags value.
+     */
+    public Map<String, String> tags() {
+        return this.tags;
+    }
+
+    /**
+     * Get the executionType property: The type of the export execution.
      *
      * @return the executionType value.
      */
-    ExecutionType executionType();
+    public ExecutionType executionType() {
+        return this.innerProperties() == null ? null : this.innerProperties().executionType();
+    }
 
     /**
-     * Gets the status property: The last known status of the export execution.
+     * Set the executionType property: The type of the export execution.
+     *
+     * @param executionType the executionType value to set.
+     * @return the ExportExecution object itself.
+     */
+    public ExportExecution withExecutionType(ExecutionType executionType) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ExportExecutionProperties();
+        }
+        this.innerProperties().withExecutionType(executionType);
+        return this;
+    }
+
+    /**
+     * Get the status property: The status of the export execution.
      *
      * @return the status value.
      */
-    ExecutionStatus status();
+    public ExecutionStatus status() {
+        return this.innerProperties() == null ? null : this.innerProperties().status();
+    }
 
     /**
-     * Gets the submittedBy property: The identifier for the entity that executed the export. For OnDemand executions it
-     * is the user email. For scheduled executions it is 'System'.
+     * Set the status property: The status of the export execution.
+     *
+     * @param status the status value to set.
+     * @return the ExportExecution object itself.
+     */
+    public ExportExecution withStatus(ExecutionStatus status) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ExportExecutionProperties();
+        }
+        this.innerProperties().withStatus(status);
+        return this;
+    }
+
+    /**
+     * Get the submittedBy property: The identifier for the entity that executed the export. For OnDemand executions, it
+     * is the email id. For Scheduled executions, it is the constant value - System.
      *
      * @return the submittedBy value.
      */
-    String submittedBy();
+    public String submittedBy() {
+        return this.innerProperties() == null ? null : this.innerProperties().submittedBy();
+    }
 
     /**
-     * Gets the submittedTime property: The time when export was queued to be executed.
+     * Set the submittedBy property: The identifier for the entity that executed the export. For OnDemand executions, it
+     * is the email id. For Scheduled executions, it is the constant value - System.
+     *
+     * @param submittedBy the submittedBy value to set.
+     * @return the ExportExecution object itself.
+     */
+    public ExportExecution withSubmittedBy(String submittedBy) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ExportExecutionProperties();
+        }
+        this.innerProperties().withSubmittedBy(submittedBy);
+        return this;
+    }
+
+    /**
+     * Get the submittedTime property: The time when export was queued to be executed.
      *
      * @return the submittedTime value.
      */
-    OffsetDateTime submittedTime();
+    public OffsetDateTime submittedTime() {
+        return this.innerProperties() == null ? null : this.innerProperties().submittedTime();
+    }
 
     /**
-     * Gets the processingStartTime property: The time when export was picked up to be executed.
+     * Set the submittedTime property: The time when export was queued to be executed.
+     *
+     * @param submittedTime the submittedTime value to set.
+     * @return the ExportExecution object itself.
+     */
+    public ExportExecution withSubmittedTime(OffsetDateTime submittedTime) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ExportExecutionProperties();
+        }
+        this.innerProperties().withSubmittedTime(submittedTime);
+        return this;
+    }
+
+    /**
+     * Get the processingStartTime property: The time when export was picked up to be executed.
      *
      * @return the processingStartTime value.
      */
-    OffsetDateTime processingStartTime();
+    public OffsetDateTime processingStartTime() {
+        return this.innerProperties() == null ? null : this.innerProperties().processingStartTime();
+    }
 
     /**
-     * Gets the processingEndTime property: The time when the export execution finished.
+     * Set the processingStartTime property: The time when export was picked up to be executed.
+     *
+     * @param processingStartTime the processingStartTime value to set.
+     * @return the ExportExecution object itself.
+     */
+    public ExportExecution withProcessingStartTime(OffsetDateTime processingStartTime) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ExportExecutionProperties();
+        }
+        this.innerProperties().withProcessingStartTime(processingStartTime);
+        return this;
+    }
+
+    /**
+     * Get the processingEndTime property: The time when export execution finished.
      *
      * @return the processingEndTime value.
      */
-    OffsetDateTime processingEndTime();
+    public OffsetDateTime processingEndTime() {
+        return this.innerProperties() == null ? null : this.innerProperties().processingEndTime();
+    }
 
     /**
-     * Gets the fileName property: The name of the exported file.
+     * Set the processingEndTime property: The time when export execution finished.
+     *
+     * @param processingEndTime the processingEndTime value to set.
+     * @return the ExportExecution object itself.
+     */
+    public ExportExecution withProcessingEndTime(OffsetDateTime processingEndTime) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ExportExecutionProperties();
+        }
+        this.innerProperties().withProcessingEndTime(processingEndTime);
+        return this;
+    }
+
+    /**
+     * Get the fileName property: The name of the file export got written to.
      *
      * @return the fileName value.
      */
-    String fileName();
+    public String fileName() {
+        return this.innerProperties() == null ? null : this.innerProperties().fileName();
+    }
 
     /**
-     * Gets the runSettings property: The export settings that were in effect for this execution.
+     * Set the fileName property: The name of the file export got written to.
+     *
+     * @param fileName the fileName value to set.
+     * @return the ExportExecution object itself.
+     */
+    public ExportExecution withFileName(String fileName) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ExportExecutionProperties();
+        }
+        this.innerProperties().withFileName(fileName);
+        return this;
+    }
+
+    /**
+     * Get the runSettings property: The common properties of the export.
      *
      * @return the runSettings value.
      */
-    CommonExportProperties runSettings();
+    public CommonExportProperties runSettings() {
+        return this.innerProperties() == null ? null : this.innerProperties().runSettings();
+    }
 
     /**
-     * Gets the error property: The details of any error.
+     * Set the runSettings property: The common properties of the export.
      *
-     * @return the error value.
+     * @param runSettings the runSettings value to set.
+     * @return the ExportExecution object itself.
      */
-    ManagementError error();
+    public ExportExecution withRunSettings(CommonExportProperties runSettings) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ExportExecutionProperties();
+        }
+        this.innerProperties().withRunSettings(runSettings);
+        return this;
+    }
 
     /**
-     * Gets the etag property: eTag of the resource. To handle concurrent update scenario, this field will be used to
-     * determine whether the user is updating the latest version or not.
+     * Validates the instance.
      *
-     * @return the etag value.
+     * @throws IllegalArgumentException thrown if the instance is not valid.
      */
-    String etag();
-
-    /**
-     * Gets the inner com.azure.resourcemanager.costmanagement.fluent.models.ExportExecutionInner object.
-     *
-     * @return the inner object.
-     */
-    ExportExecutionInner innerModel();
+    public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
+    }
 }

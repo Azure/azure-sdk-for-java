@@ -16,6 +16,7 @@ import com.azure.resourcemanager.appservice.models.WebApp;
 import com.azure.resourcemanager.appservice.models.WebDeploymentSlotBasic;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.IndependentChildResourcesImpl;
 import reactor.core.publisher.Mono;
+import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
 
 /** The implementation DeploymentSlots. */
 class DeploymentSlotsImpl
@@ -107,8 +108,8 @@ class DeploymentSlotsImpl
 
     @Override
     public PagedFlux<WebDeploymentSlotBasic> listAsync() {
-        return innerCollection.listSlotsAsync(parent.resourceGroupName(), parent.name())
-            .mapPage(inner -> new WebDeploymentSlotBasicImpl(inner, parent));
+        return PagedConverter.mapPage(innerCollection.listSlotsAsync(parent.resourceGroupName(), parent.name()),
+            inner -> new WebDeploymentSlotBasicImpl(inner, parent));
     }
 
     private DeploymentSlotImpl wrapModel(

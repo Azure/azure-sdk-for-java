@@ -4,9 +4,10 @@
 
 package com.azure.resourcemanager.cosmos.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -22,9 +23,36 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
     @JsonSubTypes.Type(name = "Periodic", value = PeriodicModeBackupPolicy.class),
     @JsonSubTypes.Type(name = "Continuous", value = ContinuousModeBackupPolicy.class)
 })
-@Immutable
+@Fluent
 public class BackupPolicy {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(BackupPolicy.class);
+
+    /*
+     * The object representing the state of the migration between the backup
+     * policies.
+     */
+    @JsonProperty(value = "migrationState")
+    private BackupPolicyMigrationState migrationState;
+
+    /**
+     * Get the migrationState property: The object representing the state of the migration between the backup policies.
+     *
+     * @return the migrationState value.
+     */
+    public BackupPolicyMigrationState migrationState() {
+        return this.migrationState;
+    }
+
+    /**
+     * Set the migrationState property: The object representing the state of the migration between the backup policies.
+     *
+     * @param migrationState the migrationState value to set.
+     * @return the BackupPolicy object itself.
+     */
+    public BackupPolicy withMigrationState(BackupPolicyMigrationState migrationState) {
+        this.migrationState = migrationState;
+        return this;
+    }
 
     /**
      * Validates the instance.
@@ -32,5 +60,8 @@ public class BackupPolicy {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (migrationState() != null) {
+            migrationState().validate();
+        }
     }
 }

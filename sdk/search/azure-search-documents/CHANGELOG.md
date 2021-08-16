@@ -1,6 +1,171 @@
 # Release History
 
-## 11.2.0-beta.4 (Unreleased)
+## 11.5.0-beta.3 (Unreleased)
+
+## 11.4.2 (2021-08-11)
+
+### Dependency Updates
+
+- Updated `azure-core` from `1.18.0` to `1.19.0`.
+- Updated `azure-core-http-netty` from `1.10.1` to `1.10.2`.
+- Updated `azure-core-serializer-json-jackson` from `1.2.5` to `1.2.6`.
+
+## 11.5.0-beta.2 (2021-08-11)
+
+### Features Added
+
+- Added support for indexer caching.
+
+### Dependency Updates
+
+- Updated `azure-core` from `1.18.0` to `1.19.0`.
+- Updated `azure-core-http-netty` from `1.10.1` to `1.10.2`.
+- Updated `azure-core-serializer-json-jackson` from `1.2.5` to `1.2.6`.
+
+## 11.4.1 (2021-08-06)
+
+### Dependency Updates
+
+- Updated `azure-core` from `1.17.0` to `1.18.0`.
+- Updated `azure-core-http-netty` from `1.10.0` to `1.10.1`.
+- Updated `azure-core-serializer-json-jackson` from `1.2.4` to `1.2.5`.
+
+## 11.5.0-beta.1 (2021-07-20)
+
+### Features Added
+
+- Added support for service version `2021-04-30-Preview`. Default version is now `2021-04-30-Preview`.
+- Added Semantic Search capability to `SearchClient` and `SearchAsyncClient`.
+- Added the ability to configure AAD authentication in client builders to enable AAD authentication in clients.
+- Added support for Normalizers in `SearchField` and `SearchIndex` with `CustomNormalizer` and `LexicalNormalizer`.
+- Added new versions of `EntityRecognitionSkill` and `SentimentSkill`. Added `PiiDetectionSkill`.
+- Added support for indexer data identity.
+
+### Dependency Updates
+
+- Updated `azure-core` from `1.17.0` to `1.18.0`.
+- Updated `azure-core-http-netty` from `1.10.0` to `1.10.1`.
+- Updated `azure-core-serializer-json-jackson` from `1.2.4` to `1.2.5`.
+
+## 11.4.0 (2021-06-08)
+
+### Features Added
+
+- Added the ability to configure Knowledge Store in skillsets.
+- Added factory method to `SynonymMap` to enable creation from a file.
+- Added support for `Edm.GeographyPoint` in `FieldBuilder` when property has type `GeoPoint`.
+- Added support for geography based filtering in `SearchFilter` when `GeoPosition`, `GeoPoint`, `GeoLineString`, or
+  `GeoPolygon` are used as formatting arguments.
+- Added new skills `CustomEntityLookupSkill` and `DocumentExtractionSkill` and new skill versions for
+  `KeyPhraseExtractionSkill` and `LanguageDetectionSkill`.
+- Added support for the ADLS Gen 2 Indexer data source type.
+- Added skillset counts to `SearchServiceCounters`.
+- Added additional log messages to `SearchIndexingBufferedSender` and `SearchIndexingBufferedAsyncSender`.
+
+### Breaking Changes
+
+- Removed support for service version `2020-06-30-Preview`. Default version is now `2020-06-30`.
+- Removed Semantic Search capability to `SearchClient` and `SearchAsyncClient`.
+- Removed support for Normalizers in `SearchField` and `SearchIndex` with `CustomNormalizer` and `LexicalNormalizer`.
+
+### Dependency Updates
+
+- Updated `azure-core` from `1.16.0` to `1.17.0`.
+- Updated `azure-core-http-netty` from `1.9.2` to `1.10.0`.
+- Updated `azure-core-serializer-json-jackson` from `1.2.3` to `1.2.4`.
+- Updated Jackson from `2.12.2` to `2.12.3`.
+- Updated Reactor from `3.4.5` to `3.4.6`.
+- Updated Reactor Netty from `1.0.6` to `1.0.7`.
+
+## 11.3.2 (2021-05-11)
+
+### Dependency Updates
+
+- Updated `azure-core` from `1.15.0` to `1.16.0`.
+- Updated `azure-core-http-netty` from `1.9.1` to `1.9.2`.
+- Updated `azure-core-serializer-json-jackson` from `1.2.2` to `1.2.3`.
+
+## 11.4.0-beta.2 (2021-05-10)
+
+### Features Added
+
+- Added Semantic Search capability to `SearchClient` and `SearchAsyncClient`.
+- Added the ability to configure Knowledge Store in skillsets.
+- Added factory method to `SynonymMap` to enable creation from a file.
+
+### Dependency Updates
+
+- Updated `azure-core` from `1.15.0` to `1.16.0`.
+- Updated `azure-core-http-netty` from `1.9.1` to `1.9.2`.
+- Updated `azure-core-serializer-json-jackson` from `1.2.2` to `1.2.3`.
+
+## 11.3.1 (2021-04-08)
+
+### Dependency Updates
+
+- Updated `azure-core` from `1.14.0` to `1.15.0`.
+- Updated `azure-core-http-netty` from `1.9.0` to `1.9.1`.
+- Updated `azure-core-serializer-json-jackson` from `1.2.0` to `1.2.2`.
+- Updated Jackson from `2.12.1` to `2.12.2`.
+
+## 11.4.0-beta.1 (2021-04-06)
+
+### New Features
+
+- Clients now default to using service version `2020-06-30-Preview`.
+- Added support for `Edm.GeographyPoint` in `FieldBuilder` when property has type `GeoPoint`.
+- Added support for geography based filtering in `SearchFilter` when `GeoPosition`, `GeoPoint`, `GeoLineString`, or
+  `GeoPolygon` are used as formatting arguments.
+- Added support for Normalizers in `SearchField` and `SearchIndex` with `CustomNormalizer` and `LexicalNormalizer`.
+- Added new skills `CustomEntityLookupSkill` and `DocumentExtractionSkill` and new skill versions for 
+  `KeyPhraseExtractionSkill` and `LanguageDetectionSkill`.
+- Added support for the ADLS Gen 2 Indexer data source type.
+- Added skillset counts to `SearchServiceCounters`.  
+- Added additional log messages to `SearchIndexingBufferedSender` and `SearchIndexingBufferedAsyncSender`.
+
+### Dependency Updates
+
+- Updated `azure-core` from `1.14.0` to `1.15.0`.
+- Updated Jackson from `2.12.1` to `2.12.2`.
+
+### Breaking Changes
+
+- Updated Jackson annotations to include `required = true` when service must receive or return the property.
+
+## 11.3.0 (2021-03-10)
+
+### Dependency Updates
+
+- Updated `azure-core` from `1.13.0` to `1.14.0`.
+- Updated Jackson from `2.11.3` to `2.12.1`.
+- Updated Reactor from `3.3.12.RELEASE` to `3.4.3`.
+- Updated Reactor Netty from `0.9.15.RELEASE` to `1.0.4`.
+
+## 11.2.0 (2021-02-10)
+
+### New Features
+
+- Added a builder, `SearchIndexingBufferedSenderBuilder<T>`, to configure and construct `SearchIndexingBufferedSender<T>`.
+- Added `SearchClientBuilder.bufferedSender(TypeReference)` to create a `SearchIndexingBufferedSenderBuilder<T>` with
+  base configuration passed from `SearchClientBuilder`.
+- Added `OnActionAddedOptions<T>`, `OnActionErrorOptions<T>`, `OnActionSentOptions<T>`, and `OnActionSucceededOptions<T>`
+  as request options for the on action callback methods in `SearchIndexingBufferedSender`.
+- Added `ClientOptions` APIs to all builders to allow re-using common client configurations.
+- All changes from the 11.2.0-beta.3, 11.2.0-beta.2, and 11.2.0-beta.1 releases listed below.
+
+### Breaking Changes
+
+- Removed `SearchIndexingBufferedSenderOptions` and `SearchClient.getSearchIndexingBufferedSender` and 
+  `SearchAsyncClient.getSearchIndexingBufferedSender`.
+- Changed buffered sender configuration options from `autoFlushWindow` to `autoFlushInterval`, 
+  `maxRetries` to `maxRetriesPerAction`, `retryDelay` to `throttlingDelay`, `maxRetryDelay` to `maxThrottlingDelay`
+  and `onActionErrorBiConsumer` to `onActionErrorConsumer`.
+- Renamed `BlobIndexerPDFTextRotationAlgorithm` to `BlobIndexerPdfTextRotationAlgorithm`.
+
+### Dependency updates
+
+- Updated `azure-core` to `1.13.0`.
+- Updated `azure-core-http-netty` to `1.8.0`.
 
 ## 11.1.3 (2021-01-15)
 

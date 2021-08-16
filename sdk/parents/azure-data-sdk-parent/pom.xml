@@ -70,7 +70,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-checkstyle-plugin</artifactId>
-        <version>3.1.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-checkstyle-plugin;external_dependency} -->
+        <version>3.1.2</version> <!-- {x-version-update;org.apache.maven.plugins:maven-checkstyle-plugin;external_dependency} -->
         <dependencies>
           <dependency>
             <groupId>com.azure</groupId>
@@ -80,7 +80,7 @@
           <dependency>
             <groupId>com.puppycrawl.tools</groupId>
             <artifactId>checkstyle</artifactId>
-            <version>8.37</version> <!-- {x-version-update;com.puppycrawl.tools:checkstyle;external_dependency} -->
+            <version>8.42</version> <!-- {x-version-update;com.puppycrawl.tools:checkstyle;external_dependency} -->
           </dependency>
         </dependencies>
         <configuration>
@@ -111,7 +111,7 @@
       <plugin>
         <groupId>com.github.spotbugs</groupId>
         <artifactId>spotbugs-maven-plugin</artifactId>
-        <version>3.1.12.2</version> <!-- {x-version-update;com.github.spotbugs:spotbugs-maven-plugin;external_dependency} -->
+        <version>4.2.0</version> <!-- {x-version-update;com.github.spotbugs:spotbugs-maven-plugin;external_dependency} -->
         <dependencies>
           <dependency>
             <groupId>com.azure</groupId>
@@ -267,7 +267,7 @@
         <plugin>
           <groupId>com.github.spotbugs</groupId>
           <artifactId>spotbugs-maven-plugin</artifactId>
-          <version>3.1.12.2</version> <!-- {x-version-update;com.github.spotbugs:spotbugs-maven-plugin;external_dependency} -->
+          <version>4.2.0</version> <!-- {x-version-update;com.github.spotbugs:spotbugs-maven-plugin;external_dependency} -->
           <dependencies>
             <dependency>
               <groupId>com.azure</groupId>
@@ -321,7 +321,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-checkstyle-plugin</artifactId>
-        <version>3.1.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-checkstyle-plugin;external_dependency} -->
+        <version>3.1.2</version> <!-- {x-version-update;org.apache.maven.plugins:maven-checkstyle-plugin;external_dependency} -->
         <configuration>
           <configLocation>checkstyle/checkstyle.xml</configLocation>
           <suppressionsLocation>checkstyle/checkstyle-suppressions.xml</suppressionsLocation>
@@ -355,7 +355,7 @@
       <plugin>
         <groupId>com.github.spotbugs</groupId>
         <artifactId>spotbugs-maven-plugin</artifactId>
-        <version>3.1.12.2</version> <!-- {x-version-update;com.github.spotbugs:spotbugs-maven-plugin;external_dependency} -->
+        <version>4.2.0</version> <!-- {x-version-update;com.github.spotbugs:spotbugs-maven-plugin;external_dependency} -->
         <reportSets>
           <reportSet>
             <id>non-aggregate</id>
@@ -555,7 +555,7 @@
       <id>transform-spotbugs</id>
       <activation>
         <file>
-          <exists>${project.build.directory}/spotbugs/spotbugsXml.xml</exists>
+          <exists>${packageOutputDirectory}/spotbugs/spotbugsXml.xml</exists>
         </file>
       </activation>
       <build>
@@ -594,7 +594,7 @@
               <dependency>
                 <groupId>com.github.spotbugs</groupId>
                 <artifactId>spotbugs</artifactId>
-                <version>4.0.0-beta3</version> <!-- {x-version-update;com.github.spotbugs:spotbugs;external_dependency} -->
+                <version>4.2.0</version> <!-- {x-version-update;com.github.spotbugs:spotbugs;external_dependency} -->
               </dependency>
             </dependencies>
           </plugin>

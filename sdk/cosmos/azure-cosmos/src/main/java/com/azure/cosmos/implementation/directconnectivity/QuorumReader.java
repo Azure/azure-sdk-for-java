@@ -6,6 +6,7 @@ package com.azure.cosmos.implementation.directconnectivity;
 
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosException;
+import com.azure.cosmos.implementation.CosmosSchedulers;
 import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.GoneException;
 import com.azure.cosmos.implementation.InternalServerErrorException;
@@ -494,7 +495,9 @@ public class QuorumReader {
                         logger.warn(
                             "Store LSN {} or quorum acked LSN {} are lower than expected LSN {}", storeResult.lsn, storeResult.quorumAckedLSN, lsnToWaitFor);
 
-                            return Flux.just(0L).delayElements(Duration.ofMillis(delayBetweenReadBarrierCallsInMs)).flatMap(dummy -> Flux.empty());
+                            return Flux.just(0L).delayElements(
+                                Duration.ofMillis(delayBetweenReadBarrierCallsInMs),
+                                CosmosSchedulers.COSMOS_PARALLEL).flatMap(dummy -> Flux.empty());
                     }
 
                         return Flux.just(PrimaryReadOutcome.QuorumMet);
@@ -563,7 +566,10 @@ public class QuorumReader {
                     }
                 }
             );
-        }).repeatWhen(obs -> obs.flatMap(aVoid -> Flux.just(0L).delayElements(Duration.ofMillis(delayBetweenReadBarrierCallsInMs))))
+        }).repeatWhen(obs -> obs.flatMap(aVoid -> Flux.just(0L)
+                                                      .delayElements(
+                                                          Duration.ofMillis(delayBetweenReadBarrierCallsInMs),
+                                                          CosmosSchedulers.COSMOS_PARALLEL)))
                 .take(1) // Retry loop
                    .flatMap(barrierRequestSucceeded ->
                         Flux.defer(() -> {
@@ -613,9 +619,13 @@ public class QuorumReader {
                                }).repeatWhen(obs -> obs.flatMap(aVoid -> {
 
                                        if ((maxBarrierRetriesForMultiRegion - readBarrierRetryCountMultiRegion.get()) > maxShortBarrierRetriesForMultiRegion) {
-                                                      return Flux.just(0L).delayElements(Duration.ofMillis(barrierRetryIntervalInMsForMultiRegion));
+                                                      return Flux.just(0L).delayElements(
+                                                          Duration.ofMillis(barrierRetryIntervalInMsForMultiRegion),
+                                                          CosmosSchedulers.COSMOS_PARALLEL);
                                        } else {
-                                                      return Flux.just(0L).delayElements(Duration.ofMillis(shortBarrierRetryIntervalInMsForMultiRegion));
+                                                      return Flux.just(0L).delayElements(
+                                                          Duration.ofMillis(shortBarrierRetryIntervalInMsForMultiRegion),
+                                                          CosmosSchedulers.COSMOS_PARALLEL);
                                        }
 
                                    })

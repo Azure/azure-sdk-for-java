@@ -20,12 +20,17 @@ import com.azure.storage.common.implementation.connectionstring.StorageAuthentic
 import com.azure.storage.common.implementation.connectionstring.StorageConnectionString;
 import com.azure.storage.common.implementation.connectionstring.StorageEndpoint;
 import com.azure.storage.common.policy.RequestRetryOptions;
-import com.azure.storage.queue.implementation.AzureQueueStorageBuilder;
 import com.azure.storage.queue.implementation.AzureQueueStorageImpl;
+import com.azure.storage.queue.implementation.AzureQueueStorageImplBuilder;
 import com.azure.storage.queue.implementation.util.BuilderHelper;
+import com.azure.storage.queue.models.QueueMessageDecodingError;
+import reactor.core.publisher.Mono;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.function.Consumer;
+import java.util.function.Function;
 
 /**
  * This class provides a fluent builder API to help aid the configuration and instantiation of the {@link QueueClient
@@ -94,6 +99,10 @@ public final class QueueClientBuilder {
     private Configuration configuration;
     private QueueServiceVersion version;
 
+    private QueueMessageEncoding messageEncoding = QueueMessageEncoding.NONE;
+    private Function<QueueMessageDecodingError, Mono<Void>> processMessageDecodingErrorAsyncHandler;
+    private Consumer<QueueMessageDecodingError> processMessageDecodingErrorHandler;
+
     /**
      * Creates a builder instance that is able to configure and construct {@link QueueClient QueueClients} and {@link
      * QueueAsyncClient QueueAsyncClients}.
@@ -140,6 +149,13 @@ public final class QueueClientBuilder {
      */
     public QueueAsyncClient buildAsyncClient() {
         StorageImplUtils.assertNotNull("queueName", queueName);
+        if (processMessageDecodingErrorAsyncHandler != null && processMessageDecodingErrorHandler != null) {
+            throw logger.logExceptionAsError(new IllegalStateException(
+                "Either processMessageDecodingError or processMessageDecodingAsyncError should be specified"
+                    + "but not both.")
+            );
+        }
+
         QueueServiceVersion serviceVersion = version != null ? version : QueueServiceVersion.getLatest();
 
         HttpPipeline pipeline = (httpPipeline != null) ? httpPipeline : BuilderHelper.buildPipeline(
@@ -147,13 +163,14 @@ public final class QueueClientBuilder {
             endpoint, retryOptions, logOptions,
             clientOptions, httpClient, perCallPolicies, perRetryPolicies, configuration, logger);
 
-        AzureQueueStorageImpl azureQueueStorage = new AzureQueueStorageBuilder()
+        AzureQueueStorageImpl azureQueueStorage = new AzureQueueStorageImplBuilder()
             .url(endpoint)
             .pipeline(pipeline)
             .version(serviceVersion.getVersion())
-            .build();
+            .buildClient();
 
-        return new QueueAsyncClient(azureQueueStorage, queueName, accountName, serviceVersion);
+        return new QueueAsyncClient(azureQueueStorage, queueName, accountName, serviceVersion,
+            messageEncoding, processMessageDecodingErrorAsyncHandler, processMessageDecodingErrorHandler);
     }
 
     /**
@@ -226,7 +243,8 @@ public final class QueueClientBuilder {
     /**
      * Sets the SAS token used to authorize requests sent to the service.
      *
-     * @param sasToken The SAS token to use for authenticating requests.
+     * @param sasToken The SAS token to use for authenticating requests. This string should only be the query parameters
+     * (with or without a leading '?') and not a full url.
      * @return the updated QueueClientBuilder
      * @throws NullPointerException If {@code sasToken} is {@code null}.
      */
@@ -384,6 +402,74 @@ public final class QueueClientBuilder {
      */
     public QueueClientBuilder clientOptions(ClientOptions clientOptions) {
         this.clientOptions = Objects.requireNonNull(clientOptions, "'clientOptions' cannot be null.");
+        return this;
+    }
+
+    /**
+     * Sets the queue message encoding.
+     *
+     * @param messageEncoding {@link QueueMessageEncoding}.
+     * @return the updated QueueClientBuilder object
+     * @throws NullPointerException If {@code messageEncoding} is {@code null}.
+     */
+    public QueueClientBuilder messageEncoding(QueueMessageEncoding messageEncoding) {
+        this.messageEncoding = Objects.requireNonNull(messageEncoding, "'messageEncoding' cannot be null.");
+        return this;
+    }
+
+    /**
+     * Sets the asynchronous handler that performs the tasks needed when a message is received or peaked from the queue
+     * but cannot be decoded.
+     * <p>
+     * Such message can be received or peaked when queue is expecting certain {@link QueueMessageEncoding}
+     * but there's another producer that is not encoding messages in expected way.
+     * I.e. the queue contains messages with different encoding.
+     * <p>
+     * {@link QueueMessageDecodingError} contains {@link QueueAsyncClient} for the queue that has received
+     * the message as well as {@link QueueMessageDecodingError#getQueueMessageItem()} or
+     * {@link QueueMessageDecodingError#getPeekedMessageItem()}  with raw body, i.e. no decoding will be attempted
+     * so that body can be inspected as has been received from the queue.
+     * <p>
+     * The handler won't attempt to remove the message from the queue. Therefore such handling should be included into
+     * handler itself.
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.queue.QueueClientBuilder#processMessageDecodingErrorAsyncHandler}
+     *
+     * @param processMessageDecodingErrorAsyncHandler the handler.
+     * @return the updated QueueClientBuilder object
+     */
+    public QueueClientBuilder processMessageDecodingErrorAsync(
+        Function<QueueMessageDecodingError, Mono<Void>> processMessageDecodingErrorAsyncHandler) {
+        this.processMessageDecodingErrorAsyncHandler = processMessageDecodingErrorAsyncHandler;
+        return this;
+    }
+
+    /**
+     * Sets the handler that performs the tasks needed when a message is received or peaked from the queue
+     * but cannot be decoded.
+     * <p>
+     * Such message can be received or peaked when queue is expecting certain {@link QueueMessageEncoding}
+     * but there's another producer that is not encoding messages in expected way.
+     * I.e. the queue contains messages with different encoding.
+     * <p>
+     * {@link QueueMessageDecodingError} contains {@link QueueAsyncClient} for the queue that has received
+     * the message as well as {@link QueueMessageDecodingError#getQueueMessageItem()} or
+     * {@link QueueMessageDecodingError#getPeekedMessageItem()}  with raw body, i.e. no decoding will be attempted
+     * so that body can be inspected as has been received from the queue.
+     * <p>
+     * The handler won't attempt to remove the message from the queue. Therefore such handling should be included into
+     * handler itself.
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.queue.QueueClientBuilder#processMessageDecodingErrorHandler}
+     *
+     * @param processMessageDecodingErrorHandler the handler.
+     * @return the updated QueueClientBuilder object
+     */
+    public QueueClientBuilder processMessageDecodingError(
+        Consumer<QueueMessageDecodingError> processMessageDecodingErrorHandler) {
+        this.processMessageDecodingErrorHandler = processMessageDecodingErrorHandler;
         return this;
     }
 

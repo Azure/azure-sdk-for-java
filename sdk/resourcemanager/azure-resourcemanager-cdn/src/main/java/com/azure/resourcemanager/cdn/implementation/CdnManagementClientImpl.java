@@ -27,10 +27,16 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.SerializerAdapter;
+import com.azure.resourcemanager.cdn.fluent.AfdCustomDomainsClient;
+import com.azure.resourcemanager.cdn.fluent.AfdEndpointsClient;
+import com.azure.resourcemanager.cdn.fluent.AfdOriginGroupsClient;
+import com.azure.resourcemanager.cdn.fluent.AfdOriginsClient;
+import com.azure.resourcemanager.cdn.fluent.AfdProfilesClient;
 import com.azure.resourcemanager.cdn.fluent.CdnManagementClient;
 import com.azure.resourcemanager.cdn.fluent.CustomDomainsClient;
 import com.azure.resourcemanager.cdn.fluent.EdgeNodesClient;
 import com.azure.resourcemanager.cdn.fluent.EndpointsClient;
+import com.azure.resourcemanager.cdn.fluent.LogAnalyticsClient;
 import com.azure.resourcemanager.cdn.fluent.ManagedRuleSetsClient;
 import com.azure.resourcemanager.cdn.fluent.OperationsClient;
 import com.azure.resourcemanager.cdn.fluent.OriginGroupsClient;
@@ -38,6 +44,12 @@ import com.azure.resourcemanager.cdn.fluent.OriginsClient;
 import com.azure.resourcemanager.cdn.fluent.PoliciesClient;
 import com.azure.resourcemanager.cdn.fluent.ProfilesClient;
 import com.azure.resourcemanager.cdn.fluent.ResourceUsagesClient;
+import com.azure.resourcemanager.cdn.fluent.RoutesClient;
+import com.azure.resourcemanager.cdn.fluent.RuleSetsClient;
+import com.azure.resourcemanager.cdn.fluent.RulesClient;
+import com.azure.resourcemanager.cdn.fluent.SecretsClient;
+import com.azure.resourcemanager.cdn.fluent.SecurityPoliciesClient;
+import com.azure.resourcemanager.cdn.fluent.ValidatesClient;
 import com.azure.resourcemanager.cdn.fluent.models.CheckNameAvailabilityOutputInner;
 import com.azure.resourcemanager.cdn.fluent.models.ValidateProbeOutputInner;
 import com.azure.resourcemanager.cdn.models.CheckNameAvailabilityInput;
@@ -222,6 +234,150 @@ public final class CdnManagementClientImpl extends AzureServiceClient implements
         return this.edgeNodes;
     }
 
+    /** The AfdProfilesClient object to access its operations. */
+    private final AfdProfilesClient afdProfiles;
+
+    /**
+     * Gets the AfdProfilesClient object to access its operations.
+     *
+     * @return the AfdProfilesClient object.
+     */
+    public AfdProfilesClient getAfdProfiles() {
+        return this.afdProfiles;
+    }
+
+    /** The AfdCustomDomainsClient object to access its operations. */
+    private final AfdCustomDomainsClient afdCustomDomains;
+
+    /**
+     * Gets the AfdCustomDomainsClient object to access its operations.
+     *
+     * @return the AfdCustomDomainsClient object.
+     */
+    public AfdCustomDomainsClient getAfdCustomDomains() {
+        return this.afdCustomDomains;
+    }
+
+    /** The AfdEndpointsClient object to access its operations. */
+    private final AfdEndpointsClient afdEndpoints;
+
+    /**
+     * Gets the AfdEndpointsClient object to access its operations.
+     *
+     * @return the AfdEndpointsClient object.
+     */
+    public AfdEndpointsClient getAfdEndpoints() {
+        return this.afdEndpoints;
+    }
+
+    /** The AfdOriginGroupsClient object to access its operations. */
+    private final AfdOriginGroupsClient afdOriginGroups;
+
+    /**
+     * Gets the AfdOriginGroupsClient object to access its operations.
+     *
+     * @return the AfdOriginGroupsClient object.
+     */
+    public AfdOriginGroupsClient getAfdOriginGroups() {
+        return this.afdOriginGroups;
+    }
+
+    /** The AfdOriginsClient object to access its operations. */
+    private final AfdOriginsClient afdOrigins;
+
+    /**
+     * Gets the AfdOriginsClient object to access its operations.
+     *
+     * @return the AfdOriginsClient object.
+     */
+    public AfdOriginsClient getAfdOrigins() {
+        return this.afdOrigins;
+    }
+
+    /** The RoutesClient object to access its operations. */
+    private final RoutesClient routes;
+
+    /**
+     * Gets the RoutesClient object to access its operations.
+     *
+     * @return the RoutesClient object.
+     */
+    public RoutesClient getRoutes() {
+        return this.routes;
+    }
+
+    /** The RuleSetsClient object to access its operations. */
+    private final RuleSetsClient ruleSets;
+
+    /**
+     * Gets the RuleSetsClient object to access its operations.
+     *
+     * @return the RuleSetsClient object.
+     */
+    public RuleSetsClient getRuleSets() {
+        return this.ruleSets;
+    }
+
+    /** The RulesClient object to access its operations. */
+    private final RulesClient rules;
+
+    /**
+     * Gets the RulesClient object to access its operations.
+     *
+     * @return the RulesClient object.
+     */
+    public RulesClient getRules() {
+        return this.rules;
+    }
+
+    /** The SecurityPoliciesClient object to access its operations. */
+    private final SecurityPoliciesClient securityPolicies;
+
+    /**
+     * Gets the SecurityPoliciesClient object to access its operations.
+     *
+     * @return the SecurityPoliciesClient object.
+     */
+    public SecurityPoliciesClient getSecurityPolicies() {
+        return this.securityPolicies;
+    }
+
+    /** The SecretsClient object to access its operations. */
+    private final SecretsClient secrets;
+
+    /**
+     * Gets the SecretsClient object to access its operations.
+     *
+     * @return the SecretsClient object.
+     */
+    public SecretsClient getSecrets() {
+        return this.secrets;
+    }
+
+    /** The ValidatesClient object to access its operations. */
+    private final ValidatesClient validates;
+
+    /**
+     * Gets the ValidatesClient object to access its operations.
+     *
+     * @return the ValidatesClient object.
+     */
+    public ValidatesClient getValidates() {
+        return this.validates;
+    }
+
+    /** The LogAnalyticsClient object to access its operations. */
+    private final LogAnalyticsClient logAnalytics;
+
+    /**
+     * Gets the LogAnalyticsClient object to access its operations.
+     *
+     * @return the LogAnalyticsClient object.
+     */
+    public LogAnalyticsClient getLogAnalytics() {
+        return this.logAnalytics;
+    }
+
     /** The PoliciesClient object to access its operations. */
     private final PoliciesClient policies;
 
@@ -269,7 +425,7 @@ public final class CdnManagementClientImpl extends AzureServiceClient implements
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2020-04-15";
+        this.apiVersion = "2020-09-01";
         this.profiles = new ProfilesClientImpl(this);
         this.endpoints = new EndpointsClientImpl(this);
         this.origins = new OriginsClientImpl(this);
@@ -278,6 +434,18 @@ public final class CdnManagementClientImpl extends AzureServiceClient implements
         this.resourceUsages = new ResourceUsagesClientImpl(this);
         this.operations = new OperationsClientImpl(this);
         this.edgeNodes = new EdgeNodesClientImpl(this);
+        this.afdProfiles = new AfdProfilesClientImpl(this);
+        this.afdCustomDomains = new AfdCustomDomainsClientImpl(this);
+        this.afdEndpoints = new AfdEndpointsClientImpl(this);
+        this.afdOriginGroups = new AfdOriginGroupsClientImpl(this);
+        this.afdOrigins = new AfdOriginsClientImpl(this);
+        this.routes = new RoutesClientImpl(this);
+        this.ruleSets = new RuleSetsClientImpl(this);
+        this.rules = new RulesClientImpl(this);
+        this.securityPolicies = new SecurityPoliciesClientImpl(this);
+        this.secrets = new SecretsClientImpl(this);
+        this.validates = new ValidatesClientImpl(this);
+        this.logAnalytics = new LogAnalyticsClientImpl(this);
         this.policies = new PoliciesClientImpl(this);
         this.managedRuleSets = new ManagedRuleSetsClientImpl(this);
         this.service =

@@ -4,7 +4,6 @@
 package com.azure.search.documents.implementation.converters;
 
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.ObjectSerializer;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.search.documents.models.IndexAction;
@@ -15,14 +14,13 @@ import java.io.IOException;
 import java.util.Map;
 
 import static com.azure.search.documents.implementation.util.Utility.MAP_STRING_OBJECT_TYPE_REFERENCE;
-import static com.azure.search.documents.implementation.util.Utility.initializeSerializerAdapter;
+import static com.azure.search.documents.implementation.util.Utility.getDefaultSerializerAdapter;
 
 /**
  * A converter between {@link com.azure.search.documents.implementation.models.IndexAction} and {@link IndexAction}.
  */
 public final class IndexActionConverter {
     private static final ClientLogger LOGGER = new ClientLogger(IndexActionConverter.class);
-    private static final JacksonAdapter searchJacksonAdapter = (JacksonAdapter) initializeSerializerAdapter();
 
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.IndexAction} to {@link IndexAction}.
@@ -31,7 +29,7 @@ public final class IndexActionConverter {
         if (obj == null) {
             return null;
         }
-        IndexAction<T> indexAction = new IndexAction<T>();
+        IndexAction<T> indexAction = new IndexAction<>();
 
         if (obj.getActionType() != null) {
             indexAction.setActionType(obj.getActionType());
@@ -47,7 +45,6 @@ public final class IndexActionConverter {
     /**
      * Maps from {@link IndexAction} to {@link com.azure.search.documents.implementation.models.IndexAction}.
      */
-    @SuppressWarnings("unchecked")
     public static <T> com.azure.search.documents.implementation.models.IndexAction map(IndexAction<T> obj,
         ObjectSerializer serializer) {
         if (obj == null) {
@@ -65,10 +62,10 @@ public final class IndexActionConverter {
             T properties = obj.getDocument();
             if (serializer == null) {
                 try {
-                    String serializedJson = searchJacksonAdapter.serialize(properties, SerializerEncoding.JSON);
-                    mapProperties =
-                        searchJacksonAdapter.deserialize(serializedJson, MAP_STRING_OBJECT_TYPE_REFERENCE.getJavaType(),
-                            SerializerEncoding.JSON);
+                    String serializedJson = getDefaultSerializerAdapter().serialize(properties,
+                        SerializerEncoding.JSON);
+                    mapProperties = getDefaultSerializerAdapter().deserialize(serializedJson,
+                        MAP_STRING_OBJECT_TYPE_REFERENCE.getJavaType(), SerializerEncoding.JSON);
                 } catch (IOException ex) {
                     throw LOGGER.logExceptionAsError(
                         new RuntimeException("Failed to serialize IndexAction.", ex));

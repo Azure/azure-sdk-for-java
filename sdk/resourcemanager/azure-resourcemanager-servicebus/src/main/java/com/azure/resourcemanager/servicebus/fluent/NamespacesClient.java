@@ -17,22 +17,403 @@ import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDe
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
 import com.azure.resourcemanager.servicebus.fluent.models.CheckNameAvailabilityResultInner;
-import com.azure.resourcemanager.servicebus.fluent.models.NamespaceResourceInner;
-import com.azure.resourcemanager.servicebus.fluent.models.ResourceListKeysInner;
-import com.azure.resourcemanager.servicebus.fluent.models.SharedAccessAuthorizationRuleResourceInner;
-import com.azure.resourcemanager.servicebus.models.NamespaceCreateOrUpdateParameters;
-import com.azure.resourcemanager.servicebus.models.NamespaceUpdateParameters;
-import com.azure.resourcemanager.servicebus.models.Policykey;
-import com.azure.resourcemanager.servicebus.models.SharedAccessAuthorizationRuleCreateOrUpdateParameters;
+import com.azure.resourcemanager.servicebus.fluent.models.NetworkRuleSetInner;
+import com.azure.resourcemanager.servicebus.fluent.models.SBAuthorizationRuleInner;
+import com.azure.resourcemanager.servicebus.fluent.models.SBNamespaceInner;
+import com.azure.resourcemanager.servicebus.fluent.models.AccessKeysInner;
+import com.azure.resourcemanager.servicebus.models.AccessRights;
+import com.azure.resourcemanager.servicebus.models.NameSpaceType;
+import com.azure.resourcemanager.servicebus.models.RegenerateAccessKeyParameters;
+import com.azure.resourcemanager.servicebus.models.SBNamespaceUpdateParameters;
 import java.nio.ByteBuffer;
+import java.util.List;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in NamespacesClient. */
 public interface NamespacesClient
-    extends InnerSupportsGet<NamespaceResourceInner>,
-        InnerSupportsListing<NamespaceResourceInner>,
-        InnerSupportsDelete<Void> {
+    extends InnerSupportsGet<SBNamespaceInner>, InnerSupportsListing<SBNamespaceInner>, InnerSupportsDelete<Void> {
+    /**
+     * Gets the authorization rules for a namespace.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param namespaceName The namespace name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the authorization rules for a namespace.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<SBAuthorizationRuleInner> listAuthorizationRulesAsync(String resourceGroupName, String namespaceName);
+
+    /**
+     * Gets the authorization rules for a namespace.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param namespaceName The namespace name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the authorization rules for a namespace.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<SBAuthorizationRuleInner> listAuthorizationRules(String resourceGroupName, String namespaceName);
+
+    /**
+     * Gets the authorization rules for a namespace.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param namespaceName The namespace name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the authorization rules for a namespace.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<SBAuthorizationRuleInner> listAuthorizationRules(
+        String resourceGroupName, String namespaceName, Context context);
+
+    /**
+     * Creates or updates an authorization rule for a namespace.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param namespaceName The namespace name.
+     * @param authorizationRuleName The authorization rule name.
+     * @param rights The rights associated with the rule.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return description of a namespace authorization rule.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<SBAuthorizationRuleInner>> createOrUpdateAuthorizationRuleWithResponseAsync(
+        String resourceGroupName, String namespaceName, String authorizationRuleName, List<AccessRights> rights);
+
+    /**
+     * Creates or updates an authorization rule for a namespace.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param namespaceName The namespace name.
+     * @param authorizationRuleName The authorization rule name.
+     * @param rights The rights associated with the rule.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return description of a namespace authorization rule.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<SBAuthorizationRuleInner> createOrUpdateAuthorizationRuleAsync(
+        String resourceGroupName, String namespaceName, String authorizationRuleName, List<AccessRights> rights);
+
+    /**
+     * Creates or updates an authorization rule for a namespace.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param namespaceName The namespace name.
+     * @param authorizationRuleName The authorization rule name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return description of a namespace authorization rule.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<SBAuthorizationRuleInner> createOrUpdateAuthorizationRuleAsync(
+        String resourceGroupName, String namespaceName, String authorizationRuleName);
+
+    /**
+     * Creates or updates an authorization rule for a namespace.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param namespaceName The namespace name.
+     * @param authorizationRuleName The authorization rule name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return description of a namespace authorization rule.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SBAuthorizationRuleInner createOrUpdateAuthorizationRule(
+        String resourceGroupName, String namespaceName, String authorizationRuleName);
+
+    /**
+     * Creates or updates an authorization rule for a namespace.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param namespaceName The namespace name.
+     * @param authorizationRuleName The authorization rule name.
+     * @param rights The rights associated with the rule.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return description of a namespace authorization rule.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<SBAuthorizationRuleInner> createOrUpdateAuthorizationRuleWithResponse(
+        String resourceGroupName,
+        String namespaceName,
+        String authorizationRuleName,
+        List<AccessRights> rights,
+        Context context);
+
+    /**
+     * Deletes a namespace authorization rule.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param namespaceName The namespace name.
+     * @param authorizationRuleName The authorization rule name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Void>> deleteAuthorizationRuleWithResponseAsync(
+        String resourceGroupName, String namespaceName, String authorizationRuleName);
+
+    /**
+     * Deletes a namespace authorization rule.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param namespaceName The namespace name.
+     * @param authorizationRuleName The authorization rule name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Void> deleteAuthorizationRuleAsync(
+        String resourceGroupName, String namespaceName, String authorizationRuleName);
+
+    /**
+     * Deletes a namespace authorization rule.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param namespaceName The namespace name.
+     * @param authorizationRuleName The authorization rule name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void deleteAuthorizationRule(String resourceGroupName, String namespaceName, String authorizationRuleName);
+
+    /**
+     * Deletes a namespace authorization rule.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param namespaceName The namespace name.
+     * @param authorizationRuleName The authorization rule name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<Void> deleteAuthorizationRuleWithResponse(
+        String resourceGroupName, String namespaceName, String authorizationRuleName, Context context);
+
+    /**
+     * Gets an authorization rule for a namespace by rule name.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param namespaceName The namespace name.
+     * @param authorizationRuleName The authorization rule name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an authorization rule for a namespace by rule name.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<SBAuthorizationRuleInner>> getAuthorizationRuleWithResponseAsync(
+        String resourceGroupName, String namespaceName, String authorizationRuleName);
+
+    /**
+     * Gets an authorization rule for a namespace by rule name.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param namespaceName The namespace name.
+     * @param authorizationRuleName The authorization rule name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an authorization rule for a namespace by rule name.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<SBAuthorizationRuleInner> getAuthorizationRuleAsync(
+        String resourceGroupName, String namespaceName, String authorizationRuleName);
+
+    /**
+     * Gets an authorization rule for a namespace by rule name.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param namespaceName The namespace name.
+     * @param authorizationRuleName The authorization rule name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an authorization rule for a namespace by rule name.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SBAuthorizationRuleInner getAuthorizationRule(
+        String resourceGroupName, String namespaceName, String authorizationRuleName);
+
+    /**
+     * Gets an authorization rule for a namespace by rule name.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param namespaceName The namespace name.
+     * @param authorizationRuleName The authorization rule name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an authorization rule for a namespace by rule name.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<SBAuthorizationRuleInner> getAuthorizationRuleWithResponse(
+        String resourceGroupName, String namespaceName, String authorizationRuleName, Context context);
+
+    /**
+     * Gets the primary and secondary connection strings for the namespace.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param namespaceName The namespace name.
+     * @param authorizationRuleName The authorization rule name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the primary and secondary connection strings for the namespace.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<AccessKeysInner>> listKeysWithResponseAsync(
+        String resourceGroupName, String namespaceName, String authorizationRuleName);
+
+    /**
+     * Gets the primary and secondary connection strings for the namespace.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param namespaceName The namespace name.
+     * @param authorizationRuleName The authorization rule name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the primary and secondary connection strings for the namespace.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<AccessKeysInner> listKeysAsync(String resourceGroupName, String namespaceName, String authorizationRuleName);
+
+    /**
+     * Gets the primary and secondary connection strings for the namespace.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param namespaceName The namespace name.
+     * @param authorizationRuleName The authorization rule name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the primary and secondary connection strings for the namespace.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    AccessKeysInner listKeys(String resourceGroupName, String namespaceName, String authorizationRuleName);
+
+    /**
+     * Gets the primary and secondary connection strings for the namespace.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param namespaceName The namespace name.
+     * @param authorizationRuleName The authorization rule name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the primary and secondary connection strings for the namespace.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<AccessKeysInner> listKeysWithResponse(
+        String resourceGroupName, String namespaceName, String authorizationRuleName, Context context);
+
+    /**
+     * Regenerates the primary or secondary connection strings for the namespace.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param namespaceName The namespace name.
+     * @param authorizationRuleName The authorization rule name.
+     * @param parameters Parameters supplied to regenerate the authorization rule.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return namespace/ServiceBus Connection String.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<AccessKeysInner>> regenerateKeysWithResponseAsync(
+        String resourceGroupName,
+        String namespaceName,
+        String authorizationRuleName,
+        RegenerateAccessKeyParameters parameters);
+
+    /**
+     * Regenerates the primary or secondary connection strings for the namespace.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param namespaceName The namespace name.
+     * @param authorizationRuleName The authorization rule name.
+     * @param parameters Parameters supplied to regenerate the authorization rule.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return namespace/ServiceBus Connection String.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<AccessKeysInner> regenerateKeysAsync(
+        String resourceGroupName,
+        String namespaceName,
+        String authorizationRuleName,
+        RegenerateAccessKeyParameters parameters);
+
+    /**
+     * Regenerates the primary or secondary connection strings for the namespace.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param namespaceName The namespace name.
+     * @param authorizationRuleName The authorization rule name.
+     * @param parameters Parameters supplied to regenerate the authorization rule.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return namespace/ServiceBus Connection String.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    AccessKeysInner regenerateKeys(
+        String resourceGroupName,
+        String namespaceName,
+        String authorizationRuleName,
+        RegenerateAccessKeyParameters parameters);
+
+    /**
+     * Regenerates the primary or secondary connection strings for the namespace.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param namespaceName The namespace name.
+     * @param authorizationRuleName The authorization rule name.
+     * @param parameters Parameters supplied to regenerate the authorization rule.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return namespace/ServiceBus Connection String.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<AccessKeysInner> regenerateKeysWithResponse(
+        String resourceGroupName,
+        String namespaceName,
+        String authorizationRuleName,
+        RegenerateAccessKeyParameters parameters,
+        Context context);
+
     /**
      * Check the give namespace name availability.
      *
@@ -87,14 +468,62 @@ public interface NamespacesClient
     Response<CheckNameAvailabilityResultInner> checkNameAvailabilityWithResponse(String name, Context context);
 
     /**
-     * Gets all the available namespaces within the subscription, irrespective of the resource groups.
+     * This operation Migrate the given namespace to provided name type.
      *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param namespaceName The namespace name.
+     * @param targetNamespaceType Type of namespaces.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the available namespaces within the subscription, irrespective of the resource groups.
+     * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<NamespaceResourceInner> listAsync();
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Void>> migrateWithResponseAsync(
+        String resourceGroupName, String namespaceName, NameSpaceType targetNamespaceType);
+
+    /**
+     * This operation Migrate the given namespace to provided name type.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param namespaceName The namespace name.
+     * @param targetNamespaceType Type of namespaces.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Void> migrateAsync(String resourceGroupName, String namespaceName, NameSpaceType targetNamespaceType);
+
+    /**
+     * This operation Migrate the given namespace to provided name type.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param namespaceName The namespace name.
+     * @param targetNamespaceType Type of namespaces.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void migrate(String resourceGroupName, String namespaceName, NameSpaceType targetNamespaceType);
+
+    /**
+     * This operation Migrate the given namespace to provided name type.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param namespaceName The namespace name.
+     * @param targetNamespaceType Type of namespaces.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<Void> migrateWithResponse(
+        String resourceGroupName, String namespaceName, NameSpaceType targetNamespaceType, Context context);
 
     /**
      * Gets all the available namespaces within the subscription, irrespective of the resource groups.
@@ -104,7 +533,17 @@ public interface NamespacesClient
      * @return all the available namespaces within the subscription, irrespective of the resource groups.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<NamespaceResourceInner> list();
+    PagedFlux<SBNamespaceInner> listAsync();
+
+    /**
+     * Gets all the available namespaces within the subscription, irrespective of the resource groups.
+     *
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all the available namespaces within the subscription, irrespective of the resource groups.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<SBNamespaceInner> list();
 
     /**
      * Gets all the available namespaces within the subscription, irrespective of the resource groups.
@@ -116,7 +555,7 @@ public interface NamespacesClient
      * @return all the available namespaces within the subscription, irrespective of the resource groups.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<NamespaceResourceInner> list(Context context);
+    PagedIterable<SBNamespaceInner> list(Context context);
 
     /**
      * Gets the available namespaces within a resource group.
@@ -128,7 +567,7 @@ public interface NamespacesClient
      * @return the available namespaces within a resource group.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<NamespaceResourceInner> listByResourceGroupAsync(String resourceGroupName);
+    PagedFlux<SBNamespaceInner> listByResourceGroupAsync(String resourceGroupName);
 
     /**
      * Gets the available namespaces within a resource group.
@@ -140,7 +579,7 @@ public interface NamespacesClient
      * @return the available namespaces within a resource group.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<NamespaceResourceInner> listByResourceGroup(String resourceGroupName);
+    PagedIterable<SBNamespaceInner> listByResourceGroup(String resourceGroupName);
 
     /**
      * Gets the available namespaces within a resource group.
@@ -153,7 +592,7 @@ public interface NamespacesClient
      * @return the available namespaces within a resource group.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<NamespaceResourceInner> listByResourceGroup(String resourceGroupName, Context context);
+    PagedIterable<SBNamespaceInner> listByResourceGroup(String resourceGroupName, Context context);
 
     /**
      * Creates or updates a service namespace. Once created, this namespace's resource manifest is immutable. This
@@ -161,7 +600,7 @@ public interface NamespacesClient
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name.
-     * @param parameters Parameters supplied to the Create Or Update Namespace operation.
+     * @param parameters Parameters supplied to create a namespace resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -169,7 +608,7 @@ public interface NamespacesClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String namespaceName, NamespaceCreateOrUpdateParameters parameters);
+        String resourceGroupName, String namespaceName, SBNamespaceInner parameters);
 
     /**
      * Creates or updates a service namespace. Once created, this namespace's resource manifest is immutable. This
@@ -177,15 +616,15 @@ public interface NamespacesClient
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name.
-     * @param parameters Parameters supplied to the Create Or Update Namespace operation.
+     * @param parameters Parameters supplied to create a namespace resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return description of a namespace resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PollerFlux<PollResult<NamespaceResourceInner>, NamespaceResourceInner> beginCreateOrUpdateAsync(
-        String resourceGroupName, String namespaceName, NamespaceCreateOrUpdateParameters parameters);
+    PollerFlux<PollResult<SBNamespaceInner>, SBNamespaceInner> beginCreateOrUpdateAsync(
+        String resourceGroupName, String namespaceName, SBNamespaceInner parameters);
 
     /**
      * Creates or updates a service namespace. Once created, this namespace's resource manifest is immutable. This
@@ -193,15 +632,15 @@ public interface NamespacesClient
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name.
-     * @param parameters Parameters supplied to the Create Or Update Namespace operation.
+     * @param parameters Parameters supplied to create a namespace resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return description of a namespace resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<NamespaceResourceInner>, NamespaceResourceInner> beginCreateOrUpdate(
-        String resourceGroupName, String namespaceName, NamespaceCreateOrUpdateParameters parameters);
+    SyncPoller<PollResult<SBNamespaceInner>, SBNamespaceInner> beginCreateOrUpdate(
+        String resourceGroupName, String namespaceName, SBNamespaceInner parameters);
 
     /**
      * Creates or updates a service namespace. Once created, this namespace's resource manifest is immutable. This
@@ -209,7 +648,7 @@ public interface NamespacesClient
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name.
-     * @param parameters Parameters supplied to the Create Or Update Namespace operation.
+     * @param parameters Parameters supplied to create a namespace resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -217,8 +656,8 @@ public interface NamespacesClient
      * @return description of a namespace resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<NamespaceResourceInner>, NamespaceResourceInner> beginCreateOrUpdate(
-        String resourceGroupName, String namespaceName, NamespaceCreateOrUpdateParameters parameters, Context context);
+    SyncPoller<PollResult<SBNamespaceInner>, SBNamespaceInner> beginCreateOrUpdate(
+        String resourceGroupName, String namespaceName, SBNamespaceInner parameters, Context context);
 
     /**
      * Creates or updates a service namespace. Once created, this namespace's resource manifest is immutable. This
@@ -226,15 +665,15 @@ public interface NamespacesClient
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name.
-     * @param parameters Parameters supplied to the Create Or Update Namespace operation.
+     * @param parameters Parameters supplied to create a namespace resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return description of a namespace resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<NamespaceResourceInner> createOrUpdateAsync(
-        String resourceGroupName, String namespaceName, NamespaceCreateOrUpdateParameters parameters);
+    Mono<SBNamespaceInner> createOrUpdateAsync(
+        String resourceGroupName, String namespaceName, SBNamespaceInner parameters);
 
     /**
      * Creates or updates a service namespace. Once created, this namespace's resource manifest is immutable. This
@@ -242,15 +681,14 @@ public interface NamespacesClient
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name.
-     * @param parameters Parameters supplied to the Create Or Update Namespace operation.
+     * @param parameters Parameters supplied to create a namespace resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return description of a namespace resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    NamespaceResourceInner createOrUpdate(
-        String resourceGroupName, String namespaceName, NamespaceCreateOrUpdateParameters parameters);
+    SBNamespaceInner createOrUpdate(String resourceGroupName, String namespaceName, SBNamespaceInner parameters);
 
     /**
      * Creates or updates a service namespace. Once created, this namespace's resource manifest is immutable. This
@@ -258,7 +696,7 @@ public interface NamespacesClient
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name.
-     * @param parameters Parameters supplied to the Create Or Update Namespace operation.
+     * @param parameters Parameters supplied to create a namespace resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -266,8 +704,8 @@ public interface NamespacesClient
      * @return description of a namespace resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    NamespaceResourceInner createOrUpdate(
-        String resourceGroupName, String namespaceName, NamespaceCreateOrUpdateParameters parameters, Context context);
+    SBNamespaceInner createOrUpdate(
+        String resourceGroupName, String namespaceName, SBNamespaceInner parameters, Context context);
 
     /**
      * Deletes an existing namespace. This operation also removes all associated resources under the namespace.
@@ -371,7 +809,7 @@ public interface NamespacesClient
      * @return a description for the specified namespace.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<NamespaceResourceInner>> getByResourceGroupWithResponseAsync(
+    Mono<Response<SBNamespaceInner>> getByResourceGroupWithResponseAsync(
         String resourceGroupName, String namespaceName);
 
     /**
@@ -385,7 +823,7 @@ public interface NamespacesClient
      * @return a description for the specified namespace.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<NamespaceResourceInner> getByResourceGroupAsync(String resourceGroupName, String namespaceName);
+    Mono<SBNamespaceInner> getByResourceGroupAsync(String resourceGroupName, String namespaceName);
 
     /**
      * Gets a description for the specified namespace.
@@ -398,7 +836,7 @@ public interface NamespacesClient
      * @return a description for the specified namespace.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    NamespaceResourceInner getByResourceGroup(String resourceGroupName, String namespaceName);
+    SBNamespaceInner getByResourceGroup(String resourceGroupName, String namespaceName);
 
     /**
      * Gets a description for the specified namespace.
@@ -412,7 +850,7 @@ public interface NamespacesClient
      * @return a description for the specified namespace.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<NamespaceResourceInner> getByResourceGroupWithResponse(
+    Response<SBNamespaceInner> getByResourceGroupWithResponse(
         String resourceGroupName, String namespaceName, Context context);
 
     /**
@@ -421,15 +859,15 @@ public interface NamespacesClient
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name.
-     * @param parameters Parameters supplied to the Patch Namespace operation.
+     * @param parameters Parameters supplied to update a namespace resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return description of a namespace resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<NamespaceResourceInner>> updateWithResponseAsync(
-        String resourceGroupName, String namespaceName, NamespaceUpdateParameters parameters);
+    Mono<Response<SBNamespaceInner>> updateWithResponseAsync(
+        String resourceGroupName, String namespaceName, SBNamespaceUpdateParameters parameters);
 
     /**
      * Updates a service namespace. Once created, this namespace's resource manifest is immutable. This operation is
@@ -437,15 +875,15 @@ public interface NamespacesClient
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name.
-     * @param parameters Parameters supplied to the Patch Namespace operation.
+     * @param parameters Parameters supplied to update a namespace resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return description of a namespace resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<NamespaceResourceInner> updateAsync(
-        String resourceGroupName, String namespaceName, NamespaceUpdateParameters parameters);
+    Mono<SBNamespaceInner> updateAsync(
+        String resourceGroupName, String namespaceName, SBNamespaceUpdateParameters parameters);
 
     /**
      * Updates a service namespace. Once created, this namespace's resource manifest is immutable. This operation is
@@ -453,14 +891,14 @@ public interface NamespacesClient
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name.
-     * @param parameters Parameters supplied to the Patch Namespace operation.
+     * @param parameters Parameters supplied to update a namespace resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return description of a namespace resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    NamespaceResourceInner update(String resourceGroupName, String namespaceName, NamespaceUpdateParameters parameters);
+    SBNamespaceInner update(String resourceGroupName, String namespaceName, SBNamespaceUpdateParameters parameters);
 
     /**
      * Updates a service namespace. Once created, this namespace's resource manifest is immutable. This operation is
@@ -468,7 +906,7 @@ public interface NamespacesClient
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name.
-     * @param parameters Parameters supplied to the Patch Namespace operation.
+     * @param parameters Parameters supplied to update a namespace resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -476,39 +914,112 @@ public interface NamespacesClient
      * @return description of a namespace resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<NamespaceResourceInner> updateWithResponse(
-        String resourceGroupName, String namespaceName, NamespaceUpdateParameters parameters, Context context);
+    Response<SBNamespaceInner> updateWithResponse(
+        String resourceGroupName, String namespaceName, SBNamespaceUpdateParameters parameters, Context context);
 
     /**
-     * Gets the authorization rules for a namespace.
+     * Create or update NetworkRuleSet for a Namespace.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param namespaceName The namespace name.
+     * @param parameters The Namespace IpFilterRule.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return description of NetworkRuleSet resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<NetworkRuleSetInner>> createOrUpdateNetworkRuleSetWithResponseAsync(
+        String resourceGroupName, String namespaceName, NetworkRuleSetInner parameters);
+
+    /**
+     * Create or update NetworkRuleSet for a Namespace.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param namespaceName The namespace name.
+     * @param parameters The Namespace IpFilterRule.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return description of NetworkRuleSet resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<NetworkRuleSetInner> createOrUpdateNetworkRuleSetAsync(
+        String resourceGroupName, String namespaceName, NetworkRuleSetInner parameters);
+
+    /**
+     * Create or update NetworkRuleSet for a Namespace.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param namespaceName The namespace name.
+     * @param parameters The Namespace IpFilterRule.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return description of NetworkRuleSet resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    NetworkRuleSetInner createOrUpdateNetworkRuleSet(
+        String resourceGroupName, String namespaceName, NetworkRuleSetInner parameters);
+
+    /**
+     * Create or update NetworkRuleSet for a Namespace.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param namespaceName The namespace name.
+     * @param parameters The Namespace IpFilterRule.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return description of NetworkRuleSet resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<NetworkRuleSetInner> createOrUpdateNetworkRuleSetWithResponse(
+        String resourceGroupName, String namespaceName, NetworkRuleSetInner parameters, Context context);
+
+    /**
+     * Gets NetworkRuleSet for a Namespace.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the authorization rules for a namespace.
+     * @return networkRuleSet for a Namespace.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<SharedAccessAuthorizationRuleResourceInner> listAuthorizationRulesAsync(
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<NetworkRuleSetInner>> getNetworkRuleSetWithResponseAsync(
         String resourceGroupName, String namespaceName);
 
     /**
-     * Gets the authorization rules for a namespace.
+     * Gets NetworkRuleSet for a Namespace.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the authorization rules for a namespace.
+     * @return networkRuleSet for a Namespace.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<SharedAccessAuthorizationRuleResourceInner> listAuthorizationRules(
-        String resourceGroupName, String namespaceName);
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<NetworkRuleSetInner> getNetworkRuleSetAsync(String resourceGroupName, String namespaceName);
 
     /**
-     * Gets the authorization rules for a namespace.
+     * Gets NetworkRuleSet for a Namespace.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param namespaceName The namespace name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return networkRuleSet for a Namespace.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    NetworkRuleSetInner getNetworkRuleSet(String resourceGroupName, String namespaceName);
+
+    /**
+     * Gets NetworkRuleSet for a Namespace.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name.
@@ -516,349 +1027,50 @@ public interface NamespacesClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the authorization rules for a namespace.
+     * @return networkRuleSet for a Namespace.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<SharedAccessAuthorizationRuleResourceInner> listAuthorizationRules(
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<NetworkRuleSetInner> getNetworkRuleSetWithResponse(
         String resourceGroupName, String namespaceName, Context context);
 
     /**
-     * Creates or updates an authorization rule for a namespace.
+     * Gets list of NetworkRuleSet for a Namespace.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name.
-     * @param authorizationRuleName The authorization rule name.
-     * @param parameters Parameters supplied to the Create Or Update Authorization Rules operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return description of a namespace authorization rule.
+     * @return list of NetworkRuleSet for a Namespace.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<SharedAccessAuthorizationRuleResourceInner>> createOrUpdateAuthorizationRuleWithResponseAsync(
-        String resourceGroupName,
-        String namespaceName,
-        String authorizationRuleName,
-        SharedAccessAuthorizationRuleCreateOrUpdateParameters parameters);
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<NetworkRuleSetInner> listNetworkRuleSetsAsync(String resourceGroupName, String namespaceName);
 
     /**
-     * Creates or updates an authorization rule for a namespace.
+     * Gets list of NetworkRuleSet for a Namespace.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name.
-     * @param authorizationRuleName The authorization rule name.
-     * @param parameters Parameters supplied to the Create Or Update Authorization Rules operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return description of a namespace authorization rule.
+     * @return list of NetworkRuleSet for a Namespace.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<SharedAccessAuthorizationRuleResourceInner> createOrUpdateAuthorizationRuleAsync(
-        String resourceGroupName,
-        String namespaceName,
-        String authorizationRuleName,
-        SharedAccessAuthorizationRuleCreateOrUpdateParameters parameters);
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<NetworkRuleSetInner> listNetworkRuleSets(String resourceGroupName, String namespaceName);
 
     /**
-     * Creates or updates an authorization rule for a namespace.
+     * Gets list of NetworkRuleSet for a Namespace.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name.
-     * @param authorizationRuleName The authorization rule name.
-     * @param parameters Parameters supplied to the Create Or Update Authorization Rules operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return description of a namespace authorization rule.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    SharedAccessAuthorizationRuleResourceInner createOrUpdateAuthorizationRule(
-        String resourceGroupName,
-        String namespaceName,
-        String authorizationRuleName,
-        SharedAccessAuthorizationRuleCreateOrUpdateParameters parameters);
-
-    /**
-     * Creates or updates an authorization rule for a namespace.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param namespaceName The namespace name.
-     * @param authorizationRuleName The authorization rule name.
-     * @param parameters Parameters supplied to the Create Or Update Authorization Rules operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return description of a namespace authorization rule.
+     * @return list of NetworkRuleSet for a Namespace.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<SharedAccessAuthorizationRuleResourceInner> createOrUpdateAuthorizationRuleWithResponse(
-        String resourceGroupName,
-        String namespaceName,
-        String authorizationRuleName,
-        SharedAccessAuthorizationRuleCreateOrUpdateParameters parameters,
-        Context context);
-
-    /**
-     * Deletes a namespace authorization rule.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param namespaceName The namespace name.
-     * @param authorizationRuleName The authorization rule name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Void>> deleteAuthorizationRuleWithResponseAsync(
-        String resourceGroupName, String namespaceName, String authorizationRuleName);
-
-    /**
-     * Deletes a namespace authorization rule.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param namespaceName The namespace name.
-     * @param authorizationRuleName The authorization rule name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Void> deleteAuthorizationRuleAsync(
-        String resourceGroupName, String namespaceName, String authorizationRuleName);
-
-    /**
-     * Deletes a namespace authorization rule.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param namespaceName The namespace name.
-     * @param authorizationRuleName The authorization rule name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void deleteAuthorizationRule(String resourceGroupName, String namespaceName, String authorizationRuleName);
-
-    /**
-     * Deletes a namespace authorization rule.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param namespaceName The namespace name.
-     * @param authorizationRuleName The authorization rule name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteAuthorizationRuleWithResponse(
-        String resourceGroupName, String namespaceName, String authorizationRuleName, Context context);
-
-    /**
-     * Gets an authorization rule for a namespace by rule name.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param namespaceName The namespace name.
-     * @param authorizationRuleName The authorization rule name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an authorization rule for a namespace by rule name.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<SharedAccessAuthorizationRuleResourceInner>> getAuthorizationRuleWithResponseAsync(
-        String resourceGroupName, String namespaceName, String authorizationRuleName);
-
-    /**
-     * Gets an authorization rule for a namespace by rule name.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param namespaceName The namespace name.
-     * @param authorizationRuleName The authorization rule name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an authorization rule for a namespace by rule name.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<SharedAccessAuthorizationRuleResourceInner> getAuthorizationRuleAsync(
-        String resourceGroupName, String namespaceName, String authorizationRuleName);
-
-    /**
-     * Gets an authorization rule for a namespace by rule name.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param namespaceName The namespace name.
-     * @param authorizationRuleName The authorization rule name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an authorization rule for a namespace by rule name.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    SharedAccessAuthorizationRuleResourceInner getAuthorizationRule(
-        String resourceGroupName, String namespaceName, String authorizationRuleName);
-
-    /**
-     * Gets an authorization rule for a namespace by rule name.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param namespaceName The namespace name.
-     * @param authorizationRuleName The authorization rule name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an authorization rule for a namespace by rule name.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<SharedAccessAuthorizationRuleResourceInner> getAuthorizationRuleWithResponse(
-        String resourceGroupName, String namespaceName, String authorizationRuleName, Context context);
-
-    /**
-     * Gets the primary and secondary connection strings for the namespace.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param namespaceName The namespace name.
-     * @param authorizationRuleName The authorization rule name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the primary and secondary connection strings for the namespace.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<ResourceListKeysInner>> listKeysWithResponseAsync(
-        String resourceGroupName, String namespaceName, String authorizationRuleName);
-
-    /**
-     * Gets the primary and secondary connection strings for the namespace.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param namespaceName The namespace name.
-     * @param authorizationRuleName The authorization rule name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the primary and secondary connection strings for the namespace.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ResourceListKeysInner> listKeysAsync(
-        String resourceGroupName, String namespaceName, String authorizationRuleName);
-
-    /**
-     * Gets the primary and secondary connection strings for the namespace.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param namespaceName The namespace name.
-     * @param authorizationRuleName The authorization rule name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the primary and secondary connection strings for the namespace.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    ResourceListKeysInner listKeys(String resourceGroupName, String namespaceName, String authorizationRuleName);
-
-    /**
-     * Gets the primary and secondary connection strings for the namespace.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param namespaceName The namespace name.
-     * @param authorizationRuleName The authorization rule name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the primary and secondary connection strings for the namespace.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ResourceListKeysInner> listKeysWithResponse(
-        String resourceGroupName, String namespaceName, String authorizationRuleName, Context context);
-
-    /**
-     * Regenerates the primary or secondary connection strings for the namespace.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param namespaceName The namespace name.
-     * @param authorizationRuleName The authorization rule name.
-     * @param policykey Key that needs to be regenerated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return namespace/ServiceBus Connection String.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<ResourceListKeysInner>> regenerateKeysWithResponseAsync(
-        String resourceGroupName, String namespaceName, String authorizationRuleName, Policykey policykey);
-
-    /**
-     * Regenerates the primary or secondary connection strings for the namespace.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param namespaceName The namespace name.
-     * @param authorizationRuleName The authorization rule name.
-     * @param policykey Key that needs to be regenerated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return namespace/ServiceBus Connection String.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ResourceListKeysInner> regenerateKeysAsync(
-        String resourceGroupName, String namespaceName, String authorizationRuleName, Policykey policykey);
-
-    /**
-     * Regenerates the primary or secondary connection strings for the namespace.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param namespaceName The namespace name.
-     * @param authorizationRuleName The authorization rule name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return namespace/ServiceBus Connection String.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ResourceListKeysInner> regenerateKeysAsync(
-        String resourceGroupName, String namespaceName, String authorizationRuleName);
-
-    /**
-     * Regenerates the primary or secondary connection strings for the namespace.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param namespaceName The namespace name.
-     * @param authorizationRuleName The authorization rule name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return namespace/ServiceBus Connection String.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    ResourceListKeysInner regenerateKeys(String resourceGroupName, String namespaceName, String authorizationRuleName);
-
-    /**
-     * Regenerates the primary or secondary connection strings for the namespace.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param namespaceName The namespace name.
-     * @param authorizationRuleName The authorization rule name.
-     * @param policykey Key that needs to be regenerated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return namespace/ServiceBus Connection String.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ResourceListKeysInner> regenerateKeysWithResponse(
-        String resourceGroupName,
-        String namespaceName,
-        String authorizationRuleName,
-        Policykey policykey,
-        Context context);
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<NetworkRuleSetInner> listNetworkRuleSets(
+        String resourceGroupName, String namespaceName, Context context);
 }

@@ -1,42 +1,42 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://REDACTED.queue.core.windows.net/queue55926b0f",
+    "Uri" : "https://REDACTED.queue.core.windows.net/faba6b86faba6b861726599399c7c16afe4f41c59f",
     "Headers" : {
       "x-ms-version" : "2017-11-09",
-      "User-Agent" : "azsdk-java-azure-storage-queue/12.7.0-beta.2 (11.0.7; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "f4177cc8-3242-4010-9c91-3e1c4ab8bdb4"
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.10.0-beta.1 (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "22159aaa-18b3-421b-8f0e-e39fe18fba7c"
     },
     "Response" : {
+      "content-length" : "0",
       "x-ms-version" : "2017-11-09",
       "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
       "retry-after" : "0",
-      "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "0aba064f-6003-005a-0767-9bf765000000",
-      "Date" : "Mon, 05 Oct 2020 22:34:29 GMT"
+      "x-ms-request-id" : "76d942ff-e003-0021-1c09-41d25a000000",
+      "Date" : "Tue, 04 May 2021 17:18:36 GMT"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.queue.core.windows.net/queue55926b0f?comp=metadata",
+    "Uri" : "https://REDACTED.queue.core.windows.net/faba6b86faba6b861726599399c7c16afe4f41c59f?comp=metadata",
     "Headers" : {
       "x-ms-version" : "2017-11-09",
-      "User-Agent" : "azsdk-java-azure-storage-queue/12.7.0-beta.2 (11.0.7; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "78553f48-91df-44d6-91af-2a1e0f0f0c4e"
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.10.0-beta.1 (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "782e03af-b2a0-4c4e-b4e7-8bb9c9fd0acf"
     },
     "Response" : {
+      "content-length" : "0",
       "x-ms-version" : "2017-11-09",
-      "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
       "Cache-Control" : "no-cache",
+      "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
       "retry-after" : "0",
-      "Content-Length" : "0",
       "x-ms-approximate-messages-count" : "0",
       "StatusCode" : "200",
-      "x-ms-request-id" : "0aba0694-6003-005a-3867-9bf765000000",
-      "Date" : "Mon, 05 Oct 2020 22:34:29 GMT"
+      "x-ms-request-id" : "d9b89982-f003-0012-5c09-418df1000000",
+      "Date" : "Tue, 04 May 2021 17:18:36 GMT"
     },
     "Exception" : null
   } ],
-  "variables" : [ "queueapitestspercallpolicy93926550ba6210ef84d", "queue55926b0f" ]
+  "variables" : [ "faba6b86faba6b8617217050cb3e08efce3a47db9f", "faba6b86faba6b861726599399c7c16afe4f41c59f" ]
 }

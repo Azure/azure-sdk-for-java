@@ -23,7 +23,9 @@ import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
@@ -46,14 +48,6 @@ final class FeedRangeCompositeContinuationImpl extends FeedRangeContinuation {
     public FeedRangeCompositeContinuationImpl(
         String containerRid,
         FeedRangeInternal feedRange,
-        List<Range<String>> ranges) {
-
-        this(containerRid, feedRange, ranges, null);
-    }
-
-    public FeedRangeCompositeContinuationImpl(
-        String containerRid,
-        FeedRangeInternal feedRange,
         List<Range<String>> ranges,
         String continuation) {
 
@@ -71,6 +65,32 @@ final class FeedRangeCompositeContinuationImpl extends FeedRangeContinuation {
                     range.getMin(),
                     range.getMax(),
                     continuation)
+            );
+        }
+
+        this.currentToken = this.getCompositeContinuationTokens().peek();
+    }
+
+    public FeedRangeCompositeContinuationImpl(
+        String containerRid,
+        FeedRangeInternal feedRange,
+        List<CompositeContinuationToken> continuationTokens) {
+
+        this(containerRid, feedRange);
+
+        checkNotNull(continuationTokens, "'continuationTokens' must not be null");
+
+        if (continuationTokens.size() == 0) {
+            throw new IllegalArgumentException("'continuationTokens' must not be empty");
+        }
+
+        for (CompositeContinuationToken continuationToken : continuationTokens) {
+            this.compositeContinuationTokens.add(
+                // add a copy
+                FeedRangeCompositeContinuationImpl.createCompositeContinuationTokenForRange(
+                    continuationToken.getRange().getMin(),
+                    continuationToken.getRange().getMax(),
+                    continuationToken.getToken())
             );
         }
 
@@ -141,6 +161,14 @@ final class FeedRangeCompositeContinuationImpl extends FeedRangeContinuation {
         }
 
         return tokenSnapshot;
+    }
+
+    @Override
+    public CompositeContinuationToken[] getCurrentContinuationTokens() {
+        CompositeContinuationToken[] snapshot = new CompositeContinuationToken[this.compositeContinuationTokens.size()];
+        this.compositeContinuationTokens.toArray(snapshot);
+
+        return snapshot;
     }
 
     @Override
@@ -222,16 +250,17 @@ final class FeedRangeCompositeContinuationImpl extends FeedRangeContinuation {
         }
 
         final RxPartitionKeyRangeCache partitionKeyRangeCache = client.getPartitionKeyRangeCache();
+        Range<String> effectiveTokenRange = this.currentToken.getRange();
         final Mono<Utils.ValueHolder<List<PartitionKeyRange>>> resolvedRangesTask =
             this.tryGetOverlappingRanges(
                 partitionKeyRangeCache,
-                this.currentToken.getRange().getMin(),
-                this.currentToken.getRange().getMax(),
+                effectiveTokenRange.getMin(),
+                effectiveTokenRange.getMax(),
                 true);
 
         return resolvedRangesTask.flatMap(resolvedRanges -> {
             if (resolvedRanges.v != null && resolvedRanges.v.size() > 0) {
-                this.createChildRanges(resolvedRanges.v);
+                this.createChildRanges(resolvedRanges.v, effectiveTokenRange);
             }
 
             return Mono.just(ShouldRetryResult.RETRY_NOW);
@@ -279,11 +308,42 @@ final class FeedRangeCompositeContinuationImpl extends FeedRangeContinuation {
         }
     }
 
-    private void createChildRanges(final List<PartitionKeyRange> keyRanges) {
+    private static String getMinString(String left, String right) {
+        checkNotNull(left, "Argument 'left' must not be null.");
+        checkNotNull(right, "Argument 'right' must not be null.");
+
+        if (left.compareTo(right) < 0) {
+            return left;
+        }
+
+        return right;
+    }
+
+    private static String getMaxString(String left, String right) {
+        checkNotNull(left, "Argument 'left' must not be null.");
+        checkNotNull(right, "Argument 'right' must not be null.");
+
+        if (left.compareTo(right) > 0) {
+            return left;
+        }
+
+        return right;
+    }
+
+    private void createChildRanges(
+        final List<PartitionKeyRange> keyRanges,
+        final Range<String> effectiveTokenRange) {
+
+        keyRanges.sort(PartitionKeyRangeMinInclusiveComparator.SingletonInstance);
+
         final PartitionKeyRange firstRange = keyRanges.get(0);
         this.currentToken
-            .setRange(new Range<>(firstRange.getMinInclusive(),
-                firstRange.getMaxExclusive(), true, false));
+            .setRange(
+                new Range<>(
+                    getMaxString(effectiveTokenRange.getMin(), firstRange.getMinInclusive()),
+                    getMinString(effectiveTokenRange.getMax(), firstRange.getMaxExclusive()),
+                    true,
+                    false));
 
         final CompositeContinuationToken continuationAsComposite =
             tryParseAsCompositeContinuationToken(
@@ -297,9 +357,17 @@ final class FeedRangeCompositeContinuationImpl extends FeedRangeContinuation {
             final int size = keyRanges.size();
             for (int i = 1; i < size; i++) {
                 final PartitionKeyRange keyRange = keyRanges.get(i);
-                continuationAsComposite.setRange(keyRange.toRange());
+                Range<String> newRange = new Range<>(
+                    getMaxString(effectiveTokenRange.getMin(), keyRange.getMinInclusive()),
+                    getMinString(effectiveTokenRange.getMax(), keyRange.getMaxExclusive()),
+                    true,
+                    false
+                );
+
+                continuationAsComposite.setRange(newRange);
                 this.compositeContinuationTokens.add(createCompositeContinuationTokenForRange(
-                    keyRange.getMinInclusive(), keyRange.getMaxExclusive(),
+                    newRange.getMin(),
+                    newRange.getMax(),
                     continuationAsComposite.toJson()));
             }
         } else {
@@ -307,8 +375,16 @@ final class FeedRangeCompositeContinuationImpl extends FeedRangeContinuation {
             final int size = keyRanges.size();
             for (int i = 1; i < size; i++) {
                 final PartitionKeyRange keyRange = keyRanges.get(i);
+                Range<String> newRange = new Range<>(
+                    getMaxString(effectiveTokenRange.getMin(), keyRange.getMinInclusive()),
+                    getMinString(effectiveTokenRange.getMax(), keyRange.getMaxExclusive()),
+                    true,
+                    false
+                );
+
                 this.compositeContinuationTokens.add(createCompositeContinuationTokenForRange(
-                    keyRange.getMinInclusive(), keyRange.getMaxExclusive(),
+                    newRange.getMin(),
+                    newRange.getMax(),
                     this.currentToken.getToken()));
             }
         }
@@ -398,5 +474,18 @@ final class FeedRangeCompositeContinuationImpl extends FeedRangeContinuation {
             this.initialNoResultsRange,
             this.currentToken,
             this.compositeContinuationTokens);
+    }
+
+    static class PartitionKeyRangeMinInclusiveComparator implements Comparator<PartitionKeyRange>, Serializable {
+        private static final long serialVersionUID = 1L;
+        final static Comparator<PartitionKeyRange> SingletonInstance = new PartitionKeyRangeMinInclusiveComparator();
+
+        private PartitionKeyRangeMinInclusiveComparator() {
+        }
+
+        @Override
+        public int compare(PartitionKeyRange o1, PartitionKeyRange o2) {
+            return o1.getMinInclusive().compareTo(o2.getMinInclusive());
+        }
     }
 }

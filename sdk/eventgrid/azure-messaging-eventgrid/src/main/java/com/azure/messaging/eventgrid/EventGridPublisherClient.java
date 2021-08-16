@@ -6,93 +6,116 @@ package com.azure.messaging.eventgrid;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.credential.AzureSasCredential;
 import com.azure.core.http.rest.Response;
+import com.azure.core.models.CloudEvent;
 import com.azure.core.util.Context;
+
+import java.time.OffsetDateTime;
 
 /**
  * A service client that publishes events to an EventGrid topic or domain. Use {@link EventGridPublisherClientBuilder}
  * to create an instance of this client. Note that this is simply a synchronous convenience layer over the
  * {@link EventGridPublisherAsyncClient}, which has more efficient asynchronous functionality and is recommended.
+ *
+ * <p><strong>Create EventGridPublisherClient for CloudEvent Samples</strong></p>
+ * {@codesnippet com.azure.messaging.eventgrid.EventGridPublisherClient#CreateCloudEventClient}
+ *
+ * <p><strong>Send CloudEvent Samples</strong></p>
+ * {@codesnippet com.azure.messaging.eventgrid.EventGridPublisherClient#SendCloudEvent}
+ *
+ * <p><strong>Create EventGridPublisherClient for EventGridEvent Samples</strong></p>
+ * {@codesnippet com.azure.messaging.eventgrid.EventGridPublisherClient#CreateEventGridEventClient}
+ *
+ * <p><strong>Send EventGridEvent Samples</strong></p>
+ * {@codesnippet com.azure.messaging.eventgrid.EventGridPublisherClient#SendEventGridEvent}
+ *
+ * <p><strong>Create EventGridPublisherClient for Custom Event Schema Samples</strong></p>
+ * {@codesnippet com.azure.messaging.eventgrid.EventGridPublisherClient#CreateCustomEventClient}
+ *
+ * <p><strong>Send Custom Event Schema Samples</strong></p>
+ * {@codesnippet com.azure.messaging.eventgrid.EventGridPublisherClient#SendCustomEvent}
+ *
  * @see EventGridEvent
  * @see CloudEvent
  */
 @ServiceClient(builder = EventGridPublisherClientBuilder.class)
-public final class EventGridPublisherClient {
+public final class EventGridPublisherClient<T> {
 
-    EventGridPublisherAsyncClient asyncClient;
-
-    EventGridPublisherClient(EventGridPublisherAsyncClient client) {
+    private final EventGridPublisherAsyncClient<T> asyncClient;
+    EventGridPublisherClient(EventGridPublisherAsyncClient<T> client) {
         this.asyncClient = client;
     }
 
     /**
-     * Get the service version of the Rest API.
-     * @return the Service version of the rest API
+     * Generate a shared access signature to provide time-limited authentication for requests to the Event Grid
+     * service with the latest Event Grid service API defined in {@link EventGridServiceVersion#getLatest()}.
+     * @param endpoint the endpoint of the Event Grid topic or domain.
+     * @param expirationTime the time in which the signature should expire, no longer providing authentication.
+     * @param keyCredential the access key obtained from the Event Grid topic or domain.
+     *
+     * @return the shared access signature string which can be used to construct an instance of
+     * {@link AzureSasCredential}.
+     *
+     * @throws NullPointerException if keyCredential or expirationTime is {@code null}.
+     * @throws RuntimeException if java security doesn't have algorithm "hmacSHA256".
      */
-    public EventGridServiceVersion getServiceVersion() {
-        return asyncClient.getServiceVersion();
+    public static String generateSas(String endpoint, AzureKeyCredential keyCredential, OffsetDateTime expirationTime) {
+        return EventGridPublisherAsyncClient.generateSas(endpoint, keyCredential, expirationTime,
+            EventGridServiceVersion.getLatest());
     }
 
     /**
-     * Publishes the given EventGrid events to the given topic or domain.
-     * @param events the EventGrid events to publish.
+     * Generate a shared access signature to provide time-limited authentication for requests to the Event Grid
+     * service.
+     * @param endpoint the endpoint of the Event Grid topic or domain.
+     * @param expirationTime the time in which the signature should expire, no longer providing authentication.
+     * @param keyCredential the access key obtained from the Event Grid topic or domain.
+     * @param apiVersion the EventGrid service api version defined in {@link EventGridServiceVersion}
+     *
+     * @return the shared access signature string which can be used to construct an instance of
+     * {@link AzureSasCredential}.
+     *
+     * @throws NullPointerException if keyCredential or expirationTime is {@code null}.
+     * @throws RuntimeException if java security doesn't have algorithm "hmacSHA256".
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void sendEvents(Iterable<EventGridEvent> events) {
-        asyncClient.sendEvents(events, Context.NONE).block();
+    public static String generateSas(String endpoint, AzureKeyCredential keyCredential, OffsetDateTime expirationTime,
+        EventGridServiceVersion apiVersion) {
+        return EventGridPublisherAsyncClient.generateSas(endpoint, keyCredential, expirationTime, apiVersion);
     }
 
     /**
-     * Publishes the given cloud events to the given topic or domain.
+     * Publishes the given events to the given topic or domain.
      * @param events the cloud events to publish.
+     * @throws NullPointerException if events is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void sendCloudEvents(Iterable<CloudEvent> events) {
-        asyncClient.sendCloudEvents(events, Context.NONE).block();
+    public void sendEvents(Iterable<T> events) {
+        asyncClient.sendEvents(events).block();
     }
 
     /**
-     * Publishes the given custom events to the given topic or domain.
-     * @param events the custom events to publish.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void sendCustomEvents(Iterable<Object> events) {
-        asyncClient.sendCustomEvents(events, Context.NONE).block();
-    }
-
-    /**
-     * Publishes the given EventGrid events to the given topic or domain and gives the response issued by EventGrid.
-     * @param events  the EventGrid events to publish.
+     * Publishes the given events to the set topic or domain and gives the response issued by EventGrid.
+     * @param events the events to publish.
      * @param context the context to use along the pipeline.
      *
-     * @return the response given by the EventGrid service.
+     * @return the response from the EventGrid service.
+     * @throws NullPointerException if events is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> sendEventsWithResponse(Iterable<EventGridEvent> events, Context context) {
+    public Response<Void> sendEventsWithResponse(Iterable<T> events, Context context) {
         return asyncClient.sendEventsWithResponse(events, context).block();
     }
 
     /**
-     * Publishes the given cloud events to the given topic or domain and gives the response issued by EventGrid.
-     * @param events  the cloud events to publish.
-     * @param context the context to use along the pipeline.
+     * Publishes the given event to the set topic or domain and gives the response issued by EventGrid.
+     * @param event the event to publish.
      *
-     * @return the response given by the EventGrid service.
+     * @throws NullPointerException if events is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> sendCloudEventsWithResponse(Iterable<CloudEvent> events, Context context) {
-        return asyncClient.sendCloudEventsWithResponse(events, context).block();
-    }
-
-    /**
-     * Publishes the given custom events to the given topic or domain and gives the response issued by EventGrid.
-     * @param events  the custom events to publish.
-     * @param context the context to use along the pipeline.
-     *
-     * @return the response given by the EventGrid service.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> sendCustomEventsWithResponse(Iterable<Object> events, Context context) {
-        return asyncClient.sendCustomEventsWithResponse(events, context).block();
+    public void sendEvent(T event) {
+        asyncClient.sendEvent(event).block();
     }
 }

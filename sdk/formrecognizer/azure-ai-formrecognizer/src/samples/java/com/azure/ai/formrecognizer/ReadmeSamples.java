@@ -39,8 +39,8 @@ import java.util.Map;
  * Class containing code snippets that will be injected to README.md.
  */
 public class ReadmeSamples {
-    private FormRecognizerClient formRecognizerClient = new FormRecognizerClientBuilder().buildClient();
-    private FormTrainingClient formTrainingClient = new FormTrainingClientBuilder().buildClient();
+    private final FormRecognizerClient formRecognizerClient = new FormRecognizerClientBuilder().buildClient();
+    private final FormTrainingClient formTrainingClient = new FormTrainingClientBuilder().buildClient();
 
     /**
      * Code snippet for getting sync client using the AzureKeyCredential authentication.
@@ -86,6 +86,9 @@ public class ReadmeSamples {
             .buildClient();
     }
 
+    /**
+     * Code snippet for recognizing custom forms using custom built models.
+     */
     public void recognizeCustomForm() {
         String formUrl = "{form_url}";
         String modelId = "{custom_trained_model_id}";
@@ -144,9 +147,12 @@ public class ReadmeSamples {
         }
     }
 
+    /**
+     * Code snippet for recognizing receipt data using prebuilt receipt models.
+     */
     public void recognizeReceiptFromUrl() {
-        String receiptUrl = "https://docs.microsoft.com/azure/cognitive-services/form-recognizer/media"
-            + "/contoso-allinone.jpg";
+        String receiptUrl = "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/main/sdk/formrecognizer"
+                + "/azure-ai-formrecognizer/src/samples/resources/sample-forms/receipts/contoso-allinone.jpg";
         SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller =
             formRecognizerClient.beginRecognizeReceiptsFromUrl(receiptUrl);
         List<RecognizedForm> receiptPageResults = syncPoller.getFinalResult();
@@ -204,10 +210,13 @@ public class ReadmeSamples {
         }
     }
 
+    /**
+     * Code snippet for recognizing invoice forms using prebuilt models.
+     */
     public void recognizeBusinessCardFromUrl() {
         String businessCardUrl =
-            "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/master/sdk/formrecognizer"
-                + "/azure-ai-formrecognizer/src/samples/java/sample-forms/businessCards/businessCard.jpg";
+            "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/main/sdk/formrecognizer"
+                + "/azure-ai-formrecognizer/src/samples/resources/sample-forms/businessCards/businessCard.jpg";
 
         SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> analyzeBusinessCardPoller =
             formRecognizerClient.beginRecognizeBusinessCardsFromUrl(businessCardUrl);
@@ -250,7 +259,7 @@ public class ReadmeSamples {
             if (jobTitles != null) {
                 if (FieldValueType.LIST == jobTitles.getValue().getValueType()) {
                     List<FormField> jobTitlesItems = jobTitles.getValue().asList();
-                    jobTitlesItems.stream().forEach(jobTitlesItem -> {
+                    jobTitlesItems.forEach(jobTitlesItem -> {
                         if (FieldValueType.STRING == jobTitlesItem.getValue().getValueType()) {
                             String jobTitle = jobTitlesItem.getValue().asString();
                             System.out.printf("Job Title: %s, confidence: %.2f%n",
@@ -262,6 +271,9 @@ public class ReadmeSamples {
         }
     }
 
+    /**
+     * Code snippet for creating custom models using training data.
+     */
     public void trainModel() {
         String trainingFilesUrl = "{SAS_URL_of_your_container_in_blob_storage}";
         SyncPoller<FormRecognizerOperationResult, CustomFormModel> trainingPoller =
@@ -292,6 +304,9 @@ public class ReadmeSamples {
         });
     }
 
+    /**
+     * Code snippet for managing models in form recognizer account.
+     */
     public void manageModels() {
         // First, we see how many custom models we have, and what our limit is
         AccountProperties accountProperties = formTrainingClient.getAccountProperties();

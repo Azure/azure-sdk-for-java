@@ -2,24 +2,32 @@
 trigger:
   branches:
     include:
-      - master
+      - main
       - feature/*
       - hotfix/*
       - release/*
   paths:
     include:
-      - sdk/resourcegraph/
+      - sdk/resourcegraph/ci.mgmt.yml
+      - sdk/resourcegraph/mgmt-v2019_04_01/
+    exclude:
+      - sdk/resourcegraph/pom.xml
+      - sdk/resourcegraph/mgmt-v2019_04_01/pom.xml
 
 pr:
   branches:
     include:
-      - master
+      - main
       - feature/*
       - hotfix/*
       - release/*
   paths:
     include:
-      - sdk/resourcegraph/
+      - sdk/resourcegraph/ci.mgmt.yml
+      - sdk/resourcegraph/mgmt-v2019_04_01/
+    exclude:
+      - sdk/resourcegraph/pom.xml
+      - sdk/resourcegraph/mgmt-v2019_04_01/pom.xml
 
 stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-management.yml

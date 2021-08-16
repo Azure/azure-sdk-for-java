@@ -7,7 +7,7 @@ package com.azure.messaging.eventgrid.systemevents;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The StorageBlobCreatedEventData model. */
+/** Schema of the Data property of an EventGridEvent for a Microsoft.Storage.BlobCreated event. */
 @Fluent
 public final class StorageBlobCreatedEventData {
     /*

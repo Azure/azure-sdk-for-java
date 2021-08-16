@@ -3,17 +3,16 @@
 package com.azure.spring.data.cosmos.repository.integration;
 
 import com.azure.cosmos.models.PartitionKey;
+import com.azure.spring.data.cosmos.IntegrationTestCollectionManager;
 import com.azure.spring.data.cosmos.common.TestUtils;
 import com.azure.spring.data.cosmos.core.CosmosTemplate;
 import com.azure.spring.data.cosmos.domain.NestedEntity;
 import com.azure.spring.data.cosmos.domain.NestedPartitionKeyEntityWithGeneratedValue;
 import com.azure.spring.data.cosmos.repository.TestRepositoryConfig;
 import com.azure.spring.data.cosmos.repository.repository.NestedPartitionKeyRepository;
-import com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation;
-import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.ClassRule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,11 +35,8 @@ public class NestedPartitionKeyRepositoryIT {
     private static final NestedPartitionKeyEntityWithGeneratedValue NESTED_ENTITY_2 =
         new NestedPartitionKeyEntityWithGeneratedValue(null, new NestedEntity("partitionKey2"));
 
-    private static final CosmosEntityInformation<NestedPartitionKeyEntityWithGeneratedValue, String> entityInformation =
-        new CosmosEntityInformation<>(NestedPartitionKeyEntityWithGeneratedValue.class);
-
-    private static CosmosTemplate staticTemplate;
-    private static boolean isSetupDone;
+    @ClassRule
+    public static final IntegrationTestCollectionManager collectionManager = new IntegrationTestCollectionManager();
 
     @Autowired
     private CosmosTemplate template;
@@ -53,21 +49,7 @@ public class NestedPartitionKeyRepositoryIT {
 
     @Before
     public void setUp() {
-        if (!isSetupDone) {
-            staticTemplate = template;
-            template.createContainerIfNotExists(entityInformation);
-        }
-        isSetupDone = true;
-    }
-
-    @After
-    public void cleanup() {
-        repository.deleteAll();
-    }
-
-    @AfterClass
-    public static void afterClassCleanup() {
-        staticTemplate.deleteContainer(entityInformation.getContainerName());
+        collectionManager.ensureContainersCreatedAndEmpty(template, NestedPartitionKeyEntityWithGeneratedValue.class);
     }
 
     @Test

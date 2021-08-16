@@ -14,6 +14,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import reactor.core.publisher.Mono;
+import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
 
 /** Implementation for SQL Firewall Rule operations. */
 public class SqlDatabaseOperationsImpl
@@ -176,12 +177,11 @@ public class SqlDatabaseOperationsImpl
 
     @Override
     public PagedFlux<SqlDatabase> listBySqlServerAsync(final String resourceGroupName, final String sqlServerName) {
-        return this
+        return PagedConverter.mapPage(this
             .manager
             .serviceClient()
             .getDatabases()
-            .listByServerAsync(resourceGroupName, sqlServerName)
-            .mapPage(
+            .listByServerAsync(resourceGroupName, sqlServerName),
                 inner ->
                     new SqlDatabaseImpl(
                         resourceGroupName, sqlServerName, inner.location(), inner.name(), inner, manager));
@@ -205,12 +205,12 @@ public class SqlDatabaseOperationsImpl
 
     @Override
     public PagedFlux<SqlDatabase> listBySqlServerAsync(final SqlServer sqlServer) {
-        return sqlServer
+        return PagedConverter.mapPage(sqlServer
             .manager()
             .serviceClient()
             .getDatabases()
-            .listByServerAsync(sqlServer.resourceGroupName(), sqlServer.name())
-            .mapPage(inner -> new SqlDatabaseImpl(inner.name(), (SqlServerImpl) sqlServer, inner, sqlServer.manager()));
+            .listByServerAsync(sqlServer.resourceGroupName(), sqlServer.name()),
+            inner -> new SqlDatabaseImpl(inner.name(), (SqlServerImpl) sqlServer, inner, sqlServer.manager()));
     }
 
     @Override

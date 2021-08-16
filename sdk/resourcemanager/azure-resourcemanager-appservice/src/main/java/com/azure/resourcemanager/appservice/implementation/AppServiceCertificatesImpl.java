@@ -5,6 +5,7 @@ package com.azure.resourcemanager.appservice.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.util.CoreUtils;
 import com.azure.resourcemanager.appservice.AppServiceManager;
 import com.azure.resourcemanager.appservice.models.AppServiceCertificate;
 import com.azure.resourcemanager.appservice.models.AppServiceCertificates;
@@ -35,11 +36,15 @@ public class AppServiceCertificatesImpl
 
     @Override
     public PagedIterable<AppServiceCertificate> listByResourceGroup(String resourceGroupName) {
-        return new PagedIterable<>(wrapPageAsync(this.inner().listByResourceGroupAsync(resourceGroupName)));
+        return new PagedIterable<>(this.listByResourceGroupAsync(resourceGroupName));
     }
 
     @Override
     public PagedFlux<AppServiceCertificate> listByResourceGroupAsync(String resourceGroupName) {
+        if (CoreUtils.isNullOrEmpty(resourceGroupName)) {
+            return new PagedFlux<>(() -> Mono.error(
+                new IllegalArgumentException("Parameter 'resourceGroupName' is required and cannot be null.")));
+        }
         return wrapPageAsync(inner().listByResourceGroupAsync(resourceGroupName));
     }
 

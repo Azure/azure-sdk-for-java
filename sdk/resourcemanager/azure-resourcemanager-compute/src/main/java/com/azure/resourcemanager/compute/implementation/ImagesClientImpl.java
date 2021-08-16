@@ -183,9 +183,7 @@ public final class ImagesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param imageName The name of the image.
-     * @param parameters The source user image virtual hard disk. The virtual hard disk will be copied before being
-     *     attached to the virtual machine. If SourceImage is provided, the destination virtual hard drive must not
-     *     exist.
+     * @param parameters Parameters supplied to the Create Image operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -218,7 +216,7 @@ public final class ImagesClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2020-06-01";
+        final String apiVersion = "2021-04-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -233,7 +231,7 @@ public final class ImagesClientImpl
                             parameters,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -241,9 +239,7 @@ public final class ImagesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param imageName The name of the image.
-     * @param parameters The source user image virtual hard disk. The virtual hard disk will be copied before being
-     *     attached to the virtual machine. If SourceImage is provided, the destination virtual hard drive must not
-     *     exist.
+     * @param parameters Parameters supplied to the Create Image operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -277,7 +273,7 @@ public final class ImagesClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2020-06-01";
+        final String apiVersion = "2021-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -297,9 +293,7 @@ public final class ImagesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param imageName The name of the image.
-     * @param parameters The source user image virtual hard disk. The virtual hard disk will be copied before being
-     *     attached to the virtual machine. If SourceImage is provided, the destination virtual hard drive must not
-     *     exist.
+     * @param parameters Parameters supplied to the Create Image operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -321,9 +315,7 @@ public final class ImagesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param imageName The name of the image.
-     * @param parameters The source user image virtual hard disk. The virtual hard disk will be copied before being
-     *     attached to the virtual machine. If SourceImage is provided, the destination virtual hard drive must not
-     *     exist.
+     * @param parameters Parameters supplied to the Create Image operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -347,9 +339,7 @@ public final class ImagesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param imageName The name of the image.
-     * @param parameters The source user image virtual hard disk. The virtual hard disk will be copied before being
-     *     attached to the virtual machine. If SourceImage is provided, the destination virtual hard drive must not
-     *     exist.
+     * @param parameters Parameters supplied to the Create Image operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -366,9 +356,7 @@ public final class ImagesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param imageName The name of the image.
-     * @param parameters The source user image virtual hard disk. The virtual hard disk will be copied before being
-     *     attached to the virtual machine. If SourceImage is provided, the destination virtual hard drive must not
-     *     exist.
+     * @param parameters Parameters supplied to the Create Image operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -386,9 +374,7 @@ public final class ImagesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param imageName The name of the image.
-     * @param parameters The source user image virtual hard disk. The virtual hard disk will be copied before being
-     *     attached to the virtual machine. If SourceImage is provided, the destination virtual hard drive must not
-     *     exist.
+     * @param parameters Parameters supplied to the Create Image operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -406,9 +392,7 @@ public final class ImagesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param imageName The name of the image.
-     * @param parameters The source user image virtual hard disk. The virtual hard disk will be copied before being
-     *     attached to the virtual machine. If SourceImage is provided, the destination virtual hard drive must not
-     *     exist.
+     * @param parameters Parameters supplied to the Create Image operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -428,9 +412,7 @@ public final class ImagesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param imageName The name of the image.
-     * @param parameters The source user image virtual hard disk. The virtual hard disk will be copied before being
-     *     attached to the virtual machine. If SourceImage is provided, the destination virtual hard drive must not
-     *     exist.
+     * @param parameters Parameters supplied to the Create Image operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -446,9 +428,7 @@ public final class ImagesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param imageName The name of the image.
-     * @param parameters The source user image virtual hard disk. The virtual hard disk will be copied before being
-     *     attached to the virtual machine. If SourceImage is provided, the destination virtual hard drive must not
-     *     exist.
+     * @param parameters Parameters supplied to the Create Image operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -466,7 +446,7 @@ public final class ImagesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param imageName The name of the image.
-     * @param parameters The source user image virtual hard disk. Only tags may be updated.
+     * @param parameters Parameters supplied to the Update Image operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -499,7 +479,7 @@ public final class ImagesClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2020-06-01";
+        final String apiVersion = "2021-04-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -514,7 +494,7 @@ public final class ImagesClientImpl
                             parameters,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -522,7 +502,7 @@ public final class ImagesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param imageName The name of the image.
-     * @param parameters The source user image virtual hard disk. Only tags may be updated.
+     * @param parameters Parameters supplied to the Update Image operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -556,7 +536,7 @@ public final class ImagesClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2020-06-01";
+        final String apiVersion = "2021-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -576,7 +556,7 @@ public final class ImagesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param imageName The name of the image.
-     * @param parameters The source user image virtual hard disk. Only tags may be updated.
+     * @param parameters Parameters supplied to the Update Image operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -597,7 +577,7 @@ public final class ImagesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param imageName The name of the image.
-     * @param parameters The source user image virtual hard disk. Only tags may be updated.
+     * @param parameters Parameters supplied to the Update Image operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -621,7 +601,7 @@ public final class ImagesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param imageName The name of the image.
-     * @param parameters The source user image virtual hard disk. Only tags may be updated.
+     * @param parameters Parameters supplied to the Update Image operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -638,7 +618,7 @@ public final class ImagesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param imageName The name of the image.
-     * @param parameters The source user image virtual hard disk. Only tags may be updated.
+     * @param parameters Parameters supplied to the Update Image operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -656,7 +636,7 @@ public final class ImagesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param imageName The name of the image.
-     * @param parameters The source user image virtual hard disk. Only tags may be updated.
+     * @param parameters Parameters supplied to the Update Image operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -674,7 +654,7 @@ public final class ImagesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param imageName The name of the image.
-     * @param parameters The source user image virtual hard disk. Only tags may be updated.
+     * @param parameters Parameters supplied to the Update Image operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -694,7 +674,7 @@ public final class ImagesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param imageName The name of the image.
-     * @param parameters The source user image virtual hard disk. Only tags may be updated.
+     * @param parameters Parameters supplied to the Update Image operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -710,7 +690,7 @@ public final class ImagesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param imageName The name of the image.
-     * @param parameters The source user image virtual hard disk. Only tags may be updated.
+     * @param parameters Parameters supplied to the Update Image operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -753,7 +733,7 @@ public final class ImagesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-06-01";
+        final String apiVersion = "2021-04-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -765,7 +745,7 @@ public final class ImagesClientImpl
                             apiVersion,
                             this.client.getSubscriptionId(),
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -801,7 +781,7 @@ public final class ImagesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-06-01";
+        final String apiVersion = "2021-04-01";
         context = this.client.mergeContext(context);
         return service
             .delete(
@@ -978,7 +958,7 @@ public final class ImagesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-06-01";
+        final String apiVersion = "2021-04-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -993,7 +973,7 @@ public final class ImagesClientImpl
                             this.client.getSubscriptionId(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1030,7 +1010,7 @@ public final class ImagesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-06-01";
+        final String apiVersion = "2021-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1154,7 +1134,7 @@ public final class ImagesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-06-01";
+        final String apiVersion = "2021-04-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1176,7 +1156,7 @@ public final class ImagesClientImpl
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1208,7 +1188,7 @@ public final class ImagesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-06-01";
+        final String apiVersion = "2021-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1314,7 +1294,7 @@ public final class ImagesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-06-01";
+        final String apiVersion = "2021-04-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1330,7 +1310,7 @@ public final class ImagesClientImpl
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1357,7 +1337,7 @@ public final class ImagesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-06-01";
+        final String apiVersion = "2021-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1463,7 +1443,7 @@ public final class ImagesClientImpl
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1534,7 +1514,7 @@ public final class ImagesClientImpl
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**

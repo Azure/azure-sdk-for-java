@@ -123,6 +123,13 @@ public class SlotDifferenceInner extends ProxyOnlyResource {
         return this.description;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public SlotDifferenceInner withKind(String kind) {
+        super.withKind(kind);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

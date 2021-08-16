@@ -8,6 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Map;
 
 /** Properties supplied to Create Redis operation. */
 @Fluent
@@ -98,6 +99,55 @@ public class RedisCreateProperties extends RedisCommonProperties {
      */
     public RedisCreateProperties withStaticIp(String staticIp) {
         this.staticIp = staticIp;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public RedisCreateProperties withRedisConfiguration(Map<String, String> redisConfiguration) {
+        super.withRedisConfiguration(redisConfiguration);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public RedisCreateProperties withEnableNonSslPort(Boolean enableNonSslPort) {
+        super.withEnableNonSslPort(enableNonSslPort);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public RedisCreateProperties withReplicasPerMaster(Integer replicasPerMaster) {
+        super.withReplicasPerMaster(replicasPerMaster);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public RedisCreateProperties withTenantSettings(Map<String, String> tenantSettings) {
+        super.withTenantSettings(tenantSettings);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public RedisCreateProperties withShardCount(Integer shardCount) {
+        super.withShardCount(shardCount);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public RedisCreateProperties withMinimumTlsVersion(TlsVersion minimumTlsVersion) {
+        super.withMinimumTlsVersion(minimumTlsVersion);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public RedisCreateProperties withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess) {
+        super.withPublicNetworkAccess(publicNetworkAccess);
         return this;
     }
 

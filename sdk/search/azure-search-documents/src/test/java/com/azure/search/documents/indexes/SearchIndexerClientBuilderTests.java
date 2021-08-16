@@ -9,7 +9,9 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
+import com.azure.core.http.policy.FixedDelay;
 import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.CoreUtils;
@@ -25,6 +27,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.security.SecureRandom;
+import java.time.Duration;
 import java.util.Collections;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -107,11 +110,6 @@ public class SearchIndexerClientBuilderTests {
     }
 
     @Test
-    public void nullCredentialThrowsNullPointerException() {
-        assertThrows(NullPointerException.class, () -> new SearchIndexerClientBuilder().credential(null));
-    }
-
-    @Test
     public void credentialWithEmptyApiKeyThrowsIllegalArgumentException() {
         assertThrows(IllegalArgumentException.class, () -> new SearchIndexerClientBuilder()
             .credential(new AzureKeyCredential("")));
@@ -136,7 +134,7 @@ public class SearchIndexerClientBuilderTests {
 
     static HttpRequest request(String url) throws MalformedURLException {
         return new HttpRequest(HttpMethod.HEAD,
-            new URL(url), new HttpHeaders().put("Content-Length", "0"),
+            new URL(url), new HttpHeaders().set("Content-Length", "0"),
             Flux.empty());
     }
 
@@ -163,6 +161,7 @@ public class SearchIndexerClientBuilderTests {
         }
     }
 
+    @SuppressWarnings("deprecation")
     @Test
     public void clientOptionsIsPreferredOverLogOptions() {
         SearchIndexerClient searchIndexerClient = new SearchIndexerClientBuilder()
@@ -170,28 +169,31 @@ public class SearchIndexerClientBuilderTests {
             .credential(searchApiKeyCredential)
             .httpLogOptions(new HttpLogOptions().setApplicationId("anOldApplication"))
             .clientOptions(new ClientOptions().setApplicationId("aNewApplication"))
+            .retryPolicy(new RetryPolicy(new FixedDelay(3, Duration.ofMillis(1))))
             .httpClient(httpRequest -> {
                 assertTrue(httpRequest.getHeaders().getValue("User-Agent").contains("aNewApplication"));
-                return Mono.error(new HttpResponseException(new MockHttpResponse(httpRequest, 400)));
+                return Mono.just(new MockHttpResponse(httpRequest, 400));
             })
             .buildClient();
 
-        assertThrows(RuntimeException.class, () -> searchIndexerClient.getIndexer("anindexer"));
+        assertThrows(HttpResponseException.class, () -> searchIndexerClient.getIndexer("anindexer"));
     }
 
+    @SuppressWarnings("deprecation")
     @Test
     public void applicationIdFallsBackToLogOptions() {
         SearchIndexerClient searchIndexerClient = new SearchIndexerClientBuilder()
             .endpoint(searchEndpoint)
             .credential(searchApiKeyCredential)
             .httpLogOptions(new HttpLogOptions().setApplicationId("anOldApplication"))
+            .retryPolicy(new RetryPolicy(new FixedDelay(3, Duration.ofMillis(1))))
             .httpClient(httpRequest -> {
                 assertTrue(httpRequest.getHeaders().getValue("User-Agent").contains("anOldApplication"));
-                return Mono.error(new HttpResponseException(new MockHttpResponse(httpRequest, 400)));
+                return Mono.just(new MockHttpResponse(httpRequest, 400));
             })
             .buildClient();
 
-        assertThrows(RuntimeException.class, () -> searchIndexerClient.getIndexer("anindexer"));
+        assertThrows(HttpResponseException.class, () -> searchIndexerClient.getIndexer("anindexer"));
     }
 
     @Test
@@ -201,12 +203,13 @@ public class SearchIndexerClientBuilderTests {
             .credential(searchApiKeyCredential)
             .clientOptions(new ClientOptions()
                 .setHeaders(Collections.singletonList(new Header("User-Agent", "custom"))))
+            .retryPolicy(new RetryPolicy(new FixedDelay(3, Duration.ofMillis(1))))
             .httpClient(httpRequest -> {
                 assertEquals("custom", httpRequest.getHeaders().getValue("User-Agent"));
-                return Mono.error(new HttpResponseException(new MockHttpResponse(httpRequest, 400)));
+                return Mono.just(new MockHttpResponse(httpRequest, 400));
             })
             .buildClient();
 
-        assertThrows(RuntimeException.class, () -> searchIndexerClient.getIndexer("anindexer"));
+        assertThrows(HttpResponseException.class, () -> searchIndexerClient.getIndexer("anindexer"));
     }
 }

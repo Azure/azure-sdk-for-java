@@ -12,6 +12,7 @@ import com.azure.resourcemanager.privatedns.models.VirtualNetworkLinks;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.ExternalChildResourcesNonCachedImpl;
 import reactor.core.publisher.Mono;
+import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
 
 /** Implementation of {@link VirtualNetworkLinks}. */
 class VirtualNetworkLinksImpl
@@ -33,9 +34,9 @@ class VirtualNetworkLinksImpl
 
     @Override
     public PagedFlux<VirtualNetworkLink> listAsync(int pageSize) {
-        return parent().manager().serviceClient().getVirtualNetworkLinks()
-            .listAsync(parent().resourceGroupName(), parent().name(), pageSize)
-            .mapPage(this::wrapModel);
+        return PagedConverter.mapPage(parent().manager().serviceClient().getVirtualNetworkLinks()
+            .listAsync(parent().resourceGroupName(), parent().name(), pageSize),
+            this::wrapModel);
     }
 
     @Override
@@ -116,9 +117,9 @@ class VirtualNetworkLinksImpl
 
     @Override
     public PagedFlux<VirtualNetworkLink> listAsync() {
-        return parent().manager().serviceClient().getVirtualNetworkLinks()
-            .listAsync(parent().resourceGroupName(), parent().name())
-            .mapPage(this::wrapModel);
+        return PagedConverter.mapPage(parent().manager().serviceClient().getVirtualNetworkLinks()
+            .listAsync(parent().resourceGroupName(), parent().name()),
+            this::wrapModel);
     }
 
     public VirtualNetworkLinksClient inner() {

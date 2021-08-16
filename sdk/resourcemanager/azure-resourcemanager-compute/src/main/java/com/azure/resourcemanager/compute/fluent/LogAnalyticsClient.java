@@ -12,8 +12,8 @@ import com.azure.core.util.Context;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.compute.fluent.models.LogAnalyticsOperationResultInner;
-import com.azure.resourcemanager.compute.models.LogAnalyticsInputBase;
 import com.azure.resourcemanager.compute.models.RequestRateByIntervalInput;
+import com.azure.resourcemanager.compute.models.ThrottledRequestsInput;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -25,7 +25,7 @@ public interface LogAnalyticsClient {
      * activities.
      *
      * @param location The location upon which virtual-machine-sizes is queried.
-     * @param parameters Api request input for LogAnalytics getRequestRateByInterval Api.
+     * @param parameters Parameters supplied to the LogAnalytics getRequestRateByInterval Api.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -40,7 +40,7 @@ public interface LogAnalyticsClient {
      * activities.
      *
      * @param location The location upon which virtual-machine-sizes is queried.
-     * @param parameters Api request input for LogAnalytics getRequestRateByInterval Api.
+     * @param parameters Parameters supplied to the LogAnalytics getRequestRateByInterval Api.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -55,7 +55,7 @@ public interface LogAnalyticsClient {
      * activities.
      *
      * @param location The location upon which virtual-machine-sizes is queried.
-     * @param parameters Api request input for LogAnalytics getRequestRateByInterval Api.
+     * @param parameters Parameters supplied to the LogAnalytics getRequestRateByInterval Api.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -70,7 +70,7 @@ public interface LogAnalyticsClient {
      * activities.
      *
      * @param location The location upon which virtual-machine-sizes is queried.
-     * @param parameters Api request input for LogAnalytics getRequestRateByInterval Api.
+     * @param parameters Parameters supplied to the LogAnalytics getRequestRateByInterval Api.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -86,7 +86,7 @@ public interface LogAnalyticsClient {
      * activities.
      *
      * @param location The location upon which virtual-machine-sizes is queried.
-     * @param parameters Api request input for LogAnalytics getRequestRateByInterval Api.
+     * @param parameters Parameters supplied to the LogAnalytics getRequestRateByInterval Api.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -101,7 +101,7 @@ public interface LogAnalyticsClient {
      * activities.
      *
      * @param location The location upon which virtual-machine-sizes is queried.
-     * @param parameters Api request input for LogAnalytics getRequestRateByInterval Api.
+     * @param parameters Parameters supplied to the LogAnalytics getRequestRateByInterval Api.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -116,7 +116,7 @@ public interface LogAnalyticsClient {
      * activities.
      *
      * @param location The location upon which virtual-machine-sizes is queried.
-     * @param parameters Api request input for LogAnalytics getRequestRateByInterval Api.
+     * @param parameters Parameters supplied to the LogAnalytics getRequestRateByInterval Api.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -131,7 +131,7 @@ public interface LogAnalyticsClient {
      * Export logs that show total throttled Api requests for this subscription in the given time window.
      *
      * @param location The location upon which virtual-machine-sizes is queried.
-     * @param parameters Api input base class for LogAnalytics Api.
+     * @param parameters Parameters supplied to the LogAnalytics getThrottledRequests Api.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -139,13 +139,13 @@ public interface LogAnalyticsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> exportThrottledRequestsWithResponseAsync(
-        String location, LogAnalyticsInputBase parameters);
+        String location, ThrottledRequestsInput parameters);
 
     /**
      * Export logs that show total throttled Api requests for this subscription in the given time window.
      *
      * @param location The location upon which virtual-machine-sizes is queried.
-     * @param parameters Api input base class for LogAnalytics Api.
+     * @param parameters Parameters supplied to the LogAnalytics getThrottledRequests Api.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -153,13 +153,13 @@ public interface LogAnalyticsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     PollerFlux<PollResult<LogAnalyticsOperationResultInner>, LogAnalyticsOperationResultInner>
-        beginExportThrottledRequestsAsync(String location, LogAnalyticsInputBase parameters);
+        beginExportThrottledRequestsAsync(String location, ThrottledRequestsInput parameters);
 
     /**
      * Export logs that show total throttled Api requests for this subscription in the given time window.
      *
      * @param location The location upon which virtual-machine-sizes is queried.
-     * @param parameters Api input base class for LogAnalytics Api.
+     * @param parameters Parameters supplied to the LogAnalytics getThrottledRequests Api.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -167,13 +167,13 @@ public interface LogAnalyticsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     SyncPoller<PollResult<LogAnalyticsOperationResultInner>, LogAnalyticsOperationResultInner>
-        beginExportThrottledRequests(String location, LogAnalyticsInputBase parameters);
+        beginExportThrottledRequests(String location, ThrottledRequestsInput parameters);
 
     /**
      * Export logs that show total throttled Api requests for this subscription in the given time window.
      *
      * @param location The location upon which virtual-machine-sizes is queried.
-     * @param parameters Api input base class for LogAnalytics Api.
+     * @param parameters Parameters supplied to the LogAnalytics getThrottledRequests Api.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -182,13 +182,13 @@ public interface LogAnalyticsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     SyncPoller<PollResult<LogAnalyticsOperationResultInner>, LogAnalyticsOperationResultInner>
-        beginExportThrottledRequests(String location, LogAnalyticsInputBase parameters, Context context);
+        beginExportThrottledRequests(String location, ThrottledRequestsInput parameters, Context context);
 
     /**
      * Export logs that show total throttled Api requests for this subscription in the given time window.
      *
      * @param location The location upon which virtual-machine-sizes is queried.
-     * @param parameters Api input base class for LogAnalytics Api.
+     * @param parameters Parameters supplied to the LogAnalytics getThrottledRequests Api.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -196,26 +196,26 @@ public interface LogAnalyticsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<LogAnalyticsOperationResultInner> exportThrottledRequestsAsync(
-        String location, LogAnalyticsInputBase parameters);
+        String location, ThrottledRequestsInput parameters);
 
     /**
      * Export logs that show total throttled Api requests for this subscription in the given time window.
      *
      * @param location The location upon which virtual-machine-sizes is queried.
-     * @param parameters Api input base class for LogAnalytics Api.
+     * @param parameters Parameters supplied to the LogAnalytics getThrottledRequests Api.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return logAnalytics operation status response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    LogAnalyticsOperationResultInner exportThrottledRequests(String location, LogAnalyticsInputBase parameters);
+    LogAnalyticsOperationResultInner exportThrottledRequests(String location, ThrottledRequestsInput parameters);
 
     /**
      * Export logs that show total throttled Api requests for this subscription in the given time window.
      *
      * @param location The location upon which virtual-machine-sizes is queried.
-     * @param parameters Api input base class for LogAnalytics Api.
+     * @param parameters Parameters supplied to the LogAnalytics getThrottledRequests Api.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -224,5 +224,5 @@ public interface LogAnalyticsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     LogAnalyticsOperationResultInner exportThrottledRequests(
-        String location, LogAnalyticsInputBase parameters, Context context);
+        String location, ThrottledRequestsInput parameters, Context context);
 }

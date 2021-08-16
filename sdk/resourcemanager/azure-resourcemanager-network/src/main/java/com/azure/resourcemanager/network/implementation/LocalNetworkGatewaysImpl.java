@@ -4,6 +4,7 @@ package com.azure.resourcemanager.network.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.util.CoreUtils;
 import com.azure.resourcemanager.network.NetworkManager;
 import com.azure.resourcemanager.network.fluent.LocalNetworkGatewaysClient;
 import com.azure.resourcemanager.network.fluent.models.LocalNetworkGatewayInner;
@@ -39,18 +40,22 @@ public class LocalNetworkGatewaysImpl
 
     @Override
     public PagedFlux<LocalNetworkGateway> listAsync() {
-        return PagedConverter.mergePagedFlux(this.manager().resourceManager().resourceGroups().listAsync(),
-            rg -> inner().listByResourceGroupAsync(rg.name())).mapPage(this::wrapModel);
+        return PagedConverter.mapPage(PagedConverter.mergePagedFlux(this.manager().resourceManager().resourceGroups().listAsync(),
+            rg -> inner().listByResourceGroupAsync(rg.name())), this::wrapModel);
     }
 
     @Override
     public PagedIterable<LocalNetworkGateway> listByResourceGroup(String groupName) {
-        return wrapList(this.inner().listByResourceGroup(groupName));
+        return new PagedIterable<>(this.listByResourceGroupAsync(groupName));
     }
 
     @Override
-    public PagedFlux<LocalNetworkGateway> listByResourceGroupAsync(String groupName) {
-        return wrapPageAsync(this.inner().listByResourceGroupAsync(groupName));
+    public PagedFlux<LocalNetworkGateway> listByResourceGroupAsync(String resourceGroupName) {
+        if (CoreUtils.isNullOrEmpty(resourceGroupName)) {
+            return new PagedFlux<>(() -> Mono.error(
+                new IllegalArgumentException("Parameter 'resourceGroupName' is required and cannot be null.")));
+        }
+        return wrapPageAsync(this.inner().listByResourceGroupAsync(resourceGroupName));
     }
 
     @Override

@@ -10,6 +10,7 @@ import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
+import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
 import com.azure.core.annotation.PathParam;
@@ -65,6 +66,7 @@ public final class ManagedPrivateEndpointsImpl {
                 @QueryParam("api-version") String apiVersion,
                 @PathParam("managedVirtualNetworkName") String managedVirtualNetworkName,
                 @PathParam("managedPrivateEndpointName") String managedPrivateEndpointName,
+                @HeaderParam("Accept") String accept,
                 Context context);
 
         @Put("/managedVirtualNetworks/{managedVirtualNetworkName}/managedPrivateEndpoints/{managedPrivateEndpointName}")
@@ -76,6 +78,7 @@ public final class ManagedPrivateEndpointsImpl {
                 @PathParam("managedVirtualNetworkName") String managedVirtualNetworkName,
                 @PathParam("managedPrivateEndpointName") String managedPrivateEndpointName,
                 @BodyParam("application/json") ManagedPrivateEndpoint managedPrivateEndpoint,
+                @HeaderParam("Accept") String accept,
                 Context context);
 
         @Delete(
@@ -96,6 +99,7 @@ public final class ManagedPrivateEndpointsImpl {
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @PathParam("managedVirtualNetworkName") String managedVirtualNetworkName,
+                @HeaderParam("Accept") String accept,
                 Context context);
 
         @Get("{nextLink}")
@@ -104,6 +108,7 @@ public final class ManagedPrivateEndpointsImpl {
         Mono<Response<ManagedPrivateEndpointListResponse>> listNext(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
                 @HostParam("endpoint") String endpoint,
+                @HeaderParam("Accept") String accept,
                 Context context);
     }
 
@@ -120,6 +125,7 @@ public final class ManagedPrivateEndpointsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ManagedPrivateEndpoint>> getWithResponseAsync(
             String managedVirtualNetworkName, String managedPrivateEndpointName) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.get(
@@ -127,6 +133,7 @@ public final class ManagedPrivateEndpointsImpl {
                                 this.client.getApiVersion(),
                                 managedVirtualNetworkName,
                                 managedPrivateEndpointName,
+                                accept,
                                 context));
     }
 
@@ -144,11 +151,13 @@ public final class ManagedPrivateEndpointsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ManagedPrivateEndpoint>> getWithResponseAsync(
             String managedVirtualNetworkName, String managedPrivateEndpointName, Context context) {
+        final String accept = "application/json";
         return service.get(
                 this.client.getEndpoint(),
                 this.client.getApiVersion(),
                 managedVirtualNetworkName,
                 managedPrivateEndpointName,
+                accept,
                 context);
     }
 
@@ -248,6 +257,7 @@ public final class ManagedPrivateEndpointsImpl {
             String managedVirtualNetworkName,
             String managedPrivateEndpointName,
             ManagedPrivateEndpoint managedPrivateEndpoint) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.create(
@@ -256,6 +266,7 @@ public final class ManagedPrivateEndpointsImpl {
                                 managedVirtualNetworkName,
                                 managedPrivateEndpointName,
                                 managedPrivateEndpoint,
+                                accept,
                                 context));
     }
 
@@ -277,12 +288,14 @@ public final class ManagedPrivateEndpointsImpl {
             String managedPrivateEndpointName,
             ManagedPrivateEndpoint managedPrivateEndpoint,
             Context context) {
+        final String accept = "application/json";
         return service.create(
                 this.client.getEndpoint(),
                 this.client.getApiVersion(),
                 managedVirtualNetworkName,
                 managedPrivateEndpointName,
                 managedPrivateEndpoint,
+                accept,
                 context);
     }
 
@@ -506,12 +519,14 @@ public final class ManagedPrivateEndpointsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<ManagedPrivateEndpoint>> listSinglePageAsync(String managedVirtualNetworkName) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                         context ->
                                 service.list(
                                         this.client.getEndpoint(),
                                         this.client.getApiVersion(),
                                         managedVirtualNetworkName,
+                                        accept,
                                         context))
                 .map(
                         res ->
@@ -537,7 +552,13 @@ public final class ManagedPrivateEndpointsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<ManagedPrivateEndpoint>> listSinglePageAsync(
             String managedVirtualNetworkName, Context context) {
-        return service.list(this.client.getEndpoint(), this.client.getApiVersion(), managedVirtualNetworkName, context)
+        final String accept = "application/json";
+        return service.list(
+                        this.client.getEndpoint(),
+                        this.client.getApiVersion(),
+                        managedVirtualNetworkName,
+                        accept,
+                        context)
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -621,7 +642,8 @@ public final class ManagedPrivateEndpointsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<ManagedPrivateEndpoint>> listNextSinglePageAsync(String nextLink) {
-        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), context))
+        final String accept = "application/json";
+        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -645,7 +667,8 @@ public final class ManagedPrivateEndpointsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<ManagedPrivateEndpoint>> listNextSinglePageAsync(String nextLink, Context context) {
-        return service.listNext(nextLink, this.client.getEndpoint(), context)
+        final String accept = "application/json";
+        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
                 .map(
                         res ->
                                 new PagedResponseBase<>(

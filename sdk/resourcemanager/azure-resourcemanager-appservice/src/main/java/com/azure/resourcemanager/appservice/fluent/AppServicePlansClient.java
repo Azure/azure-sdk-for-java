@@ -66,6 +66,17 @@ public interface AppServicePlansClient
     /**
      * Description for Get all App Service plans for a subscription.
      *
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of App Service plans.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<AppServicePlanInner> list();
+
+    /**
+     * Description for Get all App Service plans for a subscription.
+     *
      * @param detailed Specify &lt;code&gt;true&lt;/code&gt; to return all App Service plan properties. The default is
      *     &lt;code&gt;false&lt;/code&gt;, which returns a subset of the properties. Retrieval of all properties may
      *     increase the API latency.
@@ -78,17 +89,6 @@ public interface AppServicePlansClient
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<AppServicePlanInner> list(Boolean detailed, Context context);
-
-    /**
-     * Description for Get all App Service plans for a subscription.
-     *
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of App Service plans.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<AppServicePlanInner> list();
 
     /**
      * Description for Get all App Service plans in a resource group.
@@ -193,7 +193,7 @@ public interface AppServicePlansClient
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
-     * @param appServicePlan App Service plan.
+     * @param appServicePlan Details of the App Service plan.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
@@ -209,7 +209,7 @@ public interface AppServicePlansClient
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
-     * @param appServicePlan App Service plan.
+     * @param appServicePlan Details of the App Service plan.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
@@ -225,7 +225,7 @@ public interface AppServicePlansClient
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
-     * @param appServicePlan App Service plan.
+     * @param appServicePlan Details of the App Service plan.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
@@ -241,7 +241,7 @@ public interface AppServicePlansClient
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
-     * @param appServicePlan App Service plan.
+     * @param appServicePlan Details of the App Service plan.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
@@ -258,7 +258,7 @@ public interface AppServicePlansClient
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
-     * @param appServicePlan App Service plan.
+     * @param appServicePlan Details of the App Service plan.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
@@ -274,7 +274,7 @@ public interface AppServicePlansClient
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
-     * @param appServicePlan App Service plan.
+     * @param appServicePlan Details of the App Service plan.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
@@ -289,7 +289,7 @@ public interface AppServicePlansClient
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
-     * @param appServicePlan App Service plan.
+     * @param appServicePlan Details of the App Service plan.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
@@ -362,7 +362,7 @@ public interface AppServicePlansClient
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
-     * @param appServicePlan ARM resource for a app service plan.
+     * @param appServicePlan Details of the App Service plan.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
@@ -378,7 +378,7 @@ public interface AppServicePlansClient
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
-     * @param appServicePlan ARM resource for a app service plan.
+     * @param appServicePlan Details of the App Service plan.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
@@ -394,7 +394,7 @@ public interface AppServicePlansClient
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
-     * @param appServicePlan ARM resource for a app service plan.
+     * @param appServicePlan Details of the App Service plan.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
@@ -409,7 +409,7 @@ public interface AppServicePlansClient
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
-     * @param appServicePlan ARM resource for a app service plan.
+     * @param appServicePlan Details of the App Service plan.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
@@ -957,6 +957,20 @@ public interface AppServicePlansClient
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of App Service apps.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<SiteInner> listWebApps(String resourceGroupName, String name);
+
+    /**
+     * Description for Get all apps associated with an App Service plan.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service plan.
      * @param skipToken Skip to a web app in the list of webapps associated with app service plan. If specified, the
      *     resulting list will contain web apps starting from (including) the skipToken. Otherwise, the resulting list
      *     contains web apps from the start of the list.
@@ -972,20 +986,6 @@ public interface AppServicePlansClient
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<SiteInner> listWebApps(
         String resourceGroupName, String name, String skipToken, String filter, String top, Context context);
-
-    /**
-     * Description for Get all apps associated with an App Service plan.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service plan.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of App Service apps.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<SiteInner> listWebApps(String resourceGroupName, String name);
 
     /**
      * Description for Gets all selectable SKUs for a given App Service Plan.
@@ -1079,6 +1079,20 @@ public interface AppServicePlansClient
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of App Service Plan.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of CSM usage quotas.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<CsmUsageQuotaInner> listUsages(String resourceGroupName, String name);
+
+    /**
+     * Description for Gets server farm usage information.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of App Service Plan.
      * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example:
      *     $filter=(name.value eq 'Metric1' or name.value eq 'Metric2').
      * @param context The context to associate with this operation.
@@ -1090,20 +1104,6 @@ public interface AppServicePlansClient
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<CsmUsageQuotaInner> listUsages(String resourceGroupName, String name, String filter, Context context);
-
-    /**
-     * Description for Gets server farm usage information.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of App Service Plan.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of CSM usage quotas.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<CsmUsageQuotaInner> listUsages(String resourceGroupName, String name);
 
     /**
      * Description for Get all Virtual Networks associated with an App Service plan.
@@ -1300,8 +1300,7 @@ public interface AppServicePlansClient
      * @param name Name of the App Service plan.
      * @param vnetName Name of the Virtual Network.
      * @param gatewayName Name of the gateway. Only the 'primary' gateway is supported.
-     * @param connectionEnvelope The Virtual Network gateway contract. This is used to give the Virtual Network gateway
-     *     access to the VPN package.
+     * @param connectionEnvelope Definition of the gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
@@ -1323,8 +1322,7 @@ public interface AppServicePlansClient
      * @param name Name of the App Service plan.
      * @param vnetName Name of the Virtual Network.
      * @param gatewayName Name of the gateway. Only the 'primary' gateway is supported.
-     * @param connectionEnvelope The Virtual Network gateway contract. This is used to give the Virtual Network gateway
-     *     access to the VPN package.
+     * @param connectionEnvelope Definition of the gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
@@ -1346,8 +1344,7 @@ public interface AppServicePlansClient
      * @param name Name of the App Service plan.
      * @param vnetName Name of the Virtual Network.
      * @param gatewayName Name of the gateway. Only the 'primary' gateway is supported.
-     * @param connectionEnvelope The Virtual Network gateway contract. This is used to give the Virtual Network gateway
-     *     access to the VPN package.
+     * @param connectionEnvelope Definition of the gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
@@ -1369,8 +1366,7 @@ public interface AppServicePlansClient
      * @param name Name of the App Service plan.
      * @param vnetName Name of the Virtual Network.
      * @param gatewayName Name of the gateway. Only the 'primary' gateway is supported.
-     * @param connectionEnvelope The Virtual Network gateway contract. This is used to give the Virtual Network gateway
-     *     access to the VPN package.
+     * @param connectionEnvelope Definition of the gateway.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
@@ -1525,7 +1521,7 @@ public interface AppServicePlansClient
      * @param name Name of the App Service plan.
      * @param vnetName Name of the Virtual Network.
      * @param routeName Name of the Virtual Network route.
-     * @param route Virtual Network route contract used to pass routing information for a Virtual Network.
+     * @param route Definition of the Virtual Network route.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
@@ -1543,7 +1539,7 @@ public interface AppServicePlansClient
      * @param name Name of the App Service plan.
      * @param vnetName Name of the Virtual Network.
      * @param routeName Name of the Virtual Network route.
-     * @param route Virtual Network route contract used to pass routing information for a Virtual Network.
+     * @param route Definition of the Virtual Network route.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
@@ -1561,7 +1557,7 @@ public interface AppServicePlansClient
      * @param name Name of the App Service plan.
      * @param vnetName Name of the Virtual Network.
      * @param routeName Name of the Virtual Network route.
-     * @param route Virtual Network route contract used to pass routing information for a Virtual Network.
+     * @param route Definition of the Virtual Network route.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
@@ -1579,7 +1575,7 @@ public interface AppServicePlansClient
      * @param name Name of the App Service plan.
      * @param vnetName Name of the Virtual Network.
      * @param routeName Name of the Virtual Network route.
-     * @param route Virtual Network route contract used to pass routing information for a Virtual Network.
+     * @param route Definition of the Virtual Network route.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
@@ -1669,7 +1665,7 @@ public interface AppServicePlansClient
      * @param name Name of the App Service plan.
      * @param vnetName Name of the Virtual Network.
      * @param routeName Name of the Virtual Network route.
-     * @param route Virtual Network route contract used to pass routing information for a Virtual Network.
+     * @param route Definition of the Virtual Network route.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
@@ -1687,7 +1683,7 @@ public interface AppServicePlansClient
      * @param name Name of the App Service plan.
      * @param vnetName Name of the Virtual Network.
      * @param routeName Name of the Virtual Network route.
-     * @param route Virtual Network route contract used to pass routing information for a Virtual Network.
+     * @param route Definition of the Virtual Network route.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
@@ -1705,7 +1701,7 @@ public interface AppServicePlansClient
      * @param name Name of the App Service plan.
      * @param vnetName Name of the Virtual Network.
      * @param routeName Name of the Virtual Network route.
-     * @param route Virtual Network route contract used to pass routing information for a Virtual Network.
+     * @param route Definition of the Virtual Network route.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
@@ -1723,7 +1719,7 @@ public interface AppServicePlansClient
      * @param name Name of the App Service plan.
      * @param vnetName Name of the Virtual Network.
      * @param routeName Name of the Virtual Network route.
-     * @param route Virtual Network route contract used to pass routing information for a Virtual Network.
+     * @param route Definition of the Virtual Network route.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is

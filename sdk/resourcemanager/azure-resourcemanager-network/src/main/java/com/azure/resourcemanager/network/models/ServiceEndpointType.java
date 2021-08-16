@@ -18,6 +18,9 @@ public final class ServiceEndpointType extends ExpandableStringEnum<ServiceEndpo
     /** Static value Microsoft.AzureCosmosDB for ServiceEndpointType. */
     public static final ServiceEndpointType MICROSOFT_AZURECOSMOSDB = fromString("Microsoft.AzureCosmosDB");
 
+    /** Static value Microsoft.Web for ServiceEndpointType. */
+    public static final ServiceEndpointType MICROSOFT_WEB = fromString("Microsoft.Web");
+
     /**
      * Creates or finds a ServiceEndpointType from its string representation.
      *

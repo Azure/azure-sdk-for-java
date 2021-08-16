@@ -125,18 +125,6 @@ public final class AzureMediaServicesImpl implements AzureMediaServices {
         return this.defaultPollInterval;
     }
 
-    /** The AccountFiltersClient object to access its operations. */
-    private final AccountFiltersClient accountFilters;
-
-    /**
-     * Gets the AccountFiltersClient object to access its operations.
-     *
-     * @return the AccountFiltersClient object.
-     */
-    public AccountFiltersClient getAccountFilters() {
-        return this.accountFilters;
-    }
-
     /** The OperationsClient object to access its operations. */
     private final OperationsClient operations;
 
@@ -195,6 +183,18 @@ public final class AzureMediaServicesImpl implements AzureMediaServices {
      */
     public LocationsClient getLocations() {
         return this.locations;
+    }
+
+    /** The AccountFiltersClient object to access its operations. */
+    private final AccountFiltersClient accountFilters;
+
+    /**
+     * Gets the AccountFiltersClient object to access its operations.
+     *
+     * @return the AccountFiltersClient object.
+     */
+    public AccountFiltersClient getAccountFilters() {
+        return this.accountFilters;
     }
 
     /** The AssetsClient object to access its operations. */
@@ -339,13 +339,13 @@ public final class AzureMediaServicesImpl implements AzureMediaServices {
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2020-05-01";
-        this.accountFilters = new AccountFiltersClientImpl(this);
+        this.apiVersion = "2021-06-01";
         this.operations = new OperationsClientImpl(this);
         this.mediaservices = new MediaservicesClientImpl(this);
         this.privateLinkResources = new PrivateLinkResourcesClientImpl(this);
         this.privateEndpointConnections = new PrivateEndpointConnectionsClientImpl(this);
         this.locations = new LocationsClientImpl(this);
+        this.accountFilters = new AccountFiltersClientImpl(this);
         this.assets = new AssetsClientImpl(this);
         this.assetFilters = new AssetFiltersClientImpl(this);
         this.contentKeyPolicies = new ContentKeyPoliciesClientImpl(this);
@@ -440,7 +440,7 @@ public final class AzureMediaServicesImpl implements AzureMediaServices {
                         if (managementError.getCode() == null || managementError.getMessage() == null) {
                             managementError = null;
                         }
-                    } catch (IOException ioe) {
+                    } catch (IOException | RuntimeException ioe) {
                         logger.logThrowableAsWarning(ioe);
                     }
                 }
@@ -469,7 +469,7 @@ public final class AzureMediaServicesImpl implements AzureMediaServices {
             super(null);
             this.statusCode = statusCode;
             this.httpHeaders = httpHeaders;
-            this.responseBody = responseBody.getBytes(StandardCharsets.UTF_8);
+            this.responseBody = responseBody == null ? null : responseBody.getBytes(StandardCharsets.UTF_8);
         }
 
         public int getStatusCode() {

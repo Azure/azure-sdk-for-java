@@ -19,6 +19,7 @@ import com.azure.resourcemanager.sql.models.SyncMemberState;
 import com.azure.resourcemanager.sql.fluent.models.SyncMemberInner;
 import java.util.Objects;
 import reactor.core.publisher.Mono;
+import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
 
 /** Implementation for SqlSyncMember. */
 public class SqlSyncMemberImpl
@@ -242,24 +243,24 @@ public class SqlSyncMemberImpl
 
     @Override
     public PagedIterable<SqlSyncFullSchemaProperty> listMemberSchemas() {
-        return this
+        return PagedConverter.mapPage(this
             .sqlServerManager
             .serviceClient()
             .getSyncMembers()
             .listMemberSchemas(
-                this.resourceGroupName, this.sqlServerName, this.sqlDatabaseName, this.sqlSyncGroupName, this.name())
-            .mapPage(inner -> new SqlSyncFullSchemaPropertyImpl(inner));
+                this.resourceGroupName, this.sqlServerName, this.sqlDatabaseName, this.sqlSyncGroupName, this.name()),
+            inner -> new SqlSyncFullSchemaPropertyImpl(inner));
     }
 
     @Override
     public PagedFlux<SqlSyncFullSchemaProperty> listMemberSchemasAsync() {
-        return this
+        return PagedConverter.mapPage(this
             .sqlServerManager
             .serviceClient()
             .getSyncMembers()
             .listMemberSchemasAsync(
-                this.resourceGroupName, this.sqlServerName, this.sqlDatabaseName, this.sqlSyncGroupName, this.name())
-            .mapPage(syncFullSchemaPropertiesInner -> new SqlSyncFullSchemaPropertyImpl(syncFullSchemaPropertiesInner));
+                this.resourceGroupName, this.sqlServerName, this.sqlDatabaseName, this.sqlSyncGroupName, this.name()),
+            syncFullSchemaPropertiesInner -> new SqlSyncFullSchemaPropertyImpl(syncFullSchemaPropertiesInner));
     }
 
     @Override

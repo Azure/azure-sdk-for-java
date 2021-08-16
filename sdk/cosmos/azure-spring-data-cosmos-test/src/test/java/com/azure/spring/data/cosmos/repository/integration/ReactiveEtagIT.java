@@ -2,12 +2,15 @@
 // Licensed under the MIT License.
 package com.azure.spring.data.cosmos.repository.integration;
 
+import com.azure.spring.data.cosmos.ReactiveIntegrationTestCollectionManager;
+import com.azure.spring.data.cosmos.core.ReactiveCosmosTemplate;
 import com.azure.spring.data.cosmos.domain.CourseWithEtag;
 import com.azure.spring.data.cosmos.exception.CosmosAccessException;
 import com.azure.spring.data.cosmos.repository.TestRepositoryConfig;
 import com.azure.spring.data.cosmos.repository.repository.ReactiveCourseWithEtagRepository;
-import org.junit.After;
 import org.junit.Assert;
+import org.junit.Before;
+import org.junit.ClassRule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,12 +32,17 @@ import static com.azure.spring.data.cosmos.common.TestConstants.DEPARTMENT;
 @ContextConfiguration(classes = TestRepositoryConfig.class)
 public class ReactiveEtagIT {
 
+    @ClassRule
+    public static final ReactiveIntegrationTestCollectionManager collectionManager = new ReactiveIntegrationTestCollectionManager();
+
+    @Autowired
+    ReactiveCosmosTemplate template;
     @Autowired
     ReactiveCourseWithEtagRepository reactiveCourseWithEtagRepository;
 
-    @After
-    public void cleanup() {
-        reactiveCourseWithEtagRepository.deleteAll().block();
+    @Before
+    public void setup() {
+        collectionManager.ensureContainersCreatedAndEmpty(template, CourseWithEtag.class);
     }
 
     private static CourseWithEtag createCourseWithEtag() {

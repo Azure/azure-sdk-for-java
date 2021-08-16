@@ -42,7 +42,7 @@ public final class SparkSessionState {
     private OffsetDateTime shuttingDownAt;
 
     /*
-     * the time that at which "killed" livy state was first seen.
+     * The killedAt property.
      */
     @JsonProperty(value = "killedAt")
     private OffsetDateTime terminatedAt;
@@ -178,7 +178,7 @@ public final class SparkSessionState {
     }
 
     /**
-     * Get the terminatedAt property: the time that at which "killed" livy state was first seen.
+     * Get the terminatedAt property: The killedAt property.
      *
      * @return the terminatedAt value.
      */
@@ -187,7 +187,7 @@ public final class SparkSessionState {
     }
 
     /**
-     * Set the terminatedAt property: the time that at which "killed" livy state was first seen.
+     * Set the terminatedAt property: The killedAt property.
      *
      * @param terminatedAt the terminatedAt value to set.
      * @return the SparkSessionState object itself.

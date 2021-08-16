@@ -1,14 +1,12 @@
 package com.azure.spring.test;
 
-import org.springframework.util.Assert;
-
 public class EnvironmentVariable {
     public static final String AAD_B2C_CLIENT_ID = System.getenv("AAD_B2C_CLIENT_ID");
     public static final String AAD_B2C_CLIENT_SECRET = System.getenv("AAD_B2C_CLIENT_SECRET");
     public static final String AAD_B2C_PROFILE_EDIT = System.getenv("AAD_B2C_PROFILE_EDIT");
     public static final String AAD_B2C_REPLY_URL = System.getenv("AAD_B2C_REPLY_URL");
     public static final String AAD_B2C_SIGN_UP_OR_SIGN_IN = System.getenv("AAD_B2C_SIGN_UP_OR_SIGN_IN");
-    public static final String AAD_B2C_TENANT = System.getenv("AAD_B2C_TENANT");
+    public static final String AAD_B2C_BASE_URI = System.getenv("AAD_B2C_BASE_URI");
     public static final String AAD_B2C_USER_EMAIL = System.getenv("AAD_B2C_USER_EMAIL");
     public static final String AAD_B2C_USER_PASSWORD = System.getenv("AAD_B2C_USER_PASSWORD");
     public static final String AAD_MULTI_TENANT_CLIENT_ID = System.getenv("AAD_MULTI_TENANT_CLIENT_ID");
@@ -21,8 +19,11 @@ public class EnvironmentVariable {
     public static final String AAD_TENANT_ID_2 = System.getenv("AAD_TENANT_ID_2");
     public static final String AAD_USER_NAME_1 = System.getenv("AAD_USER_NAME_1");
     public static final String AAD_USER_NAME_2 = System.getenv("AAD_USER_NAME_2");
+    public static final String AAD_USER_NAME_ON_DEMAND = System.getenv("AAD_USER_NAME_ON_DEMAND");
     public static final String AAD_USER_PASSWORD_1 = System.getenv("AAD_USER_PASSWORD_1");
     public static final String AAD_USER_PASSWORD_2 = System.getenv("AAD_USER_PASSWORD_2");
+    public static final String AAD_USER_PASSWORD_ON_DEMAND = System.getenv("AAD_USER_PASSWORD_ON_DEMAND");
+    public static final String AZURE_CLOUD_TYPE = System.getenv("AZURE_CLOUD_TYPE");
     public static final String AZURE_KEYVAULT2_URI = System.getenv("AZURE_KEYVAULT2_URI");
     public static final String AZURE_KEYVAULT_URI = System.getenv("AZURE_KEYVAULT_URI");
     public static final String AZURE_STORAGE_ACCOUNT_KEY = System.getenv("AZURE_STORAGE_ACCOUNT_KEY");
@@ -43,6 +44,12 @@ public class EnvironmentVariable {
     public static final String SPRING_CLIENT_ID = System.getenv("SPRING_CLIENT_ID");
     public static final String SPRING_CLIENT_SECRET = System.getenv("SPRING_CLIENT_SECRET");
     public static final String SPRING_RESOURCE_GROUP = System.getenv("SPRING_RESOURCE_GROUP");
+    public static final String KEY_VAULT_SPRING_RESOURCE_GROUP = System.getenv("KEY_VAULT_SPRING_RESOURCE_GROUP");
     public static final String SPRING_SUBSCRIPTION_ID = System.getenv("SPRING_SUBSCRIPTION_ID");
     public static final String SPRING_TENANT_ID = System.getenv("SPRING_TENANT_ID");
+    public static final String SPRING_JMS_STANDARD_SERVICEBUS_CONNECTION_STRING = System.getenv("SPRING_JMS_STANDARD_SERVICEBUS_CONNECTION_STRING");
+    public static final String SPRING_JMS_PREMIUM_SERVICEBUS_CONNECTION_STRING = System.getenv("SPRING_JMS_PREMIUM_SERVICEBUS_CONNECTION_STRING");
+    public static final String CONDITIONAL_ACCESS_POLICY_TEST_WEB_API_B_CLIENT_ID = System.getenv("CONDITIONAL_ACCESS_POLICY_TEST_WEB_API_B_CLIENT_ID");
+    public static final String CONDITIONAL_ACCESS_POLICY_TEST_WEB_API_A_CLIENT_ID = System.getenv("CONDITIONAL_ACCESS_POLICY_TEST_WEB_API_A_CLIENT_ID");
+    public static final String CONDITIONAL_ACCESS_POLICY_TEST_WEB_API_A_CLIENT_SECRET = System.getenv("CONDITIONAL_ACCESS_POLICY_TEST_WEB_API_A_CLIENT_SECRET");
 }

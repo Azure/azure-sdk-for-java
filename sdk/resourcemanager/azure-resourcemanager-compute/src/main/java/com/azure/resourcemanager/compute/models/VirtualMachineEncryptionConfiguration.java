@@ -3,6 +3,8 @@
 
 package com.azure.resourcemanager.compute.models;
 
+import com.azure.core.management.AzureEnvironment;
+import com.azure.core.util.CoreUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 
 import java.util.Locale;
@@ -22,15 +24,21 @@ public abstract class VirtualMachineEncryptionConfiguration<T extends VirtualMac
     protected String keyEncryptionKeyVaultId;
     protected String encryptionAlgorithm = "RSA-OAEP";
     protected String passPhrase;
+    protected final AzureEnvironment azureEnvironment;
+    protected final String vaultUri;
 
     /**
      * Creates VirtualMachineEncryptionConfiguration.
      *
      * @param keyVaultId resource ID of the KeyVault to store the disk encryption key
+     * @param vaultUri URI of the key vault data-plane endpoint
      * @param aadClientId AAD application client ID to access the KeyVault
      * @param aadSecret AAD application client secret to access the KeyVault
+     * @param azureEnvironment Azure environment
      */
-    protected VirtualMachineEncryptionConfiguration(String keyVaultId, String aadClientId, String aadSecret) {
+    protected VirtualMachineEncryptionConfiguration(String keyVaultId, String vaultUri,
+                                                    String aadClientId, String aadSecret,
+                                                    AzureEnvironment azureEnvironment) {
         this.keyVaultId =
             Objects
                 .requireNonNull(
@@ -45,14 +53,19 @@ public abstract class VirtualMachineEncryptionConfiguration<T extends VirtualMac
             Objects
                 .requireNonNull(
                     aadSecret, "aadSecret parameter holding AAD secret to access the KeyVault is required.");
+        this.vaultUri = vaultUri;
+        this.azureEnvironment = azureEnvironment;
     }
 
     /**
      * Creates VirtualMachineEncryptionConfiguration.
      *
      * @param keyVaultId resource ID of the KeyVault to store the disk encryption key
-     */
-    protected VirtualMachineEncryptionConfiguration(String keyVaultId) {
+     * @param vaultUri URI of the key vault data-plane endpoint
+     * @param azureEnvironment Azure environment
+     * */
+    protected VirtualMachineEncryptionConfiguration(String keyVaultId, String vaultUri,
+                                                    AzureEnvironment azureEnvironment) {
         Objects
             .requireNonNull(
                 keyVaultId,
@@ -60,6 +73,8 @@ public abstract class VirtualMachineEncryptionConfiguration<T extends VirtualMac
         this.keyVaultId = keyVaultId;
         this.aadClientId = null;
         this.aadSecret = null;
+        this.vaultUri = vaultUri;
+        this.azureEnvironment = azureEnvironment;
     }
 
     /** @return the operating system type */
@@ -90,8 +105,16 @@ public abstract class VirtualMachineEncryptionConfiguration<T extends VirtualMac
 
     /** @return URL to the key vault to store the disk encryption key */
     public String keyVaultUrl() {
+        if (vaultUri != null) {
+            return vaultUri;
+        }
+
+        String keyVaultDnsSuffix =
+            (azureEnvironment == null || CoreUtils.isNullOrEmpty(azureEnvironment.getKeyVaultDnsSuffix()))
+                ? AzureEnvironment.AZURE.getKeyVaultDnsSuffix()
+                : azureEnvironment.getKeyVaultDnsSuffix();
         String keyVaultName = ResourceUtils.nameFromResourceId(this.keyVaultId);
-        return String.format("https://%s.vault.azure.net/", keyVaultName.toLowerCase(Locale.ROOT));
+        return String.format("https://%1$s%2$s", keyVaultName.toLowerCase(Locale.ROOT), keyVaultDnsSuffix);
     }
 
     /** @return resource ID of the Key Vault holding key encryption key (KEK) */

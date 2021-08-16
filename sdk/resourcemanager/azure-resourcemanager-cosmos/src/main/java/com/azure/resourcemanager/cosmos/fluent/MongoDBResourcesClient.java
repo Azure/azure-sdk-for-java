@@ -133,7 +133,7 @@ public interface MongoDBResourcesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
-     * @param createUpdateMongoDBDatabaseParameters Parameters to create and update Cosmos DB MongoDB database.
+     * @param createUpdateMongoDBDatabaseParameters The parameters to provide for the current MongoDB database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -152,7 +152,7 @@ public interface MongoDBResourcesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
-     * @param createUpdateMongoDBDatabaseParameters Parameters to create and update Cosmos DB MongoDB database.
+     * @param createUpdateMongoDBDatabaseParameters The parameters to provide for the current MongoDB database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -172,7 +172,7 @@ public interface MongoDBResourcesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
-     * @param createUpdateMongoDBDatabaseParameters Parameters to create and update Cosmos DB MongoDB database.
+     * @param createUpdateMongoDBDatabaseParameters The parameters to provide for the current MongoDB database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -192,7 +192,7 @@ public interface MongoDBResourcesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
-     * @param createUpdateMongoDBDatabaseParameters Parameters to create and update Cosmos DB MongoDB database.
+     * @param createUpdateMongoDBDatabaseParameters The parameters to provide for the current MongoDB database.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -214,7 +214,7 @@ public interface MongoDBResourcesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
-     * @param createUpdateMongoDBDatabaseParameters Parameters to create and update Cosmos DB MongoDB database.
+     * @param createUpdateMongoDBDatabaseParameters The parameters to provide for the current MongoDB database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -233,7 +233,7 @@ public interface MongoDBResourcesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
-     * @param createUpdateMongoDBDatabaseParameters Parameters to create and update Cosmos DB MongoDB database.
+     * @param createUpdateMongoDBDatabaseParameters The parameters to provide for the current MongoDB database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -252,7 +252,7 @@ public interface MongoDBResourcesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
-     * @param createUpdateMongoDBDatabaseParameters Parameters to create and update Cosmos DB MongoDB database.
+     * @param createUpdateMongoDBDatabaseParameters The parameters to provide for the current MongoDB database.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -444,7 +444,8 @@ public interface MongoDBResourcesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
-     * @param updateThroughputParameters Parameters to update Cosmos DB resource throughput.
+     * @param updateThroughputParameters The RUs per second of the parameters to provide for the current MongoDB
+     *     database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -463,7 +464,8 @@ public interface MongoDBResourcesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
-     * @param updateThroughputParameters Parameters to update Cosmos DB resource throughput.
+     * @param updateThroughputParameters The RUs per second of the parameters to provide for the current MongoDB
+     *     database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -483,7 +485,8 @@ public interface MongoDBResourcesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
-     * @param updateThroughputParameters Parameters to update Cosmos DB resource throughput.
+     * @param updateThroughputParameters The RUs per second of the parameters to provide for the current MongoDB
+     *     database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -503,7 +506,8 @@ public interface MongoDBResourcesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
-     * @param updateThroughputParameters Parameters to update Cosmos DB resource throughput.
+     * @param updateThroughputParameters The RUs per second of the parameters to provide for the current MongoDB
+     *     database.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -525,7 +529,8 @@ public interface MongoDBResourcesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
-     * @param updateThroughputParameters Parameters to update Cosmos DB resource throughput.
+     * @param updateThroughputParameters The RUs per second of the parameters to provide for the current MongoDB
+     *     database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -544,7 +549,8 @@ public interface MongoDBResourcesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
-     * @param updateThroughputParameters Parameters to update Cosmos DB resource throughput.
+     * @param updateThroughputParameters The RUs per second of the parameters to provide for the current MongoDB
+     *     database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -563,7 +569,8 @@ public interface MongoDBResourcesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
-     * @param updateThroughputParameters Parameters to update Cosmos DB resource throughput.
+     * @param updateThroughputParameters The RUs per second of the parameters to provide for the current MongoDB
+     *     database.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -914,7 +921,7 @@ public interface MongoDBResourcesClient {
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param collectionName Cosmos DB collection name.
-     * @param createUpdateMongoDBCollectionParameters Parameters to create and update Cosmos DB MongoDB collection.
+     * @param createUpdateMongoDBCollectionParameters The parameters to provide for the current MongoDB Collection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -935,7 +942,7 @@ public interface MongoDBResourcesClient {
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param collectionName Cosmos DB collection name.
-     * @param createUpdateMongoDBCollectionParameters Parameters to create and update Cosmos DB MongoDB collection.
+     * @param createUpdateMongoDBCollectionParameters The parameters to provide for the current MongoDB Collection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -957,7 +964,7 @@ public interface MongoDBResourcesClient {
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param collectionName Cosmos DB collection name.
-     * @param createUpdateMongoDBCollectionParameters Parameters to create and update Cosmos DB MongoDB collection.
+     * @param createUpdateMongoDBCollectionParameters The parameters to provide for the current MongoDB Collection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -979,7 +986,7 @@ public interface MongoDBResourcesClient {
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param collectionName Cosmos DB collection name.
-     * @param createUpdateMongoDBCollectionParameters Parameters to create and update Cosmos DB MongoDB collection.
+     * @param createUpdateMongoDBCollectionParameters The parameters to provide for the current MongoDB Collection.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -1003,7 +1010,7 @@ public interface MongoDBResourcesClient {
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param collectionName Cosmos DB collection name.
-     * @param createUpdateMongoDBCollectionParameters Parameters to create and update Cosmos DB MongoDB collection.
+     * @param createUpdateMongoDBCollectionParameters The parameters to provide for the current MongoDB Collection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1024,7 +1031,7 @@ public interface MongoDBResourcesClient {
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param collectionName Cosmos DB collection name.
-     * @param createUpdateMongoDBCollectionParameters Parameters to create and update Cosmos DB MongoDB collection.
+     * @param createUpdateMongoDBCollectionParameters The parameters to provide for the current MongoDB Collection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1045,7 +1052,7 @@ public interface MongoDBResourcesClient {
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param collectionName Cosmos DB collection name.
-     * @param createUpdateMongoDBCollectionParameters Parameters to create and update Cosmos DB MongoDB collection.
+     * @param createUpdateMongoDBCollectionParameters The parameters to provide for the current MongoDB Collection.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -1253,7 +1260,8 @@ public interface MongoDBResourcesClient {
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param collectionName Cosmos DB collection name.
-     * @param updateThroughputParameters Parameters to update Cosmos DB resource throughput.
+     * @param updateThroughputParameters The RUs per second of the parameters to provide for the current MongoDB
+     *     collection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1274,7 +1282,8 @@ public interface MongoDBResourcesClient {
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param collectionName Cosmos DB collection name.
-     * @param updateThroughputParameters Parameters to update Cosmos DB resource throughput.
+     * @param updateThroughputParameters The RUs per second of the parameters to provide for the current MongoDB
+     *     collection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1296,7 +1305,8 @@ public interface MongoDBResourcesClient {
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param collectionName Cosmos DB collection name.
-     * @param updateThroughputParameters Parameters to update Cosmos DB resource throughput.
+     * @param updateThroughputParameters The RUs per second of the parameters to provide for the current MongoDB
+     *     collection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1318,7 +1328,8 @@ public interface MongoDBResourcesClient {
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param collectionName Cosmos DB collection name.
-     * @param updateThroughputParameters Parameters to update Cosmos DB resource throughput.
+     * @param updateThroughputParameters The RUs per second of the parameters to provide for the current MongoDB
+     *     collection.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -1342,7 +1353,8 @@ public interface MongoDBResourcesClient {
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param collectionName Cosmos DB collection name.
-     * @param updateThroughputParameters Parameters to update Cosmos DB resource throughput.
+     * @param updateThroughputParameters The RUs per second of the parameters to provide for the current MongoDB
+     *     collection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1363,7 +1375,8 @@ public interface MongoDBResourcesClient {
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param collectionName Cosmos DB collection name.
-     * @param updateThroughputParameters Parameters to update Cosmos DB resource throughput.
+     * @param updateThroughputParameters The RUs per second of the parameters to provide for the current MongoDB
+     *     collection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1384,7 +1397,8 @@ public interface MongoDBResourcesClient {
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param collectionName Cosmos DB collection name.
-     * @param updateThroughputParameters Parameters to update Cosmos DB resource throughput.
+     * @param updateThroughputParameters The RUs per second of the parameters to provide for the current MongoDB
+     *     collection.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.

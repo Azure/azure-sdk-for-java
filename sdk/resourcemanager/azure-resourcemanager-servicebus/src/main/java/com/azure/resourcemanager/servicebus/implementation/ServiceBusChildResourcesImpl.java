@@ -17,6 +17,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.List;
+import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
 
 /**
  * Base class for Service Bus child entities.
@@ -56,8 +57,8 @@ abstract class ServiceBusChildResourcesImpl<
 
     @Override
     public PagedFlux<T> listAsync() {
-        return this.listInnerAsync()
-                .mapPage(this::wrapModel);
+        return PagedConverter.mapPage(this.listInnerAsync(),
+                this::wrapModel);
     }
 
     @Override

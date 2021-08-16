@@ -7,7 +7,10 @@ package com.azure.messaging.eventgrid.systemevents;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The DeviceConnectionStateEventProperties model. */
+/**
+ * Schema of the Data property of an EventGridEvent for a device connection state event (DeviceConnected,
+ * DeviceDisconnected).
+ */
 @Fluent
 public class DeviceConnectionStateEventProperties {
     /*

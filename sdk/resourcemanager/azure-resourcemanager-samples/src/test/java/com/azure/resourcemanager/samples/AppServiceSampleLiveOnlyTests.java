@@ -37,111 +37,68 @@ import java.time.Duration;
 
 public class AppServiceSampleLiveOnlyTests extends SamplesTestBase {
     @Test
-    @DoNotRecord
+    @DoNotRecord(skipInPlayback = true)
     public void testManageWebAppSourceControl() throws GitAPIException {
-        if (skipInPlayback()) {
-            return;
-        }
-
         Assertions.assertTrue(ManageWebAppSourceControl.runSample(azureResourceManager));
     }
 
     @Test
-    @DoNotRecord
+    @DoNotRecord(skipInPlayback = true)
     public void testManageWebAppStorageAccountConnection() {
-        if (skipInPlayback()) {
-            return;
-        }
-
         Assertions.assertTrue(ManageWebAppStorageAccountConnection.runSample(azureResourceManager));
     }
 
     @Test
-    @DoNotRecord
+    @DoNotRecord(skipInPlayback = true)
     public void testManageLinuxWebAppSourceControl() throws GitAPIException {
-        if (skipInPlayback()) {
-            return;
-        }
-
         Assertions.assertTrue(ManageLinuxWebAppSourceControl.runSample(azureResourceManager));
     }
 
     @Test
-    @DoNotRecord
+    @DoNotRecord(skipInPlayback = true)
     public void testManageLinuxWebAppStorageAccountConnection() {
-        if (skipInPlayback()) {
-            return;
-        }
-
         Assertions.assertTrue(ManageLinuxWebAppStorageAccountConnection.runSample(azureResourceManager));
     }
 
     @Test
-    @DoNotRecord
+    @DoNotRecord(skipInPlayback = true)
     public void testManageLinuxWebAppWithContainerRegistry() throws IOException, InterruptedException {
-        if (skipInPlayback()) {
-            return;
-        }
-
         Assertions.assertTrue(ManageLinuxWebAppWithContainerRegistry.runSample(azureResourceManager));
     }
 
     @Test
-    @DoNotRecord
+    @DoNotRecord(skipInPlayback = true)
     public void testManageFunctionAppWithAuthentication() throws GitAPIException {
-        if (skipInPlayback()) {
-            return;
-        }
-
         Assertions.assertTrue(ManageFunctionAppWithAuthentication.runSample(azureResourceManager));
     }
 
     @Test
-    @DoNotRecord
+    @DoNotRecord(skipInPlayback = true)
     public void testManageFunctionAppSourceControl() throws GitAPIException {
-        if (skipInPlayback()) {
-            return;
-        }
-
         Assertions.assertTrue(ManageFunctionAppSourceControl.runSample(azureResourceManager));
     }
 
     @Test
-    @DoNotRecord
+    @DoNotRecord(skipInPlayback = true)
     public void testManageLinuxWebAppCosmosDbByMsi() throws IOException, InterruptedException {
-        if (skipInPlayback()) {
-            return;
-        }
-
         Assertions.assertTrue(ManageLinuxWebAppCosmosDbByMsi.runSample(azureResourceManager, ""));
     }
 
     @Test
-    @DoNotRecord
-    public void testManageWebAppCosmosDbByMsi() {
-        if (skipInPlayback()) {
-            return;
-        }
-
-        Assertions.assertTrue(ManageWebAppCosmosDbByMsi.runSample(azureResourceManager, credentialFromFile(), clientIdFromFile()));
+    @DoNotRecord(skipInPlayback = true)
+    public void testManageWebAppCosmosDbByMsi() throws IOException {
+        Assertions.assertTrue(ManageWebAppCosmosDbByMsi.runSample(azureResourceManager, clientIdFromFile()));
     }
 
     @Test
-    @DoNotRecord
+    @DoNotRecord(skipInPlayback = true)
     public void testManageWebAppCosmosDbThroughKeyVault() {
-        if (skipInPlayback()) {
-            return;
-        }
-
         Assertions.assertTrue(ManageWebAppCosmosDbThroughKeyVault.runSample(azureResourceManager, clientIdFromFile()));
     }
 
     @Test
-    @DoNotRecord
+    @DoNotRecord(skipInPlayback = true)
     public void testManageFunctionAppLogs() throws IOException {
-        if (skipInPlayback()) {
-            return;
-        }
         azureResourceManager = buildManager(
             AzureResourceManager.class,
             setReadTimeout(azureResourceManager.storageAccounts().manager().httpPipeline(), Duration.ofMinutes(10)),
@@ -151,7 +108,7 @@ public class AppServiceSampleLiveOnlyTests extends SamplesTestBase {
     }
 
     @Test
-    @DoNotRecord
+    @DoNotRecord(skipInPlayback = true)
     public void testManageWebAppLogs() throws IOException {
         if (skipInPlayback()) {
             return;
@@ -180,62 +137,38 @@ public class AppServiceSampleLiveOnlyTests extends SamplesTestBase {
     }
 
     @Test
-    @DoNotRecord
+    @DoNotRecord(skipInPlayback = true)
     public void testManageLinuxFunctionAppSourceControl() {
-        if (skipInPlayback()) {
-            return;
-        }
-
         Assertions.assertTrue(ManageLinuxFunctionAppSourceControl.runSample(azureResourceManager));
     }
 
     @Test
-    @DoNotRecord
+    @DoNotRecord(skipInPlayback = true)
     public void testManageWebAppWithDomainSsl() throws IOException {
-        if (skipInPlayback()) {
-            return;
-        }
-
         Assertions.assertTrue(ManageWebAppWithDomainSsl.runSample(azureResourceManager));
     }
 
     @Test
-    @DoNotRecord
+    @DoNotRecord(skipInPlayback = true)
     public void testManageWebAppWithTrafficManager() throws IOException {
-        if (skipInPlayback()) {
-            return;
-        }
-
         Assertions.assertTrue(ManageWebAppWithTrafficManager.runSample(azureResourceManager));
     }
 
     @Test
-    @DoNotRecord
+    @DoNotRecord(skipInPlayback = true)
     public void testManageLinuxWebAppWithDomainSsl() throws IOException {
-        if (skipInPlayback()) {
-            return;
-        }
-
         Assertions.assertTrue(ManageLinuxWebAppWithDomainSsl.runSample(azureResourceManager));
     }
 
     @Test
-    @DoNotRecord
+    @DoNotRecord(skipInPlayback = true)
     public void testManageLinuxWebAppWithTrafficManager() throws IOException {
-        if (skipInPlayback()) {
-            return;
-        }
-
         Assertions.assertTrue(ManageLinuxWebAppWithTrafficManager.runSample(azureResourceManager));
     }
 
     @Test
-    @DoNotRecord
+    @DoNotRecord(skipInPlayback = true)
     public void testManageFunctionAppWithDomainSsl() throws IOException {
-        if (skipInPlayback()) {
-            return;
-        }
-
         Assertions.assertTrue(ManageFunctionAppWithDomainSsl.runSample(azureResourceManager));
     }
 }

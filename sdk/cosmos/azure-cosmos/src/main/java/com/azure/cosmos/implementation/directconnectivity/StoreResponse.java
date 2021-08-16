@@ -7,6 +7,7 @@ import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.RequestTimeline;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdChannelAcquisitionTimeline;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdEndpointStatistics;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,6 +29,7 @@ public class StoreResponse {
     private int pendingRequestQueueSize;
     private int requestPayloadLength;
     private RequestTimeline requestTimeline;
+    private RntbdChannelAcquisitionTimeline channelAcquisitionTimeline;
     private int rntbdChannelTaskQueueSize;
     private RntbdEndpointStatistics rntbdEndpointStatistics;
     private int rntbdRequestLength;
@@ -149,6 +151,14 @@ public class StoreResponse {
         return cosmosDiagnostics;
     }
 
+    public double getRequestCharge() {
+        String value = this.getHeaderValue(HttpConstants.HttpHeaders.REQUEST_CHARGE);
+        if (StringUtils.isEmpty(value)) {
+            return 0;
+        }
+        return Double.parseDouble(value);
+    }
+
     StoreResponse setCosmosDiagnostics(CosmosDiagnostics cosmosDiagnostics) {
         this.cosmosDiagnostics = cosmosDiagnostics;
         return this;
@@ -160,6 +170,14 @@ public class StoreResponse {
 
     RequestTimeline getRequestTimeline() {
         return this.requestTimeline;
+    }
+
+    void setChannelAcquisitionTimeline(RntbdChannelAcquisitionTimeline channelAcquisitionTimeline) {
+        this.channelAcquisitionTimeline = channelAcquisitionTimeline;
+    }
+
+    RntbdChannelAcquisitionTimeline getChannelAcquisitionTimeline() {
+        return this.channelAcquisitionTimeline;
     }
 
     void setEndpointStatistics(RntbdEndpointStatistics rntbdEndpointStatistics) {

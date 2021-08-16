@@ -12,17 +12,36 @@ import org.apache.qpid.proton.engine.EndpointState;
 import org.apache.qpid.proton.engine.Event;
 import org.apache.qpid.proton.engine.Link;
 
+import java.util.Objects;
+
 import static com.azure.core.amqp.implementation.AmqpErrorCode.TRACKING_ID_PROPERTY;
 import static com.azure.core.amqp.implementation.ClientConstants.NOT_APPLICABLE;
 
+/**
+ * Base class for AMQP links.
+ *
+ * @see SendLinkHandler
+ * @see ReceiveLinkHandler
+ */
 abstract class LinkHandler extends Handler {
     private final String entityPath;
-    final ClientLogger logger;
 
+    /**
+     * Creates an instance with the parameters.
+     *
+     * @param connectionId Identifier for the connection.
+     * @param hostname Hostname of the connection. This could be the DNS hostname or the IP address of the
+     *     connection. Usually of the form {@literal "<your-namespace>.service.windows.net"} but can change if the
+     *     messages are brokered through an intermediary.
+     * @param entityPath The address within the message broker for this link.
+     * @param logger Logger to use for messages.
+     *
+     * @throws NullPointerException if {@code connectionId}, {@code hostname}, {@code entityPath}, or {@code logger} is
+     * null.
+     */
     LinkHandler(String connectionId, String hostname, String entityPath, ClientLogger logger) {
-        super(connectionId, hostname);
-        this.entityPath = entityPath;
-        this.logger = logger;
+        super(connectionId, hostname, logger);
+        this.entityPath = Objects.requireNonNull(entityPath, "'entityPath' cannot be null.");
     }
 
     @Override
@@ -30,7 +49,7 @@ abstract class LinkHandler extends Handler {
         final Link link = event.getLink();
         final ErrorCondition condition = link.getCondition();
 
-        logger.info("onLinkLocalClose connectionId[{}], linkName[{}], errorCondition[{}], errorDescription[{}]",
+        logger.verbose("onLinkLocalClose connectionId[{}], linkName[{}], errorCondition[{}], errorDescription[{}]",
             getConnectionId(),
             link.getName(),
             condition != null ? condition.getCondition() : NOT_APPLICABLE,
@@ -39,28 +58,12 @@ abstract class LinkHandler extends Handler {
 
     @Override
     public void onLinkRemoteClose(Event event) {
-        final Link link = event.getLink();
-        final ErrorCondition condition = link.getRemoteCondition();
-
-        logger.info("onLinkRemoteClose connectionId[{}], linkName[{}], errorCondition[{}], errorDescription[{}]",
-            getConnectionId(), link.getName(),
-            condition != null ? condition.getCondition() : NOT_APPLICABLE,
-            condition != null ? condition.getDescription() : NOT_APPLICABLE);
-
-        handleRemoteLinkClosed(event);
+        handleRemoteLinkClosed("onLinkRemoteClose", event);
     }
 
     @Override
     public void onLinkRemoteDetach(Event event) {
-        final Link link = event.getLink();
-        final ErrorCondition condition = link.getCondition();
-
-        logger.info("onLinkRemoteClose connectionId[{}], linkName[{}], errorCondition[{}], errorDescription[{}]",
-            getConnectionId(), link.getName(),
-            condition != null ? condition.getCondition() : NOT_APPLICABLE,
-            condition != null ? condition.getDescription() : NOT_APPLICABLE);
-
-        handleRemoteLinkClosed(event);
+        handleRemoteLinkClosed("onLinkRemoteDetach", event);
     }
 
     @Override
@@ -69,7 +72,10 @@ abstract class LinkHandler extends Handler {
             ? event.getLink().getName()
             : NOT_APPLICABLE;
         logger.info("onLinkFinal connectionId[{}], linkName[{}]", getConnectionId(), linkName);
-        close();
+
+        // Be explicit about wanting to call Handler.close(). When we receive onLinkFinal, the service and proton-j are
+        // releasing this link. So we want to complete the endpoint states.
+        super.close();
     }
 
     public AmqpErrorContext getErrorContext(Link link) {
@@ -83,19 +89,22 @@ abstract class LinkHandler extends Handler {
         return new LinkErrorContext(getHostname(), entityPath, referenceId, link.getCredit());
     }
 
-    private void handleRemoteLinkClosed(final Event event) {
+    private void handleRemoteLinkClosed(final String eventName, final Event event) {
         final Link link = event.getLink();
         final ErrorCondition condition = link.getRemoteCondition();
 
+        logger.info("{} connectionId[{}] linkName[{}], errorCondition[{}] errorDescription[{}]",
+            eventName, getConnectionId(), link.getName(),
+            condition != null ? condition.getCondition() : NOT_APPLICABLE,
+            condition != null ? condition.getDescription() : NOT_APPLICABLE);
+
         if (link.getLocalState() != EndpointState.CLOSED) {
+            logger.info("connectionId[{}] linkName[{}] state[{}] Local link state is not closed.", getConnectionId(),
+                link.getName(), link.getLocalState());
+
             link.setCondition(condition);
             link.close();
         }
-
-        logger.info("processOnClose connectionId[{}], linkName[{}], errorCondition[{}], errorDescription[{}]",
-            getConnectionId(), link.getName(),
-            condition != null ? condition.getCondition() : NOT_APPLICABLE,
-            condition != null ? condition.getDescription() : NOT_APPLICABLE);
 
         if (condition != null && condition.getCondition() != null) {
             final Throwable exception = ExceptionUtil.toException(condition.getCondition().toString(),
@@ -103,7 +112,7 @@ abstract class LinkHandler extends Handler {
 
             onError(exception);
         } else {
-            close();
+            super.close();
         }
     }
 }

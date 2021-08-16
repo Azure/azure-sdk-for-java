@@ -59,24 +59,24 @@
       <dependency>
         <groupId>com.fasterxml.jackson.core</groupId>
         <artifactId>jackson-databind</artifactId>
-        <version>2.11.3</version> <!-- {x-version-update;com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
+        <version>2.12.4</version> <!-- {x-version-update;com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
       </dependency>
 
       <!-- Other Dependencies -->
       <dependency>
         <groupId>org.apache.commons</groupId>
         <artifactId>commons-lang3</artifactId>
-        <version>3.10</version> <!-- {x-version-update;org.apache.commons:commons-lang3;external_dependency} -->
+        <version>3.12.0</version> <!-- {x-version-update;org.apache.commons:commons-lang3;external_dependency} -->
       </dependency>
       <dependency>
         <groupId>commons-codec</groupId>
         <artifactId>commons-codec</artifactId>
-        <version>1.14</version> <!-- {x-version-update;commons-codec:commons-codec;external_dependency} -->
+        <version>1.15</version> <!-- {x-version-update;commons-codec:commons-codec;external_dependency} -->
       </dependency>
       <dependency>
         <groupId>com.google.guava</groupId>
         <artifactId>guava</artifactId>
-        <version>29.0-jre</version> <!-- {x-version-update;com.google.guava:guava;external_dependency} -->
+        <version>30.1.1-jre</version> <!-- {x-version-update;com.google.guava:guava;external_dependency} -->
       </dependency>
 
 
@@ -84,7 +84,7 @@
       <dependency>
         <groupId>junit</groupId>
         <artifactId>junit</artifactId>
-        <version>4.13.1</version> <!-- {x-version-update;junit:junit;external_dependency} -->
+        <version>4.13.2</version> <!-- {x-version-update;junit:junit;external_dependency} -->
         <scope>test</scope>
       </dependency>
       <dependency>

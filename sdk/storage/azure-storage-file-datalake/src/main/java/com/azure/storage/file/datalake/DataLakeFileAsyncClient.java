@@ -23,7 +23,7 @@ import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.BufferAggregator;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
-import com.azure.storage.common.implementation.UploadBufferPool;
+import com.azure.storage.common.implementation.BufferStagingArea;
 import com.azure.storage.common.implementation.UploadUtils;
 import com.azure.storage.file.datalake.implementation.models.LeaseAccessConditions;
 import com.azure.storage.file.datalake.implementation.models.ModifiedAccessConditions;
@@ -35,13 +35,13 @@ import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.DownloadRetryOptions;
 import com.azure.storage.file.datalake.models.FileExpirationOffset;
 import com.azure.storage.file.datalake.models.FileQueryAsyncResponse;
-import com.azure.storage.file.datalake.options.FileParallelUploadOptions;
-import com.azure.storage.file.datalake.options.FileQueryOptions;
 import com.azure.storage.file.datalake.models.FileRange;
 import com.azure.storage.file.datalake.models.FileReadAsyncResponse;
 import com.azure.storage.file.datalake.models.PathHttpHeaders;
 import com.azure.storage.file.datalake.models.PathInfo;
 import com.azure.storage.file.datalake.models.PathProperties;
+import com.azure.storage.file.datalake.options.FileParallelUploadOptions;
+import com.azure.storage.file.datalake.options.FileQueryOptions;
 import com.azure.storage.file.datalake.options.FileScheduleDeletionOptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -116,9 +116,9 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
     }
 
     DataLakeFileAsyncClient(DataLakePathAsyncClient pathAsyncClient) {
-        super(pathAsyncClient.getHttpPipeline(), pathAsyncClient.getPathUrl(), pathAsyncClient.getServiceVersion(),
-            pathAsyncClient.getAccountName(), pathAsyncClient.getFileSystemName(), pathAsyncClient.pathName,
-            PathResourceType.FILE, pathAsyncClient.getBlockBlobAsyncClient());
+        super(pathAsyncClient.getHttpPipeline(), pathAsyncClient.getAccountUrl(), pathAsyncClient.getServiceVersion(),
+            pathAsyncClient.getAccountName(), pathAsyncClient.getFileSystemName(),
+            Utility.urlEncode(pathAsyncClient.pathName), PathResourceType.FILE, pathAsyncClient.getBlockBlobAsyncClient());
     }
 
     /**
@@ -253,7 +253,6 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
 
     /**
      * Creates a new file.
-     * <p>
      * To avoid overwriting, pass "*" to {@link DataLakeRequestConditions#setIfNoneMatch(String)}.
      *
      * <p><strong>Code Samples</strong></p>
@@ -326,11 +325,21 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
                         .addProgressReporting(stream, validatedParallelTransferOptions.getProgressReceiver()),
                     fileOffset, length, options.getHeaders(), validatedUploadRequestConditions);
 
-            Flux<ByteBuffer> data = options.getDataFlux() == null ? Utility.convertStreamToByteBuffer(
-                options.getDataStream(), options.getLength(),
+            Flux<ByteBuffer> data = options.getDataFlux();
+            // no specified length: use azure.core's converter
+            if (data == null && options.getOptionalLength() == null) {
                 // We can only buffer up to max int due to restrictions in ByteBuffer.
-                (int) Math.min(Integer.MAX_VALUE, validatedParallelTransferOptions.getBlockSizeLong()), false)
-                : options.getDataFlux();
+                int chunkSize = (int) Math.min(Constants.MAX_INPUT_STREAM_CONVERTER_BUFFER_LENGTH,
+                    validatedParallelTransferOptions.getBlockSizeLong());
+                data = FluxUtil.toFluxByteBuffer(options.getDataStream(), chunkSize);
+            // specified length (legacy requirement): use custom converter. no marking because we buffer anyway.
+            } else if (data == null) {
+                // We can only buffer up to max int due to restrictions in ByteBuffer.
+                int chunkSize = (int) Math.min(Constants.MAX_INPUT_STREAM_CONVERTER_BUFFER_LENGTH,
+                    validatedParallelTransferOptions.getBlockSizeLong());
+                data = Utility.convertStreamToByteBuffer(
+                    options.getDataStream(), options.getOptionalLength(), chunkSize, false);
+            }
 
             return createWithResponse(options.getPermissions(), options.getUmask(), options.getHeaders(),
                 options.getMetadata(), validatedRequestConditions)
@@ -349,20 +358,18 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
         Lock progressLock = new ReentrantLock();
 
         // Validation done in the constructor.
-        /*
-        We use maxConcurrency + 1 for the number of buffers because one buffer will typically be being filled while the
-        others are being sent.
-         */
-        UploadBufferPool pool = new UploadBufferPool(parallelTransferOptions.getMaxConcurrency() + 1,
-            parallelTransferOptions.getBlockSizeLong(), MAX_APPEND_FILE_BYTES);
+        BufferStagingArea stagingArea = new BufferStagingArea(parallelTransferOptions.getBlockSizeLong(), MAX_APPEND_FILE_BYTES);
 
         Flux<ByteBuffer> chunkedSource = UploadUtils.chunkSource(data, parallelTransferOptions);
 
         /*
-         Write to the pool and upload the output.
+         Write to the stagingArea and upload the output.
+         maxConcurrency = 1 when writing means only 1 BufferAggregator will be accumulating at a time.
+         parallelTransferOptions.getMaxConcurrency() appends will be happening at once, so we guarantee buffering of
+         only concurrency + 1 chunks at a time.
          */
-        return chunkedSource.concatMap(pool::write)
-            .concatWith(Flux.defer(pool::flush))
+        return chunkedSource.flatMapSequential(stagingArea::write, 1, 1)
+            .concatWith(Flux.defer(stagingArea::flush))
             /* Map the data to a tuple 3, of buffer, buffer length, buffer offset */
             .map(bufferAggregator -> Tuples.of(bufferAggregator, bufferAggregator.length(), 0L))
             /* Scan reduces a flux with an accumulator while emitting the intermediate results. */
@@ -388,12 +395,12 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
                 Flux<ByteBuffer> progressData = ProgressReporter.addParallelProgressReporting(
                     bufferAggregator.asFlux(), parallelTransferOptions.getProgressReceiver(),
                     progressLock, totalProgress);
+                final long offset = currentBufferLength + currentOffset;
                 return appendWithResponse(progressData, currentOffset, currentBufferLength, null,
                     requestConditions.getLeaseId())
-                    .doFinally(x -> pool.returnBuffer(bufferAggregator))
-                    .map(resp -> currentBufferLength + currentOffset) /* End of file after append to pass to flush. */
+                    .map(resp -> offset) /* End of file after append to pass to flush. */
                     .flux();
-            }, parallelTransferOptions.getMaxConcurrency())
+            }, parallelTransferOptions.getMaxConcurrency(), 1)
             .last()
             .flatMap(length -> flushWithResponse(length, false, false, httpHeaders, requestConditions));
     }
@@ -639,7 +646,7 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
 
         PathHttpHeaders headers = new PathHttpHeaders().setTransactionalContentHash(contentMd5);
 
-        return this.dataLakeStorage.paths().appendDataWithRestResponseAsync(data, fileOffset, null, length, null, null,
+        return this.dataLakeStorage.getPaths().appendDataWithResponseAsync(data, fileOffset, null, length, null, null,
             headers, leaseAccessConditions, context).map(response -> new SimpleResponse<>(response, null));
     }
 
@@ -745,7 +752,7 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
             .setIfUnmodifiedSince(requestConditions.getIfUnmodifiedSince());
         context = context == null ? Context.NONE : context;
 
-        return this.dataLakeStorage.paths().flushDataWithRestResponseAsync(null, position, retainUncommittedData, close,
+        return this.dataLakeStorage.getPaths().flushDataWithResponseAsync(null, position, retainUncommittedData, close,
             (long) 0, null, httpHeaders, lac, mac,
             context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(response -> new SimpleResponse<>(response, new PathInfo(response.getDeserializedHeaders().getETag(),
@@ -1041,7 +1048,7 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
         } else {
             pathExpiryOptions = PathExpiryOptions.NEVER_EXPIRE;
         }
-        return this.blobDataLakeStorage.paths().setExpiryWithRestResponseAsync(
+        return this.blobDataLakeStorage.getPaths().setExpiryWithResponseAsync(
             pathExpiryOptions, null,
             null, expiresOn,
             context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))

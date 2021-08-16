@@ -14,7 +14,9 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class VirtualMachinePopularImageTests extends ComputeManagementTest {
     private String rgName = "";
@@ -44,7 +46,10 @@ public class VirtualMachinePopularImageTests extends ComputeManagementTest {
             vmMonos.add(mono);
         }
 
-        for (KnownLinuxVirtualMachineImage image : KnownLinuxVirtualMachineImage.values()) {
+        for (KnownLinuxVirtualMachineImage image : Arrays.stream(KnownLinuxVirtualMachineImage.values())
+            .filter(image -> image != KnownLinuxVirtualMachineImage.OPENSUSE_LEAP_15_1 && image != KnownLinuxVirtualMachineImage.SLES_15_SP1)
+            .collect(Collectors.toList())) {
+
             Mono<VirtualMachine> mono = computeManager.virtualMachines()
                 .define(generateRandomResourceName("vm", 10))
                 .withRegion(Region.US_SOUTH_CENTRAL)
@@ -54,7 +59,7 @@ public class VirtualMachinePopularImageTests extends ComputeManagementTest {
                 .withoutPrimaryPublicIPAddress()
                 .withPopularLinuxImage(image)
                 .withRootUsername("testUser")
-                .withRootPassword(password())
+                .withSsh(sshPublicKey())
                 .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
                 .createAsync();
             vmMonos.add(mono);

@@ -3,6 +3,7 @@
 
 package com.azure.communication.chat;
 
+import com.azure.communication.chat.implementation.AzureCommunicationChatServiceImpl;
 import com.azure.communication.chat.implementation.AzureCommunicationChatServiceImplBuilder;
 import com.azure.communication.chat.implementation.CommunicationBearerTokenCredential;
 
@@ -20,7 +21,9 @@ import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.CookiePolicy;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
+import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.RetryPolicy;
+import com.azure.core.util.ClientOptions;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.util.Configuration;
@@ -39,6 +42,8 @@ public final class ChatClientBuilder {
     private HttpLogOptions logOptions = new HttpLogOptions();
     private HttpPipeline httpPipeline;
     private Configuration configuration;
+    private ClientOptions clientOptions;
+    private RetryPolicy retryPolicy = new RetryPolicy();
 
     private static final String APP_CONFIG_PROPERTIES = "azure-communication-chat.properties";
     private static final String SDK_NAME = "name";
@@ -79,6 +84,17 @@ public final class ChatClientBuilder {
     }
 
     /**
+     * Sets the client options such as application ID and custom headers to set on a request.
+     *
+     * @param clientOptions The client options.
+     * @return The updated ChatClientBuilder object.
+     */
+    public ChatClientBuilder clientOptions(ClientOptions clientOptions) {
+        this.clientOptions = clientOptions;
+        return this;
+    }
+
+    /**
      * Apply additional {@link HttpPipelinePolicy}
      *
      * @param customPolicy HttpPipelinePolicy objects to be applied after
@@ -87,6 +103,19 @@ public final class ChatClientBuilder {
      */
     public ChatClientBuilder addPolicy(HttpPipelinePolicy customPolicy) {
         this.customPolicies.add(Objects.requireNonNull(customPolicy, "'customPolicy' cannot be null."));
+        return this;
+    }
+
+    /**
+     * Sets the {@link HttpPipelinePolicy} that will attempt to retry requests when needed.
+     * <p>
+     * A default retry policy will be supplied if one isn't provided.
+     *
+     * @param retryPolicy The {@link RetryPolicy} that will attempt to retry requests when needed.
+     * @return The updated ChatClientBuilder object.
+     */
+    public ChatClientBuilder retryPolicy(RetryPolicy retryPolicy) {
+        this.retryPolicy = Objects.requireNonNull(retryPolicy, "'retryPolicy' cannot be null.");
         return this;
     }
 
@@ -123,7 +152,7 @@ public final class ChatClientBuilder {
      * If {@code pipeline} is set, all other settings are ignored, aside from {@link #endpoint(String) endpoint}.
      *
      * @param httpPipeline HttpPipeline to use for sending service requests and receiving responses.
-     * @return the updated BlobServiceClientBuilder object
+     * @return the updated ChatClientBuilder object
      */
     public ChatClientBuilder pipeline(HttpPipeline httpPipeline) {
         this.httpPipeline = httpPipeline;
@@ -134,7 +163,7 @@ public final class ChatClientBuilder {
      * Sets the configuration object used to retrieve environment configuration values during building of the client.
      *
      * @param configuration Configuration store used to retrieve environment configurations.
-     * @return the updated BlobServiceClientBuilder object
+     * @return the updated ChatClientBuilder object
      */
     public ChatClientBuilder configuration(Configuration configuration) {
         this.configuration = configuration;
@@ -142,7 +171,7 @@ public final class ChatClientBuilder {
     }
 
     /**
-     * Create synchronous client applying CommunicationTokenCredential, UserAgentPolicy,
+     * Create synchronous chat client applying CommunicationTokenCredential, UserAgentPolicy,
      * RetryPolicy, and CookiePolicy.
      * Additional HttpPolicies specified by additionalPolicies will be applied after them
      *
@@ -154,13 +183,18 @@ public final class ChatClientBuilder {
     }
 
     /**
-     * Create asynchronous client applying CommunicationTokenCredential, UserAgentPolicy,
+     * Create asynchronous chat client applying CommunicationTokenCredential, UserAgentPolicy,
      * RetryPolicy, and CookiePolicy.
      * Additional HttpPolicies specified by additionalPolicies will be applied after them
      *
      * @return ChatAsyncClient instance
      */
     public ChatAsyncClient buildAsyncClient() {
+        AzureCommunicationChatServiceImpl internalClient = createInternalClient();
+        return new ChatAsyncClient(internalClient);
+    }
+
+    private AzureCommunicationChatServiceImpl createInternalClient() {
         Objects.requireNonNull(endpoint);
 
         HttpPipeline pipeline;
@@ -168,8 +202,7 @@ public final class ChatClientBuilder {
             pipeline = httpPipeline;
         } else {
             Objects.requireNonNull(communicationTokenCredential);
-            Objects.requireNonNull(httpClient);
-            CommunicationBearerTokenCredential tokenCredential = 
+            CommunicationBearerTokenCredential tokenCredential =
                 new CommunicationBearerTokenCredential(communicationTokenCredential);
 
             pipeline = createHttpPipeline(httpClient,
@@ -177,10 +210,11 @@ public final class ChatClientBuilder {
                 customPolicies);
         }
 
-        AzureCommunicationChatServiceImplBuilder clientBuilder = new AzureCommunicationChatServiceImplBuilder();
-        clientBuilder.endpoint(endpoint)
+        AzureCommunicationChatServiceImplBuilder clientBuilder = new AzureCommunicationChatServiceImplBuilder()
+            .endpoint(endpoint)
             .pipeline(pipeline);
-        return new ChatAsyncClient(clientBuilder.buildClient());
+
+        return clientBuilder.buildClient();
     }
 
     private HttpPipeline createHttpPipeline(HttpClient httpClient,
@@ -188,8 +222,13 @@ public final class ChatClientBuilder {
                                             List<HttpPipelinePolicy> additionalPolicies) {
 
         List<HttpPipelinePolicy> policies = new ArrayList<HttpPipelinePolicy>();
+        policies.add(getUserAgentPolicy());
+        policies.add(new RequestIdPolicy());
+        policies.add(this.retryPolicy);
+        policies.add(new CookiePolicy());
+        // auth policy is per request, should be after retry
         policies.add(authorizationPolicy);
-        applyRequiredPolicies(policies);
+        policies.add(new HttpLoggingPolicy(logOptions));
 
         if (additionalPolicies != null && additionalPolicies.size() > 0) {
             policies.addAll(additionalPolicies);
@@ -199,13 +238,6 @@ public final class ChatClientBuilder {
             .policies(policies.toArray(new HttpPipelinePolicy[0]))
             .httpClient(httpClient)
             .build();
-    }
-
-    private void applyRequiredPolicies(List<HttpPipelinePolicy> policies) {
-        policies.add(getUserAgentPolicy());
-        policies.add(new RetryPolicy());
-        policies.add(new CookiePolicy());
-        policies.add(new HttpLoggingPolicy(logOptions));
     }
 
     /*
@@ -219,7 +251,11 @@ public final class ChatClientBuilder {
         String clientName = properties.getOrDefault(SDK_NAME, "UnknownName");
         String clientVersion = properties.getOrDefault(SDK_VERSION, "UnknownVersion");
 
-        return new UserAgentPolicy(
-            logOptions.getApplicationId(), clientName, clientVersion, configuration);
+        String applicationId = logOptions.getApplicationId();
+        if (this.clientOptions != null) {
+            applicationId = this.clientOptions.getApplicationId();
+        }
+
+        return new UserAgentPolicy(applicationId, clientName, clientVersion, configuration);
     }
 }

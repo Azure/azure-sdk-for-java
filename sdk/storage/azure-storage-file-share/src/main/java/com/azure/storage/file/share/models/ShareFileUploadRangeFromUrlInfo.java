@@ -3,11 +3,14 @@
 
 package com.azure.storage.file.share.models;
 
+import com.azure.core.annotation.Immutable;
+
 import java.time.OffsetDateTime;
 
 /**
  * Response from uploading a range from a URL source.
  */
+@Immutable
 public final class ShareFileUploadRangeFromUrlInfo {
     private final String eTag;
     private final OffsetDateTime lastModified;

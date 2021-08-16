@@ -34,7 +34,7 @@ public interface SupportsBatchCreation<ResourceT extends Indexable> {
      * @param creatables the list of creatables in the batch
      * @return the batch operation result from which created resources in this batch can be accessed.
      */
-    CreatedResources<ResourceT> create(List<Creatable<ResourceT>> creatables);
+    CreatedResources<ResourceT> create(List<? extends Creatable<ResourceT>> creatables);
 
     /**
      * Puts the requests to create a batch of resources into the queue and allow the HTTP client to execute it when
@@ -53,5 +53,5 @@ public interface SupportsBatchCreation<ResourceT extends Indexable> {
      * @param creatables the list of creatables in the batch
      * @return a {@link Mono} that emits the found resource asynchronously.
      */
-    Flux<ResourceT> createAsync(List<Creatable<ResourceT>> creatables);
+    Flux<ResourceT> createAsync(List<? extends Creatable<ResourceT>> creatables);
 }

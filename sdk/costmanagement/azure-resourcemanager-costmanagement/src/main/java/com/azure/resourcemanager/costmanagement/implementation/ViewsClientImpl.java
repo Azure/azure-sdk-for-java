@@ -63,7 +63,7 @@ public final class ViewsClientImpl implements ViewsClient {
     private interface ViewsService {
         @Headers({"Content-Type: application/json"})
         @Get("/providers/Microsoft.CostManagement/views")
-        @ExpectedResponses({200})
+        @ExpectedResponses({200, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ViewListResult>> list(
             @HostParam("$host") String endpoint,
@@ -73,7 +73,7 @@ public final class ViewsClientImpl implements ViewsClient {
 
         @Headers({"Content-Type: application/json"})
         @Get("/{scope}/providers/Microsoft.CostManagement/views")
-        @ExpectedResponses({200})
+        @ExpectedResponses({200, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ViewListResult>> listByScope(
             @HostParam("$host") String endpoint,
@@ -155,7 +155,7 @@ public final class ViewsClientImpl implements ViewsClient {
 
         @Headers({"Content-Type: application/json"})
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({200, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ViewListResult>> listNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink,
@@ -165,7 +165,7 @@ public final class ViewsClientImpl implements ViewsClient {
 
         @Headers({"Content-Type: application/json"})
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({200, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ViewListResult>> listByScopeNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink,
@@ -202,7 +202,7 @@ public final class ViewsClientImpl implements ViewsClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -338,7 +338,7 @@ public final class ViewsClientImpl implements ViewsClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -533,7 +533,7 @@ public final class ViewsClientImpl implements ViewsClient {
             .withContext(
                 context ->
                     service.get(this.client.getEndpoint(), this.client.getApiVersion(), viewName, accept, context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -652,7 +652,7 @@ public final class ViewsClientImpl implements ViewsClient {
                             parameters,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -773,7 +773,7 @@ public final class ViewsClientImpl implements ViewsClient {
             .withContext(
                 context ->
                     service.delete(this.client.getEndpoint(), this.client.getApiVersion(), viewName, accept, context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -889,7 +889,7 @@ public final class ViewsClientImpl implements ViewsClient {
                     service
                         .getByScope(
                             this.client.getEndpoint(), scope, this.client.getApiVersion(), viewName, accept, context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1092,7 +1092,7 @@ public final class ViewsClientImpl implements ViewsClient {
                             parameters,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1297,7 +1297,7 @@ public final class ViewsClientImpl implements ViewsClient {
                     service
                         .deleteByScope(
                             this.client.getEndpoint(), scope, this.client.getApiVersion(), viewName, accept, context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1464,7 +1464,7 @@ public final class ViewsClientImpl implements ViewsClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1535,7 +1535,7 @@ public final class ViewsClientImpl implements ViewsClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**

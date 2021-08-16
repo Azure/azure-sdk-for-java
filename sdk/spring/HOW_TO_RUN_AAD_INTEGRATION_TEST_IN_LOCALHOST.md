@@ -109,9 +109,9 @@ azure-spring-boot-test-aad:
 ```
 mvn -f .\sdk\spring\azure-spring-boot-test-aad\pom.xml --fail-at-end "-Dmaven.javadoc.skip=true" "-Drevapi.skip=true" "-DskipSpringITs=false" verify
 ```
-azure-spring-boot-test-aad-obo:
+azure-spring-boot-test-aad-webapp-and-resource-server-with-obo:
 ```
-mvn -f .\sdk\spring\azure-spring-boot-test-aad-obo\pom.xml --fail-at-end "-Dmaven.javadoc.skip=true" "-Drevapi.skip=true" "-DskipSpringITs=false" verify
+mvn -f .\sdk\spring\azure-spring-boot-test-aad-webapp-and-resource-server-with-obo\pom.xml --fail-at-end "-Dmaven.javadoc.skip=true" "-Drevapi.skip=true" "-DskipSpringITs=false" verify
 ```
 azure-spring-boot-test-aad-resource-server:
 ```

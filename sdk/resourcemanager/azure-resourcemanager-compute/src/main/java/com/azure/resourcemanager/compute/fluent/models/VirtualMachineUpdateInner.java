@@ -10,11 +10,13 @@ import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.models.AdditionalCapabilities;
 import com.azure.resourcemanager.compute.models.BillingProfile;
+import com.azure.resourcemanager.compute.models.CapacityReservationProfile;
 import com.azure.resourcemanager.compute.models.DiagnosticsProfile;
 import com.azure.resourcemanager.compute.models.HardwareProfile;
 import com.azure.resourcemanager.compute.models.NetworkProfile;
 import com.azure.resourcemanager.compute.models.OSProfile;
 import com.azure.resourcemanager.compute.models.Plan;
+import com.azure.resourcemanager.compute.models.ScheduledEventsProfile;
 import com.azure.resourcemanager.compute.models.SecurityProfile;
 import com.azure.resourcemanager.compute.models.StorageProfile;
 import com.azure.resourcemanager.compute.models.UpdateResource;
@@ -105,12 +107,12 @@ public class VirtualMachineUpdateInner extends UpdateResource {
      * Specifies information about the availability set that the virtual
      * machine should be assigned to. Virtual machines specified in the same
      * availability set are allocated to different nodes to maximize
-     * availability. For more information about availability sets, see [Manage
-     * the availability of virtual
-     * machines](https://docs.microsoft.com/azure/virtual-machines/virtual-machines-windows-manage-availability?toc=%2fazure%2fvirtual-machines%2fwindows%2ftoc.json).
-     * <br><br> For more information on Azure planned maintenance, see [Planned
-     * maintenance for virtual machines in
-     * Azure](https://docs.microsoft.com/azure/virtual-machines/virtual-machines-windows-planned-maintenance?toc=%2fazure%2fvirtual-machines%2fwindows%2ftoc.json)
+     * availability. For more information about availability sets, see
+     * [Availability sets
+     * overview](https://docs.microsoft.com/azure/virtual-machines/availability-set-overview).
+     * <br><br> For more information on Azure planned maintenance, see
+     * [Maintenance and updates for Virtual Machines in
+     * Azure](https://docs.microsoft.com/azure/virtual-machines/maintenance-and-updates)
      * <br><br> Currently, a VM can only be added to availability set at
      * creation time. The availability set to which the VM is being added
      * should be under the same resource group as the availability set
@@ -225,6 +227,41 @@ public class VirtualMachineUpdateInner extends UpdateResource {
      */
     @JsonProperty(value = "properties.extensionsTimeBudget")
     private String extensionsTimeBudget;
+
+    /*
+     * Specifies the scale set logical fault domain into which the Virtual
+     * Machine will be created. By default, the Virtual Machine will by
+     * automatically assigned to a fault domain that best maintains balance
+     * across available fault domains.<br><li>This is applicable only if the
+     * 'virtualMachineScaleSet' property of this Virtual Machine is set.<li>The
+     * Virtual Machine Scale Set that is referenced, must have
+     * 'platformFaultDomainCount' &gt; 1.<li>This property cannot be updated
+     * once the Virtual Machine is created.<li>Fault domain assignment can be
+     * viewed in the Virtual Machine Instance View.<br><br>Minimum api‐version:
+     * 2020‐12‐01
+     */
+    @JsonProperty(value = "properties.platformFaultDomain")
+    private Integer platformFaultDomain;
+
+    /*
+     * Specifies Scheduled Event related configurations.
+     */
+    @JsonProperty(value = "properties.scheduledEventsProfile")
+    private ScheduledEventsProfile scheduledEventsProfile;
+
+    /*
+     * UserData for the VM, which must be base-64 encoded. Customer should not
+     * pass any secrets in here. <br><br>Minimum api-version: 2021-03-01
+     */
+    @JsonProperty(value = "properties.userData")
+    private String userData;
+
+    /*
+     * Specifies information about the capacity reservation that is used to
+     * allocate virtual machine. <br><br>Minimum api-version: 2021-04-01.
+     */
+    @JsonProperty(value = "properties.capacityReservation")
+    private CapacityReservationProfile capacityReservation;
 
     /**
      * Get the plan property: Specifies information about the marketplace image used to create the virtual machine. This
@@ -443,15 +480,14 @@ public class VirtualMachineUpdateInner extends UpdateResource {
     /**
      * Get the availabilitySet property: Specifies information about the availability set that the virtual machine
      * should be assigned to. Virtual machines specified in the same availability set are allocated to different nodes
-     * to maximize availability. For more information about availability sets, see [Manage the availability of virtual
-     * machines](https://docs.microsoft.com/azure/virtual-machines/virtual-machines-windows-manage-availability?toc=%2fazure%2fvirtual-machines%2fwindows%2ftoc.json).
-     * &lt;br&gt;&lt;br&gt; For more information on Azure planned maintenance, see [Planned maintenance for virtual
-     * machines in
-     * Azure](https://docs.microsoft.com/azure/virtual-machines/virtual-machines-windows-planned-maintenance?toc=%2fazure%2fvirtual-machines%2fwindows%2ftoc.json)
-     * &lt;br&gt;&lt;br&gt; Currently, a VM can only be added to availability set at creation time. The availability set
-     * to which the VM is being added should be under the same resource group as the availability set resource. An
-     * existing VM cannot be added to an availability set. &lt;br&gt;&lt;br&gt;This property cannot exist along with a
-     * non-null properties.virtualMachineScaleSet reference.
+     * to maximize availability. For more information about availability sets, see [Availability sets
+     * overview](https://docs.microsoft.com/azure/virtual-machines/availability-set-overview). &lt;br&gt;&lt;br&gt; For
+     * more information on Azure planned maintenance, see [Maintenance and updates for Virtual Machines in
+     * Azure](https://docs.microsoft.com/azure/virtual-machines/maintenance-and-updates) &lt;br&gt;&lt;br&gt; Currently,
+     * a VM can only be added to availability set at creation time. The availability set to which the VM is being added
+     * should be under the same resource group as the availability set resource. An existing VM cannot be added to an
+     * availability set. &lt;br&gt;&lt;br&gt;This property cannot exist along with a non-null
+     * properties.virtualMachineScaleSet reference.
      *
      * @return the availabilitySet value.
      */
@@ -462,15 +498,14 @@ public class VirtualMachineUpdateInner extends UpdateResource {
     /**
      * Set the availabilitySet property: Specifies information about the availability set that the virtual machine
      * should be assigned to. Virtual machines specified in the same availability set are allocated to different nodes
-     * to maximize availability. For more information about availability sets, see [Manage the availability of virtual
-     * machines](https://docs.microsoft.com/azure/virtual-machines/virtual-machines-windows-manage-availability?toc=%2fazure%2fvirtual-machines%2fwindows%2ftoc.json).
-     * &lt;br&gt;&lt;br&gt; For more information on Azure planned maintenance, see [Planned maintenance for virtual
-     * machines in
-     * Azure](https://docs.microsoft.com/azure/virtual-machines/virtual-machines-windows-planned-maintenance?toc=%2fazure%2fvirtual-machines%2fwindows%2ftoc.json)
-     * &lt;br&gt;&lt;br&gt; Currently, a VM can only be added to availability set at creation time. The availability set
-     * to which the VM is being added should be under the same resource group as the availability set resource. An
-     * existing VM cannot be added to an availability set. &lt;br&gt;&lt;br&gt;This property cannot exist along with a
-     * non-null properties.virtualMachineScaleSet reference.
+     * to maximize availability. For more information about availability sets, see [Availability sets
+     * overview](https://docs.microsoft.com/azure/virtual-machines/availability-set-overview). &lt;br&gt;&lt;br&gt; For
+     * more information on Azure planned maintenance, see [Maintenance and updates for Virtual Machines in
+     * Azure](https://docs.microsoft.com/azure/virtual-machines/maintenance-and-updates) &lt;br&gt;&lt;br&gt; Currently,
+     * a VM can only be added to availability set at creation time. The availability set to which the VM is being added
+     * should be under the same resource group as the availability set resource. An existing VM cannot be added to an
+     * availability set. &lt;br&gt;&lt;br&gt;This property cannot exist along with a non-null
+     * properties.virtualMachineScaleSet reference.
      *
      * @param availabilitySet the availabilitySet value to set.
      * @return the VirtualMachineUpdateInner object itself.
@@ -736,6 +771,102 @@ public class VirtualMachineUpdateInner extends UpdateResource {
         return this;
     }
 
+    /**
+     * Get the platformFaultDomain property: Specifies the scale set logical fault domain into which the Virtual Machine
+     * will be created. By default, the Virtual Machine will by automatically assigned to a fault domain that best
+     * maintains balance across available fault domains.&lt;br&gt;&lt;li&gt;This is applicable only if the
+     * 'virtualMachineScaleSet' property of this Virtual Machine is set.&lt;li&gt;The Virtual Machine Scale Set that is
+     * referenced, must have 'platformFaultDomainCount' &amp;gt; 1.&lt;li&gt;This property cannot be updated once the
+     * Virtual Machine is created.&lt;li&gt;Fault domain assignment can be viewed in the Virtual Machine Instance
+     * View.&lt;br&gt;&lt;br&gt;Minimum api‐version: 2020‐12‐01.
+     *
+     * @return the platformFaultDomain value.
+     */
+    public Integer platformFaultDomain() {
+        return this.platformFaultDomain;
+    }
+
+    /**
+     * Set the platformFaultDomain property: Specifies the scale set logical fault domain into which the Virtual Machine
+     * will be created. By default, the Virtual Machine will by automatically assigned to a fault domain that best
+     * maintains balance across available fault domains.&lt;br&gt;&lt;li&gt;This is applicable only if the
+     * 'virtualMachineScaleSet' property of this Virtual Machine is set.&lt;li&gt;The Virtual Machine Scale Set that is
+     * referenced, must have 'platformFaultDomainCount' &amp;gt; 1.&lt;li&gt;This property cannot be updated once the
+     * Virtual Machine is created.&lt;li&gt;Fault domain assignment can be viewed in the Virtual Machine Instance
+     * View.&lt;br&gt;&lt;br&gt;Minimum api‐version: 2020‐12‐01.
+     *
+     * @param platformFaultDomain the platformFaultDomain value to set.
+     * @return the VirtualMachineUpdateInner object itself.
+     */
+    public VirtualMachineUpdateInner withPlatformFaultDomain(Integer platformFaultDomain) {
+        this.platformFaultDomain = platformFaultDomain;
+        return this;
+    }
+
+    /**
+     * Get the scheduledEventsProfile property: Specifies Scheduled Event related configurations.
+     *
+     * @return the scheduledEventsProfile value.
+     */
+    public ScheduledEventsProfile scheduledEventsProfile() {
+        return this.scheduledEventsProfile;
+    }
+
+    /**
+     * Set the scheduledEventsProfile property: Specifies Scheduled Event related configurations.
+     *
+     * @param scheduledEventsProfile the scheduledEventsProfile value to set.
+     * @return the VirtualMachineUpdateInner object itself.
+     */
+    public VirtualMachineUpdateInner withScheduledEventsProfile(ScheduledEventsProfile scheduledEventsProfile) {
+        this.scheduledEventsProfile = scheduledEventsProfile;
+        return this;
+    }
+
+    /**
+     * Get the userData property: UserData for the VM, which must be base-64 encoded. Customer should not pass any
+     * secrets in here. &lt;br&gt;&lt;br&gt;Minimum api-version: 2021-03-01.
+     *
+     * @return the userData value.
+     */
+    public String userData() {
+        return this.userData;
+    }
+
+    /**
+     * Set the userData property: UserData for the VM, which must be base-64 encoded. Customer should not pass any
+     * secrets in here. &lt;br&gt;&lt;br&gt;Minimum api-version: 2021-03-01.
+     *
+     * @param userData the userData value to set.
+     * @return the VirtualMachineUpdateInner object itself.
+     */
+    public VirtualMachineUpdateInner withUserData(String userData) {
+        this.userData = userData;
+        return this;
+    }
+
+    /**
+     * Get the capacityReservation property: Specifies information about the capacity reservation that is used to
+     * allocate virtual machine. &lt;br&gt;&lt;br&gt;Minimum api-version: 2021-04-01.
+     *
+     * @return the capacityReservation value.
+     */
+    public CapacityReservationProfile capacityReservation() {
+        return this.capacityReservation;
+    }
+
+    /**
+     * Set the capacityReservation property: Specifies information about the capacity reservation that is used to
+     * allocate virtual machine. &lt;br&gt;&lt;br&gt;Minimum api-version: 2021-04-01.
+     *
+     * @param capacityReservation the capacityReservation value to set.
+     * @return the VirtualMachineUpdateInner object itself.
+     */
+    public VirtualMachineUpdateInner withCapacityReservation(CapacityReservationProfile capacityReservation) {
+        this.capacityReservation = capacityReservation;
+        return this;
+    }
+
     /** {@inheritDoc} */
     @Override
     public VirtualMachineUpdateInner withTags(Map<String, String> tags) {
@@ -783,6 +914,12 @@ public class VirtualMachineUpdateInner extends UpdateResource {
         }
         if (instanceView() != null) {
             instanceView().validate();
+        }
+        if (scheduledEventsProfile() != null) {
+            scheduledEventsProfile().validate();
+        }
+        if (capacityReservation() != null) {
+            capacityReservation().validate();
         }
     }
 }

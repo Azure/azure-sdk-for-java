@@ -6,6 +6,35 @@ package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Immutable;
 
-/** The IotHubDeviceConnectedEventData model. */
+/** Event data for Microsoft.Devices.DeviceConnected event. */
 @Immutable
-public final class IotHubDeviceConnectedEventData extends DeviceConnectionStateEventProperties {}
+public final class IotHubDeviceConnectedEventData extends DeviceConnectionStateEventProperties {
+    /** {@inheritDoc} */
+    @Override
+    public IotHubDeviceConnectedEventData setDeviceId(String deviceId) {
+        super.setDeviceId(deviceId);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public IotHubDeviceConnectedEventData setModuleId(String moduleId) {
+        super.setModuleId(moduleId);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public IotHubDeviceConnectedEventData setHubName(String hubName) {
+        super.setHubName(hubName);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public IotHubDeviceConnectedEventData setDeviceConnectionStateEventInfo(
+            DeviceConnectionStateEventInfo deviceConnectionStateEventInfo) {
+        super.setDeviceConnectionStateEventInfo(deviceConnectionStateEventInfo);
+        return this;
+    }
+}

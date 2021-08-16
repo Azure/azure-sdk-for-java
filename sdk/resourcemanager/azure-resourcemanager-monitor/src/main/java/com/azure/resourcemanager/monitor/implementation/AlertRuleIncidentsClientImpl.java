@@ -6,6 +6,7 @@ package com.azure.resourcemanager.monitor.implementation;
 
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
+import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
@@ -58,7 +59,7 @@ public final class AlertRuleIncidentsClientImpl implements AlertRuleIncidentsCli
     @Host("{$host}")
     @ServiceInterface(name = "MonitorClientAlertRu")
     private interface AlertRuleIncidentsService {
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/microsoft.insights/alertrules"
                 + "/{ruleName}/incidents/{incidentName}")
@@ -71,9 +72,10 @@ public final class AlertRuleIncidentsClientImpl implements AlertRuleIncidentsCli
             @PathParam("incidentName") String incidentName,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/microsoft.insights/alertrules"
                 + "/{ruleName}/incidents")
@@ -85,6 +87,7 @@ public final class AlertRuleIncidentsClientImpl implements AlertRuleIncidentsCli
             @PathParam("ruleName") String ruleName,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept,
             Context context);
     }
 
@@ -125,6 +128,7 @@ public final class AlertRuleIncidentsClientImpl implements AlertRuleIncidentsCli
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2016-03-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -136,8 +140,9 @@ public final class AlertRuleIncidentsClientImpl implements AlertRuleIncidentsCli
                             incidentName,
                             apiVersion,
                             this.client.getSubscriptionId(),
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -178,6 +183,7 @@ public final class AlertRuleIncidentsClientImpl implements AlertRuleIncidentsCli
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2016-03-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .get(
@@ -187,6 +193,7 @@ public final class AlertRuleIncidentsClientImpl implements AlertRuleIncidentsCli
                 incidentName,
                 apiVersion,
                 this.client.getSubscriptionId(),
+                accept,
                 context);
     }
 
@@ -281,6 +288,7 @@ public final class AlertRuleIncidentsClientImpl implements AlertRuleIncidentsCli
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2016-03-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -291,12 +299,13 @@ public final class AlertRuleIncidentsClientImpl implements AlertRuleIncidentsCli
                             ruleName,
                             apiVersion,
                             this.client.getSubscriptionId(),
+                            accept,
                             context))
             .<PagedResponse<IncidentInner>>map(
                 res ->
                     new PagedResponseBase<>(
                         res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -333,6 +342,7 @@ public final class AlertRuleIncidentsClientImpl implements AlertRuleIncidentsCli
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2016-03-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listByAlertRule(
@@ -341,6 +351,7 @@ public final class AlertRuleIncidentsClientImpl implements AlertRuleIncidentsCli
                 ruleName,
                 apiVersion,
                 this.client.getSubscriptionId(),
+                accept,
                 context)
             .map(
                 res ->

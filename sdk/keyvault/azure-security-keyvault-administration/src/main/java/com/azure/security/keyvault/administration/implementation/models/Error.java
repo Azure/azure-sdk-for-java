@@ -7,7 +7,7 @@ package com.azure.security.keyvault.administration.implementation.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The Error model. */
+/** The key vault server error. */
 @Immutable
 public final class Error {
     /*

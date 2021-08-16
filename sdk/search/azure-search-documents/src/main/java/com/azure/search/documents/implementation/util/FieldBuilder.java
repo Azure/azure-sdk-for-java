@@ -3,6 +3,7 @@
 
 package com.azure.search.documents.implementation.util;
 
+import com.azure.core.models.GeoPoint;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.MemberNameConverter;
 import com.azure.core.util.serializer.MemberNameConverterProviders;
@@ -63,9 +64,10 @@ public final class FieldBuilder {
         SUPPORTED_NONE_PARAMETERIZED_TYPE.put(CharSequence.class, SearchFieldDataType.STRING);
         SUPPORTED_NONE_PARAMETERIZED_TYPE.put(Character.class, SearchFieldDataType.STRING);
         SUPPORTED_NONE_PARAMETERIZED_TYPE.put(char.class, SearchFieldDataType.STRING);
+        //noinspection UseOfObsoleteDateTimeApi
         SUPPORTED_NONE_PARAMETERIZED_TYPE.put(Date.class, SearchFieldDataType.DATE_TIME_OFFSET);
         SUPPORTED_NONE_PARAMETERIZED_TYPE.put(OffsetDateTime.class, SearchFieldDataType.DATE_TIME_OFFSET);
-        //SUPPORTED_NONE_PARAMETERIZED_TYPE.put(PointGeometry.class, SearchFieldDataType.GEOGRAPHY_POINT);
+        SUPPORTED_NONE_PARAMETERIZED_TYPE.put(GeoPoint.class, SearchFieldDataType.GEOGRAPHY_POINT);
 
         UNSUPPORTED_TYPES.add(byte.class);
         UNSUPPORTED_TYPES.add(Byte.class);
@@ -106,13 +108,15 @@ public final class FieldBuilder {
     private static List<SearchField> build(Class<?> currentClass, Stack<Class<?>> classChain,
         MemberNameConverter serializer) {
         if (classChain.contains(currentClass)) {
-            LOGGER.warning(String.format("There is circular dependencies %s, %s", classChain, currentClass));
+            LOGGER.warning("There is circular dependencies {}, {}", classChain, currentClass);
             return null;
         }
+
         if (classChain.size() > MAX_DEPTH) {
             throw LOGGER.logExceptionAsError(new RuntimeException(
                 "The dependency graph is too deep. Please review your schema."));
         }
+
         classChain.push(currentClass);
         List<SearchField> searchFields = getDeclaredFieldsAndMethods(currentClass)
             .filter(FieldBuilder::fieldOrMethodIgnored)
@@ -238,13 +242,9 @@ public final class FieldBuilder {
     }
 
     private static SearchField convertToBasicSearchField(String fieldName, Type type) {
-
         SearchFieldDataType dataType = covertToSearchFieldDataType(type, false);
-        if (dataType == null) {
-            return null;
-        }
 
-        return new SearchField(fieldName, dataType);
+        return (dataType == null) ? null : new SearchField(fieldName, dataType);
     }
 
     private static SearchField enrichWithAnnotation(SearchField searchField, Member member) {
@@ -252,9 +252,8 @@ public final class FieldBuilder {
         SearchableField searchableField = getDeclaredAnnotation(member, SearchableField.class);
 
         if (simpleField != null && searchableField != null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("@SimpleFieldProperty and @SearchableFieldProperty cannot be present simultaneously "
-                    + "for %s", member.getName())));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String.format(
+                "@SimpleField and @SearchableField cannot be present simultaneously for %s", member.getName())));
         }
         if (simpleField != null) {
             searchField.setSearchable(false)
@@ -266,9 +265,9 @@ public final class FieldBuilder {
         } else if (searchableField != null) {
             if (!searchField.getType().equals(SearchFieldDataType.STRING)
                 && !searchField.getType().equals(SearchFieldDataType.collection(SearchFieldDataType.STRING))) {
-                throw LOGGER.logExceptionAsError(new RuntimeException(String.format("SearchFieldProperty can only"
-                        + " be used on string properties. Property %s returns a %s value.",
-                    member.getName(), searchField.getType())));
+                throw LOGGER.logExceptionAsError(new RuntimeException(String.format("SearchField can only be used on "
+                        + "string properties. Property %s returns a %s value.", member.getName(),
+                    searchField.getType())));
             }
 
             searchField.setSearchable(true)

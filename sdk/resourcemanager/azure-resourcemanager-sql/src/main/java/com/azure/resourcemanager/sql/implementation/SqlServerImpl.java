@@ -47,6 +47,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
 
 /** Implementation for SqlServer and its parent interfaces. */
 public class SqlServerImpl extends GroupableResourceImpl<SqlServer, ServerInner, SqlServerImpl, SqlServerManager>
@@ -266,12 +267,11 @@ public class SqlServerImpl extends GroupableResourceImpl<SqlServer, ServerInner,
     @Override
     public PagedFlux<SqlRestorableDroppedDatabase> listRestorableDroppedDatabasesAsync() {
         final SqlServerImpl self = this;
-        return this
+        return PagedConverter.mapPage(this
             .manager()
             .serviceClient()
             .getRestorableDroppedDatabases()
-            .listByServerAsync(this.resourceGroupName(), this.name())
-            .mapPage(
+            .listByServerAsync(this.resourceGroupName(), this.name()),
                 restorableDroppedDatabaseInner ->
                     new SqlRestorableDroppedDatabaseImpl(
                         self.resourceGroupName(), self.name(), restorableDroppedDatabaseInner, self.manager()));

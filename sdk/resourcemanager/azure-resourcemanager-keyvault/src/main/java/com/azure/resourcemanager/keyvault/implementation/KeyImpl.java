@@ -36,6 +36,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import reactor.core.publisher.Mono;
+import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
 
 /** Implementation for Vault and its parent interfaces. */
 class KeyImpl extends CreatableUpdatableImpl<Key, KeyProperties, KeyImpl>
@@ -133,10 +134,10 @@ class KeyImpl extends CreatableUpdatableImpl<Key, KeyProperties, KeyImpl>
 
     @Override
     public PagedFlux<Key> listVersionsAsync() {
-        return vault
+        return PagedConverter.mapPage(vault
             .keyClient()
-            .listPropertiesOfKeyVersions(this.name())
-            .mapPage(this::wrapModel);
+            .listPropertiesOfKeyVersions(this.name()),
+            this::wrapModel);
     }
 
     @Override

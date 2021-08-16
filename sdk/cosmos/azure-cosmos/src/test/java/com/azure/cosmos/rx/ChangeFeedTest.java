@@ -3,10 +3,22 @@
 package com.azure.cosmos.rx;
 
 import com.azure.cosmos.BridgeInternal;
+import com.azure.cosmos.implementation.AsyncDocumentClient;
+import com.azure.cosmos.implementation.Database;
+import com.azure.cosmos.implementation.Document;
+import com.azure.cosmos.implementation.DocumentCollection;
+import com.azure.cosmos.implementation.FeedResponseListValidator;
+import com.azure.cosmos.implementation.RequestOptions;
+import com.azure.cosmos.implementation.Resource;
+import com.azure.cosmos.implementation.ResourceResponse;
+import com.azure.cosmos.implementation.TestSuiteBase;
+import com.azure.cosmos.implementation.TestUtils;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
 import com.azure.cosmos.implementation.feedranges.FeedRangePartitionKeyImpl;
 import com.azure.cosmos.implementation.feedranges.FeedRangePartitionKeyRangeImpl;
+import com.azure.cosmos.implementation.guava25.collect.ArrayListMultimap;
+import com.azure.cosmos.implementation.guava25.collect.Multimap;
 import com.azure.cosmos.implementation.routing.Range;
 import com.azure.cosmos.models.ChangeFeedPolicy;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
@@ -15,18 +27,6 @@ import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.PartitionKeyDefinition;
-import com.azure.cosmos.implementation.Resource;
-import com.azure.cosmos.implementation.AsyncDocumentClient;
-import com.azure.cosmos.implementation.Database;
-import com.azure.cosmos.implementation.Document;
-import com.azure.cosmos.implementation.DocumentCollection;
-import com.azure.cosmos.implementation.FeedResponseListValidator;
-import com.azure.cosmos.implementation.RequestOptions;
-import com.azure.cosmos.implementation.ResourceResponse;
-import com.azure.cosmos.implementation.TestSuiteBase;
-import com.azure.cosmos.implementation.TestUtils;
-import com.azure.cosmos.implementation.guava25.collect.ArrayListMultimap;
-import com.azure.cosmos.implementation.guava25.collect.Multimap;
 import org.testng.SkipException;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.AfterMethod;
@@ -34,10 +34,11 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
-import org.testng.xml.dom.Tag;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.lang.annotation.Retention;
+import java.lang.annotation.Target;
 import java.lang.reflect.Method;
 import java.time.Duration;
 import java.time.Instant;
@@ -48,6 +49,7 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
+import static java.lang.annotation.ElementType.METHOD;
 import static org.assertj.core.api.Assertions.assertThat;
 
 //TODO: change to use external TestSuiteBase
@@ -266,7 +268,7 @@ public class ChangeFeedTest extends TestSuiteBase {
             getContinuationToken()).as("Response continuation should not be null").isNotNull();
     }
 
-    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
+    @Test(groups = { "emulator" }, enabled = false, timeOut = TIMEOUT)
     @Tag(name = "EnableFullFidelity")
     public void changeFeed_fullFidelity_fromNow() throws Exception {
         changeFeed_withUpdatesAndDelete(true);
@@ -387,35 +389,7 @@ public class ChangeFeedTest extends TestSuiteBase {
             .isNotNull();
     }
 
-    private Range<String> convertToMaxExclusive(Range<String> maxInclusiveRange) {
-        assertThat(maxInclusiveRange)
-            .isNotNull()
-            .matches(r -> r.isMaxInclusive(), "Ensure isMaxInclusive is set");
-
-        String max = maxInclusiveRange.getMax();
-        int i = max.length() - 1;
-
-        while (i >= 0) {
-            if (max.charAt(i) == 'F') {
-                i--;
-                continue;
-            }
-
-            char newChar = (char)(((int)max.charAt(i))+1);
-
-            if (i < max.length() - 1) {
-                max = max.substring(0, i) + newChar + max.substring(i + 1);
-            } else {
-                max = max.substring(0, i) + newChar;
-            }
-
-            break;
-        }
-
-        return new Range<>(maxInclusiveRange.getMin(), max, true, false);
-    }
-
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    @Test(groups = { "simple" }, timeOut = TIMEOUT, enabled = false)
     public void changeFeed_fromBeginning_withFeedRangeFiltering() throws Exception {
 
         ArrayList<Range<String>> ranges = new ArrayList<>();
@@ -428,7 +402,7 @@ public class ChangeFeedTest extends TestSuiteBase {
 
             Range<String> effectiveRange =
                 feedRangeForLogicalPartition
-                    .getEffectiveRange(
+                    .getNormalizedEffectiveRange(
                         client.getPartitionKeyRangeCache(),
                         null,
                         Mono.just(new Utils.ValueHolder<>(this.createdCollection)))
@@ -436,7 +410,7 @@ public class ChangeFeedTest extends TestSuiteBase {
 
             assertThat(effectiveRange).isNotNull();
 
-            FeedRange feedRange = new FeedRangeEpkImpl(convertToMaxExclusive(effectiveRange));
+            FeedRange feedRange = new FeedRangeEpkImpl(effectiveRange);
 
             CosmosChangeFeedRequestOptions changeFeedOption =
                 CosmosChangeFeedRequestOptions.createForProcessingFromBeginning(feedRange);
@@ -573,5 +547,11 @@ public class ChangeFeedTest extends TestSuiteBase {
         while (befTime.plusSeconds(1).isAfter(Instant.now())) {
             Thread.sleep(100);
         }
+    }
+
+    @Retention(java.lang.annotation.RetentionPolicy.RUNTIME)
+    @Target({METHOD})
+    @interface Tag {
+        String name();
     }
 }

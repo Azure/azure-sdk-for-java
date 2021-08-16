@@ -9,6 +9,7 @@ import com.azure.resourcemanager.authorization.models.BuiltInRole;
 import com.azure.resourcemanager.containerinstance.ContainerInstanceManager;
 import com.azure.resourcemanager.containerinstance.fluent.models.ContainerGroupInner;
 import com.azure.resourcemanager.containerinstance.models.Container;
+import com.azure.resourcemanager.containerinstance.models.ContainerAttachResult;
 import com.azure.resourcemanager.containerinstance.models.ContainerExecRequest;
 import com.azure.resourcemanager.containerinstance.models.ContainerExecRequestTerminalSize;
 import com.azure.resourcemanager.containerinstance.models.ContainerExecResponse;
@@ -468,8 +469,16 @@ public class ContainerGroupImpl
     @Override
     public ContainerGroupImpl withNewNetworkProfileOnExistingVirtualNetwork(
         String virtualNetworkId, String subnetName) {
-        creatableNetworkProfileName = manager().resourceManager().internalContext()
+        String randomNetworkProfileName = manager().resourceManager().internalContext()
             .randomResourceName("aci-profile-", 20);
+        return this.withNewNetworkProfileOnExistingVirtualNetwork(randomNetworkProfileName,
+            virtualNetworkId, subnetName);
+    }
+
+    @Override
+    public ContainerGroupImpl withNewNetworkProfileOnExistingVirtualNetwork(
+        String networkProfileName, String virtualNetworkId, String subnetName) {
+        creatableNetworkProfileName = networkProfileName;
         String subnetId = String.format("%s/subnets/%s", virtualNetworkId, subnetName);
         SubnetInner subnetInner = new SubnetInner();
         subnetInner.withId(subnetId);
@@ -797,6 +806,27 @@ public class ContainerGroupImpl
                     .withCommand(command)
                     .withTerminalSize(new ContainerExecRequestTerminalSize().withRows(row).withCols(column)))
             .map(ContainerExecResponseImpl::new);
+    }
+
+    @Override
+    public ContainerAttachResult attachOutputStream(String containerName) {
+        return this.attachOutputStreamAsync(containerName).block();
+    }
+
+    @Override
+    public Mono<ContainerAttachResult> attachOutputStreamAsync(String containerName) {
+        return this.manager().containerGroups().attachOutputStreamAsync(
+            this.resourceGroupName(), this.name(), containerName);
+    }
+
+    @Override
+    public ContainerAttachResult attachOutputStream(Container container) {
+        return this.attachOutputStreamAsync(container).block();
+    }
+
+    @Override
+    public Mono<ContainerAttachResult> attachOutputStreamAsync(Container container) {
+        return this.attachOutputStreamAsync(container.name());
     }
 
     RoleAssignmentHelper.IdProvider idProvider() {

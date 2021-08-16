@@ -30,8 +30,8 @@ public class ListEnrichedSeriesAsyncSample {
         final OffsetDateTime endTime = OffsetDateTime.parse("2020-09-12T00:00:00Z");
 
         PagedFlux<MetricEnrichedSeriesData> enrichedDataFlux
-            = advisorAsyncClient.listMetricEnrichedSeriesData(Arrays.asList(seriesKey),
-            detectionConfigurationId,
+            = advisorAsyncClient.listMetricEnrichedSeriesData(detectionConfigurationId,
+            Arrays.asList(seriesKey),
             startTime,
             endTime);
 

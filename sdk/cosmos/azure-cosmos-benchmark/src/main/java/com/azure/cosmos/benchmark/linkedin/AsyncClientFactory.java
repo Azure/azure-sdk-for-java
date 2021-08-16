@@ -97,15 +97,15 @@ public class AsyncClientFactory {
             .setConnectTimeout(Duration.ofSeconds(5L)) // Default
             .setConnectionEndpointRediscoveryEnabled(true) // Custom
             .setIdleEndpointTimeout(Duration.ofHours(1L)) // Default
-            .setIdleConnectionTimeout(Duration.ofSeconds(60)) // Custom
+            .setIdleConnectionTimeout(Duration.ofMinutes(5)) // Custom
             .setMaxConnectionsPerEndpoint(130) // Default
             .setMaxRequestsPerConnection(30); // Default
     }
 
     private static GatewayConnectionConfig defaultGatewayConfig() {
         return new GatewayConnectionConfig()
-            .setMaxConnectionPoolSize(3200) // Custom
-            .setIdleConnectionTimeout(Duration.ofSeconds(60)); // Default
+            .setMaxConnectionPoolSize(1000) // Default
+            .setIdleConnectionTimeout(Duration.ofMinutes(5)); // Custom
     }
 
     private static ThrottlingRetryOptions defaultThrottlingRetryOptions() {

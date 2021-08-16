@@ -17,13 +17,12 @@ import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
-import com.azure.resourcemanager.servicebus.implementation.TimeSpan;
 import com.azure.resourcemanager.servicebus.models.AccessRights;
 import com.azure.resourcemanager.servicebus.models.AuthorizationKeys;
 import com.azure.resourcemanager.servicebus.models.CheckNameAvailabilityResult;
+import com.azure.resourcemanager.servicebus.models.KeyType;
 import com.azure.resourcemanager.servicebus.models.NamespaceAuthorizationRule;
 import com.azure.resourcemanager.servicebus.models.NamespaceSku;
-import com.azure.resourcemanager.servicebus.models.Policykey;
 import com.azure.resourcemanager.servicebus.models.Queue;
 import com.azure.resourcemanager.servicebus.models.QueueAuthorizationRule;
 import com.azure.resourcemanager.servicebus.models.ServiceBusNamespace;
@@ -75,7 +74,7 @@ public class ServiceBusOperationsTests extends ResourceManagerTestBase {
     @Override
     protected void cleanUpResources() {
         if (rgName != null && resourceManager != null) {
-            resourceManager.resourceGroups().deleteByName(rgName);
+            resourceManager.resourceGroups().beginDeleteByName(rgName);
         }
     }
 
@@ -171,23 +170,20 @@ public class ServiceBusOperationsTests extends ResourceManagerTestBase {
         Assertions.assertTrue(queue.name().equalsIgnoreCase(queueName));
         // Default lock duration is 1 minute, assert TimeSpan("00:01:00") parsing
         //
-        Assertions.assertEquals("00:01:00", queue.innerModel().lockDuration());
+        Assertions.assertEquals(Duration.ofMinutes(1), queue.innerModel().lockDuration());
         Assertions.assertEquals(60, queue.lockDurationInSeconds());
 
         Duration dupDetectionDuration = queue.duplicateMessageDetectionHistoryDuration();
         Assertions.assertNotNull(dupDetectionDuration);
-        Assertions.assertEquals(10, TimeSpan.fromDuration(dupDetectionDuration).minutes());
+        Assertions.assertEquals(10 * 60, dupDetectionDuration.getSeconds());
         // Default message TTL is TimeSpan.Max, assert parsing
         //
-        Assertions.assertEquals("10675199.02:48:05.4775807", queue.innerModel().defaultMessageTimeToLive());
+        //Assertions.assertEquals("10675199.02:48:05.4775807", queue.innerModel().defaultMessageTimeToLive());
         Duration msgTtlDuration = queue.defaultMessageTtlDuration();
         Assertions.assertNotNull(msgTtlDuration);
         // Assertions the default ttl TimeSpan("10675199.02:48:05.4775807") parsing
         //
-        TimeSpan timeSpan = TimeSpan.fromDuration(msgTtlDuration);
-        Assertions.assertEquals(10675199, timeSpan.days());
-        Assertions.assertEquals(2, timeSpan.hours());
-        Assertions.assertEquals(48, timeSpan.minutes());
+        verifyDefaultDuration(msgTtlDuration);
         // Assertions the default max size In MB
         //
         Assertions.assertEquals(1024, queue.maxSizeInMB());
@@ -290,18 +286,15 @@ public class ServiceBusOperationsTests extends ResourceManagerTestBase {
 
         Duration dupDetectionDuration = topic.duplicateMessageDetectionHistoryDuration();
         Assertions.assertNotNull(dupDetectionDuration);
-        Assertions.assertEquals(10, TimeSpan.fromDuration(dupDetectionDuration).minutes());
+        Assertions.assertEquals(10, dupDetectionDuration.toMinutes());
         // Default message TTL is TimeSpan.Max, assert parsing
         //
-        Assertions.assertEquals("10675199.02:48:05.4775807", topic.innerModel().defaultMessageTimeToLive());
+        //Assertions.assertEquals("10675199.02:48:05.4775807", topic.innerModel().defaultMessageTimeToLive());
         Duration msgTtlDuration = topic.defaultMessageTtlDuration();
         Assertions.assertNotNull(msgTtlDuration);
         // Assertions the default ttl TimeSpan("10675199.02:48:05.4775807") parsing
         //
-        TimeSpan timeSpan = TimeSpan.fromDuration(msgTtlDuration);
-        Assertions.assertEquals(10675199, timeSpan.days());
-        Assertions.assertEquals(2, timeSpan.hours());
-        Assertions.assertEquals(48, timeSpan.minutes());
+        verifyDefaultDuration(msgTtlDuration);
         // Assertions the default max size In MB
         //
         Assertions.assertEquals(1024, topic.maxSizeInMB());
@@ -324,10 +317,10 @@ public class ServiceBusOperationsTests extends ResourceManagerTestBase {
                 .apply();
         Duration ttlDuration = foundTopic.defaultMessageTtlDuration();
         Assertions.assertNotNull(ttlDuration);
-        Assertions.assertEquals(20, TimeSpan.fromDuration(ttlDuration).minutes());
+        Assertions.assertEquals(20, ttlDuration.toMinutes());
         Duration duplicateDetectDuration = foundTopic.duplicateMessageDetectionHistoryDuration();
         Assertions.assertNotNull(duplicateDetectDuration);
-        Assertions.assertEquals(15, TimeSpan.fromDuration(duplicateDetectDuration).minutes());
+        Assertions.assertEquals(15, duplicateDetectDuration.toMinutes());
         Assertions.assertEquals(25, foundTopic.deleteOnIdleDurationInMinutes());
         // Delete
         namespace.topics().deleteByName(foundTopic.name());
@@ -420,7 +413,7 @@ public class ServiceBusOperationsTests extends ResourceManagerTestBase {
         Assertions.assertNotNull(nsRuleKeys.secondaryKey());
         Assertions.assertNotNull(nsRuleKeys.primaryConnectionString());
         Assertions.assertNotNull(nsRuleKeys.secondaryConnectionString());
-        nsRuleKeys = foundNsRule.regenerateKey(Policykey.PRIMARY_KEY);
+        nsRuleKeys = foundNsRule.regenerateKey(KeyType.PRIMARY_KEY);
         if (!isPlaybackMode()) {
             Assertions.assertNotEquals(nsRuleKeys.primaryKey(), primaryKey);
         }
@@ -526,7 +519,7 @@ public class ServiceBusOperationsTests extends ResourceManagerTestBase {
                 .create();
         Assertions.assertNotNull(subscription);
         Assertions.assertNotNull(subscription.innerModel());
-        Assertions.assertEquals(20, TimeSpan.fromDuration(subscription.defaultMessageTtlDuration()).minutes());
+        Assertions.assertEquals(20, subscription.defaultMessageTtlDuration().toMinutes());
         subscription = topic.subscriptions().getByName(subscriptionName);
         Assertions.assertNotNull(subscription);
         Assertions.assertNotNull(subscription.innerModel());
@@ -543,5 +536,39 @@ public class ServiceBusOperationsTests extends ResourceManagerTestBase {
         topic.subscriptions().deleteByName(subscriptionName);
         subscriptionsInTopic = topic.subscriptions().list();
         Assertions.assertTrue(TestUtilities.getSize(subscriptionsInTopic) == 0);
+    }
+
+    private static final int HOURS_PER_DAY = 24;
+    private static final int MINUTES_PER_HOUR = 60;
+
+    private static void verifyDefaultDuration(Duration duration) {
+        Assertions.assertEquals(10675199, duration.toDays());
+        Assertions.assertEquals(2, duration.toHours() % HOURS_PER_DAY);
+        Assertions.assertEquals(48, duration.toMinutes() % MINUTES_PER_HOUR);
+    }
+
+    @Test
+    public void canCRUDQueryWithSlashInName() {
+        Region region = Region.US_EAST;
+        String namespaceDNSLabel = generateRandomResourceName("jvsbns", 15);
+        String queueName = "order~created";
+
+        ServiceBusNamespace serviceBusNamespace = serviceBusManager.namespaces()
+            .define(namespaceDNSLabel)
+            .withRegion(region)
+            .withNewResourceGroup(rgName)
+            .withSku(NamespaceSku.BASIC)
+            .create();
+
+        Queue queue = serviceBusNamespace.queues().define(queueName)
+            .create();
+
+        Assertions.assertEquals(1, serviceBusNamespace.queues().list().stream().count());
+
+        queue.refresh();
+
+        Assertions.assertEquals(queueName, queue.name());
+
+        serviceBusNamespace.queues().deleteByName(queueName);
     }
 }

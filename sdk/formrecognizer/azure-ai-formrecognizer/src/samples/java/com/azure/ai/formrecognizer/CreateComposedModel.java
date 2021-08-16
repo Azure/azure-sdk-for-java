@@ -52,21 +52,21 @@ public class CreateComposedModel {
         String labeledModelId1 = model1Poller.getFinalResult().getModelId();
         String labeledModelId2 = model2Poller.getFinalResult().getModelId();
 
-        final CustomFormModel customFormModel
-            = client.beginCreateComposedModel(Arrays.asList(labeledModelId1, labeledModelId2),
-            new CreateComposedModelOptions()
-                .setModelName("my composed model name")
-                .setPollInterval(Duration.ofSeconds(5)),
-            Context.NONE)
-            .getFinalResult();
+        final CustomFormModel customFormModel =
+            client.beginCreateComposedModel(
+                Arrays.asList(labeledModelId1, labeledModelId2),
+                new CreateComposedModelOptions().setModelName("my composed model name"),
+                Context.NONE)
+                .setPollInterval(Duration.ofSeconds(5))
+                .getFinalResult();
 
         System.out.printf("Model Id: %s%n", customFormModel.getModelId());
         System.out.printf("Model Status: %s%n", customFormModel.getModelStatus());
         System.out.printf("Model name: %s%n", customFormModel.getModelName());
         System.out.printf("Is this a composed model: %s%n",
             customFormModel.getCustomModelProperties().isComposed());
-        System.out.printf("Composed model creation started on: ", customFormModel.getTrainingStartedOn());
-        System.out.printf("Composed model creation completed on: ", customFormModel.getTrainingCompletedOn());
+        System.out.printf("Composed model creation started on: %s%n", customFormModel.getTrainingStartedOn());
+        System.out.printf("Composed model creation completed on:  %s%n", customFormModel.getTrainingCompletedOn());
 
         System.out.println("Recognized Fields:");
         customFormModel.getSubmodels().forEach(customFormSubmodel -> {

@@ -102,6 +102,13 @@ public interface ComputeManagementClient {
     VirtualMachineImagesClient getVirtualMachineImages();
 
     /**
+     * Gets the VirtualMachineImagesEdgeZonesClient object to access its operations.
+     *
+     * @return the VirtualMachineImagesEdgeZonesClient object.
+     */
+    VirtualMachineImagesEdgeZonesClient getVirtualMachineImagesEdgeZones();
+
+    /**
      * Gets the UsagesClient object to access its operations.
      *
      * @return the UsagesClient object.
@@ -114,6 +121,13 @@ public interface ComputeManagementClient {
      * @return the VirtualMachinesClient object.
      */
     VirtualMachinesClient getVirtualMachines();
+
+    /**
+     * Gets the VirtualMachineScaleSetsClient object to access its operations.
+     *
+     * @return the VirtualMachineScaleSetsClient object.
+     */
+    VirtualMachineScaleSetsClient getVirtualMachineScaleSets();
 
     /**
      * Gets the VirtualMachineSizesClient object to access its operations.
@@ -130,11 +144,32 @@ public interface ComputeManagementClient {
     ImagesClient getImages();
 
     /**
-     * Gets the VirtualMachineScaleSetsClient object to access its operations.
+     * Gets the RestorePointCollectionsClient object to access its operations.
      *
-     * @return the VirtualMachineScaleSetsClient object.
+     * @return the RestorePointCollectionsClient object.
      */
-    VirtualMachineScaleSetsClient getVirtualMachineScaleSets();
+    RestorePointCollectionsClient getRestorePointCollections();
+
+    /**
+     * Gets the RestorePointsClient object to access its operations.
+     *
+     * @return the RestorePointsClient object.
+     */
+    RestorePointsClient getRestorePoints();
+
+    /**
+     * Gets the CapacityReservationGroupsClient object to access its operations.
+     *
+     * @return the CapacityReservationGroupsClient object.
+     */
+    CapacityReservationGroupsClient getCapacityReservationGroups();
+
+    /**
+     * Gets the CapacityReservationsClient object to access its operations.
+     *
+     * @return the CapacityReservationsClient object.
+     */
+    CapacityReservationsClient getCapacityReservations();
 
     /**
      * Gets the VirtualMachineScaleSetExtensionsClient object to access its operations.
@@ -221,6 +256,13 @@ public interface ComputeManagementClient {
     DiskAccessesClient getDiskAccesses();
 
     /**
+     * Gets the DiskRestorePointsClient object to access its operations.
+     *
+     * @return the DiskRestorePointsClient object.
+     */
+    DiskRestorePointsClient getDiskRestorePoints();
+
+    /**
      * Gets the GalleriesClient object to access its operations.
      *
      * @return the GalleriesClient object.
@@ -256,9 +298,65 @@ public interface ComputeManagementClient {
     GalleryApplicationVersionsClient getGalleryApplicationVersions();
 
     /**
-     * Gets the ContainerServicesClient object to access its operations.
+     * Gets the GallerySharingProfilesClient object to access its operations.
      *
-     * @return the ContainerServicesClient object.
+     * @return the GallerySharingProfilesClient object.
      */
-    ContainerServicesClient getContainerServices();
+    GallerySharingProfilesClient getGallerySharingProfiles();
+
+    /**
+     * Gets the SharedGalleriesClient object to access its operations.
+     *
+     * @return the SharedGalleriesClient object.
+     */
+    SharedGalleriesClient getSharedGalleries();
+
+    /**
+     * Gets the SharedGalleryImagesClient object to access its operations.
+     *
+     * @return the SharedGalleryImagesClient object.
+     */
+    SharedGalleryImagesClient getSharedGalleryImages();
+
+    /**
+     * Gets the SharedGalleryImageVersionsClient object to access its operations.
+     *
+     * @return the SharedGalleryImageVersionsClient object.
+     */
+    SharedGalleryImageVersionsClient getSharedGalleryImageVersions();
+
+    /**
+     * Gets the CloudServiceRoleInstancesClient object to access its operations.
+     *
+     * @return the CloudServiceRoleInstancesClient object.
+     */
+    CloudServiceRoleInstancesClient getCloudServiceRoleInstances();
+
+    /**
+     * Gets the CloudServiceRolesClient object to access its operations.
+     *
+     * @return the CloudServiceRolesClient object.
+     */
+    CloudServiceRolesClient getCloudServiceRoles();
+
+    /**
+     * Gets the CloudServicesClient object to access its operations.
+     *
+     * @return the CloudServicesClient object.
+     */
+    CloudServicesClient getCloudServices();
+
+    /**
+     * Gets the CloudServicesUpdateDomainsClient object to access its operations.
+     *
+     * @return the CloudServicesUpdateDomainsClient object.
+     */
+    CloudServicesUpdateDomainsClient getCloudServicesUpdateDomains();
+
+    /**
+     * Gets the CloudServiceOperatingSystemsClient object to access its operations.
+     *
+     * @return the CloudServiceOperatingSystemsClient object.
+     */
+    CloudServiceOperatingSystemsClient getCloudServiceOperatingSystems();
 }

@@ -34,6 +34,7 @@ public final class SearchIndexClientImplBuilder {
 
     private final Map<String, String> properties = new HashMap<>();
 
+    /** Create an instance of the SearchIndexClientImplBuilder. */
     public SearchIndexClientImplBuilder() {
         this.pipelinePolicies = new ArrayList<>();
     }
@@ -67,6 +68,22 @@ public final class SearchIndexClientImplBuilder {
      */
     public SearchIndexClientImplBuilder indexName(String indexName) {
         this.indexName = indexName;
+        return this;
+    }
+
+    /*
+     * Api Version
+     */
+    private String apiVersion;
+
+    /**
+     * Sets Api Version.
+     *
+     * @param apiVersion the apiVersion value.
+     * @return the SearchIndexClientImplBuilder.
+     */
+    public SearchIndexClientImplBuilder apiVersion(String apiVersion) {
+        this.apiVersion = apiVersion;
         return this;
     }
 
@@ -171,7 +188,7 @@ public final class SearchIndexClientImplBuilder {
     /*
      * The list of Http pipeline policies to add.
      */
-    private List<HttpPipelinePolicy> pipelinePolicies;
+    private final List<HttpPipelinePolicy> pipelinePolicies;
 
     /**
      * Adds a custom Http pipeline policy.
@@ -190,13 +207,17 @@ public final class SearchIndexClientImplBuilder {
      * @return an instance of SearchIndexClientImpl.
      */
     public SearchIndexClientImpl buildClient() {
+        if (apiVersion == null) {
+            this.apiVersion = "2021-04-30-Preview";
+        }
         if (pipeline == null) {
             this.pipeline = createHttpPipeline();
         }
         if (serializerAdapter == null) {
             this.serializerAdapter = JacksonAdapter.createDefaultSerializerAdapter();
         }
-        SearchIndexClientImpl client = new SearchIndexClientImpl(pipeline, serializerAdapter, endpoint, indexName);
+        SearchIndexClientImpl client =
+                new SearchIndexClientImpl(pipeline, serializerAdapter, endpoint, indexName, apiVersion);
         return client;
     }
 

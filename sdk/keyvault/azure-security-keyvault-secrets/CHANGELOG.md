@@ -1,7 +1,78 @@
 # Release History
 
-## 4.3.0-beta.3 (Unreleased)
+## 4.4.0-beta.1 (Unreleased)
 
+
+## 4.3.1 (2021-07-08)
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` dependency to `1.18.0`
+- Upgraded `azure-core-http-netty` dependency to `1.10.1`
+
+## 4.3.0 (2021-06-17)
+
+### Features Added
+- Changed default service version to `7.2`.
+- Added `KeyVaultSecretIdentifier` to parse secret URLs.
+
+### Changes since 4.3.0-beta.6
+
+#### Bug Fixes
+- Ensured that `RetryPolicy` and `HttpLogOptions` use a default implementation when creating Key Vault clients if not set or set to `null`.
+
+#### Breaking Changes
+- Removed service method overloads that take a `pollingInterval`, since `PollerFlux` and `SyncPoller` objects allow for setting this value directly on them.
+
+#### Non-Breaking Changes
+- Renamed `secretId` to `sourceId` in `KeyVaultSecretIdentifier`.
+- `KeyVaultSecretIdentifier` can now be used to parse any Key Vault identifier.
+- Added the `@ServiceMethod` annotation to all public methods that call the Key Vault service in `SecretClient` and `SecretAsyncClient`.
+
+## 4.3.0-beta.6 (2021-05-15)
+
+### Dependency Updates
+- Upgraded `azure-core` dependency to `1.16.0`
+- Upgraded `azure-core-http-netty` dependency to `1.9.2`
+- Upgraded `azure-core-http-okhttp` dependency to `1.6.2`
+- Upgraded `azure-identity` dependency to `1.3.0`
+
+## 4.3.0-beta.5 (2021-04-09)
+
+### New features
+- Added support for service version `7.2`.
+- Added support to specify whether or not a pipeline policy should be added per call or per retry.
+
+### Breaking Changes
+- Changed `KeyVaultSecretIdentifier` so it is instantiated via its constructor as opposed to via a `parse()` factory method.
+
+## 4.3.0-beta.4 (2021-03-12)
+
+### Changed
+- Changed logging level in `onRequest` and `onSuccess` calls for service operations from `INFO` to `VERBOSE`.
+
+### Dependency Updates
+- Upgraded `azure-core` dependency to `1.14.0`
+- Upgraded `azure-core-http-netty` dependency to `1.9.0`
+- Upgraded `azure-core-http-okhttp` dependency to `1.6.0`
+- Upgraded `azure-identity` dependency to `1.2.4`
+
+## 4.3.0-beta.3 (2021-02-11)
+
+### Dependency Updates
+- Upgraded `azure-core` dependency to `1.13.0`
+- Upgraded `azure-core-http-netty` dependency to `1.8.0`
+- Upgraded `azure-core-http-okhttp` dependency to `1.5.0`
+- Upgraded `azure-identity` dependency to `1.2.3`
+
+## 4.2.5 (2021-02-11)
+
+### Dependency Updates
+- Upgraded `azure-core` dependency to `1.13.0`
+- Upgraded `azure-core-http-netty` dependency to `1.8.0`
+- Upgraded `azure-core-http-okhttp` dependency to `1.5.0`
+- Upgraded `azure-identity` dependency to `1.2.3`
 
 ## 4.2.4 (2021-01-15)
 
@@ -113,6 +184,9 @@
 ### Major changes
 - SecretClient.vaultUrl has been added with the original value pass to SecretClient.
 
+## 4.0.0-preview.3 (2019-09-10)
+For details on the Azure SDK for Java (August 2019 Preview) release refer to the [release announcement](https://aka.ms/azure-sdk-preview3-java).
+
 ## 4.0.0-preview.4 (2019-09-08)
 For details on the Azure SDK for Java (September 2019 Preview) release refer to the [release announcement](https://aka.ms/azure-sdk-preview4-java).
 
@@ -124,9 +198,6 @@ For details on the Azure SDK for Java (September 2019 Preview) release refer to 
 - `updateSecret` method has been renamed to `updateSecretProperties` in `SecretClient` and `SecretAsyncClient`.
 - Getters and setters were updated to use Java Bean notation.
 - Changed VoidResponse to Response<Void> on sync API, and Mono<VoidResponse> to Mono<Response<Void>> on async API.
-
-## 4.0.0-preview.3 (2019-09-10)
-For details on the Azure SDK for Java (August 2019 Preview) release refer to the [release announcement](https://aka.ms/azure-sdk-preview3-java).
 
 ## 4.0.0-preview.2 (2019-08-06)
 For details on the Azure SDK for Java (August 2019 Preview) release refer to the [release announcement](https://azure.github.io/azure-sdk/releases/2019-08-06/java.html).
@@ -140,7 +211,7 @@ Version 4.0.0-preview.1 is a preview of our efforts in creating a client library
 
 For details on the Azure SDK for Java (July 2019 Preview) release, you can refer to the [release announcement](https://aka.ms/azure-sdk-preview1-java).
 
-This library is not a direct replacement for secrets management operations from [microsoft-azure-keyvault](https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/keyvault/microsoft-azure-keyvault). Applications using that library would require code changes to use `azure-keyvault-secrets`.
+This library is not a direct replacement for secrets management operations from [microsoft-azure-keyvault](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/keyvault/microsoft-azure-keyvault). Applications using that library would require code changes to use `azure-keyvault-secrets`.
 This package's
 [documentation](https://github.com/Azure/azure-sdk-for-java/blob/azure-keyvault-secrets_4.0.0-preview.1/keyvault/client/secrets/README.md)
 and
@@ -159,7 +230,7 @@ only)
   - see this package's
   [documentation](https://github.com/Azure/azure-sdk-for-java/blob/azure-keyvault-secrets_4.0.0-preview.1/keyvault/client/secrets/README.md)
   , and the
-  [Azure Identity documentation](https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/identity/azure-identity/README.md)
+  [Azure Identity documentation](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/identity/azure-identity/README.md)
   for more information
   
 ### `azure-keyvault` features not implemented in this library

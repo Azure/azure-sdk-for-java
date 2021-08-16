@@ -1,7 +1,7 @@
 # Azure Communication Service Common client library for Java
 
 Azure Communication Common contains data structures commonly used for communicating with Azure Communication Services. 
-It is intended to provide cross cutting concerns, e.g. authentication. 
+It is intended to provide cross-cutting concerns, e.g. authentication. 
 
 ## Getting started
 
@@ -12,14 +12,45 @@ It is intended to provide cross cutting concerns, e.g. authentication.
 - [Apache Maven](https://maven.apache.org/download.cgi).
 - A deployed Communication Services resource.
 
-### Include the package
+#### Include the BOM file
+
+Please include the azure-sdk-bom to your project to take dependency on the General Availability (GA) version of the library. In the following snippet, replace the {bom_version_to_target} placeholder with the version number.
+To learn more about the BOM, see the [AZURE SDK BOM README](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/boms/azure-sdk-bom/README.md).
+
+```xml
+<dependencyManagement>
+    <dependencies>
+        <dependency>
+            <groupId>com.azure</groupId>
+            <artifactId>azure-sdk-bom</artifactId>
+            <version>{bom_version_to_target}</version>
+            <type>pom</type>
+            <scope>import</scope>
+        </dependency>
+    </dependencies>
+</dependencyManagement>
+```
+and then include the direct dependency in the dependencies section without the version tag.
+
+```xml
+<dependencies>
+  <dependency>
+    <groupId>com.azure</groupId>
+    <artifactId>azure-communication-common</artifactId>
+  </dependency>
+</dependencies>
+```
+
+#### Include direct dependency
+If you want to take dependency on a particular version of the library that is not present in the BOM,
+add the direct dependency to your project as follows.
 
 [//]: # ({x-version-update-start;com.azure:azure-communication-common;current})
 ```xml
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-communication-common</artifactId>
-    <version>1.0.0-beta.3</version>
+    <version>1.0.3</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -34,7 +65,7 @@ a CommunicationIdentityClient to manage users and tokens.
 
 ### CommunicationTokenCredential
 
-It is up to you the developer to first create valid user tokens with the Communication Administration SDK. Then you use these tokens with the `CommunicationTokenCredential`.
+It is up to you the developer to first create valid user tokens with the Communication Identity SDK. Then you use these tokens with the `CommunicationTokenCredential`.
 
 `CommunicationTokenCredential` authenticates a user with Communication Services, such as Chat or Calling. It optionally provides an auto-refresh mechanism to ensure a continuously stable authentication state during communications.
 

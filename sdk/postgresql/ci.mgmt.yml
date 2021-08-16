@@ -2,24 +2,36 @@
 trigger:
   branches:
     include:
-      - master
+      - main
       - feature/*
       - hotfix/*
       - release/*
   paths:
     include:
-      - sdk/postgresql/
+      - sdk/postgresql/ci.mgmt.yml
+      - sdk/postgresql/mgmt-v2017_12_01/
+      - sdk/postgresql/mgmt-v2017_12_01_preview/
+    exclude:
+      - sdk/postgresql/pom.xml
+      - sdk/postgresql/mgmt-v2017_12_01/pom.xml
+      - sdk/postgresql/mgmt-v2017_12_01_preview/pom.xml
 
 pr:
   branches:
     include:
-      - master
+      - main
       - feature/*
       - hotfix/*
       - release/*
   paths:
     include:
-      - sdk/postgresql/
+      - sdk/postgresql/ci.mgmt.yml
+      - sdk/postgresql/mgmt-v2017_12_01/
+      - sdk/postgresql/mgmt-v2017_12_01_preview/
+    exclude:
+      - sdk/postgresql/pom.xml
+      - sdk/postgresql/mgmt-v2017_12_01/pom.xml
+      - sdk/postgresql/mgmt-v2017_12_01_preview/pom.xml
 
 stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-management.yml

@@ -8,32 +8,30 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
-/**
- * Blob info from a Filter Blobs API call.
- */
+/** Blob info from a Filter Blobs API call. */
 @JacksonXmlRootElement(localName = "Blob")
 @Fluent
 public final class FilterBlobItem {
     /*
-     * The name property.
+     * The Name property.
      */
     @JsonProperty(value = "Name", required = true)
     private String name;
 
     /*
-     * The containerName property.
+     * The ContainerName property.
      */
     @JsonProperty(value = "ContainerName", required = true)
     private String containerName;
 
     /*
-     * The tags property.
+     * Blob tags
      */
     @JsonProperty(value = "Tags")
     private BlobTags tags;
 
     /**
-     * Get the name property: The name property.
+     * Get the name property: The Name property.
      *
      * @return the name value.
      */
@@ -42,7 +40,7 @@ public final class FilterBlobItem {
     }
 
     /**
-     * Set the name property: The name property.
+     * Set the name property: The Name property.
      *
      * @param name the name value to set.
      * @return the FilterBlobItem object itself.
@@ -53,7 +51,7 @@ public final class FilterBlobItem {
     }
 
     /**
-     * Get the containerName property: The containerName property.
+     * Get the containerName property: The ContainerName property.
      *
      * @return the containerName value.
      */
@@ -62,7 +60,7 @@ public final class FilterBlobItem {
     }
 
     /**
-     * Set the containerName property: The containerName property.
+     * Set the containerName property: The ContainerName property.
      *
      * @param containerName the containerName value to set.
      * @return the FilterBlobItem object itself.
@@ -73,7 +71,7 @@ public final class FilterBlobItem {
     }
 
     /**
-     * Get the tags property: The tags property.
+     * Get the tags property: Blob tags.
      *
      * @return the tags value.
      */
@@ -82,7 +80,7 @@ public final class FilterBlobItem {
     }
 
     /**
-     * Set the tags property: The tags property.
+     * Set the tags property: Blob tags.
      *
      * @param tags the tags value to set.
      * @return the FilterBlobItem object itself.

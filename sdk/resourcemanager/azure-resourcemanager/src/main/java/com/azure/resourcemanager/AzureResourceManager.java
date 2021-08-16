@@ -73,10 +73,12 @@ import com.azure.resourcemanager.network.models.ExpressRouteCrossConnections;
 import com.azure.resourcemanager.network.models.LoadBalancers;
 import com.azure.resourcemanager.network.models.LocalNetworkGateways;
 import com.azure.resourcemanager.network.models.NetworkInterfaces;
+import com.azure.resourcemanager.network.models.NetworkProfiles;
 import com.azure.resourcemanager.network.models.NetworkSecurityGroups;
 import com.azure.resourcemanager.network.models.NetworkUsages;
 import com.azure.resourcemanager.network.models.NetworkWatchers;
 import com.azure.resourcemanager.network.models.Networks;
+import com.azure.resourcemanager.network.models.PrivateEndpoints;
 import com.azure.resourcemanager.network.models.PublicIpAddresses;
 import com.azure.resourcemanager.network.models.PublicIpPrefixes;
 import com.azure.resourcemanager.network.models.RouteFilters;
@@ -102,6 +104,7 @@ import com.azure.resourcemanager.resources.models.Providers;
 import com.azure.resourcemanager.resources.models.ResourceGroups;
 import com.azure.resourcemanager.resources.models.Subscription;
 import com.azure.resourcemanager.resources.models.Subscriptions;
+import com.azure.resourcemanager.resources.models.TagOperations;
 import com.azure.resourcemanager.resources.models.Tenants;
 import com.azure.resourcemanager.search.SearchServiceManager;
 import com.azure.resourcemanager.search.models.SearchServices;
@@ -128,7 +131,6 @@ public final class AzureResourceManager {
     private final ComputeManager computeManager;
     private final NetworkManager networkManager;
     private final KeyVaultManager keyVaultManager;
-    //    private final BatchManager batchManager;
     private final TrafficManager trafficManager;
     private final RedisManager redisManager;
     private final CdnManager cdnManager;
@@ -141,7 +143,6 @@ public final class AzureResourceManager {
     private final ContainerServiceManager containerServiceManager;
     private final SearchServiceManager searchServiceManager;
     private final CosmosManager cosmosManager;
-    //    private final AuthorizationManager authorizationManager;
     private final MsiManager msiManager;
     private final MonitorManager monitorManager;
     private final EventHubsManager eventHubsManager;
@@ -838,5 +839,20 @@ public final class AzureResourceManager {
     /** @return the private DNS zone management API entry point */
     public PrivateDnsZones privateDnsZones() {
         return this.privateDnsZoneManager.privateZones();
+    }
+
+    /** @return entry point to private endpoints management */
+    public PrivateEndpoints privateEndpoints() {
+        return this.networkManager.privateEndpoints();
+    }
+
+    /** @return entry point to tag management management */
+    public TagOperations tagOperations() {
+        return this.resourceManager.tagOperations();
+    }
+
+    /** @return entry point to network profiles management */
+    public NetworkProfiles networkProfiles() {
+        return this.networkManager.networkProfiles();
     }
 }

@@ -86,6 +86,7 @@ class ChangeFeedQueryImpl<T extends Resource> {
         return Paginator.getChangeFeedQueryResultAsObservable(
             this.client,
             this.changeFeedState,
+            ModelBridgeInternal.getPropertiesFromChangeFeedRequestOptions(this.options),
             this.createRequestFunc,
             this.executeFunc,
             this.klass,
@@ -97,6 +98,11 @@ class ChangeFeedQueryImpl<T extends Resource> {
 
     private RxDocumentServiceRequest createDocumentServiceRequest() {
         Map<String, String> headers = new HashMap<>();
+
+        if (options.isQuotaInfoEnabled()) {
+            headers.put(HttpConstants.HttpHeaders.POPULATE_QUOTA_INFO, String.valueOf(true));
+        }
+
         return RxDocumentServiceRequest.create(clientContext,
             OperationType.ReadFeed,
             resourceType,
