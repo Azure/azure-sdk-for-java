@@ -11,7 +11,6 @@
 * Added retry for `PrematureCloseException`.
 * Fixed an issue where application hangs in bulk executor.
 * Fixed an issue which preventing recovery from 410/0 after split.
-* Added `TransportRequestChannelAcquisitionContext` in `CosmosDiagnostics`.
 
 ### 4.18.0-beta.1 (2021-08-11)
 #### Key Bug Fixes
