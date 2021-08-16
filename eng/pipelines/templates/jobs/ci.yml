@@ -164,6 +164,8 @@ jobs:
           TestPipeline: ${{ parameters.TestPipeline }}
 
       - template: /eng/pipelines/templates/steps/verify-readmes.yml
+        parameters:
+          DocWardenVersion: $(DocWardenVersion)
 
       - template: /eng/common/pipelines/templates/steps/verify-links.yml
         parameters:

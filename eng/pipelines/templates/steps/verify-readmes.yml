@@ -1,5 +1,7 @@
-variables:
-  - template: ../variables/globals.yml
+parameters:
+  - name: DocWardenVersion
+    type: string
+    default: client
 
 steps:
   - task: PythonScript@0
@@ -8,5 +10,5 @@ steps:
       scriptSource: 'inline'
       script: |
         pip install setuptools wheel --quiet
-        pip install doc-warden==$(DocWardenVersion) --quiet
+        pip install doc-warden==${{ parameters.DocWardenVersion }} --quiet
         ward scan -d $(Build.SourcesDirectory) -c $(Build.SourcesDirectory)/eng/.docsettings.yml

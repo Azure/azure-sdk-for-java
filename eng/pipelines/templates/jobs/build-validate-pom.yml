@@ -42,6 +42,8 @@ jobs:
       - template: /eng/common/pipelines/templates/steps/daily-dev-build-variable.yml
 
       - template: /eng/pipelines/templates/steps/verify-readmes.yml
+        parameters:
+          DocWardenVersion: $(DocWardenVersion)
 
       - template: ../steps/cache-maven-repository.yml
         parameters:
