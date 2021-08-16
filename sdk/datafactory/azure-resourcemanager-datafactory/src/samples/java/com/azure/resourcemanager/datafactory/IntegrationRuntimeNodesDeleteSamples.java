@@ -11,12 +11,11 @@ public final class IntegrationRuntimeNodesDeleteSamples {
     /**
      * Sample code: IntegrationRuntimesNodes_Delete.
      *
-     * @param dataFactoryManager Entry point to DataFactoryManager. The Azure Data Factory V2 management API provides a
-     *     RESTful set of web services that interact with Azure Data Factory V2 services.
+     * @param manager Entry point to DataFactoryManager.
      */
     public static void integrationRuntimesNodesDelete(
-        com.azure.resourcemanager.datafactory.DataFactoryManager dataFactoryManager) {
-        dataFactoryManager
+        com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
+        manager
             .integrationRuntimeNodes()
             .deleteWithResponse(
                 "exampleResourceGroup", "exampleFactoryName", "exampleIntegrationRuntime", "Node_1", Context.NONE);

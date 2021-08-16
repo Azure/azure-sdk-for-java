@@ -10,7 +10,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import java.util.List;
 
 /** A copy activity source for SAP Business Warehouse Open Hub Destination source. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
@@ -149,7 +148,7 @@ public final class SapOpenHubSource extends TabularSource {
 
     /** {@inheritDoc} */
     @Override
-    public SapOpenHubSource withAdditionalColumns(List<AdditionalColumns> additionalColumns) {
+    public SapOpenHubSource withAdditionalColumns(Object additionalColumns) {
         super.withAdditionalColumns(additionalColumns);
         return this;
     }

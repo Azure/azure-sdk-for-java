@@ -11,13 +11,10 @@ public final class PrivateLinkResourcesGetSamples {
     /**
      * Sample code: Get private link resources of a site.
      *
-     * @param dataFactoryManager Entry point to DataFactoryManager. The Azure Data Factory V2 management API provides a
-     *     RESTful set of web services that interact with Azure Data Factory V2 services.
+     * @param manager Entry point to DataFactoryManager.
      */
     public static void getPrivateLinkResourcesOfASite(
-        com.azure.resourcemanager.datafactory.DataFactoryManager dataFactoryManager) {
-        dataFactoryManager
-            .privateLinkResources()
-            .getWithResponse("exampleResourceGroup", "exampleFactoryName", Context.NONE);
+        com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
+        manager.privateLinkResources().getWithResponse("exampleResourceGroup", "exampleFactoryName", Context.NONE);
     }
 }
