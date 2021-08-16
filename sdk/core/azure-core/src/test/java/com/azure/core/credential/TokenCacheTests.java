@@ -28,8 +28,7 @@ public class TokenCacheTests {
         CountDownLatch latch = new CountDownLatch(1);
         AtomicLong maxMillis = new AtomicLong(0);
 
-        Mono.fromCallable(OffsetDateTime::now)
-            .repeat(10)
+        Flux.range(1, 10).flatMap(ignored -> Mono.just(OffsetDateTime.now()))
             .parallel(10)
             // Runs cache.getToken() on 10 different threads
             .runOn(Schedulers.boundedElastic())

@@ -341,7 +341,8 @@ public class RetryPolicyTests {
     @ParameterizedTest
     @MethodSource("getWellKnownRetryDelaySupplier")
     public void getWellKnownRetryDelay(HttpHeaders responseHeaders, RetryStrategy retryStrategy, Duration expected) {
-        assertEquals(expected, RetryPolicy.getWellKnownRetryDelay(responseHeaders, 1, retryStrategy));
+        assertEquals(expected, RetryPolicy.getWellKnownRetryDelay(responseHeaders, 1, retryStrategy,
+            OffsetDateTime::now));
     }
 
     private static Stream<Arguments> getWellKnownRetryDelaySupplier() {
@@ -381,15 +382,11 @@ public class RetryPolicyTests {
 
     @Test
     public void retryAfterDateTime() {
-        HttpHeaders headers = new HttpHeaders().set("Retry-After",
-            new DateTimeRfc1123(OffsetDateTime.now().plusSeconds(30)).toString());
-        Duration actual = RetryPolicy.getWellKnownRetryDelay(headers, 1, null);
+        OffsetDateTime now = OffsetDateTime.now().withNano(0);
+        HttpHeaders headers = new HttpHeaders().set("Retry-After", new DateTimeRfc1123(now.plusSeconds(30)).toString());
+        Duration actual = RetryPolicy.getWellKnownRetryDelay(headers, 1, null, () -> now);
 
-        // Since DateTime based Retry-After uses OffsetDateTime.now internally make sure this result skew isn't larger
-        // than an allowable bound.
-        Duration skew = Duration.ofSeconds(30).minus(actual);
-        assertTrue(skew.getSeconds() <= 2, () -> "Expected retry skew of less than 2 seconds but was "
-            + skew.toMillis() + "ms.");
+        assertEquals(Duration.ofSeconds(30), actual);
     }
 
     private static RetryStrategy createStatusCodeRetryStrategy(int... retriableErrorCodes) {
