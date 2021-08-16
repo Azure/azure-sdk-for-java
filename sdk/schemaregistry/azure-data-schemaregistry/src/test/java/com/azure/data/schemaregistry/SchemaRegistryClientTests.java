@@ -45,10 +45,14 @@ public class SchemaRegistryClientTests extends TestBase {
         TokenCredential tokenCredential;
         if (interceptorManager.isPlaybackMode()) {
             tokenCredential = mock(TokenCredential.class);
-            when(tokenCredential.getToken(any(TokenRequestContext.class)))
-                .thenReturn(Mono.fromCallable(() -> {
+
+            // Sometimes it throws an "NotAMockException", so we had to change from thenReturn to thenAnswer.
+            when(tokenCredential.getToken(any(TokenRequestContext.class))).thenAnswer(invocationOnMock -> {
+                return Mono.fromCallable(() -> {
                     return new AccessToken("foo", OffsetDateTime.now().plusMinutes(20));
-                }));
+                });
+            });
+
             endpoint = "https://foo.servicebus.windows.net";
         } else {
             tokenCredential = new DefaultAzureCredentialBuilder().build();

@@ -52,6 +52,7 @@ public class SchemaRegistryAsyncClientTests extends TestBase {
         if (interceptorManager.isPlaybackMode()) {
             tokenCredential = mock(TokenCredential.class);
 
+            // Sometimes it throws an "NotAMockException", so we had to change from thenReturn to thenAnswer.
             when(tokenCredential.getToken(any(TokenRequestContext.class))).thenAnswer(invocationOnMock -> {
                 return Mono.fromCallable(() -> {
                     return new AccessToken("foo", OffsetDateTime.now().plusMinutes(20));
