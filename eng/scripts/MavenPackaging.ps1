@@ -154,35 +154,65 @@ function Get-FilteredMavenPackageDetails([string]$ArtifactDirectory, [string]$Gr
   return $filteredPackageDetails
 }
 
-# Compare the contents of .sha1 hash files for a local repository to the same
-# files in Maven Central. Returns $false if none of the hash files exist in the
-# remote, $true if all hashes exist and match the local hash, otherwise throws.
-function Test-ReleasedPackage([string]$LocalRepositoryDirectory) {
-  $localHashFiles = Get-ChildItem $localRepositoryDirectory -Recurse -File `
-    -Include "*.sha1" -Exclude '*.asc.sha1','maven-metadata.xml.sha1'
-
-  $matchCount = 0
-  $foundCount = 0
-  
-  foreach($hashFile in $localHashFiles) {
-    $relativePath = [IO.Path]::GetRelativePath($localRepositoryDirectory, $_)
-    $remoteUrl = "https://repo1.maven.org/maven2/$($relativePath.Replace('\','/'))"
-
-    $localHash = Get-Content -Path $hashFile -Raw
+# Compare the contents of SHA hash files for a local repository to the same
+# files in Maven Central or Azure DevOps. Returns $false if none of the hash
+# files exist in the remote, $true if all hashes exist and match the local
+# hash, otherwise throws.
+function Test-ReleasedPackage([string]$RepositoryUrl, [MavenPackageDetail]$PackageDetail, [string]$BearerToken) {
+  if ($RepositoryUrl -match "^https://pkgs.dev.azure.com/azure-sdk/\b(internal|public)\b/*") {
+    if(!$BearerToken) {
+      throw "BearerToken required for Azure DevOps package feeds"
+    }
     
-    Write-Information "Getting remote content for $relativePath"
-    Write-Information "Invoke-RestMethod -Method GET -Uri $remoteUrl -SkipHttpErrorCheck"
-    $response = Invoke-WebRequest -Method GET -Uri $remoteUrl -SkipHttpErrorCheck
+    $baseUrl = "https://pkgs.dev.azure.com/azure-sdk/internal/_packaging/azure-sdk-for-java-pr/maven/v1"
+    $algorithm = "sha256"
+    $headers = @{ Authorization="BEARER $BearerToken" }
+  }
+  elseif ($RepositoryUrl -match "^https://oss.sonatype.org/service/local/staging/deploy/maven2") {
+    $baseUrl = "https://repo1.maven.org/maven2"
+    $algorithm = "sha1"
+  }
+  else {
+    throw "Repository URL must be either an Azure Artifacts feed, or a SonaType Nexus feed."
+  }
+
+  $packageUrl = "$baseUrl/$($PackageDetail.GroupId.Replace('.', '/'))/$($PackageDetail.ArtifactID)/$($PackageDetail.Version)"
+  
+  # Count the number of remote hashes found
+  $remoteCount = 0
+
+  # Count the number of remote hashes that match their local hash
+  $matchCount = 0
+
+  foreach($artifact in $PackageDetail.AssociatedArtifacts) {
+    $localFileName = $artifact.File.Name;
+    $remoteHashUrl = "$packageUrl/$localFileName.$algorithm"
+
+    Write-Information "Comparing local and remote hashes for $localFileName"
+    Write-Information "  Getting remote hash"
+    $response = Invoke-WebRequest -Method GET -Uri $remoteHashUrl -Headers $headers -SkipHttpErrorCheck
 
     if($response.StatusCode -ge 200 -and $response.StatusCode -lt 300) {
-      $foundCount++
-      if($response.Content -ne $localHash) {
+      $remoteCount++
+      $remoteHash = $response.Content
+
+      Write-Information "  Getting local hash"
+      $localPath = $artifact.File.FullName
+      $localHash = Get-FileHash -Path $localPath -Algorithm $algorithm | Select-Object -ExpandProperty 'Hash'
+      
+      if($remoteHash -eq $localHash) {
         $matchCount++
+        Write-Information "  Remote $remoteHash == Local $localHash"
+      } else {
+        Write-Information "  Remote $remoteHash != Local $localHash"
       }
+    }
+    else {
+      Write-Information "  Unable to retrieve remote hash for $localFileName. Http reponse code: $($response.StatusCode)"
     }
   }
 
-  if($foundCount -eq 0) { return $false }
-  if($matchCount -eq $localHashFiles.Length) { return $true }
+  if($remoteCount -eq 0) { return $false }
+  if($matchCount -eq $PackageDetail.AssociatedArtifacts.Length) { return $true }
   throw "Package already deployed, but with different content."
 }
