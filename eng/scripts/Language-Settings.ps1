@@ -260,11 +260,36 @@ function Update-java-CIConfig($pkgs, $ciRepo, $locationInDocRepo, $monikerId=$nu
   Set-Content -Path $pkgJsonLoc -Value $jsonContent
 }
 
-$PackageExclusions = @{ 
-
+$PackageExclusions = @{
+    "azure-identity-spring" = "Spring team does not want this published. See Azure/azure-sdk#3255.";
+    "azure-spring-boot" = "Spring team does not want this published. See Azure/azure-sdk#3255.";
+    "azure-spring-boot-starter-keyvault-certificates" = "Spring team does not want this published. See Azure/azure-sdk#3255.";
+    "azure-spring-cloud-autoconfigure" = "Spring team does not want this published. See Azure/azure-sdk#3255.";
+    "azure-spring-cloud-context" = "Spring team does not want this published. See Azure/azure-sdk#3255.";
+    "azure-spring-cloud-feature-management" = "Spring team does not want this published. See Azure/azure-sdk#3255.";
+    "azure-spring-cloud-feature-management-web" = "Spring team does not want this published. See Azure/azure-sdk#3255.";
+    "azure-spring-integration-core" = "Spring team does not want this published. See Azure/azure-sdk#3255.";
+    "azure-spring-integration-eventhubs" = "Spring team does not want this published. See Azure/azure-sdk#3255.";
+    "azure-spring-integration-servicebus" = "Spring team does not want this published. See Azure/azure-sdk#3255.";
+    "azure-spring-integration-storage-queue" = "Spring team does not want this published. See Azure/azure-sdk#3255.";
+    "azure-spring-integration-test" = "Spring team does not want this published. See Azure/azure-sdk#3255.";
+    "azure-spring-cloud-messaging" = "Spring team does not want this published. See Azure/azure-sdk#3255.";
+    "azure-spring-cloud-storage" = "Spring team does not want this published. See Azure/azure-sdk#3255.";
+    "azure-spring-cloud-stream-binder-eventhubs" = "Spring team does not want this published. See Azure/azure-sdk#3255.";
+    "azure-spring-cloud-stream-binder-servicebus-core" = "Spring team does not want this published. See Azure/azure-sdk#3255.";
+    "azure-spring-cloud-stream-binder-servicebus-queue" = "Spring team does not want this published. See Azure/azure-sdk#3255.";
+    "azure-spring-cloud-stream-binder-servicebus-topic" = "Spring team does not want this published. See Azure/azure-sdk#3255.";
+    "azure-spring-cloud-stream-binder-test" = "Spring team does not want this published. See Azure/azure-sdk#3255.";
+    "azure-spring-cloud-telemetry" = "Spring team does not want this published. See Azure/azure-sdk#3255.";
+    "azure-spring-data-cosmos" = "Spring team does not want this published. See Azure/azure-sdk#3255.";
+    "spring-cloud-azure-appconfiguration-config" = "Spring team does not want this published. See Azure/azure-sdk#3255.";
+    "spring-cloud-azure-appconfiguration-config-web" = "Spring team does not want this published. See Azure/azure-sdk#3255.";
+    "spring-cloud-azure-feature-management" = "Spring team does not want this published. See Azure/azure-sdk#3255.";
+    "azure-spring-cloud-appconfiguration-config" = "Spring team does not want this published. See Azure/azure-sdk#3255.";
+    "azure-spring-cloud-appconfiguration-config-web" = "Spring team does not want this published. See Azure/azure-sdk#3255."
 }
 
-# Validates if the package will succeed in the CI build by validating the 
+# Validates if the package will succeed in the CI build by validating the
 # existence of a com folder in the unzipped source package
 function SourcePackageHasComFolder($artifactNamePrefix, $packageDirectory) {
   try
@@ -275,7 +300,7 @@ function SourcePackageHasComFolder($artifactNamePrefix, $packageDirectory) {
       -Dartifact="$packageArtifact" `
       -DoutputDirectory="$packageDirectory"
 
-    if ($LASTEXITCODE) { 
+    if ($LASTEXITCODE) {
       LogWarning "Could not download source artifact: $packageArtifact"
       $mvnResults | Write-Host
       return $false
@@ -291,10 +316,10 @@ function SourcePackageHasComFolder($artifactNamePrefix, $packageDirectory) {
       return $false
     }
   }
-  catch 
+  catch
   {
     LogError "Exception while updating checking if package can be documented: $($package.packageGroupId):$($package.packageArtifactId)"
-    LogError $_ 
+    LogError $_
     LogError $_.ScriptStackTrace
     return $false
   }
@@ -303,7 +328,7 @@ function SourcePackageHasComFolder($artifactNamePrefix, $packageDirectory) {
 }
 
 function PackageDependenciesResolve($artifactNamePrefix, $packageDirectory) {
-  
+
   $pomArtifactName = "${artifactNamePrefix}:pom"
   $artifactDownloadOutput = mvn `
     dependency:copy `
@@ -324,8 +349,8 @@ function PackageDependenciesResolve($artifactNamePrefix, $packageDirectory) {
     -f $downloadedPomPath `
     dependency:copy-dependencies `
     -P '!azure-mgmt-sdk-test-jar' `
-    -DoutputDirectory="$packageDirectory" 
-  
+    -DoutputDirectory="$packageDirectory"
+
   if ($LASTEXITCODE) {
     LogWarning "Could not resolve dependencies for: $pomArtifactName"
     $copyDependencyOutput | Write-Host
@@ -347,7 +372,7 @@ function ValidatePackage($package, $workingDirectory) {
     -and (PackageDependenciesResolve $artifactNamePrefix $packageDirectory)
 }
 
-function Update-java-DocsMsPackages($DocsRepoLocation, $DocsMetadata) { 
+function Update-java-DocsMsPackages($DocsRepoLocation, $DocsMetadata) {
   Write-Host "Excluded packages:"
   foreach ($excludedPackage in $PackageExclusions.Keys) {
     Write-Host "  $excludedPackage - $($PackageExclusions[$excludedPackage])"
@@ -373,11 +398,11 @@ function UpdateDocsMsPackages($DocConfigFile, $Mode, $DocsMetadata) {
   New-Item -ItemType Directory -Force -Path $workingDirectory | Out-Null
 
   $packageOutputPath = 'docs-ref-autogen'
-  if ($Mode -eq 'preview') { 
+  if ($Mode -eq 'preview') {
     $packageOutputPath = 'preview/docs-ref-autogen'
   }
   $targetPackageList = $packageConfig.Where({ $_.output_path -eq $packageOutputPath})
-  if ($targetPackageList.Length -eq 0) { 
+  if ($targetPackageList.Length -eq 0) {
     LogError "Unable to find package config for $packageOutputPath in $DocConfigFile"
     exit 1
   } elseif ($targetPackageList.Length -gt 1) {
@@ -386,14 +411,14 @@ function UpdateDocsMsPackages($DocConfigFile, $Mode, $DocsMetadata) {
   }
 
   $targetPackageList = $targetPackageList[0]
- 
+
   $outputPackages = @()
   foreach ($package in $targetPackageList.packages) {
     $packageGroupId = $package.packageGroupId
     $packageName = $package.packageArtifactId
 
     $matchingPublishedPackageArray = $DocsMetadata.Where({
-      $_.Package -eq $packageName -and $_.GroupId -eq $packageGroupId 
+      $_.Package -eq $packageName -and $_.GroupId -eq $packageGroupId
     })
 
     # If this package does not match any published packages keep it in the list.
@@ -405,19 +430,19 @@ function UpdateDocsMsPackages($DocConfigFile, $Mode, $DocsMetadata) {
       continue
     }
 
-    if ($matchingPublishedPackageArray.Count -gt 1) { 
+    if ($matchingPublishedPackageArray.Count -gt 1) {
       LogWarning "Found more than one matching published package in metadata for $packageName; only updating first entry"
     }
     $matchingPublishedPackage = $matchingPublishedPackageArray[0]
 
-    if ($Mode -eq 'preview' -and !$matchingPublishedPackage.VersionPreview.Trim()) { 
+    if ($Mode -eq 'preview' -and !$matchingPublishedPackage.VersionPreview.Trim()) {
       # If we are in preview mode and the package does not have a superseding
-      # preview version, remove the package from the list. 
+      # preview version, remove the package from the list.
       Write-Host "Remove superseded preview package: $packageName"
       continue
     }
 
-    if ($Mode -eq 'latest' -and !$matchingPublishedPackage.VersionGA.Trim()) { 
+    if ($Mode -eq 'latest' -and !$matchingPublishedPackage.VersionGA.Trim()) {
       LogWarning "Metadata is missing GA version for GA package $packageName. Keeping existing package."
       $outputPackages += $package
       continue
@@ -425,7 +450,7 @@ function UpdateDocsMsPackages($DocConfigFile, $Mode, $DocsMetadata) {
 
     $packageVersion = $($matchingPublishedPackage.VersionGA)
     if ($Mode -eq 'preview') {
-      if (!$matchingPublishedPackage.VersionPreview.Trim()) { 
+      if (!$matchingPublishedPackage.VersionPreview.Trim()) {
         LogWarning "Metadata is missing preview version for preview package $packageName. Keeping existing package."
         $outputPackages += $package
         continue
@@ -452,12 +477,12 @@ function UpdateDocsMsPackages($DocConfigFile, $Mode, $DocsMetadata) {
   }
 
   $outputPackagesHash = @{}
-  foreach ($package in $outputPackages) { 
+  foreach ($package in $outputPackages) {
     $outputPackagesHash["$($package.packageGroupId):$($package.packageArtifactId)"] = $true
   }
 
-  $remainingPackages = @() 
-  if ($Mode -eq 'preview') { 
+  $remainingPackages = @()
+  if ($Mode -eq 'preview') {
     $remainingPackages = $DocsMetadata.Where({
       $_.VersionPreview.Trim() -and !$outputPackagesHash.ContainsKey("$($package.packageGroupId):$($package.packageArtifactId)")
     })
