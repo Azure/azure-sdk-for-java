@@ -22,13 +22,12 @@ public final class DatasetsCreateOrUpdateSamples {
     /**
      * Sample code: Datasets_Update.
      *
-     * @param dataFactoryManager Entry point to DataFactoryManager. The Azure Data Factory V2 management API provides a
-     *     RESTful set of web services that interact with Azure Data Factory V2 services.
+     * @param manager Entry point to DataFactoryManager.
      */
-    public static void datasetsUpdate(com.azure.resourcemanager.datafactory.DataFactoryManager dataFactoryManager)
+    public static void datasetsUpdate(com.azure.resourcemanager.datafactory.DataFactoryManager manager)
         throws IOException {
         DatasetResource resource =
-            dataFactoryManager
+            manager
                 .datasets()
                 .getWithResponse("exampleResourceGroup", "exampleFactoryName", "exampleDataset", null, Context.NONE)
                 .getValue();

@@ -7,9 +7,9 @@
 
   <parent>
     <groupId>com.azure.spring</groupId>
-    <artifactId>azure-spring-boot-test-parent</artifactId>
-    <version>1.0.0</version> <!-- {x-version-update;com.azure.spring:azure-spring-boot-test-parent;current} -->
-    <relativePath>../azure-spring-boot-test-parent</relativePath>
+    <artifactId>azure-spring-cloud-test-parent</artifactId>
+    <version>1.0.0</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-test-parent;current} -->
+    <relativePath>../azure-spring-cloud-test-parent</relativePath>
   </parent>
 
   <artifactId>azure-spring-cloud-test-eventhubs</artifactId>

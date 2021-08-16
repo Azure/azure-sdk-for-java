@@ -1,10 +1,22 @@
 # Release History
 
-## 4.4.0-beta.2 (Unreleased)
+## 4.4.0-beta.3 (Unreleased)
+
+
+## 4.4.0-beta.2 (2021-08-13)
 
 ### Features Added
-- Added `Exportable` and `ReleasePolicy` to `CreateKeyOptions`, `ImportKeyOptions`, and `KeyProperties` to support Secure Key Release for Key Vault and Managed HSM.
-- Added a `release()` operation to `KeyClient` and `KeyAsyncClient` to release a key for Key Vault and Managed HSM.
+- To support Secure Key Release for Key Vault and Managed HSM, added `Exportable` and `ReleasePolicy` to the following classes:
+  - `CreateKeyOptions` and its children classes: `CreateEcKeyOptions`, `CreateOctKeyOptions` and `CreateRsaKeyOptions`.
+  - `ImportKeyOptions`
+  - `KeyProperties`
+- Added `releaseKey()` and `releaseKeyWithResponse()` operations to `KeyClient` and `KeyAsyncClient` to securely release a key for Key Vault and Managed HSM.
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` dependency to `1.19.0`
+- Upgraded `azure-core-http-netty` dependency to `1.10.2`
 
 ## 4.4.0-beta.1 (2021-07-09)
 

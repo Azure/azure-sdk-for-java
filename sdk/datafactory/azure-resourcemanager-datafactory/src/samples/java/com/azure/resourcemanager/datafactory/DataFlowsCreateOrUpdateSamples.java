@@ -17,12 +17,11 @@ public final class DataFlowsCreateOrUpdateSamples {
     /**
      * Sample code: DataFlows_Update.
      *
-     * @param dataFactoryManager Entry point to DataFactoryManager. The Azure Data Factory V2 management API provides a
-     *     RESTful set of web services that interact with Azure Data Factory V2 services.
+     * @param manager Entry point to DataFactoryManager.
      */
-    public static void dataFlowsUpdate(com.azure.resourcemanager.datafactory.DataFactoryManager dataFactoryManager) {
+    public static void dataFlowsUpdate(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
         DataFlowResource resource =
-            dataFactoryManager
+            manager
                 .dataFlows()
                 .getWithResponse("exampleResourceGroup", "exampleFactoryName", "exampleDataFlow", null, Context.NONE)
                 .getValue();
