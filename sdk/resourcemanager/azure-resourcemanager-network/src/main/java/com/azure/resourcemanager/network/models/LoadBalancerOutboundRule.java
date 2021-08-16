@@ -32,7 +32,7 @@ public interface LoadBalancerOutboundRule
     LoadBalancerBackend backend();
 
     /** @return the number of outbound ports to be used for NAT */
-    int allocatedOutboundPorts(); // TODO: need this or not?
+    int allocatedOutboundPorts();
 
     /** @return the provisioning state of the outbound rule resource */
     ProvisioningState provisioningState();

@@ -256,7 +256,7 @@ class LoadBalancerImpl
             }
         }
 
-        // TODO: Reset and update outbound rules
+        // Reset and update outbound rules
         List<OutboundRuleInner> innerOutboundRules = innersFromWrappers(this.outboundRules.values());
         if (null == innerOutboundRules) {
             innerOutboundRules = new ArrayList<>();
