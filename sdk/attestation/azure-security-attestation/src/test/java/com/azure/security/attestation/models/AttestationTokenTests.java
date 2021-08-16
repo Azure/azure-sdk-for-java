@@ -308,9 +308,9 @@ public class AttestationTokenTests extends AttestationClientTestBase {
         assertEquals("Test Algorithm", object.getAlg());
         assertEquals(31415926, object.getInteger());
         assertArrayEquals(new int[]{123, 456, 789}, object.getIntegerArray());
-        assertEquals(timeNow, newToken.getIssuedAt());
-        assertEquals(timeNow, newToken.getNotBefore());
-        assertEquals(timeNow.plusSeconds(30), newToken.getExpiresOn());
+        assertEquals(timeNow.atZone(ZoneId.systemDefault()), newToken.getIssuedAt().atZone(ZoneId.systemDefault()));
+        assertEquals(timeNow.atZone(ZoneId.systemDefault()), newToken.getNotBefore().atZone(ZoneId.systemDefault()));
+        assertEquals(timeNow.atZone(ZoneId.systemDefault()).plusSeconds(30), newToken.getExpiresOn().atZone(ZoneId.systemDefault()));
         assertEquals("Fred", newToken.getIssuer());
 
         assertDoesNotThrow(() -> ((AttestationTokenImpl) newToken).validate(null, new AttestationTokenValidationOptions()));
@@ -341,9 +341,6 @@ public class AttestationTokenTests extends AttestationClientTestBase {
         assertEquals("Test Algorithm", object.getAlg());
         assertEquals(31415926, object.getInteger());
         assertArrayEquals(new int[]{123, 456, 789}, object.getIntegerArray());
-        assertEquals(timeNow, newToken.getIssuedAt());
-        assertEquals(timeNow, newToken.getNotBefore());
-        assertEquals(timeNow.plusSeconds(30), newToken.getExpiresOn());
         assertEquals("Fred", newToken.getIssuer());
 
         RuntimeException ex = assertThrows(RuntimeException.class, () ->
@@ -379,8 +376,8 @@ public class AttestationTokenTests extends AttestationClientTestBase {
                 new AttestationTokenValidationOptions()));
         // Both the current time and the expiration time should be in the exception message.
         assertTrue(ex.getMessage().contains("expiration"));
-        assertTrue(ex.getMessage().contains(timeNow.toString()));
-        assertTrue(ex.getMessage().contains(timeNow.minusSeconds(30).toString()));
+        assertTrue(ex.getMessage().contains(timeNow.atZone(ZoneOffset.systemDefault()).toInstant().toString()));
+        assertTrue(ex.getMessage().contains(timeNow.minusSeconds(30).atZone(ZoneOffset.systemDefault()).toInstant().toString()));
     }
 
     @Test
@@ -407,8 +404,9 @@ public class AttestationTokenTests extends AttestationClientTestBase {
                 new AttestationTokenValidationOptions()));
         // Both the current time and the expiration time should be in the exception message.
         assertTrue(ex.getMessage().contains("NotBefore"));
-        assertTrue(ex.getMessage().contains(timeNow.toString()));
-        assertTrue(ex.getMessage().contains(timeNow.plusSeconds(30).toString()));
+        String timeNowS = timeNow.atZone(ZoneOffset.systemDefault()).toInstant().toString();
+        assertTrue(ex.getMessage().contains(timeNow.atZone(ZoneOffset.systemDefault()).toInstant().toString()));
+        assertTrue(ex.getMessage().contains(timeNow.plusSeconds(30).atZone(ZoneOffset.systemDefault()).toInstant().toString()));
     }
 
     @Test
@@ -538,9 +536,9 @@ public class AttestationTokenTests extends AttestationClientTestBase {
         String iat = token.getIssuedAt().toString();
         String exp = token.getExpiresOn().toString();
         // Because this is a pre-canned token, we know exactly when the token was issued and expires.
-        assertEquals("2021-07-21T14:08:16", token.getNotBefore().toString());
-        assertEquals("2021-07-21T14:08:16", token.getIssuedAt().toString());
-        assertEquals("2021-07-21T22:08:16", token.getExpiresOn().toString());
+        assertEquals("2021-07-21T21:08:16Z", token.getNotBefore().toString());
+        assertEquals("2021-07-21T21:08:16Z", token.getIssuedAt().toString());
+        assertEquals("2021-07-22T05:08:16Z", token.getExpiresOn().toString());
 
         com.azure.security.attestation.implementation.models.AttestationResult generatedAttestResult;
 

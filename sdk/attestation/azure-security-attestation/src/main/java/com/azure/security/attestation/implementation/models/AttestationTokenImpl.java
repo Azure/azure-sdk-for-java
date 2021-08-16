@@ -46,8 +46,6 @@ import java.security.interfaces.RSAPublicKey;
 import java.text.ParseException;
 import java.time.Duration;
 import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -234,9 +232,9 @@ public class AttestationTokenImpl implements AttestationToken {
         return issuer.get();
     }
 
-    final AtomicReference<LocalDateTime> issuedAt = new AtomicReference<>();
+    final AtomicReference<Instant> issuedAt = new AtomicReference<>();
     @Override
-    public LocalDateTime getIssuedAt() {
+    public Instant getIssuedAt() {
         if (issuedAt.get() == null) {
             Map<String, Object> claimSet = payload.toJSONObject();
             Object iatObject = claimSet.get("iat");
@@ -245,14 +243,14 @@ public class AttestationTokenImpl implements AttestationToken {
             }
 
             long iat = (long) iatObject;
-            issuedAt.set(LocalDateTime.ofInstant(Instant.ofEpochSecond(iat), ZoneId.systemDefault()));
+            issuedAt.set(Instant.ofEpochSecond(iat));
         }
         return issuedAt.get();
     }
 
-    final AtomicReference<LocalDateTime> expiresOn = new AtomicReference<>();
+    final AtomicReference<Instant> expiresOn = new AtomicReference<>();
     @Override
-    public LocalDateTime getExpiresOn() {
+    public Instant getExpiresOn() {
         if (expiresOn.get() == null) {
             Map<String, Object> claimSet = payload.toJSONObject();
             Object expObject = claimSet.get("exp");
@@ -261,14 +259,14 @@ public class AttestationTokenImpl implements AttestationToken {
             }
 
             long exp = (long) expObject;
-            expiresOn.set(LocalDateTime.ofInstant(Instant.ofEpochSecond(exp), ZoneId.systemDefault()));
+            expiresOn.set(Instant.ofEpochSecond(exp));
         }
         return expiresOn.get();
     }
 
-    final AtomicReference<LocalDateTime> notBeforeTime = new AtomicReference<>();
+    final AtomicReference<Instant> notBeforeTime = new AtomicReference<>();
     @Override
-    public LocalDateTime getNotBefore() {
+    public Instant getNotBefore() {
         if (notBeforeTime.get() == null) {
             Map<String, Object> claimSet = payload.toJSONObject();
             Object nbfObject = claimSet.get("nbf");
@@ -277,7 +275,7 @@ public class AttestationTokenImpl implements AttestationToken {
             }
 
             long nbf = (long) nbfObject;
-            notBeforeTime.set(LocalDateTime.ofInstant(Instant.ofEpochSecond(nbf), ZoneId.systemDefault()));
+            notBeforeTime.set(Instant.ofEpochSecond(nbf));
         }
         return notBeforeTime.get();
     }
@@ -328,11 +326,11 @@ public class AttestationTokenImpl implements AttestationToken {
     }
 
     private void validateTokenTimeProperties(AttestationTokenValidationOptions options) {
-        LocalDateTime timeNow = LocalDateTime.now();
+        Instant timeNow = Instant.now();
         timeNow = timeNow.minusNanos(timeNow.getNano());
 
         if (this.getExpiresOn() != null && options.getValidateExpiresOn()) {
-            final LocalDateTime expirationTime = this.getExpiresOn();
+            final Instant expirationTime = this.getExpiresOn();
             if (timeNow.isAfter(expirationTime)) {
                 final Duration timeDelta = Duration.between(timeNow, expirationTime);
                 if (timeDelta.abs().compareTo(options.getValidationSlack()) > 0) {
@@ -344,7 +342,7 @@ public class AttestationTokenImpl implements AttestationToken {
         }
 
         if (this.getNotBefore() != null && options.getValidateNotBefore()) {
-            final LocalDateTime notBefore = this.getNotBefore();
+            final Instant notBefore = this.getNotBefore();
             if (timeNow.isBefore(notBefore)) {
                 final Duration timeDelta = Duration.between(timeNow, notBefore);
                 if (timeDelta.abs().compareTo(options.getValidationSlack()) > 0) {
