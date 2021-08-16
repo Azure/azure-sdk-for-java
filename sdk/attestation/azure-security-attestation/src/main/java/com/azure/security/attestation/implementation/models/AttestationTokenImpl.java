@@ -49,9 +49,9 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -238,19 +238,14 @@ public class AttestationTokenImpl implements AttestationToken {
     @Override
     public LocalDateTime getIssuedAt() {
         if (issuedAt.get() == null) {
-            JWTClaimsSet claimsSet;
-            try {
-                claimsSet = JWTClaimsSet.parse(payload.toJSONObject());
-            } catch (ParseException e) {
-                throw logger.logExceptionAsError(new RuntimeException(e.getMessage()));
+            Map<String, Object> claimSet = payload.toJSONObject();
+            Object iatObject = claimSet.get("iat");
+            if (!(iatObject instanceof Long)) {
+                throw logger.logExceptionAsError(new RuntimeException(String.format("Invalid type for IssuedAt: %s", iatObject.getClass().getName())));
             }
 
-            Date issueTime = claimsSet.getIssueTime();
-            Instant instant = issueTime.toInstant();
-            LocalDateTime localDateTime = instant
-                .atZone(ZoneId.systemDefault())
-                    .toLocalDateTime();
-            issuedAt.set(localDateTime);
+            long iat = (long) iatObject;
+            issuedAt.set(LocalDateTime.ofInstant(Instant.ofEpochSecond(iat), ZoneId.systemDefault()));
         }
         return issuedAt.get();
     }
@@ -259,18 +254,14 @@ public class AttestationTokenImpl implements AttestationToken {
     @Override
     public LocalDateTime getExpiresOn() {
         if (expiresOn.get() == null) {
-            JWTClaimsSet claimsSet;
-            try {
-                claimsSet = JWTClaimsSet.parse(payload.toJSONObject());
-            } catch (ParseException e) {
-                throw logger.logExceptionAsError(new RuntimeException(e.getMessage()));
+            Map<String, Object> claimSet = payload.toJSONObject();
+            Object expObject = claimSet.get("exp");
+            if (!(expObject instanceof Long)) {
+                throw logger.logExceptionAsError(new RuntimeException(String.format("Invalid type for ExpiresOn: %s", expiresOn.getClass().getName())));
             }
 
-            expiresOn.set(claimsSet
-                .getExpirationTime()
-                .toInstant()
-                .atZone(ZoneId.systemDefault())
-                .toLocalDateTime());
+            long exp = (long) expObject;
+            expiresOn.set(LocalDateTime.ofInstant(Instant.ofEpochSecond(exp), ZoneId.systemDefault()));
         }
         return expiresOn.get();
     }
@@ -279,18 +270,14 @@ public class AttestationTokenImpl implements AttestationToken {
     @Override
     public LocalDateTime getNotBefore() {
         if (notBeforeTime.get() == null) {
-            JWTClaimsSet claimsSet;
-            try {
-                claimsSet = JWTClaimsSet.parse(payload.toJSONObject());
-            } catch (ParseException e) {
-                throw logger.logExceptionAsError(new RuntimeException(e.getMessage()));
+            Map<String, Object> claimSet = payload.toJSONObject();
+            Object nbfObject = claimSet.get("nbf");
+            if (!(nbfObject instanceof Long)) {
+                throw logger.logExceptionAsError(new RuntimeException(String.format("Invalid type for NotBefore: %s", nbfObject.getClass().getName())));
             }
 
-            notBeforeTime.set(claimsSet
-                .getNotBeforeTime()
-                .toInstant()
-                .atZone(ZoneId.systemDefault())
-                .toLocalDateTime());
+            long nbf = (long) nbfObject;
+            notBeforeTime.set(LocalDateTime.ofInstant(Instant.ofEpochSecond(nbf), ZoneId.systemDefault()));
         }
         return notBeforeTime.get();
     }

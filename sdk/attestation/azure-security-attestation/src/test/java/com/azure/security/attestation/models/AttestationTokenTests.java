@@ -24,6 +24,7 @@ import java.security.cert.X509Certificate;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.LinkedHashMap;
@@ -66,6 +67,7 @@ final class TestObject {
     @JsonProperty(value = "exp")
     private long expiration;
     public TestObject setExpiresOn(LocalDateTime expirationTime) {
+        long exp1 = expirationTime.toEpochSecond(ZoneOffset.UTC);
         Instant instant = expirationTime.atZone(ZoneId.systemDefault()).toInstant();
         this.expiration = instant.toEpochMilli() / 1000;
         return this;
