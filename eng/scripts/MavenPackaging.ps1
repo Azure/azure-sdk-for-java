@@ -153,3 +153,36 @@ function Get-FilteredMavenPackageDetails([string]$ArtifactDirectory, [string]$Gr
 
   return $filteredPackageDetails
 }
+
+# Compare the contents of .sha1 hash files for a local repository to the same
+# files in Maven Central. Returns $false if none of the hash files exist in the
+# remote, $true if all hashes exist and match the local hash, otherwise throws.
+function Test-ReleasedPackage([string]$LocalRepositoryDirectory) {
+  $localHashFiles = Get-ChildItem $localRepositoryDirectory -Recurse -File `
+    -Include "*.sha1" -Exclude '*.asc.sha1','maven-metadata.xml.sha1'
+
+  $matchCount = 0
+  $foundCount = 0
+  
+  foreach($hashFile in $localHashFiles) {
+    $relativePath = [IO.Path]::GetRelativePath($localRepositoryDirectory, $_)
+    $remoteUrl = "https://repo1.maven.org/maven2/$($relativePath.Replace('\','/'))"
+
+    $localHash = Get-Content -Path $hashFile -Raw
+    
+    Write-Information "Getting remote content for $relativePath"
+    Write-Information "Invoke-RestMethod -Method GET -Uri $remoteUrl -SkipHttpErrorCheck"
+    $response = Invoke-WebRequest -Method GET -Uri $remoteUrl -SkipHttpErrorCheck
+
+    if($response.StatusCode -ge 200 -and $response.StatusCode -lt 300) {
+      $foundCount++
+      if($response.Content -ne $localHash) {
+        $matchCount++
+      }
+    }
+  }
+
+  if($foundCount -eq 0) { return $false }
+  if($matchCount -eq $localHashFiles.Length) { return $true }
+  throw "Package already deployed, but with different content."
+}
