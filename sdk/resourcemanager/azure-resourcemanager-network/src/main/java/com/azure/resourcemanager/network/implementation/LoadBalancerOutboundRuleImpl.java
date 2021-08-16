@@ -74,7 +74,7 @@ public class LoadBalancerOutboundRuleImpl extends ChildResourceImpl<OutboundRule
 
     @Override
     public int allocatedOutboundPorts() {
-        return 0;
+        return this.innerModel().allocatedOutboundPorts();
     }
 
     @Override
