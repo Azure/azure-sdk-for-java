@@ -39,7 +39,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -282,12 +281,13 @@ public class RetryPolicyTests {
             .verifyComplete();
     }
 
+    @SuppressWarnings("ReactiveStreamsUnusedPublisher")
     @Test
     public void retryConsumesBody() {
         final AtomicInteger bodyConsumptionCount = new AtomicInteger();
         Flux<ByteBuffer> errorBody = Flux.generate(sink -> {
             bodyConsumptionCount.incrementAndGet();
-            sink.next(ByteBuffer.wrap("Should be consumed" .getBytes(StandardCharsets.UTF_8)));
+            sink.next(ByteBuffer.wrap("Should be consumed".getBytes(StandardCharsets.UTF_8)));
             sink.complete();
         });
 
