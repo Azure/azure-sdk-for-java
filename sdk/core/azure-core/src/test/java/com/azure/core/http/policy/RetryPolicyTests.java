@@ -388,7 +388,8 @@ public class RetryPolicyTests {
         // Since DateTime based Retry-After uses OffsetDateTime.now internally make sure this result skew isn't larger
         // than an allowable bound.
         Duration skew = Duration.ofSeconds(30).minus(actual);
-        assertTrue(skew.getSeconds() < 2);
+        assertTrue(skew.toSeconds() < 2, () -> "Expected retry skew of less than 2 seconds but was "
+            + skew.toMillis() + "ms.");
     }
 
     private static RetryStrategy createStatusCodeRetryStrategy(int... retriableErrorCodes) {
