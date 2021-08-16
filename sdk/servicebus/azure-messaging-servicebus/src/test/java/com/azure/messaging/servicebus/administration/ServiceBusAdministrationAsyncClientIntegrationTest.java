@@ -325,8 +325,8 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestBase {
             .setFilter(filter);
 
         // Act & Assert
-        StepVerifier.create(client.createRuleWithResponse(topicName, subscriptionName, ruleName, options))
-            .assertNext(response -> {
+        client.createRuleWithResponse(topicName, subscriptionName, ruleName, options)
+            .subscribe(response -> {
                 assertEquals(201, response.getStatusCode());
 
                 final RuleProperties contents = response.getValue();
@@ -342,8 +342,7 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestBase {
 
                 assertNotNull(contents.getAction());
                 assertTrue(contents.getAction() instanceof EmptyRuleAction);
-            })
-            .verifyComplete();
+            });
     }
 
     @ParameterizedTest
@@ -899,7 +898,7 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestBase {
         // Arrange
         final String connectionString = interceptorManager.isPlaybackMode()
             ? "Endpoint=sb://foo.servicebus.windows.net;SharedAccessKeyName=dummyKey;SharedAccessKey=dummyAccessKey"
-            : TestUtils.getConnectionString(false);
+            : TestUtils.getConnectionString();
 
         final String connectionStringUpdated = connectionString.replace("SharedAccessKey=",
             "SharedAccessKey=fake-key-");
@@ -1060,7 +1059,7 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestBase {
     private ServiceBusAdministrationAsyncClient createClient(HttpClient httpClient) {
         final String connectionString = interceptorManager.isPlaybackMode()
             ? "Endpoint=sb://foo.servicebus.windows.net;SharedAccessKeyName=dummyKey;SharedAccessKey=dummyAccessKey"
-            : TestUtils.getConnectionString(false);
+            : TestUtils.getConnectionString();
 
         final ServiceBusAdministrationClientBuilder builder = new ServiceBusAdministrationClientBuilder()
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
