@@ -17,6 +17,7 @@ import com.azure.data.schemaregistry.models.SchemaProperties;
 import com.azure.data.schemaregistry.models.SerializationType;
 import reactor.core.publisher.Mono;
 
+import java.net.URI;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
@@ -24,6 +25,8 @@ import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentSkipListMap;
 import java.util.function.Function;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * HTTP-based client that interacts with Azure Schema Registry service to store and retrieve schemas on demand.
@@ -34,6 +37,7 @@ public final class SchemaRegistryAsyncClient {
 
     static final Charset SCHEMA_REGISTRY_SERVICE_ENCODING = StandardCharsets.UTF_8;
 
+    private static final Pattern SCHEMA_PATTERN = Pattern.compile("/\\$schemagroups/(?<schemaGroup>.+)/schemas/(?<schemaName>.+?)/");
     private final ClientLogger logger = new ClientLogger(SchemaRegistryAsyncClient.class);
     private final AzureSchemaRegistry restService;
     private final Integer maxSchemaMapSize;
@@ -144,20 +148,37 @@ public final class SchemaRegistryAsyncClient {
         Objects.requireNonNull(schemaId, "'schemaId' should not be null");
         return this.restService.getSchemas().getByIdWithResponseAsync(schemaId)
             .handle((response, sink) -> {
-                SerializationType serializationType =
+                final SerializationType serializationType =
                     SerializationType.fromString(response.getDeserializedHeaders().getSchemaType());
+                final URI location = URI.create(response.getDeserializedHeaders().getLocation());
+                final Matcher matcher = SCHEMA_PATTERN.matcher(location.getPath());
 
-                SchemaProperties schemaObject = new SchemaProperties(schemaId,
+                if (!matcher.lookingAt()) {
+                    sink.error(new IllegalArgumentException("Response location does not contain schema group or"
+                        + " schema name. Location: " + location.getPath()));
+
+                    return;
+                }
+
+                final String schemaGroup = matcher.group("schemaGroup");
+                final String schemaName = matcher.group("schemaName");
+                final SchemaProperties schemaObject = new SchemaProperties(schemaId,
                     serializationType,
-                    null,
+                    schemaName,
                     response.getValue());
+                final String schemaCacheKey = getSchemaStringCacheKey(schemaGroup, schemaName,
+                     new String(response.getValue(), SCHEMA_REGISTRY_SERVICE_ENCODING));
 
+                schemaStringCache.putIfAbsent(schemaCacheKey, schemaObject);
                 idCache.putIfAbsent(schemaId, schemaObject);
+
                 logger.verbose("Cached schema object. Path: '{}'", schemaId);
-                SimpleResponse<SchemaProperties> schemaRegistryObjectSimpleResponse = new SimpleResponse<>(
+
+                SimpleResponse<SchemaProperties> schemaResponse = new SimpleResponse<>(
                     response.getRequest(), response.getStatusCode(),
                     response.getHeaders(), schemaObject);
-                sink.next(schemaRegistryObjectSimpleResponse);
+
+                sink.next(schemaResponse);
             });
     }
 
