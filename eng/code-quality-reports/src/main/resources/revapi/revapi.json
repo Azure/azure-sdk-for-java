@@ -302,7 +302,7 @@
       {
         "regex": true,
         "code": "java\\.annotation\\.attributeValueChanged",
-        "new": "method byte\\[\\] com\\.azure\\.security\\.keyvault\\.keys\\.models\\.JsonWebKey::get(D|Dp|E|K|N|P|Q|Qi|T|X|Y)\\(\\)",
+        "new": "method byte\\[\\] com\\.azure\\.security\\.keyvault\\.keys\\.models\\.JsonWebKey::(g|s)et(D|Dp|Dq|E|K|N|P|Q|Qi|T|X|Y)\\(\\)",
         "justification": "The class used by the serialization/deserialization annotations is package private and moving it is not a breaking change."
       },
       {
@@ -342,10 +342,9 @@
         "justification": "New method included in azure-core."
       },
       {
-        "code": "java.annotation.attributeValueChanged",
-        "old": "method byte[] com.azure.security.keyvault.keys.models.JsonWebKey::getDq()",
-        "new": "method byte[] com.azure.security.keyvault.keys.models.JsonWebKey::getDq()",
-        "justification": "Change com.azure.security.keyvault.keys.models.Base64UrlJsonSerializer package Name"
+        "code": "java.method.added",
+        "new": "method void com.azure.core.credential.AzureSasCredential::<init>(java.lang.String, java.util.function.Function<java.lang.String, java.lang.String>)",
+        "justification": "New constructor added in azure-core."
       }
     ]
   }
