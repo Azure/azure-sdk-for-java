@@ -9,31 +9,31 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The ManagedClusterPodIdentity model. */
+/** Details about the pod identity assigned to the Managed Cluster. */
 @Fluent
 public class ManagedClusterPodIdentity {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagedClusterPodIdentity.class);
 
     /*
-     * Name of the pod identity.
+     * The name of the pod identity.
      */
     @JsonProperty(value = "name", required = true)
     private String name;
 
     /*
-     * Namespace of the pod identity.
+     * The namespace of the pod identity.
      */
     @JsonProperty(value = "namespace", required = true)
     private String namespace;
 
     /*
-     * Binding selector to use for the AzureIdentityBinding resource.
+     * The binding selector to use for the AzureIdentityBinding resource.
      */
     @JsonProperty(value = "bindingSelector")
     private String bindingSelector;
 
     /*
-     * Information of the user assigned identity.
+     * The user assigned identity details.
      */
     @JsonProperty(value = "identity", required = true)
     private UserAssignedIdentity identity;
@@ -51,7 +51,7 @@ public class ManagedClusterPodIdentity {
     private ManagedClusterPodIdentityProvisioningInfo provisioningInfo;
 
     /**
-     * Get the name property: Name of the pod identity.
+     * Get the name property: The name of the pod identity.
      *
      * @return the name value.
      */
@@ -60,7 +60,7 @@ public class ManagedClusterPodIdentity {
     }
 
     /**
-     * Set the name property: Name of the pod identity.
+     * Set the name property: The name of the pod identity.
      *
      * @param name the name value to set.
      * @return the ManagedClusterPodIdentity object itself.
@@ -71,7 +71,7 @@ public class ManagedClusterPodIdentity {
     }
 
     /**
-     * Get the namespace property: Namespace of the pod identity.
+     * Get the namespace property: The namespace of the pod identity.
      *
      * @return the namespace value.
      */
@@ -80,7 +80,7 @@ public class ManagedClusterPodIdentity {
     }
 
     /**
-     * Set the namespace property: Namespace of the pod identity.
+     * Set the namespace property: The namespace of the pod identity.
      *
      * @param namespace the namespace value to set.
      * @return the ManagedClusterPodIdentity object itself.
@@ -91,7 +91,7 @@ public class ManagedClusterPodIdentity {
     }
 
     /**
-     * Get the bindingSelector property: Binding selector to use for the AzureIdentityBinding resource.
+     * Get the bindingSelector property: The binding selector to use for the AzureIdentityBinding resource.
      *
      * @return the bindingSelector value.
      */
@@ -100,7 +100,7 @@ public class ManagedClusterPodIdentity {
     }
 
     /**
-     * Set the bindingSelector property: Binding selector to use for the AzureIdentityBinding resource.
+     * Set the bindingSelector property: The binding selector to use for the AzureIdentityBinding resource.
      *
      * @param bindingSelector the bindingSelector value to set.
      * @return the ManagedClusterPodIdentity object itself.
@@ -111,7 +111,7 @@ public class ManagedClusterPodIdentity {
     }
 
     /**
-     * Get the identity property: Information of the user assigned identity.
+     * Get the identity property: The user assigned identity details.
      *
      * @return the identity value.
      */
@@ -120,7 +120,7 @@ public class ManagedClusterPodIdentity {
     }
 
     /**
-     * Set the identity property: Information of the user assigned identity.
+     * Set the identity property: The user assigned identity details.
      *
      * @param identity the identity value to set.
      * @return the ManagedClusterPodIdentity object itself.

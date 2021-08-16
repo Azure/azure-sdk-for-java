@@ -11,13 +11,10 @@ public final class PrivateEndPointConnectionsListByFactorySamples {
     /**
      * Sample code: privateEndPointConnections_ListByFactory.
      *
-     * @param dataFactoryManager Entry point to DataFactoryManager. The Azure Data Factory V2 management API provides a
-     *     RESTful set of web services that interact with Azure Data Factory V2 services.
+     * @param manager Entry point to DataFactoryManager.
      */
     public static void privateEndPointConnectionsListByFactory(
-        com.azure.resourcemanager.datafactory.DataFactoryManager dataFactoryManager) {
-        dataFactoryManager
-            .privateEndPointConnections()
-            .listByFactory("exampleResourceGroup", "exampleFactoryName", Context.NONE);
+        com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
+        manager.privateEndPointConnections().listByFactory("exampleResourceGroup", "exampleFactoryName", Context.NONE);
     }
 }

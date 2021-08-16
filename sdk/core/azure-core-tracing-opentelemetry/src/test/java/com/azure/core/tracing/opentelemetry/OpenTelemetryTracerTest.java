@@ -55,9 +55,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.fail;
 
 /**
@@ -84,7 +84,7 @@ public class OpenTelemetryTracerTest {
     private Context tracingContext;
     private Span parentSpan;
     private Scope scope;
-    private HashMap<String, Object> expectedAttributeMap = new HashMap<String, Object>() {
+    private final HashMap<String, Object> expectedAttributeMap = new HashMap<String, Object>() {
         {
             put(OpenTelemetryTracer.MESSAGE_BUS_DESTINATION, ENTITY_PATH_VALUE);
             put(OpenTelemetryTracer.PEER_ENDPOINT, HOSTNAME_VALUE);
@@ -523,7 +523,7 @@ public class OpenTelemetryTracerTest {
 
         TraceFlags traceFlags = TraceFlags.fromHex(traceparent, TRACE_OPTION_OFFSET);
 
-        SpanContext validSpanContext = SpanContext.create(
+        SpanContext validSpanContext = SpanContext.createFromRemoteParent(
             traceId,
             spanId,
             traceFlags,
@@ -543,12 +543,7 @@ public class OpenTelemetryTracerTest {
     public void extractContextInvalidDiagnosticId() {
         // Arrange
         String diagnosticId = "00000000000000000000000000000000";
-        SpanContext invalidSpanContext = SpanContext.create(
-            TraceId.getInvalid(),
-            SpanId.getInvalid(),
-            TraceFlags.getDefault(),
-            TraceState.getDefault()
-        );
+        SpanContext invalidSpanContext = SpanContext.getInvalid();
 
         // Act
         Context updatedContext = openTelemetryTracer.extractContext(diagnosticId, Context.NONE);
@@ -693,7 +688,7 @@ public class OpenTelemetryTracerTest {
         scope.close();
         parentSpan.end();
 
-        final StartSpanOptions options = new StartSpanOptions();
+        final StartSpanOptions options = new StartSpanOptions(com.azure.core.util.tracing.SpanKind.INTERNAL);
         final Context started = openTelemetryTracer.start(METHOD_NAME, options, Context.NONE);
         final ReadableSpan span = (ReadableSpan) started.getData(PARENT_SPAN_KEY).get();
         final SpanData spanData = span.toSpanData();
@@ -708,7 +703,7 @@ public class OpenTelemetryTracerTest {
 
     @Test
     public void startSpanWithOptionsNameUserNameWins() {
-        final StartSpanOptions options = new StartSpanOptions();
+        final StartSpanOptions options = new StartSpanOptions(com.azure.core.util.tracing.SpanKind.INTERNAL);
 
         final Context started = openTelemetryTracer.start(METHOD_NAME, options, tracingContext.addData(USER_SPAN_NAME_KEY, "foo"));
         final ReadableSpan span = (ReadableSpan) started.getData(PARENT_SPAN_KEY).get();
@@ -718,7 +713,7 @@ public class OpenTelemetryTracerTest {
 
     @Test
     public void startSpanWithOptionsNameImplicitParent() {
-        final StartSpanOptions options = new StartSpanOptions();
+        final StartSpanOptions options = new StartSpanOptions(com.azure.core.util.tracing.SpanKind.INTERNAL);
 
         final Context started = openTelemetryTracer.start(METHOD_NAME, options, Context.NONE);
         final ReadableSpan span = (ReadableSpan) started.getData(PARENT_SPAN_KEY).get();
@@ -736,7 +731,7 @@ public class OpenTelemetryTracerTest {
 
     @Test
     public void startSpanWithOptionsNameExplicitParent() {
-        final StartSpanOptions options = new StartSpanOptions();
+        final StartSpanOptions options = new StartSpanOptions(com.azure.core.util.tracing.SpanKind.INTERNAL);
 
         final Span explicitParentSpan = tracer.spanBuilder("foo").setNoParent().startSpan();
         final Context started = openTelemetryTracer.start(METHOD_NAME, options, new Context(PARENT_SPAN_KEY, explicitParentSpan));
@@ -750,7 +745,7 @@ public class OpenTelemetryTracerTest {
 
     @Test
     public void startSpanWithInternalKind() {
-        final StartSpanOptions options = new StartSpanOptions(StartSpanOptions.Kind.INTERNAL);
+        final StartSpanOptions options = new StartSpanOptions(com.azure.core.util.tracing.SpanKind.INTERNAL);
         final Context started = openTelemetryTracer.start(METHOD_NAME, options, Context.NONE);
         final ReadableSpan span = (ReadableSpan) started.getData(PARENT_SPAN_KEY).get();
 
@@ -759,7 +754,7 @@ public class OpenTelemetryTracerTest {
 
     @Test
     public void startSpanWithClientKind() {
-        final StartSpanOptions options = new StartSpanOptions(StartSpanOptions.Kind.CLIENT);
+        final StartSpanOptions options = new StartSpanOptions(com.azure.core.util.tracing.SpanKind.CLIENT);
         final Context started = openTelemetryTracer.start(METHOD_NAME, options, Context.NONE);
         final ReadableSpan span = (ReadableSpan) started.getData(PARENT_SPAN_KEY).get();
 
@@ -792,8 +787,8 @@ public class OpenTelemetryTracerTest {
             .put("B[]", new boolean[] {true})
             .build();
 
-        final StartSpanOptions options = new StartSpanOptions();
-        attributes.forEach((k, v) -> options.setAttribute(k, v));
+        final StartSpanOptions options = new StartSpanOptions(com.azure.core.util.tracing.SpanKind.INTERNAL);
+        attributes.forEach(options::setAttribute);
 
         final Context started = openTelemetryTracer.start(METHOD_NAME, options, tracingContext);
         final ReadableSpan span = (ReadableSpan) started.getData(PARENT_SPAN_KEY).get();

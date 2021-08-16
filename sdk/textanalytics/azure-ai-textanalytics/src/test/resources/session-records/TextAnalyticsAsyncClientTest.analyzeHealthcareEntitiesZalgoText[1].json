@@ -1,61 +1,61 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/text/analytics/v3.2-preview.1/entities/health/jobs?stringIndexType=Utf16CodeUnit&loggingOptOut=false",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/text/analytics/v3.2-preview.1/entities/health/jobs?stringIndexType=Utf16CodeUnit&loggingOptOut=true",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.2.0-beta.1 (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "11c52851-8bd4-4ab9-8310-c3eec0577d7b",
+      "x-ms-client-request-id" : "768e9050-3315-4530-8ccd-65b85ff64414",
       "Content-Type" : "application/json"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
-      "x-envoy-upstream-service-time" : "117",
+      "x-envoy-upstream-service-time" : "100",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
-      "operation-location" : "https://centralusta.cognitiveservices.azure.com/text/analytics/v3.2-preview.1/entities/health/jobs/cc4cc670-0e22-4fd9-ad4e-5a145089e43c",
+      "operation-location" : "https://tacanaryjava.cognitiveservices.azure.com/text/analytics/v3.2-preview.1/entities/health/jobs/869fc972-962d-4970-ae00-5e7e6c9351d3",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "1acb3691-3cd7-4f3d-b83e-1b2eb4696325",
+      "apim-request-id" : "d159ac87-4cc9-42eb-ba47-ced8b2f15671",
       "retry-after" : "0",
       "StatusCode" : "202",
-      "Date" : "Fri, 30 Jul 2021 18:05:55 GMT"
+      "Date" : "Tue, 10 Aug 2021 19:58:24 GMT"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/text/analytics/v3.2-preview.1/entities/health/jobs/cc4cc670-0e22-4fd9-ad4e-5a145089e43c?showStats=false",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/text/analytics/v3.2-preview.1/entities/health/jobs/869fc972-962d-4970-ae00-5e7e6c9351d3?showStats=false",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.2.0-beta.1 (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "1e9f691e-2ff9-478e-b049-097ad1598413"
+      "x-ms-client-request-id" : "000da2c5-719a-42b7-995c-ff7201dd1e56"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
-      "x-envoy-upstream-service-time" : "187",
+      "x-envoy-upstream-service-time" : "50",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "c66c7a7e-79c9-4fa4-a229-9e7be98eff97",
+      "apim-request-id" : "7792ff34-d0e7-4279-ba3b-8b2169229d55",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "Body" : "{\"jobId\":\"cc4cc670-0e22-4fd9-ad4e-5a145089e43c\",\"lastUpdateDateTime\":\"2021-07-30T18:05:58Z\",\"createdDateTime\":\"2021-07-30T18:05:55Z\",\"expirationDateTime\":\"2021-07-31T18:05:55Z\",\"status\":\"succeeded\",\"errors\":[],\"results\":{\"documents\":[{\"id\":\"0\",\"entities\":[{\"offset\":133,\"length\":11,\"text\":\"54-year-old\",\"category\":\"Age\",\"confidenceScore\":1.0}],\"relations\":[],\"warnings\":[]}],\"errors\":[],\"modelVersion\":\"2021-05-15\"}}",
-      "Date" : "Fri, 30 Jul 2021 18:06:01 GMT",
+      "Body" : "{\"jobId\":\"869fc972-962d-4970-ae00-5e7e6c9351d3\",\"lastUpdateDateTime\":\"2021-08-10T19:58:26Z\",\"createdDateTime\":\"2021-08-10T19:58:25Z\",\"expirationDateTime\":\"2021-08-11T19:58:25Z\",\"status\":\"succeeded\",\"errors\":[],\"results\":{\"documents\":[{\"id\":\"0\",\"entities\":[{\"offset\":133,\"length\":11,\"text\":\"54-year-old\",\"category\":\"Age\",\"confidenceScore\":1.0}],\"relations\":[],\"warnings\":[]}],\"errors\":[],\"modelVersion\":\"2021-05-15\"}}",
+      "Date" : "Tue, 10 Aug 2021 19:58:30 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/text/analytics/v3.2-preview.1/entities/health/jobs/cc4cc670-0e22-4fd9-ad4e-5a145089e43c?showStats=false",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/text/analytics/v3.2-preview.1/entities/health/jobs/869fc972-962d-4970-ae00-5e7e6c9351d3?showStats=false",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.2.0-beta.1 (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "116e53e2-064e-4216-a84b-4803fc246ffd"
+      "x-ms-client-request-id" : "8304f266-d593-4aac-aec9-aa3545f7e1a2"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
-      "x-envoy-upstream-service-time" : "45",
+      "x-envoy-upstream-service-time" : "595",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "60816f98-040c-45aa-9ed7-053298e569e8",
+      "apim-request-id" : "03f0598e-2b3c-44a6-b103-7d5dc31259ad",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "Body" : "{\"jobId\":\"cc4cc670-0e22-4fd9-ad4e-5a145089e43c\",\"lastUpdateDateTime\":\"2021-07-30T18:05:58Z\",\"createdDateTime\":\"2021-07-30T18:05:55Z\",\"expirationDateTime\":\"2021-07-31T18:05:55Z\",\"status\":\"succeeded\",\"errors\":[],\"results\":{\"documents\":[{\"id\":\"0\",\"entities\":[{\"offset\":133,\"length\":11,\"text\":\"54-year-old\",\"category\":\"Age\",\"confidenceScore\":1.0}],\"relations\":[],\"warnings\":[]}],\"errors\":[],\"modelVersion\":\"2021-05-15\"}}",
-      "Date" : "Fri, 30 Jul 2021 18:06:01 GMT",
+      "Body" : "{\"jobId\":\"869fc972-962d-4970-ae00-5e7e6c9351d3\",\"lastUpdateDateTime\":\"2021-08-10T19:58:26Z\",\"createdDateTime\":\"2021-08-10T19:58:25Z\",\"expirationDateTime\":\"2021-08-11T19:58:25Z\",\"status\":\"succeeded\",\"errors\":[],\"results\":{\"documents\":[{\"id\":\"0\",\"entities\":[{\"offset\":133,\"length\":11,\"text\":\"54-year-old\",\"category\":\"Age\",\"confidenceScore\":1.0}],\"relations\":[],\"warnings\":[]}],\"errors\":[],\"modelVersion\":\"2021-05-15\"}}",
+      "Date" : "Tue, 10 Aug 2021 19:58:30 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null

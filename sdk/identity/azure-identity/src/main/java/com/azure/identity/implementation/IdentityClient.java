@@ -80,7 +80,6 @@ import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -495,7 +494,8 @@ public class IdentityClient {
         PowershellManager legacyPowerShellManager = Platform.isWindows()
             ? new PowershellManager(LEGACY_WINDOWS_PS_EXECUTABLE) : null;
 
-        List<PowershellManager> powershellManagers = Arrays.asList(defaultPowerShellManager);
+        List<PowershellManager> powershellManagers = new ArrayList<>(2);
+        powershellManagers.add(defaultPowerShellManager);
         if (legacyPowerShellManager != null) {
             powershellManagers.add(legacyPowerShellManager);
         }

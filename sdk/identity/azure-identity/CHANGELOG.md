@@ -12,6 +12,7 @@
 - Added `loginHint()` setter to `InteractiveBrowserCredentialBuilder` which allows a username to be pre-selected for interactive logins.
 - Added support to consume `TenantId` challenges from `TokenRequestContext`.
 
+
 ## 1.3.1 (2021-06-08)
 
 ### Dependency Updates

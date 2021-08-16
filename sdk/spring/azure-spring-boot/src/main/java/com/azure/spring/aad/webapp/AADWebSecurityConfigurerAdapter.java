@@ -67,7 +67,7 @@ public abstract class AADWebSecurityConfigurerAdapter extends WebSecurityConfigu
     protected OAuth2AccessTokenResponseClient<OAuth2AuthorizationCodeGrantRequest> accessTokenResponseClient() {
         DefaultAuthorizationCodeTokenResponseClient result = new DefaultAuthorizationCodeTokenResponseClient();
         result.setRequestEntityConverter(
-            new AADOAuth2AuthorizationCodeGrantRequestEntityConverter(repo.getAzureClient()));
+            new AADOAuth2AuthorizationCodeGrantRequestEntityConverter(repo.getAzureClientAccessTokenScopes()));
         return result;
     }
 

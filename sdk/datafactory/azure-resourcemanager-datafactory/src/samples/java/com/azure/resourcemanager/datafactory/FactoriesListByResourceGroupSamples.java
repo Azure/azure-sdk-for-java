@@ -11,11 +11,9 @@ public final class FactoriesListByResourceGroupSamples {
     /**
      * Sample code: Factories_ListByResourceGroup.
      *
-     * @param dataFactoryManager Entry point to DataFactoryManager. The Azure Data Factory V2 management API provides a
-     *     RESTful set of web services that interact with Azure Data Factory V2 services.
+     * @param manager Entry point to DataFactoryManager.
      */
-    public static void factoriesListByResourceGroup(
-        com.azure.resourcemanager.datafactory.DataFactoryManager dataFactoryManager) {
-        dataFactoryManager.factories().listByResourceGroup("exampleResourceGroup", Context.NONE);
+    public static void factoriesListByResourceGroup(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
+        manager.factories().listByResourceGroup("exampleResourceGroup", Context.NONE);
     }
 }
