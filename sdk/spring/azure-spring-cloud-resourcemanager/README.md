@@ -52,7 +52,7 @@ This project welcomes contributions and suggestions.  Most contributions require
 Please follow [instructions here][contributing_md] to build from source or contribute.
 
 <!-- Link -->
-[src]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/azure-spring-cloud-storage
+[src]: https://github.com/Azure/azure-sdk-for-java/tree/b6a7aba854d35d2a861dbf2786b5e41b9d3538ad/sdk/spring/azure-spring-cloud-storage
 [package]: https://mvnrepository.com/artifact/com.azure.spring/azure-spring-cloud-storage
 [refdocs]: https://azure.github.io/azure-sdk-for-java/springcloud.html#azure-spring-cloud-storage
 [logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK#use-logback-logging-framework-in-a-spring-boot-application

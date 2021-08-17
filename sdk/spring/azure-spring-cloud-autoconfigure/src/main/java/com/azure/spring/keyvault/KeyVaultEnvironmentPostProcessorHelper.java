@@ -14,7 +14,6 @@ import com.azure.security.keyvault.secrets.SecretClientBuilder;
 import com.azure.security.keyvault.secrets.SecretServiceVersion;
 import com.azure.spring.autoconfigure.unity.AzureProperties;
 import com.azure.spring.keyvault.KeyVaultProperties.Property;
-import com.google.common.annotations.VisibleForTesting;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.context.properties.bind.Bindable;
@@ -179,7 +178,6 @@ class KeyVaultEnvironmentPostProcessorHelper {
         return new ManagedIdentityCredentialBuilder().build();
     }
 
-    @VisibleForTesting
     String getPropertyValue(final String normalizedName, final Property property) {
         List<String> propertyNames = Arrays.asList(KeyVaultProperties.getPropertyName(normalizedName, property),
             AzureProperties.PREFIX + DELIMITER + property.getName());

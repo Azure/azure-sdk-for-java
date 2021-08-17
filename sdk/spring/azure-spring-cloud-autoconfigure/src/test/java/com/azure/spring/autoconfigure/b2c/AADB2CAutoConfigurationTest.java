@@ -3,7 +3,6 @@
 package com.azure.spring.autoconfigure.b2c;
 
 import com.azure.spring.autoconfigure.unity.CredentialProperties;
-import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;

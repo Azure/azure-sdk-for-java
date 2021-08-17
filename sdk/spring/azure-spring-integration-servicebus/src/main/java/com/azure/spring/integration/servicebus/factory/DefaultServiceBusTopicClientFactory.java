@@ -22,7 +22,8 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Consumer;
 
-import static com.azure.spring.cloud.context.core.util.Constants.SPRING_SERVICE_BUS_APPLICATION_ID;
+import static com.azure.spring.core.ApplicationId.AZURE_SPRING_SERVICE_BUS;
+import static com.azure.spring.core.ApplicationId.VERSION;
 
 /**
  * Default implementation of {@link ServiceBusTopicClientFactory}. Client will be cached to improve performance
@@ -44,10 +45,10 @@ public class DefaultServiceBusTopicClientFactory extends AbstractServiceBusSende
     public DefaultServiceBusTopicClientFactory(String connectionString, AmqpTransportType amqpTransportType) {
         super(connectionString);
         this.serviceBusClientBuilder = new ServiceBusClientBuilder()
-                                                .connectionString(connectionString)
-                                                .transportType(amqpTransportType)
-                                                .clientOptions(new ClientOptions()
-                                                .setApplicationId(SPRING_SERVICE_BUS_APPLICATION_ID));
+                                           .connectionString(connectionString)
+                                           .transportType(amqpTransportType)
+                                           .clientOptions(new ClientOptions()
+                                                              .setApplicationId(AZURE_SPRING_SERVICE_BUS + VERSION));
     }
 
     private <K, V> void close(Map<K, V> map, Consumer<V> close) {
