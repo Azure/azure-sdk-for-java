@@ -44,7 +44,7 @@
     <packageOutputDirectory>${project.build.directory}</packageOutputDirectory>
     <legal><![CDATA[[INFO] Any downloads listed may be third party software.  Microsoft grants you no rights for third party software.]]></legal>
     <azure.core.serializer.json.jackson.version>1.2.5</azure.core.serializer.json.jackson.version> <!-- {x-version-update;com.azure:azure-core-serializer-json-jackson;dependency} -->
-    <azure.core.version>1.18.0</azure.core.version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+    <azure.core.version>1.19.0-beta.1</azure.core.version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
     <azure.eventhub.checkpoint.version>1.8.0</azure.eventhub.checkpoint.version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs-checkpointstore-blob;dependency} -->
     <azure.eventhub.version>5.8.0</azure.eventhub.version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs;dependency} -->
     <azure.identity.version>1.3.1</azure.identity.version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
