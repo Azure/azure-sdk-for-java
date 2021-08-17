@@ -3,20 +3,21 @@
 package com.azure.resourcemanager.network.implementation;
 
 import com.azure.core.management.SubResource;
+import com.azure.resourcemanager.network.fluent.models.FrontendIpConfigurationInner;
+import com.azure.resourcemanager.network.fluent.models.PublicIpAddressInner;
+import com.azure.resourcemanager.network.fluent.models.SubnetInner;
 import com.azure.resourcemanager.network.models.IpAllocationMethod;
 import com.azure.resourcemanager.network.models.LoadBalancer;
 import com.azure.resourcemanager.network.models.LoadBalancerFrontend;
 import com.azure.resourcemanager.network.models.LoadBalancerInboundNatPool;
 import com.azure.resourcemanager.network.models.LoadBalancerInboundNatRule;
+import com.azure.resourcemanager.network.models.LoadBalancerOutboundRule;
 import com.azure.resourcemanager.network.models.LoadBalancerPrivateFrontend;
 import com.azure.resourcemanager.network.models.LoadBalancerPublicFrontend;
 import com.azure.resourcemanager.network.models.LoadBalancingRule;
 import com.azure.resourcemanager.network.models.Network;
 import com.azure.resourcemanager.network.models.PublicIpAddress;
 import com.azure.resourcemanager.network.models.Subnet;
-import com.azure.resourcemanager.network.fluent.models.FrontendIpConfigurationInner;
-import com.azure.resourcemanager.network.fluent.models.PublicIpAddressInner;
-import com.azure.resourcemanager.network.fluent.models.SubnetInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.AvailabilityZoneId;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
@@ -132,6 +133,22 @@ class LoadBalancerFrontendImpl extends ChildResourceImpl<FrontendIpConfiguration
             for (SubResource innerRef : this.innerModel().inboundNatRules()) {
                 String name = ResourceUtils.nameFromResourceId(innerRef.id());
                 LoadBalancerInboundNatRule rule = this.parent().inboundNatRules().get(name);
+                if (rule != null) {
+                    rules.put(name, rule);
+                }
+            }
+        }
+
+        return Collections.unmodifiableMap(rules);
+    }
+
+    @Override
+    public Map<String, LoadBalancerOutboundRule> outboundRules() {
+        final Map<String, LoadBalancerOutboundRule> rules = new TreeMap<>();
+        if (this.innerModel().outboundRules() != null) {
+            for (SubResource innerRef : this.innerModel().outboundRules()) {
+                String name = ResourceUtils.nameFromResourceId(innerRef.id());
+                LoadBalancerOutboundRule rule = this.parent().outboundRules().get(name);
                 if (rule != null) {
                     rules.put(name, rule);
                 }
