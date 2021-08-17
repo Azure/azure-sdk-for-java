@@ -160,7 +160,7 @@ function Get-FilteredMavenPackageDetails([string]$ArtifactDirectory, [string]$Gr
 # hash, otherwise throws.
 function Test-ReleasedPackage([string]$RepositoryUrl, [MavenPackageDetail]$PackageDetail, [string]$BearerToken) {
   if ($RepositoryUrl -match "^https://pkgs.dev.azure.com/azure-sdk/\b(internal|public)\b/*") {
-    if(!$BearerToken) {
+    if (!$BearerToken) {
       throw "BearerToken required for Azure DevOps package feeds"
     }
     
@@ -171,6 +171,7 @@ function Test-ReleasedPackage([string]$RepositoryUrl, [MavenPackageDetail]$Packa
   elseif ($RepositoryUrl -match "^https://oss.sonatype.org/service/local/staging/deploy/maven2") {
     $baseUrl = "https://repo1.maven.org/maven2"
     $algorithm = "sha1"
+    $headers = @{ }
   }
   else {
     throw "Repository URL must be either an Azure Artifacts feed, or a SonaType Nexus feed."
@@ -190,9 +191,9 @@ function Test-ReleasedPackage([string]$RepositoryUrl, [MavenPackageDetail]$Packa
 
     Write-Information "Comparing local and remote hashes for $localFileName"
     Write-Information "  Getting remote hash"
-    $response = Invoke-WebRequest -Method GET -Uri $remoteHashUrl -Headers $headers -SkipHttpErrorCheck
+    $response = Invoke-WebRequest -Method GET -Uri $remoteHashUrl -Headers $headers -MaximumRetryCount 3 -SkipHttpErrorCheck
 
-    if($response.StatusCode -ge 200 -and $response.StatusCode -lt 300) {
+    if ($response.StatusCode -ge 200 -and $response.StatusCode -lt 300) {
       $remoteCount++
       $remoteHash = $response.Content
 
@@ -200,10 +201,11 @@ function Test-ReleasedPackage([string]$RepositoryUrl, [MavenPackageDetail]$Packa
       $localPath = $artifact.File.FullName
       $localHash = Get-FileHash -Path $localPath -Algorithm $algorithm | Select-Object -ExpandProperty 'Hash'
       
-      if($remoteHash -eq $localHash) {
+      if ($remoteHash -eq $localHash) {
         $matchCount++
         Write-Information "  Remote $remoteHash == Local $localHash"
-      } else {
+      }
+      else {
         Write-Information "  Remote $remoteHash != Local $localHash"
       }
     }
