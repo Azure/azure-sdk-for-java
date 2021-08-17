@@ -1,6 +1,7 @@
 # Release History
 ## 5.2.0-beta.2 (Unreleased)
-
+### Breaking Changes
+- Renamed methods `setSentencesOrderBy()` to `setOrderBy()` and `getSentencesOrderBy()` to `getOrderBy()`.
 
 ## 5.2.0-beta.1 (2021-08-11)
 ### Feature Added

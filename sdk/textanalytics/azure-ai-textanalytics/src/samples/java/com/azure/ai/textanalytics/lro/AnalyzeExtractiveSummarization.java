@@ -59,9 +59,7 @@ public class AnalyzeExtractiveSummarization {
             client.beginAnalyzeActions(documents,
                 new TextAnalyticsActions().setDisplayName("{tasks_display_name}")
                     .setExtractSummaryActions(
-                        new ExtractSummaryAction()
-                            .setMaxSentenceCount(4)
-                            .setOrderBy(SummarySentencesOrder.RANK)),
+                        new ExtractSummaryAction().setMaxSentenceCount(4).setOrderBy(SummarySentencesOrder.RANK)),
                 "en",
                 new AnalyzeActionsOptions());
 
