@@ -1,7 +1,20 @@
 ## Release History
 
-## 4.18.0-beta.1 (Unreleased)
+### 4.18.0 (2021-08-16)
+#### New Features
+* Integrated cosmos diagnostics with open telemetry tracer.
 
+#### Key Bug Fixes
+* Added reactor netty timeline to query plan calls.
+* Fixed serialization warning on `clientSideRequestDiagnostics`.
+* Fixed an issue when `IdleEndpointTimeout` is set to 0 in `DirectConnectionConfig`.
+* Added retry for `PrematureCloseException`.
+* Fixed an issue where application hangs in bulk executor.
+* Fixed an issue which preventing recovery from 410/0 after split.
+
+### 4.18.0-beta.1 (2021-08-11)
+#### Key Bug Fixes
+* Added `TransportRequestChannelAcquisitionContext` in `CosmosDiagnostics`.
 
 ### 4.17.0 (2021-07-08)
 #### New Features

@@ -1,7 +1,16 @@
 # Release History
 
-## 1.0.0-beta.5 (Unreleased)
+## 1.0.0-beta.6 (Unreleased)
 
+
+## 1.0.0-beta.5 (2021-08-10)
+- Update to 2021-06-01-preview API version
+
+### New Features
+- Add Spark configuration APIs
+
+### Breaking Changes
+- Change additionalColumns/compressionType to type of object
 
 ## 1.0.0-beta.4 (2021-04-06)
 

@@ -140,7 +140,7 @@
         <dependency>
           <groupId>com.microsoft.azure</groupId>
           <artifactId>azure-servicebus</artifactId>
-          <version>3.6.4</version> <!-- {x-version-update;com.microsoft.azure:azure-servicebus;current} -->
+          <version>3.7.0-beta.1</version> <!-- {x-version-update;com.microsoft.azure:azure-servicebus;current} -->
         </dependency>
       </dependencies>
       <properties>

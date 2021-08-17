@@ -5,6 +5,7 @@ package com.azure.monitor.query;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
+import com.azure.core.experimental.models.TimeInterval;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.RetryPolicy;
@@ -20,7 +21,6 @@ import com.azure.monitor.query.models.LogsBatchQueryResultCollection;
 import com.azure.monitor.query.models.LogsQueryException;
 import com.azure.monitor.query.models.LogsQueryOptions;
 import com.azure.monitor.query.models.LogsQueryResult;
-import com.azure.monitor.query.models.QueryTimeSpan;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
@@ -86,8 +86,8 @@ public class LogsQueryClientTest extends TestBase {
 
     @Test
     public void testLogsQuery() {
-        LogsQueryResult queryResults = client.queryLogs(WORKSPACE_ID, "AppRequests",
-                new QueryTimeSpan(OffsetDateTime.of(LocalDateTime.of(2021, 01, 01, 0, 0), ZoneOffset.UTC),
+        LogsQueryResult queryResults = client.query(WORKSPACE_ID, "AppRequests",
+                new TimeInterval(OffsetDateTime.of(LocalDateTime.of(2021, 01, 01, 0, 0), ZoneOffset.UTC),
                         OffsetDateTime.of(LocalDateTime.of(2021, 06, 10, 0, 0), ZoneOffset.UTC)));
         assertEquals(1, queryResults.getLogsTables().size());
         assertEquals(902, queryResults.getLogsTables().get(0).getAllTableCells().size());
@@ -101,7 +101,7 @@ public class LogsQueryClientTest extends TestBase {
                 .addQuery(WORKSPACE_ID, "AppRequests | take 3", null);
 
         LogsBatchQueryResultCollection batchResultCollection = client
-                .queryLogsBatchWithResponse(logsBatchQuery, Context.NONE).getValue();
+                .queryBatchWithResponse(logsBatchQuery, Context.NONE).getValue();
 
         List<LogsBatchQueryResult> responses = batchResultCollection.getBatchResults();
 
@@ -118,7 +118,7 @@ public class LogsQueryClientTest extends TestBase {
 
     @Test
     public void testMultipleWorkspaces() {
-        LogsQueryResult queryResults = client.queryLogsWithResponse(WORKSPACE_ID,
+        LogsQueryResult queryResults = client.queryWithResponse(WORKSPACE_ID,
                 "union * | where TimeGenerated > ago(100d) | project TenantId | summarize count() by TenantId", null,
                 new LogsQueryOptions()
                         .setAdditionalWorkspaces(Arrays.asList("9dad0092-fd13-403a-b367-a189a090a541")), Context.NONE)
@@ -144,7 +144,7 @@ public class LogsQueryClientTest extends TestBase {
                 .addQuery(WORKSPACE_ID, "AppRequests | take", null);
 
         LogsBatchQueryResultCollection batchResultCollection = client
-                .queryLogsBatchWithResponse(logsBatchQuery, Context.NONE).getValue();
+                .queryBatchWithResponse(logsBatchQuery, Context.NONE).getValue();
 
         List<LogsBatchQueryResult> responses = batchResultCollection.getBatchResults();
 
@@ -159,7 +159,7 @@ public class LogsQueryClientTest extends TestBase {
 
     @Test
     public void testStatistics() {
-        LogsQueryResult queryResults = client.queryLogsWithResponse(WORKSPACE_ID,
+        LogsQueryResult queryResults = client.queryWithResponse(WORKSPACE_ID,
                 "AppRequests", null, new LogsQueryOptions().setIncludeStatistics(true), Context.NONE).getValue();
 
         assertEquals(1, queryResults.getLogsTables().size());
@@ -174,7 +174,7 @@ public class LogsQueryClientTest extends TestBase {
                         new LogsQueryOptions().setIncludeStatistics(true));
 
         LogsBatchQueryResultCollection batchResultCollection = client
-                .queryLogsBatchWithResponse(logsBatchQuery, Context.NONE).getValue();
+                .queryBatchWithResponse(logsBatchQuery, Context.NONE).getValue();
 
         List<LogsBatchQueryResult> responses = batchResultCollection.getBatchResults();
 
@@ -200,7 +200,7 @@ public class LogsQueryClientTest extends TestBase {
             try {
                 // this query should take more than 5 seconds usually, but the server may have cached the
                 // response and may return before 5 seconds. So, retry with another query (different count value)
-                client.queryLogsWithResponse(WORKSPACE_ID, "range x from 1 to " + count + " step 1 | count", null,
+                client.queryWithResponse(WORKSPACE_ID, "range x from 1 to " + count + " step 1 | count", null,
                         new LogsQueryOptions()
                                 .setServerTimeout(Duration.ofSeconds(5)),
                         Context.NONE);

@@ -1,11 +1,24 @@
 # Release History
 
-## 2.7.0-beta.1 (Unreleased)
+## 2.8.0-beta.1 (Unreleased)
+
+
+## 2.7.0 (2021-08-12)
+
+### Dependency Updates
+
+- Updated `api-version` of features to `2021-07-01`.
 
 ### Features Added
 
 - Supported `start` and `stop` for `KubernetesCluster`.
 - Supported `listOrchestrators` for `KubernetesCluster`.
+- Supported `osDiskType` and `kubeletDiskType` for agent pool of `KubernetesCluster`.
+
+### Breaking Changes
+
+- Removed class `ManagedClusterIdentityUserAssignedIdentities`.
+- Removed unused classes.
 
 ## 2.6.0 (2021-06-18)
 

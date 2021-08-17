@@ -12,12 +12,10 @@ public final class TriggersQueryByFactorySamples {
     /**
      * Sample code: Triggers_QueryByFactory.
      *
-     * @param dataFactoryManager Entry point to DataFactoryManager. The Azure Data Factory V2 management API provides a
-     *     RESTful set of web services that interact with Azure Data Factory V2 services.
+     * @param manager Entry point to DataFactoryManager.
      */
-    public static void triggersQueryByFactory(
-        com.azure.resourcemanager.datafactory.DataFactoryManager dataFactoryManager) {
-        dataFactoryManager
+    public static void triggersQueryByFactory(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
+        manager
             .triggers()
             .queryByFactoryWithResponse(
                 "exampleResourceGroup",

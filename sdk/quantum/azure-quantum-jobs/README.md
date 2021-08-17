@@ -5,7 +5,7 @@ Azure Quantum is a Microsoft Azure service that you can use to run quantum compu
 - Enumerate provider status and quotas
 
 
-[Source code][source] | [API reference documentation](https://docs.microsoft.com/qsharp/api/) | [Product documentation](https://docs.microsoft.com/azure/quantum/)
+[Source code][source] | [API reference documentation](https://azure.github.io/azure-sdk-for-java/) | [Product documentation](https://docs.microsoft.com/azure/quantum/) | [Samples][samples]
 
 ## Getting started
 
@@ -45,6 +45,7 @@ To authenticate with the service, you will have to pass a [`TokenCredential`][to
 
 ## Examples
 
+* [Create the client](#create-the-client)
 * [Get Container SAS URI](#get-container-sas-uri)
 * [Upload Input Data](#upload-input-data)
 * [Create The Job](#create-the-job)
@@ -210,5 +211,6 @@ additional questions or comments.
 [coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/
 [coc]: https://opensource.microsoft.com/codeofconduct/
 [coc_contact]: mailto:opencode@microsoft.com
+[samples]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/quantum/azure-quantum-jobs/src/samples/java/com/azure/quantum/jobs
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Ftemplate%2Fazure-sdk-template%2FREADME.png)

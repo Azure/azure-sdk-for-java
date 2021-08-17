@@ -1,7 +1,23 @@
 # Release History
 
-## 1.0.0-beta.16 (Unreleased)
+## 1.0.0-beta.18 (Unreleased)
 
+
+## 1.0.0-beta.17 (2021-08-16)
+
+### Features Added
+
+- Added `TokenRequestContenxtExperimental` class that allows to configure TenantId Challenges.
+
+## 1.0.0-beta.16 (2021-08-06)
+
+### Features Added
+
+- Added `TimeInterval` to support ISO8601 time intervals.
+
+### Dependency Updates
+
+- Upgraded `azure-core` from `1.18.0` to `1.19.0`.
 
 ## 1.0.0-beta.15 (2021-07-01)
 

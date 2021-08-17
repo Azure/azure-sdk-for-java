@@ -68,7 +68,7 @@ public final class NotebooksImpl {
                 @HeaderParam("Accept") String accept,
                 Context context);
 
-        @Get("/notebooks/summary")
+        @Get("/notebooksSummary")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudErrorException.class)
         Mono<Response<NotebookListResponse>> getNotebookSummaryByWorkSpace(

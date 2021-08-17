@@ -72,7 +72,7 @@ public final class LogsTableRow {
      * @return The object that this table row is mapped to.
      * @throws IllegalArgumentException if an instance of the object cannot be created.
      */
-    public <T> T getRowAsObject(Class<T> type) {
+    public <T> T toObject(Class<T> type) {
         try {
             T t = type.newInstance();
 
