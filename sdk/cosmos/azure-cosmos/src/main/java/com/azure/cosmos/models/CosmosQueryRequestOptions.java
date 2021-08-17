@@ -491,7 +491,7 @@ public class CosmosQueryRequestOptions {
      * The results will be displayed in QueryMetrics. Please note that this options will incurs overhead, so it should be
      * enabled when debuging slow queries.
      *
-     * @return indexMetricsEnabled
+     * @return indexMetricsEnabled (default: false)
      */
     public boolean isIndexMetricsEnabled() {
         return indexMetricsEnabled;
@@ -502,6 +502,8 @@ public class CosmosQueryRequestOptions {
      * indexes and could use potential new indexes.
      * The results will be displayed in QueryMetrics. Please note that this options will incurs overhead, so it should be
      * enabled when debuging slow queries.
+     *
+     * By default the indexMetrics are disabled.
      *
      * @param indexMetricsEnabled a boolean used to obtain the index metrics
      * @return indexMetricsEnabled
