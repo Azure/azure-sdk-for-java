@@ -123,35 +123,35 @@ final class TargetIoNettyHandlerSslOpenSsl {
 
     @Alias
     @RecomputeFieldValue(kind = Kind.FromAlias)
-    private static final Throwable UNAVAILABILITY_CAUSE = new RuntimeException("OpenSsl unsupported");
+    private static Throwable UNAVAILABILITY_CAUSE = new RuntimeException("OpenSsl unsupported");
 
     @Alias
     @RecomputeFieldValue(kind = Kind.FromAlias)
-    static final List<String> DEFAULT_CIPHERS = Collections.emptyList();
+    static List<String> DEFAULT_CIPHERS = Collections.emptyList();
 
     @Alias
     @RecomputeFieldValue(kind = Kind.FromAlias)
-    static final Set<String> AVAILABLE_CIPHER_SUITES = Collections.emptySet();
+    static Set<String> AVAILABLE_CIPHER_SUITES = Collections.emptySet();
 
     @Alias
     @RecomputeFieldValue(kind = Kind.FromAlias)
-    private static final Set<String> AVAILABLE_OPENSSL_CIPHER_SUITES = Collections.emptySet();
+    private static Set<String> AVAILABLE_OPENSSL_CIPHER_SUITES = Collections.emptySet();
 
     @Alias
     @RecomputeFieldValue(kind = Kind.FromAlias)
-    private static final Set<String> AVAILABLE_JAVA_CIPHER_SUITES = Collections.emptySet();
+    private static Set<String> AVAILABLE_JAVA_CIPHER_SUITES = Collections.emptySet();
 
     @Alias
     @RecomputeFieldValue(kind = Kind.FromAlias)
-    private static final boolean SUPPORTS_KEYMANAGER_FACTORY = false;
+    private static boolean SUPPORTS_KEYMANAGER_FACTORY = false;
 
     @Alias
     @RecomputeFieldValue(kind = Kind.FromAlias)
-    private static final boolean SUPPORTS_OCSP = false;
+    private static boolean SUPPORTS_OCSP = false;
 
     @Alias
     @RecomputeFieldValue(kind = Kind.FromAlias)
-    static final Set<String> SUPPORTED_PROTOCOLS_SET = Collections.emptySet();
+    static Set<String> SUPPORTED_PROTOCOLS_SET = Collections.emptySet();
 
     @Substitute
     public static boolean isAvailable() {
@@ -224,11 +224,11 @@ final class TargetIoNettyHandlerSslJdkSslClientContext {
 final class TargetIoNettyHandlerSslSslHandler$SslEngineType {
 
     @Alias
-    public static TargetIoNettyHandlerSslSslHandler$SslEngineType jdk;
+    public static TargetIoNettyHandlerSslSslHandler$SslEngineType JDK;
 
     @Substitute
     static TargetIoNettyHandlerSslSslHandler$SslEngineType forEngine(SSLEngine engine) {
-        return jdk;
+        return JDK;
     }
 }
 
@@ -439,7 +439,7 @@ final class TargetIoNettyUtilAbstractReferenceCounted {
 
 // This class is runtime-initialized by NettyProcessor
 final class HolderIoNettyUtilConcurrentScheduledFutureTask {
-    static final long START_TIME = System.nanoTime();
+    static long START_TIME = System.nanoTime();
 }
 
 @TargetClass(className = "io.netty.util.concurrent.ScheduledFutureTask")

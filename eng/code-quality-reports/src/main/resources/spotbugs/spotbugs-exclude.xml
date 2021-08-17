@@ -2560,4 +2560,10 @@
     </Or>
     <Bug pattern="CI_CONFUSED_INHERITANCE"/>
   </Match>
+  <Match>
+    <Or>
+      <Class name="com.azure.core.http.netty.implementation.graalvm.features.TargetIoNettyHandlerSslOpenSsl"/>
+    </Or>
+    <Bug pattern="URF_UNREAD_FIELD"/>
+  </Match>
 </FindBugsFilter>
