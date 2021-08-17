@@ -306,7 +306,7 @@ stages:
                           CloseAfterOpenForTesting: '${{ parameters.TestPipeline }}'
 
           - ${{if and(eq(variables['Build.Reason'], 'Manual'), eq(variables['System.TeamProject'], 'internal'))}}:
-            - template: /common/smoke-tests/smoke-test.yml
+            - template: /common/smoke-tests/smoke-test-dependencies.yml
 
   - ${{if ne(parameters.EnableIntegrationStage, false)}}:
     - stage: Integration
