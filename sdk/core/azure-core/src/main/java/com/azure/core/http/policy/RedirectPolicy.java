@@ -18,81 +18,79 @@ import java.util.Objects;
 import java.util.Set;
 
 /**
- * A HttpPipeline policy that retries when a HTTP Redirect is received as response.
+ * A HttpPipeline policy that redirects when an HTTP Redirect is received as response.
  */
 public final class RedirectPolicy implements HttpPipelinePolicy {
 
     private static final int PERMANENT_REDIRECT_STATUS_CODE = 308;
-    Set<String> attemptedRedirectLocations = new HashSet<>();
 
     // Based on Stamp specific redirects design doc
-    private static final int MAX_REDIRECT_RETRIES = 10;
+    private static final int MAX_REDIRECT_ATTEMPTS = 10;
+    private final RedirectStrategy redirectStrategy;
+
+    private Set<String> attemptedRedirectUrls = new HashSet<>();
     private String redirectedEndpointUrl;
 
-
-    private final RedirectStrategy retryStrategy;
-
     /**
-     * Creates {@link RedirectPolicy} with default {@link DefaultRedirectStrategy} as {@link RedirectStrategy} and
-     * use the provided {@code statusCode} to determine if this request should be retried
-     * and MAX_REDIRECT_RETRIES for the retry count.
+     * Creates {@link RedirectPolicy} with default {@link MaxAttemptRedirectStrategy} as {@link RedirectStrategy} and
+     * use the provided {@code statusCode} to determine if this request should be redirected
+     * and MAX_REDIRECT_ATTEMPTS for the try count.
      */
     public RedirectPolicy() {
-        this(new DefaultRedirectStrategy(MAX_REDIRECT_RETRIES));
+        this(new MaxAttemptRedirectStrategy(MAX_REDIRECT_ATTEMPTS));
     }
 
     /**
-     * Creates {@link RedirectPolicy} with default {@link DefaultRedirectStrategy} as {@link RedirectStrategy} and
-     * use the provided {@code statusCode} to determine if this request should be retried.
+     * Creates {@link RedirectPolicy} with default {@link MaxAttemptRedirectStrategy} as {@link RedirectStrategy} and
+     * use the provided {@code statusCode} to determine if this request should be redirected.
      *
-     * @param retryStrategy The {@link RetryStrategy} used for retries.
+     * @param redirectStrategy The {@link RedirectStrategy} used for redirection.
      * @throws NullPointerException When {@code statusCode} is null.
      */
-    public RedirectPolicy(RedirectStrategy retryStrategy) {
-        this.retryStrategy = Objects.requireNonNull(retryStrategy, "'retryStrategy' cannot be null.");
+    public RedirectPolicy(RedirectStrategy redirectStrategy) {
+        this.redirectStrategy = Objects.requireNonNull(redirectStrategy, "'redirectStrategy' cannot be null.");
     }
 
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-        return attemptRetry(context, next, context.getHttpRequest(), 0);
+        return attemptRedirect(context, next, context.getHttpRequest(), 1);
     }
 
     /**
      * Function to process through the HTTP Response received in the pipeline
-     * and retry sending the request with new redirect url.
+     * and redirect sending the request with new redirect url.
      */
-    private Mono<HttpResponse> attemptRetry(final HttpPipelineCallContext context,
-                                            final HttpPipelineNextPolicy next,
-                                            final HttpRequest originalHttpRequest,
-                                            final int retryCount) {
-        // make sure the context is not modified during retry, except for the URL
+    private Mono<HttpResponse> attemptRedirect(final HttpPipelineCallContext context,
+                                               final HttpPipelineNextPolicy next,
+                                               final HttpRequest originalHttpRequest,
+                                               final int redirectAttempt) {
+        // make sure the context is not modified during redirect, except for the URL
         context.setHttpRequest(originalHttpRequest.copy());
         if (this.redirectedEndpointUrl != null) {
             context.getHttpRequest().setUrl(this.redirectedEndpointUrl);
         }
         return next.clone().process()
             .flatMap(httpResponse -> {
-                if (isRedirectableStatusCode(httpResponse.getStatusCode()) &&
-                    isRedirectableMethod(httpResponse.getRequest().getHttpMethod()) &&
-                    retryStrategy.shouldAttemptRedirect(httpResponse.getHeaders(), retryCount,
-                        attemptedRedirectLocations)) {
-                    String responseLocation =
-                        tryGetRedirectHeader(httpResponse.getHeaders(), retryStrategy.getLocationHeader());
-                    if (responseLocation != null) {
-                        attemptedRedirectLocations.add(responseLocation);
-                        this.redirectedEndpointUrl = responseLocation;
-                        return attemptRetry(context, next, originalHttpRequest, retryCount + 1);
-                    }
+                String responseLocation =
+                    tryGetRedirectHeader(httpResponse.getHeaders(), redirectStrategy.getLocationHeader());
+                if (isValidRedirectStatusCode(httpResponse.getStatusCode()) &&
+                    isAllowedRedirectMethod(httpResponse.getRequest().getHttpMethod()) &&
+                    responseLocation != null &&
+                    redirectStrategy.shouldAttemptRedirect(responseLocation, redirectAttempt,
+                        redirectStrategy.getMaxAttempts(), attemptedRedirectUrls)) {
+                    attemptedRedirectUrls.add(responseLocation);
+                    this.redirectedEndpointUrl = responseLocation;
+                    return attemptRedirect(context, next, originalHttpRequest, redirectAttempt + 1);
                 }
                 return Mono.just(httpResponse);
             });
     }
 
-    private boolean isRedirectableMethod(HttpMethod httpMethod) {
-        return retryStrategy.getRedirectableMethods().contains(httpMethod);
+    private boolean isAllowedRedirectMethod(HttpMethod httpMethod) {
+        return redirectStrategy.getAllowedMethods().contains(httpMethod);
     }
 
-    private boolean isRedirectableStatusCode(int statusCode) {
+    private boolean isValidRedirectStatusCode(int statusCode) {
         return statusCode == HttpURLConnection.HTTP_MOVED_TEMP
             || statusCode == HttpURLConnection.HTTP_MOVED_PERM
             || statusCode == PERMANENT_REDIRECT_STATUS_CODE;
@@ -100,7 +98,6 @@ public final class RedirectPolicy implements HttpPipelinePolicy {
 
     private static String tryGetRedirectHeader(HttpHeaders headers, String headerName) {
         String headerValue = headers.getValue(headerName);
-
         return CoreUtils.isNullOrEmpty(headerValue) ? null : headerValue;
     }
 }

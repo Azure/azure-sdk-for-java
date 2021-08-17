@@ -3,49 +3,45 @@
 
 package com.azure.core.http.policy;
 
-import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
-import com.azure.core.http.HttpPipelineCallContext;
-import com.azure.core.http.HttpPipelineNextPolicy;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.util.logging.ClientLogger;
 
-import java.net.HttpURLConnection;
 import java.util.Set;
 
 /**
- * The interface for determining the retry strategy used in {@link RetryPolicy}.
+ * The interface for determining the redirect strategy used in {@link RedirectPolicy}.
  */
 public interface RedirectStrategy {
-
-
     ClientLogger logger = new ClientLogger(RedirectStrategy.class);
 
     /**
-     * Max number of retry attempts to be make.
+     * Max number of redirect attempts to be made.
      *
-     * @return The max number of retry attempts.
+     * @return The max number of redirect attempts.
      */
-    int getMaxRetries();
-    String getLocationHeader();
-    Set<HttpMethod> getRedirectableMethods();
+    int getMaxAttempts();
 
     /**
-     *
-     * @param
-     *
+     * @return the value of the header, or null if the header doesn't exist in the response.
      */
+    String getLocationHeader();
+
     /**
-     * Determines if the url should be redirected between each retry.
+     * @return the set of redirect allowed methods.
+     */
+    Set<HttpMethod> getAllowedMethods();
+
+    /**
+     * Determines if the url should be redirected between each try.
      *
-     * @param responseHeaders the ongoing request headers
-     * @param tryCount redirect retries so far
-     * @param attemptedRedirectLocations attempted redirect retries locations so far
+     * @param redirectUrl the redirect url present in the response headers
+     * @param tryCount redirect attempts so far
+     * @param maxRedirects maximum number of redirects allowed
+     * @param attemptedRedirectUrls attempted redirect locations so far
      *
      * @return {@code true} if the request should be redirected, {@code false}
      * otherwise
      */
-    boolean shouldAttemptRedirect(HttpHeaders responseHeaders, int tryCount, Set<String> attemptedRedirectLocations);
-
+    boolean shouldAttemptRedirect(String redirectUrl, int tryCount, int maxRedirects,
+                                  Set<String> attemptedRedirectUrls);
 }

@@ -3,17 +3,19 @@
 
 package com.azure.core.http.policy;
 
+import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaders;
+import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
-import com.azure.core.http.HttpMethod;
-import com.azure.core.http.HttpClient;
 import com.azure.core.http.MockHttpResponse;
+import com.azure.core.http.clients.NoOpHttpClient;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
@@ -25,7 +27,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class RedirectPolicyTest {
 
     @Test
-    public void retryWith308Test() throws Exception {
+    public void defaultRedirectWhen308() throws Exception {
         RecordingHttpClient httpClient = new RecordingHttpClient(request -> {
             if (request.getUrl().toString().equals("http://localhost/")) {
                 Map<String, String> headers = new HashMap<>();
@@ -49,58 +51,53 @@ public class RedirectPolicyTest {
         assertEquals(200, response.getStatusCode());
     }
 
-    // @Test
-    // public void retryMaxTest() throws Exception {
-    //     RecordingHttpClient httpClient = new RecordingHttpClient(request -> {
-    //         Map<String, String> headers = new HashMap<>();
-    //         headers.put("Location", "http://redirecthost/");
-    //         HttpHeaders httpHeader = new HttpHeaders(headers);
-    //         return Mono.just(new MockHttpResponse(request, 308, httpHeader));
-    //     });
-    //
-    //     HttpPipeline pipeline = new HttpPipelineBuilder()
-    //         .httpClient(httpClient)
-    //         .policies(new AzureMonitorRedirectPolicy())
-    //         .build();
-    //
-    //     HttpResponse response = pipeline.send(new HttpRequest(HttpMethod.GET,
-    //         new URL("http://localhost/"))).block();
-    //     // redirect is captured only 3 times
-    //     assertEquals(11, httpClient.getCount());
-    //     assertEquals(308, response.getStatusCode());
-    // }
-    //
-    // @Test
-    // public void retryWith308MultipleRequestsTest() throws Exception {
-    //     RecordingHttpClient httpClient = new RecordingHttpClient(request -> {
-    //         if (request.getUrl().toString().equals("http://localhost/")) {
-    //             Map<String, String> headers = new HashMap<>();
-    //             headers.put("Location", "http://redirecthost/");
-    //             HttpHeaders httpHeader = new HttpHeaders(headers);
-    //             return Mono.just(new MockHttpResponse(request, 308, httpHeader));
-    //         } else {
-    //             return Mono.just(new MockHttpResponse(request, 200));
-    //         }
-    //     });
-    //
-    //     HttpPipeline pipeline = new HttpPipelineBuilder()
-    //         .httpClient(httpClient)
-    //         .policies(new AzureMonitorRedirectPolicy())
-    //         .build();
-    //
-    //     assertEquals(0, httpClient.getCount());
-    //     HttpResponse response1 = pipeline.send(new HttpRequest(HttpMethod.GET,
-    //         new URL("http://localhost/"))).block();
-    //     assertEquals(200, response1.getStatusCode());
-    //     assertEquals(2, httpClient.getCount());
-    //
-    //     httpClient.resetCount();
-    //     HttpResponse response2 = pipeline.send(new HttpRequest(HttpMethod.GET,
-    //         new URL("http://localhost/"))).block();
-    //     assertEquals(200, response2.getStatusCode());
-    //     //Make sure the future requests are sent directly to http://redirecthost/
-    //     assertEquals(1, httpClient.getCount());
-    // }
+    @Test
+    public void redirectForNAttempts() throws MalformedURLException {
+        final int[] requestCount = {1};
+        RecordingHttpClient httpClient = new RecordingHttpClient(request -> {
+                Map<String, String> headers = new HashMap<>();
+                headers.put("Location", "http://redirecthost/" + requestCount[0]);
+                HttpHeaders httpHeader = new HttpHeaders(headers);
+                requestCount[0]++;
+                return Mono.just(new MockHttpResponse(request, 308, httpHeader));
+        });
+
+        HttpPipeline pipeline = new HttpPipelineBuilder()
+            .httpClient(httpClient)
+            .policies(new RedirectPolicy(new MaxAttemptRedirectStrategy(5)))
+            .build();
+
+        HttpResponse response = pipeline.send(new HttpRequest(HttpMethod.GET,
+            new URL("http://localhost/"))).block();
+
+        assertEquals(5, httpClient.getCount());
+        assertEquals(308, response.getStatusCode());
+    }
+
+    @Test
+    public void noRedirectPolicyTest() throws Exception {
+        final HttpPipeline pipeline = new HttpPipelineBuilder()
+            .httpClient(new NoOpHttpClient() {
+
+                @Override
+                public Mono<HttpResponse> send(HttpRequest request) {
+                    if (request.getUrl().toString().equals("http://localhost/")) {
+                        Map<String, String> headers = new HashMap<>();
+                        headers.put("Location", "http://redirecthost/");
+                        HttpHeaders httpHeader = new HttpHeaders(headers);
+                        return Mono.just(new MockHttpResponse(request, 308, httpHeader));
+                    } else {
+                        return Mono.just(new MockHttpResponse(request, 200));
+                    }
+                }
+            })
+            .build();
+
+        HttpResponse response = pipeline.send(new HttpRequest(HttpMethod.GET,
+            new URL("http://localhost/"))).block();
+
+        assertEquals(308, response.getStatusCode());
+    }
 
     static class RecordingHttpClient implements HttpClient {
 
@@ -120,7 +117,6 @@ public class RedirectPolicyTest {
         int getCount() {
             return count.get();
         }
-
         void resetCount() {
             count.set(0);
         }
