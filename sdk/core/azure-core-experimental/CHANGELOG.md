@@ -1,7 +1,13 @@
 # Release History
 
-## 1.0.0-beta.17 (Unreleased)
+## 1.0.0-beta.18 (Unreleased)
 
+
+## 1.0.0-beta.17 (2021-08-16)
+
+### Features Added
+
+- Added `TokenRequestContenxtExperimental` class that allows to configure TenantId Challenges.
 
 ## 1.0.0-beta.16 (2021-08-06)
 
