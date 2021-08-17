@@ -6,7 +6,14 @@ import com.azure.security.keyvault.jca.KeyVaultPrivateKey;
 import com.azure.security.keyvault.jca.implementation.KeyVaultClient;
 
 import java.nio.ByteBuffer;
-import java.security.*;
+import java.security.InvalidParameterException;
+import java.security.MessageDigest;
+import java.security.PublicKey;
+import java.security.PrivateKey;
+import java.security.SignatureSpi;
+import java.security.SecureRandom;
+import java.security.AlgorithmParameters;
+import java.security.InvalidAlgorithmParameterException;
 import java.security.spec.AlgorithmParameterSpec;
 import static com.azure.security.keyvault.jca.implementation.KeyVaultClient.createKeyVaultClientBySystemProperty;
 
