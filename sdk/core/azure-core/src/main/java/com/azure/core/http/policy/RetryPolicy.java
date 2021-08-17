@@ -21,6 +21,7 @@ import java.time.OffsetDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Objects;
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 import static com.azure.core.util.CoreUtils.isNullOrEmpty;
 
@@ -155,7 +156,7 @@ public class RetryPolicy implements HttpPipelinePolicy {
         String retryAfterHeader, ChronoUnit retryAfterTimeUnit) {
         // If the retry after header hasn't been configured, attempt to look up the well-known headers.
         if (isNullOrEmpty(retryAfterHeader)) {
-            return getWellKnownRetryDelay(response.getHeaders(), tryCount, retryStrategy);
+            return getWellKnownRetryDelay(response.getHeaders(), tryCount, retryStrategy, OffsetDateTime::now);
         }
 
         String retryHeaderValue = response.getHeaderValue(retryAfterHeader);
@@ -172,7 +173,8 @@ public class RetryPolicy implements HttpPipelinePolicy {
     /*
      * Determines the delay duration that should be waited before retrying using the well-known retry headers.
      */
-    static Duration getWellKnownRetryDelay(HttpHeaders responseHeaders, int tryCount, RetryStrategy retryStrategy) {
+    static Duration getWellKnownRetryDelay(HttpHeaders responseHeaders, int tryCount, RetryStrategy retryStrategy,
+        Supplier<OffsetDateTime> nowSupplier) {
         // Found 'x-ms-retry-after-ms' header, use a Duration of milliseconds based on the value.
         Duration retryDelay = tryGetRetryDelay(responseHeaders, X_MS_RETRY_AFTER_MS_HEADER,
             RetryPolicy::tryGetDelayMillis);
@@ -188,7 +190,8 @@ public class RetryPolicy implements HttpPipelinePolicy {
 
         // Found 'Retry-After' header. First, attempt to resolve it as a Duration of seconds. If that fails, then
         // attempt to resolve it as an HTTP date (RFC1123).
-        retryDelay = tryGetRetryDelay(responseHeaders, RETRY_AFTER_HEADER, RetryPolicy::tryParseLongOrDateTime);
+        retryDelay = tryGetRetryDelay(responseHeaders, RETRY_AFTER_HEADER,
+            headerValue -> tryParseLongOrDateTime(headerValue, nowSupplier));
         if (retryDelay != null) {
             return retryDelay;
         }
@@ -209,12 +212,12 @@ public class RetryPolicy implements HttpPipelinePolicy {
         return (delayMillis >= 0) ? Duration.ofMillis(delayMillis) : null;
     }
 
-    private static Duration tryParseLongOrDateTime(String value) {
+    private static Duration tryParseLongOrDateTime(String value, Supplier<OffsetDateTime> nowSupplier) {
         long delaySeconds;
         try {
             OffsetDateTime retryAfter = new DateTimeRfc1123(value).getDateTime();
 
-            delaySeconds = OffsetDateTime.now().until(retryAfter, ChronoUnit.SECONDS);
+            delaySeconds = nowSupplier.get().until(retryAfter, ChronoUnit.SECONDS);
         } catch (DateTimeException ex) {
             delaySeconds = tryParseLong(value);
         }
