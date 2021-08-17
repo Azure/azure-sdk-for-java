@@ -405,8 +405,10 @@ class ReactorSender implements AmqpSendLink, AsyncCloseable, AutoCloseable {
                 reactorProvider.getReactorDispatcher().invoke(closeWork);
             } catch (IOException | RejectedExecutionException e) {
                 logger.info("connectionId[{}] entityPath[{}] linkName[{}]: Could not schedule close work. Running"
-                    + " manually.", handler.getConnectionId(), entityPath, getLinkName(), e);
+                    + " manually. And completing close.", handler.getConnectionId(), entityPath, getLinkName(), e);
+
                 closeWork.run();
+                handleClose();
             }
         }).then(isClosedMono.asMono())
             .publishOn(Schedulers.boundedElastic());
