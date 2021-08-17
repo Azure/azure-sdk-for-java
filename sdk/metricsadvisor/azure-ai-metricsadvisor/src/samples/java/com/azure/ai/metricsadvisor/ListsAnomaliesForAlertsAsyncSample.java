@@ -21,7 +21,7 @@ public class ListsAnomaliesForAlertsAsyncSample {
         final String alertId = "1746b031c00";
         final ListAnomaliesAlertedOptions options = new ListAnomaliesAlertedOptions()
             .setMaxPageSize(10);
-        advisorAsyncClient.listAnomalies(
+        advisorAsyncClient.listAnomaliesForAlert(
             alertConfigurationId,
             alertId,
             options)

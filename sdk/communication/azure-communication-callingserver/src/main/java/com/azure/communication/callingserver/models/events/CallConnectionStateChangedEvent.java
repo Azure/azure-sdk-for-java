@@ -60,7 +60,7 @@ public final class CallConnectionStateChangedEvent extends CallingServerEventBas
      * @param callConnectionId the callConnectionId value.
      * @param callConnectionState the callConnectionState value.
      */
-    public CallConnectionStateChangedEvent(
+    CallConnectionStateChangedEvent(
         String serverCallId,
         String callConnectionId,
         CallConnectionState callConnectionState) {

@@ -38,7 +38,7 @@ public interface Settings {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return state of Setting.
+     * @return state of the myscope setting.
      */
     Setting get(String settingName);
 
@@ -50,7 +50,7 @@ public interface Settings {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return state of Setting.
+     * @return state of the myscope setting.
      */
     Response<Setting> getWithResponse(String settingName, Context context);
 
@@ -62,7 +62,7 @@ public interface Settings {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return state of Setting.
+     * @return state of the myscope setting.
      */
     Setting createOrUpdate(String settingName, SettingInner parameters);
 
@@ -75,7 +75,7 @@ public interface Settings {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return state of Setting.
+     * @return state of the myscope setting.
      */
     Response<Setting> createOrUpdateWithResponse(String settingName, SettingInner parameters, Context context);
 

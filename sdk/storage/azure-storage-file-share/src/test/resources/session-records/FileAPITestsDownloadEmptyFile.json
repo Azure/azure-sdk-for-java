@@ -1,0 +1,90 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.file.core.windows.net/c44dd708c44dd70852c42552e52ea596dcea470a82?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2020-08-04",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.11.0-beta.1 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "e8148acd-0429-4573-a731-7a81a4ec3798"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2020-08-04",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "eTag" : "0x8D936ABFFE1E21B",
+      "Last-Modified" : "Thu, 24 Jun 2021 01:04:20 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "3749d34f-d01a-0055-0d94-680839000000",
+      "x-ms-client-request-id" : "e8148acd-0429-4573-a731-7a81a4ec3798",
+      "Date" : "Thu, 24 Jun 2021 01:04:20 GMT"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.file.core.windows.net/c44dd708c44dd70852c42552e52ea596dcea470a82/c44dd708c44dd70852c0117536c599920f1a4b4aa6",
+    "Headers" : {
+      "x-ms-version" : "2020-08-04",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.11.0-beta.1 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "39bdd492-3082-46cf-97b3-f68a850fdf5e"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2020-08-04",
+      "x-ms-file-permission-key" : "2559623233989293371*10026547158748585397",
+      "x-ms-file-id" : "13835128424026341376",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-file-creation-time" : "2021-06-24T01:04:21.2902256Z",
+      "Last-Modified" : "Thu, 24 Jun 2021 01:04:21 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-server-encrypted" : "true",
+      "Date" : "Thu, 24 Jun 2021 01:04:20 GMT",
+      "x-ms-file-attributes" : "Archive",
+      "x-ms-file-change-time" : "2021-06-24T01:04:21.2902256Z",
+      "x-ms-file-parent-id" : "0",
+      "eTag" : "0x8D936AC000F2170",
+      "x-ms-request-id" : "3749d363-d01a-0055-1b94-680839000000",
+      "x-ms-client-request-id" : "39bdd492-3082-46cf-97b3-f68a850fdf5e",
+      "x-ms-file-last-write-time" : "2021-06-24T01:04:21.2902256Z"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.file.core.windows.net/c44dd708c44dd70852c42552e52ea596dcea470a82/c44dd708c44dd70852c0117536c599920f1a4b4aa6",
+    "Headers" : {
+      "x-ms-version" : "2020-08-04",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.11.0-beta.1 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "5562ecb1-7e1b-4a0f-afc2-17b1138381fc"
+    },
+    "Response" : {
+      "content-length" : "1",
+      "x-ms-lease-status" : "unlocked",
+      "x-ms-file-id" : "13835128424026341376",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-file-creation-time" : "2021-06-24T01:04:21.2902256Z",
+      "Content-Range" : "bytes 0-0/1",
+      "x-ms-lease-state" : "available",
+      "Last-Modified" : "Thu, 24 Jun 2021 01:04:21 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "206",
+      "x-ms-file-attributes" : "Archive",
+      "eTag" : "0x8D936AC000F2170",
+      "x-ms-request-id" : "3749d368-d01a-0055-1f94-680839000000",
+      "Body" : "AA==",
+      "Content-Type" : "application/octet-stream",
+      "x-ms-version" : "2020-08-04",
+      "x-ms-file-permission-key" : "2559623233989293371*10026547158748585397",
+      "Date" : "Thu, 24 Jun 2021 01:04:21 GMT",
+      "Accept-Ranges" : "bytes",
+      "x-ms-server-encrypted" : "true",
+      "x-ms-type" : "File",
+      "x-ms-file-change-time" : "2021-06-24T01:04:21.2902256Z",
+      "x-ms-file-parent-id" : "0",
+      "x-ms-client-request-id" : "5562ecb1-7e1b-4a0f-afc2-17b1138381fc",
+      "x-ms-file-last-write-time" : "2021-06-24T01:04:21.2902256Z"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "c44dd708c44dd70852c42552e52ea596dcea470a82", "c44dd708c44dd70852c0117536c599920f1a4b4aa6" ]
+}

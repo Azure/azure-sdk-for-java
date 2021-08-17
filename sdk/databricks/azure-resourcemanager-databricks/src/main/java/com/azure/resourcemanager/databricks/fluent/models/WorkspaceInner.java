@@ -7,12 +7,16 @@ package com.azure.resourcemanager.databricks.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.databricks.models.CreatedBy;
 import com.azure.resourcemanager.databricks.models.ManagedIdentityConfiguration;
 import com.azure.resourcemanager.databricks.models.ProvisioningState;
+import com.azure.resourcemanager.databricks.models.PublicNetworkAccess;
+import com.azure.resourcemanager.databricks.models.RequiredNsgRules;
 import com.azure.resourcemanager.databricks.models.Sku;
 import com.azure.resourcemanager.databricks.models.WorkspaceCustomParameters;
+import com.azure.resourcemanager.databricks.models.WorkspacePropertiesEncryption;
 import com.azure.resourcemanager.databricks.models.WorkspaceProviderAuthorization;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -31,6 +35,12 @@ public class WorkspaceInner extends Resource {
      */
     @JsonProperty(value = "sku")
     private Sku sku;
+
+    /*
+     * The system metadata relating to this resource
+     */
+    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
+    private SystemData systemData;
 
     /*
      * The managed resource group Id.
@@ -102,6 +112,34 @@ public class WorkspaceInner extends Resource {
     @JsonProperty(value = "properties.storageAccountIdentity")
     private ManagedIdentityConfiguration storageAccountIdentity;
 
+    /*
+     * Encryption properties for databricks workspace
+     */
+    @JsonProperty(value = "properties.encryption")
+    private WorkspacePropertiesEncryption encryption;
+
+    /*
+     * Private endpoint connections created on the workspace
+     */
+    @JsonProperty(value = "properties.privateEndpointConnections", access = JsonProperty.Access.WRITE_ONLY)
+    private List<PrivateEndpointConnectionInner> privateEndpointConnections;
+
+    /*
+     * The network access type for accessing workspace. Set value to disabled
+     * to access workspace only via private link.
+     */
+    @JsonProperty(value = "properties.publicNetworkAccess")
+    private PublicNetworkAccess publicNetworkAccess;
+
+    /*
+     * Gets or sets a value indicating whether data plane (clusters) to control
+     * plane communication happen over private endpoint. Supported values are
+     * 'AllRules' and 'NoAzureDatabricksRules'. 'NoAzureServiceRules' value is
+     * for internal use only.
+     */
+    @JsonProperty(value = "properties.requiredNsgRules")
+    private RequiredNsgRules requiredNsgRules;
+
     /**
      * Get the sku property: The SKU of the resource.
      *
@@ -120,6 +158,15 @@ public class WorkspaceInner extends Resource {
     public WorkspaceInner withSku(Sku sku) {
         this.sku = sku;
         return this;
+    }
+
+    /**
+     * Get the systemData property: The system metadata relating to this resource.
+     *
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
     }
 
     /**
@@ -303,6 +350,81 @@ public class WorkspaceInner extends Resource {
         return this;
     }
 
+    /**
+     * Get the encryption property: Encryption properties for databricks workspace.
+     *
+     * @return the encryption value.
+     */
+    public WorkspacePropertiesEncryption encryption() {
+        return this.encryption;
+    }
+
+    /**
+     * Set the encryption property: Encryption properties for databricks workspace.
+     *
+     * @param encryption the encryption value to set.
+     * @return the WorkspaceInner object itself.
+     */
+    public WorkspaceInner withEncryption(WorkspacePropertiesEncryption encryption) {
+        this.encryption = encryption;
+        return this;
+    }
+
+    /**
+     * Get the privateEndpointConnections property: Private endpoint connections created on the workspace.
+     *
+     * @return the privateEndpointConnections value.
+     */
+    public List<PrivateEndpointConnectionInner> privateEndpointConnections() {
+        return this.privateEndpointConnections;
+    }
+
+    /**
+     * Get the publicNetworkAccess property: The network access type for accessing workspace. Set value to disabled to
+     * access workspace only via private link.
+     *
+     * @return the publicNetworkAccess value.
+     */
+    public PublicNetworkAccess publicNetworkAccess() {
+        return this.publicNetworkAccess;
+    }
+
+    /**
+     * Set the publicNetworkAccess property: The network access type for accessing workspace. Set value to disabled to
+     * access workspace only via private link.
+     *
+     * @param publicNetworkAccess the publicNetworkAccess value to set.
+     * @return the WorkspaceInner object itself.
+     */
+    public WorkspaceInner withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess) {
+        this.publicNetworkAccess = publicNetworkAccess;
+        return this;
+    }
+
+    /**
+     * Get the requiredNsgRules property: Gets or sets a value indicating whether data plane (clusters) to control plane
+     * communication happen over private endpoint. Supported values are 'AllRules' and 'NoAzureDatabricksRules'.
+     * 'NoAzureServiceRules' value is for internal use only.
+     *
+     * @return the requiredNsgRules value.
+     */
+    public RequiredNsgRules requiredNsgRules() {
+        return this.requiredNsgRules;
+    }
+
+    /**
+     * Set the requiredNsgRules property: Gets or sets a value indicating whether data plane (clusters) to control plane
+     * communication happen over private endpoint. Supported values are 'AllRules' and 'NoAzureDatabricksRules'.
+     * 'NoAzureServiceRules' value is for internal use only.
+     *
+     * @param requiredNsgRules the requiredNsgRules value to set.
+     * @return the WorkspaceInner object itself.
+     */
+    public WorkspaceInner withRequiredNsgRules(RequiredNsgRules requiredNsgRules) {
+        this.requiredNsgRules = requiredNsgRules;
+        return this;
+    }
+
     /** {@inheritDoc} */
     @Override
     public WorkspaceInner withLocation(String location) {
@@ -346,6 +468,12 @@ public class WorkspaceInner extends Resource {
         }
         if (storageAccountIdentity() != null) {
             storageAccountIdentity().validate();
+        }
+        if (encryption() != null) {
+            encryption().validate();
+        }
+        if (privateEndpointConnections() != null) {
+            privateEndpointConnections().forEach(e -> e.validate());
         }
     }
 }

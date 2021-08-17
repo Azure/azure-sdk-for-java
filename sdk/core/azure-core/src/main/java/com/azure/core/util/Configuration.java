@@ -89,6 +89,16 @@ public class Configuration implements Cloneable {
     public static final String PROPERTY_AZURE_IDENTITY_DISABLE_CP1 = "AZURE_IDENTITY_DISABLE_CP1";
 
     /**
+     * URL used by Bridge To Kubernetes to redirect IMDS calls in the development environment.
+     */
+    public static final String PROPERTY_AZURE_POD_IDENTITY_TOKEN_URL = "AZURE_POD_IDENTITY_TOKEN_URL";
+
+    /*
+     * Name of Azure AAD regional authority.
+     */
+    public static final String PROPERTY_AZURE_REGIONAL_AUTHORITY_NAME = "AZURE_REGIONAL_AUTHORITY_NAME";
+
+    /**
      * Name of the Azure resource group.
      */
     public static final String PROPERTY_AZURE_RESOURCE_GROUP = "AZURE_RESOURCE_GROUP";
@@ -123,6 +133,40 @@ public class Configuration implements Cloneable {
      */
     public static final String PROPERTY_AZURE_TRACING_DISABLED = "AZURE_TRACING_DISABLED";
 
+    /**
+     * Sets the default number of times a request will be retried, if it passes the conditions for retrying, before it
+     * fails.
+     */
+    public static final String PROPERTY_AZURE_REQUEST_RETRY_COUNT = "AZURE_REQUEST_RETRY_COUNT";
+
+    /**
+     * Sets the default timeout, in milliseconds, for a request to connect to the remote host.
+     * <p>
+     * If the configured value is equal to or less than 0 no timeout will be applied.
+     */
+    public static final String PROPERTY_AZURE_REQUEST_CONNECT_TIMEOUT = "AZURE_REQUEST_CONNECT_TIMEOUT";
+
+    /**
+     * Sets the default timeout interval, in milliseconds, allowed between each byte written by a request.
+     * <p>
+     * If the configured value is equal to or less than 0 no timeout will be applied.
+     */
+    public static final String PROPERTY_AZURE_REQUEST_WRITE_TIMEOUT = "AZURE_REQUEST_WRITE_TIMEOUT";
+
+    /**
+     * Sets the default timeout, in milliseconds, for a request to receive a response from the remote host.
+     * <p>
+     * If the configured value is equal to or less than 0 no timeout will be applied.
+     */
+    public static final String PROPERTY_AZURE_REQUEST_RESPONSE_TIMEOUT = "AZURE_REQUEST_RESPONSE_TIMEOUT";
+
+    /**
+     * Sets the default timeout interval, in milliseconds, allowed between each byte read in a response.
+     * <p>
+     * If the configured value is equal to or less than 0 no timeout will be applied.
+     */
+    public static final String PROPERTY_AZURE_REQUEST_READ_TIMEOUT = "AZURE_REQUEST_READ_TIMEOUT";
+
     /*
      * Configurations that are loaded into the global configuration store when the application starts.
      */
@@ -141,6 +185,7 @@ public class Configuration implements Cloneable {
         PROPERTY_AZURE_CLIENT_SECRET,
         PROPERTY_AZURE_TENANT_ID,
         PROPERTY_AZURE_CLIENT_CERTIFICATE_PATH,
+        PROPERTY_AZURE_IDENTITY_DISABLE_CP1,
         PROPERTY_AZURE_RESOURCE_GROUP,
         PROPERTY_AZURE_CLOUD,
         PROPERTY_AZURE_AUTHORITY_HOST,
@@ -148,6 +193,13 @@ public class Configuration implements Cloneable {
         PROPERTY_AZURE_LOG_LEVEL,
         PROPERTY_AZURE_HTTP_LOG_DETAIL_LEVEL,
         PROPERTY_AZURE_TRACING_DISABLED,
+        PROPERTY_AZURE_POD_IDENTITY_TOKEN_URL,
+        PROPERTY_AZURE_REGIONAL_AUTHORITY_NAME,
+        PROPERTY_AZURE_REQUEST_RETRY_COUNT,
+        PROPERTY_AZURE_REQUEST_CONNECT_TIMEOUT,
+        PROPERTY_AZURE_REQUEST_WRITE_TIMEOUT,
+        PROPERTY_AZURE_REQUEST_RESPONSE_TIMEOUT,
+        PROPERTY_AZURE_REQUEST_READ_TIMEOUT
     };
 
     /*
@@ -159,6 +211,7 @@ public class Configuration implements Cloneable {
      * No-op {@link Configuration} object used to opt out of using global configurations when constructing client
      * libraries.
      */
+    @SuppressWarnings("StaticInitializerReferencesSubClass")
     public static final Configuration NONE = new NoopConfiguration();
 
     private final ConcurrentMap<String, String> configurations;

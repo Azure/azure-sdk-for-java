@@ -26,7 +26,7 @@ public final class CallConnectionStateChangedEventInternal {
     /*
      * The call connection state.
      */
-    @JsonProperty(value = "callConnectionState")
+    @JsonProperty(value = "callConnectionState", required = true)
     private CallConnectionState callConnectionState;
 
     /**

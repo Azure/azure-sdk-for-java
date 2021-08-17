@@ -20,7 +20,7 @@
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>azure-spring-boot-starter-storage</artifactId>
-      <version>3.6.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-boot-starter-storage;current} -->
+      <version>3.8.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-boot-starter-storage;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure.spring</groupId>
@@ -53,8 +53,8 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>org.springframework.boot:spring-boot-starter-web:[2.5.0]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-starter-web;external_dependency} -->
-                <include>org.springframework.boot:spring-boot-starter-actuator:[2.5.0]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-starter-actuator;external_dependency} -->
+                <include>org.springframework.boot:spring-boot-starter-web:[2.5.3]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-starter-web;external_dependency} -->
+                <include>org.springframework.boot:spring-boot-starter-actuator:[2.5.3]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-starter-actuator;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>

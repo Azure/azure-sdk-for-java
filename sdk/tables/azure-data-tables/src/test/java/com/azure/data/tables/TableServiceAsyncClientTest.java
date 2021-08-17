@@ -26,6 +26,7 @@ import com.azure.data.tables.sas.TableSasIpRange;
 import com.azure.data.tables.sas.TableSasProtocol;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import reactor.test.StepVerifier;
@@ -39,6 +40,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.StringJoiner;
 
+import static com.azure.data.tables.TestUtils.assertPropertiesEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -50,6 +52,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class TableServiceAsyncClientTest extends TestBase {
     private static final Duration TIMEOUT = Duration.ofSeconds(100);
     private static final HttpClient DEFAULT_HTTP_CLIENT = HttpClient.createDefault();
+    private static final boolean IS_COSMOS_TEST = System.getenv("AZURE_TABLES_CONNECTION_STRING") != null
+        && System.getenv("AZURE_TABLES_CONNECTION_STRING").contains("cosmos.azure.com");
 
     private TableServiceAsyncClient serviceClient;
     private HttpPipelinePolicy recordPolicy;
@@ -264,9 +268,7 @@ public class TableServiceAsyncClientTest extends TestBase {
 
         // Act & Assert
         StepVerifier.create(serviceClient.listTables(options))
-            .assertNext(table -> {
-                assertEquals(tableName, table.getName());
-            })
+            .assertNext(table -> assertEquals(tableName, table.getName()))
             .expectNextCount(0)
             .thenConsumeWhile(x -> true)
             .expectComplete()
@@ -420,6 +422,9 @@ public class TableServiceAsyncClientTest extends TestBase {
 
     @Test
     public void setGetProperties() {
+        Assumptions.assumeFalse(IS_COSMOS_TEST,
+            "Setting and getting properties is not supported on Cosmos endpoints.");
+
         TableServiceRetentionPolicy retentionPolicy = new TableServiceRetentionPolicy()
             .setDaysToRetain(5)
             .setEnabled(true);
@@ -449,32 +454,33 @@ public class TableServiceAsyncClientTest extends TestBase {
             .setRetentionPolicy(retentionPolicy)
             .setIncludeApis(true);
 
-        TableServiceProperties properties = new TableServiceProperties()
+        TableServiceProperties sentProperties = new TableServiceProperties()
             .setLogging(logging)
             .setCorsRules(corsRules)
             .setMinuteMetrics(minuteMetrics)
             .setHourMetrics(hourMetrics);
 
-        StepVerifier.create(serviceClient.setProperties(properties))
+        StepVerifier.create(serviceClient.setPropertiesWithResponse(sentProperties))
+            .assertNext(response -> {
+                assertNotNull(response.getHeaders().getValue("x-ms-request-id"));
+                assertNotNull(response.getHeaders().getValue("x-ms-version"));
+            })
             .expectComplete()
             .verify();
 
+        // Service properties may take up to 30s to take effect. If they weren't already in place, wait.
+        sleepIfRunningAgainstService(30000);
+
         StepVerifier.create(serviceClient.getProperties())
-            .assertNext(retrievedProperties -> {
-                assertNotNull(retrievedProperties);
-                assertNotNull(retrievedProperties.getCorsRules());
-                assertEquals(1, retrievedProperties.getCorsRules().size());
-                assertNotNull(retrievedProperties.getCorsRules().get(0));
-                assertNotNull(retrievedProperties.getHourMetrics());
-                assertNotNull(retrievedProperties.getMinuteMetrics());
-                assertNotNull(retrievedProperties.getLogging());
-            })
+            .assertNext(retrievedProperties -> assertPropertiesEquals(sentProperties, retrievedProperties))
             .expectComplete()
             .verify();
     }
 
     @Test
     public void getStatistics() throws URISyntaxException {
+        Assumptions.assumeFalse(IS_COSMOS_TEST, "Getting statistics is not supported on Cosmos endpoints.");
+
         URI primaryEndpoint = new URI(serviceClient.getServiceEndpoint());
         String[] hostParts = primaryEndpoint.getHost().split("\\.");
         StringJoiner secondaryHostJoiner = new StringJoiner(".");

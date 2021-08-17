@@ -1,23 +1,23 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/text/analytics/v3.1-preview.5//entities/recognition/pii?showStats=false&loggingOptOut=false&domain=PHI&stringIndexType=Utf16CodeUnit",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/text/analytics/v3.2-preview.1/entities/recognition/pii?showStats=false&loggingOptOut=true&domain=PHI&stringIndexType=Utf16CodeUnit",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.1.0-beta.7 (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "5c4f3288-e2e5-4780-82b0-768c651c89f4",
+      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.2.0-beta.1 (11.0.10; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "28cf09d1-5a51-44b7-bbc8-0af855639c4b",
       "Content-Type" : "application/json"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
-      "x-envoy-upstream-service-time" : "114",
+      "x-envoy-upstream-service-time" : "106",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
       "csp-billing-usage" : "CognitiveServices.TextAnalytics.BatchScoring=2,CognitiveServices.TextAnalytics.TextRecords=2",
-      "apim-request-id" : "f45ce05d-d3c3-4fab-8b3d-a1cd4441f545",
+      "apim-request-id" : "549dafa4-5501-4c12-8b9f-92e19a212e5c",
       "retry-after" : "0",
       "StatusCode" : "200",
       "Body" : "{\"documents\":[{\"redactedText\":\"********* employee with ssn *********** is using our awesome API's.\",\"id\":\"0\",\"entities\":[{\"text\":\"Microsoft\",\"category\":\"Organization\",\"offset\":0,\"length\":9,\"confidenceScore\":0.92},{\"text\":\"859-98-0987\",\"category\":\"USSocialSecurityNumber\",\"offset\":28,\"length\":11,\"confidenceScore\":0.65}],\"warnings\":[]},{\"redactedText\":\"Your ABA number - ********* - is the first 9 digits in the lower left hand corner of your personal check.\",\"id\":\"1\",\"entities\":[{\"text\":\"111000025\",\"category\":\"PhoneNumber\",\"offset\":18,\"length\":9,\"confidenceScore\":0.8},{\"text\":\"111000025\",\"category\":\"ABARoutingNumber\",\"offset\":18,\"length\":9,\"confidenceScore\":0.75},{\"text\":\"111000025\",\"category\":\"NZSocialWelfareNumber\",\"offset\":18,\"length\":9,\"confidenceScore\":0.65}],\"warnings\":[]}],\"errors\":[],\"modelVersion\":\"2021-01-15\"}",
-      "Date" : "Mon, 10 May 2021 15:44:08 GMT",
+      "Date" : "Tue, 10 Aug 2021 19:39:30 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null

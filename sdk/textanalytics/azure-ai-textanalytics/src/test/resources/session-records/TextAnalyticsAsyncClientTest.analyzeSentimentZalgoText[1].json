@@ -1,23 +1,23 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/text/analytics/v3.1-preview.5//sentiment?showStats=false&loggingOptOut=false&opinionMining=true&stringIndexType=Utf16CodeUnit",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/text/analytics/v3.2-preview.1/sentiment?showStats=false&loggingOptOut=false&opinionMining=true&stringIndexType=Utf16CodeUnit",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.1.0-beta.7 (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "38462331-5f30-4f6e-b477-426953362a45",
+      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.2.0-beta.1 (11.0.10; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "80c246dc-2ad5-488e-9e03-a25c87aa7194",
       "Content-Type" : "application/json"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
-      "x-envoy-upstream-service-time" : "5075",
+      "x-envoy-upstream-service-time" : "100",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
       "csp-billing-usage" : "CognitiveServices.TextAnalytics.BatchScoring=1,CognitiveServices.TextAnalytics.TextRecords=1",
-      "apim-request-id" : "e76e4408-f5bd-44aa-a796-54219d2aee91",
+      "apim-request-id" : "74be5cfb-b07f-4839-a4b1-b7947db1b1c0",
       "retry-after" : "0",
       "StatusCode" : "200",
       "Body" : "{\"documents\":[{\"id\":\"0\",\"sentiment\":\"negative\",\"confidenceScores\":{\"positive\":0.0,\"neutral\":0.0,\"negative\":1.0},\"sentences\":[{\"sentiment\":\"negative\",\"confidenceScores\":{\"positive\":0.0,\"neutral\":0.0,\"negative\":1.0},\"offset\":0,\"length\":138,\"text\":\"ơ̵̧̧̢̳̘̘͕͔͕̭̟̙͎͈̞͔̈̇̒̃͋̇̅͛̋͛̎́͑̄̐̂̎͗͝m̵͍͉̗̄̏͌̂̑̽̕͝͠g̵̢̡̢̡̨̡̧̛͉̞̯̠̤̣͕̟̫̫̼̰͓̦͖̣̣͎̋͒̈́̓̒̈̍̌̓̅͑̒̓̅̅͒̿̏́͗̀̇͛̏̀̈́̀̊̾̀̔͜͠͝ͅ The hotel was unclean.\",\"targets\":[{\"sentiment\":\"negative\",\"confidenceScores\":{\"positive\":0.0,\"negative\":1.0},\"offset\":120,\"length\":5,\"text\":\"hotel\",\"relations\":[{\"relationType\":\"assessment\",\"ref\":\"#/documents/0/sentences/0/assessments/0\"}]}],\"assessments\":[{\"sentiment\":\"negative\",\"confidenceScores\":{\"positive\":0.0,\"negative\":1.0},\"offset\":130,\"length\":7,\"text\":\"unclean\",\"isNegated\":false}]}],\"warnings\":[]}],\"errors\":[],\"modelVersion\":\"2020-04-01\"}",
-      "Date" : "Mon, 10 May 2021 15:48:09 GMT",
+      "Date" : "Fri, 30 Jul 2021 18:06:03 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null

@@ -19,10 +19,22 @@ public class TopicUpdateParameters {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(TopicUpdateParameters.class);
 
     /*
-     * Tags of the resource.
+     * Tags of the Topic resource.
      */
     @JsonProperty(value = "tags")
     private Map<String, String> tags;
+
+    /*
+     * Topic resource identity information.
+     */
+    @JsonProperty(value = "identity")
+    private IdentityInfo identity;
+
+    /*
+     * The Sku pricing tier for the topic.
+     */
+    @JsonProperty(value = "sku")
+    private ResourceSku sku;
 
     /*
      * This determines if traffic is allowed over public network. By default it
@@ -41,8 +53,16 @@ public class TopicUpdateParameters {
     @JsonProperty(value = "properties.inboundIpRules")
     private List<InboundIpRule> inboundIpRules;
 
+    /*
+     * This boolean is used to enable or disable local auth. Default value is
+     * false. When the property is set to true, only AAD token will be used to
+     * authenticate if user is allowed to publish to the topic.
+     */
+    @JsonProperty(value = "properties.disableLocalAuth")
+    private Boolean disableLocalAuth;
+
     /**
-     * Get the tags property: Tags of the resource.
+     * Get the tags property: Tags of the Topic resource.
      *
      * @return the tags value.
      */
@@ -51,13 +71,53 @@ public class TopicUpdateParameters {
     }
 
     /**
-     * Set the tags property: Tags of the resource.
+     * Set the tags property: Tags of the Topic resource.
      *
      * @param tags the tags value to set.
      * @return the TopicUpdateParameters object itself.
      */
     public TopicUpdateParameters withTags(Map<String, String> tags) {
         this.tags = tags;
+        return this;
+    }
+
+    /**
+     * Get the identity property: Topic resource identity information.
+     *
+     * @return the identity value.
+     */
+    public IdentityInfo identity() {
+        return this.identity;
+    }
+
+    /**
+     * Set the identity property: Topic resource identity information.
+     *
+     * @param identity the identity value to set.
+     * @return the TopicUpdateParameters object itself.
+     */
+    public TopicUpdateParameters withIdentity(IdentityInfo identity) {
+        this.identity = identity;
+        return this;
+    }
+
+    /**
+     * Get the sku property: The Sku pricing tier for the topic.
+     *
+     * @return the sku value.
+     */
+    public ResourceSku sku() {
+        return this.sku;
+    }
+
+    /**
+     * Set the sku property: The Sku pricing tier for the topic.
+     *
+     * @param sku the sku value to set.
+     * @return the TopicUpdateParameters object itself.
+     */
+    public TopicUpdateParameters withSku(ResourceSku sku) {
+        this.sku = sku;
         return this;
     }
 
@@ -110,11 +170,41 @@ public class TopicUpdateParameters {
     }
 
     /**
+     * Get the disableLocalAuth property: This boolean is used to enable or disable local auth. Default value is false.
+     * When the property is set to true, only AAD token will be used to authenticate if user is allowed to publish to
+     * the topic.
+     *
+     * @return the disableLocalAuth value.
+     */
+    public Boolean disableLocalAuth() {
+        return this.disableLocalAuth;
+    }
+
+    /**
+     * Set the disableLocalAuth property: This boolean is used to enable or disable local auth. Default value is false.
+     * When the property is set to true, only AAD token will be used to authenticate if user is allowed to publish to
+     * the topic.
+     *
+     * @param disableLocalAuth the disableLocalAuth value to set.
+     * @return the TopicUpdateParameters object itself.
+     */
+    public TopicUpdateParameters withDisableLocalAuth(Boolean disableLocalAuth) {
+        this.disableLocalAuth = disableLocalAuth;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (identity() != null) {
+            identity().validate();
+        }
+        if (sku() != null) {
+            sku().validate();
+        }
         if (inboundIpRules() != null) {
             inboundIpRules().forEach(e -> e.validate());
         }

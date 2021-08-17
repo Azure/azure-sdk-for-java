@@ -18,12 +18,12 @@ Use the client library for App Configuration to create and manage application co
 
 ### Include the Package
 
-[//]: # ({x-version-update-start;com.azure:azure-data-appconfiguration;dependency})
+[//]: # ({x-version-update-start;com.azure:azure-data-appconfiguration;current})
 ```xml
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-data-appconfiguration</artifactId>
-  <version>1.1.12</version>
+  <version>1.2.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -402,13 +402,13 @@ When you submit a pull request, a CLA-bot will automatically determine whether y
 This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For more information see the [Code of Conduct FAQ][coc_faq] or contact [opencode@microsoft.com][coc_contact] with any additional questions or comments.
 
 <!-- LINKS -->
-[add_headers_from_context_policy]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/core/azure-core/src/main/java/com/azure/core/http/policy/AddHeadersFromContextPolicy.java
+[add_headers_from_context_policy]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core/src/main/java/com/azure/core/http/policy/AddHeadersFromContextPolicy.java
 [api_documentation]: https://aka.ms/java-docs
 [app_config_store]: https://docs.microsoft.com/azure/azure-app-configuration/quickstart-dotnet-core-app#create-an-app-configuration-store
 [app_config_role]: https://docs.microsoft.com/azure/azure-app-configuration/rest-api-authorization-azure-ad#roles
 [azconfig_docs]: https://docs.microsoft.com/azure/azure-app-configuration
 [azure_cli]: https://docs.microsoft.com/cli/azure
-[azure_identity]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/identity/azure-identity
+[azure_identity]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/identity/azure-identity
 [azure_subscription]: https://azure.microsoft.com/free
 [cla]: https://cla.microsoft.com
 [coc]: https://opensource.microsoft.com/codeofconduct/
@@ -420,8 +420,8 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [package]: https://search.maven.org/artifact/com.azure/azure-data-appconfiguration
 [performance_tuning]: https://github.com/Azure/azure-sdk-for-java/wiki/Performance-Tuning
 [rest_api]: https://github.com/Azure/AppConfiguration#rest-api-reference
-[samples]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/appconfiguration/azure-data-appconfiguration/src/samples/java/com/azure/data/appconfiguration
-[samples_readme]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/appconfiguration/azure-data-appconfiguration/src/samples/README.md
-[source_code]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/appconfiguration/azure-data-appconfiguration/src
+[samples]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/appconfiguration/azure-data-appconfiguration/src/samples/java/com/azure/data/appconfiguration
+[samples_readme]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/appconfiguration/azure-data-appconfiguration/src/samples/README.md
+[source_code]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/appconfiguration/azure-data-appconfiguration/src
 [spring_quickstart]: https://docs.microsoft.com/azure/azure-app-configuration/quickstart-java-spring-app
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fappconfiguration%2Fazure-data-appconfiguration%2FREADME.png)

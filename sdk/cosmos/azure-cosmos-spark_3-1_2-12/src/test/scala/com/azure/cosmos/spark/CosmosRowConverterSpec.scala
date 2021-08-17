@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.spark
 
+import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.node.{ArrayNode, BinaryNode, BooleanNode, ObjectNode}
 import org.apache.spark.sql.Row
@@ -18,7 +19,7 @@ import java.time.{LocalDateTime, OffsetDateTime, ZoneOffset}
 import org.apache.spark.sql.types._
 // scalastyle:on underscore.import
 
-class CosmosRowConverterSpec extends UnitSpec with CosmosLoggingTrait {
+class CosmosRowConverterSpec extends UnitSpec with BasicLoggingTrait {
   //scalastyle:off null
   //scalastyle:off multiple.string.literals
 

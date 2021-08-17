@@ -1,12 +1,73 @@
 # Release History
+## 5.2.0-beta.2 (Unreleased)
 
-## 5.1.0-beta.8 (Unreleased)
+
+## 5.2.0-beta.1 (2021-08-11)
+### Feature Added
+- We are now targeting the service's v3.2-preview.1 API as the default instead of v3.1.
+- Added support for Extractive Summarization actions through the `ExtractSummaryAction` type.
+
+## 5.1.1 (2021-08-11)
+### Dependency Updates
+- Updated `azure-core` from `1.18.0` to `1.19.0`.
+- Updated `azure-core-http-netty` from `1.10.1` to `1.10.2`.
+
+### Bugs Fixed
+- Fixed the bug to support the default value `disableServiceLogs = true`, in the option bags, `AnalyzeHealthcareEntitiesOptions`,
+  `RecognizePiiEntitiesOptions` and `RecognizePiiEntitiesAction`,
+- Using UTF-16 code unit as the default encoding in the `Sentiment Analysis` and `Linked Entities Recognition` actions.
+
+## 5.1.0 (2021-07-08)
+### Feature Added
+- We are now targeting the service's v3.1 API as the default instead of v3.1-preview.4.
+- Added a new class, `HealthcareEntityCategory` to replace the `String` type of property `category` in the `HealthcareEntity`.
+- Added the new types, `ExtractKeyPhrasesAction`, `RecognizeEntitiesAction`, `RecognizePiiEntitiesAction`,
+  `RecognizeLinkedEntitiesAction`, and `AnalyzeSentimentAction`.
+- Added new customized `***PagedFlux`, `***PagedIterable` types, `AnalyzeActionsResultPagedFlux`,
+  `AnalyzeActionsResultPagedIterable`, `AnalyzeHealthcareEntitiesPagedFlux`, and `AnalyzeHealthcareEntitiesPagedIterable`.
+- `beginAnalyzeHealthcareEntities` now works with Azure Active Directory credentials.
 
 ### Breaking Changes
-- Removed `StringIndexType`, the type will be shared in the Azure Core.
+- Changed behavior in `beginAnalyzeActions` API where now accepts up to one action only per action type. 
+  An `IllegalArgumentException` is raised if multiple actions of the same type are passed.
+- Replaced
+  `AnalyzeActionsResultPagedFlux` to `PagedFlux<AnalyzeActionsResult>`,
+  `AnalyzeActionsResultPagedIterable` to `PagedIterable<AnalyzeActionsResult>`,
+  `AnalyzeHealthcareEntitiesPagedFlux` to `PagedFlux<AnalyzeHealthcareEntitiesResultCollection>`,
+  `AnalyzeHealthcareEntitiesPagedIterable` to `PagedIterable<AnalyzeHealthcareEntitiesResultCollection>`.
+- Deprecated `analyzeSentimentBatch***` APIs with type `TextAnalyticsRequestOptions` option bag below. The same 
+  functionalities can be done in the APIs with `AnalyzeSentimentOptions` instead:
+  `AnalyzeSentimentResultCollection analyzeSentimentBatch(Iterable<String> documents, String language, TextAnalyticsRequestOptions options)`,
+  `Response<AnalyzeSentimentResultCollection> analyzeSentimentBatchWithResponse(Iterable<TextDocumentInput> documents, TextAnalyticsRequestOptions options, Context context)`,
+  `Mono<Response<AnalyzeSentimentResultCollection>> analyzeSentimentBatchWithResponse(Iterable<TextDocumentInput> documents, TextAnalyticsRequestOptions options)`,
+  `Mono<AnalyzeSentimentResultCollection> analyzeSentimentBatch(Iterable<String> documents, String language, TextAnalyticsRequestOptions options)`
+- Removed `StringIndexType`. This SDK will keep using UTF-16 code unit as the default encoding.
+- Removed type `ExtractKeyPhrasesOptions`, `RecognizeEntitiesOptions`, `RecognizeLinkedEntitiesOptions` and respective exposures.
+- Removed the property `statistics` from `AnalyzeActionsResult` as it is not currently returned by the service even if 
+  the user passes `includeStatistics` = `true`.
+- Removed constructors, but to use the private setter accessor to assign the additional properties:
+    `CategorizedEntity(String text, EntityCategory category, String subcategory, double confidenceScore, int offset)`,
+    `LinkedEntity(String name, IterableStream<LinkedEntityMatch> matches, String languages, String dataSourceEntityId, String url, String dataSource, String bingEntitySearchApiId)`,
+    `LinkedEntityMatch(String text, double confidenceScore, int offset)`
 - Renamed type `PiiEntityDomainType` to `PiiEntityDomain`.
+- Renamed `AnalyzeActionResult`'s property `recognizeEntitiesActionResults` to `recognizeEntitiesResults` which dropped the keyword `Action`.
+  This change applied to all the other `***ActionResults` properties as well.
 - Renamed property name `result` to `documentsResults` in `AnalyzeSentimentActionResult`, `ExtractKeyPhrasesActionResult`,
-  `RecognizeEntitiesActionResult`, `RecognizeLinkedEntitiesActionResult`, and `RecognizePiiEntitiesActionResult`.
+  `RecognizeEntitiesActionResult`, `RecognizeLinkedEntitiesActionResult`, and `RecognizePiiEntitiesActionResult`. 
+- Renamed the enum values in `PiiEntityCategory` by separating words with the underscore character.
+- Renamed the methods in `AnalyzeActionsOperationDetail`,
+  `getActionsFailed()` to `getFailedCount()`,
+  `getActionsInProgress()` to `getInProgressCount()`,
+  `getActionsInTotal()` to `getTotalCount()`,
+  `getActionsSucceeded()` to `getSucceededCount()`.
+- `TextAnalyticsActions` now takes `***Action` types, instead of `***Options` types. Renamed The getter and setter method names
+  based on the new type names. Replacing types show as follows:
+  - `ExtractKeyPhrasesOption` changed to new type `ExtractKeyPhrasesAction`.
+  - `RecognizeEntitiesOption` changed to new type `RecognizeEntitiesAction`.
+  - `RecognizePiiEntitiesOption` changed to new type `RecognizePiiEntitiesAction`.
+  - `RecognizeLinkedEntitiesOption` changed to new type `RecognizeLinkedEntitiesAction`.
+  - `AnalyzeSentimentOption` changed to new type `AnalyzeSentimentAction`.
+- Changed enum types `EntityCertainty` and `EntityConditionality` to `ExpandableStringEnum` types.
 
 ## 5.1.0-beta.7 (2021-05-19)
 ### Features Added

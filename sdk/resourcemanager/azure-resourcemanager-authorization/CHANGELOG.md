@@ -1,6 +1,17 @@
 # Release History
 
-## 2.6.0-beta.1 (Unreleased)
+## 2.8.0-beta.1 (Unreleased)
+
+
+## 2.7.0 (2021-08-12)
+
+### Dependency Updates
+
+- Updated core dependency from resources
+
+## 2.6.0 (2021-06-18)
+
+- Updated core dependency from resources
 
 ## 2.5.0 (2021-05-28)
 - Supported key vault data related roles to `BuiltInRole`, for RBAC authorization of data access to data in `Vault`

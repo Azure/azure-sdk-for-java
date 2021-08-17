@@ -26,7 +26,7 @@ public class AccessControlHelloWorld {
         using default Azure credentials. To make default credentials work, ensure that environment variables
         'AZURE_CLIENT_ID', 'AZURE_CLIENT_KEY' and 'AZURE_TENANT_ID' are set with the service principal credentials.
 
-        To get started, you'll need a URI to an Azure Key Vault. See the README (https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/keyvault/azure-security-keyvault-administration/README.md)
+        To get started, you'll need a URI to an Azure Key Vault. See the README (https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/keyvault/azure-security-keyvault-administration/README.md)
         for links and instructions. */
         KeyVaultAccessControlClient accessControlClient = new KeyVaultAccessControlClientBuilder()
             .vaultUrl("https://{YOUR_VAULT_NAME}.vault.azure.net")
@@ -51,7 +51,7 @@ public class AccessControlHelloWorld {
         principal object ID. A role definition ID can be obtained from the 'id' property of one of the role definitions
         returned from listRoleAssignments().
 
-        See the README (https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/keyvault/azure-security-keyvault-administration/README.md#authenticate-the-client)
+        See the README (https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/keyvault/azure-security-keyvault-administration/README.md#authenticate-the-client)
         for links and instructions on how to generate a new service principal and obtain it's object ID. You can also
         get the object ID for your currently signed in account by running the following Azure CLI command:
         az ad signed-in-user show --query objectId */

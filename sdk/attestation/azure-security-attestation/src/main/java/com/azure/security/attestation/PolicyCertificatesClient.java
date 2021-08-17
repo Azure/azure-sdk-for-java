@@ -7,14 +7,14 @@ package com.azure.security.attestation;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.security.attestation.implementation.PolicyCertificatesImpl;
-import com.azure.security.attestation.models.CloudErrorException;
 import com.azure.security.attestation.models.PolicyCertificatesModifyResponse;
 import com.azure.security.attestation.models.PolicyCertificatesResponse;
 
-/** Initializes a new instance of the synchronous AttestationClient type. */
+/** Initializes a new instance of the synchronous AzureAttestationRestClient type. */
 @ServiceClient(builder = AttestationClientBuilder.class)
 public final class PolicyCertificatesClient {
     private final PolicyCertificatesImpl serviceClient;
@@ -31,13 +31,13 @@ public final class PolicyCertificatesClient {
     /**
      * Retrieves the set of certificates used to express policy for the current tenant.
      *
-     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response to an attestation policy management API.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PolicyCertificatesResponse get() {
-        return this.serviceClient.get();
+        return PolicyCertificatesResponse.fromGenerated(serviceClient.get());
     }
 
     /**
@@ -45,13 +45,14 @@ public final class PolicyCertificatesClient {
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response to an attestation policy management API.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PolicyCertificatesResponse> getWithResponse(Context context) {
-        return this.serviceClient.getWithResponse(context);
+        Response<com.azure.security.attestation.implementation.models.PolicyCertificatesResponse> response = serviceClient.getWithResponse(context);
+        return Utilities.generateResponseFromModelType(response, PolicyCertificatesResponse.fromGenerated(response.getValue()));
     }
 
     /**
@@ -59,13 +60,13 @@ public final class PolicyCertificatesClient {
      *
      * @param policyCertificateToAdd An RFC 7519 Json Web Token.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response to an attestation policy management API.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PolicyCertificatesModifyResponse add(String policyCertificateToAdd) {
-        return this.serviceClient.add(policyCertificateToAdd);
+        return PolicyCertificatesModifyResponse.fromGenerated(serviceClient.add(policyCertificateToAdd));
     }
 
     /**
@@ -74,13 +75,14 @@ public final class PolicyCertificatesClient {
      * @param policyCertificateToAdd An RFC 7519 Json Web Token.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response to an attestation policy management API.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PolicyCertificatesModifyResponse> addWithResponse(String policyCertificateToAdd, Context context) {
-        return this.serviceClient.addWithResponse(policyCertificateToAdd, context);
+        Response<com.azure.security.attestation.implementation.models.PolicyCertificatesModifyResponse> response = this.serviceClient.addWithResponse(policyCertificateToAdd, context);
+        return Utilities.generateResponseFromModelType(response, PolicyCertificatesModifyResponse.fromGenerated(response.getValue()));
     }
 
     /**
@@ -89,13 +91,13 @@ public final class PolicyCertificatesClient {
      *
      * @param policyCertificateToRemove An RFC 7519 Json Web Token.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response to an attestation policy management API.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PolicyCertificatesModifyResponse remove(String policyCertificateToRemove) {
-        return this.serviceClient.remove(policyCertificateToRemove);
+        return PolicyCertificatesModifyResponse.fromGenerated(serviceClient.remove(policyCertificateToRemove));
     }
 
     /**
@@ -105,13 +107,15 @@ public final class PolicyCertificatesClient {
      * @param policyCertificateToRemove An RFC 7519 Json Web Token.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response to an attestation policy management API.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PolicyCertificatesModifyResponse> removeWithResponse(
             String policyCertificateToRemove, Context context) {
-        return this.serviceClient.removeWithResponse(policyCertificateToRemove, context);
+        Response<com.azure.security.attestation.implementation.models.PolicyCertificatesModifyResponse> response = this.serviceClient.removeWithResponse(policyCertificateToRemove, context);
+        return Utilities.generateResponseFromModelType(response, PolicyCertificatesModifyResponse.fromGenerated(response.getValue()));
+
     }
 }

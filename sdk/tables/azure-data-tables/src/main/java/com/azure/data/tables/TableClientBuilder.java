@@ -5,6 +5,7 @@ package com.azure.data.tables;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.credential.AzureNamedKeyCredential;
 import com.azure.core.credential.AzureSasCredential;
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelinePosition;
@@ -66,6 +67,7 @@ public final class TableClientBuilder {
     private HttpPipeline httpPipeline;
     private AzureNamedKeyCredential azureNamedKeyCredential;
     private AzureSasCredential azureSasCredential;
+    private TokenCredential tokenCredential;
     private String sasToken;
     private TableServiceVersion version;
     private RetryPolicy retryPolicy;
@@ -110,7 +112,8 @@ public final class TableClientBuilder {
     public TableAsyncClient buildAsyncClient() {
         TableServiceVersion serviceVersion = version != null ? version : TableServiceVersion.getLatest();
 
-        validateCredentials(azureNamedKeyCredential, azureSasCredential, sasToken, connectionString, logger);
+        validateCredentials(azureNamedKeyCredential, azureSasCredential, tokenCredential, sasToken, connectionString,
+            logger);
 
         AzureNamedKeyCredential namedKeyCredential = null;
 
@@ -159,8 +162,9 @@ public final class TableClientBuilder {
         }
 
         HttpPipeline pipeline = (httpPipeline != null) ? httpPipeline : BuilderHelper.buildPipeline(
-            namedKeyCredential, azureSasCredential, sasToken, endpoint, retryPolicy, httpLogOptions,
-            clientOptions, httpClient, perCallPolicies, perRetryPolicies, configuration, logger);
+            namedKeyCredential != null ? namedKeyCredential : azureNamedKeyCredential, azureSasCredential,
+            tokenCredential, sasToken, endpoint, retryPolicy, httpLogOptions, clientOptions, httpClient,
+            perCallPolicies, perRetryPolicies, configuration, logger);
 
         return new TableAsyncClient(tableName, pipeline, endpoint, serviceVersion, TABLES_SERIALIZER,
             TRANSACTIONAL_BATCH_SERIALIZER);
@@ -248,8 +252,9 @@ public final class TableClientBuilder {
 
     /**
      * Sets the SAS token used to authorize requests sent to the service. Setting this is mutually exclusive with
-     * {@link TableServiceClientBuilder#credential(AzureSasCredential)} or
-     * {@link TableServiceClientBuilder#credential(AzureNamedKeyCredential)}
+     * {@link TableClientBuilder#credential(AzureNamedKeyCredential)},
+     * {@link TableClientBuilder#credential(AzureSasCredential)} or
+     * {@link TableClientBuilder#credential(TokenCredential)}.
      *
      * @param sasToken The SAS token to use for authenticating requests.
      *
@@ -274,8 +279,9 @@ public final class TableClientBuilder {
 
     /**
      * Sets the {@link AzureSasCredential} used to authorize requests sent to the service. Setting this is mutually
-     * exclusive with {@link TableServiceClientBuilder#credential(AzureNamedKeyCredential)} or
-     * {@link TableServiceClientBuilder#sasToken(String)}.
+     * exclusive with {@link TableClientBuilder#credential(AzureNamedKeyCredential)},
+     * {@link TableClientBuilder#credential(TokenCredential)} or
+     * {@link TableClientBuilder#sasToken(String)}.
      *
      * @param credential {@link AzureSasCredential} used to authorize requests sent to the service.
      *
@@ -295,8 +301,9 @@ public final class TableClientBuilder {
 
     /**
      * Sets the {@link AzureNamedKeyCredential} used to authorize requests sent to the service. Setting this is mutually
-     * exclusive with using {@link TableServiceClientBuilder#credential(AzureSasCredential)} or
-     * {@link TableServiceClientBuilder#sasToken(String)}.
+     * exclusive with using {@link TableClientBuilder#credential(AzureSasCredential)},
+     * {@link TableClientBuilder#credential(TokenCredential)} or
+     * {@link TableClientBuilder#sasToken(String)}.
      *
      * @param credential {@link AzureNamedKeyCredential} used to authorize requests sent to the service.
      *
@@ -310,6 +317,28 @@ public final class TableClientBuilder {
         }
 
         this.azureNamedKeyCredential = credential;
+
+        return this;
+    }
+
+    /**
+     * Sets the {@link TokenCredential} used to authorize requests sent to the service. Setting this is mutually
+     * exclusive with using {@link TableClientBuilder#credential(AzureNamedKeyCredential)},
+     * {@link TableClientBuilder#credential(AzureSasCredential)} or
+     * {@link TableClientBuilder#sasToken(String)}.
+     *
+     * @param credential {@link TokenCredential} used to authorize requests sent to the service.
+     *
+     * @return The updated {@link TableClientBuilder}.
+     *
+     * @throws NullPointerException If {@code credential} is {@code null}.
+     */
+    public TableClientBuilder credential(TokenCredential credential) {
+        if (credential == null) {
+            throw logger.logExceptionAsError(new NullPointerException("'credential' cannot be null."));
+        }
+
+        this.tokenCredential = credential;
 
         return this;
     }

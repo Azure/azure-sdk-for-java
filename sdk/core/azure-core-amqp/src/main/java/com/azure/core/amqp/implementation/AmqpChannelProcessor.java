@@ -109,9 +109,10 @@ public class AmqpChannelProcessor<T> extends Mono<T> implements Processor<T, T>,
                         logger.info("namespace[{}] entityPath[{}]: Channel is disposed.",
                             fullyQualifiedNamespace, entityPath);
                     } else {
-                        logger.info("namespace[{}] entityPath[{}]: Channel is closed.",
+                        logger.info("namespace[{}] entityPath[{}]: Channel is closed. Requesting upstream. ",
                             fullyQualifiedNamespace, entityPath);
                         setAndClearChannel();
+                        requestUpstream();
                     }
                 });
         }

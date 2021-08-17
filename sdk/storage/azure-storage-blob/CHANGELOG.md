@@ -1,7 +1,17 @@
 # Release History
 
-## 12.13.0-beta.1 (Unreleased)
-- Added support to get a blob client that uses an encryption scope and customer provided key. 
+## 12.14.0-beta.2 (Unreleased)
+
+
+## 12.14.0-beta.1 (2021-07-28)
+- Fixed a bug where BlobClient.exists would not function correctly on blobs encrypted with CPK.
+- Added support for the 2020-10-02 service version.
+- Added support to list blobs deleted with versioning enabled.
+- Added support to specify Parquet Input Serialization when querying a blob.
+- Updated DownloadRetryOptions.maxRetryRequests to default downloads to retry 5 times.
+
+## 12.13.0 (2021-07-22)
+- Added support to get a blob client that uses an encryption scope and customer provided key.  
 
 ## 12.12.0 (2021-06-09)
 - GA release

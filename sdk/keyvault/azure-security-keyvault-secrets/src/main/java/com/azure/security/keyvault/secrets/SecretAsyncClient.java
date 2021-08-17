@@ -940,7 +940,7 @@ public final class SecretAsyncClient {
                 CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
                 .doOnRequest(ignored -> logger.verbose("Listing secret versions - {}", name))
                 .doOnSuccess(response -> logger.verbose("Listed secret versions - {}", name))
-                .doOnError(error -> logger.warning(String.format("Failed to list secret versions - {}", name), error));
+                .doOnError(error -> logger.warning("Failed to list secret versions - {}", name, error));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }

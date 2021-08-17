@@ -54,7 +54,7 @@ public final class OperationsClientImpl implements OperationsClient {
     @ServiceInterface(name = "MySqlManagementClien")
     private interface OperationsService {
         @Headers({"Content-Type: application/json"})
-        @Get("/providers/Microsoft.DBForMySQL/operations")
+        @Get("/providers/Microsoft.DBforMySQL/operations")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<OperationListResultInner>> list(

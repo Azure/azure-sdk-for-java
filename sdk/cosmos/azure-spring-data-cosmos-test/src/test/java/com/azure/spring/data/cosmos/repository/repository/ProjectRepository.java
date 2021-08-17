@@ -71,6 +71,8 @@ public interface ProjectRepository extends CosmosRepository<Project, String> {
 
     Iterable<Project> findByCreatorInAndStarCountIn(Collection<String> creators, Collection<Long> starCounts);
 
+    Iterable<Project> findByCreatorInOrStarCount(Collection<String> creators, Long starCount);
+
     Iterable<Project> findByCreatorNotIn(Collection<String> creators);
 
     Iterable<Project> findByCreatorInAndStarCountNotIn(Collection<String> creators, Collection<Long> starCounts);

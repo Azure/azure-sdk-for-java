@@ -4,6 +4,7 @@ package com.azure.cosmos.spark
 
 import com.azure.cosmos.spark.CosmosTableSchemaInferrer.LsnAttributeName
 import com.azure.cosmos.spark.SchemaConversionModes.SchemaConversionMode
+import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
 
 import java.sql.{Date, Timestamp}
 import com.fasterxml.jackson.databind.node.{ArrayNode, BinaryNode, NullNode, ObjectNode, TextNode}
@@ -28,7 +29,7 @@ import scala.util.{Try, Success, Failure}
 // scalastyle:off multiple.string.literals
 // scalastyle:off null
 private object CosmosRowConverter
-    extends CosmosLoggingTrait {
+    extends BasicLoggingTrait {
 
     private val FullFidelityChangeFeedMetadataPropertyName = "_metadata"
     private val OperationTypePropertyName = "operationType"
@@ -361,7 +362,6 @@ private object CosmosRowConverter
             throw new IllegalArgumentException(
               s"Unsupported datatype conversion [Value: $value] of ${value.getClass}] to $dataType]")
           }
-
     }
     // scalastyle:on
 

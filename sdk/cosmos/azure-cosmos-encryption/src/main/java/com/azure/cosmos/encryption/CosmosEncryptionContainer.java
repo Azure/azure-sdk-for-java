@@ -172,9 +172,8 @@ public class CosmosEncryptionContainer {
         try {
             return itemMono.block();
         } catch (Exception ex) {
-            final Throwable throwable = Exceptions.unwrap(ex);
-            if (throwable instanceof CosmosException) {
-                throw (CosmosException) throwable;
+            if (ex instanceof CosmosException) {
+                throw (CosmosException) ex;
             } else {
                 throw ex;
             }
@@ -182,16 +181,15 @@ public class CosmosEncryptionContainer {
     }
 
     private <T> CosmosPagedIterable<T> getCosmosPagedIterable(CosmosPagedFlux<T> cosmosPagedFlux) {
-        return UtilBridgeInternal.createCosmosPagedIterable(cosmosPagedFlux);
+        return new CosmosPagedIterable<>(cosmosPagedFlux);
     }
 
     private CosmosItemResponse<Object> blockDeleteItemResponse(Mono<CosmosItemResponse<Object>> deleteItemMono) {
         try {
             return deleteItemMono.block();
         } catch (Exception ex) {
-            final Throwable throwable = Exceptions.unwrap(ex);
-            if (throwable instanceof CosmosException) {
-                throw (CosmosException) throwable;
+            if (ex instanceof CosmosException) {
+                throw (CosmosException) ex;
             } else {
                 throw ex;
             }

@@ -16,9 +16,9 @@ import java.util.Random;
  * Utility class to help with data creation for perf testing.
  */
 public class TestDataCreationHelper {
-    private static final int RANDOM_BYTES_LENGTH = 1024 * 1024; // 1MB
+    private static final int RANDOM_BYTES_LENGTH = Integer.parseInt(
+        System.getProperty("azure.core.perf.test.data.buffer.size", "1048576")); // 1MB default;
     private static final byte[] RANDOM_BYTES;
-    private static final int SIZE = (1024 * 1024 * 1024) + 1;
 
     static {
         Random random = new Random(0);
@@ -34,12 +34,16 @@ public class TestDataCreationHelper {
      * @return The created {@link Flux}
      */
     private static Flux<ByteBuffer> createCircularByteBufferFlux(byte[] array, long size) {
-        int quotient = (int) size / array.length;
-        int remainder = (int) size % array.length;
+        long quotient = size / array.length;
+        int remainder = (int) (size % array.length);
 
-        return Flux.range(0, quotient)
-            .map(i -> allocateByteBuffer(array, array.length))
-            .concatWithValues(allocateByteBuffer(array, remainder));
+        if (quotient == 0) {
+            return Flux.just(allocateByteBuffer(array, remainder));
+        } else {
+            return Flux.just(Boolean.TRUE).repeat(quotient - 1)
+                .map(i -> allocateByteBuffer(array, array.length))
+                .concatWithValues(allocateByteBuffer(array, remainder));
+        }
     }
 
     private static ByteBuffer allocateByteBuffer(byte[] array, int size) {
@@ -66,14 +70,9 @@ public class TestDataCreationHelper {
      *
      * @param size the size of the stream
      * @return the {@link InputStream} of {@code size}
-     * @throws IllegalArgumentException if {@code size} is more than {@link #SIZE}
      */
     public static InputStream createRandomInputStream(long size) {
-        if (size > SIZE) {
-            throw new IllegalArgumentException("size must be <= " + SIZE);
-        }
-
-        return new RepeatingInputStream((int) size);
+        return new RepeatingInputStream(size);
     }
 
     /**
@@ -84,10 +83,10 @@ public class TestDataCreationHelper {
      * @throws IOException If an IO error occurs.
      */
     public static void writeBytesToOutputStream(OutputStream outputStream, long size) throws IOException {
-        int quotient = (int) size / RANDOM_BYTES.length;
-        int remainder = (int) size % RANDOM_BYTES.length;
+        long quotient = size / RANDOM_BYTES.length;
+        int remainder = (int) (size % RANDOM_BYTES.length);
 
-        for (int i = 0; i < quotient; i++) {
+        for (long i = 0; i < quotient; i++) {
             outputStream.write(RANDOM_BYTES);
         }
 

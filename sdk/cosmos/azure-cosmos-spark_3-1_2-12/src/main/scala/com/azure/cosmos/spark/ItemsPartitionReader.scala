@@ -6,7 +6,8 @@ package com.azure.cosmos.spark
 import com.azure.cosmos.implementation.spark.{OperationContextAndListenerTuple, OperationListener}
 import com.azure.cosmos.implementation.{CosmosClientMetadataCachesSnapshot, ImplementationBridgeHelpers, SparkBridgeImplementationInternal}
 import com.azure.cosmos.models.{CosmosParameterizedQuery, CosmosQueryRequestOptions}
-import com.azure.cosmos.spark.diagnostics.{DiagnosticsContext, OperationListenerFactory, SparkTaskContext}
+import com.azure.cosmos.spark.diagnostics.{DiagnosticsContext, DiagnosticsLoader, LoggerHelper, SparkTaskContext}
+import com.azure.cosmos.util.CosmosPagedIterable
 import com.fasterxml.jackson.databind.node.ObjectNode
 import org.apache.spark.TaskContext
 import org.apache.spark.broadcast.Broadcast
@@ -15,8 +16,6 @@ import org.apache.spark.sql.catalyst.InternalRow
 import org.apache.spark.sql.catalyst.encoders.ExpressionEncoder
 import org.apache.spark.sql.connector.read.PartitionReader
 import org.apache.spark.sql.types.StructType
-
-import java.util.UUID
 
 // per spark task there will be one CosmosPartitionReader.
 // This provides iterator to read from the assigned spark partition
@@ -31,11 +30,13 @@ private case class ItemsPartitionReader
   cosmosClientStateHandle: Broadcast[CosmosClientMetadataCachesSnapshot],
   diagnosticsConfig: DiagnosticsConfig
 )
-  extends PartitionReader[InternalRow] with CosmosLoggingTrait {
-  logInfo(s"Instantiated ${this.getClass.getSimpleName}")
+  extends PartitionReader[InternalRow] {
+
+  private lazy val log = LoggerHelper.getLogger(diagnosticsConfig, this.getClass)
+  log.logInfo(s"Instantiated ${this.getClass.getSimpleName}")
 
   private val containerTargetConfig = CosmosContainerConfig.parseCosmosContainerConfig(config)
-  logInfo(s"Reading from feed range $feedRange of " +
+  log.logInfo(s"Reading from feed range $feedRange of " +
     s"container ${containerTargetConfig.database}.${containerTargetConfig.container}")
   private val readConfig = CosmosReadConfig.parseCosmosReadConfig(config)
   private val client = CosmosClientCache(
@@ -43,6 +44,7 @@ private case class ItemsPartitionReader
     Some(cosmosClientStateHandle))
 
   private val cosmosAsyncContainer = ThroughputControlHelper.getContainer(config, containerTargetConfig, client)
+  cosmosAsyncContainer.openConnectionsAndInitCaches().block()
 
   private val queryOptions = new CosmosQueryRequestOptions()
 
@@ -56,10 +58,11 @@ private case class ItemsPartitionReader
       val taskDiagnosticsContext = SparkTaskContext(diagnosticsContext.correlationActivityId,
         taskContext.stageId(),
         taskContext.partitionId(),
+        taskContext.taskAttemptId(),
         feedRange.toString + " " + cosmosQuery.toSqlQuerySpec.getQueryText)
 
       val listener: OperationListener =
-        OperationListenerFactory.getOperationListener(diagnosticsConfig.mode.get)
+        DiagnosticsLoader.getDiagnosticsProvider(diagnosticsConfig).getLogger(this.getClass)
 
       val operationContextAndListenerTuple = new OperationContextAndListenerTuple(taskDiagnosticsContext, listener)
       ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper
@@ -69,14 +72,12 @@ private case class ItemsPartitionReader
 
   queryOptions.setFeedRange(SparkBridgeImplementationInternal.toFeedRange(feedRange))
 
-  private lazy val iterator = cosmosAsyncContainer.queryItems(
-    cosmosQuery.toSqlQuerySpec,
-    queryOptions,
-    classOf[ObjectNode]
-  ).toIterable.iterator()
+  private lazy val iterator = new CosmosPagedIterable[ObjectNode](
+    cosmosAsyncContainer.queryItems(cosmosQuery.toSqlQuerySpec, queryOptions, classOf[ObjectNode]),
+    readConfig.maxItemCount
+  ).iterator()
 
   private val rowSerializer: ExpressionEncoder.Serializer[Row] = RowSerializerPool.getOrCreateSerializer(readSchema)
-
 
   override def next(): Boolean = iterator.hasNext
 

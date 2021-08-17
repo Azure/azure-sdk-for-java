@@ -23,7 +23,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.18.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core;current} -->
+      <version>1.20.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -38,22 +38,22 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-security-keyvault-keys</artifactId>
-      <version>4.3.0-beta.9</version> <!-- {x-version-update;com.azure:azure-security-keyvault-keys;current} -->
+      <version>4.4.0-beta.3</version> <!-- {x-version-update;com.azure:azure-security-keyvault-keys;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-security-keyvault-secrets</artifactId>
-      <version>4.3.0-beta.7</version> <!-- {x-version-update;com.azure:azure-security-keyvault-secrets;current} -->
+      <version>4.4.0-beta.1</version> <!-- {x-version-update;com.azure:azure-security-keyvault-secrets;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-security-keyvault-certificates</artifactId>
-      <version>4.2.0-beta.7</version> <!-- {x-version-update;com.azure:azure-security-keyvault-certificates;current} -->
+      <version>4.3.0-beta.1</version> <!-- {x-version-update;com.azure:azure-security-keyvault-certificates;current} -->
     </dependency>
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-api</artifactId>
-      <version>1.7.30</version> <!-- {x-version-update;org.slf4j:slf4j-api;external_dependency} -->
+      <version>1.7.32</version> <!-- {x-version-update;org.slf4j:slf4j-api;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>com.microsoft.azure</groupId>
@@ -64,7 +64,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-test</artifactId>
-      <version>1.7.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core-test;current} -->
+      <version>1.8.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core-test;current} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -76,7 +76,7 @@
     <dependency>
       <groupId>io.projectreactor</groupId>
       <artifactId>reactor-test</artifactId>
-      <version>3.4.6</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
+      <version>3.4.8</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -91,7 +91,7 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>org.slf4j:slf4j-api:[1.7.30]</include> <!-- {x-include-update;org.slf4j:slf4j-api;external_dependency} -->
+                <include>org.slf4j:slf4j-api:[1.7.32]</include> <!-- {x-include-update;org.slf4j:slf4j-api;external_dependency} -->
                 <include>com.microsoft.azure:azure-mgmt-graph-rbac:[1.3.0]</include> <!-- {x-include-update;com.microsoft.azure:azure-mgmt-graph-rbac;external_dependency} -->
               </includes>
             </bannedDependencies>

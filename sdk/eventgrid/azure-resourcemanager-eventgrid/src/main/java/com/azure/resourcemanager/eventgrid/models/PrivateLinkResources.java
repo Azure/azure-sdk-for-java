@@ -14,8 +14,10 @@ public interface PrivateLinkResources {
      * Get properties of a private link resource.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @param parentType The type of the parent resource. This can be either \'topics\' or \'domains\'.
-     * @param parentName The name of the parent resource (namely, either, the topic name or domain name).
+     * @param parentType The type of the parent resource. This can be either \'topics\', \'domains\', or
+     *     \'partnerNamespaces\'.
+     * @param parentName The name of the parent resource (namely, either, the topic name, domain name, or partner
+     *     namespace name).
      * @param privateLinkResourceName The name of private link resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -29,8 +31,10 @@ public interface PrivateLinkResources {
      * Get properties of a private link resource.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @param parentType The type of the parent resource. This can be either \'topics\' or \'domains\'.
-     * @param parentName The name of the parent resource (namely, either, the topic name or domain name).
+     * @param parentType The type of the parent resource. This can be either \'topics\', \'domains\', or
+     *     \'partnerNamespaces\'.
+     * @param parentName The name of the parent resource (namely, either, the topic name, domain name, or partner
+     *     namespace name).
      * @param privateLinkResourceName The name of private link resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -46,11 +50,13 @@ public interface PrivateLinkResources {
         Context context);
 
     /**
-     * List all the private link resources under a topic or domain.
+     * List all the private link resources under a topic, domain, or partner namespace.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @param parentType The type of the parent resource. This can be either \'topics\' or \'domains\'.
-     * @param parentName The name of the parent resource (namely, either, the topic name or domain name).
+     * @param parentType The type of the parent resource. This can be either \'topics\', \'domains\', or
+     *     \'partnerNamespaces\'.
+     * @param parentName The name of the parent resource (namely, either, the topic name, domain name, or partner
+     *     namespace name).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -59,11 +65,13 @@ public interface PrivateLinkResources {
     PagedIterable<PrivateLinkResource> listByResource(String resourceGroupName, String parentType, String parentName);
 
     /**
-     * List all the private link resources under a topic or domain.
+     * List all the private link resources under a topic, domain, or partner namespace.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @param parentType The type of the parent resource. This can be either \'topics\' or \'domains\'.
-     * @param parentName The name of the parent resource (namely, either, the topic name or domain name).
+     * @param parentType The type of the parent resource. This can be either \'topics\', \'domains\', or
+     *     \'partnerNamespaces\'.
+     * @param parentName The name of the parent resource (namely, either, the topic name, domain name, or partner
+     *     namespace name).
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
      *     'name' property only and with limited number of OData operations. These operations are: the 'contains'
      *     function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal).

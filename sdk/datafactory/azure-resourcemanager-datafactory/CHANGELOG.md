@@ -1,7 +1,1052 @@
 # Release History
 
-## 1.0.0-beta.3 (Unreleased)
+## 1.0.0-beta.5 (Unreleased)
 
+
+## 1.0.0-beta.4 (2021-08-16)
+
+- Azure Resource Manager DataFactory client library for Java. This package contains Microsoft Azure SDK for DataFactory Management SDK. The Azure Data Factory V2 management API provides a RESTful set of web services that interact with Azure Data Factory V2 services. Package tag package-2018-06. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Breaking Changes
+
+* `models.AdditionalColumns` was removed
+
+#### `models.CosmosDbMongoDbApiSource` was modified
+
+* `java.util.List additionalColumns()` -> `java.lang.Object additionalColumns()`
+* `withAdditionalColumns(java.util.List)` was removed
+
+#### `models.QuickBooksSource` was modified
+
+* `withAdditionalColumns(java.util.List)` was removed
+* `withAdditionalColumns(java.util.List)` was removed
+
+#### `models.GoogleBigQuerySource` was modified
+
+* `withAdditionalColumns(java.util.List)` was removed
+* `withAdditionalColumns(java.util.List)` was removed
+
+#### `models.DelimitedTextSource` was modified
+
+* `withAdditionalColumns(java.util.List)` was removed
+* `java.util.List additionalColumns()` -> `java.lang.Object additionalColumns()`
+
+#### `models.SalesforceSource` was modified
+
+* `withAdditionalColumns(java.util.List)` was removed
+* `withAdditionalColumns(java.util.List)` was removed
+
+#### `models.SalesforceServiceCloudSource` was modified
+
+* `withAdditionalColumns(java.util.List)` was removed
+* `java.util.List additionalColumns()` -> `java.lang.Object additionalColumns()`
+
+#### `models.NetezzaSource` was modified
+
+* `withAdditionalColumns(java.util.List)` was removed
+* `withAdditionalColumns(java.util.List)` was removed
+
+#### `models.MySqlSource` was modified
+
+* `withAdditionalColumns(java.util.List)` was removed
+* `withAdditionalColumns(java.util.List)` was removed
+
+#### `models.SqlMISource` was modified
+
+* `withAdditionalColumns(java.util.List)` was removed
+* `withAdditionalColumns(java.util.List)` was removed
+
+#### `models.PaypalSource` was modified
+
+* `withAdditionalColumns(java.util.List)` was removed
+* `withAdditionalColumns(java.util.List)` was removed
+
+#### `models.ZohoSource` was modified
+
+* `withAdditionalColumns(java.util.List)` was removed
+* `withAdditionalColumns(java.util.List)` was removed
+
+#### `models.SapOpenHubSource` was modified
+
+* `withAdditionalColumns(java.util.List)` was removed
+* `withAdditionalColumns(java.util.List)` was removed
+
+#### `models.HiveSource` was modified
+
+* `withAdditionalColumns(java.util.List)` was removed
+* `withAdditionalColumns(java.util.List)` was removed
+
+#### `models.AmazonMwsSource` was modified
+
+* `withAdditionalColumns(java.util.List)` was removed
+* `withAdditionalColumns(java.util.List)` was removed
+
+#### `models.AzureTableSource` was modified
+
+* `withAdditionalColumns(java.util.List)` was removed
+* `withAdditionalColumns(java.util.List)` was removed
+
+#### `models.AzurePostgreSqlSource` was modified
+
+* `withAdditionalColumns(java.util.List)` was removed
+* `withAdditionalColumns(java.util.List)` was removed
+
+#### `models.PrestoSource` was modified
+
+* `withAdditionalColumns(java.util.List)` was removed
+* `withAdditionalColumns(java.util.List)` was removed
+
+#### `models.SapCloudForCustomerSource` was modified
+
+* `withAdditionalColumns(java.util.List)` was removed
+* `withAdditionalColumns(java.util.List)` was removed
+
+#### `models.MicrosoftAccessSource` was modified
+
+* `java.util.List additionalColumns()` -> `java.lang.Object additionalColumns()`
+* `withAdditionalColumns(java.util.List)` was removed
+
+#### `models.AzureMariaDBSource` was modified
+
+* `withAdditionalColumns(java.util.List)` was removed
+* `withAdditionalColumns(java.util.List)` was removed
+
+#### `models.GoogleAdWordsSource` was modified
+
+* `withAdditionalColumns(java.util.List)` was removed
+* `withAdditionalColumns(java.util.List)` was removed
+
+#### `models.MariaDBSource` was modified
+
+* `withAdditionalColumns(java.util.List)` was removed
+* `withAdditionalColumns(java.util.List)` was removed
+
+#### `models.RestSource` was modified
+
+* `withAdditionalColumns(java.util.List)` was removed
+* `java.util.List additionalColumns()` -> `java.lang.Object additionalColumns()`
+
+#### `models.SapEccSource` was modified
+
+* `withAdditionalColumns(java.util.List)` was removed
+* `withAdditionalColumns(java.util.List)` was removed
+
+#### `models.CassandraSource` was modified
+
+* `withAdditionalColumns(java.util.List)` was removed
+* `withAdditionalColumns(java.util.List)` was removed
+
+#### `models.SapTableSource` was modified
+
+* `withAdditionalColumns(java.util.List)` was removed
+* `withAdditionalColumns(java.util.List)` was removed
+
+#### `models.CommonDataServiceForAppsSource` was modified
+
+* `java.util.List additionalColumns()` -> `java.lang.Object additionalColumns()`
+* `withAdditionalColumns(java.util.List)` was removed
+
+#### `models.OracleSource` was modified
+
+* `java.util.List additionalColumns()` -> `java.lang.Object additionalColumns()`
+* `withAdditionalColumns(java.util.List)` was removed
+
+#### `models.WebSource` was modified
+
+* `withAdditionalColumns(java.util.List)` was removed
+* `java.util.List additionalColumns()` -> `java.lang.Object additionalColumns()`
+
+#### `models.DrillSource` was modified
+
+* `withAdditionalColumns(java.util.List)` was removed
+* `withAdditionalColumns(java.util.List)` was removed
+
+#### `models.ServiceNowSource` was modified
+
+* `withAdditionalColumns(java.util.List)` was removed
+* `withAdditionalColumns(java.util.List)` was removed
+
+#### `models.MongoDbSource` was modified
+
+* `withAdditionalColumns(java.util.List)` was removed
+* `java.util.List additionalColumns()` -> `java.lang.Object additionalColumns()`
+
+#### `models.InformixSource` was modified
+
+* `withAdditionalColumns(java.util.List)` was removed
+* `withAdditionalColumns(java.util.List)` was removed
+
+#### `models.ParquetSource` was modified
+
+* `withAdditionalColumns(java.util.List)` was removed
+* `java.util.List additionalColumns()` -> `java.lang.Object additionalColumns()`
+
+#### `models.ConcurSource` was modified
+
+* `withAdditionalColumns(java.util.List)` was removed
+* `withAdditionalColumns(java.util.List)` was removed
+
+#### `models.PhoenixSource` was modified
+
+* `withAdditionalColumns(java.util.List)` was removed
+* `withAdditionalColumns(java.util.List)` was removed
+
+#### `models.SalesforceMarketingCloudSource` was modified
+
+* `withAdditionalColumns(java.util.List)` was removed
+* `withAdditionalColumns(java.util.List)` was removed
+
+#### `models.TeradataSource` was modified
+
+* `withAdditionalColumns(java.util.List)` was removed
+* `withAdditionalColumns(java.util.List)` was removed
+
+#### `models.GreenplumSource` was modified
+
+* `withAdditionalColumns(java.util.List)` was removed
+* `withAdditionalColumns(java.util.List)` was removed
+
+#### `models.SapBwSource` was modified
+
+* `withAdditionalColumns(java.util.List)` was removed
+* `withAdditionalColumns(java.util.List)` was removed
+
+#### `models.OdbcSource` was modified
+
+* `withAdditionalColumns(java.util.List)` was removed
+* `withAdditionalColumns(java.util.List)` was removed
+
+#### `models.DynamicsCrmSource` was modified
+
+* `java.util.List additionalColumns()` -> `java.lang.Object additionalColumns()`
+* `withAdditionalColumns(java.util.List)` was removed
+
+#### `models.SapHanaSource` was modified
+
+* `withAdditionalColumns(java.util.List)` was removed
+* `withAdditionalColumns(java.util.List)` was removed
+
+#### `models.SquareSource` was modified
+
+* `withAdditionalColumns(java.util.List)` was removed
+* `withAdditionalColumns(java.util.List)` was removed
+
+#### `models.DynamicsSource` was modified
+
+* `java.util.List additionalColumns()` -> `java.lang.Object additionalColumns()`
+* `withAdditionalColumns(java.util.List)` was removed
+
+#### `models.ImpalaSource` was modified
+
+* `withAdditionalColumns(java.util.List)` was removed
+* `withAdditionalColumns(java.util.List)` was removed
+
+#### `models.SybaseSource` was modified
+
+* `withAdditionalColumns(java.util.List)` was removed
+* `withAdditionalColumns(java.util.List)` was removed
+
+#### `models.JiraSource` was modified
+
+* `withAdditionalColumns(java.util.List)` was removed
+* `withAdditionalColumns(java.util.List)` was removed
+
+#### `models.ResponsysSource` was modified
+
+* `withAdditionalColumns(java.util.List)` was removed
+* `withAdditionalColumns(java.util.List)` was removed
+
+#### `models.JsonSource` was modified
+
+* `withAdditionalColumns(java.util.List)` was removed
+* `java.util.List additionalColumns()` -> `java.lang.Object additionalColumns()`
+
+#### `models.SparkSource` was modified
+
+* `withAdditionalColumns(java.util.List)` was removed
+* `withAdditionalColumns(java.util.List)` was removed
+
+#### `models.HBaseSource` was modified
+
+* `withAdditionalColumns(java.util.List)` was removed
+* `withAdditionalColumns(java.util.List)` was removed
+
+#### `models.VerticaSource` was modified
+
+* `withAdditionalColumns(java.util.List)` was removed
+* `withAdditionalColumns(java.util.List)` was removed
+
+#### `models.SqlServerSource` was modified
+
+* `withAdditionalColumns(java.util.List)` was removed
+* `withAdditionalColumns(java.util.List)` was removed
+
+#### `models.AmazonRedshiftSource` was modified
+
+* `withAdditionalColumns(java.util.List)` was removed
+* `withAdditionalColumns(java.util.List)` was removed
+
+#### `models.MarketoSource` was modified
+
+* `withAdditionalColumns(java.util.List)` was removed
+* `withAdditionalColumns(java.util.List)` was removed
+
+#### `models.SqlDWSource` was modified
+
+* `withAdditionalColumns(java.util.List)` was removed
+* `withAdditionalColumns(java.util.List)` was removed
+
+#### `models.XeroSource` was modified
+
+* `withAdditionalColumns(java.util.List)` was removed
+* `withAdditionalColumns(java.util.List)` was removed
+
+#### `models.AzureMySqlSource` was modified
+
+* `withAdditionalColumns(java.util.List)` was removed
+* `withAdditionalColumns(java.util.List)` was removed
+
+#### `models.ODataSource` was modified
+
+* `java.util.List additionalColumns()` -> `java.lang.Object additionalColumns()`
+* `withAdditionalColumns(java.util.List)` was removed
+
+#### `models.XmlSource` was modified
+
+* `withAdditionalColumns(java.util.List)` was removed
+* `java.util.List additionalColumns()` -> `java.lang.Object additionalColumns()`
+
+#### `models.MongoDbAtlasSource` was modified
+
+* `java.util.List additionalColumns()` -> `java.lang.Object additionalColumns()`
+* `withAdditionalColumns(java.util.List)` was removed
+
+#### `models.TabularSource` was modified
+
+* `withAdditionalColumns(java.util.List)` was removed
+* `java.util.List additionalColumns()` -> `java.lang.Object additionalColumns()`
+
+#### `models.RelationalSource` was modified
+
+* `java.util.List additionalColumns()` -> `java.lang.Object additionalColumns()`
+* `withAdditionalColumns(java.util.List)` was removed
+
+#### `models.PostgreSqlSource` was modified
+
+* `withAdditionalColumns(java.util.List)` was removed
+* `withAdditionalColumns(java.util.List)` was removed
+
+#### `models.MongoDbV2Source` was modified
+
+* `java.util.List additionalColumns()` -> `java.lang.Object additionalColumns()`
+* `withAdditionalColumns(java.util.List)` was removed
+
+#### `models.AzureDataExplorerSource` was modified
+
+* `withAdditionalColumns(java.util.List)` was removed
+* `java.util.List additionalColumns()` -> `java.lang.Object additionalColumns()`
+
+#### `models.SqlSource` was modified
+
+* `withAdditionalColumns(java.util.List)` was removed
+* `withAdditionalColumns(java.util.List)` was removed
+
+#### `models.OracleServiceCloudSource` was modified
+
+* `withAdditionalColumns(java.util.List)` was removed
+* `withAdditionalColumns(java.util.List)` was removed
+
+#### `models.OrcSource` was modified
+
+* `java.util.List additionalColumns()` -> `java.lang.Object additionalColumns()`
+* `withAdditionalColumns(java.util.List)` was removed
+
+#### `models.DocumentDbCollectionSource` was modified
+
+* `java.util.List additionalColumns()` -> `java.lang.Object additionalColumns()`
+* `withAdditionalColumns(java.util.List)` was removed
+
+#### `models.CosmosDbSqlApiSource` was modified
+
+* `withAdditionalColumns(java.util.List)` was removed
+* `java.util.List additionalColumns()` -> `java.lang.Object additionalColumns()`
+
+#### `models.FileSystemSource` was modified
+
+* `java.util.List additionalColumns()` -> `java.lang.Object additionalColumns()`
+* `withAdditionalColumns(java.util.List)` was removed
+
+#### `models.MagentoSource` was modified
+
+* `withAdditionalColumns(java.util.List)` was removed
+* `withAdditionalColumns(java.util.List)` was removed
+
+#### `models.CouchbaseSource` was modified
+
+* `withAdditionalColumns(java.util.List)` was removed
+* `withAdditionalColumns(java.util.List)` was removed
+
+#### `models.AvroSource` was modified
+
+* `withAdditionalColumns(java.util.List)` was removed
+* `java.util.List additionalColumns()` -> `java.lang.Object additionalColumns()`
+
+#### `models.Db2Source` was modified
+
+* `withAdditionalColumns(java.util.List)` was removed
+* `withAdditionalColumns(java.util.List)` was removed
+
+#### `models.HubspotSource` was modified
+
+* `withAdditionalColumns(java.util.List)` was removed
+* `withAdditionalColumns(java.util.List)` was removed
+
+#### `models.AzureSqlSource` was modified
+
+* `withAdditionalColumns(java.util.List)` was removed
+* `withAdditionalColumns(java.util.List)` was removed
+
+#### `models.ExcelSource` was modified
+
+* `java.util.List additionalColumns()` -> `java.lang.Object additionalColumns()`
+* `withAdditionalColumns(java.util.List)` was removed
+
+#### `models.EloquaSource` was modified
+
+* `withAdditionalColumns(java.util.List)` was removed
+* `withAdditionalColumns(java.util.List)` was removed
+
+#### `models.ShopifySource` was modified
+
+* `withAdditionalColumns(java.util.List)` was removed
+* `withAdditionalColumns(java.util.List)` was removed
+
+#### `models.DynamicsAXSource` was modified
+
+* `withAdditionalColumns(java.util.List)` was removed
+* `withAdditionalColumns(java.util.List)` was removed
+
+### Features Added
+
+* `models.PowerQuerySource` was added
+
+* `models.IntegrationRuntimeOutboundNetworkDependenciesEndpoint` was added
+
+* `models.ExecuteWranglingDataflowActivity` was added
+
+* `models.IntegrationRuntimeOutboundNetworkDependenciesEndpointDetails` was added
+
+* `models.PowerQuerySink` was added
+
+* `models.WranglingDataFlow` was added
+
+* `models.IntegrationRuntimeOutboundNetworkDependenciesEndpointsResponse` was added
+
+* `models.IntegrationRuntimeOutboundNetworkDependenciesCategoryEndpoint` was added
+
+#### `models.CosmosDbMongoDbApiSource` was modified
+
+* `withAdditionalColumns(java.lang.Object)` was added
+
+#### `models.QuickBooksSource` was modified
+
+* `withAdditionalColumns(java.lang.Object)` was added
+* `withAdditionalColumns(java.lang.Object)` was added
+
+#### `models.GoogleBigQuerySource` was modified
+
+* `withAdditionalColumns(java.lang.Object)` was added
+* `withAdditionalColumns(java.lang.Object)` was added
+
+#### `models.DelimitedTextSource` was modified
+
+* `withAdditionalColumns(java.lang.Object)` was added
+
+#### `models.SalesforceSource` was modified
+
+* `withAdditionalColumns(java.lang.Object)` was added
+* `withAdditionalColumns(java.lang.Object)` was added
+
+#### `models.SalesforceServiceCloudSource` was modified
+
+* `withAdditionalColumns(java.lang.Object)` was added
+
+#### `models.NetezzaSource` was modified
+
+* `withAdditionalColumns(java.lang.Object)` was added
+* `withAdditionalColumns(java.lang.Object)` was added
+
+#### `models.MySqlSource` was modified
+
+* `withAdditionalColumns(java.lang.Object)` was added
+* `withAdditionalColumns(java.lang.Object)` was added
+
+#### `models.SqlMISource` was modified
+
+* `withAdditionalColumns(java.lang.Object)` was added
+* `withAdditionalColumns(java.lang.Object)` was added
+
+#### `models.PaypalSource` was modified
+
+* `withAdditionalColumns(java.lang.Object)` was added
+* `withAdditionalColumns(java.lang.Object)` was added
+
+#### `models.ZohoSource` was modified
+
+* `withAdditionalColumns(java.lang.Object)` was added
+* `withAdditionalColumns(java.lang.Object)` was added
+
+#### `models.SapOpenHubSource` was modified
+
+* `withAdditionalColumns(java.lang.Object)` was added
+* `withAdditionalColumns(java.lang.Object)` was added
+
+#### `models.HiveSource` was modified
+
+* `withAdditionalColumns(java.lang.Object)` was added
+* `withAdditionalColumns(java.lang.Object)` was added
+
+#### `models.AmazonMwsSource` was modified
+
+* `withAdditionalColumns(java.lang.Object)` was added
+* `withAdditionalColumns(java.lang.Object)` was added
+
+#### `models.AzureTableSource` was modified
+
+* `withAdditionalColumns(java.lang.Object)` was added
+* `withAdditionalColumns(java.lang.Object)` was added
+
+#### `models.AzurePostgreSqlSource` was modified
+
+* `withAdditionalColumns(java.lang.Object)` was added
+* `withAdditionalColumns(java.lang.Object)` was added
+
+#### `models.PrestoSource` was modified
+
+* `withAdditionalColumns(java.lang.Object)` was added
+* `withAdditionalColumns(java.lang.Object)` was added
+
+#### `models.SapCloudForCustomerSource` was modified
+
+* `withAdditionalColumns(java.lang.Object)` was added
+* `withAdditionalColumns(java.lang.Object)` was added
+
+#### `models.MicrosoftAccessSource` was modified
+
+* `withAdditionalColumns(java.lang.Object)` was added
+
+#### `models.AzureMariaDBSource` was modified
+
+* `withAdditionalColumns(java.lang.Object)` was added
+* `withAdditionalColumns(java.lang.Object)` was added
+
+#### `models.GoogleAdWordsSource` was modified
+
+* `withAdditionalColumns(java.lang.Object)` was added
+* `withAdditionalColumns(java.lang.Object)` was added
+
+#### `models.MariaDBSource` was modified
+
+* `withAdditionalColumns(java.lang.Object)` was added
+* `withAdditionalColumns(java.lang.Object)` was added
+
+#### `models.RestSource` was modified
+
+* `withAdditionalColumns(java.lang.Object)` was added
+
+#### `models.SapEccSource` was modified
+
+* `withAdditionalColumns(java.lang.Object)` was added
+* `withAdditionalColumns(java.lang.Object)` was added
+
+#### `models.CassandraSource` was modified
+
+* `withAdditionalColumns(java.lang.Object)` was added
+* `withAdditionalColumns(java.lang.Object)` was added
+
+#### `models.IntegrationRuntimeDataFlowProperties` was modified
+
+* `cleanup()` was added
+* `withCleanup(java.lang.Boolean)` was added
+
+#### `models.SapTableSource` was modified
+
+* `withAdditionalColumns(java.lang.Object)` was added
+* `withAdditionalColumns(java.lang.Object)` was added
+
+#### `models.CommonDataServiceForAppsSource` was modified
+
+* `withAdditionalColumns(java.lang.Object)` was added
+
+#### `models.OracleSource` was modified
+
+* `withAdditionalColumns(java.lang.Object)` was added
+
+#### `models.WebSource` was modified
+
+* `withAdditionalColumns(java.lang.Object)` was added
+
+#### `models.DrillSource` was modified
+
+* `withAdditionalColumns(java.lang.Object)` was added
+* `withAdditionalColumns(java.lang.Object)` was added
+
+#### `models.ServiceNowSource` was modified
+
+* `withAdditionalColumns(java.lang.Object)` was added
+* `withAdditionalColumns(java.lang.Object)` was added
+
+#### `models.MongoDbSource` was modified
+
+* `withAdditionalColumns(java.lang.Object)` was added
+
+#### `models.InformixSource` was modified
+
+* `withAdditionalColumns(java.lang.Object)` was added
+* `withAdditionalColumns(java.lang.Object)` was added
+
+#### `models.ParquetSource` was modified
+
+* `withAdditionalColumns(java.lang.Object)` was added
+
+#### `models.ConcurSource` was modified
+
+* `withAdditionalColumns(java.lang.Object)` was added
+* `withAdditionalColumns(java.lang.Object)` was added
+
+#### `models.PhoenixSource` was modified
+
+* `withAdditionalColumns(java.lang.Object)` was added
+* `withAdditionalColumns(java.lang.Object)` was added
+
+#### `models.SalesforceMarketingCloudSource` was modified
+
+* `withAdditionalColumns(java.lang.Object)` was added
+* `withAdditionalColumns(java.lang.Object)` was added
+
+#### `models.TeradataSource` was modified
+
+* `withAdditionalColumns(java.lang.Object)` was added
+* `withAdditionalColumns(java.lang.Object)` was added
+
+#### `models.GreenplumSource` was modified
+
+* `withAdditionalColumns(java.lang.Object)` was added
+* `withAdditionalColumns(java.lang.Object)` was added
+
+#### `models.SapBwSource` was modified
+
+* `withAdditionalColumns(java.lang.Object)` was added
+* `withAdditionalColumns(java.lang.Object)` was added
+
+#### `models.OdbcSource` was modified
+
+* `withAdditionalColumns(java.lang.Object)` was added
+* `withAdditionalColumns(java.lang.Object)` was added
+
+#### `models.DynamicsCrmSource` was modified
+
+* `withAdditionalColumns(java.lang.Object)` was added
+
+#### `models.SapHanaSource` was modified
+
+* `withAdditionalColumns(java.lang.Object)` was added
+* `withAdditionalColumns(java.lang.Object)` was added
+
+#### `models.SquareSource` was modified
+
+* `withAdditionalColumns(java.lang.Object)` was added
+* `withAdditionalColumns(java.lang.Object)` was added
+
+#### `models.DynamicsSource` was modified
+
+* `withAdditionalColumns(java.lang.Object)` was added
+
+#### `models.ImpalaSource` was modified
+
+* `withAdditionalColumns(java.lang.Object)` was added
+* `withAdditionalColumns(java.lang.Object)` was added
+
+#### `models.SybaseSource` was modified
+
+* `withAdditionalColumns(java.lang.Object)` was added
+* `withAdditionalColumns(java.lang.Object)` was added
+
+#### `models.JiraSource` was modified
+
+* `withAdditionalColumns(java.lang.Object)` was added
+* `withAdditionalColumns(java.lang.Object)` was added
+
+#### `models.ResponsysSource` was modified
+
+* `withAdditionalColumns(java.lang.Object)` was added
+* `withAdditionalColumns(java.lang.Object)` was added
+
+#### `models.IntegrationRuntimes` was modified
+
+* `listOutboundNetworkDependenciesEndpointsWithResponse(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+* `listOutboundNetworkDependenciesEndpoints(java.lang.String,java.lang.String,java.lang.String)` was added
+
+#### `models.JsonSource` was modified
+
+* `withAdditionalColumns(java.lang.Object)` was added
+
+#### `models.SparkSource` was modified
+
+* `withAdditionalColumns(java.lang.Object)` was added
+* `withAdditionalColumns(java.lang.Object)` was added
+
+#### `models.HBaseSource` was modified
+
+* `withAdditionalColumns(java.lang.Object)` was added
+* `withAdditionalColumns(java.lang.Object)` was added
+
+#### `models.VerticaSource` was modified
+
+* `withAdditionalColumns(java.lang.Object)` was added
+* `withAdditionalColumns(java.lang.Object)` was added
+
+#### `models.SqlServerSource` was modified
+
+* `withAdditionalColumns(java.lang.Object)` was added
+* `withAdditionalColumns(java.lang.Object)` was added
+
+#### `models.AmazonRedshiftSource` was modified
+
+* `withAdditionalColumns(java.lang.Object)` was added
+* `withAdditionalColumns(java.lang.Object)` was added
+
+#### `models.MarketoSource` was modified
+
+* `withAdditionalColumns(java.lang.Object)` was added
+* `withAdditionalColumns(java.lang.Object)` was added
+
+#### `models.SqlDWSource` was modified
+
+* `withAdditionalColumns(java.lang.Object)` was added
+* `withAdditionalColumns(java.lang.Object)` was added
+
+#### `models.XeroSource` was modified
+
+* `withAdditionalColumns(java.lang.Object)` was added
+* `withAdditionalColumns(java.lang.Object)` was added
+
+#### `models.AzureMySqlSource` was modified
+
+* `withAdditionalColumns(java.lang.Object)` was added
+* `withAdditionalColumns(java.lang.Object)` was added
+
+#### `models.IntegrationRuntimeVNetProperties` was modified
+
+* `withSubnetId(java.lang.String)` was added
+* `subnetId()` was added
+
+#### `models.ODataSource` was modified
+
+* `withAdditionalColumns(java.lang.Object)` was added
+
+#### `models.XmlSource` was modified
+
+* `withAdditionalColumns(java.lang.Object)` was added
+
+#### `models.MongoDbAtlasSource` was modified
+
+* `withAdditionalColumns(java.lang.Object)` was added
+
+#### `models.TabularSource` was modified
+
+* `withAdditionalColumns(java.lang.Object)` was added
+
+#### `models.RelationalSource` was modified
+
+* `withAdditionalColumns(java.lang.Object)` was added
+
+#### `models.PostgreSqlSource` was modified
+
+* `withAdditionalColumns(java.lang.Object)` was added
+* `withAdditionalColumns(java.lang.Object)` was added
+
+#### `models.MongoDbV2Source` was modified
+
+* `withAdditionalColumns(java.lang.Object)` was added
+
+#### `models.AzureDataExplorerSource` was modified
+
+* `withAdditionalColumns(java.lang.Object)` was added
+
+#### `models.SqlSource` was modified
+
+* `withAdditionalColumns(java.lang.Object)` was added
+* `withAdditionalColumns(java.lang.Object)` was added
+
+#### `models.OracleServiceCloudSource` was modified
+
+* `withAdditionalColumns(java.lang.Object)` was added
+* `withAdditionalColumns(java.lang.Object)` was added
+
+#### `models.OrcSource` was modified
+
+* `withAdditionalColumns(java.lang.Object)` was added
+
+#### `models.DocumentDbCollectionSource` was modified
+
+* `withAdditionalColumns(java.lang.Object)` was added
+
+#### `models.CosmosDbSqlApiSource` was modified
+
+* `withAdditionalColumns(java.lang.Object)` was added
+
+#### `models.FileSystemSource` was modified
+
+* `withAdditionalColumns(java.lang.Object)` was added
+
+#### `models.MagentoSource` was modified
+
+* `withAdditionalColumns(java.lang.Object)` was added
+* `withAdditionalColumns(java.lang.Object)` was added
+
+#### `models.CouchbaseSource` was modified
+
+* `withAdditionalColumns(java.lang.Object)` was added
+* `withAdditionalColumns(java.lang.Object)` was added
+
+#### `models.AvroSource` was modified
+
+* `withAdditionalColumns(java.lang.Object)` was added
+
+#### `models.Db2Source` was modified
+
+* `withAdditionalColumns(java.lang.Object)` was added
+* `withAdditionalColumns(java.lang.Object)` was added
+
+#### `models.HubspotSource` was modified
+
+* `withAdditionalColumns(java.lang.Object)` was added
+* `withAdditionalColumns(java.lang.Object)` was added
+
+#### `models.CosmosDbMongoDbApiLinkedService` was modified
+
+* `isServerVersionAbove32()` was added
+* `withIsServerVersionAbove32(java.lang.Object)` was added
+
+#### `models.AzureSqlSource` was modified
+
+* `withAdditionalColumns(java.lang.Object)` was added
+* `withAdditionalColumns(java.lang.Object)` was added
+
+#### `models.ExcelSource` was modified
+
+* `withAdditionalColumns(java.lang.Object)` was added
+
+#### `models.EloquaSource` was modified
+
+* `withAdditionalColumns(java.lang.Object)` was added
+* `withAdditionalColumns(java.lang.Object)` was added
+
+#### `models.ShopifySource` was modified
+
+* `withAdditionalColumns(java.lang.Object)` was added
+* `withAdditionalColumns(java.lang.Object)` was added
+
+#### `models.DynamicsAXSource` was modified
+
+* `withAdditionalColumns(java.lang.Object)` was added
+* `withAdditionalColumns(java.lang.Object)` was added
+
+## 1.0.0-beta.3 (2021-07-29)
+
+- Azure Resource Manager DataFactory client library for Java. This package contains Microsoft Azure SDK for DataFactory Management SDK. The Azure Data Factory V2 management API provides a RESTful set of web services that interact with Azure Data Factory V2 services. Package tag package-2018-06. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Breaking Changes
+
+* `models.OrcCompressionCodec` was removed
+
+* `models.AvroCompressionCodec` was removed
+
+#### `models.IntegrationRuntimeSsisProperties` was modified
+
+* `managedCredential()` was removed
+* `withManagedCredential(models.EntityReference)` was removed
+
+#### `models.AvroDataset` was modified
+
+* `withAvroCompressionCodec(models.AvroCompressionCodec)` was removed
+* `models.AvroCompressionCodec avroCompressionCodec()` -> `java.lang.Object avroCompressionCodec()`
+
+#### `models.OrcDataset` was modified
+
+* `models.OrcCompressionCodec orcCompressionCodec()` -> `java.lang.Object orcCompressionCodec()`
+* `withOrcCompressionCodec(models.OrcCompressionCodec)` was removed
+
+### Features Added
+
+* `models.SqlUpsertSettings` was added
+
+* `models.ManagedIdentityCredential` was added
+
+* `models.ServicePrincipalCredential` was added
+
+* `models.GitHubClientSecret` was added
+
+* `models.Credential` was added
+
+* `models.SqlDWUpsertSettings` was added
+
+* `models.CredentialReference` was added
+
+#### `models.SqlMISink` was modified
+
+* `withSqlWriterUseTableLock(java.lang.Object)` was added
+* `upsertSettings()` was added
+* `withUpsertSettings(models.SqlUpsertSettings)` was added
+* `withWriteBehavior(java.lang.Object)` was added
+* `writeBehavior()` was added
+* `sqlWriterUseTableLock()` was added
+
+#### `models.SqlServerSink` was modified
+
+* `sqlWriterUseTableLock()` was added
+* `withSqlWriterUseTableLock(java.lang.Object)` was added
+* `withUpsertSettings(models.SqlUpsertSettings)` was added
+* `withWriteBehavior(java.lang.Object)` was added
+* `writeBehavior()` was added
+* `upsertSettings()` was added
+
+#### `models.HDInsightOnDemandLinkedService` was modified
+
+* `credential()` was added
+* `withCredential(models.CredentialReference)` was added
+
+#### `models.AzureBatchLinkedService` was modified
+
+* `withCredential(models.CredentialReference)` was added
+* `credential()` was added
+
+#### `models.SqlDWSink` was modified
+
+* `withSqlWriterUseTableLock(java.lang.Object)` was added
+* `upsertSettings()` was added
+* `sqlWriterUseTableLock()` was added
+* `withUpsertSettings(models.SqlDWUpsertSettings)` was added
+* `writeBehavior()` was added
+* `withWriteBehavior(java.lang.Object)` was added
+
+#### `models.PipelineRunInvokedBy` was modified
+
+* `pipelineRunId()` was added
+* `pipelineName()` was added
+
+#### `models.IntegrationRuntimeSsisProperties` was modified
+
+* `credential()` was added
+* `withCredential(models.CredentialReference)` was added
+
+#### `models.WebActivityAuthentication` was modified
+
+* `credential()` was added
+* `withCredential(models.CredentialReference)` was added
+
+#### `models.AvroDataset` was modified
+
+* `withAvroCompressionCodec(java.lang.Object)` was added
+
+#### `models.FactoryGitHubConfiguration` was modified
+
+* `withClientId(java.lang.String)` was added
+* `clientSecret()` was added
+* `clientId()` was added
+* `withClientSecret(models.GitHubClientSecret)` was added
+
+#### `models.AzureSqlDatabaseLinkedService` was modified
+
+* `withCredential(models.CredentialReference)` was added
+* `credential()` was added
+
+#### `models.AzureSqlDWLinkedService` was modified
+
+* `withCredential(models.CredentialReference)` was added
+* `credential()` was added
+
+#### `models.AzureBlobStorageLinkedService` was modified
+
+* `credential()` was added
+* `withCredential(models.CredentialReference)` was added
+
+#### `models.AzureDataLakeStoreLinkedService` was modified
+
+* `credential()` was added
+* `withCredential(models.CredentialReference)` was added
+
+#### `models.OrcDataset` was modified
+
+* `withOrcCompressionCodec(java.lang.Object)` was added
+
+#### `models.RestServiceLinkedService` was modified
+
+* `credential()` was added
+* `withCredential(models.CredentialReference)` was added
+
+#### `models.AzureBlobFSLinkedService` was modified
+
+* `credential()` was added
+* `withCredential(models.CredentialReference)` was added
+
+#### `models.AzureMLLinkedService` was modified
+
+* `withAuthentication(java.lang.Object)` was added
+* `authentication()` was added
+
+#### `models.SqlSink` was modified
+
+* `writeBehavior()` was added
+* `upsertSettings()` was added
+* `withWriteBehavior(java.lang.Object)` was added
+* `sqlWriterUseTableLock()` was added
+* `withUpsertSettings(models.SqlUpsertSettings)` was added
+* `withSqlWriterUseTableLock(java.lang.Object)` was added
+
+#### `models.AzureFunctionLinkedService` was modified
+
+* `authentication()` was added
+* `withAuthentication(java.lang.Object)` was added
+* `withCredential(models.CredentialReference)` was added
+* `credential()` was added
+* `withResourceId(java.lang.Object)` was added
+* `resourceId()` was added
+
+#### `models.AzureSqlSink` was modified
+
+* `upsertSettings()` was added
+* `withWriteBehavior(java.lang.Object)` was added
+* `withSqlWriterUseTableLock(java.lang.Object)` was added
+* `writeBehavior()` was added
+* `sqlWriterUseTableLock()` was added
+* `withUpsertSettings(models.SqlUpsertSettings)` was added
+
+#### `models.GitHubAccessTokenRequest` was modified
+
+* `gitHubClientSecret()` was added
+* `withGitHubClientSecret(models.GitHubClientSecret)` was added
+
+#### `models.AzureDatabricksLinkedService` was modified
+
+* `withCredential(models.CredentialReference)` was added
+* `credential()` was added
+
+#### `models.AzureDataExplorerLinkedService` was modified
+
+* `credential()` was added
+* `withCredential(models.CredentialReference)` was added
+
+#### `models.AzureKeyVaultLinkedService` was modified
+
+* `credential()` was added
+* `withCredential(models.CredentialReference)` was added
+
+#### `models.AzureSqlMILinkedService` was modified
+
+* `withCredential(models.CredentialReference)` was added
+* `credential()` was added
 
 ## 1.0.0-beta.2 (2021-06-16)
 

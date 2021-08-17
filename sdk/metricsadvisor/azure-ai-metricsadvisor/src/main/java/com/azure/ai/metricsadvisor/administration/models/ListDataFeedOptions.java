@@ -42,7 +42,7 @@ public final class ListDataFeedOptions {
     /**
      * Gets limit indicating the number of items that will be included in a service returned page.
      *
-     * @return The maxPageSize value.
+     * @return The max page size value.
      */
     public Integer getMaxPageSize() {
         return maxPageSize;
@@ -51,11 +51,11 @@ public final class ListDataFeedOptions {
     /**
      * Sets limit indicating the number of items to be included in a service returned page.
      *
-     * @param maxPageSize The maxPageSize value.
+     * @param maxPageSize The max page size value.
      *
      * @return The ListDataFeedOptions object itself.
      */
-    public ListDataFeedOptions setMaxPageSize(final int maxPageSize) {
+    public ListDataFeedOptions setMaxPageSize(Integer maxPageSize) {
         this.maxPageSize = maxPageSize;
         return this;
     }
@@ -78,7 +78,7 @@ public final class ListDataFeedOptions {
      *
      * @return ListDataFeedOptions itself.
      */
-    public ListDataFeedOptions setSkip(final int skip) {
+    public ListDataFeedOptions setSkip(final Integer skip) {
         this.skip = skip;
         return this;
     }

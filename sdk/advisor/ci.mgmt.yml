@@ -2,26 +2,32 @@
 trigger:
   branches:
     include:
-      - master
       - main
       - feature/*
       - hotfix/*
       - release/*
   paths:
     include:
-      - sdk/advisor/
+      - sdk/advisor/ci.mgmt.yml
+      - sdk/advisor/mgmt-v2017_04_19/
+    exclude:
+      - sdk/advisor/pom.xml
+      - sdk/advisor/mgmt-v2017_04_19/pom.xml
 
 pr:
   branches:
     include:
-      - master
       - main
       - feature/*
       - hotfix/*
       - release/*
   paths:
     include:
-      - sdk/advisor/
+      - sdk/advisor/ci.mgmt.yml
+      - sdk/advisor/mgmt-v2017_04_19/
+    exclude:
+      - sdk/advisor/pom.xml
+      - sdk/advisor/mgmt-v2017_04_19/pom.xml
 
 stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-management.yml

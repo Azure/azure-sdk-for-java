@@ -1040,7 +1040,7 @@ public final class CertificateAsyncClient {
                 context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
                 .doOnRequest(ignored -> logger.verbose("Listing certificate versions - {}", certificateName))
                 .doOnSuccess(response -> logger.verbose("Listed certificate versions - {}", certificateName))
-                .doOnError(error -> logger.warning(String.format("Failed to list certificate versions - {}", certificateName), error));
+                .doOnError(error -> logger.warning("Failed to list certificate versions - {}", certificateName, error));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -1454,7 +1454,7 @@ public final class CertificateAsyncClient {
                 context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
                 .doOnRequest(ignored -> logger.verbose("Listing certificate issuers - {}"))
                 .doOnSuccess(response -> logger.verbose("Listed certificate issuers - {}"))
-                .doOnError(error -> logger.warning(String.format("Failed to list certificate issuers - {}"), error));
+                .doOnError(error -> logger.warning("Failed to list certificate issuers - {}", error));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -1580,7 +1580,7 @@ public final class CertificateAsyncClient {
             context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
             .doOnRequest(ignored -> logger.verbose("Listing certificate contacts - {}"))
             .doOnSuccess(response -> logger.verbose("Listed certificate contacts - {}"))
-            .doOnError(error -> logger.warning(String.format("Failed to list certificate contacts - {}"), error));
+            .doOnError(error -> logger.warning("Failed to list certificate contacts - {}", error));
     }
 
     /**
@@ -1615,7 +1615,7 @@ public final class CertificateAsyncClient {
                 context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
                 .doOnRequest(ignored -> logger.verbose("Listing certificate contacts - {}"))
                 .doOnSuccess(response -> logger.verbose("Listed certificate contacts - {}"))
-                .doOnError(error -> logger.warning(String.format("Failed to list certificate contacts - {}"), error));
+                .doOnError(error -> logger.warning("Failed to list certificate contacts - {}", error));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -1652,7 +1652,7 @@ public final class CertificateAsyncClient {
             context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
             .doOnRequest(ignored -> logger.verbose("Deleting certificate contacts - {}"))
             .doOnSuccess(response -> logger.verbose("Deleted certificate contacts - {}"))
-            .doOnError(error -> logger.warning(String.format("Failed to delete certificate contacts - {}"), error));
+            .doOnError(error -> logger.warning("Failed to delete certificate contacts - {}", error));
     }
 
     /**

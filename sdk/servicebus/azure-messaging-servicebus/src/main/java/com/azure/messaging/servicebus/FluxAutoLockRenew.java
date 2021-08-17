@@ -28,33 +28,34 @@ final class FluxAutoLockRenew extends FluxOperator<ServiceBusMessageContext, Ser
     private final ClientLogger logger = new ClientLogger(FluxAutoLockRenew.class);
 
     private final Function<String, Mono<OffsetDateTime>> onRenewLock;
-    private final Duration maxAutoLockRenewal;
     private final LockContainer<LockRenewalOperation> messageLockContainer;
+    private final ReceiverOptions receivingOptions;
 
     /**
      * Build a {@link FluxOperator} wrapper around the passed parent {@link Publisher}
      * @param source the {@link Publisher} to decorate
      *
      * @throws NullPointerException If {@code onRenewLock}, {@code messageLockContainer},
-     * {@code maxAutoLockRenewDuration} is null.
+     * {@code ReceiverOptions} or {@code maxAutoLockRenewDuration} is null.
      *
-     * @throws IllegalArgumentException If maxLockRenewalDuration is zero or negative.
+     * @throws IllegalArgumentException If eceiverOptions.maxLockRenewalDuration is zero or negative.
      */
     FluxAutoLockRenew(
-            Flux<? extends ServiceBusMessageContext> source, Duration maxAutoLockRenewDuration,
+            Flux<? extends ServiceBusMessageContext> source, ReceiverOptions receiverOptions,
             LockContainer<LockRenewalOperation> messageLockContainer, Function<String,
             Mono<OffsetDateTime>> onRenewLock) {
         super(source);
-
+        this.receivingOptions = Objects.requireNonNull(receiverOptions, "'receiverOptions' cannot be null.");
         this.onRenewLock = Objects.requireNonNull(onRenewLock, "'onRenewLock' cannot be null.");
         this.messageLockContainer = Objects.requireNonNull(messageLockContainer,
             "'messageLockContainer' cannot be null.");
+        Duration maxAutoLockRenewDuration = receiverOptions.getMaxLockRenewDuration();
+        Objects.requireNonNull(maxAutoLockRenewDuration,
+            "'receivingOptions.maxAutoLockRenewDuration' cannot be null.");
 
-        this.maxAutoLockRenewal = Objects.requireNonNull(maxAutoLockRenewDuration,
-            "'maxAutoLockRenewDuration' cannot be null.");
         if (maxAutoLockRenewDuration.isNegative() || maxAutoLockRenewDuration.isZero()) {
             throw logger.logExceptionAsError(new IllegalArgumentException(
-                "'maxLockRenewalDuration' should not be zero or negative."));
+                "'receivingOptions.maxLockRenewalDuration' should not be zero or negative."));
         }
     }
 
@@ -62,8 +63,9 @@ final class FluxAutoLockRenew extends FluxOperator<ServiceBusMessageContext, Ser
     public void subscribe(CoreSubscriber<? super ServiceBusMessageContext> coreSubscriber) {
         Objects.requireNonNull(coreSubscriber, "'coreSubscriber' cannot be null.");
 
-        final LockRenewSubscriber newLockRenewSubscriber = new LockRenewSubscriber(coreSubscriber, maxAutoLockRenewal,
-            messageLockContainer, onRenewLock);
+        final LockRenewSubscriber newLockRenewSubscriber = new LockRenewSubscriber(coreSubscriber,
+            receivingOptions.getMaxLockRenewDuration(), messageLockContainer, onRenewLock,
+            receivingOptions.isEnableAutoComplete());
 
         source.subscribe(newLockRenewSubscriber);
     }
@@ -80,16 +82,18 @@ final class FluxAutoLockRenew extends FluxOperator<ServiceBusMessageContext, Ser
         private final Duration maxAutoLockRenewal;
         private final LockContainer<LockRenewalOperation> messageLockContainer;
         private final CoreSubscriber<? super ServiceBusMessageContext> actual;
+        private final boolean isAutoCompleteEnabled;
 
         LockRenewSubscriber(CoreSubscriber<? super ServiceBusMessageContext> actual,
             Duration maxAutoLockRenewDuration, LockContainer<LockRenewalOperation> messageLockContainer,
-            Function<String, Mono<OffsetDateTime>> onRenewLock) {
+            Function<String, Mono<OffsetDateTime>> onRenewLock, boolean isAutoCompleteEnabled) {
             this.onRenewLock = Objects.requireNonNull(onRenewLock, "'onRenewLock' cannot be null.");
             this.actual = Objects.requireNonNull(actual, "'downstream' cannot be null.");
             this.messageLockContainer = Objects.requireNonNull(messageLockContainer,
                 "'messageLockContainer' cannot be null.");
             this.maxAutoLockRenewal = Objects.requireNonNull(maxAutoLockRenewDuration,
                 "'maxAutoLockRenewDuration' cannot be null.");
+            this.isAutoCompleteEnabled = isAutoCompleteEnabled;
         }
 
         /**
@@ -168,7 +172,9 @@ final class FluxAutoLockRenew extends FluxOperator<ServiceBusMessageContext, Ser
             } catch (Exception e) {
                 logger.info("Exception occurred while handling downstream onNext operation.", e);
             } finally {
-                lockCleanup.accept(messageContext);
+                if (isAutoCompleteEnabled) {
+                    lockCleanup.accept(messageContext);
+                }
             }
         }
 

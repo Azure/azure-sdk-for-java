@@ -2,26 +2,32 @@
 trigger:
   branches:
     include:
-      - master
       - main
       - feature/*
       - hotfix/*
       - release/*
   paths:
     include:
-      - sdk/applicationinsights/
+      - sdk/applicationinsights/ci.mgmt.yml
+      - sdk/applicationinsights/mgmt-v2015_05_01/
+    exclude:
+      - sdk/applicationinsights/pom.xml
+      - sdk/applicationinsights/mgmt-v2015_05_01/pom.xml
 
 pr:
   branches:
     include:
-      - master
       - main
       - feature/*
       - hotfix/*
       - release/*
   paths:
     include:
-      - sdk/applicationinsights/
+      - sdk/applicationinsights/ci.mgmt.yml
+      - sdk/applicationinsights/mgmt-v2015_05_01/
+    exclude:
+      - sdk/applicationinsights/pom.xml
+      - sdk/applicationinsights/mgmt-v2015_05_01/pom.xml
 
 stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-management.yml

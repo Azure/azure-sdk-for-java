@@ -3,15 +3,14 @@
 
 module com.azure.identity {
     requires transitive com.azure.core;
+    requires transitive com.azure.core.experimental;
 
     requires msal4j;
     requires msal4j.persistence.extension;
     requires com.sun.jna;
     requires com.sun.jna.platform;
     requires org.reactivestreams;
-    requires org.linguafranca.pwdb.database;
-    requires org.linguafranca.pwdb.kdbx;
-    requires org.linguafranca.pwdb.kdbx.simple;
+    requires java.xml;
 
     exports com.azure.identity;
 

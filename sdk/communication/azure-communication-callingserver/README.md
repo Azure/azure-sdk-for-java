@@ -21,7 +21,7 @@ This package contains a Java SDK for Azure Communication CallingServer Service.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-communication-callingserver</artifactId>
-    <version>1.0.0-beta.1</version>
+    <version>1.0.0-beta.4</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -46,7 +46,7 @@ Based on if the Contoso app join a call or not, APIs can be divided into two cat
 
 
 You can provide the connection string using the connectionString() function of `CallingServerClientBuilder`. Once you initialized a `CallingServerClient` class, you can do the different server calling operations.
-<!-- embedme src/samples/java/com/azure/communication/callingserver/ReadmeSamples.java#L28-L34 -->
+<!-- embedme src/samples/java/com/azure/communication/callingserver/ReadmeSamples.java#L31-L37 -->
 ```java
 // Your connectionString retrieved from your Azure Communication Service
 String connectionString = "endpoint=https://<resource-name>.communication.azure.com/;accesskey=<access-key>";
@@ -60,22 +60,21 @@ CallingServerClient callingServerClient = builder.buildClient();
 ### Create call, Add participant and Hangup a call
 
 #### Create a Call: 
-<!-- embedme src/samples/java/com/azure/communication/callingserver/ReadmeSamples.java#L46-L66 -->
+<!-- embedme src/samples/java/com/azure/communication/callingserver/ReadmeSamples.java#L49-L68 -->
 ```java
 CommunicationIdentifier source = new CommunicationUserIdentifier("<acs-user-identity>");
 CommunicationIdentifier firstCallee = new CommunicationUserIdentifier("<acs-user-identity-1>");
 CommunicationIdentifier secondCallee = new CommunicationUserIdentifier("<acs-user-identity-2>");
 
-CommunicationIdentifier[] targets = new CommunicationIdentifier[] { firstCallee, secondCallee };
+List<CommunicationIdentifier> targets = Arrays.asList(firstCallee, secondCallee);
 
 String callbackUri = "<callback-uri-for-notification>";
 
-MediaType[] requestedMediaTypes = new MediaType[] { MediaType.AUDIO, MediaType.VIDEO };
+List<MediaType> requestedMediaTypes = Arrays.asList(MediaType.AUDIO, MediaType.VIDEO);
 
-EventSubscriptionType[] requestedCallEvents = new EventSubscriptionType[] {
+List<EventSubscriptionType> requestedCallEvents = Arrays.asList(
     EventSubscriptionType.DTMF_RECEIVED,
-    EventSubscriptionType.PARTICIPANTS_UPDATED
-};
+    EventSubscriptionType.PARTICIPANTS_UPDATED);
 
 CreateCallOptions createCallOptions = new CreateCallOptions(
     callbackUri,
@@ -86,14 +85,14 @@ CallConnection callConnection = callingServerClient.createCallConnection(source,
 ```
 
 #### Add a participant to a Call:
-<!-- embedme src/samples/java/com/azure/communication/callingserver/ReadmeSamples.java#L86-L87 -->
+<!-- embedme src/samples/java/com/azure/communication/callingserver/ReadmeSamples.java#L88-L89 -->
 ```java
 CommunicationIdentifier thirdCallee = new CommunicationUserIdentifier("<acs-user-identity-3>");
 callConnection.addParticipant(thirdCallee, "ACS User 3", "<string-for-tracing-responses>");
 ```
 
 #### Hangup a Call:
-<!-- embedme src/samples/java/com/azure/communication/callingserver/ReadmeSamples.java#L76-L76 -->
+<!-- embedme src/samples/java/com/azure/communication/callingserver/ReadmeSamples.java#L78-L78 -->
 ```java
 callConnection.hangup();
 ```
@@ -134,6 +133,16 @@ serverCall.stopRecording(recordingId);
 CallRecordingStateResult callRecordingStateResult = serverCall.getRecordingState(recordingId);
 ```
 
+#### Download a Recording into a file:
+<!-- embedme src/samples/java/com/azure/communication/callingserver/ReadmeSamples.java#L100-L100 -->
+```java
+callingServerClient.downloadTo(
+            recordingUrl,
+            Paths.get(filePath),
+            null,
+            true
+        );
+```
 ### Play Audio in Call
 
 #### Play Audio: 
@@ -164,7 +173,9 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 
 ## Next steps
 
-Check out other client libraries for Azure Communication Services
+- [Read more about CallingServer Call Automation in Azure Communication Services][call_automation_apis_overview]
+- [Read more about CallingServer Call Recording in Azure Communication Services][call_recording_overview]
+- For a basic guide on how to record and download calls with Event Grid please refer to the [Record and download calls with Event Grid][record_and_download_calls_with_event_grid].
 
 <!-- LINKS -->
 [cla]: https://cla.microsoft.com
@@ -174,4 +185,7 @@ Check out other client libraries for Azure Communication Services
 [product_docs]: https://docs.microsoft.com/azure/communication-services/
 [package]: https://search.maven.org/artifact/com.azure/azure-communication-callingserver
 [api_documentation]: https://aka.ms/java-docs
-[source]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/communication/azure-communication-callingserver/src
+[call_automation_apis_overview]:https://docs.microsoft.com/azure/communication-services/concepts/voice-video-calling/call-automation-apis
+[call_recording_overview]:https://docs.microsoft.com/azure/communication-services/concepts/voice-video-calling/call-recording
+[record_and_download_calls_with_event_grid]:https://docs.microsoft.com/azure/communication-services/quickstarts/voice-video-calling/download-recording-file-sample
+[source]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/communication/azure-communication-callingserver/src

@@ -4,7 +4,7 @@
 package com.azure.security.keyvault.jca.test;
 
 import com.azure.security.keyvault.jca.KeyVaultJcaProvider;
-import com.azure.security.keyvault.jca.KeyVaultLoadStoreParameter;
+import com.azure.security.keyvault.jca.KeyVaultKeyStore;
 
 import java.io.IOException;
 import java.security.KeyStore;
@@ -17,8 +17,8 @@ import java.util.List;
 
 public class PropertyConvertorUtils {
 
-    public static void putEnvironmentPropertyToSystemPropertyForKeyVaultJca(List<String> key) {
-        key.forEach(
+    public static void putEnvironmentPropertyToSystemPropertyForKeyVaultJca() {
+        KEYVAULT_JCA_SYSTEM_PROPERTIES.forEach(
             environmentPropertyKey -> {
                 String value = System.getenv(environmentPropertyKey);
                 String systemPropertyKey = environmentPropertyKey.toLowerCase().replaceFirst("azure_keyvault_",
@@ -28,20 +28,14 @@ public class PropertyConvertorUtils {
         );
     }
 
-    public static final List<String> SYSTEM_PROPERTIES = Arrays.asList("AZURE_KEYVAULT_URI",
+    public static final List<String> KEYVAULT_JCA_SYSTEM_PROPERTIES = Arrays.asList("AZURE_KEYVAULT_ENDPOINT",
         "AZURE_KEYVAULT_TENANT_ID",
         "AZURE_KEYVAULT_CLIENT_ID",
-        "AZURE_KEYVAULT_CLIENT_SECRET");
+        "AZURE_KEYVAULT_CLIENT_SECRET",
+        "AZURE_KEYVAULT_URI");
 
     public static KeyStore getKeyVaultKeyStore() throws CertificateException, NoSuchAlgorithmException, IOException, KeyStoreException {
-        KeyStore keyStore = KeyStore.getInstance("AzureKeyVault");
-        KeyVaultLoadStoreParameter parameter = new KeyVaultLoadStoreParameter(
-            System.getenv("AZURE_KEYVAULT_URI"),
-            System.getenv("AZURE_KEYVAULT_TENANT_ID"),
-            System.getenv("AZURE_KEYVAULT_CLIENT_ID"),
-            System.getenv("AZURE_KEYVAULT_CLIENT_SECRET"));
-        keyStore.load(parameter);
-        return keyStore;
+        return KeyVaultKeyStore.getKeyVaultKeyStoreBySystemProperty();
     }
 
     public static void addKeyVaultJcaProvider() {

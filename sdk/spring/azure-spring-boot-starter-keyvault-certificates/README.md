@@ -1,5 +1,5 @@
 # Azure Key Vault Certificates Spring Boot starter client library for Java
-Azure Key Vault Certificates Spring Boot Starter is Spring starter for [Azure Key Vault Certificates](https://docs.microsoft.com/rest/api/keyvault/about-keys--secrets-and-certificates#BKMK_WorkingWithSecrets), it allows you to securely manage and tightly control your certificates.
+Azure Key Vault Certificates Spring Boot Starter is Spring starter for [Azure Key Vault Certificates](https://docs.microsoft.com/azure/key-vault/certificates/about-certificates), it allows you to securely manage and tightly control your certificates.
 
 [Package (Maven)][package] | [API reference documentation][refdocs] | [Samples][sample]
 
@@ -14,7 +14,7 @@ Azure Key Vault Certificates Spring Boot Starter is Spring starter for [Azure Ke
 <dependency>
     <groupId>com.azure.spring</groupId>
     <artifactId>azure-spring-boot-starter-keyvault-certificates</artifactId>
-    <version>3.0.0-beta.7</version>
+    <version>3.1.0-beta.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -40,7 +40,7 @@ To create a self-signed certificate use the command line below:
 ```
 
 ## Key concepts
-This starter allows you to securely manage and tightly control your certificates by using Azure Key Vault or side-load certificates by supplying them as part of the application.
+This starter provides a KeyStore (`AzureKeyVault`) which can get certificates from `JRE` / `specific path` / `Azure Key Vault` / `classpath` .
 
 ## Examples
 ### Server side SSL
@@ -281,6 +281,19 @@ spring:
           useInsecureTrustManager: true
 ```
 
+### Refresh certificate periodically
+
+KeyVaultKeyStore can fetch certificates from KeyVault periodically if following property is configured:
+
+```yaml
+azure:
+  keyvault:
+    jca:
+       certificates-refresh-interval: 1800000
+```
+
+Its value is 0(ms) by default, and certificate will not automatically refresh when its value <= 0.
+
 ### Refresh certificates when have un trust certificate
 
 When the inbound certificate is not trusted, the KeyVaultKeyStore can fetch 
@@ -296,40 +309,70 @@ azure:
 Note: If you set refresh-certificates-when-have-un-trust-certificate=true, your server will be vulnerable
 to attack, because every untrusted certificate will cause your application to send a re-acquire certificate request.
 
-### Refresh certificate periodically
+### Specific path certificates
+AzureKeyVault keystore will load certificates in the specific path:
 
-KeyVaultKeyStore can fetch certificates from KeyVault periodically if following property is configured:
+well-know path: /etc/certs/well-known/
+custom path: /etc/certs/custom/
+The 2 paths can be configured by these propreties:
 
 ```yaml
 azure:
-  keyvault:
-    jca:
-       certificates-refresh-interval: 1800000
+  cert-path:
+    well-known:     # The file location where you store the well-known certificate
+    custom:         # The file location where you store the custom certificate
 ```
 
-Its value is 0(ms) by default, and certificate will not automatically refresh when its value <= 0.
+### Classpath certificates
 
-### Refresh certificate by java code
+AzureKeyVault keystore will load certificates in the classpath.
 
-You can also manually refresh the certificate by calling this method:
-```java
-KeyVaultCertificates.refreshCertsInfo();
-```
-
-### Side-loading certificates
-
-This starter allows you to side-load certificates by supplying them as part of
-the application. 
-
-To side-load add your certificates to the `src/main/resources/keyvault` folder.
+Add the certificates to `src/main/resources/keyvault` as classpath certificates.
 
 Notes: 
 1. The alias (certificate name) is constructed from the filename of the 
 certificate (minus the extension). So if your filename is `mycert.x509` the
 certificate will be added with the alias of `mycert`. 
-2. Certificates coming from Azure Key Vault take precedence over 
-side-loaded certificates.
+2. The priority order of the certificates is: 
+    1. Certificates from JRE.
+    2. Certificates from well-known file path.
+    3. Certificates from custom file path.
+    4. Certificates from Azure Key Vault. 
+    5. Certificates from classpath.
 
+### Key-Less certificates
+You can set the private key as [non-exportable] to ensure the security of the key.
+
+Note if you want to use key less certificate, you must add `sign` permission.
+
+You can add permission in portal: ![Sign To Principal](resources/SignToPrincipal.png)
+
+Or add permission by cli command:
+```shell
+  az keyvault set-policy --name ${KEY_VAULT} \
+        --object-id ${MANAGED_IDENTITY} \
+        --key-permissions get list sign\
+        --secret-permissions get list \
+        --certificate-permissions get list
+```
+
+### Supported key type
+Content Type | Key Type | Key Size or Elliptic curve name | Sign algorithm  | Support |
+-------------|----------|---------------------------------|---------------- |-------- |
+PKCS #12     | RSA      | 2048                            | RSASSA-PSS      | ✔       |     
+PKCS #12     | RSA      | 3072                            | RSASSA-PSS      | ✔       |
+PKCS #12     | RSA      | 4096                            | RSASSA-PSS      | ✔       |
+PKCS #12     | EC       | P-256                           | SHA256withECDSA | ✔       |
+PKCS #12     | EC       | P-384                           | SHA384withECDSA | ✔       |
+PKCS #12     | EC       | P-521                           | SHA512withECDSA | ✔       |
+PKCS #12     | EC       | P-256K                          |                 | ✘       |
+PEM          | RSA      | 2048                            | RSASSA-PSS      | ✔       |
+PEM          | RSA      | 3072                            | RSASSA-PSS      | ✔       |
+PEM          | RSA      | 4096                            | RSASSA-PSS      | ✔       |
+PEM          | EC       | P-256                           | SHA256withECDSA | ✔       |
+PEM          | EC       | P-384                           | SHA384withECDSA | ✔       |
+PEM          | EC       | P-521                           | SHA512withECDSA | ✔       | 
+PEM          | EC       | P-256K                          |                 | ✘       |
 
 ## Troubleshooting
 ### Enable client logging
@@ -358,12 +401,13 @@ The following section provide a sample project illustrating how to use the start
 ## Contributing
 This project welcomes contributions and suggestions.  Most contributions require you to agree to a Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us the rights to use your contribution. For details, visit https://cla.microsoft.com.
 
-Please follow [instructions here](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/CONTRIBUTING.md) to build from source or contribute.
+Please follow [instructions here](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/CONTRIBUTING.md) to build from source or contribute.
 
 <!-- LINKS -->
 [refdocs]: https://azure.github.io/azure-sdk-for-java/springboot.html#azure-spring-boot
 [package]: https://mvnrepository.com/artifact/com.azure.spring/azure-spring-boot-starter-keyvault-certificates
-[sample]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-samples/azure-spring-boot-sample-keyvault-certificates-server-side
+[sample]: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/tag_azure-spring-boot_3.6.0/keyvault/azure-spring-boot-sample-keyvault-certificates-server-side
 [logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK#use-logback-logging-framework-in-a-spring-boot-application
-[environment_checklist]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/ENVIRONMENT_CHECKLIST.md#ready-to-run-checklist
+[environment_checklist]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/ENVIRONMENT_CHECKLIST.md#ready-to-run-checklist
+[non-exportable]: https://docs.microsoft.com/azure/key-vault/certificates/about-certificates#exportable-or-non-exportable-key
 

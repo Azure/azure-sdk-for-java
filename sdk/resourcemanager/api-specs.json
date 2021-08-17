@@ -77,8 +77,7 @@
     "dir": "azure-resourcemanager-compute",
     "source": "specification/compute/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.compute",
-    "args": "--payload-flattening-threshold=1 --tag=package-2021-03-01 --rename-model=UserAssignedIdentitiesValue:VirtualMachineIdentityUserAssignedIdentities,VirtualMachineScaleSetIdentityUserAssignedIdentitiesValue:VirtualMachineScaleSetIdentityUserAssignedIdentities",
-    "note": "Add '@JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)' to 'userAssignedIdentities' property of class 'VirtualMachineIdentity', 'VirtualMachineScaleSetIdentity'"
+    "args": "--payload-flattening-threshold=1 --tag=package-2021-04-01 --rename-model=UserAssignedIdentitiesValue:VirtualMachineIdentityUserAssignedIdentities,VirtualMachineScaleSetIdentityUserAssignedIdentitiesValue:VirtualMachineScaleSetIdentityUserAssignedIdentities --preserve-model=AvailabilitySetSkuTypes"
   },
   "consumption": {
     "dir": "azure-resourcemanager-consumption",
@@ -102,8 +101,7 @@
     "dir": "azure-resourcemanager-containerservice",
     "source": "specification/containerservice/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.containerservice",
-    "args": "--payload-flattening-threshold=1 --tag=package-2021-05 --title=ContainerServiceManagementClient --description=\"Container Service Client\" --remove-model=BaseManagedCluster --rename-model=ManagedClusterIdentityUserAssignedIdentitiesValue:ManagedClusterIdentityUserAssignedIdentities,ManagedClusterPropertiesIdentityProfile:ManagedClusterPropertiesIdentityProfileValue",
-    "note": "Remove 'final' from 'ManagedClusterAgentPoolProfile'"
+    "args": "--payload-flattening-threshold=1 --tag=package-2021-07 --preserve-model=ContainerServiceVMSizeTypes"
   },
   "cosmos": {
     "dir": "azure-resourcemanager-cosmos",
@@ -167,10 +165,10 @@
     "dir": "azure-resourcemanager-resources",
     "source": "specification/resources/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.resources",
-    "args": "--tag=package-features-2015-12"
+    "args": "--tag=package-features-2021-07"
   },
   "graphrbac": {
-    "spec": "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/master/sdk/resourcemanager",
+    "spec": "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/main/sdk/resourcemanager",
     "dir": "azure-resourcemanager-authorization",
     "source": "azure-resourcemanager-authorization/swagger/swagger.md",
     "package": "com.azure.resourcemanager.authorization",
@@ -210,7 +208,7 @@
     "dir": "azure-resourcemanager-monitor",
     "source": "specification/monitor/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.monitor",
-    "args": "--payload-flattening-threshold=1 --tag=package-2019-06 --add-inner=AutoscaleProfile,ScaleRule,LocalizableString"
+    "args": "--payload-flattening-threshold=1 --tag=package-2021-04 --add-inner=AutoscaleProfile,ScaleRule,LocalizableString --rename-model=MetricUnit:Unit"
   },
   "network": {
     "dir": "azure-resourcemanager-network",

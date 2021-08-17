@@ -3,6 +3,28 @@
 ## 1.8.0-beta.1 (Unreleased)
 
 
+## 1.7.2 (2021-08-06)
+
+### Fixed
+
+- Fixed a bug where OkHttp connections would occasionally deadlock when reading the response. ([#23183](https://github.com/Azure/azure-sdk-for-java/pull/23183))
+- Fixed a bug where `NullPointerException` would be thrown when `HttpClientOptions` was used in `OkHttpAsyncClientProvider`
+  without a connection pool size configured. ([#23357](https://github.com/Azure/azure-sdk-for-java/pull/23357))
+
+### Dependency Updates
+
+- Upgraded `azure-core` from `1.18.0` to `1.19.0`.
+
+## 1.7.1 (2021-07-01)
+
+### Features Added
+
+- Added support for new `HttpClientOptions` configurations.
+
+### Dependency Updates
+
+- Upgraded `azure-core` from `1.17.0` to `1.18.0`.
+
 ## 1.7.0 (2021-06-07)
 
 ### Dependency Updates

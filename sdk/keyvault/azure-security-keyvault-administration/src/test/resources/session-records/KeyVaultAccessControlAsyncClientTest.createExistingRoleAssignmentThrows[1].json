@@ -25,7 +25,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://REDACTED.managedhsm.azure.net///providers/Microsoft.Authorization/roleAssignments/9412ec53-56f1-4cd8-ab3e-cbbd38253f08?api-version=7.2",
+    "Uri" : "https://REDACTED.managedhsm.azure.net///providers/Microsoft.Authorization/roleAssignments/4553f6a9-6796-47cd-b4c9-16158db89f8a?api-version=7.2",
     "Headers" : {
       "User-Agent" : "azsdk-java-client_name/client_version (11.0.6; Windows 10; 10.0)",
       "Content-Type" : "application/json"
@@ -44,12 +44,12 @@
       "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=189.181.114.0;act_addr_fam=Ipv4;",
       "cache-control" : "no-cache",
       "x-ms-request-id" : "a70ffecc-aecd-11eb-a764-000d3a3b7b4c",
-      "Body" : "{\"id\":\"/providers/Microsoft.Authorization/roleAssignments/9412ec53-56f1-4cd8-ab3e-cbbd38253f08\",\"name\":\"9412ec53-56f1-4cd8-ab3e-cbbd38253f08\",\"properties\":{\"principalId\":\"49acc88b-8f9e-4619-9856-16691db66767\",\"roleDefinitionId\":\"Microsoft.KeyVault/providers/Microsoft.Authorization/roleDefinitions/515eb02d-2335-4d2d-92f2-b1cbdf9c3778\",\"scope\":\"/\"},\"type\":\"Microsoft.Authorization/roleAssignments\"}"
+      "Body" : "{\"id\":\"/providers/Microsoft.Authorization/roleAssignments/4553f6a9-6796-47cd-b4c9-16158db89f8a\",\"name\":\"4553f6a9-6796-47cd-b4c9-16158db89f8a\",\"properties\":{\"principalId\":\"49acc88b-8f9e-4619-9856-16691db66767\",\"roleDefinitionId\":\"Microsoft.KeyVault/providers/Microsoft.Authorization/roleDefinitions/515eb02d-2335-4d2d-92f2-b1cbdf9c3778\",\"scope\":\"/\"},\"type\":\"Microsoft.Authorization/roleAssignments\"}"
     },
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://REDACTED.managedhsm.azure.net///providers/Microsoft.Authorization/roleAssignments/9412ec53-56f1-4cd8-ab3e-cbbd38253f08?api-version=7.2",
+    "Uri" : "https://REDACTED.managedhsm.azure.net///providers/Microsoft.Authorization/roleAssignments/4553f6a9-6796-47cd-b4c9-16158db89f8a?api-version=7.2",
     "Headers" : {
       "User-Agent" : "azsdk-java-client_name/client_version (11.0.6; Windows 10; 10.0)",
       "Content-Type" : "application/json"
@@ -70,5 +70,5 @@
     },
     "Exception" : null
   } ],
-  "variables" : [ ]
+  "variables" : [ "4553f6a9-6796-47cd-b4c9-16158db89f8a" ]
 }

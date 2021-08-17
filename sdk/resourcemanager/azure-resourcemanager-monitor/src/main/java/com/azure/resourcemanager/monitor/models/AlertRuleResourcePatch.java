@@ -39,6 +39,12 @@ public class AlertRuleResourcePatch {
     private String description;
 
     /*
+     * the provisioning state.
+     */
+    @JsonProperty(value = "properties.provisioningState")
+    private String provisioningState;
+
+    /*
      * the flag that indicates whether the alert rule is enabled.
      */
     @JsonProperty(value = "properties.isEnabled")
@@ -49,6 +55,13 @@ public class AlertRuleResourcePatch {
      */
     @JsonProperty(value = "properties.condition")
     private RuleCondition condition;
+
+    /*
+     * action that is performed when the alert rule becomes active, and when an
+     * alert condition is resolved.
+     */
+    @JsonProperty(value = "properties.action")
+    private RuleAction action;
 
     /*
      * the array of actions that are performed when the alert rule becomes
@@ -124,6 +137,26 @@ public class AlertRuleResourcePatch {
     }
 
     /**
+     * Get the provisioningState property: the provisioning state.
+     *
+     * @return the provisioningState value.
+     */
+    public String provisioningState() {
+        return this.provisioningState;
+    }
+
+    /**
+     * Set the provisioningState property: the provisioning state.
+     *
+     * @param provisioningState the provisioningState value to set.
+     * @return the AlertRuleResourcePatch object itself.
+     */
+    public AlertRuleResourcePatch withProvisioningState(String provisioningState) {
+        this.provisioningState = provisioningState;
+        return this;
+    }
+
+    /**
      * Get the isEnabled property: the flag that indicates whether the alert rule is enabled.
      *
      * @return the isEnabled value.
@@ -160,6 +193,28 @@ public class AlertRuleResourcePatch {
      */
     public AlertRuleResourcePatch withCondition(RuleCondition condition) {
         this.condition = condition;
+        return this;
+    }
+
+    /**
+     * Get the action property: action that is performed when the alert rule becomes active, and when an alert condition
+     * is resolved.
+     *
+     * @return the action value.
+     */
+    public RuleAction action() {
+        return this.action;
+    }
+
+    /**
+     * Set the action property: action that is performed when the alert rule becomes active, and when an alert condition
+     * is resolved.
+     *
+     * @param action the action value to set.
+     * @return the AlertRuleResourcePatch object itself.
+     */
+    public AlertRuleResourcePatch withAction(RuleAction action) {
+        this.action = action;
         return this;
     }
 
@@ -202,6 +257,9 @@ public class AlertRuleResourcePatch {
     public void validate() {
         if (condition() != null) {
             condition().validate();
+        }
+        if (action() != null) {
+            action().validate();
         }
         if (actions() != null) {
             actions().forEach(e -> e.validate());

@@ -3,25 +3,31 @@
 trigger:
   branches:
     include:
-      - master
       - main
       - hotfix/*
       - release/*
   paths:
     include:
-      - sdk/datamigration/
+      - sdk/datamigration/ci.yml
+      - sdk/datamigration/azure-resourcemanager-datamigration/
+    exclude:
+      - sdk/datamigration/pom.xml
+      - sdk/datamigration/azure-resourcemanager-datamigration/pom.xml
 
 pr:
   branches:
     include:
-      - master
       - main
       - feature/*
       - hotfix/*
       - release/*
   paths:
     include:
-      - sdk/datamigration/
+      - sdk/datamigration/ci.yml
+      - sdk/datamigration/azure-resourcemanager-datamigration/
+    exclude:
+      - sdk/datamigration/pom.xml
+      - sdk/datamigration/azure-resourcemanager-datamigration/pom.xml
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml

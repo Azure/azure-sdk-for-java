@@ -194,8 +194,9 @@ public class EventProcessorTest extends ServiceTest<EventProcessorOptions> {
                 return Mono.delay(testDuration).then();
             },
             processor -> {
-                System.out.println("Completed run.");
                 endTime = System.nanoTime();
+
+                System.out.println("Completed run.");
                 return Mono.delay(Duration.ofMillis(500), Schedulers.boundedElastic())
                     .then(Mono.fromRunnable(() -> processor.stop()));
             });

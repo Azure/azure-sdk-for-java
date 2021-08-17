@@ -1,6 +1,31 @@
 # Release History
 
-## 3.6.0-beta.1 (Unreleased)
+## 3.8.0-beta.1 (Unreleased)
+This release is compatible with Spring Boot 2.5.0 - 2.5.3.
+### Dependency Upgrades
+- Upgrade to [spring-boot-dependencies:2.5.3](https://repo.maven.apache.org/maven2/org/springframework/boot/spring-boot-dependencies/2.5.3/spring-boot-dependencies-2.5.3.pom).
+### New Features
+- Add property `azure.activedirectory.resource-server.principal-claim-name` to configure principal claim name.
+- Add property `azure.activedirectory.resource-server.claim-to-authority-prefix-map` to configure claim to authority prefix map.
+### Deprecations
+- Deprecate `AADB2CJwtBearerTokenAuthenticationConverter`, use `AADJwtBearerTokenAuthenticationConverter` instead.
+
+
+## 3.7.0 (2021-07-20)
+### Dependency Upgrades
+- Upgrade to [Azure Spring Boot AutoConfigure 3.7.0](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/azure-spring-boot/CHANGELOG.md).
+
+
+## 3.6.1 (2021-07-02)
+### New Features
+- Upgrade to [spring-boot-dependencies:2.5.2](https://repo.maven.apache.org/maven2/org/springframework/boot/spring-boot-dependencies/2.5.2/spring-boot-dependencies-2.5.2.pom).
+- Upgrade to [spring-cloud-dependencies:2020.0.3](https://repo.maven.apache.org/maven2/org/springframework/cloud/spring-cloud-dependencies/2020.0.3/spring-cloud-dependencies-2020.0.3.pom).
+### Key Bug Fixes
+- Fix [cve-2021-22119](https://tanzu.vmware.com/security/cve-2021-22119).
+
+## 3.6.0 (2021-06-23)
+### New Features
+- Upgrade to [spring-boot-dependencies:2.5.0](https://repo.maven.apache.org/maven2/org/springframework/boot/spring-boot-dependencies/2.5.0/spring-boot-dependencies-2.5.0.pom).
 
 
 ## 3.5.0 (2021-05-24)
@@ -26,6 +51,7 @@
 - Fix issue that where the AAD B2C starter cannot fetch the OpenID Connect metadata document via issuer. [#21036](https://github.com/Azure/azure-sdk-for-java/issues/21036)
 - Deprecate *addB2CIssuer*, *addB2CUserFlowIssuers*, *createB2CUserFlowIssuer* methods in `AADTrustedIssuerRepository`.
 
+
 ## 3.4.0 (2021-04-19)
 ### Key Bug Fixes
 - Fix bug of Keyvault refresh Timer task blocking application termination. ([#20014](https://github.com/Azure/azure-sdk-for-java/pull/20014))
@@ -36,7 +62,28 @@
 ### New Features
 - Upgrade to `Spring Boot` [2.4.3](https://github.com/spring-projects/spring-boot/releases/tag/v2.4.3).
 
+
 ## 3.2.0 (2021-03-03)
+### Breaking Changes
+- For the required scopes in AAD auth code flow, use `Directory.Read.All` instead of `Directory.AccessAsUser.All`. ([#18901](https://github.com/Azure/azure-sdk-for-java/pull/18901))
+  Now The requested scopes are: `openid`, `profile`, `offline_access`, `User.Read`, `Directory.Read.All`.
+  You can Refer to [AADWebAppConfiguration.java](https://github.com/Azure/azure-sdk-for-java/blob/azure-spring-boot_3.2.0/sdk/spring/azure-spring-boot/src/main/java/com/azure/spring/aad/webapp/AADWebAppConfiguration.java#L119) for detailed information.
+- Remove `azure.activedirectory.b2c.oidc-enabled` property.
+- Add `azure.activedirectory.b2c.login-flow` property.
+- Change the type of `azure.activedirectory.b2c.user-flows` to map and below is the new structure:
+    ```yaml
+    azure:
+      activedirectory:
+        b2c:
+          login-flow: ${your-login-user-flow-key}               # default to sign-up-or-sign-in, will look up the user-flows map with provided key.
+          user-flows:
+            ${your-user-flow-key}: ${your-user-flow-name-defined-on-azure-portal}
+    ```
+- Require new property of `spring.jms.servicebus.pricing-tier` to set pricing tier of Azure Service Bus. Supported values are `premium`, `standard` and `basic`.
+
+### New Features
+- Enable MessageConverter bean customization.
+- Update the underpinning JMS library for the Premium pricing tier of Service Bus to JMS 2.0.
 
 
 ## 3.1.0 (2021-01-20)
@@ -57,7 +104,12 @@
     azure.activedirectory.user-group.value
     azure.activedirectory.user-group.object-id-key
     ```
-- Stop support of Azure Active Directory Endpoints.
+- Removed support for older `AAD v1` style endpoints.
+    - Support for `AAD v1`, also named `Azure Active Directory`, endpoints in the form https://login.microsoftonline.com/common/oauth2/authorize has been removed.
+    - `AAD v2`, also named `Microsoft Identity Platform`, endpoints in the form https://login.microsoftonline.com/common/oauth2/v2.0/authorize continue to be supported.
+    - Please see [this documentation](https://github.com/MicrosoftDocs/azure-docs/blob/master/articles/active-directory/azuread-dev/azure-ad-endpoint-comparison.md) for more information.
+- The required scopes in AAD auth code flow are: `openid`, `profile`, `offline_access`, `User.Read`, `Directory.AccessAsUser.All`.
+  You can Refer to [AADWebAppConfiguration.java](https://github.com/Azure/azure-sdk-for-java/blob/azure-spring-boot_3.0.0/sdk/spring/azure-spring-boot/src/main/java/com/azure/spring/aad/webapp/AADWebAppConfiguration.java#L117) for detailed information.
 
 ### New Features
 - Support consent of multiple client registrations during user login.
@@ -86,13 +138,16 @@
 ### Breaking Changes
 - Change group id from `com.microsoft.azure` to `com.azure.spring`.
 
+
 ## 2.3.5 (2020-09-14)
 ### Breaking Changes
 - Unify spring-boot-starter version
 
+
 ## 2.3.4 (2020-08-20)
 ### Key Bug Fixes
 - Replace underpinning JMS library for Service Bus of Service Bus JMS Starter to Apache Qpid to support all tiers of Service Bus.
+
 
 ## 2.3.3 (2020-08-13)
 ### New Features

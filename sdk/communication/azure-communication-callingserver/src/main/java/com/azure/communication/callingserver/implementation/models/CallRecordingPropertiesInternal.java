@@ -14,7 +14,7 @@ public final class CallRecordingPropertiesInternal {
     /*
      * The state of the recording
      */
-    @JsonProperty(value = "recordingState")
+    @JsonProperty(value = "recordingState", required = true)
     private CallRecordingState recordingState;
 
     /**

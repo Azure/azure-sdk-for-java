@@ -6,6 +6,7 @@ package com.azure.resourcemanager.resources.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Region;
 import com.azure.core.management.exception.ManagementError;
+import com.azure.core.util.Context;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.GroupableResource;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasId;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasManager;
@@ -280,6 +281,19 @@ public interface Deployment extends
              */
             Accepted<Deployment> beginCreate();
 
+            /**
+             * Begins creating the deployment resource.
+             *
+             * @param context the {@link Context} of the request
+             * @return the accepted create operation
+             */
+            Accepted<Deployment> beginCreate(Context context);
+
+            /**
+             * Begins creating the deployment resource.
+             *
+             * @return the publisher of the accepted create operation
+             */
             Mono<Deployment> beginCreateAsync();
         }
     }

@@ -9,13 +9,14 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.node.ObjectNode
 
 import java.sql.Timestamp
+import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
 
 class SparkE2EQueryITest
   extends IntegrationSpec
     with Spark
     with CosmosClient
     with AutoCleanableCosmosContainer
-    with CosmosLoggingTrait {
+    with BasicLoggingTrait {
 
   val objectMapper = new ObjectMapper()
 
@@ -110,6 +111,7 @@ class SparkE2EQueryITest
       "spark.cosmos.accountKey" -> cosmosMasterKey,
       "spark.cosmos.database" -> cosmosDatabase,
       "spark.cosmos.container" -> cosmosContainer,
+      "spark.cosmos.read.maxItemCount" -> "1",
       "spark.cosmos.read.partitioning.strategy" -> "Restrictive"
     )
 
@@ -149,6 +151,7 @@ class SparkE2EQueryITest
       "spark.cosmos.accountKey" -> cosmosMasterKey,
       "spark.cosmos.database" -> cosmosDatabase,
       "spark.cosmos.container" -> cosmosContainer,
+      "spark.cosmos.read.maxItemCount" -> "5",
       "spark.cosmos.read.partitioning.strategy" -> "Restrictive"
     )
 

@@ -4,8 +4,12 @@ package com.azure.cosmos.spark
 
 import com.azure.cosmos.CosmosAsyncClient
 import com.azure.cosmos.models.CosmosQueryRequestOptions
+import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
+import com.azure.cosmos.util.CosmosPagedIterable
 import com.fasterxml.jackson.databind.JsonNode
 import org.apache.spark.sql.catalyst.analysis.TypeCoercion
+
+import java.util.stream.Collectors
 
 // scalastyle:off underscore.import
 import com.fasterxml.jackson.databind.node._
@@ -17,7 +21,7 @@ import scala.collection.JavaConverters._
 
 // Infers a schema by reading sample data from a source container.
 private object CosmosTableSchemaInferrer
-  extends CosmosLoggingTrait {
+  extends BasicLoggingTrait {
 
   private[spark] val RawJsonBodyAttributeName = "_rawBody"
   private[spark] val TimestampAttributeName = "_ts"
@@ -88,6 +92,7 @@ private object CosmosTableSchemaInferrer
     if (cosmosInferenceConfig.inferSchemaEnabled) {
       val cosmosContainerConfig = CosmosContainerConfig.parseCosmosContainerConfig(userConfig)
       val sourceContainer = ThroughputControlHelper.getContainer(userConfig, cosmosContainerConfig, client)
+      sourceContainer.openConnectionsAndInitCaches().block()
       val queryOptions = new CosmosQueryRequestOptions()
       queryOptions.setMaxBufferedItemCount(cosmosInferenceConfig.inferSchemaSamplingSize)
       val queryText = cosmosInferenceConfig.inferSchemaQuery match {
@@ -102,10 +107,10 @@ private object CosmosTableSchemaInferrer
       val pagedFluxResponse =
         sourceContainer.queryItems(queryText, queryOptions, classOf[ObjectNode])
 
-      val feedResponseList = pagedFluxResponse
-        .take(cosmosInferenceConfig.inferSchemaSamplingSize)
-        .collectList
-        .block
+      val feedResponseList = new CosmosPagedIterable[ObjectNode](pagedFluxResponse, cosmosReadConfig.maxItemCount)
+        .stream()
+        .limit(cosmosInferenceConfig.inferSchemaSamplingSize)
+        .collect(Collectors.toList[ObjectNode]())
 
       inferSchema(feedResponseList.asScala,
         cosmosInferenceConfig.inferSchemaQuery.isDefined || cosmosInferenceConfig.includeSystemProperties,

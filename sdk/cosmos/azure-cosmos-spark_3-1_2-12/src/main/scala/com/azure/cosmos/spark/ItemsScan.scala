@@ -4,8 +4,8 @@ package com.azure.cosmos.spark
 
 import com.azure.cosmos.implementation.CosmosClientMetadataCachesSnapshot
 import com.azure.cosmos.models.{CosmosParameterizedQuery, SqlParameter, SqlQuerySpec}
-import com.azure.cosmos.spark.diagnostics.DiagnosticsContext
 import com.azure.cosmos.spark.CosmosPredicates.requireNotNull
+import com.azure.cosmos.spark.diagnostics.{DiagnosticsContext, LoggerHelper}
 import org.apache.spark.broadcast.Broadcast
 import org.apache.spark.sql.SparkSession
 import org.apache.spark.sql.connector.read.streaming.ReadLimit
@@ -19,13 +19,15 @@ private case class ItemsScan(session: SparkSession,
                              config: Map[String, String],
                              readConfig: CosmosReadConfig,
                              cosmosQuery: CosmosParameterizedQuery,
-                             cosmosClientStateHandle: Broadcast[CosmosClientMetadataCachesSnapshot])
+                             cosmosClientStateHandle: Broadcast[CosmosClientMetadataCachesSnapshot],
+                             diagnosticsConfig: DiagnosticsConfig)
   extends Scan
-    with Batch
-    with CosmosLoggingTrait {
+    with Batch {
 
   requireNotNull(cosmosQuery, "cosmosQuery")
-  logInfo(s"Instantiated ${this.getClass.getSimpleName}")
+
+  @transient private lazy val log = LoggerHelper.getLogger(diagnosticsConfig, this.getClass)
+  log.logInfo(s"Instantiated ${this.getClass.getSimpleName}")
 
   val clientConfiguration = CosmosClientConfiguration.apply(config, readConfig.forceEventualConsistency)
   val containerConfig = CosmosContainerConfig.parseCosmosContainerConfig(config)
@@ -72,6 +74,7 @@ private case class ItemsScan(session: SparkSession,
     val client =
       CosmosClientCache.apply(clientConfiguration, Some(cosmosClientStateHandle))
     val container = ThroughputControlHelper.getContainer(config, containerConfig, client)
+    container.openConnectionsAndInitCaches().block()
 
     CosmosPartitionPlanner.createInputPartitions(
       partitioningConfig,

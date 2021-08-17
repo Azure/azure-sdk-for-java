@@ -3,6 +3,7 @@
 
 package com.azure.storage.blob
 
+import com.azure.core.credential.TokenRequestContext
 import com.azure.core.http.HttpHeaders
 import com.azure.core.http.HttpMethod
 import com.azure.core.http.HttpPipelineCallContext
@@ -31,6 +32,7 @@ import com.azure.storage.common.implementation.Constants
 import com.azure.storage.common.policy.RequestRetryOptions
 import com.azure.storage.common.test.shared.StorageSpec
 import com.azure.storage.common.test.shared.TestAccount
+import com.azure.storage.common.test.shared.policy.MockDownloadHttpResponse
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 import spock.lang.Timeout
@@ -670,74 +672,6 @@ class APISpec extends StorageSpec {
         }
     }
 
-    class MockRetryRangeResponsePolicy implements HttpPipelinePolicy {
-        @Override
-        Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-            return next.process().flatMap { HttpResponse response ->
-                if (response.getRequest().getHeaders().getValue("x-ms-range") != "bytes=2-6") {
-                    return Mono.<HttpResponse> error(new IllegalArgumentException("The range header was not set correctly on retry."))
-                } else {
-                    // ETag can be a dummy value. It's not validated, but DownloadResponse requires one
-                    return Mono.<HttpResponse> just(new MockDownloadHttpResponse(response, 206, Flux.error(new IOException())))
-                }
-            }
-        }
-    }
-
-    /*
-    This is for stubbing responses that will actually go through the pipeline and autorest code. Autorest does not seem
-    to play too nicely with mocked objects and the complex reflection stuff on both ends made it more difficult to work
-    with than was worth it. Because this type is just for BlobDownload, we don't need to accept a header type.
-     */
-
-    class MockDownloadHttpResponse extends HttpResponse {
-        private final int statusCode
-        private final HttpHeaders headers
-        private final Flux<ByteBuffer> body
-
-        MockDownloadHttpResponse(HttpResponse response, int statusCode, Flux<ByteBuffer> body) {
-            super(response.getRequest())
-            this.statusCode = statusCode
-            this.headers = response.getHeaders()
-            this.body = body
-        }
-
-        @Override
-        int getStatusCode() {
-            return statusCode
-        }
-
-        @Override
-        String getHeaderValue(String s) {
-            return headers.getValue(s)
-        }
-
-        @Override
-        HttpHeaders getHeaders() {
-            return headers
-        }
-
-        @Override
-        Flux<ByteBuffer> getBody() {
-            return body
-        }
-
-        @Override
-        Mono<byte[]> getBodyAsByteArray() {
-            return Mono.error(new IOException())
-        }
-
-        @Override
-        Mono<String> getBodyAsString() {
-            return Mono.error(new IOException())
-        }
-
-        @Override
-        Mono<String> getBodyAsString(Charset charset) {
-            return Mono.error(new IOException())
-        }
-    }
-
     /**
      * Injects one retry-able IOException failure per url.
      */
@@ -774,7 +708,7 @@ class APISpec extends StorageSpec {
     }
 
     def getPollingDuration(long liveTestDurationInMillis) {
-        return (env.testMode == TestMode.PLAYBACK) ? Duration.ofMillis(10) : Duration.ofMillis(liveTestDurationInMillis)
+        return (env.testMode == TestMode.PLAYBACK) ? Duration.ofMillis(1) : Duration.ofMillis(liveTestDurationInMillis)
     }
 
     def getPerCallVersionPolicy() {

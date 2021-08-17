@@ -20,7 +20,7 @@
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>azure-spring-boot-starter-keyvault-secrets</artifactId>
-      <version>3.6.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-boot-starter-keyvault-secrets;current} -->
+      <version>3.8.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-boot-starter-keyvault-secrets;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure.spring</groupId>
@@ -30,7 +30,7 @@
     <dependency>
       <groupId>com.azure.resourcemanager</groupId>
       <artifactId>azure-resourcemanager</artifactId>
-      <version>2.5.0</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager;dependency} -->
+      <version>2.7.0</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager;dependency} -->
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>

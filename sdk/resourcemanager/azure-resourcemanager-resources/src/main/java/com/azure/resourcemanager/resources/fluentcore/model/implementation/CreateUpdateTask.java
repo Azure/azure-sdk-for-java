@@ -49,14 +49,14 @@ public class CreateUpdateTask<ResourceT extends Indexable> implements TaskItem {
     public Mono<Indexable> invokeAsync(TaskGroup.InvocationContext context) {
         if (this.resourceCreatorUpdater.isInCreateMode()) {
             return this.resourceCreatorUpdater.createResourceAsync()
-                    .subscribeOn(ResourceManagerUtils.InternalRuntimeContext.getReactorScheduler())
-                    .doOnNext(resourceT -> resource = resourceT)
-                    .map(resourceT -> resourceT);
+                .subscribeOn(ResourceManagerUtils.InternalRuntimeContext.getReactorScheduler())
+                .doOnNext(resourceT -> resource = resourceT)
+                .map(resourceT -> resourceT);
         } else {
             return this.resourceCreatorUpdater.updateResourceAsync()
-                    .subscribeOn(ResourceManagerUtils.InternalRuntimeContext.getReactorScheduler())
-                    .doOnNext(resourceT -> resource = resourceT)
-                    .map(resourceT -> resourceT);
+                .subscribeOn(ResourceManagerUtils.InternalRuntimeContext.getReactorScheduler())
+                .doOnNext(resourceT -> resource = resourceT)
+                .map(resourceT -> resourceT);
         }
     }
 
@@ -94,14 +94,14 @@ public class CreateUpdateTask<ResourceT extends Indexable> implements TaskItem {
         /**
          * Creates the resource asynchronously.
          *
-         * @return an observable that create the resource when subscribed
+         * @return a publisher that create the resource when subscribed
          */
         Mono<T> createResourceAsync();
 
         /**
          * Update the resource asynchronously.
          *
-         * @return an observable that update the resource when subscribed
+         * @return a publisher that update the resource when subscribed
          */
         Mono<T> updateResourceAsync();
 

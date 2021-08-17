@@ -1,11 +1,36 @@
 # Release History
 
-## 4.0.0-beta.8 (Unreleased)
+## 4.1.0-beta.1 (Unreleased)
 
-### Bug Fixes
+
+## 4.0.1 (2021-07-08)
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` dependency to `1.18.0`
+- Upgraded `azure-core-http-netty` dependency to `1.10.1`
+
+## 4.0.0 (2021-06-17)
+- Initial release of `KeyVaultAccessControlClient` and `KeyVaultAccessControlAsyncClient` to manage role assignments and definitions for Managed HSM.
+- Initial release of `KeyVaultBackupClient` and `KeyVaultBackupAsyncClient` to backup and restore Managed HSM.
+
+### Features Added
+- Changed default service version to `7.2`.
+- Added `KeyVaultKeyIdentifier` to parse key URLs.
+- Added local-only support for `CryptographyClient` and `CryptographyAsyncClient` by providing a `JsonWebKey` during client creation.
+- Added `KeyType.OCT-HSM` to support oct-HSM key operations to support Managed HSM.
+- Added the `CreateOctKeyOptions` class and associated `createOctKey()` methods.
+- Added AES-GCM and AES-CBC support for encrypting and decrypting, including new `Encrypt` and `Decrypt` overloads.
+- Added the ability to set a public exponent on RSA keys during creation.
+- Made all getters for properties of a `JsonWebKey` public.
+
+### Changes since 4.0.0-beta.7
+
+#### Bug Fixes
 - Ensured that `RetryPolicy` and `HttpLogOptions` use a default implementation when creating Key Vault clients if not set or set to `null`.
 
-### Breaking Changes 
+#### Breaking Changes 
 - Renamed `beginSelectiveRestore()` to `beginSelectiveKeyRestore()` in `KeyVaultBackupClient` and `KeyVaultBackupAsyncClient`. Made the aforementioned operation return the new `KeyVaultSelectiveKeyRestoreOperation` instead of a `KeyVaultRestoreOperation`.
 - Changed the final return type of `beginRestore()` and `beginSelectiveKeyRestore()`'s poller types from `Void` to the new `KeyVaultRestoreResult` and `KeyVaultSelectiveKeyRestoreResult`, respectively.
 - `KeyVaultBackupClient` and `KeyVaultBackupAsyncClient`'s long-running operations now throw a `RuntimeException` when cancellation is attempted, as it is not currently supported.
@@ -15,7 +40,7 @@
 - Removed `roleType` from `SetRoleDefinitionOptions`.
 - Removed service method overloads that take a `pollingInterval`, since `PollerFlux` and `SyncPoller` objects allow for setting this value directly on them.
 - Delete methods on the `KeyVaultAccessControlClient` now return a `void` or `Mono<Void>` and ignore HTTP `404`s.
-- Renamed `jobId` and `getJobId()` to `operationId` and `getOperationId()` in `KeyVaultLongRunningOperation`.
+- Renamed `jobId` and `getJobId()` to `operationId` and `getOperationId()` in `KeyVaultLongRunningOperation` and its children classes.
 - Made the following classes `final`:
     - `KeyVaultDataAction`
     - `KeyVaultRoleDefinitionType`

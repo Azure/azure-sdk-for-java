@@ -318,7 +318,9 @@ class ServiceBusReceiverAsyncClientTest {
         // This needs to be used with "try with resource" : https://javadoc.io/static/org.mockito/mockito-core/3.9.0/org/mockito/Mockito.html#static_mocks
         try (
             MockedConstruction<FluxAutoLockRenew> mockedAutoLockRenew = Mockito.mockConstructionWithAnswer(FluxAutoLockRenew.class,
-                invocationOnMock -> new FluxAutoLockRenew(Flux.empty(), Duration.ofSeconds(30),
+                invocationOnMock -> new FluxAutoLockRenew(Flux.empty(),
+                    new ReceiverOptions(ServiceBusReceiveMode.RECEIVE_AND_DELETE, 1, Duration.ofSeconds(30),
+                        true),
                     new LockContainer<>(Duration.ofSeconds(30)), (lock) -> Mono.empty()))) {
 
             ServiceBusReceivedMessage receivedMessage = mock(ServiceBusReceivedMessage.class);

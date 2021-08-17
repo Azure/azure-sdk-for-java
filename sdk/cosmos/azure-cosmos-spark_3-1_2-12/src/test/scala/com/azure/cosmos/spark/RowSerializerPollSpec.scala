@@ -2,10 +2,11 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.spark
 
+import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
 import org.apache.spark.sql.catalyst.encoders.RowEncoder
 import org.apache.spark.sql.types.{IntegerType, StringType, StructField, StructType}
 
-class RowSerializerPollSpec extends UnitSpec with CosmosLoggingTrait {
+class RowSerializerPollSpec extends UnitSpec with BasicLoggingTrait {
   //scalastyle:off multiple.string.literals
 
   "RowSerializer returned to the pool" should "be reused when capacity not exceeded" in {

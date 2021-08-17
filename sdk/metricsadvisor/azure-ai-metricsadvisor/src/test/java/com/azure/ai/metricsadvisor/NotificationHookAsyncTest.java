@@ -4,15 +4,14 @@
 package com.azure.ai.metricsadvisor;
 
 import com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient;
-import com.azure.ai.metricsadvisor.administration.models.NotificationHook;
 import com.azure.ai.metricsadvisor.administration.models.ListHookOptions;
+import com.azure.ai.metricsadvisor.administration.models.NotificationHook;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.test.TestBase;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.core.publisher.Mono;
@@ -83,10 +82,8 @@ public final class NotificationHookAsyncTest extends NotificationHookTestBase {
             .verifyComplete();
     }
 
-    // Track this with https://github.com/Azure/azure-sdk-for-java/issues/16932
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.metricsadvisor.TestUtils#getTestParameters")
-    @Disabled
     void testListHook(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
         MetricsAdvisorAdministrationAsyncClient client
             = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion).buildAsyncClient();
@@ -107,14 +104,16 @@ public final class NotificationHookAsyncTest extends NotificationHookTestBase {
         Assertions.assertNotNull(hookId[1]);
 
         List<NotificationHook> notificationHookList = new ArrayList<>();
-        StepVerifier.create(client.listHooks())
+        StepVerifier.create(client.listHooks(new ListHookOptions().setHookNameFilter("java_test")))
             .thenConsumeWhile(notificationHookList::add)
             .verifyComplete();
 
         assertListHookOutput(notificationHookList);
 
         List<PagedResponse<NotificationHook>> hookPageList = new ArrayList<>();
-        StepVerifier.create(client.listHooks(new ListHookOptions().setMaxPageSize(ListHookInput.INSTANCE.pageSize)).byPage())
+        StepVerifier.create(client.listHooks(new ListHookOptions()
+            .setHookNameFilter("java_test")
+            .setMaxPageSize(ListHookInput.INSTANCE.pageSize)).byPage())
             .thenConsumeWhile(hookPageList::add)
             .verifyComplete();
 

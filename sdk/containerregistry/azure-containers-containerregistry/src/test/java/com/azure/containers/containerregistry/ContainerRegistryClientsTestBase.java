@@ -8,6 +8,7 @@ import com.azure.containers.containerregistry.models.ArtifactManifestPlatform;
 import com.azure.containers.containerregistry.models.ArtifactManifestProperties;
 import com.azure.containers.containerregistry.models.ArtifactOperatingSystem;
 import com.azure.containers.containerregistry.models.ArtifactTagProperties;
+import com.azure.containers.containerregistry.models.ContainerRegistryAudience;
 import com.azure.containers.containerregistry.models.ContainerRepositoryProperties;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
@@ -35,7 +36,7 @@ import static com.azure.containers.containerregistry.TestUtils.PAGESIZE_2;
 import static com.azure.containers.containerregistry.TestUtils.REGISTRY_ENDPOINT;
 import static com.azure.containers.containerregistry.TestUtils.REGISTRY_ENDPOINT_PLAYBACK;
 import static com.azure.containers.containerregistry.TestUtils.V1_TAG_NAME;
-import static com.azure.containers.containerregistry.TestUtils.getCredential;
+import static com.azure.containers.containerregistry.TestUtils.getCredentialsByEndpoint;
 import static com.azure.containers.containerregistry.TestUtils.isSorted;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -86,7 +87,7 @@ public class ContainerRegistryClientsTestBase extends TestBase {
         .setTeleportEnabled(false);
 
     ContainerRegistryClientBuilder getContainerRegistryBuilder(HttpClient httpClient) {
-        TokenCredential credential = getCredential(getTestMode());
+        TokenCredential credential = getCredentialsByEndpoint(getTestMode(), REGISTRY_ENDPOINT);
         return getContainerRegistryBuilder(httpClient, credential);
     }
 
@@ -94,12 +95,15 @@ public class ContainerRegistryClientsTestBase extends TestBase {
         List<Function<String, String>> redactors = new ArrayList<>();
         redactors.add(data -> redact(data, JSON_PROPERTY_VALUE_REDACTION_PATTERN.matcher(data), "REDACTED"));
 
+        ContainerRegistryAudience audience = TestUtils.getAudience(endpoint);
+
         ContainerRegistryClientBuilder builder = new ContainerRegistryClientBuilder()
             .endpoint(getEndpoint(endpoint))
             .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient)
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
             .addPolicy(interceptorManager.getRecordPolicy(redactors))
-            .credential(credential);
+            .credential(credential)
+            .audience(audience);
 
            // builder.httpClient(new NettyAsyncHttpClientBuilder().proxy(new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888))).build());
         return builder;

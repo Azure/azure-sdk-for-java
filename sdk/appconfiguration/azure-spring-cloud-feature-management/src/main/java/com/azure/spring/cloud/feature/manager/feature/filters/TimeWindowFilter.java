@@ -7,6 +7,8 @@ import static com.azure.spring.cloud.feature.manager.FilterParameters.TIME_WINDO
 
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -42,14 +44,25 @@ public class TimeWindowFilter implements FeatureFilter {
                 TIME_WINDOW_FILTER_SETTING_END);
             return false;
         }
+        
+        ZonedDateTime startTime = null;
+        ZonedDateTime endTime = null;
 
-        ZonedDateTime startTime = StringUtils.hasText(start)
-            ? ZonedDateTime.parse(start, DateTimeFormatter.RFC_1123_DATE_TIME)
-            : null;
-        ZonedDateTime endTime = StringUtils.hasText(end)
-            ? ZonedDateTime.parse(end, DateTimeFormatter.RFC_1123_DATE_TIME)
-            : null;
-
+        try {
+            startTime = StringUtils.hasText(start)
+                ? ZonedDateTime.parse(start, DateTimeFormatter.ISO_DATE_TIME)
+                : null;
+            endTime = StringUtils.hasText(end)
+                ? ZonedDateTime.parse(end, DateTimeFormatter.ISO_DATE_TIME)
+                : null;
+        } catch (DateTimeParseException e) {
+            startTime = StringUtils.hasText(start)
+                ? ZonedDateTime.parse(start, DateTimeFormatter.RFC_1123_DATE_TIME)
+                : null;
+            endTime = StringUtils.hasText(end)
+                ? ZonedDateTime.parse(end, DateTimeFormatter.RFC_1123_DATE_TIME)
+                : null;
+        }
         return (!StringUtils.hasText(start) || now.isAfter(startTime))
             && (!StringUtils.hasText(end) || now.isBefore(endTime));
     }

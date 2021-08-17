@@ -14,7 +14,7 @@ import java.time.OffsetDateTime;
 public class KeyVaultLongRunningOperation {
     private final String status;
     private final String statusDetails;
-    private final KeyVaultError error;
+    private final KeyVaultAdministrationError error;
     private final String operationId;
     private final OffsetDateTime startTime;
     private final OffsetDateTime endTime;
@@ -29,7 +29,8 @@ public class KeyVaultLongRunningOperation {
      * @param startTime The start time of the {@link KeyVaultLongRunningOperation}.
      * @param endTime The end time of the {@link KeyVaultLongRunningOperation}.
      */
-    public KeyVaultLongRunningOperation(String status, String statusDetails, KeyVaultError error, String operationId, OffsetDateTime startTime, OffsetDateTime endTime) {
+    public KeyVaultLongRunningOperation(String status, String statusDetails, KeyVaultAdministrationError error,
+                                        String operationId, OffsetDateTime startTime, OffsetDateTime endTime) {
         this.status = status;
         this.statusDetails = statusDetails;
         this.error = error;
@@ -70,7 +71,7 @@ public class KeyVaultLongRunningOperation {
      *
      * @return The error.
      */
-    public KeyVaultError getError() {
+    public KeyVaultAdministrationError getError() {
         return error;
     }
 

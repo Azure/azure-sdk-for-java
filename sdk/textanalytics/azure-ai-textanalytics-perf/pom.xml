@@ -27,7 +27,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-ai-textanalytics</artifactId>
-      <version>5.1.0-beta.8</version> <!-- {x-version-update;com.azure:azure-ai-textanalytics;current} -->
+      <version>5.2.0-beta.2</version> <!-- {x-version-update;com.azure:azure-ai-textanalytics;current} -->
     </dependency>
   </dependencies>
 

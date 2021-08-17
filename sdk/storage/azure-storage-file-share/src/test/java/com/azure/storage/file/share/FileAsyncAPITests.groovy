@@ -217,7 +217,7 @@ class FileAsyncAPITests extends APISpec {
 
         when:
         def uploadVerifier = StepVerifier.create(primaryFileAsyncClient.uploadWithResponse(data.defaultFlux, data.defaultDataSizeLong, 0L))
-        def downloadVerifier = StepVerifier.create(primaryFileAsyncClient.downloadWithResponse(null, null))
+        def downloadVerifier = StepVerifier.create(primaryFileAsyncClient.downloadWithResponse(null))
 
         then:
         uploadVerifier.assertNext {
@@ -225,7 +225,7 @@ class FileAsyncAPITests extends APISpec {
         }.verifyComplete()
 
         downloadVerifier.assertNext({ response ->
-            assert assertResponseStatusCode(response, 200)
+            assert assertResponseStatusCode(response, 200, 206)
             def headers = response.getDeserializedHeaders()
             assert headers.getContentLength() == data.defaultDataSizeLong
             assert headers.getETag()

@@ -33,12 +33,47 @@ Use the Azure Cognitive Search client library to:
 
 ### Include the package
 
+#### Include the BOM file
+
+Please include the azure-sdk-bom to your project to take dependency on the General Availability (GA) version of the library. In the following snippet, replace the {bom_version_to_target} placeholder with the version number.
+To learn more about the BOM, see the [AZURE SDK BOM README](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/boms/azure-sdk-bom/README.md).
+
+```xml
+<dependencyManagement>
+    <dependencies>
+        <dependency>
+            <groupId>com.azure</groupId>
+            <artifactId>azure-sdk-bom</artifactId>
+            <version>{bom_version_to_target}</version>
+            <type>pom</type>
+            <scope>import</scope>
+        </dependency>
+    </dependencies>
+</dependencyManagement>
+```
+and then include the direct dependency in the dependencies section without the version tag.
+
+```xml
+<dependencies>
+  <dependency>
+    <groupId>com.azure</groupId>
+    <artifactId>azure-search-documents</artifactId>
+  </dependency>
+</dependencies>
+```
+
+#### Include direct dependency
+
+If you want to take dependency on a particular version of the library that is not present in the BOM,
+add the direct dependency to your project as follows.
+
+
 [//]: # ({x-version-update-start;com.azure:azure-search-documents;current})
 ```xml
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-search-documents</artifactId>
-    <version>11.4.0</version>
+    <version>11.5.0-beta.2</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -193,7 +228,7 @@ tables.)_ The `azure-search-documents` client library exposes operations on thes
 
 ## Examples
 
-The following examples all use a simple [Hotel data set](https://docs.microsoft.com/samples/azure-samples/azure-search-sample-data/azure-search-sample-data/)
+The following examples all use a simple [Hotel data set](https://github.com/Azure-Samples/azure-search-sample-data)
 that you can [import into your own index from the Azure portal.](https://docs.microsoft.com/azure/search/search-get-started-portal#step-1---start-the-import-data-wizard-and-create-a-data-source)
 These are just a few of the basics - please [check out our Samples][samples_readme] for much more.
 
@@ -467,20 +502,20 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [azure_subscription]: https://azure.microsoft.com/free
 [maven]: https://maven.apache.org/
 [package]: https://search.maven.org/artifact/com.azure/azure-search-documents
-[samples]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/search/azure-search-documents/src/samples/java/com/azure/search/documents
-[samples_readme]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/search/azure-search-documents/src/samples/README.md
-[source_code]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/search/azure-search-documents/src
+[samples]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/search/azure-search-documents/src/samples/java/com/azure/search/documents
+[samples_readme]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/search/azure-search-documents/src/samples/README.md
+[source_code]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/search/azure-search-documents/src
 [logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK
 [cla]: https://cla.microsoft.com
 [coc]: https://opensource.microsoft.com/codeofconduct/
 [coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/
 [coc_contact]: mailto:opencode@microsoft.com
-[add_headers_from_context_policy]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/core/azure-core/src/main/java/com/azure/core/http/policy/AddHeadersFromContextPolicy.java
+[add_headers_from_context_policy]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core/src/main/java/com/azure/core/http/policy/AddHeadersFromContextPolicy.java
 [rest_api]: https://docs.microsoft.com/rest/api/searchservice/http-status-codes
 [create_search_service_docs]: https://docs.microsoft.com/azure/search/search-create-service-portal
 [create_search_service_ps]: https://docs.microsoft.com/azure/search/search-manage-powershell#create-or-delete-a-service
 [create_search_service_cli]: https://docs.microsoft.com/cli/azure/search/service?view=azure-cli-latest#az-search-service-create
-[HttpResponseException]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/core/azure-core/src/main/java/com/azure/core/exception/HttpResponseException.java
+[HttpResponseException]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core/src/main/java/com/azure/core/exception/HttpResponseException.java
 [status_codes]: https://docs.microsoft.com/rest/api/searchservice/http-status-codes
 [search-get-started-portal]: https://docs.microsoft.com/azure/search/search-get-started-portal
 

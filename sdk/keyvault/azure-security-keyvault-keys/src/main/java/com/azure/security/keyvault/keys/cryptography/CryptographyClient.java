@@ -10,13 +10,15 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.util.Context;
+import com.azure.security.keyvault.keys.cryptography.models.DecryptParameters;
 import com.azure.security.keyvault.keys.cryptography.models.DecryptResult;
-import com.azure.security.keyvault.keys.cryptography.models.EncryptionAlgorithm;
+import com.azure.security.keyvault.keys.cryptography.models.EncryptParameters;
 import com.azure.security.keyvault.keys.cryptography.models.EncryptResult;
-import com.azure.security.keyvault.keys.cryptography.models.UnwrapResult;
+import com.azure.security.keyvault.keys.cryptography.models.EncryptionAlgorithm;
 import com.azure.security.keyvault.keys.cryptography.models.KeyWrapAlgorithm;
-import com.azure.security.keyvault.keys.cryptography.models.SignatureAlgorithm;
 import com.azure.security.keyvault.keys.cryptography.models.SignResult;
+import com.azure.security.keyvault.keys.cryptography.models.SignatureAlgorithm;
+import com.azure.security.keyvault.keys.cryptography.models.UnwrapResult;
 import com.azure.security.keyvault.keys.cryptography.models.VerifyResult;
 import com.azure.security.keyvault.keys.cryptography.models.WrapResult;
 import com.azure.security.keyvault.keys.models.KeyVaultKey;
@@ -169,7 +171,7 @@ public class CryptographyClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public EncryptResult encrypt(EncryptionAlgorithm algorithm, byte[] plaintext, Context context) {
-        return encrypt(new EncryptParameters(algorithm, plaintext, null, null), context);
+        return client.encrypt(algorithm, plaintext, context).block();
     }
 
     /**
@@ -250,7 +252,7 @@ public class CryptographyClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DecryptResult decrypt(EncryptionAlgorithm algorithm, byte[] ciphertext) {
-        return decrypt(new DecryptParameters(algorithm, ciphertext, null, null, null), Context.NONE);
+        return decrypt(algorithm, ciphertext, Context.NONE);
     }
 
     /**
@@ -291,7 +293,7 @@ public class CryptographyClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DecryptResult decrypt(EncryptionAlgorithm algorithm, byte[] ciphertext, Context context) {
-        return decrypt(new DecryptParameters(algorithm, ciphertext, null, null, null), context);
+        return client.decrypt(algorithm, ciphertext, context).block();
     }
 
     /**

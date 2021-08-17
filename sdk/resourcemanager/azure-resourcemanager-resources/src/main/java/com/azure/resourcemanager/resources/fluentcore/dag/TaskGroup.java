@@ -607,6 +607,7 @@ public class TaskGroup
      * of the TaskGroup.
      */
     public static final class InvocationContext {
+        /** Key of the {@link Set} of tasks to skip. */
         public static final String KEY_SKIP_TASKS = "SKIP_TASKS";
 
         private final Map<String, Object> properties;

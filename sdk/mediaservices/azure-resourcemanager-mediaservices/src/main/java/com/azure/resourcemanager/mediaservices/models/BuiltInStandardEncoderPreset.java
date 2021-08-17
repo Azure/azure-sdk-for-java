@@ -21,10 +21,42 @@ public class BuiltInStandardEncoderPreset extends Preset {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(BuiltInStandardEncoderPreset.class);
 
     /*
+     * PresetConfigurations are only supported for the ContentAwareEncoding and
+     * H265ContentAwareEncoding built-in presets. These settings will not
+     * affect other built-in or custom defined presets.
+     */
+    @JsonProperty(value = "configurations")
+    private PresetConfigurations configurations;
+
+    /*
      * The built-in preset to be used for encoding videos.
      */
     @JsonProperty(value = "presetName", required = true)
     private EncoderNamedPreset presetName;
+
+    /**
+     * Get the configurations property: PresetConfigurations are only supported for the ContentAwareEncoding and
+     * H265ContentAwareEncoding built-in presets. These settings will not affect other built-in or custom defined
+     * presets.
+     *
+     * @return the configurations value.
+     */
+    public PresetConfigurations configurations() {
+        return this.configurations;
+    }
+
+    /**
+     * Set the configurations property: PresetConfigurations are only supported for the ContentAwareEncoding and
+     * H265ContentAwareEncoding built-in presets. These settings will not affect other built-in or custom defined
+     * presets.
+     *
+     * @param configurations the configurations value to set.
+     * @return the BuiltInStandardEncoderPreset object itself.
+     */
+    public BuiltInStandardEncoderPreset withConfigurations(PresetConfigurations configurations) {
+        this.configurations = configurations;
+        return this;
+    }
 
     /**
      * Get the presetName property: The built-in preset to be used for encoding videos.
@@ -54,6 +86,9 @@ public class BuiltInStandardEncoderPreset extends Preset {
     @Override
     public void validate() {
         super.validate();
+        if (configurations() != null) {
+            configurations().validate();
+        }
         if (presetName() == null) {
             throw logger
                 .logExceptionAsError(
