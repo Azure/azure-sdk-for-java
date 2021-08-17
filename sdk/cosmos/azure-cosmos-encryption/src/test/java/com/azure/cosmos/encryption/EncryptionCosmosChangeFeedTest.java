@@ -6,6 +6,7 @@ package com.azure.cosmos.encryption;
 import com.azure.cosmos.ChangeFeedProcessor;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
+import com.azure.cosmos.CosmosClient;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.feedranges.FeedRangePartitionKeyImpl;
@@ -22,6 +23,7 @@ import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.ThroughputProperties;
 import com.azure.cosmos.util.CosmosPagedFlux;
+import com.azure.cosmos.util.CosmosPagedIterable;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -45,21 +47,21 @@ import java.util.function.Consumer;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-
 public class EncryptionCosmosChangeFeedTest extends TestSuiteBase {
     private final static Logger logger = LoggerFactory.getLogger(EncryptionCosmosChangeFeedTest.class);
     private static final ObjectMapper OBJECT_MAPPER = Utils.getSimpleObjectMapper();
     private final static String CHANGE_FEED_PK_1 = "changeFeedPK1";
     private final static String CHANGE_FEED_PK_2 = "changeFeedPK2";
+    private final static String CHANGE_FEED_PK_3 = "changeFeedPK3";
     private final static String CHANGE_FEED_PROCESSOR_PK = "changeFeedProcessorPK";
     private final int LEASE_COLLECTION_THROUGHPUT = 400;
     private final int CHANGE_FEED_PROCESSOR_TIMEOUT = 5000;
     private Map<String, EncryptionPojo> createdItemsForPk1 = new HashMap<>();
     private Map<String, EncryptionPojo> createdItemsForPk2 = new HashMap<>();
+    private Map<String, EncryptionPojo> createdItemsForPk3 = new HashMap<>();
     private CosmosEncryptionAsyncContainer cosmosEncryptionAsyncContainer;
+    private CosmosEncryptionContainer cosmosEncryptionContainer;
     private CosmosEncryptionAsyncDatabase cosmosEncryptionAsyncDatabase;
-    private CosmosAsyncClient client;
-
 
     @Factory(dataProvider = "clientBuilders")
     public EncryptionCosmosChangeFeedTest(CosmosClientBuilder clientBuilder) {
@@ -68,13 +70,17 @@ public class EncryptionCosmosChangeFeedTest extends TestSuiteBase {
 
     @BeforeClass(groups = {"encryption"}, timeOut = SETUP_TIMEOUT)
     public void beforeClass() {
-        assertThat(this.client).isNull();
-        this.client = getClientBuilder().buildAsyncClient();
+        CosmosAsyncClient asyncClient = getClientBuilder().buildAsyncClient();
+        CosmosClient syncClient = getClientBuilder().buildClient();
         TestEncryptionKeyStoreProvider encryptionKeyStoreProvider = new TestEncryptionKeyStoreProvider();
-        CosmosEncryptionAsyncClient cosmosEncryptionAsyncClient = CosmosEncryptionAsyncClient.createCosmosEncryptionAsyncClient(this.client,
+        CosmosEncryptionAsyncClient cosmosEncryptionAsyncClient = CosmosEncryptionAsyncClient.createCosmosEncryptionAsyncClient(asyncClient,
             encryptionKeyStoreProvider);
         cosmosEncryptionAsyncContainer = getSharedEncryptionContainer(cosmosEncryptionAsyncClient);
         cosmosEncryptionAsyncDatabase = getSharedEncryptionDatabase(cosmosEncryptionAsyncClient);
+
+        CosmosEncryptionClient cosmosEncryptionClient = CosmosEncryptionClient.createCosmosEncryptionClient(syncClient,
+            encryptionKeyStoreProvider);
+        cosmosEncryptionContainer = getSharedSyncEncryptionContainer(cosmosEncryptionClient);
     }
 
     @Test(groups = {"encryption"}, timeOut = TIMEOUT)
@@ -149,6 +155,35 @@ public class EncryptionCosmosChangeFeedTest extends TestSuiteBase {
             validateResponse(pojo, createdItemsForPk2.get(pojo.getId()));
         }
     }
+
+    @Test(groups = {"encryption"}, timeOut = TIMEOUT)
+    public void syncChangeFeed_fromBeginning() {
+        populateItems(createdItemsForPk3, CHANGE_FEED_PK_3);
+        FeedRange feedRange = new FeedRangePartitionKeyImpl(
+            ModelBridgeInternal.getPartitionKeyInternal(new PartitionKey(CHANGE_FEED_PK_3)));
+        CosmosChangeFeedRequestOptions changeFeedOption =
+            CosmosChangeFeedRequestOptions.createForProcessingFromBeginning(feedRange);
+        changeFeedOption.setMaxItemCount(3);
+
+        CosmosPagedIterable<EncryptionPojo> cosmosPagedIterable = cosmosEncryptionContainer
+            .queryChangeFeed(changeFeedOption, EncryptionPojo.class);
+        List<EncryptionPojo> changeFeedResultList = new ArrayList<>();
+        Iterator<FeedResponse<EncryptionPojo>> responseIterator =
+            cosmosPagedIterable.iterableByPage().iterator();
+        while (responseIterator.hasNext()) {
+            FeedResponse<EncryptionPojo> feedResponse = responseIterator.next();
+            assertThat(feedResponse.getContinuationToken())
+                .as("Response continuation should not be null")
+                .isNotNull();
+            changeFeedResultList.addAll(feedResponse.getResults());
+        }
+
+        assertThat(changeFeedResultList.size()).isEqualTo(createdItemsForPk3.size());
+        for (EncryptionPojo pojo : changeFeedResultList) {
+            validateResponse(pojo, createdItemsForPk3.get(pojo.getId()));
+        }
+    }
+
 
     @Test(groups = { "emulator" }, timeOut = 2 * TIMEOUT)
     public void pushModel_readFeedDocuments() throws InterruptedException, JsonProcessingException {
