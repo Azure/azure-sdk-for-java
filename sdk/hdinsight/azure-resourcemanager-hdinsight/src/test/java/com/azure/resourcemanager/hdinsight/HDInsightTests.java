@@ -12,6 +12,7 @@ import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.annotation.DoNotRecord;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.azure.resourcemanager.hdinsight.models.Cluster;
 import com.azure.resourcemanager.hdinsight.models.ClusterCreateProperties;
 import com.azure.resourcemanager.hdinsight.models.ClusterDefinition;
 import com.azure.resourcemanager.hdinsight.models.ComputeProfile;
@@ -92,7 +93,7 @@ public class HDInsightTests extends TestBase {
             clusterDefinition.put("gateway", Collections.unmodifiableMap(clusterProperties));
 
             // cluster
-            manager.clusters().define("cluster" + randomPadding())
+            Cluster cluster = manager.clusters().define("cluster" + randomPadding())
                 .withExistingResourceGroup(resourceGroupName)
                 .withRegion(REGION)
                 .withProperties(new ClusterCreateProperties()
@@ -150,6 +151,8 @@ public class HDInsightTests extends TestBase {
                     ))
                 .create();
             // @embedmeEnd
+
+            manager.clusters().deleteById(cluster.id());
         } finally {
             storageManager.resourceManager().resourceGroups().beginDeleteByName(resourceGroupName);
         }

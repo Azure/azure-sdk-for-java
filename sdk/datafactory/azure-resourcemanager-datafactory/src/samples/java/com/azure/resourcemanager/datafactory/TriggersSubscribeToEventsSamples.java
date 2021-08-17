@@ -11,12 +11,10 @@ public final class TriggersSubscribeToEventsSamples {
     /**
      * Sample code: Triggers_SubscribeToEvents.
      *
-     * @param dataFactoryManager Entry point to DataFactoryManager. The Azure Data Factory V2 management API provides a
-     *     RESTful set of web services that interact with Azure Data Factory V2 services.
+     * @param manager Entry point to DataFactoryManager.
      */
-    public static void triggersSubscribeToEvents(
-        com.azure.resourcemanager.datafactory.DataFactoryManager dataFactoryManager) {
-        dataFactoryManager
+    public static void triggersSubscribeToEvents(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
+        manager
             .triggers()
             .subscribeToEvents("exampleResourceGroup", "exampleFactoryName", "exampleTrigger", Context.NONE);
     }

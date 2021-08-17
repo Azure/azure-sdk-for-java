@@ -4,7 +4,7 @@
 
 package com.azure.resourcemanager.hdinsight.fluent.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.hdinsight.models.RuntimeScriptAction;
 import com.azure.resourcemanager.hdinsight.models.ScriptActionExecutionSummary;
@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The execution details of a script action. */
-@Immutable
+@Fluent
 public final class RuntimeScriptActionDetailInner extends RuntimeScriptAction {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(RuntimeScriptActionDetailInner.class);
 

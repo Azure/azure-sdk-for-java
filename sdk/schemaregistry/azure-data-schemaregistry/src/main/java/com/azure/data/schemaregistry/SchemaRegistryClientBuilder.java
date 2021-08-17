@@ -45,6 +45,9 @@ import java.util.function.Function;
  */
 @ServiceClientBuilder(serviceClients = SchemaRegistryAsyncClient.class)
 public class SchemaRegistryClientBuilder {
+    static final int MAX_SCHEMA_MAP_SIZE_DEFAULT = 1000;
+    static final int MAX_SCHEMA_MAP_SIZE_MINIMUM = 10;
+
     private final ClientLogger logger = new ClientLogger(SchemaRegistryClientBuilder.class);
 
     private static final String DEFAULT_SCOPE = "https://eventhubs.azure.net/.default";
@@ -125,11 +128,11 @@ public class SchemaRegistryClientBuilder {
      * @return The updated {@link SchemaRegistryClientBuilder} object.
      * @throws IllegalArgumentException on invalid maxCacheSize value
      */
-    public SchemaRegistryClientBuilder maxCacheSize(int maxCacheSize) {
-        if (maxCacheSize < SchemaRegistryAsyncClient.MAX_SCHEMA_MAP_SIZE_MINIMUM) {
+    SchemaRegistryClientBuilder maxCacheSize(int maxCacheSize) {
+        if (maxCacheSize < MAX_SCHEMA_MAP_SIZE_MINIMUM) {
             throw logger.logExceptionAsError(new IllegalArgumentException(
                 String.format("Schema map size must be greater than %s entries",
-                    SchemaRegistryAsyncClient.MAX_SCHEMA_MAP_SIZE_MINIMUM)));
+                    MAX_SCHEMA_MAP_SIZE_MINIMUM)));
         }
 
         this.maxSchemaMapSize = maxCacheSize;
@@ -319,7 +322,7 @@ public class SchemaRegistryClientBuilder {
             .buildClient();
 
         int buildMaxSchemaMapSize = (maxSchemaMapSize == null)
-            ? SchemaRegistryAsyncClient.MAX_SCHEMA_MAP_SIZE_DEFAULT
+            ? MAX_SCHEMA_MAP_SIZE_DEFAULT
             : maxSchemaMapSize;
 
         return new SchemaRegistryAsyncClient(restService, buildMaxSchemaMapSize, typeParserMap);

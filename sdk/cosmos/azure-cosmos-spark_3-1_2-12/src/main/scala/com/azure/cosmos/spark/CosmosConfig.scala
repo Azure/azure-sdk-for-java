@@ -40,6 +40,7 @@ private object CosmosConfigNames {
   val ApplicationName = "spark.cosmos.applicationName"
   val UseGatewayMode = "spark.cosmos.useGatewayMode"
   val ReadCustomQuery = "spark.cosmos.read.customQuery"
+  val ReadMaxItemCount = "spark.cosmos.read.maxItemCount"
   val ReadForceEventualConsistency = "spark.cosmos.read.forceEventualConsistency"
   val ReadSchemaConversionMode = "spark.cosmos.read.schemaConversionMode"
   val ReadInferSchemaSamplingSize = "spark.cosmos.read.inferSchema.samplingSize"
@@ -85,6 +86,7 @@ private object CosmosConfigNames {
     ReadCustomQuery,
     ReadForceEventualConsistency,
     ReadSchemaConversionMode,
+    ReadMaxItemCount,
     ReadInferSchemaSamplingSize,
     ReadInferSchemaEnabled,
     ReadInferSchemaIncludeSystemProperties,
@@ -300,6 +302,7 @@ private object CosmosAccountConfig {
 
 private case class CosmosReadConfig(forceEventualConsistency: Boolean,
                                     schemaConversionMode: SchemaConversionMode,
+                                    maxItemCount: Int,
                                     customQuery: Option[CosmosParameterizedQuery])
 
 private object SchemaConversionModes extends Enumeration {
@@ -311,6 +314,7 @@ private object SchemaConversionModes extends Enumeration {
 
 private object CosmosReadConfig {
   private val DefaultSchemaConversionMode: SchemaConversionMode = SchemaConversionModes.Relaxed
+  private val DefaultMaxItemCount : Int = 1000
 
   private val ForceEventualConsistency = CosmosConfigEntry[Boolean](key = CosmosConfigNames.ReadForceEventualConsistency,
     mandatory = false,
@@ -339,12 +343,20 @@ private object CosmosReadConfig {
       "etc.) that cannot be pushed down yet (at least in Spark 3.1) - so the custom query is a fallback to allow " +
       "them to be pushed into the query sent to Cosmos.")
 
+  private val MaxItemCount = CosmosConfigEntry[Int](
+    key = CosmosConfigNames.ReadMaxItemCount,
+    mandatory = false,
+    defaultValue = Some(DefaultMaxItemCount),
+    parseFromStringFunction = queryText => queryText.toInt,
+    helpMessage = "The maximum number of documents returned in a single request. The default is 1000.")
+
   def parseCosmosReadConfig(cfg: Map[String, String]): CosmosReadConfig = {
     val forceEventualConsistency = CosmosConfigEntry.parse(cfg, ForceEventualConsistency)
     val jsonSchemaConversionMode = CosmosConfigEntry.parse(cfg, JsonSchemaConversion)
     val customQuery = CosmosConfigEntry.parse(cfg, CustomQuery)
+    val maxItemCount = CosmosConfigEntry.parse(cfg, MaxItemCount)
 
-    CosmosReadConfig(forceEventualConsistency.get, jsonSchemaConversionMode.get, customQuery)
+    CosmosReadConfig(forceEventualConsistency.get, jsonSchemaConversionMode.get, maxItemCount.get, customQuery)
   }
 }
 

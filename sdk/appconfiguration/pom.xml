@@ -51,8 +51,6 @@
         <activeByDefault>true</activeByDefault>
       </activation>
       <modules>
-        <module>../core/</module>
-        <module>../parents/azure-client-sdk-parent/</module>
         <module>azure-data-appconfiguration</module>
         <module>azure-data-appconfiguration-perf</module>
         <module>azure-resourcemanager-appconfiguration</module>
