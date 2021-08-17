@@ -11,14 +11,14 @@
     },
     "searchEndpointSuffix": {
       "type": "string",
-      "defaultValue": "search.windows.net",
+      "defaultValue": "search.azure.us",
       "metadata": {
         "description": "The Search service endpoint suffix."
       }
     },
     "storageEndpointSuffix": {
       "type": "string",
-      "defaultValue": "core.windows.net",
+      "defaultValue": "core.usgovcloudapi.net",
       "metadata": {
         "description": "The Storage account endpoint suffix."
       }
