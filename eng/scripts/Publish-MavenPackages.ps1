@@ -177,7 +177,7 @@ foreach ($packageDetail in $packageDetails) {
     }
     else {
       $attempt = 0
-      while($attempt++ -lt 3) {
+      while ($attempt++ -lt 3) {
         Write-Information "Releasing staging repostiory $stagedRepositoryId, attempt $attempt"
         Write-Information "mvn org.sonatype.plugins:nexus-staging-maven-plugin:rc-release `"-DstagingRepositoryId=$stagedRepositoryId`" `"-DnexusUrl=https://oss.sonatype.org`" `"-DrepositoryId=target-repo`" `"-DserverId=target-repo`" `"-Drepo.username=$RepositoryUsername`" `"-Drepo.password=`"`"[redacted]`"`"`" `"--settings=$PSScriptRoot\..\maven.publish.settings.xml`""
         mvn org.sonatype.plugins:nexus-staging-maven-plugin:rc-release "-DstagingRepositoryId=$stagedRepositoryId" "-DnexusUrl=https://oss.sonatype.org" "-DrepositoryId=target-repo" "-DserverId=target-repo" "-Drepo.username=$RepositoryUsername" "-Drepo.password=""$RepositoryPassword""" "--settings=$PSScriptRoot\..\maven.publish.settings.xml"

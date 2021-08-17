@@ -185,7 +185,7 @@ function Test-ReleasedPackage([string]$RepositoryUrl, [MavenPackageDetail]$Packa
   # Count the number of remote hashes that match their local hash
   $matchCount = 0
 
-  foreach($artifact in $PackageDetail.AssociatedArtifacts) {
+  foreach ($artifact in $PackageDetail.AssociatedArtifacts) {
     $localFileName = $artifact.File.Name;
     $remoteHashUrl = "$packageUrl/$localFileName.$algorithm"
 
@@ -214,7 +214,7 @@ function Test-ReleasedPackage([string]$RepositoryUrl, [MavenPackageDetail]$Packa
     }
   }
 
-  if($remoteCount -eq 0) { return $false }
-  if($matchCount -eq $PackageDetail.AssociatedArtifacts.Length) { return $true }
+  if ($remoteCount -eq 0) { return $false }
+  if ($matchCount -eq $PackageDetail.AssociatedArtifacts.Length) { return $true }
   throw "Package already deployed, but with different content."
 }
