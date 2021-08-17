@@ -3,6 +3,7 @@
 package com.azure.resourcemanager.network.implementation;
 
 import com.azure.core.management.SubResource;
+import com.azure.resourcemanager.network.fluent.models.FrontendIpConfigurationInner;
 import com.azure.resourcemanager.network.fluent.models.OutboundRuleInner;
 import com.azure.resourcemanager.network.models.LoadBalancer;
 import com.azure.resourcemanager.network.models.LoadBalancerBackend;
@@ -17,6 +18,8 @@ import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 public class LoadBalancerOutboundRuleImpl extends ChildResourceImpl<OutboundRuleInner, LoadBalancerImpl, LoadBalancer>
     implements LoadBalancerOutboundRule,
@@ -46,19 +49,17 @@ public class LoadBalancerOutboundRuleImpl extends ChildResourceImpl<OutboundRule
     }
 
     @Override
-    public List<LoadBalancerFrontend> frontends() {
-        List<LoadBalancerFrontend> retFrontEnds = new ArrayList<>();
+    public Map<String, LoadBalancerFrontend> frontends() {
+        Map<String, LoadBalancerFrontend> nameToFrontEndMap = new TreeMap<>();
         if(this.innerModel().frontendIpConfigurations() != null && !this.innerModel().frontendIpConfigurations().isEmpty()) {
             for(SubResource frontendIpConfiguration : this.innerModel().frontendIpConfigurations()) {
-                retFrontEnds.add(
-                    this
-                    .parent()
+                LoadBalancerFrontend frontend = this.parent()
                     .frontends()
-                    .get(ResourceUtils.nameFromResourceId(frontendIpConfiguration.id()))
-                );
+                    .get(ResourceUtils.nameFromResourceId(frontendIpConfiguration.id()));
+                nameToFrontEndMap.put(frontend.name(), frontend);
             }
         }
-        return retFrontEnds;
+        return nameToFrontEndMap;
     }
 
     @Override

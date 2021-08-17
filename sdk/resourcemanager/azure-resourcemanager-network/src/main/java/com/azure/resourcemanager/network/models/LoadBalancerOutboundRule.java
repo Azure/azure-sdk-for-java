@@ -11,6 +11,7 @@ import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 import com.azure.resourcemanager.resources.fluentcore.model.Settable;
 
 import java.util.List;
+import java.util.Map;
 
 /** An immutable client-side representation of an outbound rule. */
 public interface LoadBalancerOutboundRule
@@ -23,7 +24,7 @@ public interface LoadBalancerOutboundRule
     List<String> frontendIpConfigurationIds();
 
     /** @return the associated frontends */
-    List<LoadBalancerFrontend> frontends();
+    Map<String, LoadBalancerFrontend> frontends();
 
     /** @return the associated backend address pool id */
     String backendAddressPoolId();
