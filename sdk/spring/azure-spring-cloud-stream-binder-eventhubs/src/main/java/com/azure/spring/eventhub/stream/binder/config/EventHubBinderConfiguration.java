@@ -4,12 +4,12 @@
 package com.azure.spring.eventhub.stream.binder.config;
 
 import com.azure.resourcemanager.AzureResourceManager;
-import com.azure.spring.cloud.autoconfigure.context.AzureContextAutoConfiguration;
-import com.azure.spring.cloud.autoconfigure.context.AzureEnvironmentAutoConfiguration;
+import com.azure.spring.cloud.autoconfigure.context.AzureResourceManagerAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.eventhub.AzureEventHubAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.eventhub.AzureEventHubProperties;
+import com.azure.spring.cloud.autoconfigure.eventhub.EventHubConnectionStringProvider;
 import com.azure.spring.cloud.autoconfigure.eventhub.EventHubUtils;
-import com.azure.spring.cloud.context.core.config.AzureProperties;
+import com.azure.spring.cloud.context.core.api.AzureResourceMetadata;
 import com.azure.spring.cloud.context.core.impl.EventHubConsumerGroupManager;
 import com.azure.spring.cloud.context.core.impl.EventHubManager;
 import com.azure.spring.cloud.context.core.impl.EventHubNamespaceManager;
@@ -18,7 +18,6 @@ import com.azure.spring.eventhub.stream.binder.properties.EventHubExtendedBindin
 import com.azure.spring.eventhub.stream.binder.provisioning.EventHubChannelProvisioner;
 import com.azure.spring.eventhub.stream.binder.provisioning.EventHubChannelResourceManagerProvisioner;
 import com.azure.spring.integration.eventhub.api.EventHubOperation;
-import com.azure.spring.integration.eventhub.factory.EventHubConnectionStringProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -34,8 +33,7 @@ import org.springframework.context.annotation.Import;
 @Configuration
 @ConditionalOnMissingBean(Binder.class)
 @Import({
-    AzureEnvironmentAutoConfiguration.class,
-    AzureContextAutoConfiguration.class,
+    AzureResourceManagerAutoConfiguration.class,
     AzureEventHubAutoConfiguration.class,
     EventHubBinderHealthIndicatorConfiguration.class
 })
@@ -45,16 +43,17 @@ public class EventHubBinderConfiguration {
     @Bean
     @ConditionalOnMissingBean
     @ConditionalOnBean(EventHubNamespaceManager.class)
-    public EventHubManager eventHubManager(AzureResourceManager azureResourceManager, AzureProperties azureProperties) {
-        return new EventHubManager(azureResourceManager, azureProperties);
+    public EventHubManager eventHubManager(AzureResourceManager azureResourceManager,
+                                           AzureResourceMetadata azureResourceMetadata) {
+        return new EventHubManager(azureResourceManager, azureResourceMetadata);
     }
 
     @Bean
     @ConditionalOnMissingBean
     @ConditionalOnBean(EventHubNamespaceManager.class)
     public EventHubConsumerGroupManager eventHubConsumerGroupManager(AzureResourceManager azureResourceManager,
-                                                                     AzureProperties azureProperties) {
-        return new EventHubConsumerGroupManager(azureResourceManager, azureProperties);
+                                                                     AzureResourceMetadata azureContextProperties) {
+        return new EventHubConsumerGroupManager(azureResourceManager, azureContextProperties);
     }
 
     @Bean

@@ -22,20 +22,32 @@ The project provides a Spring Boot Starter `azure-spring-boot-starter-storage` t
 ## Key concepts
 The [Azure Storage platform] is Microsoft's cloud storage solution for modern data storage scenarios. Core storage services offer a massively scalable object store for data objects, disk storage for Azure virtual machines (VMs), a file system service for the cloud, a messaging store for reliable messaging, and a NoSQL store.
 
+### Configuration Options
+Azure Storage Spring Boot Starter deprecates all legacy properties of which the prefix is `azure.storage` and uses `spring.cloud.azure.storage` instead.
+When a deprecated property is detected while its active property is not found, the active property will be configured into the application environment with the value from the deprecated property.
+
+If you load configuration properties from Azure Key Vault, the preceding detection and replacement are also applicable for Key Vault property sources. Replaced properties from Key Vault have a higher priority than local ones.
+Note that replaced properties will not be refreshed as common properties from Key Vault property source.
+#### Active Properties
+
+|Name|Description|Comment|
+|:---|:---|:---
+spring.cloud.azure.storage.account-name | The name of the Azure Storage account. | | 
+spring.cloud.azure.storage.account-key | The access key of the Azure Storage account. | | 
+spring.cloud.azure.storage.blob-endpoint | The blob endpoint of the Azure Storage account. | Optional when storage blob resource is used. |
+spring.cloud.azure.storage.file-endpoint | The file endpoint of the Azure Storage account. | Optional when storage file resource is used |
+
+#### Deprecated Properties
+|Obsolete Type|Description|Replacement Type|
+|:---|:---|:---
+azure.storage.account-name | The name of the Azure Storage account. |**spring.cloud.azure.storage.account-name**  |
+azure.storage.account-key | The access key of the Azure Storage account. |**spring.cloud.azure.storage.account-key** |
+azure.storage.blob-endpoint | The blob endpoint of the Azure Storage account. |**spring.cloud.azure.storage.blob-endpoint** |
+azure.storage.file-endpoint | The file endpoint of the Azure Storage account. |**spring.cloud.azure.storage.file-endpoint** |
+
 ## Examples
 
 Please use this [sample] as a reference for how to use **Azure Spring Boot Storage Starter** in your projects. 
-
-#### Auto-configuration for Azure Blob storage
-
-The `azure-spring-boot-starter-storage` provides the following configuration options in `application.properties`.
-
-Name | Description | Required  
----|---|---
- azure.storage.accountName | The name of the Azure Storage account. | Yes |
- azure.storage.accountKey | The access key of the Azure Storage account. | Yes |
- azure.storage.blob-endpoint | The blob endpoint URL of the Azure Storage account. | [Optional] Required when storage blob service is used. |
- azure.storage.file-endpoint | The file endpoint URL of the Azure Storage account. | [Optional] Required when storage file service is used |
 
 #### Autowire a resource 
 You can use the annotation of `@Value("azure-blob://[your-container-name]/[your-blob-name]")` to autowire a **blob** `Resource`.

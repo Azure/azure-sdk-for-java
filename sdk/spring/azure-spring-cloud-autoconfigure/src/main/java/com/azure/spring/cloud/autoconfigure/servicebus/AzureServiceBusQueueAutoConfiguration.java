@@ -4,12 +4,14 @@
 package com.azure.spring.cloud.autoconfigure.servicebus;
 
 import com.azure.messaging.servicebus.ServiceBusProcessorClient;
-import com.azure.spring.cloud.context.core.config.AzureProperties;
+import com.azure.resourcemanager.servicebus.models.ServiceBusNamespace;
+import com.azure.spring.cloud.context.core.api.AzureResourceMetadata;
 import com.azure.spring.cloud.context.core.impl.ServiceBusNamespaceManager;
 import com.azure.spring.cloud.context.core.impl.ServiceBusQueueManager;
+import com.azure.spring.core.util.Tuple;
 import com.azure.spring.integration.servicebus.converter.ServiceBusMessageConverter;
 import com.azure.spring.integration.servicebus.factory.DefaultServiceBusQueueClientFactory;
-import com.azure.spring.integration.servicebus.factory.ServiceBusConnectionStringProvider;
+import com.azure.spring.integration.servicebus.factory.ServiceBusProvisioner;
 import com.azure.spring.integration.servicebus.factory.ServiceBusQueueClientFactory;
 import com.azure.spring.integration.servicebus.queue.ServiceBusQueueOperation;
 import com.azure.spring.integration.servicebus.queue.ServiceBusQueueTemplate;
@@ -40,9 +42,9 @@ public class AzureServiceBusQueueAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    @ConditionalOnBean(ServiceBusNamespaceManager.class)
-    public ServiceBusQueueManager serviceBusQueueManager(AzureProperties azureProperties) {
-        return new ServiceBusQueueManager(azureProperties);
+    @ConditionalOnBean({ ServiceBusNamespaceManager.class, AzureResourceMetadata.class })
+    public ServiceBusQueueManager serviceBusQueueManager(AzureResourceMetadata azureResourceMetadata) {
+        return new ServiceBusQueueManager(azureResourceMetadata);
     }
 
     @Bean
@@ -64,11 +66,43 @@ public class AzureServiceBusQueueAutoConfiguration {
 
         DefaultServiceBusQueueClientFactory clientFactory = new DefaultServiceBusQueueClientFactory(connectionString, properties.getTransportType());
         clientFactory.setRetryOptions(properties.getRetryOptions());
-        clientFactory.setNamespace(properties.getNamespace());
-        clientFactory.setServiceBusNamespaceManager(namespaceManager);
-        clientFactory.setServiceBusQueueManager(queueManager);
+        clientFactory.setServiceBusProvisioner(new ServiceBusQueueProvisioner(namespaceManager, queueManager) {
+        });
 
         return clientFactory;
+    }
+
+    static class ServiceBusQueueProvisioner implements ServiceBusProvisioner {
+
+        private final ServiceBusNamespaceManager namespaceManager;
+        private final ServiceBusQueueManager queueManager;
+
+        ServiceBusQueueProvisioner(ServiceBusNamespaceManager namespaceManager,
+                                   ServiceBusQueueManager queueManager) {
+            this.namespaceManager = namespaceManager;
+            this.queueManager = queueManager;
+        }
+
+        @Override
+        public void provisionNamespace(String namespace) {
+            this.namespaceManager.create(namespace);
+        }
+
+        @Override
+        public void provisionQueue(String namespace, String queue) {
+            final ServiceBusNamespace serviceBusNamespace = namespaceManager.get(namespace);
+            this.queueManager.create(Tuple.of(serviceBusNamespace, queue));
+        }
+
+        @Override
+        public void provisionTopic(String namespace, String topic) {
+            throw new UnsupportedOperationException("Can't provision topic in a queue client");
+        }
+
+        @Override
+        public void provisionSubscription(String namespace, String topic, String subscription) {
+            throw new UnsupportedOperationException("Can't provision subscription in a queue client");
+        }
     }
 
     @Bean

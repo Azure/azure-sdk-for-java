@@ -5,10 +5,9 @@ package com.azure.spring.cloud.autoconfigure.servicebus;
 
 import com.azure.messaging.servicebus.ServiceBusReceivedMessage;
 import com.azure.resourcemanager.AzureResourceManager;
-import com.azure.spring.cloud.autoconfigure.context.AzureContextAutoConfiguration;
-import com.azure.spring.cloud.context.core.config.AzureProperties;
+import com.azure.spring.cloud.autoconfigure.context.AzureResourceManagerAutoConfiguration;
+import com.azure.spring.cloud.context.core.api.AzureResourceMetadata;
 import com.azure.spring.cloud.context.core.impl.ServiceBusNamespaceManager;
-import com.azure.spring.integration.servicebus.factory.ServiceBusConnectionStringProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +27,7 @@ import org.springframework.util.StringUtils;
  * @author Warren Zhu
  */
 @Configuration
-@AutoConfigureAfter(AzureContextAutoConfiguration.class)
+@AutoConfigureAfter(AzureResourceManagerAutoConfiguration.class)
 @ConditionalOnClass(ServiceBusReceivedMessage.class)
 @ConditionalOnProperty(value = "spring.cloud.azure.servicebus.enabled", matchIfMissing = true)
 @EnableConfigurationProperties(AzureServiceBusProperties.class)
@@ -38,10 +37,10 @@ public class AzureServiceBusAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    @ConditionalOnBean({ AzureResourceManager.class, AzureProperties.class })
+    @ConditionalOnBean({ AzureResourceManager.class, AzureResourceMetadata.class })
     public ServiceBusNamespaceManager serviceBusNamespaceManager(AzureResourceManager azureResourceManager,
-                                                                 AzureProperties azureProperties) {
-        return new ServiceBusNamespaceManager(azureResourceManager, azureProperties);
+                                                                 AzureResourceMetadata azureResourceMetadata) {
+        return new ServiceBusNamespaceManager(azureResourceManager, azureResourceMetadata);
     }
 
     /**

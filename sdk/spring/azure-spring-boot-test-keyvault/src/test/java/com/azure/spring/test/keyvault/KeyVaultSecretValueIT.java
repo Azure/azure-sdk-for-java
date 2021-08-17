@@ -75,11 +75,11 @@ public class KeyVaultSecretValueIT {
     public void keyVaultAsPropertySource() {
         LOGGER.info("keyVaultAsPropertySource begin.");
         try (AppRunner app = new AppRunner(DummyApp.class)) {
-            app.property("azure.keyvault.enabled", "true");
-            app.property("azure.keyvault.uri", AZURE_KEYVAULT_URI);
-            app.property("azure.keyvault.client-id", SPRING_CLIENT_ID);
-            app.property("azure.keyvault.client-key", SPRING_CLIENT_SECRET);
-            app.property("azure.keyvault.tenant-id", SPRING_TENANT_ID);
+            app.property("spring.cloud.azure.keyvault.enabled", "true");
+            app.property("spring.cloud.azure.keyvault.uri", AZURE_KEYVAULT_URI);
+            app.property("spring.cloud.azure.keyvault.credential.client-id", SPRING_CLIENT_ID);
+            app.property("spring.cloud.azure.keyvault.credential.client-secret", SPRING_CLIENT_SECRET);
+            app.property("spring.cloud.azure.keyvault.credential.tenant-id", SPRING_TENANT_ID);
 
             LOGGER.info("app begin to start.");
             final ConfigurableApplicationContext dummy = app.start();
@@ -98,12 +98,12 @@ public class KeyVaultSecretValueIT {
     public void keyVaultAsPropertySourceWithSpecificKeys() {
         LOGGER.info("keyVaultAsPropertySourceWithSpecificKeys begin.");
         try (AppRunner app = new AppRunner(DummyApp.class)) {
-            app.property("azure.keyvault.enabled", "true");
-            app.property("azure.keyvault.uri", AZURE_KEYVAULT_URI);
-            app.property("azure.keyvault.client-id", SPRING_CLIENT_ID);
-            app.property("azure.keyvault.client-key", SPRING_CLIENT_SECRET);
-            app.property("azure.keyvault.tenant-id", SPRING_TENANT_ID);
-            app.property("azure.keyvault.secret-keys", KEY_VAULT_SECRET_NAME);
+            app.property("spring.cloud.azure.keyvault.enabled", "true");
+            app.property("spring.cloud.azure.keyvault.uri", AZURE_KEYVAULT_URI);
+            app.property("spring.cloud.azure.keyvault.credential.client-id", SPRING_CLIENT_ID);
+            app.property("spring.cloud.azure.keyvault.credential.client-secret", SPRING_CLIENT_SECRET);
+            app.property("spring.cloud.azure.keyvault.credential.tenant-id", SPRING_TENANT_ID);
+            app.property("spring.cloud.azure.keyvault.secret-keys", KEY_VAULT_SECRET_NAME);
             LOGGER.info("====" + KEY_VAULT_SECRET_NAME);
             app.start();
             assertEquals(KEY_VAULT_SECRET_VALUE, app.getProperty(KEY_VAULT_SECRET_NAME));

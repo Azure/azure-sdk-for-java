@@ -10,28 +10,28 @@ import com.azure.resourcemanager.storage.StorageManager;
 import com.azure.resourcemanager.storage.models.StorageAccount;
 import com.azure.resourcemanager.storage.models.StorageAccountKey;
 import com.azure.resourcemanager.storage.models.StorageAccounts;
-import com.azure.spring.cloud.context.core.config.AzureProperties;
+import com.azure.spring.cloud.autoconfigure.commonconfig.TestConfigWithAzureResourceManager;
 import com.azure.spring.cloud.context.core.impl.EventHubNamespaceManager;
 import com.azure.spring.cloud.context.core.impl.StorageAccountManager;
 import com.azure.spring.integration.eventhub.api.EventHubClientFactory;
 import com.azure.spring.integration.eventhub.api.EventHubOperation;
-import com.azure.spring.integration.eventhub.factory.EventHubConnectionStringProvider;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.test.context.FilteredClassLoader;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
+import org.springframework.context.annotation.Primary;
 
 import java.util.List;
 
 import static java.util.Collections.singletonList;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class AzureEventHubAutoConfigurationTest {
 
@@ -90,8 +90,7 @@ public class AzureEventHubAutoConfigurationTest {
     @Test
     public void testResourceManagerProvided() {
         this.contextRunner.withUserConfiguration(
-            TestConfigWithAzureResourceManagerAndConnectionProvider.class,
-            AzureEventHubAutoConfiguration.class)
+            TestConfigWithAzureResourceManagerAndConnectionProvider.class)
                           .withPropertyValues(
                               AZURE_PROPERTY_PREFIX + "resource-group=rg1",
                               EVENT_HUB_PROPERTY_PREFIX + "namespace=ns1",
@@ -106,17 +105,17 @@ public class AzureEventHubAutoConfigurationTest {
     }
 
     @Configuration
-    @EnableConfigurationProperties(AzureProperties.class)
+    @Import(TestConfigWithAzureResourceManager.class)
     public static class TestConfigWithAzureResourceManagerAndConnectionProvider {
 
         @Bean
-        public AzureResourceManager azureResourceManager() {
+        @Primary
+        public AzureResourceManager azureResourceManagerMock() {
             final AzureResourceManager mockResourceManager = mock(AzureResourceManager.class);
             final StorageManager mockStorageManager = mock(StorageManager.class);
             final StorageAccounts mockStorageAccounts = mock(StorageAccounts.class);
             final StorageAccount mockStorageAccount = mock(StorageAccount.class);
             final List<StorageAccountKey> mockStorageAccountKeys = singletonList(mock(StorageAccountKey.class));
-
 
             when(mockResourceManager.storageAccounts()).thenReturn(mockStorageAccounts);
             when(mockStorageAccounts.getByResourceGroup(anyString(), anyString())).thenReturn(mockStorageAccount);

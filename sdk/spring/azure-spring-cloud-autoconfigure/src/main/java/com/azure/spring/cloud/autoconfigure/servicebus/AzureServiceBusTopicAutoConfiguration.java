@@ -4,13 +4,16 @@
 package com.azure.spring.cloud.autoconfigure.servicebus;
 
 import com.azure.messaging.servicebus.ServiceBusProcessorClient;
-import com.azure.spring.cloud.context.core.config.AzureProperties;
+import com.azure.resourcemanager.servicebus.models.ServiceBusNamespace;
+import com.azure.resourcemanager.servicebus.models.Topic;
+import com.azure.spring.cloud.context.core.api.AzureResourceMetadata;
 import com.azure.spring.cloud.context.core.impl.ServiceBusNamespaceManager;
 import com.azure.spring.cloud.context.core.impl.ServiceBusTopicManager;
 import com.azure.spring.cloud.context.core.impl.ServiceBusTopicSubscriptionManager;
+import com.azure.spring.core.util.Tuple;
 import com.azure.spring.integration.servicebus.converter.ServiceBusMessageConverter;
 import com.azure.spring.integration.servicebus.factory.DefaultServiceBusTopicClientFactory;
-import com.azure.spring.integration.servicebus.factory.ServiceBusConnectionStringProvider;
+import com.azure.spring.integration.servicebus.factory.ServiceBusProvisioner;
 import com.azure.spring.integration.servicebus.factory.ServiceBusTopicClientFactory;
 import com.azure.spring.integration.servicebus.topic.ServiceBusTopicOperation;
 import com.azure.spring.integration.servicebus.topic.ServiceBusTopicTemplate;
@@ -41,16 +44,16 @@ public class AzureServiceBusTopicAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    @ConditionalOnBean(ServiceBusNamespaceManager.class)
-    public ServiceBusTopicManager serviceBusTopicManager(AzureProperties azureProperties) {
-        return new ServiceBusTopicManager(azureProperties);
+    @ConditionalOnBean({ ServiceBusNamespaceManager.class, AzureResourceMetadata.class })
+    public ServiceBusTopicManager serviceBusTopicManager(AzureResourceMetadata azureResourceMetadata) {
+        return new ServiceBusTopicManager(azureResourceMetadata);
     }
 
     @Bean
     @ConditionalOnMissingBean
-    @ConditionalOnBean(ServiceBusTopicManager.class)
-    public ServiceBusTopicSubscriptionManager serviceBusTopicSubscriptionManager(AzureProperties azureProperties) {
-        return new ServiceBusTopicSubscriptionManager(azureProperties);
+    @ConditionalOnBean({ ServiceBusTopicManager.class, AzureResourceMetadata.class })
+    public ServiceBusTopicSubscriptionManager serviceBusTopicSubscriptionManager(AzureResourceMetadata azureResourceMetadata) {
+        return new ServiceBusTopicSubscriptionManager(azureResourceMetadata);
     }
 
     @Bean
@@ -74,11 +77,47 @@ public class AzureServiceBusTopicAutoConfiguration {
         DefaultServiceBusTopicClientFactory clientFactory = new DefaultServiceBusTopicClientFactory(connectionString, properties.getTransportType());
         clientFactory.setRetryOptions(properties.getRetryOptions());
         clientFactory.setNamespace(properties.getNamespace());
-        clientFactory.setServiceBusNamespaceManager(namespaceManager);
-        clientFactory.setServiceBusTopicManager(topicManager);
-        clientFactory.setServiceBusTopicSubscriptionManager(topicSubscriptionManager);
+        clientFactory.setServiceBusProvisioner(new ServiceBusTopicProvisioner(namespaceManager, topicManager, topicSubscriptionManager));
 
         return clientFactory;
+    }
+
+    static class ServiceBusTopicProvisioner implements ServiceBusProvisioner {
+
+        private final ServiceBusNamespaceManager namespaceManager;
+        private final ServiceBusTopicManager topicManager;
+        private final ServiceBusTopicSubscriptionManager subscriptionManager;
+
+        ServiceBusTopicProvisioner(ServiceBusNamespaceManager namespaceManager,
+                                   ServiceBusTopicManager topicManager,
+                                   ServiceBusTopicSubscriptionManager subscriptionManager) {
+            this.namespaceManager = namespaceManager;
+            this.topicManager = topicManager;
+            this.subscriptionManager = subscriptionManager;
+        }
+
+        @Override
+        public void provisionNamespace(String namespace) {
+            this.namespaceManager.create(namespace);
+        }
+
+        @Override
+        public void provisionQueue(String namespace, String queue) {
+            throw new UnsupportedOperationException("Can't provision queue in a topic client");
+        }
+
+        @Override
+        public void provisionTopic(String namespace, String topic) {
+            final ServiceBusNamespace serviceBusNamespace = namespaceManager.get(namespace);
+            this.topicManager.create(Tuple.of(serviceBusNamespace, topic));
+        }
+
+        @Override
+        public void provisionSubscription(String namespace, String topic, String subscription) {
+            final ServiceBusNamespace serviceBusNamespace = namespaceManager.get(namespace);
+            final Topic serviceBusTopic = topicManager.get(Tuple.of(serviceBusNamespace, topic));
+            this.subscriptionManager.create(Tuple.of(serviceBusTopic, subscription));
+        }
     }
 
     @Bean

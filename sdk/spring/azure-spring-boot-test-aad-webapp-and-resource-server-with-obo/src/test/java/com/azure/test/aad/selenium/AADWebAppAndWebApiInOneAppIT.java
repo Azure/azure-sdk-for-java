@@ -5,7 +5,6 @@ package com.azure.test.aad.selenium;
 import com.azure.spring.aad.webapi.AADResourceServerWebSecurityConfigurerAdapter;
 import com.azure.spring.aad.webapp.AADWebSecurityConfigurerAdapter;
 import com.azure.spring.test.aad.AADWebApiITHelper;
-import com.azure.spring.utils.AzureCloudUrls;
 import com.azure.test.aad.common.AADSeleniumITHelper;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -65,8 +64,8 @@ public class AADWebAppAndWebApiInOneAppIT {
         properties.put("azure.activedirectory.client-secret", AAD_MULTI_TENANT_CLIENT_SECRET);
         properties.put("azure.activedirectory.user-group.allowed-groups", "group1");
         properties.put("azure.activedirectory.post-logout-redirect-uri", "http://localhost:${server.port}");
-        properties.put("azure.activedirectory.base-uri", AzureCloudUrls.getBaseUrl(AZURE_CLOUD_TYPE));
-        properties.put("azure.activedirectory.graph-base-uri", AzureCloudUrls.getGraphBaseUrl(AZURE_CLOUD_TYPE));
+        properties.put("azure.activedirectory.base-uri", AADSeleniumITHelper.getBaseUrl(AZURE_CLOUD_TYPE));
+        properties.put("azure.activedirectory.graph-base-uri", AADSeleniumITHelper.getGraphBaseUrl(AZURE_CLOUD_TYPE));
         properties.put("azure.activedirectory.application-type", "web_application_and_resource_server");
 
         properties.put("azure.activedirectory.app-id-uri", "api://" + AAD_MULTI_TENANT_CLIENT_ID);

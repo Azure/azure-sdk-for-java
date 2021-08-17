@@ -8,10 +8,9 @@ import com.azure.resourcemanager.eventhubs.models.AuthorizationRule;
 import com.azure.resourcemanager.eventhubs.models.EventHubAuthorizationKey;
 import com.azure.resourcemanager.eventhubs.models.EventHubNamespace;
 import com.azure.resourcemanager.eventhubs.models.EventHubNamespaceAuthorizationRule;
-import com.azure.spring.cloud.autoconfigure.context.AzureContextAutoConfiguration;
-import com.azure.spring.cloud.context.core.config.AzureProperties;
+import com.azure.spring.cloud.autoconfigure.context.AzureResourceManagerAutoConfiguration;
+import com.azure.spring.cloud.context.core.api.AzureResourceMetadata;
 import com.azure.spring.cloud.context.core.impl.EventHubNamespaceManager;
-import com.azure.spring.integration.eventhub.factory.EventHubConnectionStringProvider;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
@@ -33,7 +32,7 @@ import java.util.Arrays;
  * @author Warren Zhu
  */
 @Configuration
-@AutoConfigureAfter(AzureContextAutoConfiguration.class)
+@AutoConfigureAfter(AzureResourceManagerAutoConfiguration.class)
 @ConditionalOnClass(KafkaTemplate.class)
 @ConditionalOnProperty(prefix = "spring.cloud.azure.eventhub", value = "namespace")
 @EnableConfigurationProperties(AzureEventHubProperties.class)
@@ -69,10 +68,10 @@ public class AzureEventHubKafkaAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    @ConditionalOnBean(AzureResourceManager.class)
+    @ConditionalOnBean({ AzureResourceManager.class, AzureResourceMetadata.class })
     public EventHubNamespaceManager eventHubNamespaceManager(AzureResourceManager azureResourceManager,
-                                                             AzureProperties azureProperties) {
-        return new EventHubNamespaceManager(azureResourceManager, azureProperties);
+                                                             AzureResourceMetadata azureResourceMetadata) {
+        return new EventHubNamespaceManager(azureResourceManager, azureResourceMetadata);
     }
 
 

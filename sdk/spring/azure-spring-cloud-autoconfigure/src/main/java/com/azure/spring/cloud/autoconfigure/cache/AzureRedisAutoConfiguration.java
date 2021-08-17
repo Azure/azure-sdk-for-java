@@ -5,10 +5,11 @@ package com.azure.spring.cloud.autoconfigure.cache;
 
 import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.resourcemanager.redis.models.RedisCache;
-import com.azure.spring.cloud.autoconfigure.context.AzureContextAutoConfiguration;
-import com.azure.spring.cloud.context.core.config.AzureProperties;
+import com.azure.spring.cloud.autoconfigure.context.AzureResourceManagerAutoConfiguration;
+import com.azure.spring.cloud.context.core.api.AzureResourceMetadata;
 import com.azure.spring.cloud.context.core.impl.RedisCacheManager;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -27,17 +28,19 @@ import java.util.Arrays;
  * @author Warren Zhu
  */
 @Configuration
-@AutoConfigureAfter(AzureContextAutoConfiguration.class)
+@AutoConfigureAfter(AzureResourceManagerAutoConfiguration.class)
 @ConditionalOnProperty(value = "spring.cloud.azure.redis.enabled", matchIfMissing = true)
-@ConditionalOnClass(RedisOperations.class)
+@ConditionalOnClass({RedisOperations.class, RedisCacheManager.class})
 @EnableConfigurationProperties(AzureRedisProperties.class)
 public class AzureRedisAutoConfiguration {
 
-    @ConditionalOnMissingBean
+
     @Bean
+    @ConditionalOnMissingBean
+    @ConditionalOnBean({ AzureResourceManager.class, AzureResourceMetadata.class })
     public RedisCacheManager redisCacheManager(AzureResourceManager azureResourceManager,
-                                               AzureProperties azureProperties) {
-        return new RedisCacheManager(azureResourceManager, azureProperties);
+                                               AzureResourceMetadata azureResourceMetadata) {
+        return new RedisCacheManager(azureResourceManager, azureResourceMetadata);
     }
 
     @ConditionalOnMissingBean

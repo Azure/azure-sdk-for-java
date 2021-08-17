@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <parent>
+    <groupId>com.azure</groupId>
+    <artifactId>azure-client-sdk-parent</artifactId>
+    <version>1.7.0</version> <!-- {x-version-update;com.azure:azure-client-sdk-parent;current} -->
+    <relativePath>../../parents/azure-client-sdk-parent</relativePath>
+  </parent>
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>com.azure.spring</groupId>
+  <artifactId>azure-spring-cloud-resourcemanager</artifactId>
+  <version>2.8.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-resourcemanager;current} -->
+
+  <name>Azure Spring Cloud Resource Manager</name>
+  <url>https://github.com/Azure/azure-sdk-for-java</url>
+
+  <properties>
+    <jacoco.min.linecoverage>0.09</jacoco.min.linecoverage>
+    <jacoco.min.branchcoverage>0.14</jacoco.min.branchcoverage>
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>com.azure.spring</groupId>
+      <artifactId>azure-spring-cloud-context</artifactId>
+      <version>2.8.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-context;current} -->
+    </dependency>
+
+    <!-- com.azure.resourcemanager dependencies -->
+    <dependency>
+      <groupId>com.azure.resourcemanager</groupId>
+      <artifactId>azure-resourcemanager</artifactId>
+      <version>2.7.0</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager;dependency} -->
+    </dependency>
+
+  </dependencies>
+
+</project>

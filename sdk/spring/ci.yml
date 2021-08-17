@@ -121,12 +121,15 @@ extends:
   parameters:
     ServiceDirectory: spring
     Artifacts:
-      - name: azure-identity-spring
+      - name: azure-spring-cloud-context
         groupId: com.azure.spring
-        safeName: azureidentityspring
-      - name: azure-spring-boot
+        safeName: azurespringcloudcontext
+      - name: azure-spring-cloud-autoconfigure
         groupId: com.azure.spring
-        safeName: azurespringboot
+        safeName: azurespringcloudautoconfigure
+      - name: azure-spring-cloud-resourcemanager
+        groupId: com.azure.spring
+        safeName: azurespringcloudresourcemanager
       - name: azure-spring-boot-starter
         groupId: com.azure.spring
         safeName: azurespringbootstarter
@@ -159,9 +162,6 @@ extends:
         groupId: com.azure.spring
         safeName: azurespringbootstarterstorage
         skipUpdatePackageJson: true
-      - name: azure-spring-cloud-context
-        groupId: com.azure.spring
-        safeName: azurespringcloudcontext
       - name: azure-spring-integration-core
         groupId: com.azure.spring
         safeName: azurespringintegrationcore
@@ -177,12 +177,6 @@ extends:
       - name: azure-spring-integration-storage-queue
         groupId: com.azure.spring
         safeName: azurespringintegrationstoragequeue
-      - name: azure-spring-cloud-storage
-        groupId: com.azure.spring
-        safeName: azurespringcloudstorage
-      - name: azure-spring-cloud-autoconfigure
-        groupId: com.azure.spring
-        safeName: azurespringcloudautoconfigure
       - name: azure-spring-cloud-messaging
         groupId: com.azure.spring
         safeName: azurespringcloudmessaging

@@ -13,25 +13,26 @@ import com.azure.resourcemanager.eventhubs.models.EventHubAuthorizationKey;
 import com.azure.resourcemanager.eventhubs.models.EventHubNamespace;
 import com.azure.resourcemanager.eventhubs.models.EventHubNamespaceAuthorizationRule;
 import com.azure.resourcemanager.eventhubs.models.EventHubNamespaces;
-import com.azure.spring.cloud.context.core.config.AzureProperties;
+import com.azure.spring.cloud.autoconfigure.commonconfig.TestConfigWithAzureResourceManager;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.autoconfigure.kafka.KafkaProperties;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.test.context.FilteredClassLoader;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
+import org.springframework.context.annotation.Primary;
 import org.springframework.kafka.core.KafkaTemplate;
 import reactor.core.publisher.Mono;
 
 import static java.util.Collections.singletonList;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class AzureEventHubKafkaAutoConfigurationTest {
 
@@ -82,11 +83,12 @@ public class AzureEventHubKafkaAutoConfigurationTest {
     }
 
     @Configuration
-    @EnableConfigurationProperties(AzureProperties.class)
+    @Import(TestConfigWithAzureResourceManager.class)
     public static class TestConfigurationWithResourceManager {
 
         @Bean
-        public AzureResourceManager azureResourceManager() {
+        @Primary
+        public AzureResourceManager azureResourceManagerMock() {
             final AzureResourceManager mockResourceManager = mock(AzureResourceManager.class);
             final EventHubNamespaces mockNamespaces = mock(EventHubNamespaces.class);
             final EventHubNamespace mockNamespace = mock(EventHubNamespace.class);
@@ -102,7 +104,6 @@ public class AzureEventHubKafkaAutoConfigurationTest {
 
             return mockResourceManager;
         }
-
     }
 
     static <T> PagedIterable<T> buildPagedIterable(T element) {

@@ -6,12 +6,12 @@ package com.azure.spring.cloud.autoconfigure.servicebus;
 import com.azure.core.amqp.AmqpRetryMode;
 import com.azure.core.amqp.AmqpTransportType;
 import com.azure.messaging.servicebus.ServiceBusProcessorClient;
-import com.azure.resourcemanager.AzureResourceManager;
-import com.azure.spring.cloud.context.core.config.AzureProperties;
+import com.azure.spring.cloud.autoconfigure.commonconfig.TestConfigWithAzureResourceManager;
+import com.azure.spring.cloud.autoconfigure.context.AzureContextProperties;
+import com.azure.spring.cloud.context.core.api.AzureResourceMetadata;
 import com.azure.spring.cloud.context.core.impl.ServiceBusNamespaceManager;
 import com.azure.spring.cloud.context.core.impl.ServiceBusQueueManager;
 import com.azure.spring.integration.servicebus.converter.ServiceBusMessageConverter;
-import com.azure.spring.integration.servicebus.factory.ServiceBusConnectionStringProvider;
 import com.azure.spring.integration.servicebus.factory.ServiceBusQueueClientFactory;
 import com.azure.spring.integration.servicebus.queue.ServiceBusQueueOperation;
 import com.azure.spring.integration.servicebus.queue.ServiceBusQueueTemplate;
@@ -188,12 +188,17 @@ public class AzureServiceBusQueueAutoConfigurationTest {
     }
 
     @Configuration
-    @EnableConfigurationProperties(AzureProperties.class)
+    @EnableConfigurationProperties(AzureContextProperties.class)
     public static class TestConfigWithServiceBusNamespaceManager {
 
         @Bean
         public ServiceBusNamespaceManager servicebusNamespaceManager() {
             return mock(ServiceBusNamespaceManager.class);
+        }
+
+        @Bean
+        public AzureResourceMetadata azureResourceMetadata() {
+            return mock(AzureResourceMetadata.class);
         }
 
     }
@@ -210,18 +215,7 @@ public class AzureServiceBusQueueAutoConfigurationTest {
     }
 
     @Configuration
-    @EnableConfigurationProperties(AzureProperties.class)
-    public static class TestConfigWithAzureResourceManager {
-
-        @Bean
-        public AzureResourceManager azureResourceManager() {
-            return mock(AzureResourceManager.class);
-        }
-
-    }
-
-    @Configuration
-    @EnableConfigurationProperties(AzureProperties.class)
+    @EnableConfigurationProperties(AzureContextProperties.class)
     public static class TestConfigWithMessageConverter {
 
         @Bean
