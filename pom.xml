@@ -793,6 +793,7 @@
         <module>sdk/postgresql</module>
         <module>sdk/postgresqlflexibleserver</module>
         <module>sdk/powerbidedicated</module>
+        <module>sdk/powerbiprivatelinks</module>
         <module>sdk/purview</module>
         <module>sdk/quantum</module>
         <module>sdk/recoveryservices</module>
