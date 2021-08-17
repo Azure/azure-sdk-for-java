@@ -74,6 +74,9 @@ public interface LoadBalancer
     /** @return load balancer sku. */
     LoadBalancerSkuType sku();
 
+    /** @return outbound rules for this balancer */
+    Map<String, LoadBalancerOutboundRule> outboundRules();
+
     /** The entirety of the load balancer definition. */
     interface Definition
         extends DefinitionStages.Blank,

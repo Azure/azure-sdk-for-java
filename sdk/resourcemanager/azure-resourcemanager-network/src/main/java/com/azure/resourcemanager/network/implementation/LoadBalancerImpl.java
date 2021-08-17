@@ -802,6 +802,11 @@ class LoadBalancerImpl
     }
 
     @Override
+    public Map<String, LoadBalancerOutboundRule> outboundRules() {
+        return Collections.unmodifiableMap(this.outboundRules);
+    }
+
+    @Override
     public Map<String, LoadBalancerTcpProbe> tcpProbes() {
         return Collections.unmodifiableMap(this.tcpProbes);
     }
