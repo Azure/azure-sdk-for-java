@@ -53,38 +53,6 @@ public final class ScanRulesetsClient {
      *
      * @param scanRulesetName The scanRulesetName parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @return a scan ruleset.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public BinaryData get(String scanRulesetName, RequestOptions requestOptions) {
-        return this.serviceClient.get(scanRulesetName, requestOptions);
-    }
-
-    /**
-     * Get a scan ruleset.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     id: String
-     *     name: String
-     *     scanRulesetType: String(Custom/System)
-     *     status: String(Enabled/Disabled)
-     *     version: Integer
-     * }
-     * }</pre>
-     *
-     * @param scanRulesetName The scanRulesetName parameter.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
      * @return a scan ruleset.
      */
@@ -119,38 +87,6 @@ public final class ScanRulesetsClient {
      *
      * @param scanRulesetName The scanRulesetName parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public BinaryData createOrUpdate(String scanRulesetName, RequestOptions requestOptions) {
-        return this.serviceClient.createOrUpdate(scanRulesetName, requestOptions);
-    }
-
-    /**
-     * Creates or Updates a scan ruleset.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     id: String
-     *     name: String
-     *     scanRulesetType: String(Custom/System)
-     *     status: String(Enabled/Disabled)
-     *     version: Integer
-     * }
-     * }</pre>
-     *
-     * @param scanRulesetName The scanRulesetName parameter.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
      * @return the response.
      */
@@ -158,38 +94,6 @@ public final class ScanRulesetsClient {
     public Response<BinaryData> createOrUpdateWithResponse(
             String scanRulesetName, RequestOptions requestOptions, Context context) {
         return this.serviceClient.createOrUpdateWithResponse(scanRulesetName, requestOptions, context);
-    }
-
-    /**
-     * Deletes a scan ruleset.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     id: String
-     *     name: String
-     *     scanRulesetType: String(Custom/System)
-     *     status: String(Enabled/Disabled)
-     *     version: Integer
-     * }
-     * }</pre>
-     *
-     * @param scanRulesetName The scanRulesetName parameter.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public BinaryData delete(String scanRulesetName, RequestOptions requestOptions) {
-        return this.serviceClient.delete(scanRulesetName, requestOptions);
     }
 
     /**

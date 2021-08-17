@@ -15,7 +15,7 @@ public class ListGlossaries {
             .endpoint(System.getenv("ATLAS_ENDPOINT"))
             .credential(new DefaultAzureCredentialBuilder().build())
             .buildGlossaryClient();
-        BinaryData binaryData = client.listGlossaries(null);
+        BinaryData binaryData = client.listGlossariesWithResponse(null, null).getValue();
         List<?> glossaries = binaryData.toObject(List.class);
         System.out.println(glossaries);
         if (!glossaries.isEmpty()) {

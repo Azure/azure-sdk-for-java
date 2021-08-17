@@ -58,35 +58,6 @@ public final class ClassificationRulesAsyncClient {
     }
 
     /**
-     * Get a classification rule.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     id: String
-     *     name: String
-     * }
-     * }</pre>
-     *
-     * @param classificationRuleName The classificationRuleName parameter.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @return a classification rule.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BinaryData> get(String classificationRuleName, RequestOptions requestOptions) {
-        return this.serviceClient.getAsync(classificationRuleName, requestOptions);
-    }
-
-    /**
      * Creates or Updates a classification rule.
      *
      * <p><strong>Query Parameters</strong>
@@ -117,35 +88,6 @@ public final class ClassificationRulesAsyncClient {
     }
 
     /**
-     * Creates or Updates a classification rule.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     id: String
-     *     name: String
-     * }
-     * }</pre>
-     *
-     * @param classificationRuleName The classificationRuleName parameter.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BinaryData> createOrUpdate(String classificationRuleName, RequestOptions requestOptions) {
-        return this.serviceClient.createOrUpdateAsync(classificationRuleName, requestOptions);
-    }
-
-    /**
      * Deletes a classification rule.
      *
      * <p><strong>Query Parameters</strong>
@@ -172,35 +114,6 @@ public final class ClassificationRulesAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> deleteWithResponse(String classificationRuleName, RequestOptions requestOptions) {
         return this.serviceClient.deleteWithResponseAsync(classificationRuleName, requestOptions);
-    }
-
-    /**
-     * Deletes a classification rule.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     id: String
-     *     name: String
-     * }
-     * }</pre>
-     *
-     * @param classificationRuleName The classificationRuleName parameter.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BinaryData> delete(String classificationRuleName, RequestOptions requestOptions) {
-        return this.serviceClient.deleteAsync(classificationRuleName, requestOptions);
     }
 
     /**
@@ -320,56 +233,6 @@ public final class ClassificationRulesAsyncClient {
     public Mono<Response<BinaryData>> tagClassificationVersionWithResponse(
             String classificationRuleName, int classificationRuleVersion, RequestOptions requestOptions) {
         return this.serviceClient.tagClassificationVersionWithResponseAsync(
-                classificationRuleName, classificationRuleVersion, requestOptions);
-    }
-
-    /**
-     * Sets Classification Action on a specific classification rule version.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>action</td><td>String</td><td>Yes</td><td>The action parameter</td></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     scanResultId: String
-     *     startTime: String
-     *     endTime: String
-     *     status: String(Accepted/InProgress/TransientFailure/Succeeded/Failed/Canceled)
-     *     error: {
-     *         code: String
-     *         message: String
-     *         target: String
-     *         details: [
-     *             {
-     *                 code: String
-     *                 message: String
-     *                 target: String
-     *                 details: [
-     *                     (recursive schema, see above)
-     *                 ]
-     *             }
-     *         ]
-     *     }
-     * }
-     * }</pre>
-     *
-     * @param classificationRuleName The classificationRuleName parameter.
-     * @param classificationRuleVersion The classificationRuleVersion parameter.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BinaryData> tagClassificationVersion(
-            String classificationRuleName, int classificationRuleVersion, RequestOptions requestOptions) {
-        return this.serviceClient.tagClassificationVersionAsync(
                 classificationRuleName, classificationRuleVersion, requestOptions);
     }
 }

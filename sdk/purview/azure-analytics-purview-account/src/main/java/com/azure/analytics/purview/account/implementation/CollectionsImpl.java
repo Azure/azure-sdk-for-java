@@ -89,7 +89,7 @@ public final class CollectionsImpl {
                 Context context);
 
         @Get("/collections/{collectionName}/getChildCollectionNames")
-        Mono<Response<BinaryData>> listChildCollectionNames(
+        Mono<Response<BinaryData>> getChildCollectionNames(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("collectionName") String collectionName,
                 @QueryParam("api-version") String apiVersion,
@@ -112,7 +112,7 @@ public final class CollectionsImpl {
                 Context context);
 
         @Get("{nextLink}")
-        Mono<Response<BinaryData>> listChildCollectionNamesNext(
+        Mono<Response<BinaryData>> getChildCollectionNamesNext(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
                 @HostParam("endpoint") String endpoint,
                 RequestOptions requestOptions,
@@ -217,152 +217,6 @@ public final class CollectionsImpl {
                 this.client.getServiceVersion().getVersion(),
                 requestOptions,
                 context);
-    }
-
-    /**
-     * Get a collection.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     collectionProvisioningState: String(Unknown/Creating/Moving/Deleting/Failed/Succeeded)
-     *     description: String
-     *     friendlyName: String
-     *     name: String
-     *     parentCollection: {
-     *         referenceName: String
-     *         type: String
-     *     }
-     *     systemData: {
-     *         createdAt: String
-     *         createdBy: String
-     *         createdByType: String(User/Application/ManagedIdentity/Key)
-     *         lastModifiedAt: String
-     *         lastModifiedBy: String
-     *         lastModifiedByType: String(User/Application/ManagedIdentity/Key)
-     *     }
-     * }
-     * }</pre>
-     *
-     * @param collectionName The collectionName parameter.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @return a collection.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BinaryData> getAsync(String collectionName, RequestOptions requestOptions) {
-        return getWithResponseAsync(collectionName, requestOptions)
-                .flatMap(
-                        (Response<BinaryData> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
-    }
-
-    /**
-     * Get a collection.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     collectionProvisioningState: String(Unknown/Creating/Moving/Deleting/Failed/Succeeded)
-     *     description: String
-     *     friendlyName: String
-     *     name: String
-     *     parentCollection: {
-     *         referenceName: String
-     *         type: String
-     *     }
-     *     systemData: {
-     *         createdAt: String
-     *         createdBy: String
-     *         createdByType: String(User/Application/ManagedIdentity/Key)
-     *         lastModifiedAt: String
-     *         lastModifiedBy: String
-     *         lastModifiedByType: String(User/Application/ManagedIdentity/Key)
-     *     }
-     * }
-     * }</pre>
-     *
-     * @param collectionName The collectionName parameter.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @return a collection.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BinaryData> getAsync(String collectionName, RequestOptions requestOptions, Context context) {
-        return getWithResponseAsync(collectionName, requestOptions, context)
-                .flatMap(
-                        (Response<BinaryData> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
-    }
-
-    /**
-     * Get a collection.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     collectionProvisioningState: String(Unknown/Creating/Moving/Deleting/Failed/Succeeded)
-     *     description: String
-     *     friendlyName: String
-     *     name: String
-     *     parentCollection: {
-     *         referenceName: String
-     *         type: String
-     *     }
-     *     systemData: {
-     *         createdAt: String
-     *         createdBy: String
-     *         createdByType: String(User/Application/ManagedIdentity/Key)
-     *         lastModifiedAt: String
-     *         lastModifiedBy: String
-     *         lastModifiedByType: String(User/Application/ManagedIdentity/Key)
-     *     }
-     * }
-     * }</pre>
-     *
-     * @param collectionName The collectionName parameter.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @return a collection.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public BinaryData get(String collectionName, RequestOptions requestOptions) {
-        return getAsync(collectionName, requestOptions).block();
     }
 
     /**
@@ -569,175 +423,6 @@ public final class CollectionsImpl {
      * @param collectionName The collectionName parameter.
      * @param collection Collection resource.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @return collection resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BinaryData> createOrUpdateAsync(
-            String collectionName, BinaryData collection, RequestOptions requestOptions) {
-        return createOrUpdateWithResponseAsync(collectionName, collection, requestOptions)
-                .flatMap(
-                        (Response<BinaryData> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
-    }
-
-    /**
-     * Creates or updates a collection entity.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     collectionProvisioningState: String(Unknown/Creating/Moving/Deleting/Failed/Succeeded)
-     *     description: String
-     *     friendlyName: String
-     *     name: String
-     *     parentCollection: {
-     *         referenceName: String
-     *         type: String
-     *     }
-     *     systemData: {
-     *         createdAt: String
-     *         createdBy: String
-     *         createdByType: String(User/Application/ManagedIdentity/Key)
-     *         lastModifiedAt: String
-     *         lastModifiedBy: String
-     *         lastModifiedByType: String(User/Application/ManagedIdentity/Key)
-     *     }
-     * }
-     * }</pre>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * (recursive schema, see above)
-     * }</pre>
-     *
-     * @param collectionName The collectionName parameter.
-     * @param collection Collection resource.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @return collection resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BinaryData> createOrUpdateAsync(
-            String collectionName, BinaryData collection, RequestOptions requestOptions, Context context) {
-        return createOrUpdateWithResponseAsync(collectionName, collection, requestOptions, context)
-                .flatMap(
-                        (Response<BinaryData> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
-    }
-
-    /**
-     * Creates or updates a collection entity.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     collectionProvisioningState: String(Unknown/Creating/Moving/Deleting/Failed/Succeeded)
-     *     description: String
-     *     friendlyName: String
-     *     name: String
-     *     parentCollection: {
-     *         referenceName: String
-     *         type: String
-     *     }
-     *     systemData: {
-     *         createdAt: String
-     *         createdBy: String
-     *         createdByType: String(User/Application/ManagedIdentity/Key)
-     *         lastModifiedAt: String
-     *         lastModifiedBy: String
-     *         lastModifiedByType: String(User/Application/ManagedIdentity/Key)
-     *     }
-     * }
-     * }</pre>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * (recursive schema, see above)
-     * }</pre>
-     *
-     * @param collectionName The collectionName parameter.
-     * @param collection Collection resource.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @return collection resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public BinaryData createOrUpdate(String collectionName, BinaryData collection, RequestOptions requestOptions) {
-        return createOrUpdateAsync(collectionName, collection, requestOptions).block();
-    }
-
-    /**
-     * Creates or updates a collection entity.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     collectionProvisioningState: String(Unknown/Creating/Moving/Deleting/Failed/Succeeded)
-     *     description: String
-     *     friendlyName: String
-     *     name: String
-     *     parentCollection: {
-     *         referenceName: String
-     *         type: String
-     *     }
-     *     systemData: {
-     *         createdAt: String
-     *         createdBy: String
-     *         createdByType: String(User/Application/ManagedIdentity/Key)
-     *         lastModifiedAt: String
-     *         lastModifiedBy: String
-     *         lastModifiedByType: String(User/Application/ManagedIdentity/Key)
-     *     }
-     * }
-     * }</pre>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * (recursive schema, see above)
-     * }</pre>
-     *
-     * @param collectionName The collectionName parameter.
-     * @param collection Collection resource.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
      * @return collection resource.
      */
@@ -799,67 +484,6 @@ public final class CollectionsImpl {
                 this.client.getServiceVersion().getVersion(),
                 requestOptions,
                 context);
-    }
-
-    /**
-     * Deletes a Collection entity.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
-     * @param collectionName The collectionName parameter.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteAsync(String collectionName, RequestOptions requestOptions) {
-        return deleteWithResponseAsync(collectionName, requestOptions).flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * Deletes a Collection entity.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
-     * @param collectionName The collectionName parameter.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteAsync(String collectionName, RequestOptions requestOptions, Context context) {
-        return deleteWithResponseAsync(collectionName, requestOptions, context)
-                .flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * Deletes a Collection entity.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
-     * @param collectionName The collectionName parameter.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String collectionName, RequestOptions requestOptions) {
-        deleteAsync(collectionName, requestOptions).block();
     }
 
     /**
@@ -1245,11 +869,11 @@ public final class CollectionsImpl {
      * @return paged list of collections.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<BinaryData>> listChildCollectionNamesSinglePageAsync(
+    public Mono<PagedResponse<BinaryData>> getChildCollectionNamesSinglePageAsync(
             String collectionName, RequestOptions requestOptions) {
         return FluxUtil.withContext(
                         context ->
-                                service.listChildCollectionNames(
+                                service.getChildCollectionNames(
                                         this.client.getEndpoint(),
                                         collectionName,
                                         this.client.getServiceVersion().getVersion(),
@@ -1299,9 +923,9 @@ public final class CollectionsImpl {
      * @return paged list of collections.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<BinaryData>> listChildCollectionNamesSinglePageAsync(
+    public Mono<PagedResponse<BinaryData>> getChildCollectionNamesSinglePageAsync(
             String collectionName, RequestOptions requestOptions, Context context) {
-        return service.listChildCollectionNames(
+        return service.getChildCollectionNames(
                         this.client.getEndpoint(),
                         collectionName,
                         this.client.getServiceVersion().getVersion(),
@@ -1350,10 +974,10 @@ public final class CollectionsImpl {
      * @return paged list of collections.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> listChildCollectionNamesAsync(String collectionName, RequestOptions requestOptions) {
+    public PagedFlux<BinaryData> getChildCollectionNamesAsync(String collectionName, RequestOptions requestOptions) {
         return new PagedFlux<>(
-                () -> listChildCollectionNamesSinglePageAsync(collectionName, requestOptions),
-                nextLink -> listChildCollectionNamesNextSinglePageAsync(nextLink, null));
+                () -> getChildCollectionNamesSinglePageAsync(collectionName, requestOptions),
+                nextLink -> getChildCollectionNamesNextSinglePageAsync(nextLink, null));
     }
 
     /**
@@ -1389,11 +1013,11 @@ public final class CollectionsImpl {
      * @return paged list of collections.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> listChildCollectionNamesAsync(
+    public PagedFlux<BinaryData> getChildCollectionNamesAsync(
             String collectionName, RequestOptions requestOptions, Context context) {
         return new PagedFlux<>(
-                () -> listChildCollectionNamesSinglePageAsync(collectionName, requestOptions, context),
-                nextLink -> listChildCollectionNamesNextSinglePageAsync(nextLink, null, context));
+                () -> getChildCollectionNamesSinglePageAsync(collectionName, requestOptions, context),
+                nextLink -> getChildCollectionNamesNextSinglePageAsync(nextLink, null, context));
     }
 
     /**
@@ -1428,8 +1052,8 @@ public final class CollectionsImpl {
      * @return paged list of collections.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> listChildCollectionNames(String collectionName, RequestOptions requestOptions) {
-        return new PagedIterable<>(listChildCollectionNamesAsync(collectionName, requestOptions));
+    public PagedIterable<BinaryData> getChildCollectionNames(String collectionName, RequestOptions requestOptions) {
+        return new PagedIterable<>(getChildCollectionNamesAsync(collectionName, requestOptions));
     }
 
     /**
@@ -1465,9 +1089,9 @@ public final class CollectionsImpl {
      * @return paged list of collections.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> listChildCollectionNames(
+    public PagedIterable<BinaryData> getChildCollectionNames(
             String collectionName, RequestOptions requestOptions, Context context) {
-        return new PagedIterable<>(listChildCollectionNamesAsync(collectionName, requestOptions, context));
+        return new PagedIterable<>(getChildCollectionNamesAsync(collectionName, requestOptions, context));
     }
 
     /**
@@ -1551,126 +1175,6 @@ public final class CollectionsImpl {
                 this.client.getServiceVersion().getVersion(),
                 requestOptions,
                 context);
-    }
-
-    /**
-     * Gets the parent name and parent friendly name chains that represent the collection path.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     *     <tr><td>skipToken</td><td>String</td><td>No</td><td>The skipToken parameter</td></tr>
-     * </table>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     parentFriendlyNameChain: [
-     *         String
-     *     ]
-     *     parentNameChain: [
-     *         String
-     *     ]
-     * }
-     * }</pre>
-     *
-     * @param collectionName The collectionName parameter.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @return the parent name and parent friendly name chains that represent the collection path.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BinaryData> getCollectionPathAsync(String collectionName, RequestOptions requestOptions) {
-        return getCollectionPathWithResponseAsync(collectionName, requestOptions)
-                .flatMap(
-                        (Response<BinaryData> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
-    }
-
-    /**
-     * Gets the parent name and parent friendly name chains that represent the collection path.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     *     <tr><td>skipToken</td><td>String</td><td>No</td><td>The skipToken parameter</td></tr>
-     * </table>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     parentFriendlyNameChain: [
-     *         String
-     *     ]
-     *     parentNameChain: [
-     *         String
-     *     ]
-     * }
-     * }</pre>
-     *
-     * @param collectionName The collectionName parameter.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @return the parent name and parent friendly name chains that represent the collection path.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BinaryData> getCollectionPathAsync(
-            String collectionName, RequestOptions requestOptions, Context context) {
-        return getCollectionPathWithResponseAsync(collectionName, requestOptions, context)
-                .flatMap(
-                        (Response<BinaryData> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
-    }
-
-    /**
-     * Gets the parent name and parent friendly name chains that represent the collection path.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     *     <tr><td>skipToken</td><td>String</td><td>No</td><td>The skipToken parameter</td></tr>
-     * </table>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     parentFriendlyNameChain: [
-     *         String
-     *     ]
-     *     parentNameChain: [
-     *         String
-     *     ]
-     * }
-     * }</pre>
-     *
-     * @param collectionName The collectionName parameter.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @return the parent name and parent friendly name chains that represent the collection path.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public BinaryData getCollectionPath(String collectionName, RequestOptions requestOptions) {
-        return getCollectionPathAsync(collectionName, requestOptions).block();
     }
 
     /**
@@ -1837,11 +1341,11 @@ public final class CollectionsImpl {
      * @return paged list of collections.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<BinaryData>> listChildCollectionNamesNextSinglePageAsync(
+    public Mono<PagedResponse<BinaryData>> getChildCollectionNamesNextSinglePageAsync(
             String nextLink, RequestOptions requestOptions) {
         return FluxUtil.withContext(
                         context ->
-                                service.listChildCollectionNamesNext(
+                                service.getChildCollectionNamesNext(
                                         nextLink, this.client.getEndpoint(), requestOptions, context))
                 .map(
                         res ->
@@ -1878,9 +1382,9 @@ public final class CollectionsImpl {
      * @return paged list of collections.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<BinaryData>> listChildCollectionNamesNextSinglePageAsync(
+    public Mono<PagedResponse<BinaryData>> getChildCollectionNamesNextSinglePageAsync(
             String nextLink, RequestOptions requestOptions, Context context) {
-        return service.listChildCollectionNamesNext(nextLink, this.client.getEndpoint(), requestOptions, context)
+        return service.getChildCollectionNamesNext(nextLink, this.client.getEndpoint(), requestOptions, context)
                 .map(
                         res ->
                                 new PagedResponseBase<>(

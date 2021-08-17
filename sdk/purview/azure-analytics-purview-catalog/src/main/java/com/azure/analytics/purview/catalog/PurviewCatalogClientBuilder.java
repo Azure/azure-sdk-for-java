@@ -20,7 +20,6 @@ import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.serializer.JacksonAdapter;
-import com.azure.core.util.serializer.SerializerAdapter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -102,22 +101,6 @@ public final class PurviewCatalogClientBuilder {
      */
     public PurviewCatalogClientBuilder pipeline(HttpPipeline pipeline) {
         this.pipeline = pipeline;
-        return this;
-    }
-
-    /*
-     * The serializer to serialize an object into a string
-     */
-    private SerializerAdapter serializerAdapter;
-
-    /**
-     * Sets The serializer to serialize an object into a string.
-     *
-     * @param serializerAdapter the serializerAdapter value.
-     * @return the PurviewCatalogClientBuilder.
-     */
-    public PurviewCatalogClientBuilder serializerAdapter(SerializerAdapter serializerAdapter) {
-        this.serializerAdapter = serializerAdapter;
         return this;
     }
 
@@ -231,11 +214,9 @@ public final class PurviewCatalogClientBuilder {
         if (pipeline == null) {
             this.pipeline = createHttpPipeline();
         }
-        if (serializerAdapter == null) {
-            this.serializerAdapter = JacksonAdapter.createDefaultSerializerAdapter();
-        }
         PurviewCatalogClientImpl client =
-                new PurviewCatalogClientImpl(pipeline, serializerAdapter, endpoint, serviceVersion);
+                new PurviewCatalogClientImpl(
+                        pipeline, JacksonAdapter.createDefaultSerializerAdapter(), endpoint, serviceVersion);
         return client;
     }
 
@@ -246,9 +227,6 @@ public final class PurviewCatalogClientBuilder {
             httpLogOptions = new HttpLogOptions();
         }
         List<HttpPipelinePolicy> policies = new ArrayList<>();
-        if (tokenCredential != null) {
-            policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, DEFAULT_SCOPES));
-        }
         String clientName = properties.getOrDefault(SDK_NAME, "UnknownName");
         String clientVersion = properties.getOrDefault(SDK_VERSION, "UnknownVersion");
         policies.add(
@@ -256,6 +234,9 @@ public final class PurviewCatalogClientBuilder {
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
         policies.add(retryPolicy == null ? new RetryPolicy() : retryPolicy);
         policies.add(new CookiePolicy());
+        if (tokenCredential != null) {
+            policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, DEFAULT_SCOPES));
+        }
         policies.addAll(this.pipelinePolicies);
         HttpPolicyProviders.addAfterRetryPolicies(policies);
         policies.add(new HttpLoggingPolicy(httpLogOptions));

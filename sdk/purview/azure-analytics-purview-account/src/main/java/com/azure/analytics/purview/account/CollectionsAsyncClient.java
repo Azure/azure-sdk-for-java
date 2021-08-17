@@ -72,49 +72,6 @@ public final class CollectionsAsyncClient {
     }
 
     /**
-     * Get a collection.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     collectionProvisioningState: String(Unknown/Creating/Moving/Deleting/Failed/Succeeded)
-     *     description: String
-     *     friendlyName: String
-     *     name: String
-     *     parentCollection: {
-     *         referenceName: String
-     *         type: String
-     *     }
-     *     systemData: {
-     *         createdAt: String
-     *         createdBy: String
-     *         createdByType: String(User/Application/ManagedIdentity/Key)
-     *         lastModifiedAt: String
-     *         lastModifiedBy: String
-     *         lastModifiedByType: String(User/Application/ManagedIdentity/Key)
-     *     }
-     * }
-     * }</pre>
-     *
-     * @param collectionName The collectionName parameter.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @return a collection.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BinaryData> get(String collectionName, RequestOptions requestOptions) {
-        return this.serviceClient.getAsync(collectionName, requestOptions);
-    }
-
-    /**
      * Creates or updates a collection entity.
      *
      * <p><strong>Query Parameters</strong>
@@ -166,57 +123,6 @@ public final class CollectionsAsyncClient {
     }
 
     /**
-     * Creates or updates a collection entity.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     collectionProvisioningState: String(Unknown/Creating/Moving/Deleting/Failed/Succeeded)
-     *     description: String
-     *     friendlyName: String
-     *     name: String
-     *     parentCollection: {
-     *         referenceName: String
-     *         type: String
-     *     }
-     *     systemData: {
-     *         createdAt: String
-     *         createdBy: String
-     *         createdByType: String(User/Application/ManagedIdentity/Key)
-     *         lastModifiedAt: String
-     *         lastModifiedBy: String
-     *         lastModifiedByType: String(User/Application/ManagedIdentity/Key)
-     *     }
-     * }
-     * }</pre>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * (recursive schema, see above)
-     * }</pre>
-     *
-     * @param collectionName The collectionName parameter.
-     * @param collection Collection resource.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @return collection resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BinaryData> createOrUpdate(
-            String collectionName, BinaryData collection, RequestOptions requestOptions) {
-        return this.serviceClient.createOrUpdateAsync(collectionName, collection, requestOptions);
-    }
-
-    /**
      * Deletes a Collection entity.
      *
      * <p><strong>Query Parameters</strong>
@@ -234,26 +140,6 @@ public final class CollectionsAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponse(String collectionName, RequestOptions requestOptions) {
         return this.serviceClient.deleteWithResponseAsync(collectionName, requestOptions);
-    }
-
-    /**
-     * Deletes a Collection entity.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
-     * @param collectionName The collectionName parameter.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> delete(String collectionName, RequestOptions requestOptions) {
-        return this.serviceClient.deleteAsync(collectionName, requestOptions);
     }
 
     /**
@@ -337,8 +223,8 @@ public final class CollectionsAsyncClient {
      * @return paged list of collections.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> listChildCollectionNames(String collectionName, RequestOptions requestOptions) {
-        return this.serviceClient.listChildCollectionNamesAsync(collectionName, requestOptions);
+    public PagedFlux<BinaryData> getChildCollectionNames(String collectionName, RequestOptions requestOptions) {
+        return this.serviceClient.getChildCollectionNamesAsync(collectionName, requestOptions);
     }
 
     /**
@@ -374,39 +260,5 @@ public final class CollectionsAsyncClient {
     public Mono<Response<BinaryData>> getCollectionPathWithResponse(
             String collectionName, RequestOptions requestOptions) {
         return this.serviceClient.getCollectionPathWithResponseAsync(collectionName, requestOptions);
-    }
-
-    /**
-     * Gets the parent name and parent friendly name chains that represent the collection path.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     *     <tr><td>skipToken</td><td>String</td><td>No</td><td>The skipToken parameter</td></tr>
-     * </table>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     parentFriendlyNameChain: [
-     *         String
-     *     ]
-     *     parentNameChain: [
-     *         String
-     *     ]
-     * }
-     * }</pre>
-     *
-     * @param collectionName The collectionName parameter.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @return the parent name and parent friendly name chains that represent the collection path.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BinaryData> getCollectionPath(String collectionName, RequestOptions requestOptions) {
-        return this.serviceClient.getCollectionPathAsync(collectionName, requestOptions);
     }
 }

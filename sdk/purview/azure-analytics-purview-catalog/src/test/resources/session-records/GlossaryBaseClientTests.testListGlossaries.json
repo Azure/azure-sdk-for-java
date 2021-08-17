@@ -3,7 +3,7 @@
     "Method" : "GET",
     "Uri" : "https://REDACTED.catalog.purview.azure.com/api/atlas/v2/glossary",
     "Headers" : {
-      "x-ms-client-request-id" : "50dd395e-ba14-4e44-a125-86c5979238fc"
+      "x-ms-client-request-id" : "9ba1c442-8ee0-44ee-8096-26544a98397f"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
@@ -14,9 +14,9 @@
       "Pragma" : "no-cache",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "Date" : "Tue, 10 Aug 2021 03:39:15 GMT",
+      "Date" : "Tue, 17 Aug 2021 11:08:37 GMT",
       "Access-Control-Allow-Headers" : "authorization,content-type,x-xsrf-header,x-ms-client-request-id,lastmodifiedts",
-      "x-ms-correlation-request-id" : "1684aa3b-33d9-44c0-b738-1794eb2a5865",
+      "x-ms-correlation-request-id" : "632eb89a-5dd6-431b-b4e3-2433a112b3b4",
       "X-Frame-Options" : "DENY",
       "Access-Control-Expose-Headers" : "x-ms-request-id,lastmodifiedts",
       "Strict-Transport-Security" : "max-age=31536000 ; includeSubDomains",
@@ -24,7 +24,7 @@
       "x-xss-protection" : "1; mode=block",
       "Content-Security-Policy" : "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' blob: data:; connect-src 'self'; img-src 'self' blob: data:; style-src 'self' 'unsafe-inline';font-src 'self' data:",
       "Expires" : "0",
-      "x-ms-request-id" : "50dd395e-ba14-4e44-a125-86c5979238fc",
+      "x-ms-request-id" : "9ba1c442-8ee0-44ee-8096-26544a98397f",
       "Body" : "[{\"guid\":\"62b478b3-a988-4941-8272-28f5728c3c82\",\"qualifiedName\":\"Glossary\",\"name\":\"Glossary\",\"lastModifiedTS\":\"1\",\"terms\":[{\"termGuid\":\"f44cea38-41fd-48ff-be97-6614f96dc076\",\"relationGuid\":\"d4ff7d44-861e-4930-809a-877afff2112e\",\"displayText\":\"term\"}]}]",
       "Content-Type" : "application/json; charset=utf-8"
     },

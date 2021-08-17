@@ -79,56 +79,6 @@ public final class ScanResultAsyncClient {
     }
 
     /**
-     * Runs the scan.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>scanLevel</td><td>String</td><td>No</td><td>The scanLevel parameter</td></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     scanResultId: String
-     *     startTime: String
-     *     endTime: String
-     *     status: String(Accepted/InProgress/TransientFailure/Succeeded/Failed/Canceled)
-     *     error: {
-     *         code: String
-     *         message: String
-     *         target: String
-     *         details: [
-     *             {
-     *                 code: String
-     *                 message: String
-     *                 target: String
-     *                 details: [
-     *                     (recursive schema, see above)
-     *                 ]
-     *             }
-     *         ]
-     *     }
-     * }
-     * }</pre>
-     *
-     * @param dataSourceName The dataSourceName parameter.
-     * @param scanName The scanName parameter.
-     * @param runId The runId parameter.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BinaryData> runScan(
-            String dataSourceName, String scanName, String runId, RequestOptions requestOptions) {
-        return this.serviceClient.runScanAsync(dataSourceName, scanName, runId, requestOptions);
-    }
-
-    /**
      * Cancels a scan.
      *
      * <p><strong>Query Parameters</strong>
@@ -175,55 +125,6 @@ public final class ScanResultAsyncClient {
     public Mono<Response<BinaryData>> cancelScanWithResponse(
             String dataSourceName, String scanName, String runId, RequestOptions requestOptions) {
         return this.serviceClient.cancelScanWithResponseAsync(dataSourceName, scanName, runId, requestOptions);
-    }
-
-    /**
-     * Cancels a scan.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     scanResultId: String
-     *     startTime: String
-     *     endTime: String
-     *     status: String(Accepted/InProgress/TransientFailure/Succeeded/Failed/Canceled)
-     *     error: {
-     *         code: String
-     *         message: String
-     *         target: String
-     *         details: [
-     *             {
-     *                 code: String
-     *                 message: String
-     *                 target: String
-     *                 details: [
-     *                     (recursive schema, see above)
-     *                 ]
-     *             }
-     *         ]
-     *     }
-     * }
-     * }</pre>
-     *
-     * @param dataSourceName The dataSourceName parameter.
-     * @param scanName The scanName parameter.
-     * @param runId The runId parameter.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BinaryData> cancelScan(
-            String dataSourceName, String scanName, String runId, RequestOptions requestOptions) {
-        return this.serviceClient.cancelScanAsync(dataSourceName, scanName, runId, requestOptions);
     }
 
     /**

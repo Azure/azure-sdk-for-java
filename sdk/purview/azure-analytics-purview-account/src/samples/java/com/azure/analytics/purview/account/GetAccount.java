@@ -9,7 +9,7 @@ public class GetAccount {
             .endpoint(System.getenv("ACCOUNT_ENDPOINT"))
             .credential(new DefaultAzureCredentialBuilder().build())
             .buildAccountsClient();
-        BinaryData response = client.get(null);
+        BinaryData response = client.getWithResponse(null, null).getValue();
         System.out.println(response);
     }
 }

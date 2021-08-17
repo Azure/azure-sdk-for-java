@@ -128,38 +128,6 @@ public final class SystemScanRulesetsClient {
      *
      * @param dataSourceType The dataSourceType parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @return a system scan ruleset for a data source.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public BinaryData get(String dataSourceType, RequestOptions requestOptions) {
-        return this.serviceClient.get(dataSourceType, requestOptions);
-    }
-
-    /**
-     * Get a system scan ruleset for a data source.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     id: String
-     *     name: String
-     *     scanRulesetType: String(Custom/System)
-     *     status: String(Enabled/Disabled)
-     *     version: Integer
-     * }
-     * }</pre>
-     *
-     * @param dataSourceType The dataSourceType parameter.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
      * @return a system scan ruleset for a data source.
      */
@@ -194,77 +162,12 @@ public final class SystemScanRulesetsClient {
      *
      * @param version The version parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @return a scan ruleset by version.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public BinaryData getByVersion(int version, RequestOptions requestOptions) {
-        return this.serviceClient.getByVersion(version, requestOptions);
-    }
-
-    /**
-     * Get a scan ruleset by version.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>dataSourceType</td><td>String</td><td>No</td><td>The dataSourceType parameter</td></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     id: String
-     *     name: String
-     *     scanRulesetType: String(Custom/System)
-     *     status: String(Enabled/Disabled)
-     *     version: Integer
-     * }
-     * }</pre>
-     *
-     * @param version The version parameter.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
      * @return a scan ruleset by version.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getByVersionWithResponse(int version, RequestOptions requestOptions, Context context) {
         return this.serviceClient.getByVersionWithResponse(version, requestOptions, context);
-    }
-
-    /**
-     * Get the latest version of a system scan ruleset.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>dataSourceType</td><td>String</td><td>No</td><td>The dataSourceType parameter</td></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     id: String
-     *     name: String
-     *     scanRulesetType: String(Custom/System)
-     *     status: String(Enabled/Disabled)
-     *     version: Integer
-     * }
-     * }</pre>
-     *
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @return the latest version of a system scan ruleset.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public BinaryData getLatest(RequestOptions requestOptions) {
-        return this.serviceClient.getLatest(requestOptions);
     }
 
     /**

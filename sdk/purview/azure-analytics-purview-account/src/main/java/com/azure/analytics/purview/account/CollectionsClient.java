@@ -64,105 +64,12 @@ public final class CollectionsClient {
      *
      * @param collectionName The collectionName parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @return a collection.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public BinaryData get(String collectionName, RequestOptions requestOptions) {
-        return this.serviceClient.get(collectionName, requestOptions);
-    }
-
-    /**
-     * Get a collection.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     collectionProvisioningState: String(Unknown/Creating/Moving/Deleting/Failed/Succeeded)
-     *     description: String
-     *     friendlyName: String
-     *     name: String
-     *     parentCollection: {
-     *         referenceName: String
-     *         type: String
-     *     }
-     *     systemData: {
-     *         createdAt: String
-     *         createdBy: String
-     *         createdByType: String(User/Application/ManagedIdentity/Key)
-     *         lastModifiedAt: String
-     *         lastModifiedBy: String
-     *         lastModifiedByType: String(User/Application/ManagedIdentity/Key)
-     *     }
-     * }
-     * }</pre>
-     *
-     * @param collectionName The collectionName parameter.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
      * @return a collection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getWithResponse(String collectionName, RequestOptions requestOptions, Context context) {
         return this.serviceClient.getWithResponse(collectionName, requestOptions, context);
-    }
-
-    /**
-     * Creates or updates a collection entity.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     collectionProvisioningState: String(Unknown/Creating/Moving/Deleting/Failed/Succeeded)
-     *     description: String
-     *     friendlyName: String
-     *     name: String
-     *     parentCollection: {
-     *         referenceName: String
-     *         type: String
-     *     }
-     *     systemData: {
-     *         createdAt: String
-     *         createdBy: String
-     *         createdByType: String(User/Application/ManagedIdentity/Key)
-     *         lastModifiedAt: String
-     *         lastModifiedBy: String
-     *         lastModifiedByType: String(User/Application/ManagedIdentity/Key)
-     *     }
-     * }
-     * }</pre>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * (recursive schema, see above)
-     * }</pre>
-     *
-     * @param collectionName The collectionName parameter.
-     * @param collection Collection resource.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @return collection resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public BinaryData createOrUpdate(String collectionName, BinaryData collection, RequestOptions requestOptions) {
-        return this.serviceClient.createOrUpdate(collectionName, collection, requestOptions);
     }
 
     /**
@@ -215,25 +122,6 @@ public final class CollectionsClient {
     public Response<BinaryData> createOrUpdateWithResponse(
             String collectionName, BinaryData collection, RequestOptions requestOptions, Context context) {
         return this.serviceClient.createOrUpdateWithResponse(collectionName, collection, requestOptions, context);
-    }
-
-    /**
-     * Deletes a Collection entity.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
-     * @param collectionName The collectionName parameter.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String collectionName, RequestOptions requestOptions) {
-        this.serviceClient.delete(collectionName, requestOptions);
     }
 
     /**
@@ -388,8 +276,8 @@ public final class CollectionsClient {
      * @return paged list of collections.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> listChildCollectionNames(String collectionName, RequestOptions requestOptions) {
-        return this.serviceClient.listChildCollectionNames(collectionName, requestOptions);
+    public PagedIterable<BinaryData> getChildCollectionNames(String collectionName, RequestOptions requestOptions) {
+        return this.serviceClient.getChildCollectionNames(collectionName, requestOptions);
     }
 
     /**
@@ -425,43 +313,9 @@ public final class CollectionsClient {
      * @return paged list of collections.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> listChildCollectionNames(
+    public PagedIterable<BinaryData> getChildCollectionNames(
             String collectionName, RequestOptions requestOptions, Context context) {
-        return this.serviceClient.listChildCollectionNames(collectionName, requestOptions, context);
-    }
-
-    /**
-     * Gets the parent name and parent friendly name chains that represent the collection path.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     *     <tr><td>skipToken</td><td>String</td><td>No</td><td>The skipToken parameter</td></tr>
-     * </table>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     parentFriendlyNameChain: [
-     *         String
-     *     ]
-     *     parentNameChain: [
-     *         String
-     *     ]
-     * }
-     * }</pre>
-     *
-     * @param collectionName The collectionName parameter.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @return the parent name and parent friendly name chains that represent the collection path.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public BinaryData getCollectionPath(String collectionName, RequestOptions requestOptions) {
-        return this.serviceClient.getCollectionPath(collectionName, requestOptions);
+        return this.serviceClient.getChildCollectionNames(collectionName, requestOptions, context);
     }
 
     /**

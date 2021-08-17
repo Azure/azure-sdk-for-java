@@ -67,44 +67,6 @@ public final class FiltersAsyncClient {
     }
 
     /**
-     * Get a filter.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     id: String
-     *     name: String
-     *     properties: {
-     *         excludeUriPrefixes: [
-     *             String
-     *         ]
-     *         includeUriPrefixes: [
-     *             String
-     *         ]
-     *     }
-     * }
-     * }</pre>
-     *
-     * @param dataSourceName The dataSourceName parameter.
-     * @param scanName The scanName parameter.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @return a filter.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BinaryData> get(String dataSourceName, String scanName, RequestOptions requestOptions) {
-        return this.serviceClient.getAsync(dataSourceName, scanName, requestOptions);
-    }
-
-    /**
      * Creates or updates a filter.
      *
      * <p><strong>Query Parameters</strong>
@@ -141,43 +103,5 @@ public final class FiltersAsyncClient {
     public Mono<Response<BinaryData>> createOrUpdateWithResponse(
             String dataSourceName, String scanName, RequestOptions requestOptions) {
         return this.serviceClient.createOrUpdateWithResponseAsync(dataSourceName, scanName, requestOptions);
-    }
-
-    /**
-     * Creates or updates a filter.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     id: String
-     *     name: String
-     *     properties: {
-     *         excludeUriPrefixes: [
-     *             String
-     *         ]
-     *         includeUriPrefixes: [
-     *             String
-     *         ]
-     *     }
-     * }
-     * }</pre>
-     *
-     * @param dataSourceName The dataSourceName parameter.
-     * @param scanName The scanName parameter.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BinaryData> createOrUpdate(String dataSourceName, String scanName, RequestOptions requestOptions) {
-        return this.serviceClient.createOrUpdateAsync(dataSourceName, scanName, requestOptions);
     }
 }

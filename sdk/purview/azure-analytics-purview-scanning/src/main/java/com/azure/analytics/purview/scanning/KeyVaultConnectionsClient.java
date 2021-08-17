@@ -54,85 +54,12 @@ public final class KeyVaultConnectionsClient {
      *
      * @param keyVaultName The keyVaultName parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @return key vault information.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public BinaryData get(String keyVaultName, RequestOptions requestOptions) {
-        return this.serviceClient.get(keyVaultName, requestOptions);
-    }
-
-    /**
-     * Gets key vault information.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     id: String
-     *     name: String
-     *     properties: {
-     *         baseUrl: String
-     *         description: String
-     *     }
-     * }
-     * }</pre>
-     *
-     * @param keyVaultName The keyVaultName parameter.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
      * @return key vault information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getWithResponse(String keyVaultName, RequestOptions requestOptions, Context context) {
         return this.serviceClient.getWithResponse(keyVaultName, requestOptions, context);
-    }
-
-    /**
-     * Creates an instance of a key vault connection.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     id: String
-     *     name: String
-     *     properties: {
-     *         baseUrl: String
-     *         description: String
-     *     }
-     * }
-     * }</pre>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * (recursive schema, see above)
-     * }</pre>
-     *
-     * @param keyVaultName The keyVaultName parameter.
-     * @param body The body parameter.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public BinaryData create(String keyVaultName, BinaryData body, RequestOptions requestOptions) {
-        return this.serviceClient.create(keyVaultName, body, requestOptions);
     }
 
     /**
@@ -175,39 +102,6 @@ public final class KeyVaultConnectionsClient {
     public Response<BinaryData> createWithResponse(
             String keyVaultName, BinaryData body, RequestOptions requestOptions, Context context) {
         return this.serviceClient.createWithResponse(keyVaultName, body, requestOptions, context);
-    }
-
-    /**
-     * Deletes the key vault connection associated with the account.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     id: String
-     *     name: String
-     *     properties: {
-     *         baseUrl: String
-     *         description: String
-     *     }
-     * }
-     * }</pre>
-     *
-     * @param keyVaultName The keyVaultName parameter.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public BinaryData delete(String keyVaultName, RequestOptions requestOptions) {
-        return this.serviceClient.delete(keyVaultName, requestOptions);
     }
 
     /**

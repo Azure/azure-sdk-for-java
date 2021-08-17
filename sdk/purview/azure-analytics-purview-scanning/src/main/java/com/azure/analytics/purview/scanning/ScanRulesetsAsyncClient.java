@@ -61,38 +61,6 @@ public final class ScanRulesetsAsyncClient {
     }
 
     /**
-     * Get a scan ruleset.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     id: String
-     *     name: String
-     *     scanRulesetType: String(Custom/System)
-     *     status: String(Enabled/Disabled)
-     *     version: Integer
-     * }
-     * }</pre>
-     *
-     * @param scanRulesetName The scanRulesetName parameter.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @return a scan ruleset.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BinaryData> get(String scanRulesetName, RequestOptions requestOptions) {
-        return this.serviceClient.getAsync(scanRulesetName, requestOptions);
-    }
-
-    /**
      * Creates or Updates a scan ruleset.
      *
      * <p><strong>Query Parameters</strong>
@@ -126,38 +94,6 @@ public final class ScanRulesetsAsyncClient {
     }
 
     /**
-     * Creates or Updates a scan ruleset.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     id: String
-     *     name: String
-     *     scanRulesetType: String(Custom/System)
-     *     status: String(Enabled/Disabled)
-     *     version: Integer
-     * }
-     * }</pre>
-     *
-     * @param scanRulesetName The scanRulesetName parameter.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BinaryData> createOrUpdate(String scanRulesetName, RequestOptions requestOptions) {
-        return this.serviceClient.createOrUpdateAsync(scanRulesetName, requestOptions);
-    }
-
-    /**
      * Deletes a scan ruleset.
      *
      * <p><strong>Query Parameters</strong>
@@ -187,38 +123,6 @@ public final class ScanRulesetsAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> deleteWithResponse(String scanRulesetName, RequestOptions requestOptions) {
         return this.serviceClient.deleteWithResponseAsync(scanRulesetName, requestOptions);
-    }
-
-    /**
-     * Deletes a scan ruleset.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     id: String
-     *     name: String
-     *     scanRulesetType: String(Custom/System)
-     *     status: String(Enabled/Disabled)
-     *     version: Integer
-     * }
-     * }</pre>
-     *
-     * @param scanRulesetName The scanRulesetName parameter.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BinaryData> delete(String scanRulesetName, RequestOptions requestOptions) {
-        return this.serviceClient.deleteAsync(scanRulesetName, requestOptions);
     }
 
     /**

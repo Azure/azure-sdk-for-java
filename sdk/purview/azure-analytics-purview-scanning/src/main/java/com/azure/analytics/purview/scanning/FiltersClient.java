@@ -58,44 +58,6 @@ public final class FiltersClient {
      * @param dataSourceName The dataSourceName parameter.
      * @param scanName The scanName parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @return a filter.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public BinaryData get(String dataSourceName, String scanName, RequestOptions requestOptions) {
-        return this.serviceClient.get(dataSourceName, scanName, requestOptions);
-    }
-
-    /**
-     * Get a filter.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     id: String
-     *     name: String
-     *     properties: {
-     *         excludeUriPrefixes: [
-     *             String
-     *         ]
-     *         includeUriPrefixes: [
-     *             String
-     *         ]
-     *     }
-     * }
-     * }</pre>
-     *
-     * @param dataSourceName The dataSourceName parameter.
-     * @param scanName The scanName parameter.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
      * @return a filter.
      */
@@ -103,44 +65,6 @@ public final class FiltersClient {
     public Response<BinaryData> getWithResponse(
             String dataSourceName, String scanName, RequestOptions requestOptions, Context context) {
         return this.serviceClient.getWithResponse(dataSourceName, scanName, requestOptions, context);
-    }
-
-    /**
-     * Creates or updates a filter.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     id: String
-     *     name: String
-     *     properties: {
-     *         excludeUriPrefixes: [
-     *             String
-     *         ]
-     *         includeUriPrefixes: [
-     *             String
-     *         ]
-     *     }
-     * }
-     * }</pre>
-     *
-     * @param dataSourceName The dataSourceName parameter.
-     * @param scanName The scanName parameter.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public BinaryData createOrUpdate(String dataSourceName, String scanName, RequestOptions requestOptions) {
-        return this.serviceClient.createOrUpdate(dataSourceName, scanName, requestOptions);
     }
 
     /**

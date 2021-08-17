@@ -98,38 +98,6 @@ public final class SystemScanRulesetsAsyncClient {
     }
 
     /**
-     * Get a system scan ruleset for a data source.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     id: String
-     *     name: String
-     *     scanRulesetType: String(Custom/System)
-     *     status: String(Enabled/Disabled)
-     *     version: Integer
-     * }
-     * }</pre>
-     *
-     * @param dataSourceType The dataSourceType parameter.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @return a system scan ruleset for a data source.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BinaryData> get(String dataSourceType, RequestOptions requestOptions) {
-        return this.serviceClient.getAsync(dataSourceType, requestOptions);
-    }
-
-    /**
      * Get a scan ruleset by version.
      *
      * <p><strong>Query Parameters</strong>
@@ -163,39 +131,6 @@ public final class SystemScanRulesetsAsyncClient {
     }
 
     /**
-     * Get a scan ruleset by version.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>dataSourceType</td><td>String</td><td>No</td><td>The dataSourceType parameter</td></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     id: String
-     *     name: String
-     *     scanRulesetType: String(Custom/System)
-     *     status: String(Enabled/Disabled)
-     *     version: Integer
-     * }
-     * }</pre>
-     *
-     * @param version The version parameter.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @return a scan ruleset by version.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BinaryData> getByVersion(int version, RequestOptions requestOptions) {
-        return this.serviceClient.getByVersionAsync(version, requestOptions);
-    }
-
-    /**
      * Get the latest version of a system scan ruleset.
      *
      * <p><strong>Query Parameters</strong>
@@ -225,38 +160,6 @@ public final class SystemScanRulesetsAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getLatestWithResponse(RequestOptions requestOptions) {
         return this.serviceClient.getLatestWithResponseAsync(requestOptions);
-    }
-
-    /**
-     * Get the latest version of a system scan ruleset.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>dataSourceType</td><td>String</td><td>No</td><td>The dataSourceType parameter</td></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     id: String
-     *     name: String
-     *     scanRulesetType: String(Custom/System)
-     *     status: String(Enabled/Disabled)
-     *     version: Integer
-     * }
-     * }</pre>
-     *
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @return the latest version of a system scan ruleset.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BinaryData> getLatest(RequestOptions requestOptions) {
-        return this.serviceClient.getLatestAsync(requestOptions);
     }
 
     /**
