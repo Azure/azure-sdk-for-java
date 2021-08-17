@@ -305,6 +305,9 @@ stages:
                           PRLabels: "auto-merge"
                           CloseAfterOpenForTesting: '${{ parameters.TestPipeline }}'
 
+          - ${{if and(eq(variables['Build.Reason'], 'Manual'), eq(variables['System.TeamProject'], 'internal'))}}:
+            - template: $(Build.SourcesDirectory)/common/smoke-tests/smoke-test-job.yml
+
   - ${{if ne(parameters.EnableIntegrationStage, false)}}:
     - stage: Integration
       dependsOn: Signing
