@@ -16,6 +16,7 @@ import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.core.util.serializer.TypeReference;
+import com.fasterxml.jackson.annotation.JsonSetter;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
@@ -205,6 +206,7 @@ public class OperationResourcePollingStrategy<T, U> implements PollingStrategy<T
          * @param status the status of the long running operation
          * @return the modified PollResult instance
          */
+        @JsonSetter
         public PollResult setStatus(String status) {
             if ("NotStarted".equalsIgnoreCase(status)) {
                 this.status = LongRunningOperationStatus.NOT_STARTED;

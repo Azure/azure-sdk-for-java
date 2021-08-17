@@ -192,7 +192,9 @@ public final class PollerFlux<T, U> extends Flux<AsyncPollResponse<T, U>> {
                         return Mono.error(new IllegalStateException("Cannot poll with strategy " + strategy));
                     }
                     return strategy.onInitialResponse(r, ctx, pollResponseType).flatMap(status -> {
-                        if (TypeUtil.isTypeOrSubTypeOf(r.getValue().getClass(), pollResponseType.getJavaType())) {
+                        if (r.getValue() == null) {
+                            return Mono.just(new PollResponse<>(status, null));
+                        } else if (TypeUtil.isTypeOrSubTypeOf(r.getValue().getClass(), pollResponseType.getJavaType())) {
                             return Mono.just(new PollResponse<>(status, (T) r.getValue()));
                         } else {
                             Mono<BinaryData> binaryDataMono;
