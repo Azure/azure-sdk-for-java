@@ -85,6 +85,8 @@
   <!-- To allow using sysout in GraalVM classes as the output is printed out during the build -->
   <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck"
             files="com.azure.core.experimental.implementation.graalvm.GraalVMFeature.java"/>            
+<suppress checks="."
+            files="com.azure.core.http.netty.implementation.graalvm.features.*\.java"/>            
 
   <!-- All fields are not set in constructors. -->
   <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck"

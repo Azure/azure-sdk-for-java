@@ -2544,4 +2544,20 @@
     <Method name="getServiceVersions"/>
     <Bug pattern="BC_UNCONFIRMED_CAST_OF_RETURN_VALUE"/>
   </Match>
+
+  <Match>
+    <Or>
+      <Class name="com.azure.core.http.netty.implementation.graalvm.features.TargetIoNettyHandlerSslJdkAlpnApplicationProtocolNegotiatorAlpnWrapper"/>
+      <Class name="com.azure.core.http.netty.implementation.graalvm.features.TargetIoNettyHandlerSslJdkAlpnApplicationProtocolNegotiatorAlpnWrapperJava8"/>
+      <Class name="com.azure.core.http.netty.implementation.graalvm.features.TargetIoNettyHandlerSslJdkSslContext"/>
+      <Class name="com.azure.core.http.netty.implementation.graalvm.features.TargetIoNettyHandlerSslSslContext"/>
+    </Or>
+    <Bug pattern="BC_IMPOSSIBLE_CAST"/>
+  </Match>
+  <Match>
+    <Or>
+      <Class name="com.azure.core.http.netty.implementation.graalvm.features.TargetIoNettyHandlerCodecHttpHttpContentDecompressor"/>
+    </Or>
+    <Bug pattern="CI_CONFUSED_INHERITANCE"/>
+  </Match>
 </FindBugsFilter>
