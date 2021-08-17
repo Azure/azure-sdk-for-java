@@ -485,6 +485,37 @@ public class ImplementationBridgeHelpers {
         }
     }
 
+    public static final class FeedResponseHelper {
+        private static FeedResponseAccessor accessor;
+
+        private FeedResponseHelper() {
+        }
+
+        static {
+            ensureClassLoaded(FeedResponse.class);
+        }
+
+        public static void setFeedResponseAccessor(final FeedResponseAccessor newAccessor) {
+            if (accessor != null) {
+                throw new IllegalStateException("FeedResponseAccessor already initialized!");
+            }
+
+            accessor = newAccessor;
+        }
+
+        public static FeedResponseAccessor getFeedResponseAccessor() {
+            if (accessor == null) {
+                throw new IllegalStateException("FeedResponseAccessor is not initialized yet!");
+            }
+
+            return accessor;
+        }
+
+        public interface FeedResponseAccessor {
+            <T> boolean getNoChanges(FeedResponse<T> feedResponse);
+        }
+    }
+
     private static <T> void ensureClassLoaded(Class<T> classType) {
         try {
             // ensures the class is loaded

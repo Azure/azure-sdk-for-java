@@ -13,6 +13,7 @@ import com.azure.cosmos.encryption.implementation.EncryptionProcessor;
 import com.azure.cosmos.encryption.implementation.EncryptionUtils;
 import com.azure.cosmos.encryption.models.EncryptionModelBridgeInternal;
 import com.azure.cosmos.encryption.models.SqlQuerySpecWithEncryption;
+import com.azure.cosmos.encryption.util.Beta;
 import com.azure.cosmos.implementation.CosmosPagedFluxOptions;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
@@ -277,6 +278,8 @@ public class CosmosEncryptionAsyncContainer {
         }
     }
 
+    @Beta(value = Beta.SinceVersion.V1, warningText =
+        Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public <T> CosmosPagedFlux<T> queryChangeFeed(CosmosChangeFeedRequestOptions options, Class<T> classType) {
         checkNotNull(options, "Argument 'options' must not be null.");
         checkNotNull(classType, "Argument 'classType' must not be null.");
@@ -302,8 +305,7 @@ public class CosmosEncryptionAsyncContainer {
         return container;
     }
 
-    private <T> byte[] cosmosSerializerToStream(T item) {
-        // TODO:
+    <T> byte[] cosmosSerializerToStream(T item) {
         return EncryptionUtils.serializeJsonToByteArray(EncryptionUtils.getSimpleObjectMapper(), item);
     }
 
@@ -311,7 +313,7 @@ public class CosmosEncryptionAsyncContainer {
         return CosmosBridgeInternal.getAsyncDocumentClient(container.getDatabase()).getItemDeserializer();
     }
 
-    private <T> Mono<byte[]> decryptResponse(
+    <T> Mono<byte[]> decryptResponse(
         byte[] input) {
 
         if (input == null) {
@@ -333,11 +335,16 @@ public class CosmosEncryptionAsyncContainer {
     }
 
     private <T> Function<CosmosPagedFluxOptions, Flux<FeedResponse<T>>> queryDecryptionTransformer(Class<T> classType,
+                                                                                                   boolean isChangeFeed,
                                                                                                    Function<CosmosPagedFluxOptions, Flux<FeedResponse<JsonNode>>> func) {
         return func.andThen(flux ->
             flux.publishOn(encryptionScheduler)
                 .flatMap(
                     page -> {
+                        boolean useEtagAsContinuation = isChangeFeed;
+                        boolean isNoChangesResponse = isChangeFeed ?
+                            ModelBridgeInternal.getNoCHangesFromFeedResponse(page)
+                            : false;
                         List<byte[]> byteArrayList = page.getResults().stream()
                             .map(node -> cosmosSerializerToStream(node))
                             .collect(Collectors.toList());
@@ -350,8 +357,8 @@ public class CosmosEncryptionAsyncContainer {
                             page.getResponseHeaders(),
                             BridgeInternal.queryMetricsFromFeedResponse(page),
                             ModelBridgeInternal.getQueryPlanDiagnosticsContext(page),
-                            false,
-                            false,
+                            useEtagAsContinuation,
+                            isNoChangesResponse,
                             page.getCosmosDiagnostics())
                         );
                     }
@@ -496,7 +503,7 @@ public class CosmosEncryptionAsyncContainer {
             new Transformer<T>() {
                 @Override
                 public Function<CosmosPagedFluxOptions, Flux<FeedResponse<T>>> transform(Function<CosmosPagedFluxOptions, Flux<FeedResponse<JsonNode>>> func) {
-                    return queryDecryptionTransformer(classType, func);
+                    return queryDecryptionTransformer(classType, false, func);
                 }
             }).byPage().onErrorResume(exception -> {
             if (exception instanceof CosmosException) {
@@ -524,6 +531,7 @@ public class CosmosEncryptionAsyncContainer {
         CosmosChangeFeedRequestOptions finalOptions = options;
         Flux<FeedResponse<T>> tFlux =
             UtilBridgeInternal.createCosmosPagedFlux(((Transformer<T>) func -> queryDecryptionTransformer(classType,
+                true,
                 func)).transform(cosmosAsyncContainerAccessor.queryChangeFeedInternalFunc(this.container, options,
                 JsonNode.class))).byPage().onErrorResume(exception -> {
                 if (exception instanceof CosmosException) {
@@ -559,7 +567,7 @@ public class CosmosEncryptionAsyncContainer {
             new Transformer<T>() {
                 @Override
                 public Function<CosmosPagedFluxOptions, Flux<FeedResponse<T>>> transform(Function<CosmosPagedFluxOptions, Flux<FeedResponse<JsonNode>>> func) {
-                    return queryDecryptionTransformer(classType, func);
+                    return queryDecryptionTransformer(classType, false, func);
                 }
             }).byPage().onErrorResume(exception -> {
             if (exception instanceof CosmosException) {
