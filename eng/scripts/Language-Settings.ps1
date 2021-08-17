@@ -261,32 +261,32 @@ function Update-java-CIConfig($pkgs, $ciRepo, $locationInDocRepo, $monikerId=$nu
 }
 
 $PackageExclusions = @{
-    "azure-identity-spring" = "Spring team does not want this published. See Azure/azure-sdk#3255.";
-    "azure-spring-boot" = "Spring team does not want this published. See Azure/azure-sdk#3255.";
-    "azure-spring-boot-starter-keyvault-certificates" = "Spring team does not want this published. See Azure/azure-sdk#3255.";
-    "azure-spring-cloud-autoconfigure" = "Spring team does not want this published. See Azure/azure-sdk#3255.";
-    "azure-spring-cloud-context" = "Spring team does not want this published. See Azure/azure-sdk#3255.";
-    "azure-spring-cloud-feature-management" = "Spring team does not want this published. See Azure/azure-sdk#3255.";
-    "azure-spring-cloud-feature-management-web" = "Spring team does not want this published. See Azure/azure-sdk#3255.";
-    "azure-spring-integration-core" = "Spring team does not want this published. See Azure/azure-sdk#3255.";
-    "azure-spring-integration-eventhubs" = "Spring team does not want this published. See Azure/azure-sdk#3255.";
-    "azure-spring-integration-servicebus" = "Spring team does not want this published. See Azure/azure-sdk#3255.";
-    "azure-spring-integration-storage-queue" = "Spring team does not want this published. See Azure/azure-sdk#3255.";
-    "azure-spring-integration-test" = "Spring team does not want this published. See Azure/azure-sdk#3255.";
-    "azure-spring-cloud-messaging" = "Spring team does not want this published. See Azure/azure-sdk#3255.";
-    "azure-spring-cloud-storage" = "Spring team does not want this published. See Azure/azure-sdk#3255.";
-    "azure-spring-cloud-stream-binder-eventhubs" = "Spring team does not want this published. See Azure/azure-sdk#3255.";
-    "azure-spring-cloud-stream-binder-servicebus-core" = "Spring team does not want this published. See Azure/azure-sdk#3255.";
-    "azure-spring-cloud-stream-binder-servicebus-queue" = "Spring team does not want this published. See Azure/azure-sdk#3255.";
-    "azure-spring-cloud-stream-binder-servicebus-topic" = "Spring team does not want this published. See Azure/azure-sdk#3255.";
-    "azure-spring-cloud-stream-binder-test" = "Spring team does not want this published. See Azure/azure-sdk#3255.";
-    "azure-spring-cloud-telemetry" = "Spring team does not want this published. See Azure/azure-sdk#3255.";
-    "azure-spring-data-cosmos" = "Spring team does not want this published. See Azure/azure-sdk#3255.";
-    "spring-cloud-azure-appconfiguration-config" = "Spring team does not want this published. See Azure/azure-sdk#3255.";
-    "spring-cloud-azure-appconfiguration-config-web" = "Spring team does not want this published. See Azure/azure-sdk#3255.";
-    "spring-cloud-azure-feature-management" = "Spring team does not want this published. See Azure/azure-sdk#3255.";
-    "azure-spring-cloud-appconfiguration-config" = "Spring team does not want this published. See Azure/azure-sdk#3255.";
-    "azure-spring-cloud-appconfiguration-config-web" = "Spring team does not want this published. See Azure/azure-sdk#3255."
+    "azure-identity-spring" = "Spring team does not want this published. See https://github.com/Azure/azure-sdk/issues/3255.";
+    "azure-spring-boot" = "Spring team does not want this published. See https://github.com/Azure/azure-sdk/issues/3255.";
+    "azure-spring-boot-starter-keyvault-certificates" = "Spring team does not want this published. See https://github.com/Azure/azure-sdk/issues/3255.";
+    "azure-spring-cloud-autoconfigure" = "Spring team does not want this published. See https://github.com/Azure/azure-sdk/issues/3255.";
+    "azure-spring-cloud-context" = "Spring team does not want this published. See https://github.com/Azure/azure-sdk/issues/3255.";
+    "azure-spring-cloud-feature-management" = "Spring team does not want this published. See https://github.com/Azure/azure-sdk/issues/3255.";
+    "azure-spring-cloud-feature-management-web" = "Spring team does not want this published. See https://github.com/Azure/azure-sdk/issues/3255.";
+    "azure-spring-integration-core" = "Spring team does not want this published. See https://github.com/Azure/azure-sdk/issues/3255.";
+    "azure-spring-integration-eventhubs" = "Spring team does not want this published. See https://github.com/Azure/azure-sdk/issues/3255.";
+    "azure-spring-integration-servicebus" = "Spring team does not want this published. See https://github.com/Azure/azure-sdk/issues/3255.";
+    "azure-spring-integration-storage-queue" = "Spring team does not want this published. See https://github.com/Azure/azure-sdk/issues/3255.";
+    "azure-spring-integration-test" = "Spring team does not want this published. See https://github.com/Azure/azure-sdk/issues/3255.";
+    "azure-spring-cloud-messaging" = "Spring team does not want this published. See https://github.com/Azure/azure-sdk/issues/3255.";
+    "azure-spring-cloud-storage" = "Spring team does not want this published. See https://github.com/Azure/azure-sdk/issues/3255.";
+    "azure-spring-cloud-stream-binder-eventhubs" = "Spring team does not want this published. See https://github.com/Azure/azure-sdk/issues/3255.";
+    "azure-spring-cloud-stream-binder-servicebus-core" = "Spring team does not want this published. See https://github.com/Azure/azure-sdk/issues/3255.";
+    "azure-spring-cloud-stream-binder-servicebus-queue" = "Spring team does not want this published. See https://github.com/Azure/azure-sdk/issues/3255.";
+    "azure-spring-cloud-stream-binder-servicebus-topic" = "Spring team does not want this published. See https://github.com/Azure/azure-sdk/issues/3255.";
+    "azure-spring-cloud-stream-binder-test" = "Spring team does not want this published. See https://github.com/Azure/azure-sdk/issues/3255.";
+    "azure-spring-cloud-telemetry" = "Spring team does not want this published. See https://github.com/Azure/azure-sdk/issues/3255.";
+    "azure-spring-data-cosmos" = "Spring team does not want this published. See https://github.com/Azure/azure-sdk/issues/3255.";
+    "spring-cloud-azure-appconfiguration-config" = "Spring team does not want this published. See https://github.com/Azure/azure-sdk/issues/3255.";
+    "spring-cloud-azure-appconfiguration-config-web" = "Spring team does not want this published. See https://github.com/Azure/azure-sdk/issues/3255.";
+    "spring-cloud-azure-feature-management" = "Spring team does not want this published. See https://github.com/Azure/azure-sdk/issues/3255.";
+    "azure-spring-cloud-appconfiguration-config" = "Spring team does not want this published. See https://github.com/Azure/azure-sdk/issues/3255.";
+    "azure-spring-cloud-appconfiguration-config-web" = "Spring team does not want this published. See https://github.com/Azure/azure-sdk/issues/3255."
 }
 
 # Validates if the package will succeed in the CI build by validating the
@@ -378,7 +378,7 @@ function Update-java-DocsMsPackages($DocsRepoLocation, $DocsMetadata) {
     Write-Host "  $excludedPackage - $($PackageExclusions[$excludedPackage])"
   }
 
-  $FilteredMetadata = $DocsMetadata.Where({ !($PackageExclusions.ContainsKey($_.Package)) })
+  $FilteredMetadata = $DocsMetadata.Where({ !($PackageExclusions.ContainsKey($_.Package) -or $_.Type -eq 'spring') })
 
   UpdateDocsMsPackages `
     (Join-Path $DocsRepoLocation 'package.json') `
