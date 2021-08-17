@@ -15,6 +15,7 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.http.rest.Response;
 import reactor.core.publisher.Mono;
+import com.azure.core.util.FluxUtil;
 import com.azure.core.util.Context;
 
 import static com.azure.core.util.FluxUtil.monoError;
@@ -42,10 +43,7 @@ public final class CommunicationRelayAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CommunicationRelayConfiguration> getRelayConfiguration(CommunicationUserIdentifier communicationUser) {
-        CommunicationRelayConfigurationRequest body = new CommunicationRelayConfigurationRequest();
-        body.setId(communicationUser.getId());
-        
-        return withContext(context -> client.issueRelayConfigurationAsync(body, context));
+        return this.getRelayConfigurationWithResponse(communicationUser).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -56,14 +54,7 @@ public final class CommunicationRelayAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<CommunicationRelayConfiguration>> getRelayConfigurationWithResponse(CommunicationUserIdentifier communicationUser) {
-        try {
-            CommunicationRelayConfigurationRequest body = new CommunicationRelayConfigurationRequest();
-            body.setId(communicationUser.getId());
-            return withContext(context -> client.issueRelayConfigurationWithResponseAsync(body, context)
-                .onErrorMap(CommunicationErrorResponseException.class, e -> e));
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return withContext(context -> getRelayConfigurationWithResponse(communicationUser, context));
     }
     
     /**
@@ -74,6 +65,7 @@ public final class CommunicationRelayAsyncClient {
      * @return The created Communication Relay Configuration.
      */
     Mono<Response<CommunicationRelayConfiguration>> getRelayConfigurationWithResponse(CommunicationUserIdentifier communicationUser, Context context) {
+        context = context == null ? Context.NONE : context;
         try {
             CommunicationRelayConfigurationRequest body = new CommunicationRelayConfigurationRequest();
             body.setId(communicationUser.getId());

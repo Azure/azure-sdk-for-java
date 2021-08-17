@@ -52,6 +52,7 @@ public final class CommunicationRelayClientBuilder {
     private RetryPolicy retryPolicy;
     private Configuration configuration;
     private ClientOptions clientOptions;
+    private String connectionString;
     private final Map<String, String> properties = CoreUtils.getProperties(COMMUNICATION_IDENTITY_PROPERTIES);
     private final List<HttpPipelinePolicy> customPolicies = new ArrayList<HttpPipelinePolicy>();
 
@@ -107,7 +108,6 @@ public final class CommunicationRelayClientBuilder {
      * @return CommunicationRelayClientBuilder
      */
     public CommunicationRelayClientBuilder connectionString(String connectionString) {
-        Objects.requireNonNull(connectionString, "'connectionString' cannot be null.");
         CommunicationConnectionString connectionStringObject = new CommunicationConnectionString(connectionString);
         String endpoint = connectionStringObject.getEndpoint();
         String accessKey = connectionStringObject.getAccessKey();
@@ -209,8 +209,8 @@ public final class CommunicationRelayClientBuilder {
      * @return CommunicationRelayAsyncClient instance
      */
     public CommunicationRelayAsyncClient buildAsyncClient() {
-        Objects.requireNonNull(endpoint, "'ednpoint' cannot be null.");
-        Objects.requireNonNull(customPolicies, "'customPolicies' cannot be null.");
+        Objects.requireNonNull(endpoint, "'endpoint' cannot be null.");
+        Objects.requireNonNull(endpoint, "'credential' cannot be null.");
         return new CommunicationRelayAsyncClient(createServiceImpl());
     }
 
@@ -222,8 +222,6 @@ public final class CommunicationRelayClientBuilder {
      * @return CommunicationRelayClient instance
      */
     public CommunicationRelayClient buildClient() {
-        Objects.requireNonNull(endpoint, "'ednpoint' cannot be null.");
-        Objects.requireNonNull(customPolicies, "'customPolicies' cannot be null.");
         return new CommunicationRelayClient(buildAsyncClient());
     }
 

@@ -46,7 +46,6 @@ public final class CommunicationRelayClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CommunicationRelayConfiguration> getRelayConfigurationWithResponse(CommunicationUserIdentifier communicationUser, Context context) {
-        context = context == null ? Context.NONE : context;
         Response<CommunicationRelayConfiguration> response =
             client.getRelayConfigurationWithResponse(communicationUser, context).block();
         
