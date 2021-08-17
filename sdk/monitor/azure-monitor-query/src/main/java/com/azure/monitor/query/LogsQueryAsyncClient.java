@@ -9,6 +9,7 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.experimental.models.TimeInterval;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.monitor.query.log.implementation.AzureLogAnalyticsImpl;
@@ -31,8 +32,6 @@ import com.azure.monitor.query.models.LogsQueryErrorDetail;
 import com.azure.monitor.query.models.LogsQueryException;
 import com.azure.monitor.query.models.LogsQueryOptions;
 import com.azure.monitor.query.models.LogsQueryResult;
-import com.azure.monitor.query.models.LogsQueryStatistics;
-import com.azure.monitor.query.models.LogsQueryVisualization;
 import com.azure.monitor.query.models.LogsTable;
 import com.azure.monitor.query.models.LogsTableCell;
 import com.azure.monitor.query.models.LogsTableColumn;
@@ -190,7 +189,8 @@ public final class LogsQueryAsyncClient {
             LogsQueryResult logsQueryResult = getLogsQueryResult(queryResults.getTables(),
                     queryResults.getStatistics(), queryResults.getRender(), queryResults.getError());
             LogsBatchQueryResult logsBatchQueryResult = new LogsBatchQueryResult(singleQueryResponse.getId(),
-                    singleQueryResponse.getStatus(), logsQueryResult);
+                    singleQueryResponse.getStatus(), logsQueryResult.getAllTables(), logsQueryResult.getStatistics(),
+                    logsQueryResult.getVisualization(), logsQueryResult.getError());
             batchResults.add(logsBatchQueryResult);
         }
         batchResults.sort(Comparator.comparingInt(o -> Integer.parseInt(o.getId())));
@@ -290,15 +290,15 @@ public final class LogsQueryAsyncClient {
             }
         }
 
-        LogsQueryStatistics queryStatistics = null;
+        BinaryData queryStatistics = null;
 
         if (innerStats != null) {
-            queryStatistics = new LogsQueryStatistics(innerStats);
+            queryStatistics = BinaryData.fromObject(innerStats);
         }
 
-        LogsQueryVisualization queryVisualization = null;
+        BinaryData queryVisualization = null;
         if (innerVisualization != null) {
-            queryVisualization = new LogsQueryVisualization(innerVisualization);
+            queryVisualization = BinaryData.fromObject(innerVisualization);
         }
 
         LogsQueryResult logsQueryResult = new LogsQueryResult(tables, queryStatistics, queryVisualization,

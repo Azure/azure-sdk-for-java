@@ -13,7 +13,6 @@ import com.azure.monitor.query.models.LogsBatchQuery;
 import com.azure.monitor.query.models.LogsBatchQueryResult;
 import com.azure.monitor.query.models.LogsBatchQueryResultCollection;
 import com.azure.monitor.query.models.LogsQueryOptions;
-import com.azure.monitor.query.models.LogsQueryResult;
 import com.azure.monitor.query.models.LogsTable;
 import com.azure.monitor.query.models.LogsTableRow;
 
@@ -51,10 +50,9 @@ public class LogsQueryBatchSample {
         List<LogsBatchQueryResult> responses = batchResultCollection.getBatchResults();
 
         for (LogsBatchQueryResult response : responses) {
-            LogsQueryResult queryResult = response.getQueryResult();
 
             // Sample to iterate by row
-            for (LogsTable table : queryResult.getLogsTables()) {
+            for (LogsTable table : response.getAllTables()) {
                 for (LogsTableRow row : table.getRows()) {
                     System.out.println("Row index " + row.getRowIndex());
                     row.getRow()

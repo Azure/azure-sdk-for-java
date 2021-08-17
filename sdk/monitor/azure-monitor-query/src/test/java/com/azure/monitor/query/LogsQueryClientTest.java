@@ -89,9 +89,9 @@ public class LogsQueryClientTest extends TestBase {
         LogsQueryResult queryResults = client.query(WORKSPACE_ID, "AppRequests",
                 new TimeInterval(OffsetDateTime.of(LocalDateTime.of(2021, 01, 01, 0, 0), ZoneOffset.UTC),
                         OffsetDateTime.of(LocalDateTime.of(2021, 06, 10, 0, 0), ZoneOffset.UTC)));
-        assertEquals(1, queryResults.getLogsTables().size());
-        assertEquals(902, queryResults.getLogsTables().get(0).getAllTableCells().size());
-        assertEquals(22, queryResults.getLogsTables().get(0).getRows().size());
+        assertEquals(1, queryResults.getAllTables().size());
+        assertEquals(902, queryResults.getAllTables().get(0).getAllTableCells().size());
+        assertEquals(22, queryResults.getAllTables().get(0).getRows().size());
     }
 
     @Test
@@ -107,13 +107,13 @@ public class LogsQueryClientTest extends TestBase {
 
         assertEquals(2, responses.size());
 
-        assertEquals(1, responses.get(0).getQueryResult().getLogsTables().size());
-        assertEquals(82, responses.get(0).getQueryResult().getLogsTables().get(0).getAllTableCells().size());
-        assertEquals(2, responses.get(0).getQueryResult().getLogsTables().get(0).getRows().size());
+        assertEquals(1, responses.get(0).getAllTables().size());
+        assertEquals(82, responses.get(0).getAllTables().get(0).getAllTableCells().size());
+        assertEquals(2, responses.get(0).getAllTables().get(0).getRows().size());
 
-        assertEquals(1, responses.get(1).getQueryResult().getLogsTables().size());
-        assertEquals(123, responses.get(1).getQueryResult().getLogsTables().get(0).getAllTableCells().size());
-        assertEquals(3, responses.get(1).getQueryResult().getLogsTables().get(0).getRows().size());
+        assertEquals(1, responses.get(1).getAllTables().size());
+        assertEquals(123, responses.get(1).getAllTables().get(0).getAllTableCells().size());
+        assertEquals(3, responses.get(1).getAllTables().get(0).getRows().size());
     }
 
     @Test
@@ -123,9 +123,9 @@ public class LogsQueryClientTest extends TestBase {
                 new LogsQueryOptions()
                         .setAdditionalWorkspaces(Arrays.asList("9dad0092-fd13-403a-b367-a189a090a541")), Context.NONE)
                 .getValue();
-        assertEquals(1, queryResults.getLogsTables().size());
+        assertEquals(1, queryResults.getAllTables().size());
         assertEquals(2, queryResults
-                .getLogsTables()
+                .getAllTables()
                 .get(0)
                 .getRows()
                 .stream()
@@ -150,11 +150,10 @@ public class LogsQueryClientTest extends TestBase {
 
         assertEquals(2, responses.size());
         assertEquals(200, responses.get(0).getStatus());
-        assertNotNull(responses.get(0).getQueryResult());
-        assertNull(responses.get(0).getQueryResult().getError());
+        assertNull(responses.get(0).getError());
         assertEquals(400, responses.get(1).getStatus());
-        assertNotNull(responses.get(1).getQueryResult().getError());
-        assertEquals("BadArgumentError", responses.get(1).getQueryResult().getError().getCode());
+        assertNotNull(responses.get(1).getError());
+        assertEquals("BadArgumentError", responses.get(1).getError().getCode());
     }
 
     @Test
@@ -162,7 +161,7 @@ public class LogsQueryClientTest extends TestBase {
         LogsQueryResult queryResults = client.queryWithResponse(WORKSPACE_ID,
                 "AppRequests", null, new LogsQueryOptions().setIncludeStatistics(true), Context.NONE).getValue();
 
-        assertEquals(1, queryResults.getLogsTables().size());
+        assertEquals(1, queryResults.getAllTables().size());
         assertNotNull(queryResults.getStatistics());
     }
 
@@ -180,13 +179,11 @@ public class LogsQueryClientTest extends TestBase {
 
         assertEquals(2, responses.size());
         assertEquals(200, responses.get(0).getStatus());
-        assertNotNull(responses.get(0).getQueryResult());
-        assertNull(responses.get(0).getQueryResult().getError());
-        assertNull(responses.get(0).getQueryResult().getStatistics());
+        assertNull(responses.get(0).getError());
+        assertNull(responses.get(0).getStatistics());
         assertEquals(200, responses.get(1).getStatus());
-        assertNotNull(responses.get(1).getQueryResult());
-        assertNull(responses.get(1).getQueryResult().getError());
-        assertNotNull(responses.get(1).getQueryResult().getStatistics());
+        assertNull(responses.get(1).getError());
+        assertNotNull(responses.get(1).getStatistics());
     }
 
     @Test

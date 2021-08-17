@@ -77,10 +77,10 @@ public class ReadmeSamples {
         List<LogsBatchQueryResult> responses = batchResultCollection.getBatchResults();
 
         for (LogsBatchQueryResult response : responses) {
-            LogsQueryResult queryResult = response.getQueryResult();
+
 
             // Sample to iterate by row
-            for (LogsTable table : queryResult.getLogsTables()) {
+            for (LogsTable table : response.getAllTables()) {
                 for (LogsTableRow row : table.getRows()) {
                     System.out.println("Row index " + row.getRowIndex());
                     row.getRow()
@@ -109,7 +109,7 @@ public class ReadmeSamples {
         LogsQueryResult logsQueryResult = response.getValue();
 
         // Sample to iterate by row
-        for (LogsTable table : logsQueryResult.getLogsTables()) {
+        for (LogsTable table : logsQueryResult.getAllTables()) {
             for (LogsTableRow row : table.getRows()) {
                 System.out.println("Row index " + row.getRowIndex());
                 row.getRow()
@@ -166,17 +166,17 @@ public class ReadmeSamples {
 
         LogsQueryResult queryResults = logsQueryClient.query("{workspace-id}", "{kusto-query}",
             new TimeInterval(Duration.ofDays(2)));
-        System.out.println("Number of tables = " + queryResults.getLogsTables().size());
+        System.out.println("Number of tables = " + queryResults.getAllTables().size());
 
         // Sample to iterate over all cells in the table
-        for (LogsTable table : queryResults.getLogsTables()) {
+        for (LogsTable table : queryResults.getAllTables()) {
             for (LogsTableCell tableCell : table.getAllTableCells()) {
                 System.out.println("Column = " + tableCell.getColumnName() + "; value = " + tableCell.getValueAsString());
             }
         }
 
         // Sample to iterate over each row
-        for (LogsTable table : queryResults.getLogsTables()) {
+        for (LogsTable table : queryResults.getAllTables()) {
             for (LogsTableRow tableRow : table.getRows()) {
                 for (LogsTableCell tableCell : tableRow.getRow()) {
                     System.out.println("Column = " + tableCell.getColumnName()
@@ -186,7 +186,7 @@ public class ReadmeSamples {
         }
 
         // Sample to get a specific column by name
-        for (LogsTable table : queryResults.getLogsTables()) {
+        for (LogsTable table : queryResults.getAllTables()) {
             for (LogsTableRow tableRow : table.getRows()) {
                 Optional<LogsTableCell> tableCell = tableRow.getColumnValue("DurationMs");
                 tableCell
