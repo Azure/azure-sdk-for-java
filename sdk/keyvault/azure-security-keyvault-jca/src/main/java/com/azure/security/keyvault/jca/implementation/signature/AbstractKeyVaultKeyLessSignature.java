@@ -6,13 +6,7 @@ import com.azure.security.keyvault.jca.KeyVaultPrivateKey;
 import com.azure.security.keyvault.jca.implementation.KeyVaultClient;
 
 import java.nio.ByteBuffer;
-import java.security.InvalidParameterException;
-import java.security.MessageDigest;
-import java.security.PublicKey;
-import java.security.PrivateKey;
-import java.security.SignatureSpi;
-import java.security.SecureRandom;
-import java.security.InvalidAlgorithmParameterException;
+import java.security.*;
 import java.security.spec.AlgorithmParameterSpec;
 import static com.azure.security.keyvault.jca.implementation.KeyVaultClient.createKeyVaultClientBySystemProperty;
 
@@ -117,4 +111,17 @@ public abstract class AbstractKeyVaultKeyLessSignature extends SignatureSpi {
     @Override
     protected void engineSetParameter(AlgorithmParameterSpec params) throws InvalidAlgorithmParameterException {
     }
+
+    /**
+     * Add this method to enable getParameters which added in this commit:
+     * https://github.com/openjdk/jdk/commit/316140ff92af7ac1aadb74de9cd37a5f3c412406
+     * You can find this logic in file SignatureScheme.java and line 202 in this commit.
+     * Which will call this method. If we don't support this method, this algorithm won't be available
+     * @return AlgorithmParameters
+     */
+    @Override
+    protected AlgorithmParameters engineGetParameters() {
+        return null;
+    }
+
 }

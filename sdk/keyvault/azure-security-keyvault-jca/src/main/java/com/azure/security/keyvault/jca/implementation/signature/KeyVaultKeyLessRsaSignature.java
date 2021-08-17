@@ -55,17 +55,4 @@ public class KeyVaultKeyLessRsaSignature extends AbstractKeyVaultKeyLessSignatur
     public String getAlgorithmName() {
         return "RSASSA-PSS";
     }
-
-    /**
-     * Add this method to enable getParameters which added in this commit:
-     * https://github.com/openjdk/jdk/commit/316140ff92af7ac1aadb74de9cd37a5f3c412406
-     * You can find this logic in file SignatureScheme.java and line 202 in this commit.
-     * Which will call this method. If we don't support this method, this algorithm won't be available
-     * @return AlgorithmParameters
-     */
-    @Override
-    protected AlgorithmParameters engineGetParameters() {
-        return null;
-    }
-
 }
