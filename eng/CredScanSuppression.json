@@ -16,7 +16,9 @@
                 "dummyPassword",
                 "P@ssw0rd",
                 "12NewPA$$w0rd!",
-                "Samp1eP@ssw0rd"
+                "Samp1eP@ssw0rd",
+                "*sig=sD3fPKLnFKZUjnSV4qA%2FXoJOqsmDfNfxWcZ7kPtLc0I%3D*",
+                "*\\\"x-ms-meta-encryptiondata\\\"*\\\"EncryptedKey\\\":\\\"*\\\"*"
             ],
             "_justification": "Secret used by test code, it is fake."
         },
