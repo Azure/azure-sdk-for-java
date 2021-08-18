@@ -6,6 +6,7 @@ package com.azure.core.util;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -34,6 +35,15 @@ public class Context {
     private final Object key;
     private final Object value;
 
+    private final int size;
+
+    protected Context() {
+        this.parent = null;
+        this.key = null;
+        this.value = null;
+        this.size = 0;
+    }
+
     /**
      * Constructs a new {@link Context} object.
      *
@@ -43,18 +53,24 @@ public class Context {
      *
      * @param key The key with which the specified value should be associated.
      * @param value The value to be associated with the specified key.
-     * @throws IllegalArgumentException If {@code key} is {@code null}.
+     * @throws NullPointerException If {@code key} or {@code value} is {@code null}.
      */
     public Context(Object key, Object value) {
         this.parent = null;
         this.key = Objects.requireNonNull(key, "'key' cannot be null.");
-        this.value = value;
+        this.value = Objects.requireNonNull(value, "'value' cannot be null.");
+        this.size = 1;
     }
 
     private Context(Context parent, Object key, Object value) {
         this.parent = parent;
         this.key = key;
         this.value = value;
+
+        // we need to check if this key is shadowing an existing key
+        this.size = parent == null
+                        ? 1
+                        : parent.size + (parent.getData(key).isPresent() ? 0 : 1);
     }
 
     /**
@@ -130,6 +146,16 @@ public class Context {
     }
 
     /**
+     * Returns the number of elements in this Context, measured from the given context to the root element. If there
+     * are children of this context, they are not counted.
+     *
+     * @return The number of elements in this context.
+     */
+    public int size() {
+        return size;
+    }
+
+    /**
      * Scans the linked-list of {@link Context} objects populating a {@link Map} with the values of the context.
      *
      * <p><strong>Code samples</strong></p>
@@ -139,7 +165,14 @@ public class Context {
      * @return A map containing all values of the context linked-list.
      */
     public Map<Object, Object> getValues() {
-        return getValuesHelper(new HashMap<>());
+        if (parent == null) {
+            if (key == null) {
+                return Collections.emptyMap();
+            } else {
+                return Collections.singletonMap(key, value);
+            }
+        }
+        return Collections.unmodifiableMap(getValuesHelper(new HashMap<>()));
     }
 
     private Map<Object, Object> getValuesHelper(Map<Object, Object> values) {

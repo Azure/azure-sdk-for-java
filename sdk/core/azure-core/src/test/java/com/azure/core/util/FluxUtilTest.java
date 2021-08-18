@@ -39,17 +39,21 @@ import java.nio.file.StandardOpenOption;
 import java.security.SecureRandom;
 import java.time.Duration;
 import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
@@ -96,11 +100,6 @@ public class FluxUtilTest {
     }
 
     @Test
-    public void toReactorContextCleansesNullValues() {
-        assertTrue(FluxUtil.toReactorContext(new Context("key", null)).isEmpty());
-    }
-
-    @Test
     public void toReactorContext() {
         Context context = new Context("key1", "value1");
 
@@ -118,6 +117,25 @@ public class FluxUtilTest {
         assertEquals("value3", reactorContext.get("key1"));
         assertTrue(reactorContext.hasKey("key2"));
         assertEquals("value2", reactorContext.get("key2"));
+
+        reactorContext.put("key3", "value3");
+        assertEquals(3, reactorContext.size());
+        assertTrue(reactorContext.hasKey("key3"));
+        assertEquals("value3", reactorContext.get("key3"));
+
+        List<Map.Entry<Object, Object>> collect = reactorContext.stream().collect(Collectors.toList());
+        assertEquals(3, collect.size());
+        Map.Entry<Object, Object> entry1 = collect.get(0);
+        assertEquals("key1", entry1.getKey());
+        assertEquals("value3", entry1.getValue());
+        Map.Entry<Object, Object> entry2 = collect.get(1);
+        assertEquals("key2", entry2.getKey());
+        assertEquals("value2", entry2.getValue());
+        Map.Entry<Object, Object> entry3 = collect.get(2);
+        assertEquals("key3", entry3.getKey());
+        assertEquals("value3", entry3.getValue());
+        reactor.util.context.Context finalReactorContext = reactorContext;
+        assertThrows(UnsupportedOperationException.class, () -> finalReactorContext.delete(null));
     }
 
     @Test

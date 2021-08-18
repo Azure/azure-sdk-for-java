@@ -16,6 +16,7 @@ import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Tests {@link Context}
@@ -110,5 +111,19 @@ public class ContextTests {
             Arguments.of(contextWithMultipleKeys, expectedMultipleKeys),
             Arguments.of(contextWithMultipleSameKeys, Collections.singletonMap("key", "value2"))
         );
+    }
+
+    @Test
+    public void getValueNullParent() {
+        final Context context = new Context();
+        final Map<Object, Object> values = context.getValues();
+        assertTrue(values.isEmpty());
+
+        final Context context1 = context.addData("key1", "value1");
+        final Map<Object, Object> values1 = context1.getValues();
+
+        assertEquals(1, values1.size());
+        assertTrue(values1.containsKey("key1"));
+        assertEquals("value1", values1.get("key1"));
     }
 }
