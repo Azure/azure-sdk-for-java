@@ -2,10 +2,16 @@
 
 ## 1.0.0-beta.5 (2021-08-17)
 
+### Other Changes
+
+#### Dependency Updates
+
+- Update `azure-data-schemaregistry` dependency to `1.0.0-beta.5`.
+- Update `azure-core-serializer-avro-apache` dependency to `1.0.0-beta.13`.
 
 ## 1.0.0-beta.4 (2020-09-21)
 - Added 4-byte format identifier prefix to serialized payload
-- Updated `module-info` to require `azure-data-schemaregistry` module transitively 
+- Updated `module-info` to require `azure-data-schemaregistry` module transitively
 
 ## 1.0.0-beta.3 (2020-09-10)
 - Updated to use `azure-core` for `ObjectSerializer`.
