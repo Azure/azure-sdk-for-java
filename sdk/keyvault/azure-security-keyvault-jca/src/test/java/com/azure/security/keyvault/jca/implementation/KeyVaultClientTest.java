@@ -70,7 +70,7 @@ public class KeyVaultClientTest {
     }
 
     @Test
-    public void testGetAlias() {
+    public void testGetAliasWithCertificateInfoWith0Page() {
         try (MockedStatic<HttpUtil> utilities = Mockito.mockStatic(HttpUtil.class)) {
             utilities.when(() -> HttpUtil.get(anyString(), anyMap())).thenReturn("fakeValue");
             KeyVaultClient keyVaultClient = mock(KeyVaultClient.class);
@@ -80,7 +80,7 @@ public class KeyVaultClientTest {
     }
 
     @Test
-    public void testGetAliasWithCertificateInfoWithOnePage() {
+    public void testGetAliasWithCertificateInfoWith1Page() {
         try (MockedStatic<HttpUtil> utilities = Mockito.mockStatic(HttpUtil.class)) {
             // create fake certificates
             CertificateItem fakeCertificateItem1 = new CertificateItem();
@@ -97,7 +97,7 @@ public class KeyVaultClientTest {
     }
 
     @Test
-    public void testGetAliasWithCertificateInfoWithPages() {
+    public void testGetAliasWithCertificateInfoWith2Pages() {
         try (MockedStatic<HttpUtil> utilities = Mockito.mockStatic(HttpUtil.class)) {
             // create fake certificates
             CertificateItem fakeCertificateItem1 = new CertificateItem();
