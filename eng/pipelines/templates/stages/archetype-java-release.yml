@@ -116,7 +116,38 @@ stages:
                     PackageName: ${{artifact.name}}
                     ServiceName: ${{parameters.ServiceDirectory}}
                     ForRelease: true
-
+          - job: InstallationCheck
+            displayName: "Installation Check"
+            variables:
+              - template: ../variables/globals.yml
+            steps:
+              - download: current
+                artifact: ${{parameters.ArtifactName}}-signed
+              - pwsh: |
+                  Copy-Item "$(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed/${{artifact.groupId}}/${{artifact.name}}/" "$(Pipeline.Workspace)/install-check-dir/${{artifact.name}}" -Recurse
+                  Write-Host "Copying artifact ${{artifact.name}}"
+                  $pomf = Get-ChildItem $(Pipeline.Workspace)/install-check-dir/${{artifact.name}}/*.pom
+                  Rename-Item "$($pomf)" pom.xml
+                  Write-Host "Renaming $($pomf) to pom.xml"
+                  Copy-Item "$(System.DefaultWorkingDirectory)/eng" "$(Pipeline.Workspace)/install-check-dir/${{ artifact.name }}/eng" -Recurse
+                displayName: "Copy Artifacts and Directories"
+              - task: Maven@3
+                displayName: 'Install reporting tools'
+                inputs:
+                  mavenPomFile: "$(Pipeline.Workspace)/install-check-dir/${{ artifact.name }}/eng/code-quality-reports/pom.xml"
+                  options: "$(DefaultOptions)"
+                  mavenOptions: "$(MemoryOptions) $(LoggingOptions)"
+                  javaHomeOption: 'JDKVersion'
+                  jdkVersionOption: '1.11'
+                  jdkArchitectureOption: 'x64'
+                  publishJUnitResults: false
+                  goals: 'install'
+              - task: Maven@3
+                displayName: "Maven Install"
+                inputs:
+                  mavenPomFile: "$(Pipeline.Workspace)/install-check-dir/${{ artifact.name }}/pom.xml"
+                  options: "$(DefaultOptions) -Dcheckstyle.skip=true"
+                  goals: "install"
 
           - deployment: TagRepository
             displayName: "Create release tag"
