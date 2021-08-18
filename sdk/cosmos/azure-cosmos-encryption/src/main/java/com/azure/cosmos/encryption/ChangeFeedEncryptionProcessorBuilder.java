@@ -20,7 +20,6 @@ import java.util.stream.Collectors;
 /**
  * Helper class to build a encryption supported {@link ChangeFeedProcessor} instance.
  *
- * {@codesnippet com.azure.cosmos.changeFeedProcessor.builder}
  */
 public class ChangeFeedEncryptionProcessorBuilder {
 
@@ -76,16 +75,11 @@ public class ChangeFeedEncryptionProcessorBuilder {
     /**
      * Sets a consumer function which will be called to process changes.
      *
-     * {@codesnippet com.azure.cosmos.changeFeedProcessor.handleChanges}
-     *
      * @param consumer the {@link Consumer} to call for handling the feeds.
      * @return current Builder.
      */
     public ChangeFeedEncryptionProcessorBuilder handleChanges(Consumer<List<JsonNode>> consumer) {
         this.encryptionConsumer = jsonNodes -> {
-            List<byte[]> byteArrayList = jsonNodes.stream()
-                .map(node -> feedContainer.cosmosSerializerToStream(node))
-                .collect(Collectors.toList());
             List<Mono<byte[]>> byteArrayMonoList =
                 jsonNodes.stream().map(jsonNode -> feedContainer.decryptResponse((ObjectNode) jsonNode)).collect(Collectors.toList());
             Flux.concat(byteArrayMonoList).publishOn(Schedulers.boundedElastic()).map(
