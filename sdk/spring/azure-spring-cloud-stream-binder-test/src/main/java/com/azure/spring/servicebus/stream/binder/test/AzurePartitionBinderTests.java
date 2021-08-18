@@ -68,7 +68,12 @@ public abstract class AzurePartitionBinderTests<B extends AbstractTestBinder<
         // azure binder not support anonymous group
     }
 
-    // Same logic as super.testSendAndReceiveNoOriginalContentType() except one line commented below
+    /**
+     *  Same logic as super.testSendAndReceiveNoOriginalContentType() except one line commented below
+     *
+     * @param testInfo Information about the current test or container.
+     * @throws Exception Thrown when the binder cannot be obtained.
+     */
     @Test
     @SuppressWarnings({ "rawtypes", "unchecked" })
     public void testSendAndReceiveNoOriginalContentType(TestInfo testInfo) throws Exception {
