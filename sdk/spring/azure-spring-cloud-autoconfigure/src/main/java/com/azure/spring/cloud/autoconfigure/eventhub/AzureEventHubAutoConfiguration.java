@@ -127,6 +127,10 @@ public class AzureEventHubAutoConfiguration {
         final String accountKey = properties.getCheckpointAccessKey();
         final StorageConnectionStringProvider provider;
 
+        if (accountName == null || accountKey == null) {
+            return null;
+        }
+
         if (storageAccountManager != null) {
             provider = new StorageConnectionStringProvider(storageAccountManager.getOrCreate(accountName));
         } else {

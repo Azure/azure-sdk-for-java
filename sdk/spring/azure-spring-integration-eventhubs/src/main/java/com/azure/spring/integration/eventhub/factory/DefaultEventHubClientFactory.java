@@ -21,7 +21,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.lang.NonNull;
-import org.springframework.util.Assert;
 
 import java.time.Duration;
 import java.util.Map;
@@ -62,7 +61,6 @@ public class DefaultEventHubClientFactory implements EventHubClientFactory, Disp
     public DefaultEventHubClientFactory(@NonNull String eventHubConnectionString,
                                         String checkpointConnectionString,
                                         String checkpointStorageContainer) {
-        Assert.hasText(checkpointConnectionString, "checkpointConnectionString can't be null or empty");
         this.eventHubConnectionString = eventHubConnectionString;
         this.checkpointStorageConnectionString = checkpointConnectionString;
         this.checkpointStorageContainer = checkpointStorageContainer;
