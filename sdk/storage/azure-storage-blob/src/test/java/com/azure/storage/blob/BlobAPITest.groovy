@@ -1157,6 +1157,10 @@ class BlobAPITest extends APISpec {
                 return next.process()
                     .flatMap({ r ->
                         if (counter.incrementAndGet() == 1) {
+                            /*
+                             * When the download begins trigger an upload to overwrite the downloading blob
+                             * so that the download is able to get an ETag before it is changed.
+                             */
                             return bacUploading.upload(data.defaultFlux, data.defaultDataSize, true)
                             .thenReturn(r)
                         }
@@ -1183,10 +1187,6 @@ class BlobAPITest extends APISpec {
          */
         Hooks.onErrorDropped({ ignored -> /* do nothing with it */ })
 
-        /*
-         * When the download begins trigger an upload to overwrite the downloading blob after waiting 500 milliseconds
-         * so that the download is able to get an ETag before it is changed.
-         */
         StepVerifier.create(bacDownloading.downloadToFileWithResponse(outFile.toPath().toString(), null, options, null, null, false))
             .verifyErrorSatisfies({
                 /*
