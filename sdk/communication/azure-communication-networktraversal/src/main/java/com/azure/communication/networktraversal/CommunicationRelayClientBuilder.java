@@ -39,8 +39,8 @@ public final class CommunicationRelayClientBuilder {
     private static final String SDK_NAME = "name";
     private static final String SDK_VERSION = "version";
 
-    private static final String COMMUNICATION_IDENTITY_PROPERTIES =
-        "azure-communication-networktravesal.properties";
+    private static final String COMMUNICATION_NETWORK_TRAVERSAL_PROPERTIES =
+        "azure-communication-networktraversal.properties";
 
     private final ClientLogger logger = new ClientLogger(CommunicationRelayClientBuilder.class);
     private String endpoint;
@@ -53,8 +53,8 @@ public final class CommunicationRelayClientBuilder {
     private Configuration configuration;
     private ClientOptions clientOptions;
     private String connectionString;
-    private final Map<String, String> properties = CoreUtils.getProperties(COMMUNICATION_IDENTITY_PROPERTIES);
-    private final List<HttpPipelinePolicy> customPolicies = new ArrayList<HttpPipelinePolicy>();
+    private final Map<String, String> properties = CoreUtils.getProperties(COMMUNICATION_NETWORK_TRAVERSAL_PROPERTIES);
+    private final List<HttpPipelinePolicy> customPolicies = new ArrayList<>();
 
     /**
      * Set endpoint of the service
@@ -210,7 +210,6 @@ public final class CommunicationRelayClientBuilder {
      */
     public CommunicationRelayAsyncClient buildAsyncClient() {
         Objects.requireNonNull(endpoint, "'endpoint' cannot be null.");
-        Objects.requireNonNull(endpoint, "'credential' cannot be null.");
         return new CommunicationRelayAsyncClient(createServiceImpl());
     }
 

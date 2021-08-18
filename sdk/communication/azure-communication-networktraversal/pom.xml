@@ -122,6 +122,7 @@
       <groupId>com.azure</groupId>
       <artifactId>azure-communication-identity</artifactId>
       <version>1.1.1</version>
+      <scope>test</scope>
     </dependency>
   </dependencies>
 
