@@ -21,7 +21,7 @@
     "dir": "azure-resourcemanager-appservice",
     "source": "specification/web/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.appservice",
-    "args": "--payload-flattening-threshold=1 --tag=package-2020-12 --add-inner=AppServiceCertificate --name-for-ungrouped-operations=ResourceProvider",
+    "args": "--payload-flattening-threshold=1 --tag=package-2021-02 --add-inner=AppServiceCertificate --name-for-ungrouped-operations=ResourceProvider",
     "note": "Add status code '200' to 'syncFunctionTriggers'"
   },
   "authorization": {
