@@ -8,15 +8,17 @@ import com.azure.cosmos.ChangeFeedProcessorBuilder;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.models.ChangeFeedProcessorOptions;
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
 
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 /**
- * Helper class to build a {@link ChangeFeedProcessor} instance.
+ * Helper class to build a encryption supported {@link ChangeFeedProcessor} instance.
  *
  * {@codesnippet com.azure.cosmos.changeFeedProcessor.builder}
  */
@@ -85,10 +87,10 @@ public class ChangeFeedEncryptionProcessorBuilder {
                 .map(node -> feedContainer.cosmosSerializerToStream(node))
                 .collect(Collectors.toList());
             List<Mono<byte[]>> byteArrayMonoList =
-                byteArrayList.stream().map(bytes -> feedContainer.decryptResponse(bytes)).collect(Collectors.toList());
-            Flux.concat(byteArrayMonoList).map(
+                jsonNodes.stream().map(jsonNode -> feedContainer.decryptResponse((ObjectNode) jsonNode)).collect(Collectors.toList());
+            Flux.concat(byteArrayMonoList).publishOn(Schedulers.boundedElastic()).map(
                 item -> feedContainer.getItemDeserializer().parseFrom(JsonNode.class, item)
-            ).collectList().doOnSuccess(consumer).subscribe();
+            ).collectList().doOnSuccess(consumer).block();
         };
 
         return this;

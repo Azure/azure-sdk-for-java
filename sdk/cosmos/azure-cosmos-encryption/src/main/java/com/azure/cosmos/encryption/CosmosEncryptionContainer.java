@@ -179,7 +179,6 @@ public class CosmosEncryptionContainer {
     public <T> CosmosPagedIterable<T> queryChangeFeed(
         CosmosChangeFeedRequestOptions options,
         Class<T> classType) {
-
         checkNotNull(options, "Argument 'options' must not be null.");
         checkNotNull(classType, "Argument 'classType' must not be null.");
 

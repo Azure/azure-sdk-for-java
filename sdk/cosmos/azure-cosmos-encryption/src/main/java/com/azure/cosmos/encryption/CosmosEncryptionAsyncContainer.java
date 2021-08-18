@@ -32,6 +32,7 @@ import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.util.CosmosPagedFlux;
 import com.azure.cosmos.util.UtilBridgeInternal;
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Scheduler;
@@ -324,6 +325,17 @@ public class CosmosEncryptionAsyncContainer {
             input);
     }
 
+    <T> Mono<byte[]> decryptResponse(
+        ObjectNode jsonNode) {
+
+        if (jsonNode == null) {
+            return Mono.empty();
+        }
+
+        return this.encryptionProcessor.decrypt(
+            jsonNode);
+    }
+
     private Mono<CosmosItemResponse<byte[]>> setByteArrayContent(CosmosItemResponse<byte[]> rsp,
                                                                  Mono<byte[]> bytesMono) {
         return bytesMono.flatMap(
@@ -345,12 +357,8 @@ public class CosmosEncryptionAsyncContainer {
                         boolean isNoChangesResponse = isChangeFeed ?
                             ModelBridgeInternal.getNoCHangesFromFeedResponse(page)
                             : false;
-                        List<byte[]> byteArrayList = page.getResults().stream()
-                            .map(node -> cosmosSerializerToStream(node))
-                            .collect(Collectors.toList());
-
                         List<Mono<byte[]>> byteArrayMonoList =
-                            byteArrayList.stream().map(bytes -> decryptResponse(bytes)).collect(Collectors.toList());
+                            page.getResults().stream().map(jsonNode -> decryptResponse((ObjectNode) jsonNode)).collect(Collectors.toList());
                         return Flux.concat(byteArrayMonoList).map(
                             item -> getItemDeserializer().parseFrom(classType, item)
                         ).collectList().map(itemList -> BridgeInternal.createFeedResponseWithQueryMetrics(itemList,
@@ -491,7 +499,6 @@ public class CosmosEncryptionAsyncContainer {
         this.cosmosChangeFeedRequestOptionsAccessor.setHeader(requestOptions, Constants.IS_CLIENT_ENCRYPTED_HEADER, "true");
         this.cosmosChangeFeedRequestOptionsAccessor.setHeader(requestOptions, Constants.INTENDED_COLLECTION_RID_HEADER, this.encryptionProcessor.getContainerRid());
     }
-
 
     private <T> CosmosPagedFlux<T> queryItemsHelper(SqlQuerySpec sqlQuerySpec,
                                                     CosmosQueryRequestOptions options,
