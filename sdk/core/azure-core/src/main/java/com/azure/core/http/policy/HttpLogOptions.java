@@ -176,7 +176,11 @@ public class HttpLogOptions {
      * Sets the custom application specific id supplied by the user of the client library.
      *
      * @param applicationId The user specified application id.
+     *
      * @return The updated HttpLogOptions object.
+     *
+     * @throws IllegalArgumentException If {@code applicationId} contains spaces or larger than 24 in length.
+     *
      * @deprecated Use {@link ClientOptions} to configure {@code applicationId}.
      */
     @Deprecated

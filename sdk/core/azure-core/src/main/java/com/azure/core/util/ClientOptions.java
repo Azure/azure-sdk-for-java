@@ -48,7 +48,9 @@ public class ClientOptions {
      * {@codesnippet com.azure.core.util.ClientOptions.setApplicationId#String}
      *
      * @param applicationId The application ID.
+     *
      * @return The updated ClientOptions object.
+     *
      * @throws IllegalArgumentException If {@code applicationId} contains spaces or larger than 24 in length.
      */
     public ClientOptions setApplicationId(String applicationId) {

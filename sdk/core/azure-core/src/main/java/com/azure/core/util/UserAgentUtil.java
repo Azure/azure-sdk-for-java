@@ -33,7 +33,10 @@ public final class UserAgentUtil {
      * @param sdkVersion Version of the SDK.
      * @param configuration The configuration to use to determine if platform info should be included in the user agent
      * string.
+     *
      * @return User agent string as specified in design guidelines.
+     *
+     * @throws IllegalArgumentException If {@code applicationId} contains spaces or larger than 24 in length.
      */
     public static String toUserAgentString(String applicationId, String sdkName, String sdkVersion,
         Configuration configuration) {
