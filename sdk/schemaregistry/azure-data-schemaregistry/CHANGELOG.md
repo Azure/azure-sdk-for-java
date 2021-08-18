@@ -11,6 +11,9 @@
 - `SchemaRegistryClientBuilder.maxCacheSize` is package-private.
 
 ### Other Changes
+
+#### Dependency Updates
+
 - Update `azure-core-serializer-avro-apache` dependency to `1.0.0-beta.13`.
 
 ## 1.0.0-beta.4 (2020-09-21)
