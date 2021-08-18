@@ -36,12 +36,13 @@ import static org.mockito.Mockito.when;
  */
 public class SchemaRegistryAsyncClientTests extends TestBase {
     static final int RESOURCE_LENGTH = 16;
-    static final String AZURE_EVENTHUBS_FULLY_QUALIFIED_DOMAIN_NAME = "AZURE_EVENTHUBS_FULLY_QUALIFIED_DOMAIN_NAME";
+    static final String SCHEMA_REGISTRY_ENDPOINT = "SCHEMA_REGISTRY_ENDPOINT";
+    static final String SCHEMA_REGISTRY_GROUP = "SCHEMA_REGISTRY_GROUP";
     static final String SCHEMA_CONTENT = "{\"type\" : \"record\",\"namespace\" : \"TestSchema\",\"name\" : \"Employee\",\"fields\" : [{ \"name\" : \"Name\" , \"type\" : \"string\" },{ \"name\" : \"Age\", \"type\" : \"int\" }]}";
-    static final String SCHEMA_GROUP = "at";
     static final Pattern WHITESPACE_PATTERN = Pattern.compile("\\s+", Pattern.MULTILINE);
     static final String SCHEMA_CONTENT_NO_WHITESPACE = WHITESPACE_PATTERN.matcher(SCHEMA_CONTENT).replaceAll("");
 
+    private String schemaGroup;
     private SchemaRegistryClientBuilder builder;
 
     @Override
@@ -51,6 +52,7 @@ public class SchemaRegistryAsyncClientTests extends TestBase {
 
         if (interceptorManager.isPlaybackMode()) {
             tokenCredential = mock(TokenCredential.class);
+            schemaGroup = "at";
 
             // Sometimes it throws an "NotAMockException", so we had to change from thenReturn to thenAnswer.
             when(tokenCredential.getToken(any(TokenRequestContext.class))).thenAnswer(invocationOnMock -> {
@@ -62,9 +64,11 @@ public class SchemaRegistryAsyncClientTests extends TestBase {
             endpoint = "https://foo.servicebus.windows.net";
         } else {
             tokenCredential = new DefaultAzureCredentialBuilder().build();
-            endpoint = System.getenv(AZURE_EVENTHUBS_FULLY_QUALIFIED_DOMAIN_NAME);
+            endpoint = System.getenv(SCHEMA_REGISTRY_ENDPOINT);
+            schemaGroup = System.getenv(SCHEMA_REGISTRY_GROUP);
 
             assertNotNull(endpoint, "'endpoint' cannot be null in LIVE/RECORD mode.");
+            assertNotNull(schemaGroup, "'schemaGroup' cannot be null in LIVE/RECORD mode.");
         }
 
         builder = new SchemaRegistryClientBuilder()
@@ -97,7 +101,7 @@ public class SchemaRegistryAsyncClientTests extends TestBase {
         final AtomicReference<String> schemaId = new AtomicReference<>();
 
         // Act & Assert
-        StepVerifier.create(client1.registerSchema(SCHEMA_GROUP, schemaName, SCHEMA_CONTENT, SerializationType.AVRO))
+        StepVerifier.create(client1.registerSchema(schemaGroup, schemaName, SCHEMA_CONTENT, SerializationType.AVRO))
             .assertNext(response -> {
                 assertEquals(schemaName, response.getSchemaName());
                 assertNotNull(response.getSchemaId());
@@ -145,13 +149,13 @@ public class SchemaRegistryAsyncClientTests extends TestBase {
         final AtomicReference<String> schemaId2 = new AtomicReference<>();
 
         // Act & Assert
-        StepVerifier.create(client1.registerSchema(SCHEMA_GROUP, schemaName, SCHEMA_CONTENT, SerializationType.AVRO))
+        StepVerifier.create(client1.registerSchema(schemaGroup, schemaName, SCHEMA_CONTENT, SerializationType.AVRO))
             .assertNext(response -> {
                 assertSchemaProperties(response, null, schemaName, SCHEMA_CONTENT);
                 schemaId.set(response.getSchemaId());
             }).verifyComplete();
 
-        StepVerifier.create(client1.registerSchema(SCHEMA_GROUP, schemaName, schemaContentModified, SerializationType.AVRO))
+        StepVerifier.create(client1.registerSchema(schemaGroup, schemaName, schemaContentModified, SerializationType.AVRO))
             .assertNext(response -> {
                 assertSchemaProperties(response, null, schemaName, schemaContentModified);
                 schemaId2.set(response.getSchemaId());
@@ -181,7 +185,7 @@ public class SchemaRegistryAsyncClientTests extends TestBase {
         final AtomicReference<String> schemaId = new AtomicReference<>();
 
         // Act & Assert
-        StepVerifier.create(client1.registerSchema(SCHEMA_GROUP, schemaName, SCHEMA_CONTENT, SerializationType.AVRO))
+        StepVerifier.create(client1.registerSchema(schemaGroup, schemaName, SCHEMA_CONTENT, SerializationType.AVRO))
             .assertNext(response -> {
                 assertSchemaProperties(response, null, schemaName, SCHEMA_CONTENT);
                 schemaId.set(response.getSchemaId());
@@ -193,7 +197,7 @@ public class SchemaRegistryAsyncClientTests extends TestBase {
         assertNotNull(schemaIdToGet);
 
         // Act & Assert
-        StepVerifier.create(client2.getSchemaId(SCHEMA_GROUP, schemaName, SCHEMA_CONTENT, SerializationType.AVRO))
+        StepVerifier.create(client2.getSchemaId(schemaGroup, schemaName, SCHEMA_CONTENT, SerializationType.AVRO))
             .assertNext(schema -> assertEquals(schemaIdToGet, schema))
             .verifyComplete();
     }
@@ -209,7 +213,7 @@ public class SchemaRegistryAsyncClientTests extends TestBase {
         final SchemaRegistryAsyncClient client1 = builder.buildAsyncClient();
 
         // Act & Assert
-        StepVerifier.create(client1.registerSchema(SCHEMA_GROUP, schemaName, invalidContent, SerializationType.AVRO))
+        StepVerifier.create(client1.registerSchema(schemaGroup, schemaName, invalidContent, SerializationType.AVRO))
             .expectErrorSatisfies(error -> {
                 assertTrue(error instanceof ServiceErrorResponseException);
 
@@ -230,7 +234,7 @@ public class SchemaRegistryAsyncClientTests extends TestBase {
         final AtomicReference<String> schemaId = new AtomicReference<>();
 
         // Act & Assert
-        StepVerifier.create(client1.registerSchema(SCHEMA_GROUP, schemaName, SCHEMA_CONTENT, SerializationType.AVRO))
+        StepVerifier.create(client1.registerSchema(schemaGroup, schemaName, SCHEMA_CONTENT, SerializationType.AVRO))
             .assertNext(response -> {
                 assertSchemaProperties(response, null, schemaName, SCHEMA_CONTENT);
                 schemaId.set(response.getSchemaId());

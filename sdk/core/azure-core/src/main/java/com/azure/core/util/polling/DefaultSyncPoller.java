@@ -72,6 +72,9 @@ final class DefaultSyncPoller<T, U> implements SyncPoller<T, U> {
         //
         this.pollingContext.setOnetimeActivationResponse(this.activationResponse);
         this.pollingContext.setLatestResponse(this.activationResponse);
+        if (this.activationResponse.getStatus().isComplete()) {
+            this.terminalPollContext = this.pollingContext;
+        }
     }
 
     @Override

@@ -19,10 +19,10 @@ import reactor.core.publisher.Mono;
 
 import java.time.OffsetDateTime;
 
-import static com.azure.data.schemaregistry.SchemaRegistryAsyncClientTests.AZURE_EVENTHUBS_FULLY_QUALIFIED_DOMAIN_NAME;
 import static com.azure.data.schemaregistry.SchemaRegistryAsyncClientTests.RESOURCE_LENGTH;
 import static com.azure.data.schemaregistry.SchemaRegistryAsyncClientTests.SCHEMA_CONTENT;
-import static com.azure.data.schemaregistry.SchemaRegistryAsyncClientTests.SCHEMA_GROUP;
+import static com.azure.data.schemaregistry.SchemaRegistryAsyncClientTests.SCHEMA_REGISTRY_ENDPOINT;
+import static com.azure.data.schemaregistry.SchemaRegistryAsyncClientTests.SCHEMA_REGISTRY_GROUP;
 import static com.azure.data.schemaregistry.SchemaRegistryAsyncClientTests.assertSchemaProperties;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
@@ -37,6 +37,7 @@ import static org.mockito.Mockito.when;
  */
 public class SchemaRegistryClientTests extends TestBase {
 
+    private String schemaGroup;
     private SchemaRegistryClientBuilder builder;
 
     @Override
@@ -45,6 +46,7 @@ public class SchemaRegistryClientTests extends TestBase {
         TokenCredential tokenCredential;
         if (interceptorManager.isPlaybackMode()) {
             tokenCredential = mock(TokenCredential.class);
+            schemaGroup = "at";
 
             // Sometimes it throws an "NotAMockException", so we had to change from thenReturn to thenAnswer.
             when(tokenCredential.getToken(any(TokenRequestContext.class))).thenAnswer(invocationOnMock -> {
@@ -56,9 +58,11 @@ public class SchemaRegistryClientTests extends TestBase {
             endpoint = "https://foo.servicebus.windows.net";
         } else {
             tokenCredential = new DefaultAzureCredentialBuilder().build();
-            endpoint = System.getenv(AZURE_EVENTHUBS_FULLY_QUALIFIED_DOMAIN_NAME);
+            endpoint = System.getenv(SCHEMA_REGISTRY_ENDPOINT);
+            schemaGroup = System.getenv(SCHEMA_REGISTRY_GROUP);
 
             assertNotNull(endpoint, "'endpoint' cannot be null in LIVE/RECORD mode.");
+            assertNotNull(schemaGroup, "'schemaGroup' cannot be null in LIVE/RECORD mode.");
         }
 
         builder = new SchemaRegistryClientBuilder()
@@ -90,7 +94,7 @@ public class SchemaRegistryClientTests extends TestBase {
         final SchemaRegistryClient client2 = builder.buildClient();
 
         // Act
-        final SchemaProperties response = client1.registerSchema(SCHEMA_GROUP, schemaName, SCHEMA_CONTENT, SerializationType.AVRO);
+        final SchemaProperties response = client1.registerSchema(schemaGroup, schemaName, SCHEMA_CONTENT, SerializationType.AVRO);
 
         // Assert
         assertSchemaProperties(response, null, schemaName, SCHEMA_CONTENT);
@@ -119,13 +123,13 @@ public class SchemaRegistryClientTests extends TestBase {
         final SchemaRegistryClient client2 = builder.buildClient();
 
         // Act & Assert
-        final SchemaProperties response = client1.registerSchema(SCHEMA_GROUP, schemaName, SCHEMA_CONTENT,
+        final SchemaProperties response = client1.registerSchema(schemaGroup, schemaName, SCHEMA_CONTENT,
             SerializationType.AVRO);
         assertSchemaProperties(response, null, schemaName, SCHEMA_CONTENT);
 
         // Expected that the second time we call this method, it will return a different schema because the contents
         // are different.
-        final SchemaProperties response2 = client1.registerSchema(SCHEMA_GROUP, schemaName, schemaContentModified,
+        final SchemaProperties response2 = client1.registerSchema(schemaGroup, schemaName, schemaContentModified,
             SerializationType.AVRO);
         assertSchemaProperties(response2, null, schemaName, schemaContentModified);
 
@@ -149,7 +153,7 @@ public class SchemaRegistryClientTests extends TestBase {
         final SchemaRegistryClient client2 = builder.buildClient();
 
         // Act & Assert
-        final SchemaProperties response = client1.registerSchema(SCHEMA_GROUP, schemaName, SCHEMA_CONTENT,
+        final SchemaProperties response = client1.registerSchema(schemaGroup, schemaName, SCHEMA_CONTENT,
             SerializationType.AVRO);
         assertSchemaProperties(response, null, schemaName, SCHEMA_CONTENT);
 
@@ -159,7 +163,7 @@ public class SchemaRegistryClientTests extends TestBase {
         assertNotNull(schemaIdToGet);
 
         // Act & Assert
-        final String schemaId = client2.getSchemaId(SCHEMA_GROUP, schemaName, SCHEMA_CONTENT, SerializationType.AVRO);
+        final String schemaId = client2.getSchemaId(schemaGroup, schemaName, SCHEMA_CONTENT, SerializationType.AVRO);
         assertEquals(schemaIdToGet, schemaId);
     }
 
@@ -175,7 +179,7 @@ public class SchemaRegistryClientTests extends TestBase {
 
         // Act
         final ServiceErrorResponseException exception = assertThrows(ServiceErrorResponseException.class,
-            () -> client1.registerSchema(SCHEMA_GROUP, schemaName, invalidContent, SerializationType.AVRO));
+            () -> client1.registerSchema(schemaGroup, schemaName, invalidContent, SerializationType.AVRO));
 
         // Assert
         assertEquals(400, exception.getResponse().getStatusCode());
@@ -191,7 +195,7 @@ public class SchemaRegistryClientTests extends TestBase {
         final SchemaRegistryClient client1 = builder.buildClient();
 
         // Act & Assert
-        final SchemaProperties response = client1.registerSchema(SCHEMA_GROUP, schemaName, SCHEMA_CONTENT,
+        final SchemaProperties response = client1.registerSchema(schemaGroup, schemaName, SCHEMA_CONTENT,
             SerializationType.AVRO);
         assertSchemaProperties(response, null, schemaName, SCHEMA_CONTENT);
 
