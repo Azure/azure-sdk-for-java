@@ -52,14 +52,14 @@ public class ClientOptions {
      * @throws IllegalArgumentException If {@code applicationId} contains spaces or larger than 24 in length.
      */
     public ClientOptions setApplicationId(String applicationId) {
-        if (CoreUtils.isNullOrEmpty(applicationId)) {
-            this.applicationId = applicationId;
-        } else if (applicationId.length() > MAX_APPLICATION_ID_LENGTH) {
-            throw logger.logExceptionAsError(new IllegalArgumentException(INVALID_APPLICATION_ID_LENGTH));
-        } else if (applicationId.contains(" ")) {
-            throw logger.logExceptionAsError(new IllegalArgumentException(INVALID_APPLICATION_ID_SPACE));
-        } else {
-            this.applicationId = applicationId;
+        if (!CoreUtils.isNullOrEmpty(applicationId)) {
+            if (applicationId.length() > MAX_APPLICATION_ID_LENGTH) {
+                throw logger.logExceptionAsError(new IllegalArgumentException(INVALID_APPLICATION_ID_LENGTH));
+            } else if (applicationId.contains(" ")) {
+                throw logger.logExceptionAsError(new IllegalArgumentException(INVALID_APPLICATION_ID_SPACE));
+            } else {
+                this.applicationId = applicationId;
+            }
         }
 
         return this;

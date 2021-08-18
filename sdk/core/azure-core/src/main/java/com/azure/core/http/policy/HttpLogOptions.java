@@ -29,6 +29,9 @@ public class HttpLogOptions {
     private final ClientLogger logger = new ClientLogger(HttpLogOptions.class);
 
     private static final int MAX_APPLICATION_ID_LENGTH = 24;
+    private static final String INVALID_APPLICATION_ID_LENGTH = "'applicationId' length cannot be greater than "
+        + MAX_APPLICATION_ID_LENGTH;
+    private static final String INVALID_APPLICATION_ID_SPACE = "'applicationId' cannot contain spaces.";
     private static final List<String> DEFAULT_HEADERS_WHITELIST = Arrays.asList(
         "x-ms-client-request-id",
         "x-ms-return-client-request-id",
@@ -180,16 +183,14 @@ public class HttpLogOptions {
     public HttpLogOptions setApplicationId(final String applicationId) {
         if (!CoreUtils.isNullOrEmpty(applicationId)) {
             if (applicationId.length() > MAX_APPLICATION_ID_LENGTH) {
-                throw logger
-                    .logExceptionAsError(new IllegalArgumentException("'applicationId' length cannot be greater than "
-                        + MAX_APPLICATION_ID_LENGTH));
+                throw logger.logExceptionAsError(new IllegalArgumentException(INVALID_APPLICATION_ID_LENGTH));
             } else if (applicationId.contains(" ")) {
-                throw logger
-                    .logExceptionAsError(new IllegalArgumentException("'applicationId' must not contain a space."));
+                throw logger.logExceptionAsError(new IllegalArgumentException(INVALID_APPLICATION_ID_SPACE));
             } else {
                 this.applicationId = applicationId;
             }
         }
+
         return this;
     }
 
