@@ -10,7 +10,7 @@
 - Removed `Response<T>` overloads for getSchema and getSchemaId because response could be cached.
 - `SchemaRegistryClientBuilder.maxCacheSize` is package-private.
 
-### Dependency Updates
+### Other Changes
 - Update `azure-core-serializer-avro-apache` dependency to `1.0.0-beta.13`.
 
 ## 1.0.0-beta.4 (2020-09-21)

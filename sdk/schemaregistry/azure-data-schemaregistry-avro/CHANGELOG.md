@@ -2,8 +2,7 @@
 
 ## 1.0.0-beta.5 (2021-08-17)
 
-### Dependency Updates
-
+### Other Changes
 - Update `azure-data-schemaregistry` dependency to `1.0.0-beta.5`.
 - Update `azure-core-serializer-avro-apache` dependency to `1.0.0-beta.13`.
 
