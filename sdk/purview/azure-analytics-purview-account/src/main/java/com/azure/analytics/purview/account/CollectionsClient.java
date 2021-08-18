@@ -68,8 +68,9 @@ public final class CollectionsClient {
      * @return a collection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getWithResponse(String collectionName, RequestOptions requestOptions, Context context) {
-        return this.serviceClient.getWithResponse(collectionName, requestOptions, context);
+    public Response<BinaryData> getCollectionWithResponse(
+            String collectionName, RequestOptions requestOptions, Context context) {
+        return this.serviceClient.getCollectionWithResponse(collectionName, requestOptions, context);
     }
 
     /**
@@ -119,9 +120,10 @@ public final class CollectionsClient {
      * @return collection resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createOrUpdateWithResponse(
+    public Response<BinaryData> createOrUpdateCollectionWithResponse(
             String collectionName, BinaryData collection, RequestOptions requestOptions, Context context) {
-        return this.serviceClient.createOrUpdateWithResponse(collectionName, collection, requestOptions, context);
+        return this.serviceClient.createOrUpdateCollectionWithResponse(
+                collectionName, collection, requestOptions, context);
     }
 
     /**
@@ -141,181 +143,182 @@ public final class CollectionsClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(String collectionName, RequestOptions requestOptions, Context context) {
-        return this.serviceClient.deleteWithResponse(collectionName, requestOptions, context);
-    }
-
-    /**
-     * List the collections in the account.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     *     <tr><td>skipToken</td><td>String</td><td>No</td><td>The skipToken parameter</td></tr>
-     * </table>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     count: Long
-     *     nextLink: String
-     *     value: [
-     *         {
-     *             collectionProvisioningState: String(Unknown/Creating/Moving/Deleting/Failed/Succeeded)
-     *             description: String
-     *             friendlyName: String
-     *             name: String
-     *             parentCollection: {
-     *                 referenceName: String
-     *                 type: String
-     *             }
-     *             systemData: {
-     *                 createdAt: String
-     *                 createdBy: String
-     *                 createdByType: String(User/Application/ManagedIdentity/Key)
-     *                 lastModifiedAt: String
-     *                 lastModifiedBy: String
-     *                 lastModifiedByType: String(User/Application/ManagedIdentity/Key)
-     *             }
-     *         }
-     *     ]
-     * }
-     * }</pre>
-     *
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @return paged list of collections.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> listByAccount(RequestOptions requestOptions) {
-        return this.serviceClient.listByAccount(requestOptions);
-    }
-
-    /**
-     * List the collections in the account.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     *     <tr><td>skipToken</td><td>String</td><td>No</td><td>The skipToken parameter</td></tr>
-     * </table>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     count: Long
-     *     nextLink: String
-     *     value: [
-     *         {
-     *             collectionProvisioningState: String(Unknown/Creating/Moving/Deleting/Failed/Succeeded)
-     *             description: String
-     *             friendlyName: String
-     *             name: String
-     *             parentCollection: {
-     *                 referenceName: String
-     *                 type: String
-     *             }
-     *             systemData: {
-     *                 createdAt: String
-     *                 createdBy: String
-     *                 createdByType: String(User/Application/ManagedIdentity/Key)
-     *                 lastModifiedAt: String
-     *                 lastModifiedBy: String
-     *                 lastModifiedByType: String(User/Application/ManagedIdentity/Key)
-     *             }
-     *         }
-     *     ]
-     * }
-     * }</pre>
-     *
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @return paged list of collections.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> listByAccount(RequestOptions requestOptions, Context context) {
-        return this.serviceClient.listByAccount(requestOptions, context);
-    }
-
-    /**
-     * Lists the child collections names in the collection.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     *     <tr><td>skipToken</td><td>String</td><td>No</td><td>The skipToken parameter</td></tr>
-     * </table>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     count: Long
-     *     nextLink: String
-     *     value: [
-     *         {
-     *             friendlyName: String
-     *             name: String
-     *         }
-     *     ]
-     * }
-     * }</pre>
-     *
-     * @param collectionName The collectionName parameter.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @return paged list of collections.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> getChildCollectionNames(String collectionName, RequestOptions requestOptions) {
-        return this.serviceClient.getChildCollectionNames(collectionName, requestOptions);
-    }
-
-    /**
-     * Lists the child collections names in the collection.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     *     <tr><td>skipToken</td><td>String</td><td>No</td><td>The skipToken parameter</td></tr>
-     * </table>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     count: Long
-     *     nextLink: String
-     *     value: [
-     *         {
-     *             friendlyName: String
-     *             name: String
-     *         }
-     *     ]
-     * }
-     * }</pre>
-     *
-     * @param collectionName The collectionName parameter.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @return paged list of collections.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> getChildCollectionNames(
+    public Response<Void> deleteCollectionWithResponse(
             String collectionName, RequestOptions requestOptions, Context context) {
-        return this.serviceClient.getChildCollectionNames(collectionName, requestOptions, context);
+        return this.serviceClient.deleteCollectionWithResponse(collectionName, requestOptions, context);
+    }
+
+    /**
+     * List the collections in the account.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     *     <tr><td>skipToken</td><td>String</td><td>No</td><td>The skipToken parameter</td></tr>
+     * </table>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     count: Long
+     *     nextLink: String
+     *     value: [
+     *         {
+     *             collectionProvisioningState: String(Unknown/Creating/Moving/Deleting/Failed/Succeeded)
+     *             description: String
+     *             friendlyName: String
+     *             name: String
+     *             parentCollection: {
+     *                 referenceName: String
+     *                 type: String
+     *             }
+     *             systemData: {
+     *                 createdAt: String
+     *                 createdBy: String
+     *                 createdByType: String(User/Application/ManagedIdentity/Key)
+     *                 lastModifiedAt: String
+     *                 lastModifiedBy: String
+     *                 lastModifiedByType: String(User/Application/ManagedIdentity/Key)
+     *             }
+     *         }
+     *     ]
+     * }
+     * }</pre>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return paged list of collections.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<BinaryData> listCollections(RequestOptions requestOptions) {
+        return this.serviceClient.listCollections(requestOptions);
+    }
+
+    /**
+     * List the collections in the account.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     *     <tr><td>skipToken</td><td>String</td><td>No</td><td>The skipToken parameter</td></tr>
+     * </table>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     count: Long
+     *     nextLink: String
+     *     value: [
+     *         {
+     *             collectionProvisioningState: String(Unknown/Creating/Moving/Deleting/Failed/Succeeded)
+     *             description: String
+     *             friendlyName: String
+     *             name: String
+     *             parentCollection: {
+     *                 referenceName: String
+     *                 type: String
+     *             }
+     *             systemData: {
+     *                 createdAt: String
+     *                 createdBy: String
+     *                 createdByType: String(User/Application/ManagedIdentity/Key)
+     *                 lastModifiedAt: String
+     *                 lastModifiedBy: String
+     *                 lastModifiedByType: String(User/Application/ManagedIdentity/Key)
+     *             }
+     *         }
+     *     ]
+     * }
+     * }</pre>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @return paged list of collections.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<BinaryData> listCollections(RequestOptions requestOptions, Context context) {
+        return this.serviceClient.listCollections(requestOptions, context);
+    }
+
+    /**
+     * Lists the child collections names in the collection.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     *     <tr><td>skipToken</td><td>String</td><td>No</td><td>The skipToken parameter</td></tr>
+     * </table>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     count: Long
+     *     nextLink: String
+     *     value: [
+     *         {
+     *             friendlyName: String
+     *             name: String
+     *         }
+     *     ]
+     * }
+     * }</pre>
+     *
+     * @param collectionName The collectionName parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return paged list of collections.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<BinaryData> listChildCollectionNames(String collectionName, RequestOptions requestOptions) {
+        return this.serviceClient.listChildCollectionNames(collectionName, requestOptions);
+    }
+
+    /**
+     * Lists the child collections names in the collection.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     *     <tr><td>skipToken</td><td>String</td><td>No</td><td>The skipToken parameter</td></tr>
+     * </table>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     count: Long
+     *     nextLink: String
+     *     value: [
+     *         {
+     *             friendlyName: String
+     *             name: String
+     *         }
+     *     ]
+     * }
+     * }</pre>
+     *
+     * @param collectionName The collectionName parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @return paged list of collections.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<BinaryData> listChildCollectionNames(
+            String collectionName, RequestOptions requestOptions, Context context) {
+        return this.serviceClient.listChildCollectionNames(collectionName, requestOptions, context);
     }
 
     /**
@@ -327,7 +330,6 @@ public final class CollectionsClient {
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     *     <tr><td>skipToken</td><td>String</td><td>No</td><td>The skipToken parameter</td></tr>
      * </table>
      *
      * <p><strong>Response Body Schema</strong>

@@ -48,14 +48,14 @@ public final class AccountsImpl {
     @ServiceInterface(name = "PurviewAccountClient")
     private interface AccountsService {
         @Get("/")
-        Mono<Response<BinaryData>> get(
+        Mono<Response<BinaryData>> getAccountProperties(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
                 RequestOptions requestOptions,
                 Context context);
 
         @Patch("/")
-        Mono<Response<BinaryData>> update(
+        Mono<Response<BinaryData>> updateAccountProperties(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @BodyParam("application/json") BinaryData accountUpdateParameters,
@@ -63,14 +63,14 @@ public final class AccountsImpl {
                 Context context);
 
         @Post("/listkeys")
-        Mono<Response<BinaryData>> listKeys(
+        Mono<Response<BinaryData>> getAccessKeys(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
                 RequestOptions requestOptions,
                 Context context);
 
         @Post("/regeneratekeys")
-        Mono<Response<BinaryData>> regenerateKeys(
+        Mono<Response<BinaryData>> regenerateAccessKey(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @BodyParam("application/json") BinaryData keyOptions,
@@ -164,10 +164,10 @@ public final class AccountsImpl {
      * @return an account.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getWithResponseAsync(RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getAccountPropertiesWithResponseAsync(RequestOptions requestOptions) {
         return FluxUtil.withContext(
                 context ->
-                        service.get(
+                        service.getAccountProperties(
                                 this.client.getEndpoint(),
                                 this.client.getServiceVersion().getVersion(),
                                 requestOptions,
@@ -261,8 +261,9 @@ public final class AccountsImpl {
      * @return an account.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getWithResponseAsync(RequestOptions requestOptions, Context context) {
-        return service.get(
+    public Mono<Response<BinaryData>> getAccountPropertiesWithResponseAsync(
+            RequestOptions requestOptions, Context context) {
+        return service.getAccountProperties(
                 this.client.getEndpoint(), this.client.getServiceVersion().getVersion(), requestOptions, context);
     }
 
@@ -353,8 +354,8 @@ public final class AccountsImpl {
      * @return an account.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getWithResponse(RequestOptions requestOptions, Context context) {
-        return getWithResponseAsync(requestOptions, context).block();
+    public Response<BinaryData> getAccountPropertiesWithResponse(RequestOptions requestOptions, Context context) {
+        return getAccountPropertiesWithResponseAsync(requestOptions, context).block();
     }
 
     /**
@@ -452,11 +453,11 @@ public final class AccountsImpl {
      * @return account resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> updateWithResponseAsync(
+    public Mono<Response<BinaryData>> updateAccountPropertiesWithResponseAsync(
             BinaryData accountUpdateParameters, RequestOptions requestOptions) {
         return FluxUtil.withContext(
                 context ->
-                        service.update(
+                        service.updateAccountProperties(
                                 this.client.getEndpoint(),
                                 this.client.getServiceVersion().getVersion(),
                                 accountUpdateParameters,
@@ -560,9 +561,9 @@ public final class AccountsImpl {
      * @return account resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> updateWithResponseAsync(
+    public Mono<Response<BinaryData>> updateAccountPropertiesWithResponseAsync(
             BinaryData accountUpdateParameters, RequestOptions requestOptions, Context context) {
-        return service.update(
+        return service.updateAccountProperties(
                 this.client.getEndpoint(),
                 this.client.getServiceVersion().getVersion(),
                 accountUpdateParameters,
@@ -666,9 +667,9 @@ public final class AccountsImpl {
      * @return account resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> updateWithResponse(
+    public Response<BinaryData> updateAccountPropertiesWithResponse(
             BinaryData accountUpdateParameters, RequestOptions requestOptions, Context context) {
-        return updateWithResponseAsync(accountUpdateParameters, requestOptions, context).block();
+        return updateAccountPropertiesWithResponseAsync(accountUpdateParameters, requestOptions, context).block();
     }
 
     /**
@@ -695,10 +696,10 @@ public final class AccountsImpl {
      * @return the Account access keys.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> listKeysWithResponseAsync(RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getAccessKeysWithResponseAsync(RequestOptions requestOptions) {
         return FluxUtil.withContext(
                 context ->
-                        service.listKeys(
+                        service.getAccessKeys(
                                 this.client.getEndpoint(),
                                 this.client.getServiceVersion().getVersion(),
                                 requestOptions,
@@ -730,8 +731,8 @@ public final class AccountsImpl {
      * @return the Account access keys.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> listKeysWithResponseAsync(RequestOptions requestOptions, Context context) {
-        return service.listKeys(
+    public Mono<Response<BinaryData>> getAccessKeysWithResponseAsync(RequestOptions requestOptions, Context context) {
+        return service.getAccessKeys(
                 this.client.getEndpoint(), this.client.getServiceVersion().getVersion(), requestOptions, context);
     }
 
@@ -760,8 +761,8 @@ public final class AccountsImpl {
      * @return the Account access keys.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> listKeysWithResponse(RequestOptions requestOptions, Context context) {
-        return listKeysWithResponseAsync(requestOptions, context).block();
+    public Response<BinaryData> getAccessKeysWithResponse(RequestOptions requestOptions, Context context) {
+        return getAccessKeysWithResponseAsync(requestOptions, context).block();
     }
 
     /**
@@ -797,11 +798,11 @@ public final class AccountsImpl {
      * @return the Account access keys.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> regenerateKeysWithResponseAsync(
+    public Mono<Response<BinaryData>> regenerateAccessKeyWithResponseAsync(
             BinaryData keyOptions, RequestOptions requestOptions) {
         return FluxUtil.withContext(
                 context ->
-                        service.regenerateKeys(
+                        service.regenerateAccessKey(
                                 this.client.getEndpoint(),
                                 this.client.getServiceVersion().getVersion(),
                                 keyOptions,
@@ -843,9 +844,9 @@ public final class AccountsImpl {
      * @return the Account access keys.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> regenerateKeysWithResponseAsync(
+    public Mono<Response<BinaryData>> regenerateAccessKeyWithResponseAsync(
             BinaryData keyOptions, RequestOptions requestOptions, Context context) {
-        return service.regenerateKeys(
+        return service.regenerateAccessKey(
                 this.client.getEndpoint(),
                 this.client.getServiceVersion().getVersion(),
                 keyOptions,
@@ -887,8 +888,8 @@ public final class AccountsImpl {
      * @return the Account access keys.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> regenerateKeysWithResponse(
+    public Response<BinaryData> regenerateAccessKeyWithResponse(
             BinaryData keyOptions, RequestOptions requestOptions, Context context) {
-        return regenerateKeysWithResponseAsync(keyOptions, requestOptions, context).block();
+        return regenerateAccessKeyWithResponseAsync(keyOptions, requestOptions, context).block();
     }
 }

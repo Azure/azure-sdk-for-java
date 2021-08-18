@@ -57,7 +57,7 @@ public final class CollectionsImpl {
     @ServiceInterface(name = "PurviewAccountClient")
     private interface CollectionsService {
         @Get("/collections/{collectionName}")
-        Mono<Response<BinaryData>> get(
+        Mono<Response<BinaryData>> getCollection(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("collectionName") String collectionName,
                 @QueryParam("api-version") String apiVersion,
@@ -65,7 +65,7 @@ public final class CollectionsImpl {
                 Context context);
 
         @Put("/collections/{collectionName}")
-        Mono<Response<BinaryData>> createOrUpdate(
+        Mono<Response<BinaryData>> createOrUpdateCollection(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("collectionName") String collectionName,
                 @QueryParam("api-version") String apiVersion,
@@ -74,7 +74,7 @@ public final class CollectionsImpl {
                 Context context);
 
         @Delete("/collections/{collectionName}")
-        Mono<Response<Void>> delete(
+        Mono<Response<Void>> deleteCollection(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("collectionName") String collectionName,
                 @QueryParam("api-version") String apiVersion,
@@ -82,14 +82,14 @@ public final class CollectionsImpl {
                 Context context);
 
         @Get("/collections")
-        Mono<Response<BinaryData>> listByAccount(
+        Mono<Response<BinaryData>> listCollections(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
                 RequestOptions requestOptions,
                 Context context);
 
         @Get("/collections/{collectionName}/getChildCollectionNames")
-        Mono<Response<BinaryData>> getChildCollectionNames(
+        Mono<Response<BinaryData>> listChildCollectionNames(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("collectionName") String collectionName,
                 @QueryParam("api-version") String apiVersion,
@@ -105,14 +105,14 @@ public final class CollectionsImpl {
                 Context context);
 
         @Get("{nextLink}")
-        Mono<Response<BinaryData>> listByAccountNext(
+        Mono<Response<BinaryData>> listCollectionsNext(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
                 @HostParam("endpoint") String endpoint,
                 RequestOptions requestOptions,
                 Context context);
 
         @Get("{nextLink}")
-        Mono<Response<BinaryData>> getChildCollectionNamesNext(
+        Mono<Response<BinaryData>> listChildCollectionNamesNext(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
                 @HostParam("endpoint") String endpoint,
                 RequestOptions requestOptions,
@@ -158,10 +158,11 @@ public final class CollectionsImpl {
      * @return a collection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getWithResponseAsync(String collectionName, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getCollectionWithResponseAsync(
+            String collectionName, RequestOptions requestOptions) {
         return FluxUtil.withContext(
                 context ->
-                        service.get(
+                        service.getCollection(
                                 this.client.getEndpoint(),
                                 collectionName,
                                 this.client.getServiceVersion().getVersion(),
@@ -209,9 +210,9 @@ public final class CollectionsImpl {
      * @return a collection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getWithResponseAsync(
+    public Mono<Response<BinaryData>> getCollectionWithResponseAsync(
             String collectionName, RequestOptions requestOptions, Context context) {
-        return service.get(
+        return service.getCollection(
                 this.client.getEndpoint(),
                 collectionName,
                 this.client.getServiceVersion().getVersion(),
@@ -259,8 +260,9 @@ public final class CollectionsImpl {
      * @return a collection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getWithResponse(String collectionName, RequestOptions requestOptions, Context context) {
-        return getWithResponseAsync(collectionName, requestOptions, context).block();
+    public Response<BinaryData> getCollectionWithResponse(
+            String collectionName, RequestOptions requestOptions, Context context) {
+        return getCollectionWithResponseAsync(collectionName, requestOptions, context).block();
     }
 
     /**
@@ -309,11 +311,11 @@ public final class CollectionsImpl {
      * @return collection resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createOrUpdateWithResponseAsync(
+    public Mono<Response<BinaryData>> createOrUpdateCollectionWithResponseAsync(
             String collectionName, BinaryData collection, RequestOptions requestOptions) {
         return FluxUtil.withContext(
                 context ->
-                        service.createOrUpdate(
+                        service.createOrUpdateCollection(
                                 this.client.getEndpoint(),
                                 collectionName,
                                 this.client.getServiceVersion().getVersion(),
@@ -369,9 +371,9 @@ public final class CollectionsImpl {
      * @return collection resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createOrUpdateWithResponseAsync(
+    public Mono<Response<BinaryData>> createOrUpdateCollectionWithResponseAsync(
             String collectionName, BinaryData collection, RequestOptions requestOptions, Context context) {
-        return service.createOrUpdate(
+        return service.createOrUpdateCollection(
                 this.client.getEndpoint(),
                 collectionName,
                 this.client.getServiceVersion().getVersion(),
@@ -427,9 +429,9 @@ public final class CollectionsImpl {
      * @return collection resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createOrUpdateWithResponse(
+    public Response<BinaryData> createOrUpdateCollectionWithResponse(
             String collectionName, BinaryData collection, RequestOptions requestOptions, Context context) {
-        return createOrUpdateWithResponseAsync(collectionName, collection, requestOptions, context).block();
+        return createOrUpdateCollectionWithResponseAsync(collectionName, collection, requestOptions, context).block();
     }
 
     /**
@@ -448,10 +450,11 @@ public final class CollectionsImpl {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteWithResponseAsync(String collectionName, RequestOptions requestOptions) {
+    public Mono<Response<Void>> deleteCollectionWithResponseAsync(
+            String collectionName, RequestOptions requestOptions) {
         return FluxUtil.withContext(
                 context ->
-                        service.delete(
+                        service.deleteCollection(
                                 this.client.getEndpoint(),
                                 collectionName,
                                 this.client.getServiceVersion().getVersion(),
@@ -476,9 +479,9 @@ public final class CollectionsImpl {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteWithResponseAsync(
+    public Mono<Response<Void>> deleteCollectionWithResponseAsync(
             String collectionName, RequestOptions requestOptions, Context context) {
-        return service.delete(
+        return service.deleteCollection(
                 this.client.getEndpoint(),
                 collectionName,
                 this.client.getServiceVersion().getVersion(),
@@ -503,8 +506,9 @@ public final class CollectionsImpl {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(String collectionName, RequestOptions requestOptions, Context context) {
-        return deleteWithResponseAsync(collectionName, requestOptions, context).block();
+    public Response<Void> deleteCollectionWithResponse(
+            String collectionName, RequestOptions requestOptions, Context context) {
+        return deleteCollectionWithResponseAsync(collectionName, requestOptions, context).block();
     }
 
     /**
@@ -552,10 +556,10 @@ public final class CollectionsImpl {
      * @return paged list of collections.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<BinaryData>> listByAccountSinglePageAsync(RequestOptions requestOptions) {
+    public Mono<PagedResponse<BinaryData>> listCollectionsSinglePageAsync(RequestOptions requestOptions) {
         return FluxUtil.withContext(
                         context ->
-                                service.listByAccount(
+                                service.listCollections(
                                         this.client.getEndpoint(),
                                         this.client.getServiceVersion().getVersion(),
                                         requestOptions,
@@ -617,9 +621,9 @@ public final class CollectionsImpl {
      * @return paged list of collections.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<BinaryData>> listByAccountSinglePageAsync(
+    public Mono<PagedResponse<BinaryData>> listCollectionsSinglePageAsync(
             RequestOptions requestOptions, Context context) {
-        return service.listByAccount(
+        return service.listCollections(
                         this.client.getEndpoint(),
                         this.client.getServiceVersion().getVersion(),
                         requestOptions,
@@ -680,10 +684,10 @@ public final class CollectionsImpl {
      * @return paged list of collections.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> listByAccountAsync(RequestOptions requestOptions) {
+    public PagedFlux<BinaryData> listCollectionsAsync(RequestOptions requestOptions) {
         return new PagedFlux<>(
-                () -> listByAccountSinglePageAsync(requestOptions),
-                nextLink -> listByAccountNextSinglePageAsync(nextLink, null));
+                () -> listCollectionsSinglePageAsync(requestOptions),
+                nextLink -> listCollectionsNextSinglePageAsync(nextLink, null));
     }
 
     /**
@@ -732,10 +736,10 @@ public final class CollectionsImpl {
      * @return paged list of collections.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> listByAccountAsync(RequestOptions requestOptions, Context context) {
+    public PagedFlux<BinaryData> listCollectionsAsync(RequestOptions requestOptions, Context context) {
         return new PagedFlux<>(
-                () -> listByAccountSinglePageAsync(requestOptions, context),
-                nextLink -> listByAccountNextSinglePageAsync(nextLink, null, context));
+                () -> listCollectionsSinglePageAsync(requestOptions, context),
+                nextLink -> listCollectionsNextSinglePageAsync(nextLink, null, context));
     }
 
     /**
@@ -783,8 +787,8 @@ public final class CollectionsImpl {
      * @return paged list of collections.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> listByAccount(RequestOptions requestOptions) {
-        return new PagedIterable<>(listByAccountAsync(requestOptions));
+    public PagedIterable<BinaryData> listCollections(RequestOptions requestOptions) {
+        return new PagedIterable<>(listCollectionsAsync(requestOptions));
     }
 
     /**
@@ -833,8 +837,8 @@ public final class CollectionsImpl {
      * @return paged list of collections.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> listByAccount(RequestOptions requestOptions, Context context) {
-        return new PagedIterable<>(listByAccountAsync(requestOptions, context));
+    public PagedIterable<BinaryData> listCollections(RequestOptions requestOptions, Context context) {
+        return new PagedIterable<>(listCollectionsAsync(requestOptions, context));
     }
 
     /**
@@ -869,11 +873,11 @@ public final class CollectionsImpl {
      * @return paged list of collections.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<BinaryData>> getChildCollectionNamesSinglePageAsync(
+    public Mono<PagedResponse<BinaryData>> listChildCollectionNamesSinglePageAsync(
             String collectionName, RequestOptions requestOptions) {
         return FluxUtil.withContext(
                         context ->
-                                service.getChildCollectionNames(
+                                service.listChildCollectionNames(
                                         this.client.getEndpoint(),
                                         collectionName,
                                         this.client.getServiceVersion().getVersion(),
@@ -923,9 +927,9 @@ public final class CollectionsImpl {
      * @return paged list of collections.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<BinaryData>> getChildCollectionNamesSinglePageAsync(
+    public Mono<PagedResponse<BinaryData>> listChildCollectionNamesSinglePageAsync(
             String collectionName, RequestOptions requestOptions, Context context) {
-        return service.getChildCollectionNames(
+        return service.listChildCollectionNames(
                         this.client.getEndpoint(),
                         collectionName,
                         this.client.getServiceVersion().getVersion(),
@@ -974,10 +978,10 @@ public final class CollectionsImpl {
      * @return paged list of collections.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> getChildCollectionNamesAsync(String collectionName, RequestOptions requestOptions) {
+    public PagedFlux<BinaryData> listChildCollectionNamesAsync(String collectionName, RequestOptions requestOptions) {
         return new PagedFlux<>(
-                () -> getChildCollectionNamesSinglePageAsync(collectionName, requestOptions),
-                nextLink -> getChildCollectionNamesNextSinglePageAsync(nextLink, null));
+                () -> listChildCollectionNamesSinglePageAsync(collectionName, requestOptions),
+                nextLink -> listChildCollectionNamesNextSinglePageAsync(nextLink, null));
     }
 
     /**
@@ -1013,11 +1017,11 @@ public final class CollectionsImpl {
      * @return paged list of collections.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> getChildCollectionNamesAsync(
+    public PagedFlux<BinaryData> listChildCollectionNamesAsync(
             String collectionName, RequestOptions requestOptions, Context context) {
         return new PagedFlux<>(
-                () -> getChildCollectionNamesSinglePageAsync(collectionName, requestOptions, context),
-                nextLink -> getChildCollectionNamesNextSinglePageAsync(nextLink, null, context));
+                () -> listChildCollectionNamesSinglePageAsync(collectionName, requestOptions, context),
+                nextLink -> listChildCollectionNamesNextSinglePageAsync(nextLink, null, context));
     }
 
     /**
@@ -1052,8 +1056,8 @@ public final class CollectionsImpl {
      * @return paged list of collections.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> getChildCollectionNames(String collectionName, RequestOptions requestOptions) {
-        return new PagedIterable<>(getChildCollectionNamesAsync(collectionName, requestOptions));
+    public PagedIterable<BinaryData> listChildCollectionNames(String collectionName, RequestOptions requestOptions) {
+        return new PagedIterable<>(listChildCollectionNamesAsync(collectionName, requestOptions));
     }
 
     /**
@@ -1089,9 +1093,9 @@ public final class CollectionsImpl {
      * @return paged list of collections.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> getChildCollectionNames(
+    public PagedIterable<BinaryData> listChildCollectionNames(
             String collectionName, RequestOptions requestOptions, Context context) {
-        return new PagedIterable<>(getChildCollectionNamesAsync(collectionName, requestOptions, context));
+        return new PagedIterable<>(listChildCollectionNamesAsync(collectionName, requestOptions, context));
     }
 
     /**
@@ -1103,7 +1107,6 @@ public final class CollectionsImpl {
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     *     <tr><td>skipToken</td><td>String</td><td>No</td><td>The skipToken parameter</td></tr>
      * </table>
      *
      * <p><strong>Response Body Schema</strong>
@@ -1145,7 +1148,6 @@ public final class CollectionsImpl {
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     *     <tr><td>skipToken</td><td>String</td><td>No</td><td>The skipToken parameter</td></tr>
      * </table>
      *
      * <p><strong>Response Body Schema</strong>
@@ -1186,7 +1188,6 @@ public final class CollectionsImpl {
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     *     <tr><td>skipToken</td><td>String</td><td>No</td><td>The skipToken parameter</td></tr>
      * </table>
      *
      * <p><strong>Response Body Schema</strong>
@@ -1250,11 +1251,12 @@ public final class CollectionsImpl {
      * @return paged list of collections.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<BinaryData>> listByAccountNextSinglePageAsync(
+    public Mono<PagedResponse<BinaryData>> listCollectionsNextSinglePageAsync(
             String nextLink, RequestOptions requestOptions) {
         return FluxUtil.withContext(
                         context ->
-                                service.listByAccountNext(nextLink, this.client.getEndpoint(), requestOptions, context))
+                                service.listCollectionsNext(
+                                        nextLink, this.client.getEndpoint(), requestOptions, context))
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -1304,9 +1306,9 @@ public final class CollectionsImpl {
      * @return paged list of collections.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<BinaryData>> listByAccountNextSinglePageAsync(
+    public Mono<PagedResponse<BinaryData>> listCollectionsNextSinglePageAsync(
             String nextLink, RequestOptions requestOptions, Context context) {
-        return service.listByAccountNext(nextLink, this.client.getEndpoint(), requestOptions, context)
+        return service.listCollectionsNext(nextLink, this.client.getEndpoint(), requestOptions, context)
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -1341,11 +1343,11 @@ public final class CollectionsImpl {
      * @return paged list of collections.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<BinaryData>> getChildCollectionNamesNextSinglePageAsync(
+    public Mono<PagedResponse<BinaryData>> listChildCollectionNamesNextSinglePageAsync(
             String nextLink, RequestOptions requestOptions) {
         return FluxUtil.withContext(
                         context ->
-                                service.getChildCollectionNamesNext(
+                                service.listChildCollectionNamesNext(
                                         nextLink, this.client.getEndpoint(), requestOptions, context))
                 .map(
                         res ->
@@ -1382,9 +1384,9 @@ public final class CollectionsImpl {
      * @return paged list of collections.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<BinaryData>> getChildCollectionNamesNextSinglePageAsync(
+    public Mono<PagedResponse<BinaryData>> listChildCollectionNamesNextSinglePageAsync(
             String nextLink, RequestOptions requestOptions, Context context) {
-        return service.getChildCollectionNamesNext(nextLink, this.client.getEndpoint(), requestOptions, context)
+        return service.listChildCollectionNamesNext(nextLink, this.client.getEndpoint(), requestOptions, context)
                 .map(
                         res ->
                                 new PagedResponseBase<>(

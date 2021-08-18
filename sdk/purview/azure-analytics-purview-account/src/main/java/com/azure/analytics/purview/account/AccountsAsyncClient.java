@@ -113,8 +113,8 @@ public final class AccountsAsyncClient {
      * @return an account.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getWithResponse(RequestOptions requestOptions) {
-        return this.serviceClient.getWithResponseAsync(requestOptions);
+    public Mono<Response<BinaryData>> getAccountPropertiesWithResponse(RequestOptions requestOptions) {
+        return this.serviceClient.getAccountPropertiesWithResponseAsync(requestOptions);
     }
 
     /**
@@ -212,9 +212,9 @@ public final class AccountsAsyncClient {
      * @return account resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> updateWithResponse(
+    public Mono<Response<BinaryData>> updateAccountPropertiesWithResponse(
             BinaryData accountUpdateParameters, RequestOptions requestOptions) {
-        return this.serviceClient.updateWithResponseAsync(accountUpdateParameters, requestOptions);
+        return this.serviceClient.updateAccountPropertiesWithResponseAsync(accountUpdateParameters, requestOptions);
     }
 
     /**
@@ -241,8 +241,8 @@ public final class AccountsAsyncClient {
      * @return the Account access keys.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> listKeysWithResponse(RequestOptions requestOptions) {
-        return this.serviceClient.listKeysWithResponseAsync(requestOptions);
+    public Mono<Response<BinaryData>> getAccessKeysWithResponse(RequestOptions requestOptions) {
+        return this.serviceClient.getAccessKeysWithResponseAsync(requestOptions);
     }
 
     /**
@@ -278,7 +278,8 @@ public final class AccountsAsyncClient {
      * @return the Account access keys.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> regenerateKeysWithResponse(BinaryData keyOptions, RequestOptions requestOptions) {
-        return this.serviceClient.regenerateKeysWithResponseAsync(keyOptions, requestOptions);
+    public Mono<Response<BinaryData>> regenerateAccessKeyWithResponse(
+            BinaryData keyOptions, RequestOptions requestOptions) {
+        return this.serviceClient.regenerateAccessKeyWithResponseAsync(keyOptions, requestOptions);
     }
 }

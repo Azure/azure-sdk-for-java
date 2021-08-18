@@ -30,10 +30,10 @@ import java.util.Map;
         serviceClients = {
             AccountsClient.class,
             CollectionsClient.class,
-            ResourceSetRuleConfigsClient.class,
+            ResourceSetRulesClient.class,
             AccountsAsyncClient.class,
             CollectionsAsyncClient.class,
-            ResourceSetRuleConfigsAsyncClient.class
+            ResourceSetRulesAsyncClient.class
         })
 public final class PurviewAccountClientBuilder {
     private static final String SDK_NAME = "name";
@@ -261,12 +261,12 @@ public final class PurviewAccountClientBuilder {
     }
 
     /**
-     * Builds an instance of ResourceSetRuleConfigsAsyncClient async client.
+     * Builds an instance of ResourceSetRulesAsyncClient async client.
      *
-     * @return an instance of ResourceSetRuleConfigsAsyncClient.
+     * @return an instance of ResourceSetRulesAsyncClient.
      */
-    public ResourceSetRuleConfigsAsyncClient buildResourceSetRuleConfigsAsyncClient() {
-        return new ResourceSetRuleConfigsAsyncClient(buildInnerClient().getResourceSetRuleConfigs());
+    public ResourceSetRulesAsyncClient buildResourceSetRulesAsyncClient() {
+        return new ResourceSetRulesAsyncClient(buildInnerClient().getResourceSetRules());
     }
 
     /**
@@ -288,11 +288,11 @@ public final class PurviewAccountClientBuilder {
     }
 
     /**
-     * Builds an instance of ResourceSetRuleConfigsClient sync client.
+     * Builds an instance of ResourceSetRulesClient sync client.
      *
-     * @return an instance of ResourceSetRuleConfigsClient.
+     * @return an instance of ResourceSetRulesClient.
      */
-    public ResourceSetRuleConfigsClient buildResourceSetRuleConfigsClient() {
-        return new ResourceSetRuleConfigsClient(buildInnerClient().getResourceSetRuleConfigs());
+    public ResourceSetRulesClient buildResourceSetRulesClient() {
+        return new ResourceSetRulesClient(buildInnerClient().getResourceSetRules());
     }
 }

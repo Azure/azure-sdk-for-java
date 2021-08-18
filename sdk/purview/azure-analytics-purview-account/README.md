@@ -1,6 +1,6 @@
 # Azure Purview Account client library for Java
 
-Azure Purview Account.
+Azure Purview data plane account. It supports data plane operations. It can manage account, collections, keys, resource set rule.
 
 **Please rely heavily on the [service's documentation][product_documentation] and our [Low-Level client docs][low_level_client] to use this library**
 

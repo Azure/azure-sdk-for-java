@@ -67,8 +67,8 @@ public final class CollectionsAsyncClient {
      * @return a collection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getWithResponse(String collectionName, RequestOptions requestOptions) {
-        return this.serviceClient.getWithResponseAsync(collectionName, requestOptions);
+    public Mono<Response<BinaryData>> getCollectionWithResponse(String collectionName, RequestOptions requestOptions) {
+        return this.serviceClient.getCollectionWithResponseAsync(collectionName, requestOptions);
     }
 
     /**
@@ -117,9 +117,9 @@ public final class CollectionsAsyncClient {
      * @return collection resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createOrUpdateWithResponse(
+    public Mono<Response<BinaryData>> createOrUpdateCollectionWithResponse(
             String collectionName, BinaryData collection, RequestOptions requestOptions) {
-        return this.serviceClient.createOrUpdateWithResponseAsync(collectionName, collection, requestOptions);
+        return this.serviceClient.createOrUpdateCollectionWithResponseAsync(collectionName, collection, requestOptions);
     }
 
     /**
@@ -138,8 +138,8 @@ public final class CollectionsAsyncClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteWithResponse(String collectionName, RequestOptions requestOptions) {
-        return this.serviceClient.deleteWithResponseAsync(collectionName, requestOptions);
+    public Mono<Response<Void>> deleteCollectionWithResponse(String collectionName, RequestOptions requestOptions) {
+        return this.serviceClient.deleteCollectionWithResponseAsync(collectionName, requestOptions);
     }
 
     /**
@@ -187,8 +187,8 @@ public final class CollectionsAsyncClient {
      * @return paged list of collections.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> listByAccount(RequestOptions requestOptions) {
-        return this.serviceClient.listByAccountAsync(requestOptions);
+    public PagedFlux<BinaryData> listCollections(RequestOptions requestOptions) {
+        return this.serviceClient.listCollectionsAsync(requestOptions);
     }
 
     /**
@@ -223,8 +223,8 @@ public final class CollectionsAsyncClient {
      * @return paged list of collections.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> getChildCollectionNames(String collectionName, RequestOptions requestOptions) {
-        return this.serviceClient.getChildCollectionNamesAsync(collectionName, requestOptions);
+    public PagedFlux<BinaryData> listChildCollectionNames(String collectionName, RequestOptions requestOptions) {
+        return this.serviceClient.listChildCollectionNamesAsync(collectionName, requestOptions);
     }
 
     /**
@@ -236,7 +236,6 @@ public final class CollectionsAsyncClient {
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     *     <tr><td>skipToken</td><td>String</td><td>No</td><td>The skipToken parameter</td></tr>
      * </table>
      *
      * <p><strong>Response Body Schema</strong>

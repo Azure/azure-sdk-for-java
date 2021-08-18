@@ -1,20 +1,19 @@
 {
   "networkCallRecords" : [ {
-    "Method" : "GET",
-    "Uri" : "https://REDACTED.purview.azure.com?api-version=2019-11-01-preview",
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.purview.azure.com/listkeys?api-version=2019-11-01-preview",
     "Headers" : {
-      "x-ms-client-request-id" : "a8ef7a70-abb0-4f0e-8442-b49cc6cda568"
+      "x-ms-client-request-id" : "9f88dd2d-9d80-4593-b7af-4169a2d49c3e"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
-      "x-ms-account-status" : "Succeeded",
       "Server" : "Kestrel",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "Body" : "{\"sku\":{\"name\":\"Standard\",\"capacity\":4},\"properties\":{\"cloudConnectors\":{\"awsExternalId\":\"5c37e31f-6ff8-4ef8-8b4d-60c49b0f90f6\"},\"friendlyName\":\"fypvac\",\"createdBy\":\"fey@microsoft.com\",\"createdByObjectId\":\"0a592c45-613e-4f1b-9023-7c4414fd53bf\",\"createdAt\":\"2021-08-04T08:34:28.6789756Z\",\"endpoints\":{\"catalog\":\"https://fypvac.catalog.purview.azure.com\",\"scan\":\"https://fypvac.scan.purview.azure.com\",\"guardian\":\"https://fypvac.guardian.purview.azure.com\"},\"provisioningState\":\"Succeeded\",\"privateEndpointConnections\":[],\"managedResources\":{\"resourceGroup\":\"/subscriptions/0b1f6471-1bf0-4dda-aec3-cb9272f09590/resourceGroups/managed-rg-fypvac\",\"storageAccount\":\"/subscriptions/0b1f6471-1bf0-4dda-aec3-cb9272f09590/resourceGroups/managed-rg-fypvac/providers/Microsoft.Storage/storageAccounts/scaneastusdsmvroz\",\"eventHubNamespace\":\"/subscriptions/0b1f6471-1bf0-4dda-aec3-cb9272f09590/resourceGroups/managed-rg-fypvac/providers/Microsoft.EventHub/namespaces/Atlas-b709b982-e5b5-436f-b0e6-eca43c5eb8bf\"},\"publicNetworkAccess\":\"Enabled\",\"managedResourceGroupName\":\"managed-rg-fypvac\"},\"id\":\"/subscriptions/0b1f6471-1bf0-4dda-aec3-cb9272f09590/resourceGroups/fypurview/providers/Microsoft.Purview/accounts/fypvac\",\"name\":\"fypvac\",\"type\":\"Microsoft.Purview/accounts\",\"location\":\"eastus\",\"identity\":{\"type\":\"SystemAssigned\",\"principalId\":\"167df1e1-a087-43aa-8a7f-c17a4bbd4d36\",\"tenantId\":\"54826b22-38d6-4fb2-bad9-b7b93a3e9c5a\"},\"tags\":{},\"systemData\":{\"createdBy\":\"fey@microsoft.com\",\"createdByType\":\"User\",\"createdAt\":\"2021-08-04T08:34:28.6789756Z\",\"lastModifiedBy\":\"fey@microsoft.com\",\"lastModifiedByType\":\"User\",\"lastModifiedAt\":\"2021-08-04T08:34:28.6789756Z\"}}",
-      "Date" : "Tue, 17 Aug 2021 11:08:52 GMT",
-      "x-ms-correlation-request-id" : "6e3758d2-41b6-41bf-b445-facbb67a4545",
+      "Body" : "{\"atlasKafkaPrimaryEndpoint\":\"Endpoint=sb://atlas-b709b982-e5b5-436f-b0e6-eca43c5eb8bf.servicebus.windows.net/;SharedAccessKeyName=AlternateSharedAccessKey;SharedAccessKey=k2c+6E2Mb5o03ead1Yl4h7PcGwciu04MC2Buemv8pEo=\",\"atlasKafkaSecondaryEndpoint\":\"Endpoint=sb://atlas-b709b982-e5b5-436f-b0e6-eca43c5eb8bf.servicebus.windows.net/;SharedAccessKeyName=AlternateSharedAccessKey;SharedAccessKey=tIAXs4GqMrd56p68mJUgQRHuMME4wznK1/BvJKA0jh8=\"}",
+      "Date" : "Wed, 18 Aug 2021 03:28:18 GMT",
+      "x-ms-correlation-request-id" : "3c419ac5-a299-4ba4-b878-b295469462ad",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null

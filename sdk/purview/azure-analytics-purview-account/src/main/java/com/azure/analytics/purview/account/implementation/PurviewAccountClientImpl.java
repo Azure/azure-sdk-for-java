@@ -87,16 +87,16 @@ public final class PurviewAccountClientImpl {
         return this.collections;
     }
 
-    /** The ResourceSetRuleConfigsImpl object to access its operations. */
-    private final ResourceSetRuleConfigsImpl resourceSetRuleConfigs;
+    /** The ResourceSetRulesImpl object to access its operations. */
+    private final ResourceSetRulesImpl resourceSetRules;
 
     /**
-     * Gets the ResourceSetRuleConfigsImpl object to access its operations.
+     * Gets the ResourceSetRulesImpl object to access its operations.
      *
-     * @return the ResourceSetRuleConfigsImpl object.
+     * @return the ResourceSetRulesImpl object.
      */
-    public ResourceSetRuleConfigsImpl getResourceSetRuleConfigs() {
-        return this.resourceSetRuleConfigs;
+    public ResourceSetRulesImpl getResourceSetRules() {
+        return this.resourceSetRules;
     }
 
     /**
@@ -146,6 +146,6 @@ public final class PurviewAccountClientImpl {
         this.serviceVersion = serviceVersion;
         this.accounts = new AccountsImpl(this);
         this.collections = new CollectionsImpl(this);
-        this.resourceSetRuleConfigs = new ResourceSetRuleConfigsImpl(this);
+        this.resourceSetRules = new ResourceSetRulesImpl(this);
     }
 }

@@ -4,7 +4,7 @@
 
 package com.azure.analytics.purview.account;
 
-import com.azure.analytics.purview.account.implementation.ResourceSetRuleConfigsImpl;
+import com.azure.analytics.purview.account.implementation.ResourceSetRulesImpl;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
@@ -16,15 +16,15 @@ import com.azure.core.util.Context;
 
 /** Initializes a new instance of the synchronous PurviewAccountClient type. */
 @ServiceClient(builder = PurviewAccountClientBuilder.class)
-public final class ResourceSetRuleConfigsClient {
-    private final ResourceSetRuleConfigsImpl serviceClient;
+public final class ResourceSetRulesClient {
+    private final ResourceSetRulesImpl serviceClient;
 
     /**
-     * Initializes an instance of ResourceSetRuleConfigs client.
+     * Initializes an instance of ResourceSetRules client.
      *
      * @param serviceClient the service client implementation.
      */
-    ResourceSetRuleConfigsClient(ResourceSetRuleConfigsImpl serviceClient) {
+    ResourceSetRulesClient(ResourceSetRulesImpl serviceClient) {
         this.serviceClient = serviceClient;
     }
 
@@ -145,8 +145,8 @@ public final class ResourceSetRuleConfigsClient {
      * @return a resource set config service model.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getWithResponse(RequestOptions requestOptions, Context context) {
-        return this.serviceClient.getWithResponse(requestOptions, context);
+    public Response<BinaryData> getResourceSetRuleWithResponse(RequestOptions requestOptions, Context context) {
+        return this.serviceClient.getResourceSetRuleWithResponse(requestOptions, context);
     }
 
     /**
@@ -273,9 +273,10 @@ public final class ResourceSetRuleConfigsClient {
      * @return resourceSetRuleConfig implementation class.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createOrUpdateWithResponse(
+    public Response<BinaryData> createOrUpdateResourceSetRuleWithResponse(
             BinaryData resourceSetRuleConfig, RequestOptions requestOptions, Context context) {
-        return this.serviceClient.createOrUpdateWithResponse(resourceSetRuleConfig, requestOptions, context);
+        return this.serviceClient.createOrUpdateResourceSetRuleWithResponse(
+                resourceSetRuleConfig, requestOptions, context);
     }
 
     /**
@@ -294,8 +295,8 @@ public final class ResourceSetRuleConfigsClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(RequestOptions requestOptions, Context context) {
-        return this.serviceClient.deleteWithResponse(requestOptions, context);
+    public Response<Void> deleteResourceSetRuleWithResponse(RequestOptions requestOptions, Context context) {
+        return this.serviceClient.deleteResourceSetRuleWithResponse(requestOptions, context);
     }
 
     /**
@@ -421,8 +422,8 @@ public final class ResourceSetRuleConfigsClient {
      * @return a resource set config service model.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> listByAccount(RequestOptions requestOptions) {
-        return this.serviceClient.listByAccount(requestOptions);
+    public PagedIterable<BinaryData> listResourceSetRules(RequestOptions requestOptions) {
+        return this.serviceClient.listResourceSetRules(requestOptions);
     }
 
     /**
@@ -549,7 +550,7 @@ public final class ResourceSetRuleConfigsClient {
      * @return a resource set config service model.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> listByAccount(RequestOptions requestOptions, Context context) {
-        return this.serviceClient.listByAccount(requestOptions, context);
+    public PagedIterable<BinaryData> listResourceSetRules(RequestOptions requestOptions, Context context) {
+        return this.serviceClient.listResourceSetRules(requestOptions, context);
     }
 }

@@ -114,8 +114,8 @@ public final class AccountsClient {
      * @return an account.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getWithResponse(RequestOptions requestOptions, Context context) {
-        return this.serviceClient.getWithResponse(requestOptions, context);
+    public Response<BinaryData> getAccountPropertiesWithResponse(RequestOptions requestOptions, Context context) {
+        return this.serviceClient.getAccountPropertiesWithResponse(requestOptions, context);
     }
 
     /**
@@ -214,9 +214,9 @@ public final class AccountsClient {
      * @return account resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> updateWithResponse(
+    public Response<BinaryData> updateAccountPropertiesWithResponse(
             BinaryData accountUpdateParameters, RequestOptions requestOptions, Context context) {
-        return this.serviceClient.updateWithResponse(accountUpdateParameters, requestOptions, context);
+        return this.serviceClient.updateAccountPropertiesWithResponse(accountUpdateParameters, requestOptions, context);
     }
 
     /**
@@ -244,8 +244,8 @@ public final class AccountsClient {
      * @return the Account access keys.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> listKeysWithResponse(RequestOptions requestOptions, Context context) {
-        return this.serviceClient.listKeysWithResponse(requestOptions, context);
+    public Response<BinaryData> getAccessKeysWithResponse(RequestOptions requestOptions, Context context) {
+        return this.serviceClient.getAccessKeysWithResponse(requestOptions, context);
     }
 
     /**
@@ -282,8 +282,8 @@ public final class AccountsClient {
      * @return the Account access keys.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> regenerateKeysWithResponse(
+    public Response<BinaryData> regenerateAccessKeyWithResponse(
             BinaryData keyOptions, RequestOptions requestOptions, Context context) {
-        return this.serviceClient.regenerateKeysWithResponse(keyOptions, requestOptions, context);
+        return this.serviceClient.regenerateAccessKeyWithResponse(keyOptions, requestOptions, context);
     }
 }
