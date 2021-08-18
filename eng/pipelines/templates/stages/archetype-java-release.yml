@@ -116,7 +116,26 @@ stages:
                     PackageName: ${{artifact.name}}
                     ServiceName: ${{parameters.ServiceDirectory}}
                     ForRelease: true
-
+          - job: InstallationCheck
+            displayName: "Installation Check"
+            steps:
+              - download: current
+                artifact: ${{parameters.ArtifactName}}-signed
+              - pwsh: |
+                  dir
+                  tree "$(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed" /F
+                  Copy-Item "$(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed/${{artifact.groupId}}/${{artifact.name}}/" "$(Pipeline.Workspace)/install-check-dir/${{artifact.name}}" -Recurse
+                  Write-Host "Copying artifact ${{artifact.name}}"
+                  $pomf = Get-ChildItem $(Pipeline.Workspace)/install-check-dir/${{artifact.name}}/*.pom
+                  Rename-Item "$($pomf)" pom.xml
+                  Write-Host "Renaming $($pomf) to pom.xml"
+                displayName: "Copy Artifacts"
+              - pwsh: |
+                  Write-Host "Maven install for artifact: ${{ artifact.name}}"
+                  mvn clean install -f eng/code-quality-reports/pom.xml
+                  mvn install
+                workingDirectory: $(Pipeline.Workspace)/install-check-dir/${{ artifact.name }}
+                displayName: "Dependency Installation Test"
 
           - deployment: TagRepository
             displayName: "Create release tag"
