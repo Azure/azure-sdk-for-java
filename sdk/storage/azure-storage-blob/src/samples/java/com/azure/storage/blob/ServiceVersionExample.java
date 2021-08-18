@@ -26,9 +26,10 @@ public class ServiceVersionExample {
         // This service client may now be used as desired, and any service requests will target the specified version.
 
         /*
-        If the workload includes generating new SAS tokens using an older format, the version of the sas generation can also
-        be configured. Set the environment variable AZURE_STORAGE_SAS_SERVICE_VERSION to the service version which
-        corresponds to the desired SAS format to configure this behavior.
+        If the workload includes generating new SAS tokens using an older format, the version of the sas generation can
+        also be configured. Before starting the jvm, set the environment variable AZURE_STORAGE_SAS_SERVICE_VERSION or
+        the JVM system propert -DAZURE_STORAGE_SAS_SERVICE_VERSION to the service version which corresponds to the
+        desired SAS format to configure this behavior.
          */
     }
 }
