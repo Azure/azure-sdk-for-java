@@ -1,7 +1,14 @@
 # Release History
 
-## 1.0.0-beta.7 (Unreleased)
+## 1.0.0-beta.8 (Unreleased)
 
+
+### 1.0.0-beta.7 (2021-08-16)
+#### New Features
+* Redesigned Database and Container encryption cache for staleness when recreating database and containers in encryption.
+
+#### Key Bug Fixes
+* Fixed encryption create with contentResponseOnWriteEnabled false
 
 ### 1.0.0-beta.6 (2021-06-11)
 #### New Features

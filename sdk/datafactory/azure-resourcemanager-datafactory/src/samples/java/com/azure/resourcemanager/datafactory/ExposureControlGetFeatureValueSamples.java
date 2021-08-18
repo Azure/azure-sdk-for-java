@@ -12,12 +12,11 @@ public final class ExposureControlGetFeatureValueSamples {
     /**
      * Sample code: ExposureControl_GetFeatureValue.
      *
-     * @param dataFactoryManager Entry point to DataFactoryManager. The Azure Data Factory V2 management API provides a
-     *     RESTful set of web services that interact with Azure Data Factory V2 services.
+     * @param manager Entry point to DataFactoryManager.
      */
     public static void exposureControlGetFeatureValue(
-        com.azure.resourcemanager.datafactory.DataFactoryManager dataFactoryManager) {
-        dataFactoryManager
+        com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
+        manager
             .exposureControls()
             .getFeatureValueWithResponse(
                 "WestEurope",

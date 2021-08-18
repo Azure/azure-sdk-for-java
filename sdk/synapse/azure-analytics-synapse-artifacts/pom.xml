@@ -13,7 +13,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-analytics-synapse-artifacts</artifactId>
-  <version>1.0.0-beta.5</version> <!-- {x-version-update;com.azure:azure-analytics-synapse-artifacts;current} -->
+  <version>1.0.0-beta.6</version> <!-- {x-version-update;com.azure:azure-analytics-synapse-artifacts;current} -->
 
   <name>Microsoft Azure client library for Synapse artifacts service</name>
   <description>This package contains the Microsoft Azure Synapse Analytics artifacts related features.</description>

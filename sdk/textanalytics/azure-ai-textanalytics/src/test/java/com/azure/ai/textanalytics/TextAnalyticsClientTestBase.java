@@ -1140,7 +1140,7 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
                 .setExtractSummaryActions(
                     new ExtractSummaryAction()
                         .setMaxSentenceCount(maxSentenceCount)
-                        .setSentencesOrderBy(summarySentencesOrder)));
+                        .setOrderBy(summarySentencesOrder)));
     }
 
     String getEndpoint() {

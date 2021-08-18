@@ -3,14 +3,16 @@
 package com.azure.security.attestation;
 
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestMode;
+import com.azure.core.util.Context;
 import com.azure.security.attestation.models.AttestationSigner;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.test.StepVerifier;
 
-import java.util.Arrays;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -27,39 +29,65 @@ public class AttestationSignersTest extends AttestationClientTestBase {
 
         AttestationClientBuilder attestationBuilder = getBuilder(client, clientUri);
 
-        AttestationSigner[] signers = attestationBuilder.buildAttestationClient().getAttestationSigners();
+        List<AttestationSigner> signers = attestationBuilder.buildClient().listAttestationSigners();
 
         verifySigningCertificatesResponse(clientUri, signers);
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getAttestationClients")
+    void testGetSigningCertificatesWithResponse(HttpClient client, String clientUri) {
+
+        AttestationClient attestationClient = getBuilder(client, clientUri).buildClient();
+
+        Response<List<AttestationSigner>> signers = attestationClient
+            .listAttestationSignersWithResponse(Context.NONE);
+
+        verifySigningCertificatesResponse(clientUri, signers.getValue());
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getAttestationClients")
     void testGetSigningCertificatesAsync(HttpClient client, String clientUri) {
 
-        AttestationClientBuilder attestationBuilder = getBuilder(client, clientUri);
+        AttestationAsyncClient attestationClient = getBuilder(client, clientUri).buildAsyncClient();
 
-        StepVerifier.create(attestationBuilder.buildAttestationAsyncClient().getAttestationSigners())
+        StepVerifier.create(attestationClient.listAttestationSigners())
             .assertNext(signers -> Assertions.assertDoesNotThrow(() -> verifySigningCertificatesResponse(clientUri, signers)))
             .expectComplete()
             .verify();
     }
 
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getAttestationClients")
+    void testGetSigningCertificatesWithResponseAsync(HttpClient client, String clientUri) {
+
+        AttestationAsyncClient attestationClient = getBuilder(client, clientUri).buildAsyncClient();
+
+        StepVerifier.create(attestationClient.listAttestationSignersWithResponse())
+            .assertNext(signers -> Assertions.assertDoesNotThrow(() -> verifySigningCertificatesResponse(clientUri, signers.getValue())))
+            .expectComplete()
+            .verify();
+    }
+
+
     /**
      * Verifies the response to the GetSigningCertificates (/certs) API.
-     *
+     * <p>
      * Each certificate returned needs to be a valid X.509 certificate.
      * We also verify that self signed certificates are signed with the known trusted roots.
+     *
      * @param clientUri Base URI for client, used to verify the contents of the certificates.
-     * @param signers AttestationSigners to verify.
+     * @param signers   AttestationSigners to verify.
      */
-    private void verifySigningCertificatesResponse(String clientUri, AttestationSigner[] signers) {
-        Assertions.assertTrue(signers.length > 1);
+    private void verifySigningCertificatesResponse(String clientUri, List<AttestationSigner> signers) {
+        Assertions.assertTrue(signers.size() > 1);
 
-        Arrays.stream(signers).forEach(signer -> {
+        signers.forEach(signer -> {
             assertNotNull(signer.getKeyId());
             assertNotNull(signer.getCertificates());
-            Assertions.assertNotEquals(0, signer.getCertificates().length);
-            Arrays.stream(signer.getCertificates()).forEach(x5c -> {
+            Assertions.assertNotEquals(0, signer.getCertificates().size());
+            signer.getCertificates().forEach(x5c -> {
                 // If the certificate is self signed, it should be associated
                 // with either the Microsoft root CA, the VBS self signed root, or the instance.
                 if (x5c.getIssuerDN().equals(x5c.getSubjectDN())) {

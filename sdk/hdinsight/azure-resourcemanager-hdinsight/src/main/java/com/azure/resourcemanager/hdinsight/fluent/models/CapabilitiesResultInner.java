@@ -12,6 +12,7 @@ import com.azure.resourcemanager.hdinsight.models.VersionsCapability;
 import com.azure.resourcemanager.hdinsight.models.VmSizeCompatibilityFilter;
 import com.azure.resourcemanager.hdinsight.models.VmSizesCapability;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
@@ -25,18 +26,21 @@ public final class CapabilitiesResultInner {
      * The version capability.
      */
     @JsonProperty(value = "versions")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, VersionsCapability> versions;
 
     /*
      * The virtual machine size compatibility features.
      */
     @JsonProperty(value = "regions")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, RegionsCapability> regions;
 
     /*
      * The virtual machine sizes.
      */
     @JsonProperty(value = "vmsizes")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, VmSizesCapability> vmsizes;
 
     /*
