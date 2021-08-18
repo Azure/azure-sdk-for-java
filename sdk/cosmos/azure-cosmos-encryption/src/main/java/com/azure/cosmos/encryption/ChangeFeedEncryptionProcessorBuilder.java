@@ -23,11 +23,11 @@ import java.util.stream.Collectors;
  */
 public class ChangeFeedEncryptionProcessorBuilder {
 
-    private String hostName;
-    private CosmosEncryptionAsyncContainer feedContainer;
-    private CosmosAsyncContainer leaseContainer;
+    private String hostName ;
     private ChangeFeedProcessorOptions changeFeedProcessorOptions;
     private Consumer<List<JsonNode>> encryptionConsumer;
+    private CosmosEncryptionAsyncContainer feedContainer = null;
+    private CosmosAsyncContainer leaseContainer = null;
 
     /**
      * Helper class to build a encryption supported {@link ChangeFeedProcessor} instance.
