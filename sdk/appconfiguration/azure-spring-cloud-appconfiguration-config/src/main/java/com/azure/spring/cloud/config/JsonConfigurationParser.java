@@ -17,6 +17,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 class JsonConfigurationParser {
+    private static final ObjectMapper MAPPER = new ObjectMapper();
 
     static boolean isJsonContentType(String contentType) {
         String acceptedMainType = "application";
@@ -49,8 +50,7 @@ class JsonConfigurationParser {
     static HashMap<String, Object> parseJsonSetting(ConfigurationSetting setting)
         throws JsonMappingException, JsonProcessingException {
         HashMap<String, Object> settings = new HashMap<String, Object>();
-        ObjectMapper jsonMapper = new ObjectMapper();
-        JsonNode json = jsonMapper.readTree(setting.getValue());
+        JsonNode json = MAPPER.readTree(setting.getValue());
         parseSetting(setting.getKey(), json, settings);
         return settings;
     }

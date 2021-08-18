@@ -48,9 +48,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 
 /**
- * Azure App Configuration PropertySource unique per Store Label(Profile) combo. 
- * 
- * <p>i.e. If connecting to 2 stores and have 2 labels set 4 AppConfigurationPropertySources need to be created.</p> 
+ * Azure App Configuration PropertySource unique per Store Label(Profile) combo.
+ *
+ * <p>i.e. If connecting to 2 stores and have 2 labels set 4 AppConfigurationPropertySources need to be created.</p>
  */
 public class AppConfigurationPropertySource extends EnumerablePropertySource<ConfigurationClient> {
 
@@ -76,6 +76,9 @@ public class AppConfigurationPropertySource extends EnumerablePropertySource<Con
 
     private static final ObjectMapper CASE_INSENSITIVE_MAPPER = new ObjectMapper()
         .configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES, true);
+
+    private static final ObjectMapper FEATURE_MAPPER = new ObjectMapper()
+        .setPropertyNamingStrategy(PropertyNamingStrategy.KEBAB_CASE);
 
     private final String context;
 
@@ -243,10 +246,8 @@ public class AppConfigurationPropertySource extends EnumerablePropertySource<Con
      * @param featureSet Feature Flag info to be set to this property source.
      */
     void initFeatures(FeatureSet featureSet) {
-        ObjectMapper featureMapper = new ObjectMapper();
-        featureMapper.setPropertyNamingStrategy(PropertyNamingStrategy.KEBAB_CASE);
         properties.put(FEATURE_MANAGEMENT_KEY,
-            featureMapper.convertValue(featureSet.getFeatureManagement(), LinkedHashMap.class));
+            FEATURE_MAPPER.convertValue(featureSet.getFeatureManagement(), LinkedHashMap.class));
     }
 
     private FeatureSet addToFeatureSet(FeatureSet featureSet, List<ConfigurationSetting> settings, Date date)
@@ -266,7 +267,7 @@ public class AppConfigurationPropertySource extends EnumerablePropertySource<Con
      *
      * @param item Used to create Features before being converted to be set into properties.
      * @return Feature created from KeyValueItem
-     * @throws IOException - If a ConfigurationSetting isn't of the feature flag content type. 
+     * @throws IOException - If a ConfigurationSetting isn't of the feature flag content type.
      */
     @SuppressWarnings("unchecked")
     private Object createFeature(ConfigurationSetting item) throws IOException {

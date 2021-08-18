@@ -57,6 +57,8 @@ import javax.crypto.spec.SecretKeySpec;
 @JsonAutoDetect(getterVisibility = JsonAutoDetect.Visibility.PUBLIC_ONLY, setterVisibility =
     JsonAutoDetect.Visibility.PUBLIC_ONLY)
 public class JsonWebKey {
+    private static final ObjectMapper MAPPER = new ObjectMapper();
+
     private final ClientLogger logger = new ClientLogger(JsonWebKey.class);
 
     /**
@@ -466,13 +468,8 @@ public class JsonWebKey {
 
     @Override
     public String toString() {
-        ObjectMapper mapper = new ObjectMapper();
         try {
-            return mapper.writeValueAsString(this);
-        } catch (JsonGenerationException e) {
-            throw logger.logExceptionAsError(new IllegalStateException(e));
-        } catch (JsonMappingException e) {
-            throw logger.logExceptionAsError(new IllegalStateException(e));
+            return MAPPER.writeValueAsString(this);
         } catch (IOException e) {
             throw logger.logExceptionAsError(new IllegalStateException(e));
         }
