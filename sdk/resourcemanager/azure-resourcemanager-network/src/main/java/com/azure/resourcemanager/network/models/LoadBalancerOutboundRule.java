@@ -18,15 +18,8 @@ public interface LoadBalancerOutboundRule
     HasProtocol<LoadBalancerOutboundRuleProtocol>,
     ChildResource<LoadBalancer> {
 
-
-    /** @return the associated frontend IP configuration ids */
-    List<String> frontendIpConfigurationIds();
-
     /** @return the associated frontends */
     Map<String, LoadBalancerFrontend> frontends();
-
-    /** @return the associated backend address pool id */
-    String backendAddressPoolId();
 
     /** @return the associated backend */
     LoadBalancerBackend backend();
@@ -134,7 +127,7 @@ public interface LoadBalancerOutboundRule
         interface WithEnableTcpReset<ParentT> {
             /**
              * Specifies the TCP reset enablement for this outbound rule
-             * @param enableTcpReset
+             * @param enableTcpReset boolean value indicating enable TCP reset or not
              * @return the next stage of the definition
              */
             LoadBalancerOutboundRule.DefinitionStages.WithAttach<ParentT> withEnableTcpReset(boolean enableTcpReset);

@@ -278,7 +278,7 @@ class LoadBalancerImpl
             }
             // clear deleted backend references
             SubResource ref = outboundRule.innerModel().backendAddressPool();
-            if(ref != null && !this.backends().containsKey(ResourceUtils.nameFromResourceId(ref.id()))) {
+            if (ref != null && !this.backends().containsKey(ResourceUtils.nameFromResourceId(ref.id()))) {
                 outboundRule.innerModel().withBackendAddressPool(null);
             }
         }

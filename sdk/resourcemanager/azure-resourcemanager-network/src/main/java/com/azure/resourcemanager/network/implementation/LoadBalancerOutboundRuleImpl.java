@@ -16,6 +16,7 @@ import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -35,35 +36,18 @@ public class LoadBalancerOutboundRuleImpl extends ChildResourceImpl<OutboundRule
         return this.innerModel().protocol();
     }
 
-
-    @Override
-    public List<String> frontendIpConfigurationIds() {
-        List<String> frontendIpConfigurationIds = new ArrayList<>();
-        if(this.innerModel().frontendIpConfigurations() != null && !this.innerModel().frontendIpConfigurations().isEmpty()) {
-            for(SubResource frontendIpConfiguration : this.innerModel().frontendIpConfigurations()) {
-                frontendIpConfigurationIds.add(frontendIpConfiguration.id());
-            }
-        }
-        return frontendIpConfigurationIds;
-    }
-
     @Override
     public Map<String, LoadBalancerFrontend> frontends() {
         Map<String, LoadBalancerFrontend> nameToFrontEndMap = new TreeMap<>();
-        if(this.innerModel().frontendIpConfigurations() != null && !this.innerModel().frontendIpConfigurations().isEmpty()) {
-            for(SubResource frontendIpConfiguration : this.innerModel().frontendIpConfigurations()) {
+        if (this.innerModel().frontendIpConfigurations() != null && !this.innerModel().frontendIpConfigurations().isEmpty()) {
+            for (SubResource frontendIpConfiguration : this.innerModel().frontendIpConfigurations()) {
                 LoadBalancerFrontend frontend = this.parent()
                     .frontends()
                     .get(ResourceUtils.nameFromResourceId(frontendIpConfiguration.id()));
                 nameToFrontEndMap.put(frontend.name(), frontend);
             }
         }
-        return nameToFrontEndMap;
-    }
-
-    @Override
-    public String backendAddressPoolId() {
-        return this.innerModel().backendAddressPool().id();
+        return Collections.unmodifiableMap(nameToFrontEndMap);
     }
 
     @Override
@@ -130,8 +114,8 @@ public class LoadBalancerOutboundRuleImpl extends ChildResourceImpl<OutboundRule
     @Override
     public LoadBalancerOutboundRuleImpl toFrontends(List<String> names) {
         List<SubResource> frontendRefs = new ArrayList<>();
-        if(names != null && !names.isEmpty()) {
-            for(String name : names) {
+        if (names != null && !names.isEmpty()) {
+            for (String name : names) {
                 SubResource frontendRef = this.parent().ensureFrontendRef(name);
                 frontendRefs.add(frontendRef);
             }
