@@ -28,8 +28,8 @@ public class ServiceVersionExample {
         /*
         If the workload includes generating new SAS tokens using an older format, the version of the sas generation can
         also be configured. Before starting the jvm, set the environment variable AZURE_STORAGE_SAS_SERVICE_VERSION or
-        the JVM system property AZURE_STORAGE_SAS_SERVICE_VERSION (e.g. -DAZURE_STORAGE_SAS_SERVICE_VERSION=2019-12-12)
-        to the service version which corresponds to the desired SAS format to configure this behavior.
+        the JVM system propert -DAZURE_STORAGE_SAS_SERVICE_VERSION to the service version which corresponds to the
+        desired SAS format to configure this behavior.
          */
     }
 }
