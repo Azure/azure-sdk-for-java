@@ -1,5 +1,8 @@
 # Release History
 
+## 4.7.0-beta.1 (Unreleased)
+
+
 ## 4.6.0 (2021-08-11)
 ### Features Added
 - Added new Container Service system event `ContainerServiceNewKubernetesVersionAvailableEventData`.

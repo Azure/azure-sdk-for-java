@@ -12,12 +12,10 @@ public final class FactoriesGetDataPlaneAccessSamples {
     /**
      * Sample code: Factories_GetDataPlaneAccess.
      *
-     * @param dataFactoryManager Entry point to DataFactoryManager. The Azure Data Factory V2 management API provides a
-     *     RESTful set of web services that interact with Azure Data Factory V2 services.
+     * @param manager Entry point to DataFactoryManager.
      */
-    public static void factoriesGetDataPlaneAccess(
-        com.azure.resourcemanager.datafactory.DataFactoryManager dataFactoryManager) {
-        dataFactoryManager
+    public static void factoriesGetDataPlaneAccess(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
+        manager
             .factories()
             .getDataPlaneAccessWithResponse(
                 "exampleResourceGroup",
