@@ -183,7 +183,7 @@ foreach ($packageDetail in $packageDetails) {
         mvn org.sonatype.plugins:nexus-staging-maven-plugin:rc-release "-DstagingRepositoryId=$stagedRepositoryId" "-DnexusUrl=https://oss.sonatype.org" "-DrepositoryId=target-repo" "-DserverId=target-repo" "-Drepo.username=$RepositoryUsername" "-Drepo.password=""$RepositoryPassword""" "--settings=$PSScriptRoot\..\maven.publish.settings.xml"
   
         if ($LASTEXITCODE -eq 0) {
-          "Package $($packageDetail.FullyQualifiedName) deployed"
+          Write-Information "Package $($packageDetail.FullyQualifiedName) deployed"
           break
         }
 
