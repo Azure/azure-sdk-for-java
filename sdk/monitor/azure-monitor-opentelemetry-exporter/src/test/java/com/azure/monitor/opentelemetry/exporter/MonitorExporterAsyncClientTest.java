@@ -3,8 +3,8 @@
 
 package com.azure.monitor.opentelemetry.exporter;
 
-import com.azure.monitor.opentelemetry.exporter.implementation.models.TelemetryItem;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.ExportResultException;
+import com.azure.monitor.opentelemetry.exporter.implementation.models.TelemetryItem;
 import org.junit.jupiter.api.Test;
 import reactor.test.StepVerifier;
 

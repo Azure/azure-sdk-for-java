@@ -30,12 +30,11 @@ public final class DataFlowDebugSessionAddDataFlowSamples {
     /**
      * Sample code: DataFlowDebugSession_AddDataFlow.
      *
-     * @param dataFactoryManager Entry point to DataFactoryManager. The Azure Data Factory V2 management API provides a
-     *     RESTful set of web services that interact with Azure Data Factory V2 services.
+     * @param manager Entry point to DataFactoryManager.
      */
-    public static void dataFlowDebugSessionAddDataFlow(
-        com.azure.resourcemanager.datafactory.DataFactoryManager dataFactoryManager) throws IOException {
-        dataFactoryManager
+    public static void dataFlowDebugSessionAddDataFlow(com.azure.resourcemanager.datafactory.DataFactoryManager manager)
+        throws IOException {
+        manager
             .dataFlowDebugSessions()
             .addDataFlowWithResponse(
                 "exampleResourceGroup",

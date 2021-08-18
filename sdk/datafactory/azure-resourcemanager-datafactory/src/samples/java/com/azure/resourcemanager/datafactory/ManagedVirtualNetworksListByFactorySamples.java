@@ -11,13 +11,10 @@ public final class ManagedVirtualNetworksListByFactorySamples {
     /**
      * Sample code: ManagedVirtualNetworks_ListByFactory.
      *
-     * @param dataFactoryManager Entry point to DataFactoryManager. The Azure Data Factory V2 management API provides a
-     *     RESTful set of web services that interact with Azure Data Factory V2 services.
+     * @param manager Entry point to DataFactoryManager.
      */
     public static void managedVirtualNetworksListByFactory(
-        com.azure.resourcemanager.datafactory.DataFactoryManager dataFactoryManager) {
-        dataFactoryManager
-            .managedVirtualNetworks()
-            .listByFactory("exampleResourceGroup", "exampleFactoryName", Context.NONE);
+        com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
+        manager.managedVirtualNetworks().listByFactory("exampleResourceGroup", "exampleFactoryName", Context.NONE);
     }
 }
