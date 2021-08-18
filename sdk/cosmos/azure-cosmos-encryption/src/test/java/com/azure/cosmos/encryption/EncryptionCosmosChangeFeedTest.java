@@ -185,7 +185,7 @@ public class EncryptionCosmosChangeFeedTest extends TestSuiteBase {
     }
 
 
-    @Test(groups = { "emulator" }, timeOut = 2 * TIMEOUT)
+    @Test(groups = { "encryption" }, timeOut = 2 * TIMEOUT)
     public void pushModel_readFeedDocuments() throws InterruptedException, JsonProcessingException {
         CosmosEncryptionAsyncContainer createdFeedCollection =  createFeedCollection();
         CosmosAsyncContainer createdLeaseCollection = createLeaseCollection(LEASE_COLLECTION_THROUGHPUT);
