@@ -93,7 +93,7 @@ public abstract class CredentialBuilderBase<T extends CredentialBuilderBase<T>> 
 
     /**
      * Sets the {@link ClientOptions} which enables various options to be set on the client. For example configuring
-     * {@code piiLogging} using {@link ClientOptions#setAllowPiiLogging(boolean)} to allow
+     * {@code piiLogging} using {@link com.azure.identity.IdentityClientOptions#setAllowPiiLogging(boolean)} to allow
      * pii logs to be enabled on client side debugging/monitoring purposes.
      *
      * @param options the {@link ClientOptions} to be set on the credential client.
@@ -102,7 +102,10 @@ public abstract class CredentialBuilderBase<T extends CredentialBuilderBase<T>> 
      */
     @SuppressWarnings("unchecked")
     public T clientOptions(ClientOptions options) {
-        this.identityClientOptions.setAllowPiiLogging(options.isPiiLoggingAllowed());
+        if (options instanceof com.azure.identity.IdentityClientOptions) {
+            this.identityClientOptions.setAllowPiiLogging(((com.azure.identity.IdentityClientOptions) options)
+                .isPiiLoggingAllowed());
+        }
         return (T) this;
     }
 }
