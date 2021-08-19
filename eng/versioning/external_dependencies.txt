@@ -168,7 +168,7 @@ com.microsoft.azure:azure-mgmt-resources;1.3.0
 com.microsoft.azure:azure-mgmt-search;1.24.1
 com.microsoft.azure:azure-mgmt-storage;1.3.0
 com.microsoft.azure:azure-storage;8.0.0
-com.microsoft.azure:msal4j;1.10.1
+com.microsoft.azure:msal4j;1.11.0
 com.microsoft.azure:msal4j-persistence-extension;1.1.0
 com.sun.activation:jakarta.activation;1.2.2
 io.opentelemetry:opentelemetry-api;1.0.0
@@ -262,6 +262,7 @@ org.hdrhistogram:HdrHistogram;2.1.12
 org.jacoco:jacoco-maven-plugin;0.8.5
 org.jacoco:org.jacoco.agent;0.8.5
 org.mockito:mockito-core;3.9.0
+org.mockito:mockito-inline;3.9.0
 org.revapi:revapi-java;0.20.0
 org.revapi:revapi-maven-plugin;0.11.2
 org.moditect:moditect-maven-plugin;1.0.0.RC1

@@ -479,6 +479,12 @@
     <Bug pattern="SE_BAD_FIELD"/>
   </Match>
 
+  <!-- Storing HttpResponseError as the Object value is not required to be serializable or transient -->
+  <Match>
+    <Class name="com.azure.core.exception.HttpResponseException"/>
+    <Bug pattern="SE_BAD_FIELD_STORE"/>
+  </Match>
+
   <!-- The two values can still change in the future. Change it will be a breaking code change.-->
   <Match>
     <Class name="com.microsoft.azure.servicebus.MessageReceiver"/>
@@ -1232,6 +1238,12 @@
   <Match>
     <Class name="com.azure.cosmos.CosmosException"/>
     <Field name="requestUri"/>
+    <Bug pattern="SE_BAD_FIELD"/>
+  </Match>
+
+  <Match>
+    <Class name="com.azure.cosmos.CosmosException"/>
+    <Field name="channelAcquisitionTimeline"/>
     <Bug pattern="SE_BAD_FIELD"/>
   </Match>
 

@@ -33,7 +33,7 @@ public class LogsQuerySample {
                 .credential(tokenCredential)
                 .buildClient();
 
-        LogsQueryResult queryResults = logsQueryClient.queryLogs("d2d0e126-fa1e-4b0a-b647-250cdd471e68", "AppRequests",
+        LogsQueryResult queryResults = logsQueryClient.query("d2d0e126-fa1e-4b0a-b647-250cdd471e68", "AppRequests",
                 null);
         System.out.println("Number of tables = " + queryResults.getLogsTables().size());
 

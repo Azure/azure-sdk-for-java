@@ -456,24 +456,12 @@ public class AADAuthenticationProperties implements InitializingBean {
         }
 
         validateTenantId();
-        validateApplicationType(); // This must before validateClientId() and validateAuthorizationClients().
-        validateClientId();
+        validateApplicationType(); // This must before validateAuthorizationClients().
         validateAuthorizationClients();
     }
 
     private void validateAuthorizationClients() {
         authorizationClients.forEach(this::validateAuthorizationClientProperties);
-    }
-
-    private void validateClientId() {
-        if ((applicationType == AADApplicationType.WEB_APPLICATION
-            || applicationType == AADApplicationType.WEB_APPLICATION_AND_RESOURCE_SERVER
-            || applicationType == AADApplicationType.RESOURCE_SERVER_WITH_OBO)
-            && !StringUtils.hasText(clientId)) {
-            throw new IllegalStateException("'azure.activedirectory.client-id' must be configured when "
-                + "application type is 'web_application', "
-                + "'resource_server_with_obo' or 'web_application_and_resource_server'.");
-        }
     }
 
     private void validateTenantId() {

@@ -11,12 +11,9 @@ public final class TriggersStopSamples {
     /**
      * Sample code: Triggers_Stop.
      *
-     * @param dataFactoryManager Entry point to DataFactoryManager. The Azure Data Factory V2 management API provides a
-     *     RESTful set of web services that interact with Azure Data Factory V2 services.
+     * @param manager Entry point to DataFactoryManager.
      */
-    public static void triggersStop(com.azure.resourcemanager.datafactory.DataFactoryManager dataFactoryManager) {
-        dataFactoryManager
-            .triggers()
-            .stop("exampleResourceGroup", "exampleFactoryName", "exampleTrigger", Context.NONE);
+    public static void triggersStop(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
+        manager.triggers().stop("exampleResourceGroup", "exampleFactoryName", "exampleTrigger", Context.NONE);
     }
 }

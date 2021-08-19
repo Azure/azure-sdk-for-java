@@ -6,6 +6,7 @@ package com.azure.security.attestation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.Base64Url;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.CoreUtils;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -62,11 +63,11 @@ public final class PolicyResult {
      *
      * @return the policyTokenHash value.
      */
-    public byte[] getPolicyTokenHash() {
+    public BinaryData getPolicyTokenHash() {
         if (this.policyTokenHash == null) {
             return null;
         }
-        return this.policyTokenHash.decodedBytes();
+        return BinaryData.fromBytes(this.policyTokenHash.decodedBytes());
     }
 
     /**
@@ -75,11 +76,11 @@ public final class PolicyResult {
      * @param policyTokenHash the policyTokenHash value to set.
      * @return the PolicyResult object itself.
      */
-    public PolicyResult setPolicyTokenHash(byte[] policyTokenHash) {
+    public PolicyResult setPolicyTokenHash(BinaryData policyTokenHash) {
         if (policyTokenHash == null) {
             this.policyTokenHash = null;
         } else {
-            this.policyTokenHash = Base64Url.encode(CoreUtils.clone(policyTokenHash));
+            this.policyTokenHash = Base64Url.encode(CoreUtils.clone(policyTokenHash.toBytes()));
         }
         return this;
     }
