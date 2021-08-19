@@ -13,6 +13,8 @@ import com.azure.core.amqp.exception.AmqpErrorCondition;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.exception.AmqpResponseCode;
 import com.azure.core.amqp.implementation.handler.ConnectionHandler;
+import com.azure.core.amqp.implementation.handler.ReceiveLinkHandler;
+import com.azure.core.amqp.implementation.handler.SendLinkHandler;
 import com.azure.core.amqp.implementation.handler.SessionHandler;
 import com.azure.core.amqp.models.CbsAuthorizationType;
 import com.azure.core.credential.TokenCredential;
@@ -27,7 +29,9 @@ import org.apache.qpid.proton.engine.Connection;
 import org.apache.qpid.proton.engine.EndpointState;
 import org.apache.qpid.proton.engine.Event;
 import org.apache.qpid.proton.engine.Handler;
+import org.apache.qpid.proton.engine.Receiver;
 import org.apache.qpid.proton.engine.Record;
+import org.apache.qpid.proton.engine.Sender;
 import org.apache.qpid.proton.engine.Session;
 import org.apache.qpid.proton.engine.SslDomain;
 import org.apache.qpid.proton.engine.SslPeerDetails;
@@ -69,6 +73,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.argThat;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
@@ -160,7 +165,6 @@ class ReactorConnectionTest {
 
         when(reactorHandlerProvider.createConnectionHandler(CONNECTION_ID, connectionOptions))
             .thenReturn(connectionHandler);
-
         sessionHandler = new SessionHandler(CONNECTION_ID, FULLY_QUALIFIED_NAMESPACE, SESSION_NAME, reactorDispatcher,
             TEST_DURATION);
         when(reactorHandlerProvider.createSessionHandler(anyString(), anyString(), anyString(), any(Duration.class)))
@@ -703,7 +707,6 @@ class ReactorConnectionTest {
         final ReactorConnection connection2 = new ReactorConnection(CONNECTION_ID, connectionOptions, provider,
             reactorHandlerProvider, tokenManager, messageSerializer, SenderSettleMode.SETTLED,
             ReceiverSettleMode.FIRST);
-        final AmqpShutdownSignal signal = new AmqpShutdownSignal(false, false, "Remove");
 
         when(provider.getReactorDispatcher()).thenReturn(dispatcher);
 
@@ -726,10 +729,24 @@ class ReactorConnectionTest {
     @Test
     @Disabled("This will be revisited")
     void createManagementNode() {
+        final String linkName = "bar";
         final String entityPath = "foo";
         final Session session = mock(Session.class);
         final Record record = mock(Record.class);
+        final Sender sender = mock(Sender.class);
+        final Receiver receiver = mock(Receiver.class);
+
+        doAnswer(invocationOnMock -> {
+            System.out.println("Sleeping in reactor process method.");
+            TimeUnit.SECONDS.sleep(10);
+            return false;
+        }).when(reactor).process();
+
         when(session.attachments()).thenReturn(record);
+        when(session.sender(argThat(name -> name.equals("mgmt:sender")))).thenReturn(sender);
+        when(session.receiver(argThat(name -> name.equals("mgmt:receiver")))).thenReturn(receiver);
+        when(sender.attachments()).thenReturn(record);
+        when(receiver.attachments()).thenReturn(record);
 
         when(connectionProtonJ.getRemoteState()).thenReturn(EndpointState.ACTIVE);
         when(connectionProtonJ.session()).thenReturn(session);
@@ -752,8 +769,27 @@ class ReactorConnectionTest {
 
         final SessionHandler sessionHandler = mock(SessionHandler.class);
         when(sessionHandler.getEndpointStates()).thenReturn(sessionEndpoints.flux());
-        when(reactorHandlerProvider.createSessionHandler(any(), argThat(path -> path.contains("mgmt") && path.contains(entityPath)),
-            anyString(), any())).thenReturn(sessionHandler);
+        when(reactorHandlerProvider.createSessionHandler(any(),
+            argThat(path -> path.contains("mgmt") && path.contains(entityPath)), anyString(), any()))
+            .thenReturn(sessionHandler);
+
+        final SendLinkHandler linkHandler = new SendLinkHandler(CONNECTION_ID, FULLY_QUALIFIED_NAMESPACE, linkName,
+            entityPath);
+        when(reactorHandlerProvider.createSendLinkHandler(eq(CONNECTION_ID), eq(FULLY_QUALIFIED_NAMESPACE),
+            argThat(path -> path.contains("mgmt") && path.contains(entityPath)), argThat(path -> path.contains("management"))))
+            .thenReturn(linkHandler);
+        when(reactorHandlerProvider.createSendLinkHandler(eq(CONNECTION_ID), eq(FULLY_QUALIFIED_NAMESPACE),
+            argThat(path -> path.contains("cbs") && path.contains(entityPath)), argThat(path -> path.contains("cbs"))))
+            .thenReturn(linkHandler);
+
+        final ReceiveLinkHandler receiveLinkHandler = new ReceiveLinkHandler(CONNECTION_ID, FULLY_QUALIFIED_NAMESPACE,
+            linkName, entityPath);
+        when(reactorHandlerProvider.createReceiveLinkHandler(eq(CONNECTION_ID), eq(FULLY_QUALIFIED_NAMESPACE),
+            argThat(path -> path.contains("mgmt") && path.contains(entityPath)), argThat(path -> path.contains("management"))))
+            .thenReturn(receiveLinkHandler);
+        when(reactorHandlerProvider.createReceiveLinkHandler(eq(CONNECTION_ID), eq(FULLY_QUALIFIED_NAMESPACE),
+            argThat(path -> path.contains("cbs") && path.contains(entityPath)), argThat(path -> path.contains("cbs"))))
+            .thenReturn(receiveLinkHandler);
 
         // Act and Assert
         StepVerifier.create(connection.getManagementNode(entityPath))
