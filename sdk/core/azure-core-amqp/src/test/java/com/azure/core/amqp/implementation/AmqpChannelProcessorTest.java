@@ -188,7 +188,6 @@ class AmqpChannelProcessorTest {
     @ParameterizedTest
     void newConnectionOnRetriableError(Throwable exception) {
         // Arrange
-
         final Flux<TestObject> publisher = createSink(connection1, connection2);
         final AmqpChannelProcessor<TestObject> processor = publisher.subscribeWith(channelProcessor);
 
@@ -203,13 +202,10 @@ class AmqpChannelProcessorTest {
             .verifyComplete();
 
         connection1.getSink().error(exception);
-        connection2.getSink().next(AmqpEndpointState.ACTIVE);
 
         // Expect that the next connection is returned to us.
         StepVerifier.create(processor)
-            .then(() -> {
-
-            })
+            .then(() -> connection2.getSink().next(AmqpEndpointState.ACTIVE))
             .expectNext(connection2)
             .verifyComplete();
 
