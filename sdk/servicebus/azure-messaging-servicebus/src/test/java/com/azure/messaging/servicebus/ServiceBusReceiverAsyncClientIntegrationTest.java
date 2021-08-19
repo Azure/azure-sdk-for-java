@@ -13,11 +13,7 @@ import com.azure.core.amqp.models.AmqpMessageProperties;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.implementation.DispositionStatus;
 import com.azure.messaging.servicebus.implementation.MessagingEntityType;
-import com.azure.messaging.servicebus.models.AbandonOptions;
-import com.azure.messaging.servicebus.models.CompleteOptions;
-import com.azure.messaging.servicebus.models.DeadLetterOptions;
-import com.azure.messaging.servicebus.models.DeferOptions;
-import com.azure.messaging.servicebus.models.SubQueue;
+import com.azure.messaging.servicebus.models.*;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Tag;
@@ -979,7 +975,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
                 messagesPending.decrementAndGet();
             })
             .thenCancel()
-            .verify();
+            .verify(TIMEOUT);
     }
 
     @MethodSource("com.azure.messaging.servicebus.IntegrationTestBase#messagingEntityWithSessions")
@@ -1501,14 +1497,16 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
             assertNotNull(sessionId, "'sessionId' should have been set.");
             sessionReceiver = getSessionReceiverBuilder(useCredentials, entityType, entityIndex, shareConnection)
                 .maxAutoLockRenewDuration(options.getMaxAutoLockRenewDuration())
+                .receiveMode(ServiceBusReceiveMode.PEEK_LOCK)
                 .disableAutoComplete()
                 .buildAsyncClient();
 
-            this.receiver = sessionReceiver.acceptSession(sessionId).block();
+            this.receiver = sessionReceiver.acceptSession(sessionId).block(TIMEOUT);
 
         } else {
             this.receiver = getReceiverBuilder(useCredentials, entityType, entityIndex, shareConnection)
                 .maxAutoLockRenewDuration(options.getMaxAutoLockRenewDuration())
+                .receiveMode(ServiceBusReceiveMode.PEEK_LOCK)
                 .disableAutoComplete()
                 .buildAsyncClient();
         }
