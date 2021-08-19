@@ -54,8 +54,8 @@
         <!-- Tests -->
         <dependency>
             <groupId>org.mockito</groupId>
-            <artifactId>mockito-core</artifactId>
-            <version>3.9.0</version> <!-- {x-version-update;org.mockito:mockito-core;external_dependency} -->
+            <artifactId>mockito-inline</artifactId>
+            <version>3.9.0</version> <!-- {x-version-update;org.mockito:mockito-inline;external_dependency} -->
             <scope>test</scope>
         </dependency>
         <dependency>
