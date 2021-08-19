@@ -60,17 +60,17 @@ stages:
           groupId: com.azure
           safeName: azurecorejacksontests
   - template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
-        parameters:
-            ServiceDirectory: core
-            TestName: 'jackson_unsupported_versions'
-            MatrixConfigs:
-                - Name: jackson_version_tests
-                  Path: sdk/core/unsupported-version-matrix.json
-                  Selection: sparse
-                  NonSparseParameters:
-                      - AZURE_CORE_TEST_UNSUPPORTED_JACKSON_VERSION
-                  GenerateVMJobs: true
-            Artifacts:
-                - name: azure-core-jackson-tests
-                  groupId: com.azure
-                  safeName: azurecorejacksontests
+    parameters:
+      ServiceDirectory: core
+      TestName: 'jackson_unsupported_versions'
+      MatrixConfigs:
+        - Name: jackson_version_tests
+          Path: sdk/core/unsupported-version-matrix.json
+          Selection: sparse
+          NonSparseParameters:
+            - AZURE_CORE_TEST_UNSUPPORTED_JACKSON_VERSION
+          GenerateVMJobs: true
+      Artifacts:
+        - name: azure-core-jackson-tests
+          groupId: com.azure
+          safeName: azurecorejacksontests
