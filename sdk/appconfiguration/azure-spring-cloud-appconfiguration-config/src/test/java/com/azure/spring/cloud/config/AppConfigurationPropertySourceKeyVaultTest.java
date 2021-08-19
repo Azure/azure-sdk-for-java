@@ -17,8 +17,9 @@ import static com.azure.spring.cloud.config.TestConstants.TEST_STORE_NAME;
 import static com.azure.spring.cloud.config.TestConstants.TEST_VALUE_1;
 import static com.azure.spring.cloud.config.TestConstants.TEST_VALUE_2;
 import static com.azure.spring.cloud.config.TestConstants.TEST_VALUE_3;
-import static com.azure.spring.cloud.config.TestConstants.TEST_VALUE_VAULT_1;
+import static com.azure.spring.cloud.config.TestConstants.TEST_URI_VAULT_1;
 import static com.azure.spring.cloud.config.TestUtils.createItem;
+import static com.azure.spring.cloud.config.TestUtils.createSecretReference;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.fail;
 import static org.mockito.BDDMockito.given;
@@ -44,6 +45,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
+import com.azure.data.appconfiguration.models.SecretReferenceConfigurationSetting;
 import com.azure.security.keyvault.secrets.models.KeyVaultSecret;
 import com.azure.spring.cloud.config.feature.management.entity.FeatureSet;
 import com.azure.spring.cloud.config.properties.AppConfigurationProperties;
@@ -72,8 +74,8 @@ public class AppConfigurationPropertySourceKeyVaultTest {
     private static final ConfigurationSetting ITEM_3 = createItem(TEST_CONTEXT, TEST_KEY_3, TEST_VALUE_3, TEST_LABEL_3,
         EMPTY_CONTENT_TYPE);
 
-    private static final ConfigurationSetting KEY_VAULT_ITEM = createItem(TEST_CONTEXT, TEST_KEY_VAULT_1,
-        TEST_VALUE_VAULT_1, TEST_LABEL_VAULT_1, KEY_VAULT_CONTENT_TYPE);
+    private static final SecretReferenceConfigurationSetting KEY_VAULT_ITEM = createSecretReference(TEST_CONTEXT, TEST_KEY_VAULT_1,
+        TEST_URI_VAULT_1, TEST_LABEL_VAULT_1, KEY_VAULT_CONTENT_TYPE);
     
     private AppConfigurationPropertySource propertySource;
     private AppConfigurationProperties appConfigurationProperties;

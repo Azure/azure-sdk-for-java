@@ -542,11 +542,8 @@ public final class ConfigurationClient {
 
     /**
      * Lists chronological/historical representation of {@link ConfigurationSetting} resource(s). Revisions are provided
-     * <<<<<<< HEAD in descending order from their {@link ConfigurationSetting#getLastModified() lastModified} date.
-     * Revisions expire after a period of time, see <a href="https://azure.microsoft.com/en-us/pricing/details/app-configuration/">Pricing</a>
-     * ======= in descending order from their {@link ConfigurationSetting#getLastModified() lastModified} date.
-     * Revisions expire after a period of time, see <a href="https://azure.microsoft.com/pricing/details/app-configuration/">Pricing</a>
-     * >>>>>>> bba99ce7ebb2c9d58d893711a4fba1f833ef0dc8 for more information.
+     * in descending order from their {@link ConfigurationSetting#getLastModified() lastModified} date. Revisions expire
+     * after a period of time, see <a href="https://azure.microsoft.com/pricing/details/app-configuration/">Pricing</a>
      *
      * If {@code selector} is {@code null}, then all the {@link ConfigurationSetting ConfigurationSettings} are fetched
      * in their current state. Otherwise, the results returned match the parameters given in {@code selector}.

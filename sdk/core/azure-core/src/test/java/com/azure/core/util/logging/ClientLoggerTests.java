@@ -8,7 +8,11 @@ import com.azure.core.util.CoreUtils;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
+import org.junit.jupiter.api.parallel.Isolated;
 import org.junit.jupiter.api.parallel.ResourceLock;
+import org.junit.jupiter.api.parallel.Resources;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -35,6 +39,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 /**
  * Tests for {@link ClientLogger}.
  */
+@Execution(ExecutionMode.SAME_THREAD)
+@Isolated
+@ResourceLock(Resources.SYSTEM_OUT)
 public class ClientLoggerTests {
     private String originalLogLevel;
     private PrintStream originalSystemOut;
@@ -53,10 +60,7 @@ public class ClientLoggerTests {
 
     @AfterEach
     public void revertLoggingConfiguration() {
-        if (originalLogLevel != null) {
-            setPropertyToOriginalOrClear(originalLogLevel);
-        }
-
+        setPropertyToOriginalOrClear(originalLogLevel);
         System.setOut(originalSystemOut);
     }
 
@@ -65,7 +69,6 @@ public class ClientLoggerTests {
      */
     @ParameterizedTest
     @MethodSource("singleLevelCheckSupplier")
-    @ResourceLock("SYSTEM_OUT")
     public void canLogAtLevel(LogLevel logLevelToConfigure, LogLevel logLevelToValidate, boolean expected) {
         setupLogLevel(logLevelToConfigure.getLogLevel());
         assertEquals(expected, new ClientLogger(ClientLoggerTests.class).canLogAtLevel(logLevelToValidate));
@@ -76,7 +79,6 @@ public class ClientLoggerTests {
      */
     @ParameterizedTest
     @MethodSource("singleLevelCheckSupplier")
-    @ResourceLock("SYSTEM_OUT")
     public void logSimpleMessage(LogLevel logLevelToConfigure, LogLevel logLevelToUse, boolean logContainsMessage) {
         String logMessage = "This is a test";
 
@@ -92,7 +94,6 @@ public class ClientLoggerTests {
      */
     @ParameterizedTest
     @MethodSource("logMaliciousErrorSupplier")
-    @ResourceLock("SYSTEM_OUT")
     public void logMaliciousMessage(LogLevel logLevelToConfigure, LogLevel logLevelToUse) {
         String logMessage = "You have successfully authenticated, \r\n[INFO] User dummy was not"
             + " successfully authenticated.";
@@ -110,7 +111,6 @@ public class ClientLoggerTests {
 
     @ParameterizedTest
     @MethodSource("singleLevelCheckSupplier")
-    @ResourceLock("SYSTEM_OUT")
     public void logFormattedMessage(LogLevel logLevelToConfigure, LogLevel logLevelToUse, boolean logContainsMessage) {
         String logMessage = "This is a test";
         String logFormat = "{} is a {}";
@@ -128,7 +128,6 @@ public class ClientLoggerTests {
      */
     @ParameterizedTest
     @MethodSource("multiLevelCheckSupplier")
-    @ResourceLock("SYSTEM_OUT")
     public void logException(LogLevel logLevelToConfigure, LogLevel logLevelToUse, boolean logContainsMessage,
         boolean logContainsStackTrace) {
         String logMessage = "This is an exception";
@@ -149,7 +148,6 @@ public class ClientLoggerTests {
      */
     @ParameterizedTest
     @MethodSource("logExceptionAsWarningSupplier")
-    @ResourceLock("SYSTEM_OUT")
     public void logExceptionAsWarning(LogLevel logLevelToConfigure, boolean logContainsMessage,
         boolean logContainsStackTrace) {
         String exceptionMessage = "An exception message";
@@ -160,7 +158,7 @@ public class ClientLoggerTests {
             throw new ClientLogger(ClientLoggerTests.class).logExceptionAsWarning(illegalStateException);
         } catch (RuntimeException exception) {
             assertTrue(exception instanceof IllegalStateException, () -> "Expected IllegalStateException but got "
-                + exception.getClass().getSimpleName());
+                + exception.getClass().getSimpleName() + ".");
         }
 
         String logValues = byteArraySteamToString(logCaptureStream);
@@ -174,7 +172,6 @@ public class ClientLoggerTests {
      */
     @ParameterizedTest
     @MethodSource("logExceptionAsWarningSupplier")
-    @ResourceLock("SYSTEM_OUT")
     public void logCheckedExceptionAsWarning(LogLevel logLevelToConfigure, boolean logContainsMessage,
         boolean logContainsStackTrace) {
         String exceptionMessage = "An exception message";
@@ -185,7 +182,7 @@ public class ClientLoggerTests {
             throw new ClientLogger(ClientLoggerTests.class).logThrowableAsWarning(ioException);
         } catch (Throwable throwable) {
             assertTrue(throwable instanceof IOException, () -> "Expected IOException but got "
-                + throwable.getClass().getSimpleName());
+                + throwable.getClass().getSimpleName() + ".");
         }
 
         String logValues = byteArraySteamToString(logCaptureStream);
@@ -199,7 +196,6 @@ public class ClientLoggerTests {
      */
     @ParameterizedTest
     @MethodSource("logExceptionAsErrorSupplier")
-    @ResourceLock("SYSTEM_OUT")
     public void logExceptionAsError(LogLevel logLevelToConfigure, boolean logContainsMessage,
         boolean logContainsStackTrace) {
         String exceptionMessage = "An exception message";
@@ -210,7 +206,7 @@ public class ClientLoggerTests {
             throw new ClientLogger(ClientLoggerTests.class).logExceptionAsError(illegalStateException);
         } catch (RuntimeException exception) {
             assertTrue(exception instanceof IllegalStateException, () -> "Expected IllegalStateException but got "
-                + exception.getClass().getSimpleName());
+                + exception.getClass().getSimpleName() + ".");
         }
 
         String logValues = byteArraySteamToString(logCaptureStream);
@@ -224,7 +220,6 @@ public class ClientLoggerTests {
      */
     @ParameterizedTest
     @MethodSource("logExceptionAsErrorSupplier")
-    @ResourceLock("SYSTEM_OUT")
     public void logCheckedExceptionAsError(LogLevel logLevelToConfigure, boolean logContainsMessage,
         boolean logContainsStackTrace) {
         String exceptionMessage = "An exception message";
@@ -235,7 +230,7 @@ public class ClientLoggerTests {
             throw new ClientLogger(ClientLoggerTests.class).logThrowableAsError(ioException);
         } catch (Throwable throwable) {
             assertTrue(throwable instanceof IOException, () -> "Expected IOException but got "
-                + throwable.getClass().getSimpleName());
+                + throwable.getClass().getSimpleName() + ".");
         }
 
         String logValues = byteArraySteamToString(logCaptureStream);
@@ -248,7 +243,6 @@ public class ClientLoggerTests {
      */
     @ParameterizedTest
     @MethodSource("validLogLevelSupplier")
-    @ResourceLock("SYSTEM_OUT")
     public void logLevelFromString(String environmentLogLevel, LogLevel expected) {
         assertEquals(expected, LogLevel.fromString(environmentLogLevel));
     }
@@ -259,17 +253,14 @@ public class ClientLoggerTests {
      */
     @ParameterizedTest
     @ValueSource(strings = {"errs", "not_set", "12", "onlyErrorsPlease"})
-    @ResourceLock("SYSTEM_OUT")
     public void invalidLogLevelFromString(String environmentLogLevel) {
         assertThrows(IllegalArgumentException.class, () -> LogLevel.fromString(environmentLogLevel));
     }
 
     @ParameterizedTest
     @MethodSource("provideLogLevels")
-    @ResourceLock("SYSTEM_OUT")
     public void logWithSupplier(LogLevel logLevel) {
         setupLogLevel(logLevel.getLogLevel());
-        setPropertyToOriginalOrClear(Configuration.getGlobalConfiguration().get(PROPERTY_AZURE_LOG_LEVEL));
         Supplier<String> supplier = () -> String.format("Param 1: %s, Param 2: %s, Param 3: %s", "test1", "test2", "test3");
         ClientLogger logger = new ClientLogger(ClientLoggerTests.class);
         logHelper(() -> logger.log(logLevel, supplier), (args) -> logger.log(logLevel, supplier), supplier);
@@ -280,12 +271,10 @@ public class ClientLoggerTests {
 
     @ParameterizedTest
     @MethodSource("provideLogLevels")
-    @ResourceLock("SYSTEM_OUT")
     public void logWithNullSupplier(LogLevel logLevel) {
         setupLogLevel(logLevel.getLogLevel());
-        setPropertyToOriginalOrClear(Configuration.getGlobalConfiguration().get(PROPERTY_AZURE_LOG_LEVEL));
         ClientLogger logger = new ClientLogger(ClientLoggerTests.class);
-        logHelper(() -> logger.log(logLevel, null), (args) -> logger.log(logLevel, null), new Object[] {null});
+        logHelper(() -> logger.log(logLevel, null), (args) -> logger.log(logLevel, null), new Object[]{null});
 
         String logValues = byteArraySteamToString(logCaptureStream);
         assertTrue(logValues.isEmpty());
@@ -293,11 +282,9 @@ public class ClientLoggerTests {
 
     @ParameterizedTest
     @MethodSource("provideLogLevels")
-    @ResourceLock("SYSTEM_OUT")
     public void logSupplierWithException(LogLevel logLevel) {
         NullPointerException exception = new NullPointerException();
         setupLogLevel(logLevel.getLogLevel());
-        setPropertyToOriginalOrClear(Configuration.getGlobalConfiguration().get(PROPERTY_AZURE_LOG_LEVEL));
         Supplier<String> supplier = () -> String.format("Param 1: %s, Param 2: %s, Param 3: %s", "test1", "test2", "test3");
         ClientLogger logger = new ClientLogger(ClientLoggerTests.class);
         logHelper(() -> logger.log(logLevel, supplier, exception), (args) -> logger.log(logLevel, supplier, exception), supplier);
@@ -308,10 +295,8 @@ public class ClientLoggerTests {
 
     @ParameterizedTest
     @MethodSource("provideLogLevels")
-    @ResourceLock("SYSTEM_OUT")
     public void logShouldEvaluateSupplierWithNullException(LogLevel logLevel) {
         setupLogLevel(logLevel.getLogLevel());
-        setPropertyToOriginalOrClear(Configuration.getGlobalConfiguration().get(PROPERTY_AZURE_LOG_LEVEL));
         Supplier<String> supplier = () -> String.format("Param 1: %s, Param 2: %s, Param 3: %s", "test1", "test2", "test3");
         ClientLogger logger = new ClientLogger(ClientLoggerTests.class);
         logHelper(() -> logger.log(logLevel, supplier, null), (args) -> logger.log(logLevel, supplier, null), supplier);
@@ -322,7 +307,6 @@ public class ClientLoggerTests {
 
 
     @Test
-    @ResourceLock("SYSTEM_OUT")
     public void testIsSupplierLogging() {
         Supplier<String> supplier = () -> String.format("Param 1: %s, Param 2: %s, Param 3: %s", "test1", "test2", "test3");
         ClientLogger logger = new ClientLogger(ClientLoggerTests.class);
@@ -333,7 +317,6 @@ public class ClientLoggerTests {
     }
 
     @Test
-    @ResourceLock("SYSTEM_OUT")
     public void testIsSupplierLoggingWithException() {
         Supplier<String> supplier = () -> String.format("Param 1: %s, Param 2: %s, Param 3: %s", "test1", "test2", "test3");
         ClientLogger logger = new ClientLogger(ClientLoggerTests.class);
@@ -343,7 +326,6 @@ public class ClientLoggerTests {
     }
 
     @Test
-    @ResourceLock("SYSTEM_OUT")
     public void testIsSupplierLoggingWithNullException() {
         Supplier<String> supplier = () -> String.format("Param 1: %s, Param 2: %s, Param 3: %s", "test1", "test2", "test3");
         ClientLogger logger = new ClientLogger(ClientLoggerTests.class);
@@ -353,7 +335,6 @@ public class ClientLoggerTests {
     }
 
     @Test
-    @ResourceLock("SYSTEM_OUT")
     public void testIsSupplierLoggingWithMoreParameters() {
         Supplier<String> supplier = () -> String.format("Param 1: %s, Param 2: %s, Param 3: %s", "test1", "test2", "test3");
         ClientLogger logger = new ClientLogger(ClientLoggerTests.class);
@@ -363,7 +344,6 @@ public class ClientLoggerTests {
     }
 
     @Test
-    @ResourceLock("SYSTEM_OUT")
     public void testIsSupplierGettingEvaluated() {
         Supplier<String> supplier = () -> String.format("Param 1: %s, Param 2: %s, Param 3: %s", "test1", "test2", "test3");
         ClientLogger logger = new ClientLogger(ClientLoggerTests.class);
@@ -373,12 +353,10 @@ public class ClientLoggerTests {
     }
 
     @Test
-    @ResourceLock("SYSTEM_OUT")
     public void logSupplierShouldLogExceptionOnVerboseLevel() {
         LogLevel logLevel = LogLevel.VERBOSE;
         NullPointerException exception = new NullPointerException();
         setupLogLevel(logLevel.getLogLevel());
-        setPropertyToOriginalOrClear(Configuration.getGlobalConfiguration().get(PROPERTY_AZURE_LOG_LEVEL));
         Supplier<String> supplier = () -> String.format("Param 1: %s, Param 2: %s, Param 3: %s", "test1", "test2", "test3");
         ClientLogger logger = new ClientLogger(ClientLoggerTests.class);
         String expectedStackTrace = stackTraceToString(exception);
