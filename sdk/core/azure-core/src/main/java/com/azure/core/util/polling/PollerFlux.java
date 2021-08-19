@@ -189,7 +189,8 @@ public final class PollerFlux<T, U> extends Flux<AsyncPollResponse<T, U>> {
             ctx -> initialOperation.get()
                 .flatMap(r -> strategy.canPoll(r).flatMap(canPoll -> {
                     if (!canPoll) {
-                        return Mono.error(new IllegalStateException("Cannot poll with strategy " + strategy));
+                        return Mono.error(new IllegalStateException(
+                            "Cannot poll with strategy " + strategy.getClass().getSimpleName()));
                     }
                     return strategy.onInitialResponse(r, ctx, pollResponseType).flatMap(status -> {
                         if (r.getValue() == null) {

@@ -216,7 +216,7 @@ public final class PollerJavaDocCodeSnippets {
         // BEGIN: com.azure.core.util.polling.poller.initializeAndSubscribeWithCustomPollingStrategy
 
         // Create custom polling strategy based on OperationResourcePollingStrategy
-        PollingStrategy<BinaryData, String> strategy = new OperationResourcePollingStrategy<>(
+        PollingStrategy<BinaryData, String> strategy = new OperationResourcePollingStrategy<BinaryData, String>(
                 new HttpPipelineBuilder().build(),
                 Context.NONE) {
             // override any interface method to customize the polling behavior
