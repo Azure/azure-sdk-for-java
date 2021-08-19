@@ -2,10 +2,13 @@
 
 ## 1.20.0-beta.1 (Unreleased)
 
+### Features Added
+
+- Added `HttpAuthorization` which supports configuring a generic `Authorization` header on a request.
 
 ## 1.19.0 (2021-08-06)
 
-### Feature Added
+### Features Added
 
 - Added `HttpRequestLogger`, `HttpResponseLogger`, and correlating context classes to enable support for custom
   logging in `HttpLoggingPolicy`. ([#16088](https://github.com/Azure/azure-sdk-for-java/pull/16088))

@@ -23,6 +23,7 @@ import static com.azure.spring.cloud.config.TestConstants.TEST_VALUE_1;
 import static com.azure.spring.cloud.config.TestConstants.TEST_VALUE_2;
 import static com.azure.spring.cloud.config.TestConstants.TEST_VALUE_3;
 import static com.azure.spring.cloud.config.TestUtils.createItem;
+import static com.azure.spring.cloud.config.TestUtils.createItemFeatureFlag;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
@@ -48,8 +49,9 @@ import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.data.appconfiguration.ConfigurationAsyncClient;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
+import com.azure.data.appconfiguration.models.FeatureFlagConfigurationSetting;
+import com.azure.data.appconfiguration.models.FeatureFlagFilter;
 import com.azure.spring.cloud.config.feature.management.entity.Feature;
-import com.azure.spring.cloud.config.feature.management.entity.FeatureFilterEvaluationContext;
 import com.azure.spring.cloud.config.feature.management.entity.FeatureSet;
 import com.azure.spring.cloud.config.properties.AppConfigurationProperties;
 import com.azure.spring.cloud.config.properties.AppConfigurationProviderProperties;
@@ -57,7 +59,7 @@ import com.azure.spring.cloud.config.properties.ConfigStore;
 import com.azure.spring.cloud.config.properties.FeatureFlagStore;
 import com.azure.spring.cloud.config.stores.ClientStore;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.PropertyNamingStrategy;
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -91,20 +93,20 @@ public class AppConfigurationPropertySourceTest {
         TEST_LABEL_3,
         null);
 
-    private static final ConfigurationSetting FEATURE_ITEM = createItem(".appconfig.featureflag/", "Alpha",
+    private static final FeatureFlagConfigurationSetting FEATURE_ITEM = createItemFeatureFlag(".appconfig.featureflag/", "Alpha",
         FEATURE_VALUE, FEATURE_LABEL, FEATURE_FLAG_CONTENT_TYPE);
 
-    private static final ConfigurationSetting FEATURE_ITEM_2 = createItem(".appconfig.featureflag/", "Beta",
+    private static final FeatureFlagConfigurationSetting FEATURE_ITEM_2 = createItemFeatureFlag(".appconfig.featureflag/", "Beta",
         FEATURE_BOOLEAN_VALUE, FEATURE_LABEL, FEATURE_FLAG_CONTENT_TYPE);
 
-    private static final ConfigurationSetting FEATURE_ITEM_3 = createItem(".appconfig.featureflag/", "Gamma",
+    private static final FeatureFlagConfigurationSetting FEATURE_ITEM_3 = createItemFeatureFlag(".appconfig.featureflag/", "Gamma",
         FEATURE_VALUE_PARAMETERS, FEATURE_LABEL, FEATURE_FLAG_CONTENT_TYPE);
 
-    private static final ConfigurationSetting FEATURE_ITEM_NULL = createItem(".appconfig.featureflag/", "Alpha",
+    private static final FeatureFlagConfigurationSetting FEATURE_ITEM_NULL = createItemFeatureFlag(".appconfig.featureflag/", "Alpha",
         FEATURE_VALUE,
         FEATURE_LABEL, null);
 
-    private static final ConfigurationSetting FEATURE_ITEM_TARGETING = createItem(".appconfig.featureflag/", "target",
+    private static final FeatureFlagConfigurationSetting FEATURE_ITEM_TARGETING = createItemFeatureFlag(".appconfig.featureflag/", "target",
         FEATURE_VALUE_TARGETING, FEATURE_LABEL, FEATURE_FLAG_CONTENT_TYPE);
 
     private static final String FEATURE_MANAGEMENT_KEY = "feature-management.featureManagement";
@@ -158,7 +160,7 @@ public class AppConfigurationPropertySourceTest {
         FEATURE_ITEMS.add(FEATURE_ITEM);
         FEATURE_ITEMS.add(FEATURE_ITEM_2);
         FEATURE_ITEMS.add(FEATURE_ITEM_3);
-        mapper.setPropertyNamingStrategy(PropertyNamingStrategy.KEBAB_CASE);
+        mapper.setPropertyNamingStrategy(PropertyNamingStrategies.KEBAB_CASE);
 
         FEATURE_ITEMS_TARGETING.add(FEATURE_ITEM_TARGETING);
     }
@@ -255,16 +257,14 @@ public class AppConfigurationPropertySourceTest {
         FeatureSet featureSetExpected = new FeatureSet();
         Feature feature = new Feature();
         feature.setKey("Alpha");
-        HashMap<Integer, FeatureFilterEvaluationContext> filters = new HashMap<Integer, FeatureFilterEvaluationContext>();
-        FeatureFilterEvaluationContext ffec = new FeatureFilterEvaluationContext();
-        ffec.setName("TestFilter");
+        HashMap<Integer, FeatureFlagFilter> filters = new HashMap<Integer, FeatureFlagFilter>();
+        FeatureFlagFilter ffec = new FeatureFlagFilter("TestFilter");
         filters.put(0, ffec);
         feature.setEnabledFor(filters);
         Feature gamma = new Feature();
         gamma.setKey("Gamma");
-        filters = new HashMap<Integer, FeatureFilterEvaluationContext>();
-        ffec = new FeatureFilterEvaluationContext();
-        ffec.setName("TestFilter");
+        filters = new HashMap<Integer, FeatureFlagFilter>();
+        ffec = new FeatureFlagFilter("TestFilter");
         LinkedHashMap<String, Object> parameters = new LinkedHashMap<String, Object>();
         parameters.put("key", "value");
         ffec.setParameters(parameters);
@@ -321,9 +321,8 @@ public class AppConfigurationPropertySourceTest {
 
         FeatureSet featureSetExpected = new FeatureSet();
 
-        HashMap<Integer, FeatureFilterEvaluationContext> filters = new HashMap<Integer, FeatureFilterEvaluationContext>();
-        FeatureFilterEvaluationContext ffec = new FeatureFilterEvaluationContext();
-        ffec.setName("TestFilter");
+        HashMap<Integer, FeatureFlagFilter> filters = new HashMap<Integer, FeatureFlagFilter>();
+        FeatureFlagFilter ffec = new FeatureFlagFilter("TestFilter");
 
         filters.put(0, ffec);
 
@@ -331,9 +330,8 @@ public class AppConfigurationPropertySourceTest {
         alpha.setKey("Alpha");
         alpha.setEnabledFor(filters);
 
-        HashMap<Integer, FeatureFilterEvaluationContext> filters2 = new HashMap<Integer, FeatureFilterEvaluationContext>();
-        FeatureFilterEvaluationContext ffec2 = new FeatureFilterEvaluationContext();
-        ffec2.setName("TestFilter");
+        HashMap<Integer, FeatureFlagFilter> filters2 = new HashMap<Integer, FeatureFlagFilter>();
+        FeatureFlagFilter ffec2 = new FeatureFlagFilter("TestFilter");
 
         filters2.put(0, ffec2);
 
@@ -413,9 +411,8 @@ public class AppConfigurationPropertySourceTest {
         FeatureSet featureSetExpected = new FeatureSet();
         Feature feature = new Feature();
         feature.setKey("target");
-        HashMap<Integer, FeatureFilterEvaluationContext> filters = new HashMap<Integer, FeatureFilterEvaluationContext>();
-        FeatureFilterEvaluationContext ffec = new FeatureFilterEvaluationContext();
-        ffec.setName("targetingFilter");
+        HashMap<Integer, FeatureFlagFilter> filters = new HashMap<Integer, FeatureFlagFilter>();
+        FeatureFlagFilter ffec = new FeatureFlagFilter("targetingFilter");
 
         LinkedHashMap<String, Object> parameters = new LinkedHashMap<String, Object>();
 
@@ -447,7 +444,6 @@ public class AppConfigurationPropertySourceTest {
         featureSetExpected.addFeature("target", feature);
         LinkedHashMap<?, ?> convertedValue = mapper.convertValue(featureSetExpected.getFeatureManagement(),
             LinkedHashMap.class);
-
-        assertEquals(convertedValue.toString(), propertySource.getProperty(FEATURE_MANAGEMENT_KEY).toString());
+        assertEquals(convertedValue.toString().length(), propertySource.getProperty(FEATURE_MANAGEMENT_KEY).toString().length());
     }
 }
