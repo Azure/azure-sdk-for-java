@@ -102,4 +102,9 @@ public class KeyVaultKeyLessRsaSignatureTest {
         assertArrayEquals("fakeValue".getBytes(), keyVaultKeyLessRsaSignature.engineSign());
     }
 
+    @Test
+    public void engineSetParameterWithNullParameterTest() {
+        keyVaultKeyLessRsaSignature = new KeyVaultKeyLessRsaSignature();
+        assertThrows(InvalidAlgorithmParameterException.class, () -> keyVaultKeyLessRsaSignature.engineSetParameter(null));
+    }
 }
