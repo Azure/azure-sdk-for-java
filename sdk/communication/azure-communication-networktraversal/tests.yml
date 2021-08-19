@@ -1,7 +1,14 @@
 trigger: none
 
 stages:
-  - template: /sdk/communication/communication-tests-template.yml
+  - template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
     parameters:
-      PackageName: azure-communication-networktraversal
-      SafeName: azurecommunicationnetworktraversal
+      PackageName: "@azure/communication-network-traversal"
+      ServiceDirectory: communication
+      CloudConfig:
+        Public:
+          SubscriptionConfigurations:
+            - $(sub-config-azure-cloud-test-resources)
+            - $(sub-config-communication-services-cloud-test-resources-common)
+            - $(sub-config-communication-services-cloud-test-resources-java)
+      Clouds: Public
