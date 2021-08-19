@@ -1,5 +1,5 @@
 {
-  "displayNames": { 
+  "displayNames": {
     "2.9.10": "jackson2_9",
   },
   "matrix": {
@@ -9,8 +9,8 @@
     "JavaTestVersion": "1.11",
     "AZURE_TEST_HTTP_CLIENTS": "netty",
     "TestGoals": "surefire:test",
-    "AZURE_CORE_TEST_JACKSON_VERSION": [
-        "2.9.10",
+    "AZURE_CORE_TEST_UNSUPPORTED_JACKSON_VERSION": [
+        "2.9.10"
     ],
     "TestFromSource": true
   }
