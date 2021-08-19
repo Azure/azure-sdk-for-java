@@ -102,7 +102,7 @@ public final class SemanticVersion implements Comparable<SemanticVersion> {
         try {
             Manifest manifest = new JarFile(clazz.getProtectionDomain().getCodeSource().getLocation().getFile())
                     .getManifest();
-            versionStr = manifest.getMainAttributes().getValue("Bundle-Version");
+            versionStr = manifest.getMainAttributes().getValue("Implementation-Version");
             return parse(versionStr);
         } catch (Exception e) {
             return createInvalid();
