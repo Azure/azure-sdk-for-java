@@ -89,6 +89,7 @@
         <module>sdk/monitor/azure-monitor-query</module>
 
         <!-- Purview -->
+        <module>sdk/purview/azure-analytics-purview-account</module>
         <module>sdk/purview/azure-analytics-purview-catalog</module>
         <module>sdk/purview/azure-analytics-purview-scanning</module>
 
