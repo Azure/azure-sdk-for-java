@@ -15,7 +15,8 @@ public final class PiiEntityCollection extends IterableStream<PiiEntity> {
     private final IterableStream<TextAnalyticsWarning> warnings;
 
     /**
-     * Creates a {@link PiiEntityCollection} model that describes a entities collection including warnings.
+     * Creates a {@link PiiEntityCollection} model that describes a Personally Identifiable Information entities
+     * collection including warnings.
      *
      * @param entities An {@link IterableStream} of {@link PiiEntity Personally Identifiable Information entities}.
      * @param redactedText The text of the input document with all of the PII information redacted out.

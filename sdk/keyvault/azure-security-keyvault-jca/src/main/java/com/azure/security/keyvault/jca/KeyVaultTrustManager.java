@@ -22,7 +22,7 @@ import static java.util.logging.Level.WARNING;
 /**
  * The Azure Key Vault variant of the X509TrustManager.
  */
-public class KeyVaultTrustManager extends X509ExtendedTrustManager {
+public final class KeyVaultTrustManager extends X509ExtendedTrustManager {
 
     /**
      * Stores the logger.

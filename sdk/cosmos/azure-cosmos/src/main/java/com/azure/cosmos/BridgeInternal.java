@@ -32,6 +32,7 @@ import com.azure.cosmos.implementation.Warning;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
 import com.azure.cosmos.implementation.directconnectivity.StoreResult;
 import com.azure.cosmos.implementation.directconnectivity.Uri;
+import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdChannelAcquisitionTimeline;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdEndpointStatistics;
 import com.azure.cosmos.implementation.patch.PatchOperation;
 import com.azure.cosmos.implementation.query.QueryInfo;
@@ -217,6 +218,17 @@ public final class BridgeInternal {
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static <E extends CosmosException> E setChannelAcquisitionTimeline(E e, RntbdChannelAcquisitionTimeline channelAcquisitionTimeline) {
+        e.setChannelAcquisitionTimeline(channelAcquisitionTimeline);
+        return e;
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static <E extends CosmosException> RntbdChannelAcquisitionTimeline getChannelAcqusitionTimeline(E e) {
+        return e.getChannelAcquisitionTimeline();
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static <E extends CosmosException> E setChannelTaskQueueSize(E e, int value) {
         e.setRntbdChannelTaskQueueSize(value);
         return e;
@@ -376,9 +388,9 @@ public final class BridgeInternal {
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static QueryMetrics createQueryMetricsFromDelimitedStringAndClientSideMetrics(
-        String queryMetricsDelimitedString, ClientSideMetrics clientSideMetrics, String activityId) {
+        String queryMetricsDelimitedString, ClientSideMetrics clientSideMetrics, String activityId, String indexUtilizationInfoJSONString) {
         return QueryMetrics.createFromDelimitedStringAndClientSideMetrics(queryMetricsDelimitedString,
-            clientSideMetrics, activityId);
+            clientSideMetrics, activityId, indexUtilizationInfoJSONString);
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
@@ -539,9 +551,9 @@ public final class BridgeInternal {
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static void setTransportClientRequestTimelineOnDiagnostics(CosmosDiagnostics cosmosDiagnostics,
-                                                                      RequestTimeline requestTimeline) {
-        cosmosDiagnostics.clientSideRequestStatistics().setTransportClientRequestTimeline(requestTimeline);
+    public static void setGatewayRequestTimelineOnDiagnostics(CosmosDiagnostics cosmosDiagnostics,
+                                                              RequestTimeline requestTimeline) {
+        cosmosDiagnostics.clientSideRequestStatistics().setGatewayRequestTimeline(requestTimeline);
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
@@ -583,8 +595,13 @@ public final class BridgeInternal {
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static String recordAddressResolutionStart(CosmosDiagnostics cosmosDiagnostics,
-                                                      URI targetEndpoint) {
-        return cosmosDiagnostics.clientSideRequestStatistics().recordAddressResolutionStart(targetEndpoint);
+                                                      URI targetEndpoint,
+                                                      boolean forceRefresh,
+                                                      boolean forceCollectionRoutingMapRefresh) {
+        return cosmosDiagnostics.clientSideRequestStatistics().recordAddressResolutionStart(
+            targetEndpoint,
+            forceRefresh,
+            forceCollectionRoutingMapRefresh);
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)

@@ -4,6 +4,7 @@
 package com.azure.resourcemanager.network.implementation;
 
 import com.azure.core.management.provider.IdentifierProvider;
+import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.NetworkManager;
 import com.azure.resourcemanager.network.fluent.models.ApplicationSecurityGroupInner;
@@ -525,7 +526,8 @@ class NetworkInterfaceImpl
                     innerToFluentMap(this);
                     initializeChildrenFromInner();
                     afterCreating();
-                });
+                },
+                Context.NONE);
     }
 
     @Override

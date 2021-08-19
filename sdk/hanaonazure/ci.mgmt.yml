@@ -8,7 +8,11 @@ trigger:
       - release/*
   paths:
     include:
-      - sdk/hanaonazure/
+      - sdk/hanaonazure/ci.mgmt.yml
+      - sdk/hanaonazure/mgmt-v2017_11_03_preview/
+    exclude:
+      - sdk/hanaonazure/pom.xml
+      - sdk/hanaonazure/mgmt-v2017_11_03_preview/pom.xml
 
 pr:
   branches:
@@ -19,7 +23,11 @@ pr:
       - release/*
   paths:
     include:
-      - sdk/hanaonazure/
+      - sdk/hanaonazure/ci.mgmt.yml
+      - sdk/hanaonazure/mgmt-v2017_11_03_preview/
+    exclude:
+      - sdk/hanaonazure/pom.xml
+      - sdk/hanaonazure/mgmt-v2017_11_03_preview/pom.xml
 
 stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-management.yml

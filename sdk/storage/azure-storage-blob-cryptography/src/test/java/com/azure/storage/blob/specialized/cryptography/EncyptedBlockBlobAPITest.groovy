@@ -8,6 +8,7 @@ import com.azure.core.http.HttpPipelinePosition
 import com.azure.core.http.HttpResponse
 import com.azure.core.http.policy.HttpPipelinePolicy
 import com.azure.identity.DefaultAzureCredentialBuilder
+import com.azure.storage.blob.BlobClientBuilder
 import com.azure.storage.blob.BlobContainerClient
 import com.azure.storage.blob.BlobServiceClientBuilder
 import com.azure.storage.blob.BlobUrlParts
@@ -26,6 +27,7 @@ import com.azure.storage.blob.models.ParallelTransferOptions
 import com.azure.storage.blob.options.BlobParallelUploadOptions
 import com.azure.storage.blob.specialized.BlockBlobClient
 import com.azure.storage.common.implementation.Constants
+import com.azure.storage.common.test.shared.TestHttpClientType
 import com.azure.storage.common.test.shared.extensions.LiveOnly
 import com.microsoft.azure.storage.CloudStorageAccount
 import com.microsoft.azure.storage.blob.BlobEncryptionPolicy
@@ -50,6 +52,7 @@ import java.nio.file.Files
 import java.nio.file.OpenOption
 import java.nio.file.StandardOpenOption
 import java.time.Duration
+import java.util.concurrent.atomic.AtomicInteger
 
 class EncyptedBlockBlobAPITest extends APISpec {
 
@@ -1240,9 +1243,29 @@ class EncyptedBlockBlobAPITest extends APISpec {
         def outFile = new File(namer.getResourcePrefix())
         Files.deleteIfExists(file.toPath())
 
+        def counter = new AtomicInteger()
+
         expect:
-        def bac = getEncryptedClientBuilder(fakeKey, null, env.primaryAccount.credential,
+        def bacUploading = getEncryptedClientBuilder(fakeKey, null, env.primaryAccount.credential,
             ebc.getBlobUrl().toString())
+            .buildEncryptedBlobAsyncClient()
+
+        def bacDownloading = getEncryptedClientBuilder(fakeKey, null, env.primaryAccount.credential,
+            ebc.getBlobUrl().toString())
+            .addPolicy({ context, next ->
+                return next.process()
+                    .flatMap({ r ->
+                        if (counter.incrementAndGet() == 1) {
+                            /*
+                             * When the download begins trigger an upload to overwrite the downloading blob
+                             * so that the download is able to get an ETag before it is changed.
+                             */
+                            return bacUploading.upload(data.defaultFlux, null, true)
+                                .thenReturn(r)
+                        }
+                        return Mono.just(r)
+                    })
+            })
             .buildEncryptedBlobAsyncClient()
 
         /*
@@ -1260,12 +1283,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
          */
         Hooks.onErrorDropped({ ignored -> /* do nothing with it */ })
 
-        /*
-         * When the download begins trigger an upload to overwrite the downloading blob after waiting 500 milliseconds
-         * so that the download is able to get an ETag before it is changed.
-         */
-        StepVerifier.create(bac.downloadToFileWithResponse(outFile.toPath().toString(), null, options, null, null, false)
-            .doOnSubscribe({ bac.upload(data.defaultFlux, null, true).delaySubscription(Duration.ofMillis(500)).subscribe() }))
+        StepVerifier.create(bacDownloading.downloadToFileWithResponse(outFile.toPath().toString(), null, options, null, null, false))
             .verifyErrorSatisfies({
                 /*
                  * If an operation is running on multiple threads and multiple return an exception Reactor will combine

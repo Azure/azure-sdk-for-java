@@ -83,11 +83,11 @@ def create_from_source_pom(project_list: str, set_pipeline_variable: str):
 
     # Resolve all dependencies of the projects in the project list and of the dependent modules.
     for project_identifier in project_list_identifiers + dependent_modules:
-        depencency_modules = resolve_project_dependencies(project_identifier, dependency_modules, project_dependencies_mapping)
+        dependency_modules = resolve_project_dependencies(project_identifier, dependency_modules, project_dependencies_mapping)
 
     modules = []
     # Finally map the project identifiers to relative module paths.
-    for project_identifier in project_list_identifiers + dependent_modules + depencency_modules:
+    for project_identifier in project_list_identifiers + dependent_modules + dependency_modules:
         if project_identifier in project_to_pom_path_mapping:
             modules.append(project_to_pom_path_mapping[project_identifier])
 
@@ -139,12 +139,18 @@ def create_dependency_and_path_mappings(project_list_identifiers: list, artifact
 
             # Only parse files that are pom.xml files.
             if (file_name.startswith('pom') and file_name.endswith('.xml')):
-                add_project_to_dependency_and_module_mappings(file_path, project_dependencies_mapping, project_list_identifiers, artifact_identifier_to_source_version, dependency_mapping, module_path_mapping)
+                add_project_to_dependency_and_module_mappings(file_path, project_dependencies_mapping,
+                                                              project_list_identifiers,
+                                                              artifact_identifier_to_source_version, dependency_mapping,
+                                                              module_path_mapping)
 
     return project_dependencies_mapping, dependency_mapping, module_path_mapping
 
 # Function that constructs the project dependencies map and adds to dependency to project map and project to module relative path map for a track 2 project.
-def add_project_to_dependency_and_module_mappings(file_path: str, project_dependencies_mapping: dict, project_list_identifiers: list, artifact_identifier_to_source_version: dict, dependency_mapping: dict, module_path_mapping: dict):
+def add_project_to_dependency_and_module_mappings(file_path: str, project_dependencies_mapping: dict,
+                                                  project_list_identifiers: list,
+                                                  artifact_identifier_to_source_version: dict,
+                                                  dependency_mapping: dict, module_path_mapping: dict):
     if 'eng' in file_path.split(os.sep):
         return
 
@@ -159,7 +165,7 @@ def add_project_to_dependency_and_module_mappings(file_path: str, project_depend
 
     module_path_mapping[project_identifier] = os.path.dirname(file_path).replace(root_path, '').replace('\\', '/')
 
-    dependencies = tree_root.iter(maven_xml_namespace + 'dependency')
+    dependencies = {child:parent for parent in tree_root.iter() for child in parent if child.tag == maven_xml_namespace + 'dependency'}
 
     # If the project doesn't have a dependencies XML element skip it.
     if dependencies is None:
@@ -169,11 +175,17 @@ def add_project_to_dependency_and_module_mappings(file_path: str, project_depend
         project_dependencies_mapping[project_identifier] = []
 
     for dependency in dependencies:
+
+        # not all the <dependency> are maven dependencies, ignore them 
+        if dependencies[dependency].tag == maven_xml_namespace + 'dependenciesToScan':
+            continue
+
         dependency_identifier = create_artifact_identifier(dependency)
         if not dependency_identifier in artifact_identifier_to_source_version:
             continue
 
         dependency_version = get_dependency_version(dependency)
+
         if dependency_version != artifact_identifier_to_source_version[dependency_identifier]:
             continue
 

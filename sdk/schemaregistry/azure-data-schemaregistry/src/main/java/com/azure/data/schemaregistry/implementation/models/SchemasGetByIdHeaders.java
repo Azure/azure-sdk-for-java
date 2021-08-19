@@ -10,112 +10,112 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class SchemasGetByIdHeaders {
     /*
-     * The X-Schema-Version property.
+     * The schema-Version property.
      */
-    @JsonProperty(value = "X-Schema-Version")
-    private Integer xSchemaVersion;
+    @JsonProperty(value = "schema-version")
+    private Integer schemaVersion;
 
     /*
-     * The X-Schema-Type property.
+     * The schema-Type property.
      */
-    @JsonProperty(value = "X-Schema-Type")
-    private String xSchemaType;
+    @JsonProperty(value = "serialization-type")
+    private String schemaType;
 
     /*
-     * The X-Schema-Id property.
+     * The schema-Id property.
      */
-    @JsonProperty(value = "X-Schema-Id")
-    private String xSchemaId;
+    @JsonProperty(value = "schema-id")
+    private String schemaId;
 
     /*
-     * The X-Schema-Id-Location property.
+     * The schema-Id-Location property.
      */
-    @JsonProperty(value = "X-Schema-Id-Location")
-    private String xSchemaIdLocation;
+    @JsonProperty(value = "schema-id-location")
+    private String schemaIdLocation;
 
     /*
      * The Location property.
      */
-    @JsonProperty(value = "Location")
+    @JsonProperty(value = "location")
     private String location;
 
     /**
-     * Get the xSchemaVersion property: The X-Schema-Version property.
+     * Get the schemaVersion property: The Schema-Version property.
      *
-     * @return the xSchemaVersion value.
+     * @return the schemaVersion value.
      */
-    public Integer getXSchemaVersion() {
-        return this.xSchemaVersion;
+    public Integer getSchemaVersion() {
+        return this.schemaVersion;
     }
 
     /**
-     * Set the xSchemaVersion property: The X-Schema-Version property.
+     * Set the schemaVersion property: The schema-Version property.
      *
-     * @param xSchemaVersion the xSchemaVersion value to set.
+     * @param schemaVersion the schemaVersion value to set.
      * @return the SchemasGetByIdHeaders object itself.
      */
-    public SchemasGetByIdHeaders setXSchemaVersion(Integer xSchemaVersion) {
-        this.xSchemaVersion = xSchemaVersion;
+    public SchemasGetByIdHeaders setSchemaVersion(Integer schemaVersion) {
+        this.schemaVersion = schemaVersion;
         return this;
     }
 
     /**
-     * Get the xSchemaType property: The X-Schema-Type property.
+     * Get the schemaType property: The schema-Type property.
      *
-     * @return the xSchemaType value.
+     * @return the schemaType value.
      */
-    public String getXSchemaType() {
-        return this.xSchemaType;
+    public String getSchemaType() {
+        return this.schemaType;
     }
 
     /**
-     * Set the xSchemaType property: The X-Schema-Type property.
+     * Set the schemaType property: The schema-Type property.
      *
-     * @param xSchemaType the xSchemaType value to set.
+     * @param schemaType the schemaType value to set.
      * @return the SchemasGetByIdHeaders object itself.
      */
-    public SchemasGetByIdHeaders setXSchemaType(String xSchemaType) {
-        this.xSchemaType = xSchemaType;
+    public SchemasGetByIdHeaders setSchemaType(String schemaType) {
+        this.schemaType = schemaType;
         return this;
     }
 
     /**
-     * Get the xSchemaId property: The X-Schema-Id property.
+     * Get the schemaId property: The schema-Id property.
      *
-     * @return the xSchemaId value.
+     * @return the schemaId value.
      */
-    public String getXSchemaId() {
-        return this.xSchemaId;
+    public String getSchemaId() {
+        return this.schemaId;
     }
 
     /**
-     * Set the xSchemaId property: The X-Schema-Id property.
+     * Set the schemaId property: The schema-Id property.
      *
-     * @param xSchemaId the xSchemaId value to set.
+     * @param schemaId the schemaId value to set.
      * @return the SchemasGetByIdHeaders object itself.
      */
-    public SchemasGetByIdHeaders setXSchemaId(String xSchemaId) {
-        this.xSchemaId = xSchemaId;
+    public SchemasGetByIdHeaders setSchemaId(String schemaId) {
+        this.schemaId = schemaId;
         return this;
     }
 
     /**
-     * Get the xSchemaIdLocation property: The X-Schema-Id-Location property.
+     * Get the schemaIdLocation property: The schema-Id-Location property.
      *
-     * @return the xSchemaIdLocation value.
+     * @return the schemaIdLocation value.
      */
-    public String getXSchemaIdLocation() {
-        return this.xSchemaIdLocation;
+    public String getSchemaIdLocation() {
+        return this.schemaIdLocation;
     }
 
     /**
-     * Set the xSchemaIdLocation property: The X-Schema-Id-Location property.
+     * Set the schemaIdLocation property: The schema-Id-Location property.
      *
-     * @param xSchemaIdLocation the xSchemaIdLocation value to set.
+     * @param schemaIdLocation the schemaIdLocation value to set.
      * @return the SchemasGetByIdHeaders object itself.
      */
-    public SchemasGetByIdHeaders setXSchemaIdLocation(String xSchemaIdLocation) {
-        this.xSchemaIdLocation = xSchemaIdLocation;
+    public SchemasGetByIdHeaders setSchemaIdLocation(String schemaIdLocation) {
+        this.schemaIdLocation = schemaIdLocation;
         return this;
     }
 

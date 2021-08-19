@@ -1,6 +1,17 @@
 # Release History
 
-## 1.2.0-beta.2 (Unreleased)
+## 1.3.0-beta.1 (Unreleased)
+
+
+## 1.2.1 (2021-08-11)
+### Dependency Updates
+- Updated `azure-core` from `1.18.0` to `1.19.0`.
+- Updated `azure-core-http-netty` from `1.10.1` to `1.10.2`.
+
+## 1.2.0 (2021-07-08)
+### Bugs Fixed
+- `SecretReferenceConfigurationSetting` and `FeatureFlagConfigurationSetting` are able to update the strongly-type
+  properties of setting when changing the setting's `value`, vice versa.
 
 ## 1.1.12 (2021-05-18)
 ### Dependency Updates

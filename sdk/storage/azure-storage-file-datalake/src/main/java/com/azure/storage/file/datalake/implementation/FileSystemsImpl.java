@@ -69,6 +69,7 @@ public final class FileSystemsImpl {
         @UnexpectedResponseExceptionType(com.azure.storage.file.datalake.models.DataLakeStorageException.class)
         Mono<FileSystemsCreateResponse> create(
                 @HostParam("url") String url,
+                @PathParam("filesystem") String fileSystem,
                 @QueryParam("resource") String resource,
                 @HeaderParam("x-ms-client-request-id") String requestId,
                 @QueryParam("timeout") Integer timeout,
@@ -82,6 +83,7 @@ public final class FileSystemsImpl {
         @UnexpectedResponseExceptionType(com.azure.storage.file.datalake.models.DataLakeStorageException.class)
         Mono<FileSystemsSetPropertiesResponse> setProperties(
                 @HostParam("url") String url,
+                @PathParam("filesystem") String fileSystem,
                 @QueryParam("resource") String resource,
                 @HeaderParam("x-ms-client-request-id") String requestId,
                 @QueryParam("timeout") Integer timeout,
@@ -97,6 +99,7 @@ public final class FileSystemsImpl {
         @UnexpectedResponseExceptionType(com.azure.storage.file.datalake.models.DataLakeStorageException.class)
         Mono<FileSystemsGetPropertiesResponse> getProperties(
                 @HostParam("url") String url,
+                @PathParam("filesystem") String fileSystem,
                 @QueryParam("resource") String resource,
                 @HeaderParam("x-ms-client-request-id") String requestId,
                 @QueryParam("timeout") Integer timeout,
@@ -109,6 +112,7 @@ public final class FileSystemsImpl {
         @UnexpectedResponseExceptionType(com.azure.storage.file.datalake.models.DataLakeStorageException.class)
         Mono<FileSystemsDeleteResponse> delete(
                 @HostParam("url") String url,
+                @PathParam("filesystem") String fileSystem,
                 @QueryParam("resource") String resource,
                 @HeaderParam("x-ms-client-request-id") String requestId,
                 @QueryParam("timeout") Integer timeout,
@@ -141,9 +145,9 @@ public final class FileSystemsImpl {
         @UnexpectedResponseExceptionType(com.azure.storage.file.datalake.models.DataLakeStorageException.class)
         Mono<FileSystemsListBlobHierarchySegmentResponse> listBlobHierarchySegment(
                 @HostParam("url") String url,
+                @PathParam("filesystem") String fileSystem,
                 @QueryParam("restype") String restype,
                 @QueryParam("comp") String comp,
-                @PathParam("filesystem") String fileSystem,
                 @QueryParam("prefix") String prefix,
                 @QueryParam("delimiter") String delimiter,
                 @QueryParam("marker") String marker,
@@ -184,6 +188,7 @@ public final class FileSystemsImpl {
         final String accept = "application/json";
         return service.create(
                 this.client.getUrl(),
+                this.client.getFileSystem(),
                 this.client.getResource(),
                 requestId,
                 timeout,
@@ -240,6 +245,7 @@ public final class FileSystemsImpl {
                 ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
         return service.setProperties(
                 this.client.getUrl(),
+                this.client.getFileSystem(),
                 this.client.getResource(),
                 requestId,
                 timeout,
@@ -271,6 +277,7 @@ public final class FileSystemsImpl {
         final String accept = "application/json";
         return service.getProperties(
                 this.client.getUrl(),
+                this.client.getFileSystem(),
                 this.client.getResource(),
                 requestId,
                 timeout,
@@ -321,6 +328,7 @@ public final class FileSystemsImpl {
                 ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
         return service.delete(
                 this.client.getUrl(),
+                this.client.getFileSystem(),
                 this.client.getResource(),
                 requestId,
                 timeout,
@@ -431,9 +439,9 @@ public final class FileSystemsImpl {
                 JacksonAdapter.createDefaultSerializerAdapter().serializeList(include, CollectionFormat.CSV);
         return service.listBlobHierarchySegment(
                 this.client.getUrl(),
+                this.client.getFileSystem(),
                 restype,
                 comp,
-                this.client.getFileSystem(),
                 prefix,
                 delimiter,
                 marker,

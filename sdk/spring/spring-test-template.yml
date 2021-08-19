@@ -9,9 +9,8 @@ parameters:
     - spring/azure-spring-boot-test-servicebus-jms
     - spring/azure-spring-boot-test-storage
     - spring/azure-spring-cloud-test-eventhubs
+    - spring/azure-spring-cloud-test-eventhubs-kafka
     - spring/azure-spring-cloud-test-servicebus-binder
-    - spring/azure-spring-boot-samples/azure-spring-cloud-sample-eventhubs-binder
-    - spring/azure-spring-boot-samples/azure-spring-cloud-sample-eventhubs-kafka
   Artifacts:
     - name: azure-spring-boot-test-application
       groupId: com.azure.spring
@@ -28,7 +27,7 @@ parameters:
     - name: azure-spring-boot-test-aad-b2c
       groupId: com.azure.spring
       safeName: azurespringboottestaadb2c
-    - name: azure-spring-boot-test-aad-obo
+    - name: azure-spring-boot-test-aad-webapp-and-resource-server-with-obo
       groupId: com.azure.spring
       safeName: azurespringboottestaadobo
     - name: azure-spring-boot-test-aad-resource-server
@@ -55,15 +54,12 @@ parameters:
     - name: azure-spring-cloud-test-eventhubs
       groupId: com.azure.spring
       safeName: azurespringcloudtesteventhubs
+    - name: azure-spring-cloud-test-eventhubs-kafka
+      groupId: com.azure.spring
+      safeName: azurespringcloudtesteventhubskafka
     - name: azure-spring-boot-test-storage
       groupId: com.azure.spring
       safeName: azurespringbootteststorage
-    - name: azure-spring-cloud-sample-eventhubs-binder
-      groupId: com.azure.spring
-      safeName: azurespringcloudsampleeventhubsbinder
-    - name: azure-spring-cloud-sample-eventhubs-kafka
-      groupId: com.azure.spring
-      safeName: azurespringcloudsampleeventhubskafka
     - name: azure-spring-cloud-test-servicebus-binder
       groupId: com.azure.spring
       safeName: azurespringcloudtestservicebusbinder

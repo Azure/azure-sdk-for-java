@@ -7,14 +7,14 @@ package com.azure.security.attestation;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.Response;
 import com.azure.security.attestation.implementation.PoliciesImpl;
 import com.azure.security.attestation.models.AttestationType;
-import com.azure.security.attestation.models.CloudErrorException;
 import com.azure.security.attestation.models.PolicyResponse;
 import reactor.core.publisher.Mono;
 
-/** Initializes a new instance of the asynchronous AttestationClient type. */
+/** Initializes a new instance of the asynchronous AzureAttestationRestClient type. */
 @ServiceClient(builder = AttestationClientBuilder.class, isAsync = true)
 public final class PolicyAsyncClient {
     private final PoliciesImpl serviceClient;
@@ -33,13 +33,14 @@ public final class PolicyAsyncClient {
      *
      * @param attestationType Specifies the trusted execution environment to be used to validate the evidence.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response to an attestation policy operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PolicyResponse>> getWithResponse(AttestationType attestationType) {
-        return this.serviceClient.getWithResponseAsync(attestationType);
+        return this.serviceClient.getWithResponseAsync(attestationType)
+            .map(response -> Utilities.generateResponseFromModelType(response, PolicyResponse.fromGenerated(response.getValue())));
     }
 
     /**
@@ -47,13 +48,15 @@ public final class PolicyAsyncClient {
      *
      * @param attestationType Specifies the trusted execution environment to be used to validate the evidence.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response to an attestation policy operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PolicyResponse> get(AttestationType attestationType) {
-        return this.serviceClient.getAsync(attestationType);
+        return serviceClient.getAsync(attestationType)
+            .map(PolicyResponse::fromGenerated);
+
     }
 
     /**
@@ -62,14 +65,15 @@ public final class PolicyAsyncClient {
      * @param attestationType Specifies the trusted execution environment to be used to validate the evidence.
      * @param newAttestationPolicy simple string.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response to an attestation policy operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PolicyResponse>> setWithResponse(
             AttestationType attestationType, String newAttestationPolicy) {
-        return this.serviceClient.setWithResponseAsync(attestationType, newAttestationPolicy);
+        return serviceClient.setWithResponseAsync(attestationType, newAttestationPolicy)
+            .map(response -> Utilities.generateResponseFromModelType(response, PolicyResponse.fromGenerated(response.getValue())));
     }
 
     /**
@@ -78,13 +82,14 @@ public final class PolicyAsyncClient {
      * @param attestationType Specifies the trusted execution environment to be used to validate the evidence.
      * @param newAttestationPolicy simple string.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response to an attestation policy operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PolicyResponse> set(AttestationType attestationType, String newAttestationPolicy) {
-        return this.serviceClient.setAsync(attestationType, newAttestationPolicy);
+        return this.serviceClient.setAsync(attestationType, newAttestationPolicy)
+            .map(PolicyResponse::fromGenerated);
     }
 
     /**
@@ -93,13 +98,14 @@ public final class PolicyAsyncClient {
      * @param attestationType Specifies the trusted execution environment to be used to validate the evidence.
      * @param policyJws simple string.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response to an attestation policy operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PolicyResponse>> resetWithResponse(AttestationType attestationType, String policyJws) {
-        return this.serviceClient.resetWithResponseAsync(attestationType, policyJws);
+        return this.serviceClient.resetWithResponseAsync(attestationType, policyJws)
+            .map(response -> Utilities.generateResponseFromModelType(response, PolicyResponse.fromGenerated(response.getValue())));
     }
 
     /**
@@ -108,12 +114,13 @@ public final class PolicyAsyncClient {
      * @param attestationType Specifies the trusted execution environment to be used to validate the evidence.
      * @param policyJws simple string.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response to an attestation policy operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PolicyResponse> reset(AttestationType attestationType, String policyJws) {
-        return this.serviceClient.resetAsync(attestationType, policyJws);
+        return this.serviceClient.resetAsync(attestationType, policyJws)
+            .map(PolicyResponse::fromGenerated);
     }
 }

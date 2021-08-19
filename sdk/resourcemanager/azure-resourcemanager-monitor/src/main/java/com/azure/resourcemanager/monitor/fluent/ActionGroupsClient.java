@@ -27,7 +27,7 @@ public interface ActionGroupsClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param actionGroupName The name of the action group.
-     * @param actionGroup An action group resource.
+     * @param actionGroup The action group to create or use for the update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -42,7 +42,7 @@ public interface ActionGroupsClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param actionGroupName The name of the action group.
-     * @param actionGroup An action group resource.
+     * @param actionGroup The action group to create or use for the update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -57,7 +57,7 @@ public interface ActionGroupsClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param actionGroupName The name of the action group.
-     * @param actionGroup An action group resource.
+     * @param actionGroup The action group to create or use for the update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -72,7 +72,7 @@ public interface ActionGroupsClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param actionGroupName The name of the action group.
-     * @param actionGroup An action group resource.
+     * @param actionGroup The action group to create or use for the update.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -195,7 +195,7 @@ public interface ActionGroupsClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param actionGroupName The name of the action group.
-     * @param actionGroupPatch An action group object for the body of patch operations.
+     * @param actionGroupPatch Parameters supplied to the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -210,7 +210,7 @@ public interface ActionGroupsClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param actionGroupName The name of the action group.
-     * @param actionGroupPatch An action group object for the body of patch operations.
+     * @param actionGroupPatch Parameters supplied to the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -225,7 +225,7 @@ public interface ActionGroupsClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param actionGroupName The name of the action group.
-     * @param actionGroupPatch An action group object for the body of patch operations.
+     * @param actionGroupPatch Parameters supplied to the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -240,7 +240,7 @@ public interface ActionGroupsClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param actionGroupName The name of the action group.
-     * @param actionGroupPatch An action group object for the body of patch operations.
+     * @param actionGroupPatch Parameters supplied to the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.

@@ -1,5 +1,21 @@
 # Release History
 
+## 3.2.0-beta.1 (Unreleased)
+
+
+## 3.1.3 (2021-08-11)
+### Dependency Updates
+- Updated `azure-core` to `1.19.0`.
+- Updated `azure-core-http-netty` to `1.10.2`.
+
+## 3.1.2 (2021-07-08)
+### Other changes
+- Updated test infrastructure to remove dependency on network call recorded data.
+
+#### Dependency Updates
+- Updated `azure-core` to `1.18.0`.
+- Updated `azure-core-http-netty` to `1.10.1`.
+
 ## 3.1.1 (2021-06-09)
 
 ### Bug Fixes

@@ -1,17 +1,19 @@
 {
   "networkCallRecords" : [ {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.wus.test.attest.azure.net/.well-known/openid-configuration",
-    "Headers" : { },
+    "Uri" : "https://REDACTED.wus.attest.azure.net/.well-known/openid-configuration",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.9; Windows 10; 10.0)"
+    },
     "Response" : {
+      "content-length" : "573",
       "Server" : "Kestrel",
-      "x-ms-maa-service-version" : "1.10.01483.0001",
+      "x-ms-maa-service-version" : "1.10.01644.0004",
       "retry-after" : "0",
-      "Content-Length" : "588",
       "StatusCode" : "200",
-      "x-ms-request-id" : "00-67a9e03e5aeaf7665847025d570b6bc8-0000000000000000-00",
-      "Body" : "{\"response_types_supported\":[\"token\",\"none\"],\"id_token_signing_alg_values_supported\":[\"RS256\"],\"revocation_endpoint\":\"https://sharedwus.wus.test.attest.azure.net/revoke\",\"issuer\":\"https://sharedwus.wus.test.attest.azure.net\",\"jwks_uri\":\"https://sharedwus.wus.test.attest.azure.net/certs\",\"claims_supported\":[\"cnf\",\"nonce\",\"x-ms-ver\",\"x-ms-attestation-type\",\"x-ms-policy-hash\",\"x-ms-policy-signer\",\"x-ms-sgx-is-debuggable\",\"x-ms-sgx-mrenclave\",\"x-ms-sgx-mrsigner\",\"x-ms-sgx-svn\",\"x-ms-sgx-ehd\",\"x-ms-sgx-collateral\",\"is-debuggable\",\"sgx-mrsigner\",\"sgx-mrenclave\",\"product-id\",\"svn\",\"tee\"]}",
-      "Date" : "Tue, 26 Jan 2021 17:42:44 GMT",
+      "x-ms-request-id" : "00-ff940c3e210073b5ac1e7974c251add1-0000000000000000-00",
+      "Body" : "{\"response_types_supported\":[\"token\",\"none\"],\"id_token_signing_alg_values_supported\":[\"RS256\"],\"revocation_endpoint\":\"https://sharedwus.wus.attest.azure.net/revoke\",\"issuer\":\"https://sharedwus.wus.attest.azure.net\",\"jwks_uri\":\"https://sharedwus.wus.attest.azure.net/certs\",\"claims_supported\":[\"cnf\",\"nonce\",\"x-ms-ver\",\"x-ms-attestation-type\",\"x-ms-policy-hash\",\"x-ms-policy-signer\",\"x-ms-sgx-is-debuggable\",\"x-ms-sgx-mrenclave\",\"x-ms-sgx-mrsigner\",\"x-ms-sgx-svn\",\"x-ms-sgx-ehd\",\"x-ms-sgx-collateral\",\"is-debuggable\",\"sgx-mrsigner\",\"sgx-mrenclave\",\"product-id\",\"svn\",\"tee\"]}",
+      "Date" : "Wed, 11 Aug 2021 22:20:55 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null

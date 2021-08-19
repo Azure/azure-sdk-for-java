@@ -24,20 +24,19 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
+ * The following utility class is used to generate an event to hook into {@link Reactor}'s event delegation pattern. It
+ * uses a {@link Pipe} as the IO on which Reactor listens to.
+ *
+ * <p>
  * {@link Reactor} is not thread-safe - all calls to {@link Proton} APIs should be on the Reactor Thread. {@link
  * Reactor} works out-of-box for all event driven API - ex: onReceive - which could raise upon onSocketRead. {@link
  * Reactor} doesn't support APIs like send() out-of-box - which could potentially run on different thread to that of the
  * Reactor thread.
- *
- * <p>
- * The following utility class is used to generate an Event to hook into {@link Reactor}'s event delegation pattern. It
- * uses a {@link Pipe} as the IO on which Reactor listens to.
  * </p>
  *
  * <p>
  * Cardinality: Multiple {@link ReactorDispatcher}'s could be attached to 1 {@link Reactor}. Each {@link
- * ReactorDispatcher} should be initialized synchronously - as it calls API in {@link Reactor} which is not
- * thread-safe.
+ * ReactorDispatcher} should be initialized synchronously - as it calls API in {@link Reactor} which is not thread-safe.
  * </p>
  */
 public final class ReactorDispatcher {
@@ -52,6 +51,13 @@ public final class ReactorDispatcher {
     private final AtomicBoolean isClosed = new AtomicBoolean();
     private final Sinks.One<AmqpShutdownSignal> shutdownSignal = Sinks.one();
 
+    /**
+     * Creates an instance. The {@code ioSignal} is associated with {@code reactor} as a child {@link Selectable}.
+     *
+     * @param connectionId The connection id.
+     * @param reactor The reactor instance.
+     * @param ioSignal IO pipe to signal work on the {@code reactor}.
+     */
     public ReactorDispatcher(final String connectionId, final Reactor reactor, final Pipe ioSignal) {
         this.connectionId = connectionId;
         this.reactor = reactor;
@@ -60,6 +66,13 @@ public final class ReactorDispatcher {
         this.onClose = new CloseHandler();
         this.workScheduler = new WorkScheduler();
 
+        // The Proton-J reactor goes quiescent when there is no work to do, and it only wakes up when a Selectable (by
+        // default, the network connection) signals that data is available.
+        //
+        // That's a problem in the send-only scenario, which is a common scenario, or any scenario where activity is
+        // sparse. If the reactor has gone quiescent, the SDK can put a pending send in the work queue, but it will just
+        // sit there until a Selectable wakes the reactor up. The pipe gives the SDK code a guaranteed way to ensure the
+        // reactor is awake.
         final Selectable schedulerSelectable = this.reactor.selectable();
 
         schedulerSelectable.setChannel(this.ioSignal.source());

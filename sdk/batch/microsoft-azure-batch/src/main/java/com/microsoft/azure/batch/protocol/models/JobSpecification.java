@@ -27,6 +27,17 @@ public class JobSpecification {
     private Integer priority;
 
     /**
+     * The maximum number of tasks that can be executed in parallel for the
+     * job.
+     * The value of maxParallelTasks must be -1 or greater than 0 if specified.
+     * If not specified, the default value is -1, which means there's no limit
+     * to the number of tasks that can be run at once. You can update a job's
+     * maxParallelTasks after it has been created using the update job API.
+     */
+    @JsonProperty(value = "maxParallelTasks")
+    private Integer maxParallelTasks;
+
+    /**
      * The display name for Jobs created under this schedule.
      * The name need not be unique and can contain any Unicode characters up to
      * a maximum length of 1024.
@@ -157,6 +168,26 @@ public class JobSpecification {
      */
     public JobSpecification withPriority(Integer priority) {
         this.priority = priority;
+        return this;
+    }
+
+    /**
+     * Get the value of maxParallelTasks must be -1 or greater than 0 if specified. If not specified, the default value is -1, which means there's no limit to the number of tasks that can be run at once. You can update a job's maxParallelTasks after it has been created using the update job API.
+     *
+     * @return the maxParallelTasks value
+     */
+    public Integer maxParallelTasks() {
+        return this.maxParallelTasks;
+    }
+
+    /**
+     * Set the value of maxParallelTasks must be -1 or greater than 0 if specified. If not specified, the default value is -1, which means there's no limit to the number of tasks that can be run at once. You can update a job's maxParallelTasks after it has been created using the update job API.
+     *
+     * @param maxParallelTasks the maxParallelTasks value to set
+     * @return the JobSpecification object itself.
+     */
+    public JobSpecification withMaxParallelTasks(Integer maxParallelTasks) {
+        this.maxParallelTasks = maxParallelTasks;
         return this;
     }
 

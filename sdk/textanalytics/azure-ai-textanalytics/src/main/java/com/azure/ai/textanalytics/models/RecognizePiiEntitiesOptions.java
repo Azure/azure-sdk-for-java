@@ -12,11 +12,12 @@ import java.util.Arrays;
  */
 @Fluent
 public final class RecognizePiiEntitiesOptions extends TextAnalyticsRequestOptions {
+    private Boolean disableServiceLogs;
     private PiiEntityDomain domainFilter;
     private Iterable<PiiEntityCategory> categoriesFilter;
 
     /**
-     * Set the model version. This value indicates which model will be used for scoring, e.g. "latest", "2019-10-01".
+     * Sets the model version. This value indicates which model will be used for scoring, e.g. "latest", "2019-10-01".
      * If a model-version is not specified, the API will default to the latest, non-preview version.
      *
      * @param modelVersion The model version.
@@ -30,14 +31,14 @@ public final class RecognizePiiEntitiesOptions extends TextAnalyticsRequestOptio
     }
 
     /**
-     * Set the value of {@code includeStatistics}. The default value is false by default.
+     * Sets the value of {@code includeStatistics}. The default value is false by default.
      * If set to true, indicates that the service should return document and document batch statistics
      * with the results of the operation.
      *
      * @param includeStatistics If a boolean value was specified in the request this field will contain
      * information about the document payload.
      *
-     * @return the {@link RecognizePiiEntitiesOptions} object itself.
+     * @return The {@link RecognizePiiEntitiesOptions} object itself.
      */
     @Override
     public RecognizePiiEntitiesOptions setIncludeStatistics(boolean includeStatistics) {
@@ -46,22 +47,34 @@ public final class RecognizePiiEntitiesOptions extends TextAnalyticsRequestOptio
     }
 
     /**
-     * Set the value of {@code disableServiceLogs}.
+     * Gets the value of service logs disable status. The default value of this property is 'true'. This means,
+     * Text Analytics service won't log your input text. Setting this property to 'false', enables logging your input
+     * text for 48 hours, solely to allow for troubleshooting issues.
+     *
+     * @return true if service logging of input text is disabled.
+     */
+    @Override
+    public boolean isServiceLogsDisabled() {
+        return disableServiceLogs == null ? true : disableServiceLogs;
+    }
+
+    /**
+     * Sets the value of service logs disable status.
      *
      * @param disableServiceLogs The default value of this property is 'true'. This means, Text Analytics service
      * does not log your input text. Setting this property to 'false', enables the service to log your text input for
      * 48 hours, solely to allow for troubleshooting issues.
      *
-     * @return the {@link RecognizePiiEntitiesOptions} object itself.
+     * @return The {@link RecognizePiiEntitiesOptions} object itself.
      */
     @Override
     public RecognizePiiEntitiesOptions setServiceLogsDisabled(boolean disableServiceLogs) {
-        super.setServiceLogsDisabled(disableServiceLogs);
+        this.disableServiceLogs = disableServiceLogs;
         return this;
     }
 
     /**
-     * Get the value of domainFilter. It filters the response entities to ones only included in the specified domain.
+     * Gets the value of domainFilter. It filters the response entities to ones only included in the specified domain.
      * I.e., if set to 'PHI', will only return entities in the Protected Healthcare Information domain.
      * See https://aka.ms/tanerpii for more information.
      *
@@ -72,7 +85,7 @@ public final class RecognizePiiEntitiesOptions extends TextAnalyticsRequestOptio
     }
 
     /**
-     * Set the value of domainFilter. It filters the response entities to ones only included in the specified domain.
+     * Sets the value of domainFilter. It filters the response entities to ones only included in the specified domain.
      * I.e., if set to 'PHI', will only return entities in the Protected Healthcare Information domain.
      * See https://aka.ms/tanerpii for more information.
      *
@@ -86,7 +99,7 @@ public final class RecognizePiiEntitiesOptions extends TextAnalyticsRequestOptio
     }
 
     /**
-     * Get the value of categoriesFilter. It filters the response entities to ones only included in the specified
+     * Gets the value of categoriesFilter. It filters the response entities to ones only included in the specified
      * categories.
      *
      * @return The value of categoriesFilter.
@@ -96,7 +109,7 @@ public final class RecognizePiiEntitiesOptions extends TextAnalyticsRequestOptio
     }
 
     /**
-     * Set the value of categoriesFilter. It filters the response entities to ones only included in the specified
+     * Sets the value of categoriesFilter. It filters the response entities to ones only included in the specified
      * categories.
      *
      * @param categoriesFilter It filters the response entities to ones only included in the specified categories.

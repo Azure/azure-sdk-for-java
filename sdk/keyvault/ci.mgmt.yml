@@ -8,10 +8,14 @@ trigger:
   paths:
     include:
       - sdk/keyvault/ci.mgmt.yml
-      - sdk/keyvault/pom.mgmt.xml
-      - sdk/keyvault/mgmt-v2015_06_01
-      - sdk/keyvault/mgmt-v2016_10_01
-      - sdk/keyvault/mgmt-v2019_09_01
+      - sdk/keyvault/mgmt-v2015_06_01/
+      - sdk/keyvault/mgmt-v2016_10_01/
+      - sdk/keyvault/mgmt-v2019_09_01/
+    exclude:
+      - sdk/keyvault/pom.xml
+      - sdk/keyvault/mgmt-v2015_06_01/pom.xml
+      - sdk/keyvault/mgmt-v2016_10_01/pom.xml
+      - sdk/keyvault/mgmt-v2019_09_01/pom.xml
 
 pr:
   branches:
@@ -23,10 +27,14 @@ pr:
   paths:
     include:
       - sdk/keyvault/ci.mgmt.yml
-      - sdk/keyvault/pom.mgmt.xml
-      - sdk/keyvault/mgmt-v2015_06_01
-      - sdk/keyvault/mgmt-v2016_10_01
-      - sdk/keyvault/mgmt-v2019_09_01
+      - sdk/keyvault/mgmt-v2015_06_01/
+      - sdk/keyvault/mgmt-v2016_10_01/
+      - sdk/keyvault/mgmt-v2019_09_01/
+    exclude:
+      - sdk/keyvault/pom.xml
+      - sdk/keyvault/mgmt-v2015_06_01/pom.xml
+      - sdk/keyvault/mgmt-v2016_10_01/pom.xml
+      - sdk/keyvault/mgmt-v2019_09_01/pom.xml
 
 stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-management.yml

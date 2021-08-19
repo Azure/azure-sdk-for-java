@@ -1,6 +1,6 @@
 package com.azure.storage.blob
 
-import com.azure.core.experimental.http.HttpAuthorization
+import com.azure.core.http.HttpAuthorization
 import com.azure.core.util.BinaryData
 import com.azure.core.util.Context
 import com.azure.storage.blob.models.BlobStorageException

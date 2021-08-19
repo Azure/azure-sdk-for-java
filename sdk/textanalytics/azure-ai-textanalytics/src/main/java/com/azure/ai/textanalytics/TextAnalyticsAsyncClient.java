@@ -85,7 +85,7 @@ public final class TextAnalyticsAsyncClient {
     final AnalyzeActionsAsyncClient analyzeActionsAsyncClient;
 
     /**
-     * Create a {@link TextAnalyticsAsyncClient} that sends requests to the Text Analytics services's endpoint. Each
+     * Creates a {@link TextAnalyticsAsyncClient} that sends requests to the Text Analytics service's endpoint. Each
      * service call goes through the {@link TextAnalyticsClientBuilder#pipeline http pipeline}.
      *
      * @param service The proxy service used to perform REST calls.
@@ -110,18 +110,18 @@ public final class TextAnalyticsAsyncClient {
     }
 
     /**
-     * Get default country hint code.
+     * Gets default country hint code.
      *
-     * @return the default country hint code
+     * @return The default country hint code
      */
     public String getDefaultCountryHint() {
         return defaultCountryHint;
     }
 
     /**
-     * Get default language when the builder is setup.
+     * Gets default language when the builder is setup.
      *
-     * @return the default language
+     * @return The default language
      */
     public String getDefaultLanguage() {
         return defaultLanguage;

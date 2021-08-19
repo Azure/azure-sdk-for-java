@@ -19,7 +19,7 @@ import java.util.function.Supplier;
 public final class AnalyzeHealthcareEntitiesPagedFlux extends ContinuablePagedFluxCore<String,
     AnalyzeHealthcareEntitiesResultCollection, PagedResponse<AnalyzeHealthcareEntitiesResultCollection>> {
     /**
-     * Create an instance of {@link AnalyzeHealthcareEntitiesPagedFlux}
+     * Creates an instance of {@link AnalyzeHealthcareEntitiesPagedFlux}
      *
      * @param pageRetrieverProvider a provider that returns {@link PageRetriever}
      */

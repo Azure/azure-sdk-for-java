@@ -54,7 +54,7 @@ public class MultiMetricCriteria {
      * the criteria time aggregation types.
      */
     @JsonProperty(value = "timeAggregation", required = true)
-    private AggregationType timeAggregation;
+    private AggregationTypeEnum timeAggregation;
 
     /*
      * List of dimension conditions.
@@ -139,7 +139,7 @@ public class MultiMetricCriteria {
      *
      * @return the timeAggregation value.
      */
-    public AggregationType timeAggregation() {
+    public AggregationTypeEnum timeAggregation() {
         return this.timeAggregation;
     }
 
@@ -149,7 +149,7 @@ public class MultiMetricCriteria {
      * @param timeAggregation the timeAggregation value to set.
      * @return the MultiMetricCriteria object itself.
      */
-    public MultiMetricCriteria withTimeAggregation(AggregationType timeAggregation) {
+    public MultiMetricCriteria withTimeAggregation(AggregationTypeEnum timeAggregation) {
         this.timeAggregation = timeAggregation;
         return this;
     }

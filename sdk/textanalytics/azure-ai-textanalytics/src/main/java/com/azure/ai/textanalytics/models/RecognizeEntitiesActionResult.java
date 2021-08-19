@@ -22,7 +22,7 @@ public final class RecognizeEntitiesActionResult extends TextAnalyticsActionResu
     /**
      * Gets the entities recognition action result.
      *
-     * @return the entities recognition action result.
+     * @return The entities recognition action result.
      *
      * @throws TextAnalyticsException if result has {@code isError} equals to true and when a non-error property
      * was accessed.

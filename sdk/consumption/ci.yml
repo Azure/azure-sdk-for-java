@@ -9,6 +9,9 @@ trigger:
   paths:
     include:
       - sdk/consumption/
+    exclude:
+      - sdk/consumption/pom.xml
+      - sdk/consumption/azure-resourcemanager-consumption/pom.xml
 
 pr:
   branches:
@@ -20,6 +23,9 @@ pr:
   paths:
     include:
       - sdk/consumption/
+    exclude:
+      - sdk/consumption/pom.xml
+      - sdk/consumption/azure-resourcemanager-consumption/pom.xml
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
