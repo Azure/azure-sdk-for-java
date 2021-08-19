@@ -65,7 +65,7 @@ import java.util.function.Consumer;
  *
  * {@codesnippet com.azure.core.http.rest.requestoptions.postrequest}
  */
-final class RequestOptions {
+public final class RequestOptions {
     private Consumer<HttpRequest> requestCallback = request -> { };
     private boolean throwOnError = true;
 
