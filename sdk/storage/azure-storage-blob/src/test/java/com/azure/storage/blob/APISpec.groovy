@@ -3,7 +3,6 @@
 
 package com.azure.storage.blob
 
-import com.azure.core.credential.TokenRequestContext
 import com.azure.core.http.HttpHeaders
 import com.azure.core.http.HttpMethod
 import com.azure.core.http.HttpPipelineCallContext
@@ -17,7 +16,9 @@ import com.azure.core.test.TestMode
 import com.azure.core.util.CoreUtils
 import com.azure.core.util.FluxUtil
 import com.azure.identity.EnvironmentCredentialBuilder
+import com.azure.storage.blob.models.BlobErrorCode
 import com.azure.storage.blob.models.BlobProperties
+import com.azure.storage.blob.models.BlobStorageException
 import com.azure.storage.blob.models.CopyStatusType
 import com.azure.storage.blob.models.LeaseStateType
 import com.azure.storage.blob.models.ListBlobContainersOptions
@@ -32,7 +33,6 @@ import com.azure.storage.common.implementation.Constants
 import com.azure.storage.common.policy.RequestRetryOptions
 import com.azure.storage.common.test.shared.StorageSpec
 import com.azure.storage.common.test.shared.TestAccount
-import com.azure.storage.common.test.shared.policy.MockDownloadHttpResponse
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 import spock.lang.Timeout
@@ -106,7 +106,7 @@ class APISpec extends StorageSpec {
         containerName = generateContainerName()
         cc = primaryBlobServiceClient.getBlobContainerClient(containerName)
         ccAsync = primaryBlobServiceAsyncClient.getBlobContainerAsyncClient(containerName)
-        cc.create()
+        ignoreErrors({ cc.create() }, BlobErrorCode.CONTAINER_ALREADY_EXISTS)
     }
 
     def cleanup() {
@@ -125,7 +125,7 @@ class APISpec extends StorageSpec {
                     createLeaseClient(containerClient).breakLeaseWithResponse(new BlobBreakLeaseOptions().setBreakPeriod(Duration.ofSeconds(0)), null, null)
                 }
 
-                containerClient.delete()
+                ignoreErrors({ containerClient.delete() }, BlobErrorCode.CONTAINER_NOT_FOUND)
             }
         }
     }
@@ -669,6 +669,16 @@ class APISpec extends StorageSpec {
     def sleepIfRecord(long milliseconds) {
         if (env.testMode != TestMode.PLAYBACK) {
             sleep(milliseconds)
+        }
+    }
+
+    def ignoreErrors(Closure closure, BlobErrorCode... errors) {
+        try {
+            closure.call()
+        } catch (BlobStorageException ex) {
+            if (!errors.contains(ex.errorCode)) {
+                throw ex
+            }
         }
     }
 

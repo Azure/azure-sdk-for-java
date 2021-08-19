@@ -262,6 +262,7 @@ org.hdrhistogram:HdrHistogram;2.1.12
 org.jacoco:jacoco-maven-plugin;0.8.5
 org.jacoco:org.jacoco.agent;0.8.5
 org.mockito:mockito-core;3.9.0
+org.mockito:mockito-inline;3.9.0
 org.revapi:revapi-java;0.20.0
 org.revapi:revapi-maven-plugin;0.11.2
 org.moditect:moditect-maven-plugin;1.0.0.RC1
