@@ -2,7 +2,7 @@
 
 Azure Purview data plane account. It supports data plane operations. It can manage account, collections, keys, resource set rule.
 
-**Please rely heavily on the [service's documentation][product_documentation] and our [Low-Level client docs][low_level_client] to use this library**
+**Please rely heavily on the [service's documentation][product_documentation] and [Low-Level client documentation][low_level_client] to use this library**
 
 [Source code][source_code] | [Package (Maven)][package] | [API reference documentation][api_reference_doc] | [Product Documentation][product_documentation] | [Samples][samples_readme]
 
@@ -45,7 +45,7 @@ To use the [DefaultAzureCredential][DefaultAzureCredential] provider shown below
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity</artifactId>
-    <version>1.2.5</version>
+    <version>1.3.5</version>
 </dependency>
 ```
 
@@ -95,6 +95,10 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
 [package]: https://mvnrepository.com/artifact/com.azure/azure-analytics-purview-account
 [samples_readme]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/purview/azure-analytics-purview-account/src/samples/README.md
-[low_level_client]: https://github.com/Azure/azure-sdk-for-java/wiki/Low-Level-Client
-
+[low_level_client]: https://github.com/Azure/azure-sdk-for-java/wiki/Protocol-Methods
+[cla]: https://cla.microsoft.com
+[coc]: https://opensource.microsoft.com/codeofconduct/
+[coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/
+[coc_contact]: mailto:opencode@microsoft.com
+[create_azure_purview_account]: https://docs.microsoft.com/en-us/azure/purview/create-catalog-portal
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fpurview%2Fazure-analytics-purview-account%2FREADME.png)

@@ -3,7 +3,6 @@ package com.azure.analytics.purview.account;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.BinaryData;
 import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.Test;
 
 import java.util.List;
 import java.util.stream.Collectors;
