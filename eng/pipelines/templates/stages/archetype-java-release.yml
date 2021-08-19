@@ -120,6 +120,7 @@ stages:
             displayName: "Installation Check"
             steps:
               - pwsh: |
+                  tree "$(Pipeline.Workspace)/${{ parameters.ArtifactName }}" /F
                   Copy-Item "$(Pipeline.Workspace)/${{ parameters.ArtifactName }}/${{ artifact.groupId }}/${{ artifact.name }}/" "$(Pipeline.Workspace)/install-check-dir/${{ artifact.name }}" -Recurse
                   Write-Host "Copying artifact ${{artifact.name}}"
                   $pomf = Get-ChildItem $(Pipeline.Workspace)/install-check-dir/${{ artifact.name }}/*.pom
