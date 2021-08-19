@@ -130,9 +130,10 @@ stages:
                   Rename-Item "$($pomf)" pom.xml
                   Write-Host "Renaming $($pomf) to pom.xml"
                 displayName: "Copy Artifacts"
+              - pwsh:
+                  mvn clean install -f eng/code-quality-reports/pom.xml
               - pwsh: |
                   Write-Host "Maven install for artifact: ${{ artifact.name}}"
-                  mvn clean install -f eng/code-quality-reports/pom.xml
                   mvn install
                 workingDirectory: $(Pipeline.Workspace)/install-check-dir/${{ artifact.name }}
                 displayName: "Dependency Installation Test"
