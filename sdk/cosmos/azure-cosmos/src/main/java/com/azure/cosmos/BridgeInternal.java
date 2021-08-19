@@ -388,9 +388,9 @@ public final class BridgeInternal {
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static QueryMetrics createQueryMetricsFromDelimitedStringAndClientSideMetrics(
-        String queryMetricsDelimitedString, ClientSideMetrics clientSideMetrics, String activityId) {
+        String queryMetricsDelimitedString, ClientSideMetrics clientSideMetrics, String activityId, String indexUtilizationInfoJSONString) {
         return QueryMetrics.createFromDelimitedStringAndClientSideMetrics(queryMetricsDelimitedString,
-            clientSideMetrics, activityId);
+            clientSideMetrics, activityId, indexUtilizationInfoJSONString);
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
