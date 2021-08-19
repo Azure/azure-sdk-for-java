@@ -100,5 +100,5 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [coc]: https://opensource.microsoft.com/codeofconduct/
 [coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/
 [coc_contact]: mailto:opencode@microsoft.com
-[create_azure_purview_account]: https://docs.microsoft.com/en-us/azure/purview/create-catalog-portal
+[create_azure_purview_account]: https://docs.microsoft.com/azure/purview/create-catalog-portal
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fpurview%2Fazure-analytics-purview-account%2FREADME.png)
