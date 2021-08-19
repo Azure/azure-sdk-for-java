@@ -179,7 +179,8 @@ public class HttpLogOptions {
      *
      * @return The updated HttpLogOptions object.
      *
-     * @throws IllegalArgumentException If {@code applicationId} contains spaces or larger than 24 in length.
+     * @throws IllegalArgumentException If {@code applicationId} contains spaces or is larger than 24 characters in
+     * length.
      *
      * @deprecated Use {@link ClientOptions} to configure {@code applicationId}.
      */
@@ -190,10 +191,10 @@ public class HttpLogOptions {
                 throw logger.logExceptionAsError(new IllegalArgumentException(INVALID_APPLICATION_ID_LENGTH));
             } else if (applicationId.contains(" ")) {
                 throw logger.logExceptionAsError(new IllegalArgumentException(INVALID_APPLICATION_ID_SPACE));
-            } else {
-                this.applicationId = applicationId;
             }
         }
+
+        this.applicationId = applicationId;
 
         return this;
     }

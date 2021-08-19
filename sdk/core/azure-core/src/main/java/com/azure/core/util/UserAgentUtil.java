@@ -36,7 +36,8 @@ public final class UserAgentUtil {
      *
      * @return User agent string as specified in design guidelines.
      *
-     * @throws IllegalArgumentException If {@code applicationId} contains spaces or larger than 24 in length.
+     * @throws IllegalArgumentException If {@code applicationId} contains spaces or is larger than 24 characters in
+     * length.
      */
     public static String toUserAgentString(String applicationId, String sdkName, String sdkVersion,
         Configuration configuration) {
