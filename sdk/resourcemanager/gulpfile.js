@@ -117,7 +117,7 @@ function codegen(project, cb) {
     }
 
     const generatorPath = args['autorest-java']
-        ? `--use=${path.resolve(args['autorest-java'])} `
+        ? (args['autorest-java'].startsWith('@autorest/java') ? `--use=${args['autorest-java']} ` : `--use=${path.resolve(args['autorest-java'])} `)
         : '';
 
     const regenManager = args['regenerate-manager'] ? ' --regenerate-manager ' : '';

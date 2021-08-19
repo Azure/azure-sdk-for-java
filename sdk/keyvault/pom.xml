@@ -33,7 +33,7 @@
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-security-keyvault-keys</artifactId>
-          <version>4.4.0-beta.2</version> <!-- {x-version-update;com.azure:azure-security-keyvault-keys;current} -->
+          <version>4.4.0-beta.3</version> <!-- {x-version-update;com.azure:azure-security-keyvault-keys;current} -->
         </dependency>
         <dependency>
           <groupId>com.azure</groupId>

@@ -1,6 +1,9 @@
 # Release History
 
-## 2.7.0-beta.1 (Unreleased)
+## 2.8.0-beta.1 (Unreleased)
+
+
+## 2.7.0 (2021-08-12)
 
 ### Dependency Updates
 
@@ -10,6 +13,7 @@
 
 - Supported `start` and `stop` for `KubernetesCluster`.
 - Supported `listOrchestrators` for `KubernetesCluster`.
+- Supported `osDiskType` and `kubeletDiskType` for agent pool of `KubernetesCluster`.
 
 ### Breaking Changes
 

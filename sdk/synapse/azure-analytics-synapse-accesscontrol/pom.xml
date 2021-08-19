@@ -13,7 +13,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-analytics-synapse-accesscontrol</artifactId>
-  <version>1.0.0-beta.4</version> <!-- {x-version-update;com.azure:azure-analytics-synapse-accesscontrol;current} -->
+  <version>1.0.0-beta.5</version> <!-- {x-version-update;com.azure:azure-analytics-synapse-accesscontrol;current} -->
 
   <name>Microsoft Azure client library for Synapse Access Control</name>
   <description>This package contains the Microsoft Azure Synapse Analytics Access Control SDK.</description>

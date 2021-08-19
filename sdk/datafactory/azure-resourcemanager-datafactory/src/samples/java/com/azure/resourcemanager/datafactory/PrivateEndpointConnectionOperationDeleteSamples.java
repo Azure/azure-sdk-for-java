@@ -11,12 +11,11 @@ public final class PrivateEndpointConnectionOperationDeleteSamples {
     /**
      * Sample code: Delete a private endpoint connection for a datafactory.
      *
-     * @param dataFactoryManager Entry point to DataFactoryManager. The Azure Data Factory V2 management API provides a
-     *     RESTful set of web services that interact with Azure Data Factory V2 services.
+     * @param manager Entry point to DataFactoryManager.
      */
     public static void deleteAPrivateEndpointConnectionForADatafactory(
-        com.azure.resourcemanager.datafactory.DataFactoryManager dataFactoryManager) {
-        dataFactoryManager
+        com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
+        manager
             .privateEndpointConnectionOperations()
             .deleteWithResponse("exampleResourceGroup", "exampleFactoryName", "connection", Context.NONE);
     }

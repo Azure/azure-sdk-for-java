@@ -2,16 +2,18 @@
   "networkCallRecords" : [ {
     "Method" : "GET",
     "Uri" : "https://REDACTED.wus.attest.azure.net/policies/Tpm?api-version=2020-10-01",
-    "Headers" : { },
+    "Headers" : {
+      "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.9; Windows 10; 10.0)"
+    },
     "Response" : {
       "content-length" : "717",
       "Server" : "Kestrel",
       "x-ms-maa-service-version" : "1.10.01644.0004",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "x-ms-request-id" : "00-fa0ef066537c75045f934a1b48a12583-0000000000000000-00",
-      "Body" : "{\"token\":\"eyJhbGciOiJSUzI1NiIsImprdSI6Imh0dHBzOi8vc2hhcmVkd3VzLnd1cy5hdHRlc3QuYXp1cmUubmV0L2NlcnRzIiwia2lkIjoiclB0QkdSV1RsUG16czV1MzVMMFFSRDlXZHltZUtQUnh0ZVRlVGx3TjBFYz0iLCJ0eXAiOiJKV1QifQ.eyJleHAiOjE2MjY4MjE0MTgsImlhdCI6MTYyNjgxNzgxOCwiaXNzIjoiaHR0cHM6Ly9zaGFyZWR3dXMud3VzLmF0dGVzdC5henVyZS5uZXQiLCJuYmYiOjE2MjY4MTc4MTgsIngtbXMtcG9saWN5IjoiZXlKaGJHY2lPaUp1YjI1bEluMC4uIn0.HnwpfQ44VsEf0oXglvtyxy_us2_KRmlEBucMkE1IXevCZi76z1fpyXKKBd-0saT3u0JG3lWDkOp7iVMapxGt0-zigIRVeP1JLKxM29bVznRFxIEeOa4ExmWWyNJ1RIInfCjxCgFKH8uUi4rdLkUL9PV9QM6UZ0vcj6rNc07lijXCcX_v_jFxiWLZi_pjMfFWeJeTzUgvL1Db7HECYl0WbNJfB3izRbkJfihekHpdSYE0s9Qoi3Fk1gdoENApQohi0PqTGhfJiOkwCscDAcU5DVw5XO4oAX6ohrJJp7ytXDuz0Zu49SI3V2z2TRkyJ68Gu8jmwJVLOv_SWjavkclyqg\"}",
-      "Date" : "Tue, 20 Jul 2021 21:50:17 GMT",
+      "x-ms-request-id" : "00-b7be38be7b3db113b2605ac728156649-0000000000000000-00",
+      "Body" : "{\"token\":\"eyJhbGciOiJSUzI1NiIsImprdSI6Imh0dHBzOi8vc2hhcmVkd3VzLnd1cy5hdHRlc3QuYXp1cmUubmV0L2NlcnRzIiwia2lkIjoiclB0QkdSV1RsUG16czV1MzVMMFFSRDlXZHltZUtQUnh0ZVRlVGx3TjBFYz0iLCJ0eXAiOiJKV1QifQ.eyJleHAiOjE2Mjg3MjQwNTYsImlhdCI6MTYyODcyMDQ1NiwiaXNzIjoiaHR0cHM6Ly9zaGFyZWR3dXMud3VzLmF0dGVzdC5henVyZS5uZXQiLCJuYmYiOjE2Mjg3MjA0NTYsIngtbXMtcG9saWN5IjoiZXlKaGJHY2lPaUp1YjI1bEluMC4uIn0.DdsldkPN-VBM70uJiV2MSF06-x_Wwz7ouFu3rbRNF9VpQz81IJ0uzGeWWwvEW401FTxOVfHM7QldagxuvmyS1xXMOdQiJTn15oV5nxr39ebGhPJb0vEQn9b5CQqMJfh35T0SEyf8Q_pMj5IeMntnAgoqlu_ykxflCd_rnV3mPQzj61d10wL0gFdJ0WWp2nHvFY9AkJ1M6Mu-AuaU2liw8Adqh2j0gP4ItXkz8Hj06aP1RFJVAxAvuw4JAZra1O_z83LJhPjS6MsJiYU5ocsydMddfBZYudMnbwhvPcRO0ei0OHu4mTfWPipP9KzON9veRxHNTWq5v5itHWc2QC3-oA\"}",
+      "Date" : "Wed, 11 Aug 2021 22:20:55 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null

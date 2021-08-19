@@ -4,6 +4,7 @@
 package com.azure.test.aad.resource.server;
 
 import com.azure.spring.aad.webapi.AADJwtBearerTokenAuthenticationConverter;
+import com.azure.spring.aad.webapi.AADResourceServerProperties;
 import com.azure.spring.aad.webapi.AADResourceServerWebSecurityConfigurerAdapter;
 import com.azure.spring.test.aad.AADWebApiITHelper;
 import org.junit.jupiter.api.Assertions;
@@ -75,7 +76,8 @@ public class AADWeiResourceServerIT {
         @Override
         protected void configure(HttpSecurity http) throws Exception {
             super.configure(http);
-            AADJwtBearerTokenAuthenticationConverter converter = new AADJwtBearerTokenAuthenticationConverter("upn");
+            AADJwtBearerTokenAuthenticationConverter converter =
+                new AADJwtBearerTokenAuthenticationConverter("upn", AADResourceServerProperties.DEFAULT_CLAIM_TO_AUTHORITY_PREFIX_MAP);
             http.oauth2ResourceServer()
                 .jwt()
                 .jwtAuthenticationConverter(converter);

@@ -49,7 +49,7 @@ public final class AnalyzeSentimentOptions extends TextAnalyticsRequestOptions {
     }
 
     /**
-     * Sets the value of {@code disableServiceLogs}.
+     * Sets the value of service logs disable status.
      *
      * @param disableServiceLogs The default value of this property is 'false', except for methods like
      * 'beginAnalyzeHealthcareEntities' and 'recognizePiiEntities'. This means, Text Analytics service logs

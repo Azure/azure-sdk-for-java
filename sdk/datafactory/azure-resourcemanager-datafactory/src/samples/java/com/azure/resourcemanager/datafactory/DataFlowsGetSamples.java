@@ -11,11 +11,10 @@ public final class DataFlowsGetSamples {
     /**
      * Sample code: DataFlows_Get.
      *
-     * @param dataFactoryManager Entry point to DataFactoryManager. The Azure Data Factory V2 management API provides a
-     *     RESTful set of web services that interact with Azure Data Factory V2 services.
+     * @param manager Entry point to DataFactoryManager.
      */
-    public static void dataFlowsGet(com.azure.resourcemanager.datafactory.DataFactoryManager dataFactoryManager) {
-        dataFactoryManager
+    public static void dataFlowsGet(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
+        manager
             .dataFlows()
             .getWithResponse("exampleResourceGroup", "exampleFactoryName", "exampleDataFlow", null, Context.NONE);
     }

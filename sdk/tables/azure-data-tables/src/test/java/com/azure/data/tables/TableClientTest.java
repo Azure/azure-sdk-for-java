@@ -543,13 +543,7 @@ public class TableClientTest extends TestBase {
 
         List<TableEntity> retrievedEntities = iterator.next().getValue();
 
-        TableEntity retrievedEntity = retrievedEntities.get(0);
-        TableEntity retrievedEntity2 = retrievedEntities.get(1);
-
-        assertEquals(partitionKeyValue, retrievedEntity.getPartitionKey());
-        assertEquals(rowKeyValue, retrievedEntity.getRowKey());
-        assertEquals(partitionKeyValue, retrievedEntity2.getPartitionKey());
-        assertEquals(rowKeyValue2, retrievedEntity2.getRowKey());
+        assertEquals(2, retrievedEntities.size());
     }
 
     @Test
