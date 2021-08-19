@@ -355,7 +355,7 @@
                   </group>
                   <group>
                     <title>Azure Web Pub Sub</title>
-                    <package>com.azure.messaging.webpubsub*</package>
+                    <packages>com.azure.messaging.webpubsub*</packages>
                   </group>
                   <group>
                     <title>Azure Mixed Reality Authentication</title>
@@ -707,6 +707,7 @@
         <module>eng/code-quality-reports</module>
         <module>eng/jacoco-test-coverage</module>
         <module>sdk/advisor</module>
+        <module>sdk/agrifood</module>
         <module>sdk/anomalydetector</module>
         <module>sdk/apimanagement</module>
         <module>sdk/appconfiguration</module>
@@ -715,6 +716,7 @@
         <module>sdk/authorization</module>
         <module>sdk/automation</module>
         <module>sdk/avs</module>
+        <module>sdk/azurearcdata</module>
         <module>sdk/azurestack</module>
         <module>sdk/azurestackhci</module>
         <module>sdk/batch</module>
@@ -749,9 +751,9 @@
         <module>sdk/devspaces</module>
         <module>sdk/devtestlabs</module>
         <module>sdk/digitaltwins</module>
+        <module>sdk/elastic</module>
         <module>sdk/eventgrid</module>
         <module>sdk/eventhubs</module>
-        <module>sdk/agrifood</module>
         <module>sdk/formrecognizer</module>
         <module>sdk/frontdoor</module>
         <module>sdk/hanaonazure</module>
@@ -760,6 +762,7 @@
         <module>sdk/healthcareapis</module>
         <module>sdk/hybridcompute</module>
         <module>sdk/hybridkubernetes</module>
+        <module>sdk/hybridnetwork</module>
         <module>sdk/identity</module>
         <module>sdk/imagebuilder</module>
         <module>sdk/iotcentral</module>
@@ -788,6 +791,7 @@
         <module>sdk/peering</module>
         <module>sdk/policyinsights</module>
         <module>sdk/postgresql</module>
+        <module>sdk/postgresqlflexibleserver</module>
         <module>sdk/powerbidedicated</module>
         <module>sdk/purview</module>
         <module>sdk/quantum</module>
@@ -802,6 +806,7 @@
         <module>sdk/resourcemover</module>
         <module>sdk/schemaregistry</module>
         <module>sdk/search</module>
+        <module>sdk/security</module>
         <module>sdk/servicebus</module>
         <module>sdk/servicefabric</module>
         <module>sdk/signalr</module>

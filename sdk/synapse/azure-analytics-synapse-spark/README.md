@@ -14,15 +14,15 @@ Maven dependency for the Azure Synapse Spark client library. Add it to your proj
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-analytics-synapse-spark</artifactId>
-    <version>1.0.0-beta.3</version>
+    <version>1.0.0-beta.4</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
 
 ### Prerequisites
 - [Java Development Kit (JDK)][jdk] with version 8 or above
-- An [Azure subscription][azure_sub].
-- An existing Azure Synapse workspace. If you need to create an Azure Synapse workspace, you can use the Azure Portal or [Azure CLI][azure_cli].
+- [Azure subscription][azure_sub].
+- An existing Azure Synapse workspace. If you need to create an Azure Synapse workspace, you can use the [Azure Portal][azure_portal] or [Azure CLI][azure_cli].
     ```Bash
     az synapse workspace create \
         --name <your-workspace-name> \
@@ -72,6 +72,7 @@ import com.azure.analytics.synapse.spark.SparkClientBuilder;
 
 SparkBatchClient batchClient = new SparkClientBuilder()
     .endpoint("https://{YOUR_WORKSPACE_NAME}.dev.azuresynapse.net")
+    .sparkPoolName("{SPARK_POOL_NAME}")
     .credential(new DefaultAzureCredentialBuilder().build())
     .buildSparkBatchClient();
 ```
@@ -228,4 +229,6 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 [azure_synapse_cli_full]: https://docs.microsoft.com/cli/azure/synapse?view=azure-cli-latest
 [spark_samples]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/synapse/azure-analytics-synapse-spark/src/samples/java/com/azure/analytics/synapse/spark
 [performance_tuning]: https://github.com/Azure/azure-sdk-for-java/wiki/Performance-Tuning
-
+[jdk]: https://docs.microsoft.com/java/azure/jdk/
+[azure_sub]: https://azure.microsoft.com/free/
+[azure_portal]: https://docs.microsoft.com/azure/synapse-analytics/quickstart-create-workspace

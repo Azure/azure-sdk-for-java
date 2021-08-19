@@ -1,7 +1,44 @@
 # Release History
 
-## 3.7.0-beta.1 (Unreleased)
+## 3.8.0-beta.1 (Unreleased)
+This release is compatible with Spring Boot 2.5.0 - 2.5.3.
+### Dependency Upgrades
+- Upgrade to [spring-boot-dependencies:2.5.3](https://repo.maven.apache.org/maven2/org/springframework/boot/spring-boot-dependencies/2.5.3/spring-boot-dependencies-2.5.3.pom).
+### New Features
+- Add property `azure.activedirectory.resource-server.principal-claim-name` to configure principal claim name.
+- Add property `azure.activedirectory.resource-server.claim-to-authority-prefix-map` to configure claim to authority prefix map.
 
+
+## 3.7.0 (2021-07-20)
+### New Features
+- Add property `azure.activedirectory.application-type` to configure the application type.
+
+    Here are the 4 valid values:
+    - *web_application*: Web Application.
+    - *resource_server*: Resource Server.
+    - *resource_server_with_obo*: Resource Server with authorization grant type `on_behalf_of`.
+    - *web_application_and_resource_server*: Web Application and Resource Server in one application, it also supports `on_behalf_of`.
+
+    This property is optional, its value can be inferred by dependencies, only `web_application_and_resource_server` must be configured manually: `azure.activedirectory.application-type=web_application_and_resource_server`.
+    
+    Here is the table about how the AAD starter infers application type by dependencies:
+    
+    | Has dependency: spring-security-oauth2-client | Has dependency: spring-security-oauth2-resource-server |                  Valid values of application type                 | Default value               |
+    |-----------------------------------------------|--------------------------------------------------------|-------------------------------------------------------------------|-----------------------------|
+    |                      Yes                      |                          No                            |                       `web_application`                           |       `web_application`     |
+    |                      No                       |                          Yes                           |                       `resource_server`                           |       `resource_server`     |
+    |                      Yes                      |                          Yes                           | `resource_server_with_obo`, `web_application_and_resource_server` | `resource_server_with_obo`  |
+
+- Support new value `on_behalf_of` for OBO authorization grant type, originally we only support `on-behalf-of`.
+
+
+## 3.6.1 (2021-07-02)
+### New Features
+- Upgrade to [spring-boot-dependencies:2.5.2](https://repo.maven.apache.org/maven2/org/springframework/boot/spring-boot-dependencies/2.5.2/spring-boot-dependencies-2.5.2.pom).
+- Upgrade to [spring-cloud-dependencies:2020.0.3](https://repo.maven.apache.org/maven2/org/springframework/cloud/spring-cloud-dependencies/2020.0.3/spring-cloud-dependencies-2020.0.3.pom).
+
+### Key Bug Fixes
+- Fix [cve-2021-22119](https://tanzu.vmware.com/security/cve-2021-22119).
 
 ## 3.6.0 (2021-06-23)
 ### Breaking Changes
@@ -39,6 +76,7 @@
 - Fix issue that where the AAD B2C starter cannot fetch the OpenID Connect metadata document via issuer. [#21036](https://github.com/Azure/azure-sdk-for-java/issues/21036)
 - Deprecate *addB2CIssuer*, *addB2CUserFlowIssuers*, *createB2CUserFlowIssuer* methods in `AADTrustedIssuerRepository`.
 
+
 ## 3.4.0 (2021-04-19)
 ### Key Bug Fixes
 - Fix bug that user-name-attribute cannot be configured. ([#20209](https://github.com/Azure/azure-sdk-for-java/issues/20209))
@@ -50,8 +88,12 @@
 - Upgrade to `Spring Security` [5.4.5](https://github.com/spring-projects/spring-security/releases/tag/5.4.5).
 - Support creating `GrantedAuthority` by "roles" claim from id-token for web application.
 
-## 3.2.0 (2021-03-03)
 
+## 3.2.0 (2021-03-03)
+### Breaking Changes
+- For the required scopes in AAD auth code flow, use `Directory.Read.All` instead of `Directory.AccessAsUser.All`. ([#18901](https://github.com/Azure/azure-sdk-for-java/pull/18901))
+  Now The requested scopes are: `openid`, `profile`, `offline_access`, `User.Read`, `Directory.Read.All`. 
+  You can Refer to [AADWebAppConfiguration.java](https://github.com/Azure/azure-sdk-for-java/blob/azure-spring-boot_3.2.0/sdk/spring/azure-spring-boot/src/main/java/com/azure/spring/aad/webapp/AADWebAppConfiguration.java#L119) for detailed information.
 
 ## 3.1.0 (2021-01-20)
 
@@ -71,10 +113,11 @@
     azure.activedirectory.user-group.object-id-key
     ```
 - Removed support for older `AAD v1` style endpoints.
-  - Support for `AAD v1`, also named `Azure Active Directory`, endpoints in the form https://login.microsoft.online.com/common/oauth2/authorize has been removed.
+  - Support for `AAD v1`, also named `Azure Active Directory`, endpoints in the form https://login.microsoftonline.com/common/oauth2/authorize has been removed.
   - `AAD v2`, also named `Microsoft Identity Platform`, endpoints in the form https://login.microsoftonline.com/common/oauth2/v2.0/authorize continue to be supported.
   - Please see [this documentation](https://github.com/MicrosoftDocs/azure-docs/blob/master/articles/active-directory/azuread-dev/azure-ad-endpoint-comparison.md) for more information.
-
+- The required scopes in AAD auth code flow are: `openid`, `profile`, `offline_access`, `User.Read`, `Directory.AccessAsUser.All`.
+  You can Refer to [AADWebAppConfiguration.java](https://github.com/Azure/azure-sdk-for-java/blob/azure-spring-boot_3.0.0/sdk/spring/azure-spring-boot/src/main/java/com/azure/spring/aad/webapp/AADWebAppConfiguration.java#L117) for detailed information.
 
 ### New Features
 - Support consent of multiple client registrations during user login.
@@ -98,9 +141,12 @@
     # Membership URI of Microsoft Graph API to get users' group information, default value is "https://graph.microsoft.com/v1.0/me/memberOf"
     azure.activedirectory.graph-membership-uri
     ```
+
+
 ## 2.3.5 (2020-09-14)
 ### Key Bug Fixes
 - Get full list of groups the user belongs to from Graph API
+
 
 ## 2.3.3 (2020-08-13)
 ### Key Bug Fixes 

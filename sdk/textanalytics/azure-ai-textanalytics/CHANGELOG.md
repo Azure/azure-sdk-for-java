@@ -1,14 +1,34 @@
 # Release History
+## 5.2.0-beta.2 (Unreleased)
+### Breaking Changes
+- Renamed methods `setSentencesOrderBy()` to `setOrderBy()` and `getSentencesOrderBy()` to `getOrderBy()`, in the
+  option bag, `ExtractSummaryAction`.
 
-## 5.1.0 (Unreleased)
-#### Feature Added
+## 5.2.0-beta.1 (2021-08-11)
+### Feature Added
+- We are now targeting the service's v3.2-preview.1 API as the default instead of v3.1.
+- Added support for Extractive Summarization actions through the `ExtractSummaryAction` type.
+
+## 5.1.1 (2021-08-11)
+### Dependency Updates
+- Updated `azure-core` from `1.18.0` to `1.19.0`.
+- Updated `azure-core-http-netty` from `1.10.1` to `1.10.2`.
+
+### Bugs Fixed
+- Fixed the bug to support the default value `disableServiceLogs = true`, in the option bags, `AnalyzeHealthcareEntitiesOptions`,
+  `RecognizePiiEntitiesOptions` and `RecognizePiiEntitiesAction`,
+- Using UTF-16 code unit as the default encoding in the `Sentiment Analysis` and `Linked Entities Recognition` actions.
+
+## 5.1.0 (2021-07-08)
+### Feature Added
 - We are now targeting the service's v3.1 API as the default instead of v3.1-preview.4.
 - Added a new class, `HealthcareEntityCategory` to replace the `String` type of property `category` in the `HealthcareEntity`.
 - Added the new types, `ExtractKeyPhrasesAction`, `RecognizeEntitiesAction`, `RecognizePiiEntitiesAction`,
   `RecognizeLinkedEntitiesAction`, and `AnalyzeSentimentAction`.
 - Added new customized `***PagedFlux`, `***PagedIterable` types, `AnalyzeActionsResultPagedFlux`,
   `AnalyzeActionsResultPagedIterable`, `AnalyzeHealthcareEntitiesPagedFlux`, and `AnalyzeHealthcareEntitiesPagedIterable`.
-  
+- `beginAnalyzeHealthcareEntities` now works with Azure Active Directory credentials.
+
 ### Breaking Changes
 - Changed behavior in `beginAnalyzeActions` API where now accepts up to one action only per action type. 
   An `IllegalArgumentException` is raised if multiple actions of the same type are passed.

@@ -10,6 +10,7 @@ import com.azure.ai.metricsadvisor.models.ListMetricFeedbackFilter;
 import com.azure.ai.metricsadvisor.models.ListMetricFeedbackOptions;
 import com.azure.ai.metricsadvisor.models.MetricFeedback;
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import io.netty.handler.codec.http.HttpResponseStatus;
@@ -72,14 +73,21 @@ public class FeedbackTest extends FeedbackTestBase {
             final OffsetDateTime firstFeedbackCreatedTime = firstFeedback.getCreatedTime();
 
             // Act & Assert
-            client.listFeedback(METRIC_ID,
+            int pageCount = 0;
+            for (PagedResponse<MetricFeedback> metricFeedbackPagedResponse : client.listFeedback(METRIC_ID,
                 new ListMetricFeedbackOptions()
                     .setFilter(new ListMetricFeedbackFilter()
                         .setTimeMode(FeedbackQueryTimeMode.FEEDBACK_CREATED_TIME)
                         .setStartTime(firstFeedbackCreatedTime.minusDays(1))
                         .setEndTime(firstFeedbackCreatedTime.plusDays(1))),
-                Context.NONE)
-                .forEach(actualMetricFeedbackList::add);
+                Context.NONE).iterableByPage()) {
+                metricFeedbackPagedResponse.getValue()
+                    .forEach(actualMetricFeedbackList::add);
+                pageCount++;
+                if (pageCount > 4) {
+                    break;
+                }
+            }
 
             final List<String> expectedMetricFeedbackIdList = expectedMetricFeedbackList.stream()
                 .map(MetricFeedback::getId)
@@ -115,10 +123,14 @@ public class FeedbackTest extends FeedbackTestBase {
         creatMetricFeedbackRunner(inputMetricFeedback -> {
             MetricFeedback createdFeedback = client.addFeedback(METRIC_ID, inputMetricFeedback
                 .setDimensionFilter(new DimensionKey(DIMENSION_FILTER)));
+            final OffsetDateTime feedbackCreatedTime = createdFeedback.getCreatedTime();
 
             // Act & Assert
             Assertions.assertNotNull(createdFeedback.getId());
             client.listFeedback(METRIC_ID, new ListMetricFeedbackOptions().setFilter(new ListMetricFeedbackFilter()
+                    .setTimeMode(FeedbackQueryTimeMode.FEEDBACK_CREATED_TIME)
+                    .setStartTime(feedbackCreatedTime.minusDays(1))
+                    .setEndTime(feedbackCreatedTime.plusDays(1))
                     .setDimensionFilter(new DimensionKey(DIMENSION_FILTER)))
                     .setMaxPageSize(10),
                 Context.NONE)

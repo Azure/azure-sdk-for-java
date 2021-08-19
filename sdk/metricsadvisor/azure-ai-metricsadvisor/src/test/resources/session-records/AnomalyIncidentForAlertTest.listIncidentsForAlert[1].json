@@ -4,19 +4,19 @@
     "Uri" : "https://REDACTED.cognitiveservices.azure.com/metricsadvisor/v1.0/alert/anomaly/configurations/204a211a-c5f4-45f3-a30e-512fb25d1d2c/alerts/175434e3400/incidents?$maxpagesize=10",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.0.0-beta.5 (11.0.11; Mac OS X; 11.4)",
-      "x-ms-client-request-id" : "e5bf1208-d5ee-49ce-aad9-ec3296ed37d6"
+      "x-ms-client-request-id" : "2f0c423d-c2e0-4f1e-9a4a-d481f32cd6c7"
     },
     "Response" : {
-      "x-request-id" : "57fe0513-5c37-47fa-86c9-ee7966389f71",
+      "x-request-id" : "d24f5dee-95e5-4405-a7c8-918b8edca5d4",
       "content-length" : "1020",
-      "x-envoy-upstream-service-time" : "228",
+      "x-envoy-upstream-service-time" : "649",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "57fe0513-5c37-47fa-86c9-ee7966389f71",
+      "apim-request-id" : "d24f5dee-95e5-4405-a7c8-918b8edca5d4",
       "retry-after" : "0",
       "StatusCode" : "200",
       "Body" : "{\"value\":[{\"dataFeedId\":\"9860df01-e740-40ec-94a2-6351813552ba\",\"metricId\":\"27e3015f-04fd-44ba-a20b-bc529a0aebae\",\"anomalyDetectionConfigurationId\":\"fb5a6ed6-2b9e-4b72-8b0c-0046ead1c15c\",\"incidentId\":\"51d849d03277901eadfa9a0e7665b4ad-175434e3400\",\"startTime\":\"2020-10-20T00:00:00Z\",\"lastTime\":\"2020-10-20T00:00:00Z\",\"rootNode\":{\"dimension\":{\"city\":\"Delhi\",\"category\":\"Shoes Handbags & Sunglasses\"}},\"property\":{\"incidentStatus\":\"Resolved\",\"valueOfRootNode\":5079001.4,\"expectedValueOfRootNode\":5142673.035323909}},{\"dataFeedId\":\"9860df01-e740-40ec-94a2-6351813552ba\",\"metricId\":\"27e3015f-04fd-44ba-a20b-bc529a0aebae\",\"anomalyDetectionConfigurationId\":\"fb5a6ed6-2b9e-4b72-8b0c-0046ead1c15c\",\"incidentId\":\"daceb039d9ec34d28f04654dd61aee57-175434e3400\",\"startTime\":\"2020-10-20T00:00:00Z\",\"lastTime\":\"2020-10-20T00:00:00Z\",\"rootNode\":{\"dimension\":{\"city\":\"Karachi\",\"category\":\"Handmade\"}},\"property\":{\"maxSeverity\":\"Medium\",\"incidentStatus\":\"Active\",\"valueOfRootNode\":3724747.4,\"expectedValueOfRootNode\":3579278.2792707016}}]}",
-      "Date" : "Mon, 21 Jun 2021 23:22:53 GMT",
+      "Date" : "Tue, 06 Jul 2021 19:51:02 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null

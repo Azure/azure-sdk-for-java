@@ -19,12 +19,12 @@ import java.time.Duration;
 @ServiceClientBuilder(serviceClients = {FeatureClientImpl.class})
 public final class FeatureClientBuilder {
     /*
-     * The ID of the target subscription.
+     * The Azure subscription ID.
      */
     private String subscriptionId;
 
     /**
-     * Sets The ID of the target subscription.
+     * Sets The Azure subscription ID.
      *
      * @param subscriptionId the subscriptionId value.
      * @return the FeatureClientBuilder.

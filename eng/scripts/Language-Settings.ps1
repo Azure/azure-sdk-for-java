@@ -4,6 +4,7 @@ $PackageRepository = "Maven"
 $packagePattern = "*.pom"
 $MetadataUri = "https://raw.githubusercontent.com/Azure/azure-sdk/main/_data/releases/latest/java-packages.csv"
 $BlobStorageUrl = "https://azuresdkdocs.blob.core.windows.net/%24web?restype=container&comp=list&prefix=java%2F&delimiter=%2F"
+$CampaignTag = Resolve-Path (Join-Path -Path $PSScriptRoot -ChildPath "../repo-docs/ga_tag.html")
 
 function Get-java-PackageInfoFromRepo ($pkgPath, $serviceDirectory)
 {
@@ -155,7 +156,7 @@ function Publish-java-GithubIODocs ($DocLocation, $PublicArtifactLocation)
       $IndexHtml = Join-Path -Path $UnjarredDocumentationPath -ChildPath "index.html"
       if (!(Test-Path -path $IndexHtml))
       {
-        Write-Host "$($PkgName) does not have an index.html file, skippping."
+        Write-Host "$($PkgName) does not have an index.html file, skipping."
         continue
       }
 
@@ -168,13 +169,19 @@ function Publish-java-GithubIODocs ($DocLocation, $PublicArtifactLocation)
       $Version = $PomXml.project.version
       $ArtifactId = $PomXml.project.artifactId
 
+      # inject the ga tag just before we upload the index to storage.
+      $indexContent = Get-Content -Path $IndexHtml -Raw
+      $tagContent = Get-Content -Path $CampaignTag -Raw
+
+      $indexContent = $indexContent.Replace("</head>", $tagContent + "</head>")
+      Set-Content -Path $IndexHtml -Value $indexContent -NoNewline
+
       Write-Host "Start Upload for $($PkgName)/$($Version)"
       Write-Host "DocDir $($UnjarredDocumentationPath)"
       Write-Host "PkgName $($ArtifactId)"
       Write-Host "DocVersion $($Version)"
       $releaseTag = RetrieveReleaseTag $PublicArtifactLocation
       Upload-Blobs -DocDir $UnjarredDocumentationPath -PkgName $ArtifactId -DocVersion $Version -ReleaseTag $releaseTag
-
     }
     Finally
     {
@@ -205,7 +212,7 @@ function Get-java-GithubIoDocIndex()
   # Build up the artifact to service name mapping for GithubIo toc.
   $tocContent = Get-TocMapping -metadata $uniquePackages -artifacts $artifacts
   # Generate yml/md toc files and build site.
-  GenerateDocfxTocContent -tocContent $tocContent -lang "Java"
+  GenerateDocfxTocContent -tocContent $tocContent -lang "Java" -campaignId "UA-62780441-42"
 }
 
 # a "package.json configures target packages for all the monikers in a Repository, it also has a slightly different
@@ -251,6 +258,257 @@ function Update-java-CIConfig($pkgs, $ciRepo, $locationInDocRepo, $monikerId=$nu
   $jsonContent = $allJsonData | ConvertTo-Json -Depth 10 | % {$_ -replace "(?m)  (?<=^(?:  )*)", "    " }
 
   Set-Content -Path $pkgJsonLoc -Value $jsonContent
+}
+
+$PackageExclusions = @{
+}
+
+# Validates if the package will succeed in the CI build by validating the
+# existence of a com folder in the unzipped source package
+function SourcePackageHasComFolder($artifactNamePrefix, $packageDirectory) {
+  try
+  {
+    $packageArtifact = "${artifactNamePrefix}:jar:sources"
+    $mvnResults = mvn `
+      dependency:copy `
+      -Dartifact="$packageArtifact" `
+      -DoutputDirectory="$packageDirectory"
+
+    if ($LASTEXITCODE) {
+      LogWarning "Could not download source artifact: $packageArtifact"
+      $mvnResults | Write-Host
+      return $false
+    }
+
+    $sourcesJarPath = (Get-ChildItem -File -Path $packageDirectory -Filter "*-sources.jar")[0]
+    $sourcesExtractPath = Join-Path $packageDirectory "sources"
+    Add-Type -AssemblyName System.IO.Compression.FileSystem
+    [System.IO.Compression.ZipFile]::ExtractToDirectory($sourcesJarPath, $sourcesExtractPath)
+
+    if (!(Test-Path "$sourcesExtractPath\com")) {
+      LogWarning "Could not locate 'com' folder extracting $packageArtifact"
+      return $false
+    }
+  }
+  catch
+  {
+    LogError "Exception while updating checking if package can be documented: $($package.packageGroupId):$($package.packageArtifactId)"
+    LogError $_
+    LogError $_.ScriptStackTrace
+    return $false
+  }
+
+  return $true
+}
+
+function PackageDependenciesResolve($artifactNamePrefix, $packageDirectory) {
+
+  $pomArtifactName = "${artifactNamePrefix}:pom"
+  $artifactDownloadOutput = mvn `
+    dependency:copy `
+    -Dartifact="$pomArtifactName" `
+    -DoutputDirectory="$packageDirectory"
+
+  if ($LASTEXITCODE) {
+    LogWarning "Could not download pom artifact: $pomArtifactName"
+    $artifactDownloadOutput | Write-Host
+    return $false
+  }
+
+  $downloadedPomPath = (Get-ChildItem -File -Path $packageDirectory -Filter '*.pom')[0]
+
+  # -P '!azure-mgmt-sdk-test-jar' excludes the unpublished test jar from
+  # dependencies
+  $copyDependencyOutput = mvn `
+    -f $downloadedPomPath `
+    dependency:copy-dependencies `
+    -P '!azure-mgmt-sdk-test-jar' `
+    -DoutputDirectory="$packageDirectory"
+
+  if ($LASTEXITCODE) {
+    LogWarning "Could not resolve dependencies for: $pomArtifactName"
+    $copyDependencyOutput | Write-Host
+    return $false
+  }
+
+  return $true
+}
+
+function ValidatePackage($package, $workingDirectory) {
+  $artifactNamePrefix = "$($package.packageGroupId):$($package.packageArtifactId):$($package.packageVersion)"
+
+  $packageDirectory = Join-Path `
+    $workingDirectory `
+    "$($package.packageGroupId)__$($package.packageArtifactId)__$($package.packageVersion)"
+  New-Item -ItemType Directory -Path $packageDirectory -Force
+
+  return (SourcePackageHasComFolder $artifactNamePrefix $packageDirectory) `
+    -and (PackageDependenciesResolve $artifactNamePrefix $packageDirectory)
+}
+
+function Update-java-DocsMsPackages($DocsRepoLocation, $DocsMetadata) {
+  Write-Host "Excluded packages:"
+  foreach ($excludedPackage in $PackageExclusions.Keys) {
+    Write-Host "  $excludedPackage - $($PackageExclusions[$excludedPackage])"
+  }
+
+  # Also exclude 'spring' packages
+  # https://github.com/Azure/azure-sdk-for-java/issues/23087
+  $FilteredMetadata = $DocsMetadata.Where({ !($PackageExclusions.ContainsKey($_.Package) -or $_.Type -eq 'spring') })
+
+  UpdateDocsMsPackages `
+    (Join-Path $DocsRepoLocation 'package.json') `
+    'preview' `
+    $FilteredMetadata
+
+  UpdateDocsMsPackages `
+    (Join-Path $DocsRepoLocation 'package.json') `
+    'latest' `
+    $FilteredMetadata
+}
+
+function UpdateDocsMsPackages($DocConfigFile, $Mode, $DocsMetadata) {
+  $packageConfig = Get-Content $DocConfigFile -Raw | ConvertFrom-Json
+
+  $workingDirectory = Join-Path ([System.IO.Path]::GetTempPath()) ([System.IO.Path]::GetRandomFileName())
+  New-Item -ItemType Directory -Force -Path $workingDirectory | Out-Null
+
+  $packageOutputPath = 'docs-ref-autogen'
+  if ($Mode -eq 'preview') {
+    $packageOutputPath = 'preview/docs-ref-autogen'
+  }
+  $targetPackageList = $packageConfig.Where({ $_.output_path -eq $packageOutputPath})
+  if ($targetPackageList.Length -eq 0) {
+    LogError "Unable to find package config for $packageOutputPath in $DocConfigFile"
+    exit 1
+  } elseif ($targetPackageList.Length -gt 1) {
+    LogError "Found multiple package configs for $packageOutputPath in $DocConfigFile"
+    exit 1
+  }
+
+  $targetPackageList = $targetPackageList[0]
+
+  $outputPackages = @()
+  foreach ($package in $targetPackageList.packages) {
+    $packageGroupId = $package.packageGroupId
+    $packageName = $package.packageArtifactId
+
+    $matchingPublishedPackageArray = $DocsMetadata.Where({
+      $_.Package -eq $packageName -and $_.GroupId -eq $packageGroupId
+    })
+
+    # If this package does not match any published packages keep it in the list.
+    # This handles packages which are not tracked in metadata but still need to
+    # be built in Docs CI.
+    if ($matchingPublishedPackageArray.Count -eq 0) {
+      Write-Host "Keep non-tracked package: $packageName"
+      $outputPackages += $package
+      continue
+    }
+
+    if ($matchingPublishedPackageArray.Count -gt 1) {
+      LogWarning "Found more than one matching published package in metadata for $packageName; only updating first entry"
+    }
+    $matchingPublishedPackage = $matchingPublishedPackageArray[0]
+
+    if ($Mode -eq 'preview' -and !$matchingPublishedPackage.VersionPreview.Trim()) {
+      # If we are in preview mode and the package does not have a superseding
+      # preview version, remove the package from the list.
+      Write-Host "Remove superseded preview package: $packageName"
+      continue
+    }
+
+    if ($Mode -eq 'latest' -and !$matchingPublishedPackage.VersionGA.Trim()) {
+      LogWarning "Metadata is missing GA version for GA package $packageName. Keeping existing package."
+      $outputPackages += $package
+      continue
+    }
+
+    $packageVersion = $($matchingPublishedPackage.VersionGA)
+    if ($Mode -eq 'preview') {
+      if (!$matchingPublishedPackage.VersionPreview.Trim()) {
+        LogWarning "Metadata is missing preview version for preview package $packageName. Keeping existing package."
+        $outputPackages += $package
+        continue
+      }
+      $packageVersion = $matchingPublishedPackage.VersionPreview
+    }
+
+    # If upgrading the package, run basic sanity checks against the package
+    if ($package.packageVersion -ne $packageVersion) {
+      Write-Host "Validating new version detected for $packageName ($packageVersion)"
+      $validatePackageResult = ValidatePackage $package $workingDirectory
+
+      if (!$validatePackageResult) {
+        LogWarning "Package is not valid: $packageName. Keeping old version."
+        $outputPackages += $package
+        continue
+      }
+
+      $package.packageVersion = $packageVersion
+    }
+
+    Write-Host "Keeping tracked package: $packageName."
+    $outputPackages += $package
+  }
+
+  $outputPackagesHash = @{}
+  foreach ($package in $outputPackages) {
+    $outputPackagesHash["$($package.packageGroupId):$($package.packageArtifactId)"] = $true
+  }
+
+  $remainingPackages = @()
+  if ($Mode -eq 'preview') {
+    $remainingPackages = $DocsMetadata.Where({
+      $_.VersionPreview.Trim() -and !$outputPackagesHash.ContainsKey("$($package.packageGroupId):$($package.packageArtifactId)")
+    })
+  } else {
+    $remainingPackages = $DocsMetadata.Where({
+      $_.VersionGA.Trim() -and !$outputPackagesHash.ContainsKey("$($package.packageGroupId):$($package.packageArtifactId)")
+    })
+  }
+
+  # Add packages that exist in the metadata but are not onboarded in docs config
+  foreach ($package in $remainingPackages) {
+    $packageName = $package.Package
+    $packageGroupId = $package.GroupId
+    $packageVersion = $package.VersionGA
+    if ($Mode -eq 'preview') {
+      $packageVersion = $package.VersionPreview
+    }
+
+    Write-Host "Validating new package $($packageGroupId):$($packageName):$($packageVersion)"
+    $validatePackageResult = ValidatePackage $package $workingDirectory
+    if (!$validatePackageResult) {
+      LogWarning "Package is not valid: ${packageGroupId}:$packageName. Cannot onboard."
+      continue
+    }
+
+    Write-Host "Add new package from metadata: ${packageGroupId}:$packageName"
+    $package = [ordered]@{
+      packageArtifactId = $packageArtifactId
+      packageGroupId = $packageGroupId
+      packageVersion = $packageVersion
+      packageDownloadUrl = "https://repo1.maven.org/maven2"
+    }
+
+    $outputPackages += $package
+  }
+
+  $targetPackageList.packages = $outputPackages
+
+  # It is assumed that there is a matching config from above when the number of
+  # matching $targetPackageList is 1
+  foreach ($config in $packageConfig) {
+    if ($config.output_path -eq $packageOutputPath) {
+      $config = $targetPackageList
+      break
+    }
+  }
+
+  $outputJson = ConvertTo-Json $packageConfig -Depth 100
+  Set-Content -Path $DocConfigFile -Value $outputJson
+  Write-Host "Onboarding configuration written to: $DocConfigFile"
 }
 
 # function is used to filter packages to submit to API view tool

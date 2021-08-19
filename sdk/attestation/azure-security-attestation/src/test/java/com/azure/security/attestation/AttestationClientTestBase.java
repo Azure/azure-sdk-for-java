@@ -2,25 +2,20 @@
 // Licensed under the MIT License.
 package com.azure.security.attestation;
 
-import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.HttpPipelineBuilder;
-import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
-import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.test.TestBase;
-import com.azure.core.test.TestMode;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.identity.EnvironmentCredentialBuilder;
+import com.azure.security.attestation.models.AttestationSigner;
 import com.azure.security.attestation.models.AttestationType;
-import com.azure.security.attestation.models.JsonWebKey;
 import com.nimbusds.jose.JOSEException;
 import com.nimbusds.jose.JWSSigner;
 import com.nimbusds.jose.crypto.RSASSASigner;
 import com.nimbusds.jose.crypto.RSASSAVerifier;
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.SignedJWT;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.params.provider.Arguments;
 import reactor.core.publisher.Mono;
 
@@ -30,21 +25,17 @@ import java.security.KeyFactory;
 import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
 import java.security.PublicKey;
-import java.security.cert.Certificate;
-import java.security.cert.CertificateException;
-import java.security.cert.CertificateFactory;
-import java.security.cert.X509Certificate;
 import java.security.interfaces.RSAPublicKey;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.text.ParseException;
-import java.util.ArrayList;
 import java.util.Base64;
-import java.util.List;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+
+//import io.github.cdimascio.dotenv.Dotenv;
 
 /**
  * Specialization of the TestBase class for the attestation tests.
@@ -64,6 +55,12 @@ public class AttestationClientTestBase extends TestBase {
         AAD,
     }
 
+    @BeforeAll
+    public static void beforeAll() {
+        TestBase.setupClass();
+//        Dotenv.configure().ignoreIfMissing().systemProperties().load();
+    }
+
     /**
      * Determine the Attestation instance type based on the client URI provided.
      * @param clientUri - URI for the attestation client.
@@ -72,7 +69,7 @@ public class AttestationClientTestBase extends TestBase {
     ClientTypes classifyClient(String clientUri) {
         assertNotNull(clientUri);
         String regionShortName = getLocationShortName();
-        String sharedUri = "https://shared" + regionShortName + "." + regionShortName + ".test.attest.azure.net";
+        String sharedUri = "https://shared" + regionShortName + "." + regionShortName + ".attest.azure.net";
         if (sharedUri.equals(clientUri)) {
             return ClientTypes.SHARED;
         } else if (getIsolatedUrl().equals(clientUri)) {
@@ -100,38 +97,16 @@ public class AttestationClientTestBase extends TestBase {
      * @return Returns an attestation client builder corresponding to the httpClient and clientUri.
      */
     AttestationClientBuilder getBuilder(HttpClient httpClient, String clientUri) {
-        return new AttestationClientBuilder().pipeline(getHttpPipeline(httpClient)).instanceUrl(clientUri);
-    }
-
-    /**
-     * Retrieves an HTTP pipeline configured on the specified HTTP pipeline.
-     *
-     * Used by getBuilder().
-     * @param httpClient - Client on which to configure the HTTP pipeline.
-     * @return an HttpPipeline object configured for the MAA service on the specified http client.
-     */
-    private HttpPipeline getHttpPipeline(HttpClient httpClient) {
-        TokenCredential credential = null;
-
-        if (!interceptorManager.isPlaybackMode()) {
-            credential = new EnvironmentCredentialBuilder().httpClient(httpClient).build();
-        }
-
-        final List<HttpPipelinePolicy> policies = new ArrayList<>();
-        if (credential != null) {
-            policies.add(new BearerTokenAuthenticationPolicy(credential, DATAPLANE_SCOPE));
-        }
-
-        if (getTestMode() == TestMode.RECORD) {
-            policies.add(interceptorManager.getRecordPolicy());
-        }
-
-        return new HttpPipelineBuilder()
-            .policies(policies.toArray(new HttpPipelinePolicy[0]))
+        AttestationClientBuilder builder = new AttestationClientBuilder()
+            .endpoint(clientUri)
             .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient)
-            .build();
+//            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
+            .addPolicy(interceptorManager.getRecordPolicy());
+        if (!interceptorManager.isPlaybackMode()) {
+            builder.credential(new EnvironmentCredentialBuilder().httpClient(httpClient).build());
+        }
+        return builder;
     }
-
 
     /**
      * Verifies an MAA attestation token and returns the set of attestation claims embedded in the token.
@@ -149,9 +124,9 @@ public class AttestationClientTestBase extends TestBase {
         }
 
         SignedJWT finalToken = token;
-        return getSigningCertificateByKeyId(token, httpClient, clientUri)
-            .handle((cert, sink) -> {
-                final PublicKey key = cert.getPublicKey();
+        return getSigningCertificateByKeyId(token.getHeader().getKeyID(), httpClient, clientUri)
+            .handle((signer, sink) -> {
+                final PublicKey key = signer.getCertificates().get(0).getPublicKey();
                 final RSAPublicKey rsaKey = (RSAPublicKey) key;
 
                 final RSASSAVerifier verifier = new RSASSAVerifier(rsaKey);
@@ -210,33 +185,16 @@ public class AttestationClientTestBase extends TestBase {
      * @param clientUri - Base URI for the attestation client.
      * @return X509Certificate which will have been used to sign the token.
      */
-    Mono<X509Certificate> getSigningCertificateByKeyId(SignedJWT token, HttpClient client, String clientUri) {
+    Mono<AttestationSigner> getSigningCertificateByKeyId(String keyId, HttpClient client, String clientUri) {
         AttestationClientBuilder builder = getBuilder(client, clientUri);
-        return builder.buildSigningCertificatesAsyncClient().get()
-            .handle((keySet, sink) -> {
-                final CertificateFactory cf;
-                try {
-                    cf = CertificateFactory.getInstance("X.509");
-                } catch (CertificateException e) {
-                    sink.error(logger.logThrowableAsError(e));
-                    return;
-                }
-
-                final String keyId = token.getHeader().getKeyID();
+        return builder.buildAsyncClient().listAttestationSigners()
+            .handle((signers, sink) -> {
                 boolean foundKey = false;
-                for (JsonWebKey key : keySet.getKeys()) {
-                    if (keyId.equals(key.getKid())) {
-                        final Certificate cert;
-                        try {
-                            cert = cf.generateCertificate(base64ToStream(key.getX5C().get(0)));
-                            foundKey = true;
-                        } catch (CertificateException e) {
-                            sink.error(logger.logThrowableAsError(e));
-                            return;
-                        }
 
-                        assertTrue(cert instanceof X509Certificate);
-                        sink.next((X509Certificate) cert);
+                for (AttestationSigner signer : signers) {
+                    if (keyId.equals(signer.getKeyId())) {
+                        foundKey = true;
+                        sink.next(signer);
                     }
                 }
                 if (!foundKey) {
@@ -367,7 +325,7 @@ public class AttestationClientTestBase extends TestBase {
 
         final String regionShortName = getLocationShortName();
         return getHttpClients().flatMap(httpClient -> Stream.of(
-            Arguments.of(httpClient, "https://shared" + regionShortName + "." + regionShortName + ".test.attest.azure.net"),
+            Arguments.of(httpClient, "https://shared" + regionShortName + "." + regionShortName + ".attest.azure.net"),
             Arguments.of(httpClient, getIsolatedUrl()),
             Arguments.of(httpClient, getAadUrl())));
     }

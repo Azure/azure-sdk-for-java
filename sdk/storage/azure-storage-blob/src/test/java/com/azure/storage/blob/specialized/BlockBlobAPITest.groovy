@@ -64,10 +64,10 @@ class BlockBlobAPITest extends APISpec {
         blobName = generateBlobName()
         blobClient = cc.getBlobClient(blobName)
         blockBlobClient = blobClient.getBlockBlobClient()
-        blockBlobClient.upload(data.defaultInputStream, data.defaultDataSize)
+        blockBlobClient.upload(data.defaultInputStream, data.defaultDataSize, true)
         blobAsyncClient = ccAsync.getBlobAsyncClient(generateBlobName())
         blockBlobAsyncClient = blobAsyncClient.getBlockBlobAsyncClient()
-        blockBlobAsyncClient.upload(data.defaultFlux, data.defaultDataSize).block()
+        blockBlobAsyncClient.upload(data.defaultFlux, data.defaultDataSize, true).block()
     }
 
     def "Stage block"() {
@@ -787,7 +787,7 @@ class BlockBlobAPITest extends APISpec {
     @LiveOnly
     def "Upload from file with tags"() {
         given:
-        def tags = Collections.singletonMap("tag", "value")
+        def tags = Collections.singletonMap(namer.getRandomName(20), namer.getRandomName(20))
         def file = getRandomFile(Constants.KB)
         def outStream = new ByteArrayOutputStream()
 

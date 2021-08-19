@@ -2,6 +2,11 @@
 
 ## 1.1.0-beta.1 (Unreleased)
 
+- Add support for new service API version 2021-07-01
+    - Add flag for disabling local authentication to IotHubProperties
+    - Add flags to disable device and/or module symmetric key based authentication to IotHubProperties
+    - Add flag for restricting outbound network access to IotHubProperties
+    - Add settable list of allowed fully qualified domain names for egress from IoT Hub to IotHubProperties
 
 ## 1.0.0 (2021-05-14)
 

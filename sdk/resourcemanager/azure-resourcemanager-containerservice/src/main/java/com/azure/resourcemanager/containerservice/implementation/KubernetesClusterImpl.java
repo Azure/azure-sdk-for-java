@@ -23,10 +23,10 @@ import com.azure.resourcemanager.containerservice.models.ManagedClusterAgentPool
 import com.azure.resourcemanager.containerservice.models.ManagedClusterApiServerAccessProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterIdentity;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterPropertiesAutoScalerProfile;
-import com.azure.resourcemanager.containerservice.models.ManagedClusterPropertiesIdentityProfileValue;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterServicePrincipalProfile;
 import com.azure.resourcemanager.containerservice.models.PowerState;
 import com.azure.resourcemanager.containerservice.models.ResourceIdentityType;
+import com.azure.resourcemanager.containerservice.models.UserAssignedIdentity;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.PrivateEndpoint;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.PrivateEndpointConnection;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.PrivateEndpointConnectionProvisioningState;
@@ -197,13 +197,33 @@ public class KubernetesClusterImpl
     public String systemAssignedManagedServiceIdentityPrincipalId() {
         String objectId = null;
         if (this.innerModel().identityProfile() != null) {
-            ManagedClusterPropertiesIdentityProfileValue identity =
+            UserAssignedIdentity identity =
                 this.innerModel().identityProfile().get("kubeletidentity");
             if (identity != null) {
                 objectId = identity.objectId();
             }
         }
         return objectId;
+    }
+
+    @Override
+    public void start() {
+        this.startAsync().block();
+    }
+
+    @Override
+    public Mono<Void> startAsync() {
+        return manager().kubernetesClusters().startAsync(this.resourceGroupName(), this.name());
+    }
+
+    @Override
+    public void stop() {
+        this.stopAsync().block();
+    }
+
+    @Override
+    public Mono<Void> stopAsync() {
+        return manager().kubernetesClusters().stopAsync(this.resourceGroupName(), this.name());
     }
 
     private Mono<List<CredentialResult>> listAdminConfig(final KubernetesClusterImpl self) {

@@ -22,10 +22,10 @@ public final class PiiEntityDomain extends ExpandableStringEnum<PiiEntityDomain>
     public static final PiiEntityDomain NONE = fromString("none");
 
     /**
-     * Creates or finds a {@link EntityCategory} from its string representation.
+     * Creates or finds a {@link PiiEntityDomain} from its string representation.
      *
      * @param name The string name to look for.
-     * @return The corresponding {@link EntityCategory}.
+     * @return The corresponding {@link PiiEntityDomain}.
      */
     public static PiiEntityDomain fromString(String name) {
         return fromString(name, PiiEntityDomain.class);

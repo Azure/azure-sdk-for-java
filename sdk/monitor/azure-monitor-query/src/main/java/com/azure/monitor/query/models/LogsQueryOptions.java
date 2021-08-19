@@ -13,29 +13,10 @@ import java.util.List;
  */
 @Fluent
 public final class LogsQueryOptions {
-    private final QueryTimeSpan timeSpan;
-    private final String workspaceId;
-    private final String query;
-
-    private boolean includeRendering;
+    private boolean includeVisualization;
     private boolean includeStatistics;
     private Duration serverTimeout;
-    private List<String> workspaceNames;
-    private List<String> workspaceIds;
-    private List<String> azureResourceIds;
-    private List<String> qualifiedWorkspaceNames;
-
-    /**
-     * Creates an instance of {@link LogsQueryOptions} with required params.
-     * @param workspaceId The workspaceId  on which the query is executed.
-     * @param query The Kusto query.
-     * @param timeSpan The time period for which the logs should be queried.
-     */
-    public LogsQueryOptions(String workspaceId, String query, QueryTimeSpan timeSpan) {
-        this.workspaceId = workspaceId;
-        this.query = query;
-        this.timeSpan = timeSpan;
-    }
+    private List<String> additionalWorkspaces;
 
     /**
      * Returns the server timeout for this query.
@@ -56,20 +37,20 @@ public final class LogsQueryOptions {
     }
 
     /**
-     * Returns the flag that indicates if the query should return rendering details.
-     * @return The flag that indicates if the query should return rendering details.
+     * Returns the flag that indicates if the query should return visualization details.
+     * @return The flag that indicates if the query should return visualization details.
      */
-    public boolean isIncludeRendering() {
-        return includeRendering;
+    public boolean isIncludeVisualization() {
+        return includeVisualization;
     }
 
     /**
-     * Sets the flag that indicates if the query should return rendering details.
-     * @param includeRendering The flag that indicates if the query should return rendering details.
+     * Sets the flag that indicates if the query should return visualization details.
+     * @param includeVisualization The flag that indicates if the query should return visualization details.
      * @return The updated options instance.
      */
-    public LogsQueryOptions setIncludeRendering(boolean includeRendering) {
-        this.includeRendering = includeRendering;
+    public LogsQueryOptions setIncludeVisualization(boolean includeVisualization) {
+        this.includeVisualization = includeVisualization;
         return this;
     }
 
@@ -92,98 +73,38 @@ public final class LogsQueryOptions {
     }
 
     /**
-     * Returns the list of workspace names on which this query is executed.
-     * @return The list of workspace names on which this query is executed.
+     * Returns the list of additional workspaces on which this query is executed. The list can contain any of the
+     * following workspace identifiers:
+     * <ul>
+     *     <li>Workspace Name - human-readable string {@code <workspaceName>} of the OMS workspace </li>
+     *     <li>Qualified Name - string with format {@code <subscriptionName>/<resourceGroup>/<workspaceName>}</li>
+     *     <li>Workspace ID - GUID string</li>
+     *     <li>Azure Resource ID - string with format
+     *     {@code /subscriptions/<subscriptionId>/resourceGroups/<resourceGroup>/providers/microsoft
+     *     .operationalinsights/workspaces/<workspaceName>}</li>
+     * </ul>
+     * @return the list of additional workspaces on which this query is executed.
      */
-    public List<String> getWorkspaceNames() {
-        return workspaceNames;
+    public List<String> getAdditionalWorkspaces() {
+        return additionalWorkspaces;
     }
 
     /**
-     * Sets the list of workspace names on which this query is executed.
-     * @param workspaceNames The list of workspace names on which this query is executed.
+     * Sets the list of additional workspaces on which this query is executed. The list can contain any of the
+     * following workspace identifiers:
+     * <ul>
+     *     <li>Workspace Name - human-readable string {@code <workspaceName>} of the OMS workspace </li>
+     *     <li>Qualified Name - string with format {@code <subscriptionName>/<resourceGroup>/<workspaceName>}</li>
+     *     <li>Workspace ID - GUID string</li>
+     *     <li>Azure Resource ID - string with format
+     *     {@code /subscriptions/<subscriptionId>/resourceGroups/<resourceGroup>/providers/microsoft
+     *     .operationalinsights/workspaces/<workspaceName>}</li>
+     * </ul>
+     * @param additionalWorkspaces the list of additional workspaces on which this query is executed.
      * @return The updated options instance.
      */
-    public LogsQueryOptions setWorkspaceNames(List<String> workspaceNames) {
-        this.workspaceNames = workspaceNames;
+    public LogsQueryOptions setAdditionalWorkspaces(List<String> additionalWorkspaces) {
+        this.additionalWorkspaces = additionalWorkspaces;
         return this;
-    }
-
-    /**
-     * Returns the list of workspace ids on which this query is executed.
-     * @return The list of workspace ids on which this query is executed.
-     */
-    public List<String> getWorkspaceIds() {
-        return workspaceIds;
-    }
-
-    /**
-     * Sets the list of workspace ids on which this query is executed.
-     * @param workspaceIds the list of workspace ids on which this query is executed.
-     * @return The updated options instance.
-     */
-    public LogsQueryOptions setWorkspaceIds(List<String> workspaceIds) {
-        this.workspaceIds = workspaceIds;
-        return this;
-    }
-
-    /**
-     * Returns the list of Azure resource ids on which this query is executed.
-     * @return the list of Azure resource ids on which this query is executed.
-     */
-    public List<String> getAzureResourceIds() {
-        return azureResourceIds;
-    }
-
-    /**
-     * Sets the list of Azure resource ids on which this query is executed.
-     * @param azureResourceIds the list of Azure resource ids on which this query is executed.
-     * @return The updated options instance.
-     */
-    public LogsQueryOptions setAzureResourceIds(List<String> azureResourceIds) {
-        this.azureResourceIds = azureResourceIds;
-        return this;
-    }
-
-    /**
-     * Returns the list of qualified workspace names on which this query is executed.
-     * @return the list of qualified workspace names on which this query is executed.
-     */
-    public List<String> getQualifiedWorkspaceNames() {
-        return qualifiedWorkspaceNames;
-    }
-
-    /**
-     * Sets the list of qualified workspace names on which this query is executed.
-     * @param qualifiedWorkspaceNames the list of qualified workspace names on which this query is executed.
-     * @return The updated options instance.
-     */
-    public LogsQueryOptions setQualifiedWorkspaceNames(List<String> qualifiedWorkspaceNames) {
-        this.qualifiedWorkspaceNames = qualifiedWorkspaceNames;
-        return this;
-    }
-
-    /**
-     * Returns the workspace id on which this query is executed.
-     * @return the workspace id on which this query is executed.
-     */
-    public String getWorkspaceId() {
-        return workspaceId;
-    }
-
-    /**
-     * Returns the Kusto query.
-     * @return the Kusto query.
-     */
-    public String getQuery() {
-        return query;
-    }
-
-    /**
-     * Returns the timespan for this query.
-     * @return the timespan for this query.
-     */
-    public QueryTimeSpan getTimeSpan() {
-        return timeSpan;
     }
 }

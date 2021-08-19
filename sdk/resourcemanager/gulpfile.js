@@ -117,7 +117,7 @@ function codegen(project, cb) {
     }
 
     const generatorPath = args['autorest-java']
-        ? `--use=${path.resolve(args['autorest-java'])} `
+        ? (args['autorest-java'].startsWith('@autorest/java') ? `--use=${args['autorest-java']} ` : `--use=${path.resolve(args['autorest-java'])} `)
         : '';
 
     const regenManager = args['regenerate-manager'] ? ' --regenerate-manager ' : '';
@@ -126,7 +126,8 @@ function codegen(project, cb) {
     cmd = autoRestExe + ' ' + readmeFile +
                         ' --java ' +
                         ' --azure-arm ' +
-                        ' --pipeline.modelerfour.additional-checks=false --pipeline.modelerfour.lenient-model-deduplication=true --pipeline.modelerfour.flatten-payloads=true ' +
+                        ' --pipeline.modelerfour.additional-checks=false --pipeline.modelerfour.lenient-model-deduplication=true --pipeline.modelerfour.flatten-models=false ' +
+                        ' --client-flattened-annotation-target=NONE ' +
                         generator +
                         ` --java.namespace=${mappings[project].package} ` +
                         ` --java.output-folder=${outDir} ` +

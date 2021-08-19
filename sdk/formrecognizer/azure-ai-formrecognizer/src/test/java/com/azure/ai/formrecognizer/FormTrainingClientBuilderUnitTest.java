@@ -16,7 +16,6 @@ import org.junit.jupiter.api.Test;
 import java.time.Duration;
 import java.util.Set;
 
-import static com.azure.ai.formrecognizer.FormRecognizerClientTestBase.HTTPS_EXCEPTION_MESSAGE;
 import static com.azure.ai.formrecognizer.TestUtils.INVALID_KEY;
 import static com.azure.ai.formrecognizer.TestUtils.VALID_HTTPS_LOCALHOST;
 import static com.azure.ai.formrecognizer.TestUtils.VALID_HTTP_LOCALHOST;
@@ -106,9 +105,8 @@ public class FormTrainingClientBuilderUnitTest {
             .configuration(Configuration.getGlobalConfiguration())
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS));
 
-        Exception exception = assertThrows(RuntimeException.class, () ->
+        assertThrows(RuntimeException.class, () ->
             clientBuilder.buildClient().beginRecognizeContentFromUrl(VALID_URL).getFinalResult());
-        assertEquals(exception.getMessage(), HTTPS_EXCEPTION_MESSAGE);
     }
 
     @Test

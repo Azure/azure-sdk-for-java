@@ -36,8 +36,8 @@ public final class MetricsQueryClient {
      * @return A time-series metrics result for the requested metric names.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public MetricsQueryResult queryMetrics(String resourceUri, List<String> metricsNames) {
-        return queryMetricsWithResponse(resourceUri, metricsNames, new MetricsQueryOptions(), Context.NONE).getValue();
+    public MetricsQueryResult query(String resourceUri, List<String> metricsNames) {
+        return queryWithResponse(resourceUri, metricsNames, new MetricsQueryOptions(), Context.NONE).getValue();
     }
 
     /**
@@ -49,9 +49,9 @@ public final class MetricsQueryClient {
      * @return A time-series metrics result for the requested metric names.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<MetricsQueryResult> queryMetricsWithResponse(String resourceUri, List<String> metricsNames,
-                                                                 MetricsQueryOptions options, Context context) {
-        return asyncClient.queryMetricsWithResponse(resourceUri, metricsNames, options, context).block();
+    public Response<MetricsQueryResult> queryWithResponse(String resourceUri, List<String> metricsNames,
+                                                          MetricsQueryOptions options, Context context) {
+        return asyncClient.queryWithResponse(resourceUri, metricsNames, options, context).block();
     }
 
 
@@ -62,8 +62,8 @@ public final class MetricsQueryClient {
      * @return List of metrics namespaces.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<MetricNamespace> listMetricsNamespace(String resourceUri, OffsetDateTime startTime) {
-        return listMetricsNamespace(resourceUri, startTime, Context.NONE);
+    public PagedIterable<MetricNamespace> listMetricNamespaces(String resourceUri, OffsetDateTime startTime) {
+        return listMetricNamespaces(resourceUri, startTime, Context.NONE);
     }
 
     /**
@@ -74,20 +74,19 @@ public final class MetricsQueryClient {
      * @return List of metrics namespaces.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<MetricNamespace> listMetricsNamespace(String resourceUri, OffsetDateTime startTime,
+    public PagedIterable<MetricNamespace> listMetricNamespaces(String resourceUri, OffsetDateTime startTime,
                                                                Context context) {
-        return new PagedIterable<>(asyncClient.listMetricsNamespace(resourceUri, startTime, context));
+        return new PagedIterable<>(asyncClient.listMetricNamespaces(resourceUri, startTime, context));
     }
 
     /**
      * Lists all the metrics definitions created for the resource URI.
      * @param resourceUri The resource URI for which the metrics definitions are listed.
-     * @param metricsNamespace The metrics namespace to which the listed metrics definitions belong.
      * @return List of metrics definitions.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedIterable<MetricDefinition> listMetricsDefinition(String resourceUri, String metricsNamespace) {
-        return listMetricsDefinition(resourceUri, metricsNamespace, Context.NONE);
+    public PagedIterable<MetricDefinition> listMetricDefinitions(String resourceUri) {
+        return listMetricDefinitions(resourceUri, null, Context.NONE);
     }
 
     /**
@@ -98,8 +97,8 @@ public final class MetricsQueryClient {
      * @return List of metrics definitions.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedIterable<MetricDefinition> listMetricsDefinition(String resourceUri, String metricsNamespace,
+    public PagedIterable<MetricDefinition> listMetricDefinitions(String resourceUri, String metricsNamespace,
                                                                  Context context) {
-        return new PagedIterable<>(asyncClient.listMetricsDefinition(resourceUri, metricsNamespace, context));
+        return new PagedIterable<>(asyncClient.listMetricDefinitions(resourceUri, metricsNamespace, context));
     }
 }

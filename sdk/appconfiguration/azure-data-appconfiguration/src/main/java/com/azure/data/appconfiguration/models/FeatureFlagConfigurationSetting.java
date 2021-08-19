@@ -3,22 +3,31 @@
 
 package com.azure.data.appconfiguration.models;
 
-import java.util.Collections;
+import com.azure.core.util.logging.ClientLogger;
+
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+
+import static com.azure.data.appconfiguration.implementation.ConfigurationSettingJsonDeserializer.readFeatureFlagConfigurationSettingValue;
+import static com.azure.data.appconfiguration.implementation.ConfigurationSettingJsonSerializer.writeFeatureFlagConfigurationSetting;
 
 /**
  * {@link FeatureFlagConfigurationSetting} allows you to customize your own feature flags to dynamically administer a
  * feature's lifecycle. Feature flags can be used to enable or disable features.
  */
 public final class FeatureFlagConfigurationSetting extends ConfigurationSetting {
-    private final String featureId;
-    private final boolean isEnabled;
+    private static final ClientLogger LOGGER = new ClientLogger(FeatureFlagConfigurationSetting.class);
+    private static final String FEATURE_FLAG_CONTENT_TYPE = "application/vnd.microsoft.appconfig.ff+json;charset=utf-8";
+
+    private String featureId;
+    private boolean isEnabled;
     private String description;
     private String displayName;
     private List<FeatureFlagFilter> clientFilters;
-
-    private static final String FEATURE_FLAG_CONTENT_TYPE = "application/vnd.microsoft.appconfig.ff+json;charset=utf-8";
 
     /**
      * A prefix is used to construct a feature flag configuration setting's key.
@@ -58,10 +67,19 @@ public final class FeatureFlagConfigurationSetting extends ConfigurationSetting 
      * @param value The value to associate with this configuration setting.
      *
      * @return The updated {@link FeatureFlagConfigurationSetting} object.
+     * @throws IllegalArgumentException if the setting's {@code value} is an invalid JSON format.
      */
     @Override
     public FeatureFlagConfigurationSetting setValue(String value) {
         super.setValue(value);
+        // update strongly-typed properties.
+        final FeatureFlagConfigurationSetting updatedSetting = readFeatureFlagConfigurationSettingValue(value);
+        this.featureId = updatedSetting.getFeatureId();
+        this.description = updatedSetting.getDescription();
+        this.isEnabled = updatedSetting.isEnabled();
+        this.displayName = updatedSetting.getDisplayName();
+        this.clientFilters = StreamSupport.stream(updatedSetting.getClientFilters().spliterator(), false)
+                                     .collect(Collectors.toList());
         return this;
     }
 
@@ -128,12 +146,41 @@ public final class FeatureFlagConfigurationSetting extends ConfigurationSetting 
     }
 
     /**
+     * Set the feature ID of this configuration setting.
+     *
+     * @param featureId the feature ID of this configuration setting.
+     *
+     * @return The updated {@link FeatureFlagConfigurationSetting} object.
+     * @throws IllegalArgumentException if the setting's {@code value} is an invalid JSON format.
+     */
+    public FeatureFlagConfigurationSetting setFeatureId(String featureId) {
+        this.featureId = featureId;
+        super.setKey(KEY_PREFIX + featureId);
+        updateSettingValue();
+        return this;
+    }
+
+    /**
      * Get the boolean indicator to show if the setting is turn on or off.
      *
      * @return the boolean indicator to show if the setting is turn on or off.
      */
     public boolean isEnabled() {
         return this.isEnabled;
+    }
+
+    /**
+     * Set the boolean indicator to show if the setting is turn on or off.
+     *
+     * @param isEnabled the boolean indicator to show if the setting is turn on or off.
+
+     * @return The updated {@link FeatureFlagConfigurationSetting} object.
+     * @throws IllegalArgumentException if the setting's {@code value} is an invalid JSON format.
+     */
+    public FeatureFlagConfigurationSetting setEnabled(boolean isEnabled) {
+        this.isEnabled = isEnabled;
+        updateSettingValue();
+        return this;
     }
 
     /**
@@ -151,9 +198,11 @@ public final class FeatureFlagConfigurationSetting extends ConfigurationSetting 
      * @param description the description of this configuration setting.
      *
      * @return The updated {@link FeatureFlagConfigurationSetting} object.
+     * @throws IllegalArgumentException if the setting's {@code value} is an invalid JSON format.
      */
     public FeatureFlagConfigurationSetting setDescription(String description) {
         this.description = description;
+        updateSettingValue();
         return this;
     }
 
@@ -172,9 +221,11 @@ public final class FeatureFlagConfigurationSetting extends ConfigurationSetting 
      * @param displayName the display name of this configuration setting.
      *
      * @return The updated {@link FeatureFlagConfigurationSetting} object.
+     * @throws IllegalArgumentException if the setting's {@code value} is an invalid JSON format.
      */
     public FeatureFlagConfigurationSetting setDisplayName(String displayName) {
         this.displayName = displayName;
+        updateSettingValue();
         return this;
     }
 
@@ -183,8 +234,11 @@ public final class FeatureFlagConfigurationSetting extends ConfigurationSetting 
      *
      * @return the feature flag filters of this configuration setting.
      */
-    public Iterable<FeatureFlagFilter> getClientFilters() {
-        return Collections.unmodifiableList(clientFilters);
+    public List<FeatureFlagFilter> getClientFilters() {
+        if (clientFilters == null) {
+            clientFilters = new ArrayList<>();
+        }
+        return clientFilters;
     }
 
     /**
@@ -193,9 +247,11 @@ public final class FeatureFlagConfigurationSetting extends ConfigurationSetting 
      * @param clientFilters the feature flag filters of this configuration setting.
      *
      * @return The updated {@link FeatureFlagConfigurationSetting} object.
+     * @throws IllegalArgumentException if the setting's {@code value} is an invalid JSON format.
      */
     public FeatureFlagConfigurationSetting setClientFilters(List<FeatureFlagFilter> clientFilters) {
         this.clientFilters = clientFilters;
+        updateSettingValue();
         return this;
     }
 
@@ -207,7 +263,20 @@ public final class FeatureFlagConfigurationSetting extends ConfigurationSetting 
      * @return The updated {@link FeatureFlagConfigurationSetting} object.
      */
     public FeatureFlagConfigurationSetting addClientFilter(FeatureFlagFilter clientFilter) {
+        if (clientFilters == null) {
+            clientFilters = new ArrayList<>();
+        }
         clientFilters.add(clientFilter);
+        updateSettingValue();
         return this;
+    }
+
+    private void updateSettingValue() {
+        try {
+            super.setValue(writeFeatureFlagConfigurationSetting(this));
+        } catch (IOException exception) {
+            LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Can't parse Feature Flag configuration setting value.", exception));
+        }
     }
 }

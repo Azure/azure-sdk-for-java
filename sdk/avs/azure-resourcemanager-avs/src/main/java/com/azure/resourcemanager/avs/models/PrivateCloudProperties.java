@@ -86,6 +86,12 @@ public final class PrivateCloudProperties extends PrivateCloudUpdateProperties {
     @JsonProperty(value = "nsxtCertificateThumbprint", access = JsonProperty.Access.WRITE_ONLY)
     private String nsxtCertificateThumbprint;
 
+    /*
+     * Array of cloud link IDs from other clouds that connect to this one
+     */
+    @JsonProperty(value = "externalCloudLinks", access = JsonProperty.Access.WRITE_ONLY)
+    private List<String> externalCloudLinks;
+
     /**
      * Get the provisioningState property: The provisioning state.
      *
@@ -231,6 +237,15 @@ public final class PrivateCloudProperties extends PrivateCloudUpdateProperties {
      */
     public String nsxtCertificateThumbprint() {
         return this.nsxtCertificateThumbprint;
+    }
+
+    /**
+     * Get the externalCloudLinks property: Array of cloud link IDs from other clouds that connect to this one.
+     *
+     * @return the externalCloudLinks value.
+     */
+    public List<String> externalCloudLinks() {
+        return this.externalCloudLinks;
     }
 
     /** {@inheritDoc} */

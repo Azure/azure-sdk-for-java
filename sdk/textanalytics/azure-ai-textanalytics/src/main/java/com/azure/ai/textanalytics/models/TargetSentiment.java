@@ -47,7 +47,7 @@ public final class TargetSentiment {
     }
 
     /**
-     * Get the target text property.
+     * Gets the target text property.
      *
      * @return The text value.
      */
@@ -56,7 +56,7 @@ public final class TargetSentiment {
     }
 
     /**
-     * Get the target text sentiment label: POSITIVE, NEGATIVE, MIXED. {@link TextSentiment} has
+     * Gets the target text sentiment label: POSITIVE, NEGATIVE, MIXED. {@link TextSentiment} has
      * NEUTRAL sentiment type additionally, but target sentiment can only be POSITIVE, NEGATIVE, or MIXED.
      *
      * @return The sentiment value.
@@ -66,7 +66,7 @@ public final class TargetSentiment {
     }
 
     /**
-     * Get the target text offset from the start of document.
+     * Gets the target text offset from the start of document.
      *
      * @return The target text offset from the start of document.
      */
@@ -75,7 +75,7 @@ public final class TargetSentiment {
     }
 
     /**
-     * Get the length of target text.
+     * Gets the length of target text.
      *
      * @return The length of target text.
      */
@@ -84,7 +84,7 @@ public final class TargetSentiment {
     }
 
     /**
-     * Get the confidence score of the sentiment label. All score values sum up to 1, the higher the score, the
+     * Gets the confidence score of the sentiment label. All score values sum up to 1, the higher the score, the
      * higher the confidence in the sentiment. AspectSentiment only has positive or negative confidence score value
      * because there is no neutral sentiment label in the AspectSentiment.
      *

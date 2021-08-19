@@ -40,7 +40,9 @@
         "premiumFileAccountName": "[concat('premf', parameters('baseName'))]",
         "keyvaultName": "[concat(parameters('baseName'), 'kvlt')]",
         "azureKeyVaultUrl": "[format('https://{0}.vault.azure.net', variables('keyvaultName'))]",
-        "location": "[resourceGroup().location]"
+        "location": "[resourceGroup().location]",
+        "resourceGroupName": "[resourceGroup().name]",
+        "subscriptionId": "[subscription().subscriptionId]"
     },
     "resources": [
         {
@@ -601,6 +603,10 @@
             "type": "string",
             "value": "[listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('dataLakeAccountName')), variables('storageApiVersion')).keys[0].value]"
         },
+        "STORAGE_DATA_LAKE_CONNECTION_STRING": {
+            "type": "string",
+            "value": "[concat('DefaultEndpointsProtocol=https;AccountName=', variables('dataLakeAccountName'), ';AccountKey=', listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('dataLakeAccountName')), variables('storageApiVersion')).keys[0].value, ';EndpointSuffix=', parameters('endpointSuffix'))]"
+        },
         "STORAGE_DATA_LAKE_SOFT_DELETE_ACCOUNT_NAME": {
           "type": "string",
           "value": "[variables('dataLakeSoftDeleteAccountName')]"
@@ -612,6 +618,14 @@
         "KEYVAULT_URL":{
             "type": "string",
             "value": "[variables('azureKeyVaultUrl')]"
+        },
+        "STORAGE_RESOURCE_GROUP_NAME": {
+            "type": "string",
+            "value": "[variables('resourceGroupName')]"
+        },
+        "STORAGE_SUBSCRIPTION_ID": {
+            "type": "string",
+            "value": "[variables('subscriptionId')]"
         }
     }
 }

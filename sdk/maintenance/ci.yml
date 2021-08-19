@@ -8,7 +8,11 @@ trigger:
       - release/*
   paths:
     include:
-      - sdk/maintenance/
+      - sdk/maintenance/ci.yml
+      - sdk/maintenance/azure-resourcemanager-maintenance/
+    exclude:
+      - sdk/maintenance/pom.xml
+      - sdk/maintenance/azure-resourcemanager-maintenance/pom.xml
 
 pr:
   branches:
@@ -19,7 +23,11 @@ pr:
       - release/*
   paths:
     include:
-      - sdk/maintenance/
+      - sdk/maintenance/ci.yml
+      - sdk/maintenance/azure-resourcemanager-maintenance/
+    exclude:
+      - sdk/maintenance/pom.xml
+      - sdk/maintenance/azure-resourcemanager-maintenance/pom.xml
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml

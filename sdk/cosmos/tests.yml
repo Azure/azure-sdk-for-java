@@ -3,7 +3,7 @@ trigger: none
 variables:
   - template: ../../eng/pipelines/templates/variables/globals.yml
   - name: AdditionalArgs
-    value: ''
+    value: '-DCOSMOS.CLIENT_TELEMETRY_ENDPOINT=$(cosmos-client-telemetry-endpoint) -DCOSMOS.CLIENT_TELEMETRY_COSMOS_ACCOUNT=$(cosmos-client-telemetry-cosmos-account)'
 
 stages:
   - template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml

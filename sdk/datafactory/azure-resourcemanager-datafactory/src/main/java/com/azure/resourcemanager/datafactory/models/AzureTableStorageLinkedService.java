@@ -5,8 +5,8 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.datafactory.fluent.models.AzureStorageLinkedServiceTypeProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -17,150 +17,23 @@ import java.util.Map;
 /** The azure table storage linked service. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("AzureTableStorage")
-@JsonFlatten
 @Fluent
-public class AzureTableStorageLinkedService extends LinkedService {
+public final class AzureTableStorageLinkedService extends LinkedService {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureTableStorageLinkedService.class);
 
     /*
-     * The connection string. It is mutually exclusive with sasUri property.
-     * Type: string, SecureString or AzureKeyVaultSecretReference.
+     * Azure Table Storage linked service properties.
      */
-    @JsonProperty(value = "typeProperties.connectionString")
-    private Object connectionString;
-
-    /*
-     * The Azure key vault secret reference of accountKey in connection string.
-     */
-    @JsonProperty(value = "typeProperties.accountKey")
-    private AzureKeyVaultSecretReference accountKey;
-
-    /*
-     * SAS URI of the Azure Storage resource. It is mutually exclusive with
-     * connectionString property. Type: string, SecureString or
-     * AzureKeyVaultSecretReference.
-     */
-    @JsonProperty(value = "typeProperties.sasUri")
-    private Object sasUri;
-
-    /*
-     * The Azure key vault secret reference of sasToken in sas uri.
-     */
-    @JsonProperty(value = "typeProperties.sasToken")
-    private AzureKeyVaultSecretReference sasToken;
-
-    /*
-     * The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string
-     * (or Expression with resultType string).
-     */
-    @JsonProperty(value = "typeProperties.encryptedCredential")
-    private String encryptedCredential;
+    @JsonProperty(value = "typeProperties", required = true)
+    private AzureStorageLinkedServiceTypeProperties innerTypeProperties = new AzureStorageLinkedServiceTypeProperties();
 
     /**
-     * Get the connectionString property: The connection string. It is mutually exclusive with sasUri property. Type:
-     * string, SecureString or AzureKeyVaultSecretReference.
+     * Get the innerTypeProperties property: Azure Table Storage linked service properties.
      *
-     * @return the connectionString value.
+     * @return the innerTypeProperties value.
      */
-    public Object connectionString() {
-        return this.connectionString;
-    }
-
-    /**
-     * Set the connectionString property: The connection string. It is mutually exclusive with sasUri property. Type:
-     * string, SecureString or AzureKeyVaultSecretReference.
-     *
-     * @param connectionString the connectionString value to set.
-     * @return the AzureTableStorageLinkedService object itself.
-     */
-    public AzureTableStorageLinkedService withConnectionString(Object connectionString) {
-        this.connectionString = connectionString;
-        return this;
-    }
-
-    /**
-     * Get the accountKey property: The Azure key vault secret reference of accountKey in connection string.
-     *
-     * @return the accountKey value.
-     */
-    public AzureKeyVaultSecretReference accountKey() {
-        return this.accountKey;
-    }
-
-    /**
-     * Set the accountKey property: The Azure key vault secret reference of accountKey in connection string.
-     *
-     * @param accountKey the accountKey value to set.
-     * @return the AzureTableStorageLinkedService object itself.
-     */
-    public AzureTableStorageLinkedService withAccountKey(AzureKeyVaultSecretReference accountKey) {
-        this.accountKey = accountKey;
-        return this;
-    }
-
-    /**
-     * Get the sasUri property: SAS URI of the Azure Storage resource. It is mutually exclusive with connectionString
-     * property. Type: string, SecureString or AzureKeyVaultSecretReference.
-     *
-     * @return the sasUri value.
-     */
-    public Object sasUri() {
-        return this.sasUri;
-    }
-
-    /**
-     * Set the sasUri property: SAS URI of the Azure Storage resource. It is mutually exclusive with connectionString
-     * property. Type: string, SecureString or AzureKeyVaultSecretReference.
-     *
-     * @param sasUri the sasUri value to set.
-     * @return the AzureTableStorageLinkedService object itself.
-     */
-    public AzureTableStorageLinkedService withSasUri(Object sasUri) {
-        this.sasUri = sasUri;
-        return this;
-    }
-
-    /**
-     * Get the sasToken property: The Azure key vault secret reference of sasToken in sas uri.
-     *
-     * @return the sasToken value.
-     */
-    public AzureKeyVaultSecretReference sasToken() {
-        return this.sasToken;
-    }
-
-    /**
-     * Set the sasToken property: The Azure key vault secret reference of sasToken in sas uri.
-     *
-     * @param sasToken the sasToken value to set.
-     * @return the AzureTableStorageLinkedService object itself.
-     */
-    public AzureTableStorageLinkedService withSasToken(AzureKeyVaultSecretReference sasToken) {
-        this.sasToken = sasToken;
-        return this;
-    }
-
-    /**
-     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
-     * @return the encryptedCredential value.
-     */
-    public String encryptedCredential() {
-        return this.encryptedCredential;
-    }
-
-    /**
-     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
-     * @param encryptedCredential the encryptedCredential value to set.
-     * @return the AzureTableStorageLinkedService object itself.
-     */
-    public AzureTableStorageLinkedService withEncryptedCredential(String encryptedCredential) {
-        this.encryptedCredential = encryptedCredential;
-        return this;
+    private AzureStorageLinkedServiceTypeProperties innerTypeProperties() {
+        return this.innerTypeProperties;
     }
 
     /** {@inheritDoc} */
@@ -192,6 +65,127 @@ public class AzureTableStorageLinkedService extends LinkedService {
     }
 
     /**
+     * Get the connectionString property: The connection string. It is mutually exclusive with sasUri property. Type:
+     * string, SecureString or AzureKeyVaultSecretReference.
+     *
+     * @return the connectionString value.
+     */
+    public Object connectionString() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().connectionString();
+    }
+
+    /**
+     * Set the connectionString property: The connection string. It is mutually exclusive with sasUri property. Type:
+     * string, SecureString or AzureKeyVaultSecretReference.
+     *
+     * @param connectionString the connectionString value to set.
+     * @return the AzureTableStorageLinkedService object itself.
+     */
+    public AzureTableStorageLinkedService withConnectionString(Object connectionString) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new AzureStorageLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withConnectionString(connectionString);
+        return this;
+    }
+
+    /**
+     * Get the accountKey property: The Azure key vault secret reference of accountKey in connection string.
+     *
+     * @return the accountKey value.
+     */
+    public AzureKeyVaultSecretReference accountKey() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().accountKey();
+    }
+
+    /**
+     * Set the accountKey property: The Azure key vault secret reference of accountKey in connection string.
+     *
+     * @param accountKey the accountKey value to set.
+     * @return the AzureTableStorageLinkedService object itself.
+     */
+    public AzureTableStorageLinkedService withAccountKey(AzureKeyVaultSecretReference accountKey) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new AzureStorageLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withAccountKey(accountKey);
+        return this;
+    }
+
+    /**
+     * Get the sasUri property: SAS URI of the Azure Storage resource. It is mutually exclusive with connectionString
+     * property. Type: string, SecureString or AzureKeyVaultSecretReference.
+     *
+     * @return the sasUri value.
+     */
+    public Object sasUri() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().sasUri();
+    }
+
+    /**
+     * Set the sasUri property: SAS URI of the Azure Storage resource. It is mutually exclusive with connectionString
+     * property. Type: string, SecureString or AzureKeyVaultSecretReference.
+     *
+     * @param sasUri the sasUri value to set.
+     * @return the AzureTableStorageLinkedService object itself.
+     */
+    public AzureTableStorageLinkedService withSasUri(Object sasUri) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new AzureStorageLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withSasUri(sasUri);
+        return this;
+    }
+
+    /**
+     * Get the sasToken property: The Azure key vault secret reference of sasToken in sas uri.
+     *
+     * @return the sasToken value.
+     */
+    public AzureKeyVaultSecretReference sasToken() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().sasToken();
+    }
+
+    /**
+     * Set the sasToken property: The Azure key vault secret reference of sasToken in sas uri.
+     *
+     * @param sasToken the sasToken value to set.
+     * @return the AzureTableStorageLinkedService object itself.
+     */
+    public AzureTableStorageLinkedService withSasToken(AzureKeyVaultSecretReference sasToken) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new AzureStorageLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withSasToken(sasToken);
+        return this;
+    }
+
+    /**
+     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     *
+     * @return the encryptedCredential value.
+     */
+    public String encryptedCredential() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().encryptedCredential();
+    }
+
+    /**
+     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     *
+     * @param encryptedCredential the encryptedCredential value to set.
+     * @return the AzureTableStorageLinkedService object itself.
+     */
+    public AzureTableStorageLinkedService withEncryptedCredential(String encryptedCredential) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new AzureStorageLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withEncryptedCredential(encryptedCredential);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -199,11 +193,13 @@ public class AzureTableStorageLinkedService extends LinkedService {
     @Override
     public void validate() {
         super.validate();
-        if (accountKey() != null) {
-            accountKey().validate();
-        }
-        if (sasToken() != null) {
-            sasToken().validate();
+        if (innerTypeProperties() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property innerTypeProperties in model AzureTableStorageLinkedService"));
+        } else {
+            innerTypeProperties().validate();
         }
     }
 }

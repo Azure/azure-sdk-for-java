@@ -26,6 +26,8 @@ import com.azure.security.keyvault.keys.models.KeyCurveName;
 import com.azure.security.keyvault.keys.models.KeyOperation;
 import com.azure.security.keyvault.keys.models.KeyType;
 import com.azure.security.keyvault.keys.models.RandomBytes;
+import com.azure.security.keyvault.keys.models.ReleaseKeyOptions;
+import com.azure.security.keyvault.keys.models.ReleaseKeyResult;
 
 /**
  * The KeyClient provides synchronous methods to manage {@link KeyVaultKey keys} in the Azure Key Vault. The client supports
@@ -915,9 +917,68 @@ public final class KeyClient {
      * @param count The requested number of random bytes.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      *
-     * @return The requested number of bytes containing random values from a managed HSM.
+     * @return The {@link Response HTTP response} for this operation and the requested number of bytes containing
+     * random values from a managed HSM.
      */
     public Response<RandomBytes> getRandomBytesWithResponse(int count, Context context) {
         return client.getRandomBytesWithResponse(count, context).block();
+    }
+
+    /**
+     * Releases the latest version of a key.
+     *
+     * <p>The key must be exportable. This operation requires the 'keys/release' permission.</p>
+     *
+     * @param name The name of the key to release.
+     * @param target The attestation assertion for the target of the key release.
+     *
+     * @return The key release result containing the released key.
+     *
+     * @throws IllegalArgumentException If {@code name} or {@code target} are {@code null} or empty.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ReleaseKeyResult releaseKey(String name, String target) {
+        return client.releaseKey(name, target).block();
+    }
+
+    /**
+     * Releases a key.
+     *
+     * <p>The key must be exportable. This operation requires the 'keys/release' permission.</p>
+     *
+     * @param name The name of the key to release.
+     * @param version The version of the key to retrieve. If this is empty or {@code null}, this call is equivalent to
+     * calling {@link KeyAsyncClient#releaseKey(String, String)}, with the latest key version being released.
+     * @param target The attestation assertion for the target of the key release.
+     *
+     * @return The key release result containing the released key.
+     *
+     * @throws IllegalArgumentException If {@code name} or {@code target} are {@code null} or empty.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ReleaseKeyResult releaseKey(String name, String version, String target) {
+        return client.releaseKey(name, version, target).block();
+    }
+
+    /**
+     * Releases a key.
+     *
+     * <p>The key must be exportable. This operation requires the 'keys/release' permission.</p>
+     *
+     * @param name The name of the key to release.
+     * @param version Version of the key to release.This parameter is optional.
+     * @param target The attestation assertion for the target of the key release.
+     * @param options Additional options for releasing a key.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     *
+     * @return The {@link Response HTTP response} for this operation and the {@link ReleaseKeyResult} containing the
+     * released key.
+     *
+     * @throws IllegalArgumentException If {@code name} or {@code target} are {@code null} or empty.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<ReleaseKeyResult> releaseKeyWithResponse(String name, String version, String target,
+                                                             ReleaseKeyOptions options, Context context) {
+        return client.releaseKeyWithResponse(name, version, target, options, context).block();
     }
 }

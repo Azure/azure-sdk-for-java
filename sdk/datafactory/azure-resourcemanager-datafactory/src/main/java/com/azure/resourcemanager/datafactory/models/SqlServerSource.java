@@ -7,10 +7,10 @@ package com.azure.resourcemanager.datafactory.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import java.util.List;
 import java.util.Map;
 
 /** A copy activity SQL server source. */
@@ -39,6 +39,7 @@ public final class SqlServerSource extends TabularSource {
      * "{Parameter1: {value: "1", type: "int"}}".
      */
     @JsonProperty(value = "storedProcedureParameters")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, StoredProcedureParameter> storedProcedureParameters;
 
     /*
@@ -197,7 +198,7 @@ public final class SqlServerSource extends TabularSource {
 
     /** {@inheritDoc} */
     @Override
-    public SqlServerSource withAdditionalColumns(List<AdditionalColumns> additionalColumns) {
+    public SqlServerSource withAdditionalColumns(Object additionalColumns) {
         super.withAdditionalColumns(additionalColumns);
         return this;
     }

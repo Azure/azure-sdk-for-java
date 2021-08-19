@@ -1,7 +1,37 @@
 # Release History
 
-## 1.0.0-beta.5 (Unreleased)
+## 1.1.0-beta.1 (Unreleased)
 
+
+## 1.0.1 (2021-08-11)
+### Dependency Updates
+- Updated `azure-core` to `1.19.0`.
+- Updated `azure-core-http-netty` to `1.10.2`.
+
+## 1.0.0 (2021-07-08)
+
+### Features added
+
+- Added `getAdmins` and `setAdmins` methods to `NotificationHook` model
+- Added the `getMeasureType` and `setMeasureType` to `MetricBoundaryCondition` model
+- Added `getViewers` and `setViewers` methods to `DataFeedOptions` model
+
+### Breaking changes
+
+- Removed the prefix `Anomaly` from all Alert Configuration APIs
+- Removed the prefix `MetricAnomaly` from all Detection Configuration APIs
+- Renamed `MetricAnomalyAlertConfiguration` to `MetricAlertConfiguration`
+- Renamed `DetectionConditionsOperator` to `DetectionConditionOperator`
+- Renamed the `getDimensionsToSplitAlert` method in the model `AnomalyAlertConfiguration` to `getDimensionsToSplitAlert`
+- Renamed the `setDimensionsToSplitAlert` method in the model `AnomalyAlertConfiguration` to `setDimensionsToSplitAlert`
+- Updated the model getter and setter methods for primitive types to use corresponding reference types
+- Renamed `setCrossConditionOperator` method in all detection configuration condition models to `setConditionOperator`
+- Renamed `getCrossConditionOperator` method in all detection configuration condition models to `getConditionOperator`
+- Updated the constructors of `DataFeedMetric`, `DataFeedDimension`, `ChangeThresholdCondition`, `HardThresholdCondition`, `SmartDetectionCondition`, `SeverityCondition`, `MetricAnomalyAlertSnoozeCondition` and `TopNGroupScope` to take required parameters.
+- Removed `SingleBoundaryCondition` model
+- Removed `setSingleBoundary` and `setBothBoundary` methods in `MetricBoundaryCondition` model
+- Replaced `listAnomalies` API with `listAnomaliesForAlert` and `listAnomaliesForDetectionConfig`
+- Replaced `listIncidents` API with `listIncidentsForAlert` and `listIncidentsForDetectionConfig`
 
 ## 1.0.0-beta.4 (2021-06-09)
 

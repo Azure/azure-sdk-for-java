@@ -1,7 +1,11 @@
 # Release History
 
-## 1.0.0-beta.4 (Unreleased)
+## 1.0.0-beta.5 (Unreleased)
 
+
+## 1.0.0-beta.4 (2021-08-10)
+- Update API version to 2021-06-01-preview
+- Added missing properties for managed private endpoints in stable version
 
 ## 1.0.0-beta.3 (2021-04-06)
 

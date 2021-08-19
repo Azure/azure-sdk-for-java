@@ -8,9 +8,13 @@ import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.exception.AzureException;
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpHeader;
+import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
+import com.azure.core.http.HttpPipelinePosition;
 import com.azure.core.http.policy.AddHeadersFromContextPolicy;
+import com.azure.core.http.policy.AddHeadersPolicy;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
@@ -55,11 +59,21 @@ import java.util.Objects;
 @ServiceClientBuilder(serviceClients = {ServiceBusAdministrationClient.class,
     ServiceBusAdministrationAsyncClient.class})
 public final class ServiceBusAdministrationClientBuilder {
+    private static final String CLIENT_NAME;
+    private static final String CLIENT_VERSION;
+
+    static {
+        Map<String, String> properties = CoreUtils.getProperties("azure-messaging-servicebus.properties");
+
+        CLIENT_NAME = properties.getOrDefault("name", "UnknownName");
+        CLIENT_VERSION = properties.getOrDefault("version", "UnknownVersion");
+    }
+
     private final ClientLogger logger = new ClientLogger(ServiceBusAdministrationClientBuilder.class);
     private final ServiceBusManagementSerializer serializer = new ServiceBusManagementSerializer();
-    private final List<HttpPipelinePolicy> userPolicies = new ArrayList<>();
-    private final Map<String, String> properties =
-        CoreUtils.getProperties("azure-messaging-servicebus.properties");
+
+    private final List<HttpPipelinePolicy> perCallPolicies = new ArrayList<>();
+    private final List<HttpPipelinePolicy> perRetryPolicies = new ArrayList<>();
 
     private Configuration configuration;
 
@@ -142,7 +156,12 @@ public final class ServiceBusAdministrationClientBuilder {
      */
     public ServiceBusAdministrationClientBuilder addPolicy(HttpPipelinePolicy policy) {
         Objects.requireNonNull(policy);
-        userPolicies.add(policy);
+        if (policy.getPipelinePosition() == HttpPipelinePosition.PER_CALL) {
+            perCallPolicies.add(policy);
+        } else {
+            perRetryPolicies.add(policy);
+        }
+
         return this;
     }
 
@@ -348,37 +367,30 @@ public final class ServiceBusAdministrationClientBuilder {
 
         // Closest to API goes first, closest to wire goes last.
         final List<HttpPipelinePolicy> httpPolicies = new ArrayList<>();
-        final String clientName = properties.getOrDefault("name", "UnknownName");
-        final String clientVersion = properties.getOrDefault("version", "UnknownVersion");
 
         // Find applicationId to use
-        String logApplicationId = null;
-        if (httpLogOptions != null) {
-            logApplicationId = httpLogOptions.getApplicationId();
-        }
+        final String applicationId = CoreUtils.getApplicationId(clientOptions, httpLogOptions);
 
-        String clientApplicationId = null;
-        if (clientOptions != null && clientOptions.getApplicationId() != null) {
-            clientApplicationId = clientOptions.getApplicationId();
-        }
-
-        if (logApplicationId != null && clientApplicationId != null
-            && !logApplicationId.equalsIgnoreCase(clientApplicationId)) {
-            throw logger.logExceptionAsError(new IllegalStateException(
-                "'httpLogOptions.getApplicationId() and clientOptions.getApplicationId()' cannot be different."));
-        }
-        // We prioritize application id set in ClientOptions.
-        final String applicationId = clientApplicationId != null ? clientApplicationId : logApplicationId;
-
-        httpPolicies.add(new UserAgentPolicy(applicationId, clientName, clientVersion,
-            buildConfiguration));
+        httpPolicies.add(new UserAgentPolicy(applicationId, CLIENT_NAME, CLIENT_VERSION, buildConfiguration));
         httpPolicies.add(new ServiceBusTokenCredentialHttpPolicy(tokenCredential));
         httpPolicies.add(new AddHeadersFromContextPolicy());
+
+        httpPolicies.addAll(perCallPolicies);
 
         HttpPolicyProviders.addBeforeRetryPolicies(httpPolicies);
 
         httpPolicies.add(retryPolicy == null ? new RetryPolicy() : retryPolicy);
-        httpPolicies.addAll(userPolicies);
+        httpPolicies.addAll(perRetryPolicies);
+
+        if (clientOptions != null) {
+            List<HttpHeader> httpHeaderList = new ArrayList<>();
+            clientOptions.getHeaders().forEach(h -> httpHeaderList.add(new HttpHeader(h.getName(), h.getValue())));
+
+            if (!httpHeaderList.isEmpty()) {
+                httpPolicies.add(new AddHeadersPolicy(new HttpHeaders(httpHeaderList)));
+            }
+        }
+
         httpPolicies.add(new HttpLoggingPolicy(httpLogOptions));
 
         HttpPolicyProviders.addAfterRetryPolicies(httpPolicies);
@@ -386,6 +398,7 @@ public final class ServiceBusAdministrationClientBuilder {
         return new HttpPipelineBuilder()
             .policies(httpPolicies.toArray(new HttpPipelinePolicy[0]))
             .httpClient(httpClient)
+            .clientOptions(clientOptions)
             .build();
     }
 }

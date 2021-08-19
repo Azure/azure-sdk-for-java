@@ -1,7 +1,24 @@
 # Release History
 
-## 4.5.0-beta.1 (Unreleased)
+## 4.7.0-beta.1 (Unreleased)
 
+
+## 4.6.0 (2021-08-11)
+### Features Added
+- Added new Container Service system event `ContainerServiceNewKubernetesVersionAvailableEventData`.
+
+### Dependency Updates
+- Update `azure-core` dependency to `1.19.0`.
+- Update `azure-core-http-netty` dependency to `1.10.2`.
+
+## 4.5.0 (2021-07-19)
+### Features Added
+- Added `EventGridPublisherClientBuilder#credential(TokenCredential credential)` to support Azure Active Directory authentication.
+- Added field `metadata` to system event classes `AcsChatMessageEditedEventData`, `AcsChatMessageEditedInThreadEventData`, `AcsChatMessageReceivedEventData` and `AcsChatMessageReceivedInThreadEventData`.
+
+### Dependency Updates
+- Update `azure-core` dependency to `1.18.0`.
+- Update `azure-core-http-netty` dependency to `1.10.1`.
 
 ## 4.4.0 (2021-06-09)
 ### New Features
