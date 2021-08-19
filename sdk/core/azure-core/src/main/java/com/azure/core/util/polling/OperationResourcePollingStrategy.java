@@ -12,6 +12,7 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.implementation.TypeUtil;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
@@ -39,6 +40,7 @@ public class OperationResourcePollingStrategy<T, U> implements PollingStrategy<T
     private static final String POLL_RESPONSE_BODY = "pollResponseBody";
 
     private final SerializerAdapter serializer = new JacksonAdapter();
+    private final ClientLogger logger = new ClientLogger(OperationResourcePollingStrategy.class);
 
     private final HttpPipeline httpPipeline;
     private final Context context;
@@ -147,7 +149,7 @@ public class OperationResourcePollingStrategy<T, U> implements PollingStrategy<T
             } else if ("POST".equalsIgnoreCase(httpMethod) && pollingContext.getData(LOCATION) != null) {
                 finalGetUrl = pollingContext.getData(LOCATION);
             } else {
-                throw new RuntimeException("Cannot get final result");
+                throw logger.logExceptionAsError(new RuntimeException("Cannot get final result"));
             }
         }
 

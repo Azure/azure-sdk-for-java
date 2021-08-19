@@ -12,6 +12,7 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.implementation.TypeUtil;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.core.util.serializer.TypeReference;
@@ -35,6 +36,7 @@ public class LocationPollingStrategy<T, U> implements PollingStrategy<T, U> {
     private static final String POLL_RESPONSE_BODY = "pollResponseBody";
 
     private final JacksonAdapter serializer = new JacksonAdapter();
+    private final ClientLogger logger = new ClientLogger(LocationPollingStrategy.class);
 
     private final HttpPipeline httpPipeline;
     private final Context context;
@@ -75,7 +77,8 @@ public class LocationPollingStrategy<T, U> implements PollingStrategy<T, U> {
                 || response.getStatusCode() == 204) {
             return Mono.just(LongRunningOperationStatus.IN_PROGRESS);
         } else {
-            throw new RuntimeException("Operation failed or cancelled: " + response.getStatusCode());
+            throw logger.logExceptionAsError(
+                new RuntimeException("Operation failed or cancelled: " + response.getStatusCode()));
         }
     }
 
@@ -134,7 +137,7 @@ public class LocationPollingStrategy<T, U> implements PollingStrategy<T, U> {
         } else if ("POST".equalsIgnoreCase(httpMethod) && pollingContext.getData(LOCATION) != null) {
             finalGetUrl = pollingContext.getData(LOCATION);
         } else {
-            throw new RuntimeException("Cannot get final result");
+            throw logger.logExceptionAsError(new RuntimeException("Cannot get final result"));
         }
 
         if (finalGetUrl == null) {
