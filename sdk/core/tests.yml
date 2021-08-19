@@ -49,7 +49,7 @@ stages:
       ServiceDirectory: core
       TestName: 'jackson_supported_versions'
       MatrixConfigs:
-        - Name: jackson_version_tests
+        - Name: jackson_supported_version_tests
           Path: sdk/core/supported-version-matrix.json
           Selection: sparse
           NonSparseParameters:
@@ -64,7 +64,7 @@ stages:
       ServiceDirectory: core
       TestName: 'jackson_unsupported_versions'
       MatrixConfigs:
-        - Name: jackson_version_tests
+        - Name: jackson_unsupported_version_tests
           Path: sdk/core/unsupported-version-matrix.json
           Selection: sparse
           NonSparseParameters:
