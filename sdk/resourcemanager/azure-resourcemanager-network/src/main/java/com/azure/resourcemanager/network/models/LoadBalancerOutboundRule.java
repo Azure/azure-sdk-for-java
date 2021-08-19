@@ -78,6 +78,11 @@ public interface LoadBalancerOutboundRule
          * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface WithBackend<ParentT>  {
+            /**
+             * Specifies a backend for outbound rule to apply to
+             * @param name the backend name
+             * @return the next stage of the definition
+             */
             LoadBalancerOutboundRule.DefinitionStages.WithFrontend<ParentT> fromBackend(String name);
         }
 
@@ -90,14 +95,14 @@ public interface LoadBalancerOutboundRule
             /**
              * Specifies a frontend for outbound rule to apply to
              * @param name the frontend name
-             * @return the next stage of the parent definition to return to after attaching this definition
+             * @return the next stage of the definition
              */
             LoadBalancerOutboundRule.DefinitionStages.WithAttach<ParentT> toFrontend(String name);
 
             /**
              * Specifies a list of frontends for outbound rule to apply to
              * @param names a list of frontend names
-             * @return the next stage of the parent definition to return to after attaching this definition
+             * @return the next stage of the definition
              */
             LoadBalancerOutboundRule.DefinitionStages.WithAttach<ParentT> toFrontends(List<String> names);
         }
@@ -165,14 +170,14 @@ public interface LoadBalancerOutboundRule
             /**
              * Specifies the frontend IP Address
              * @param name frontend name
-             * @return the next stage of the Update
+             * @return the next stage of the update
              */
             Update<ParentT> toFrontend(String name);
 
             /**
              * Specifies the frontend IP Addresses
              * @param names a list of frontend names
-             * @return the next stage of the Update
+             * @return the next stage of the update
              */
             Update<ParentT> toFrontends(List<String> names);
         }
@@ -193,7 +198,7 @@ public interface LoadBalancerOutboundRule
              * Specifies the idle connection timeout in minutes.
              *
              * @param enableTcpReset the TCP reset enablement boolean
-             * @return the next stage of the definition
+             * @return the next stage of the update
              */
             Update<ParentT> withEnableTcpReset(boolean enableTcpReset);
         }
