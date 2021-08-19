@@ -108,7 +108,7 @@ public class QueryValidationTests extends TestSuiteBase {
             createdDocuments);
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    @Test(groups = {"simple"}, timeOut = TIMEOUT *2)
     public void orderByQueryForLargeCollection() {
         CosmosContainerProperties containerProperties = getCollectionDefinition();
         createdDatabase.createContainer(
@@ -324,7 +324,7 @@ public class QueryValidationTests extends TestSuiteBase {
 
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT * 20)
+    @Test(groups = {"simple"}, timeOut = TIMEOUT * 40)
     public void splitQueryContinuationToken() throws Exception {
         String containerId = "splittestcontainer_" + UUID.randomUUID();
         int itemCount = 20;
