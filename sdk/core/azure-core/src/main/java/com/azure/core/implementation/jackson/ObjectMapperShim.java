@@ -45,7 +45,7 @@ public final class ObjectMapperShim {
      * Creates and configures JSON {@code ObjectMapper} capable of serializing azure.core types, with flattening and additional properties support.
      *
      * @param innerMapperShim inner mapper to use for non-azure specific serialization.
-     * @return Instance of shimmed {@code ObjectMapper}.
+     * @return Instance of shimmed {@code ObjectMapperShim}.
      */
     public static ObjectMapperShim createJsonMapper(ObjectMapperShim innerMapperShim) {
         try {
@@ -59,7 +59,7 @@ public final class ObjectMapperShim {
     /**
      * Creates and configures XML {@code ObjectMapper} capable of serializing azure.core types.
      *
-     * @return Instance of shimmed {@code ObjectMapper}.
+     * @return Instance of shimmed {@code ObjectMapperShim}.
      */
     public static ObjectMapperShim createXmlMapper() {
         try {
@@ -73,7 +73,7 @@ public final class ObjectMapperShim {
     /**
      * Creates and configures JSON {@code ObjectMapper}.
      *
-     * @return Instance of shimmed {@code ObjectMapper}.
+     * @return Instance of shimmed {@code ObjectMapperShim}.
      */
     public static ObjectMapperShim createSimpleMapper() {
         try {
@@ -87,7 +87,7 @@ public final class ObjectMapperShim {
     /**
      * Creates JSON {@code ObjectMapper} with default Jackson settings.
      *
-     * @return Instance of shimmed {@code ObjectMapper}.
+     * @return Instance of shimmed {@code ObjectMapperShim}.
      */
     public static ObjectMapperShim createDefaultMapper() {
         try {
@@ -101,7 +101,7 @@ public final class ObjectMapperShim {
     /**
      * Creates JSON {@code ObjectMapper} with default Jackson settings, but capable of pretty-printing.
      *
-     * @return Instance of shimmed {@code ObjectMapper}.
+     * @return Instance of shimmed {@code ObjectMapperShim}.
      */
     public static ObjectMapperShim createPrettyPrintMapper() {
         try {
@@ -115,7 +115,7 @@ public final class ObjectMapperShim {
     /**
      * Creates and configures JSON {@code ObjectMapper} for headers serialization.
      *
-     * @return Instance of shimmed {@code ObjectMapper}.
+     * @return Instance of shimmed {@code ObjectMapperShim}.
      */
     public static ObjectMapperShim createHeaderMapper() {
         try {
@@ -127,7 +127,6 @@ public final class ObjectMapperShim {
     }
 
     private final ObjectMapper mapper;
-    private final Map<Type, JavaType> typeToJavaTypeCache = new ConcurrentHashMap<>();
 
     private ObjectMapperShim(ObjectMapper mapper) {
         this.mapper = mapper;
