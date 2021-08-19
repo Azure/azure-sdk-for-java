@@ -3,7 +3,13 @@
 
 package com.azure.core.implementation;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+import java.util.Enumeration;
 import java.util.Objects;
+import java.util.jar.JarFile;
+import java.util.jar.Manifest;
 
 /**
  * Implements lightweight semantic version based on https://semver.org/ for internal use.
@@ -87,11 +93,20 @@ public final class SemanticVersion implements Comparable<SemanticVersion> {
         }
 
         String versionStr = clazz.getPackage().getImplementationVersion();
-        if (versionStr == null) {
-            return createInvalid();
+
+        if (versionStr != null) {
+            return parse(versionStr);
         }
 
-        return parse(versionStr);
+        // if versionStr is null, try loading the version from the manifest in the jar file
+        try {
+            Manifest manifest = new JarFile(clazz.getProtectionDomain().getCodeSource().getLocation().getFile())
+                    .getManifest();
+            versionStr = manifest.getMainAttributes().getValue("Bundle-Version");
+            return parse(versionStr);
+        } catch (Exception e) {
+            return createInvalid();
+        }
     }
 
     private final int major;
@@ -211,6 +226,11 @@ public final class SemanticVersion implements Comparable<SemanticVersion> {
     @Override
     public int hashCode() {
         return versionString.hashCode();
+    }
+
+    @Override
+    public String toString() {
+        return versionString;
     }
 
     /**

@@ -75,10 +75,11 @@ public class SemanticVersionTests {
 
     @Test
     public void classVersion() {
-        // TODO (limolkova) for some reason (investigating) package versions are not available
-        // in tests for azure-core project, it does not affect real applications
+        SemanticVersion version = SemanticVersion
+                .getPackageVersionForClass("com.fasterxml.jackson.databind.ObjectMapper");
+        assertTrue(version.isValid());
 
-        SemanticVersion version = SemanticVersion.getPackageVersionForClass("org.junit.jupiter.api.Test");
+        version = SemanticVersion.getPackageVersionForClass("org.reactivestreams.Processor");
         assertTrue(version.isValid());
     }
 
