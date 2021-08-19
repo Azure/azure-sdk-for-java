@@ -118,7 +118,6 @@ public class AzureEventHubAutoConfiguration {
         return new EventHubTemplate(clientFactory);
     }
 
-
     private String getStorageConnectionString(AzureEventHubProperties properties,
                                               StorageAccountManager storageAccountManager,
                                               AzureEnvironment azureEnvironment) {
@@ -127,7 +126,7 @@ public class AzureEventHubAutoConfiguration {
         final String accountKey = properties.getCheckpointAccessKey();
         final StorageConnectionStringProvider provider;
 
-        if (accountName == null || accountKey == null) {
+        if (accountName == null) {
             return null;
         }
 
