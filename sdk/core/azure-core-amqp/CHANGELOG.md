@@ -6,7 +6,13 @@
 
 - Fixed a bug where SendTimeout-timer thread was not being disposed of resulting in lingering
   threads when a send link was remotely closed.
-- Fixed a bug where ReactorConnection waited indefinitely for CBS node to complete closing. The underlying problem is that the RequestResponseChannel's sender and receiver links were not active, so they would wait forever for a remote close signal.
+- Fixed a bug where ReactorConnection waited indefinitely for CBS node to complete closing. The underlying problem is
+  that the RequestResponseChannel's sender and receiver links were not active, so they would wait forever for a remote
+  close signal.
+- Fixed a bug where ReactorReceiver and ReactorSender would not complete their close operation if their close work could
+  not be scheduled on the proton-j Reactor. This happens in the case that the connection is shutdown before the link.
+- Fixed a bug where RejectedExecutionExceptions and IllegalStateExceptions would not be retried. This happens in the
+  case that an IO pipe is interrupted while signalling the Reactor work queue.
 
 ## 2.3.0 (2021-07-01)
 
@@ -59,7 +65,7 @@
 
 ## 2.1.0-beta.1 (2021-03-26)
 ### New Features
-- Exposes 'AmqpTransactionCoordinator' via AmqpSession. 
+- Exposes 'AmqpTransactionCoordinator' via AmqpSession.
 
 ## 2.0.4 (2021-04-12)
 
