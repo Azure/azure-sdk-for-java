@@ -18,8 +18,9 @@
  * Portions Copyright (c) Microsoft Corporation
  */
 
-package com.azure.core.implementation;
+package com.azure.core.implementation.jackson;
 
+import com.azure.core.implementation.Option;
 import com.fasterxml.jackson.databind.BeanDescription;
 import com.fasterxml.jackson.databind.SerializationConfig;
 import com.fasterxml.jackson.databind.ser.BeanPropertyWriter;

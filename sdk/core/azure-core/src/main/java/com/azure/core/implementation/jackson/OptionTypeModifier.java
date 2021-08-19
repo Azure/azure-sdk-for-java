@@ -18,8 +18,9 @@
  * Portions Copyright (c) Microsoft Corporation
  */
 
-package com.azure.core.implementation;
+package com.azure.core.implementation.jackson;
 
+import com.azure.core.implementation.Option;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.type.ReferenceType;
 import com.fasterxml.jackson.databind.type.TypeBindings;
