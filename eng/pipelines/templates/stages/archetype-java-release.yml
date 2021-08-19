@@ -131,6 +131,8 @@ stages:
                   Write-Host "Renaming $($pomf) to pom.xml"
                 displayName: "Copy Artifacts"
               - pwsh:
+                  dir eng
+                  tree eng/code-quality-reports /F
                   mvn clean install -f eng/code-quality-reports/pom.xml
               - pwsh: |
                   Write-Host "Maven install for artifact: ${{ artifact.name}}"
