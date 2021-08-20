@@ -341,7 +341,7 @@ function ValidatePackage($package, $workingDirectory) {
   $packageDirectory = Join-Path `
     $workingDirectory `
     "$($package.packageGroupId)__$($package.packageArtifactId)__$($package.packageVersion)"
-  New-Item -ItemType Directory -Path $packageDirectory -Force
+  New-Item -ItemType Directory -Path $packageDirectory -Force | Out-Null
 
   return (SourcePackageHasComFolder $artifactNamePrefix $packageDirectory) `
     -and (PackageDependenciesResolve $artifactNamePrefix $packageDirectory)
