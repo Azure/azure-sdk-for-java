@@ -95,7 +95,7 @@ com.azure:azure-messaging-eventhubs;5.10.0;5.11.0-beta.1
 com.azure:azure-messaging-eventhubs-checkpointstore-blob;1.9.0;1.10.0-beta.1
 com.azure:azure-messaging-eventhubs-track1-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-messaging-eventhubs-track2-perf;1.0.0-beta.1;1.0.0-beta.1
-com.azure:azure-messaging-servicebus;7.3.0;7.4.0-beta.1
+com.azure:azure-messaging-servicebus;7.3.0;7.4.0
 com.azure:azure-messaging-servicebus-track1-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-messaging-servicebus-track2-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-messaging-webpubsub;1.0.0-beta.3;1.0.0-beta.4
