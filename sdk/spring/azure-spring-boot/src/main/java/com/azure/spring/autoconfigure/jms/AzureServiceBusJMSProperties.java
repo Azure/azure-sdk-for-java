@@ -84,6 +84,10 @@ public class AzureServiceBusJMSProperties {
         }
     }
 
+    /**
+     * Properties to configure {@link org.springframework.jms.annotation.JmsListener} for
+     * {@link org.springframework.jms.config.AbstractJmsListenerContainerFactory}.
+     */
     public static class Listener {
 
         /**

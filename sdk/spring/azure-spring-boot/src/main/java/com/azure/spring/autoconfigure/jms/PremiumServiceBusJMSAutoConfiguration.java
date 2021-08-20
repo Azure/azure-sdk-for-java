@@ -10,13 +10,10 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnResource;
-import org.springframework.boot.autoconfigure.jms.DefaultJmsListenerContainerFactoryConfigurer;
 import org.springframework.boot.autoconfigure.jms.JmsProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.jms.config.DefaultJmsListenerContainerFactory;
-import org.springframework.jms.config.JmsListenerContainerFactory;
 
 import javax.jms.ConnectionFactory;
 
@@ -55,23 +52,5 @@ public class PremiumServiceBusJMSAutoConfiguration extends AbstractServiceBusJMS
 
         return springServiceBusJmsConnectionFactory;
     }
-
-//    @Bean
-//    @ConditionalOnMissingBean
-//    public JmsListenerContainerFactory<?> jmsListenerContainerFactory(
-//        DefaultJmsListenerContainerFactoryConfigurer configurer, ConnectionFactory connectionFactory) {
-//        final DefaultJmsListenerContainerFactory jmsListenerContainerFactory = new DefaultJmsListenerContainerFactory();
-//        configurer.configure(jmsListenerContainerFactory, connectionFactory);
-//        return jmsListenerContainerFactory;
-//    }
-//
-//    @Bean
-//    public JmsListenerContainerFactory<?> topicJmsListenerContainerFactory(
-//        DefaultJmsListenerContainerFactoryConfigurer configurer, ConnectionFactory connectionFactory) {
-//        final DefaultJmsListenerContainerFactory jmsListenerContainerFactory = new DefaultJmsListenerContainerFactory();
-//        configurer.configure(jmsListenerContainerFactory, connectionFactory);
-//        jmsListenerContainerFactory.setSubscriptionDurable(Boolean.TRUE);
-//        return jmsListenerContainerFactory;
-//    }
 
 }

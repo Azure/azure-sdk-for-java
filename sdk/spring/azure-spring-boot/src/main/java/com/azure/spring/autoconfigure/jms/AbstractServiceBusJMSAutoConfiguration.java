@@ -16,13 +16,16 @@ import org.springframework.jms.config.JmsListenerContainerFactory;
 import javax.annotation.PostConstruct;
 import javax.jms.ConnectionFactory;
 
+/**
+ * Abstract autoconfiguration class of ServiceBusJMS for JmsListenerContainerFactory.
+ */
 @Configuration
 public abstract class AbstractServiceBusJMSAutoConfiguration {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AbstractServiceBusJMSAutoConfiguration.class);
 
-    JmsProperties jmsProperties;
-    AzureServiceBusJMSProperties azureServiceBusJMSProperties;
+    final JmsProperties jmsProperties;
+    final AzureServiceBusJMSProperties azureServiceBusJMSProperties;
 
     public AbstractServiceBusJMSAutoConfiguration(JmsProperties jmsProperties,
                                                   AzureServiceBusJMSProperties azureServiceBusJMSProperties) {
@@ -33,7 +36,7 @@ public abstract class AbstractServiceBusJMSAutoConfiguration {
     @PostConstruct
     private void validate() {
         AzureServiceBusJMSProperties.Listener listener = azureServiceBusJMSProperties.getListener();
-        if((listener.isSubscriptionDurable() || listener.isSubscriptionShared()) && !jmsProperties.isPubSubDomain()) {
+        if ((listener.isSubscriptionDurable() || listener.isSubscriptionShared()) && !jmsProperties.isPubSubDomain()) {
             LOGGER.warn("Usage of JMS subscription is detected! Property of spring.jms.pub-sub-domain will be set as true");
             jmsProperties.setPubSubDomain(true);
         }

@@ -7,9 +7,11 @@ This release is compatible with Spring Boot 2.5.0 - 2.5.3.
 ### New Features
 - Add property `azure.activedirectory.resource-server.principal-claim-name` to configure principal claim name.
 - Add property `azure.activedirectory.resource-server.claim-to-authority-prefix-map` to configure claim to authority prefix map.
+- Support configuration of `AbstractJmsListenerContainerFactory` for `JmsListener`. Enabled properties include `replyPubSubDomain`, `replyQosSettings`, `subscriptionDurable`, `subscriptionShared` and `phase` with prefix as `spring.jms.servicebus.listener`.
 
 ### Key Bug Fixes
 - Fix the bug that Spring JMS configuration of JMS listener doesn't work for Azure Service Bus JMS Spring Boot Starter.
+- Fix the bug of not supporting Spring Native autoconfiguration of JMS listener.
 
 ## 3.7.0 (2021-07-20)
 ### New Features
