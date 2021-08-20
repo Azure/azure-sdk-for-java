@@ -35,7 +35,7 @@ In this section, you see how to configure your app to use either a Service Bus q
 Name | Description 
 |:---|:---
 spring.jms.servicebus.connection-string | Specify the connection string you obtained in your Service Bus namespace from the Azure portal.
-spring.jms.servicebus.topic-client-id | Specify the JMS client ID, which is your Service Bus Subscription ID in the Azure portal.
+spring.jms.servicebus.topic-client-id | Specify the JMS client ID, which is your Service Bus Subscription name in the Azure portal.
 spring.jms.servicebus.idle-timeout | Specify the idle timeout in milliseconds. The recommended value for this tutorial is 1800000.
 spring.jms.servicebus.pricing-tier | Specify the pricing tier of your service bus. Supported values are *premium*, *standard*, and *basic*. Premium uses Java Message Service (JMS) 2.0, while standard and basic use JMS 1.0 to interact with Azure Service Bus.
 
