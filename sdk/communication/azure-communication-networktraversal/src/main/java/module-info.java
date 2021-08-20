@@ -11,6 +11,4 @@ module com.azure.communication.networktraversal {
 
     opens com.azure.communication.networktraversal.models
         to com.fasterxml.jackson.databind;
-    opens com.azure.communication.networktraversal.implementation.models
-        to com.fasterxml.jackson.databind;
 }
