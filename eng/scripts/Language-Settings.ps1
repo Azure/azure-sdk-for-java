@@ -335,12 +335,12 @@ function PackageDependenciesResolve($artifactNamePrefix, $packageDirectory) {
   return $true
 }
 
-function ValidatePackage($package, $workingDirectory) {
-  $artifactNamePrefix = "$($package.packageGroupId):$($package.packageArtifactId):$($package.packageVersion)"
+function ValidatePackage($groupId, $artifactId, $version, $workingDirectory) {
+  $artifactNamePrefix = "${groupId}:${artifactId}:${version}"
 
   $packageDirectory = Join-Path `
     $workingDirectory `
-    "$($package.packageGroupId)__$($package.packageArtifactId)__$($package.packageVersion)"
+    "${groupId}__${artifactId}__${version}"
   New-Item -ItemType Directory -Path $packageDirectory -Force | Out-Null
 
   return (SourcePackageHasComFolder $artifactNamePrefix $packageDirectory) `
@@ -438,7 +438,7 @@ function UpdateDocsMsPackages($DocConfigFile, $Mode, $DocsMetadata) {
     # If upgrading the package, run basic sanity checks against the package
     if ($package.packageVersion -ne $packageVersion) {
       Write-Host "Validating new version detected for $packageName ($packageVersion)"
-      $validatePackageResult = ValidatePackage $package $workingDirectory
+      $validatePackageResult = ValidatePackage $package.packageGroupId $package.packageArtifactId $packageVersion $workingDirectory
 
       if (!$validatePackageResult) {
         LogWarning "Package is not valid: $packageName. Keeping old version."
@@ -479,7 +479,7 @@ function UpdateDocsMsPackages($DocConfigFile, $Mode, $DocsMetadata) {
     }
 
     Write-Host "Validating new package $($packageGroupId):$($packageName):$($packageVersion)"
-    $validatePackageResult = ValidatePackage $package $workingDirectory
+    $validatePackageResult = ValidatePackage ValidatePackage $package.packageGroupId $package.packageArtifactId $packageVersion $workingDirectory
     if (!$validatePackageResult) {
       LogWarning "Package is not valid: ${packageGroupId}:$packageName. Cannot onboard."
       continue
