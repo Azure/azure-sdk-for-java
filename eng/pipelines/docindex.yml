@@ -21,6 +21,7 @@ jobs:
           Repositories:
             - Name: $(DocRepoOwner)/$(DocRepoName)
               WorkingDirectory: $(DocRepoLocation)
+              Commitish: djurek/re-pin-cosmos-encryption
 
       # Call update docs ci script to onboard packages
       - task: Powershell@2
@@ -37,7 +38,7 @@ jobs:
 
       - template: /eng/common/pipelines/templates/steps/git-push-changes.yml
         parameters:
-          BaseRepoBranch: $(DefaultBranch)
+          BaseRepoBranch: djurek/re-pin-cosmos-encryption
           BaseRepoOwner: $(DocRepoOwner)
           CommitMsg: "Update docs CI configuration"
           TargetRepoName: $(DocRepoName)
