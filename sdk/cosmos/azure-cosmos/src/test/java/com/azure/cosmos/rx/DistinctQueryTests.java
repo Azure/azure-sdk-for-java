@@ -288,7 +288,7 @@ public class DistinctQueryTests extends TestSuiteBase {
         Random rand = new Random();
         ObjectMapper mapper = new ObjectMapper();
         for (int i = 0; i < 40; i++) {
-            Person person = getRandomPerson(rand);
+            Person person = getRandomPerson(rand, true);
             docs.add(person);
         }
         String resourceJson = String.format("{ " + "\"id\": \"%s\", \"intprop\": %d }", UUID.randomUUID().toString(),
@@ -306,22 +306,22 @@ public class DistinctQueryTests extends TestSuiteBase {
         return new Pet(name, age);
     }
 
-    public Person getRandomPerson(Random rand) {
+    public Person getRandomPerson(Random rand, boolean addChildren) {
         String name = getRandomName(rand);
         City city = getRandomCity(rand);
         double income = getRandomIncome(rand);
         List<Person> people = new ArrayList<Person>();
-        if (rand.nextInt(10) % 10 == 0) {
-            for (int i = 0; i < rand.nextInt(5); i++) {
-                people.add(getRandomPerson(rand));
+        if (rand.nextInt(2) == 0 && addChildren) {
+            //  Starting from -1, add at least one children
+            for (int i = -1; i < rand.nextInt(5); i++) {
+                people.add(getRandomPerson(rand, false));
             }
         }
 
         int age = getRandomAge(rand);
         Pet pet = getRandomPet(rand);
         UUID guid = UUID.randomUUID();
-        Person p = new Person(name, city, income, people, age, pet, guid);
-        return p;
+        return new Person(name, city, income, people, age, pet, guid);
     }
 
     @AfterClass(groups = {"simple"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
