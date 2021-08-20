@@ -133,7 +133,11 @@ stages:
               - pwsh: |
                   dir eng
                   tree eng/code-quality-reports /F
-                  Copy-Item "$(Pipeline.Workspace)/eng" "$(Pipeline.Workspace)/install-check-dir/eng" -Recurse
+                  Write-Host "Directory List:"
+                  Write-Host "$(System.DefaultWorkingDirectory)"
+                  Write-Host "$(Agent.BuildDirectory)"
+                  Write-Host "$(Build.ArtifactStagingDirectory)"
+                  Copy-Item "$(System.DefaultWorkingDirectory)/eng" "$(Pipeline.Workspace)/install-check-dir/eng" -Recurse
                   mvn clean install -f eng/code-quality-reports/pom.xml
               - pwsh: |
                   Write-Host "Maven install for artifact: ${{ artifact.name}}"
