@@ -4,7 +4,7 @@
 ### Features Added
  - Updated ServiceBusAdministrationClientBuilder to Support HttpPipelinePosition.
 
- #### Dependency Updates
+#### Dependency Updates
  - Update `azure-core` dependency to `1.19.0`.
  - Update `azure-core-amqp` dependency to `2.3.1`.
 
