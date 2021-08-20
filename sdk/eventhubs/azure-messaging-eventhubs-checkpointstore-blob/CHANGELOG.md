@@ -2,6 +2,12 @@
 
 ## 1.8.2 (2021-08-19)
 
+### Other Changes
+
+#### Dependency Updates
+
+- Update `azure-messaging-eventhubs` dependency to `5.10.0`.
+- Update `azure-storage-blob` to `12.13.0`.
 
 ## 1.8.1 (2021-07-09)
 ### Dependency Updates
