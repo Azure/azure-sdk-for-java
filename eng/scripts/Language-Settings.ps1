@@ -479,7 +479,7 @@ function UpdateDocsMsPackages($DocConfigFile, $Mode, $DocsMetadata) {
     }
 
     Write-Host "Validating new package $($packageGroupId):$($packageName):$($packageVersion)"
-    $validatePackageResult = ValidatePackage ValidatePackage $package.packageGroupId $package.packageArtifactId $packageVersion $workingDirectory
+    $validatePackageResult = ValidatePackage $package.packageGroupId $package.packageArtifactId $packageVersion $workingDirectory
     if (!$validatePackageResult) {
       LogWarning "Package is not valid: ${packageGroupId}:$packageName. Cannot onboard."
       continue
