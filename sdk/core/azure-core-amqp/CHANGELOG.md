@@ -2,6 +2,9 @@
 
 ## 2.4.0-beta.1 (Unreleased)
 
+
+## 2.3.1 (2021-08-19)
+
 ### Bug Fixes
 
 - Fixed a bug where SendTimeout-timer thread was not being disposed of resulting in lingering
