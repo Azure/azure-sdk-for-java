@@ -1,5 +1,15 @@
 # Release History
 
+## 7.5.0-beta.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
 ## 7.4.0 (2021-08-20)
 ### Features Added
  - Updated ServiceBusAdministrationClientBuilder to Support HttpPipelinePosition.
