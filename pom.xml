@@ -724,6 +724,7 @@
         <module>sdk/billing</module>
         <module>sdk/boms</module>
         <module>sdk/botservice</module>
+        <module>sdk/cdn</module>
         <module>sdk/changeanalysis</module>
         <module>sdk/cognitiveservices</module>
         <module>sdk/commerce</module>
