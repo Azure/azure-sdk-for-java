@@ -6,6 +6,13 @@
 
 - Add `EventProcessorClientBuilder.prefetchCount(int)` overload.
 
+### Other Changes
+
+#### Dependency Updates
+
+- Update `azure-core` dependency to `1.19.0`.
+- Update `azure-core-amqp` dependency to `2.3.1`.
+
 ## 5.9.0 (2021-07-09)
 
 ### Features Added
