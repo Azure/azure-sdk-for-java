@@ -3,13 +3,14 @@
 
 package com.azure.spring.autoconfigure.aad;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.azure.spring.aad.AADApplicationType;
 import com.azure.spring.aad.AADAuthorizationGrantType;
 import com.azure.spring.aad.webapp.AuthorizationClientProperties;
 import com.nimbusds.jose.jwk.source.RemoteJWKSet;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.DeprecatedConfigurationProperty;
@@ -26,9 +27,9 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
-import com.azure.spring.aad.AADApplicationType;
 import static com.azure.spring.aad.AADApplicationType.inferApplicationTypeByDependencies;
 import static com.azure.spring.aad.AADAuthorizationGrantType.AUTHORIZATION_CODE;
+import static com.azure.spring.aad.AADAuthorizationGrantType.AZURE_DELEGATED;
 import static com.azure.spring.aad.AADAuthorizationGrantType.ON_BEHALF_OF;
 import static com.azure.spring.aad.AADClientRegistrationRepository.AZURE_CLIENT_REGISTRATION_ID;
 
@@ -455,24 +456,12 @@ public class AADAuthenticationProperties implements InitializingBean {
         }
 
         validateTenantId();
-        validateApplicationType(); // This must before validateClientId() and validateAuthorizationClients().
-        validateClientId();
+        validateApplicationType(); // This must before validateAuthorizationClients().
         validateAuthorizationClients();
     }
 
     private void validateAuthorizationClients() {
         authorizationClients.forEach(this::validateAuthorizationClientProperties);
-    }
-
-    private void validateClientId() {
-        if ((applicationType == AADApplicationType.WEB_APPLICATION
-            || applicationType == AADApplicationType.WEB_APPLICATION_AND_RESOURCE_SERVER
-            || applicationType == AADApplicationType.RESOURCE_SERVER_WITH_OBO)
-            && !StringUtils.hasText(clientId)) {
-            throw new IllegalStateException("'azure.activedirectory.client-id' must be configured when "
-                + "application type is 'web_application', "
-                + "'resource_server_with_obo' or 'web_application_and_resource_server'.");
-        }
     }
 
     private void validateTenantId() {
@@ -498,6 +487,7 @@ public class AADAuthenticationProperties implements InitializingBean {
 
     /**
      * Validate configured application type or set default value.
+     *
      * @throws IllegalStateException Invalid property 'azure.activedirectory.application-type'
      */
     private void validateApplicationType() {
@@ -532,7 +522,11 @@ public class AADAuthenticationProperties implements InitializingBean {
             // Set default value for authorization grant grantType
             switch (applicationType) {
                 case WEB_APPLICATION:
-                    properties.setAuthorizationGrantType(AUTHORIZATION_CODE);
+                    if (properties.isOnDemand()) {
+                        properties.setAuthorizationGrantType(AUTHORIZATION_CODE);
+                    } else {
+                        properties.setAuthorizationGrantType(AZURE_DELEGATED);
+                    }
                     LOGGER.debug("The client '{}' sets the default value of AADAuthorizationGrantType to "
                         + "'authorization_code'.", registrationId);
                     break;
@@ -572,7 +566,8 @@ public class AADAuthenticationProperties implements InitializingBean {
                     break;
                 case RESOURCE_SERVER_WITH_OBO:
                     if (AUTHORIZATION_CODE.getValue().equals(grantType)) {
-                        throw new IllegalStateException("When 'azure.activedirectory.application-type=resource_server_with_obo',"
+                        throw new IllegalStateException("When 'azure.activedirectory"
+                            + ".application-type=resource_server_with_obo',"
                             + " 'azure.activedirectory.authorization-clients." + registrationId
                             + ".authorization-grant-type' can not be 'authorization_code'.");
                     }
@@ -599,9 +594,25 @@ public class AADAuthenticationProperties implements InitializingBean {
             }
         }
 
-        if (properties.getScopes() == null || properties.getScopes().isEmpty()) {
+        // Validate scopes.
+        List<String> scopes = properties.getScopes();
+        if (scopes == null || scopes.isEmpty()) {
             throw new IllegalStateException(
                 "'azure.activedirectory.authorization-clients." + registrationId + ".scopes' must be configured");
+        }
+        // Add necessary scopes for authorization_code clients.
+        // https://docs.microsoft.com/en-us/graph/permissions-reference#remarks-17
+        // https://docs.microsoft.com/en-us/azure/active-directory/develop/v2-permissions-and-consent#openid-connect-scopes
+        if (properties.getAuthorizationGrantType().getValue().equals(AUTHORIZATION_CODE.getValue())) {
+            if (!scopes.contains("openid")) {
+                scopes.add("openid"); // "openid" allows to request an ID token.
+            }
+            if (!scopes.contains("profile")) {
+                scopes.add("profile"); // "profile" allows to return additional claims in the ID token.
+            }
+            if (!scopes.contains("offline_access")) {
+                scopes.add("offline_access"); // "offline_access" allows to request a refresh token.
+            }
         }
     }
 

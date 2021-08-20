@@ -655,9 +655,9 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     abstract void analyzeSentimentAction(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
 
     // Extractive Summarization
-    @Test
-    abstract void analyzeExtractSummaryActionWithDefaultParameterValues(HttpClient httpClient,
-        TextAnalyticsServiceVersion serviceVersion);
+//    @Test
+//    abstract void analyzeExtractSummaryActionWithDefaultParameterValues(HttpClient httpClient,
+//        TextAnalyticsServiceVersion serviceVersion);
 
     @Test
     abstract void analyzeExtractSummaryActionSortedByOffset(HttpClient httpClient,
@@ -1140,7 +1140,7 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
                 .setExtractSummaryActions(
                     new ExtractSummaryAction()
                         .setMaxSentenceCount(maxSentenceCount)
-                        .setSentencesOrderBy(summarySentencesOrder)));
+                        .setOrderBy(summarySentencesOrder)));
     }
 
     String getEndpoint() {

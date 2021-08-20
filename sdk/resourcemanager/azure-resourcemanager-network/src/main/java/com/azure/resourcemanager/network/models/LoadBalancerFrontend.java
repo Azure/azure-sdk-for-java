@@ -21,4 +21,7 @@ public interface LoadBalancerFrontend
 
     /** @return the inbound NAT rules on this load balancer that use this frontend, indexed by their names */
     Map<String, LoadBalancerInboundNatRule> inboundNatRules();
+
+    /** @return the outbound rules on this load balancer that use this frontend, indexed by their names */
+    Map<String, LoadBalancerOutboundRule> outboundRules();
 }

@@ -280,8 +280,11 @@ public class ReactorReceiver implements AmqpReceiveLink, AsyncCloseable, AutoClo
                 dispatcher.invoke(closeReceiver);
             } catch (IOException | RejectedExecutionException e) {
                 logger.info("connectionId[{}] linkName[{}] Could not schedule disposing of receiver on "
-                        + "ReactorDispatcher. Manually invoking.", handler.getConnectionId(), getLinkName(), e);
+                        + "ReactorDispatcher. Manually invoking and completing close.", handler.getConnectionId(),
+                    getLinkName(), e);
+
                 closeReceiver.run();
+                completeClose();
             }
         }).then(isClosedMono.asMono()).publishOn(Schedulers.boundedElastic());
     }

@@ -60,6 +60,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -444,6 +445,7 @@ public class CosmosAsyncContainer {
      */
     @Beta(value = Beta.SinceVersion.V4_14_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public Mono<Void> openConnectionsAndInitCaches() {
+
         if(isInitialized.compareAndSet(false, true)) {
             return this.getFeedRanges().flatMap(feedRanges -> {
                 List<Flux<FeedResponse<ObjectNode>>> fluxList = new ArrayList<>();

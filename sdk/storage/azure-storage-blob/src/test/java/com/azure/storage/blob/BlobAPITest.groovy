@@ -44,7 +44,6 @@ import com.azure.storage.blob.specialized.BlobClientBase
 import com.azure.storage.blob.specialized.SpecializedBlobClientBuilder
 import com.azure.storage.common.Utility
 import com.azure.storage.common.implementation.Constants
-import com.azure.storage.common.test.shared.TestHttpClientType
 import com.azure.storage.common.test.shared.extensions.LiveOnly
 import com.azure.storage.common.test.shared.extensions.PlaybackOnly
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion
@@ -52,6 +51,7 @@ import com.azure.storage.common.test.shared.policy.MockFailureResponsePolicy
 import com.azure.storage.common.test.shared.policy.MockRetryRangeResponsePolicy
 import reactor.core.Exceptions
 import reactor.core.publisher.Hooks
+import reactor.core.publisher.Mono
 import reactor.test.StepVerifier
 import spock.lang.IgnoreIf
 import spock.lang.Unroll
@@ -66,6 +66,7 @@ import java.nio.file.StandardOpenOption
 import java.security.MessageDigest
 import java.time.Duration
 import java.time.OffsetDateTime
+import java.util.concurrent.atomic.AtomicInteger
 
 class BlobAPITest extends APISpec {
     BlobClient bc
@@ -851,7 +852,6 @@ class BlobAPITest extends APISpec {
 
     @LiveOnly
     @Unroll
-    @IgnoreIf({ getEnv().httpClientType == TestHttpClientType.OK_HTTP}) // https://github.com/Azure/azure-sdk-for-java/issues/23243
     def "Download file"() {
         setup:
         def file = getRandomFile(fileSize)
@@ -1143,11 +1143,32 @@ class BlobAPITest extends APISpec {
         bc.uploadFromFile(file.toPath().toString(), true)
         def outFile = new File(namer.getResourcePrefix())
         Files.deleteIfExists(file.toPath())
+        def counter = new AtomicInteger()
 
         expect:
-        def bac = instrument(new BlobClientBuilder()
-            .pipeline(bc.getHttpPipeline())
-            .endpoint(bc.getBlobUrl()))
+        def bacUploading = instrument(new BlobClientBuilder()
+            .endpoint(bc.getBlobUrl())
+            .credential(env.primaryAccount.credential))
+            .buildAsyncClient()
+            .getBlockBlobAsyncClient()
+
+        def bacDownloading = instrument(new BlobClientBuilder()
+            .addPolicy({ context, next ->
+                return next.process()
+                    .flatMap({ r ->
+                        if (counter.incrementAndGet() == 1) {
+                            /*
+                             * When the download begins trigger an upload to overwrite the downloading blob
+                             * so that the download is able to get an ETag before it is changed.
+                             */
+                            return bacUploading.upload(data.defaultFlux, data.defaultDataSize, true)
+                            .thenReturn(r)
+                        }
+                        return Mono.just(r)
+                    })
+            })
+            .endpoint(bc.getBlobUrl())
+            .credential(env.primaryAccount.credential))
             .buildAsyncClient()
             .getBlockBlobAsyncClient()
 
@@ -1166,12 +1187,7 @@ class BlobAPITest extends APISpec {
          */
         Hooks.onErrorDropped({ ignored -> /* do nothing with it */ })
 
-        /*
-         * When the download begins trigger an upload to overwrite the downloading blob after waiting 500 milliseconds
-         * so that the download is able to get an ETag before it is changed.
-         */
-        StepVerifier.create(bac.downloadToFileWithResponse(outFile.toPath().toString(), null, options, null, null, false)
-            .doOnSubscribe({ bac.upload(data.defaultFlux, data.defaultDataSize, true).delaySubscription(Duration.ofMillis(500)).subscribe() }))
+        StepVerifier.create(bacDownloading.downloadToFileWithResponse(outFile.toPath().toString(), null, options, null, null, false))
             .verifyErrorSatisfies({
                 /*
                  * If an operation is running on multiple threads and multiple return an exception Reactor will combine

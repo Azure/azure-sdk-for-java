@@ -38,18 +38,12 @@ az keyvault create --resource-group <your-resource-group-name> --name <your-key-
 ### Server side SSL
 If you are looking to integrate the JCA provider to create an SSLServerSocket see the example below.
 
-<!-- embedme ./src/samples/java/com/azure/security/keyvault/jca/ServerSSLSample.java#L18-L36 -->
+<!-- embedme ./src/samples/java/com/azure/security/keyvault/jca/ServerSSLSample.java#L18-L30 -->
 ```java
 KeyVaultJcaProvider provider = new KeyVaultJcaProvider();
 Security.addProvider(provider);
 
-KeyStore keyStore = KeyStore.getInstance("AzureKeyVault");
-KeyVaultLoadStoreParameter parameter = new KeyVaultLoadStoreParameter(
-    System.getProperty("azure.keyvault.uri"),
-    System.getProperty("azure.keyvault.tenant-id"),
-    System.getProperty("azure.keyvault.client-id"),
-    System.getProperty("azure.keyvault.client-secret"));
-keyStore.load(parameter);
+KeyStore keyStore = KeyVaultKeyStore.getKeyVaultKeyStoreBySystemProperty();
 
 KeyManagerFactory managerFactory = KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm());
 managerFactory.init(keyStore, "".toCharArray());
@@ -66,18 +60,12 @@ Note if you want to use Azure Managed Identity, you should set the value of `azu
 ### Client side SSL
 If you are looking to integrate the JCA provider for client side socket connections, see the Apache HTTP client example below.
 
-<!-- embedme ./src/samples/java/com/azure/security/keyvault/jca/ClientSSLSample.java#L28-L67 -->
+<!-- embedme ./src/samples/java/com/azure/security/keyvault/jca/ClientSSLSample.java#L28-L61 -->
 ```java
 KeyVaultJcaProvider provider = new KeyVaultJcaProvider();
 Security.addProvider(provider);
 
-KeyStore keyStore = KeyStore.getInstance("AzureKeyVault");
-KeyVaultLoadStoreParameter parameter = new KeyVaultLoadStoreParameter(
-    System.getProperty("azure.keyvault.uri"),
-    System.getProperty("azure.keyvault.tenant-id"),
-    System.getProperty("azure.keyvault.client-id"),
-    System.getProperty("azure.keyvault.client-secret"));
-keyStore.load(parameter);
+KeyStore keyStore = KeyVaultKeyStore.getKeyVaultKeyStoreBySystemProperty();
 
 SSLContext sslContext = SSLContexts
     .custom()
@@ -158,6 +146,33 @@ PEM          | EC       | P-521                           | SHA512withECDSA | âœ
 PEM          | EC       | P-256K                          |                 | âœ˜       |
 
 ## Troubleshooting
+
+## Configure logging
+This module uses JUL (`java.util.logging`), so to configure things like the logging level you can directly modify the JUL configuration.
+
+Here is an example of a `logging.properties` file:
+```properties
+# To enable this configuration file, please add this property:
+# -Djava.util.logging.config.file="src/test/resources/logging.properties"
+#
+# The Java logging APIs (java.util.logging) default loads logging.properties from:
+# 1. $JAVA_HOME/jre/lib/ (Java 8 and before)
+# 2. $JAVA_HOME/conf/ (Java 9 and above)
+#
+# For more information about this file, please refer to:
+# 1. https://docs.oracle.com/javase/8/docs/technotes/guides/logging/overview.html#a1.8
+# 2. https://docs.oracle.com/cd/E23549_01/doc.1111/e14568/handler.htm
+
+handlers = java.util.logging.ConsoleHandler
+java.util.logging.ConsoleHandler.level = ALL
+java.util.logging.ConsoleHandler.formatter = java.util.logging.SimpleFormatter
+java.util.logging.SimpleFormatter.format= [%1$tF %1$tT] %3 [%4$-7s] %5$s %n
+
+.level = INFO
+com.azure.security.keyvault.jca.level = ALL
+```
+
+
 ### General
 Azure Key Vault JCA clients raise exceptions. For example, if you try to check a client's identity with a certificate chain that does not include a trusted certificate, a `CertificateException` will be thrown. In the following snippet, the error is handled gracefully by catching the exception and displaying additional information about the error.
 

@@ -9,31 +9,31 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The UserAssignedIdentity model. */
+/** Details about a user assigned identity. */
 @Fluent
 public class UserAssignedIdentity {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(UserAssignedIdentity.class);
 
     /*
-     * The resource id of the user assigned identity.
+     * The resource ID of the user assigned identity.
      */
     @JsonProperty(value = "resourceId")
     private String resourceId;
 
     /*
-     * The client id of the user assigned identity.
+     * The client ID of the user assigned identity.
      */
     @JsonProperty(value = "clientId")
     private String clientId;
 
     /*
-     * The object id of the user assigned identity.
+     * The object ID of the user assigned identity.
      */
     @JsonProperty(value = "objectId")
     private String objectId;
 
     /**
-     * Get the resourceId property: The resource id of the user assigned identity.
+     * Get the resourceId property: The resource ID of the user assigned identity.
      *
      * @return the resourceId value.
      */
@@ -42,7 +42,7 @@ public class UserAssignedIdentity {
     }
 
     /**
-     * Set the resourceId property: The resource id of the user assigned identity.
+     * Set the resourceId property: The resource ID of the user assigned identity.
      *
      * @param resourceId the resourceId value to set.
      * @return the UserAssignedIdentity object itself.
@@ -53,7 +53,7 @@ public class UserAssignedIdentity {
     }
 
     /**
-     * Get the clientId property: The client id of the user assigned identity.
+     * Get the clientId property: The client ID of the user assigned identity.
      *
      * @return the clientId value.
      */
@@ -62,7 +62,7 @@ public class UserAssignedIdentity {
     }
 
     /**
-     * Set the clientId property: The client id of the user assigned identity.
+     * Set the clientId property: The client ID of the user assigned identity.
      *
      * @param clientId the clientId value to set.
      * @return the UserAssignedIdentity object itself.
@@ -73,7 +73,7 @@ public class UserAssignedIdentity {
     }
 
     /**
-     * Get the objectId property: The object id of the user assigned identity.
+     * Get the objectId property: The object ID of the user assigned identity.
      *
      * @return the objectId value.
      */
@@ -82,7 +82,7 @@ public class UserAssignedIdentity {
     }
 
     /**
-     * Set the objectId property: The object id of the user assigned identity.
+     * Set the objectId property: The object ID of the user assigned identity.
      *
      * @param objectId the objectId value to set.
      * @return the UserAssignedIdentity object itself.
