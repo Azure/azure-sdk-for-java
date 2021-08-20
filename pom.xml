@@ -784,6 +784,7 @@
         <module>sdk/mixedreality</module>
         <module>sdk/modelsrepository</module>
         <module>sdk/monitor</module>
+        <module>sdk/msi</module>
         <module>sdk/mysql</module>
         <module>sdk/netapp</module>
         <module>sdk/notificationhubs</module>
