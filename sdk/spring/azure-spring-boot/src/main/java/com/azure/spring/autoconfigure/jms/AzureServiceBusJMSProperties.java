@@ -5,6 +5,7 @@ package com.azure.spring.autoconfigure.jms;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.jms.support.QosSettings;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
 
@@ -27,6 +28,8 @@ public class AzureServiceBusJMSProperties {
     private int idleTimeout = 1800000;
 
     private String pricingTier;
+
+    private final Listener listener = new Listener();
 
     public String getConnectionString() {
         return connectionString;
@@ -60,6 +63,10 @@ public class AzureServiceBusJMSProperties {
         this.idleTimeout = idleTimeout;
     }
 
+    public Listener getListener() {
+        return listener;
+    }
+
     /**
      * Validate spring.jms.servicebus related properties.
      *
@@ -74,6 +81,75 @@ public class AzureServiceBusJMSProperties {
 
         if (!pricingTier.matches("(?i)premium|standard|basic")) {
             throw new IllegalArgumentException("'spring.jms.servicebus.pricing-tier' is not valid");
+        }
+    }
+
+    public static class Listener {
+
+        /**
+         * Whether the reply destination type is topic.
+         */
+        private Boolean replyPubSubDomain;
+
+        /**
+         * Configure the {@link QosSettings} to use when sending a reply.
+         */
+        private QosSettings replyQosSettings;
+
+        /**
+         * Whether to make the subscription durable.
+         */
+        private Boolean subscriptionDurable = true;
+
+        /**
+         * Whether to make the subscription shared.
+         */
+        private Boolean subscriptionShared;
+
+        /**
+         * Specify the phase in which this container should be started and
+         * stopped.
+         */
+        private Integer phase;
+
+        public Boolean isReplyPubSubDomain() {
+            return replyPubSubDomain;
+        }
+
+        public void setReplyPubSubDomain(Boolean replyPubSubDomain) {
+            this.replyPubSubDomain = replyPubSubDomain;
+        }
+
+        public QosSettings getReplyQosSettings() {
+            return replyQosSettings;
+        }
+
+        public void setReplyQosSettings(QosSettings replyQosSettings) {
+            this.replyQosSettings = replyQosSettings;
+        }
+
+        public Boolean isSubscriptionDurable() {
+            return subscriptionDurable;
+        }
+
+        public void setSubscriptionDurable(Boolean subscriptionDurable) {
+            this.subscriptionDurable = subscriptionDurable;
+        }
+
+        public Boolean isSubscriptionShared() {
+            return subscriptionShared;
+        }
+
+        public void setSubscriptionShared(Boolean subscriptionShared) {
+            this.subscriptionShared = subscriptionShared;
+        }
+
+        public Integer getPhase() {
+            return phase;
+        }
+
+        public void setPhase(Integer phase) {
+            this.phase = phase;
         }
     }
 }

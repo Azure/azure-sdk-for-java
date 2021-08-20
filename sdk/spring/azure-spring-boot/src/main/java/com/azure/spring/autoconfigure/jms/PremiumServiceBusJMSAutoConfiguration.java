@@ -11,6 +11,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnResource;
 import org.springframework.boot.autoconfigure.jms.DefaultJmsListenerContainerFactoryConfigurer;
+import org.springframework.boot.autoconfigure.jms.JmsProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -30,7 +31,12 @@ import static com.azure.spring.utils.ApplicationId.AZURE_SPRING_SERVICE_BUS;
 @ConditionalOnProperty(value = "spring.jms.servicebus.enabled", matchIfMissing = true)
 @ConditionalOnExpression(value = "'${spring.jms.servicebus.pricing-tier}'.equalsIgnoreCase('premium')")
 @EnableConfigurationProperties(AzureServiceBusJMSProperties.class)
-public class PremiumServiceBusJMSAutoConfiguration {
+public class PremiumServiceBusJMSAutoConfiguration extends AbstractServiceBusJMSAutoConfiguration {
+
+    public PremiumServiceBusJMSAutoConfiguration(JmsProperties jmsProperties,
+                                                 AzureServiceBusJMSProperties azureServiceBusJMSProperties) {
+        super(jmsProperties, azureServiceBusJMSProperties);
+    }
 
     @Bean
     @ConditionalOnMissingBean
@@ -50,22 +56,22 @@ public class PremiumServiceBusJMSAutoConfiguration {
         return springServiceBusJmsConnectionFactory;
     }
 
-    @Bean
-    @ConditionalOnMissingBean
-    public JmsListenerContainerFactory<?> jmsListenerContainerFactory(
-        DefaultJmsListenerContainerFactoryConfigurer configurer, ConnectionFactory connectionFactory) {
-        final DefaultJmsListenerContainerFactory jmsListenerContainerFactory = new DefaultJmsListenerContainerFactory();
-        configurer.configure(jmsListenerContainerFactory, connectionFactory);
-        return jmsListenerContainerFactory;
-    }
-
-    @Bean
-    public JmsListenerContainerFactory<?> topicJmsListenerContainerFactory(
-        DefaultJmsListenerContainerFactoryConfigurer configurer, ConnectionFactory connectionFactory) {
-        final DefaultJmsListenerContainerFactory jmsListenerContainerFactory = new DefaultJmsListenerContainerFactory();
-        configurer.configure(jmsListenerContainerFactory, connectionFactory);
-        jmsListenerContainerFactory.setSubscriptionDurable(Boolean.TRUE);
-        return jmsListenerContainerFactory;
-    }
+//    @Bean
+//    @ConditionalOnMissingBean
+//    public JmsListenerContainerFactory<?> jmsListenerContainerFactory(
+//        DefaultJmsListenerContainerFactoryConfigurer configurer, ConnectionFactory connectionFactory) {
+//        final DefaultJmsListenerContainerFactory jmsListenerContainerFactory = new DefaultJmsListenerContainerFactory();
+//        configurer.configure(jmsListenerContainerFactory, connectionFactory);
+//        return jmsListenerContainerFactory;
+//    }
+//
+//    @Bean
+//    public JmsListenerContainerFactory<?> topicJmsListenerContainerFactory(
+//        DefaultJmsListenerContainerFactoryConfigurer configurer, ConnectionFactory connectionFactory) {
+//        final DefaultJmsListenerContainerFactory jmsListenerContainerFactory = new DefaultJmsListenerContainerFactory();
+//        configurer.configure(jmsListenerContainerFactory, connectionFactory);
+//        jmsListenerContainerFactory.setSubscriptionDurable(Boolean.TRUE);
+//        return jmsListenerContainerFactory;
+//    }
 
 }

@@ -1,0 +1,88 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
+package com.azure.spring.autoconfigure.jms;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.jms.DefaultJmsListenerContainerFactoryConfigurer;
+import org.springframework.boot.autoconfigure.jms.JmsProperties;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.jms.config.DefaultJmsListenerContainerFactory;
+import org.springframework.jms.config.JmsListenerContainerFactory;
+
+import javax.annotation.PostConstruct;
+import javax.jms.ConnectionFactory;
+
+@Configuration
+public abstract class AbstractServiceBusJMSAutoConfiguration {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(AbstractServiceBusJMSAutoConfiguration.class);
+
+    JmsProperties jmsProperties;
+    AzureServiceBusJMSProperties azureServiceBusJMSProperties;
+
+    public AbstractServiceBusJMSAutoConfiguration(JmsProperties jmsProperties,
+                                                  AzureServiceBusJMSProperties azureServiceBusJMSProperties) {
+        this.jmsProperties = jmsProperties;
+        this.azureServiceBusJMSProperties = azureServiceBusJMSProperties;
+    }
+
+    @PostConstruct
+    private void validate() {
+        AzureServiceBusJMSProperties.Listener listener = azureServiceBusJMSProperties.getListener();
+        if((listener.isSubscriptionDurable() || listener.isSubscriptionShared()) && !jmsProperties.isPubSubDomain()) {
+            LOGGER.warn("Usage of JMS subscription is detected! Property of spring.jms.pub-sub-domain will be set as true");
+            jmsProperties.setPubSubDomain(true);
+        }
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    public JmsListenerContainerFactory<?> jmsListenerContainerFactory(
+        DefaultJmsListenerContainerFactoryConfigurer configurer, ConnectionFactory connectionFactory) {
+        final DefaultJmsListenerContainerFactory jmsListenerContainerFactory = new DefaultJmsListenerContainerFactory();
+        configurer.configure(jmsListenerContainerFactory, connectionFactory);
+        jmsListenerContainerFactory.setPubSubDomain(Boolean.FALSE);
+        configureCommonListenerContainerFactory(jmsListenerContainerFactory);
+        return jmsListenerContainerFactory;
+    }
+
+    @Bean
+    public JmsListenerContainerFactory<?> topicJmsListenerContainerFactory(
+        DefaultJmsListenerContainerFactoryConfigurer configurer, ConnectionFactory connectionFactory) {
+        final DefaultJmsListenerContainerFactory jmsListenerContainerFactory = new DefaultJmsListenerContainerFactory();
+        configurer.configure(jmsListenerContainerFactory, connectionFactory);
+        configureCommonListenerContainerFactory(jmsListenerContainerFactory);
+        configureTopicListenerContainerFactory(jmsListenerContainerFactory);
+        return jmsListenerContainerFactory;
+    }
+
+    private void configureCommonListenerContainerFactory(DefaultJmsListenerContainerFactory jmsListenerContainerFactory) {
+        AzureServiceBusJMSProperties.Listener listener = azureServiceBusJMSProperties.getListener();
+        if (listener.getReplyQosSettings() != null) {
+            jmsListenerContainerFactory.setReplyQosSettings(listener.getReplyQosSettings());
+        }
+        if (listener.getPhase() != null) {
+            jmsListenerContainerFactory.setPhase(listener.getPhase());
+        }
+    }
+
+    private void configureTopicListenerContainerFactory(DefaultJmsListenerContainerFactory jmsListenerContainerFactory) {
+        AzureServiceBusJMSProperties.Listener listener = azureServiceBusJMSProperties.getListener();
+        if (azureServiceBusJMSProperties.getTopicClientId() != null) {
+            jmsListenerContainerFactory.setClientId(azureServiceBusJMSProperties.getTopicClientId());
+        }
+        if (listener.isReplyPubSubDomain() != null) {
+            jmsListenerContainerFactory.setReplyPubSubDomain(listener.isReplyPubSubDomain());
+        }
+        if (listener.isSubscriptionDurable() != null) {
+            jmsListenerContainerFactory.setSubscriptionDurable(listener.isSubscriptionDurable());
+        }
+        if (listener.isSubscriptionShared() != null) {
+            jmsListenerContainerFactory.setSubscriptionShared(listener.isSubscriptionShared());
+        }
+    }
+}

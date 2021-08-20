@@ -9,12 +9,10 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnResource;
-import org.springframework.boot.autoconfigure.jms.DefaultJmsListenerContainerFactoryConfigurer;
+import org.springframework.boot.autoconfigure.jms.JmsProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.jms.config.DefaultJmsListenerContainerFactory;
-import org.springframework.jms.config.JmsListenerContainerFactory;
 
 import javax.jms.ConnectionFactory;
 
@@ -27,9 +25,14 @@ import javax.jms.ConnectionFactory;
 @ConditionalOnProperty(value = "spring.jms.servicebus.enabled", matchIfMissing = true)
 @ConditionalOnExpression(value = "not '${spring.jms.servicebus.pricing-tier}'.equalsIgnoreCase('premium')")
 @EnableConfigurationProperties(AzureServiceBusJMSProperties.class)
-public class NonPremiumServiceBusJMSAutoConfiguration {
+public class NonPremiumServiceBusJMSAutoConfiguration extends AbstractServiceBusJMSAutoConfiguration {
 
     private static final String AMQP_URI_FORMAT = "amqps://%s?amqp.idleTimeout=%d";
+
+    public NonPremiumServiceBusJMSAutoConfiguration(JmsProperties jmsProperties,
+                                                    AzureServiceBusJMSProperties azureServiceBusJMSProperties) {
+        super(jmsProperties, azureServiceBusJMSProperties);
+    }
 
     @Bean
     @ConditionalOnMissingBean
@@ -50,24 +53,6 @@ public class NonPremiumServiceBusJMSAutoConfiguration {
         jmsConnectionFactory.setUsername(sasKeyName);
         jmsConnectionFactory.setPassword(sasKey);
         return jmsConnectionFactory;
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
-    public JmsListenerContainerFactory<?> jmsListenerContainerFactory(
-        DefaultJmsListenerContainerFactoryConfigurer configurer, ConnectionFactory connectionFactory) {
-        final DefaultJmsListenerContainerFactory jmsListenerContainerFactory = new DefaultJmsListenerContainerFactory();
-        configurer.configure(jmsListenerContainerFactory, connectionFactory);
-        return jmsListenerContainerFactory;
-    }
-
-    @Bean
-    public JmsListenerContainerFactory<?> topicJmsListenerContainerFactory(
-        DefaultJmsListenerContainerFactoryConfigurer configurer, ConnectionFactory connectionFactory) {
-        final DefaultJmsListenerContainerFactory jmsListenerContainerFactory = new DefaultJmsListenerContainerFactory();
-        configurer.configure(jmsListenerContainerFactory, connectionFactory);
-        jmsListenerContainerFactory.setSubscriptionDurable(Boolean.TRUE);
-        return jmsListenerContainerFactory;
     }
 
 }
