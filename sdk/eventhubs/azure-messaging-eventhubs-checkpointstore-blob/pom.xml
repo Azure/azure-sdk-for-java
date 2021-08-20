@@ -17,7 +17,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-messaging-eventhubs-checkpointstore-blob</artifactId>
-  <version>1.8.2</version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs-checkpointstore-blob;current} -->
+  <version>1.9.0</version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs-checkpointstore-blob;current} -->
 
   <name>Microsoft Azure client library for storing checkpoints in Storage Blobs</name>
   <description>Library for using storing checkpoints in Storage Blobs</description>

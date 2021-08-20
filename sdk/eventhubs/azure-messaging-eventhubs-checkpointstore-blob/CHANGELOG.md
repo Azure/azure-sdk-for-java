@@ -1,6 +1,6 @@
 # Release History
 
-## 1.8.2 (2021-08-19)
+## 1.9.0 (2021-08-19)
 
 ### Other Changes
 
