@@ -31,9 +31,10 @@ public class CommunicationRelayTests extends CommunicationRelayClientTestBase {
             client = setupClient(builder, "createRelayClientUsingManagedIdentitySync");
             assertNotNull(client);
             
-            String connectionString = System.getenv("COMMUNICATION_LIVETEST_DYNAMIC_CONNECTION_STRING");
-            CommunicationIdentityClient communicationIdentityClient = new CommunicationIdentityClientBuilder().connectionString(connectionString).buildClient();
-
+            CommunicationIdentityClientBuilder identityBuilder = createClientIdentityBuilderUsingManagedIdentity(httpClient);
+            CommunicationIdentityClient communicationIdentityClient = setupIdentityClient(identityBuilder, "createIdentityClientUsingManagedIdentity");
+            assertNotNull(communicationIdentityClient);
+            
             CommunicationUserIdentifier user = communicationIdentityClient.createUser();
             
             // Action & Assert
@@ -62,10 +63,10 @@ public class CommunicationRelayTests extends CommunicationRelayClientTestBase {
         client = setupClient(builder, "createIdentityClientUsingConnectionStringSync");
         assertNotNull(client);
         
-        String connectionString = System.getenv("COMMUNICATION_LIVETEST_DYNAMIC_CONNECTION_STRING");
-        CommunicationIdentityClient communicationIdentityClient = new CommunicationIdentityClientBuilder()
-            .connectionString(connectionString)
-            .buildClient();
+        CommunicationIdentityClientBuilder identityBuilder = createIdentityClientBuilderUsingConnectionString(httpClient);
+        CommunicationIdentityClient communicationIdentityClient = setupIdentityClient(identityBuilder, "createIdentityClientUsingConnectionString");
+        assertNotNull(communicationIdentityClient);
+
         CommunicationUserIdentifier user = communicationIdentityClient.createUser();
         CommunicationRelayConfiguration config;
         

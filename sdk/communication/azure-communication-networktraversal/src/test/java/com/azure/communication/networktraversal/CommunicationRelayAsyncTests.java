@@ -66,10 +66,9 @@ public class CommunicationRelayAsyncTests extends CommunicationRelayClientTestBa
         asyncClient = setupAsyncClient(builder, "createIdentityClientUsingConnectionStringSync");
         assertNotNull(asyncClient);
         
-        String connectionString = System.getenv("COMMUNICATION_LIVETEST_DYNAMIC_CONNECTION_STRING");
-        CommunicationIdentityAsyncClient communicationIdentityClient = new CommunicationIdentityClientBuilder()
-            .connectionString(connectionString)
-            .buildAsyncClient();
+        CommunicationIdentityClientBuilder identityBuilder = createIdentityClientBuilderUsingConnectionString(httpClient);
+        CommunicationIdentityAsyncClient communicationIdentityClient = setupIdentityAsyncClient(identityBuilder, "createAsyncIdentityClientUsingConnectionString");
+        assertNotNull(communicationIdentityClient);
         
         Mono<CommunicationUserIdentifier> response = communicationIdentityClient.createUser();
         CommunicationUserIdentifier user = response.block();

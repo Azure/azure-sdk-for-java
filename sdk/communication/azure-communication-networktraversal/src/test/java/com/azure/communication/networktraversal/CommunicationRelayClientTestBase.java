@@ -160,6 +160,22 @@ public class CommunicationRelayClientTestBase extends TestBase {
         return builder;
     }
 
+    protected CommunicationIdentityClientBuilder createIdentityClientBuilderUsingConnectionString(HttpClient httpClient) {
+        CommunicationIdentityClientBuilder builder = new CommunicationIdentityClientBuilder();
+        builder
+            .connectionString(CONNECTION_STRING)
+            .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient);
+
+        if (getTestMode() == TestMode.RECORD) {
+            List<Function<String, String>> redactors = new ArrayList<>();
+            redactors.add(data -> redact(data, JSON_PROPERTY_VALUE_REDACTION_PATTERN.matcher(data), "REDACTED"));
+            redactors.add(data -> redact(data, JSON_PROPERTY_ARRAY_REDACTION_PATTERN.matcher(data), "redacted.skype.com:3400"));
+            builder.addPolicy(interceptorManager.getRecordPolicy(redactors));
+        }
+
+        return builder;
+    }
+
     private static TestMode initializeTestMode() {
         ClientLogger logger = new ClientLogger(CommunicationRelayClientTestBase.class);
         String azureTestMode = Configuration.getGlobalConfiguration().get("AZURE_TEST_MODE");

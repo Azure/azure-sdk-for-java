@@ -95,6 +95,15 @@ CommunicationUserIdentifier user = communicationIdentityClient.createUser();
 System.out.println("User id: " + user.getId());
 
 CommunicationRelayConfiguration config = communicationRelayClient.getRelayConfiguration(user);
+        
+        System.out.println("Expires on:" + config.getExpiresOn());
+        List<CommunicationIceServer> iceServers = config.getIceServers();
+
+        for (CommunicationIceServer iceS : iceServers) {
+            System.out.println("URLS: " + iceS.getUrls());
+            System.out.println("Username: " + iceS.getUsername());
+            System.out.println("Credential: " + iceS.getCredential());
+        } 
 ```
 
 ## Troubleshooting
@@ -110,6 +119,7 @@ try {
     System.out.println(ex.getMessage());
 }
 ```
+Refer to the offical documentation for more details and error codes (to be added).
 
 ## Next steps
 

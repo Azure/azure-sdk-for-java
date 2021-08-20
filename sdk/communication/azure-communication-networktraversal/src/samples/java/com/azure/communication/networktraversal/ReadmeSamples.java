@@ -100,7 +100,7 @@ public class ReadmeSamples {
         for (CommunicationIceServer iceS : iceServers) {
             System.out.println("URLS: " + iceS.getUrls());
             System.out.println("Username: " + iceS.getUsername());
-            System.out.println("credential: " + iceS.getCredential());
+            System.out.println("Credential: " + iceS.getCredential());
         } 
         return config;
     }
