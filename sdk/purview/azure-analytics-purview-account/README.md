@@ -4,7 +4,7 @@ Azure Purview data plane account. It supports data plane operations. It can mana
 
 **Please rely heavily on the [service's documentation][product_documentation] and [Low-Level client documentation][low_level_client] to use this library**
 
-[Source code][source_code] | [Package (Maven)][package] | [API reference documentation][api_reference_doc] | [Product Documentation][product_documentation] | [Samples][samples_readme]
+[Package (Maven)][package] | [API reference documentation][api_reference_doc] | [Product Documentation][product_documentation]
 
 ## Getting started
 
@@ -52,7 +52,6 @@ To use the [DefaultAzureCredential][DefaultAzureCredential] provider shown below
 Set the values of the client ID, tenant ID, and client secret of the AAD application as environment variables: AZURE_CLIENT_ID, AZURE_TENANT_ID, AZURE_CLIENT_SECRET.
 
 ##### Example
-<!-- embedme ./src/samples/java/com/azure/analytics/purview/account/ReadmeSamples.java#L7-L10 -->
 ```java
 AccountsClient client = new PurviewAccountClientBuilder()
     .host(System.getenv("ACCOUNT_ENDPOINT"))
@@ -63,7 +62,10 @@ AccountsClient client = new PurviewAccountClientBuilder()
 ## Key concepts
 
 ## Examples
-More examples can be found in [samples][samples_code].
+
+```java
+BinaryData response = client.getAccountPropertiesWithResponse(null, null).getValue();
+```
 
 ## Troubleshooting
 
@@ -84,9 +86,6 @@ When you submit a pull request, a CLA-bot will automatically determine whether y
 This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For more information see the [Code of Conduct FAQ][coc_faq] or contact [opencode@microsoft.com][coc_contact] with any additional questions or comments.
 
 <!-- LINKS -->
-[samples]: src/samples/java/com/azure/analytics/purview/account
-[source_code]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/purview/azure-analytics-purview-account/src
-[samples_code]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/purview/azure-analytics-purview-account/src/samples/
 [azure_subscription]: https://azure.microsoft.com/free/
 [api_reference_doc]: https://azure.github.io/azure-sdk-for-java
 [product_documentation]: https://azure.microsoft.com/services/purview/
@@ -94,7 +93,6 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [DefaultAzureCredential]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/identity/azure-identity/README.md#defaultazurecredential
 [jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
 [package]: https://mvnrepository.com/artifact/com.azure/azure-analytics-purview-account
-[samples_readme]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/purview/azure-analytics-purview-account/src/samples/README.md
 [low_level_client]: https://github.com/Azure/azure-sdk-for-java/wiki/Protocol-Methods
 [cla]: https://cla.microsoft.com
 [coc]: https://opensource.microsoft.com/codeofconduct/
