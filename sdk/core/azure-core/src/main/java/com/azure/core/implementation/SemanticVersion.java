@@ -3,6 +3,7 @@
 
 package com.azure.core.implementation;
 
+import java.io.IOException;
 import java.util.Objects;
 import java.util.jar.JarFile;
 import java.util.jar.Manifest;
@@ -95,13 +96,25 @@ public final class SemanticVersion implements Comparable<SemanticVersion> {
         }
 
         // if versionStr is null, try loading the version from the manifest in the jar file
+        JarFile jar = null;
         try {
-            Manifest manifest = new JarFile(clazz.getProtectionDomain().getCodeSource().getLocation().getFile())
-                    .getManifest();
+            jar = new JarFile(clazz.getProtectionDomain().getCodeSource().getLocation().getFile());
+            Manifest manifest = jar.getManifest();
             versionStr = manifest.getMainAttributes().getValue("Implementation-Version");
+            if (versionStr == null) {
+                versionStr = manifest.getMainAttributes().getValue("Bundle-Version");
+            }
             return parse(versionStr);
-        } catch (Exception e) {
+        } catch (Throwable t) {
             return createInvalid();
+        } finally {
+            if (jar != null) {
+                try {
+                    jar.close();
+                } catch (IOException e) {
+                    // ignored
+                }
+            }
         }
     }
 
