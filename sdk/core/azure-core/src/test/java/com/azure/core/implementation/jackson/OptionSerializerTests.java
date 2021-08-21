@@ -4,7 +4,6 @@
 package com.azure.core.implementation.jackson;
 
 import com.azure.core.implementation.Option;
-import com.azure.core.implementation.jackson.OptionModule;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.fasterxml.jackson.annotation.JsonProperty;
