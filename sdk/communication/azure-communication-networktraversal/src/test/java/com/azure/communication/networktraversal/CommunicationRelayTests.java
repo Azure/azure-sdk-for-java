@@ -21,6 +21,11 @@ public class CommunicationRelayTests extends CommunicationRelayClientTestBase {
     private CommunicationRelayClient client;
     private CommunicationUserIdentifier user;
 
+    @Override
+    protected void afterTest() {
+        super.afterTest();
+    }
+    
     private void setupTest(HttpClient httpClient) {
         CommunicationIdentityClient communicationIdentityClient = createIdentityClientBuilder(httpClient).buildClient();
         user = communicationIdentityClient.createUser();

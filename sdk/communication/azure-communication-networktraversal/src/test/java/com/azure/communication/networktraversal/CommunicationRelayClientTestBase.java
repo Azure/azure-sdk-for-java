@@ -4,7 +4,7 @@
 package com.azure.communication.networktraversal;
 
 import com.azure.communication.common.implementation.CommunicationConnectionString;
-import com.azure.communication.identity.*;
+import com.azure.communication.identity.CommunicationIdentityClientBuilder;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;
