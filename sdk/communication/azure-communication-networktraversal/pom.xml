@@ -47,8 +47,6 @@
   </scm>
 
   <properties>
-    <src.dir>src/main</src.dir>
-    <test.dir>src/test</test.dir>
     <jacoco.min.linecoverage>0.88</jacoco.min.linecoverage>
     <jacoco.min.branchcoverage>0.70</jacoco.min.branchcoverage>
     <jacoco.skip.coverage.check>false</jacoco.skip.coverage.check>
@@ -154,8 +152,8 @@
             <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
             <configuration>
               <argLine>
-                --add-opens com.azure.communication.networktraversal/com.azure.communication.networktraversal=ALL-UNNAMED
-              </argLine>
+                --add-opens com.azure.communication.common/com.azure.communication.common.implementation=ALL-UNNAMED
+            </argLine>
             </configuration>
           </plugin>
         </plugins>
