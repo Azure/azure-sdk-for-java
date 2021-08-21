@@ -73,26 +73,6 @@ public class CommunicationRelayClientTestBase extends TestBase {
         return builder;
     }
 
-    protected CommunicationIdentityClientBuilder createIdentityClientBuilder(HttpClient httpClient) {
-        CommunicationIdentityClientBuilder builder = new CommunicationIdentityClientBuilder();
-
-        CommunicationConnectionString communicationConnectionString = new CommunicationConnectionString(CONNECTION_STRING);
-        String communicationEndpoint = communicationConnectionString.getEndpoint();
-        String communicationAccessKey = communicationConnectionString.getAccessKey();
-
-        builder.endpoint(communicationEndpoint)
-            .credential(new AzureKeyCredential(communicationAccessKey))
-            .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient);
-
-        if (getTestMode() == TestMode.RECORD) {
-            List<Function<String, String>> redactors = new ArrayList<>();
-            redactors.add(data -> redact(data, JSON_PROPERTY_VALUE_REDACTION_PATTERN.matcher(data), "REDACTED"));
-            builder.addPolicy(interceptorManager.getRecordPolicy(redactors));
-        }
-
-        return builder;
-    }
-
     protected CommunicationRelayClientBuilder createClientBuilderUsingManagedIdentity(HttpClient httpClient) {
         CommunicationRelayClientBuilder builder = new CommunicationRelayClientBuilder();
 
@@ -160,7 +140,7 @@ public class CommunicationRelayClientTestBase extends TestBase {
         return builder;
     }
 
-    protected CommunicationIdentityClientBuilder createIdentityClientBuilderUsingConnectionString(HttpClient httpClient) {
+    protected CommunicationIdentityClientBuilder createIdentityClientBuilder(HttpClient httpClient) {
         CommunicationIdentityClientBuilder builder = new CommunicationIdentityClientBuilder();
         builder
             .connectionString(CONNECTION_STRING)

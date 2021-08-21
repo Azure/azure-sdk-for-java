@@ -5,8 +5,7 @@ package com.azure.communication.networktraversal;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import com.azure.communication.common.CommunicationUserIdentifier;
-import com.azure.communication.identity.CommunicationIdentityClientBuilder;
-import com.azure.communication.identity.CommunicationIdentityAsyncClient;
+import com.azure.communication.identity.CommunicationIdentityClient;
 import com.azure.communication.networktraversal.models.CommunicationRelayConfiguration;
 import com.azure.communication.networktraversal.models.CommunicationIceServer;
 
@@ -21,27 +20,24 @@ import reactor.test.StepVerifier;
 
 public class CommunicationRelayAsyncTests extends CommunicationRelayClientTestBase {
     private CommunicationRelayAsyncClient asyncClient;
+    private CommunicationUserIdentifier user;
+    
+    private void setupTest(HttpClient httpClient) {
+        CommunicationIdentityClient communicationIdentityClient = createIdentityClientBuilder(httpClient).buildClient();
+        user = communicationIdentityClient.createUser();
+    }
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void createRelayClientUsingManagedIdentity(HttpClient httpClient) {
-
         // Arrange
+        setupTest(httpClient);
         CommunicationRelayClientBuilder builder = createClientBuilderUsingManagedIdentity(httpClient);
         asyncClient = setupAsyncClient(builder, "createRelayClientUsingManagedIdentitySync");
-        assertNotNull(asyncClient);
         
-        CommunicationIdentityClientBuilder identityBuilder = createIdentityClientBuilder(httpClient);
-        CommunicationIdentityAsyncClient communicationIdentityClient = setupIdentityAsyncClient(identityBuilder, "createRelayClientUsingManagedIdentity");
-
         // Action & Assert
-        Mono<CommunicationUserIdentifier> response = communicationIdentityClient.createUser();
-        CommunicationUserIdentifier user = response.block();
-        
-        StepVerifier.create(response)
-        .assertNext(item -> {
-            assertNotNull(item.getId());
-        }).verifyComplete();
+        assertNotNull(asyncClient);        
+        assertNotNull(user.getId());
         
         if (user != null) {
             Mono<CommunicationRelayConfiguration> relayResponse = asyncClient.getRelayConfiguration(user);
@@ -60,26 +56,14 @@ public class CommunicationRelayAsyncTests extends CommunicationRelayClientTestBa
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void createRelayClientUsingConnectionString(HttpClient httpClient) {
-        
         // Arrange
+        setupTest(httpClient);
         CommunicationRelayClientBuilder builder = createClientBuilderUsingConnectionString(httpClient);
         asyncClient = setupAsyncClient(builder, "createIdentityClientUsingConnectionStringSync");
-        assertNotNull(asyncClient);
-        
-        CommunicationIdentityClientBuilder identityBuilder = createIdentityClientBuilderUsingConnectionString(httpClient);
-        CommunicationIdentityAsyncClient communicationIdentityClient = setupIdentityAsyncClient(identityBuilder, "createAsyncIdentityClientUsingConnectionString");
-        assertNotNull(communicationIdentityClient);
-        
-        Mono<CommunicationUserIdentifier> response = communicationIdentityClient.createUser();
-        CommunicationUserIdentifier user = response.block();
-        
-        
+       
         // Action & Assert
-        StepVerifier.create(response)
-        .assertNext(item -> {
-            assertNotNull(item.getId());
-        }).verifyComplete();
-        
+        assertNotNull(asyncClient);
+        assertNotNull(user.getId());
         if (user != null) {
             Mono<CommunicationRelayConfiguration> relayResponse = asyncClient.getRelayConfiguration(user);
 
@@ -98,24 +82,15 @@ public class CommunicationRelayAsyncTests extends CommunicationRelayClientTestBa
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void getRelayConfigWithResponse(HttpClient httpClient) {
-        
         // Arrange
+        setupTest(httpClient);
         CommunicationRelayClientBuilder builder = createClientBuilderUsingManagedIdentity(httpClient);
         asyncClient = setupAsyncClient(builder, "createRelayClientUsingManagedIdentitySync");
-        assertNotNull(asyncClient);
-        
-        CommunicationIdentityClientBuilder identityBuilder = createIdentityClientBuilder(httpClient);
-        CommunicationIdentityAsyncClient communicationIdentityClient = setupIdentityAsyncClient(identityBuilder, "createRelayClientUsingManagedIdentity");
         
         // Action & Assert
-        Mono<CommunicationUserIdentifier> responseUser = communicationIdentityClient.createUser();
-        CommunicationUserIdentifier user = responseUser.block();
-        
-        StepVerifier.create(responseUser)
-        .assertNext(item -> {
-            assertNotNull(item.getId());
-        }).verifyComplete();
-        
+        assertNotNull(asyncClient);
+        assertNotNull(user.getId());
+
         if (user != null) {
             Mono<Response<CommunicationRelayConfiguration>> relayConfig = asyncClient.getRelayConfigurationWithResponse(user);
 
@@ -134,9 +109,5 @@ public class CommunicationRelayAsyncTests extends CommunicationRelayClientTestBa
 
     private CommunicationRelayAsyncClient setupAsyncClient(CommunicationRelayClientBuilder builder, String testName) {
         return addLoggingPolicy(builder, testName).buildAsyncClient();
-    }
-
-    private CommunicationIdentityAsyncClient setupIdentityAsyncClient(CommunicationIdentityClientBuilder builder, String testName) {
-        return addLoggingPolicyIdentity(builder, testName).buildAsyncClient();
     }
 }

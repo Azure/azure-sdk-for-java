@@ -6,7 +6,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import com.azure.communication.common.CommunicationUserIdentifier;
-import com.azure.communication.identity.CommunicationIdentityClientBuilder;
 import com.azure.communication.identity.CommunicationIdentityClient;
 import com.azure.communication.networktraversal.models.CommunicationRelayConfiguration;
 import com.azure.communication.networktraversal.models.CommunicationIceServer;
@@ -20,24 +19,24 @@ import java.util.List;
 
 public class CommunicationRelayTests extends CommunicationRelayClientTestBase {
     private CommunicationRelayClient client;
+    private CommunicationUserIdentifier user;
+
+    private void setupTest(HttpClient httpClient) {
+        CommunicationIdentityClient communicationIdentityClient = createIdentityClientBuilder(httpClient).buildClient();
+        user = communicationIdentityClient.createUser();
+    }
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void createRelayClientUsingManagedIdentity(HttpClient httpClient) {
-
         // Arrange
         try {
+            setupTest(httpClient);
             CommunicationRelayClientBuilder builder = createClientBuilderUsingManagedIdentity(httpClient);
             client = setupClient(builder, "createRelayClientUsingManagedIdentitySync");
-            assertNotNull(client);
-            
-            CommunicationIdentityClientBuilder identityBuilder = createClientIdentityBuilderUsingManagedIdentity(httpClient);
-            CommunicationIdentityClient communicationIdentityClient = setupIdentityClient(identityBuilder, "createIdentityClientUsingManagedIdentity");
-            assertNotNull(communicationIdentityClient);
-            
-            CommunicationUserIdentifier user = communicationIdentityClient.createUser();
             
             // Action & Assert
+            assertNotNull(client);
             CommunicationRelayConfiguration config = client.getRelayConfiguration(user);
             List<CommunicationIceServer> iceServers = config.getIceServers();
 
@@ -57,26 +56,16 @@ public class CommunicationRelayTests extends CommunicationRelayClientTestBase {
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void createRelayClientUsingConnectionString(HttpClient httpClient) {
-
         // Arrange
-        CommunicationRelayClientBuilder builder = createClientBuilderUsingConnectionString(httpClient);
-        client = setupClient(builder, "createIdentityClientUsingConnectionStringSync");
-        assertNotNull(client);
-        
-        CommunicationIdentityClientBuilder identityBuilder = createIdentityClientBuilderUsingConnectionString(httpClient);
-        CommunicationIdentityClient communicationIdentityClient = setupIdentityClient(identityBuilder, "createIdentityClientUsingConnectionString");
-        assertNotNull(communicationIdentityClient);
-
-        CommunicationUserIdentifier user = communicationIdentityClient.createUser();
-        CommunicationRelayConfiguration config;
-        
-        
-        // Action & Assert
         try {
-            config = client.getRelayConfiguration(user);
+            setupTest(httpClient);
+            CommunicationRelayClientBuilder builder = createClientBuilderUsingConnectionString(httpClient);
+            client = setupClient(builder, "createIdentityClientUsingConnectionStringSync");
+            assertNotNull(client);
+            CommunicationRelayConfiguration config = client.getRelayConfiguration(user);
+            
             // Action & Assert
             List<CommunicationIceServer> iceServers = config.getIceServers();
-
             assertNotNull(config);
             assertNotNull(config.getExpiresOn());
 
@@ -94,20 +83,14 @@ public class CommunicationRelayTests extends CommunicationRelayClientTestBase {
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void getRelayConfigWithResponse(HttpClient httpClient) {
         // Arrange
-        CommunicationRelayClientBuilder builder = createClientBuilder(httpClient);
-        client = setupClient(builder, "getRelayConfigWithResponse");
-
-        CommunicationIdentityClientBuilder identityBuilder = createIdentityClientBuilder(httpClient);
-        CommunicationIdentityClient communicationIdentityClient = setupIdentityClient(identityBuilder, "getRelayConfigWithResponse");
-
-        CommunicationUserIdentifier user = communicationIdentityClient.createUser();
-        Response<CommunicationRelayConfiguration> response;
-        
-        
-        // Action & Assert
         try {
-            response = client.getRelayConfigurationWithResponse(user, Context.NONE);
+            setupTest(httpClient);
+            CommunicationRelayClientBuilder builder = createClientBuilder(httpClient);
+            client = setupClient(builder, "getRelayConfigWithResponse");
+            Response<CommunicationRelayConfiguration> response;
+        
             // Action & Assert
+            response = client.getRelayConfigurationWithResponse(user, Context.NONE);
             List<CommunicationIceServer> iceServers = response.getValue().getIceServers();
 
             assertNotNull(response.getValue());
@@ -126,9 +109,5 @@ public class CommunicationRelayTests extends CommunicationRelayClientTestBase {
 
     private CommunicationRelayClient setupClient(CommunicationRelayClientBuilder builder, String testName) {
         return addLoggingPolicy(builder, testName).buildClient();
-    }
-
-    private CommunicationIdentityClient setupIdentityClient(CommunicationIdentityClientBuilder builder, String testName) {
-        return addLoggingPolicyIdentity(builder, testName).buildClient();
     }
 }
