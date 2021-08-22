@@ -212,6 +212,9 @@ public class IdentityClient {
 
             ConfidentialClientApplication.Builder applicationBuilder =
                 ConfidentialClientApplication.builder(clientId, credential);
+
+            applicationBuilder.logPii(options.isPiiLoggingAllowed());
+
             try {
                 applicationBuilder = applicationBuilder.authority(authorityUrl);
             } catch (MalformedURLException e) {
@@ -301,6 +304,7 @@ public class IdentityClient {
                         "Shared token cache is unavailable in this environment.", null, t));
                 }
             }
+            builder.logPii(options.isPiiLoggingAllowed());
             PublicClientApplication publicClientApplication = builder.build();
             return tokenCache != null ? tokenCache.registerCache()
                 .map(ignored -> publicClientApplication) : Mono.just(publicClientApplication);
@@ -1242,7 +1246,6 @@ public class IdentityClient {
                     connection.disconnect();
                 }
             }
-
             return true;
         });
     }
