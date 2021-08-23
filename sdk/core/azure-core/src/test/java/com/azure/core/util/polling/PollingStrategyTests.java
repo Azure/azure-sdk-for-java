@@ -6,7 +6,6 @@ package com.azure.core.util.polling;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
-import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.MockHttpResponse;
@@ -14,12 +13,9 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.serializer.TypeReference;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentMatchers;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
@@ -29,13 +25,8 @@ import reactor.test.StepVerifier;
 import java.time.Duration;
 import java.util.function.Supplier;
 
-import static com.azure.core.util.polling.PollerFlux.create;
-import static com.azure.core.util.polling.PollerFlux.error;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.Mockito.when;
 
 public class PollingStrategyTests {
@@ -75,7 +66,7 @@ public class PollingStrategyTests {
             Duration.ofSeconds(1),
             () -> activationOperation.get(),
             new StatusCheckPollingStrategy<>(),
-            new TypeReference<>() { }, new TypeReference<>() { });
+            new TypeReference<PollResult>() { }, new TypeReference<PollResult>() { });
 
         StepVerifier.create(pollerFlux)
             .expectSubscription()
@@ -118,7 +109,7 @@ public class PollingStrategyTests {
             Duration.ofSeconds(1),
             () -> activationOperation.get(),
             new OperationResourcePollingStrategy<>(new HttpPipelineBuilder().httpClient(httpClient).build(), Context.NONE),
-            new TypeReference<>() { }, new TypeReference<>() { });
+            new TypeReference<PollResult>() { }, new TypeReference<PollResult>() { });
 
         StepVerifier.create(pollerFlux)
             .expectSubscription()
@@ -164,7 +155,7 @@ public class PollingStrategyTests {
             Duration.ofSeconds(1),
             () -> activationOperation.get(),
             new OperationResourcePollingStrategy<>(new HttpPipelineBuilder().httpClient(httpClient).build(), Context.NONE),
-            new TypeReference<>() { }, new TypeReference<>() { });
+            new TypeReference<PollResult>() { }, new TypeReference<PollResult>() { });
 
         StepVerifier.create(pollerFlux)
             .expectSubscription()
@@ -210,7 +201,7 @@ public class PollingStrategyTests {
             Duration.ofSeconds(1),
             () -> activationOperation.get(),
             new OperationResourcePollingStrategy<>(new HttpPipelineBuilder().httpClient(httpClient).build(), Context.NONE),
-            new TypeReference<>() { }, new TypeReference<>() { });
+            new TypeReference<PollResult>() { }, new TypeReference<PollResult>() { });
 
         StepVerifier.create(pollerFlux)
             .expectSubscription()
@@ -252,7 +243,7 @@ public class PollingStrategyTests {
             Duration.ofSeconds(1),
             () -> activationOperation.get(),
             new OperationResourcePollingStrategy<>(new HttpPipelineBuilder().httpClient(httpClient).build(), Context.NONE),
-            new TypeReference<>() { }, new TypeReference<>() { });
+            new TypeReference<PollResult>() { }, new TypeReference<PollResult>() { });
 
         StepVerifier.create(pollerFlux)
             .expectSubscription()
@@ -299,7 +290,7 @@ public class PollingStrategyTests {
             Duration.ofSeconds(1),
             () -> activationOperation.get(),
             new LocationPollingStrategy<>(new HttpPipelineBuilder().httpClient(httpClient).build(), Context.NONE),
-            new TypeReference<>() { }, new TypeReference<>() { });
+            new TypeReference<PollResult>() { }, new TypeReference<PollResult>() { });
 
         StepVerifier.create(pollerFlux)
             .expectSubscription()
