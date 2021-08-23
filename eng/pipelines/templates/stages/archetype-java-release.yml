@@ -147,9 +147,9 @@ stages:
                 displayName: "Maven Install"
                 inputs:
                   mavenPomFile: "$(Pipeline.Workspace)/install-check-dir/${{ artifact.name }}/pom.xml"
-                  options: "$(DefaultOptions) -Dcheckstyle.skip=true"
+                  options: "$(DefaultOptions)"
                   goals: "install"
-              # - pwsh: |      -DskipTests
+              # - pwsh: |     -Dcheckstyle.skip=true
               #     dir eng
               #     tree eng/code-quality-reports /F
               #     Copy-Item "$(System.DefaultWorkingDirectory)/eng" "$(Pipeline.Workspace)/install-check-dir/${{ artifact.name }}/eng" -Recurse
