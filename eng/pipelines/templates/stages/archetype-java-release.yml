@@ -118,6 +118,8 @@ stages:
                     ForRelease: true
           - job: InstallationCheck
             displayName: "Installation Check"
+            variables:
+              - template: ../variables/globals.yml
             steps:
               - download: current
                 artifact: ${{parameters.ArtifactName}}-signed
