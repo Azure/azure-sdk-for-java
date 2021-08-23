@@ -1,0 +1,22 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.purview.azure.com/collections?api-version=2019-11-01-preview",
+    "Headers" : {
+      "x-ms-client-request-id" : "61908702-3a43-476b-9412-8830b214678b"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Server" : "Kestrel",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Body" : "{\"value\":[{\"name\":\"fypv2\",\"friendlyName\":\"fypv2\",\"description\":\"The root collection.\",\"systemData\":{\"createdBy\":\"0a592c45-613e-4f1b-9023-7c4414fd53bf\",\"createdByType\":\"User\",\"createdAt\":\"2021-08-23T12:52:06.4658298Z\",\"lastModifiedBy\":\"0a592c45-613e-4f1b-9023-7c4414fd53bf\",\"lastModifiedByType\":\"User\",\"lastModifiedAt\":\"2021-08-23T12:52:06.4658298Z\"},\"collectionProvisioningState\":\"Succeeded\"},{\"name\":\"lsttqi\",\"friendlyName\":\"ccc\",\"description\":\"foo\",\"parentCollection\":{\"type\":\"CollectionReference\",\"referenceName\":\"fypv2\"},\"systemData\":{\"createdBy\":\"0a592c45-613e-4f1b-9023-7c4414fd53bf\",\"createdByType\":\"User\",\"createdAt\":\"2021-08-23T12:57:31.0726064Z\",\"lastModifiedBy\":\"0a592c45-613e-4f1b-9023-7c4414fd53bf\",\"lastModifiedByType\":\"User\",\"lastModifiedAt\":\"2021-08-23T12:57:31.0726065Z\"},\"collectionProvisioningState\":\"Succeeded\"}],\"count\":2}",
+      "Date" : "Mon, 23 Aug 2021 12:58:09 GMT",
+      "x-ms-correlation-request-id" : "c3a29da7-6628-4dc3-9bb8-12f106f53beb",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}
