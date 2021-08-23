@@ -1,7 +1,7 @@
 # Release History
 
 ## 12.14.0-beta.2 (Unreleased)
-
+- When opening a BlobInputStream, removed the initial getProperties call in favor of a download for better performance.
 
 ## 12.14.0-beta.1 (2021-07-28)
 - Fixed a bug where BlobClient.exists would not function correctly on blobs encrypted with CPK.
