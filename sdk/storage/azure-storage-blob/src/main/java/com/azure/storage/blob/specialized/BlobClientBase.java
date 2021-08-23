@@ -315,13 +315,11 @@ public class BlobClientBase {
         int chunkSize = options.getBlockSize() == null ? 4 * Constants.MB : options.getBlockSize();
 
         com.azure.storage.common.ParallelTransferOptions pOptions =
-        new com.azure.storage.common.ParallelTransferOptions()
-            .setBlockSizeLong((long) chunkSize);
-        BiFunction<BlobRange, BlobRequestConditions, Mono<BlobDownloadAsyncResponse>> downloadFunc = (r, conditions)
-            -> client.downloadWithResponse(r, null, conditions, false);
+            new com.azure.storage.common.ParallelTransferOptions().setBlockSizeLong((long) chunkSize);
+        BiFunction<BlobRange, BlobRequestConditions, Mono<BlobDownloadAsyncResponse>> downloadFunc =
+            (r, conditions) -> client.downloadWithResponse(r, null, conditions, false);
         Tuple3<Long, BlobRequestConditions, BlobDownloadAsyncResponse> tuple =
-            ChunkedDownloadUtils.downloadFirstChunk(range, pOptions,
-            requestConditions, downloadFunc, true).block();
+            ChunkedDownloadUtils.downloadFirstChunk(range, pOptions, requestConditions, downloadFunc, true).block();
         Objects.requireNonNull(tuple);
 
         BlobDownloadAsyncResponse downloadResponse = tuple.getT3();
