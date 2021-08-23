@@ -70,8 +70,7 @@ public class DCountDocumentQueryExecutionContext<T extends Resource> implements 
                    .collectList()
                    .map(superList -> {
                        double requestCharge = 0;
-                       final List<T> dcountResult = new ArrayList<>();
-                       HashMap<String, String> headers = new HashMap<>();
+                       Map<String, String> headers = new HashMap<>();
                        List<ClientSideRequestStatistics> diagnosticsList = new ArrayList<>();
 
                        for (FeedResponse<T> page : superList) {
