@@ -4,16 +4,15 @@
 package com.azure.core.http.policy;
 
 import com.azure.core.http.HttpMethod;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.http.HttpRequest;
+import com.azure.core.http.HttpResponse;
 
-import java.util.Set;
+import java.util.Map;
 
 /**
  * The interface for determining the redirect strategy used in {@link RedirectPolicy}.
  */
 public interface RedirectStrategy {
-    ClientLogger logger = new ClientLogger(RedirectStrategy.class);
-
     /**
      * Max number of redirect attempts to be made.
      *
@@ -29,19 +28,23 @@ public interface RedirectStrategy {
     /**
      * @return the set of redirect allowed methods.
      */
-    Set<HttpMethod> getAllowedMethods();
+    Map<Integer, HttpMethod> getAllowedMethods();
 
     /**
      * Determines if the url should be redirected between each try.
      *
-     * @param redirectUrl the redirect url present in the response headers
+     * @param httpResponse the {@link HttpRequest} containing the redirect url present in the response headers
      * @param tryCount redirect attempts so far
-     * @param maxRedirects maximum number of redirects allowed
-     * @param attemptedRedirectUrls attempted redirect locations so far
-     *
      * @return {@code true} if the request should be redirected, {@code false}
      * otherwise
      */
-    boolean shouldAttemptRedirect(String redirectUrl, int tryCount, int maxRedirects,
-                                  Set<String> attemptedRedirectUrls);
+    boolean shouldAttemptRedirect(HttpResponse httpResponse, int tryCount);
+
+    /**
+     * Creates the {@link HttpRequest request} for the redirect attempt.
+     *
+     * @param httpResponse the {@link HttpRequest} containing the redirect url present in the response headers
+     * @return the modified {@link HttpRequest} to redirect the incoming request.
+     */
+    HttpRequest createRedirect(HttpResponse httpResponse);
 }

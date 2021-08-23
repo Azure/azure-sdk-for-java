@@ -1,0 +1,199 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
+package com.azure.core.http.policy;
+
+import com.azure.core.http.HttpHeaders;
+import com.azure.core.http.HttpMethod;
+import com.azure.core.http.HttpRequest;
+import com.azure.core.http.HttpResponse;
+import com.azure.core.util.CoreUtils;
+import com.azure.core.util.logging.ClientLogger;
+
+import java.net.HttpURLConnection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+
+/**
+ * A default implementation of {@link RedirectStrategy} that uses the provided try count, header name, http methods
+ * and status code to determine if request should be redirected.
+ */
+public final class DefaultRedirectStrategy implements RedirectStrategy {
+    private final ClientLogger logger = new ClientLogger(DefaultRedirectStrategy.class);
+
+    // Based on Stamp specific redirects design doc
+    private static final int DEFAULT_MAX_REDIRECT_ATTEMPTS = 10;
+    private static final String DEFAULT_REDIRECT_LOCATION_HEADER_NAME = "Location";
+    private static final int PERMANENT_REDIRECT_STATUS_CODE = 308;
+    private static final HashMap<Integer, HttpMethod> DEFAULT_ALLOWED_METHODS = new HashMap<Integer, HttpMethod>() {
+        {
+            put(HttpMethod.GET.ordinal(), HttpMethod.GET);
+            put(HttpMethod.HEAD.ordinal(), HttpMethod.HEAD);
+        }
+    };
+
+    private final int maxAttempts;
+    private final String locationHeader;
+    private final Map<Integer, HttpMethod> redirectMethods;
+    private final Set<String> attemptedRedirectUrls = new HashSet<>();
+
+    /**
+     * Creates an instance of {@link DefaultRedirectStrategy} with a maximum number of redirect attempts 10,
+     * header name "Location" to locate the redirect url in the response headers and {@link HttpMethod#GET}
+     * and {@link HttpMethod#HEAD} as allowed methods for performing the redirect.
+     *
+     * @throws NullPointerException if {@code locationHeader} is {@code null}.
+     * @throws IllegalArgumentException if {@code maxAttempts} is less than 0.
+     */
+    public DefaultRedirectStrategy() {
+        this(DEFAULT_MAX_REDIRECT_ATTEMPTS, DEFAULT_REDIRECT_LOCATION_HEADER_NAME, new HashMap<Integer, HttpMethod>() {
+            {
+                put(HttpMethod.GET.ordinal(), HttpMethod.GET);
+                put(HttpMethod.HEAD.ordinal(), HttpMethod.HEAD);
+            }
+        });
+    }
+
+    /**
+     * Creates an instance of {@link DefaultRedirectStrategy} with the provided number of redirect attempts.
+     *
+     * @param maxAttempts The max number of redirect attempts that can be made.
+     * @throws NullPointerException if {@code locationHeader} is {@code null}.
+     * @throws IllegalArgumentException if {@code maxAttempts} is less than 0.
+     */
+    public DefaultRedirectStrategy(int maxAttempts) {
+        this(maxAttempts, DEFAULT_REDIRECT_LOCATION_HEADER_NAME, DEFAULT_ALLOWED_METHODS);
+    }
+
+    /**
+     * Creates an instance of {@link DefaultRedirectStrategy}.
+     *
+     * @param maxAttempts The max number of redirect attempts that can be made.
+     * @param locationHeader The header name containing the redirect URL.
+     * @param allowedMethods The set of {@link HttpMethod} that are allowed to be redirected.
+     * @throws IllegalArgumentException if {@code maxAttempts} is less than 0.
+     */
+    public DefaultRedirectStrategy(int maxAttempts, String locationHeader, Map<Integer, HttpMethod> allowedMethods) {
+        if (maxAttempts < 0) {
+            ClientLogger logger = new ClientLogger(DefaultRedirectStrategy.class);
+            throw logger.logExceptionAsError(new IllegalArgumentException("Max attempts cannot be less than 0."));
+        }
+        this.maxAttempts = maxAttempts;
+        this.locationHeader = locationHeader == null ? DEFAULT_REDIRECT_LOCATION_HEADER_NAME : locationHeader;
+        this.redirectMethods = allowedMethods == null ? DEFAULT_ALLOWED_METHODS : allowedMethods;
+    }
+
+    @Override
+    public boolean shouldAttemptRedirect(HttpResponse httpResponse, int tryCount) {
+        String redirectUrl =
+            tryGetRedirectHeader(httpResponse.getHeaders(), this.getLocationHeader());
+
+        if (isValidRedirectCount(tryCount)
+            && !alreadyAttemptedRedirectUrl(redirectUrl)
+            && isValidRedirectStatusCode(httpResponse.getStatusCode())
+            && isAllowedRedirectMethod(httpResponse.getRequest().getHttpMethod())) {
+            logger.verbose("[Redirecting] Try count: {}, Attempted Redirect URLs: {}", tryCount,
+                attemptedRedirectUrls.toString());
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    @Override
+    public HttpRequest createRedirect(HttpResponse httpResponse) {
+        String responseLocation =
+            tryGetRedirectHeader(httpResponse.getHeaders(), this.getLocationHeader());
+        if (responseLocation != null) {
+            attemptedRedirectUrls.add(responseLocation);
+            return httpResponse.getRequest().setUrl(responseLocation);
+        } else {
+            return httpResponse.getRequest();
+        }
+    }
+
+    @Override
+    public int getMaxAttempts() {
+        return maxAttempts;
+    }
+
+    @Override
+    public String getLocationHeader() {
+        return locationHeader;
+    }
+
+    @Override
+    public Map<Integer, HttpMethod> getAllowedMethods() {
+        return redirectMethods;
+    }
+
+    /**
+     * Check if the redirect url provided in the response headers is already attempted.
+     *
+     * @param redirectUrl the redirect url provided in the response header.
+     * @return {@code true} if the redirectUrl provided in the response header is already being attempted for redirect.
+     */
+    private boolean alreadyAttemptedRedirectUrl(String redirectUrl) {
+        if (attemptedRedirectUrls.contains(redirectUrl)) {
+            logger.error(String.format("Request was redirected more than once to: %s", redirectUrl));
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Check if the attempt count of the redirect is less than the {@code maxAttempts}
+     *
+     * @param tryCount the try count for the HTTP request associated to the HTTP response.
+     * @return {@code true} if the {@code tryCount} is greater than the {@code maxAttempts}.
+     */
+    private boolean isValidRedirectCount(int tryCount) {
+        if (tryCount >= getMaxAttempts()) {
+            logger.error(String.format("Request has been redirected more than %d times.", getMaxAttempts()));
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * Check if the request http method is a valid redirect method.
+     *
+     * @param httpMethod the http method of the request.
+     * @return {@code true} if the request {@code httpMethod} is a valid http redirect method.
+     */
+    private boolean isAllowedRedirectMethod(HttpMethod httpMethod) {
+        if (getAllowedMethods().containsKey(httpMethod.ordinal())) {
+            return true;
+        } else {
+            logger.error(
+                String.format("Request was redirected from a non redirect-able method: %s", httpMethod));
+            return false;
+        }
+    }
+
+    /**
+     * Checks if the incoming request status code is a valid redirect status code.
+     *
+     * @param statusCode the status code of the incoming request.
+     * @return {@code true} if the request {@code statusCode} is a valid http redirect method.
+     */
+    private boolean isValidRedirectStatusCode(int statusCode) {
+        return statusCode == HttpURLConnection.HTTP_MOVED_TEMP
+            || statusCode == HttpURLConnection.HTTP_MOVED_PERM
+            || statusCode == PERMANENT_REDIRECT_STATUS_CODE;
+    }
+
+    /**
+     * Gets the redirect url from the response headers.
+     *
+     * @param headers the http response headers.
+     * @param headerName the header name to look up value for.
+     * @return the header value for the provided header name.
+     */
+    private static String tryGetRedirectHeader(HttpHeaders headers, String headerName) {
+        String headerValue = headers.getValue(headerName);
+        return CoreUtils.isNullOrEmpty(headerValue) ? null : headerValue;
+    }
+}

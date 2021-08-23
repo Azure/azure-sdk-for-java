@@ -27,6 +27,31 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class RedirectPolicyTest {
 
     @Test
+    public void noRedirectPolicyTest() throws Exception {
+        final HttpPipeline pipeline = new HttpPipelineBuilder()
+            .httpClient(new NoOpHttpClient() {
+
+                @Override
+                public Mono<HttpResponse> send(HttpRequest request) {
+                    if (request.getUrl().toString().equals("http://localhost/")) {
+                        Map<String, String> headers = new HashMap<>();
+                        headers.put("Location", "http://redirecthost/");
+                        HttpHeaders httpHeader = new HttpHeaders(headers);
+                        return Mono.just(new MockHttpResponse(request, 308, httpHeader));
+                    } else {
+                        return Mono.just(new MockHttpResponse(request, 200));
+                    }
+                }
+            })
+            .build();
+
+        HttpResponse response = pipeline.send(new HttpRequest(HttpMethod.GET,
+            new URL("http://localhost/"))).block();
+
+        assertEquals(308, response.getStatusCode());
+    }
+
+    @Test
     public void defaultRedirectWhen308() throws Exception {
         RecordingHttpClient httpClient = new RecordingHttpClient(request -> {
             if (request.getUrl().toString().equals("http://localhost/")) {
@@ -55,16 +80,16 @@ public class RedirectPolicyTest {
     public void redirectForNAttempts() throws MalformedURLException {
         final int[] requestCount = {1};
         RecordingHttpClient httpClient = new RecordingHttpClient(request -> {
-                Map<String, String> headers = new HashMap<>();
-                headers.put("Location", "http://redirecthost/" + requestCount[0]);
-                HttpHeaders httpHeader = new HttpHeaders(headers);
-                requestCount[0]++;
-                return Mono.just(new MockHttpResponse(request, 308, httpHeader));
+            Map<String, String> headers = new HashMap<>();
+            headers.put("Location", "http://redirecthost/" + requestCount[0]);
+            HttpHeaders httpHeader = new HttpHeaders(headers);
+            requestCount[0]++;
+            return Mono.just(new MockHttpResponse(request, 308, httpHeader));
         });
 
         HttpPipeline pipeline = new HttpPipelineBuilder()
             .httpClient(httpClient)
-            .policies(new RedirectPolicy(new MaxAttemptRedirectStrategy(5)))
+            .policies(new RedirectPolicy(new DefaultRedirectStrategy(5)))
             .build();
 
         HttpResponse response = pipeline.send(new HttpRequest(HttpMethod.GET,
@@ -75,28 +100,149 @@ public class RedirectPolicyTest {
     }
 
     @Test
-    public void noRedirectPolicyTest() throws Exception {
-        final HttpPipeline pipeline = new HttpPipelineBuilder()
-            .httpClient(new NoOpHttpClient() {
+    public void redirectNonAllowedMethodTest() throws Exception {
+        RecordingHttpClient httpClient = new RecordingHttpClient(request -> {
+            if (request.getUrl().toString().equals("http://localhost/")) {
+                Map<String, String> headers = new HashMap<>();
+                headers.put("Location", "http://redirecthost/");
+                HttpHeaders httpHeader = new HttpHeaders(headers);
+                return Mono.just(new MockHttpResponse(request, 308, httpHeader));
+            } else {
+                return Mono.just(new MockHttpResponse(request, 200));
+            }
+        });
 
-                @Override
-                public Mono<HttpResponse> send(HttpRequest request) {
-                    if (request.getUrl().toString().equals("http://localhost/")) {
-                        Map<String, String> headers = new HashMap<>();
-                        headers.put("Location", "http://redirecthost/");
-                        HttpHeaders httpHeader = new HttpHeaders(headers);
-                        return Mono.just(new MockHttpResponse(request, 308, httpHeader));
-                    } else {
-                        return Mono.just(new MockHttpResponse(request, 200));
-                    }
-                }
-            })
+        HttpPipeline pipeline = new HttpPipelineBuilder()
+            .httpClient(httpClient)
+            .policies(new RedirectPolicy(new DefaultRedirectStrategy(5)))
+            .build();
+
+        HttpResponse response = pipeline.send(new HttpRequest(HttpMethod.POST,
+            new URL("http://localhost/"))).block();
+
+        // not redirected to 200
+        assertEquals(1, httpClient.getCount());
+        assertEquals(308, response.getStatusCode());
+    }
+
+    @Test
+    public void redirectAllowedStatusCodesTest() throws Exception {
+        RecordingHttpClient httpClient = new RecordingHttpClient(request -> {
+            if (request.getUrl().toString().equals("http://localhost/")) {
+                Map<String, String> headers = new HashMap<>();
+                headers.put("Location", "http://redirecthost/");
+                HttpHeaders httpHeader = new HttpHeaders(headers);
+                return Mono.just(new MockHttpResponse(request, 308, httpHeader));
+            } else {
+                return Mono.just(new MockHttpResponse(request, 200));
+            }
+        });
+
+        HttpPipeline pipeline = new HttpPipelineBuilder()
+            .httpClient(httpClient)
+            .policies(new RedirectPolicy(new DefaultRedirectStrategy()))
             .build();
 
         HttpResponse response = pipeline.send(new HttpRequest(HttpMethod.GET,
             new URL("http://localhost/"))).block();
 
+        assertEquals(2, httpClient.getCount());
+        assertEquals(200, response.getStatusCode());
+    }
+
+    @Test
+    public void alreadyAttemptedUrlsTest() throws Exception {
+        RecordingHttpClient httpClient = new RecordingHttpClient(request -> {
+            if (request.getUrl().toString().equals("http://localhost/")) {
+                Map<String, String> headers = new HashMap<>();
+                headers.put("Location", "http://redirecthost/");
+                HttpHeaders httpHeader = new HttpHeaders(headers);
+                return Mono.just(new MockHttpResponse(request, 308, httpHeader));
+            } else if (request.getUrl().toString().equals("http://redirecthost/")) {
+                Map<String, String> headers = new HashMap<>();
+                headers.put("Location", "http://redirecthost/");
+                HttpHeaders httpHeader = new HttpHeaders(headers);
+                return Mono.just(new MockHttpResponse(request, 308, httpHeader));
+            } else {
+                return Mono.just(new MockHttpResponse(request, 200));
+            }
+        });
+
+        HttpPipeline pipeline = new HttpPipelineBuilder()
+            .httpClient(httpClient)
+            .policies(new RedirectPolicy(new DefaultRedirectStrategy()))
+            .build();
+
+        HttpResponse response = pipeline.send(new HttpRequest(HttpMethod.GET,
+            new URL("http://localhost/"))).block();
+
+        assertEquals(2, httpClient.getCount());
         assertEquals(308, response.getStatusCode());
+    }
+
+    @Test
+    public void redirectForProvidedHeader() throws MalformedURLException {
+        final int[] requestCount = {1};
+        RecordingHttpClient httpClient = new RecordingHttpClient(request -> {
+            Map<String, String> headers = new HashMap<>();
+            headers.put("Location1", "http://redirecthost/" + requestCount[0]);
+            HttpHeaders httpHeader = new HttpHeaders(headers);
+            requestCount[0]++;
+            return Mono.just(new MockHttpResponse(request, 308, httpHeader));
+        });
+
+        HttpPipeline pipeline = new HttpPipelineBuilder()
+            .httpClient(httpClient)
+            .policies(new RedirectPolicy(new DefaultRedirectStrategy(5, "Location1", null)))
+            .build();
+
+        HttpResponse response = pipeline.send(new HttpRequest(HttpMethod.GET,
+            new URL("http://localhost/"))).block();
+
+        assertEquals(5, httpClient.getCount());
+        assertEquals(308, response.getStatusCode());
+    }
+
+    @Test
+    public void redirectForProvidedMethods() throws MalformedURLException {
+        HashMap<Integer, HttpMethod> allowedMethods = new HashMap<Integer, HttpMethod>() {
+                {
+                    put(HttpMethod.GET.ordinal(), HttpMethod.GET);
+                    put(HttpMethod.PUT.ordinal(), HttpMethod.PUT);
+                    put(HttpMethod.POST.ordinal(), HttpMethod.POST);
+                }
+        };
+        final int[] requestCount = {1};
+        RecordingHttpClient httpClient = new RecordingHttpClient(request -> {
+            if (request.getUrl().toString().equals("http://localhost/")) {
+                Map<String, String> headers = new HashMap<>();
+                headers.put("Location", "http://redirecthost/" + requestCount[0]++);
+                HttpHeaders httpHeader = new HttpHeaders(headers);
+                request.setHttpMethod(HttpMethod.PUT);
+                requestCount[0]++;
+                return Mono.just(new MockHttpResponse(request, 308, httpHeader));
+            } else if (request.getUrl().toString().equals("http://redirecthost/" + requestCount[0])
+                && requestCount[0] == 2) {
+                Map<String, String> headers = new HashMap<>();
+                headers.put("Location", "http://redirecthost/" + requestCount[0]++);
+                HttpHeaders httpHeader = new HttpHeaders(headers);
+                request.setHttpMethod(HttpMethod.POST);
+                return Mono.just(new MockHttpResponse(request, 308, httpHeader));
+            } else {
+                return Mono.just(new MockHttpResponse(request, 200));
+            }
+        });
+
+        HttpPipeline pipeline = new HttpPipelineBuilder()
+            .httpClient(httpClient)
+            .policies(new RedirectPolicy(new DefaultRedirectStrategy(5, null, allowedMethods)))
+            .build();
+
+        HttpResponse response = pipeline.send(new HttpRequest(HttpMethod.GET,
+            new URL("http://localhost/"))).block();
+
+        assertEquals(2, httpClient.getCount());
+        assertEquals(200, response.getStatusCode());
     }
 
     static class RecordingHttpClient implements HttpClient {
