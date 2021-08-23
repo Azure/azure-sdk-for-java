@@ -53,7 +53,7 @@ public class NettyAsyncHttpResponseTests {
         HttpClientResponse reactorNettyResponse = mock(HttpClientResponse.class);
         when(reactorNettyResponse.status()).thenReturn(HttpResponseStatus.OK);
 
-        NettyAsyncHttpResponse response = new NettyAsyncHttpResponse(reactorNettyResponse, null, REQUEST, false);
+        NettyAsyncHttpResponse response = new NettyAsyncHttpResponse(reactorNettyResponse, null, REQUEST);
 
         assertEquals(200, response.getStatusCode());
     }
@@ -68,7 +68,7 @@ public class NettyAsyncHttpResponseTests {
         when(reactorNettyResponse.responseHeaders()).thenReturn(headers);
 
         com.azure.core.http.HttpHeaders actualHeaders = new NettyAsyncHttpResponse(
-            reactorNettyResponse, null, REQUEST, false)
+            reactorNettyResponse, null, REQUEST)
             .getHeaders();
 
         assertEquals("aValue", actualHeaders.getValue("aHeader"));
@@ -87,7 +87,7 @@ public class NettyAsyncHttpResponseTests {
         when(connection.inbound()).thenReturn(nettyInbound);
         when(connection.isDisposed()).thenReturn(true);
 
-        NettyAsyncHttpResponse response = new NettyAsyncHttpResponse(null, connection, REQUEST, false);
+        NettyAsyncHttpResponse response = new NettyAsyncHttpResponse(null, connection, REQUEST);
 
         StepVerifier.create(FluxUtil.collectBytesInByteBufferStream(response.getBody()))
             .assertNext(actual -> assertArrayEquals(HELLO_BYTES, actual))
@@ -106,7 +106,7 @@ public class NettyAsyncHttpResponseTests {
         when(connection.inbound()).thenReturn(nettyInbound);
         when(connection.isDisposed()).thenReturn(true);
 
-        NettyAsyncHttpResponse response = new NettyAsyncHttpResponse(null, connection, REQUEST, false);
+        NettyAsyncHttpResponse response = new NettyAsyncHttpResponse(null, connection, REQUEST);
 
         StepVerifier.create(response.getBodyAsByteArray())
             .assertNext(actual -> assertArrayEquals(HELLO_BYTES, actual))
@@ -131,8 +131,8 @@ public class NettyAsyncHttpResponseTests {
         when(connection.inbound()).thenReturn(nettyInbound);
         when(connection.isDisposed()).thenReturn(true);
 
-        NettyAsyncHttpResponse response = new NettyAsyncHttpResponse(reactorNettyResponse, connection, REQUEST,
-            false);
+        NettyAsyncHttpResponse response = new NettyAsyncHttpResponse(reactorNettyResponse, connection, REQUEST
+        );
 
         StepVerifier.create(response.getBodyAsString())
             .assertNext(actual -> assertEquals(HELLO, actual))
@@ -151,7 +151,7 @@ public class NettyAsyncHttpResponseTests {
         when(connection.inbound()).thenReturn(nettyInbound);
         when(connection.isDisposed()).thenReturn(true);
 
-        NettyAsyncHttpResponse response = new NettyAsyncHttpResponse(null, connection, REQUEST, false);
+        NettyAsyncHttpResponse response = new NettyAsyncHttpResponse(null, connection, REQUEST);
 
         StepVerifier.create(response.getBodyAsString(StandardCharsets.UTF_8))
             .assertNext(actual -> assertEquals(HELLO, actual))
@@ -163,7 +163,7 @@ public class NettyAsyncHttpResponseTests {
         Connection connection = mock(Connection.class);
         when(connection.isDisposed()).thenReturn(true);
 
-        new NettyAsyncHttpResponse(null, connection, REQUEST, false).close();
+        new NettyAsyncHttpResponse(null, connection, REQUEST).close();
 
         verify(connection, times(1)).isDisposed();
     }
@@ -196,8 +196,8 @@ public class NettyAsyncHttpResponseTests {
         when(connection.isDisposed()).thenReturn(false);
         when(connection.channel()).thenReturn(channel);
 
-        NettyAsyncHttpResponse response = new NettyAsyncHttpResponse(reactorNettyResponse, connection, REQUEST,
-            false);
+        NettyAsyncHttpResponse response = new NettyAsyncHttpResponse(reactorNettyResponse, connection, REQUEST
+        );
 
         Object object = method.invoke(response, argumentValues);
         if (object instanceof Mono) {

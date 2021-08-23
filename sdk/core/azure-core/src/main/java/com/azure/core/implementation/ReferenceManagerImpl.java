@@ -83,7 +83,7 @@ public final class ReferenceManagerImpl implements Runnable {
 
         CleanableReference() {
             super(null, null);
-            this.cleanupAction = () -> { };
+            this.cleanupAction = null;
             this.cleanupList = this;
         }
 

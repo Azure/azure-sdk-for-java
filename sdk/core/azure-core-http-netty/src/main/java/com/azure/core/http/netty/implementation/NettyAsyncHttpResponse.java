@@ -5,6 +5,7 @@ package com.azure.core.http.netty.implementation;
 
 import com.azure.core.http.HttpRequest;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.ReferenceManager;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.netty.ByteBufFlux;
@@ -15,26 +16,31 @@ import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 
 import static com.azure.core.http.netty.implementation.Utility.closeConnection;
-import static com.azure.core.http.netty.implementation.Utility.deepCopyBuffer;
 
 /**
  * Default HTTP response for Reactor Netty.
  */
 public final class NettyAsyncHttpResponse extends NettyAsyncHttpResponseBase {
+    private static final ReferenceManager REFERENCE_MANAGER = ReferenceManager.create();
+
     private final Connection reactorNettyConnection;
-    private final boolean disableBufferCopy;
 
     public NettyAsyncHttpResponse(HttpClientResponse reactorNettyResponse, Connection reactorNettyConnection,
-        HttpRequest httpRequest, boolean disableBufferCopy) {
+        HttpRequest httpRequest) {
         super(reactorNettyResponse, httpRequest);
         this.reactorNettyConnection = reactorNettyConnection;
-        this.disableBufferCopy = disableBufferCopy;
     }
 
     @Override
     public Flux<ByteBuffer> getBody() {
         return bodyIntern().doFinally(ignored -> close())
-            .map(byteBuf -> this.disableBufferCopy ? byteBuf.nioBuffer() : deepCopyBuffer(byteBuf));
+            .map(byteBuf -> {
+                byteBuf.retain();
+                ByteBuffer buffer = byteBuf.nioBuffer();
+                REFERENCE_MANAGER.register(buffer, byteBuf::release);
+
+                return buffer;
+            });
     }
 
     @Override

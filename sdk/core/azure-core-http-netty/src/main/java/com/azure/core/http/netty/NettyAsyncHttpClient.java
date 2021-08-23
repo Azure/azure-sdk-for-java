@@ -105,7 +105,7 @@ class NettyAsyncHttpClient implements HttpClient {
             .request(HttpMethod.valueOf(request.getHttpMethod().toString()))
             .uri(request.getUrl().toString())
             .send(bodySendDelegate(request))
-            .responseConnection(responseDelegate(request, disableBufferCopy, eagerlyReadResponse))
+            .responseConnection(responseDelegate(request, eagerlyReadResponse))
             .single()
             .onErrorMap(throwable -> {
                 // The exception was an SSLException that was caused by a failure to connect to a proxy.
@@ -169,12 +169,11 @@ class NettyAsyncHttpClient implements HttpClient {
      * Delegate to receive response.
      *
      * @param restRequest the Rest request whose response this delegate handles
-     * @param disableBufferCopy Flag indicating if the network response shouldn't be buffered.
      * @param eagerlyReadResponse Flag indicating if the network response should be eagerly read into memory.
      * @return a delegate upon invocation setup Rest response object
      */
     private static BiFunction<HttpClientResponse, Connection, Publisher<HttpResponse>> responseDelegate(
-        final HttpRequest restRequest, final boolean disableBufferCopy, final boolean eagerlyReadResponse) {
+        final HttpRequest restRequest, final boolean eagerlyReadResponse) {
         return (reactorNettyResponse, reactorNettyConnection) -> {
             /*
              * If we are eagerly reading the response into memory we can ignore the disable buffer copy flag as we
@@ -190,8 +189,7 @@ class NettyAsyncHttpClient implements HttpClient {
                     .map(bytes -> new NettyAsyncHttpBufferedResponse(reactorNettyResponse, restRequest, bytes));
 
             } else {
-                return Mono.just(new NettyAsyncHttpResponse(reactorNettyResponse, reactorNettyConnection, restRequest,
-                    disableBufferCopy));
+                return Mono.just(new NettyAsyncHttpResponse(reactorNettyResponse, reactorNettyConnection, restRequest));
             }
         };
     }

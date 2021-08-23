@@ -323,7 +323,7 @@ public class NettyAsyncHttpClientTests {
 
         DelayWriteStream delayWriteStream = new DelayWriteStream();
         response.getBody().doOnNext(delayWriteStream::write).blockLast();
-        assertFalse(Arrays.equals(LONG_BODY, delayWriteStream.aggregateBuffers()));
+        assertArrayEquals(LONG_BODY, delayWriteStream.aggregateBuffers());
     }
 
     /**
