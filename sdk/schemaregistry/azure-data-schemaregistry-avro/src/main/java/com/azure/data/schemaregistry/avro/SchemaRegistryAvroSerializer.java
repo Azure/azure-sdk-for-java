@@ -33,15 +33,15 @@ public final class SchemaRegistryAvroSerializer implements ObjectSerializer {
     private final SchemaRegistryAsyncClient schemaRegistryClient;
     private final AvroSchemaRegistryUtils avroSchemaRegistryUtils;
     private final String schemaGroup;
-    private final Boolean autoRegisterSchemas;
+    private final boolean autoRegisterSchemas;
 
     SchemaRegistryAvroSerializer(SchemaRegistryAsyncClient schemaRegistryClient,
-        AvroSchemaRegistryUtils avroSchemaRegistryUtils, String schemaGroup, Boolean autoRegisterSchemas) {
+        AvroSchemaRegistryUtils avroSchemaRegistryUtils, String schemaGroup, boolean autoRegisterSchemas) {
         this.schemaRegistryClient = Objects.requireNonNull(schemaRegistryClient,
             "'schemaRegistryClient' cannot be null.");
         this.avroSchemaRegistryUtils = Objects.requireNonNull(avroSchemaRegistryUtils,
             "'avroSchemaRegistryUtils' cannot be null.");
-        this.schemaGroup = schemaGroup;
+        this.schemaGroup = Objects.requireNonNull(schemaGroup, "'schemaGroup' cannot be null.");
         this.autoRegisterSchemas = autoRegisterSchemas;
     }
 

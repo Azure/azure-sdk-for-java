@@ -29,20 +29,15 @@ class AvroSchemaRegistryUtils {
     private final ClientLogger logger = new ClientLogger(AvroSchemaRegistryUtils.class);
     private static final EncoderFactory ENCODER_FACTORY = EncoderFactory.get();
     private static final DecoderFactory DECODER_FACTORY = DecoderFactory.get();
-    private static final Boolean AVRO_SPECIFIC_READER_DEFAULT = false;
 
-    private final Boolean avroSpecificReader;
+    private final boolean avroSpecificReader;
 
     /**
      * Instantiates AvroCodec instance
      * @param avroSpecificReader flag indicating if decoder should decode records as SpecificRecords
      */
-    AvroSchemaRegistryUtils(Boolean avroSpecificReader) {
-        if (avroSpecificReader == null) {
-            this.avroSpecificReader = AvroSchemaRegistryUtils.AVRO_SPECIFIC_READER_DEFAULT;
-        } else {
-            this.avroSpecificReader = avroSpecificReader;
-        }
+    AvroSchemaRegistryUtils(boolean avroSpecificReader) {
+        this.avroSpecificReader = avroSpecificReader;
     }
 
     SerializationType getSerializationType() {
