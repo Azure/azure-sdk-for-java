@@ -184,12 +184,12 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-data-schemaregistry</artifactId>
-      <version>1.0.0-beta.5</version> <!-- {x-version-update;com.azure:azure-data-schemaregistry;current} -->
+      <version>1.0.0-beta.6</version> <!-- {x-version-update;com.azure:azure-data-schemaregistry;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-data-schemaregistry-avro</artifactId>
-      <version>1.0.0-beta.5</version> <!-- {x-version-update;com.azure:azure-data-schemaregistry-avro;current} -->
+      <version>1.0.0-beta.6</version> <!-- {x-version-update;com.azure:azure-data-schemaregistry-avro;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -214,17 +214,17 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-messaging-eventhubs</artifactId>
-      <version>5.10.0-beta.1</version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs;current} -->
+      <version>5.11.0-beta.1</version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-messaging-eventhubs-checkpointstore-blob</artifactId>
-      <version>1.9.0-beta.1</version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs-checkpointstore-blob;current} -->
+      <version>1.10.0-beta.1</version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs-checkpointstore-blob;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-messaging-servicebus</artifactId>
-      <version>7.4.0-beta.1</version> <!-- {x-version-update;com.azure:azure-messaging-servicebus;current} -->
+      <version>7.5.0-beta.1</version> <!-- {x-version-update;com.azure:azure-messaging-servicebus;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
