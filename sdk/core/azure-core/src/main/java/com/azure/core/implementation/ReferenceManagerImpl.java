@@ -50,7 +50,8 @@ public final class ReferenceManagerImpl implements Runnable {
      * @param cleanupAction The cleanup action to perform when the {@code object} becomes phantom reachable.
      */
     public void register(Object object, Runnable cleanupAction) {
-        new CleanableReference<>(object, cleanupAction, this);
+        new CleanableReference<>(Objects.requireNonNull(object, "'object' cannot be null."),
+            Objects.requireNonNull(cleanupAction, "'cleanupAction' cannot be null."), this);
     }
 
     @Override
@@ -88,7 +89,7 @@ public final class ReferenceManagerImpl implements Runnable {
         }
 
         CleanableReference(T referent, Runnable cleanupAction, ReferenceManagerImpl manager) {
-            super(Objects.requireNonNull(referent, "'referent' cannot be null."), manager.queue);
+            super(referent, manager.queue);
             this.cleanupAction = cleanupAction;
             this.cleanupList = manager.cleanableReferenceList;
             insert();

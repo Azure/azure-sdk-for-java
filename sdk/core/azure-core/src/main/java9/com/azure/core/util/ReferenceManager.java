@@ -3,14 +3,14 @@
 
 package com.azure.core.util;
 
-import com.azure.core.implementation.ReferenceManagerImpl;
+import java.lang.ref.Cleaner;
 
 /**
  * This class handles managing references to {@link Object Objects} and providing the ability to run a cleaning
  * operation once the object is no longer able to be reference.
  */
 public final class ReferenceManager {
-    private final ReferenceManagerImpl impl;
+    private final Cleaner cleaner;
 
     /**
      * Creates a new instance of {@link ReferenceManager}.
@@ -34,10 +34,10 @@ public final class ReferenceManager {
      * @throws NullPointerException If either {@code object} or {@code cleanupAction} are null.
      */
     public void register(Object object, Runnable cleanupAction) {
-        impl.register(object, cleanupAction);
+        cleaner.register(object, cleanupAction);
     }
 
     private ReferenceManager() {
-        this.impl = new ReferenceManagerImpl();
+        this.cleaner = Cleaner.create();
     }
 }
