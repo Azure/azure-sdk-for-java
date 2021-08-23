@@ -4,6 +4,7 @@
 package com.azure.monitor.query.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.models.HttpResponseError;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.logging.ClientLogger;
 
@@ -17,7 +18,7 @@ import java.util.stream.Collectors;
 public class LogsQueryResult {
     private final List<LogsTable> logsTables;
     private final BinaryData statistics;
-    private final LogsQueryError error;
+    private final HttpResponseError error;
     private final BinaryData visualization;
     private final ClientLogger logger = new ClientLogger(LogsQueryResult.class);
 
@@ -29,7 +30,7 @@ public class LogsQueryResult {
      * @param error The error details if there was an error executing the query.
      */
     public LogsQueryResult(List<LogsTable> logsTables, BinaryData statistics,
-                           BinaryData visualization, LogsQueryError error) {
+                           BinaryData visualization, HttpResponseError error) {
         this.logsTables = logsTables;
         this.statistics = statistics;
         this.error = error;
@@ -70,7 +71,7 @@ public class LogsQueryResult {
      * @return A list of objects corresponding to the list of rows in the response table.
      * @throws IllegalStateException if the query response contains more than one table.
      */
-    public <T> List<T> toObject(Class<T> type) {
+    <T> List<T> toObject(Class<T> type) {
         if (this.logsTables.size() != 1) {
             throw logger.logExceptionAsError(
                     new IllegalStateException("Cannot map result to object if the response contains multiple tables."));
@@ -95,7 +96,7 @@ public class LogsQueryResult {
      * Returns the error details if there was an error executing the query.
      * @return the error details if there was an error executing the query.
      */
-    public LogsQueryError getError() {
+    public HttpResponseError getError() {
         return error;
     }
 

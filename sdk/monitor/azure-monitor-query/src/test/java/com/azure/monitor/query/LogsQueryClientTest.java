@@ -5,6 +5,7 @@ package com.azure.monitor.query;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.experimental.models.TimeInterval;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
@@ -17,8 +18,7 @@ import com.azure.core.util.Context;
 import com.azure.identity.ClientSecretCredentialBuilder;
 import com.azure.monitor.query.models.LogsBatchQuery;
 import com.azure.monitor.query.models.LogsBatchQueryResult;
-import com.azure.monitor.query.models.LogsBatchQueryResultCollection;
-import com.azure.monitor.query.models.LogsQueryException;
+import com.azure.monitor.query.models.LogsBatchQueryResults;
 import com.azure.monitor.query.models.LogsQueryOptions;
 import com.azure.monitor.query.models.LogsQueryResult;
 import org.junit.jupiter.api.BeforeEach;
@@ -96,11 +96,11 @@ public class LogsQueryClientTest extends TestBase {
 
     @Test
     public void testLogsQueryBatch() {
-        LogsBatchQuery logsBatchQuery = new LogsBatchQuery()
-                .addQuery(WORKSPACE_ID, "AppRequests | take 2", null)
-                .addQuery(WORKSPACE_ID, "AppRequests | take 3", null);
+        LogsBatchQuery logsBatchQuery = new LogsBatchQuery();
+        logsBatchQuery.addQuery(WORKSPACE_ID, "AppRequests | take 2", null);
+        logsBatchQuery.addQuery(WORKSPACE_ID, "AppRequests | take 3", null);
 
-        LogsBatchQueryResultCollection batchResultCollection = client
+        LogsBatchQueryResults batchResultCollection = client
                 .queryBatchWithResponse(logsBatchQuery, Context.NONE).getValue();
 
         List<LogsBatchQueryResult> responses = batchResultCollection.getBatchResults();
@@ -139,11 +139,11 @@ public class LogsQueryClientTest extends TestBase {
 
     @Test
     public void testBatchQueryPartialSuccess() {
-        LogsBatchQuery logsBatchQuery = new LogsBatchQuery()
-                .addQuery(WORKSPACE_ID, "AppRequests | take 2", null)
-                .addQuery(WORKSPACE_ID, "AppRequests | take", null);
+        LogsBatchQuery logsBatchQuery = new LogsBatchQuery();
+        logsBatchQuery.addQuery(WORKSPACE_ID, "AppRequests | take 2", null);
+        logsBatchQuery.addQuery(WORKSPACE_ID, "AppRequests | take", null);
 
-        LogsBatchQueryResultCollection batchResultCollection = client
+        LogsBatchQueryResults batchResultCollection = client
                 .queryBatchWithResponse(logsBatchQuery, Context.NONE).getValue();
 
         List<LogsBatchQueryResult> responses = batchResultCollection.getBatchResults();
@@ -167,12 +167,12 @@ public class LogsQueryClientTest extends TestBase {
 
     @Test
     public void testBatchStatistics() {
-        LogsBatchQuery logsBatchQuery = new LogsBatchQuery()
-                .addQuery(WORKSPACE_ID, "AppRequests | take 2", null)
-                .addQuery(WORKSPACE_ID, "AppRequests | take 2", null,
+        LogsBatchQuery logsBatchQuery = new LogsBatchQuery();
+        logsBatchQuery.addQuery(WORKSPACE_ID, "AppRequests | take 2", null);
+        logsBatchQuery.addQuery(WORKSPACE_ID, "AppRequests | take 2", null,
                         new LogsQueryOptions().setIncludeStatistics(true));
 
-        LogsBatchQueryResultCollection batchResultCollection = client
+        LogsBatchQueryResults batchResultCollection = client
                 .queryBatchWithResponse(logsBatchQuery, Context.NONE).getValue();
 
         List<LogsBatchQueryResult> responses = batchResultCollection.getBatchResults();
@@ -202,8 +202,8 @@ public class LogsQueryClientTest extends TestBase {
                                 .setServerTimeout(Duration.ofSeconds(5)),
                         Context.NONE);
             } catch (Exception exception) {
-                if (exception instanceof LogsQueryException) {
-                    LogsQueryException logsQueryException = (LogsQueryException) exception;
+                if (exception instanceof HttpResponseException) {
+                    HttpResponseException logsQueryException = (HttpResponseException) exception;
                     if (logsQueryException.getResponse().getStatusCode() == 504) {
                         break;
                     }

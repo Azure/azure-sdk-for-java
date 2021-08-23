@@ -3,10 +3,10 @@
 
 package com.azure.monitor.query;
 
+import com.azure.core.experimental.models.TimeInterval;
 import com.azure.core.util.Configuration;
 import com.azure.identity.ClientSecretCredential;
 import com.azure.identity.ClientSecretCredentialBuilder;
-import com.azure.monitor.query.models.LogsQueryResult;
 
 import java.util.List;
 
@@ -30,11 +30,10 @@ public class LogsQueryWithModels {
                 .credential(tokenCredential)
                 .buildClient();
 
-        LogsQueryResult queryResults = logsQueryClient
-                .query("{workspace-id}", "AppRequests", null);
-
         // Sample to use a model type to read the results
-        List<CustomModel> customModels = queryResults.toObject(CustomModel.class);
+        List<CustomModel> customModels  = logsQueryClient
+                .query("{workspace-id}", "AppRequests", TimeInterval.ALL, CustomModel.class);
+
         customModels.forEach(model -> System.out.println("Time generated " + model.getTimeGenerated()
                 + "; success = " + model.getSuccess() + "; operation name = " + model.getOperationName()));
     }

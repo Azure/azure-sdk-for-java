@@ -39,17 +39,15 @@ This client library provides access to query metrics and logs collected by Azure
 
 <!-- embedme ./src/samples/java/com/azure/monitor/query/ReadmeSamples.java#L39-L42 -->
 ```java
-public void createLogsClients() {
-    LogsQueryClient logsQueryClient = new LogsQueryClientBuilder()
-        .credential(new DefaultAzureCredentialBuilder().build())
-        .buildClient();
+LogsQueryClient logsQueryClient = new LogsQueryClientBuilder()
+    .credential(new DefaultAzureCredentialBuilder().build())
+    .buildClient();
 ```
 
 ### Create Logs query async client
 
 <!-- embedme ./src/samples/java/com/azure/monitor/query/ReadmeSamples.java#L43-L46 -->
 ```java
-
 LogsQueryAsyncClient logsQueryAsyncClient = new LogsQueryClientBuilder()
     .credential(new DefaultAzureCredentialBuilder().build())
     .buildAsyncClient();
@@ -58,17 +56,15 @@ LogsQueryAsyncClient logsQueryAsyncClient = new LogsQueryClientBuilder()
 
 <!-- embedme ./src/samples/java/com/azure/monitor/query/ReadmeSamples.java#L52-L55 -->
 ```java
-public void createMetricsClients() {
-    MetricsQueryClient metricsQueryClient = new MetricsQueryClientBuilder()
-        .credential(new DefaultAzureCredentialBuilder().build())
-        .buildClient();
+MetricsQueryClient metricsQueryClient = new MetricsQueryClientBuilder()
+    .credential(new DefaultAzureCredentialBuilder().build())
+    .buildClient();
 ```
 
 ### Create Metrics query async client
 
 <!-- embedme ./src/samples/java/com/azure/monitor/query/ReadmeSamples.java#L56-L59 -->
 ```java
-
 MetricsQueryAsyncClient metricsQueryAsyncClient = new MetricsQueryClientBuilder()
     .credential(new DefaultAzureCredentialBuilder().build())
     .buildAsyncClient();

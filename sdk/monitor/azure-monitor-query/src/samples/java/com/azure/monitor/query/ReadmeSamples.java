@@ -10,13 +10,13 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.monitor.query.models.AggregationType;
 import com.azure.monitor.query.models.LogsBatchQuery;
 import com.azure.monitor.query.models.LogsBatchQueryResult;
-import com.azure.monitor.query.models.LogsBatchQueryResultCollection;
+import com.azure.monitor.query.models.LogsBatchQueryResults;
 import com.azure.monitor.query.models.LogsQueryOptions;
 import com.azure.monitor.query.models.LogsQueryResult;
 import com.azure.monitor.query.models.LogsTable;
 import com.azure.monitor.query.models.LogsTableCell;
 import com.azure.monitor.query.models.LogsTableRow;
-import com.azure.monitor.query.models.Metric;
+import com.azure.monitor.query.models.MetricResult;
 import com.azure.monitor.query.models.MetricsQueryOptions;
 import com.azure.monitor.query.models.MetricsQueryResult;
 
@@ -67,18 +67,18 @@ public class ReadmeSamples {
             .credential(new DefaultAzureCredentialBuilder().build())
             .buildClient();
 
-        LogsBatchQuery logsBatchQuery = new LogsBatchQuery()
-            .addQuery("{workspace-id}", "{query-1}", new TimeInterval(Duration.ofDays(2)))
-            .addQuery("{workspace-id}", "{query-2}", new TimeInterval(Duration.ofDays(30)));
+        LogsBatchQuery logsBatchQuery = new LogsBatchQuery();
+        String query1 = logsBatchQuery.addQuery("{workspace-id}", "{query-1}", new TimeInterval(Duration.ofDays(2)));
+        String query2 = logsBatchQuery.addQuery("{workspace-id}", "{query-2}", new TimeInterval(Duration.ofDays(30)));
 
-        LogsBatchQueryResultCollection batchResultCollection = logsQueryClient
+        LogsBatchQueryResults batchResultCollection = logsQueryClient
             .queryBatchWithResponse(logsBatchQuery, Context.NONE).getValue();
 
         List<LogsBatchQueryResult> responses = batchResultCollection.getBatchResults();
 
         for (LogsBatchQueryResult response : responses) {
-
-
+            String queryId = response.getId();
+            System.out.println("Response for query " + queryId);
             // Sample to iterate by row
             for (LogsTable table : response.getAllTables()) {
                 for (LogsTableRow row : table.getRows()) {
@@ -132,25 +132,25 @@ public class ReadmeSamples {
                 Arrays.asList("SuccessfulCalls"),
                 new MetricsQueryOptions()
                     .setMetricNamespace("Microsoft.CognitiveServices/accounts")
-                    .setTimeSpan(new TimeInterval(Duration.ofDays(30)))
-                    .setInterval(Duration.ofHours(1))
+                    .setTimeInterval(new TimeInterval(Duration.ofDays(30)))
+                    .setGranularity(Duration.ofHours(1))
                     .setTop(100)
                     .setAggregations(Arrays.asList(AggregationType.AVERAGE, AggregationType.COUNT)),
                 Context.NONE);
 
         MetricsQueryResult metricsQueryResult = metricsResponse.getValue();
-        List<Metric> metrics = metricsQueryResult.getMetrics();
+        List<MetricResult> metrics = metricsQueryResult.getMetrics();
         metrics.stream()
             .forEach(metric -> {
-                System.out.println(metric.getMetricsName());
+                System.out.println(metric.getMetricName());
                 System.out.println(metric.getId());
-                System.out.println(metric.getType());
+                System.out.println(metric.getResourceType());
                 System.out.println(metric.getUnit());
                 System.out.println(metric.getTimeSeries().size());
-                System.out.println(metric.getTimeSeries().get(0).getData().size());
+                System.out.println(metric.getTimeSeries().get(0).getValues().size());
                 metric.getTimeSeries()
                     .stream()
-                    .flatMap(ts -> ts.getData().stream())
+                    .flatMap(ts -> ts.getValues().stream())
                     .forEach(mv -> System.out.println(mv.getTimeStamp().toString() + "; Count = " + mv.getCount()
                         + "; Average = " + mv.getAverage()));
             });
@@ -205,10 +205,9 @@ public class ReadmeSamples {
                 .credential(new DefaultAzureCredentialBuilder().build())
                 .buildClient();
 
-        LogsQueryResult queryResults = logsQueryClient.query("{workspace-id}", "{kusto-query}",
-                new TimeInterval(Duration.ofDays(2)));
+        List<CustomModel> results = logsQueryClient.query("{workspace-id}", "{kusto-query}",
+                new TimeInterval(Duration.ofDays(2)), CustomModel.class);
 
-        List<CustomModel> results = queryResults.toObject(CustomModel.class);
         results.forEach(model -> {
             System.out.println("Time generated " + model.getTimeGenerated() + "; success = " + model.getSuccess()
                     + "; operation name = " + model.getOperationName());
