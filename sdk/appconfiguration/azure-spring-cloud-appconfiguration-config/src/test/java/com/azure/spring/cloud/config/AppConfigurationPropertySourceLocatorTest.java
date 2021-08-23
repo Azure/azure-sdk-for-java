@@ -49,6 +49,7 @@ import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.spring.cloud.config.properties.AppConfigurationProperties;
 import com.azure.spring.cloud.config.properties.AppConfigurationProviderProperties;
 import com.azure.spring.cloud.config.properties.AppConfigurationStoreMonitoring;
+import com.azure.spring.cloud.config.properties.AppConfigurationStoreSelects;
 import com.azure.spring.cloud.config.properties.AppConfigurationStoreTrigger;
 import com.azure.spring.cloud.config.properties.ConfigStore;
 import com.azure.spring.cloud.config.properties.FeatureFlagStore;
@@ -166,14 +167,15 @@ public class AppConfigurationPropertySourceLocatorTest {
 
     @Test
     public void compositeSourceIsCreated() {
-        String[] labels = new String[1];
-        labels[0] = "\0";
-        when(configStoreMock.getLabels(Mockito.any())).thenReturn(labels);
+        AppConfigurationStoreSelects selectedKeys = new AppConfigurationStoreSelects().setKeyFilter("/application/").setLabelFilter("\0");
+        List<AppConfigurationStoreSelects> selects = new ArrayList<>();
+        selects.add(selectedKeys);
+        when(configStoreMock.getSelects()).thenReturn(selects);
         when(configStoreMock.getFeatureFlags()).thenReturn(featureFlagStoreMock);
         when(properties.getDefaultContext()).thenReturn("application");
 
         locator = new AppConfigurationPropertySourceLocator(properties, appProperties, clientStoreMock,
-            tokenCredentialProvider, null);
+            tokenCredentialProvider, null, null);
         PropertySource<?> source = locator.locate(environment);
         assertThat(source).isInstanceOf(CompositePropertySource.class);
 
@@ -189,9 +191,10 @@ public class AppConfigurationPropertySourceLocatorTest {
     
     @Test
     public void storeCreatedWithFeatureFlags() {
-        String[] labels = new String[1];
-        labels[0] = "\0";
-        when(configStoreMock.getLabels(Mockito.any())).thenReturn(labels);
+        AppConfigurationStoreSelects selectedKeys = new AppConfigurationStoreSelects().setKeyFilter("/application/").setLabelFilter("\0");
+        List<AppConfigurationStoreSelects> selects = new ArrayList<>();
+        selects.add(selectedKeys);
+        when(configStoreMock.getSelects()).thenReturn(selects);
         when(properties.getDefaultContext()).thenReturn("application");
         when(clientStoreMock.getWatchKey(Mockito.any(), Mockito.anyString())).thenReturn(ITEM_1)
         .thenReturn(FEATURE_ITEM);
@@ -202,7 +205,7 @@ public class AppConfigurationPropertySourceLocatorTest {
         when(configStoreMock.getFeatureFlags()).thenReturn(featureFlagStore);
 
         locator = new AppConfigurationPropertySourceLocator(properties, appProperties, clientStoreMock,
-            tokenCredentialProvider, null);
+            tokenCredentialProvider, null, null);
         PropertySource<?> source = locator.locate(environment);
         assertThat(source).isInstanceOf(CompositePropertySource.class);
 
@@ -221,16 +224,17 @@ public class AppConfigurationPropertySourceLocatorTest {
 
     @Test
     public void watchedKeyCheck() {
-        String[] labels = new String[1];
-        labels[0] = "\0";
-        when(configStoreMock.getLabels(Mockito.any())).thenReturn(labels);
+        AppConfigurationStoreSelects selectedKeys = new AppConfigurationStoreSelects().setKeyFilter("/application/").setLabelFilter("\0");
+        List<AppConfigurationStoreSelects> selects = new ArrayList<>();
+        selects.add(selectedKeys);
+        when(configStoreMock.getSelects()).thenReturn(selects);
         when(configStoreMock.getFeatureFlags()).thenReturn(featureFlagStoreMock);
         when(properties.getDefaultContext()).thenReturn("application");
         when(clientStoreMock.getWatchKey(Mockito.any(), Mockito.anyString())).thenReturn(ITEM_1)
             .thenReturn(FEATURE_ITEM);
 
         locator = new AppConfigurationPropertySourceLocator(properties, appProperties, clientStoreMock,
-            tokenCredentialProvider, null);
+            tokenCredentialProvider, null, null);
         PropertySource<?> source = locator.locate(environment);
         assertThat(source).isInstanceOf(CompositePropertySource.class);
 
@@ -249,9 +253,10 @@ public class AppConfigurationPropertySourceLocatorTest {
 
     @Test
     public void nullApplicationNameCreateDefaultContextOnly() {
-        String[] labels = new String[1];
-        labels[0] = "\0";
-        when(configStoreMock.getLabels(Mockito.any())).thenReturn(labels);
+        AppConfigurationStoreSelects selectedKeys = new AppConfigurationStoreSelects().setKeyFilter("/application/").setLabelFilter("\0");
+        List<AppConfigurationStoreSelects> selects = new ArrayList<>();
+        selects.add(selectedKeys);
+        when(configStoreMock.getSelects()).thenReturn(selects);
         when(configStoreMock.getFeatureFlags()).thenReturn(featureFlagStoreMock);
         when(environment.getActiveProfiles()).thenReturn(new String[]{});
         when(environment.getProperty("spring.application.name")).thenReturn(null);
@@ -259,7 +264,7 @@ public class AppConfigurationPropertySourceLocatorTest {
         when(properties.getName()).thenReturn(null);
 
         locator = new AppConfigurationPropertySourceLocator(properties, appProperties,
-            clientStoreMock, tokenCredentialProvider, null);
+            clientStoreMock, tokenCredentialProvider, null, null);
 
         PropertySource<?> source = locator.locate(environment);
         assertThat(source).isInstanceOf(CompositePropertySource.class);
@@ -274,16 +279,17 @@ public class AppConfigurationPropertySourceLocatorTest {
 
     @Test
     public void emptyApplicationNameCreateDefaultContextOnly() {
-        String[] labels = new String[1];
-        labels[0] = "\0";
-        when(configStoreMock.getLabels(Mockito.any())).thenReturn(labels);
+        AppConfigurationStoreSelects selectedKeys = new AppConfigurationStoreSelects().setKeyFilter("/application/").setLabelFilter("\0");
+        List<AppConfigurationStoreSelects> selects = new ArrayList<>();
+        selects.add(selectedKeys);
+        when(configStoreMock.getSelects()).thenReturn(selects);
         when(configStoreMock.getFeatureFlags()).thenReturn(featureFlagStoreMock);
         when(environment.getActiveProfiles()).thenReturn(new String[]{});
         when(environment.getProperty("spring.application.name")).thenReturn("");
         when(properties.getName()).thenReturn("");
         when(properties.getDefaultContext()).thenReturn("application");
         locator = new AppConfigurationPropertySourceLocator(properties, appProperties,
-            clientStoreMock, tokenCredentialProvider, null);
+            clientStoreMock, tokenCredentialProvider, null, null);
 
         PropertySource<?> source = locator.locate(environment);
         assertThat(source).isInstanceOf(CompositePropertySource.class);
@@ -302,7 +308,7 @@ public class AppConfigurationPropertySourceLocatorTest {
         when(properties.getDefaultContext()).thenReturn("application");
 
         locator = new AppConfigurationPropertySourceLocator(properties, appProperties,
-            clientStoreMock, tokenCredentialProvider, null);
+            clientStoreMock, tokenCredentialProvider, null, null);
 
         when(clientStoreMock.listSettings(Mockito.any(), Mockito.anyString())).thenThrow(new RuntimeException());
         NullPointerException e = assertThrows(NullPointerException.class, () -> locator.locate(environment));
@@ -322,7 +328,7 @@ public class AppConfigurationPropertySourceLocatorTest {
         when(environment.getProperty("spring.application.name")).thenReturn(null);
 
         locator = new AppConfigurationPropertySourceLocator(properties, appProperties,
-            clientStoreMock, tokenCredentialProvider, null);
+            clientStoreMock, tokenCredentialProvider, null, null);
         
         NullPointerException e = assertThrows(NullPointerException.class, () -> locator.locate(environment));
         assertThat(e).hasMessage(null);
@@ -332,7 +338,7 @@ public class AppConfigurationPropertySourceLocatorTest {
     public void notFailFastShouldPass() throws IOException {
         when(configStoreMock.isFailFast()).thenReturn(false);
         locator = new AppConfigurationPropertySourceLocator(properties, appProperties,
-            clientStoreMock, tokenCredentialProvider, null);
+            clientStoreMock, tokenCredentialProvider, null, null);
 
         when(configStoreMock.isFailFast()).thenReturn(false);
         when(clientStoreMock.listSettings(Mockito.any(), Mockito.anyString())).thenThrow(new RuntimeException());
@@ -347,9 +353,10 @@ public class AppConfigurationPropertySourceLocatorTest {
 
     @Test
     public void multiplePropertySourcesExistForMultiStores() {
-        String[] labels = new String[1];
-        labels[0] = "\0";
-        when(configStoreMock.getLabels(Mockito.any())).thenReturn(labels);
+        AppConfigurationStoreSelects selectedKeys = new AppConfigurationStoreSelects().setKeyFilter("/application/").setLabelFilter("\0");
+        List<AppConfigurationStoreSelects> selects = new ArrayList<>();
+        selects.add(selectedKeys);
+        when(configStoreMock.getSelects()).thenReturn(selects);
         when(environment.getActiveProfiles()).thenReturn(new String[]{});
         when(configStoreMock.getEndpoint()).thenReturn(TEST_STORE_NAME);
 
@@ -358,7 +365,7 @@ public class AppConfigurationPropertySourceLocatorTest {
         TestUtils.addStore(properties, TEST_STORE_NAME_2, TEST_CONN_STRING_2);
 
         locator = new AppConfigurationPropertySourceLocator(properties, appProperties,
-            clientStoreMock, tokenCredentialProvider, null);
+            clientStoreMock, tokenCredentialProvider, null, null);
 
         PropertySource<?> source = locator.locate(environment);
         assertThat(source).isInstanceOf(CompositePropertySource.class);
@@ -395,15 +402,17 @@ public class AppConfigurationPropertySourceLocatorTest {
         
         String[] array = {};
         when(env.getActiveProfiles()).thenReturn(array);
-        String[] labels = {""};
-        when(configStore.getLabels(Mockito.any())).thenReturn(labels);
+        AppConfigurationStoreSelects selectedKeys = new AppConfigurationStoreSelects().setKeyFilter("/application/").setLabelFilter("\0");
+        List<AppConfigurationStoreSelects> selects = new ArrayList<>();
+        selects.add(selectedKeys);
+        when(configStoreMock.getSelects()).thenReturn(selects);
         when(configStore.isEnabled()).thenReturn(true);
         when(clientStoreMock.listSettings(Mockito.any(), Mockito.any())).thenThrow(new NullPointerException(""));
         when(appPropertiesMock.getPrekillTime()).thenReturn(-60);
         when(appPropertiesMock.getStartDate()).thenReturn(new Date());
 
         locator = new AppConfigurationPropertySourceLocator(properties, appPropertiesMock, clientStoreMock,
-            tokenCredentialProvider, null);
+            tokenCredentialProvider, null, null);
 
         boolean threwException = false;
         try {

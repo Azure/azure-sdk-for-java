@@ -55,6 +55,7 @@ import com.azure.spring.cloud.config.feature.management.entity.Feature;
 import com.azure.spring.cloud.config.feature.management.entity.FeatureSet;
 import com.azure.spring.cloud.config.properties.AppConfigurationProperties;
 import com.azure.spring.cloud.config.properties.AppConfigurationProviderProperties;
+import com.azure.spring.cloud.config.properties.AppConfigurationStoreSelects;
 import com.azure.spring.cloud.config.properties.ConfigStore;
 import com.azure.spring.cloud.config.properties.FeatureFlagStore;
 import com.azure.spring.cloud.config.stores.ClientStore;
@@ -172,8 +173,9 @@ public class AppConfigurationPropertySourceTest {
         appProperties = new AppConfigurationProviderProperties();
         ArrayList<String> contexts = new ArrayList<String>();
         contexts.add("/application/*");
-        propertySource = new AppConfigurationPropertySource(TEST_CONTEXT, configStoreMock, "\0",
-            appConfigurationProperties, clientStoreMock, appProperties, tokenCredentialProvider, null);
+        AppConfigurationStoreSelects selectedKeys = new AppConfigurationStoreSelects().setKeyFilter("/application/").setLabelFilter("\0");
+        propertySource = new AppConfigurationPropertySource(TEST_CONTEXT, configStoreMock, selectedKeys, new ArrayList<>(),
+            appConfigurationProperties, clientStoreMock, appProperties, tokenCredentialProvider, null, null);
 
         testItems = new ArrayList<ConfigurationSetting>();
         testItems.add(ITEM_1);
@@ -243,7 +245,7 @@ public class AppConfigurationPropertySourceTest {
     @Test
     public void testFeatureFlagCanBeInitedAndQueried() throws IOException {
         when(clientStoreMock.listSettings(Mockito.any(), Mockito.anyString()))
-            .thenReturn(new ArrayList<ConfigurationSetting>()).thenReturn(FEATURE_ITEMS);
+            .thenReturn(FEATURE_ITEMS).thenReturn(new ArrayList<ConfigurationSetting>());
         featureFlagStore.setEnabled(true);
 
         FeatureSet featureSet = new FeatureSet();
@@ -397,7 +399,7 @@ public class AppConfigurationPropertySourceTest {
     @Test
     public void testFeatureFlagTargeting() throws IOException {
         when(clientStoreMock.listSettings(Mockito.any(), Mockito.anyString()))
-            .thenReturn(new ArrayList<ConfigurationSetting>()).thenReturn(FEATURE_ITEMS_TARGETING);
+            .thenReturn(FEATURE_ITEMS_TARGETING).thenReturn(new ArrayList<ConfigurationSetting>());
         featureFlagStore.setEnabled(true);
         
         FeatureSet featureSet = new FeatureSet();

@@ -2,12 +2,13 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.config;
 
-import static com.azure.spring.cloud.config.TestConstants.REFRESH_INTERVAL_PROP;
 import static com.azure.spring.cloud.config.TestConstants.CONN_STRING_PROP;
 import static com.azure.spring.cloud.config.TestConstants.CONN_STRING_PROP_NEW;
 import static com.azure.spring.cloud.config.TestConstants.DEFAULT_CONTEXT_PROP;
 import static com.azure.spring.cloud.config.TestConstants.FAIL_FAST_PROP;
+import static com.azure.spring.cloud.config.TestConstants.KEY_PROP;
 import static com.azure.spring.cloud.config.TestConstants.LABEL_PROP;
+import static com.azure.spring.cloud.config.TestConstants.REFRESH_INTERVAL_PROP;
 import static com.azure.spring.cloud.config.TestConstants.STORE_ENDPOINT_PROP;
 import static com.azure.spring.cloud.config.TestConstants.TEST_CONN_STRING;
 import static com.azure.spring.cloud.config.TestUtils.propPair;
@@ -44,7 +45,9 @@ public class AppConfigurationPropertiesTest {
     private static final String NO_ENDPOINT_CONN_STRING = "Id=fake-conn-id;Secret=ZmFrZS1jb25uLXNlY3JldA==";
     private static final String NO_ID_CONN_STRING = "Endpoint=https://fake.test.config.io;Secret=ZmFrZS1jb25uLXNlY3JldA==";
     private static final String NO_SECRET_CONN_STRING = "Endpoint=https://fake.test.config.io;Id=fake-conn-id;";
+    private static final String VALID_KEY = "/application/";
     private static final String ILLEGAL_LABELS = "*,my-label";
+    
     @InjectMocks
     private ApplicationContextRunner contextRunner = new ApplicationContextRunner()
         .withConfiguration(AutoConfigurations.of(AppConfigurationBootstrapConfiguration.class));
@@ -129,11 +132,12 @@ public class AppConfigurationPropertiesTest {
         this.contextRunner
             .withPropertyValues(
                 propPair(CONN_STRING_PROP, TEST_CONN_STRING),
+                propPair(KEY_PROP, VALID_KEY),
                 propPair(LABEL_PROP, ILLEGAL_LABELS)
             )
             .run(context -> assertThat(context)
                 .getFailure()
-                .hasStackTraceContaining("Label must not contain asterisk(*)")
+                .hasStackTraceContaining("LabelFilter must not contain asterisk(*)")
             );
     }
 

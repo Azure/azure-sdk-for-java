@@ -47,15 +47,21 @@ import reactor.core.publisher.Mono;
 public class ClientStoreTest {
 
     static TokenCredential tokenCredential;
+
     @Rule
     public MockitoRule mockitoRule = MockitoJUnit.rule();
+
     private ClientStore clientStore;
+
     @Mock
     private ConfigurationClientBuilder builderMock;
+
     @Mock
     private ConfigurationAsyncClient clientMock;
+
     @Mock
     private TokenCredential credentialMock;
+
     private List<PagedResponse<ConfigurationSetting>> pagedResponses;
 
     private AppConfigurationProviderProperties appProperties;

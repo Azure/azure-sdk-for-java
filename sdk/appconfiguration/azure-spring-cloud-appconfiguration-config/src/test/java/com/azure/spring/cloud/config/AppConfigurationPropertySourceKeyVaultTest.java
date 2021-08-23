@@ -50,6 +50,7 @@ import com.azure.security.keyvault.secrets.models.KeyVaultSecret;
 import com.azure.spring.cloud.config.feature.management.entity.FeatureSet;
 import com.azure.spring.cloud.config.properties.AppConfigurationProperties;
 import com.azure.spring.cloud.config.properties.AppConfigurationProviderProperties;
+import com.azure.spring.cloud.config.properties.AppConfigurationStoreSelects;
 import com.azure.spring.cloud.config.properties.ConfigStore;
 import com.azure.spring.cloud.config.stores.ClientStore;
 import com.azure.spring.cloud.config.stores.KeyVaultClient;
@@ -113,8 +114,9 @@ public class AppConfigurationPropertySourceKeyVaultTest {
         testStore.setEndpoint(TEST_STORE_NAME);
         ArrayList<String> contexts = new ArrayList<String>();
         contexts.add("/application/*");
-        propertySource = new AppConfigurationPropertySource(TEST_CONTEXT, testStore, "\0",
-            appConfigurationProperties, clientStoreMock, appProperties, tokenCredentialProvider, null);
+        AppConfigurationStoreSelects selects = new AppConfigurationStoreSelects().setKeyFilter("/application/").setLabelFilter("\0");
+        propertySource = new AppConfigurationPropertySource(TEST_CONTEXT, testStore, selects, new ArrayList<>(),
+            appConfigurationProperties, clientStoreMock, appProperties, tokenCredentialProvider, null, null);
         
         TEST_ITEMS.add(ITEM_1);
         TEST_ITEMS.add(ITEM_2);

@@ -6,9 +6,11 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.junit.Test;
 
+import com.azure.spring.cloud.config.properties.AppConfigurationStoreSelects;
 import com.azure.spring.cloud.config.properties.ConfigStore;
 
 public class ConfigStoreTest {
@@ -16,7 +18,22 @@ public class ConfigStoreTest {
     @Test(expected = IllegalArgumentException.class)
     public void invalidLabel() {
         ConfigStore configStore = new ConfigStore();
-        configStore.setLabel("*");
+        AppConfigurationStoreSelects selectedKeys = new AppConfigurationStoreSelects().setKeyFilter("/application/")
+            .setLabelFilter("*");
+        List<AppConfigurationStoreSelects> selects = new ArrayList<>();
+        selects.add(selectedKeys);
+        configStore.setSelects(selects);
+        configStore.validateAndInit();
+        fail();
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void invalidKey() {
+        ConfigStore configStore = new ConfigStore();
+        AppConfigurationStoreSelects selectedKeys = new AppConfigurationStoreSelects().setKeyFilter("/application/*");
+        List<AppConfigurationStoreSelects> selects = new ArrayList<>();
+        selects.add(selectedKeys);
+        configStore.setSelects(selects);
         configStore.validateAndInit();
         fail();
     }
@@ -24,6 +41,7 @@ public class ConfigStoreTest {
     @Test(expected = IllegalStateException.class)
     public void invalidEndpoint() {
         ConfigStore configStore = new ConfigStore();
+        configStore.validateAndInit();
         configStore.setConnectionString("Endpoint=a^a;Id=fake-conn-id;Secret=ZmFrZS1jb25uLXNlY3JldA==");
         configStore.validateAndInit();
         fail();
@@ -32,17 +50,29 @@ public class ConfigStoreTest {
     @Test
     public void getLabelsTest() {
         ConfigStore configStore = new ConfigStore();
-        assertEquals(configStore.getLabels(new ArrayList<String>())[0], "\0");
+        configStore.validateAndInit();
 
-        configStore.setLabel("dev");
-        assertEquals(configStore.getLabels(new ArrayList<String>())[0], "dev");
+        assertEquals("\0", configStore.getSelects().get(0).getLabelFilter(new ArrayList<>())[0]);
 
-        configStore.setLabel("dev,test");
-        assertEquals(configStore.getLabels(new ArrayList<String>())[0], "test");
-        assertEquals(configStore.getLabels(new ArrayList<String>())[1], "dev");
+        AppConfigurationStoreSelects selectedKeys = new AppConfigurationStoreSelects().setKeyFilter("/application/")
+            .setLabelFilter("dev");
+        List<AppConfigurationStoreSelects> selects = new ArrayList<>();
+        selects.add(selectedKeys);
+        configStore.setSelects(selects);
+        assertEquals("dev", configStore.getSelects().get(0).getLabelFilter(new ArrayList<>())[0]);
 
-        configStore.setLabel(",");
-        assertEquals(configStore.getLabels(new ArrayList<String>())[0], "\0");
+        selectedKeys = new AppConfigurationStoreSelects().setKeyFilter("/application/").setLabelFilter("dev,test");
+        selects = new ArrayList<>();
+        selects.add(selectedKeys);
+        configStore.setSelects(selects);
+        assertEquals("test", configStore.getSelects().get(0).getLabelFilter(new ArrayList<>())[0]);
+        assertEquals("dev", configStore.getSelects().get(0).getLabelFilter(new ArrayList<>())[1]);
+
+        selectedKeys = new AppConfigurationStoreSelects().setKeyFilter("/application/").setLabelFilter(",");
+        selects = new ArrayList<>();
+        selects.add(selectedKeys);
+        configStore.setSelects(selects);
+        assertEquals("\0", configStore.getSelects().get(0).getLabelFilter(new ArrayList<>())[0]);
     }
 
 }
