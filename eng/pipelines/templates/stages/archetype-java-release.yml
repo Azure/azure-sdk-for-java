@@ -131,7 +131,6 @@ stages:
                   Write-Host "Renaming $($pomf) to pom.xml"
                 displayName: "Copy Artifacts"
               - template: /eng/pipelines/templates/steps/install-reporting-tools.yml
-                displayName: "Install reporting tools"
               - task: Maven@3
                 inputs:
                   mavenPomFile: "$(Pipeline.Workspace)/install-check-dir/${{ artifact.name }}/pom.xml"
