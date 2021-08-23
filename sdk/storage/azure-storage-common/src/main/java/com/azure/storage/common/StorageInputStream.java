@@ -135,6 +135,7 @@ public abstract class StorageInputStream extends InputStream {
 
         this.currentBuffer = initialBuffer;
         this.bufferStartOffset = rangeOffset;
+        this.bufferSize = initialBuffer.remaining();
     }
 
     /**

@@ -17,6 +17,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.BlobServiceClient;
+import com.azure.storage.blob.implementation.util.ChunkedDownloadUtils;
 import com.azure.storage.blob.implementation.util.ModelHelper;
 import com.azure.storage.blob.models.BlobDownloadAsyncResponse;
 import com.azure.storage.blob.models.BlobDownloadContentAsyncResponse;
@@ -59,6 +60,7 @@ import com.azure.storage.common.implementation.StorageImplUtils;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
 import reactor.util.function.Tuple2;
+import reactor.util.function.Tuple3;
 
 import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
@@ -77,6 +79,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import java.util.function.BiFunction;
 
 import static com.azure.storage.common.implementation.StorageImplUtils.blockWithOptionalTimeout;
 
@@ -308,14 +311,26 @@ public class BlobClientBase {
         options = options == null ? new BlobInputStreamOptions() : options;
         ConsistentReadControl consistentReadControl = options.getConsistentReadControl() == null
             ? ConsistentReadControl.ETAG : options.getConsistentReadControl();
+        BlobRequestConditions requestConditions = options.getRequestConditions() == null
+            ? new BlobRequestConditions() : options.getRequestConditions();
 
         BlobRange range = options.getRange() == null ? new BlobRange(0) : options.getRange();
         int chunkSize = options.getBlockSize() == null ? 4 * Constants.MB : options.getBlockSize();
+        // If the actual size of the download is smaller than a chunk, reduce chunk size to avoid downloading extra
+        // Converting to int is safe in this case because it is already shown to be less than chunkSize
+        chunkSize = range.getCount() != null && range.getCount() < chunkSize ? range.getCount().intValue() : chunkSize;
 
-        BlobDownloadAsyncResponse downloadResponse = client.downloadWithResponse(
-            new BlobRange(range.getOffset(), (long) chunkSize), null, options.getRequestConditions(), false)
-            .block();
-        Objects.requireNonNull(downloadResponse);
+        com.azure.storage.common.ParallelTransferOptions pOptions =
+        new com.azure.storage.common.ParallelTransferOptions()
+            .setBlockSizeLong((long) chunkSize);
+        BiFunction<BlobRange, BlobRequestConditions, Mono<BlobDownloadAsyncResponse>> downloadFunc = (r, conditions)
+            -> client.downloadWithResponse(r, null, conditions, false);
+        Tuple3<Long, BlobRequestConditions, BlobDownloadAsyncResponse> tuple =
+            ChunkedDownloadUtils.downloadFirstChunk(new BlobRange(range.getOffset(), (long) chunkSize), pOptions,
+            requestConditions, downloadFunc, true).block();
+        Objects.requireNonNull(tuple);
+
+        BlobDownloadAsyncResponse downloadResponse = tuple.getT3();
         ByteBuffer initialBuffer = FluxUtil.collectBytesInByteBufferStream(downloadResponse.getValue())
             .map(ByteBuffer::wrap).block();
         Objects.requireNonNull(initialBuffer);
@@ -323,9 +338,6 @@ public class BlobClientBase {
 
         String eTag = properties.getETag();
         String versionId = properties.getVersionId();
-
-        BlobRequestConditions requestConditions = options.getRequestConditions() == null
-            ? new BlobRequestConditions() : options.getRequestConditions();
         BlobAsyncClientBase client = this.client;
 
         switch (consistentReadControl) {
@@ -353,9 +365,8 @@ public class BlobClientBase {
                     + "supported."));
         }
 
-        return new BlobInputStream(client, range.getOffset() + initialBuffer.remaining(),
-            range.getCount() == null ? null : range.getCount() - initialBuffer.remaining(),
-            chunkSize, initialBuffer, requestConditions, properties);
+        return new BlobInputStream(client, range.getOffset(), range.getCount(), chunkSize, initialBuffer,
+            requestConditions, properties);
     }
 
     /**

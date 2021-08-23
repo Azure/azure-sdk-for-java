@@ -1,5 +1,6 @@
 package com.azure.storage.blob
 
+import com.azure.storage.blob.models.BlobRange
 import com.azure.storage.blob.models.BlobRequestConditions
 import com.azure.storage.blob.models.BlobType
 import com.azure.storage.blob.models.ConsistentReadControl
@@ -11,6 +12,8 @@ import com.azure.storage.common.test.shared.extensions.LiveOnly
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion
 import spock.lang.Requires
 import spock.lang.Unroll
+
+import java.nio.ByteBuffer
 
 class BlockBlobInputOutputStreamTest extends APISpec {
     BlockBlobClient bc
@@ -31,10 +34,10 @@ class BlockBlobInputOutputStreamTest extends APISpec {
         def count = is.read(outArr)
 
         then:
-        for (int i=0; i < dataSize; i++) {
+        for (int i = 0; i < dataSize; i++) {
             assert data[i] == outArr[i]
         }
-        for (int i=dataSize; i < (outArr.length); i++) {
+        for (int i = dataSize; i < (outArr.length); i++) {
             assert outArr[i] == (byte) 0
         }
 
@@ -98,7 +101,8 @@ class BlockBlobInputOutputStreamTest extends APISpec {
                 b = inputStream.read()
                 assert b != -1
                 outputStream.write(b)
-                assert inputStream.available() == sizes[i] - 1 // Make sure the internal buffer is the expected chunk size.
+                assert inputStream.available() == sizes[i] - 1
+                // Make sure the internal buffer is the expected chunk size.
                 // Read the rest of the chunk
                 for (int j = 0; j < sizes[i] - 1; j++) {
                     b = inputStream.read()
@@ -121,6 +125,40 @@ class BlockBlobInputOutputStreamTest extends APISpec {
         null             || 2         | [4 * Constants.MB, 2 * Constants.MB] // Default
         5 * Constants.MB || 2         | [5 * Constants.MB, 1 * Constants.MB] // Greater than default
         3 * Constants.MB || 2         | [3 * Constants.MB, 3 * Constants.MB] // Smaller than default
+    }
+
+    // Only run this test in live mode as BlobOutputStream dynamically assigns blocks
+    @LiveOnly
+    def "BlobRange"() {
+        setup:
+        int length = 6 * Constants.MB
+        byte[] randomBytes = getRandomByteArray(length)
+
+        BlobOutputStream outStream = bc.getBlobOutputStream()
+        outStream.write(randomBytes, 0, 6 * Constants.MB)
+        outStream.close()
+
+        def resultBytes = new byte[count == null ? length : count]
+
+        when:
+        def inputStream = bc.openInputStream(new BlobInputStreamOptions().setRange(new BlobRange(start, count))
+            .setBlockSize(4 * Constants.MB))
+        inputStream.read(resultBytes) // read the whole range
+
+        then:
+        inputStream.read() == -1
+        ByteBuffer.wrap(randomBytes, start, count)  == ByteBuffer.wrap(resultBytes)
+
+        where:
+        start            | count
+        0                | 100 // Small range
+        0                | 4 * Constants.MB // block size
+        0                | 5 * Constants.MB // Requires multiple chunks
+        5                | 100 // small offset
+        1 * Constants.MB | 2 * Constants.MB // larger offset inside first chunk
+        1 * Constants.KB | 4 * Constants.MB // offset with range spanning chunks
+        5 * Constants.MB | (1 * Constants.KB) // Range entirely in second chunk
+        // full blob tested in other tests
     }
 
     // Only run this test in live mode as BlobOutputStream dynamically assigns blocks
@@ -306,13 +344,15 @@ class BlockBlobInputOutputStreamTest extends APISpec {
         def properties = blobClient.getProperties()
 
         when:
-        def inputStream = blobClient.openInputStream(new BlobInputStreamOptions().setBlockSize(1).setConsistentReadControl(ConsistentReadControl.ETAG)
+        def inputStream = blobClient.openInputStream(new BlobInputStreamOptions().setBlockSize(1)
+            .setConsistentReadControl(ConsistentReadControl.ETAG)
+            .setBlockSize(500) // Set the block size to be small enough to not retrieve the whole blob on initial download
             .setRequestConditions(new BlobRequestConditions().setIfMatch(properties.getETag())))
 
         // Since eTag is the only form of consistentReadControl and the blob is modified, we will throw.
         blobClient.upload(new ByteArrayInputStream(randomBytes), length, true)
 
-        inputStream.read()
+        inputStream.read(new byte[600]) // Read enough to exceed the initial download
 
         then: "Failed read"
         thrown(IOException) // BlobStorageException = ConditionNotMet
