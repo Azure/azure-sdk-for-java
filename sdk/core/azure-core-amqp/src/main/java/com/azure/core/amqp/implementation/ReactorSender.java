@@ -405,8 +405,10 @@ class ReactorSender implements AmqpSendLink, AsyncCloseable, AutoCloseable {
                 reactorProvider.getReactorDispatcher().invoke(closeWork);
             } catch (IOException | RejectedExecutionException e) {
                 logger.info("connectionId[{}] entityPath[{}] linkName[{}]: Could not schedule close work. Running"
-                    + " manually.", handler.getConnectionId(), entityPath, getLinkName(), e);
+                    + " manually. And completing close.", handler.getConnectionId(), entityPath, getLinkName(), e);
+
                 closeWork.run();
+                handleClose();
             }
         }).then(isClosedMono.asMono())
             .publishOn(Schedulers.boundedElastic());
@@ -654,9 +656,9 @@ class ReactorSender implements AmqpSendLink, AsyncCloseable, AutoCloseable {
         synchronized (pendingSendLock) {
             final String logMessage = isDisposed.getAndSet(true)
                 ? "This was already disposed. Dropping error."
-                : String.format("Disposing of %s pending sends with error.", pendingSendsMap.size());
+                : String.format("Disposing of '%d' pending sends with error.", pendingSendsMap.size());
             logger.verbose("connectionId[{}] entityPath[{}] linkName[{}] {}", handler.getConnectionId(), entityPath,
-                getLinkName(), logMessage, error);
+                getLinkName(), logMessage);
 
             pendingSendsMap.forEach((key, value) -> value.error(error));
             pendingSendsMap.clear();
@@ -674,7 +676,7 @@ class ReactorSender implements AmqpSendLink, AsyncCloseable, AutoCloseable {
         synchronized (pendingSendLock) {
             final String logMessage = isDisposed.getAndSet(true)
                 ? "This was already disposed."
-                : String.format("Disposing of '%s' pending sends.", pendingSendsMap.size());
+                : String.format("Disposing of '%d' pending sends.", pendingSendsMap.size());
 
             logger.verbose("connectionId[{}] entityPath[{}] linkName[{}] {}", handler.getConnectionId(), entityPath,
                 getLinkName(), logMessage);

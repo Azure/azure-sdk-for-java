@@ -490,7 +490,7 @@ public class ReactorConnection implements AmqpConnection {
         final Mono<Void> closeSessionsMono = Mono.when(closingSessions)
             .timeout(operationTimeout)
             .onErrorResume(error -> {
-                logger.warning("connectionId[{}]: Timed out waiting for all sessions to close.", connectionId, error);
+                logger.warning("connectionId[{}]: Timed out waiting for all sessions to close.", connectionId);
                 return Mono.empty();
             })
             .then(closedExecutor)
