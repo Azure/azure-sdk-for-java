@@ -75,12 +75,6 @@
       <version>1.7.32</version> <!-- {x-version-update;org.slf4j:slf4j-simple;external_dependency} -->
       <scope>test</scope>
     </dependency>
-    <dependency>
-      <groupId>com.azure.resourcemanager</groupId>
-      <artifactId>azure-resourcemanager-iothub</artifactId>
-      <version>1.0.0</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-iothub;dependency} -->
-      <scope>test</scope>
-    </dependency>
   </dependencies>
   <build>
     <plugins>
