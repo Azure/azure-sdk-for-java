@@ -326,7 +326,7 @@ public class BlobClientBase {
         BiFunction<BlobRange, BlobRequestConditions, Mono<BlobDownloadAsyncResponse>> downloadFunc = (r, conditions)
             -> client.downloadWithResponse(r, null, conditions, false);
         Tuple3<Long, BlobRequestConditions, BlobDownloadAsyncResponse> tuple =
-            ChunkedDownloadUtils.downloadFirstChunk(new BlobRange(range.getOffset(), (long) chunkSize), pOptions,
+            ChunkedDownloadUtils.downloadFirstChunk(range, pOptions,
             requestConditions, downloadFunc, true).block();
         Objects.requireNonNull(tuple);
 

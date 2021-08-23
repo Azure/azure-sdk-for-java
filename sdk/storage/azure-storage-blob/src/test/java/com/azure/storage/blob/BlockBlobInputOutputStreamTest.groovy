@@ -88,7 +88,7 @@ class BlockBlobInputOutputStreamTest extends APISpec {
         int length = 6 * Constants.MB
         byte[] randomBytes = getRandomByteArray(length)
 
-        BlobOutputStream outStream = bc.getBlobOutputStream()
+        BlobOutputStream outStream = bc.getBlobOutputStream(true)
         outStream.write(randomBytes, 0, 6 * Constants.MB)
         outStream.close()
 
@@ -134,7 +134,7 @@ class BlockBlobInputOutputStreamTest extends APISpec {
         int length = 6 * Constants.MB
         byte[] randomBytes = getRandomByteArray(length)
 
-        BlobOutputStream outStream = bc.getBlobOutputStream()
+        BlobOutputStream outStream = bc.getBlobOutputStream(true)
         outStream.write(randomBytes, 0, 6 * Constants.MB)
         outStream.close()
 
