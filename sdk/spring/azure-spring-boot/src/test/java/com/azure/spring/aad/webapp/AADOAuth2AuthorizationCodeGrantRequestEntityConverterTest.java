@@ -12,6 +12,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.RequestEntity;
 import org.springframework.security.oauth2.client.endpoint.OAuth2AuthorizationCodeGrantRequest;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
+import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.oauth2.core.endpoint.OAuth2AuthorizationExchange;
 import org.springframework.security.oauth2.core.endpoint.OAuth2AuthorizationRequest;
 import org.springframework.security.oauth2.core.endpoint.OAuth2AuthorizationResponse;
@@ -39,7 +40,8 @@ public class AADOAuth2AuthorizationCodeGrantRequestEntityConverterTest {
     @Test
     public void addScopeForAzureClient() {
         getContextRunner().run(context -> {
-            AADClientRegistrationRepository repository = context.getBean(AADClientRegistrationRepository.class);
+            AADClientRegistrationRepository repository =
+                (AADClientRegistrationRepository) context.getBean(ClientRegistrationRepository.class);
             ClientRegistration azure = repository.findByRegistrationId(AZURE_CLIENT_REGISTRATION_ID);
             MultiValueMap<String, String> body = convertedBodyOf(repository, createCodeGrantRequest(azure));
             assertEquals("openid profile offline_access", body.getFirst("scope"));
@@ -49,7 +51,8 @@ public class AADOAuth2AuthorizationCodeGrantRequestEntityConverterTest {
     @Test
     public void addScopeForOnDemandClient() {
         getContextRunner().run(context -> {
-            AADClientRegistrationRepository repository = context.getBean(AADClientRegistrationRepository.class);
+            AADClientRegistrationRepository repository =
+                (AADClientRegistrationRepository) context.getBean(ClientRegistrationRepository.class);
             ClientRegistration arm = repository.findByRegistrationId("arm");
             MultiValueMap<String, String> body = convertedBodyOf(repository, createCodeGrantRequest(arm));
             assertEquals("Arm.Scope openid profile offline_access", body.getFirst("scope"));
@@ -60,7 +63,8 @@ public class AADOAuth2AuthorizationCodeGrantRequestEntityConverterTest {
     @SuppressWarnings("unchecked")
     public void addHeadersForAzureClient() {
         getContextRunner().run(context -> {
-            AADClientRegistrationRepository repository = context.getBean(AADClientRegistrationRepository.class);
+            AADClientRegistrationRepository repository =
+                (AADClientRegistrationRepository) context.getBean(ClientRegistrationRepository.class);
             ClientRegistration azure = repository.findByRegistrationId(AZURE_CLIENT_REGISTRATION_ID);
             HttpHeaders httpHeaders = convertedHeaderOf(repository, createCodeGrantRequest(azure));
             assertThat(httpHeaders.entrySet(), (Matcher) hasItems(expectedHeaders(repository)));
@@ -71,7 +75,8 @@ public class AADOAuth2AuthorizationCodeGrantRequestEntityConverterTest {
     @SuppressWarnings("unchecked")
     public void addHeadersForOnDemandClient() {
         getContextRunner().run(context -> {
-            AADClientRegistrationRepository repository = context.getBean(AADClientRegistrationRepository.class);
+            AADClientRegistrationRepository repository =
+                (AADClientRegistrationRepository) context.getBean(ClientRegistrationRepository.class);
             ClientRegistration arm = repository.findByRegistrationId("arm");
             HttpHeaders httpHeaders = convertedHeaderOf(repository, createCodeGrantRequest(arm));
             assertThat(httpHeaders.entrySet(), (Matcher) hasItems(expectedHeaders(repository)));

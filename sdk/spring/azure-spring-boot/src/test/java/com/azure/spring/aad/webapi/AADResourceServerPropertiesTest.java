@@ -16,12 +16,7 @@ public class AADResourceServerPropertiesTest {
 
     @Test
     public void testNoPropertiesConfigured() {
-        new WebApplicationContextRunner()
-            .withUserConfiguration(AADAutoConfiguration.class)
-            .withClassLoader(new FilteredClassLoader(ClientRegistration.class))
-            .withPropertyValues(
-                "azure.activedirectory.tenant-id=fake-tenant-id",
-                "azure.activedirectory.app-id-uri=fake-app-id-uri")
+        getResourceServerContextRunner()
             .run(context -> {
                 AADResourceServerProperties properties = context.getBean(AADResourceServerProperties.class);
                 assertEquals(AADTokenClaim.SUB, properties.getPrincipalClaimName());
@@ -31,12 +26,8 @@ public class AADResourceServerPropertiesTest {
 
     @Test
     public void testPropertiesConfigured() {
-        new WebApplicationContextRunner()
-            .withUserConfiguration(AADAutoConfiguration.class)
-            .withClassLoader(new FilteredClassLoader(ClientRegistration.class))
+        getResourceServerContextRunner()
             .withPropertyValues(
-                "azure.activedirectory.tenant-id=fake-tenant-id",
-                "azure.activedirectory.app-id-uri=fake-app-id-uri",
                 "azure.activedirectory.resource-server.principal-claim-name=fake-claim-name",
                 "azure.activedirectory.resource-server.claim-to-authority-prefix-map.fake-key-1=fake-value-1",
                 "azure.activedirectory.resource-server.claim-to-authority-prefix-map.fake-key-2=fake-value-2")
@@ -47,5 +38,14 @@ public class AADResourceServerPropertiesTest {
                 assertEquals("fake-value-1", properties.getClaimToAuthorityPrefixMap().get("fake-key-1"));
                 assertEquals("fake-value-2", properties.getClaimToAuthorityPrefixMap().get("fake-key-2"));
             });
+    }
+
+    private WebApplicationContextRunner getResourceServerContextRunner() {
+        return new WebApplicationContextRunner()
+            .withUserConfiguration(AADAutoConfiguration.class)
+            .withClassLoader(new FilteredClassLoader(ClientRegistration.class))
+            .withPropertyValues(
+                "azure.activedirectory.tenant-id=fake-tenant-id",
+                "azure.activedirectory.app-id-uri=fake-app-id-uri");
     }
 }

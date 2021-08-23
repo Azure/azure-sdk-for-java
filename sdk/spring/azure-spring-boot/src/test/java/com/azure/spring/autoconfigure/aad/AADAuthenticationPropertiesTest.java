@@ -3,13 +3,20 @@
 
 package com.azure.spring.autoconfigure.aad;
 
+import com.azure.spring.aad.AADApplicationType;
 import com.azure.spring.aad.webapp.WebApplicationContextRunnerUtils;
 import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.FilteredClassLoader;
+import org.springframework.boot.test.context.runner.WebApplicationContextRunner;
+import org.springframework.security.oauth2.client.registration.ClientRegistration;
+import org.springframework.security.oauth2.server.resource.BearerTokenAuthenticationToken;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class AADAuthenticationPropertiesTest {
+
+    private final WebApplicationContextRunner contextRunner = new WebApplicationContextRunner();
 
     @Test
     public void webAppWithOboWithExceptionTest() {
@@ -198,5 +205,115 @@ public class AADAuthenticationPropertiesTest {
             .run(context ->
                 assertThrows(IllegalStateException.class, () -> context.getBean(AADAuthenticationProperties.class))
             );
+    }
+
+    private WebApplicationContextRunner contextRunnerWithConfiguredApplicationType(String applicationType) {
+        WebApplicationContextRunner runner = contextRunner
+            .withUserConfiguration(AADAutoConfiguration.class)
+            .withPropertyValues(
+                "azure.activedirectory.client-id = fake-client-id",
+                "azure.activedirectory.client-secret = fake-client-secret",
+                "azure.activedirectory.tenant-id = fake-tenant-id",
+                "azure.activedirectory.app-id-uri=fake-app-id-uri");
+        if (applicationType == null) {
+            return runner;
+        }
+        return runner
+            .withPropertyValues("azure.activedirectory.application-type=" + applicationType);
+    }
+
+    @Test
+    public void applicationTypeOfWebApplication() {
+        WebApplicationContextRunnerUtils
+            .getContextRunnerWithRequiredProperties()
+            .run(context -> {
+                AADAuthenticationProperties properties = context.getBean(AADAuthenticationProperties.class);
+                assertEquals(properties.getApplicationType(), AADApplicationType.WEB_APPLICATION);
+            });
+
+        WebApplicationContextRunnerUtils
+            .getContextRunnerWithRequiredProperties()
+            .withPropertyValues(
+                "azure.activedirectory.application-type=web_application")
+            .run(context -> {
+                AADAuthenticationProperties properties = context.getBean(AADAuthenticationProperties.class);
+                assertEquals(properties.getApplicationType(), AADApplicationType.WEB_APPLICATION);
+            });
+
+        this.contextRunnerWithConfiguredApplicationType("web_application")
+            .run(context -> {
+                AADAuthenticationProperties properties = context.getBean(AADAuthenticationProperties.class);
+                assertEquals(properties.getApplicationType(), AADApplicationType.WEB_APPLICATION);
+            });
+    }
+
+    @Test
+    public void applicationTypeOfResourceServerWithOBO() {
+        this.contextRunnerWithConfiguredApplicationType(null)
+            .run(context -> {
+                AADAuthenticationProperties properties = context.getBean(AADAuthenticationProperties.class);
+                assertEquals(properties.getApplicationType(), AADApplicationType.RESOURCE_SERVER_WITH_OBO);
+            });
+
+        this.contextRunnerWithConfiguredApplicationType("resource_server_with_obo")
+            .withPropertyValues(
+                "azure.activedirectory.application-type=resource_server_with_obo")
+            .run(context -> {
+                AADAuthenticationProperties properties = context.getBean(AADAuthenticationProperties.class);
+                assertEquals(properties.getApplicationType(), AADApplicationType.RESOURCE_SERVER_WITH_OBO);
+            });
+    }
+
+    @Test
+    public void applicationTypeWithWebApplicationAndResourceServer() {
+        this.contextRunnerWithConfiguredApplicationType("web_application_and_resource_server")
+            .run(context -> {
+                AADAuthenticationProperties properties = context.getBean(AADAuthenticationProperties.class);
+                assertEquals(properties.getApplicationType(), AADApplicationType.WEB_APPLICATION_AND_RESOURCE_SERVER);
+            });
+    }
+
+
+    @Test
+    public void applicationTypeWithResourceServer() {
+        this.contextRunnerWithConfiguredApplicationType(null)
+            .withClassLoader(new FilteredClassLoader(ClientRegistration.class))
+            .run(context -> {
+                AADAuthenticationProperties properties = context.getBean(AADAuthenticationProperties.class);
+                assertEquals(properties.getApplicationType(), AADApplicationType.RESOURCE_SERVER);
+            });
+
+        this.contextRunnerWithConfiguredApplicationType(null)
+            .withClassLoader(new FilteredClassLoader(ClientRegistration.class))
+            .withPropertyValues(
+                "azure.activedirectory.application-type=resource_server")
+            .run(context -> {
+                AADAuthenticationProperties properties = context.getBean(AADAuthenticationProperties.class);
+                assertEquals(properties.getApplicationType(), AADApplicationType.RESOURCE_SERVER);
+            });
+
+        this.contextRunnerWithConfiguredApplicationType("resource_server")
+            .run(context -> {
+                AADAuthenticationProperties properties = context.getBean(AADAuthenticationProperties.class);
+                assertEquals(properties.getApplicationType(), AADApplicationType.RESOURCE_SERVER);
+            });
+    }
+
+    @Test
+    public void applicationTypeOfInvalidWebApplication() {
+        this.contextRunnerWithConfiguredApplicationType("web_application")
+            .withClassLoader(new FilteredClassLoader(ClientRegistration.class))
+            .run(context -> {
+                assertThrows(IllegalStateException.class, () -> context.getBean(AADAuthenticationProperties.class));
+            });
+    }
+
+    @Test
+    public void applicationTypeOfInvalidResourceServer() {
+        this.contextRunnerWithConfiguredApplicationType("resource_server")
+            .withClassLoader(new FilteredClassLoader(BearerTokenAuthenticationToken.class))
+            .run(context -> {
+                assertThrows(IllegalStateException.class, () -> context.getBean(AADAuthenticationProperties.class));
+            });
     }
 }
