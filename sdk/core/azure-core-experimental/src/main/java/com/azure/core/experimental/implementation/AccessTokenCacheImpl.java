@@ -6,6 +6,7 @@ package com.azure.core.experimental.implementation;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
+import com.azure.core.experimental.credential.AccessTokenExperimental;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -27,7 +28,7 @@ public class AccessTokenCacheImpl {
     // The delay after a refresh to attempt another token refresh
     private static final Duration REFRESH_DELAY = Duration.ofSeconds(30);
     // the offset before token expiry to attempt proactive token refresh
-    private static final Duration REFRESH_OFFSET = Duration.ofMinutes(5);
+//    private static final Duration REFRESH_OFFSET = Duration.ofMinutes(5);
     private volatile AccessToken cache;
     private volatile OffsetDateTime nextTokenRefresh = OffsetDateTime.now();
     private final AtomicReference<Sinks.One<AccessToken>> wip;
@@ -45,8 +46,8 @@ public class AccessTokenCacheImpl {
         Objects.requireNonNull(tokenCredential, "The token credential cannot be null");
         this.wip = new AtomicReference<>();
         this.tokenCredential = tokenCredential;
-        this.shouldRefresh = accessToken -> OffsetDateTime.now()
-            .isAfter(accessToken.getExpiresAt().minus(REFRESH_OFFSET));
+        this.shouldRefresh = accessToken -> OffsetDateTime.now().isAfter(accessToken instanceof AccessTokenExperimental
+            ? ((AccessTokenExperimental) accessToken).getRefreshOn() : accessToken.getExpiresAt().minusMinutes(5));
     }
 
     /**

@@ -520,13 +520,10 @@ public class IdentityClient {
     public Mono<AccessToken> authenticateWithOBO(TokenRequestContext request, UserAssertion userAssertion) {
 
         return confidentialClientApplicationAccessor.getValue()
-            .flatMap(confidentialClient -> {
-
-                return Mono.fromFuture(() -> confidentialClient.acquireToken(OnBehalfOfParameters
-                        .builder(new HashSet<>(request.getScopes()), userAssertion)
-                        .build()))
-                    .map(MsalToken::new);
-            });
+            .flatMap(confidentialClient -> Mono.fromFuture(() -> confidentialClient.acquireToken(OnBehalfOfParameters
+                    .builder(new HashSet<>(request.getScopes()), userAssertion)
+                    .build()))
+                .map(MsalToken::new));
     }
 
 
