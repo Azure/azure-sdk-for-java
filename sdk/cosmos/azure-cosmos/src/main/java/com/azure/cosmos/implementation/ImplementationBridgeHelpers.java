@@ -3,7 +3,6 @@
 
 package com.azure.cosmos.implementation;
 
-import com.azure.cosmos.BulkExecutionOptions;
 import com.azure.cosmos.BulkExecutionThresholds;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncDatabase;
@@ -13,6 +12,7 @@ import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.implementation.batch.PartitionScopeThresholds;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
+import com.azure.cosmos.models.CosmosBulkExecutionOptions;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
@@ -162,12 +162,12 @@ public class ImplementationBridgeHelpers {
 
         private CosmosBulkExecutionOptionsHelper() {}
         static {
-            ensureClassLoaded(BulkExecutionOptions.class);
+            ensureClassLoaded(CosmosBulkExecutionOptions.class);
         }
 
         public static void setCosmosBulkExecutionOptionsAccessor(final CosmosBulkExecutionOptionsAccessor newAccessor) {
             if (accessor != null) {
-                throw new IllegalStateException("BulkExecutionOptions accessor already initialized!");
+                throw new IllegalStateException("CosmosBulkExecutionOptions accessor already initialized!");
             }
 
             accessor = newAccessor;
@@ -175,7 +175,7 @@ public class ImplementationBridgeHelpers {
 
         public static CosmosBulkExecutionOptionsAccessor getCosmosBulkExecutionOptionsAccessor() {
             if (accessor == null) {
-                throw new IllegalStateException("BulkExecutionOptions accessor is not initialized yet!");
+                throw new IllegalStateException("CosmosBulkExecutionOptions accessor is not initialized yet!");
             }
 
             return accessor;
@@ -183,12 +183,12 @@ public class ImplementationBridgeHelpers {
 
         public interface CosmosBulkExecutionOptionsAccessor {
             void setOperationContext(
-                BulkExecutionOptions options,
+                CosmosBulkExecutionOptions options,
                 OperationContextAndListenerTuple operationContext);
 
-            OperationContextAndListenerTuple getOperationContext(BulkExecutionOptions options);
+            OperationContextAndListenerTuple getOperationContext(CosmosBulkExecutionOptions options);
 
-            <T> T getLegacyBatchScopedContext(BulkExecutionOptions options);
+            <T> T getLegacyBatchScopedContext(CosmosBulkExecutionOptions options);
         }
     }
 

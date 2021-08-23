@@ -28,6 +28,7 @@ import com.azure.cosmos.implementation.routing.Range;
 import com.azure.cosmos.implementation.throughputControl.config.ThroughputControlGroupFactory;
 import com.azure.cosmos.implementation.throughputControl.config.GlobalThroughputControlGroup;
 import com.azure.cosmos.implementation.throughputControl.config.LocalThroughputControlGroup;
+import com.azure.cosmos.models.CosmosBulkExecutionOptions;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
 import com.azure.cosmos.models.CosmosConflictProperties;
 import com.azure.cosmos.models.CosmosContainerProperties;
@@ -868,6 +869,11 @@ public class CosmosAsyncContainer {
     /**
      * Executes flux of operations in Bulk.
      *
+     * @deprecated forRemoval = true, since = "4.19"
+     * This overload will be removed. Please use one of the following overloads instead
+     * - {@link CosmosAsyncContainer#processBulkOperations(Flux)}
+     * - {@link CosmosAsyncContainer#processBulkOperations(Flux, CosmosBulkExecutionOptions)}
+     *
      * @param <TContext> The context for the bulk processing.
      *
      * @param operations Flux of operation which will be executed by this container.
@@ -889,18 +895,51 @@ public class CosmosAsyncContainer {
      * get the exception.
      */
     @Beta(value = Beta.SinceVersion.V4_18_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Deprecated() //forRemoval = true, since = "4.19"
+    @SuppressWarnings("DeprecatedIsStillUsed")
     public <TContext> Flux<CosmosBulkOperationResponse<TContext>> processBulkOperations(
         Flux<CosmosItemOperation> operations,
         BulkExecutionOptions bulkOptions) {
 
+        return processBulkOperations(operations, bulkOptions.toCosmosBulkExecutionOptions());
+    }
+
+    /**
+     * Executes flux of operations in Bulk.
+     *
+     * @param <TContext> The context for the bulk processing.
+     *
+     * @param operations Flux of operation which will be executed by this container.
+     * @param bulkOptions Options that apply for this Bulk request which specifies options regarding execution like
+     *                    concurrency, batching size, interval and context.
+     *
+     * @return A Flux of {@link CosmosBulkOperationResponse} which contains operation and it's response or exception.
+     * <p>
+     *     To create a operation which can be executed here, use {@link BulkOperations}. For eg.
+     *     for a upsert operation use {@link BulkOperations#getUpsertItemOperation(Object, PartitionKey)}
+     * </p>
+     * <p>
+     *     We can get the corresponding operation using {@link CosmosBulkOperationResponse#getOperation()} and
+     *     it's response using {@link CosmosBulkOperationResponse#getResponse()}. If the operation was executed
+     *     successfully, the value returned by {@link CosmosBulkItemResponse#isSuccessStatusCode()} will be true. To get
+     *     actual status use {@link CosmosBulkItemResponse#getStatusCode()}.
+     * </p>
+     * To check if the operation had any exception, use {@link CosmosBulkOperationResponse#getException()} to
+     * get the exception.
+     */
+    @Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public <TContext> Flux<CosmosBulkOperationResponse<TContext>> processBulkOperations(
+        Flux<CosmosItemOperation> operations,
+        CosmosBulkExecutionOptions bulkOptions) {
+
         if (bulkOptions == null) {
-            bulkOptions = new BulkExecutionOptions();
+            bulkOptions = new CosmosBulkExecutionOptions();
         }
 
-        final BulkExecutionOptions options = bulkOptions;
+        final CosmosBulkExecutionOptions cosmosBulkExecutionOptions = bulkOptions;
 
         return Flux.deferContextual(context -> {
-            final BulkExecutor<TContext> executor = new BulkExecutor<>(this, operations, options);
+            final BulkExecutor<TContext> executor = new BulkExecutor<>(this, operations, cosmosBulkExecutionOptions);
 
             return executor.execute();
         });

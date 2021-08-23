@@ -4,6 +4,7 @@ package com.azure.cosmos.spark
 
 // scalastyle:off underscore.import
 import com.azure.cosmos._
+import com.azure.cosmos.models.CosmosBulkExecutionOptions
 
 import scala.collection.mutable
 import scala.concurrent.duration.Duration
@@ -65,7 +66,7 @@ class BulkWriter(container: CosmosAsyncContainer,
   private val totalScheduledMetrics = new AtomicLong(0)
   private val totalSuccessfulIngestionMetrics = new AtomicLong(0)
 
-  private val bulkOptions = new BulkExecutionOptions(BulkWriter.bulkProcessingThresholds)
+  private val cosmosBulkExecutionOptions = new CosmosBulkExecutionOptions(BulkWriter.bulkProcessingThresholds)
   private val operationContext = initializeOperationContext()
 
   private def initializeOperationContext(): SparkTaskContext = {
@@ -86,7 +87,7 @@ class BulkWriter(container: CosmosAsyncContainer,
       val operationContextAndListenerTuple = new OperationContextAndListenerTuple(taskDiagnosticsContext, listener)
       ImplementationBridgeHelpers.CosmosBulkExecutionOptionsHelper
         .getCosmosBulkExecutionOptionsAccessor
-        .setOperationContext(bulkOptions, operationContextAndListenerTuple)
+        .setOperationContext(cosmosBulkExecutionOptions, operationContextAndListenerTuple)
 
       taskDiagnosticsContext
     } else{
@@ -103,7 +104,7 @@ class BulkWriter(container: CosmosAsyncContainer,
       container
           .processBulkOperations[Object](
             bulkInputEmitter.asFlux(),
-            bulkOptions)
+            cosmosBulkExecutionOptions)
           .asScala
 
     bulkOperationResponseFlux.subscribe(

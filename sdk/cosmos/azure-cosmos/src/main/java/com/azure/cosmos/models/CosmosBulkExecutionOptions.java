@@ -1,24 +1,22 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.cosmos;
+package com.azure.cosmos.models;
 
+import com.azure.cosmos.BulkExecutionThresholds;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.batch.BatchRequestResponseConstants;
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
-import com.azure.cosmos.models.CosmosBulkExecutionOptions;
 import com.azure.cosmos.util.Beta;
 
 import java.time.Duration;
 
 /**
- * @deprecated forRemoval = true, since = "4.19"
- * This class is not necessary anymore and will be removed.
- * Please use {@link com.azure.cosmos.models.CosmosBulkExecutionOptions}
+ * Encapsulates options that can be specified for operations used in Bulk execution.
+ * It can be passed while processing bulk operations.
  */
-@Beta(value = Beta.SinceVersion.V4_18_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-@Deprecated() //forRemoval = true, since = "4.19"
-@SuppressWarnings("DeprecatedIsStillUsed")
-public final class BulkExecutionOptions {
+@Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+public final class CosmosBulkExecutionOptions {
     private int maxMicroBatchSize = BatchRequestResponseConstants.MAX_OPERATIONS_IN_DIRECT_MODE_BATCH_REQUEST;
     private int maxMicroBatchConcurrency = BatchRequestResponseConstants.DEFAULT_MAX_MICRO_BATCH_CONCURRENCY;
     private double maxMicroBatchRetryRate = BatchRequestResponseConstants.DEFAULT_MAX_MICRO_BATCH_RETRY_RATE;
@@ -33,7 +31,7 @@ public final class BulkExecutionOptions {
      * Constructor
      * @param thresholds thresholds
      */
-    BulkExecutionOptions(Object legacyBatchScopedContext, BulkExecutionThresholds thresholds) {
+    CosmosBulkExecutionOptions(Object legacyBatchScopedContext, BulkExecutionThresholds thresholds) {
         this.legacyBatchScopedContext = legacyBatchScopedContext;
         if (thresholds == null) {
             this.thresholds = new BulkExecutionThresholds();
@@ -46,18 +44,16 @@ public final class BulkExecutionOptions {
      * Constructor
      * @param thresholds thresholds
      */
-    @Beta(value = Beta.SinceVersion.V4_18_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    @Deprecated() //forRemoval = true, since = "4.19"
-    public BulkExecutionOptions(BulkExecutionThresholds thresholds) {
+    @Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public CosmosBulkExecutionOptions(BulkExecutionThresholds thresholds) {
         this(null, thresholds);
     }
 
     /**
      * Constructor
      */
-    @Beta(value = Beta.SinceVersion.V4_18_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    @Deprecated() //forRemoval = true, since = "4.19"
-    public BulkExecutionOptions() {
+    @Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public CosmosBulkExecutionOptions() {
         this(null);
     }
 
@@ -74,8 +70,7 @@ public final class BulkExecutionOptions {
      * If the retry rate exceeds `getMaxMicroBatchInterval` the micro batch size gets dynamically reduced at runtime
      * @return micro batch size
      */
-    @Beta(value = Beta.SinceVersion.V4_18_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    @Deprecated() //forRemoval = true, since = "4.19"
+    @Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public int getMaxMicroBatchSize() {
         return maxMicroBatchSize;
     }
@@ -96,9 +91,8 @@ public final class BulkExecutionOptions {
      *
      * @return the bulk processing options.
      */
-    @Beta(value = Beta.SinceVersion.V4_18_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    @Deprecated() //forRemoval = true, since = "4.19"
-    public BulkExecutionOptions setMaxMicroBatchSize(int maxMicroBatchSize) {
+    @Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public CosmosBulkExecutionOptions setMaxMicroBatchSize(int maxMicroBatchSize) {
         this.maxMicroBatchSize = maxMicroBatchSize;
         return this;
     }
@@ -108,8 +102,7 @@ public final class BulkExecutionOptions {
      *
      * @return max micro batch concurrency
      */
-    @Beta(value = Beta.SinceVersion.V4_18_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    @Deprecated() //forRemoval = true, since = "4.19"
+    @Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public int getMaxMicroBatchConcurrency() {
         return maxMicroBatchConcurrency;
     }
@@ -121,9 +114,8 @@ public final class BulkExecutionOptions {
      *
      * @return the bulk processing options.
      */
-    @Beta(value = Beta.SinceVersion.V4_18_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    @Deprecated() //forRemoval = true, since = "4.19"
-    public BulkExecutionOptions setMaxMicroBatchConcurrency(int maxMicroBatchConcurrency) {
+    @Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public CosmosBulkExecutionOptions setMaxMicroBatchConcurrency(int maxMicroBatchConcurrency) {
         this.maxMicroBatchConcurrency = maxMicroBatchConcurrency;
         return this;
     }
@@ -133,8 +125,7 @@ public final class BulkExecutionOptions {
      *
      * @return max micro batch interval
      */
-    @Beta(value = Beta.SinceVersion.V4_18_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    @Deprecated() //forRemoval = true, since = "4.19"
+    @Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public Duration getMaxMicroBatchInterval() {
         return maxMicroBatchInterval;
     }
@@ -146,9 +137,8 @@ public final class BulkExecutionOptions {
      *
      * @return the bulk processing options.
      */
-    @Beta(value = Beta.SinceVersion.V4_18_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    @Deprecated() //forRemoval = true, since = "4.19"
-    public BulkExecutionOptions setMaxMicroBatchInterval(Duration maxMicroBatchInterval) {
+    @Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public CosmosBulkExecutionOptions setMaxMicroBatchInterval(Duration maxMicroBatchInterval) {
         this.maxMicroBatchInterval = maxMicroBatchInterval;
         return this;
     }
@@ -160,8 +150,7 @@ public final class BulkExecutionOptions {
      *
      * @return max targeted micro batch retry rate
      */
-    @Beta(value = Beta.SinceVersion.V4_18_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    @Deprecated() //forRemoval = true, since = "4.19"
+    @Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public double getMaxTargetedMicroBatchRetryRate() {
         return this.maxMicroBatchRetryRate;
     }
@@ -178,9 +167,8 @@ public final class BulkExecutionOptions {
      *
      * @return the bulk processing options.
      */
-    @Beta(value = Beta.SinceVersion.V4_18_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    @Deprecated() //forRemoval = true, since = "4.19"
-    public BulkExecutionOptions setTargetedMicroBatchRetryRate(double minRetryRate, double maxRetryRate) {
+    @Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public CosmosBulkExecutionOptions setTargetedMicroBatchRetryRate(double minRetryRate, double maxRetryRate) {
         if (minRetryRate < 0) {
             throw new IllegalArgumentException("The maxRetryRate must not be a negative value");
         }
@@ -201,8 +189,7 @@ public final class BulkExecutionOptions {
      *
      * @return min targeted micro batch retry rate
      */
-    @Beta(value = Beta.SinceVersion.V4_18_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    @Deprecated() //forRemoval = true, since = "4.19"
+    @Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public double getMinTargetedMicroBatchRetryRate() {
         return this.minMicroBatchRetryRate;
     }
@@ -219,8 +206,7 @@ public final class BulkExecutionOptions {
      * Returns thresholds
      * @return thresholds
      */
-    @Beta(value = Beta.SinceVersion.V4_18_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    @Deprecated() //forRemoval = true, since = "4.19"
+    @Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public BulkExecutionThresholds getThresholds() {
         return this.thresholds;
     }
@@ -233,12 +219,30 @@ public final class BulkExecutionOptions {
         this.operationContextAndListenerTuple = operationContextAndListenerTuple;
     }
 
-    CosmosBulkExecutionOptions toCosmosBulkExecutionOptions() {
-        CosmosBulkExecutionOptions cosmosBulkExecutionOptions = new CosmosBulkExecutionOptions(this.thresholds);
-        cosmosBulkExecutionOptions.setMaxMicroBatchInterval(this.maxMicroBatchInterval);
-        cosmosBulkExecutionOptions.setMaxMicroBatchConcurrency(this.maxMicroBatchConcurrency);
-        cosmosBulkExecutionOptions.setMaxMicroBatchSize(this.maxMicroBatchSize);
-        cosmosBulkExecutionOptions.setTargetedMicroBatchRetryRate(this.minMicroBatchRetryRate, this.maxMicroBatchRetryRate);
-        return cosmosBulkExecutionOptions;
+    ///////////////////////////////////////////////////////////////////////////////////////////
+    // the following helper/accessor only helps to access this class outside of this package.//
+    ///////////////////////////////////////////////////////////////////////////////////////////
+
+    static {
+        ImplementationBridgeHelpers.CosmosBulkExecutionOptionsHelper.setCosmosBulkExecutionOptionsAccessor(
+            new ImplementationBridgeHelpers.CosmosBulkExecutionOptionsHelper.CosmosBulkExecutionOptionsAccessor() {
+
+                @Override
+                public void setOperationContext(CosmosBulkExecutionOptions options,
+                                                OperationContextAndListenerTuple operationContextAndListenerTuple) {
+                    options.setOperationContextAndListenerTuple(operationContextAndListenerTuple);
+                }
+
+                @Override
+                public OperationContextAndListenerTuple getOperationContext(CosmosBulkExecutionOptions options) {
+                    return options.getOperationContextAndListenerTuple();
+                }
+
+                @Override
+                @SuppressWarnings({"unchecked"})
+                public <T> T getLegacyBatchScopedContext(CosmosBulkExecutionOptions options) {
+                    return (T)options.getLegacyBatchScopedContext();
+                }
+            });
     }
 }

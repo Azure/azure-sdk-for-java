@@ -1,8 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.cosmos;
+package com.azure.cosmos.models;
 
+import com.azure.cosmos.BulkExecutionThresholds;
+import com.azure.cosmos.BulkProcessingOptions;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.batch.PartitionScopeThresholds;
 import org.testng.annotations.Test;
@@ -30,7 +32,7 @@ public class BulkProcessingOptionsTest {
 
     @Test(groups = { "unit" })
     public void minAndMaxTargetRetryRate() {
-        BulkExecutionOptions options = new BulkExecutionOptions();
+        CosmosBulkExecutionOptions options = new CosmosBulkExecutionOptions();
 
         double rnd1 = rnd.nextDouble();
         double rnd2 = rnd.nextDouble();
@@ -46,15 +48,15 @@ public class BulkProcessingOptionsTest {
 
     @Test(groups = { "unit" })
     public void thresholdsInstanceCanBePassedAcrossBulkExecutionOptionsInstances() {
-        BulkExecutionOptions initialOptions = new BulkExecutionOptions();
+        CosmosBulkExecutionOptions initialOptions = new CosmosBulkExecutionOptions();
         BulkExecutionThresholds thresholds = initialOptions.getThresholds();
         ConcurrentMap<String, PartitionScopeThresholds> partitionScopeThresholdsMap =
             ImplementationBridgeHelpers
                 .BulkExecutionThresholdsHelper
                 .getBulkExecutionThresholdsAccessor()
                 .getPartitionScopeThresholds(thresholds);
-        BulkExecutionOptions optionsWithThresholds =
-            new BulkExecutionOptions(null, thresholds);
+        CosmosBulkExecutionOptions optionsWithThresholds =
+            new CosmosBulkExecutionOptions(null, thresholds);
 
         assertThat(thresholds).isSameAs(optionsWithThresholds.getThresholds());
         assertThat(partitionScopeThresholdsMap)

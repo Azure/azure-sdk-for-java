@@ -20,6 +20,7 @@ import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.RequestOptions;
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
+import com.azure.cosmos.models.CosmosBulkExecutionOptions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.Exceptions;
@@ -82,7 +83,7 @@ public final class BulkExecutor<TContext> {
     private final Long maxMicroBatchIntervalInMs;
     private final TContext batchContext;
     private final ConcurrentMap<String, PartitionScopeThresholds> partitionScopeThresholds;
-    private final BulkExecutionOptions bulkOptions;
+    private final CosmosBulkExecutionOptions cosmosBulkExecutionOptions;
 
     // Handle gone error:
     private final AtomicBoolean mainSourceCompleted;
@@ -94,13 +95,13 @@ public final class BulkExecutor<TContext> {
 
     public BulkExecutor(CosmosAsyncContainer container,
                         Flux<CosmosItemOperation> inputOperations,
-                        BulkExecutionOptions bulkOptions) {
+                        CosmosBulkExecutionOptions cosmosBulkOptions) {
 
         checkNotNull(container, "expected non-null container");
         checkNotNull(inputOperations, "expected non-null inputOperations");
-        checkNotNull(bulkOptions, "expected non-null bulkOptions");
+        checkNotNull(cosmosBulkOptions, "expected non-null bulkOptions");
 
-        this.bulkOptions = bulkOptions;
+        this.cosmosBulkExecutionOptions = cosmosBulkOptions;
         this.container = container;
         this.inputOperations = inputOperations;
         this.docClientWrapper = CosmosBridgeInternal.getAsyncDocumentClient(container.getDatabase());
@@ -108,16 +109,16 @@ public final class BulkExecutor<TContext> {
 
         // Fill the option first, to make the BulkProcessingOptions immutable, as if accessed directly, we might get
         // different values when a new group is created.
-        maxMicroBatchIntervalInMs = bulkOptions.getMaxMicroBatchInterval().toMillis();
+        maxMicroBatchIntervalInMs = cosmosBulkExecutionOptions.getMaxMicroBatchInterval().toMillis();
         batchContext = ImplementationBridgeHelpers.CosmosBulkExecutionOptionsHelper
             .getCosmosBulkExecutionOptionsAccessor()
-            .getLegacyBatchScopedContext(bulkOptions);
+            .getLegacyBatchScopedContext(cosmosBulkExecutionOptions);
         this.partitionScopeThresholds = ImplementationBridgeHelpers.BulkExecutionThresholdsHelper
             .getBulkExecutionThresholdsAccessor()
-            .getPartitionScopeThresholds(bulkOptions.getThresholds());
+            .getPartitionScopeThresholds(cosmosBulkExecutionOptions.getThresholds());
         operationListener = ImplementationBridgeHelpers.CosmosBulkExecutionOptionsHelper
             .getCosmosBulkExecutionOptionsAccessor()
-            .getOperationContext(bulkOptions);
+            .getOperationContext(cosmosBulkExecutionOptions);
         if (operationListener != null &&
             operationListener.getOperationContext() != null) {
             operationContextText = operationListener.getOperationContext().toString();
@@ -194,7 +195,7 @@ public final class BulkExecutor<TContext> {
                         PartitionScopeThresholds partitionScopeThresholds =
                             this.partitionScopeThresholds.computeIfAbsent(
                                 pkRangeId,
-                                (newPkRangeId) -> new PartitionScopeThresholds(newPkRangeId, this.bulkOptions));
+                                (newPkRangeId) -> new PartitionScopeThresholds(newPkRangeId, this.cosmosBulkExecutionOptions));
                         return Pair.of(partitionScopeThresholds, operation);
                     });
             })
@@ -307,7 +308,7 @@ public final class BulkExecutor<TContext> {
 
                     return executeOperations(operations, thresholds, groupSink);
                 },
-                this.bulkOptions.getMaxMicroBatchConcurrency());
+                this.cosmosBulkExecutionOptions.getMaxMicroBatchConcurrency());
     }
 
     private Flux<CosmosBulkOperationResponse<TContext>> executeOperations(

@@ -3,6 +3,7 @@
 
 package com.azure.cosmos;
 
+import com.azure.cosmos.models.CosmosBulkExecutionOptions;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.PartitionKeyDefinition;
@@ -192,7 +193,7 @@ public class CosmosBulkAsyncTest extends BatchTestBase {
                 return BulkOperations.getCreateItemOperation(eventDoc, new PartitionKey(partitionKey), ctx);
             }));
 
-        BulkExecutionOptions bulkExecutionOptions = new BulkExecutionOptions();
+        CosmosBulkExecutionOptions bulkExecutionOptions = new CosmosBulkExecutionOptions();
         bulkExecutionOptions.setTargetedMicroBatchRetryRate(0.25, 0.5);
         bulkExecutionOptions.setMaxMicroBatchConcurrency(1);
 
