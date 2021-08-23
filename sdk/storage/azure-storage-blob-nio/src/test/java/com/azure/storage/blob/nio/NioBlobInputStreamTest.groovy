@@ -100,6 +100,7 @@ class NioBlobInputStreamTest extends APISpec {
     def "Read fail"() {
         setup:
         bc.delete()
+        nioStream.read(new byte[4 * 1024 * 1024]) // Must read through the initial download to trigger network failures
 
         when:
         nioStream.read()
@@ -279,7 +280,7 @@ class NioBlobInputStreamTest extends APISpec {
 
         where:
         readAmount      | available
-        0               | 0
+        0               | 4 * 1024 * 1024 // opening the stream will download the first chunk
         5               | (4 * 1024 * 1024) - 5
         5 * 1024 * 1024 | 3 * 1024 * 1024
     }

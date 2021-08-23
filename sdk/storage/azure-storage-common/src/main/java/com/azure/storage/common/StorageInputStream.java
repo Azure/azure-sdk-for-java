@@ -118,6 +118,7 @@ public abstract class StorageInputStream extends InputStream {
      * @param rangeLength How much data the stream should return after blobRangeOffset.
      * @param chunkSize Holds the stream read size.
      * @param contentLength The length of the stream to be transferred.
+     * @param initialBuffer The first chunk of the download. Fetched alongside properties for optimization
      * @throws IndexOutOfBoundsException when range offset is less than 0 or rangeLength exists but les than or
      * equal to 0.
      */
