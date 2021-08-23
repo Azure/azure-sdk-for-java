@@ -6,7 +6,6 @@ package com.azure.spring.autoconfigure.cosmos;
 import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.spring.data.cosmos.core.ResponseDiagnosticsProcessor;
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
@@ -15,6 +14,7 @@ import org.springframework.boot.context.properties.DeprecatedConfigurationProper
 import org.springframework.validation.annotation.Validated;
 
 import javax.validation.constraints.NotEmpty;
+import java.util.regex.Pattern;
 
 /**
  * Configuration properties for Cosmos database, consistency, telemetry, connection, query metrics and diagnostics.
@@ -24,6 +24,9 @@ import javax.validation.constraints.NotEmpty;
 public class CosmosProperties implements InitializingBean {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CosmosProperties.class);
+
+    public static final String URIPATTERN = "http[s]{0,1}://.*.documents.azure.com.*";
+
     /**
      * Document DB URI.
      */
@@ -146,8 +149,10 @@ public class CosmosProperties implements InitializingBean {
     }
 
     private void validateUri() {
-        if (StringUtils.startsWithIgnoreCase(uri, "mongodb://")) {
-            throw new IllegalArgumentException("'azure.cosmos.uri' does not support mongodb, to work with mongodb, please use spring-data-mongodb instead.");
+        if (!Pattern.matches(URIPATTERN, uri)) {
+            throw new IllegalArgumentException("the uri's pattern specified in 'azure.cosmos.uri' is not supported, "
+                + "only sql/core api is supported, please check https://docs.microsoft.com/en-us/azure/cosmos-db/ "
+                + "for more info.");
         }
     }
 }
