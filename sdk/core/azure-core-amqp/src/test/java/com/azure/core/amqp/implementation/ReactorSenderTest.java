@@ -49,6 +49,7 @@ import reactor.test.publisher.TestPublisher;
 import java.io.IOException;
 import java.time.Duration;
 import java.util.Arrays;
+import java.util.concurrent.RejectedExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -69,7 +70,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 /**
- * Unit tests for {@link ReactorSender}
+ * Unit tests for {@link ReactorSender}.
  */
 public class ReactorSenderTest {
     private static final String ENTITY_PATH = "entity-path";
@@ -478,6 +479,36 @@ public class ReactorSenderTest {
 
         endpointStatePublisher.assertNoSubscribers();
         shutdownSignals.assertNoSubscribers();
+    }
+
+    /**
+     * An error in scheduling the close work will close the sender.
+     */
+    @Test
+    void disposesOnErrorSchedulingCloseWork() throws IOException {
+        // Arrange
+        reactorSender = new ReactorSender(amqpConnection, ENTITY_PATH, sender, handler,
+            reactorProvider, tokenManager, messageSerializer, options, scheduler);
+        final AtomicBoolean wasClosed = new AtomicBoolean();
+        doAnswer(invocationOnMock -> {
+            if (wasClosed.get()) {
+                throw new RejectedExecutionException("Test-resource-exception");
+            } else {
+                final Runnable runnable = invocationOnMock.getArgument(0);
+                runnable.run();
+                return null;
+            }
+        }).when(reactorDispatcher).invoke(any(Runnable.class));
+
+        // Act and Assert
+        StepVerifier.create(reactorSender.closeAsync().doOnSubscribe(subscribed -> wasClosed.set(true)))
+            .expectComplete()
+            .verify();
+
+        // Expect that this Mono has completed.
+        StepVerifier.create(reactorSender.isClosed())
+            .expectComplete()
+            .verify();
     }
 
     @Test

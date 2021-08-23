@@ -261,6 +261,7 @@ function Update-java-CIConfig($pkgs, $ciRepo, $locationInDocRepo, $monikerId=$nu
 }
 
 $PackageExclusions = @{
+  "azure-core-experimental" = "Don't want to include an experimental package.";
 }
 
 # Validates if the package will succeed in the CI build by validating the
@@ -334,13 +335,13 @@ function PackageDependenciesResolve($artifactNamePrefix, $packageDirectory) {
   return $true
 }
 
-function ValidatePackage($package, $workingDirectory) {
-  $artifactNamePrefix = "$($package.packageGroupId):$($package.packageArtifactId):$($package.packageVersion)"
+function ValidatePackage($groupId, $artifactId, $version, $workingDirectory) {
+  $artifactNamePrefix = "${groupId}:${artifactId}:${version}"
 
   $packageDirectory = Join-Path `
     $workingDirectory `
-    "$($package.packageGroupId)__$($package.packageArtifactId)__$($package.packageVersion)"
-  New-Item -ItemType Directory -Path $packageDirectory -Force
+    "${groupId}__${artifactId}__${version}"
+  New-Item -ItemType Directory -Path $packageDirectory -Force | Out-Null
 
   return (SourcePackageHasComFolder $artifactNamePrefix $packageDirectory) `
     -and (PackageDependenciesResolve $artifactNamePrefix $packageDirectory)
@@ -437,7 +438,7 @@ function UpdateDocsMsPackages($DocConfigFile, $Mode, $DocsMetadata) {
     # If upgrading the package, run basic sanity checks against the package
     if ($package.packageVersion -ne $packageVersion) {
       Write-Host "Validating new version detected for $packageName ($packageVersion)"
-      $validatePackageResult = ValidatePackage $package $workingDirectory
+      $validatePackageResult = ValidatePackage $package.packageGroupId $package.packageArtifactId $packageVersion $workingDirectory
 
       if (!$validatePackageResult) {
         LogWarning "Package is not valid: $packageName. Keeping old version."
@@ -478,7 +479,7 @@ function UpdateDocsMsPackages($DocConfigFile, $Mode, $DocsMetadata) {
     }
 
     Write-Host "Validating new package $($packageGroupId):$($packageName):$($packageVersion)"
-    $validatePackageResult = ValidatePackage $package $workingDirectory
+    $validatePackageResult = ValidatePackage $packageGroupId $packageName $packageVersion $workingDirectory
     if (!$validatePackageResult) {
       LogWarning "Package is not valid: ${packageGroupId}:$packageName. Cannot onboard."
       continue
