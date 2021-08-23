@@ -53,8 +53,8 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>org.springframework.boot:spring-boot-starter-web:[2.5.3]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-starter-web;external_dependency} -->
-                <include>org.springframework.boot:spring-boot-starter-actuator:[2.5.3]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-starter-actuator;external_dependency} -->
+                <include>org.springframework.boot:spring-boot-starter-web:[2.6.0-M2]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-starter-web;external_dependency} -->
+                <include>org.springframework.boot:spring-boot-starter-actuator:[2.6.0-M2]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-starter-actuator;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>

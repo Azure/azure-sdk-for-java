@@ -30,12 +30,12 @@
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-cache</artifactId>
-      <version>2.5.3</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-cache;external_dependency} -->
+      <version>2.6.0-M2</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-cache;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-data-redis</artifactId>
-      <version>2.5.3</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-data-redis;external_dependency} -->
+      <version>2.6.0-M2</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-data-redis;external_dependency} -->
     </dependency>
   </dependencies>
   <build>
@@ -48,8 +48,8 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>org.springframework.boot:spring-boot-starter-cache:[2.5.3]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-starter-cache;external_dependency} -->
-                <include>org.springframework.boot:spring-boot-starter-data-redis:[2.5.3]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-starter-data-redis;external_dependency} -->
+                <include>org.springframework.boot:spring-boot-starter-cache:[2.6.0-M2]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-starter-cache;external_dependency} -->
+                <include>org.springframework.boot:spring-boot-starter-data-redis:[2.6.0-M2]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-starter-data-redis;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>

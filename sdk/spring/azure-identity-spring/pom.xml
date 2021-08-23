@@ -23,7 +23,7 @@
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot</artifactId>
-      <version>2.5.3</version> <!-- {x-version-update;org.springframework.boot:spring-boot;external_dependency} -->
+      <version>2.6.0-M2</version> <!-- {x-version-update;org.springframework.boot:spring-boot;external_dependency} -->
       <scope>provided</scope>
     </dependency>
     <dependency>
@@ -46,7 +46,7 @@
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-test</artifactId>
-      <version>2.5.3</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-test;external_dependency} -->
+      <version>2.6.0-M2</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -61,7 +61,7 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>org.springframework.boot:spring-boot:[2.5.3]</include> <!-- {x-include-update;org.springframework.boot:spring-boot;external_dependency} -->
+                <include>org.springframework.boot:spring-boot:[2.6.0-M2]</include> <!-- {x-include-update;org.springframework.boot:spring-boot;external_dependency} -->
                 <include>org.springframework:spring-context:[5.3.9]</include> <!-- {x-include-update;org.springframework:spring-context;external_dependency} -->
                 <include>org.springframework:spring-core:[5.3.9]</include> <!-- {x-include-update;org.springframework:spring-core;external_dependency} -->
               </includes>
