@@ -9,29 +9,31 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import reactor.core.publisher.Mono;
 
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * A {@link HttpPipelinePolicy} that redirects a {@link HttpRequest} when an HTTP Redirect is received as response.
  */
 public final class RedirectPolicy implements HttpPipelinePolicy {
     private final RedirectStrategy redirectStrategy;
+    private final Set<String> attemptedRedirectUrls = new HashSet<>();
 
     /**
      * Creates {@link RedirectPolicy} with default {@link DefaultRedirectStrategy} as {@link RedirectStrategy} and
-     * use the provided {@code statusCode} to determine if this request should be redirected
-     * and MAX_REDIRECT_ATTEMPTS for the try count.
+     * uses the redirect status response code (301, 302, 307, 308) to determine if this request should be redirected.
      */
     public RedirectPolicy() {
         this(new DefaultRedirectStrategy());
     }
 
     /**
-     * Creates {@link RedirectPolicy} with default {@link DefaultRedirectStrategy} as {@link RedirectStrategy} and
-     * use the provided {@code statusCode} to determine if this request should be redirected.
+     * Creates {@link RedirectPolicy} with the provided {@code redirectStrategy} as {@link RedirectStrategy} and
+     * uses the redirect status response code (301, 302, 307, 308) to determine if this request should be redirected.
      *
      * @param redirectStrategy The {@link RedirectStrategy} used for redirection.
-     * @throws NullPointerException When {@code statusCode} is null.
+     * @throws NullPointerException When {@code redirectStrategy} is null.
      */
     public RedirectPolicy(RedirectStrategy redirectStrategy) {
         this.redirectStrategy = Objects.requireNonNull(redirectStrategy, "'redirectStrategy' cannot be null.");
@@ -54,7 +56,7 @@ public final class RedirectPolicy implements HttpPipelinePolicy {
 
         return next.clone().process()
             .flatMap(httpResponse -> {
-                if (redirectStrategy.shouldAttemptRedirect(httpResponse, redirectAttempt)) {
+                if (redirectStrategy.shouldAttemptRedirect(context, httpResponse, redirectAttempt, attemptedRedirectUrls)) {
                     HttpRequest redirectRequestCopy = redirectStrategy.createRedirect(httpResponse);
                     return httpResponse.getBody()
                         .ignoreElements()
