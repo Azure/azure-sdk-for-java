@@ -52,7 +52,7 @@ public abstract class AbstractServiceBusJMSAutoConfiguration {
      * @return {@link JmsListenerContainerFactory} bean
      */
     @Bean
-    @ConditionalOnMissingBean
+    @ConditionalOnMissingBean(name = "topicJmsListenerContainerFactory")
     public JmsListenerContainerFactory<?> topicJmsListenerContainerFactory(
         DefaultJmsListenerContainerFactoryConfigurer configurer, ConnectionFactory connectionFactory) {
         final DefaultJmsListenerContainerFactory jmsListenerContainerFactory = new DefaultJmsListenerContainerFactory();
