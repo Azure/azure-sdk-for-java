@@ -39,6 +39,11 @@
       <artifactId>azure-core</artifactId>
       <version>1.19.0-beta.1</version> <!-- {x-version-update;beta_com.azure:azure-core;dependency} -->
     </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-core-http-netty</artifactId>
+      <version>1.10.2</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
+    </dependency>
 
     <!-- Test dependencies -->
     <dependency>
