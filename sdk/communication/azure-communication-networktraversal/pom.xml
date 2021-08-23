@@ -47,8 +47,8 @@
   </scm>
 
   <properties>
-    <jacoco.min.linecoverage>0.88</jacoco.min.linecoverage>
-    <jacoco.min.branchcoverage>0.70</jacoco.min.branchcoverage>
+    <jacoco.min.linecoverage>0.70</jacoco.min.linecoverage>
+    <jacoco.min.branchcoverage>0.40</jacoco.min.branchcoverage>
     <jacoco.skip.coverage.check>false</jacoco.skip.coverage.check>
   </properties>
 
