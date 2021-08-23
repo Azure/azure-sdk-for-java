@@ -22,7 +22,7 @@ public final class RecognizeLinkedEntitiesActionResult extends TextAnalyticsActi
     /**
      * Gets the linked entities recognition action result.
      *
-     * @return the linked entities recognition action result.
+     * @return The linked entities recognition action result.
      *
      * @throws TextAnalyticsException if result has {@code isError} equals to true and when a non-error property
      * was accessed.

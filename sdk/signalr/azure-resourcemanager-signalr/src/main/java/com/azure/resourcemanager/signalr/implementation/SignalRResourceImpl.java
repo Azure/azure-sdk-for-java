@@ -153,6 +153,18 @@ public final class SignalRResourceImpl implements SignalRResource, SignalRResour
         return this.innerModel().networkACLs();
     }
 
+    public String publicNetworkAccess() {
+        return this.innerModel().publicNetworkAccess();
+    }
+
+    public Boolean disableLocalAuth() {
+        return this.innerModel().disableLocalAuth();
+    }
+
+    public Boolean disableAadAuth() {
+        return this.innerModel().disableAadAuth();
+    }
+
     public Region region() {
         return Region.fromName(this.regionName());
     }
@@ -328,6 +340,21 @@ public final class SignalRResourceImpl implements SignalRResource, SignalRResour
 
     public SignalRResourceImpl withNetworkACLs(SignalRNetworkACLs networkACLs) {
         this.innerModel().withNetworkACLs(networkACLs);
+        return this;
+    }
+
+    public SignalRResourceImpl withPublicNetworkAccess(String publicNetworkAccess) {
+        this.innerModel().withPublicNetworkAccess(publicNetworkAccess);
+        return this;
+    }
+
+    public SignalRResourceImpl withDisableLocalAuth(Boolean disableLocalAuth) {
+        this.innerModel().withDisableLocalAuth(disableLocalAuth);
+        return this;
+    }
+
+    public SignalRResourceImpl withDisableAadAuth(Boolean disableAadAuth) {
+        this.innerModel().withDisableAadAuth(disableAadAuth);
         return this;
     }
 }

@@ -287,7 +287,8 @@ public interface ConfigurationStore {
             UpdateStages.WithIdentity,
             UpdateStages.WithSku,
             UpdateStages.WithEncryption,
-            UpdateStages.WithDisableLocalAuth {
+            UpdateStages.WithDisableLocalAuth,
+            UpdateStages.WithPublicNetworkAccess {
         /**
          * Executes the update request.
          *
@@ -355,6 +356,18 @@ public interface ConfigurationStore {
              * @return the next definition stage.
              */
             Update withDisableLocalAuth(Boolean disableLocalAuth);
+        }
+        /** The stage of the ConfigurationStore update allowing to specify publicNetworkAccess. */
+        interface WithPublicNetworkAccess {
+            /**
+             * Specifies the publicNetworkAccess property: Control permission for data plane traffic coming from public
+             * networks while private endpoint is enabled..
+             *
+             * @param publicNetworkAccess Control permission for data plane traffic coming from public networks while
+             *     private endpoint is enabled.
+             * @return the next definition stage.
+             */
+            Update withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess);
         }
     }
     /**

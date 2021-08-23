@@ -18,12 +18,12 @@ Use the client library for App Configuration to create and manage application co
 
 ### Include the Package
 
-[//]: # ({x-version-update-start;com.azure:azure-data-appconfiguration;dependency})
+[//]: # ({x-version-update-start;com.azure:azure-data-appconfiguration;current})
 ```xml
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-data-appconfiguration</artifactId>
-  <version>1.1.12</version>
+  <version>1.2.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})

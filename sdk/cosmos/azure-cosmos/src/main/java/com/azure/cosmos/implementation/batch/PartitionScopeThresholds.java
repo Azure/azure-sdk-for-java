@@ -3,11 +3,10 @@
 
 package com.azure.cosmos.implementation.batch;
 
-import com.azure.cosmos.BulkProcessingOptions;
+import com.azure.cosmos.BulkExecutionOptions;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import reactor.util.function.Tuple2;
 
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -16,11 +15,11 @@ import java.util.concurrent.atomic.AtomicReference;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
-public class PartitionScopeThresholds<TContext> {
+public class PartitionScopeThresholds {
     private final static Logger logger = LoggerFactory.getLogger(PartitionScopeThresholds.class);
 
     private final String pkRangeId;
-    private final BulkProcessingOptions<TContext> options;
+    private final BulkExecutionOptions options;
     private final AtomicInteger targetMicroBatchSize;
     private final AtomicLong totalOperationCount;
     private final AtomicReference<CurrentIntervalThresholds> currentThresholds;
@@ -29,7 +28,7 @@ public class PartitionScopeThresholds<TContext> {
     private final double maxRetryRate;
     private final double avgRetryRate;
 
-    public PartitionScopeThresholds(String pkRangeId, BulkProcessingOptions<TContext> options) {
+    public PartitionScopeThresholds(String pkRangeId, BulkExecutionOptions options) {
         checkNotNull(pkRangeId, "expected non-null pkRangeId");
         checkNotNull(options, "expected non-null options");
 

@@ -1,7 +1,39 @@
 # Release History
 
-## 5.9.0-beta.1 (Unreleased)
+## 5.11.0-beta.1 (Unreleased)
 
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 5.10.0 (2021-08-19)
+
+### Features Added
+
+- Add `EventProcessorClientBuilder.prefetchCount(int)` overload.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Update `azure-core` dependency to `1.19.0`.
+- Update `azure-core-amqp` dependency to `2.3.1`.
+
+## 5.9.0 (2021-07-09)
+
+### Features Added
+
+- Add additional fields to `EventData`. `getContentType()`, `getCorrelationId()`, `getMessageId()` and the corresponding setters were added.
+- Add `EventData.getRawAmqpMessage()`. Data in `EventData.getSystemProperties()` is backed by `AmqpAnnotatedMessage` but are read-only.
+
+### Dependency Updates
+
+- Update `azure-core` dependency to `1.18.0`.
+- Update `azure-core-amqp` dependency to `2.3.0`.
 
 ## 5.8.0 (2021-06-14)
 

@@ -23,6 +23,7 @@ import java.util.function.Function;
  */
 public final class IdentityClientOptions {
     private static final int MAX_RETRY_DEFAULT_LIMIT = 3;
+    public static final String AZURE_IDENTITY_ENABLE_LEGACY_TENANT_SELECTION = "AZURE_IDENTITY_ENABLE_LEGACY_TENANT_SELECTION";
 
     private String authorityHost;
     private int maxRetry;
@@ -32,6 +33,7 @@ public final class IdentityClientOptions {
     private ExecutorService executorService;
     private HttpClient httpClient;
     private boolean allowUnencryptedCache;
+    private boolean allowMultiTenantAuthentication;
     private boolean sharedTokenCacheEnabled;
     private String keePassDatabasePath;
     private boolean includeX5c;
@@ -39,20 +41,21 @@ public final class IdentityClientOptions {
     private TokenCachePersistenceOptions tokenCachePersistenceOptions;
     private boolean cp1Disabled;
     private RegionalAuthority regionalAuthority;
+    private boolean identityLegacyTenantSelection;
+    private Configuration configuration;
 
     /**
      * Creates an instance of IdentityClientOptions with default settings.
      */
     public IdentityClientOptions() {
         Configuration configuration = Configuration.getGlobalConfiguration();
-        authorityHost = configuration.get(Configuration.PROPERTY_AZURE_AUTHORITY_HOST,
-            AzureAuthorityHosts.AZURE_PUBLIC_CLOUD);
-        cp1Disabled = configuration.get(Configuration.PROPERTY_AZURE_IDENTITY_DISABLE_CP1, false);
-        ValidationUtil.validateAuthHost(getClass().getSimpleName(), authorityHost);
+        loadFromConfiugration(configuration);
         maxRetry = MAX_RETRY_DEFAULT_LIMIT;
         retryTimeout = i -> Duration.ofSeconds((long) Math.pow(2, i.getSeconds() - 1));
         regionalAuthority = RegionalAuthority.fromString(
             configuration.get(Configuration.PROPERTY_AZURE_REGIONAL_AUTHORITY_NAME));
+        identityLegacyTenantSelection = configuration
+            .get(AZURE_IDENTITY_ENABLE_LEGACY_TENANT_SELECTION, false);
     }
 
     /**
@@ -197,8 +200,30 @@ public final class IdentityClientOptions {
         return this;
     }
 
+    /**
+     * Allows to override the tenant being used in the authentication request
+     * via {@link com.azure.core.experimental.credential.TokenRequestContextExperimental#setTenantId(String)}.
+     *
+     * @param allowMultiTenantAuthentication the flag to indicate if multi tenant authentication is enabled or not.
+     * @return The updated identity client options.
+     */
+    public IdentityClientOptions setAllowMultiTenantAuthentication(boolean allowMultiTenantAuthentication) {
+        this.allowMultiTenantAuthentication = allowMultiTenantAuthentication;
+        return this;
+    }
+
+
     public boolean getAllowUnencryptedCache() {
         return this.allowUnencryptedCache;
+    }
+
+    /**
+     * Get the flag indicating if multi tenant authentication is enabled or not.
+     *
+     * @return the boolean status indicating if multi tenant authentication is enabled or not.
+     */
+    public boolean isMultiTenantAuthenticationAllowed() {
+        return this.allowMultiTenantAuthentication;
     }
 
     /**
@@ -327,5 +352,51 @@ public final class IdentityClientOptions {
      */
     public RegionalAuthority getRegionalAuthority() {
         return regionalAuthority;
+    }
+
+
+    /**
+     * Gets the regional authority, or null if regional authority should not be used.
+     * @return the regional authority value if specified
+     */
+    public boolean isLegacyTenantSelectionEnabled() {
+        return identityLegacyTenantSelection;
+    }
+
+
+    /**
+     * Sets the specified configuration store.
+     *
+     * @param configuration the configuration store to be used to read env variables and/or system properties.
+     * @return the updated identity client options
+     */
+    public IdentityClientOptions setConfiguration(Configuration configuration) {
+        this.configuration = configuration;
+        loadFromConfiugration(configuration);
+        return this;
+    }
+
+    /**
+     * Gets the configured configuration store.
+     *
+     * @return the configured {@link Configuration} store.
+     */
+    public Configuration getConfiguration() {
+        return this.configuration;
+    }
+
+    /**
+     * Loads the details from the specified Configuration Store.
+     *
+     * @return the regional authority value if specified
+     */
+    private IdentityClientOptions loadFromConfiugration(Configuration configuration) {
+        authorityHost = configuration.get(Configuration.PROPERTY_AZURE_AUTHORITY_HOST,
+            AzureAuthorityHosts.AZURE_PUBLIC_CLOUD);
+        ValidationUtil.validateAuthHost(getClass().getSimpleName(), authorityHost);
+        cp1Disabled = configuration.get(Configuration.PROPERTY_AZURE_IDENTITY_DISABLE_CP1, false);
+        regionalAuthority = RegionalAuthority.fromString(
+            configuration.get(Configuration.PROPERTY_AZURE_REGIONAL_AUTHORITY_NAME));
+        return  this;
     }
 }

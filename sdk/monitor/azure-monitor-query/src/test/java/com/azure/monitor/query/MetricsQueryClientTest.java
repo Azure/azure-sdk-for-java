@@ -5,6 +5,7 @@ package com.azure.monitor.query;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
+import com.azure.core.experimental.models.TimeInterval;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.rest.PagedIterable;
@@ -21,7 +22,6 @@ import com.azure.monitor.query.models.MetricDefinition;
 import com.azure.monitor.query.models.MetricNamespace;
 import com.azure.monitor.query.models.MetricsQueryOptions;
 import com.azure.monitor.query.models.MetricsQueryResult;
-import com.azure.monitor.query.models.QueryTimeSpan;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -75,13 +75,13 @@ public class MetricsQueryClientTest extends TestBase {
     @Test
     public void testMetricsQuery() {
         Response<MetricsQueryResult> metricsResponse = client
-            .queryMetricsWithResponse(RESOURCE_URI, Arrays.asList("SuccessfulCalls"),
+            .queryWithResponse(RESOURCE_URI, Arrays.asList("SuccessfulCalls"),
                 new MetricsQueryOptions()
-                    .setMetricsNamespace("Microsoft.CognitiveServices/accounts")
-                    .setTimeSpan(new QueryTimeSpan(Duration.ofDays(10)))
+                    .setMetricNamespace("Microsoft.CognitiveServices/accounts")
+                    .setTimeSpan(new TimeInterval(Duration.ofDays(10)))
                     .setInterval(Duration.ofHours(1))
                     .setTop(100)
-                    .setAggregation(Arrays.asList(AggregationType.COUNT, AggregationType.TOTAL,
+                    .setAggregations(Arrays.asList(AggregationType.COUNT, AggregationType.TOTAL,
                             AggregationType.MAXIMUM, AggregationType.MINIMUM, AggregationType.AVERAGE)),
                 Context.NONE);
 
@@ -103,13 +103,13 @@ public class MetricsQueryClientTest extends TestBase {
     @Test
     public void testMetricsDefinition() {
         PagedIterable<MetricDefinition> metricsDefinitions = client
-                .listMetricsDefinition(RESOURCE_URI, "Microsoft.CognitiveServices/accounts");
+                .listMetricDefinitions(RESOURCE_URI);
         assertEquals(11, metricsDefinitions.stream().count());
     }
 
     @Test
     public void testMetricsNamespaces() {
-        PagedIterable<MetricNamespace> metricsNamespaces = client.listMetricsNamespace(RESOURCE_URI,
+        PagedIterable<MetricNamespace> metricsNamespaces = client.listMetricNamespaces(RESOURCE_URI,
                 OffsetDateTime.of(LocalDateTime.of(2021, 06, 01, 0, 0), ZoneOffset.UTC));
         assertEquals(2, metricsNamespaces.stream().count());
     }

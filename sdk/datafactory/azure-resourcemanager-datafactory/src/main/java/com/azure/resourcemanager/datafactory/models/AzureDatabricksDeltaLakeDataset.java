@@ -5,8 +5,8 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.datafactory.fluent.models.AzureDatabricksDeltaLakeDatasetTypeProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -17,63 +17,23 @@ import java.util.Map;
 /** Azure Databricks Delta Lake dataset. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("AzureDatabricksDeltaLakeDataset")
-@JsonFlatten
 @Fluent
-public class AzureDatabricksDeltaLakeDataset extends Dataset {
+public final class AzureDatabricksDeltaLakeDataset extends Dataset {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureDatabricksDeltaLakeDataset.class);
 
     /*
-     * The name of delta table. Type: string (or Expression with resultType
-     * string).
+     * Properties specific to this dataset type.
      */
-    @JsonProperty(value = "typeProperties.table")
-    private Object table;
-
-    /*
-     * The database name of delta table. Type: string (or Expression with
-     * resultType string).
-     */
-    @JsonProperty(value = "typeProperties.database")
-    private Object database;
+    @JsonProperty(value = "typeProperties")
+    private AzureDatabricksDeltaLakeDatasetTypeProperties innerTypeProperties;
 
     /**
-     * Get the table property: The name of delta table. Type: string (or Expression with resultType string).
+     * Get the innerTypeProperties property: Properties specific to this dataset type.
      *
-     * @return the table value.
+     * @return the innerTypeProperties value.
      */
-    public Object table() {
-        return this.table;
-    }
-
-    /**
-     * Set the table property: The name of delta table. Type: string (or Expression with resultType string).
-     *
-     * @param table the table value to set.
-     * @return the AzureDatabricksDeltaLakeDataset object itself.
-     */
-    public AzureDatabricksDeltaLakeDataset withTable(Object table) {
-        this.table = table;
-        return this;
-    }
-
-    /**
-     * Get the database property: The database name of delta table. Type: string (or Expression with resultType string).
-     *
-     * @return the database value.
-     */
-    public Object database() {
-        return this.database;
-    }
-
-    /**
-     * Set the database property: The database name of delta table. Type: string (or Expression with resultType string).
-     *
-     * @param database the database value to set.
-     * @return the AzureDatabricksDeltaLakeDataset object itself.
-     */
-    public AzureDatabricksDeltaLakeDataset withDatabase(Object database) {
-        this.database = database;
-        return this;
+    private AzureDatabricksDeltaLakeDatasetTypeProperties innerTypeProperties() {
+        return this.innerTypeProperties;
     }
 
     /** {@inheritDoc} */
@@ -126,6 +86,52 @@ public class AzureDatabricksDeltaLakeDataset extends Dataset {
     }
 
     /**
+     * Get the table property: The name of delta table. Type: string (or Expression with resultType string).
+     *
+     * @return the table value.
+     */
+    public Object table() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().table();
+    }
+
+    /**
+     * Set the table property: The name of delta table. Type: string (or Expression with resultType string).
+     *
+     * @param table the table value to set.
+     * @return the AzureDatabricksDeltaLakeDataset object itself.
+     */
+    public AzureDatabricksDeltaLakeDataset withTable(Object table) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new AzureDatabricksDeltaLakeDatasetTypeProperties();
+        }
+        this.innerTypeProperties().withTable(table);
+        return this;
+    }
+
+    /**
+     * Get the database property: The database name of delta table. Type: string (or Expression with resultType string).
+     *
+     * @return the database value.
+     */
+    public Object database() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().database();
+    }
+
+    /**
+     * Set the database property: The database name of delta table. Type: string (or Expression with resultType string).
+     *
+     * @param database the database value to set.
+     * @return the AzureDatabricksDeltaLakeDataset object itself.
+     */
+    public AzureDatabricksDeltaLakeDataset withDatabase(Object database) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new AzureDatabricksDeltaLakeDatasetTypeProperties();
+        }
+        this.innerTypeProperties().withDatabase(database);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -133,5 +139,8 @@ public class AzureDatabricksDeltaLakeDataset extends Dataset {
     @Override
     public void validate() {
         super.validate();
+        if (innerTypeProperties() != null) {
+            innerTypeProperties().validate();
+        }
     }
 }

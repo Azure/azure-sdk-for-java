@@ -50,7 +50,7 @@ public class CosmosBulkAsyncTest extends BatchTestBase {
         safeCloseAsync(this.bulkClient);
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    @Test(groups = {"simple"}, timeOut = TIMEOUT * 2)
     public void createItem_withBulkAndThroughputControl() throws InterruptedException {
         int totalRequest = getTotalRequest(180, 200);
 
@@ -162,6 +162,64 @@ public class CosmosBulkAsyncTest extends BatchTestBase {
                 assertThat(cosmosBulkItemResponse.getSessionToken()).isNotNull();
                 assertThat(cosmosBulkItemResponse.getActivityId()).isNotNull();
                 assertThat(cosmosBulkItemResponse.getRequestCharge()).isNotNull();
+
+                return Mono.just(cosmosBulkItemResponse);
+            }).blockLast();
+
+        assertThat(processedDoc.get()).isEqualTo(totalRequest * 2);
+    }
+
+    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    public void createItem_withBulk_and_operationLevelContext() {
+        int totalRequest = getTotalRequest();
+
+        Flux<CosmosItemOperation> cosmosItemOperationFlux = Flux.merge(
+            Flux.range(0, totalRequest).map(i -> {
+
+                String randomId = UUID.randomUUID().toString();
+                String partitionKey = randomId;
+                TestDoc testDoc = this.populateTestDoc(partitionKey);
+                ItemOperationContext ctx = new ItemOperationContext(randomId);
+
+                return BulkOperations.getCreateItemOperation(testDoc, new PartitionKey(partitionKey), ctx);
+            }),
+            Flux.range(0, totalRequest).map(i -> {
+                String randomId = UUID.randomUUID().toString();
+                String partitionKey = randomId;
+                EventDoc eventDoc = new EventDoc(UUID.randomUUID().toString(), 2, 4, "type1", partitionKey);
+
+                ItemOperationContext ctx = new ItemOperationContext(randomId);
+                return BulkOperations.getCreateItemOperation(eventDoc, new PartitionKey(partitionKey), ctx);
+            }));
+
+        BulkExecutionOptions bulkExecutionOptions = new BulkExecutionOptions();
+        bulkExecutionOptions.setTargetedMicroBatchRetryRate(0.25, 0.5);
+        bulkExecutionOptions.setMaxMicroBatchConcurrency(1);
+
+        Flux<CosmosBulkOperationResponse<CosmosBulkAsyncTest>> responseFlux = bulkAsyncContainer
+            .processBulkOperations(cosmosItemOperationFlux, bulkExecutionOptions);
+
+        AtomicInteger processedDoc = new AtomicInteger(0);
+        responseFlux
+            .flatMap((CosmosBulkOperationResponse<CosmosBulkAsyncTest> cosmosBulkOperationResponse) -> {
+
+                processedDoc.incrementAndGet();
+
+                CosmosBulkItemResponse cosmosBulkItemResponse = cosmosBulkOperationResponse.getResponse();
+                if (cosmosBulkOperationResponse.getException() != null) {
+                    logger.error("Bulk operation failed", cosmosBulkOperationResponse.getException());
+                    fail(cosmosBulkOperationResponse.getException().toString());
+                }
+
+                assertThat(cosmosBulkItemResponse.getStatusCode()).isEqualTo(HttpResponseStatus.CREATED.code());
+                assertThat(cosmosBulkItemResponse.getRequestCharge()).isGreaterThan(0);
+                assertThat(cosmosBulkItemResponse.getCosmosDiagnostics().toString()).isNotNull();
+                assertThat(cosmosBulkItemResponse.getSessionToken()).isNotNull();
+                assertThat(cosmosBulkItemResponse.getActivityId()).isNotNull();
+                assertThat(cosmosBulkItemResponse.getRequestCharge()).isNotNull();
+                ItemOperationContext ctx = cosmosBulkOperationResponse.getOperation().getContext();
+                assertThat(cosmosBulkOperationResponse.getOperation().getPartitionKeyValue().toString())
+                    .isEqualTo(new PartitionKey(ctx.getCorrelationId()).toString());
 
                 return Mono.just(cosmosBulkItemResponse);
             }).blockLast();
@@ -721,5 +779,17 @@ public class CosmosBulkAsyncTest extends BatchTestBase {
 
     private int getTotalRequest() {
         return getTotalRequest(200, 300);
+    }
+
+    private static class ItemOperationContext {
+        private final String correlationId;
+
+        public ItemOperationContext(String correlationId) {
+            this.correlationId = correlationId;
+        }
+
+        public String getCorrelationId() {
+            return this.correlationId;
+        }
     }
 }

@@ -42,10 +42,11 @@ public class LogsQueryBatchSample {
         LogsBatchQuery logsBatchQuery = new LogsBatchQuery()
                 .addQuery("d2d0e126-fa1e-4b0a-b647-250cdd471e68", "AppRequests | take 2", null)
                 .addQuery("d2d0e126-fa1e-4b0a-b647-250cdd471e68", "AppRequests | take 3", null)
-                .addQuery(new LogsQueryOptions("d2d0e126-fa1e-4b0a-b647-250cdd471e68", "AppRequests | take 4", null).setIncludeStatistics(true));
+                .addQuery("d2d0e126-fa1e-4b0a-b647-250cdd471e68", "AppRequests | take 4", null,
+                        new LogsQueryOptions().setIncludeStatistics(true));
 
         LogsBatchQueryResultCollection batchResultCollection = logsQueryClient
-                .queryLogsBatchWithResponse(logsBatchQuery, Context.NONE).getValue();
+                .queryBatchWithResponse(logsBatchQuery, Context.NONE).getValue();
 
         List<LogsBatchQueryResult> responses = batchResultCollection.getBatchResults();
 
@@ -54,9 +55,9 @@ public class LogsQueryBatchSample {
 
             // Sample to iterate by row
             for (LogsTable table : queryResult.getLogsTables()) {
-                for (LogsTableRow row : table.getTableRows()) {
+                for (LogsTableRow row : table.getRows()) {
                     System.out.println("Row index " + row.getRowIndex());
-                    row.getTableRow()
+                    row.getRow()
                             .forEach(cell -> System.out.println("Column = " + cell.getColumnName() + "; value = " + cell.getValueAsString()));
                 }
             }

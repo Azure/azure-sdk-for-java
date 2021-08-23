@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** Feature of a SignalR resource, which controls the SignalR runtime behavior. */
+/** Feature of a resource, which controls the runtime behavior. */
 @Fluent
 public final class SignalRFeature {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(SignalRFeature.class);

@@ -5,8 +5,8 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.datafactory.fluent.models.FileShareDatasetTypeProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -17,207 +17,23 @@ import java.util.Map;
 /** An on-premises file system dataset. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("FileShare")
-@JsonFlatten
 @Fluent
-public class FileShareDataset extends Dataset {
+public final class FileShareDataset extends Dataset {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(FileShareDataset.class);
 
     /*
-     * The path of the on-premises file system. Type: string (or Expression
-     * with resultType string).
+     * On-premises file system dataset properties.
      */
-    @JsonProperty(value = "typeProperties.folderPath")
-    private Object folderPath;
-
-    /*
-     * The name of the on-premises file system. Type: string (or Expression
-     * with resultType string).
-     */
-    @JsonProperty(value = "typeProperties.fileName")
-    private Object fileName;
-
-    /*
-     * The start of file's modified datetime. Type: string (or Expression with
-     * resultType string).
-     */
-    @JsonProperty(value = "typeProperties.modifiedDatetimeStart")
-    private Object modifiedDatetimeStart;
-
-    /*
-     * The end of file's modified datetime. Type: string (or Expression with
-     * resultType string).
-     */
-    @JsonProperty(value = "typeProperties.modifiedDatetimeEnd")
-    private Object modifiedDatetimeEnd;
-
-    /*
-     * The format of the files.
-     */
-    @JsonProperty(value = "typeProperties.format")
-    private DatasetStorageFormat format;
-
-    /*
-     * Specify a filter to be used to select a subset of files in the
-     * folderPath rather than all files. Type: string (or Expression with
-     * resultType string).
-     */
-    @JsonProperty(value = "typeProperties.fileFilter")
-    private Object fileFilter;
-
-    /*
-     * The data compression method used for the file system.
-     */
-    @JsonProperty(value = "typeProperties.compression")
-    private DatasetCompression compression;
+    @JsonProperty(value = "typeProperties")
+    private FileShareDatasetTypeProperties innerTypeProperties;
 
     /**
-     * Get the folderPath property: The path of the on-premises file system. Type: string (or Expression with resultType
-     * string).
+     * Get the innerTypeProperties property: On-premises file system dataset properties.
      *
-     * @return the folderPath value.
+     * @return the innerTypeProperties value.
      */
-    public Object folderPath() {
-        return this.folderPath;
-    }
-
-    /**
-     * Set the folderPath property: The path of the on-premises file system. Type: string (or Expression with resultType
-     * string).
-     *
-     * @param folderPath the folderPath value to set.
-     * @return the FileShareDataset object itself.
-     */
-    public FileShareDataset withFolderPath(Object folderPath) {
-        this.folderPath = folderPath;
-        return this;
-    }
-
-    /**
-     * Get the fileName property: The name of the on-premises file system. Type: string (or Expression with resultType
-     * string).
-     *
-     * @return the fileName value.
-     */
-    public Object fileName() {
-        return this.fileName;
-    }
-
-    /**
-     * Set the fileName property: The name of the on-premises file system. Type: string (or Expression with resultType
-     * string).
-     *
-     * @param fileName the fileName value to set.
-     * @return the FileShareDataset object itself.
-     */
-    public FileShareDataset withFileName(Object fileName) {
-        this.fileName = fileName;
-        return this;
-    }
-
-    /**
-     * Get the modifiedDatetimeStart property: The start of file's modified datetime. Type: string (or Expression with
-     * resultType string).
-     *
-     * @return the modifiedDatetimeStart value.
-     */
-    public Object modifiedDatetimeStart() {
-        return this.modifiedDatetimeStart;
-    }
-
-    /**
-     * Set the modifiedDatetimeStart property: The start of file's modified datetime. Type: string (or Expression with
-     * resultType string).
-     *
-     * @param modifiedDatetimeStart the modifiedDatetimeStart value to set.
-     * @return the FileShareDataset object itself.
-     */
-    public FileShareDataset withModifiedDatetimeStart(Object modifiedDatetimeStart) {
-        this.modifiedDatetimeStart = modifiedDatetimeStart;
-        return this;
-    }
-
-    /**
-     * Get the modifiedDatetimeEnd property: The end of file's modified datetime. Type: string (or Expression with
-     * resultType string).
-     *
-     * @return the modifiedDatetimeEnd value.
-     */
-    public Object modifiedDatetimeEnd() {
-        return this.modifiedDatetimeEnd;
-    }
-
-    /**
-     * Set the modifiedDatetimeEnd property: The end of file's modified datetime. Type: string (or Expression with
-     * resultType string).
-     *
-     * @param modifiedDatetimeEnd the modifiedDatetimeEnd value to set.
-     * @return the FileShareDataset object itself.
-     */
-    public FileShareDataset withModifiedDatetimeEnd(Object modifiedDatetimeEnd) {
-        this.modifiedDatetimeEnd = modifiedDatetimeEnd;
-        return this;
-    }
-
-    /**
-     * Get the format property: The format of the files.
-     *
-     * @return the format value.
-     */
-    public DatasetStorageFormat format() {
-        return this.format;
-    }
-
-    /**
-     * Set the format property: The format of the files.
-     *
-     * @param format the format value to set.
-     * @return the FileShareDataset object itself.
-     */
-    public FileShareDataset withFormat(DatasetStorageFormat format) {
-        this.format = format;
-        return this;
-    }
-
-    /**
-     * Get the fileFilter property: Specify a filter to be used to select a subset of files in the folderPath rather
-     * than all files. Type: string (or Expression with resultType string).
-     *
-     * @return the fileFilter value.
-     */
-    public Object fileFilter() {
-        return this.fileFilter;
-    }
-
-    /**
-     * Set the fileFilter property: Specify a filter to be used to select a subset of files in the folderPath rather
-     * than all files. Type: string (or Expression with resultType string).
-     *
-     * @param fileFilter the fileFilter value to set.
-     * @return the FileShareDataset object itself.
-     */
-    public FileShareDataset withFileFilter(Object fileFilter) {
-        this.fileFilter = fileFilter;
-        return this;
-    }
-
-    /**
-     * Get the compression property: The data compression method used for the file system.
-     *
-     * @return the compression value.
-     */
-    public DatasetCompression compression() {
-        return this.compression;
-    }
-
-    /**
-     * Set the compression property: The data compression method used for the file system.
-     *
-     * @param compression the compression value to set.
-     * @return the FileShareDataset object itself.
-     */
-    public FileShareDataset withCompression(DatasetCompression compression) {
-        this.compression = compression;
-        return this;
+    private FileShareDatasetTypeProperties innerTypeProperties() {
+        return this.innerTypeProperties;
     }
 
     /** {@inheritDoc} */
@@ -270,6 +86,177 @@ public class FileShareDataset extends Dataset {
     }
 
     /**
+     * Get the folderPath property: The path of the on-premises file system. Type: string (or Expression with resultType
+     * string).
+     *
+     * @return the folderPath value.
+     */
+    public Object folderPath() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().folderPath();
+    }
+
+    /**
+     * Set the folderPath property: The path of the on-premises file system. Type: string (or Expression with resultType
+     * string).
+     *
+     * @param folderPath the folderPath value to set.
+     * @return the FileShareDataset object itself.
+     */
+    public FileShareDataset withFolderPath(Object folderPath) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new FileShareDatasetTypeProperties();
+        }
+        this.innerTypeProperties().withFolderPath(folderPath);
+        return this;
+    }
+
+    /**
+     * Get the fileName property: The name of the on-premises file system. Type: string (or Expression with resultType
+     * string).
+     *
+     * @return the fileName value.
+     */
+    public Object fileName() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().fileName();
+    }
+
+    /**
+     * Set the fileName property: The name of the on-premises file system. Type: string (or Expression with resultType
+     * string).
+     *
+     * @param fileName the fileName value to set.
+     * @return the FileShareDataset object itself.
+     */
+    public FileShareDataset withFileName(Object fileName) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new FileShareDatasetTypeProperties();
+        }
+        this.innerTypeProperties().withFileName(fileName);
+        return this;
+    }
+
+    /**
+     * Get the modifiedDatetimeStart property: The start of file's modified datetime. Type: string (or Expression with
+     * resultType string).
+     *
+     * @return the modifiedDatetimeStart value.
+     */
+    public Object modifiedDatetimeStart() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().modifiedDatetimeStart();
+    }
+
+    /**
+     * Set the modifiedDatetimeStart property: The start of file's modified datetime. Type: string (or Expression with
+     * resultType string).
+     *
+     * @param modifiedDatetimeStart the modifiedDatetimeStart value to set.
+     * @return the FileShareDataset object itself.
+     */
+    public FileShareDataset withModifiedDatetimeStart(Object modifiedDatetimeStart) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new FileShareDatasetTypeProperties();
+        }
+        this.innerTypeProperties().withModifiedDatetimeStart(modifiedDatetimeStart);
+        return this;
+    }
+
+    /**
+     * Get the modifiedDatetimeEnd property: The end of file's modified datetime. Type: string (or Expression with
+     * resultType string).
+     *
+     * @return the modifiedDatetimeEnd value.
+     */
+    public Object modifiedDatetimeEnd() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().modifiedDatetimeEnd();
+    }
+
+    /**
+     * Set the modifiedDatetimeEnd property: The end of file's modified datetime. Type: string (or Expression with
+     * resultType string).
+     *
+     * @param modifiedDatetimeEnd the modifiedDatetimeEnd value to set.
+     * @return the FileShareDataset object itself.
+     */
+    public FileShareDataset withModifiedDatetimeEnd(Object modifiedDatetimeEnd) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new FileShareDatasetTypeProperties();
+        }
+        this.innerTypeProperties().withModifiedDatetimeEnd(modifiedDatetimeEnd);
+        return this;
+    }
+
+    /**
+     * Get the format property: The format of the files.
+     *
+     * @return the format value.
+     */
+    public DatasetStorageFormat format() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().format();
+    }
+
+    /**
+     * Set the format property: The format of the files.
+     *
+     * @param format the format value to set.
+     * @return the FileShareDataset object itself.
+     */
+    public FileShareDataset withFormat(DatasetStorageFormat format) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new FileShareDatasetTypeProperties();
+        }
+        this.innerTypeProperties().withFormat(format);
+        return this;
+    }
+
+    /**
+     * Get the fileFilter property: Specify a filter to be used to select a subset of files in the folderPath rather
+     * than all files. Type: string (or Expression with resultType string).
+     *
+     * @return the fileFilter value.
+     */
+    public Object fileFilter() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().fileFilter();
+    }
+
+    /**
+     * Set the fileFilter property: Specify a filter to be used to select a subset of files in the folderPath rather
+     * than all files. Type: string (or Expression with resultType string).
+     *
+     * @param fileFilter the fileFilter value to set.
+     * @return the FileShareDataset object itself.
+     */
+    public FileShareDataset withFileFilter(Object fileFilter) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new FileShareDatasetTypeProperties();
+        }
+        this.innerTypeProperties().withFileFilter(fileFilter);
+        return this;
+    }
+
+    /**
+     * Get the compression property: The data compression method used for the file system.
+     *
+     * @return the compression value.
+     */
+    public DatasetCompression compression() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().compression();
+    }
+
+    /**
+     * Set the compression property: The data compression method used for the file system.
+     *
+     * @param compression the compression value to set.
+     * @return the FileShareDataset object itself.
+     */
+    public FileShareDataset withCompression(DatasetCompression compression) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new FileShareDatasetTypeProperties();
+        }
+        this.innerTypeProperties().withCompression(compression);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -277,11 +264,8 @@ public class FileShareDataset extends Dataset {
     @Override
     public void validate() {
         super.validate();
-        if (format() != null) {
-            format().validate();
-        }
-        if (compression() != null) {
-            compression().validate();
+        if (innerTypeProperties() != null) {
+            innerTypeProperties().validate();
         }
     }
 }

@@ -12,7 +12,7 @@ The Azure Cosmos Encryption Plugin is used for encrypting data with user provide
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-cosmos-encryption</artifactId>
-  <version>1.0.0-beta.6</version>
+  <version>1.0.0-beta.7</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -44,8 +44,8 @@ A few important properties defined at the level of the container, among them are
 ## Examples
 The following section provides several code snippets covering some of the most common Cosmos Encryption API tasks, including:
 * [Create Cosmos Encryption Client](#create-cosmos-encryption-client "Create Cosmos Encryption Client")
-* [Create Cosmos Encryption Database](#create-encryption-database "Create Encryption Database")
-* [Create Encryption Container](#create-encryption-container "Create Encryption Container")
+* [Create Cosmos Encryption Database](#create-cosmos-encryption-database "Create Encryption Database")
+* [Create Encryption Container](#create-cosmos-encryption-container "Create Encryption Container")
 * [CRUD operation on Items](#crud-operation-on-items "CRUD operation on Items")
 
 ### Create Cosmos Encryption Client

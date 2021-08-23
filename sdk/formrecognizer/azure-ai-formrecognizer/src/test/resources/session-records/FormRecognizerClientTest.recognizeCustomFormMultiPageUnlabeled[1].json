@@ -1,421 +1,221 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.1//custom/models",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.1/custom/models",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/3.1.0 (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "8657cf47-f440-4a61-b43b-5050e7c16e61",
+      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/3.1.0 (11.0.9; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "6c2421d5-2fdf-4d71-ac85-a5a163d268b0",
       "Content-Type" : "application/json"
     },
     "Response" : {
       "content-length" : "0",
-      "x-envoy-upstream-service-time" : "380",
+      "x-envoy-upstream-service-time" : "414",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "969a69dc-4455-4826-a1bc-57fe7e3bf514",
+      "apim-request-id" : "103f2d36-ae20-4d07-aff1-c075d15003d6",
       "retry-after" : "0",
       "StatusCode" : "201",
-      "Date" : "Tue, 11 May 2021 21:24:50 GMT",
-      "Location" : "https://mariari-canada-central.cognitiveservices.azure.com/formrecognizer/v2.1/custom/models/6751553c-a23b-4a76-891f-77e76dd295cf"
+      "Date" : "Wed, 07 Jul 2021 06:32:31 GMT",
+      "Location" : "https://shafangfr.cognitiveservices.azure.com/formrecognizer/v2.1/custom/models/1f1e7908-9b86-451c-b973-339c08a6e884"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.1//custom/models/6751553c-a23b-4a76-891f-77e76dd295cf?includeKeys=true",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.1/custom/models/1f1e7908-9b86-451c-b973-339c08a6e884?includeKeys=true",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/3.1.0 (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "ab6d1764-6df1-4b1c-83a3-ddb216b3c3eb"
-    },
-    "Response" : {
-      "content-length" : "170",
-      "x-envoy-upstream-service-time" : "24",
-      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
-      "x-content-type-options" : "nosniff",
-      "apim-request-id" : "e639185d-bb76-497d-9bae-5bb5387f7912",
-      "retry-after" : "0",
-      "StatusCode" : "200",
-      "Body" : "{\"modelInfo\":{\"modelId\":\"6751553c-a23b-4a76-891f-77e76dd295cf\",\"status\":\"creating\",\"createdDateTime\":\"2021-05-11T21:24:50Z\",\"lastUpdatedDateTime\":\"2021-05-11T21:24:50Z\"}}",
-      "Date" : "Tue, 11 May 2021 21:24:55 GMT",
-      "Content-Type" : "application/json; charset=utf-8"
-    },
-    "Exception" : null
-  }, {
-    "Method" : "GET",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.1//custom/models/6751553c-a23b-4a76-891f-77e76dd295cf?includeKeys=true",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/3.1.0 (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "0d259dc6-7ad3-4612-ab89-fb8021cbef91"
+      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/3.1.0 (11.0.9; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "0bc76566-c1c6-4faf-947d-e4d41fc292c2"
     },
     "Response" : {
       "content-length" : "170",
       "x-envoy-upstream-service-time" : "19",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "10d14643-3afa-418a-ac21-f4c2be2ff770",
+      "apim-request-id" : "0178cd8f-f07f-4b92-828e-1784829bf981",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "Body" : "{\"modelInfo\":{\"modelId\":\"6751553c-a23b-4a76-891f-77e76dd295cf\",\"status\":\"creating\",\"createdDateTime\":\"2021-05-11T21:24:50Z\",\"lastUpdatedDateTime\":\"2021-05-11T21:24:50Z\"}}",
-      "Date" : "Tue, 11 May 2021 21:25:00 GMT",
+      "Body" : "{\"modelInfo\":{\"modelId\":\"1f1e7908-9b86-451c-b973-339c08a6e884\",\"status\":\"creating\",\"createdDateTime\":\"2021-07-07T06:32:32Z\",\"lastUpdatedDateTime\":\"2021-07-07T06:32:32Z\"}}",
+      "Date" : "Wed, 07 Jul 2021 06:32:36 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.1//custom/models/6751553c-a23b-4a76-891f-77e76dd295cf?includeKeys=true",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.1/custom/models/1f1e7908-9b86-451c-b973-339c08a6e884?includeKeys=true",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/3.1.0 (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "e3aa1095-4f57-42c8-9d3e-ee81448b4f42"
-    },
-    "Response" : {
-      "content-length" : "170",
-      "x-envoy-upstream-service-time" : "21",
-      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
-      "x-content-type-options" : "nosniff",
-      "apim-request-id" : "f0fdd5e5-261b-4938-851d-7a64fefd7a64",
-      "retry-after" : "0",
-      "StatusCode" : "200",
-      "Body" : "{\"modelInfo\":{\"modelId\":\"6751553c-a23b-4a76-891f-77e76dd295cf\",\"status\":\"creating\",\"createdDateTime\":\"2021-05-11T21:24:50Z\",\"lastUpdatedDateTime\":\"2021-05-11T21:24:50Z\"}}",
-      "Date" : "Tue, 11 May 2021 21:25:05 GMT",
-      "Content-Type" : "application/json; charset=utf-8"
-    },
-    "Exception" : null
-  }, {
-    "Method" : "GET",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.1//custom/models/6751553c-a23b-4a76-891f-77e76dd295cf?includeKeys=true",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/3.1.0 (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "b8bfdf42-5886-48a7-9b36-72a19fe4ab4c"
-    },
-    "Response" : {
-      "content-length" : "170",
-      "x-envoy-upstream-service-time" : "25",
-      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
-      "x-content-type-options" : "nosniff",
-      "apim-request-id" : "a6c27f51-0ec8-408b-bc49-4a4a31eb12ab",
-      "retry-after" : "0",
-      "StatusCode" : "200",
-      "Body" : "{\"modelInfo\":{\"modelId\":\"6751553c-a23b-4a76-891f-77e76dd295cf\",\"status\":\"creating\",\"createdDateTime\":\"2021-05-11T21:24:50Z\",\"lastUpdatedDateTime\":\"2021-05-11T21:24:50Z\"}}",
-      "Date" : "Tue, 11 May 2021 21:25:11 GMT",
-      "Content-Type" : "application/json; charset=utf-8"
-    },
-    "Exception" : null
-  }, {
-    "Method" : "GET",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.1//custom/models/6751553c-a23b-4a76-891f-77e76dd295cf?includeKeys=true",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/3.1.0 (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "7f9339a1-601d-4ea0-ade5-4c961d28aa90"
-    },
-    "Response" : {
-      "content-length" : "170",
-      "x-envoy-upstream-service-time" : "85",
-      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
-      "x-content-type-options" : "nosniff",
-      "apim-request-id" : "f361d900-64e0-43bb-8737-59f08454d3a0",
-      "retry-after" : "0",
-      "StatusCode" : "200",
-      "Body" : "{\"modelInfo\":{\"modelId\":\"6751553c-a23b-4a76-891f-77e76dd295cf\",\"status\":\"creating\",\"createdDateTime\":\"2021-05-11T21:24:50Z\",\"lastUpdatedDateTime\":\"2021-05-11T21:24:50Z\"}}",
-      "Date" : "Tue, 11 May 2021 21:25:16 GMT",
-      "Content-Type" : "application/json; charset=utf-8"
-    },
-    "Exception" : null
-  }, {
-    "Method" : "GET",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.1//custom/models/6751553c-a23b-4a76-891f-77e76dd295cf?includeKeys=true",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/3.1.0 (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "07d75cb5-1760-40e7-bc2b-d7acabbd3a44"
-    },
-    "Response" : {
-      "content-length" : "170",
-      "x-envoy-upstream-service-time" : "27",
-      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
-      "x-content-type-options" : "nosniff",
-      "apim-request-id" : "4fe0fa1d-3b13-43a4-b796-802bfd9dee1e",
-      "retry-after" : "0",
-      "StatusCode" : "200",
-      "Body" : "{\"modelInfo\":{\"modelId\":\"6751553c-a23b-4a76-891f-77e76dd295cf\",\"status\":\"creating\",\"createdDateTime\":\"2021-05-11T21:24:50Z\",\"lastUpdatedDateTime\":\"2021-05-11T21:24:50Z\"}}",
-      "Date" : "Tue, 11 May 2021 21:25:21 GMT",
-      "Content-Type" : "application/json; charset=utf-8"
-    },
-    "Exception" : null
-  }, {
-    "Method" : "GET",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.1//custom/models/6751553c-a23b-4a76-891f-77e76dd295cf?includeKeys=true",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/3.1.0 (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "bd84bc31-2dcb-4b0e-aaf4-ec3820ee9b91"
-    },
-    "Response" : {
-      "content-length" : "170",
-      "x-envoy-upstream-service-time" : "23",
-      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
-      "x-content-type-options" : "nosniff",
-      "apim-request-id" : "dedaf65b-c89c-4e7b-8307-38a9d1c60f50",
-      "retry-after" : "0",
-      "StatusCode" : "200",
-      "Body" : "{\"modelInfo\":{\"modelId\":\"6751553c-a23b-4a76-891f-77e76dd295cf\",\"status\":\"creating\",\"createdDateTime\":\"2021-05-11T21:24:50Z\",\"lastUpdatedDateTime\":\"2021-05-11T21:24:50Z\"}}",
-      "Date" : "Tue, 11 May 2021 21:25:26 GMT",
-      "Content-Type" : "application/json; charset=utf-8"
-    },
-    "Exception" : null
-  }, {
-    "Method" : "GET",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.1//custom/models/6751553c-a23b-4a76-891f-77e76dd295cf?includeKeys=true",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/3.1.0 (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "3f0ded3f-60b9-4fee-995a-44310a8fc927"
-    },
-    "Response" : {
-      "content-length" : "170",
-      "x-envoy-upstream-service-time" : "27",
-      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
-      "x-content-type-options" : "nosniff",
-      "apim-request-id" : "c70b5011-717a-4480-a18d-1bbe5c8bd6bb",
-      "retry-after" : "0",
-      "StatusCode" : "200",
-      "Body" : "{\"modelInfo\":{\"modelId\":\"6751553c-a23b-4a76-891f-77e76dd295cf\",\"status\":\"creating\",\"createdDateTime\":\"2021-05-11T21:24:50Z\",\"lastUpdatedDateTime\":\"2021-05-11T21:24:50Z\"}}",
-      "Date" : "Tue, 11 May 2021 21:25:31 GMT",
-      "Content-Type" : "application/json; charset=utf-8"
-    },
-    "Exception" : null
-  }, {
-    "Method" : "GET",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.1//custom/models/6751553c-a23b-4a76-891f-77e76dd295cf?includeKeys=true",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/3.1.0 (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "54c0cf16-75c4-45f6-8a41-3e1029adf64e"
-    },
-    "Response" : {
-      "content-length" : "170",
-      "x-envoy-upstream-service-time" : "22",
-      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
-      "x-content-type-options" : "nosniff",
-      "apim-request-id" : "9b99b47a-e206-45a0-bc4b-3fcb29b5f611",
-      "retry-after" : "0",
-      "StatusCode" : "200",
-      "Body" : "{\"modelInfo\":{\"modelId\":\"6751553c-a23b-4a76-891f-77e76dd295cf\",\"status\":\"creating\",\"createdDateTime\":\"2021-05-11T21:24:50Z\",\"lastUpdatedDateTime\":\"2021-05-11T21:24:50Z\"}}",
-      "Date" : "Tue, 11 May 2021 21:25:36 GMT",
-      "Content-Type" : "application/json; charset=utf-8"
-    },
-    "Exception" : null
-  }, {
-    "Method" : "GET",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.1//custom/models/6751553c-a23b-4a76-891f-77e76dd295cf?includeKeys=true",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/3.1.0 (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "df068e0e-c7e4-430b-9701-0accae401aeb"
-    },
-    "Response" : {
-      "content-length" : "170",
-      "x-envoy-upstream-service-time" : "19",
-      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
-      "x-content-type-options" : "nosniff",
-      "apim-request-id" : "bec4f27c-82da-406c-a2c9-0736fb7a5b63",
-      "retry-after" : "0",
-      "StatusCode" : "200",
-      "Body" : "{\"modelInfo\":{\"modelId\":\"6751553c-a23b-4a76-891f-77e76dd295cf\",\"status\":\"creating\",\"createdDateTime\":\"2021-05-11T21:24:50Z\",\"lastUpdatedDateTime\":\"2021-05-11T21:24:50Z\"}}",
-      "Date" : "Tue, 11 May 2021 21:25:42 GMT",
-      "Content-Type" : "application/json; charset=utf-8"
-    },
-    "Exception" : null
-  }, {
-    "Method" : "GET",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.1//custom/models/6751553c-a23b-4a76-891f-77e76dd295cf?includeKeys=true",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/3.1.0 (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "37d97c27-1082-4057-9706-d5446918d0d0"
-    },
-    "Response" : {
-      "content-length" : "170",
-      "x-envoy-upstream-service-time" : "38",
-      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
-      "x-content-type-options" : "nosniff",
-      "apim-request-id" : "9d5a0d92-37a9-49f7-adda-8292f2186a3b",
-      "retry-after" : "0",
-      "StatusCode" : "200",
-      "Body" : "{\"modelInfo\":{\"modelId\":\"6751553c-a23b-4a76-891f-77e76dd295cf\",\"status\":\"creating\",\"createdDateTime\":\"2021-05-11T21:24:50Z\",\"lastUpdatedDateTime\":\"2021-05-11T21:24:50Z\"}}",
-      "Date" : "Tue, 11 May 2021 21:25:46 GMT",
-      "Content-Type" : "application/json; charset=utf-8"
-    },
-    "Exception" : null
-  }, {
-    "Method" : "GET",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.1//custom/models/6751553c-a23b-4a76-891f-77e76dd295cf?includeKeys=true",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/3.1.0 (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "46dc3115-1f6f-4265-a279-32bd2ae6ac38"
-    },
-    "Response" : {
-      "content-length" : "170",
-      "x-envoy-upstream-service-time" : "45",
-      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
-      "x-content-type-options" : "nosniff",
-      "apim-request-id" : "40eac4d6-3b46-42cc-b124-fb946321aa22",
-      "retry-after" : "0",
-      "StatusCode" : "200",
-      "Body" : "{\"modelInfo\":{\"modelId\":\"6751553c-a23b-4a76-891f-77e76dd295cf\",\"status\":\"creating\",\"createdDateTime\":\"2021-05-11T21:24:50Z\",\"lastUpdatedDateTime\":\"2021-05-11T21:24:50Z\"}}",
-      "Date" : "Tue, 11 May 2021 21:25:51 GMT",
-      "Content-Type" : "application/json; charset=utf-8"
-    },
-    "Exception" : null
-  }, {
-    "Method" : "GET",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.1//custom/models/6751553c-a23b-4a76-891f-77e76dd295cf?includeKeys=true",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/3.1.0 (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "807e8e55-57f3-43dc-9e43-0ff728a3c4ed"
+      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/3.1.0 (11.0.9; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "b9c39896-4c20-48ff-b12f-45d73734b20a"
     },
     "Response" : {
       "content-length" : "170",
       "x-envoy-upstream-service-time" : "20",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "08236d81-3cd1-4dd2-b1c6-21ddc43f6600",
+      "apim-request-id" : "8f43d7b4-4fb6-40b3-b62f-585ec9ea6dcd",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "Body" : "{\"modelInfo\":{\"modelId\":\"6751553c-a23b-4a76-891f-77e76dd295cf\",\"status\":\"creating\",\"createdDateTime\":\"2021-05-11T21:24:50Z\",\"lastUpdatedDateTime\":\"2021-05-11T21:24:50Z\"}}",
-      "Date" : "Tue, 11 May 2021 21:25:57 GMT",
+      "Body" : "{\"modelInfo\":{\"modelId\":\"1f1e7908-9b86-451c-b973-339c08a6e884\",\"status\":\"creating\",\"createdDateTime\":\"2021-07-07T06:32:32Z\",\"lastUpdatedDateTime\":\"2021-07-07T06:32:32Z\"}}",
+      "Date" : "Wed, 07 Jul 2021 06:32:41 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.1//custom/models/6751553c-a23b-4a76-891f-77e76dd295cf?includeKeys=true",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.1/custom/models/1f1e7908-9b86-451c-b973-339c08a6e884?includeKeys=true",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/3.1.0 (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "67bb9ab7-8019-4cee-8866-f14c3a484b4e"
+      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/3.1.0 (11.0.9; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "fde16993-5517-4ce2-b56d-cee0f4dabbf6"
     },
     "Response" : {
-      "content-length" : "1111",
-      "x-envoy-upstream-service-time" : "18",
+      "content-length" : "170",
+      "x-envoy-upstream-service-time" : "20",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "584a7370-0df9-45ba-880a-f15fbc775e45",
+      "apim-request-id" : "76ad9d06-65ac-4ff6-9247-a472d4bbc6a2",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "Body" : "{\"modelInfo\":{\"modelId\":\"6751553c-a23b-4a76-891f-77e76dd295cf\",\"status\":\"ready\",\"createdDateTime\":\"2021-05-11T21:24:50Z\",\"lastUpdatedDateTime\":\"2021-05-11T21:26:01Z\"},\"keys\":{\"clusters\":{\"0\":[\"Contoso Ltd. Conference will be held on May 28-29, 2020 at the Elm Conference Center in\",\"Included\",\"Maple City, Massachusetts. The conference has sold out of its 1,500 tickets, with a 400 person\",\"Package\",\"Price\",\"Rates:\",\"Vendor #:\",\"Vendor Registration\",\"below, and attach a check made out to:\",\"waitlist. Vendor applications are being accepted through Feb 28, 2020. Please fill in the form\"],\"1\":[\"Company Name:\",\"Contact:\",\"Preferred Package:\",\"Special Requests:\",\"Vendor #:\",\"Vendor Details:\"]}},\"trainResult\":{\"trainingDocuments\":[{\"documentName\":\"multi1.pdf\",\"pages\":2,\"errors\":[],\"status\":\"succeeded\"},{\"documentName\":\"multi2.pdf\",\"pages\":2,\"errors\":[],\"status\":\"succeeded\"},{\"documentName\":\"multi3.pdf\",\"pages\":2,\"errors\":[],\"status\":\"succeeded\"},{\"documentName\":\"multi4.pdf\",\"pages\":2,\"errors\":[],\"status\":\"succeeded\"},{\"documentName\":\"multi5.pdf\",\"pages\":2,\"errors\":[],\"status\":\"succeeded\"}],\"errors\":[]}}",
-      "Date" : "Tue, 11 May 2021 21:26:02 GMT",
+      "Body" : "{\"modelInfo\":{\"modelId\":\"1f1e7908-9b86-451c-b973-339c08a6e884\",\"status\":\"creating\",\"createdDateTime\":\"2021-07-07T06:32:32Z\",\"lastUpdatedDateTime\":\"2021-07-07T06:32:32Z\"}}",
+      "Date" : "Wed, 07 Jul 2021 06:32:47 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.1//custom/models/6751553c-a23b-4a76-891f-77e76dd295cf?includeKeys=true",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.1/custom/models/1f1e7908-9b86-451c-b973-339c08a6e884?includeKeys=true",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/3.1.0 (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "f7fffed6-577b-4077-a16a-ccb58c178733"
+      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/3.1.0 (11.0.9; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "eb394f8a-c6d2-42e2-8557-0818032d823d"
     },
     "Response" : {
-      "content-length" : "1111",
-      "x-envoy-upstream-service-time" : "16",
+      "content-length" : "170",
+      "x-envoy-upstream-service-time" : "21",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "e22178d2-ffa0-4341-98ac-4f52ae25d8d6",
+      "apim-request-id" : "6a289fe3-b113-4f79-b248-54e40578ca4e",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "Body" : "{\"modelInfo\":{\"modelId\":\"6751553c-a23b-4a76-891f-77e76dd295cf\",\"status\":\"ready\",\"createdDateTime\":\"2021-05-11T21:24:50Z\",\"lastUpdatedDateTime\":\"2021-05-11T21:26:01Z\"},\"keys\":{\"clusters\":{\"0\":[\"Contoso Ltd. Conference will be held on May 28-29, 2020 at the Elm Conference Center in\",\"Included\",\"Maple City, Massachusetts. The conference has sold out of its 1,500 tickets, with a 400 person\",\"Package\",\"Price\",\"Rates:\",\"Vendor #:\",\"Vendor Registration\",\"below, and attach a check made out to:\",\"waitlist. Vendor applications are being accepted through Feb 28, 2020. Please fill in the form\"],\"1\":[\"Company Name:\",\"Contact:\",\"Preferred Package:\",\"Special Requests:\",\"Vendor #:\",\"Vendor Details:\"]}},\"trainResult\":{\"trainingDocuments\":[{\"documentName\":\"multi1.pdf\",\"pages\":2,\"errors\":[],\"status\":\"succeeded\"},{\"documentName\":\"multi2.pdf\",\"pages\":2,\"errors\":[],\"status\":\"succeeded\"},{\"documentName\":\"multi3.pdf\",\"pages\":2,\"errors\":[],\"status\":\"succeeded\"},{\"documentName\":\"multi4.pdf\",\"pages\":2,\"errors\":[],\"status\":\"succeeded\"},{\"documentName\":\"multi5.pdf\",\"pages\":2,\"errors\":[],\"status\":\"succeeded\"}],\"errors\":[]}}",
-      "Date" : "Tue, 11 May 2021 21:26:02 GMT",
+      "Body" : "{\"modelInfo\":{\"modelId\":\"1f1e7908-9b86-451c-b973-339c08a6e884\",\"status\":\"creating\",\"createdDateTime\":\"2021-07-07T06:32:32Z\",\"lastUpdatedDateTime\":\"2021-07-07T06:32:32Z\"}}",
+      "Date" : "Wed, 07 Jul 2021 06:32:51 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.1/custom/models/1f1e7908-9b86-451c-b973-339c08a6e884?includeKeys=true",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/3.1.0 (11.0.9; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "109fe6f2-9209-493c-ba55-2b73f1ed25fe"
+    },
+    "Response" : {
+      "content-length" : "784",
+      "x-envoy-upstream-service-time" : "28",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "b4e2ae3b-2566-449d-a750-386345867b06",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Body" : "{\"modelInfo\":{\"modelId\":\"1f1e7908-9b86-451c-b973-339c08a6e884\",\"status\":\"ready\",\"createdDateTime\":\"2021-07-07T06:32:32Z\",\"lastUpdatedDateTime\":\"2021-07-07T06:32:54Z\"},\"keys\":{\"clusters\":{\"0\":[\"Address:\",\"Invoice For:\",\"Item\",\"Price\",\"Quantity\",\"Redmond, WA\",\"Signature:\",\"Subtotal:\",\"Tax:\",\"Tip:\",\"Total:\"]}},\"trainResult\":{\"trainingDocuments\":[{\"documentName\":\"multipage_invoice1.pdf\",\"pages\":3,\"errors\":[],\"status\":\"succeeded\"},{\"documentName\":\"multipage_invoice2.pdf\",\"pages\":3,\"errors\":[],\"status\":\"succeeded\"},{\"documentName\":\"multipage_invoice3.pdf\",\"pages\":3,\"errors\":[],\"status\":\"succeeded\"},{\"documentName\":\"multipage_invoice4.pdf\",\"pages\":3,\"errors\":[],\"status\":\"succeeded\"},{\"documentName\":\"multipage_invoice5.pdf\",\"pages\":3,\"errors\":[],\"status\":\"succeeded\"}],\"errors\":[]}}",
+      "Date" : "Wed, 07 Jul 2021 06:32:57 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.1/custom/models/1f1e7908-9b86-451c-b973-339c08a6e884?includeKeys=true",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/3.1.0 (11.0.9; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "0c9f4916-be64-4a98-88f4-24d15dbad0af"
+    },
+    "Response" : {
+      "content-length" : "784",
+      "x-envoy-upstream-service-time" : "25",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "28038194-fad3-4f04-b78b-f98d3474c32c",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Body" : "{\"modelInfo\":{\"modelId\":\"1f1e7908-9b86-451c-b973-339c08a6e884\",\"status\":\"ready\",\"createdDateTime\":\"2021-07-07T06:32:32Z\",\"lastUpdatedDateTime\":\"2021-07-07T06:32:54Z\"},\"keys\":{\"clusters\":{\"0\":[\"Address:\",\"Invoice For:\",\"Item\",\"Price\",\"Quantity\",\"Redmond, WA\",\"Signature:\",\"Subtotal:\",\"Tax:\",\"Tip:\",\"Total:\"]}},\"trainResult\":{\"trainingDocuments\":[{\"documentName\":\"multipage_invoice1.pdf\",\"pages\":3,\"errors\":[],\"status\":\"succeeded\"},{\"documentName\":\"multipage_invoice2.pdf\",\"pages\":3,\"errors\":[],\"status\":\"succeeded\"},{\"documentName\":\"multipage_invoice3.pdf\",\"pages\":3,\"errors\":[],\"status\":\"succeeded\"},{\"documentName\":\"multipage_invoice4.pdf\",\"pages\":3,\"errors\":[],\"status\":\"succeeded\"},{\"documentName\":\"multipage_invoice5.pdf\",\"pages\":3,\"errors\":[],\"status\":\"succeeded\"}],\"errors\":[]}}",
+      "Date" : "Wed, 07 Jul 2021 06:32:57 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   }, {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.1//custom/models/6751553c-a23b-4a76-891f-77e76dd295cf/analyze?includeTextDetails=false",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.1/custom/models/1f1e7908-9b86-451c-b973-339c08a6e884/analyze?includeTextDetails=false",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/3.1.0 (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "32dc174b-f00b-4bd0-8368-13c2cbf1c9d3",
+      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/3.1.0 (11.0.9; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "92591129-86f9-4efa-8725-88a2f4a1d94c",
       "Content-Type" : "application/pdf"
     },
     "Response" : {
       "content-length" : "0",
-      "x-envoy-upstream-service-time" : "112",
+      "x-envoy-upstream-service-time" : "68",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "b2a26720-508c-43fd-a180-d69aa55b5b19",
+      "apim-request-id" : "8f40afaa-dce7-4700-a886-0aed7a76551e",
       "retry-after" : "0",
       "StatusCode" : "202",
-      "Operation-Location" : "https://mariari-canada-central.cognitiveservices.azure.com/formrecognizer/v2.1/custom/models/6751553c-a23b-4a76-891f-77e76dd295cf/analyzeresults/bcd34336-57f7-4b70-9468-1e405b7a4453",
-      "Date" : "Tue, 11 May 2021 21:26:02 GMT"
+      "Operation-Location" : "https://shafangfr.cognitiveservices.azure.com/formrecognizer/v2.1/custom/models/1f1e7908-9b86-451c-b973-339c08a6e884/analyzeresults/bb0e8bb2-19d0-45a3-93d4-28c9975e5da8",
+      "Date" : "Wed, 07 Jul 2021 06:32:58 GMT"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.1//custom/models/6751553c-a23b-4a76-891f-77e76dd295cf/analyzeResults/bcd34336-57f7-4b70-9468-1e405b7a4453",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.1/custom/models/1f1e7908-9b86-451c-b973-339c08a6e884/analyzeResults/bb0e8bb2-19d0-45a3-93d4-28c9975e5da8",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/3.1.0 (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "11045c6b-3e76-46b1-a908-2fa194afdb5e"
+      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/3.1.0 (11.0.9; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "6806abae-999a-4dbc-bdce-6f5b6a666f74"
     },
     "Response" : {
       "content-length" : "134",
       "x-envoy-upstream-service-time" : "21",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "257bd6a9-70c6-43df-9bee-8663d5a80cc6",
+      "apim-request-id" : "1d2eba9c-8374-4d3f-8da6-57ffce55d1fc",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "Body" : "{\"status\": \"running\", \"createdDateTime\": \"2021-05-11T21:26:03Z\", \"lastUpdatedDateTime\": \"2021-05-11T21:26:03Z\", \"analyzeResult\": null}",
-      "Date" : "Tue, 11 May 2021 21:26:08 GMT",
+      "Body" : "{\"status\": \"running\", \"createdDateTime\": \"2021-07-07T06:32:58Z\", \"lastUpdatedDateTime\": \"2021-07-07T06:32:59Z\", \"analyzeResult\": null}",
+      "Date" : "Wed, 07 Jul 2021 06:33:03 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.1//custom/models/6751553c-a23b-4a76-891f-77e76dd295cf/analyzeResults/bcd34336-57f7-4b70-9468-1e405b7a4453",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.1/custom/models/1f1e7908-9b86-451c-b973-339c08a6e884/analyzeResults/bb0e8bb2-19d0-45a3-93d4-28c9975e5da8",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/3.1.0 (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "d2583d48-28dd-463a-9468-521866271074"
+      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/3.1.0 (11.0.9; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "a3db4355-4588-48c8-8e81-97874d60c19c"
     },
     "Response" : {
-      "content-length" : "134",
-      "x-envoy-upstream-service-time" : "23",
+      "content-length" : "17290",
+      "x-envoy-upstream-service-time" : "22",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "4ec4557a-9b2b-4832-9935-bda7827c38b5",
+      "apim-request-id" : "9dc74e61-e14b-4d5d-b4af-dd3b462c90ea",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "Body" : "{\"status\": \"running\", \"createdDateTime\": \"2021-05-11T21:26:03Z\", \"lastUpdatedDateTime\": \"2021-05-11T21:26:03Z\", \"analyzeResult\": null}",
-      "Date" : "Tue, 11 May 2021 21:26:12 GMT",
+      "Body" : "{\"status\": \"succeeded\", \"createdDateTime\": \"2021-07-07T06:32:58Z\", \"lastUpdatedDateTime\": \"2021-07-07T06:33:06Z\", \"analyzeResult\": {\"version\": \"2.1.0\", \"readResults\": [{\"page\": 1, \"angle\": 0, \"width\": 8.5, \"height\": 11.0, \"unit\": \"inch\", \"lines\": [], \"selectionMarks\": null}, {\"page\": 2, \"angle\": 0, \"width\": 8.5, \"height\": 11.0, \"unit\": \"inch\", \"lines\": [], \"selectionMarks\": null}, {\"page\": 3, \"angle\": 0, \"width\": 8.5, \"height\": 11.0, \"unit\": \"inch\", \"lines\": [], \"selectionMarks\": null}], \"pageResults\": [{\"page\": 1, \"keyValuePairs\": [{\"key\": {\"text\": \"Invoice For:\", \"boundingBox\": [6.0028, 1.059, 7.0556, 1.059, 7.0556, 1.2292, 6.0028, 1.2292], \"elements\": null}, \"value\": {\"text\": \"Bilbo Baggins 123 Hobbit Lane\", \"boundingBox\": [6.0, 1.4428, 7.1, 1.4428, 7.1, 1.8056, 6.0, 1.8056], \"elements\": null}, \"confidence\": 1.0}, {\"key\": {\"text\": \"Address:\", \"boundingBox\": [0.875, 1.4757, 1.5764, 1.4757, 1.5764, 1.6285, 0.875, 1.6285], \"elements\": null}, \"value\": {\"text\": \"567 Main St.\", \"boundingBox\": [0.875, 1.8368, 1.7194, 1.8368, 1.7194, 1.9698, 0.875, 1.9698], \"elements\": null}, \"confidence\": 1.0}, {\"key\": {\"text\": \"Redmond, WA\", \"boundingBox\": [6.0, 1.8848, 6.9556, 1.8848, 6.9556, 2.0256, 6.0, 2.0256], \"elements\": null}, \"value\": {\"text\": \"555-555-5555\", \"boundingBox\": [5.9972, 2.1076, 6.9306, 2.1076, 6.9306, 2.2465, 5.9972, 2.2465], \"elements\": null}, \"confidence\": 1.0}, {\"key\": {\"text\": \"Redmond, WA\", \"boundingBox\": [0.875, 2.0547, 1.8264, 2.0547, 1.8264, 2.1962, 0.875, 2.1962], \"elements\": null}, \"value\": {\"text\": \"555-555-5555\", \"boundingBox\": [0.875, 2.2743, 1.8056, 2.2743, 1.8056, 2.4132, 0.875, 2.4132], \"elements\": null}, \"confidence\": 0.29}, {\"key\": {\"text\": \"Subtotal:\", \"boundingBox\": [5.4972, 4.8889, 6.1319, 4.8889, 6.1319, 5.0278, 5.4972, 5.0278], \"elements\": null}, \"value\": {\"text\": \"300.00\", \"boundingBox\": [6.1597, 4.8889, 6.6222, 4.8889, 6.6222, 5.0243, 6.1597, 5.0243], \"elements\": null}, \"confidence\": 1.0}, {\"key\": {\"text\": \"Tax:\", \"boundingBox\": [5.5, 5.1181, 5.7889, 5.1181, 5.7889, 5.2465, 5.5, 5.2465], \"elements\": null}, \"value\": {\"text\": \"30.00\", \"boundingBox\": [5.8125, 5.1146, 6.1833, 5.1146, 6.1833, 5.25, 5.8125, 5.25], \"elements\": null}, \"confidence\": 1.0}, {\"key\": {\"text\": \"Tip:\", \"boundingBox\": [5.5, 5.3299, 5.7528, 5.3299, 5.7528, 5.4861, 5.5, 5.4861], \"elements\": null}, \"value\": {\"text\": \"100.00\", \"boundingBox\": [5.7847, 5.3299, 6.2639, 5.3299, 6.2639, 5.4826, 5.7847, 5.4826], \"elements\": null}, \"confidence\": 1.0}, {\"key\": {\"text\": \"Total:\", \"boundingBox\": [5.5, 5.5486, 5.8958, 5.5486, 5.8958, 5.6875, 5.5, 5.6875], \"elements\": null}, \"value\": {\"text\": \"430.00\", \"boundingBox\": [5.9194, 5.5521, 6.3861, 5.5521, 6.3861, 5.6875, 5.9194, 5.6875], \"elements\": null}, \"confidence\": 1.0}, {\"key\": {\"text\": \"Signature:\", \"boundingBox\": [1.0, 6.6458, 1.7194, 6.6458, 1.7194, 6.8125, 1.0, 6.8125], \"elements\": null}, \"value\": {\"text\": \"Bilbo Baggins\", \"boundingBox\": [2.0694, 6.6322, 3.0028, 6.6322, 3.0028, 6.804, 2.0694, 6.804], \"elements\": null}, \"confidence\": 1.0}], \"tables\": [{\"rows\": 8, \"columns\": 3, \"boundingBox\": [1.0694, 2.9896, 5.775, 2.9896, 5.775, 4.5938, 1.0694, 4.5938], \"cells\": [{\"text\": \"Item\", \"rowIndex\": 0, \"columnIndex\": 0, \"boundingBox\": [1.0764, 2.9931, 1.3167, 2.9931, 1.3167, 3.1146, 1.0764, 3.1146], \"confidence\": 1.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": true, \"isFooter\": false}, {\"text\": \"Quantity\", \"rowIndex\": 0, \"columnIndex\": 1, \"boundingBox\": [3.2431, 2.9965, 3.8306, 2.9965, 3.8306, 3.1354, 3.2431, 3.1354], \"confidence\": 1.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": true, \"isFooter\": false}, {\"text\": \"Price\", \"rowIndex\": 0, \"columnIndex\": 2, \"boundingBox\": [5.4, 2.9896, 5.7292, 2.9896, 5.7292, 3.1181, 5.4, 3.1181], \"confidence\": 1.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": true, \"isFooter\": false}, {\"text\": \"A\", \"rowIndex\": 1, \"columnIndex\": 0, \"boundingBox\": [1.0764, 3.2049, 1.1528, 3.2049, 1.1528, 3.3229, 1.0764, 3.3229], \"confidence\": 1.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"1\", \"rowIndex\": 1, \"columnIndex\": 1, \"boundingBox\": [3.2361, 3.1944, 3.3083, 3.1944, 3.3083, 3.3229, 3.2361, 3.3229], \"confidence\": 1.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"10.99\", \"rowIndex\": 1, \"columnIndex\": 2, \"boundingBox\": [5.4194, 3.1979, 5.7667, 3.1979, 5.7667, 3.3299, 5.4194, 3.3299], \"confidence\": 1.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"B\", \"rowIndex\": 2, \"columnIndex\": 0, \"boundingBox\": [1.0806, 3.4167, 1.1528, 3.4167, 1.1528, 3.5451, 1.0806, 3.5451], \"confidence\": 1.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"2\", \"rowIndex\": 2, \"columnIndex\": 1, \"boundingBox\": [3.2431, 3.4097, 3.3222, 3.4097, 3.3222, 3.5451, 3.2431, 3.5451], \"confidence\": 1.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"14.67\", \"rowIndex\": 2, \"columnIndex\": 2, \"boundingBox\": [5.4139, 3.4167, 5.775, 3.4167, 5.775, 3.5451, 5.4139, 3.5451], \"confidence\": 1.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"C\", \"rowIndex\": 3, \"columnIndex\": 0, \"boundingBox\": [1.0722, 3.6285, 1.1389, 3.6285, 1.1389, 3.7431, 1.0722, 3.7431], \"confidence\": 1.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"4\", \"rowIndex\": 3, \"columnIndex\": 1, \"boundingBox\": [3.2431, 3.6215, 3.3125, 3.6215, 3.3125, 3.7326, 3.2431, 3.7326], \"confidence\": 1.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"15.66\", \"rowIndex\": 3, \"columnIndex\": 2, \"boundingBox\": [5.4167, 3.6215, 5.7708, 3.6215, 5.7708, 3.7569, 5.4167, 3.7569], \"confidence\": 1.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"D\", \"rowIndex\": 4, \"columnIndex\": 0, \"boundingBox\": [1.0764, 3.8403, 1.1528, 3.8403, 1.1528, 3.9618, 1.0764, 3.9618], \"confidence\": 1.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"1\", \"rowIndex\": 4, \"columnIndex\": 1, \"boundingBox\": [3.2431, 3.8438, 3.3125, 3.8438, 3.3125, 3.9722, 3.2431, 3.9722], \"confidence\": 1.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"12.00\", \"rowIndex\": 4, \"columnIndex\": 2, \"boundingBox\": [5.4167, 3.8333, 5.7708, 3.8333, 5.7708, 3.9653, 5.4167, 3.9653], \"confidence\": 1.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"E\", \"rowIndex\": 5, \"columnIndex\": 0, \"boundingBox\": [1.0833, 4.0486, 1.1458, 4.0486, 1.1458, 4.1597, 1.0833, 4.1597], \"confidence\": 1.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"4\", \"rowIndex\": 5, \"columnIndex\": 1, \"boundingBox\": [3.2431, 4.0417, 3.3125, 4.0417, 3.3125, 4.1562, 3.2431, 4.1562], \"confidence\": 1.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"10.00\", \"rowIndex\": 5, \"columnIndex\": 2, \"boundingBox\": [5.4194, 4.0417, 5.7667, 4.0417, 5.7667, 4.1701, 5.4194, 4.1701], \"confidence\": 1.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"F\", \"rowIndex\": 6, \"columnIndex\": 0, \"boundingBox\": [1.0694, 4.2604, 1.1389, 4.2604, 1.1389, 4.3785, 1.0694, 4.3785], \"confidence\": 1.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"6\", \"rowIndex\": 6, \"columnIndex\": 1, \"boundingBox\": [3.2431, 4.2535, 3.3167, 4.2535, 3.3167, 4.3819, 3.2431, 4.3819], \"confidence\": 1.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"12.00\", \"rowIndex\": 6, \"columnIndex\": 2, \"boundingBox\": [5.4167, 4.2569, 5.7639, 4.2569, 5.7639, 4.3854, 5.4167, 4.3854], \"confidence\": 1.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"G\", \"rowIndex\": 7, \"columnIndex\": 0, \"boundingBox\": [1.0806, 4.4653, 1.15, 4.4653, 1.15, 4.5903, 1.0806, 4.5903], \"confidence\": 1.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"8\", \"rowIndex\": 7, \"columnIndex\": 1, \"boundingBox\": [3.2389, 4.4583, 3.3083, 4.4583, 3.3083, 4.5799, 3.2389, 4.5799], \"confidence\": 1.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"22.00\", \"rowIndex\": 7, \"columnIndex\": 2, \"boundingBox\": [5.4056, 4.4549, 5.775, 4.4549, 5.775, 4.5938, 5.4056, 4.5938], \"confidence\": 1.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}]}], \"clusterId\": 0}, {\"page\": 2, \"keyValuePairs\": [], \"tables\": [], \"clusterId\": null}, {\"page\": 3, \"keyValuePairs\": [{\"key\": {\"text\": \"Invoice For:\", \"boundingBox\": [6.0028, 1.059, 7.0583, 1.059, 7.0583, 1.2292, 6.0028, 1.2292], \"elements\": null}, \"value\": {\"text\": \"Frodo Baggins 123 Hobbit Lane\", \"boundingBox\": [6.0, 1.4444, 7.0972, 1.4444, 7.0972, 1.8046, 6.0, 1.8046], \"elements\": null}, \"confidence\": 1.0}, {\"key\": {\"text\": \"Address:\", \"boundingBox\": [0.875, 1.4757, 1.5764, 1.4757, 1.5764, 1.6285, 0.875, 1.6285], \"elements\": null}, \"value\": {\"text\": \"567 Main St.\", \"boundingBox\": [0.875, 1.8368, 1.7194, 1.8368, 1.7194, 1.9698, 0.875, 1.9698], \"elements\": null}, \"confidence\": 1.0}, {\"key\": {\"text\": \"Redmond, WA\", \"boundingBox\": [6.0, 1.8848, 6.9514, 1.8848, 6.9514, 2.0256, 6.0, 2.0256], \"elements\": null}, \"value\": {\"text\": \"555-555-5555\", \"boundingBox\": [5.9972, 2.1076, 6.9306, 2.1076, 6.9306, 2.2465, 5.9972, 2.2465], \"elements\": null}, \"confidence\": 1.0}, {\"key\": {\"text\": \"Redmond, WA\", \"boundingBox\": [0.875, 2.0547, 1.8264, 2.0547, 1.8264, 2.1962, 0.875, 2.1962], \"elements\": null}, \"value\": {\"text\": \"555-555-5555\", \"boundingBox\": [0.875, 2.2743, 1.8056, 2.2743, 1.8056, 2.4132, 0.875, 2.4132], \"elements\": null}, \"confidence\": 0.29}, {\"key\": {\"text\": \"Subtotal:\", \"boundingBox\": [5.4972, 4.8924, 6.1319, 4.8924, 6.1319, 5.0278, 5.4972, 5.0278], \"elements\": null}, \"value\": {\"text\": \"3000.00\", \"boundingBox\": [6.1556, 4.8889, 6.7014, 4.8889, 6.7014, 5.0243, 6.1556, 5.0243], \"elements\": null}, \"confidence\": 1.0}, {\"key\": {\"text\": \"Tax:\", \"boundingBox\": [5.5, 5.1181, 5.7917, 5.1181, 5.7917, 5.25, 5.5, 5.25], \"elements\": null}, \"value\": {\"text\": \"300.00\", \"boundingBox\": [5.8194, 5.1146, 6.2778, 5.1146, 6.2778, 5.25, 5.8194, 5.25], \"elements\": null}, \"confidence\": 1.0}, {\"key\": {\"text\": \"Tip:\", \"boundingBox\": [5.4972, 5.3299, 5.7528, 5.3299, 5.7528, 5.4861, 5.4972, 5.4861], \"elements\": null}, \"value\": {\"text\": \"1000.00\", \"boundingBox\": [5.7806, 5.3299, 6.3403, 5.3299, 6.3403, 5.4826, 5.7806, 5.4826], \"elements\": null}, \"confidence\": 1.0}, {\"key\": {\"text\": \"Total:\", \"boundingBox\": [5.5, 5.5486, 5.9, 5.5486, 5.9, 5.6875, 5.5, 5.6875], \"elements\": null}, \"value\": {\"text\": \"4300.00\", \"boundingBox\": [5.9278, 5.5521, 6.4792, 5.5521, 6.4792, 5.691, 5.9278, 5.691], \"elements\": null}, \"confidence\": 1.0}, {\"key\": {\"text\": \"Signature:\", \"boundingBox\": [1.0, 6.6458, 1.7194, 6.6458, 1.7194, 6.8125, 1.0, 6.8125], \"elements\": null}, \"value\": {\"text\": \"Frodo Baggins\", \"boundingBox\": [2.0722, 6.6474, 3.0528, 6.6474, 3.0528, 6.7903, 2.0722, 6.7903], \"elements\": null}, \"confidence\": 1.0}], \"tables\": [{\"rows\": 8, \"columns\": 3, \"boundingBox\": [1.0694, 2.9896, 5.8611, 2.9896, 5.8611, 4.5972, 1.0694, 4.5972], \"cells\": [{\"text\": \"Item\", \"rowIndex\": 0, \"columnIndex\": 0, \"boundingBox\": [1.0764, 2.9931, 1.3167, 2.9931, 1.3167, 3.1146, 1.0764, 3.1146], \"confidence\": 1.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": true, \"isFooter\": false}, {\"text\": \"Quantity\", \"rowIndex\": 0, \"columnIndex\": 1, \"boundingBox\": [3.2431, 2.9965, 3.8403, 2.9965, 3.8403, 3.1389, 3.2431, 3.1389], \"confidence\": 1.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": true, \"isFooter\": false}, {\"text\": \"Price\", \"rowIndex\": 0, \"columnIndex\": 2, \"boundingBox\": [5.4, 2.9896, 5.7292, 2.9896, 5.7292, 3.1181, 5.4, 3.1181], \"confidence\": 1.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": true, \"isFooter\": false}, {\"text\": \"A\", \"rowIndex\": 1, \"columnIndex\": 0, \"boundingBox\": [1.0764, 3.2049, 1.1528, 3.2049, 1.1528, 3.3229, 1.0764, 3.3229], \"confidence\": 1.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"10\", \"rowIndex\": 1, \"columnIndex\": 1, \"boundingBox\": [3.2472, 3.1979, 3.3861, 3.1979, 3.3861, 3.3264, 3.2472, 3.3264], \"confidence\": 1.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"100.99\", \"rowIndex\": 1, \"columnIndex\": 2, \"boundingBox\": [5.4194, 3.1979, 5.8611, 3.1979, 5.8611, 3.3333, 5.4194, 3.3333], \"confidence\": 1.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"B\", \"rowIndex\": 2, \"columnIndex\": 0, \"boundingBox\": [1.0806, 3.4167, 1.1528, 3.4167, 1.1528, 3.5451, 1.0806, 3.5451], \"confidence\": 1.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"20\", \"rowIndex\": 2, \"columnIndex\": 1, \"boundingBox\": [3.2472, 3.4132, 3.3889, 3.4132, 3.3889, 3.5417, 3.2472, 3.5417], \"confidence\": 1.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"140.67\", \"rowIndex\": 2, \"columnIndex\": 2, \"boundingBox\": [5.4167, 3.4201, 5.8583, 3.4201, 5.8583, 3.5486, 5.4167, 3.5486], \"confidence\": 1.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"C\", \"rowIndex\": 3, \"columnIndex\": 0, \"boundingBox\": [1.0722, 3.6285, 1.1389, 3.6285, 1.1389, 3.7431, 1.0722, 3.7431], \"confidence\": 1.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"40\", \"rowIndex\": 3, \"columnIndex\": 1, \"boundingBox\": [3.2472, 3.6215, 3.3889, 3.6215, 3.3889, 3.7465, 3.2472, 3.7465], \"confidence\": 1.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"150.66\", \"rowIndex\": 3, \"columnIndex\": 2, \"boundingBox\": [5.4167, 3.625, 5.85, 3.625, 5.85, 3.7569, 5.4167, 3.7569], \"confidence\": 1.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"D\", \"rowIndex\": 4, \"columnIndex\": 0, \"boundingBox\": [1.0764, 3.8403, 1.1528, 3.8403, 1.1528, 3.9618, 1.0764, 3.9618], \"confidence\": 1.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"10\", \"rowIndex\": 4, \"columnIndex\": 1, \"boundingBox\": [3.2389, 3.8368, 3.3861, 3.8368, 3.3861, 3.9618, 3.2389, 3.9618], \"confidence\": 1.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"120.00\", \"rowIndex\": 4, \"columnIndex\": 2, \"boundingBox\": [5.4028, 3.8333, 5.8583, 3.8333, 5.8583, 3.9688, 5.4028, 3.9688], \"confidence\": 1.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"E\", \"rowIndex\": 5, \"columnIndex\": 0, \"boundingBox\": [1.0833, 4.0486, 1.1458, 4.0486, 1.1458, 4.1597, 1.0833, 4.1597], \"confidence\": 1.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"40\", \"rowIndex\": 5, \"columnIndex\": 1, \"boundingBox\": [3.2431, 4.0382, 3.3889, 4.0382, 3.3889, 4.1632, 3.2431, 4.1632], \"confidence\": 1.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"100.00\", \"rowIndex\": 5, \"columnIndex\": 2, \"boundingBox\": [5.4097, 4.0417, 5.8611, 4.0417, 5.8611, 4.1736, 5.4097, 4.1736], \"confidence\": 1.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"F\", \"rowIndex\": 6, \"columnIndex\": 0, \"boundingBox\": [1.0694, 4.2604, 1.1389, 4.2604, 1.1389, 4.3785, 1.0694, 4.3785], \"confidence\": 1.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"60\", \"rowIndex\": 6, \"columnIndex\": 1, \"boundingBox\": [3.2431, 4.2535, 3.3917, 4.2535, 3.3917, 4.3819, 3.2431, 4.3819], \"confidence\": 1.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"120.00\", \"rowIndex\": 6, \"columnIndex\": 2, \"boundingBox\": [5.4097, 4.2535, 5.8472, 4.2535, 5.8472, 4.3889, 5.4097, 4.3889], \"confidence\": 1.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"G\", \"rowIndex\": 7, \"columnIndex\": 0, \"boundingBox\": [1.0806, 4.4653, 1.15, 4.4653, 1.15, 4.5903, 1.0806, 4.5903], \"confidence\": 1.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"80\", \"rowIndex\": 7, \"columnIndex\": 1, \"boundingBox\": [3.2431, 4.4583, 3.3917, 4.4583, 3.3917, 4.5938, 3.2431, 4.5938], \"confidence\": 1.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"220.00\", \"rowIndex\": 7, \"columnIndex\": 2, \"boundingBox\": [5.4139, 4.4618, 5.8542, 4.4618, 5.8542, 4.5972, 5.4139, 4.5972], \"confidence\": 1.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}]}], \"clusterId\": 0}], \"documentResults\": [], \"errors\": []}}",
+      "Date" : "Wed, 07 Jul 2021 06:33:08 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.1//custom/models/6751553c-a23b-4a76-891f-77e76dd295cf/analyzeResults/bcd34336-57f7-4b70-9468-1e405b7a4453",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.1/custom/models/1f1e7908-9b86-451c-b973-339c08a6e884/analyzeResults/bb0e8bb2-19d0-45a3-93d4-28c9975e5da8",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/3.1.0 (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "77998418-af42-4382-a3e5-1d26284e2ce5"
+      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/3.1.0 (11.0.9; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "8b9d78c5-08e3-41e7-a683-bcca59e82ca5"
     },
     "Response" : {
-      "content-length" : "14329",
-      "x-envoy-upstream-service-time" : "26",
+      "content-length" : "17290",
+      "x-envoy-upstream-service-time" : "34",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "54315ecd-e9cc-407a-aadd-df5f2be9ca07",
+      "apim-request-id" : "5f4363d8-ae81-42a5-b00e-cee04d5e99d1",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "Body" : "{\"status\": \"succeeded\", \"createdDateTime\": \"2021-05-11T21:26:03Z\", \"lastUpdatedDateTime\": \"2021-05-11T21:26:14Z\", \"analyzeResult\": {\"version\": null, \"readResults\": [{\"page\": 1, \"angle\": 0, \"width\": 8.5, \"height\": 11.0, \"unit\": \"inch\", \"lines\": [], \"selectionMarks\": null}, {\"page\": 2, \"angle\": 0, \"width\": 8.5, \"height\": 11.0, \"unit\": \"inch\", \"lines\": [], \"selectionMarks\": null}, {\"page\": 3, \"angle\": 0, \"width\": 8.5, \"height\": 11.0, \"unit\": \"inch\", \"lines\": [], \"selectionMarks\": null}], \"pageResults\": [{\"page\": 1, \"keyValuePairs\": [{\"key\": {\"text\": \"Subtotal:\", \"boundingBox\": [5.4972, 4.8889, 6.125, 4.8889, 6.125, 5.0278, 5.4972, 5.0278], \"elements\": null}, \"value\": {\"text\": \"300.00\", \"boundingBox\": [6.1528, 4.8889, 6.6458, 4.8889, 6.6458, 5.0243, 6.1528, 5.0243], \"elements\": null}, \"confidence\": 1.0}, {\"key\": {\"text\": \"Tax:\", \"boundingBox\": [5.5, 5.1181, 5.7889, 5.1181, 5.7889, 5.2465, 5.5, 5.2465], \"elements\": null}, \"value\": {\"text\": \"30.00\", \"boundingBox\": [5.8167, 5.1146, 6.2083, 5.1146, 6.2083, 5.25, 5.8167, 5.25], \"elements\": null}, \"confidence\": 1.0}, {\"key\": {\"text\": \"Tip:\", \"boundingBox\": [5.5, 5.3299, 5.7569, 5.3299, 5.7569, 5.4861, 5.5, 5.4861], \"elements\": null}, \"value\": {\"text\": \"100.00\", \"boundingBox\": [5.7889, 5.3299, 6.2708, 5.3299, 6.2708, 5.4826, 5.7889, 5.4826], \"elements\": null}, \"confidence\": 1.0}, {\"key\": {\"text\": \"Total:\", \"boundingBox\": [5.5, 5.5486, 5.8958, 5.5486, 5.8958, 5.6875, 5.5, 5.6875], \"elements\": null}, \"value\": {\"text\": \"430.00\", \"boundingBox\": [5.9236, 5.5521, 6.4, 5.5521, 6.4, 5.6875, 5.9236, 5.6875], \"elements\": null}, \"confidence\": 1.0}], \"tables\": [{\"rows\": 8, \"columns\": 3, \"cells\": [{\"text\": \"Item\", \"rowIndex\": 0, \"columnIndex\": 0, \"boundingBox\": [1.0764, 2.9931, 1.3681, 2.9931, 1.3681, 3.1146, 1.0764, 3.1146], \"confidence\": 0.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": true, \"isFooter\": false}, {\"text\": \"Quantity\", \"rowIndex\": 0, \"columnIndex\": 1, \"boundingBox\": [3.2431, 2.9965, 3.8444, 2.9965, 3.8444, 3.1354, 3.2431, 3.1354], \"confidence\": 0.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": true, \"isFooter\": false}, {\"text\": \"Price\", \"rowIndex\": 0, \"columnIndex\": 2, \"boundingBox\": [5.4, 2.9896, 5.7431, 2.9896, 5.7431, 3.1181, 5.4, 3.1181], \"confidence\": 0.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": true, \"isFooter\": false}, {\"text\": \"A\", \"rowIndex\": 1, \"columnIndex\": 0, \"boundingBox\": [1.0764, 3.2049, 1.1736, 3.2049, 1.1736, 3.3229, 1.0764, 3.3229], \"confidence\": 0.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"1\", \"rowIndex\": 1, \"columnIndex\": 1, \"boundingBox\": [3.2431, 3.1944, 3.3306, 3.1944, 3.3306, 3.3229, 3.2431, 3.3229], \"confidence\": 0.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"10.99\", \"rowIndex\": 1, \"columnIndex\": 2, \"boundingBox\": [5.4194, 3.1979, 5.7806, 3.1979, 5.7806, 3.3299, 5.4194, 3.3299], \"confidence\": 0.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"B\", \"rowIndex\": 2, \"columnIndex\": 0, \"boundingBox\": [1.0722, 3.4167, 1.1667, 3.4167, 1.1667, 3.5451, 1.0722, 3.5451], \"confidence\": 0.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"2\", \"rowIndex\": 2, \"columnIndex\": 1, \"boundingBox\": [3.2472, 3.4097, 3.3361, 3.4097, 3.3361, 3.5451, 3.2472, 3.5451], \"confidence\": 0.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"14.67\", \"rowIndex\": 2, \"columnIndex\": 2, \"boundingBox\": [5.4139, 3.4167, 5.7806, 3.4167, 5.7806, 3.5451, 5.4139, 3.5451], \"confidence\": 0.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"C\", \"rowIndex\": 3, \"columnIndex\": 0, \"boundingBox\": [1.0722, 3.6285, 1.1806, 3.6285, 1.1806, 3.7431, 1.0722, 3.7431], \"confidence\": 0.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"4\", \"rowIndex\": 3, \"columnIndex\": 1, \"boundingBox\": [3.2708, 3.625, 3.3472, 3.625, 3.3472, 3.7361, 3.2708, 3.7361], \"confidence\": 0.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"15.66\", \"rowIndex\": 3, \"columnIndex\": 2, \"boundingBox\": [5.4167, 3.6215, 5.7847, 3.6215, 5.7847, 3.7569, 5.4167, 3.7569], \"confidence\": 0.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"D\", \"rowIndex\": 4, \"columnIndex\": 0, \"boundingBox\": [1.0764, 3.8403, 1.1694, 3.8403, 1.1694, 3.9618, 1.0764, 3.9618], \"confidence\": 0.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"1\", \"rowIndex\": 4, \"columnIndex\": 1, \"boundingBox\": [3.2569, 3.8333, 3.3444, 3.8333, 3.3444, 3.9549, 3.2569, 3.9549], \"confidence\": 0.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"12.00\", \"rowIndex\": 4, \"columnIndex\": 2, \"boundingBox\": [5.4167, 3.8333, 5.7847, 3.8333, 5.7847, 3.9653, 5.4167, 3.9653], \"confidence\": 0.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"E\", \"rowIndex\": 5, \"columnIndex\": 0, \"boundingBox\": [1.0764, 4.0486, 1.1667, 4.0486, 1.1667, 4.1597, 1.0764, 4.1597], \"confidence\": 0.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"4\", \"rowIndex\": 5, \"columnIndex\": 1, \"boundingBox\": [3.2667, 4.0417, 3.3361, 4.0417, 3.3361, 4.1597, 3.2667, 4.1597], \"confidence\": 0.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"10.00\", \"rowIndex\": 5, \"columnIndex\": 2, \"boundingBox\": [5.4194, 4.0417, 5.7806, 4.0417, 5.7806, 4.1701, 5.4194, 4.1701], \"confidence\": 0.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"__emptycell__\", \"rowIndex\": 6, \"columnIndex\": 0, \"boundingBox\": [0.9861, 4.2083, 3.1528, 4.2083, 3.1528, 4.4167, 0.9861, 4.4167], \"confidence\": 0.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"6\", \"rowIndex\": 6, \"columnIndex\": 1, \"boundingBox\": [3.2361, 4.2535, 3.3403, 4.2535, 3.3403, 4.3819, 3.2361, 4.3819], \"confidence\": 0.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"12.00\", \"rowIndex\": 6, \"columnIndex\": 2, \"boundingBox\": [5.4167, 4.2569, 5.7847, 4.2569, 5.7847, 4.3854, 5.4167, 4.3854], \"confidence\": 0.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"G\", \"rowIndex\": 7, \"columnIndex\": 0, \"boundingBox\": [1.0806, 4.4653, 1.1875, 4.4653, 1.1875, 4.5903, 1.0806, 4.5903], \"confidence\": 0.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"8\", \"rowIndex\": 7, \"columnIndex\": 1, \"boundingBox\": [3.2389, 4.4583, 3.3361, 4.4583, 3.3361, 4.5799, 3.2389, 4.5799], \"confidence\": 0.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"22.00\", \"rowIndex\": 7, \"columnIndex\": 2, \"boundingBox\": [5.4, 4.4549, 5.7889, 4.4549, 5.7889, 4.5938, 5.4, 4.5938], \"confidence\": 0.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}]}], \"clusterId\": null}, {\"page\": 2, \"keyValuePairs\": [], \"tables\": [], \"clusterId\": null}, {\"page\": 3, \"keyValuePairs\": [{\"key\": {\"text\": \"Subtotal:\", \"boundingBox\": [5.4972, 4.8924, 6.125, 4.8924, 6.125, 5.0278, 5.4972, 5.0278], \"elements\": null}, \"value\": {\"text\": \"3000.00\", \"boundingBox\": [6.15, 4.8889, 6.7222, 4.8889, 6.7222, 5.0243, 6.15, 5.0243], \"elements\": null}, \"confidence\": 1.0}, {\"key\": {\"text\": \"Tax:\", \"boundingBox\": [5.5, 5.1181, 5.7847, 5.1181, 5.7847, 5.25, 5.5, 5.25], \"elements\": null}, \"value\": {\"text\": \"300.00\", \"boundingBox\": [5.8125, 5.1146, 6.2986, 5.1146, 6.2986, 5.25, 5.8125, 5.25], \"elements\": null}, \"confidence\": 1.0}, {\"key\": {\"text\": \"Tip:\", \"boundingBox\": [5.4972, 5.3299, 5.7528, 5.3299, 5.7528, 5.4861, 5.4972, 5.4861], \"elements\": null}, \"value\": {\"text\": \"1000.00\", \"boundingBox\": [5.7847, 5.3299, 6.3403, 5.3299, 6.3403, 5.4826, 5.7847, 5.4826], \"elements\": null}, \"confidence\": 1.0}, {\"key\": {\"text\": \"Total:\", \"boundingBox\": [5.5, 5.5486, 5.8917, 5.5486, 5.8917, 5.6875, 5.5, 5.6875], \"elements\": null}, \"value\": {\"text\": \"4300.00\", \"boundingBox\": [5.9194, 5.5521, 6.4931, 5.5521, 6.4931, 5.691, 5.9194, 5.691], \"elements\": null}, \"confidence\": 1.0}], \"tables\": [{\"rows\": 8, \"columns\": 3, \"cells\": [{\"text\": \"Item\", \"rowIndex\": 0, \"columnIndex\": 0, \"boundingBox\": [1.0764, 2.9931, 1.3681, 2.9931, 1.3681, 3.1146, 1.0764, 3.1146], \"confidence\": 0.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": true, \"isFooter\": false}, {\"text\": \"Quantity\", \"rowIndex\": 0, \"columnIndex\": 1, \"boundingBox\": [3.2431, 2.9965, 3.8444, 2.9965, 3.8444, 3.1389, 3.2431, 3.1389], \"confidence\": 0.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": true, \"isFooter\": false}, {\"text\": \"Price\", \"rowIndex\": 0, \"columnIndex\": 2, \"boundingBox\": [5.4, 2.9896, 5.7431, 2.9896, 5.7431, 3.1181, 5.4, 3.1181], \"confidence\": 0.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": true, \"isFooter\": false}, {\"text\": \"A\", \"rowIndex\": 1, \"columnIndex\": 0, \"boundingBox\": [1.0764, 3.2049, 1.1736, 3.2049, 1.1736, 3.3229, 1.0764, 3.3229], \"confidence\": 0.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"10\", \"rowIndex\": 1, \"columnIndex\": 1, \"boundingBox\": [3.2472, 3.1979, 3.4167, 3.1979, 3.4167, 3.3264, 3.2472, 3.3264], \"confidence\": 0.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"100.99\", \"rowIndex\": 1, \"columnIndex\": 2, \"boundingBox\": [5.4194, 3.1979, 5.8681, 3.1979, 5.8681, 3.3333, 5.4194, 3.3333], \"confidence\": 0.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"B\", \"rowIndex\": 2, \"columnIndex\": 0, \"boundingBox\": [1.0722, 3.4167, 1.1667, 3.4167, 1.1667, 3.5451, 1.0722, 3.5451], \"confidence\": 0.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"20\", \"rowIndex\": 2, \"columnIndex\": 1, \"boundingBox\": [3.2389, 3.4132, 3.4194, 3.4132, 3.4194, 3.5417, 3.2389, 3.5417], \"confidence\": 0.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"140.67\", \"rowIndex\": 2, \"columnIndex\": 2, \"boundingBox\": [5.4167, 3.4201, 5.8722, 3.4201, 5.8722, 3.5486, 5.4167, 3.5486], \"confidence\": 0.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"C\", \"rowIndex\": 3, \"columnIndex\": 0, \"boundingBox\": [1.0722, 3.6285, 1.1806, 3.6285, 1.1806, 3.7431, 1.0722, 3.7431], \"confidence\": 0.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"40\", \"rowIndex\": 3, \"columnIndex\": 1, \"boundingBox\": [3.2472, 3.6215, 3.4097, 3.6215, 3.4097, 3.7465, 3.2472, 3.7465], \"confidence\": 0.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"150.66\", \"rowIndex\": 3, \"columnIndex\": 2, \"boundingBox\": [5.4167, 3.625, 5.8722, 3.625, 5.8722, 3.7569, 5.4167, 3.7569], \"confidence\": 0.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"D\", \"rowIndex\": 4, \"columnIndex\": 0, \"boundingBox\": [1.0764, 3.8403, 1.1694, 3.8403, 1.1694, 3.9618, 1.0764, 3.9618], \"confidence\": 0.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"10\", \"rowIndex\": 4, \"columnIndex\": 1, \"boundingBox\": [3.2389, 3.8368, 3.4056, 3.8368, 3.4056, 3.9618, 3.2389, 3.9618], \"confidence\": 0.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"120.00\", \"rowIndex\": 4, \"columnIndex\": 2, \"boundingBox\": [5.4028, 3.8333, 5.8722, 3.8333, 5.8722, 3.9688, 5.4028, 3.9688], \"confidence\": 0.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"E\", \"rowIndex\": 5, \"columnIndex\": 0, \"boundingBox\": [1.0764, 4.0486, 1.1667, 4.0486, 1.1667, 4.1597, 1.0764, 4.1597], \"confidence\": 0.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"40\", \"rowIndex\": 5, \"columnIndex\": 1, \"boundingBox\": [3.2431, 4.0382, 3.4167, 4.0382, 3.4167, 4.1632, 3.2431, 4.1632], \"confidence\": 0.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"100.00\", \"rowIndex\": 5, \"columnIndex\": 2, \"boundingBox\": [5.4097, 4.0417, 5.8639, 4.0417, 5.8639, 4.1736, 5.4097, 4.1736], \"confidence\": 0.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"__emptycell__\", \"rowIndex\": 6, \"columnIndex\": 0, \"boundingBox\": [0.9861, 4.2083, 3.1528, 4.2083, 3.1528, 4.4167, 0.9861, 4.4167], \"confidence\": 0.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"60\", \"rowIndex\": 6, \"columnIndex\": 1, \"boundingBox\": [3.2431, 4.2535, 3.4139, 4.2535, 3.4139, 4.3819, 3.2431, 4.3819], \"confidence\": 0.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"120.00\", \"rowIndex\": 6, \"columnIndex\": 2, \"boundingBox\": [5.4097, 4.2535, 5.8611, 4.2535, 5.8611, 4.3889, 5.4097, 4.3889], \"confidence\": 0.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"G\", \"rowIndex\": 7, \"columnIndex\": 0, \"boundingBox\": [1.0806, 4.4653, 1.1875, 4.4653, 1.1875, 4.5903, 1.0806, 4.5903], \"confidence\": 0.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"80\", \"rowIndex\": 7, \"columnIndex\": 1, \"boundingBox\": [3.2361, 4.4583, 3.4167, 4.4583, 3.4167, 4.5938, 3.2361, 4.5938], \"confidence\": 0.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"220.00\", \"rowIndex\": 7, \"columnIndex\": 2, \"boundingBox\": [5.4139, 4.4618, 5.8681, 4.4618, 5.8681, 4.5972, 5.4139, 4.5972], \"confidence\": 0.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}]}], \"clusterId\": null}], \"documentResults\": [], \"errors\": []}}",
-      "Date" : "Tue, 11 May 2021 21:26:18 GMT",
-      "Content-Type" : "application/json; charset=utf-8"
-    },
-    "Exception" : null
-  }, {
-    "Method" : "GET",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.1//custom/models/6751553c-a23b-4a76-891f-77e76dd295cf/analyzeResults/bcd34336-57f7-4b70-9468-1e405b7a4453",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/3.1.0 (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "502ba555-497b-4661-915a-154028f39be7"
-    },
-    "Response" : {
-      "content-length" : "14329",
-      "x-envoy-upstream-service-time" : "25",
-      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
-      "x-content-type-options" : "nosniff",
-      "apim-request-id" : "d84887b3-24eb-4b67-9232-ef381bff462c",
-      "retry-after" : "0",
-      "StatusCode" : "200",
-      "Body" : "{\"status\": \"succeeded\", \"createdDateTime\": \"2021-05-11T21:26:03Z\", \"lastUpdatedDateTime\": \"2021-05-11T21:26:14Z\", \"analyzeResult\": {\"version\": null, \"readResults\": [{\"page\": 1, \"angle\": 0, \"width\": 8.5, \"height\": 11.0, \"unit\": \"inch\", \"lines\": [], \"selectionMarks\": null}, {\"page\": 2, \"angle\": 0, \"width\": 8.5, \"height\": 11.0, \"unit\": \"inch\", \"lines\": [], \"selectionMarks\": null}, {\"page\": 3, \"angle\": 0, \"width\": 8.5, \"height\": 11.0, \"unit\": \"inch\", \"lines\": [], \"selectionMarks\": null}], \"pageResults\": [{\"page\": 1, \"keyValuePairs\": [{\"key\": {\"text\": \"Subtotal:\", \"boundingBox\": [5.4972, 4.8889, 6.125, 4.8889, 6.125, 5.0278, 5.4972, 5.0278], \"elements\": null}, \"value\": {\"text\": \"300.00\", \"boundingBox\": [6.1528, 4.8889, 6.6458, 4.8889, 6.6458, 5.0243, 6.1528, 5.0243], \"elements\": null}, \"confidence\": 1.0}, {\"key\": {\"text\": \"Tax:\", \"boundingBox\": [5.5, 5.1181, 5.7889, 5.1181, 5.7889, 5.2465, 5.5, 5.2465], \"elements\": null}, \"value\": {\"text\": \"30.00\", \"boundingBox\": [5.8167, 5.1146, 6.2083, 5.1146, 6.2083, 5.25, 5.8167, 5.25], \"elements\": null}, \"confidence\": 1.0}, {\"key\": {\"text\": \"Tip:\", \"boundingBox\": [5.5, 5.3299, 5.7569, 5.3299, 5.7569, 5.4861, 5.5, 5.4861], \"elements\": null}, \"value\": {\"text\": \"100.00\", \"boundingBox\": [5.7889, 5.3299, 6.2708, 5.3299, 6.2708, 5.4826, 5.7889, 5.4826], \"elements\": null}, \"confidence\": 1.0}, {\"key\": {\"text\": \"Total:\", \"boundingBox\": [5.5, 5.5486, 5.8958, 5.5486, 5.8958, 5.6875, 5.5, 5.6875], \"elements\": null}, \"value\": {\"text\": \"430.00\", \"boundingBox\": [5.9236, 5.5521, 6.4, 5.5521, 6.4, 5.6875, 5.9236, 5.6875], \"elements\": null}, \"confidence\": 1.0}], \"tables\": [{\"rows\": 8, \"columns\": 3, \"cells\": [{\"text\": \"Item\", \"rowIndex\": 0, \"columnIndex\": 0, \"boundingBox\": [1.0764, 2.9931, 1.3681, 2.9931, 1.3681, 3.1146, 1.0764, 3.1146], \"confidence\": 0.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": true, \"isFooter\": false}, {\"text\": \"Quantity\", \"rowIndex\": 0, \"columnIndex\": 1, \"boundingBox\": [3.2431, 2.9965, 3.8444, 2.9965, 3.8444, 3.1354, 3.2431, 3.1354], \"confidence\": 0.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": true, \"isFooter\": false}, {\"text\": \"Price\", \"rowIndex\": 0, \"columnIndex\": 2, \"boundingBox\": [5.4, 2.9896, 5.7431, 2.9896, 5.7431, 3.1181, 5.4, 3.1181], \"confidence\": 0.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": true, \"isFooter\": false}, {\"text\": \"A\", \"rowIndex\": 1, \"columnIndex\": 0, \"boundingBox\": [1.0764, 3.2049, 1.1736, 3.2049, 1.1736, 3.3229, 1.0764, 3.3229], \"confidence\": 0.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"1\", \"rowIndex\": 1, \"columnIndex\": 1, \"boundingBox\": [3.2431, 3.1944, 3.3306, 3.1944, 3.3306, 3.3229, 3.2431, 3.3229], \"confidence\": 0.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"10.99\", \"rowIndex\": 1, \"columnIndex\": 2, \"boundingBox\": [5.4194, 3.1979, 5.7806, 3.1979, 5.7806, 3.3299, 5.4194, 3.3299], \"confidence\": 0.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"B\", \"rowIndex\": 2, \"columnIndex\": 0, \"boundingBox\": [1.0722, 3.4167, 1.1667, 3.4167, 1.1667, 3.5451, 1.0722, 3.5451], \"confidence\": 0.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"2\", \"rowIndex\": 2, \"columnIndex\": 1, \"boundingBox\": [3.2472, 3.4097, 3.3361, 3.4097, 3.3361, 3.5451, 3.2472, 3.5451], \"confidence\": 0.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"14.67\", \"rowIndex\": 2, \"columnIndex\": 2, \"boundingBox\": [5.4139, 3.4167, 5.7806, 3.4167, 5.7806, 3.5451, 5.4139, 3.5451], \"confidence\": 0.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"C\", \"rowIndex\": 3, \"columnIndex\": 0, \"boundingBox\": [1.0722, 3.6285, 1.1806, 3.6285, 1.1806, 3.7431, 1.0722, 3.7431], \"confidence\": 0.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"4\", \"rowIndex\": 3, \"columnIndex\": 1, \"boundingBox\": [3.2708, 3.625, 3.3472, 3.625, 3.3472, 3.7361, 3.2708, 3.7361], \"confidence\": 0.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"15.66\", \"rowIndex\": 3, \"columnIndex\": 2, \"boundingBox\": [5.4167, 3.6215, 5.7847, 3.6215, 5.7847, 3.7569, 5.4167, 3.7569], \"confidence\": 0.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"D\", \"rowIndex\": 4, \"columnIndex\": 0, \"boundingBox\": [1.0764, 3.8403, 1.1694, 3.8403, 1.1694, 3.9618, 1.0764, 3.9618], \"confidence\": 0.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"1\", \"rowIndex\": 4, \"columnIndex\": 1, \"boundingBox\": [3.2569, 3.8333, 3.3444, 3.8333, 3.3444, 3.9549, 3.2569, 3.9549], \"confidence\": 0.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"12.00\", \"rowIndex\": 4, \"columnIndex\": 2, \"boundingBox\": [5.4167, 3.8333, 5.7847, 3.8333, 5.7847, 3.9653, 5.4167, 3.9653], \"confidence\": 0.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"E\", \"rowIndex\": 5, \"columnIndex\": 0, \"boundingBox\": [1.0764, 4.0486, 1.1667, 4.0486, 1.1667, 4.1597, 1.0764, 4.1597], \"confidence\": 0.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"4\", \"rowIndex\": 5, \"columnIndex\": 1, \"boundingBox\": [3.2667, 4.0417, 3.3361, 4.0417, 3.3361, 4.1597, 3.2667, 4.1597], \"confidence\": 0.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"10.00\", \"rowIndex\": 5, \"columnIndex\": 2, \"boundingBox\": [5.4194, 4.0417, 5.7806, 4.0417, 5.7806, 4.1701, 5.4194, 4.1701], \"confidence\": 0.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"__emptycell__\", \"rowIndex\": 6, \"columnIndex\": 0, \"boundingBox\": [0.9861, 4.2083, 3.1528, 4.2083, 3.1528, 4.4167, 0.9861, 4.4167], \"confidence\": 0.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"6\", \"rowIndex\": 6, \"columnIndex\": 1, \"boundingBox\": [3.2361, 4.2535, 3.3403, 4.2535, 3.3403, 4.3819, 3.2361, 4.3819], \"confidence\": 0.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"12.00\", \"rowIndex\": 6, \"columnIndex\": 2, \"boundingBox\": [5.4167, 4.2569, 5.7847, 4.2569, 5.7847, 4.3854, 5.4167, 4.3854], \"confidence\": 0.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"G\", \"rowIndex\": 7, \"columnIndex\": 0, \"boundingBox\": [1.0806, 4.4653, 1.1875, 4.4653, 1.1875, 4.5903, 1.0806, 4.5903], \"confidence\": 0.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"8\", \"rowIndex\": 7, \"columnIndex\": 1, \"boundingBox\": [3.2389, 4.4583, 3.3361, 4.4583, 3.3361, 4.5799, 3.2389, 4.5799], \"confidence\": 0.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"22.00\", \"rowIndex\": 7, \"columnIndex\": 2, \"boundingBox\": [5.4, 4.4549, 5.7889, 4.4549, 5.7889, 4.5938, 5.4, 4.5938], \"confidence\": 0.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}]}], \"clusterId\": null}, {\"page\": 2, \"keyValuePairs\": [], \"tables\": [], \"clusterId\": null}, {\"page\": 3, \"keyValuePairs\": [{\"key\": {\"text\": \"Subtotal:\", \"boundingBox\": [5.4972, 4.8924, 6.125, 4.8924, 6.125, 5.0278, 5.4972, 5.0278], \"elements\": null}, \"value\": {\"text\": \"3000.00\", \"boundingBox\": [6.15, 4.8889, 6.7222, 4.8889, 6.7222, 5.0243, 6.15, 5.0243], \"elements\": null}, \"confidence\": 1.0}, {\"key\": {\"text\": \"Tax:\", \"boundingBox\": [5.5, 5.1181, 5.7847, 5.1181, 5.7847, 5.25, 5.5, 5.25], \"elements\": null}, \"value\": {\"text\": \"300.00\", \"boundingBox\": [5.8125, 5.1146, 6.2986, 5.1146, 6.2986, 5.25, 5.8125, 5.25], \"elements\": null}, \"confidence\": 1.0}, {\"key\": {\"text\": \"Tip:\", \"boundingBox\": [5.4972, 5.3299, 5.7528, 5.3299, 5.7528, 5.4861, 5.4972, 5.4861], \"elements\": null}, \"value\": {\"text\": \"1000.00\", \"boundingBox\": [5.7847, 5.3299, 6.3403, 5.3299, 6.3403, 5.4826, 5.7847, 5.4826], \"elements\": null}, \"confidence\": 1.0}, {\"key\": {\"text\": \"Total:\", \"boundingBox\": [5.5, 5.5486, 5.8917, 5.5486, 5.8917, 5.6875, 5.5, 5.6875], \"elements\": null}, \"value\": {\"text\": \"4300.00\", \"boundingBox\": [5.9194, 5.5521, 6.4931, 5.5521, 6.4931, 5.691, 5.9194, 5.691], \"elements\": null}, \"confidence\": 1.0}], \"tables\": [{\"rows\": 8, \"columns\": 3, \"cells\": [{\"text\": \"Item\", \"rowIndex\": 0, \"columnIndex\": 0, \"boundingBox\": [1.0764, 2.9931, 1.3681, 2.9931, 1.3681, 3.1146, 1.0764, 3.1146], \"confidence\": 0.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": true, \"isFooter\": false}, {\"text\": \"Quantity\", \"rowIndex\": 0, \"columnIndex\": 1, \"boundingBox\": [3.2431, 2.9965, 3.8444, 2.9965, 3.8444, 3.1389, 3.2431, 3.1389], \"confidence\": 0.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": true, \"isFooter\": false}, {\"text\": \"Price\", \"rowIndex\": 0, \"columnIndex\": 2, \"boundingBox\": [5.4, 2.9896, 5.7431, 2.9896, 5.7431, 3.1181, 5.4, 3.1181], \"confidence\": 0.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": true, \"isFooter\": false}, {\"text\": \"A\", \"rowIndex\": 1, \"columnIndex\": 0, \"boundingBox\": [1.0764, 3.2049, 1.1736, 3.2049, 1.1736, 3.3229, 1.0764, 3.3229], \"confidence\": 0.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"10\", \"rowIndex\": 1, \"columnIndex\": 1, \"boundingBox\": [3.2472, 3.1979, 3.4167, 3.1979, 3.4167, 3.3264, 3.2472, 3.3264], \"confidence\": 0.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"100.99\", \"rowIndex\": 1, \"columnIndex\": 2, \"boundingBox\": [5.4194, 3.1979, 5.8681, 3.1979, 5.8681, 3.3333, 5.4194, 3.3333], \"confidence\": 0.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"B\", \"rowIndex\": 2, \"columnIndex\": 0, \"boundingBox\": [1.0722, 3.4167, 1.1667, 3.4167, 1.1667, 3.5451, 1.0722, 3.5451], \"confidence\": 0.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"20\", \"rowIndex\": 2, \"columnIndex\": 1, \"boundingBox\": [3.2389, 3.4132, 3.4194, 3.4132, 3.4194, 3.5417, 3.2389, 3.5417], \"confidence\": 0.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"140.67\", \"rowIndex\": 2, \"columnIndex\": 2, \"boundingBox\": [5.4167, 3.4201, 5.8722, 3.4201, 5.8722, 3.5486, 5.4167, 3.5486], \"confidence\": 0.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"C\", \"rowIndex\": 3, \"columnIndex\": 0, \"boundingBox\": [1.0722, 3.6285, 1.1806, 3.6285, 1.1806, 3.7431, 1.0722, 3.7431], \"confidence\": 0.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"40\", \"rowIndex\": 3, \"columnIndex\": 1, \"boundingBox\": [3.2472, 3.6215, 3.4097, 3.6215, 3.4097, 3.7465, 3.2472, 3.7465], \"confidence\": 0.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"150.66\", \"rowIndex\": 3, \"columnIndex\": 2, \"boundingBox\": [5.4167, 3.625, 5.8722, 3.625, 5.8722, 3.7569, 5.4167, 3.7569], \"confidence\": 0.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"D\", \"rowIndex\": 4, \"columnIndex\": 0, \"boundingBox\": [1.0764, 3.8403, 1.1694, 3.8403, 1.1694, 3.9618, 1.0764, 3.9618], \"confidence\": 0.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"10\", \"rowIndex\": 4, \"columnIndex\": 1, \"boundingBox\": [3.2389, 3.8368, 3.4056, 3.8368, 3.4056, 3.9618, 3.2389, 3.9618], \"confidence\": 0.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"120.00\", \"rowIndex\": 4, \"columnIndex\": 2, \"boundingBox\": [5.4028, 3.8333, 5.8722, 3.8333, 5.8722, 3.9688, 5.4028, 3.9688], \"confidence\": 0.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"E\", \"rowIndex\": 5, \"columnIndex\": 0, \"boundingBox\": [1.0764, 4.0486, 1.1667, 4.0486, 1.1667, 4.1597, 1.0764, 4.1597], \"confidence\": 0.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"40\", \"rowIndex\": 5, \"columnIndex\": 1, \"boundingBox\": [3.2431, 4.0382, 3.4167, 4.0382, 3.4167, 4.1632, 3.2431, 4.1632], \"confidence\": 0.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"100.00\", \"rowIndex\": 5, \"columnIndex\": 2, \"boundingBox\": [5.4097, 4.0417, 5.8639, 4.0417, 5.8639, 4.1736, 5.4097, 4.1736], \"confidence\": 0.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"__emptycell__\", \"rowIndex\": 6, \"columnIndex\": 0, \"boundingBox\": [0.9861, 4.2083, 3.1528, 4.2083, 3.1528, 4.4167, 0.9861, 4.4167], \"confidence\": 0.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"60\", \"rowIndex\": 6, \"columnIndex\": 1, \"boundingBox\": [3.2431, 4.2535, 3.4139, 4.2535, 3.4139, 4.3819, 3.2431, 4.3819], \"confidence\": 0.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"120.00\", \"rowIndex\": 6, \"columnIndex\": 2, \"boundingBox\": [5.4097, 4.2535, 5.8611, 4.2535, 5.8611, 4.3889, 5.4097, 4.3889], \"confidence\": 0.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"G\", \"rowIndex\": 7, \"columnIndex\": 0, \"boundingBox\": [1.0806, 4.4653, 1.1875, 4.4653, 1.1875, 4.5903, 1.0806, 4.5903], \"confidence\": 0.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"80\", \"rowIndex\": 7, \"columnIndex\": 1, \"boundingBox\": [3.2361, 4.4583, 3.4167, 4.4583, 3.4167, 4.5938, 3.2361, 4.5938], \"confidence\": 0.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"220.00\", \"rowIndex\": 7, \"columnIndex\": 2, \"boundingBox\": [5.4139, 4.4618, 5.8681, 4.4618, 5.8681, 4.5972, 5.4139, 4.5972], \"confidence\": 0.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}]}], \"clusterId\": null}], \"documentResults\": [], \"errors\": []}}",
-      "Date" : "Tue, 11 May 2021 21:26:18 GMT",
+      "Body" : "{\"status\": \"succeeded\", \"createdDateTime\": \"2021-07-07T06:32:58Z\", \"lastUpdatedDateTime\": \"2021-07-07T06:33:06Z\", \"analyzeResult\": {\"version\": \"2.1.0\", \"readResults\": [{\"page\": 1, \"angle\": 0, \"width\": 8.5, \"height\": 11.0, \"unit\": \"inch\", \"lines\": [], \"selectionMarks\": null}, {\"page\": 2, \"angle\": 0, \"width\": 8.5, \"height\": 11.0, \"unit\": \"inch\", \"lines\": [], \"selectionMarks\": null}, {\"page\": 3, \"angle\": 0, \"width\": 8.5, \"height\": 11.0, \"unit\": \"inch\", \"lines\": [], \"selectionMarks\": null}], \"pageResults\": [{\"page\": 1, \"keyValuePairs\": [{\"key\": {\"text\": \"Invoice For:\", \"boundingBox\": [6.0028, 1.059, 7.0556, 1.059, 7.0556, 1.2292, 6.0028, 1.2292], \"elements\": null}, \"value\": {\"text\": \"Bilbo Baggins 123 Hobbit Lane\", \"boundingBox\": [6.0, 1.4428, 7.1, 1.4428, 7.1, 1.8056, 6.0, 1.8056], \"elements\": null}, \"confidence\": 1.0}, {\"key\": {\"text\": \"Address:\", \"boundingBox\": [0.875, 1.4757, 1.5764, 1.4757, 1.5764, 1.6285, 0.875, 1.6285], \"elements\": null}, \"value\": {\"text\": \"567 Main St.\", \"boundingBox\": [0.875, 1.8368, 1.7194, 1.8368, 1.7194, 1.9698, 0.875, 1.9698], \"elements\": null}, \"confidence\": 1.0}, {\"key\": {\"text\": \"Redmond, WA\", \"boundingBox\": [6.0, 1.8848, 6.9556, 1.8848, 6.9556, 2.0256, 6.0, 2.0256], \"elements\": null}, \"value\": {\"text\": \"555-555-5555\", \"boundingBox\": [5.9972, 2.1076, 6.9306, 2.1076, 6.9306, 2.2465, 5.9972, 2.2465], \"elements\": null}, \"confidence\": 1.0}, {\"key\": {\"text\": \"Redmond, WA\", \"boundingBox\": [0.875, 2.0547, 1.8264, 2.0547, 1.8264, 2.1962, 0.875, 2.1962], \"elements\": null}, \"value\": {\"text\": \"555-555-5555\", \"boundingBox\": [0.875, 2.2743, 1.8056, 2.2743, 1.8056, 2.4132, 0.875, 2.4132], \"elements\": null}, \"confidence\": 0.29}, {\"key\": {\"text\": \"Subtotal:\", \"boundingBox\": [5.4972, 4.8889, 6.1319, 4.8889, 6.1319, 5.0278, 5.4972, 5.0278], \"elements\": null}, \"value\": {\"text\": \"300.00\", \"boundingBox\": [6.1597, 4.8889, 6.6222, 4.8889, 6.6222, 5.0243, 6.1597, 5.0243], \"elements\": null}, \"confidence\": 1.0}, {\"key\": {\"text\": \"Tax:\", \"boundingBox\": [5.5, 5.1181, 5.7889, 5.1181, 5.7889, 5.2465, 5.5, 5.2465], \"elements\": null}, \"value\": {\"text\": \"30.00\", \"boundingBox\": [5.8125, 5.1146, 6.1833, 5.1146, 6.1833, 5.25, 5.8125, 5.25], \"elements\": null}, \"confidence\": 1.0}, {\"key\": {\"text\": \"Tip:\", \"boundingBox\": [5.5, 5.3299, 5.7528, 5.3299, 5.7528, 5.4861, 5.5, 5.4861], \"elements\": null}, \"value\": {\"text\": \"100.00\", \"boundingBox\": [5.7847, 5.3299, 6.2639, 5.3299, 6.2639, 5.4826, 5.7847, 5.4826], \"elements\": null}, \"confidence\": 1.0}, {\"key\": {\"text\": \"Total:\", \"boundingBox\": [5.5, 5.5486, 5.8958, 5.5486, 5.8958, 5.6875, 5.5, 5.6875], \"elements\": null}, \"value\": {\"text\": \"430.00\", \"boundingBox\": [5.9194, 5.5521, 6.3861, 5.5521, 6.3861, 5.6875, 5.9194, 5.6875], \"elements\": null}, \"confidence\": 1.0}, {\"key\": {\"text\": \"Signature:\", \"boundingBox\": [1.0, 6.6458, 1.7194, 6.6458, 1.7194, 6.8125, 1.0, 6.8125], \"elements\": null}, \"value\": {\"text\": \"Bilbo Baggins\", \"boundingBox\": [2.0694, 6.6322, 3.0028, 6.6322, 3.0028, 6.804, 2.0694, 6.804], \"elements\": null}, \"confidence\": 1.0}], \"tables\": [{\"rows\": 8, \"columns\": 3, \"boundingBox\": [1.0694, 2.9896, 5.775, 2.9896, 5.775, 4.5938, 1.0694, 4.5938], \"cells\": [{\"text\": \"Item\", \"rowIndex\": 0, \"columnIndex\": 0, \"boundingBox\": [1.0764, 2.9931, 1.3167, 2.9931, 1.3167, 3.1146, 1.0764, 3.1146], \"confidence\": 1.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": true, \"isFooter\": false}, {\"text\": \"Quantity\", \"rowIndex\": 0, \"columnIndex\": 1, \"boundingBox\": [3.2431, 2.9965, 3.8306, 2.9965, 3.8306, 3.1354, 3.2431, 3.1354], \"confidence\": 1.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": true, \"isFooter\": false}, {\"text\": \"Price\", \"rowIndex\": 0, \"columnIndex\": 2, \"boundingBox\": [5.4, 2.9896, 5.7292, 2.9896, 5.7292, 3.1181, 5.4, 3.1181], \"confidence\": 1.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": true, \"isFooter\": false}, {\"text\": \"A\", \"rowIndex\": 1, \"columnIndex\": 0, \"boundingBox\": [1.0764, 3.2049, 1.1528, 3.2049, 1.1528, 3.3229, 1.0764, 3.3229], \"confidence\": 1.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"1\", \"rowIndex\": 1, \"columnIndex\": 1, \"boundingBox\": [3.2361, 3.1944, 3.3083, 3.1944, 3.3083, 3.3229, 3.2361, 3.3229], \"confidence\": 1.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"10.99\", \"rowIndex\": 1, \"columnIndex\": 2, \"boundingBox\": [5.4194, 3.1979, 5.7667, 3.1979, 5.7667, 3.3299, 5.4194, 3.3299], \"confidence\": 1.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"B\", \"rowIndex\": 2, \"columnIndex\": 0, \"boundingBox\": [1.0806, 3.4167, 1.1528, 3.4167, 1.1528, 3.5451, 1.0806, 3.5451], \"confidence\": 1.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"2\", \"rowIndex\": 2, \"columnIndex\": 1, \"boundingBox\": [3.2431, 3.4097, 3.3222, 3.4097, 3.3222, 3.5451, 3.2431, 3.5451], \"confidence\": 1.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"14.67\", \"rowIndex\": 2, \"columnIndex\": 2, \"boundingBox\": [5.4139, 3.4167, 5.775, 3.4167, 5.775, 3.5451, 5.4139, 3.5451], \"confidence\": 1.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"C\", \"rowIndex\": 3, \"columnIndex\": 0, \"boundingBox\": [1.0722, 3.6285, 1.1389, 3.6285, 1.1389, 3.7431, 1.0722, 3.7431], \"confidence\": 1.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"4\", \"rowIndex\": 3, \"columnIndex\": 1, \"boundingBox\": [3.2431, 3.6215, 3.3125, 3.6215, 3.3125, 3.7326, 3.2431, 3.7326], \"confidence\": 1.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"15.66\", \"rowIndex\": 3, \"columnIndex\": 2, \"boundingBox\": [5.4167, 3.6215, 5.7708, 3.6215, 5.7708, 3.7569, 5.4167, 3.7569], \"confidence\": 1.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"D\", \"rowIndex\": 4, \"columnIndex\": 0, \"boundingBox\": [1.0764, 3.8403, 1.1528, 3.8403, 1.1528, 3.9618, 1.0764, 3.9618], \"confidence\": 1.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"1\", \"rowIndex\": 4, \"columnIndex\": 1, \"boundingBox\": [3.2431, 3.8438, 3.3125, 3.8438, 3.3125, 3.9722, 3.2431, 3.9722], \"confidence\": 1.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"12.00\", \"rowIndex\": 4, \"columnIndex\": 2, \"boundingBox\": [5.4167, 3.8333, 5.7708, 3.8333, 5.7708, 3.9653, 5.4167, 3.9653], \"confidence\": 1.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"E\", \"rowIndex\": 5, \"columnIndex\": 0, \"boundingBox\": [1.0833, 4.0486, 1.1458, 4.0486, 1.1458, 4.1597, 1.0833, 4.1597], \"confidence\": 1.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"4\", \"rowIndex\": 5, \"columnIndex\": 1, \"boundingBox\": [3.2431, 4.0417, 3.3125, 4.0417, 3.3125, 4.1562, 3.2431, 4.1562], \"confidence\": 1.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"10.00\", \"rowIndex\": 5, \"columnIndex\": 2, \"boundingBox\": [5.4194, 4.0417, 5.7667, 4.0417, 5.7667, 4.1701, 5.4194, 4.1701], \"confidence\": 1.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"F\", \"rowIndex\": 6, \"columnIndex\": 0, \"boundingBox\": [1.0694, 4.2604, 1.1389, 4.2604, 1.1389, 4.3785, 1.0694, 4.3785], \"confidence\": 1.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"6\", \"rowIndex\": 6, \"columnIndex\": 1, \"boundingBox\": [3.2431, 4.2535, 3.3167, 4.2535, 3.3167, 4.3819, 3.2431, 4.3819], \"confidence\": 1.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"12.00\", \"rowIndex\": 6, \"columnIndex\": 2, \"boundingBox\": [5.4167, 4.2569, 5.7639, 4.2569, 5.7639, 4.3854, 5.4167, 4.3854], \"confidence\": 1.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"G\", \"rowIndex\": 7, \"columnIndex\": 0, \"boundingBox\": [1.0806, 4.4653, 1.15, 4.4653, 1.15, 4.5903, 1.0806, 4.5903], \"confidence\": 1.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"8\", \"rowIndex\": 7, \"columnIndex\": 1, \"boundingBox\": [3.2389, 4.4583, 3.3083, 4.4583, 3.3083, 4.5799, 3.2389, 4.5799], \"confidence\": 1.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"22.00\", \"rowIndex\": 7, \"columnIndex\": 2, \"boundingBox\": [5.4056, 4.4549, 5.775, 4.4549, 5.775, 4.5938, 5.4056, 4.5938], \"confidence\": 1.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}]}], \"clusterId\": 0}, {\"page\": 2, \"keyValuePairs\": [], \"tables\": [], \"clusterId\": null}, {\"page\": 3, \"keyValuePairs\": [{\"key\": {\"text\": \"Invoice For:\", \"boundingBox\": [6.0028, 1.059, 7.0583, 1.059, 7.0583, 1.2292, 6.0028, 1.2292], \"elements\": null}, \"value\": {\"text\": \"Frodo Baggins 123 Hobbit Lane\", \"boundingBox\": [6.0, 1.4444, 7.0972, 1.4444, 7.0972, 1.8046, 6.0, 1.8046], \"elements\": null}, \"confidence\": 1.0}, {\"key\": {\"text\": \"Address:\", \"boundingBox\": [0.875, 1.4757, 1.5764, 1.4757, 1.5764, 1.6285, 0.875, 1.6285], \"elements\": null}, \"value\": {\"text\": \"567 Main St.\", \"boundingBox\": [0.875, 1.8368, 1.7194, 1.8368, 1.7194, 1.9698, 0.875, 1.9698], \"elements\": null}, \"confidence\": 1.0}, {\"key\": {\"text\": \"Redmond, WA\", \"boundingBox\": [6.0, 1.8848, 6.9514, 1.8848, 6.9514, 2.0256, 6.0, 2.0256], \"elements\": null}, \"value\": {\"text\": \"555-555-5555\", \"boundingBox\": [5.9972, 2.1076, 6.9306, 2.1076, 6.9306, 2.2465, 5.9972, 2.2465], \"elements\": null}, \"confidence\": 1.0}, {\"key\": {\"text\": \"Redmond, WA\", \"boundingBox\": [0.875, 2.0547, 1.8264, 2.0547, 1.8264, 2.1962, 0.875, 2.1962], \"elements\": null}, \"value\": {\"text\": \"555-555-5555\", \"boundingBox\": [0.875, 2.2743, 1.8056, 2.2743, 1.8056, 2.4132, 0.875, 2.4132], \"elements\": null}, \"confidence\": 0.29}, {\"key\": {\"text\": \"Subtotal:\", \"boundingBox\": [5.4972, 4.8924, 6.1319, 4.8924, 6.1319, 5.0278, 5.4972, 5.0278], \"elements\": null}, \"value\": {\"text\": \"3000.00\", \"boundingBox\": [6.1556, 4.8889, 6.7014, 4.8889, 6.7014, 5.0243, 6.1556, 5.0243], \"elements\": null}, \"confidence\": 1.0}, {\"key\": {\"text\": \"Tax:\", \"boundingBox\": [5.5, 5.1181, 5.7917, 5.1181, 5.7917, 5.25, 5.5, 5.25], \"elements\": null}, \"value\": {\"text\": \"300.00\", \"boundingBox\": [5.8194, 5.1146, 6.2778, 5.1146, 6.2778, 5.25, 5.8194, 5.25], \"elements\": null}, \"confidence\": 1.0}, {\"key\": {\"text\": \"Tip:\", \"boundingBox\": [5.4972, 5.3299, 5.7528, 5.3299, 5.7528, 5.4861, 5.4972, 5.4861], \"elements\": null}, \"value\": {\"text\": \"1000.00\", \"boundingBox\": [5.7806, 5.3299, 6.3403, 5.3299, 6.3403, 5.4826, 5.7806, 5.4826], \"elements\": null}, \"confidence\": 1.0}, {\"key\": {\"text\": \"Total:\", \"boundingBox\": [5.5, 5.5486, 5.9, 5.5486, 5.9, 5.6875, 5.5, 5.6875], \"elements\": null}, \"value\": {\"text\": \"4300.00\", \"boundingBox\": [5.9278, 5.5521, 6.4792, 5.5521, 6.4792, 5.691, 5.9278, 5.691], \"elements\": null}, \"confidence\": 1.0}, {\"key\": {\"text\": \"Signature:\", \"boundingBox\": [1.0, 6.6458, 1.7194, 6.6458, 1.7194, 6.8125, 1.0, 6.8125], \"elements\": null}, \"value\": {\"text\": \"Frodo Baggins\", \"boundingBox\": [2.0722, 6.6474, 3.0528, 6.6474, 3.0528, 6.7903, 2.0722, 6.7903], \"elements\": null}, \"confidence\": 1.0}], \"tables\": [{\"rows\": 8, \"columns\": 3, \"boundingBox\": [1.0694, 2.9896, 5.8611, 2.9896, 5.8611, 4.5972, 1.0694, 4.5972], \"cells\": [{\"text\": \"Item\", \"rowIndex\": 0, \"columnIndex\": 0, \"boundingBox\": [1.0764, 2.9931, 1.3167, 2.9931, 1.3167, 3.1146, 1.0764, 3.1146], \"confidence\": 1.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": true, \"isFooter\": false}, {\"text\": \"Quantity\", \"rowIndex\": 0, \"columnIndex\": 1, \"boundingBox\": [3.2431, 2.9965, 3.8403, 2.9965, 3.8403, 3.1389, 3.2431, 3.1389], \"confidence\": 1.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": true, \"isFooter\": false}, {\"text\": \"Price\", \"rowIndex\": 0, \"columnIndex\": 2, \"boundingBox\": [5.4, 2.9896, 5.7292, 2.9896, 5.7292, 3.1181, 5.4, 3.1181], \"confidence\": 1.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": true, \"isFooter\": false}, {\"text\": \"A\", \"rowIndex\": 1, \"columnIndex\": 0, \"boundingBox\": [1.0764, 3.2049, 1.1528, 3.2049, 1.1528, 3.3229, 1.0764, 3.3229], \"confidence\": 1.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"10\", \"rowIndex\": 1, \"columnIndex\": 1, \"boundingBox\": [3.2472, 3.1979, 3.3861, 3.1979, 3.3861, 3.3264, 3.2472, 3.3264], \"confidence\": 1.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"100.99\", \"rowIndex\": 1, \"columnIndex\": 2, \"boundingBox\": [5.4194, 3.1979, 5.8611, 3.1979, 5.8611, 3.3333, 5.4194, 3.3333], \"confidence\": 1.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"B\", \"rowIndex\": 2, \"columnIndex\": 0, \"boundingBox\": [1.0806, 3.4167, 1.1528, 3.4167, 1.1528, 3.5451, 1.0806, 3.5451], \"confidence\": 1.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"20\", \"rowIndex\": 2, \"columnIndex\": 1, \"boundingBox\": [3.2472, 3.4132, 3.3889, 3.4132, 3.3889, 3.5417, 3.2472, 3.5417], \"confidence\": 1.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"140.67\", \"rowIndex\": 2, \"columnIndex\": 2, \"boundingBox\": [5.4167, 3.4201, 5.8583, 3.4201, 5.8583, 3.5486, 5.4167, 3.5486], \"confidence\": 1.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"C\", \"rowIndex\": 3, \"columnIndex\": 0, \"boundingBox\": [1.0722, 3.6285, 1.1389, 3.6285, 1.1389, 3.7431, 1.0722, 3.7431], \"confidence\": 1.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"40\", \"rowIndex\": 3, \"columnIndex\": 1, \"boundingBox\": [3.2472, 3.6215, 3.3889, 3.6215, 3.3889, 3.7465, 3.2472, 3.7465], \"confidence\": 1.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"150.66\", \"rowIndex\": 3, \"columnIndex\": 2, \"boundingBox\": [5.4167, 3.625, 5.85, 3.625, 5.85, 3.7569, 5.4167, 3.7569], \"confidence\": 1.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"D\", \"rowIndex\": 4, \"columnIndex\": 0, \"boundingBox\": [1.0764, 3.8403, 1.1528, 3.8403, 1.1528, 3.9618, 1.0764, 3.9618], \"confidence\": 1.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"10\", \"rowIndex\": 4, \"columnIndex\": 1, \"boundingBox\": [3.2389, 3.8368, 3.3861, 3.8368, 3.3861, 3.9618, 3.2389, 3.9618], \"confidence\": 1.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"120.00\", \"rowIndex\": 4, \"columnIndex\": 2, \"boundingBox\": [5.4028, 3.8333, 5.8583, 3.8333, 5.8583, 3.9688, 5.4028, 3.9688], \"confidence\": 1.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"E\", \"rowIndex\": 5, \"columnIndex\": 0, \"boundingBox\": [1.0833, 4.0486, 1.1458, 4.0486, 1.1458, 4.1597, 1.0833, 4.1597], \"confidence\": 1.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"40\", \"rowIndex\": 5, \"columnIndex\": 1, \"boundingBox\": [3.2431, 4.0382, 3.3889, 4.0382, 3.3889, 4.1632, 3.2431, 4.1632], \"confidence\": 1.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"100.00\", \"rowIndex\": 5, \"columnIndex\": 2, \"boundingBox\": [5.4097, 4.0417, 5.8611, 4.0417, 5.8611, 4.1736, 5.4097, 4.1736], \"confidence\": 1.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"F\", \"rowIndex\": 6, \"columnIndex\": 0, \"boundingBox\": [1.0694, 4.2604, 1.1389, 4.2604, 1.1389, 4.3785, 1.0694, 4.3785], \"confidence\": 1.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"60\", \"rowIndex\": 6, \"columnIndex\": 1, \"boundingBox\": [3.2431, 4.2535, 3.3917, 4.2535, 3.3917, 4.3819, 3.2431, 4.3819], \"confidence\": 1.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"120.00\", \"rowIndex\": 6, \"columnIndex\": 2, \"boundingBox\": [5.4097, 4.2535, 5.8472, 4.2535, 5.8472, 4.3889, 5.4097, 4.3889], \"confidence\": 1.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"G\", \"rowIndex\": 7, \"columnIndex\": 0, \"boundingBox\": [1.0806, 4.4653, 1.15, 4.4653, 1.15, 4.5903, 1.0806, 4.5903], \"confidence\": 1.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"80\", \"rowIndex\": 7, \"columnIndex\": 1, \"boundingBox\": [3.2431, 4.4583, 3.3917, 4.4583, 3.3917, 4.5938, 3.2431, 4.5938], \"confidence\": 1.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}, {\"text\": \"220.00\", \"rowIndex\": 7, \"columnIndex\": 2, \"boundingBox\": [5.4139, 4.4618, 5.8542, 4.4618, 5.8542, 4.5972, 5.4139, 4.5972], \"confidence\": 1.0, \"rowSpan\": 1, \"columnSpan\": 1, \"elements\": null, \"isHeader\": false, \"isFooter\": false}]}], \"clusterId\": 0}], \"documentResults\": [], \"errors\": []}}",
+      "Date" : "Wed, 07 Jul 2021 06:33:08 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null

@@ -36,7 +36,6 @@ public final class TestConstants {
     public static final String TEST_ENDPOINT = "https://fake.test.config.io";
     public static final String TEST_KV_API = TEST_ENDPOINT + "/kv?key=fake-key*&label=fake-label";
     public static final String TEST_ID = "fake-conn-id";
-    public static final String TEST_SECRET = "ZmFrZS1jb25uLXNlY3JldA=="; // Base64 encoded
     public static final String TEST_ACCESS_TOKEN = "fake_token";
     // from
     // fake-conn-secret
@@ -56,7 +55,6 @@ public final class TestConstants {
     public static final String TEST_ETAG = "fake-etag";
     public static final String TEST_KEY_VAULT_1 = "test_key_vault_1";
     public static final String TEST_URI_VAULT_1 = "https://test.key.vault.com/my_secret_url";
-    public static final String TEST_VALUE_VAULT_1 = "{\"uri\":\"" + TEST_URI_VAULT_1 + "\"}";
     public static final String TEST_LABEL_VAULT_1 = "test_lable_vault_1";
     public static final String FEATURE_KEY = "feature-management.featureManagement";
     public static final String FEATURE_VALUE = "{\"id\":\"Alpha\",\"description\":\"\",\"enabled\":true,"

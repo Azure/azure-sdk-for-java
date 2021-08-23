@@ -565,10 +565,10 @@ public final class ReservationsSummariesClientImpl implements ReservationsSummar
      *     '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}' for
      *     BillingProfile scope (modern).
      * @param grain Can be daily or monthly.
-     * @param startDate Start date. Only applicable when querying with billing profile.
-     * @param endDate End date. Only applicable when querying with billing profile.
-     * @param filter Required only for daily grain. The properties/UsageDate for start date and end date. The filter
-     *     supports 'le' and 'ge'. Not applicable when querying with billing profile.
+     * @param startDate Start date. Required only when querying with billing profile.
+     * @param endDate End date. Required only when querying with billing profile.
+     * @param filter The properties/UsageDate for start date and end date. The filter supports 'le' and 'ge'. Not
+     *     required when querying with billing profile.
      * @param reservationId Reservation Id GUID. Only valid if reservationOrderId is also provided. Filter to a specific
      *     reservation.
      * @param reservationOrderId Reservation Order Id GUID. Required if reservationId is provided. Filter to a specific
@@ -636,10 +636,10 @@ public final class ReservationsSummariesClientImpl implements ReservationsSummar
      *     '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}' for
      *     BillingProfile scope (modern).
      * @param grain Can be daily or monthly.
-     * @param startDate Start date. Only applicable when querying with billing profile.
-     * @param endDate End date. Only applicable when querying with billing profile.
-     * @param filter Required only for daily grain. The properties/UsageDate for start date and end date. The filter
-     *     supports 'le' and 'ge'. Not applicable when querying with billing profile.
+     * @param startDate Start date. Required only when querying with billing profile.
+     * @param endDate End date. Required only when querying with billing profile.
+     * @param filter The properties/UsageDate for start date and end date. The filter supports 'le' and 'ge'. Not
+     *     required when querying with billing profile.
      * @param reservationId Reservation Id GUID. Only valid if reservationOrderId is also provided. Filter to a specific
      *     reservation.
      * @param reservationOrderId Reservation Order Id GUID. Required if reservationId is provided. Filter to a specific
@@ -706,10 +706,10 @@ public final class ReservationsSummariesClientImpl implements ReservationsSummar
      *     '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}' for
      *     BillingProfile scope (modern).
      * @param grain Can be daily or monthly.
-     * @param startDate Start date. Only applicable when querying with billing profile.
-     * @param endDate End date. Only applicable when querying with billing profile.
-     * @param filter Required only for daily grain. The properties/UsageDate for start date and end date. The filter
-     *     supports 'le' and 'ge'. Not applicable when querying with billing profile.
+     * @param startDate Start date. Required only when querying with billing profile.
+     * @param endDate End date. Required only when querying with billing profile.
+     * @param filter The properties/UsageDate for start date and end date. The filter supports 'le' and 'ge'. Not
+     *     required when querying with billing profile.
      * @param reservationId Reservation Id GUID. Only valid if reservationOrderId is also provided. Filter to a specific
      *     reservation.
      * @param reservationOrderId Reservation Order Id GUID. Required if reservationId is provided. Filter to a specific
@@ -766,10 +766,10 @@ public final class ReservationsSummariesClientImpl implements ReservationsSummar
      *     '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}' for
      *     BillingProfile scope (modern).
      * @param grain Can be daily or monthly.
-     * @param startDate Start date. Only applicable when querying with billing profile.
-     * @param endDate End date. Only applicable when querying with billing profile.
-     * @param filter Required only for daily grain. The properties/UsageDate for start date and end date. The filter
-     *     supports 'le' and 'ge'. Not applicable when querying with billing profile.
+     * @param startDate Start date. Required only when querying with billing profile.
+     * @param endDate End date. Required only when querying with billing profile.
+     * @param filter The properties/UsageDate for start date and end date. The filter supports 'le' and 'ge'. Not
+     *     required when querying with billing profile.
      * @param reservationId Reservation Id GUID. Only valid if reservationOrderId is also provided. Filter to a specific
      *     reservation.
      * @param reservationOrderId Reservation Order Id GUID. Required if reservationId is provided. Filter to a specific
@@ -829,10 +829,10 @@ public final class ReservationsSummariesClientImpl implements ReservationsSummar
      *     '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}' for
      *     BillingProfile scope (modern).
      * @param grain Can be daily or monthly.
-     * @param startDate Start date. Only applicable when querying with billing profile.
-     * @param endDate End date. Only applicable when querying with billing profile.
-     * @param filter Required only for daily grain. The properties/UsageDate for start date and end date. The filter
-     *     supports 'le' and 'ge'. Not applicable when querying with billing profile.
+     * @param startDate Start date. Required only when querying with billing profile.
+     * @param endDate End date. Required only when querying with billing profile.
+     * @param filter The properties/UsageDate for start date and end date. The filter supports 'le' and 'ge'. Not
+     *     required when querying with billing profile.
      * @param reservationId Reservation Id GUID. Only valid if reservationOrderId is also provided. Filter to a specific
      *     reservation.
      * @param reservationOrderId Reservation Order Id GUID. Required if reservationId is provided. Filter to a specific

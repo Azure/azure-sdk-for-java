@@ -7,6 +7,7 @@ import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.SubResource;
 import com.azure.core.management.provider.IdentifierProvider;
 import com.azure.core.management.serializer.SerializerFactory;
+import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
@@ -1538,7 +1539,12 @@ class VirtualMachineImpl
 
     @Override
     public NetworkInterface getPrimaryNetworkInterface() {
-        return this.networkManager.networkInterfaces().getById(primaryNetworkInterfaceId());
+        return this.getPrimaryNetworkInterfaceAsync().block();
+    }
+
+    @Override
+    public Mono<NetworkInterface> getPrimaryNetworkInterfaceAsync() {
+        return this.networkManager.networkInterfaces().getByIdAsync(primaryNetworkInterfaceId());
     }
 
     @Override
@@ -1849,7 +1855,8 @@ class VirtualMachineImpl
                     // same as createResourceAsync
                     prepareCreateResourceAsync().block();
                 },
-                this::reset);
+                this::reset,
+                Context.NONE);
     }
 
     @Override
@@ -2389,7 +2396,7 @@ class VirtualMachineImpl
     }
 
     private void copyInnerToUpdateParameter(VirtualMachineUpdateInner updateParameter) {
-        updateParameter.withPlan(this.innerModel().plan());
+        //updateParameter.withPlan(this.innerModel().plan());   // update cannot change plan
         updateParameter.withHardwareProfile(this.innerModel().hardwareProfile());
         updateParameter.withStorageProfile(this.innerModel().storageProfile());
         updateParameter.withOsProfile(this.innerModel().osProfile());

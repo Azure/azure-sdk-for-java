@@ -51,7 +51,7 @@ public final class CreateVirtualMachinesUsingCustomImageOrSpecializedVHD {
         final String rgName = Utils.randomResourceName(azureResourceManager, "rgCOMV", 15);
         final String publicIPDnsLabel = Utils.randomResourceName(azureResourceManager, "pip", 15);
         final String userName = "tirekicker";
-        final String password = Utils.password();
+        final String sshPublicKey = Utils.sshPublicKey();
 
         final String apacheInstallScript = "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/main/sdk/resourcemanager/azure-resourcemanager-samples/src/main/resources/install_apache.sh";
         final String apacheInstallCommand = "bash install_apache.sh";
@@ -72,7 +72,7 @@ public final class CreateVirtualMachinesUsingCustomImageOrSpecializedVHD {
                     .withNewPrimaryPublicIPAddress(publicIPDnsLabel)
                     .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                     .withRootUsername(userName)
-                    .withRootPassword(password)
+                    .withSsh(sshPublicKey)
                     .withUnmanagedDisks()
                     .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
                     .defineNewExtension("CustomScriptForLinux")
@@ -129,7 +129,7 @@ public final class CreateVirtualMachinesUsingCustomImageOrSpecializedVHD {
                     .withoutPrimaryPublicIPAddress()
                     .withStoredLinuxImage(capturedImageUri) // Note: A Generalized Image can also be an uploaded VHD prepared from an on-premise generalized VM.
                     .withRootUsername(userName)
-                    .withRootPassword(password)
+                    .withSsh(sshPublicKey)
                     .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
                     .create();
 

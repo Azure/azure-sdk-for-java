@@ -35,7 +35,6 @@ import com.azure.cosmos.models.TriggerType;
 import com.azure.cosmos.util.CosmosPagedFlux;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.reactivex.subscribers.TestSubscriber;
-import org.jetbrains.annotations.NotNull;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Factory;
@@ -109,7 +108,7 @@ public class QueryValidationTests extends TestSuiteBase {
             createdDocuments);
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    @Test(groups = {"simple"}, timeOut = TIMEOUT *2)
     public void orderByQueryForLargeCollection() {
         CosmosContainerProperties containerProperties = getCollectionDefinition();
         createdDatabase.createContainer(
@@ -325,7 +324,7 @@ public class QueryValidationTests extends TestSuiteBase {
 
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT * 20)
+    @Test(groups = {"simple"}, timeOut = TIMEOUT * 40)
     public void splitQueryContinuationToken() throws Exception {
         String containerId = "splittestcontainer_" + UUID.randomUUID();
         int itemCount = 20;
@@ -459,7 +458,6 @@ public class QueryValidationTests extends TestSuiteBase {
         container.delete().block();
     }
 
-    @NotNull
     private List<PartitionKeyRange> getPartitionKeyRanges(
         String containerId, AsyncDocumentClient asyncDocumentClient) {
         List<PartitionKeyRange> partitionKeyRanges = new ArrayList<>();

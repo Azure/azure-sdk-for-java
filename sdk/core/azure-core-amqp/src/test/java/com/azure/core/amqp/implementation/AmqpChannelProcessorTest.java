@@ -15,6 +15,8 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
@@ -27,8 +29,11 @@ import reactor.test.publisher.TestPublisher;
 
 import java.time.Duration;
 import java.util.Objects;
+import java.util.concurrent.RejectedExecutionException;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Stream;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.eq;
@@ -65,7 +70,7 @@ class AmqpChannelProcessorTest {
 
         channelProcessor = new AmqpChannelProcessor<>("connection-test", "test-path",
             TestObject::getStates, retryPolicy,
-            new ClientLogger(AmqpChannelProcessor.class + "<TestObject>"));
+            new ClientLogger(AmqpChannelProcessor.class.getName() + "<TestObject>"));
     }
 
     @AfterEach
@@ -167,19 +172,26 @@ class AmqpChannelProcessorTest {
             .verifyComplete();
     }
 
+    public static Stream<Throwable> newConnectionOnRetriableError() {
+        return Stream.of(
+            new RejectedExecutionException("Rejected test execution"),
+            new IllegalStateException("Dispatcher was closed. Please try again."),
+            new AmqpException(true, AmqpErrorCondition.SERVER_BUSY_ERROR, "Test-error",
+                new AmqpErrorContext("test-namespace"))
+        );
+    }
+
     /**
      * Verifies that we can get the next connection when the first one encounters a retryable error.
      */
-    @Test
-    void newConnectionOnRetryableError() {
+    @MethodSource
+    @ParameterizedTest
+    void newConnectionOnRetriableError(Throwable exception) {
         // Arrange
-        final AmqpException amqpException = new AmqpException(true, AmqpErrorCondition.SERVER_BUSY_ERROR, "Test-error",
-            new AmqpErrorContext("test-namespace"));
-
         final Flux<TestObject> publisher = createSink(connection1, connection2);
         final AmqpChannelProcessor<TestObject> processor = publisher.subscribeWith(channelProcessor);
 
-        when(retryPolicy.calculateRetryDelay(amqpException, 1)).thenReturn(Duration.ofSeconds(1));
+        when(retryPolicy.calculateRetryDelay(exception, 1)).thenReturn(Duration.ofSeconds(1));
         when(retryPolicy.getMaxRetries()).thenReturn(3);
 
         // Act & Assert
@@ -189,14 +201,11 @@ class AmqpChannelProcessorTest {
             .expectNext(connection1)
             .verifyComplete();
 
-        connection1.getSink().error(amqpException);
-        connection2.getSink().next(AmqpEndpointState.ACTIVE);
+        connection1.getSink().error(exception);
 
         // Expect that the next connection is returned to us.
         StepVerifier.create(processor)
-            .then(() -> {
-
-            })
+            .then(() -> connection2.getSink().next(AmqpEndpointState.ACTIVE))
             .expectNext(connection2)
             .verifyComplete();
 
@@ -206,15 +215,20 @@ class AmqpChannelProcessorTest {
             .verifyComplete();
     }
 
-    /**
-     * Verifies that an error is propagated when the first connection encounters a non-retryable error.
-     */
-    @Test
-    void nonRetryableError() {
-        // Arrange
-        final AmqpException amqpException = new AmqpException(false, AmqpErrorCondition.ILLEGAL_STATE, "Test-error",
-            new AmqpErrorContext("test-namespace"));
+    public static Stream<Throwable> nonRetriableError() {
+        return Stream.of(
+            new AmqpException(false, AmqpErrorCondition.ILLEGAL_STATE, "Test-error",
+                new AmqpErrorContext("test-namespace")),
+            new NullPointerException("Another exception"));
+    }
 
+    /**
+     * Verifies that an error is propagated when the first connection encounters a non-retriable error.
+     */
+    @MethodSource
+    @ParameterizedTest
+    void nonRetriableError(Throwable exception) {
+        // Arrange
         final TestPublisher<TestObject> publisher = TestPublisher.createCold();
         final AmqpChannelProcessor<TestObject> processor = publisher.next(connection1).flux()
             .subscribeWith(channelProcessor);
@@ -232,16 +246,16 @@ class AmqpChannelProcessorTest {
             .expectComplete()
             .verify();
 
-        connection1.getSink().error(amqpException);
+        connection1.getSink().error(exception);
 
         // Expect that the error is returned to us.
         StepVerifier.create(processor)
-            .expectErrorMatches(error -> Objects.equals(amqpException, error))
+            .expectErrorMatches(error -> Objects.equals(exception, error))
             .verify();
 
         // Expect that the error is returned to us again.
         StepVerifier.create(processor)
-            .expectErrorMatches(error -> Objects.equals(amqpException, error))
+            .expectErrorMatches(error -> Objects.equals(exception, error))
             .verify();
     }
 
@@ -285,6 +299,8 @@ class AmqpChannelProcessorTest {
         StepVerifier.create(processor)
             .expectError(IllegalStateException.class)
             .verify();
+
+        assertTrue(channelProcessor.isChannelClosed());
     }
 
     @Test

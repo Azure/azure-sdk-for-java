@@ -23,6 +23,8 @@ import com.azure.resourcemanager.network.fluent.models.PublicIpAddressInner;
 import com.azure.resourcemanager.network.fluent.models.SubnetInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
+import reactor.core.publisher.Mono;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -80,12 +82,13 @@ class NicIpConfigurationImpl extends NicIpConfigurationBaseImpl<NetworkInterface
 
     @Override
     public PublicIpAddress getPublicIpAddress() {
-        String id = publicIpAddressId();
-        if (id == null) {
-            return null;
-        }
+        return this.getPublicIpAddressAsync().block();
+    }
 
-        return this.networkManager.publicIpAddresses().getById(id);
+    @Override
+    public Mono<PublicIpAddress> getPublicIpAddressAsync() {
+        String pipId = this.publicIpAddressId();
+        return pipId == null ? Mono.empty() : this.networkManager.publicIpAddresses().getByIdAsync(pipId);
     }
 
     @Override

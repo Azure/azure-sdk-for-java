@@ -5,44 +5,30 @@
 package com.azure.resourcemanager.containerservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
-import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** Managed cluster Access Profile. */
-@JsonFlatten
 @Fluent
-public class ManagedClusterAccessProfileInner extends Resource {
+public final class ManagedClusterAccessProfileInner extends Resource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagedClusterAccessProfileInner.class);
 
     /*
-     * Base64-encoded Kubernetes configuration file.
+     * AccessProfile of a managed cluster.
      */
-    @JsonProperty(value = "properties.kubeConfig")
-    private byte[] kubeConfig;
+    @JsonProperty(value = "properties")
+    private AccessProfile innerProperties;
 
     /**
-     * Get the kubeConfig property: Base64-encoded Kubernetes configuration file.
+     * Get the innerProperties property: AccessProfile of a managed cluster.
      *
-     * @return the kubeConfig value.
+     * @return the innerProperties value.
      */
-    public byte[] kubeConfig() {
-        return CoreUtils.clone(this.kubeConfig);
-    }
-
-    /**
-     * Set the kubeConfig property: Base64-encoded Kubernetes configuration file.
-     *
-     * @param kubeConfig the kubeConfig value to set.
-     * @return the ManagedClusterAccessProfileInner object itself.
-     */
-    public ManagedClusterAccessProfileInner withKubeConfig(byte[] kubeConfig) {
-        this.kubeConfig = CoreUtils.clone(kubeConfig);
-        return this;
+    private AccessProfile innerProperties() {
+        return this.innerProperties;
     }
 
     /** {@inheritDoc} */
@@ -60,10 +46,36 @@ public class ManagedClusterAccessProfileInner extends Resource {
     }
 
     /**
+     * Get the kubeConfig property: Base64-encoded Kubernetes configuration file.
+     *
+     * @return the kubeConfig value.
+     */
+    public byte[] kubeConfig() {
+        return this.innerProperties() == null ? null : this.innerProperties().kubeConfig();
+    }
+
+    /**
+     * Set the kubeConfig property: Base64-encoded Kubernetes configuration file.
+     *
+     * @param kubeConfig the kubeConfig value to set.
+     * @return the ManagedClusterAccessProfileInner object itself.
+     */
+    public ManagedClusterAccessProfileInner withKubeConfig(byte[] kubeConfig) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AccessProfile();
+        }
+        this.innerProperties().withKubeConfig(kubeConfig);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

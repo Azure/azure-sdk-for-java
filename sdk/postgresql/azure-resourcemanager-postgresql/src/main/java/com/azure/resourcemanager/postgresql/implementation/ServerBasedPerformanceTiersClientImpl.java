@@ -63,7 +63,7 @@ public final class ServerBasedPerformanceTiersClientImpl implements ServerBasedP
     private interface ServerBasedPerformanceTiersService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBForPostgreSQL"
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL"
                 + "/servers/{serverName}/performanceTiers")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)

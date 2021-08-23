@@ -21,7 +21,7 @@ import org.junit.jupiter.api.Test;
 
 public class VirtualMachineManagedServiceIdentityOperationsTests extends ComputeManagementTest {
     private String rgName = "";
-    private final Region region = Region.US_SOUTH_CENTRAL;
+    private final Region region = Region.US_EAST;
     private final String vmName = "javavm";
 
     @Override
@@ -50,7 +50,7 @@ public class VirtualMachineManagedServiceIdentityOperationsTests extends Compute
                 .withoutPrimaryPublicIPAddress()
                 .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                 .withRootUsername("Foo12")
-                .withRootPassword(password())
+                .withSsh(sshPublicKey())
                 .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
                 .withOSDiskCaching(CachingTypes.READ_WRITE)
                 .withSystemAssignedManagedServiceIdentity()
@@ -121,7 +121,7 @@ public class VirtualMachineManagedServiceIdentityOperationsTests extends Compute
                 .withoutPrimaryPublicIPAddress()
                 .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                 .withRootUsername("Foo12")
-                .withRootPassword(password())
+                .withSsh(sshPublicKey())
                 .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
                 .withOSDiskCaching(CachingTypes.READ_WRITE)
                 .withSystemAssignedManagedServiceIdentity()
@@ -188,7 +188,7 @@ public class VirtualMachineManagedServiceIdentityOperationsTests extends Compute
                 .withoutPrimaryPublicIPAddress()
                 .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                 .withRootUsername("Foo12")
-                .withRootPassword(password())
+                .withSsh(sshPublicKey())
                 .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
                 .withOSDiskCaching(CachingTypes.READ_WRITE)
                 .withSystemAssignedManagedServiceIdentity()
@@ -256,7 +256,7 @@ public class VirtualMachineManagedServiceIdentityOperationsTests extends Compute
                 .withoutPrimaryPublicIPAddress()
                 .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                 .withRootUsername("Foo12")
-                .withRootPassword(password())
+                .withSsh(sshPublicKey())
                 .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
                 .withOSDiskCaching(CachingTypes.READ_WRITE)
                 .withSystemAssignedManagedServiceIdentity()

@@ -30,8 +30,8 @@ public final class ArmRoleReceiver {
     /*
      * Indicates whether to use common alert schema.
      */
-    @JsonProperty(value = "useCommonAlertSchema", required = true)
-    private boolean useCommonAlertSchema;
+    @JsonProperty(value = "useCommonAlertSchema")
+    private Boolean useCommonAlertSchema;
 
     /**
      * Get the name property: The name of the arm role receiver. Names must be unique across all receivers within an
@@ -80,7 +80,7 @@ public final class ArmRoleReceiver {
      *
      * @return the useCommonAlertSchema value.
      */
-    public boolean useCommonAlertSchema() {
+    public Boolean useCommonAlertSchema() {
         return this.useCommonAlertSchema;
     }
 
@@ -90,7 +90,7 @@ public final class ArmRoleReceiver {
      * @param useCommonAlertSchema the useCommonAlertSchema value to set.
      * @return the ArmRoleReceiver object itself.
      */
-    public ArmRoleReceiver withUseCommonAlertSchema(boolean useCommonAlertSchema) {
+    public ArmRoleReceiver withUseCommonAlertSchema(Boolean useCommonAlertSchema) {
         this.useCommonAlertSchema = useCommonAlertSchema;
         return this;
     }

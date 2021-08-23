@@ -3,6 +3,7 @@
 
 package com.azure.containers.containerregistry.implementation.authentication;
 
+import com.azure.containers.containerregistry.models.ContainerRegistryAudience;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
@@ -30,11 +31,11 @@ public class ContainerRegistryTokenService implements TokenCredential {
      * @param pipeline           the pipeline to be used for the rest calls to the service.
      * @param serializerAdapter  the serializer adapter to be used for the rest calls to the service.
      */
-    public ContainerRegistryTokenService(TokenCredential aadTokenCredential, String authenticationScope, String url, HttpPipeline pipeline, SerializerAdapter serializerAdapter) {
+    public ContainerRegistryTokenService(TokenCredential aadTokenCredential, ContainerRegistryAudience audience, String url, HttpPipeline pipeline, SerializerAdapter serializerAdapter) {
         this.tokenService = new TokenServiceImpl(url, pipeline, serializerAdapter);
 
         if (aadTokenCredential != null) {
-            this.refreshTokenCache = new AccessTokenCacheImpl(new ContainerRegistryRefreshTokenCredential(tokenService, aadTokenCredential, authenticationScope));
+            this.refreshTokenCache = new AccessTokenCacheImpl(new ContainerRegistryRefreshTokenCredential(tokenService, aadTokenCredential, audience));
         } else {
             isAnonymousAccess = true;
         }
