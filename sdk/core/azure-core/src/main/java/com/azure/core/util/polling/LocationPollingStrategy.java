@@ -85,8 +85,7 @@ public class LocationPollingStrategy<T, U> implements PollingStrategy<T, U> {
     @SuppressWarnings("unchecked")
     @Override
     public Mono<PollResponse<T>> poll(PollingContext<T> pollingContext, TypeReference<T> pollResponseType) {
-        HttpRequest request = new HttpRequest(HttpMethod.GET,
-            pollingContext.getData(LOCATION).replace("http://", "https://"));
+        HttpRequest request = new HttpRequest(HttpMethod.GET, pollingContext.getData(LOCATION));
         Mono<HttpResponse> responseMono;
         if (context == null) {
             responseMono = httpPipeline.send(request);
@@ -130,6 +129,12 @@ public class LocationPollingStrategy<T, U> implements PollingStrategy<T, U> {
     @SuppressWarnings("unchecked")
     @Override
     public Mono<U> getResult(PollingContext<T> pollingContext, TypeReference<U> resultType) {
+        if (pollingContext.getLatestResponse().getStatus() == LongRunningOperationStatus.FAILED) {
+            return Mono.error(new RuntimeException("Long running operation failed."));
+        } else if (pollingContext.getLatestResponse().getStatus() == LongRunningOperationStatus.USER_CANCELLED) {
+            return Mono.error(new RuntimeException("Long running operation canceled."));
+        }
+
         String finalGetUrl;
         String httpMethod = pollingContext.getData(HTTP_METHOD);
         if ("PUT".equalsIgnoreCase(httpMethod) || "PATCH".equalsIgnoreCase(httpMethod)) {

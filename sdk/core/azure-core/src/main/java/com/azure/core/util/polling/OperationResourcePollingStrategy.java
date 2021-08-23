@@ -141,6 +141,11 @@ public class OperationResourcePollingStrategy<T, U> implements PollingStrategy<T
     @SuppressWarnings("unchecked")
     @Override
     public Mono<U> getResult(PollingContext<T> pollingContext, TypeReference<U> resultType) {
+        if (pollingContext.getLatestResponse().getStatus() == LongRunningOperationStatus.FAILED) {
+            return Mono.error(new RuntimeException("Long running operation failed."));
+        } else if (pollingContext.getLatestResponse().getStatus() == LongRunningOperationStatus.USER_CANCELLED) {
+            return Mono.error(new RuntimeException("Long running operation canceled."));
+        }
         String finalGetUrl = pollingContext.getData(RESOURCE_LOCATION);
         if (finalGetUrl == null) {
             String httpMethod = pollingContext.getData(HTTP_METHOD);
