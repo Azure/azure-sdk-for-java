@@ -9,7 +9,6 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnResource;
-import org.springframework.boot.autoconfigure.jms.JmsProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -29,9 +28,8 @@ public class NonPremiumServiceBusJMSAutoConfiguration extends AbstractServiceBus
 
     private static final String AMQP_URI_FORMAT = "amqps://%s?amqp.idleTimeout=%d";
 
-    public NonPremiumServiceBusJMSAutoConfiguration(JmsProperties jmsProperties,
-                                                    AzureServiceBusJMSProperties azureServiceBusJMSProperties) {
-        super(jmsProperties, azureServiceBusJMSProperties);
+    public NonPremiumServiceBusJMSAutoConfiguration(AzureServiceBusJMSProperties azureServiceBusJMSProperties) {
+        super(azureServiceBusJMSProperties);
     }
 
     @Bean

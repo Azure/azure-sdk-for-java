@@ -10,7 +10,6 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnResource;
-import org.springframework.boot.autoconfigure.jms.JmsProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -30,9 +29,8 @@ import static com.azure.spring.utils.ApplicationId.AZURE_SPRING_SERVICE_BUS;
 @EnableConfigurationProperties(AzureServiceBusJMSProperties.class)
 public class PremiumServiceBusJMSAutoConfiguration extends AbstractServiceBusJMSAutoConfiguration {
 
-    public PremiumServiceBusJMSAutoConfiguration(JmsProperties jmsProperties,
-                                                 AzureServiceBusJMSProperties azureServiceBusJMSProperties) {
-        super(jmsProperties, azureServiceBusJMSProperties);
+    public PremiumServiceBusJMSAutoConfiguration(AzureServiceBusJMSProperties azureServiceBusJMSProperties) {
+        super(azureServiceBusJMSProperties);
     }
 
     @Bean

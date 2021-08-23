@@ -5,9 +5,7 @@ package com.azure.spring.autoconfigure.jms;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.jms.DefaultJmsListenerContainerFactoryConfigurer;
-import org.springframework.boot.autoconfigure.jms.JmsProperties;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.jms.config.DefaultJmsListenerContainerFactory;
 import org.springframework.jms.config.JmsListenerContainerFactory;
 
@@ -16,15 +14,11 @@ import javax.jms.ConnectionFactory;
 /**
  * Abstract autoconfiguration class of ServiceBusJMS for JmsListenerContainerFactory.
  */
-@Configuration
 public abstract class AbstractServiceBusJMSAutoConfiguration {
 
-    final JmsProperties jmsProperties;
     final AzureServiceBusJMSProperties azureServiceBusJMSProperties;
 
-    public AbstractServiceBusJMSAutoConfiguration(JmsProperties jmsProperties,
-                                                  AzureServiceBusJMSProperties azureServiceBusJMSProperties) {
-        this.jmsProperties = jmsProperties;
+    public AbstractServiceBusJMSAutoConfiguration(AzureServiceBusJMSProperties azureServiceBusJMSProperties) {
         this.azureServiceBusJMSProperties = azureServiceBusJMSProperties;
     }
 
