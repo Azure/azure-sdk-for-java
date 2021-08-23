@@ -4,7 +4,7 @@ package com.azure.cosmos.spark
 
 // scalastyle:off underscore.import
 import com.azure.cosmos._
-import com.azure.cosmos.models.CosmosBulkExecutionOptions
+import com.azure.cosmos.models.{CosmosBulkExecutionOptions, CosmosBulkExecutionThresholdsState}
 
 import scala.collection.mutable
 import scala.concurrent.duration.Duration
@@ -516,7 +516,7 @@ private object BulkWriter {
   val emitFailureHandler: EmitFailureHandler =
         (_, emitResult) => if (emitResult.equals(EmitResult.FAIL_NON_SERIALIZED)) true else false
 
-  val bulkProcessingThresholds = new BulkExecutionThresholds()
+  val bulkProcessingThresholds = new CosmosBulkExecutionThresholdsState()
 }
 
 //scalastyle:on multiple.string.literals

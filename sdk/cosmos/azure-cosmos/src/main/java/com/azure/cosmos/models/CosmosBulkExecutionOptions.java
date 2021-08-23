@@ -3,7 +3,6 @@
 
 package com.azure.cosmos.models;
 
-import com.azure.cosmos.BulkExecutionThresholds;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.batch.BatchRequestResponseConstants;
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
@@ -24,17 +23,17 @@ public final class CosmosBulkExecutionOptions {
     private Duration maxMicroBatchInterval = Duration.ofMillis(
         BatchRequestResponseConstants.DEFAULT_MAX_MICRO_BATCH_INTERVAL_IN_MILLISECONDS);
     private final Object legacyBatchScopedContext;
-    private final BulkExecutionThresholds thresholds;
+    private final CosmosBulkExecutionThresholdsState thresholds;
     private OperationContextAndListenerTuple operationContextAndListenerTuple;
 
     /**
      * Constructor
      * @param thresholds thresholds
      */
-    CosmosBulkExecutionOptions(Object legacyBatchScopedContext, BulkExecutionThresholds thresholds) {
+    CosmosBulkExecutionOptions(Object legacyBatchScopedContext, CosmosBulkExecutionThresholdsState thresholds) {
         this.legacyBatchScopedContext = legacyBatchScopedContext;
         if (thresholds == null) {
-            this.thresholds = new BulkExecutionThresholds();
+            this.thresholds = new CosmosBulkExecutionThresholdsState();
         } else {
             this.thresholds = thresholds;
         }
@@ -45,7 +44,7 @@ public final class CosmosBulkExecutionOptions {
      * @param thresholds thresholds
      */
     @Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    public CosmosBulkExecutionOptions(BulkExecutionThresholds thresholds) {
+    public CosmosBulkExecutionOptions(CosmosBulkExecutionThresholdsState thresholds) {
         this(null, thresholds);
     }
 
@@ -207,7 +206,7 @@ public final class CosmosBulkExecutionOptions {
      * @return thresholds
      */
     @Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    public BulkExecutionThresholds getThresholds() {
+    public CosmosBulkExecutionThresholdsState getThresholds() {
         return this.thresholds;
     }
 

@@ -3,7 +3,6 @@
 
 package com.azure.cosmos.models;
 
-import com.azure.cosmos.BulkExecutionThresholds;
 import com.azure.cosmos.BulkProcessingOptions;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.batch.PartitionScopeThresholds;
@@ -49,10 +48,9 @@ public class BulkProcessingOptionsTest {
     @Test(groups = { "unit" })
     public void thresholdsInstanceCanBePassedAcrossBulkExecutionOptionsInstances() {
         CosmosBulkExecutionOptions initialOptions = new CosmosBulkExecutionOptions();
-        BulkExecutionThresholds thresholds = initialOptions.getThresholds();
+        CosmosBulkExecutionThresholdsState thresholds = initialOptions.getThresholds();
         ConcurrentMap<String, PartitionScopeThresholds> partitionScopeThresholdsMap =
-            ImplementationBridgeHelpers
-                .BulkExecutionThresholdsHelper
+            ImplementationBridgeHelpers.CosmosBulkExecutionThresholdsStateHelper
                 .getBulkExecutionThresholdsAccessor()
                 .getPartitionScopeThresholds(thresholds);
         CosmosBulkExecutionOptions optionsWithThresholds =
@@ -61,8 +59,7 @@ public class BulkProcessingOptionsTest {
         assertThat(thresholds).isSameAs(optionsWithThresholds.getThresholds());
         assertThat(partitionScopeThresholdsMap)
             .isSameAs(
-                ImplementationBridgeHelpers
-                    .BulkExecutionThresholdsHelper
+                ImplementationBridgeHelpers.CosmosBulkExecutionThresholdsStateHelper
                     .getBulkExecutionThresholdsAccessor()
                     .getPartitionScopeThresholds(optionsWithThresholds.getThresholds()));
     }

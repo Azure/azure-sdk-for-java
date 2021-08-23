@@ -3,6 +3,7 @@
 
 package com.azure.cosmos;
 
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.batch.BatchRequestResponseConstants;
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
 import com.azure.cosmos.models.CosmosBulkExecutionOptions;
@@ -234,11 +235,15 @@ public final class BulkExecutionOptions {
     }
 
     CosmosBulkExecutionOptions toCosmosBulkExecutionOptions() {
-        CosmosBulkExecutionOptions cosmosBulkExecutionOptions = new CosmosBulkExecutionOptions(this.thresholds);
+        CosmosBulkExecutionOptions cosmosBulkExecutionOptions = new CosmosBulkExecutionOptions(
+            this.thresholds.toCosmosBulkExecutionThresholdsState());
         cosmosBulkExecutionOptions.setMaxMicroBatchInterval(this.maxMicroBatchInterval);
         cosmosBulkExecutionOptions.setMaxMicroBatchConcurrency(this.maxMicroBatchConcurrency);
         cosmosBulkExecutionOptions.setMaxMicroBatchSize(this.maxMicroBatchSize);
         cosmosBulkExecutionOptions.setTargetedMicroBatchRetryRate(this.minMicroBatchRetryRate, this.maxMicroBatchRetryRate);
+        ImplementationBridgeHelpers.CosmosBulkExecutionOptionsHelper
+            .getCosmosBulkExecutionOptionsAccessor()
+            .setOperationContext(cosmosBulkExecutionOptions, this.operationContextAndListenerTuple);
         return cosmosBulkExecutionOptions;
     }
 }

@@ -4,7 +4,6 @@
 package com.azure.cosmos.implementation.batch;
 
 import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.BulkExecutionOptions;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosBridgeInternal;
 import com.azure.cosmos.CosmosBulkItemResponse;
@@ -113,7 +112,7 @@ public final class BulkExecutor<TContext> {
         batchContext = ImplementationBridgeHelpers.CosmosBulkExecutionOptionsHelper
             .getCosmosBulkExecutionOptionsAccessor()
             .getLegacyBatchScopedContext(cosmosBulkExecutionOptions);
-        this.partitionScopeThresholds = ImplementationBridgeHelpers.BulkExecutionThresholdsHelper
+        this.partitionScopeThresholds = ImplementationBridgeHelpers.CosmosBulkExecutionThresholdsStateHelper
             .getBulkExecutionThresholdsAccessor()
             .getPartitionScopeThresholds(cosmosBulkExecutionOptions.getThresholds());
         operationListener = ImplementationBridgeHelpers.CosmosBulkExecutionOptionsHelper
