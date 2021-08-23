@@ -30,6 +30,15 @@ Support for AMQP 1.0 in Azure Service Bus means that you can use the queuing and
 ### Configure the app for your service bus
 In this section, you see how to configure your app to use either a Service Bus queue or topic.
 
+#### configuration options
+
+Name | Description 
+|:---|:---
+spring.jms.servicebus.connection-string | Specify the connection string you obtained in your Service Bus namespace from the Azure portal.
+spring.jms.servicebus.topic-client-id | Specify the JMS client ID, which is your Service Bus Subscription name in the Azure portal.
+spring.jms.servicebus.idle-timeout | Specify the idle timeout in milliseconds. The recommended value for this tutorial is 1800000.
+spring.jms.servicebus.pricing-tier | Specify the pricing tier of your service bus. Supported values are *premium*, *standard*, and *basic*. Premium uses Java Message Service (JMS) 2.0, while standard and basic use JMS 1.0 to interact with Azure Service Bus.
+
 #### Use a Service Bus queue
 
 Append the following code to the end of the *application.properties* file. Replace the sample values with the appropriate values for your service bus:
@@ -37,7 +46,6 @@ Append the following code to the end of the *application.properties* file. Repla
 ```yaml
 spring.jms.servicebus.connection-string=<ServiceBusNamespaceConnectionString>
 spring.jms.servicebus.idle-timeout=<IdleTimeout>
-# Supported values for pricing-tier are premium, standard and basic. Premium uses Java Message Service (JMS) 2.0, while standard and basic use JMS 1.0 to interact with Azure Service Bus.
 spring.jms.servicebus.pricing-tier=<ServiceBusPricingTier>
 ```
 
@@ -49,7 +57,6 @@ Append the following code to the end of the *application.properties* file. Repla
 spring.jms.servicebus.connection-string=<ServiceBusNamespaceConnectionString>
 spring.jms.servicebus.topic-client-id=<ServiceBusTopicClientId>
 spring.jms.servicebus.idle-timeout=<IdleTimeout>
-# Supported values for pricing-tier are premium and standard.
 spring.jms.servicebus.pricing-tier=<ServiceBusPricingTier>
 ```
 
@@ -258,7 +265,7 @@ Please follow [instructions here](https://github.com/Azure/azure-sdk-for-java/bl
 [docs]: https://docs.microsoft.com/azure/developer/java/spring-framework/configure-spring-boot-starter-java-app-with-azure-service-bus
 [refdocs]: https://azure.github.io/azure-sdk-for-java/springboot.html#azure-spring-boot
 [package]: https://mvnrepository.com/artifact/com.azure.spring/azure-spring-boot-starter-servicebus-jms
-[sample]: https://github.com/Azure-Samples/azure-spring-boot-samples/
+[sample]: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/main/servicebus/azure-spring-boot-starter-servicebus-jms
 [logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK#use-logback-logging-framework-in-a-spring-boot-application
 [servicebus-message-payloads]: https://docs.microsoft.com/azure/service-bus-messaging/service-bus-messages-payloads
 [spring_jms_guide]: https://spring.io/guides/gs/messaging-jms/
