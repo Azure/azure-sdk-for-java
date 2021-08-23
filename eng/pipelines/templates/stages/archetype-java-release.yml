@@ -131,8 +131,19 @@ stages:
                   $pomf = Get-ChildItem $(Pipeline.Workspace)/install-check-dir/${{artifact.name}}/*.pom
                   Rename-Item "$($pomf)" pom.xml
                   Write-Host "Renaming $($pomf) to pom.xml"
+                  Copy-Item "$(System.DefaultWorkingDirectory)/eng" "$(Pipeline.Workspace)/install-check-dir/${{ artifact.name }}/eng" -Recurse
                 displayName: "Copy Artifacts"
-              - template: /eng/pipelines/templates/steps/install-reporting-tools.yml
+              - task: Maven@3
+                displayName: 'Install reporting tools'
+                inputs:
+                  mavenPomFile: eng/code-quality-reports/pom.xml
+                  options: $(DefaultOptions)
+                  mavenOptions: $(MemoryOptions) $(LoggingOptions)
+                  javaHomeOption: 'JDKVersion'
+                  jdkVersionOption: '1.11'
+                  jdkArchitectureOption: 'x64'
+                  publishJUnitResults: false
+                  goals: 'install'
               - task: Maven@3
                 inputs:
                   mavenPomFile: "$(Pipeline.Workspace)/install-check-dir/${{ artifact.name }}/pom.xml"
