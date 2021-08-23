@@ -27,7 +27,7 @@ microservice using **Spring Cloud Stream** based on [Azure Event Hub][azure_even
 The Spring Cloud Stream Binder for Azure Event Hub provides the binding implementation for the Spring Cloud Stream.
 This implementation uses Spring Integration Event Hub Channel Adapters at its foundation. From design's perspective, 
 Event Hub is similar as Kafka. Also, Event Hub could be accessed via Kafka API. If your project has tight dependency 
-on Kafka API, you can try `Event Hub with Kafka API Sample`
+on Kafka API, you can try [Event Hub with Kafka API Sample][kafka_sample]
 #### Consumer Group
 
 Event Hub provides similar support of consumer group as Apache Kafka, but with slight different logic. While Kafka 
@@ -42,7 +42,7 @@ from most heavy-loaded consumers to achieve the workload balancing.
 
 ## Examples 
 
-Please use this `sample` as a reference for how to use this binder. 
+Please use this [sample][sample] as a reference for how to use this binder. 
 
 ### Configuration Options 
 
@@ -50,12 +50,22 @@ The binder provides the following configuration options in `application.properti
 
 #### Spring Cloud Azure Properties ####
 
-Name | Description | Required | Default 
----|---|---|---
- spring.cloud.azure.resource-group | Name of Azure resource group | Yes |
- spring.cloud.azure.region | Region name of the Azure resource group, e.g. westus | Yes | 
- spring.cloud.azure.eventhub.namespace | Event Hub Namespace. Auto creating if missing | Yes |
- spring.cloud.azure.eventhub.checkpoint-storage-account | StorageAccount name for checkpoint message successfully consumed | Yes
+|Name | Description | Required | Default 
+|:---|:---|:---|:---
+spring.cloud.azure.auto-create-resources | If enable auto-creation for Azure resources |  | false
+spring.cloud.azure.region | Region name of the Azure resource group, e.g. westus | Yes if spring.cloud.azure.auto-create-resources is enabled. |
+spring.cloud.azure.environment | Azure Cloud name for Azure resources, supported values are  `azure`, `azurechina`, `azure_germany` and `azureusgovernment` which are case insensitive | |azure | 
+spring.cloud.azure.client-id | Client (application) id of a service principal or Managed Service Identity (MSI) | Yes if service principal or MSI is used as credential configuration. |
+spring.cloud.azure.client-secret | Client secret of a service principal | Yes if service principal is used as credential configuration. |
+spring.cloud.azure.msi-enabled | If enable MSI as credential configuration | Yes if MSI is used as credential configuration. | false
+spring.cloud.azure.resource-group | Name of Azure resource group | Yes if service principal or MSI is used as credential configuration. |
+spring.cloud.azure.subscription-id | Subscription id of an MSI | Yes if MSI is used as credential configuration. |
+spring.cloud.azure.tenant-id | Tenant id of a service principal | Yes if service principal is used as credential configuration. |
+spring.cloud.azure.eventhub.connection-string | Event Hubs Namespace connection string | Yes if connection string is used as Event Hubs credential configuration |
+spring.cloud.azure.eventhub.checkpoint-storage-account | StorageAccount name for message checkpoint | Yes
+spring.cloud.azure.eventhub.checkpoint-access-key | StorageAccount access key for message checkpoint | Yes if StorageAccount access key is used as StorageAccount credential configuration
+spring.cloud.azure.eventhub.checkpoint-container | StorageAccount container name for message checkpoint | Yes
+spring.cloud.azure.eventhub.namespace | Event Hub Namespace. Auto creating if missing | Yes if service principal or MSI is used as credential configuration. |
 
 #### Common Producer Properties ####
 
@@ -213,12 +223,13 @@ Please follow [instructions here][contributing_md] to build from source or contr
 [package]: https://mvnrepository.com/artifact/com.azure.spring/azure-spring-cloud-stream-binder-eventhubs
 [refdocs]: https://azure.github.io/azure-sdk-for-java/springcloud.html#azure-spring-cloud-stream-binder-eventhubs
 [docs]: https://docs.microsoft.com/azure/developer/java/spring-framework/configure-spring-cloud-stream-binder-java-app-azure-event-hub
-[sample]: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/tag_azure-spring-boot_3.6.0/eventhubs/azure-spring-cloud-sample-eventhubs-binder
+[sample]: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/main/eventhubs/azure-spring-cloud-stream-binder-eventhubs
 [logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK#use-logback-logging-framework-in-a-spring-boot-application
 [logging_doc]: https://docs.spring.io/spring-boot/docs/current/reference/html/features.html#boot-features-logging
-[eventhubs_multibinders_sample]: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/tag_azure-spring-boot_3.6.0/eventhubs/azure-spring-cloud-sample-eventhubs-multibinders
+[eventhubs_multibinders_sample]: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/main/eventhubs/azure-spring-cloud-stream-binder-eventhubs/eventhubs-multibinders
 [contributing_md]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/CONTRIBUTING.md
 [azure_event_hub]: https://azure.microsoft.com/services/event-hubs/
 [environment_checklist]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/ENVIRONMENT_CHECKLIST.md#ready-to-run-checklist
 [spring_cloud_stream_current_producer_properties]: https://docs.spring.io/spring-cloud-stream/docs/current/reference/html/spring-cloud-stream.html#_producer_properties
 [Add azure-spring-cloud-dependencies]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/AZURE_SPRING_BOMS_USAGE.md#add-azure-spring-cloud-dependencies
+[kafka_sample]: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/main/eventhubs/azure-spring-cloud-starter-eventhubs-kafka/eventhubs-kafka
