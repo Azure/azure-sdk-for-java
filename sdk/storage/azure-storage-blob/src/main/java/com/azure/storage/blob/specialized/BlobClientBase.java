@@ -313,9 +313,6 @@ public class BlobClientBase {
 
         BlobRange range = options.getRange() == null ? new BlobRange(0) : options.getRange();
         int chunkSize = options.getBlockSize() == null ? 4 * Constants.MB : options.getBlockSize();
-        // If the actual size of the download is smaller than a chunk, reduce chunk size to avoid downloading extra
-        // Converting to int is safe in this case because it is already shown to be less than chunkSize
-        chunkSize = range.getCount() != null && range.getCount() < chunkSize ? range.getCount().intValue() : chunkSize;
 
         com.azure.storage.common.ParallelTransferOptions pOptions =
         new com.azure.storage.common.ParallelTransferOptions()

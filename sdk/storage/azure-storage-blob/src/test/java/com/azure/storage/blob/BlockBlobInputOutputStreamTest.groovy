@@ -43,8 +43,6 @@ class BlockBlobInputOutputStreamTest extends APISpec {
 
         count == retVal
 
-        // I think this first test case is failing. What does download file do? I think it catches this exception on initial download
-        // Does the way I've written it work if the blob is < 4mb but just non-zero? i.e. does the service accept an end range that is past blob
         where:
         dataSize        || retVal
         0               || -1
@@ -58,7 +56,7 @@ class BlockBlobInputOutputStreamTest extends APISpec {
         int length = 6 * Constants.MB
         byte[] randomBytes = getRandomByteArray(length)
 
-        BlobOutputStream outStream = bc.getBlobOutputStream()
+        BlobOutputStream outStream = bc.getBlobOutputStream(true)
         outStream.write(randomBytes, 1 * Constants.MB, 5 * Constants.MB)
         outStream.close()
 
@@ -101,8 +99,7 @@ class BlockBlobInputOutputStreamTest extends APISpec {
                 b = inputStream.read()
                 assert b != -1
                 outputStream.write(b)
-                assert inputStream.available() == sizes[i] - 1
-                // Make sure the internal buffer is the expected chunk size.
+                assert inputStream.available() == sizes[i] - 1 // Make sure the internal buffer is the expected chunk size.
                 // Read the rest of the chunk
                 for (int j = 0; j < sizes[i] - 1; j++) {
                     b = inputStream.read()
@@ -138,8 +135,7 @@ class BlockBlobInputOutputStreamTest extends APISpec {
         outStream.write(randomBytes, 0, 6 * Constants.MB)
         outStream.close()
 
-        def resultBytes = new byte[count == null ? length : count]
-
+        def resultBytes = new byte[count == null ? length - start : count]
         when:
         def inputStream = bc.openInputStream(new BlobInputStreamOptions().setRange(new BlobRange(start, count))
             .setBlockSize(4 * Constants.MB))
@@ -147,18 +143,20 @@ class BlockBlobInputOutputStreamTest extends APISpec {
 
         then:
         inputStream.read() == -1
-        ByteBuffer.wrap(randomBytes, start, count)  == ByteBuffer.wrap(resultBytes)
+        ByteBuffer.wrap(randomBytes, start, count == null ? length - start : count)  == ByteBuffer.wrap(resultBytes)
 
         where:
         start            | count
+        0                | null // full blob
         0                | 100 // Small range
         0                | 4 * Constants.MB // block size
         0                | 5 * Constants.MB // Requires multiple chunks
         5                | 100 // small offset
+        5                | null // full blob after an offset
         1 * Constants.MB | 2 * Constants.MB // larger offset inside first chunk
         1 * Constants.KB | 4 * Constants.MB // offset with range spanning chunks
         5 * Constants.MB | (1 * Constants.KB) // Range entirely in second chunk
-        // full blob tested in other tests
+        5 * Constants.MB | null // rest of blob after first chunk
     }
 
     // Only run this test in live mode as BlobOutputStream dynamically assigns blocks
@@ -168,7 +166,7 @@ class BlockBlobInputOutputStreamTest extends APISpec {
         int length = 6 * Constants.MB
         byte[] randomBytes = getRandomByteArray(length)
 
-        BlobOutputStream outStream = bc.getBlobOutputStream()
+        BlobOutputStream outStream = bc.getBlobOutputStream(true)
         outStream.write(randomBytes, 1 * Constants.MB, 5 * Constants.MB)
         outStream.close()
 
