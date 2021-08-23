@@ -21,7 +21,7 @@ public class AzureServiceBusJMSProperties {
     private String connectionString;
 
     /**
-     * JMS clientID
+     * JMS clientID. Only works for the bean of topicJmsListenerContainerFactory.
      */
     private String topicClientId;
 
@@ -91,7 +91,7 @@ public class AzureServiceBusJMSProperties {
     public static class Listener {
 
         /**
-         * Whether the reply destination type is topic.
+         * Whether the reply destination type is topic. Only works for the bean of topicJmsListenerContainerFactory.
          */
         private Boolean replyPubSubDomain;
 
@@ -101,12 +101,12 @@ public class AzureServiceBusJMSProperties {
         private QosSettings replyQosSettings;
 
         /**
-         * Whether to make the subscription durable.
+         * Whether to make the subscription durable. Only works for the bean of topicJmsListenerContainerFactory.
          */
-        private Boolean subscriptionDurable = true;
+        private Boolean subscriptionDurable = Boolean.TRUE;
 
         /**
-         * Whether to make the subscription shared.
+         * Whether to make the subscription shared. Only works for the bean of topicJmsListenerContainerFactory.
          */
         private Boolean subscriptionShared;
 

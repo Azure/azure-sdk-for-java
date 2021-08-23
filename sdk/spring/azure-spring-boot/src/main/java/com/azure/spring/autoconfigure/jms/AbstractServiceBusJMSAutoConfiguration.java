@@ -3,8 +3,6 @@
 
 package com.azure.spring.autoconfigure.jms;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.jms.DefaultJmsListenerContainerFactoryConfigurer;
 import org.springframework.boot.autoconfigure.jms.JmsProperties;
@@ -13,7 +11,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.jms.config.DefaultJmsListenerContainerFactory;
 import org.springframework.jms.config.JmsListenerContainerFactory;
 
-import javax.annotation.PostConstruct;
 import javax.jms.ConnectionFactory;
 
 /**
@@ -21,8 +18,6 @@ import javax.jms.ConnectionFactory;
  */
 @Configuration
 public abstract class AbstractServiceBusJMSAutoConfiguration {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(AbstractServiceBusJMSAutoConfiguration.class);
 
     final JmsProperties jmsProperties;
     final AzureServiceBusJMSProperties azureServiceBusJMSProperties;
@@ -33,15 +28,12 @@ public abstract class AbstractServiceBusJMSAutoConfiguration {
         this.azureServiceBusJMSProperties = azureServiceBusJMSProperties;
     }
 
-    @PostConstruct
-    private void validate() {
-        AzureServiceBusJMSProperties.Listener listener = azureServiceBusJMSProperties.getListener();
-        if ((listener.isSubscriptionDurable() || listener.isSubscriptionShared()) && !jmsProperties.isPubSubDomain()) {
-            LOGGER.warn("Usage of JMS subscription is detected! Property of spring.jms.pub-sub-domain will be set as true");
-            jmsProperties.setPubSubDomain(true);
-        }
-    }
-
+    /**
+     * Declare {@link JmsListenerContainerFactory} bean for Azure Service Bus Queue.
+     * @param configurer configure {@link DefaultJmsListenerContainerFactory} with sensible defaults
+     * @param connectionFactory configure {@link ConnectionFactory} for {@link JmsListenerContainerFactory}
+     * @return {@link JmsListenerContainerFactory} bean
+     */
     @Bean
     @ConditionalOnMissingBean
     public JmsListenerContainerFactory<?> jmsListenerContainerFactory(
@@ -53,11 +45,19 @@ public abstract class AbstractServiceBusJMSAutoConfiguration {
         return jmsListenerContainerFactory;
     }
 
+    /**
+     * Declare {@link JmsListenerContainerFactory} bean for Azure Service Bus Topic.
+     * @param configurer configure {@link DefaultJmsListenerContainerFactory} with sensible defaults
+     * @param connectionFactory configure {@link ConnectionFactory} for {@link JmsListenerContainerFactory}
+     * @return {@link JmsListenerContainerFactory} bean
+     */
     @Bean
+    @ConditionalOnMissingBean
     public JmsListenerContainerFactory<?> topicJmsListenerContainerFactory(
         DefaultJmsListenerContainerFactoryConfigurer configurer, ConnectionFactory connectionFactory) {
         final DefaultJmsListenerContainerFactory jmsListenerContainerFactory = new DefaultJmsListenerContainerFactory();
         configurer.configure(jmsListenerContainerFactory, connectionFactory);
+        jmsListenerContainerFactory.setPubSubDomain(Boolean.TRUE);
         configureCommonListenerContainerFactory(jmsListenerContainerFactory);
         configureTopicListenerContainerFactory(jmsListenerContainerFactory);
         return jmsListenerContainerFactory;
