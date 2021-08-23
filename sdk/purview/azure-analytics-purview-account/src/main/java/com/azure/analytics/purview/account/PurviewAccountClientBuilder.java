@@ -19,9 +19,9 @@ import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.serializer.JacksonAdapter;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -42,7 +42,8 @@ public final class PurviewAccountClientBuilder {
 
     static final String[] DEFAULT_SCOPES = new String[] {"https://purview.azure.net/.default"};
 
-    private final Map<String, String> properties = new HashMap<>();
+    private final Map<String, String> properties =
+            CoreUtils.getProperties("azure-analytics-purview-account.properties");
 
     /** Create an instance of the PurviewAccountClientBuilder. */
     public PurviewAccountClientBuilder() {
