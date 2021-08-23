@@ -60,7 +60,7 @@ com.azure:azure-communication-phonenumbers;1.0.3;1.1.0-beta.1
 com.azure:azure-containers-containerregistry;1.0.0-beta.3;1.0.0-beta.4
 com.azure:azure-containers-containerregistry-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-core;1.19.0;1.20.0-beta.1
-com.azure:azure-core-amqp;2.3.0;2.4.0-beta.1
+com.azure:azure-core-amqp;2.3.1;2.4.0-beta.1
 com.azure:azure-core-amqp-experimental;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-core-experimental;1.0.0-beta.17;1.0.0-beta.18
 com.azure:azure-core-http-jdk-httpclient;1.0.0-beta.1;1.0.0-beta.1
@@ -91,11 +91,11 @@ com.azure:azure-identity-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-iot-deviceupdate;1.0.0-beta.1;1.0.0-beta.2
 com.azure:azure-iot-modelsrepository;1.0.0-beta.1;1.0.0-beta.2
 com.azure:azure-messaging-eventgrid;4.6.0;4.7.0-beta.1
-com.azure:azure-messaging-eventhubs;5.9.0;5.10.0-beta.1
-com.azure:azure-messaging-eventhubs-checkpointstore-blob;1.8.1;1.9.0-beta.1
+com.azure:azure-messaging-eventhubs;5.10.0;5.11.0-beta.1
+com.azure:azure-messaging-eventhubs-checkpointstore-blob;1.9.0;1.10.0-beta.1
 com.azure:azure-messaging-eventhubs-track1-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-messaging-eventhubs-track2-perf;1.0.0-beta.1;1.0.0-beta.1
-com.azure:azure-messaging-servicebus;7.3.0;7.4.0-beta.1
+com.azure:azure-messaging-servicebus;7.4.0;7.5.0-beta.1
 com.azure:azure-messaging-servicebus-track1-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-messaging-servicebus-track2-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-messaging-webpubsub;1.0.0-beta.3;1.0.0-beta.4
@@ -319,7 +319,6 @@ com.azure.resourcemanager:azure-resourcemanager-hybridnetwork;1.0.0-beta.1;1.0.0
 # In the pom, the version update tag after the version should name the unreleased package and the dependency version:
 # <!-- {x-version-update;unreleased_com.azure:azure-core;dependency} -->
 unreleased_com.azure:azure-core;1.20.0-beta.1
-unreleased_com.azure:azure-core-amqp;2.4.0-beta.1
 unreleased_com.azure:azure-core-experimental;1.0.0-beta.18
 
 
