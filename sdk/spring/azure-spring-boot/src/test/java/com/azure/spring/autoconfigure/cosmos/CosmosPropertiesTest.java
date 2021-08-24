@@ -56,7 +56,7 @@ public class CosmosPropertiesTest {
             context.register(Config.class);
             context.refresh();
             final CosmosProperties properties = context.getBean(CosmosProperties.class);
-            assertThat(properties.getUri()).matches(CosmosProperties.URIPATTERN);
+            assertThat(properties.getUri()).matches(CosmosProperties.URI_REGEX);
         };
     }
 
@@ -71,7 +71,7 @@ public class CosmosPropertiesTest {
             context.register(Config.class);
             context.refresh();
             final CosmosProperties properties = context.getBean(CosmosProperties.class);
-            assertThat(properties.getUri()).matches(CosmosProperties.URIPATTERN);
+            assertThat(properties.getUri()).matches(CosmosProperties.URI_REGEX);
         };
     }
 
