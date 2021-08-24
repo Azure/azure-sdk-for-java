@@ -239,7 +239,10 @@ public class EncryptionProcessor {
                 Thread.currentThread().getName());
         }
         ObjectNode itemJObj = Utils.parse(payload, ObjectNode.class);
+        return encrypt(itemJObj);
+    }
 
+    public Mono<byte[]> encrypt(ObjectNode itemJObj) {
         assert (itemJObj != null);
         return initEncryptionSettingsIfNotInitializedAsync().then(Mono.defer(() -> {
             for (ClientEncryptionIncludedPath includedPath : this.clientEncryptionPolicy.getIncludedPaths()) {
@@ -350,6 +353,10 @@ public class EncryptionProcessor {
         }
 
         ObjectNode itemJObj = Utils.parse(input, ObjectNode.class);
+        return decrypt(itemJObj);
+    }
+
+    public Mono<byte[]> decrypt(ObjectNode itemJObj) {
         assert (itemJObj != null);
         return initEncryptionSettingsIfNotInitializedAsync().then(Mono.defer(() -> {
             for (ClientEncryptionIncludedPath includedPath : this.clientEncryptionPolicy.getIncludedPaths()) {
