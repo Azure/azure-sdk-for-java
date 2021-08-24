@@ -28,11 +28,11 @@ import java.util.Objects;
  */
 class AvroSchemaRegistryUtils {
     private final ClientLogger logger = new ClientLogger(AvroSchemaRegistryUtils.class);
-    private static final EncoderFactory ENCODER_FACTORY = EncoderFactory.get();
-    private static final DecoderFactory DECODER_FACTORY = DecoderFactory.get();
 
     private final boolean avroSpecificReader;
     private final Schema.Parser parser;
+    private final EncoderFactory encoderFactory;
+    private final DecoderFactory decoderFactory;
 
     /**
      * Instantiates AvroCodec instance
@@ -40,9 +40,11 @@ class AvroSchemaRegistryUtils {
      * @param avroSpecificReader flag indicating if decoder should decode records as {@link SpecificRecord
      *     SpecificRecords}.
      */
-    AvroSchemaRegistryUtils(boolean avroSpecificReader) {
+    AvroSchemaRegistryUtils(boolean avroSpecificReader, EncoderFactory encoderFactory, DecoderFactory decoderFactory) {
         this.parser = new Schema.Parser();
         this.avroSpecificReader = avroSpecificReader;
+        this.encoderFactory = encoderFactory;
+        this.decoderFactory = decoderFactory;
     }
 
     SerializationType getSerializationType() {
@@ -103,7 +105,7 @@ class AvroSchemaRegistryUtils {
             if (object instanceof byte[]) {
                 out.write((byte[]) object); // todo: real avro byte arrays require writing array size to buffer
             } else {
-                BinaryEncoder encoder = ENCODER_FACTORY.directBinaryEncoder(out, null);
+                BinaryEncoder encoder = encoderFactory.directBinaryEncoder(out, null);
                 DatumWriter<Object> writer;
                 if (object instanceof SpecificRecord) {
                     writer = new SpecificDatumWriter<>(schema);
@@ -137,7 +139,7 @@ class AvroSchemaRegistryUtils {
         DatumReader<T> reader = getDatumReader(schemaObject);
 
         try {
-            T result = reader.read(null, DECODER_FACTORY.binaryDecoder(b, null));
+            T result = reader.read(null, decoderFactory.binaryDecoder(b, null));
             return result;
         } catch (IOException | RuntimeException e) {
             throw logger.logExceptionAsError(new IllegalStateException("Error deserializing Avro message.", e));
