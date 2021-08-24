@@ -5,46 +5,37 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.appservice.fluent.models.PremierAddOnPatchResourceProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** ARM resource for a PremierAddOn. */
-@JsonFlatten
 @Fluent
-public class PremierAddOnPatchResource extends ProxyOnlyResource {
+public final class PremierAddOnPatchResource extends ProxyOnlyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(PremierAddOnPatchResource.class);
 
     /*
-     * Premier add on SKU.
+     * PremierAddOnPatchResource resource specific properties
      */
-    @JsonProperty(value = "properties.sku")
-    private String sku;
+    @JsonProperty(value = "properties")
+    private PremierAddOnPatchResourceProperties innerProperties;
 
-    /*
-     * Premier add on Product.
+    /**
+     * Get the innerProperties property: PremierAddOnPatchResource resource specific properties.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.product")
-    private String product;
+    private PremierAddOnPatchResourceProperties innerProperties() {
+        return this.innerProperties;
+    }
 
-    /*
-     * Premier add on Vendor.
-     */
-    @JsonProperty(value = "properties.vendor")
-    private String vendor;
-
-    /*
-     * Premier add on Marketplace publisher.
-     */
-    @JsonProperty(value = "properties.marketplacePublisher")
-    private String marketplacePublisher;
-
-    /*
-     * Premier add on Marketplace offer.
-     */
-    @JsonProperty(value = "properties.marketplaceOffer")
-    private String marketplaceOffer;
+    /** {@inheritDoc} */
+    @Override
+    public PremierAddOnPatchResource withKind(String kind) {
+        super.withKind(kind);
+        return this;
+    }
 
     /**
      * Get the sku property: Premier add on SKU.
@@ -52,7 +43,7 @@ public class PremierAddOnPatchResource extends ProxyOnlyResource {
      * @return the sku value.
      */
     public String sku() {
-        return this.sku;
+        return this.innerProperties() == null ? null : this.innerProperties().sku();
     }
 
     /**
@@ -62,7 +53,10 @@ public class PremierAddOnPatchResource extends ProxyOnlyResource {
      * @return the PremierAddOnPatchResource object itself.
      */
     public PremierAddOnPatchResource withSku(String sku) {
-        this.sku = sku;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PremierAddOnPatchResourceProperties();
+        }
+        this.innerProperties().withSku(sku);
         return this;
     }
 
@@ -72,7 +66,7 @@ public class PremierAddOnPatchResource extends ProxyOnlyResource {
      * @return the product value.
      */
     public String product() {
-        return this.product;
+        return this.innerProperties() == null ? null : this.innerProperties().product();
     }
 
     /**
@@ -82,7 +76,10 @@ public class PremierAddOnPatchResource extends ProxyOnlyResource {
      * @return the PremierAddOnPatchResource object itself.
      */
     public PremierAddOnPatchResource withProduct(String product) {
-        this.product = product;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PremierAddOnPatchResourceProperties();
+        }
+        this.innerProperties().withProduct(product);
         return this;
     }
 
@@ -92,7 +89,7 @@ public class PremierAddOnPatchResource extends ProxyOnlyResource {
      * @return the vendor value.
      */
     public String vendor() {
-        return this.vendor;
+        return this.innerProperties() == null ? null : this.innerProperties().vendor();
     }
 
     /**
@@ -102,7 +99,10 @@ public class PremierAddOnPatchResource extends ProxyOnlyResource {
      * @return the PremierAddOnPatchResource object itself.
      */
     public PremierAddOnPatchResource withVendor(String vendor) {
-        this.vendor = vendor;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PremierAddOnPatchResourceProperties();
+        }
+        this.innerProperties().withVendor(vendor);
         return this;
     }
 
@@ -112,7 +112,7 @@ public class PremierAddOnPatchResource extends ProxyOnlyResource {
      * @return the marketplacePublisher value.
      */
     public String marketplacePublisher() {
-        return this.marketplacePublisher;
+        return this.innerProperties() == null ? null : this.innerProperties().marketplacePublisher();
     }
 
     /**
@@ -122,7 +122,10 @@ public class PremierAddOnPatchResource extends ProxyOnlyResource {
      * @return the PremierAddOnPatchResource object itself.
      */
     public PremierAddOnPatchResource withMarketplacePublisher(String marketplacePublisher) {
-        this.marketplacePublisher = marketplacePublisher;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PremierAddOnPatchResourceProperties();
+        }
+        this.innerProperties().withMarketplacePublisher(marketplacePublisher);
         return this;
     }
 
@@ -132,7 +135,7 @@ public class PremierAddOnPatchResource extends ProxyOnlyResource {
      * @return the marketplaceOffer value.
      */
     public String marketplaceOffer() {
-        return this.marketplaceOffer;
+        return this.innerProperties() == null ? null : this.innerProperties().marketplaceOffer();
     }
 
     /**
@@ -142,14 +145,10 @@ public class PremierAddOnPatchResource extends ProxyOnlyResource {
      * @return the PremierAddOnPatchResource object itself.
      */
     public PremierAddOnPatchResource withMarketplaceOffer(String marketplaceOffer) {
-        this.marketplaceOffer = marketplaceOffer;
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public PremierAddOnPatchResource withKind(String kind) {
-        super.withKind(kind);
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PremierAddOnPatchResourceProperties();
+        }
+        this.innerProperties().withMarketplaceOffer(marketplaceOffer);
         return this;
     }
 
@@ -161,5 +160,8 @@ public class PremierAddOnPatchResource extends ProxyOnlyResource {
     @Override
     public void validate() {
         super.validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

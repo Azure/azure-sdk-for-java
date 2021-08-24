@@ -12,6 +12,7 @@ import com.azure.data.appconfiguration.models.FeatureFlagConfigurationSetting;
 import com.azure.data.appconfiguration.models.FeatureFlagFilter;
 import com.azure.data.appconfiguration.models.SecretReferenceConfigurationSetting;
 import com.azure.spring.cloud.config.properties.AppConfigurationProperties;
+import com.azure.spring.cloud.config.properties.AppConfigurationStoreSelects;
 import com.azure.spring.cloud.config.properties.ConfigStore;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -88,7 +89,7 @@ public final class TestUtils {
     }
 
     static void addStore(AppConfigurationProperties properties, String storeEndpoint, String connectionString) {
-        addStore(properties, storeEndpoint, connectionString, null);
+        addStore(properties, storeEndpoint, connectionString, "\0");
     }
 
     static void addStore(AppConfigurationProperties properties, String storeEndpoint, String connectionString,
@@ -97,7 +98,10 @@ public final class TestUtils {
         ConfigStore store = new ConfigStore();
         store.setConnectionString(connectionString);
         store.setEndpoint(storeEndpoint);
-        store.setLabel(label);
+        AppConfigurationStoreSelects selectedKeys = new AppConfigurationStoreSelects().setKeyFilter("/application/").setLabelFilter(label);
+        List<AppConfigurationStoreSelects> selects = new ArrayList<>();
+        selects.add(selectedKeys);
+        store.setSelects(selects);
         stores.add(store);
         properties.setStores(stores);
     }

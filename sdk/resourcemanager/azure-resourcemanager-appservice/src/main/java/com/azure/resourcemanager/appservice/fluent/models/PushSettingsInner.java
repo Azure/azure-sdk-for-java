@@ -5,47 +5,37 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.models.ProxyOnlyResource;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Push settings for the App. */
-@JsonFlatten
 @Fluent
-public class PushSettingsInner extends ProxyOnlyResource {
+public final class PushSettingsInner extends ProxyOnlyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(PushSettingsInner.class);
 
     /*
-     * Gets or sets a flag indicating whether the Push endpoint is enabled.
+     * PushSettings resource specific properties
      */
-    @JsonProperty(value = "properties.isPushEnabled")
-    private Boolean isPushEnabled;
+    @JsonProperty(value = "properties")
+    private PushSettingsProperties innerProperties;
 
-    /*
-     * Gets or sets a JSON string containing a list of tags that are
-     * whitelisted for use by the push registration endpoint.
+    /**
+     * Get the innerProperties property: PushSettings resource specific properties.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.tagWhitelistJson")
-    private String tagWhitelistJson;
+    private PushSettingsProperties innerProperties() {
+        return this.innerProperties;
+    }
 
-    /*
-     * Gets or sets a JSON string containing a list of tags that require user
-     * authentication to be used in the push registration endpoint.
-     * Tags can consist of alphanumeric characters and the following:
-     * '_', '@', '#', '.', ':', '-'.
-     * Validation should be performed at the PushRequestHandler.
-     */
-    @JsonProperty(value = "properties.tagsRequiringAuth")
-    private String tagsRequiringAuth;
-
-    /*
-     * Gets or sets a JSON string containing a list of dynamic tags that will
-     * be evaluated from user claims in the push registration endpoint.
-     */
-    @JsonProperty(value = "properties.dynamicTagsJson")
-    private String dynamicTagsJson;
+    /** {@inheritDoc} */
+    @Override
+    public PushSettingsInner withKind(String kind) {
+        super.withKind(kind);
+        return this;
+    }
 
     /**
      * Get the isPushEnabled property: Gets or sets a flag indicating whether the Push endpoint is enabled.
@@ -53,7 +43,7 @@ public class PushSettingsInner extends ProxyOnlyResource {
      * @return the isPushEnabled value.
      */
     public Boolean isPushEnabled() {
-        return this.isPushEnabled;
+        return this.innerProperties() == null ? null : this.innerProperties().isPushEnabled();
     }
 
     /**
@@ -63,7 +53,10 @@ public class PushSettingsInner extends ProxyOnlyResource {
      * @return the PushSettingsInner object itself.
      */
     public PushSettingsInner withIsPushEnabled(Boolean isPushEnabled) {
-        this.isPushEnabled = isPushEnabled;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PushSettingsProperties();
+        }
+        this.innerProperties().withIsPushEnabled(isPushEnabled);
         return this;
     }
 
@@ -74,7 +67,7 @@ public class PushSettingsInner extends ProxyOnlyResource {
      * @return the tagWhitelistJson value.
      */
     public String tagWhitelistJson() {
-        return this.tagWhitelistJson;
+        return this.innerProperties() == null ? null : this.innerProperties().tagWhitelistJson();
     }
 
     /**
@@ -85,7 +78,10 @@ public class PushSettingsInner extends ProxyOnlyResource {
      * @return the PushSettingsInner object itself.
      */
     public PushSettingsInner withTagWhitelistJson(String tagWhitelistJson) {
-        this.tagWhitelistJson = tagWhitelistJson;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PushSettingsProperties();
+        }
+        this.innerProperties().withTagWhitelistJson(tagWhitelistJson);
         return this;
     }
 
@@ -97,7 +93,7 @@ public class PushSettingsInner extends ProxyOnlyResource {
      * @return the tagsRequiringAuth value.
      */
     public String tagsRequiringAuth() {
-        return this.tagsRequiringAuth;
+        return this.innerProperties() == null ? null : this.innerProperties().tagsRequiringAuth();
     }
 
     /**
@@ -109,7 +105,10 @@ public class PushSettingsInner extends ProxyOnlyResource {
      * @return the PushSettingsInner object itself.
      */
     public PushSettingsInner withTagsRequiringAuth(String tagsRequiringAuth) {
-        this.tagsRequiringAuth = tagsRequiringAuth;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PushSettingsProperties();
+        }
+        this.innerProperties().withTagsRequiringAuth(tagsRequiringAuth);
         return this;
     }
 
@@ -120,7 +119,7 @@ public class PushSettingsInner extends ProxyOnlyResource {
      * @return the dynamicTagsJson value.
      */
     public String dynamicTagsJson() {
-        return this.dynamicTagsJson;
+        return this.innerProperties() == null ? null : this.innerProperties().dynamicTagsJson();
     }
 
     /**
@@ -131,14 +130,10 @@ public class PushSettingsInner extends ProxyOnlyResource {
      * @return the PushSettingsInner object itself.
      */
     public PushSettingsInner withDynamicTagsJson(String dynamicTagsJson) {
-        this.dynamicTagsJson = dynamicTagsJson;
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public PushSettingsInner withKind(String kind) {
-        super.withKind(kind);
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PushSettingsProperties();
+        }
+        this.innerProperties().withDynamicTagsJson(dynamicTagsJson);
         return this;
     }
 
@@ -150,5 +145,8 @@ public class PushSettingsInner extends ProxyOnlyResource {
     @Override
     public void validate() {
         super.validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }
