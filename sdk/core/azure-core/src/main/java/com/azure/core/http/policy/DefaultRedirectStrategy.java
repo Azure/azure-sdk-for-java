@@ -72,8 +72,20 @@ public final class DefaultRedirectStrategy implements RedirectStrategy {
             throw logger.logExceptionAsError(new IllegalArgumentException("Max attempts cannot be less than 0."));
         }
         this.maxAttempts = maxAttempts;
-        this.locationHeader = locationHeader == null ? DEFAULT_REDIRECT_LOCATION_HEADER_NAME : locationHeader;
-        this.redirectMethods = allowedMethods == null ? DEFAULT_REDIRECT_ALLOWED_METHODS : allowedMethods;
+        if (CoreUtils.isNullOrEmpty(locationHeader)) {
+            logger.error(String.format("'locationHeader' provided as null will be defaulted to %s",
+                DEFAULT_REDIRECT_LOCATION_HEADER_NAME));
+            this.locationHeader = DEFAULT_REDIRECT_LOCATION_HEADER_NAME;
+        } else {
+            this.locationHeader = locationHeader;
+        }
+        if (CoreUtils.isNullOrEmpty(allowedMethods)) {
+            logger.error(String.format("'allowedMethods' provided as null will be defaulted to %s",
+                DEFAULT_REDIRECT_ALLOWED_METHODS));
+            this.redirectMethods = DEFAULT_REDIRECT_ALLOWED_METHODS;
+        } else {
+            this.redirectMethods = allowedMethods;
+        }
     }
 
     @Override
@@ -189,8 +201,8 @@ public final class DefaultRedirectStrategy implements RedirectStrategy {
     private String tryGetRedirectHeader(HttpHeaders headers, String headerName) {
         String headerValue = headers.getValue(headerName);
         if (CoreUtils.isNullOrEmpty(headerValue)) {
-            logger.error(String.format("Redirect url was null for header name: %s, Request redirect was terminated"
-                , headerName));
+            logger.error(String.format("Redirect url was null for header name: %s, Request redirect was terminated",
+                headerName));
             return null;
         } else {
             return headerValue;
