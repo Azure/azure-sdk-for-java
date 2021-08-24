@@ -87,17 +87,17 @@ class AvroSchemaRegistryUtils {
     }
 
     /**
-     * Returns ByteArrayOutputStream containing Avro encoding of object parameter
+     * Returns A byte[] containing Avro encoding of object parameter.
      *
      * @param object Object to be encoded into byte stream
      *
-     * @return closed ByteArrayOutputStream
+     * @return A set of bytes that represent the object.
      */
-    byte[] encode(Object object) {
+    byte[] encode(Object object) throws IOException {
         Schema schema = AvroSchemaUtils.getSchema(object);
 
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
         try {
-            ByteArrayOutputStream out = new ByteArrayOutputStream();
             if (object instanceof byte[]) {
                 out.write((byte[]) object); // todo: real avro byte arrays require writing array size to buffer
             } else {
@@ -116,6 +116,8 @@ class AvroSchemaRegistryUtils {
             // Avro serialization can throw AvroRuntimeException, NullPointerException, ClassCastException, etc
             throw logger.logExceptionAsError(
                 new IllegalStateException("Error serializing Avro message", e));
+        } finally {
+            out.close();
         }
     }
 
