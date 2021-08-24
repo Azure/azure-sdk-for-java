@@ -8,6 +8,7 @@ import com.azure.analytics.purview.account.implementation.AccountsImpl;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
@@ -110,6 +111,8 @@ public final class AccountsAsyncClient {
      * }</pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
+     *     false.
      * @return an account.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -209,6 +212,8 @@ public final class AccountsAsyncClient {
      *
      * @param accountUpdateParameters The account properties that can be updated through data plane.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
+     *     false.
      * @return account resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -238,6 +243,8 @@ public final class AccountsAsyncClient {
      * }</pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
+     *     false.
      * @return the Account access keys.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -275,6 +282,8 @@ public final class AccountsAsyncClient {
      *
      * @param keyOptions A access key options used for regeneration.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
+     *     false.
      * @return the Account access keys.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
