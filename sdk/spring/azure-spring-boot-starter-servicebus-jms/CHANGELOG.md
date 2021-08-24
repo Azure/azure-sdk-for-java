@@ -8,8 +8,7 @@ This release is compatible with Spring Boot 2.5.0 - 2.5.3.
 ### New Features
 - Support configuration of `AbstractJmsListenerContainerFactory` for `JmsListener`. Enabled properties include `replyPubSubDomain`, `replyQosSettings`, `subscriptionDurable`, `subscriptionShared` and `phase` with prefix as `spring.jms.servicebus.listener`.
 ### Key Bug Fixes
-- Fix the bug that Spring JMS configuration of JMS listener doesn't work for Azure Service Bus JMS Spring Boot Starter.
-- Fix the bug of not supporting Spring Native autoconfiguration of JMS listener.
+- Fix the bug of not supporting Spring Boot autoconfiguration of JMS listener.
 ## 3.7.0 (2021-07-20)
 ### Dependency Upgrades
 - Upgrade to [spring-boot-dependencies:2.5.2](https://repo.maven.apache.org/maven2/org/springframework/boot/spring-boot-dependencies/2.5.2/spring-boot-dependencies-2.5.2.pom).

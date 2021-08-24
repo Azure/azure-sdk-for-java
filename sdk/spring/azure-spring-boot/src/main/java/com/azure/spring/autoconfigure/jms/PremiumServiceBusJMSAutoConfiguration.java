@@ -35,15 +35,15 @@ public class PremiumServiceBusJMSAutoConfiguration extends AbstractServiceBusJMS
 
     @Bean
     @ConditionalOnMissingBean
-    public ConnectionFactory jmsConnectionFactory(AzureServiceBusJMSProperties serviceBusJMSProperties) {
-        final String connectionString = serviceBusJMSProperties.getConnectionString();
-        final String clientId = serviceBusJMSProperties.getTopicClientId();
-        final int idleTimeout = serviceBusJMSProperties.getIdleTimeout();
+    public ConnectionFactory jmsConnectionFactory() {
+        String connectionString = azureServiceBusJMSProperties.getConnectionString();
+        String clientId = azureServiceBusJMSProperties.getTopicClientId();
+        int idleTimeout = azureServiceBusJMSProperties.getIdleTimeout();
 
-        final ServiceBusJmsConnectionFactorySettings settings =
+        ServiceBusJmsConnectionFactorySettings settings =
             new ServiceBusJmsConnectionFactorySettings(idleTimeout, false);
         settings.setShouldReconnect(false);
-        final SpringServiceBusJmsConnectionFactory springServiceBusJmsConnectionFactory =
+        SpringServiceBusJmsConnectionFactory springServiceBusJmsConnectionFactory =
             new SpringServiceBusJmsConnectionFactory(connectionString, settings);
         springServiceBusJmsConnectionFactory.setClientId(clientId);
         springServiceBusJmsConnectionFactory.setCustomUserAgent(AZURE_SPRING_SERVICE_BUS);

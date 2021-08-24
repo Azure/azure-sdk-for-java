@@ -16,7 +16,7 @@ import javax.jms.ConnectionFactory;
  */
 public abstract class AbstractServiceBusJMSAutoConfiguration {
 
-    final AzureServiceBusJMSProperties azureServiceBusJMSProperties;
+    protected final AzureServiceBusJMSProperties azureServiceBusJMSProperties;
 
     public AbstractServiceBusJMSAutoConfiguration(AzureServiceBusJMSProperties azureServiceBusJMSProperties) {
         this.azureServiceBusJMSProperties = azureServiceBusJMSProperties;
@@ -32,7 +32,7 @@ public abstract class AbstractServiceBusJMSAutoConfiguration {
     @ConditionalOnMissingBean
     public JmsListenerContainerFactory<?> jmsListenerContainerFactory(
         DefaultJmsListenerContainerFactoryConfigurer configurer, ConnectionFactory connectionFactory) {
-        final DefaultJmsListenerContainerFactory jmsListenerContainerFactory = new DefaultJmsListenerContainerFactory();
+        DefaultJmsListenerContainerFactory jmsListenerContainerFactory = new DefaultJmsListenerContainerFactory();
         configurer.configure(jmsListenerContainerFactory, connectionFactory);
         jmsListenerContainerFactory.setPubSubDomain(Boolean.FALSE);
         configureCommonListenerContainerFactory(jmsListenerContainerFactory);
@@ -49,7 +49,7 @@ public abstract class AbstractServiceBusJMSAutoConfiguration {
     @ConditionalOnMissingBean(name = "topicJmsListenerContainerFactory")
     public JmsListenerContainerFactory<?> topicJmsListenerContainerFactory(
         DefaultJmsListenerContainerFactoryConfigurer configurer, ConnectionFactory connectionFactory) {
-        final DefaultJmsListenerContainerFactory jmsListenerContainerFactory = new DefaultJmsListenerContainerFactory();
+        DefaultJmsListenerContainerFactory jmsListenerContainerFactory = new DefaultJmsListenerContainerFactory();
         configurer.configure(jmsListenerContainerFactory, connectionFactory);
         jmsListenerContainerFactory.setPubSubDomain(Boolean.TRUE);
         configureCommonListenerContainerFactory(jmsListenerContainerFactory);

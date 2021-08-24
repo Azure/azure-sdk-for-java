@@ -34,18 +34,18 @@ public class NonPremiumServiceBusJMSAutoConfiguration extends AbstractServiceBus
 
     @Bean
     @ConditionalOnMissingBean
-    public ConnectionFactory jmsConnectionFactory(AzureServiceBusJMSProperties serviceBusJMSProperties) {
-        final String connectionString = serviceBusJMSProperties.getConnectionString();
-        final String clientId = serviceBusJMSProperties.getTopicClientId();
-        final int idleTimeout = serviceBusJMSProperties.getIdleTimeout();
+    public ConnectionFactory jmsConnectionFactory() {
+        String connectionString = azureServiceBusJMSProperties.getConnectionString();
+        String clientId = azureServiceBusJMSProperties.getTopicClientId();
+        int idleTimeout = azureServiceBusJMSProperties.getIdleTimeout();
 
-        final ServiceBusKey serviceBusKey = ConnectionStringResolver.getServiceBusKey(connectionString);
-        final String host = serviceBusKey.getHost();
-        final String sasKeyName = serviceBusKey.getSharedAccessKeyName();
-        final String sasKey = serviceBusKey.getSharedAccessKey();
+        ServiceBusKey serviceBusKey = ConnectionStringResolver.getServiceBusKey(connectionString);
+        String host = serviceBusKey.getHost();
+        String sasKeyName = serviceBusKey.getSharedAccessKeyName();
+        String sasKey = serviceBusKey.getSharedAccessKey();
 
-        final String remoteUri = String.format(AMQP_URI_FORMAT, host, idleTimeout);
-        final JmsConnectionFactory jmsConnectionFactory = new JmsConnectionFactory();
+        String remoteUri = String.format(AMQP_URI_FORMAT, host, idleTimeout);
+        JmsConnectionFactory jmsConnectionFactory = new JmsConnectionFactory();
         jmsConnectionFactory.setRemoteURI(remoteUri);
         jmsConnectionFactory.setClientID(clientId);
         jmsConnectionFactory.setUsername(sasKeyName);
