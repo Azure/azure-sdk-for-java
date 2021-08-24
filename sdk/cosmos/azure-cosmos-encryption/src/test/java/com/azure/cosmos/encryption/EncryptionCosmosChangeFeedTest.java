@@ -223,7 +223,7 @@ public class EncryptionCosmosChangeFeedTest extends TestSuiteBase {
 
             assertThat(changeFeedProcessor.isStarted()).as("Change Feed Processor instance is running").isTrue();
 
-            changeFeedProcessor.stop().subscribeOn(Schedulers.elastic()).timeout(Duration.ofMillis(2 * CHANGE_FEED_PROCESSOR_TIMEOUT)).subscribe();
+            changeFeedProcessor.stop().subscribeOn(Schedulers.boundedElastic()).timeout(Duration.ofMillis(2 * CHANGE_FEED_PROCESSOR_TIMEOUT)).subscribe();
 
             assertThat(receivedDocuments.size()).isEqualTo(createdDocuments.size());
             for (EncryptionPojo item : createdDocuments) {
