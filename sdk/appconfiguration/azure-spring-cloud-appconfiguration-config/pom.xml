@@ -121,7 +121,7 @@
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-junit-jupiter</artifactId>
-            <version>3.9.0</version> <!-- {x-version-update;appconfig_spring_org.mockito:mockito-junit-jupiter;3.9.0;external_dependency} -->
+            <version>3.9.0</version> <!-- {x-version-update;appconfig_spring_org.mockito:mockito-junit-jupiter;external_dependency} -->
             <scope>test</scope>
         </dependency>
         <dependency>
