@@ -4,6 +4,7 @@
 package com.azure.data.schemaregistry.avro;
 
 import com.azure.data.schemaregistry.SchemaRegistryAsyncClient;
+import org.apache.avro.Schema;
 import org.apache.avro.io.DecoderFactory;
 import org.apache.avro.io.EncoderFactory;
 import org.apache.avro.specific.SpecificDatumReader;
@@ -103,9 +104,9 @@ public final class SchemaRegistryAvroSerializerBuilder {
         final boolean isAutoRegister = autoRegisterSchemas != null && autoRegisterSchemas;
         final boolean useAvroSpecificReader = avroSpecificReader == null
             ? AVRO_SPECIFIC_READER_DEFAULT : avroSpecificReader;
-
-        final AvroSchemaRegistryUtils codec = new AvroSchemaRegistryUtils(useAvroSpecificReader, EncoderFactory.get(),
-            DecoderFactory.get());
+        final Schema.Parser parser = new Schema.Parser();
+        final AvroSchemaRegistryUtils codec = new AvroSchemaRegistryUtils(useAvroSpecificReader, parser,
+            EncoderFactory.get(), DecoderFactory.get());
 
         return new SchemaRegistryAvroSerializer(schemaRegistryAsyncClient, codec, schemaGroup, isAutoRegister);
     }
