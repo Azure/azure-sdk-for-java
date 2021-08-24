@@ -38,9 +38,19 @@ public class ServerCallAsyncLiveTests extends CallingServerTestBase {
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void runAllClientFunctionsAsync(HttpClient httpClient) {
         String groupId = getGroupId("runAllClientFunctionsAsync");
+
+        // Run with TokenCredential client
         CallingServerClientBuilder builder = getConversationClientUsingConnectionString(httpClient);
-        CallingServerAsyncClient callingServerAsyncClient =
-            setupAsyncClient(builder, "runAllClientFunctionsAsync");
+        CallingServerAsyncClient callingServerAsyncClient = setupAsyncClient(builder, "runAllClientFunctionsAsync");
+        runAllClientFunctionsAsync(groupId, callingServerAsyncClient);
+
+        // Run with connection string client
+        builder = getConversationClientUsingTokenCredential(httpClient);
+        callingServerAsyncClient = setupAsyncClient(builder, "runAllClientFunctionsAsync");
+        runAllClientFunctionsAsync(groupId, callingServerAsyncClient);
+    }
+
+    private void runAllClientFunctionsAsync(String groupId, CallingServerAsyncClient callingServerAsyncClient) {
         String recordingId = "";
         List<CallConnectionAsync> callConnections = new ArrayList<>();
         ServerCallAsync serverCall = null;

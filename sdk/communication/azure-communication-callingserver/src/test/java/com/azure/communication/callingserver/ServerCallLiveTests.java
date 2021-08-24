@@ -42,16 +42,28 @@ public class ServerCallLiveTests extends CallingServerTestBase {
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void runAllClientFunctions(HttpClient httpClient) {
-        String groupId = getGroupId("runAllClientFunctions");
-        CallingServerClientBuilder builder = getCallClientUsingConnectionString(httpClient);
-        CallingServerClient callingServerClient = setupClient(builder, "runAllClientFunctions");
+        String testName = "runAllClientFunctions";
+        String groupId = getGroupId(testName);
+
+        // Run with TokenCredential client
+        CallingServerClientBuilder builder = getCallClientUsingTokenCredential(httpClient);
+        CallingServerClient tokenClient = setupClient(builder, testName);
+        runAllClientFunctions(groupId, tokenClient);
+
+        // Run with connection string client
+        builder = getCallClientUsingConnectionString(httpClient);
+        CallingServerClient connectionStringClient = setupClient(builder, testName);
+        runAllClientFunctions(groupId, connectionStringClient);
+    }
+
+    private void runAllClientFunctions(String groupId, CallingServerClient client) {
         String recordingId = "";
         List<CallConnection> callConnections = new ArrayList<>();
         ServerCall serverCall = null;
 
         try {
-            callConnections = createCall(callingServerClient, groupId, fromUser, toUser, CALLBACK_URI);
-            serverCall = callingServerClient.initializeServerCall(groupId);
+            callConnections = createCall(client, groupId, fromUser, toUser, CALLBACK_URI);
+            serverCall = client.initializeServerCall(groupId);
 
             StartCallRecordingResult startCallRecordingResult = serverCall.startRecording(CALLBACK_URI);
             recordingId = startCallRecordingResult.getRecordingId();
