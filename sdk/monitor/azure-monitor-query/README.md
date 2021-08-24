@@ -91,7 +91,7 @@ You must create at least one workspace to use Azure Monitor Logs. A single works
 monitoring data, or may choose to create multiple workspaces depending on your requirements. For example, you might have
 one workspace for your production data and another for testing.
 
-#### Log queries
+#### Logs queries
 
 Data is retrieved from a Log Analytics workspace using a log query which is a read-only request to process data and
 return results. Log queries are written
@@ -125,6 +125,7 @@ time-stamped data. Each set of metric values is a time series with the following
 ## Examples
 
 * [Get logs for a query](#get-query "Get logs for a query")
+* [Get logs for a query and read the response as a model type](#get-query-model "Get logs for a query and read the response as a model type")
 * [Get logs for a batch for queries](#get-batch-query "Get logs for a batch of queries")
 * [Get logs for a query with server timeout](#get-query-server-timeout "Get logs for a query with server timeout")
 * [Get logs from multiple workspaces](#get-query-multiple-workspaces "Get logs from multiple workspaces")
