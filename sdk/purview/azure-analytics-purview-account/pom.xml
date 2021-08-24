@@ -11,7 +11,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-analytics-purview-account</artifactId>
-  <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-analytics-purview-account;current} -->
+  <version>1.0.0-beta.2</version> <!-- {x-version-update;com.azure:azure-analytics-purview-account;current} -->
 
   <name>Microsoft Azure client library for Purview Account</name>
   <description>This package contains Microsoft Azure Purview Account client library.</description>
