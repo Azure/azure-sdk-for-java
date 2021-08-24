@@ -5,126 +5,204 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.appservice.fluent.models.AzureActiveDirectoryRegistrationProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The AzureActiveDirectoryRegistration model. */
-@JsonFlatten
+/** The configuration settings of the Azure Active Directory app registration. */
 @Fluent
-public class AzureActiveDirectoryRegistration extends ProxyOnlyResource {
+public final class AzureActiveDirectoryRegistration extends ProxyOnlyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureActiveDirectoryRegistration.class);
 
     /*
-     * The openIdIssuer property.
+     * AzureActiveDirectoryRegistration resource specific properties
      */
-    @JsonProperty(value = "properties.openIdIssuer")
-    private String openIdIssuer;
-
-    /*
-     * The clientId property.
-     */
-    @JsonProperty(value = "properties.clientId")
-    private String clientId;
-
-    /*
-     * The clientSecretSettingName property.
-     */
-    @JsonProperty(value = "properties.clientSecretSettingName")
-    private String clientSecretSettingName;
-
-    /*
-     * The clientSecretCertificateThumbprint property.
-     */
-    @JsonProperty(value = "properties.clientSecretCertificateThumbprint")
-    private String clientSecretCertificateThumbprint;
+    @JsonProperty(value = "properties")
+    private AzureActiveDirectoryRegistrationProperties innerProperties;
 
     /**
-     * Get the openIdIssuer property: The openIdIssuer property.
+     * Get the innerProperties property: AzureActiveDirectoryRegistration resource specific properties.
      *
-     * @return the openIdIssuer value.
+     * @return the innerProperties value.
      */
-    public String openIdIssuer() {
-        return this.openIdIssuer;
-    }
-
-    /**
-     * Set the openIdIssuer property: The openIdIssuer property.
-     *
-     * @param openIdIssuer the openIdIssuer value to set.
-     * @return the AzureActiveDirectoryRegistration object itself.
-     */
-    public AzureActiveDirectoryRegistration withOpenIdIssuer(String openIdIssuer) {
-        this.openIdIssuer = openIdIssuer;
-        return this;
-    }
-
-    /**
-     * Get the clientId property: The clientId property.
-     *
-     * @return the clientId value.
-     */
-    public String clientId() {
-        return this.clientId;
-    }
-
-    /**
-     * Set the clientId property: The clientId property.
-     *
-     * @param clientId the clientId value to set.
-     * @return the AzureActiveDirectoryRegistration object itself.
-     */
-    public AzureActiveDirectoryRegistration withClientId(String clientId) {
-        this.clientId = clientId;
-        return this;
-    }
-
-    /**
-     * Get the clientSecretSettingName property: The clientSecretSettingName property.
-     *
-     * @return the clientSecretSettingName value.
-     */
-    public String clientSecretSettingName() {
-        return this.clientSecretSettingName;
-    }
-
-    /**
-     * Set the clientSecretSettingName property: The clientSecretSettingName property.
-     *
-     * @param clientSecretSettingName the clientSecretSettingName value to set.
-     * @return the AzureActiveDirectoryRegistration object itself.
-     */
-    public AzureActiveDirectoryRegistration withClientSecretSettingName(String clientSecretSettingName) {
-        this.clientSecretSettingName = clientSecretSettingName;
-        return this;
-    }
-
-    /**
-     * Get the clientSecretCertificateThumbprint property: The clientSecretCertificateThumbprint property.
-     *
-     * @return the clientSecretCertificateThumbprint value.
-     */
-    public String clientSecretCertificateThumbprint() {
-        return this.clientSecretCertificateThumbprint;
-    }
-
-    /**
-     * Set the clientSecretCertificateThumbprint property: The clientSecretCertificateThumbprint property.
-     *
-     * @param clientSecretCertificateThumbprint the clientSecretCertificateThumbprint value to set.
-     * @return the AzureActiveDirectoryRegistration object itself.
-     */
-    public AzureActiveDirectoryRegistration withClientSecretCertificateThumbprint(
-        String clientSecretCertificateThumbprint) {
-        this.clientSecretCertificateThumbprint = clientSecretCertificateThumbprint;
-        return this;
+    private AzureActiveDirectoryRegistrationProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /** {@inheritDoc} */
     @Override
     public AzureActiveDirectoryRegistration withKind(String kind) {
         super.withKind(kind);
+        return this;
+    }
+
+    /**
+     * Get the openIdIssuer property: The OpenID Connect Issuer URI that represents the entity which issues access
+     * tokens for this application. When using Azure Active Directory, this value is the URI of the directory tenant,
+     * e.g. https://login.microsoftonline.com/v2.0/{tenant-guid}/. This URI is a case-sensitive identifier for the token
+     * issuer. More information on OpenID Connect Discovery: http://openid.net/specs/openid-connect-discovery-1_0.html.
+     *
+     * @return the openIdIssuer value.
+     */
+    public String openIdIssuer() {
+        return this.innerProperties() == null ? null : this.innerProperties().openIdIssuer();
+    }
+
+    /**
+     * Set the openIdIssuer property: The OpenID Connect Issuer URI that represents the entity which issues access
+     * tokens for this application. When using Azure Active Directory, this value is the URI of the directory tenant,
+     * e.g. https://login.microsoftonline.com/v2.0/{tenant-guid}/. This URI is a case-sensitive identifier for the token
+     * issuer. More information on OpenID Connect Discovery: http://openid.net/specs/openid-connect-discovery-1_0.html.
+     *
+     * @param openIdIssuer the openIdIssuer value to set.
+     * @return the AzureActiveDirectoryRegistration object itself.
+     */
+    public AzureActiveDirectoryRegistration withOpenIdIssuer(String openIdIssuer) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AzureActiveDirectoryRegistrationProperties();
+        }
+        this.innerProperties().withOpenIdIssuer(openIdIssuer);
+        return this;
+    }
+
+    /**
+     * Get the clientId property: The Client ID of this relying party application, known as the client_id. This setting
+     * is required for enabling OpenID Connection authentication with Azure Active Directory or other 3rd party OpenID
+     * Connect providers. More information on OpenID Connect: http://openid.net/specs/openid-connect-core-1_0.html.
+     *
+     * @return the clientId value.
+     */
+    public String clientId() {
+        return this.innerProperties() == null ? null : this.innerProperties().clientId();
+    }
+
+    /**
+     * Set the clientId property: The Client ID of this relying party application, known as the client_id. This setting
+     * is required for enabling OpenID Connection authentication with Azure Active Directory or other 3rd party OpenID
+     * Connect providers. More information on OpenID Connect: http://openid.net/specs/openid-connect-core-1_0.html.
+     *
+     * @param clientId the clientId value to set.
+     * @return the AzureActiveDirectoryRegistration object itself.
+     */
+    public AzureActiveDirectoryRegistration withClientId(String clientId) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AzureActiveDirectoryRegistrationProperties();
+        }
+        this.innerProperties().withClientId(clientId);
+        return this;
+    }
+
+    /**
+     * Get the clientSecretSettingName property: The app setting name that contains the client secret of the relying
+     * party application.
+     *
+     * @return the clientSecretSettingName value.
+     */
+    public String clientSecretSettingName() {
+        return this.innerProperties() == null ? null : this.innerProperties().clientSecretSettingName();
+    }
+
+    /**
+     * Set the clientSecretSettingName property: The app setting name that contains the client secret of the relying
+     * party application.
+     *
+     * @param clientSecretSettingName the clientSecretSettingName value to set.
+     * @return the AzureActiveDirectoryRegistration object itself.
+     */
+    public AzureActiveDirectoryRegistration withClientSecretSettingName(String clientSecretSettingName) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AzureActiveDirectoryRegistrationProperties();
+        }
+        this.innerProperties().withClientSecretSettingName(clientSecretSettingName);
+        return this;
+    }
+
+    /**
+     * Get the clientSecretCertificateThumbprint property: An alternative to the client secret, that is the thumbprint
+     * of a certificate used for signing purposes. This property acts as a replacement for the Client Secret. It is also
+     * optional.
+     *
+     * @return the clientSecretCertificateThumbprint value.
+     */
+    public String clientSecretCertificateThumbprint() {
+        return this.innerProperties() == null ? null : this.innerProperties().clientSecretCertificateThumbprint();
+    }
+
+    /**
+     * Set the clientSecretCertificateThumbprint property: An alternative to the client secret, that is the thumbprint
+     * of a certificate used for signing purposes. This property acts as a replacement for the Client Secret. It is also
+     * optional.
+     *
+     * @param clientSecretCertificateThumbprint the clientSecretCertificateThumbprint value to set.
+     * @return the AzureActiveDirectoryRegistration object itself.
+     */
+    public AzureActiveDirectoryRegistration withClientSecretCertificateThumbprint(
+        String clientSecretCertificateThumbprint) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AzureActiveDirectoryRegistrationProperties();
+        }
+        this.innerProperties().withClientSecretCertificateThumbprint(clientSecretCertificateThumbprint);
+        return this;
+    }
+
+    /**
+     * Get the clientSecretCertificateSubjectAlternativeName property: An alternative to the client secret thumbprint,
+     * that is the subject alternative name of a certificate used for signing purposes. This property acts as a
+     * replacement for the Client Secret Certificate Thumbprint. It is also optional.
+     *
+     * @return the clientSecretCertificateSubjectAlternativeName value.
+     */
+    public String clientSecretCertificateSubjectAlternativeName() {
+        return this.innerProperties() == null
+            ? null
+            : this.innerProperties().clientSecretCertificateSubjectAlternativeName();
+    }
+
+    /**
+     * Set the clientSecretCertificateSubjectAlternativeName property: An alternative to the client secret thumbprint,
+     * that is the subject alternative name of a certificate used for signing purposes. This property acts as a
+     * replacement for the Client Secret Certificate Thumbprint. It is also optional.
+     *
+     * @param clientSecretCertificateSubjectAlternativeName the clientSecretCertificateSubjectAlternativeName value to
+     *     set.
+     * @return the AzureActiveDirectoryRegistration object itself.
+     */
+    public AzureActiveDirectoryRegistration withClientSecretCertificateSubjectAlternativeName(
+        String clientSecretCertificateSubjectAlternativeName) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AzureActiveDirectoryRegistrationProperties();
+        }
+        this
+            .innerProperties()
+            .withClientSecretCertificateSubjectAlternativeName(clientSecretCertificateSubjectAlternativeName);
+        return this;
+    }
+
+    /**
+     * Get the clientSecretCertificateIssuer property: An alternative to the client secret thumbprint, that is the
+     * issuer of a certificate used for signing purposes. This property acts as a replacement for the Client Secret
+     * Certificate Thumbprint. It is also optional.
+     *
+     * @return the clientSecretCertificateIssuer value.
+     */
+    public String clientSecretCertificateIssuer() {
+        return this.innerProperties() == null ? null : this.innerProperties().clientSecretCertificateIssuer();
+    }
+
+    /**
+     * Set the clientSecretCertificateIssuer property: An alternative to the client secret thumbprint, that is the
+     * issuer of a certificate used for signing purposes. This property acts as a replacement for the Client Secret
+     * Certificate Thumbprint. It is also optional.
+     *
+     * @param clientSecretCertificateIssuer the clientSecretCertificateIssuer value to set.
+     * @return the AzureActiveDirectoryRegistration object itself.
+     */
+    public AzureActiveDirectoryRegistration withClientSecretCertificateIssuer(String clientSecretCertificateIssuer) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AzureActiveDirectoryRegistrationProperties();
+        }
+        this.innerProperties().withClientSecretCertificateIssuer(clientSecretCertificateIssuer);
         return this;
     }
 
@@ -136,5 +214,8 @@ public class AzureActiveDirectoryRegistration extends ProxyOnlyResource {
     @Override
     public void validate() {
         super.validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

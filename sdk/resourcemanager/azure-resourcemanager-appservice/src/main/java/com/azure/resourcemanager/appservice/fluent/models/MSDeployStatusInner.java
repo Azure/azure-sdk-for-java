@@ -4,8 +4,7 @@
 
 package com.azure.resourcemanager.appservice.fluent.models;
 
-import com.azure.core.annotation.Immutable;
-import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.models.MSDeployProvisioningState;
 import com.azure.resourcemanager.appservice.models.ProxyOnlyResource;
@@ -14,84 +13,23 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** MSDeploy ARM response. */
-@JsonFlatten
-@Immutable
-public class MSDeployStatusInner extends ProxyOnlyResource {
+@Fluent
+public final class MSDeployStatusInner extends ProxyOnlyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(MSDeployStatusInner.class);
 
     /*
-     * Username of deployer
+     * MSDeployStatus resource specific properties
      */
-    @JsonProperty(value = "properties.deployer", access = JsonProperty.Access.WRITE_ONLY)
-    private String deployer;
-
-    /*
-     * Provisioning state
-     */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private MSDeployProvisioningState provisioningState;
-
-    /*
-     * Start time of deploy operation
-     */
-    @JsonProperty(value = "properties.startTime", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime startTime;
-
-    /*
-     * End time of deploy operation
-     */
-    @JsonProperty(value = "properties.endTime", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime endTime;
-
-    /*
-     * Whether the deployment operation has completed
-     */
-    @JsonProperty(value = "properties.complete", access = JsonProperty.Access.WRITE_ONLY)
-    private Boolean complete;
+    @JsonProperty(value = "properties")
+    private MSDeployStatusProperties innerProperties;
 
     /**
-     * Get the deployer property: Username of deployer.
+     * Get the innerProperties property: MSDeployStatus resource specific properties.
      *
-     * @return the deployer value.
+     * @return the innerProperties value.
      */
-    public String deployer() {
-        return this.deployer;
-    }
-
-    /**
-     * Get the provisioningState property: Provisioning state.
-     *
-     * @return the provisioningState value.
-     */
-    public MSDeployProvisioningState provisioningState() {
-        return this.provisioningState;
-    }
-
-    /**
-     * Get the startTime property: Start time of deploy operation.
-     *
-     * @return the startTime value.
-     */
-    public OffsetDateTime startTime() {
-        return this.startTime;
-    }
-
-    /**
-     * Get the endTime property: End time of deploy operation.
-     *
-     * @return the endTime value.
-     */
-    public OffsetDateTime endTime() {
-        return this.endTime;
-    }
-
-    /**
-     * Get the complete property: Whether the deployment operation has completed.
-     *
-     * @return the complete value.
-     */
-    public Boolean complete() {
-        return this.complete;
+    private MSDeployStatusProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /** {@inheritDoc} */
@@ -102,6 +40,51 @@ public class MSDeployStatusInner extends ProxyOnlyResource {
     }
 
     /**
+     * Get the deployer property: Username of deployer.
+     *
+     * @return the deployer value.
+     */
+    public String deployer() {
+        return this.innerProperties() == null ? null : this.innerProperties().deployer();
+    }
+
+    /**
+     * Get the provisioningState property: Provisioning state.
+     *
+     * @return the provisioningState value.
+     */
+    public MSDeployProvisioningState provisioningState() {
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    }
+
+    /**
+     * Get the startTime property: Start time of deploy operation.
+     *
+     * @return the startTime value.
+     */
+    public OffsetDateTime startTime() {
+        return this.innerProperties() == null ? null : this.innerProperties().startTime();
+    }
+
+    /**
+     * Get the endTime property: End time of deploy operation.
+     *
+     * @return the endTime value.
+     */
+    public OffsetDateTime endTime() {
+        return this.innerProperties() == null ? null : this.innerProperties().endTime();
+    }
+
+    /**
+     * Get the complete property: Whether the deployment operation has completed.
+     *
+     * @return the complete value.
+     */
+    public Boolean complete() {
+        return this.innerProperties() == null ? null : this.innerProperties().complete();
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -109,5 +92,8 @@ public class MSDeployStatusInner extends ProxyOnlyResource {
     @Override
     public void validate() {
         super.validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

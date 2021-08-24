@@ -5,23 +5,37 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.models.ProxyOnlyResource;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** A domain specific resource identifier. */
-@JsonFlatten
 @Fluent
-public class IdentifierInner extends ProxyOnlyResource {
+public final class IdentifierInner extends ProxyOnlyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(IdentifierInner.class);
 
     /*
-     * String representation of the identity.
+     * Identifier resource specific properties
      */
-    @JsonProperty(value = "properties.id")
-    private String value;
+    @JsonProperty(value = "properties")
+    private IdentifierProperties innerProperties;
+
+    /**
+     * Get the innerProperties property: Identifier resource specific properties.
+     *
+     * @return the innerProperties value.
+     */
+    private IdentifierProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public IdentifierInner withKind(String kind) {
+        super.withKind(kind);
+        return this;
+    }
 
     /**
      * Get the value property: String representation of the identity.
@@ -29,7 +43,7 @@ public class IdentifierInner extends ProxyOnlyResource {
      * @return the value value.
      */
     public String value() {
-        return this.value;
+        return this.innerProperties() == null ? null : this.innerProperties().value();
     }
 
     /**
@@ -39,14 +53,10 @@ public class IdentifierInner extends ProxyOnlyResource {
      * @return the IdentifierInner object itself.
      */
     public IdentifierInner withValue(String value) {
-        this.value = value;
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public IdentifierInner withKind(String kind) {
-        super.withKind(kind);
+        if (this.innerProperties() == null) {
+            this.innerProperties = new IdentifierProperties();
+        }
+        this.innerProperties().withValue(value);
         return this;
     }
 
@@ -58,5 +68,8 @@ public class IdentifierInner extends ProxyOnlyResource {
     @Override
     public void validate() {
         super.validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }
