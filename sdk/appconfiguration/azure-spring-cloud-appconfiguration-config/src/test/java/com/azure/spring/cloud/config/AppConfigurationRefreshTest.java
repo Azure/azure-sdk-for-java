@@ -5,9 +5,9 @@ package com.azure.spring.cloud.config;
 import static com.azure.spring.cloud.config.TestConstants.TEST_CONN_STRING;
 import static com.azure.spring.cloud.config.TestConstants.TEST_ETAG;
 import static com.azure.spring.cloud.config.TestConstants.TEST_STORE_NAME;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -22,9 +22,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
+import org.junit.jupiter.api.MethodOrderer.Alphanumeric;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
@@ -40,6 +42,7 @@ import com.azure.spring.cloud.config.properties.ConfigStore;
 import com.azure.spring.cloud.config.properties.FeatureFlagStore;
 import com.azure.spring.cloud.config.stores.ClientStore;
 
+@TestMethodOrder(Alphanumeric.class)
 public class AppConfigurationRefreshTest {
 
     private static final String WATCHED_KEYS = "/application/*";
@@ -59,9 +62,9 @@ public class AppConfigurationRefreshTest {
     @Mock
     private ClientStore clientStoreMock;
 
-    @Before
+    @BeforeEach
     public void setup() {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
 
         ConfigStore store = new ConfigStore();
         store.setEndpoint(TEST_STORE_NAME);
@@ -106,14 +109,19 @@ public class AppConfigurationRefreshTest {
         StateHolder.setStateFeatureFlag(TEST_STORE_NAME, watchKeys, monitoring.getFeatureFlagRefreshInterval());
     }
 
-    @After
-    public void cleanupMethod() {
+    @AfterEach
+    public void cleanupMethod() throws Exception {
+        MockitoAnnotations.openMocks(this).close();
         StateHolder.setState(TEST_STORE_NAME, new ArrayList<>(), monitoring.getRefreshInterval());
         StateHolder.setStateFeatureFlag(TEST_STORE_NAME, new ArrayList<>(), monitoring.getFeatureFlagRefreshInterval());
     }
 
     @Test
     public void nonUpdatedEtagShouldntPublishEvent() throws Exception {
+        List<ConfigurationSetting> watchKeys = new ArrayList<ConfigurationSetting>();
+        watchKeys.add(initialResponse());
+        StateHolder.setState(TEST_STORE_NAME, watchKeys, monitoring.getRefreshInterval());
+
         configRefresh.setApplicationEventPublisher(eventPublisher);
 
         when(clientStoreMock.getWatchKey(Mockito.any(), Mockito.anyString())).thenReturn(initialResponse());
@@ -125,6 +133,10 @@ public class AppConfigurationRefreshTest {
 
     @Test
     public void updatedEtagShouldPublishEvent() throws Exception {
+        List<ConfigurationSetting> watchKeys = new ArrayList<ConfigurationSetting>();
+        watchKeys.add(initialResponse());
+        StateHolder.setState(TEST_STORE_NAME, watchKeys, monitoring.getRefreshInterval());
+
         when(clientStoreMock.getWatchKey(Mockito.any(), Mockito.anyString())).thenReturn(initialResponse());
         configRefresh.setApplicationEventPublisher(eventPublisher);
 
@@ -138,7 +150,7 @@ public class AppConfigurationRefreshTest {
         assertTrue(configRefresh.refreshConfigurations().get());
         verify(eventPublisher, times(1)).publishEvent(any(RefreshEvent.class));
 
-        List<ConfigurationSetting> watchKeys = new ArrayList<>();
+        watchKeys = new ArrayList<>();
         watchKeys.add(updatedResponse());
         StateHolder.setState(TEST_STORE_NAME, watchKeys, monitoring.getRefreshInterval());
 
@@ -161,6 +173,9 @@ public class AppConfigurationRefreshTest {
     public void updatedFeatureFlagEtagShouldPublishEvent() throws Exception {
         monitoring.setEnabled(false);
         featureFlagStore.setEnabled(true);
+        List<ConfigurationSetting> watchKeys = new ArrayList<ConfigurationSetting>();
+        watchKeys.add(initialResponse());
+        StateHolder.setStateFeatureFlag(TEST_STORE_NAME, watchKeys, monitoring.getRefreshInterval());
 
         when(clientStoreMock.getWatchKey(Mockito.any(), Mockito.anyString())).thenReturn(initialResponse());
         configRefresh.setApplicationEventPublisher(eventPublisher);
@@ -175,7 +190,7 @@ public class AppConfigurationRefreshTest {
         assertTrue(configRefresh.refreshConfigurations().get());
         verify(eventPublisher, times(1)).publishEvent(any(RefreshEvent.class));
 
-        List<ConfigurationSetting> watchKeys = new ArrayList<>();
+        watchKeys = new ArrayList<>();
         watchKeys.add(updatedResponse());
         StateHolder.setStateFeatureFlag(TEST_STORE_NAME, watchKeys, monitoring.getRefreshInterval());
 
@@ -196,6 +211,10 @@ public class AppConfigurationRefreshTest {
 
     @Test
     public void noEtagReturned() throws Exception {
+        List<ConfigurationSetting> watchKeys = new ArrayList<ConfigurationSetting>();
+        watchKeys.add(initialResponse());
+        StateHolder.setState(TEST_STORE_NAME, watchKeys, monitoring.getRefreshInterval());
+
         when(clientStoreMock.getWatchKey(Mockito.any(), Mockito.anyString()))
             .thenReturn(null);
         configRefresh.setApplicationEventPublisher(eventPublisher);
@@ -226,6 +245,10 @@ public class AppConfigurationRefreshTest {
 
     @Test
     public void nullItemsReturned() throws Exception {
+        List<ConfigurationSetting> watchKeys = new ArrayList<ConfigurationSetting>();
+        watchKeys.add(initialResponse());
+        StateHolder.setState(TEST_STORE_NAME, watchKeys, monitoring.getRefreshInterval());
+
         when(clientStoreMock.getWatchKey(Mockito.any(), Mockito.anyString())).thenReturn(null);
         configRefresh.setApplicationEventPublisher(eventPublisher);
 
@@ -267,6 +290,10 @@ public class AppConfigurationRefreshTest {
 
     @Test
     public void notRefreshTime() throws Exception {
+        List<ConfigurationSetting> watchKeys = new ArrayList<ConfigurationSetting>();
+        watchKeys.add(initialResponse());
+        StateHolder.setState(TEST_STORE_NAME, watchKeys, monitoring.getRefreshInterval());
+
         ConfigStore store = new ConfigStore();
         store.setEndpoint(TEST_STORE_NAME);
         store.setConnectionString(TEST_CONN_STRING);

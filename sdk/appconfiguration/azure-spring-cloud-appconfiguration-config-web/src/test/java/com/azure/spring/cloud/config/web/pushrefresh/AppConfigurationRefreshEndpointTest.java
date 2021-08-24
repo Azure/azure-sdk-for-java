@@ -19,6 +19,7 @@ import java.util.stream.Stream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -67,7 +68,7 @@ public class AppConfigurationRefreshEndpointTest {
 
     @Before
     public void setup() throws IOException {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
 
         monitoring = new AppConfigurationStoreMonitoring();
         AppConfigurationStoreTrigger trigger = new AppConfigurationStoreTrigger();
@@ -91,6 +92,11 @@ public class AppConfigurationRefreshEndpointTest {
 
         when(request.getReader()).thenReturn(reader);
         when(reader.lines()).thenReturn(lines);
+    }
+    
+    @After
+    public void cleanup() throws Exception {
+        MockitoAnnotations.openMocks(this).close();
     }
 
     @Test

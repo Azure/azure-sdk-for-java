@@ -2,20 +2,21 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.config.stores;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.azure.spring.cloud.config.properties.AppConfigurationStoreSelects;
 import com.azure.spring.cloud.config.properties.ConfigStore;
 
 public class ConfigStoreTest {
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void invalidLabel() {
         ConfigStore configStore = new ConfigStore();
         AppConfigurationStoreSelects selectedKeys = new AppConfigurationStoreSelects().setKeyFilter("/application/")
@@ -23,28 +24,28 @@ public class ConfigStoreTest {
         List<AppConfigurationStoreSelects> selects = new ArrayList<>();
         selects.add(selectedKeys);
         configStore.setSelects(selects);
-        configStore.validateAndInit();
-        fail();
+
+        assertThrows(IllegalArgumentException.class, () -> configStore.validateAndInit());
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void invalidKey() {
         ConfigStore configStore = new ConfigStore();
         AppConfigurationStoreSelects selectedKeys = new AppConfigurationStoreSelects().setKeyFilter("/application/*");
         List<AppConfigurationStoreSelects> selects = new ArrayList<>();
         selects.add(selectedKeys);
         configStore.setSelects(selects);
-        configStore.validateAndInit();
-        fail();
+        
+        assertThrows(IllegalArgumentException.class, () -> configStore.validateAndInit());
     }
 
-    @Test(expected = IllegalStateException.class)
+    @Test
     public void invalidEndpoint() {
         ConfigStore configStore = new ConfigStore();
         configStore.validateAndInit();
         configStore.setConnectionString("Endpoint=a^a;Id=fake-conn-id;Secret=ZmFrZS1jb25uLXNlY3JldA==");
-        configStore.validateAndInit();
-        fail();
+
+        assertThrows(IllegalStateException.class, () -> configStore.validateAndInit());
     }
 
     @Test

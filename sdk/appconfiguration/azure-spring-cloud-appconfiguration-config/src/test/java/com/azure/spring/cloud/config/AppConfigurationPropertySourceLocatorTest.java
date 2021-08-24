@@ -15,9 +15,11 @@ import static com.azure.spring.cloud.config.TestConstants.TEST_STORE_NAME_1;
 import static com.azure.spring.cloud.config.TestConstants.TEST_STORE_NAME_2;
 import static com.azure.spring.cloud.config.TestConstants.TEST_VALUE_1;
 import static com.azure.spring.cloud.config.TestUtils.createItem;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertThrows;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -31,9 +33,11 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
+import org.junit.jupiter.api.MethodOrderer.Alphanumeric;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
@@ -57,6 +61,7 @@ import com.azure.spring.cloud.config.stores.ClientStore;
 
 import reactor.core.publisher.Flux;
 
+@TestMethodOrder(Alphanumeric.class)
 public class AppConfigurationPropertySourceLocatorTest {
 
     private static final String APPLICATION_NAME = "foo";
@@ -105,9 +110,9 @@ public class AppConfigurationPropertySourceLocatorTest {
     private AppConfigurationProviderProperties appProperties;
     private KeyVaultCredentialProvider tokenCredentialProvider = null;
 
-    @Before
+    @BeforeEach
     public void setup() {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
         when(environment.getActiveProfiles()).thenReturn(new String[]{PROFILE_NAME_1, PROFILE_NAME_2});
         MutablePropertySources sources = new MutablePropertySources();
         
@@ -156,9 +161,9 @@ public class AppConfigurationPropertySourceLocatorTest {
         appProperties.setMaxRetryTime(0);
     }
 
-    @After
-    public void cleanup()
-        throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException {
+    @AfterEach
+    public void cleanup() throws Exception {
+        MockitoAnnotations.openMocks(this).close();
         Field field = AppConfigurationPropertySourceLocator.class.getDeclaredField("startup");
         field.setAccessible(true);
         field.set(null, new AtomicBoolean(true));
@@ -177,7 +182,7 @@ public class AppConfigurationPropertySourceLocatorTest {
         locator = new AppConfigurationPropertySourceLocator(properties, appProperties, clientStoreMock,
             tokenCredentialProvider, null, null);
         PropertySource<?> source = locator.locate(environment);
-        assertThat(source).isInstanceOf(CompositePropertySource.class);
+        assertTrue(source instanceof CompositePropertySource);
 
         Collection<PropertySource<?>> sources = ((CompositePropertySource) source).getPropertySources();
         
@@ -185,8 +190,8 @@ public class AppConfigurationPropertySourceLocatorTest {
             "/foo/store1/\0",
             "/application/store1/\0"
         };
-        assertThat(sources.size()).isEqualTo(2);
-        assertThat(sources.stream().map(s -> s.getName()).toArray()).containsExactly((Object[]) expectedSourceNames);
+        assertEquals(2, sources.size());
+        assertArrayEquals((Object[]) expectedSourceNames, sources.stream().map(s -> s.getName()).toArray());
     }
     
     @Test
@@ -207,7 +212,7 @@ public class AppConfigurationPropertySourceLocatorTest {
         locator = new AppConfigurationPropertySourceLocator(properties, appProperties, clientStoreMock,
             tokenCredentialProvider, null, null);
         PropertySource<?> source = locator.locate(environment);
-        assertThat(source).isInstanceOf(CompositePropertySource.class);
+        assertTrue(source instanceof CompositePropertySource);
 
         Collection<PropertySource<?>> sources = ((CompositePropertySource) source).getPropertySources();
         // Application name: foo and active profile: dev,prod, should construct below
@@ -218,8 +223,8 @@ public class AppConfigurationPropertySourceLocatorTest {
             "/foo/store1/\0",
             "/application/store1/\0"
         };
-        assertThat(sources.size()).isEqualTo(2);
-        assertThat(sources.stream().map(s -> s.getName()).toArray()).containsExactly((Object[]) expectedSourceNames);
+        assertEquals(2, sources.size());
+        assertArrayEquals((Object[]) expectedSourceNames, sources.stream().map(s -> s.getName()).toArray());
     }
 
     @Test
@@ -236,7 +241,7 @@ public class AppConfigurationPropertySourceLocatorTest {
         locator = new AppConfigurationPropertySourceLocator(properties, appProperties, clientStoreMock,
             tokenCredentialProvider, null, null);
         PropertySource<?> source = locator.locate(environment);
-        assertThat(source).isInstanceOf(CompositePropertySource.class);
+        assertTrue(source instanceof CompositePropertySource);
 
         Collection<PropertySource<?>> sources = ((CompositePropertySource) source).getPropertySources();
         // Application name: foo and active profile: dev,prod, should construct below
@@ -247,8 +252,8 @@ public class AppConfigurationPropertySourceLocatorTest {
             "/foo/store1/\0",
             "/application/store1/\0"
         };
-        assertThat(sources.size()).isEqualTo(2);
-        assertThat(sources.stream().map(s -> s.getName()).toArray()).containsExactly((Object[]) expectedSourceNames);
+        assertEquals(2, sources.size());
+        assertArrayEquals((Object[]) expectedSourceNames, sources.stream().map(s -> s.getName()).toArray());
     }
 
     @Test
@@ -267,14 +272,14 @@ public class AppConfigurationPropertySourceLocatorTest {
             clientStoreMock, tokenCredentialProvider, null, null);
 
         PropertySource<?> source = locator.locate(environment);
-        assertThat(source).isInstanceOf(CompositePropertySource.class);
+        assertTrue(source instanceof CompositePropertySource);
 
         Collection<PropertySource<?>> sources = ((CompositePropertySource) source).getPropertySources();
         // Default context, null application name, empty active profile,
         // should construct composite Property Source: [/application/]
         String[] expectedSourceNames = new String[]{"/application/store1/\0"};
-        assertThat(sources.size()).isEqualTo(1);
-        assertThat(sources.stream().map(s -> s.getName()).toArray()).containsExactly((Object[]) expectedSourceNames);
+        assertEquals(1, sources.size());
+        assertArrayEquals((Object[]) expectedSourceNames, sources.stream().map(s -> s.getName()).toArray());
     }
 
     @Test
@@ -292,14 +297,14 @@ public class AppConfigurationPropertySourceLocatorTest {
             clientStoreMock, tokenCredentialProvider, null, null);
 
         PropertySource<?> source = locator.locate(environment);
-        assertThat(source).isInstanceOf(CompositePropertySource.class);
+        assertTrue(source instanceof CompositePropertySource);
 
         Collection<PropertySource<?>> sources = ((CompositePropertySource) source).getPropertySources();
         // Default context, empty application name, empty active profile,
         // should construct composite Property Source: [/application/]
         String[] expectedSourceNames = new String[]{"/application/store1/\0"};
-        assertThat(sources.size()).isEqualTo(1);
-        assertThat(sources.stream().map(s -> s.getName()).toArray()).containsExactly((Object[]) expectedSourceNames);
+        assertEquals(1, sources.size());
+        assertArrayEquals((Object[]) expectedSourceNames, sources.stream().map(s -> s.getName()).toArray());
     }
 
     @Test
@@ -312,7 +317,7 @@ public class AppConfigurationPropertySourceLocatorTest {
 
         when(clientStoreMock.listSettings(Mockito.any(), Mockito.anyString())).thenThrow(new RuntimeException());
         NullPointerException e = assertThrows(NullPointerException.class, () -> locator.locate(environment));
-        assertThat(e).hasMessage(null);
+        assertNull(e.getMessage());
         verify(configStoreMock, times(1)).isFailFast();
     }
 
@@ -331,7 +336,7 @@ public class AppConfigurationPropertySourceLocatorTest {
             clientStoreMock, tokenCredentialProvider, null, null);
         
         NullPointerException e = assertThrows(NullPointerException.class, () -> locator.locate(environment));
-        assertThat(e).hasMessage(null);
+        assertNull(e.getMessage());
     }
 
     @Test
@@ -345,7 +350,7 @@ public class AppConfigurationPropertySourceLocatorTest {
         when(configStoreMock.getEndpoint()).thenReturn(TEST_STORE_NAME);
 
         PropertySource<?> source = locator.locate(environment);
-        assertThat(source).isInstanceOf(CompositePropertySource.class);
+        assertTrue(source instanceof CompositePropertySource);
 
         // Once a store fails it should stop attempting to load
         verify(configStoreMock, times(1)).isFailFast();
@@ -368,13 +373,13 @@ public class AppConfigurationPropertySourceLocatorTest {
             clientStoreMock, tokenCredentialProvider, null, null);
 
         PropertySource<?> source = locator.locate(environment);
-        assertThat(source).isInstanceOf(CompositePropertySource.class);
+        assertTrue(source instanceof CompositePropertySource);
 
         Collection<PropertySource<?>> sources = ((CompositePropertySource) source).getPropertySources();
         String[] expectedSourceNames = new String[]{"/application/" + TEST_STORE_NAME_2 + "/\0",
             "/application/" + TEST_STORE_NAME_1 + "/\0"};
-        assertThat(sources.size()).isEqualTo(2);
-        assertThat(sources.stream().map(s -> s.getName()).toArray()).containsExactly((Object[]) expectedSourceNames);
+        assertEquals(2, sources.size());
+        assertArrayEquals((Object[]) expectedSourceNames, sources.stream().map(s -> s.getName()).toArray());
     }
 
     @Test

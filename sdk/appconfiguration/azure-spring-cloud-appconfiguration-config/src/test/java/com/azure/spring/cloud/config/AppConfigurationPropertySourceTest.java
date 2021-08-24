@@ -25,9 +25,9 @@ import static com.azure.spring.cloud.config.TestConstants.TEST_VALUE_3;
 import static com.azure.spring.cloud.config.TestUtils.createItem;
 import static com.azure.spring.cloud.config.TestUtils.createItemFeatureFlag;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.Mockito.when;
 
 import java.io.IOException;
@@ -38,9 +38,10 @@ import java.util.LinkedHashMap;
 import java.util.List;
 
 import org.apache.commons.lang3.ArrayUtils;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
@@ -152,23 +153,24 @@ public class AppConfigurationPropertySourceTest {
     private AppConfigurationProviderProperties appProperties;
 
     private KeyVaultCredentialProvider tokenCredentialProvider = null;
-
-    @BeforeClass
-    public static void init() {
+    
+    @BeforeAll
+    public static void setup() {
         TestUtils.addStore(TEST_PROPS, TEST_STORE_NAME, TEST_CONN_STRING);
-
+        
         FEATURE_ITEM.setContentType(FEATURE_FLAG_CONTENT_TYPE);
         FEATURE_ITEMS.add(FEATURE_ITEM);
         FEATURE_ITEMS.add(FEATURE_ITEM_2);
         FEATURE_ITEMS.add(FEATURE_ITEM_3);
-        mapper.setPropertyNamingStrategy(PropertyNamingStrategies.KEBAB_CASE);
-
+        
         FEATURE_ITEMS_TARGETING.add(FEATURE_ITEM_TARGETING);
     }
 
-    @Before
-    public void setup() {
-        MockitoAnnotations.initMocks(this);
+    @BeforeEach
+    public void init() {
+        mapper.setPropertyNamingStrategy(PropertyNamingStrategies.KEBAB_CASE);
+        
+        MockitoAnnotations.openMocks(this);
         appConfigurationProperties = new AppConfigurationProperties();
         appProperties = new AppConfigurationProviderProperties();
         ArrayList<String> contexts = new ArrayList<String>();
@@ -191,6 +193,11 @@ public class AppConfigurationPropertySourceTest {
         when(collectionMock.block()).thenReturn(itemsMock);
         when(itemsMock.iterator()).thenReturn(itemsIteratorMock);
         when(itemsIteratorMock.next()).thenReturn(pagedResponseMock);
+    }
+    
+    @AfterEach
+    public void cleanup() throws Exception {
+        MockitoAnnotations.openMocks(this).close();
     }
 
     @Test
@@ -446,6 +453,8 @@ public class AppConfigurationPropertySourceTest {
         featureSetExpected.addFeature("target", feature);
         LinkedHashMap<?, ?> convertedValue = mapper.convertValue(featureSetExpected.getFeatureManagement(),
             LinkedHashMap.class);
+        System.out.println(convertedValue.toString());
+        System.out.println(propertySource.getProperty(FEATURE_MANAGEMENT_KEY).toString());
         assertEquals(convertedValue.toString().length(), propertySource.getProperty(FEATURE_MANAGEMENT_KEY).toString().length());
     }
 }

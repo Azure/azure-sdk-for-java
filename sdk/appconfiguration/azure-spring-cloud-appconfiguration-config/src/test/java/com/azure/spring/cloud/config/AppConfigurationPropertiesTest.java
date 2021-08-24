@@ -14,7 +14,7 @@ import static com.azure.spring.cloud.config.TestConstants.TEST_CONN_STRING;
 import static com.azure.spring.cloud.config.TestUtils.propPair;
 import static com.azure.spring.cloud.config.resource.Connection.ENDPOINT_ERR_MSG;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.Mockito.when;
 
 import java.io.InputStream;
@@ -26,8 +26,9 @@ import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.message.BasicStatusLine;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -75,9 +76,9 @@ public class AppConfigurationPropertiesTest {
     @Mock
     private ObjectMapper mockObjectMapper;
 
-    @Before
+    @BeforeEach
     public void setup() {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
         try {
             when(mockClosableHttpResponse.getStatusLine())
                 .thenReturn(new BasicStatusLine(new ProtocolVersion("", 0, 0), 200, ""));
@@ -86,6 +87,11 @@ public class AppConfigurationPropertiesTest {
         } catch (Exception e) {
             fail();
         }
+    }
+    
+    @AfterEach
+    public void cleanup() throws Exception {
+        MockitoAnnotations.openMocks(this).close();
     }
 
     @Test

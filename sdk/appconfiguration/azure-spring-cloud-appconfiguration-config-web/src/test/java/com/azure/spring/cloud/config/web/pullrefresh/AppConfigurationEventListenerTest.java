@@ -5,6 +5,7 @@ package com.azure.spring.cloud.config.web.pullrefresh;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -19,7 +20,12 @@ public class AppConfigurationEventListenerTest {
 
     @Before
     public void setup() {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
+    }
+    
+    @After
+    public void cleanup() throws Exception {
+        MockitoAnnotations.openMocks(this).close();
     }
 
     @Test

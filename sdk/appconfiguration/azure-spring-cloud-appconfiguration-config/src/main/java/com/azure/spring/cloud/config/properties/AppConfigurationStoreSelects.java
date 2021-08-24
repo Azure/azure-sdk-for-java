@@ -99,7 +99,7 @@ public class AppConfigurationStoreSelects {
     }
 
     private String mapLabel(String label) {
-        if ( label == null || "".equals(label) || EMPTY_LABEL.equals(label)) {
+        if (label == null || "".equals(label) || EMPTY_LABEL.equals(label)) {
             return EMPTY_LABEL;
         }
         return label.trim();
