@@ -295,6 +295,10 @@
                     <packages>com.azure.containers.containerregistry*</packages>
                   </group>
                   <group>
+                    <title>Azure Purview Account</title>
+                    <packages>com.azure.analytics.purview.account*</packages>
+                  </group>
+                  <group>
                     <title>Azure Purview Catalog</title>
                     <packages>com.azure.analytics.purview.catalog*</packages>
                   </group>
