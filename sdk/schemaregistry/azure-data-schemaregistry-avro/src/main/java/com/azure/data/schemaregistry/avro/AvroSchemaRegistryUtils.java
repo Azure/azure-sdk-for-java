@@ -40,8 +40,9 @@ class AvroSchemaRegistryUtils {
      * @param avroSpecificReader flag indicating if decoder should decode records as {@link SpecificRecord
      *     SpecificRecords}.
      */
-    AvroSchemaRegistryUtils(boolean avroSpecificReader, EncoderFactory encoderFactory, DecoderFactory decoderFactory) {
-        this.parser = new Schema.Parser();
+    AvroSchemaRegistryUtils(boolean avroSpecificReader, Schema.Parser parser, EncoderFactory encoderFactory,
+        DecoderFactory decoderFactory) {
+        this.parser = parser;
         this.avroSpecificReader = avroSpecificReader;
         this.encoderFactory = encoderFactory;
         this.decoderFactory = decoderFactory;

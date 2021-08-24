@@ -52,13 +52,16 @@ public class SchemaRegistryAvroSerializerTest {
     private static final DecoderFactory DECODER_FACTORY = DecoderFactory.get();
     private static final EncoderFactory ENCODER_FACTORY = EncoderFactory.get();
 
+    private Schema.Parser parser;
     private AutoCloseable mocksCloseable;
+
     @Mock
     private SchemaRegistryAsyncClient client;
 
     @BeforeEach
     public void beforeEach() {
         mocksCloseable = MockitoAnnotations.openMocks(this);
+        parser = new Schema.Parser();
     }
 
     @AfterEach
@@ -71,7 +74,7 @@ public class SchemaRegistryAvroSerializerTest {
     @Test
     void testRegistryGuidPrefixedToPayload() {
         // manually add SchemaRegistryObject into mock registry client cache
-        AvroSchemaRegistryUtils encoder = new AvroSchemaRegistryUtils(false, ENCODER_FACTORY,
+        AvroSchemaRegistryUtils encoder = new AvroSchemaRegistryUtils(false, parser, ENCODER_FACTORY,
             DECODER_FACTORY);
 
         SchemaProperties registered = new SchemaProperties(MOCK_GUID,
@@ -107,7 +110,7 @@ public class SchemaRegistryAvroSerializerTest {
 
     @Test
     void testNullPayloadThrowsSerializationException() {
-        AvroSchemaRegistryUtils encoder = new AvroSchemaRegistryUtils(false, ENCODER_FACTORY,
+        AvroSchemaRegistryUtils encoder = new AvroSchemaRegistryUtils(false, parser, ENCODER_FACTORY,
             DECODER_FACTORY);
         SchemaRegistryAvroSerializer serializer = new SchemaRegistryAvroSerializer(
             client, encoder, MOCK_SCHEMA_GROUP, false);
@@ -119,7 +122,7 @@ public class SchemaRegistryAvroSerializerTest {
     @Test
     void testIfRegistryNullThenThrow() {
         try {
-            AvroSchemaRegistryUtils encoder = new AvroSchemaRegistryUtils(false, ENCODER_FACTORY,
+            AvroSchemaRegistryUtils encoder = new AvroSchemaRegistryUtils(false, parser, ENCODER_FACTORY,
                 DECODER_FACTORY);
             SchemaRegistryAvroSerializer serializer = new SchemaRegistryAvroSerializer(
                 null, encoder, MOCK_SCHEMA_GROUP, false);
@@ -135,7 +138,7 @@ public class SchemaRegistryAvroSerializerTest {
     void testAddUtils() throws IOException {
 
         // manually add SchemaRegistryObject to cache
-        AvroSchemaRegistryUtils decoder = new AvroSchemaRegistryUtils(false, ENCODER_FACTORY,
+        AvroSchemaRegistryUtils decoder = new AvroSchemaRegistryUtils(false, parser, ENCODER_FACTORY,
             DECODER_FACTORY);
 
         SchemaProperties registered = new SchemaProperties(MOCK_GUID,
@@ -164,7 +167,7 @@ public class SchemaRegistryAvroSerializerTest {
     @Test
     void testNullPayload() {
         SchemaRegistryAvroSerializer deserializer = new SchemaRegistryAvroSerializer(
-            client, new AvroSchemaRegistryUtils(false, ENCODER_FACTORY, DECODER_FACTORY),
+            client, new AvroSchemaRegistryUtils(false, parser, ENCODER_FACTORY, DECODER_FACTORY),
             MOCK_SCHEMA_GROUP, true);
 
         StepVerifier.create(deserializer.deserializeAsync(null, null))
@@ -174,7 +177,7 @@ public class SchemaRegistryAvroSerializerTest {
     @Test
     void testIfTooShortPayloadThrow() {
         SchemaRegistryAvroSerializer deserializer = new SchemaRegistryAvroSerializer(
-            client, new AvroSchemaRegistryUtils(false, ENCODER_FACTORY, DECODER_FACTORY),
+            client, new AvroSchemaRegistryUtils(false, parser, ENCODER_FACTORY, DECODER_FACTORY),
             MOCK_SCHEMA_GROUP, true);
 
         StepVerifier.create(deserializer.deserializeAsync(new ByteArrayInputStream("aaa".getBytes()),
