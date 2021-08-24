@@ -39,13 +39,17 @@ class AvroSchemaRegistryUtils {
      *
      * @param avroSpecificReader flag indicating if decoder should decode records as {@link SpecificRecord
      *     SpecificRecords}.
+     * @param parser Schema parser to use.
+     * @param encoderFactory Encoder factory
+     * @param decoderFactory Decoder factory
      */
     AvroSchemaRegistryUtils(boolean avroSpecificReader, Schema.Parser parser, EncoderFactory encoderFactory,
         DecoderFactory decoderFactory) {
-        this.parser = parser;
+
         this.avroSpecificReader = avroSpecificReader;
-        this.encoderFactory = encoderFactory;
-        this.decoderFactory = decoderFactory;
+        this.parser = Objects.requireNonNull(parser, "'parser' cannot be null.");
+        this.encoderFactory = Objects.requireNonNull(encoderFactory, "'encoderFactory' cannot be null.");
+        this.decoderFactory = Objects.requireNonNull(decoderFactory, "'decoderFactory' cannot be null.");
     }
 
     SerializationType getSerializationType() {
