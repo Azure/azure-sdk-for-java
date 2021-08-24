@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.relay.implementation;
 
 import com.azure.core.util.Context;
-import com.azure.resourcemanager.relay.RelayManager;
 import com.azure.resourcemanager.relay.fluent.models.WcfRelayInner;
 import com.azure.resourcemanager.relay.models.Relaytype;
 import com.azure.resourcemanager.relay.models.WcfRelay;
@@ -14,7 +13,7 @@ import java.time.OffsetDateTime;
 public final class WcfRelayImpl implements WcfRelay, WcfRelay.Definition, WcfRelay.Update {
     private WcfRelayInner innerObject;
 
-    private final RelayManager serviceManager;
+    private final com.azure.resourcemanager.relay.RelayManager serviceManager;
 
     public String id() {
         return this.innerModel().id();
@@ -64,7 +63,7 @@ public final class WcfRelayImpl implements WcfRelay, WcfRelay.Definition, WcfRel
         return this.innerObject;
     }
 
-    private RelayManager manager() {
+    private com.azure.resourcemanager.relay.RelayManager manager() {
         return this.serviceManager;
     }
 
@@ -101,7 +100,7 @@ public final class WcfRelayImpl implements WcfRelay, WcfRelay.Definition, WcfRel
         return this;
     }
 
-    WcfRelayImpl(String name, RelayManager serviceManager) {
+    WcfRelayImpl(String name, com.azure.resourcemanager.relay.RelayManager serviceManager) {
         this.innerObject = new WcfRelayInner();
         this.serviceManager = serviceManager;
         this.relayName = name;
@@ -132,7 +131,7 @@ public final class WcfRelayImpl implements WcfRelay, WcfRelay.Definition, WcfRel
         return this;
     }
 
-    WcfRelayImpl(WcfRelayInner innerObject, RelayManager serviceManager) {
+    WcfRelayImpl(WcfRelayInner innerObject, com.azure.resourcemanager.relay.RelayManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
         this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");

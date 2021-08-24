@@ -9,7 +9,6 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.relay.RelayManager;
 import com.azure.resourcemanager.relay.fluent.HybridConnectionsClient;
 import com.azure.resourcemanager.relay.fluent.models.AccessKeysInner;
 import com.azure.resourcemanager.relay.fluent.models.AuthorizationRuleInner;
@@ -26,9 +25,10 @@ public final class HybridConnectionsImpl implements HybridConnections {
 
     private final HybridConnectionsClient innerClient;
 
-    private final RelayManager serviceManager;
+    private final com.azure.resourcemanager.relay.RelayManager serviceManager;
 
-    public HybridConnectionsImpl(HybridConnectionsClient innerClient, RelayManager serviceManager) {
+    public HybridConnectionsImpl(
+        HybridConnectionsClient innerClient, com.azure.resourcemanager.relay.RelayManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
@@ -36,14 +36,14 @@ public final class HybridConnectionsImpl implements HybridConnections {
     public PagedIterable<HybridConnection> listByNamespace(String resourceGroupName, String namespaceName) {
         PagedIterable<HybridConnectionInner> inner =
             this.serviceClient().listByNamespace(resourceGroupName, namespaceName);
-        return inner.mapPage(inner1 -> new HybridConnectionImpl(inner1, this.manager()));
+        return Utils.mapPage(inner, inner1 -> new HybridConnectionImpl(inner1, this.manager()));
     }
 
     public PagedIterable<HybridConnection> listByNamespace(
         String resourceGroupName, String namespaceName, Context context) {
         PagedIterable<HybridConnectionInner> inner =
             this.serviceClient().listByNamespace(resourceGroupName, namespaceName, context);
-        return inner.mapPage(inner1 -> new HybridConnectionImpl(inner1, this.manager()));
+        return Utils.mapPage(inner, inner1 -> new HybridConnectionImpl(inner1, this.manager()));
     }
 
     public void delete(String resourceGroupName, String namespaceName, String hybridConnectionName) {
@@ -83,7 +83,7 @@ public final class HybridConnectionsImpl implements HybridConnections {
         String resourceGroupName, String namespaceName, String hybridConnectionName) {
         PagedIterable<AuthorizationRuleInner> inner =
             this.serviceClient().listAuthorizationRules(resourceGroupName, namespaceName, hybridConnectionName);
-        return inner.mapPage(inner1 -> new AuthorizationRuleImpl(inner1, this.manager()));
+        return Utils.mapPage(inner, inner1 -> new AuthorizationRuleImpl(inner1, this.manager()));
     }
 
     public PagedIterable<AuthorizationRule> listAuthorizationRules(
@@ -92,7 +92,7 @@ public final class HybridConnectionsImpl implements HybridConnections {
             this
                 .serviceClient()
                 .listAuthorizationRules(resourceGroupName, namespaceName, hybridConnectionName, context);
-        return inner.mapPage(inner1 -> new AuthorizationRuleImpl(inner1, this.manager()));
+        return Utils.mapPage(inner, inner1 -> new AuthorizationRuleImpl(inner1, this.manager()));
     }
 
     public AuthorizationRule createOrUpdateAuthorizationRule(
@@ -382,7 +382,7 @@ public final class HybridConnectionsImpl implements HybridConnections {
         return this.innerClient;
     }
 
-    private RelayManager manager() {
+    private com.azure.resourcemanager.relay.RelayManager manager() {
         return this.serviceManager;
     }
 

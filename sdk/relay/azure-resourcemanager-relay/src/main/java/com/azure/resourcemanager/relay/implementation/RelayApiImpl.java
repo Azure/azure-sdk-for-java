@@ -277,7 +277,7 @@ public final class RelayApiImpl implements RelayApi {
                         if (managementError.getCode() == null || managementError.getMessage() == null) {
                             managementError = null;
                         }
-                    } catch (IOException ioe) {
+                    } catch (IOException | RuntimeException ioe) {
                         logger.logThrowableAsWarning(ioe);
                     }
                 }
@@ -306,7 +306,7 @@ public final class RelayApiImpl implements RelayApi {
             super(null);
             this.statusCode = statusCode;
             this.httpHeaders = httpHeaders;
-            this.responseBody = responseBody.getBytes(StandardCharsets.UTF_8);
+            this.responseBody = responseBody == null ? null : responseBody.getBytes(StandardCharsets.UTF_8);
         }
 
         public int getStatusCode() {

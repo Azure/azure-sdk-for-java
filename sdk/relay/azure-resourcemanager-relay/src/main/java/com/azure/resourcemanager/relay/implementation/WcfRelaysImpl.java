@@ -9,7 +9,6 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.relay.RelayManager;
 import com.azure.resourcemanager.relay.fluent.WcfRelaysClient;
 import com.azure.resourcemanager.relay.fluent.models.AccessKeysInner;
 import com.azure.resourcemanager.relay.fluent.models.AuthorizationRuleInner;
@@ -26,22 +25,22 @@ public final class WcfRelaysImpl implements WcfRelays {
 
     private final WcfRelaysClient innerClient;
 
-    private final RelayManager serviceManager;
+    private final com.azure.resourcemanager.relay.RelayManager serviceManager;
 
-    public WcfRelaysImpl(WcfRelaysClient innerClient, RelayManager serviceManager) {
+    public WcfRelaysImpl(WcfRelaysClient innerClient, com.azure.resourcemanager.relay.RelayManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<WcfRelay> listByNamespace(String resourceGroupName, String namespaceName) {
         PagedIterable<WcfRelayInner> inner = this.serviceClient().listByNamespace(resourceGroupName, namespaceName);
-        return inner.mapPage(inner1 -> new WcfRelayImpl(inner1, this.manager()));
+        return Utils.mapPage(inner, inner1 -> new WcfRelayImpl(inner1, this.manager()));
     }
 
     public PagedIterable<WcfRelay> listByNamespace(String resourceGroupName, String namespaceName, Context context) {
         PagedIterable<WcfRelayInner> inner =
             this.serviceClient().listByNamespace(resourceGroupName, namespaceName, context);
-        return inner.mapPage(inner1 -> new WcfRelayImpl(inner1, this.manager()));
+        return Utils.mapPage(inner, inner1 -> new WcfRelayImpl(inner1, this.manager()));
     }
 
     public void delete(String resourceGroupName, String namespaceName, String relayName) {
@@ -81,14 +80,14 @@ public final class WcfRelaysImpl implements WcfRelays {
         String resourceGroupName, String namespaceName, String relayName) {
         PagedIterable<AuthorizationRuleInner> inner =
             this.serviceClient().listAuthorizationRules(resourceGroupName, namespaceName, relayName);
-        return inner.mapPage(inner1 -> new AuthorizationRuleImpl(inner1, this.manager()));
+        return Utils.mapPage(inner, inner1 -> new AuthorizationRuleImpl(inner1, this.manager()));
     }
 
     public PagedIterable<AuthorizationRule> listAuthorizationRules(
         String resourceGroupName, String namespaceName, String relayName, Context context) {
         PagedIterable<AuthorizationRuleInner> inner =
             this.serviceClient().listAuthorizationRules(resourceGroupName, namespaceName, relayName, context);
-        return inner.mapPage(inner1 -> new AuthorizationRuleImpl(inner1, this.manager()));
+        return Utils.mapPage(inner, inner1 -> new AuthorizationRuleImpl(inner1, this.manager()));
     }
 
     public AuthorizationRule createOrUpdateAuthorizationRule(
@@ -366,7 +365,7 @@ public final class WcfRelaysImpl implements WcfRelays {
         return this.innerClient;
     }
 
-    private RelayManager manager() {
+    private com.azure.resourcemanager.relay.RelayManager manager() {
         return this.serviceManager;
     }
 

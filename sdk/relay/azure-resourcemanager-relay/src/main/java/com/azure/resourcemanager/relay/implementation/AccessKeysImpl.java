@@ -4,16 +4,15 @@
 
 package com.azure.resourcemanager.relay.implementation;
 
-import com.azure.resourcemanager.relay.RelayManager;
 import com.azure.resourcemanager.relay.fluent.models.AccessKeysInner;
 import com.azure.resourcemanager.relay.models.AccessKeys;
 
 public final class AccessKeysImpl implements AccessKeys {
     private AccessKeysInner innerObject;
 
-    private final RelayManager serviceManager;
+    private final com.azure.resourcemanager.relay.RelayManager serviceManager;
 
-    AccessKeysImpl(AccessKeysInner innerObject, RelayManager serviceManager) {
+    AccessKeysImpl(AccessKeysInner innerObject, com.azure.resourcemanager.relay.RelayManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -42,7 +41,7 @@ public final class AccessKeysImpl implements AccessKeys {
         return this.innerObject;
     }
 
-    private RelayManager manager() {
+    private com.azure.resourcemanager.relay.RelayManager manager() {
         return this.serviceManager;
     }
 }

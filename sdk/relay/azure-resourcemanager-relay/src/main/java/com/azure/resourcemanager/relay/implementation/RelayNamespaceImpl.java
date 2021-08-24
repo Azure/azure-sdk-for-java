@@ -6,7 +6,6 @@ package com.azure.resourcemanager.relay.implementation;
 
 import com.azure.core.management.Region;
 import com.azure.core.util.Context;
-import com.azure.resourcemanager.relay.RelayManager;
 import com.azure.resourcemanager.relay.fluent.models.RelayNamespaceInner;
 import com.azure.resourcemanager.relay.models.ProvisioningStateEnum;
 import com.azure.resourcemanager.relay.models.RelayNamespace;
@@ -19,7 +18,7 @@ import java.util.Map;
 public final class RelayNamespaceImpl implements RelayNamespace, RelayNamespace.Definition, RelayNamespace.Update {
     private RelayNamespaceInner innerObject;
 
-    private final RelayManager serviceManager;
+    private final com.azure.resourcemanager.relay.RelayManager serviceManager;
 
     public String id() {
         return this.innerModel().id();
@@ -82,7 +81,7 @@ public final class RelayNamespaceImpl implements RelayNamespace, RelayNamespace.
         return this.innerObject;
     }
 
-    private RelayManager manager() {
+    private com.azure.resourcemanager.relay.RelayManager manager() {
         return this.serviceManager;
     }
 
@@ -115,7 +114,7 @@ public final class RelayNamespaceImpl implements RelayNamespace, RelayNamespace.
         return this;
     }
 
-    RelayNamespaceImpl(String name, RelayManager serviceManager) {
+    RelayNamespaceImpl(String name, com.azure.resourcemanager.relay.RelayManager serviceManager) {
         this.innerObject = new RelayNamespaceInner();
         this.serviceManager = serviceManager;
         this.namespaceName = name;
@@ -146,7 +145,7 @@ public final class RelayNamespaceImpl implements RelayNamespace, RelayNamespace.
         return this;
     }
 
-    RelayNamespaceImpl(RelayNamespaceInner innerObject, RelayManager serviceManager) {
+    RelayNamespaceImpl(RelayNamespaceInner innerObject, com.azure.resourcemanager.relay.RelayManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
         this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");

@@ -4,6 +4,20 @@ Azure Resource Manager Relay client library for Java.
 
 This package contains Microsoft Azure SDK for Relay Management SDK. Use these API to manage Azure Relay resources through Azure Resource Manager. Package tag package-2017-04. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
+## We'd love to hear your feedback
+
+We're always working on improving our products and the way we communicate with our users. So we'd love to learn what's working and how we can do better.
+
+If you haven't already, please take a few minutes to [complete this short survey][survey] we have put together.
+
+Thank you in advance for your collaboration. We really appreciate your time!
+
+## Documentation
+
+Various documentation is available to help you get started
+
+- [API reference documentation][docs]
+
 ## Getting started
 
 ### Prerequisites
@@ -18,7 +32,7 @@ This package contains Microsoft Azure SDK for Relay Management SDK. Use these AP
 <dependency>
     <groupId>com.azure.resourcemanager</groupId>
     <artifactId>azure-resourcemanager-relay</artifactId>
-    <version>1.0.0-beta.1</version>
+    <version>1.0.0-beta.2</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -60,6 +74,8 @@ See [API design][design] for general introduction on design and key concepts on 
 
 ## Examples
 
+
+
 ## Troubleshooting
 
 ## Next steps
@@ -75,6 +91,8 @@ For details on contributing to this repository, see the [contributing guide](htt
 1. Create new Pull Request
 
 <!-- LINKS -->
+[survey]: https://microsoft.qualtrics.com/jfe/form/SV_ehN0lIk2FKEBkwd?Q_CHL=DOCS
+[docs]: https://azure.github.io/azure-sdk-for-java/
 [jdk]: https://docs.microsoft.com/java/azure/jdk/
 [azure_subscription]: https://azure.microsoft.com/free/
 [azure_identity]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/identity/azure-identity
