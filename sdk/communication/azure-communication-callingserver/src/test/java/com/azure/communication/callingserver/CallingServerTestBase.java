@@ -19,6 +19,7 @@ import com.azure.core.test.TestMode;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
@@ -41,6 +42,9 @@ public class CallingServerTestBase extends TestBase {
     protected static final String CONNECTION_STRING = Configuration.getGlobalConfiguration()
         .get("COMMUNICATION_LIVETEST_STATIC_CONNECTION_STRING",
             "endpoint=https://REDACTED.communication.azure.com/;accesskey=QWNjZXNzS2V5");
+
+    protected static final String ENDPOINT = Configuration.getGlobalConfiguration().get("COMMUNICATION_LIVETEST_STATIC_ENDPOINT",
+        "https://REDACTED.communication.azure.com/");
 
     protected static final String AZURE_TENANT_ID = Configuration.getGlobalConfiguration()
         .get("COMMUNICATION_LIVETEST_STATIC_RESOURCE_IDENTIFIER",
@@ -88,6 +92,22 @@ public class CallingServerTestBase extends TestBase {
         return builder;
     }
 
+    protected CallingServerClientBuilder getCallClientUsingTokenCredential(HttpClient httpClient) {
+        TokenCredential tokenCredential = getTestMode() == TestMode.PLAYBACK ? new FakeCredentials() : new DefaultAzureCredentialBuilder().build();
+
+        CallingServerClientBuilder builder = new CallingServerClientBuilder()
+            .endpoint(ENDPOINT)
+            .credential(tokenCredential)
+            .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient);
+
+        if (getTestMode() == TestMode.RECORD) {
+            List<Function<String, String>> redactors = new ArrayList<>();
+            redactors.add(data -> redact(data, JSON_PROPERTY_VALUE_REDACTION_PATTERN.matcher(data), "REDACTED"));
+            builder.addPolicy(interceptorManager.getRecordPolicy(redactors));
+        }
+        return builder;
+    }
+
     protected String getNewUserId() {
         if (getTestMode() == TestMode.LIVE) {
             CommunicationIdentityClient communicationIdentityClient = new CommunicationIdentityClientBuilder()
@@ -123,6 +143,22 @@ public class CallingServerTestBase extends TestBase {
     protected CallingServerClientBuilder getConversationClientUsingConnectionString(HttpClient httpClient) {
         CallingServerClientBuilder builder = new CallingServerClientBuilder()
             .connectionString(CONNECTION_STRING)
+            .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient);
+
+        if (getTestMode() == TestMode.RECORD) {
+            List<Function<String, String>> redactors = new ArrayList<>();
+            redactors.add(data -> redact(data, JSON_PROPERTY_VALUE_REDACTION_PATTERN.matcher(data), "REDACTED"));
+            builder.addPolicy(interceptorManager.getRecordPolicy(redactors));
+        }
+        return builder;
+    }
+
+    protected CallingServerClientBuilder getConversationClientUsingTokenCredential(HttpClient httpClient) {
+        TokenCredential tokenCredential = getTestMode() == TestMode.PLAYBACK ? new FakeCredentials() : new DefaultAzureCredentialBuilder().build();
+
+        CallingServerClientBuilder builder = new CallingServerClientBuilder()
+            .endpoint(ENDPOINT)
+            .credential(tokenCredential)
             .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient);
 
         if (getTestMode() == TestMode.RECORD) {
