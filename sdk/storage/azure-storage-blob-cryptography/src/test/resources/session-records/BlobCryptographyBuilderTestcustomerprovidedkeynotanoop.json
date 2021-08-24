@@ -1,0 +1,73 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.blob.core.windows.net/cb3512700cb3512703a9332632887902fcdad4f948ab?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2020-10-02",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.14.0-beta.2 (11.0.9.1; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "eb453c20-3167-4c9c-a477-b70b52266a44"
+    },
+    "Response" : {
+      "content-length" : "0",
+      "x-ms-version" : "2020-10-02",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "eTag" : "0x8D9674E9D1099BA",
+      "Last-Modified" : "Tue, 24 Aug 2021 22:29:18 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "fc4a933e-a01e-0074-1c37-99ab1d000000",
+      "x-ms-client-request-id" : "eb453c20-3167-4c9c-a477-b70b52266a44",
+      "Date" : "Tue, 24 Aug 2021 22:29:18 GMT"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.blob.core.windows.net/cb3512700cb3512703a9332632887902fcdad4f948ab/cb3512702cb3512703a985815916835f9b2e54f1ab30",
+    "Headers" : {
+      "x-ms-version" : "2020-10-02",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.14.0-beta.2 azsdk-java-azure-storage-blob-cryptography/12.14.0-beta.2 (11.0.9.1; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "49b28515-f4e1-4541-8c3a-d9dc1db768b2",
+      "Content-Type" : "application/octet-stream"
+    },
+    "Response" : {
+      "content-length" : "0",
+      "x-ms-version" : "2020-10-02",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-content-crc64" : "MtRESt40jrw=",
+      "Last-Modified" : "Tue, 24 Aug 2021 22:29:19 GMT",
+      "retry-after" : "0",
+      "x-ms-encryption-key-sha256" : "REDACTED",
+      "StatusCode" : "201",
+      "x-ms-request-server-encrypted" : "true",
+      "Date" : "Tue, 24 Aug 2021 22:29:18 GMT",
+      "Content-MD5" : "qDJ0J/r/EYTZjTFuf1DMiQ==",
+      "eTag" : "0x8D9674E9D40BCEF",
+      "x-ms-request-id" : "e0f68d63-201e-0037-4437-994d41000000",
+      "x-ms-client-request-id" : "49b28515-f4e1-4541-8c3a-d9dc1db768b2"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.blob.core.windows.net/cb3512700cb3512703a9332632887902fcdad4f948ab/cb3512702cb3512703a985815916835f9b2e54f1ab30",
+    "Headers" : {
+      "x-ms-version" : "2020-10-02",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.14.0-beta.2 azsdk-java-azure-storage-blob-cryptography/12.14.0-beta.2 (11.0.9.1; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "433d9839-1834-4b9d-ade2-b049bdb25f4c"
+    },
+    "Response" : {
+      "content-length" : "301",
+      "x-ms-version" : "2020-10-02",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "BlobUsesCustomerSpecifiedEncryption",
+      "retry-after" : "0",
+      "StatusCode" : "409",
+      "x-ms-request-id" : "e0f68df1-201e-0037-4637-994d41000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>BlobUsesCustomerSpecifiedEncryption</Code><Message>The blob is encrypted with customer specified encryption, but it was not provided in the request.\nRequestId:e0f68df1-201e-0037-4637-994d41000000\nTime:2021-08-24T22:29:19.4702244Z</Message></Error>",
+      "x-ms-client-request-id" : "433d9839-1834-4b9d-ade2-b049bdb25f4c",
+      "Date" : "Tue, 24 Aug 2021 22:29:19 GMT",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "cb3512700cb3512703a9332632887902fcdad4f948ab", "cb3512701cb3512703a910884e78ff688e3df431a93d", "cb3512702cb3512703a985815916835f9b2e54f1ab30" ]
+}
