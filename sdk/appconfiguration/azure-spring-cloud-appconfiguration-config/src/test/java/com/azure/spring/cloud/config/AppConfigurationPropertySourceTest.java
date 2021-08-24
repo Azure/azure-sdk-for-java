@@ -175,7 +175,7 @@ public class AppConfigurationPropertySourceTest {
         appProperties = new AppConfigurationProviderProperties();
         ArrayList<String> contexts = new ArrayList<String>();
         contexts.add("/application/*");
-        AppConfigurationStoreSelects selectedKeys = new AppConfigurationStoreSelects().setKeyFilter("/application/").setLabelFilter("\0");
+        AppConfigurationStoreSelects selectedKeys = new AppConfigurationStoreSelects().setKeyFilter("/foo/").setLabelFilter("\0");
         propertySource = new AppConfigurationPropertySource(TEST_CONTEXT, configStoreMock, selectedKeys, new ArrayList<>(),
             appConfigurationProperties, clientStoreMock, appProperties, tokenCredentialProvider, null, null);
 

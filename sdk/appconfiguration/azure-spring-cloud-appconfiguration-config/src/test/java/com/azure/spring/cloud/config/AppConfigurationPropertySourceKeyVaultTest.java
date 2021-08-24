@@ -125,7 +125,7 @@ public class AppConfigurationPropertySourceKeyVaultTest {
         testStore.setEndpoint(TEST_STORE_NAME);
         ArrayList<String> contexts = new ArrayList<String>();
         contexts.add("/application/*");
-        AppConfigurationStoreSelects selects = new AppConfigurationStoreSelects().setKeyFilter("/application/")
+        AppConfigurationStoreSelects selects = new AppConfigurationStoreSelects().setKeyFilter("/foo/")
             .setLabelFilter("\0");
         propertySource = new AppConfigurationPropertySource(TEST_CONTEXT, testStore, selects, new ArrayList<>(),
             appConfigurationProperties, clientStoreMock, appProperties, tokenCredentialProvider, null,

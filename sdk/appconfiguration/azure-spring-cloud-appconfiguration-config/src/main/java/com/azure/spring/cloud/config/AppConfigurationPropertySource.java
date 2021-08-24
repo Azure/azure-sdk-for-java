@@ -78,8 +78,6 @@ public class AppConfigurationPropertySource extends EnumerablePropertySource<Con
     private static final ObjectMapper CASE_INSENSITIVE_MAPPER = new ObjectMapper()
         .configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES, true);
 
-    private final String context;
-
     private final AppConfigurationStoreSelects selectedKeys;
     
     private final List<String> profiles;
@@ -109,7 +107,6 @@ public class AppConfigurationPropertySource extends EnumerablePropertySource<Con
         // The context alone does not uniquely define a PropertySource, append storeName
         // and label to uniquely define a PropertySource
         super(context + configStore.getEndpoint() + "/" + selectedKeys.getLabel());
-        this.context = context;
         this.configStore = configStore;
         this.selectedKeys = selectedKeys;
         this.profiles = profiles;
@@ -177,10 +174,9 @@ public class AppConfigurationPropertySource extends EnumerablePropertySource<Con
         Collections.reverse(labels);
 
         for (String label: labels) {
-            settingSelector = new SettingSelector().setKeyFilter(selectedKeys.getKeyFilter()).setLabelFilter(label);
+            settingSelector = new SettingSelector().setKeyFilter(selectedKeys.getKeyFilter() + "*").setLabelFilter(label);
 
             // * for wildcard match
-            settingSelector.setKeyFilter(context + "*");
             List<ConfigurationSetting> settings = clients.listSettings(settingSelector, storeName);
             
             if (settings == null) {
@@ -188,7 +184,7 @@ public class AppConfigurationPropertySource extends EnumerablePropertySource<Con
             }
             
             for (ConfigurationSetting setting : settings) {
-                String key = setting.getKey().trim().substring(context.length()).replace('/', '.');
+                String key = setting.getKey().trim().substring(selectedKeys.getKeyFilter().length()).replace('/', '.');
                 if (setting instanceof SecretReferenceConfigurationSetting) {
                     String entry = getKeyVaultEntry((SecretReferenceConfigurationSetting) setting);
 
@@ -200,7 +196,7 @@ public class AppConfigurationPropertySource extends EnumerablePropertySource<Con
                     && JsonConfigurationParser.isJsonContentType(setting.getContentType())) {
                     HashMap<String, Object> jsonSettings = JsonConfigurationParser.parseJsonSetting(setting);
                     for (Entry<String, Object> jsonSetting : jsonSettings.entrySet()) {
-                        key = jsonSetting.getKey().trim().substring(context.length());
+                        key = jsonSetting.getKey().trim().substring(selectedKeys.getKeyFilter().length());
                         properties.put(key, jsonSetting.getValue());
                     }
                 } else {
