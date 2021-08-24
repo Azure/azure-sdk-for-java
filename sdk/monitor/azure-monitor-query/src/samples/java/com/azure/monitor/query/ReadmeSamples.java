@@ -118,15 +118,15 @@ public class ReadmeSamples {
         String query1 = logsBatchQuery.addQuery("{workspace-id}", "{query-1}", new TimeInterval(Duration.ofDays(2)));
         String query2 = logsBatchQuery.addQuery("{workspace-id}", "{query-2}", new TimeInterval(Duration.ofDays(30)));
 
-        LogsBatchQueryResults batchResultCollection = logsQueryClient
+        LogsBatchQueryResults batchResults = logsQueryClient
                 .queryBatchWithResponse(logsBatchQuery, Context.NONE).getValue();
 
-        LogsBatchQueryResult result = batchResultCollection.getResult(query1);
+        LogsBatchQueryResult result = batchResults.getResult(query1);
         for (LogsTableRow row : result.getTable().getRows()) {
             System.out.println(row.getColumnValue("OperationName") + " " + row.getColumnValue("ResourceGroup"));
         }
 
-        List<CustomLogModel> customLogModels = batchResultCollection.getResult(query2, CustomLogModel.class);
+        List<CustomLogModel> customLogModels = batchResults.getResult(query2, CustomLogModel.class);
         for (CustomLogModel customLogModel : customLogModels) {
             System.out.println(customLogModel.getOperationName() + " " + customLogModel.getResourceGroup());
         }

@@ -37,37 +37,37 @@ This client library provides access to query metrics and logs collected by Azure
 
 ### Create Logs query client
 
-<!-- embedme ./src/samples/java/com/azure/monitor/query/ReadmeSamples.java#L40-L42 -->
+<!-- embedme ./src/samples/java/com/azure/monitor/query/ReadmeSamples.java#L39-L41 -->
 ```java
-
-
-
+LogsQueryClient logsQueryClient = new LogsQueryClientBuilder()
+    .credential(new DefaultAzureCredentialBuilder().build())
+    .buildClient();
 ```
 
 ### Create Logs query async client
 
-<!-- embedme ./src/samples/java/com/azure/monitor/query/ReadmeSamples.java#L44-L46 -->
+<!-- embedme ./src/samples/java/com/azure/monitor/query/ReadmeSamples.java#L43-L45 -->
 ```java
-        .credential(new DefaultAzureCredentialBuilder().build())
-        .buildAsyncClient();
-}
+LogsQueryAsyncClient logsQueryAsyncClient = new LogsQueryClientBuilder()
+    .credential(new DefaultAzureCredentialBuilder().build())
+    .buildAsyncClient();
 ```
 ### Create Metrics query client
 
-<!-- embedme ./src/samples/java/com/azure/monitor/query/ReadmeSamples.java#L53-L55 -->
+<!-- embedme ./src/samples/java/com/azure/monitor/query/ReadmeSamples.java#L52-L54 -->
 ```java
-
-
-
+MetricsQueryClient metricsQueryClient = new MetricsQueryClientBuilder()
+    .credential(new DefaultAzureCredentialBuilder().build())
+    .buildClient();
 ```
 
 ### Create Metrics query async client
 
-<!-- embedme ./src/samples/java/com/azure/monitor/query/ReadmeSamples.java#L57-L59 -->
+<!-- embedme ./src/samples/java/com/azure/monitor/query/ReadmeSamples.java#L56-L58 -->
 ```java
-        .credential(new DefaultAzureCredentialBuilder().build())
-        .buildAsyncClient();
-}
+MetricsQueryAsyncClient metricsQueryAsyncClient = new MetricsQueryClientBuilder()
+    .credential(new DefaultAzureCredentialBuilder().build())
+    .buildAsyncClient();
 ```
 
 ## Key concepts
@@ -190,15 +190,15 @@ LogsBatchQuery logsBatchQuery = new LogsBatchQuery();
 String query1 = logsBatchQuery.addQuery("{workspace-id}", "{query-1}", new TimeInterval(Duration.ofDays(2)));
 String query2 = logsBatchQuery.addQuery("{workspace-id}", "{query-2}", new TimeInterval(Duration.ofDays(30)));
 
-LogsBatchQueryResults batchResultCollection = logsQueryClient
+LogsBatchQueryResults batchResults = logsQueryClient
         .queryBatchWithResponse(logsBatchQuery, Context.NONE).getValue();
 
-LogsBatchQueryResult result = batchResultCollection.getResult(query1);
+LogsBatchQueryResult result = batchResults.getResult(query1);
 for (LogsTableRow row : result.getTable().getRows()) {
     System.out.println(row.getColumnValue("OperationName") + " " + row.getColumnValue("ResourceGroup"));
 }
 
-List<CustomLogModel> customLogModels = batchResultCollection.getResult(query2, CustomLogModel.class);
+List<CustomLogModel> customLogModels = batchResults.getResult(query2, CustomLogModel.class);
 for (CustomLogModel customLogModel : customLogModels) {
     System.out.println(customLogModel.getOperationName() + " " + customLogModel.getResourceGroup());
 }
@@ -235,7 +235,7 @@ Response<LogsQueryResult> response = logsQueryClient.queryWithResponse("{workspa
 LogsQueryResult result = response.getValue();
 ```
 
-#### Handling the response for Logs Query
+#### Response structure for Logs Query
 
 The `query` API returns the `LogsQueryResult` while the `queryBatch` API returns the `LogsBatchQueryResult`.
 
@@ -313,25 +313,29 @@ for (MetricResult metric : metricsQueryResult.getMetrics()) {
     }
 }
 ```
-### Handle metrics response
+### Response structure for Metrics query
 
-The metrics query API returns a `MetricsResult` object. The `MetricsResult` object contains properties such as a list of `Metric`-typed objects, `interval`, `namespace`, and `timespan`. The `Metric` objects list can be accessed using the `metrics` param. Each `Metric` object in this list contains a list of `TimeSeriesElement` objects. Each `TimeSeriesElement` contains `data` and `metadata_values` properties. In visual form, the object hierarchy of the response resembles the following structure:
+The metrics query API returns a `MetricsQueryResult` object. The `MetricsQueryResult` object contains properties such as a 
+list of `MetricResult`-typed objects, `granularity`, `namespace`, and `timeInterval`. The `MetricResult` objects list 
+can be accessed using the `metrics` param. Each `MetricResult` object in this list contains a list of `TimeSeriesElement` objects. 
+Each `TimeSeriesElement` contains `data` and `metadata_values` properties. In visual form, the object hierarchy of the 
+response resembles the following structure:
 
 ```
 MetricsQueryResult
-|---interval
-|---timespan
+|---granularity
+|---timeInterval
 |---cost
 |---namespace
-|---resourceregion
-|---metrics (list of `Metric` objects)
+|---resourceRegion
+|---metrics (list of `MetricResult` objects)
     |---id
     |---type
     |---name
     |---unit
-    |---timeseries (list of `TimeSeriesElement` objects)
-        |---metadata_values (dimenstions)
-        |---data (list of data points represented by `MetricValue` objects)
+    |---timeSeries (list of `TimeSeriesElement` objects)
+        |---metadata (dimensions)
+        |---metricValues (list of data points represented by `MetricValue` objects)
              |--- timeStamp
              |--- count
              |--- average
