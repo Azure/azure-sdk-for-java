@@ -361,4 +361,3 @@ spring_org.springframework.kafka:spring-kafka;2.6.6
 # sdk\appconfiguration\azure-spring-cloud-feature-management-web\pom.xml
 appconfig_spring_com.fasterxml.jackson.core:jackson-annotations;2.11.4
 appconfig_spring_com.fasterxml.jackson.core:jackson-databind;2.11.4
-appconfig_spring_org.mockito:mockito-junit-jupiter;3.9.0
