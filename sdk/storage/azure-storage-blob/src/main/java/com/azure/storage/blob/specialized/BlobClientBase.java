@@ -320,14 +320,14 @@ public class BlobClientBase {
         Tuple3<Long, BlobRequestConditions, BlobDownloadAsyncResponse> tuple =
             ChunkedDownloadUtils.downloadFirstChunk(range, pOptions, requestConditions, downloadFunc, true).block();
         if (tuple == null) {
-            throw logger.logThrowableAsError(new IllegalStateException("Downloading first chunk returned null"));
+            throw logger.logExceptionAsError(new IllegalStateException("Downloading first chunk returned null"));
         }
 
         BlobDownloadAsyncResponse downloadResponse = tuple.getT3();
         ByteBuffer initialBuffer = FluxUtil.collectBytesInByteBufferStream(downloadResponse.getValue())
             .map(ByteBuffer::wrap).block();
         if (initialBuffer == null) {
-            throw logger.logThrowableAsError(new IllegalStateException("Collecting first chunk returned null"));
+            throw logger.logExceptionAsError(new IllegalStateException("Collecting first chunk returned null"));
         }
         BlobProperties properties = BlobAsyncClientBase.buildBlobPropertiesResponse(downloadResponse).getValue();
 
