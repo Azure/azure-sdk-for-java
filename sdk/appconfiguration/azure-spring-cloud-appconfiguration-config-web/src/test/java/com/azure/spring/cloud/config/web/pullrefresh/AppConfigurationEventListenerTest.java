@@ -5,9 +5,9 @@ package com.azure.spring.cloud.config.web.pullrefresh;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
@@ -18,12 +18,12 @@ public class AppConfigurationEventListenerTest {
     @Mock
     private AppConfigurationRefresh appConfigurationRefresh;
 
-    @Before
+    @BeforeEach
     public void setup() {
         MockitoAnnotations.openMocks(this);
     }
     
-    @After
+    @AfterEach
     public void cleanup() throws Exception {
         MockitoAnnotations.openMocks(this).close();
     }

@@ -19,9 +19,9 @@ import java.util.stream.Stream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
@@ -62,7 +62,7 @@ public class AppConfigurationBusRefreshEndpointTest {
 
     private String tokenSecret = "secret";
 
-    @Before
+    @BeforeEach
     public void setup() throws IOException {
         MockitoAnnotations.openMocks(this);
 
@@ -90,7 +90,7 @@ public class AppConfigurationBusRefreshEndpointTest {
         when(reader.lines()).thenReturn(lines);
     }
     
-    @After
+    @AfterEach
     public void cleanup() throws Exception {
         MockitoAnnotations.openMocks(this).close();
     }
