@@ -5,31 +5,33 @@
 package com.azure.resourcemanager.redis.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** A private link resource. */
+/** Properties of a private link resource. */
 @Fluent
-public final class PrivateLinkResourceInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PrivateLinkResourceInner.class);
+public final class PrivateLinkResourceProperties {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(PrivateLinkResourceProperties.class);
 
     /*
-     * Resource properties.
+     * The private link resource group id.
      */
-    @JsonProperty(value = "properties")
-    private PrivateLinkResourceProperties innerProperties;
+    @JsonProperty(value = "groupId", access = JsonProperty.Access.WRITE_ONLY)
+    private String groupId;
 
-    /**
-     * Get the innerProperties property: Resource properties.
-     *
-     * @return the innerProperties value.
+    /*
+     * The private link resource required member names.
      */
-    private PrivateLinkResourceProperties innerProperties() {
-        return this.innerProperties;
-    }
+    @JsonProperty(value = "requiredMembers", access = JsonProperty.Access.WRITE_ONLY)
+    private List<String> requiredMembers;
+
+    /*
+     * The private link resource Private link DNS zone name.
+     */
+    @JsonProperty(value = "requiredZoneNames")
+    private List<String> requiredZoneNames;
 
     /**
      * Get the groupId property: The private link resource group id.
@@ -37,7 +39,7 @@ public final class PrivateLinkResourceInner extends ProxyResource {
      * @return the groupId value.
      */
     public String groupId() {
-        return this.innerProperties() == null ? null : this.innerProperties().groupId();
+        return this.groupId;
     }
 
     /**
@@ -46,7 +48,7 @@ public final class PrivateLinkResourceInner extends ProxyResource {
      * @return the requiredMembers value.
      */
     public List<String> requiredMembers() {
-        return this.innerProperties() == null ? null : this.innerProperties().requiredMembers();
+        return this.requiredMembers;
     }
 
     /**
@@ -55,20 +57,17 @@ public final class PrivateLinkResourceInner extends ProxyResource {
      * @return the requiredZoneNames value.
      */
     public List<String> requiredZoneNames() {
-        return this.innerProperties() == null ? null : this.innerProperties().requiredZoneNames();
+        return this.requiredZoneNames;
     }
 
     /**
      * Set the requiredZoneNames property: The private link resource Private link DNS zone name.
      *
      * @param requiredZoneNames the requiredZoneNames value to set.
-     * @return the PrivateLinkResourceInner object itself.
+     * @return the PrivateLinkResourceProperties object itself.
      */
-    public PrivateLinkResourceInner withRequiredZoneNames(List<String> requiredZoneNames) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new PrivateLinkResourceProperties();
-        }
-        this.innerProperties().withRequiredZoneNames(requiredZoneNames);
+    public PrivateLinkResourceProperties withRequiredZoneNames(List<String> requiredZoneNames) {
+        this.requiredZoneNames = requiredZoneNames;
         return this;
     }
 
@@ -78,8 +77,5 @@ public final class PrivateLinkResourceInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (innerProperties() != null) {
-            innerProperties().validate();
-        }
     }
 }

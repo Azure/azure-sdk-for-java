@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.redis.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.redis.models.PrivateEndpoint;
 import com.azure.resourcemanager.redis.models.PrivateEndpointConnectionProvisioningState;
@@ -13,25 +12,29 @@ import com.azure.resourcemanager.redis.models.PrivateLinkServiceConnectionState;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The Private Endpoint Connection resource. */
+/** Properties of the PrivateEndpointConnectProperties. */
 @Fluent
-public final class PrivateEndpointConnectionInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PrivateEndpointConnectionInner.class);
+public final class PrivateEndpointConnectionProperties {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(PrivateEndpointConnectionProperties.class);
 
     /*
-     * Resource properties.
+     * The resource of private end point.
      */
-    @JsonProperty(value = "properties")
-    private PrivateEndpointConnectionProperties innerProperties;
+    @JsonProperty(value = "privateEndpoint")
+    private PrivateEndpoint privateEndpoint;
 
-    /**
-     * Get the innerProperties property: Resource properties.
-     *
-     * @return the innerProperties value.
+    /*
+     * A collection of information about the state of the connection between
+     * service consumer and provider.
      */
-    private PrivateEndpointConnectionProperties innerProperties() {
-        return this.innerProperties;
-    }
+    @JsonProperty(value = "privateLinkServiceConnectionState", required = true)
+    private PrivateLinkServiceConnectionState privateLinkServiceConnectionState;
+
+    /*
+     * The provisioning state of the private endpoint connection resource.
+     */
+    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
+    private PrivateEndpointConnectionProvisioningState provisioningState;
 
     /**
      * Get the privateEndpoint property: The resource of private end point.
@@ -39,20 +42,17 @@ public final class PrivateEndpointConnectionInner extends ProxyResource {
      * @return the privateEndpoint value.
      */
     public PrivateEndpoint privateEndpoint() {
-        return this.innerProperties() == null ? null : this.innerProperties().privateEndpoint();
+        return this.privateEndpoint;
     }
 
     /**
      * Set the privateEndpoint property: The resource of private end point.
      *
      * @param privateEndpoint the privateEndpoint value to set.
-     * @return the PrivateEndpointConnectionInner object itself.
+     * @return the PrivateEndpointConnectionProperties object itself.
      */
-    public PrivateEndpointConnectionInner withPrivateEndpoint(PrivateEndpoint privateEndpoint) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new PrivateEndpointConnectionProperties();
-        }
-        this.innerProperties().withPrivateEndpoint(privateEndpoint);
+    public PrivateEndpointConnectionProperties withPrivateEndpoint(PrivateEndpoint privateEndpoint) {
+        this.privateEndpoint = privateEndpoint;
         return this;
     }
 
@@ -63,7 +63,7 @@ public final class PrivateEndpointConnectionInner extends ProxyResource {
      * @return the privateLinkServiceConnectionState value.
      */
     public PrivateLinkServiceConnectionState privateLinkServiceConnectionState() {
-        return this.innerProperties() == null ? null : this.innerProperties().privateLinkServiceConnectionState();
+        return this.privateLinkServiceConnectionState;
     }
 
     /**
@@ -71,14 +71,11 @@ public final class PrivateEndpointConnectionInner extends ProxyResource {
      * between service consumer and provider.
      *
      * @param privateLinkServiceConnectionState the privateLinkServiceConnectionState value to set.
-     * @return the PrivateEndpointConnectionInner object itself.
+     * @return the PrivateEndpointConnectionProperties object itself.
      */
-    public PrivateEndpointConnectionInner withPrivateLinkServiceConnectionState(
+    public PrivateEndpointConnectionProperties withPrivateLinkServiceConnectionState(
         PrivateLinkServiceConnectionState privateLinkServiceConnectionState) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new PrivateEndpointConnectionProperties();
-        }
-        this.innerProperties().withPrivateLinkServiceConnectionState(privateLinkServiceConnectionState);
+        this.privateLinkServiceConnectionState = privateLinkServiceConnectionState;
         return this;
     }
 
@@ -88,7 +85,7 @@ public final class PrivateEndpointConnectionInner extends ProxyResource {
      * @return the provisioningState value.
      */
     public PrivateEndpointConnectionProvisioningState provisioningState() {
-        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+        return this.provisioningState;
     }
 
     /**
@@ -97,8 +94,17 @@ public final class PrivateEndpointConnectionInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (innerProperties() != null) {
-            innerProperties().validate();
+        if (privateEndpoint() != null) {
+            privateEndpoint().validate();
+        }
+        if (privateLinkServiceConnectionState() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property privateLinkServiceConnectionState in model"
+                            + " PrivateEndpointConnectionProperties"));
+        } else {
+            privateLinkServiceConnectionState().validate();
         }
     }
 }
