@@ -6,6 +6,7 @@ package com.azure.data.schemaregistry.avro;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.data.schemaregistry.models.SerializationType;
 import org.apache.avro.Schema;
+import org.apache.avro.generic.GenericContainer;
 import org.apache.avro.generic.GenericDatumReader;
 import org.apache.avro.generic.GenericDatumWriter;
 import org.apache.avro.io.BinaryEncoder;
@@ -31,12 +32,16 @@ class AvroSchemaRegistryUtils {
     private static final DecoderFactory DECODER_FACTORY = DecoderFactory.get();
 
     private final boolean avroSpecificReader;
+    private final Schema.Parser parser;
 
     /**
      * Instantiates AvroCodec instance
-     * @param avroSpecificReader flag indicating if decoder should decode records as SpecificRecords
+     *
+     * @param avroSpecificReader flag indicating if decoder should decode records as {@link SpecificRecord
+     *     SpecificRecords}.
      */
     AvroSchemaRegistryUtils(boolean avroSpecificReader) {
+        this.parser = new Schema.Parser();
         this.avroSpecificReader = avroSpecificReader;
     }
 
@@ -46,17 +51,19 @@ class AvroSchemaRegistryUtils {
 
     /**
      * @param schemaString string representation of schema
+     *
      * @return avro schema
      */
     Schema parseSchemaString(String schemaString) {
-        return (new Schema.Parser()).parse(schemaString);
+        return parser.parse(schemaString);
     }
-
 
     /**
      * @param object Schema object used to generate schema string
-     * @see AvroSchemaUtils for distinction between primitive and Avro schema generation
+     *
      * @return string representation of schema
+     *
+     * @see AvroSchemaUtils for distinction between primitive and Avro schema generation
      */
     String getSchemaString(Object object) {
         Schema schema = AvroSchemaUtils.getSchema(object);
@@ -67,7 +74,11 @@ class AvroSchemaRegistryUtils {
      * Returns schema name for storing schemas in schema registry store.
      *
      * @param object Schema object used to generate schema path
+     *
      * @return schema name as string
+     *
+     * @throws IllegalArgumentException if {@code object} is not a primitive type and not of type {@link
+     *     GenericContainer}.
      */
     String getSchemaName(Object object) {
         return AvroSchemaUtils.getSchema(object).getFullName();
@@ -79,7 +90,9 @@ class AvroSchemaRegistryUtils {
 
     /**
      * Returns ByteArrayOutputStream containing Avro encoding of object parameter
+     *
      * @param object Object to be encoded into byte stream
+     *
      * @return closed ByteArrayOutputStream
      */
     byte[] encode(Object object) {
@@ -108,14 +121,15 @@ class AvroSchemaRegistryUtils {
         }
     }
 
-
     /**
      * @param b byte array containing encoded bytes
-     * @param schemaBytes schema content for Avro reader read - fetched from Azure Schema Registry
+     * @param schemaBytes schema content for Avro reader to read - fetched from Azure Schema Registry
+     *
      * @return deserialized object
      */
     <T> T decode(byte[] b, byte[] schemaBytes) {
-        Objects.requireNonNull(schemaBytes, "Schema must not be null.");
+        Objects.requireNonNull(b, "'b' must not be null.");
+        Objects.requireNonNull(schemaBytes, "'schemaBytes' must not be null.");
 
         String schemaString = new String(schemaBytes, StandardCharsets.UTF_8);
         Schema schemaObject = parseSchemaString(schemaString);
@@ -134,10 +148,12 @@ class AvroSchemaRegistryUtils {
      * Returns correct reader for decoding payload.
      *
      * @param writerSchema Avro schema fetched from schema registry store
+     *
      * @return correct Avro DatumReader object given encoder configuration
      */
     private <T> DatumReader<T> getDatumReader(Schema writerSchema) {
-        boolean writerSchemaIsPrimitive = AvroSchemaUtils.getPrimitiveSchemas().values().contains(writerSchema);
+        boolean writerSchemaIsPrimitive = AvroSchemaUtils.getPrimitiveSchemas().containsKey(writerSchema.getType());
+
         // do not use SpecificDatumReader if writerSchema is a primitive
         if (avroSpecificReader && !writerSchemaIsPrimitive) {
             return new SpecificDatumReader<>(writerSchema);
