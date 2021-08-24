@@ -79,6 +79,35 @@ public class CallingServerTestBase extends TestBase {
         = Pattern.compile(String.format("(?:%s)(.*?)(?:\",|\"})", JSON_PROPERTIES_TO_REDACT),
         Pattern.CASE_INSENSITIVE);
 
+    protected CallingServerClientBuilder getCallClientUsingConnectionString(HttpClient httpClient) {
+        CallingServerClientBuilder builder = new CallingServerClientBuilder()
+            .connectionString(CONNECTION_STRING)
+            .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient);
+
+        if (getTestMode() == TestMode.RECORD) {
+            List<Function<String, String>> redactors = new ArrayList<>();
+            redactors.add(data -> redact(data, JSON_PROPERTY_VALUE_REDACTION_PATTERN.matcher(data), "REDACTED"));
+            builder.addPolicy(interceptorManager.getRecordPolicy(redactors));
+        }
+        return builder;
+    }
+
+    protected CallingServerClientBuilder getCallClientUsingTokenCredential(HttpClient httpClient) {
+        TokenCredential tokenCredential = getTestMode() == TestMode.PLAYBACK ? new FakeCredentials() : new DefaultAzureCredentialBuilder().build();
+
+        CallingServerClientBuilder builder = new CallingServerClientBuilder()
+            .endpoint(ENDPOINT)
+            .credential(tokenCredential)
+            .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient);
+
+        if (getTestMode() == TestMode.RECORD) {
+            List<Function<String, String>> redactors = new ArrayList<>();
+            redactors.add(data -> redact(data, JSON_PROPERTY_VALUE_REDACTION_PATTERN.matcher(data), "REDACTED"));
+            builder.addPolicy(interceptorManager.getRecordPolicy(redactors));
+        }
+        return builder;
+    }
+
     protected String getNewUserId() {
         if (getTestMode() == TestMode.LIVE) {
             CommunicationIdentityClient communicationIdentityClient = new CommunicationIdentityClientBuilder()

@@ -55,7 +55,6 @@ public class ServerCallLiveTests extends CallingServerTestBase {
         CallingServerClient tokenClient = setupClient(builder, "runAllClientFunctionsForTokenCredentialClient");
         String groupId = getGroupId("runAllClientFunctionsForTokenCredentialClient");
         runAllClientFunctions(groupId, tokenClient);
-
     }
 
     private void runAllClientFunctions(String groupId, CallingServerClient client) {
