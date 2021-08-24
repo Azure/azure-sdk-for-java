@@ -247,6 +247,30 @@ public class RedirectPolicyTest {
         assertEquals(200, response.getStatusCode());
     }
 
+    @Test
+    public void nullRedirectUrlTest() throws MalformedURLException {
+        RecordingHttpClient httpClient = new RecordingHttpClient(request -> {
+            if (request.getUrl().toString().equals("http://localhost/")) {
+                Map<String, String> headers = new HashMap<>();
+                HttpHeaders httpHeader = new HttpHeaders(headers);
+                return Mono.just(new MockHttpResponse(request, 308, httpHeader));
+            } else {
+                return Mono.just(new MockHttpResponse(request, 200));
+            }
+        });
+
+        HttpPipeline pipeline = new HttpPipelineBuilder()
+            .httpClient(httpClient)
+            .policies(new RedirectPolicy(new DefaultRedirectStrategy()))
+            .build();
+
+        HttpResponse response = pipeline.send(new HttpRequest(HttpMethod.GET,
+            new URL("http://localhost/"))).block();
+
+        assertEquals(1, httpClient.getCount());
+        assertEquals(308, response.getStatusCode());
+    }
+
     static class RecordingHttpClient implements HttpClient {
 
         private final AtomicInteger count = new AtomicInteger();

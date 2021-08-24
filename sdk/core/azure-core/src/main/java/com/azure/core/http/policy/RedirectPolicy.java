@@ -14,7 +14,8 @@ import java.util.Objects;
 import java.util.Set;
 
 /**
- * A {@link HttpPipelinePolicy} that redirects a {@link HttpRequest} when an HTTP Redirect is received as response.
+ * A {@link HttpPipelinePolicy} that redirects a {@link HttpRequest} when an HTTP Redirect is received as
+ * {@link HttpResponse response}.
  */
 public final class RedirectPolicy implements HttpPipelinePolicy {
     private final RedirectStrategy redirectStrategy;
@@ -29,11 +30,11 @@ public final class RedirectPolicy implements HttpPipelinePolicy {
     }
 
     /**
-     * Creates {@link RedirectPolicy} with the provided {@code redirectStrategy} as {@link RedirectStrategy} and
-     * uses the redirect status response code (301, 302, 307, 308) to determine if this request should be redirected.
+     * Creates {@link RedirectPolicy} with the provided {@code redirectStrategy} as {@link RedirectStrategy}
+     * to determine if this request should be redirected.
      *
      * @param redirectStrategy The {@link RedirectStrategy} used for redirection.
-     * @throws NullPointerException When {@code redirectStrategy} is null.
+     * @throws NullPointerException When {@code redirectStrategy} is {@code null}.
      */
     public RedirectPolicy(RedirectStrategy redirectStrategy) {
         this.redirectStrategy = Objects.requireNonNull(redirectStrategy, "'redirectStrategy' cannot be null.");
@@ -56,8 +57,9 @@ public final class RedirectPolicy implements HttpPipelinePolicy {
 
         return next.clone().process()
             .flatMap(httpResponse -> {
-                if (redirectStrategy.shouldAttemptRedirect(context, httpResponse, redirectAttempt, attemptedRedirectUrls)) {
-                    HttpRequest redirectRequestCopy = redirectStrategy.createRedirect(httpResponse);
+                if (redirectStrategy.shouldAttemptRedirect(context, httpResponse, redirectAttempt,
+                    attemptedRedirectUrls)) {
+                    HttpRequest redirectRequestCopy = redirectStrategy.createRedirectRequest(httpResponse);
                     return httpResponse.getBody()
                         .ignoreElements()
                         .then(attemptRedirect(context, next, redirectRequestCopy, redirectAttempt + 1));

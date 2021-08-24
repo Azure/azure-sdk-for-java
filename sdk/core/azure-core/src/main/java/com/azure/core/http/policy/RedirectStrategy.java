@@ -48,10 +48,10 @@ public interface RedirectStrategy {
                                   Set<String> attemptedRedirectUrls);
 
     /**
-     * Creates the {@link HttpRequest request} for the redirect attempt.
+     * Creates an {@link HttpRequest request} for the redirect attempt.
      *
-     * @param httpResponse the {@link HttpRequest} containing the redirect url present in the response headers
+     * @param httpResponse the {@link HttpResponse} containing the redirect url present in the response headers
      * @return the modified {@link HttpRequest} to redirect the incoming request.
      */
-    HttpRequest createRedirect(HttpResponse httpResponse);
+    HttpRequest createRedirectRequest(HttpResponse httpResponse);
 }
