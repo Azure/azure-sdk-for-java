@@ -57,6 +57,7 @@ com.azure:azure-communication-common;1.0.3;1.0.3
 com.azure:azure-communication-sms;1.0.3;1.1.0-beta.1
 com.azure:azure-communication-identity;1.1.1;1.1.1
 com.azure:azure-communication-phonenumbers;1.0.3;1.1.0-beta.1
+com.azure:azure-communication-networktraversal;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-containers-containerregistry;1.0.0-beta.3;1.0.0-beta.4
 com.azure:azure-containers-containerregistry-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-core;1.19.0;1.20.0-beta.1
@@ -99,7 +100,7 @@ com.azure:azure-messaging-servicebus;7.4.0;7.5.0-beta.1
 com.azure:azure-messaging-servicebus-track1-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-messaging-servicebus-track2-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-messaging-webpubsub;1.0.0-beta.3;1.0.0-beta.4
-com.azure:azure-mixedreality-authentication;1.0.0;1.1.0
+com.azure:azure-mixedreality-authentication;1.1.0;1.2.0-beta.1
 com.azure:azure-mixedreality-remoterendering;1.0.0;1.1.0-beta.1
 com.azure:azure-monitor-opentelemetry-exporter;1.0.0-beta.4;1.0.0-beta.5
 com.azure:azure-monitor-query;1.0.0-beta.3;1.0.0-beta.4
