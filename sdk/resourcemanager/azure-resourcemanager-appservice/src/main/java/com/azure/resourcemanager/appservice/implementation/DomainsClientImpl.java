@@ -346,14 +346,15 @@ public final class DomainsClientImpl
     /**
      * Description for Check if a domain is available for registration.
      *
-     * @param name Name of the object.
+     * @param identifier Name of the domain.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return domain availability check result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<DomainAvailabilityCheckResultInner>> checkAvailabilityWithResponseAsync(String name) {
+    public Mono<Response<DomainAvailabilityCheckResultInner>> checkAvailabilityWithResponseAsync(
+        NameIdentifierInner identifier) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -366,9 +367,12 @@ public final class DomainsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        if (identifier == null) {
+            return Mono.error(new IllegalArgumentException("Parameter identifier is required and cannot be null."));
+        } else {
+            identifier.validate();
+        }
         final String accept = "application/json";
-        NameIdentifierInner identifier = new NameIdentifierInner();
-        identifier.withName(name);
         return FluxUtil
             .withContext(
                 context ->
@@ -386,7 +390,7 @@ public final class DomainsClientImpl
     /**
      * Description for Check if a domain is available for registration.
      *
-     * @param name Name of the object.
+     * @param identifier Name of the domain.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -395,7 +399,7 @@ public final class DomainsClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<DomainAvailabilityCheckResultInner>> checkAvailabilityWithResponseAsync(
-        String name, Context context) {
+        NameIdentifierInner identifier, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -408,9 +412,12 @@ public final class DomainsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        if (identifier == null) {
+            return Mono.error(new IllegalArgumentException("Parameter identifier is required and cannot be null."));
+        } else {
+            identifier.validate();
+        }
         final String accept = "application/json";
-        NameIdentifierInner identifier = new NameIdentifierInner();
-        identifier.withName(name);
         context = this.client.mergeContext(context);
         return service
             .checkAvailability(
@@ -425,15 +432,15 @@ public final class DomainsClientImpl
     /**
      * Description for Check if a domain is available for registration.
      *
-     * @param name Name of the object.
+     * @param identifier Name of the domain.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return domain availability check result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DomainAvailabilityCheckResultInner> checkAvailabilityAsync(String name) {
-        return checkAvailabilityWithResponseAsync(name)
+    public Mono<DomainAvailabilityCheckResultInner> checkAvailabilityAsync(NameIdentifierInner identifier) {
+        return checkAvailabilityWithResponseAsync(identifier)
             .flatMap(
                 (Response<DomainAvailabilityCheckResultInner> res) -> {
                     if (res.getValue() != null) {
@@ -447,41 +454,21 @@ public final class DomainsClientImpl
     /**
      * Description for Check if a domain is available for registration.
      *
+     * @param identifier Name of the domain.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return domain availability check result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DomainAvailabilityCheckResultInner> checkAvailabilityAsync() {
-        final String name = null;
-        return checkAvailabilityWithResponseAsync(name)
-            .flatMap(
-                (Response<DomainAvailabilityCheckResultInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+    public DomainAvailabilityCheckResultInner checkAvailability(NameIdentifierInner identifier) {
+        return checkAvailabilityAsync(identifier).block();
     }
 
     /**
      * Description for Check if a domain is available for registration.
      *
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return domain availability check result.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public DomainAvailabilityCheckResultInner checkAvailability() {
-        final String name = null;
-        return checkAvailabilityAsync(name).block();
-    }
-
-    /**
-     * Description for Check if a domain is available for registration.
-     *
-     * @param name Name of the object.
+     * @param identifier Name of the domain.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -489,8 +476,9 @@ public final class DomainsClientImpl
      * @return domain availability check result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DomainAvailabilityCheckResultInner> checkAvailabilityWithResponse(String name, Context context) {
-        return checkAvailabilityWithResponseAsync(name, context).block();
+    public Response<DomainAvailabilityCheckResultInner> checkAvailabilityWithResponse(
+        NameIdentifierInner identifier, Context context) {
+        return checkAvailabilityWithResponseAsync(identifier, context).block();
     }
 
     /**

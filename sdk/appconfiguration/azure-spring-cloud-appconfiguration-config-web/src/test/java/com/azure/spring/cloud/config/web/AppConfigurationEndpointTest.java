@@ -2,9 +2,11 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.config.web;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
 import java.io.IOException;
@@ -13,9 +15,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
+import org.junit.jupiter.api.Test;
 
 import com.azure.spring.cloud.config.properties.ConfigStore;
 import com.fasterxml.jackson.core.JsonGenerationException;
@@ -31,9 +31,6 @@ public class AppConfigurationEndpointTest {
     private static final String GET_TEST_REFRESH = "src/test/resources/webHookRefresh.json";
 
     private static final String GET_TEST_INVALID = "src/test/resources/webHookInvalid.json";
-
-    @Rule
-    public ExpectedException expected = ExpectedException.none();
 
     private ObjectMapper mapper = new ObjectMapper();
 
@@ -58,9 +55,8 @@ public class AppConfigurationEndpointTest {
         JsonNode request = mapper.readValue(new File(GET_TEST_INVALID), JsonNode.class);
         List<ConfigStore> configStores = new ArrayList<ConfigStore>();
         Map<String, String> allRequestParams = new HashMap<String, String>();
-        expected.expect(IllegalArgumentException.class);
 
-        new AppConfigurationEndpoint(request, configStores, allRequestParams);
+        assertThrows(IllegalArgumentException.class, () -> new AppConfigurationEndpoint(request, configStores, allRequestParams));
     }
 
     @Test
