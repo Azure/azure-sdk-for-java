@@ -25,9 +25,9 @@ import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
 import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
 import com.azure.cosmos.implementation.query.QueryInfo;
 import com.azure.cosmos.implementation.routing.Range;
-import com.azure.cosmos.implementation.throughputControl.config.ThroughputControlGroupFactory;
 import com.azure.cosmos.implementation.throughputControl.config.GlobalThroughputControlGroup;
 import com.azure.cosmos.implementation.throughputControl.config.LocalThroughputControlGroup;
+import com.azure.cosmos.implementation.throughputControl.config.ThroughputControlGroupFactory;
 import com.azure.cosmos.models.CosmosBulkExecutionOptions;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
 import com.azure.cosmos.models.CosmosConflictProperties;
@@ -61,7 +61,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -795,8 +794,8 @@ public class CosmosAsyncContainer {
      *
      * @return A Flux of {@link CosmosBulkOperationResponse} which contains operation and it's response or exception.
      * <p>
-     *     To create a operation which can be executed here, use {@link BulkOperations}. For eg.
-     *     for a upsert operation use {@link BulkOperations#getUpsertItemOperation(Object, PartitionKey)}
+     *     To create a operation which can be executed here, use {@link com.azure.cosmos.models.CosmosBulkOperations}. For eg.
+     *     for a upsert operation use {@link com.azure.cosmos.models.CosmosBulkOperations#getUpsertItemOperation(Object, PartitionKey)}
      * </p>
      * <p>
      *     We can get the corresponding operation using {@link CosmosBulkOperationResponse#getOperation()} and
@@ -811,7 +810,7 @@ public class CosmosAsyncContainer {
     public <TContext> Flux<CosmosBulkOperationResponse<TContext>> processBulkOperations(
         Flux<CosmosItemOperation> operations) {
 
-        return this.processBulkOperations(operations, new BulkExecutionOptions());
+        return this.processBulkOperations(operations, new CosmosBulkExecutionOptions());
     }
 
     /**
@@ -896,7 +895,6 @@ public class CosmosAsyncContainer {
      */
     @Beta(value = Beta.SinceVersion.V4_18_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     @Deprecated() //forRemoval = true, since = "4.19"
-    @SuppressWarnings("DeprecatedIsStillUsed")
     public <TContext> Flux<CosmosBulkOperationResponse<TContext>> processBulkOperations(
         Flux<CosmosItemOperation> operations,
         BulkExecutionOptions bulkOptions) {
@@ -915,8 +913,8 @@ public class CosmosAsyncContainer {
      *
      * @return A Flux of {@link CosmosBulkOperationResponse} which contains operation and it's response or exception.
      * <p>
-     *     To create a operation which can be executed here, use {@link BulkOperations}. For eg.
-     *     for a upsert operation use {@link BulkOperations#getUpsertItemOperation(Object, PartitionKey)}
+     *     To create a operation which can be executed here, use {@link com.azure.cosmos.models.CosmosBulkOperations}. For eg.
+     *     for a upsert operation use {@link com.azure.cosmos.models.CosmosBulkOperations#getUpsertItemOperation(Object, PartitionKey)}
      * </p>
      * <p>
      *     We can get the corresponding operation using {@link CosmosBulkOperationResponse#getOperation()} and

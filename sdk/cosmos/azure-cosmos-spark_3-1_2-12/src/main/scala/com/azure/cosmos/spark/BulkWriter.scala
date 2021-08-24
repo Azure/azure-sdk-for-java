@@ -4,7 +4,7 @@ package com.azure.cosmos.spark
 
 // scalastyle:off underscore.import
 import com.azure.cosmos._
-import com.azure.cosmos.models.{CosmosBulkExecutionOptions, CosmosBulkExecutionThresholdsState}
+import com.azure.cosmos.models.{CosmosBulkExecutionOptions, CosmosBulkExecutionThresholdsState, CosmosBulkItemRequestOptions, CosmosBulkOperations}
 
 import scala.collection.mutable
 import scala.concurrent.duration.Duration
@@ -244,18 +244,18 @@ class BulkWriter(container: CosmosAsyncContainer,
 
     val bulkItemOperation = writeConfig.itemWriteStrategy match {
       case ItemWriteStrategy.ItemOverwrite =>
-        BulkOperations.getUpsertItemOperation(objectNode, partitionKeyValue, operationContext)
+        CosmosBulkOperations.getUpsertItemOperation(objectNode, partitionKeyValue, operationContext)
       case ItemWriteStrategy.ItemAppend =>
-        BulkOperations.getCreateItemOperation(objectNode, partitionKeyValue, operationContext)
+        CosmosBulkOperations.getCreateItemOperation(objectNode, partitionKeyValue, operationContext)
       case ItemWriteStrategy.ItemDelete =>
-        BulkOperations.getDeleteItemOperation(operationContext.itemId, partitionKeyValue, operationContext)
+        CosmosBulkOperations.getDeleteItemOperation(operationContext.itemId, partitionKeyValue, operationContext)
       case ItemWriteStrategy.ItemDeleteIfNotModified =>
-        BulkOperations.getDeleteItemOperation(
+        CosmosBulkOperations.getDeleteItemOperation(
           operationContext.itemId,
           partitionKeyValue,
           operationContext.eTag match {
-            case Some(eTag) => new BulkItemRequestOptions().setIfMatchETag(eTag)
-            case _ =>  new BulkItemRequestOptions()
+            case Some(eTag) => new CosmosBulkItemRequestOptions().setIfMatchETag(eTag)
+            case _ =>  new CosmosBulkItemRequestOptions()
           },
           operationContext)
       case _ =>

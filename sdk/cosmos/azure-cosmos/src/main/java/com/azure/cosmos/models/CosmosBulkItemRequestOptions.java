@@ -1,21 +1,19 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.cosmos;
+package com.azure.cosmos.models;
 
+import com.azure.cosmos.CosmosClientBuilder;
+import com.azure.cosmos.CosmosItemOperation;
 import com.azure.cosmos.util.Beta;
 
 /**
- * @deprecated forRemoval = true, since = "4.19"
- * This class is not necessary anymore and will be removed. Please use {@link com.azure.cosmos.models.CosmosBulkItemRequestOptions}
- *
  * Encapsulates options that can be specified for an operation used in Bulk execution. It can be passed while
- * creating bulk request using {@link BulkOperations}.
+ * creating bulk request using {@link CosmosBulkOperations}.
  */
-@Beta(value = Beta.SinceVersion.V4_9_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-@Deprecated() //forRemoval = true, since = "4.19"
-public final class BulkItemRequestOptions
-        extends BulkItemRequestOptionsBase {
+@Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+public final class CosmosBulkItemRequestOptions
+        extends CosmosBulkItemRequestOptionsBase {
 
     /**
      * Sets the If-Match (ETag) associated with the operation in {@link CosmosItemOperation}.
@@ -23,8 +21,8 @@ public final class BulkItemRequestOptions
      * @param ifMatchETag the ifMatchETag associated with the request.
      * @return the current request options
      */
-    @Beta(value = Beta.SinceVersion.V4_9_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    public BulkItemRequestOptions setIfMatchETag(final String ifMatchETag) {
+    @Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public CosmosBulkItemRequestOptions setIfMatchETag(final String ifMatchETag) {
         super.setIfMatchETagCore(ifMatchETag);
         return this;
     }
@@ -35,8 +33,8 @@ public final class BulkItemRequestOptions
      * @param ifNoneMatchEtag the ifNoneMatchETag associated with the request.
      * @return the current request options.
      */
-    @Beta(value = Beta.SinceVersion.V4_9_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    public BulkItemRequestOptions setIfNoneMatchETag(final String ifNoneMatchEtag) {
+    @Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public CosmosBulkItemRequestOptions setIfNoneMatchETag(final String ifNoneMatchEtag) {
         super.setIfNoneMatchETagCore(ifNoneMatchEtag);
         return this;
     }
@@ -52,16 +50,16 @@ public final class BulkItemRequestOptions
      *
      * By-default, this is null.
      *
-     * NOTE: This flag is also present on {@link com.azure.cosmos.CosmosClientBuilder}, however if specified
-     * here, it will override the value specified in {@link com.azure.cosmos.CosmosClientBuilder} for this request.
+     * NOTE: This flag is also present on {@link CosmosClientBuilder}, however if specified
+     * here, it will override the value specified in {@link CosmosClientBuilder} for this request.
      *
      * @param contentResponseOnWriteEnabled a boolean indicating whether payload will be included
      * in the response or not for this operation.
      *
      * @return the current request options.
      */
-    @Beta(value = Beta.SinceVersion.V4_9_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    public BulkItemRequestOptions setContentResponseOnWriteEnabled(Boolean contentResponseOnWriteEnabled) {
+    @Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public CosmosBulkItemRequestOptions setContentResponseOnWriteEnabled(Boolean contentResponseOnWriteEnabled) {
         super.setContentResponseOnWriteEnabledCore(contentResponseOnWriteEnabled);
         return this;
     }
