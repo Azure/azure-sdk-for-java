@@ -4,7 +4,6 @@
 package com.azure.data.schemaregistry.avro;
 
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.data.schemaregistry.models.SerializationType;
 import org.apache.avro.Schema;
 import org.apache.avro.generic.GenericContainer;
 import org.apache.avro.generic.GenericDatumReader;
@@ -52,10 +51,6 @@ class AvroSchemaRegistryUtils {
         this.decoderFactory = Objects.requireNonNull(decoderFactory, "'decoderFactory' cannot be null.");
     }
 
-    SerializationType getSerializationType() {
-        return SerializationType.AVRO;
-    }
-
     /**
      * @param schemaString string representation of schema
      *
@@ -89,10 +84,6 @@ class AvroSchemaRegistryUtils {
      */
     String getSchemaName(Object object) {
         return AvroSchemaUtils.getSchema(object).getFullName();
-    }
-
-    String getSchemaGroup() {
-        return "$Default";
     }
 
     /**
