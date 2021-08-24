@@ -6,6 +6,7 @@ package com.azure.monitor.query.models;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.models.HttpResponseError;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.CoreUtils;
 
 import java.util.List;
 
@@ -49,5 +50,17 @@ public final class LogsBatchQueryResult extends LogsQueryResult {
         return status;
     }
 
+    /**
+     * Returns true if the query failed. If the query partially succeeded i.e. there are tables returned in the
+     * response, then this method will return {@code false}.
+     *
+     * @return Returns true if the query failed.
+     */
+    public boolean hasFailed() {
+        if (getError() != null && CoreUtils.isNullOrEmpty(getAllTables())) {
+            return true;
+        }
+        return false;
+    }
 }
 

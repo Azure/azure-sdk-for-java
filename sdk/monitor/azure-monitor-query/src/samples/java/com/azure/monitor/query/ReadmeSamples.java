@@ -117,18 +117,24 @@ public class ReadmeSamples {
         LogsBatchQuery logsBatchQuery = new LogsBatchQuery();
         String query1 = logsBatchQuery.addQuery("{workspace-id}", "{query-1}", new TimeInterval(Duration.ofDays(2)));
         String query2 = logsBatchQuery.addQuery("{workspace-id}", "{query-2}", new TimeInterval(Duration.ofDays(30)));
+        String query3 = logsBatchQuery.addQuery("{workspace-id}", "{query-3}", new TimeInterval(Duration.ofDays(10)));
 
         LogsBatchQueryResults batchResults = logsQueryClient
                 .queryBatchWithResponse(logsBatchQuery, Context.NONE).getValue();
 
-        LogsBatchQueryResult result = batchResults.getResult(query1);
-        for (LogsTableRow row : result.getTable().getRows()) {
+        LogsBatchQueryResult query1Result = batchResults.getResult(query1);
+        for (LogsTableRow row : query1Result.getTable().getRows()) {
             System.out.println(row.getColumnValue("OperationName") + " " + row.getColumnValue("ResourceGroup"));
         }
 
         List<CustomLogModel> customLogModels = batchResults.getResult(query2, CustomLogModel.class);
         for (CustomLogModel customLogModel : customLogModels) {
             System.out.println(customLogModel.getOperationName() + " " + customLogModel.getResourceGroup());
+        }
+
+        LogsBatchQueryResult query3Result = batchResults.getResult(query3);
+        if (query3Result.hasFailed()) {
+            System.out.println(query3Result.getError().getMessage());
         }
     }
 

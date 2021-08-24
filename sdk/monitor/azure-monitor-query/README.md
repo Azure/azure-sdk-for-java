@@ -181,7 +181,7 @@ for (CustomLogModel customLogModel : customLogModels) {
 ```
 ### Get logs for a batch of queries
 
-<!-- embedme ./src/samples/java/com/azure/monitor/query/ReadmeSamples.java#L113-L132 -->
+<!-- embedme ./src/samples/java/com/azure/monitor/query/ReadmeSamples.java#L113-L138 -->
 ```java
 LogsQueryClient logsQueryClient = new LogsQueryClientBuilder()
         .credential(new DefaultAzureCredentialBuilder().build())
@@ -190,12 +190,13 @@ LogsQueryClient logsQueryClient = new LogsQueryClientBuilder()
 LogsBatchQuery logsBatchQuery = new LogsBatchQuery();
 String query1 = logsBatchQuery.addQuery("{workspace-id}", "{query-1}", new TimeInterval(Duration.ofDays(2)));
 String query2 = logsBatchQuery.addQuery("{workspace-id}", "{query-2}", new TimeInterval(Duration.ofDays(30)));
+String query3 = logsBatchQuery.addQuery("{workspace-id}", "{query-3}", new TimeInterval(Duration.ofDays(10)));
 
 LogsBatchQueryResults batchResults = logsQueryClient
         .queryBatchWithResponse(logsBatchQuery, Context.NONE).getValue();
 
-LogsBatchQueryResult result = batchResults.getResult(query1);
-for (LogsTableRow row : result.getTable().getRows()) {
+LogsBatchQueryResult query1Result = batchResults.getResult(query1);
+for (LogsTableRow row : query1Result.getTable().getRows()) {
     System.out.println(row.getColumnValue("OperationName") + " " + row.getColumnValue("ResourceGroup"));
 }
 
@@ -203,11 +204,16 @@ List<CustomLogModel> customLogModels = batchResults.getResult(query2, CustomLogM
 for (CustomLogModel customLogModel : customLogModels) {
     System.out.println(customLogModel.getOperationName() + " " + customLogModel.getResourceGroup());
 }
+
+LogsBatchQueryResult query3Result = batchResults.getResult(query3);
+if (query3Result.hasFailed()) {
+    System.out.println(query3Result.getError().getMessage());
+}
 ```
 
 ### Get logs for a query with server timeout
 
-<!-- embedme ./src/samples/java/com/azure/monitor/query/ReadmeSamples.java#L140-L149 -->
+<!-- embedme ./src/samples/java/com/azure/monitor/query/ReadmeSamples.java#L146-L155 -->
 ```java
 LogsQueryClient logsQueryClient = new LogsQueryClientBuilder()
     .credential(new DefaultAzureCredentialBuilder().build())
@@ -223,7 +229,7 @@ Response<LogsQueryResult> response = logsQueryClient.queryWithResponse("{workspa
 
 ### Get logs from multiple workspaces
 
-<!-- embedme ./src/samples/java/com/azure/monitor/query/ReadmeSamples.java#L156-L164 -->
+<!-- embedme ./src/samples/java/com/azure/monitor/query/ReadmeSamples.java#L162-L170 -->
 ```java
 LogsQueryClient logsQueryClient = new LogsQueryClientBuilder()
         .credential(new DefaultAzureCredentialBuilder().build())
@@ -267,7 +273,7 @@ A resource ID, as denoted by the `{resource-id}` placeholder in the sample below
 2. From the **Overview** blade, select the **JSON View** link.
 3. In the resulting JSON, copy the value of the `id` property.
 
-<!-- embedme ./src/samples/java/com/azure/monitor/query/ReadmeSamples.java#L172-L187 -->
+<!-- embedme ./src/samples/java/com/azure/monitor/query/ReadmeSamples.java#L178-L193 -->
 ```java
 MetricsQueryClient metricsQueryClient = new MetricsQueryClientBuilder()
         .credential(new DefaultAzureCredentialBuilder().build())
@@ -289,7 +295,7 @@ for (MetricResult metric : metricsQueryResult.getMetrics()) {
 
 ### Get average and count metrics
 
-<!-- embedme ./src/samples/java/com/azure/monitor/query/ReadmeSamples.java#L194-L215 -->
+<!-- embedme ./src/samples/java/com/azure/monitor/query/ReadmeSamples.java#L200-L221 -->
 ```java
 MetricsQueryClient metricsQueryClient = new MetricsQueryClientBuilder()
     .credential(new DefaultAzureCredentialBuilder().build())
