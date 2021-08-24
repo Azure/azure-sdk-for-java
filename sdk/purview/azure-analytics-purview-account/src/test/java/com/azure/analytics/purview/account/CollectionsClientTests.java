@@ -5,7 +5,7 @@ package com.azure.analytics.purview.account;
 
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.BinaryData;
-import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -21,7 +21,7 @@ public class CollectionsClientTests extends PurviewAccountClientTestBase {
             .buildCollectionsClient());
     }
 
-    @Disabled("{\"error\":{\"code\":\"Unauthorized\",\"message\":\"Not authorized to access account\"}}")
+    @Test
     public void testCollections() {
         PagedIterable<BinaryData> response = client.listCollections(null);
         List<BinaryData> list = response.stream().collect(Collectors.toList());

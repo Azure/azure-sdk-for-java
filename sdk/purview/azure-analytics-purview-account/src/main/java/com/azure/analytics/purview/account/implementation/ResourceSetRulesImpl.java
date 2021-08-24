@@ -15,6 +15,7 @@ import com.azure.core.annotation.QueryParam;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.PagedResponse;
@@ -207,6 +208,8 @@ public final class ResourceSetRulesImpl {
      * }</pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
+     *     false.
      * @return a resource set config service model.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -334,6 +337,8 @@ public final class ResourceSetRulesImpl {
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
+     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
+     *     false.
      * @return a resource set config service model.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -457,6 +462,8 @@ public final class ResourceSetRulesImpl {
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
+     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
+     *     false.
      * @return a resource set config service model.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -584,6 +591,8 @@ public final class ResourceSetRulesImpl {
      *
      * @param resourceSetRuleConfig ResourceSetRuleConfig implementation class.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
+     *     false.
      * @return resourceSetRuleConfig implementation class.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -720,6 +729,8 @@ public final class ResourceSetRulesImpl {
      * @param resourceSetRuleConfig ResourceSetRuleConfig implementation class.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
+     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
+     *     false.
      * @return resourceSetRuleConfig implementation class.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -854,6 +865,8 @@ public final class ResourceSetRulesImpl {
      * @param resourceSetRuleConfig ResourceSetRuleConfig implementation class.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
+     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
+     *     false.
      * @return resourceSetRuleConfig implementation class.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -874,6 +887,8 @@ public final class ResourceSetRulesImpl {
      * </table>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
+     *     false.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -900,6 +915,8 @@ public final class ResourceSetRulesImpl {
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
+     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
+     *     false.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -921,6 +938,8 @@ public final class ResourceSetRulesImpl {
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
+     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
+     *     false.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1048,6 +1067,8 @@ public final class ResourceSetRulesImpl {
      * }</pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
+     *     false.
      * @return a resource set config service model.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1191,6 +1212,8 @@ public final class ResourceSetRulesImpl {
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
+     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
+     *     false.
      * @return a resource set config service model.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1332,6 +1355,8 @@ public final class ResourceSetRulesImpl {
      * }</pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
+     *     false.
      * @return a resource set config service model.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -1462,6 +1487,8 @@ public final class ResourceSetRulesImpl {
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
+     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
+     *     false.
      * @return a resource set config service model.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -1591,6 +1618,8 @@ public final class ResourceSetRulesImpl {
      * }</pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
+     *     false.
      * @return a resource set config service model.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -1719,6 +1748,8 @@ public final class ResourceSetRulesImpl {
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
+     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
+     *     false.
      * @return a resource set config service model.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -1838,6 +1869,8 @@ public final class ResourceSetRulesImpl {
      *
      * @param nextLink The nextLink parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
+     *     false.
      * @return paged list of account resources.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1971,6 +2004,8 @@ public final class ResourceSetRulesImpl {
      * @param nextLink The nextLink parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
+     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
+     *     false.
      * @return paged list of account resources.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)

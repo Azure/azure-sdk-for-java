@@ -8,6 +8,7 @@ import com.azure.analytics.purview.account.implementation.CollectionsImpl;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
@@ -64,6 +65,8 @@ public final class CollectionsAsyncClient {
      *
      * @param collectionName The collectionName parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
+     *     false.
      * @return a collection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -114,6 +117,8 @@ public final class CollectionsAsyncClient {
      * @param collectionName The collectionName parameter.
      * @param collection Collection resource.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
+     *     false.
      * @return collection resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -135,6 +140,8 @@ public final class CollectionsAsyncClient {
      *
      * @param collectionName The collectionName parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
+     *     false.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -184,6 +191,8 @@ public final class CollectionsAsyncClient {
      * }</pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
+     *     false.
      * @return paged list of collections.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -220,6 +229,8 @@ public final class CollectionsAsyncClient {
      *
      * @param collectionName The collectionName parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
+     *     false.
      * @return paged list of collections.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -253,6 +264,8 @@ public final class CollectionsAsyncClient {
      *
      * @param collectionName The collectionName parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
+     *     false.
      * @return the parent name and parent friendly name chains that represent the collection path.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
