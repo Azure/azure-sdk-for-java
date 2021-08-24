@@ -73,6 +73,11 @@
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
+      <artifactId>azure-communication-networktraversal</artifactId>
+      <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-communication-networktraversal;current} -->
+    </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
       <artifactId>azure-communication-sms</artifactId>
       <version>1.1.0-beta.1</version> <!-- {x-version-update;com.azure:azure-communication-sms;current} -->
     </dependency>
@@ -89,7 +94,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-containers-containerregistry</artifactId>
-      <version>1.0.0-beta.4</version> <!-- {x-version-update;com.azure:azure-containers-containerregistry;current} -->
+      <version>1.0.0-beta.5</version> <!-- {x-version-update;com.azure:azure-containers-containerregistry;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -575,7 +580,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-mixedreality-authentication</artifactId>
-      <version>1.1.0</version> <!-- {x-version-update;com.azure:azure-mixedreality-authentication;current} -->
+      <version>1.2.0-beta.1</version> <!-- {x-version-update;com.azure:azure-mixedreality-authentication;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
