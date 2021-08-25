@@ -13,7 +13,7 @@
   <packaging>jar</packaging>
 
   <name>Microsoft Azure SDK for NetAppFiles Management</name>
-  <description>This package contains Microsoft Azure SDK for NetAppFiles Management SDK. For documentation on how to use this package, please see https://aka.ms/azsdk/java/mgmt. Microsoft NetApp Files Azure Resource Provider specification. Package tag package-netapp-2021-04-01.</description>
+  <description>This package contains Microsoft Azure SDK for NetAppFiles Management SDK. For documentation on how to use this package, please see https://aka.ms/azsdk/java/mgmt. Microsoft NetApp Files Azure Resource Provider specification. Package tag package-netapp-2021-06-01.</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
   <licenses>

@@ -1,7 +1,120 @@
 # Release History
 
-## 1.0.0-beta.5 (Unreleased)
+## 1.0.0-beta.5 (2021-08-25)
 
+- Azure Resource Manager NetAppFiles client library for Java. This package contains Microsoft Azure SDK for NetAppFiles Management SDK. Microsoft NetApp Files Azure Resource Provider specification. Package tag package-netapp-2021-06-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Breaking Changes
+
+* `models.MountTargetProperties` was removed
+
+#### `models.BackupPolicy$Definition` was modified
+
+* `withYearlyBackupsToKeep(java.lang.Integer)` was removed
+* `withVolumeBackups(java.util.List)` was removed
+* `withVolumesAssigned(java.lang.Integer)` was removed
+
+#### `models.BackupPolicyPatch` was modified
+
+* `yearlyBackupsToKeep()` was removed
+* `withVolumesAssigned(java.lang.Integer)` was removed
+* `withVolumeBackups(java.util.List)` was removed
+* `withYearlyBackupsToKeep(java.lang.Integer)` was removed
+
+#### `models.BackupPolicy$Update` was modified
+
+* `withYearlyBackupsToKeep(java.lang.Integer)` was removed
+* `withVolumesAssigned(java.lang.Integer)` was removed
+* `withVolumeBackups(java.util.List)` was removed
+
+#### `models.BackupPolicy` was modified
+
+* `yearlyBackupsToKeep()` was removed
+
+### Features Added
+
+* `models.AvsDataStore` was added
+
+* `models.EncryptionType` was added
+
+* `models.MetricAggregationType` was added
+
+#### `models.MetricSpecification` was modified
+
+* `supportedTimeGrainTypes()` was added
+* `withSupportedAggregationTypes(java.util.List)` was added
+* `internalMetricName()` was added
+* `sourceMdmAccount()` was added
+* `sourceMdmNamespace()` was added
+* `withSourceMdmNamespace(java.lang.String)` was added
+* `supportedAggregationTypes()` was added
+* `withSupportedTimeGrainTypes(java.util.List)` was added
+* `withInternalMetricName(java.lang.String)` was added
+* `withSourceMdmAccount(java.lang.String)` was added
+
+#### `models.Volume` was modified
+
+* `avsDataStore()` was added
+* `isDefaultQuotaEnabled()` was added
+* `defaultUserQuotaInKiBs()` was added
+* `etag()` was added
+* `cloneProgress()` was added
+* `defaultGroupQuotaInKiBs()` was added
+
+#### `models.Volume$Update` was modified
+
+* `withDefaultGroupQuotaInKiBs(java.lang.Long)` was added
+* `withIsDefaultQuotaEnabled(java.lang.Boolean)` was added
+* `withDefaultUserQuotaInKiBs(java.lang.Long)` was added
+
+#### `models.VolumePatch` was modified
+
+* `isDefaultQuotaEnabled()` was added
+* `defaultUserQuotaInKiBs()` was added
+* `withDefaultUserQuotaInKiBs(java.lang.Long)` was added
+* `defaultGroupQuotaInKiBs()` was added
+* `withIsDefaultQuotaEnabled(java.lang.Boolean)` was added
+* `withDefaultGroupQuotaInKiBs(java.lang.Long)` was added
+
+#### `models.CapacityPool$Definition` was modified
+
+* `withEncryptionType(models.EncryptionType)` was added
+
+#### `models.CapacityPool` was modified
+
+* `encryptionType()` was added
+* `etag()` was added
+
+#### `models.Volume$Definition` was modified
+
+* `withAvsDataStore(models.AvsDataStore)` was added
+* `withDefaultUserQuotaInKiBs(java.lang.Long)` was added
+* `withDefaultGroupQuotaInKiBs(java.lang.Long)` was added
+* `withIsDefaultQuotaEnabled(java.lang.Boolean)` was added
+
+#### `models.BackupPolicyPatch` was modified
+
+* `namePropertiesName()` was added
+* `backupPolicyId()` was added
+
+#### `models.Accounts` was modified
+
+* `list(com.azure.core.util.Context)` was added
+* `list()` was added
+
+#### `models.BackupPolicy` was modified
+
+* `etag()` was added
+* `namePropertiesName()` was added
+* `backupPolicyId()` was added
+
+#### `models.NetAppAccount` was modified
+
+* `etag()` was added
+
+#### `models.SnapshotPolicy` was modified
+
+* `etag()` was added
 
 ## 1.0.0-beta.4 (2021-06-16)
 
