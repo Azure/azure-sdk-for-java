@@ -5,35 +5,37 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.appservice.fluent.models.RenewCertificateOrderRequestProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Class representing certificate renew request. */
-@JsonFlatten
 @Fluent
-public class RenewCertificateOrderRequest extends ProxyOnlyResource {
+public final class RenewCertificateOrderRequest extends ProxyOnlyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(RenewCertificateOrderRequest.class);
 
     /*
-     * Certificate Key Size.
+     * RenewCertificateOrderRequest resource specific properties
      */
-    @JsonProperty(value = "properties.keySize")
-    private Integer keySize;
+    @JsonProperty(value = "properties")
+    private RenewCertificateOrderRequestProperties innerProperties;
 
-    /*
-     * Csr to be used for re-key operation.
+    /**
+     * Get the innerProperties property: RenewCertificateOrderRequest resource specific properties.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.csr")
-    private String csr;
+    private RenewCertificateOrderRequestProperties innerProperties() {
+        return this.innerProperties;
+    }
 
-    /*
-     * Should we change the ASC type (from managed private key to external
-     * private key and vice versa).
-     */
-    @JsonProperty(value = "properties.isPrivateKeyExternal")
-    private Boolean isPrivateKeyExternal;
+    /** {@inheritDoc} */
+    @Override
+    public RenewCertificateOrderRequest withKind(String kind) {
+        super.withKind(kind);
+        return this;
+    }
 
     /**
      * Get the keySize property: Certificate Key Size.
@@ -41,7 +43,7 @@ public class RenewCertificateOrderRequest extends ProxyOnlyResource {
      * @return the keySize value.
      */
     public Integer keySize() {
-        return this.keySize;
+        return this.innerProperties() == null ? null : this.innerProperties().keySize();
     }
 
     /**
@@ -51,7 +53,10 @@ public class RenewCertificateOrderRequest extends ProxyOnlyResource {
      * @return the RenewCertificateOrderRequest object itself.
      */
     public RenewCertificateOrderRequest withKeySize(Integer keySize) {
-        this.keySize = keySize;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RenewCertificateOrderRequestProperties();
+        }
+        this.innerProperties().withKeySize(keySize);
         return this;
     }
 
@@ -61,7 +66,7 @@ public class RenewCertificateOrderRequest extends ProxyOnlyResource {
      * @return the csr value.
      */
     public String csr() {
-        return this.csr;
+        return this.innerProperties() == null ? null : this.innerProperties().csr();
     }
 
     /**
@@ -71,7 +76,10 @@ public class RenewCertificateOrderRequest extends ProxyOnlyResource {
      * @return the RenewCertificateOrderRequest object itself.
      */
     public RenewCertificateOrderRequest withCsr(String csr) {
-        this.csr = csr;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RenewCertificateOrderRequestProperties();
+        }
+        this.innerProperties().withCsr(csr);
         return this;
     }
 
@@ -82,7 +90,7 @@ public class RenewCertificateOrderRequest extends ProxyOnlyResource {
      * @return the isPrivateKeyExternal value.
      */
     public Boolean isPrivateKeyExternal() {
-        return this.isPrivateKeyExternal;
+        return this.innerProperties() == null ? null : this.innerProperties().isPrivateKeyExternal();
     }
 
     /**
@@ -93,14 +101,10 @@ public class RenewCertificateOrderRequest extends ProxyOnlyResource {
      * @return the RenewCertificateOrderRequest object itself.
      */
     public RenewCertificateOrderRequest withIsPrivateKeyExternal(Boolean isPrivateKeyExternal) {
-        this.isPrivateKeyExternal = isPrivateKeyExternal;
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public RenewCertificateOrderRequest withKind(String kind) {
-        super.withKind(kind);
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RenewCertificateOrderRequestProperties();
+        }
+        this.innerProperties().withIsPrivateKeyExternal(isPrivateKeyExternal);
         return this;
     }
 
@@ -112,5 +116,8 @@ public class RenewCertificateOrderRequest extends ProxyOnlyResource {
     @Override
     public void validate() {
         super.validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

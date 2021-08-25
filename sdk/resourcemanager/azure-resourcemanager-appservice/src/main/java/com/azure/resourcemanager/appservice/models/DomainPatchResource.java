@@ -5,143 +5,39 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.appservice.fluent.models.DomainPatchResourceProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
 /** ARM resource for a domain. */
-@JsonFlatten
 @Fluent
-public class DomainPatchResource extends ProxyOnlyResource {
+public final class DomainPatchResource extends ProxyOnlyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(DomainPatchResource.class);
 
     /*
-     * Administrative contact.
+     * DomainPatchResource resource specific properties
      */
-    @JsonProperty(value = "properties.contactAdmin")
-    private Contact contactAdmin;
+    @JsonProperty(value = "properties")
+    private DomainPatchResourceProperties innerProperties;
 
-    /*
-     * Billing contact.
+    /**
+     * Get the innerProperties property: DomainPatchResource resource specific properties.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.contactBilling")
-    private Contact contactBilling;
+    private DomainPatchResourceProperties innerProperties() {
+        return this.innerProperties;
+    }
 
-    /*
-     * Registrant contact.
-     */
-    @JsonProperty(value = "properties.contactRegistrant")
-    private Contact contactRegistrant;
-
-    /*
-     * Technical contact.
-     */
-    @JsonProperty(value = "properties.contactTech")
-    private Contact contactTech;
-
-    /*
-     * Domain registration status.
-     */
-    @JsonProperty(value = "properties.registrationStatus", access = JsonProperty.Access.WRITE_ONLY)
-    private DomainStatus registrationStatus;
-
-    /*
-     * Domain provisioning state.
-     */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningState provisioningState;
-
-    /*
-     * Name servers.
-     */
-    @JsonProperty(value = "properties.nameServers", access = JsonProperty.Access.WRITE_ONLY)
-    private List<String> nameServers;
-
-    /*
-     * <code>true</code> if domain privacy is enabled for this domain;
-     * otherwise, <code>false</code>.
-     */
-    @JsonProperty(value = "properties.privacy")
-    private Boolean privacy;
-
-    /*
-     * Domain creation timestamp.
-     */
-    @JsonProperty(value = "properties.createdTime", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime createdTime;
-
-    /*
-     * Domain expiration timestamp.
-     */
-    @JsonProperty(value = "properties.expirationTime", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime expirationTime;
-
-    /*
-     * Timestamp when the domain was renewed last time.
-     */
-    @JsonProperty(value = "properties.lastRenewedTime", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime lastRenewedTime;
-
-    /*
-     * <code>true</code> if the domain should be automatically renewed;
-     * otherwise, <code>false</code>.
-     */
-    @JsonProperty(value = "properties.autoRenew")
-    private Boolean autoRenew;
-
-    /*
-     * <code>true</code> if Azure can assign this domain to App Service apps;
-     * otherwise, <code>false</code>. This value will be <code>true</code> if
-     * domain registration status is active and
-     * it is hosted on name servers Azure has programmatic access to.
-     */
-    @JsonProperty(value = "properties.readyForDnsRecordManagement", access = JsonProperty.Access.WRITE_ONLY)
-    private Boolean readyForDnsRecordManagement;
-
-    /*
-     * All hostnames derived from the domain and assigned to Azure resources.
-     */
-    @JsonProperty(value = "properties.managedHostNames", access = JsonProperty.Access.WRITE_ONLY)
-    private List<Hostname> managedHostNames;
-
-    /*
-     * Legal agreement consent.
-     */
-    @JsonProperty(value = "properties.consent")
-    private DomainPurchaseConsent consent;
-
-    /*
-     * Reasons why domain is not renewable.
-     */
-    @JsonProperty(value = "properties.domainNotRenewableReasons", access = JsonProperty.Access.WRITE_ONLY)
-    private List<DomainPatchResourcePropertiesDomainNotRenewableReasonsItem> domainNotRenewableReasons;
-
-    /*
-     * Current DNS type
-     */
-    @JsonProperty(value = "properties.dnsType")
-    private DnsType dnsType;
-
-    /*
-     * Azure DNS Zone to use
-     */
-    @JsonProperty(value = "properties.dnsZoneId")
-    private String dnsZoneId;
-
-    /*
-     * Target DNS type (would be used for migration)
-     */
-    @JsonProperty(value = "properties.targetDnsType")
-    private DnsType targetDnsType;
-
-    /*
-     * The authCode property.
-     */
-    @JsonProperty(value = "properties.authCode")
-    private String authCode;
+    /** {@inheritDoc} */
+    @Override
+    public DomainPatchResource withKind(String kind) {
+        super.withKind(kind);
+        return this;
+    }
 
     /**
      * Get the contactAdmin property: Administrative contact.
@@ -149,7 +45,7 @@ public class DomainPatchResource extends ProxyOnlyResource {
      * @return the contactAdmin value.
      */
     public Contact contactAdmin() {
-        return this.contactAdmin;
+        return this.innerProperties() == null ? null : this.innerProperties().contactAdmin();
     }
 
     /**
@@ -159,7 +55,10 @@ public class DomainPatchResource extends ProxyOnlyResource {
      * @return the DomainPatchResource object itself.
      */
     public DomainPatchResource withContactAdmin(Contact contactAdmin) {
-        this.contactAdmin = contactAdmin;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DomainPatchResourceProperties();
+        }
+        this.innerProperties().withContactAdmin(contactAdmin);
         return this;
     }
 
@@ -169,7 +68,7 @@ public class DomainPatchResource extends ProxyOnlyResource {
      * @return the contactBilling value.
      */
     public Contact contactBilling() {
-        return this.contactBilling;
+        return this.innerProperties() == null ? null : this.innerProperties().contactBilling();
     }
 
     /**
@@ -179,7 +78,10 @@ public class DomainPatchResource extends ProxyOnlyResource {
      * @return the DomainPatchResource object itself.
      */
     public DomainPatchResource withContactBilling(Contact contactBilling) {
-        this.contactBilling = contactBilling;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DomainPatchResourceProperties();
+        }
+        this.innerProperties().withContactBilling(contactBilling);
         return this;
     }
 
@@ -189,7 +91,7 @@ public class DomainPatchResource extends ProxyOnlyResource {
      * @return the contactRegistrant value.
      */
     public Contact contactRegistrant() {
-        return this.contactRegistrant;
+        return this.innerProperties() == null ? null : this.innerProperties().contactRegistrant();
     }
 
     /**
@@ -199,7 +101,10 @@ public class DomainPatchResource extends ProxyOnlyResource {
      * @return the DomainPatchResource object itself.
      */
     public DomainPatchResource withContactRegistrant(Contact contactRegistrant) {
-        this.contactRegistrant = contactRegistrant;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DomainPatchResourceProperties();
+        }
+        this.innerProperties().withContactRegistrant(contactRegistrant);
         return this;
     }
 
@@ -209,7 +114,7 @@ public class DomainPatchResource extends ProxyOnlyResource {
      * @return the contactTech value.
      */
     public Contact contactTech() {
-        return this.contactTech;
+        return this.innerProperties() == null ? null : this.innerProperties().contactTech();
     }
 
     /**
@@ -219,7 +124,10 @@ public class DomainPatchResource extends ProxyOnlyResource {
      * @return the DomainPatchResource object itself.
      */
     public DomainPatchResource withContactTech(Contact contactTech) {
-        this.contactTech = contactTech;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DomainPatchResourceProperties();
+        }
+        this.innerProperties().withContactTech(contactTech);
         return this;
     }
 
@@ -229,7 +137,7 @@ public class DomainPatchResource extends ProxyOnlyResource {
      * @return the registrationStatus value.
      */
     public DomainStatus registrationStatus() {
-        return this.registrationStatus;
+        return this.innerProperties() == null ? null : this.innerProperties().registrationStatus();
     }
 
     /**
@@ -238,7 +146,7 @@ public class DomainPatchResource extends ProxyOnlyResource {
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
-        return this.provisioningState;
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
     /**
@@ -247,7 +155,7 @@ public class DomainPatchResource extends ProxyOnlyResource {
      * @return the nameServers value.
      */
     public List<String> nameServers() {
-        return this.nameServers;
+        return this.innerProperties() == null ? null : this.innerProperties().nameServers();
     }
 
     /**
@@ -257,7 +165,7 @@ public class DomainPatchResource extends ProxyOnlyResource {
      * @return the privacy value.
      */
     public Boolean privacy() {
-        return this.privacy;
+        return this.innerProperties() == null ? null : this.innerProperties().privacy();
     }
 
     /**
@@ -268,7 +176,10 @@ public class DomainPatchResource extends ProxyOnlyResource {
      * @return the DomainPatchResource object itself.
      */
     public DomainPatchResource withPrivacy(Boolean privacy) {
-        this.privacy = privacy;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DomainPatchResourceProperties();
+        }
+        this.innerProperties().withPrivacy(privacy);
         return this;
     }
 
@@ -278,7 +189,7 @@ public class DomainPatchResource extends ProxyOnlyResource {
      * @return the createdTime value.
      */
     public OffsetDateTime createdTime() {
-        return this.createdTime;
+        return this.innerProperties() == null ? null : this.innerProperties().createdTime();
     }
 
     /**
@@ -287,7 +198,7 @@ public class DomainPatchResource extends ProxyOnlyResource {
      * @return the expirationTime value.
      */
     public OffsetDateTime expirationTime() {
-        return this.expirationTime;
+        return this.innerProperties() == null ? null : this.innerProperties().expirationTime();
     }
 
     /**
@@ -296,7 +207,7 @@ public class DomainPatchResource extends ProxyOnlyResource {
      * @return the lastRenewedTime value.
      */
     public OffsetDateTime lastRenewedTime() {
-        return this.lastRenewedTime;
+        return this.innerProperties() == null ? null : this.innerProperties().lastRenewedTime();
     }
 
     /**
@@ -306,7 +217,7 @@ public class DomainPatchResource extends ProxyOnlyResource {
      * @return the autoRenew value.
      */
     public Boolean autoRenew() {
-        return this.autoRenew;
+        return this.innerProperties() == null ? null : this.innerProperties().autoRenew();
     }
 
     /**
@@ -317,7 +228,10 @@ public class DomainPatchResource extends ProxyOnlyResource {
      * @return the DomainPatchResource object itself.
      */
     public DomainPatchResource withAutoRenew(Boolean autoRenew) {
-        this.autoRenew = autoRenew;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DomainPatchResourceProperties();
+        }
+        this.innerProperties().withAutoRenew(autoRenew);
         return this;
     }
 
@@ -329,7 +243,7 @@ public class DomainPatchResource extends ProxyOnlyResource {
      * @return the readyForDnsRecordManagement value.
      */
     public Boolean readyForDnsRecordManagement() {
-        return this.readyForDnsRecordManagement;
+        return this.innerProperties() == null ? null : this.innerProperties().readyForDnsRecordManagement();
     }
 
     /**
@@ -338,7 +252,7 @@ public class DomainPatchResource extends ProxyOnlyResource {
      * @return the managedHostNames value.
      */
     public List<Hostname> managedHostNames() {
-        return this.managedHostNames;
+        return this.innerProperties() == null ? null : this.innerProperties().managedHostNames();
     }
 
     /**
@@ -347,7 +261,7 @@ public class DomainPatchResource extends ProxyOnlyResource {
      * @return the consent value.
      */
     public DomainPurchaseConsent consent() {
-        return this.consent;
+        return this.innerProperties() == null ? null : this.innerProperties().consent();
     }
 
     /**
@@ -357,7 +271,10 @@ public class DomainPatchResource extends ProxyOnlyResource {
      * @return the DomainPatchResource object itself.
      */
     public DomainPatchResource withConsent(DomainPurchaseConsent consent) {
-        this.consent = consent;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DomainPatchResourceProperties();
+        }
+        this.innerProperties().withConsent(consent);
         return this;
     }
 
@@ -367,7 +284,7 @@ public class DomainPatchResource extends ProxyOnlyResource {
      * @return the domainNotRenewableReasons value.
      */
     public List<DomainPatchResourcePropertiesDomainNotRenewableReasonsItem> domainNotRenewableReasons() {
-        return this.domainNotRenewableReasons;
+        return this.innerProperties() == null ? null : this.innerProperties().domainNotRenewableReasons();
     }
 
     /**
@@ -376,7 +293,7 @@ public class DomainPatchResource extends ProxyOnlyResource {
      * @return the dnsType value.
      */
     public DnsType dnsType() {
-        return this.dnsType;
+        return this.innerProperties() == null ? null : this.innerProperties().dnsType();
     }
 
     /**
@@ -386,7 +303,10 @@ public class DomainPatchResource extends ProxyOnlyResource {
      * @return the DomainPatchResource object itself.
      */
     public DomainPatchResource withDnsType(DnsType dnsType) {
-        this.dnsType = dnsType;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DomainPatchResourceProperties();
+        }
+        this.innerProperties().withDnsType(dnsType);
         return this;
     }
 
@@ -396,7 +316,7 @@ public class DomainPatchResource extends ProxyOnlyResource {
      * @return the dnsZoneId value.
      */
     public String dnsZoneId() {
-        return this.dnsZoneId;
+        return this.innerProperties() == null ? null : this.innerProperties().dnsZoneId();
     }
 
     /**
@@ -406,7 +326,10 @@ public class DomainPatchResource extends ProxyOnlyResource {
      * @return the DomainPatchResource object itself.
      */
     public DomainPatchResource withDnsZoneId(String dnsZoneId) {
-        this.dnsZoneId = dnsZoneId;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DomainPatchResourceProperties();
+        }
+        this.innerProperties().withDnsZoneId(dnsZoneId);
         return this;
     }
 
@@ -416,7 +339,7 @@ public class DomainPatchResource extends ProxyOnlyResource {
      * @return the targetDnsType value.
      */
     public DnsType targetDnsType() {
-        return this.targetDnsType;
+        return this.innerProperties() == null ? null : this.innerProperties().targetDnsType();
     }
 
     /**
@@ -426,7 +349,10 @@ public class DomainPatchResource extends ProxyOnlyResource {
      * @return the DomainPatchResource object itself.
      */
     public DomainPatchResource withTargetDnsType(DnsType targetDnsType) {
-        this.targetDnsType = targetDnsType;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DomainPatchResourceProperties();
+        }
+        this.innerProperties().withTargetDnsType(targetDnsType);
         return this;
     }
 
@@ -436,7 +362,7 @@ public class DomainPatchResource extends ProxyOnlyResource {
      * @return the authCode value.
      */
     public String authCode() {
-        return this.authCode;
+        return this.innerProperties() == null ? null : this.innerProperties().authCode();
     }
 
     /**
@@ -446,14 +372,10 @@ public class DomainPatchResource extends ProxyOnlyResource {
      * @return the DomainPatchResource object itself.
      */
     public DomainPatchResource withAuthCode(String authCode) {
-        this.authCode = authCode;
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public DomainPatchResource withKind(String kind) {
-        super.withKind(kind);
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DomainPatchResourceProperties();
+        }
+        this.innerProperties().withAuthCode(authCode);
         return this;
     }
 
@@ -465,23 +387,8 @@ public class DomainPatchResource extends ProxyOnlyResource {
     @Override
     public void validate() {
         super.validate();
-        if (contactAdmin() != null) {
-            contactAdmin().validate();
-        }
-        if (contactBilling() != null) {
-            contactBilling().validate();
-        }
-        if (contactRegistrant() != null) {
-            contactRegistrant().validate();
-        }
-        if (contactTech() != null) {
-            contactTech().validate();
-        }
-        if (managedHostNames() != null) {
-            managedHostNames().forEach(e -> e.validate());
-        }
-        if (consent() != null) {
-            consent().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

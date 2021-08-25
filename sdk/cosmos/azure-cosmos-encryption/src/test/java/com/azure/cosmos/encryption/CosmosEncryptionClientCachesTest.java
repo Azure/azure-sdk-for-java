@@ -19,7 +19,6 @@ import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.EncryptionKeyWrapMetadata;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.ThroughputProperties;
-import com.azure.cosmos.rx.TestSuiteBase;
 import com.microsoft.data.encryption.cryptography.EncryptionKeyStoreProvider;
 import org.mockito.Mockito;
 import org.testng.annotations.AfterClass;

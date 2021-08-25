@@ -5,37 +5,40 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The HttpSettings model. */
-@JsonFlatten
+/**
+ * The configuration settings of the HTTP requests for authentication and authorization requests made against App
+ * Service Authentication/Authorization.
+ */
 @Fluent
-public class HttpSettings extends ProxyOnlyResource {
+public final class HttpSettings {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(HttpSettings.class);
 
     /*
-     * The requireHttps property.
+     * <code>false</code> if the authentication/authorization responses not
+     * having the HTTPS scheme are permissible; otherwise, <code>true</code>.
      */
-    @JsonProperty(value = "properties.requireHttps")
+    @JsonProperty(value = "requireHttps")
     private Boolean requireHttps;
 
     /*
-     * The routes property.
+     * The configuration settings of the paths HTTP requests.
      */
-    @JsonProperty(value = "properties.routes")
+    @JsonProperty(value = "routes")
     private HttpSettingsRoutes routes;
 
     /*
-     * The forwardProxy property.
+     * The configuration settings of a forward proxy used to make the requests.
      */
-    @JsonProperty(value = "properties.forwardProxy")
+    @JsonProperty(value = "forwardProxy")
     private ForwardProxy forwardProxy;
 
     /**
-     * Get the requireHttps property: The requireHttps property.
+     * Get the requireHttps property: &lt;code&gt;false&lt;/code&gt; if the authentication/authorization responses not
+     * having the HTTPS scheme are permissible; otherwise, &lt;code&gt;true&lt;/code&gt;.
      *
      * @return the requireHttps value.
      */
@@ -44,7 +47,8 @@ public class HttpSettings extends ProxyOnlyResource {
     }
 
     /**
-     * Set the requireHttps property: The requireHttps property.
+     * Set the requireHttps property: &lt;code&gt;false&lt;/code&gt; if the authentication/authorization responses not
+     * having the HTTPS scheme are permissible; otherwise, &lt;code&gt;true&lt;/code&gt;.
      *
      * @param requireHttps the requireHttps value to set.
      * @return the HttpSettings object itself.
@@ -55,7 +59,7 @@ public class HttpSettings extends ProxyOnlyResource {
     }
 
     /**
-     * Get the routes property: The routes property.
+     * Get the routes property: The configuration settings of the paths HTTP requests.
      *
      * @return the routes value.
      */
@@ -64,7 +68,7 @@ public class HttpSettings extends ProxyOnlyResource {
     }
 
     /**
-     * Set the routes property: The routes property.
+     * Set the routes property: The configuration settings of the paths HTTP requests.
      *
      * @param routes the routes value to set.
      * @return the HttpSettings object itself.
@@ -75,7 +79,7 @@ public class HttpSettings extends ProxyOnlyResource {
     }
 
     /**
-     * Get the forwardProxy property: The forwardProxy property.
+     * Get the forwardProxy property: The configuration settings of a forward proxy used to make the requests.
      *
      * @return the forwardProxy value.
      */
@@ -84,7 +88,7 @@ public class HttpSettings extends ProxyOnlyResource {
     }
 
     /**
-     * Set the forwardProxy property: The forwardProxy property.
+     * Set the forwardProxy property: The configuration settings of a forward proxy used to make the requests.
      *
      * @param forwardProxy the forwardProxy value to set.
      * @return the HttpSettings object itself.
@@ -94,21 +98,12 @@ public class HttpSettings extends ProxyOnlyResource {
         return this;
     }
 
-    /** {@inheritDoc} */
-    @Override
-    public HttpSettings withKind(String kind) {
-        super.withKind(kind);
-        return this;
-    }
-
     /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
-    @Override
     public void validate() {
-        super.validate();
         if (routes() != null) {
             routes().validate();
         }

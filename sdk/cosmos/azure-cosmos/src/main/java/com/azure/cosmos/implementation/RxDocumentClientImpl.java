@@ -388,9 +388,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         // hence asserting it
         if (databaseAccount == null) {
             logger.error("Client initialization failed."
-                + " Check if the endpoint is reachable and if your auth token is valid");
+                + " Check if the endpoint is reachable and if your auth token is valid. More info: https://aka.ms/cosmosdb-tsg-service-unavailable-java");
             throw new RuntimeException("Client initialization failed."
-                + " Check if the endpoint is reachable and if your auth token is valid");
+                + " Check if the endpoint is reachable and if your auth token is valid. More info: https://aka.ms/cosmosdb-tsg-service-unavailable-java");
         }
 
         this.useMultipleWriteLocations = this.connectionPolicy.isMultipleWriteRegionsEnabled() && BridgeInternal.isEnableMultipleWriteLocations(databaseAccount);

@@ -124,94 +124,120 @@ extends:
       - name: azure-spring-cloud-context
         groupId: com.azure.spring
         safeName: azurespringcloudcontext
+        skipPublishDocMs: true
       - name: azure-spring-cloud-autoconfigure
         groupId: com.azure.spring
         safeName: azurespringcloudautoconfigure
+        skipPublishDocMs: true
       - name: azure-spring-cloud-resourcemanager
         groupId: com.azure.spring
         safeName: azurespringcloudresourcemanager
+        skipPublishDocMs: true
       - name: azure-spring-boot-starter
         groupId: com.azure.spring
         safeName: azurespringbootstarter
+        skipPublishDocMs: true
         skipUpdatePackageJson: true
       - name: azure-spring-boot-starter-active-directory
         groupId: com.azure.spring
         safeName: azurespringbootstarteractivedirectory
+        skipPublishDocMs: true
         skipUpdatePackageJson: true
       - name: azure-spring-boot-starter-active-directory-b2c
         groupId: com.azure.spring
         safeName: azurespringbootstarteractivedirectoryb2c
+        skipPublishDocMs: true
         skipUpdatePackageJson: true
       - name: azure-spring-boot-starter-cosmos
         groupId: com.azure.spring
         safeName: azurespringbootstartercosmos
+        skipPublishDocMs: true
         skipUpdatePackageJson: true
       - name: azure-spring-boot-starter-keyvault-certificates
         groupId: com.azure.spring
         safeName: azurespringbootstarterkeyvaultcertificates
+        skipPublishDocMs: true
         skipUpdatePackageJson: true
       - name: azure-spring-boot-starter-keyvault-secrets
         groupId: com.azure.spring
         safeName: azurespringbootstarterkeyvaultsecrets
+        skipPublishDocMs: true
         skipUpdatePackageJson: true
       - name: azure-spring-boot-starter-servicebus-jms
         groupId: com.azure.spring
         safeName: azurespringbootstarterservicebusjms
+        skipPublishDocMs: true
         skipUpdatePackageJson: true
       - name: azure-spring-boot-starter-storage
         groupId: com.azure.spring
         safeName: azurespringbootstarterstorage
+        skipPublishDocMs: true
         skipUpdatePackageJson: true
       - name: azure-spring-integration-core
         groupId: com.azure.spring
         safeName: azurespringintegrationcore
+        skipPublishDocMs: true
       - name: azure-spring-integration-test
         groupId: com.azure.spring
         safeName: azurespringintegrationtest
+        skipPublishDocMs: true
       - name: azure-spring-integration-eventhubs
         groupId: com.azure.spring
         safeName: azurespringintegrationeventhubs
+        skipPublishDocMs: true
       - name: azure-spring-integration-servicebus
         groupId: com.azure.spring
         safeName: azurespringintegrationservicebus
+        skipPublishDocMs: true
       - name: azure-spring-integration-storage-queue
         groupId: com.azure.spring
         safeName: azurespringintegrationstoragequeue
       - name: azure-spring-cloud-messaging
         groupId: com.azure.spring
         safeName: azurespringcloudmessaging
+        skipPublishDocMs: true
       - name: azure-spring-cloud-starter-cache
         groupId: com.azure.spring
         safeName: azurespringcloudstartercache
+        skipPublishDocMs: true
         skipUpdatePackageJson: true
       - name: azure-spring-cloud-starter-eventhubs
         groupId: com.azure.spring
         safeName: azurespringcloudstartereventhubs
+        skipPublishDocMs: true
         skipUpdatePackageJson: true
       - name: azure-spring-cloud-starter-eventhubs-kafka
         groupId: com.azure.spring
         safeName: azurespringcloudstartereventhubskafka
+        skipPublishDocMs: true
         skipUpdatePackageJson: true
       - name: azure-spring-cloud-starter-servicebus
         groupId: com.azure.spring
         safeName: azurespringcloudstarterservicebus
+        skipPublishDocMs: true
         skipUpdatePackageJson: true
       - name: azure-spring-cloud-starter-storage-queue
         groupId: com.azure.spring
         safeName: azurespringcloudstarterstoragequeue
+        skipPublishDocMs: true
         skipUpdatePackageJson: true
       - name: azure-spring-cloud-stream-binder-servicebus-core
         groupId: com.azure.spring
         safeName: azurespringcloudservicebusstreambindercore
+        skipPublishDocMs: true
       - name: azure-spring-cloud-stream-binder-test
         groupId: com.azure.spring
         safeName: azurespringcloudstreambindertest
+        skipPublishDocMs: true
       - name: azure-spring-cloud-stream-binder-servicebus-topic
         groupId: com.azure.spring
         safeName: azurespringcloudservicebustopicstreambinder
+        skipPublishDocMs: true
       - name: azure-spring-cloud-stream-binder-servicebus-queue
         groupId: com.azure.spring
         safeName: azurespringcloudservicebusqueuestreambinder
+        skipPublishDocMs: true
       - name: azure-spring-cloud-stream-binder-eventhubs
         groupId: com.azure.spring
         safeName: azurespringcloudeventhubsstreambinder
+        skipPublishDocMs: true
