@@ -235,7 +235,7 @@ com.azure.resourcemanager:azure-resourcemanager-eventgrid;1.0.0;1.1.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-healthbot;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-confluent;1.0.0-beta.2;1.0.0-beta.3
 com.azure.resourcemanager:azure-resourcemanager-digitaltwins;1.0.0-beta.1;1.0.0-beta.2
-com.azure.resourcemanager:azure-resourcemanager-netapp;1.0.0-beta.4;1.0.0-beta.5
+com.azure.resourcemanager:azure-resourcemanager-netapp;1.0.0-beta.5;1.0.0-beta.6
 com.azure.resourcemanager:azure-resourcemanager-storagecache;1.0.0-beta.3;1.0.0-beta.4
 com.azure.resourcemanager:azure-resourcemanager-redisenterprise;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-hybridkubernetes;1.0.0-beta.1;1.0.0-beta.2
