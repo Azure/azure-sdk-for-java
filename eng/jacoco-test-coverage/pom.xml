@@ -35,6 +35,11 @@
     <tag>HEAD</tag>
   </scm>
 
+  <properties>
+    <relative.path.to.eng.folder>../../</relative.path.to.eng.folder>
+  </properties>
+
+
   <dependencies>
     <dependency>
       <groupId>com.azure</groupId>
