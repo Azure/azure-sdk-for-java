@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ProvisioningState;
@@ -14,10 +13,15 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Service Endpoint policy definitions. */
-@JsonFlatten
 @Fluent
-public class ServiceEndpointPolicyDefinitionInner extends SubResource {
+public final class ServiceEndpointPolicyDefinitionInner extends SubResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ServiceEndpointPolicyDefinitionInner.class);
+
+    /*
+     * Properties of the service endpoint policy definition.
+     */
+    @JsonProperty(value = "properties")
+    private ServiceEndpointPolicyDefinitionPropertiesFormat innerProperties;
 
     /*
      * The name of the resource that is unique within a resource group. This
@@ -32,30 +36,14 @@ public class ServiceEndpointPolicyDefinitionInner extends SubResource {
     @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
-    /*
-     * A description for this rule. Restricted to 140 chars.
+    /**
+     * Get the innerProperties property: Properties of the service endpoint policy definition.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.description")
-    private String description;
-
-    /*
-     * Service endpoint name.
-     */
-    @JsonProperty(value = "properties.service")
-    private String service;
-
-    /*
-     * A list of service resources.
-     */
-    @JsonProperty(value = "properties.serviceResources")
-    private List<String> serviceResources;
-
-    /*
-     * The provisioning state of the service endpoint policy definition
-     * resource.
-     */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningState provisioningState;
+    private ServiceEndpointPolicyDefinitionPropertiesFormat innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the name property: The name of the resource that is unique within a resource group. This name can be used to
@@ -88,13 +76,20 @@ public class ServiceEndpointPolicyDefinitionInner extends SubResource {
         return this.etag;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public ServiceEndpointPolicyDefinitionInner withId(String id) {
+        super.withId(id);
+        return this;
+    }
+
     /**
      * Get the description property: A description for this rule. Restricted to 140 chars.
      *
      * @return the description value.
      */
     public String description() {
-        return this.description;
+        return this.innerProperties() == null ? null : this.innerProperties().description();
     }
 
     /**
@@ -104,7 +99,10 @@ public class ServiceEndpointPolicyDefinitionInner extends SubResource {
      * @return the ServiceEndpointPolicyDefinitionInner object itself.
      */
     public ServiceEndpointPolicyDefinitionInner withDescription(String description) {
-        this.description = description;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ServiceEndpointPolicyDefinitionPropertiesFormat();
+        }
+        this.innerProperties().withDescription(description);
         return this;
     }
 
@@ -114,7 +112,7 @@ public class ServiceEndpointPolicyDefinitionInner extends SubResource {
      * @return the service value.
      */
     public String service() {
-        return this.service;
+        return this.innerProperties() == null ? null : this.innerProperties().service();
     }
 
     /**
@@ -124,7 +122,10 @@ public class ServiceEndpointPolicyDefinitionInner extends SubResource {
      * @return the ServiceEndpointPolicyDefinitionInner object itself.
      */
     public ServiceEndpointPolicyDefinitionInner withService(String service) {
-        this.service = service;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ServiceEndpointPolicyDefinitionPropertiesFormat();
+        }
+        this.innerProperties().withService(service);
         return this;
     }
 
@@ -134,7 +135,7 @@ public class ServiceEndpointPolicyDefinitionInner extends SubResource {
      * @return the serviceResources value.
      */
     public List<String> serviceResources() {
-        return this.serviceResources;
+        return this.innerProperties() == null ? null : this.innerProperties().serviceResources();
     }
 
     /**
@@ -144,7 +145,10 @@ public class ServiceEndpointPolicyDefinitionInner extends SubResource {
      * @return the ServiceEndpointPolicyDefinitionInner object itself.
      */
     public ServiceEndpointPolicyDefinitionInner withServiceResources(List<String> serviceResources) {
-        this.serviceResources = serviceResources;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ServiceEndpointPolicyDefinitionPropertiesFormat();
+        }
+        this.innerProperties().withServiceResources(serviceResources);
         return this;
     }
 
@@ -154,14 +158,7 @@ public class ServiceEndpointPolicyDefinitionInner extends SubResource {
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
-        return this.provisioningState;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public ServiceEndpointPolicyDefinitionInner withId(String id) {
-        super.withId(id);
-        return this;
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
     /**
@@ -170,5 +167,8 @@ public class ServiceEndpointPolicyDefinitionInner extends SubResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }
