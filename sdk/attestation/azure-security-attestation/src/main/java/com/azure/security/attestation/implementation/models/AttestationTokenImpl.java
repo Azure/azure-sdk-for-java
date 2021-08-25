@@ -51,6 +51,7 @@ import java.util.Set;
 @Fluent
 @Immutable
 public class AttestationTokenImpl implements AttestationToken {
+    private static final SerializerAdapter SERIALIZER_ADAPTER = JacksonAdapter.createDefaultSerializerAdapter();
 
     /**
      * Creates a new instance of an AttestationToken object.
@@ -94,15 +95,11 @@ public class AttestationTokenImpl implements AttestationToken {
         if (payload.toString().length() == 0) {
             return null;
         } else {
-            SerializerAdapter serializerAdapter = new JacksonAdapter();
-            T t;
-
             try {
-                t = serializerAdapter.deserialize(payload.toString(), returnType, SerializerEncoding.JSON);
+                return SERIALIZER_ADAPTER.deserialize(payload.toString(), returnType, SerializerEncoding.JSON);
             } catch (IOException e) {
                 throw logger.logExceptionAsError(new RuntimeException(e.getMessage()));
             }
-            return t;
         }
     }
 

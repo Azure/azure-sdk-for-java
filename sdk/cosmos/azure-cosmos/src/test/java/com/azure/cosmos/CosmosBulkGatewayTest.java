@@ -4,6 +4,8 @@ package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.PartitionKeyRange;
+import com.azure.cosmos.models.CosmosBulkExecutionOptions;
+import com.azure.cosmos.models.CosmosBulkOperations;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosContainerResponse;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
@@ -64,26 +66,26 @@ public class CosmosBulkGatewayTest extends BatchTestBase {
             String partitionKey = UUID.randomUUID().toString();
             TestDoc testDoc = this.populateTestDoc(partitionKey);
 
-            return BulkOperations.getCreateItemOperation(testDoc, new PartitionKey(partitionKey));
+            return CosmosBulkOperations.getCreateItemOperation(testDoc, new PartitionKey(partitionKey));
         });
 
         Flux<CosmosItemOperation> cosmosItemOperationFlux2 = Flux.range(0, totalRequest).map(i -> {
             String partitionKey = UUID.randomUUID().toString();
             EventDoc eventDoc = new EventDoc(UUID.randomUUID().toString(), 2, 4, "type1", partitionKey);
 
-            return BulkOperations.getCreateItemOperation(eventDoc, new PartitionKey(partitionKey));
+            return CosmosBulkOperations.getCreateItemOperation(eventDoc, new PartitionKey(partitionKey));
         });
 
-        BulkProcessingOptions<CosmosBulkAsyncTest> bulkProcessingOptions = new BulkProcessingOptions<>();
-        bulkProcessingOptions.setMaxMicroBatchSize(100);
-        bulkProcessingOptions.setMaxMicroBatchConcurrency(5);
+        CosmosBulkExecutionOptions cosmosBulkExecutionOptions = new CosmosBulkExecutionOptions();
+        cosmosBulkExecutionOptions.setMaxMicroBatchSize(100);
+        cosmosBulkExecutionOptions.setMaxMicroBatchConcurrency(5);
 
         Flux<CosmosBulkOperationResponse<CosmosBulkAsyncTest>> responseFlux =
-            container.processBulkOperations(cosmosItemOperationFlux1, bulkProcessingOptions);
+            container.processBulkOperations(cosmosItemOperationFlux1, cosmosBulkExecutionOptions);
 
         AtomicInteger processedDoc = new AtomicInteger(0);
         responseFlux
-            .flatMap((CosmosBulkOperationResponse<CosmosBulkAsyncTest> cosmosBulkOperationResponse) -> {
+            .flatMap(cosmosBulkOperationResponse -> {
 
                 processedDoc.incrementAndGet();
 
@@ -130,11 +132,11 @@ public class CosmosBulkGatewayTest extends BatchTestBase {
             .as("Partition ranges should increase after split");
         logger.info("After split num partitions = {}", partitionKeyRangesAfterSplit.size());
 
-        responseFlux = container.processBulkOperations(cosmosItemOperationFlux2, bulkProcessingOptions);
+        responseFlux = container.processBulkOperations(cosmosItemOperationFlux2, cosmosBulkExecutionOptions);
 
         AtomicInteger processedDoc2 = new AtomicInteger(0);
         responseFlux
-            .flatMap((CosmosBulkOperationResponse<CosmosBulkAsyncTest> cosmosBulkOperationResponse) -> {
+            .flatMap(cosmosBulkOperationResponse -> {
 
                 processedDoc2.incrementAndGet();
 

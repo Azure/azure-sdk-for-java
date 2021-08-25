@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.models.DiskEncryptionSetType;
@@ -18,9 +17,8 @@ import java.util.List;
 import java.util.Map;
 
 /** disk encryption set resource. */
-@JsonFlatten
 @Fluent
-public class DiskEncryptionSetInner extends Resource {
+public final class DiskEncryptionSetInner extends Resource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(DiskEncryptionSetInner.class);
 
     /*
@@ -31,43 +29,10 @@ public class DiskEncryptionSetInner extends Resource {
     private EncryptionSetIdentity identity;
 
     /*
-     * The type of key used to encrypt the data of the disk.
+     * The properties property.
      */
-    @JsonProperty(value = "properties.encryptionType")
-    private DiskEncryptionSetType encryptionType;
-
-    /*
-     * The key vault key which is currently used by this disk encryption set.
-     */
-    @JsonProperty(value = "properties.activeKey")
-    private KeyForDiskEncryptionSet activeKey;
-
-    /*
-     * A readonly collection of key vault keys previously used by this disk
-     * encryption set while a key rotation is in progress. It will be empty if
-     * there is no ongoing key rotation.
-     */
-    @JsonProperty(value = "properties.previousKeys", access = JsonProperty.Access.WRITE_ONLY)
-    private List<KeyForDiskEncryptionSet> previousKeys;
-
-    /*
-     * The disk encryption set provisioning state.
-     */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private String provisioningState;
-
-    /*
-     * Set this flag to true to enable auto-updating of this disk encryption
-     * set to the latest key version.
-     */
-    @JsonProperty(value = "properties.rotationToLatestKeyVersionEnabled")
-    private Boolean rotationToLatestKeyVersionEnabled;
-
-    /*
-     * The time when the active key of this disk encryption set was updated.
-     */
-    @JsonProperty(value = "properties.lastKeyRotationTimestamp", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime lastKeyRotationTimestamp;
+    @JsonProperty(value = "properties")
+    private EncryptionSetProperties innerProperties;
 
     /**
      * Get the identity property: The managed identity for the disk encryption set. It should be given permission on the
@@ -92,93 +57,12 @@ public class DiskEncryptionSetInner extends Resource {
     }
 
     /**
-     * Get the encryptionType property: The type of key used to encrypt the data of the disk.
+     * Get the innerProperties property: The properties property.
      *
-     * @return the encryptionType value.
+     * @return the innerProperties value.
      */
-    public DiskEncryptionSetType encryptionType() {
-        return this.encryptionType;
-    }
-
-    /**
-     * Set the encryptionType property: The type of key used to encrypt the data of the disk.
-     *
-     * @param encryptionType the encryptionType value to set.
-     * @return the DiskEncryptionSetInner object itself.
-     */
-    public DiskEncryptionSetInner withEncryptionType(DiskEncryptionSetType encryptionType) {
-        this.encryptionType = encryptionType;
-        return this;
-    }
-
-    /**
-     * Get the activeKey property: The key vault key which is currently used by this disk encryption set.
-     *
-     * @return the activeKey value.
-     */
-    public KeyForDiskEncryptionSet activeKey() {
-        return this.activeKey;
-    }
-
-    /**
-     * Set the activeKey property: The key vault key which is currently used by this disk encryption set.
-     *
-     * @param activeKey the activeKey value to set.
-     * @return the DiskEncryptionSetInner object itself.
-     */
-    public DiskEncryptionSetInner withActiveKey(KeyForDiskEncryptionSet activeKey) {
-        this.activeKey = activeKey;
-        return this;
-    }
-
-    /**
-     * Get the previousKeys property: A readonly collection of key vault keys previously used by this disk encryption
-     * set while a key rotation is in progress. It will be empty if there is no ongoing key rotation.
-     *
-     * @return the previousKeys value.
-     */
-    public List<KeyForDiskEncryptionSet> previousKeys() {
-        return this.previousKeys;
-    }
-
-    /**
-     * Get the provisioningState property: The disk encryption set provisioning state.
-     *
-     * @return the provisioningState value.
-     */
-    public String provisioningState() {
-        return this.provisioningState;
-    }
-
-    /**
-     * Get the rotationToLatestKeyVersionEnabled property: Set this flag to true to enable auto-updating of this disk
-     * encryption set to the latest key version.
-     *
-     * @return the rotationToLatestKeyVersionEnabled value.
-     */
-    public Boolean rotationToLatestKeyVersionEnabled() {
-        return this.rotationToLatestKeyVersionEnabled;
-    }
-
-    /**
-     * Set the rotationToLatestKeyVersionEnabled property: Set this flag to true to enable auto-updating of this disk
-     * encryption set to the latest key version.
-     *
-     * @param rotationToLatestKeyVersionEnabled the rotationToLatestKeyVersionEnabled value to set.
-     * @return the DiskEncryptionSetInner object itself.
-     */
-    public DiskEncryptionSetInner withRotationToLatestKeyVersionEnabled(Boolean rotationToLatestKeyVersionEnabled) {
-        this.rotationToLatestKeyVersionEnabled = rotationToLatestKeyVersionEnabled;
-        return this;
-    }
-
-    /**
-     * Get the lastKeyRotationTimestamp property: The time when the active key of this disk encryption set was updated.
-     *
-     * @return the lastKeyRotationTimestamp value.
-     */
-    public OffsetDateTime lastKeyRotationTimestamp() {
-        return this.lastKeyRotationTimestamp;
+    private EncryptionSetProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /** {@inheritDoc} */
@@ -196,6 +80,105 @@ public class DiskEncryptionSetInner extends Resource {
     }
 
     /**
+     * Get the encryptionType property: The type of key used to encrypt the data of the disk.
+     *
+     * @return the encryptionType value.
+     */
+    public DiskEncryptionSetType encryptionType() {
+        return this.innerProperties() == null ? null : this.innerProperties().encryptionType();
+    }
+
+    /**
+     * Set the encryptionType property: The type of key used to encrypt the data of the disk.
+     *
+     * @param encryptionType the encryptionType value to set.
+     * @return the DiskEncryptionSetInner object itself.
+     */
+    public DiskEncryptionSetInner withEncryptionType(DiskEncryptionSetType encryptionType) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new EncryptionSetProperties();
+        }
+        this.innerProperties().withEncryptionType(encryptionType);
+        return this;
+    }
+
+    /**
+     * Get the activeKey property: The key vault key which is currently used by this disk encryption set.
+     *
+     * @return the activeKey value.
+     */
+    public KeyForDiskEncryptionSet activeKey() {
+        return this.innerProperties() == null ? null : this.innerProperties().activeKey();
+    }
+
+    /**
+     * Set the activeKey property: The key vault key which is currently used by this disk encryption set.
+     *
+     * @param activeKey the activeKey value to set.
+     * @return the DiskEncryptionSetInner object itself.
+     */
+    public DiskEncryptionSetInner withActiveKey(KeyForDiskEncryptionSet activeKey) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new EncryptionSetProperties();
+        }
+        this.innerProperties().withActiveKey(activeKey);
+        return this;
+    }
+
+    /**
+     * Get the previousKeys property: A readonly collection of key vault keys previously used by this disk encryption
+     * set while a key rotation is in progress. It will be empty if there is no ongoing key rotation.
+     *
+     * @return the previousKeys value.
+     */
+    public List<KeyForDiskEncryptionSet> previousKeys() {
+        return this.innerProperties() == null ? null : this.innerProperties().previousKeys();
+    }
+
+    /**
+     * Get the provisioningState property: The disk encryption set provisioning state.
+     *
+     * @return the provisioningState value.
+     */
+    public String provisioningState() {
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    }
+
+    /**
+     * Get the rotationToLatestKeyVersionEnabled property: Set this flag to true to enable auto-updating of this disk
+     * encryption set to the latest key version.
+     *
+     * @return the rotationToLatestKeyVersionEnabled value.
+     */
+    public Boolean rotationToLatestKeyVersionEnabled() {
+        return this.innerProperties() == null ? null : this.innerProperties().rotationToLatestKeyVersionEnabled();
+    }
+
+    /**
+     * Set the rotationToLatestKeyVersionEnabled property: Set this flag to true to enable auto-updating of this disk
+     * encryption set to the latest key version.
+     *
+     * @param rotationToLatestKeyVersionEnabled the rotationToLatestKeyVersionEnabled value to set.
+     * @return the DiskEncryptionSetInner object itself.
+     */
+    public DiskEncryptionSetInner withRotationToLatestKeyVersionEnabled(Boolean rotationToLatestKeyVersionEnabled) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new EncryptionSetProperties();
+        }
+        this.innerProperties().withRotationToLatestKeyVersionEnabled(rotationToLatestKeyVersionEnabled);
+        return this;
+    }
+
+    /**
+     * Get the lastKeyRotationTimestamp property: The time when the active key of this disk encryption set was updated.
+     *
+     * @return the lastKeyRotationTimestamp value.
+     */
+    public OffsetDateTime lastKeyRotationTimestamp() {
+        return this.innerProperties() == null ? null : this.innerProperties().lastKeyRotationTimestamp();
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -204,11 +187,8 @@ public class DiskEncryptionSetInner extends Resource {
         if (identity() != null) {
             identity().validate();
         }
-        if (activeKey() != null) {
-            activeKey().validate();
-        }
-        if (previousKeys() != null) {
-            previousKeys().forEach(e -> e.validate());
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

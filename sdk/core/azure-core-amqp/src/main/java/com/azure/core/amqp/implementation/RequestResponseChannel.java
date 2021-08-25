@@ -209,7 +209,7 @@ public class RequestResponseChannel implements AsyncCloseable {
             .onErrorResume(TimeoutException.class, error -> {
                 return Mono.fromRunnable(() -> {
                     logger.info("connectionId[{}] linkName[{}] Timed out waiting for RequestResponseChannel to complete"
-                            + "closing. Manually closing.",
+                            + " closing. Manually closing.",
                         connectionId, linkName, error);
 
                     onTerminalState("SendLinkHandler");
@@ -236,7 +236,7 @@ public class RequestResponseChannel implements AsyncCloseable {
                 });
             } catch (IOException | RejectedExecutionException e) {
                 logger.info("connectionId[{}] linkName[{}] Unable to schedule close work. Closing manually.",
-                    connectionId, linkName, e);
+                    connectionId, linkName);
                 sendLink.close();
                 receiveLink.close();
             }

@@ -9,7 +9,6 @@ import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.encryption.models.CosmosEncryptionAlgorithm;
 import com.azure.cosmos.models.CosmosClientEncryptionKeyProperties;
 import com.azure.cosmos.models.EncryptionKeyWrapMetadata;
-import com.azure.cosmos.rx.TestSuiteBase;
 import com.microsoft.data.encryption.cryptography.EncryptionKeyStoreProvider;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;

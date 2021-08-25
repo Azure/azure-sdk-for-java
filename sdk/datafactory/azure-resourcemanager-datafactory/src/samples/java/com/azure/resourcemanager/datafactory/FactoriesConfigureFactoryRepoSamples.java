@@ -10,6 +10,11 @@ import com.azure.resourcemanager.datafactory.models.FactoryVstsConfiguration;
 
 /** Samples for Factories ConfigureFactoryRepo. */
 public final class FactoriesConfigureFactoryRepoSamples {
+    /*
+     * operationId: Factories_ConfigureFactoryRepo
+     * api-version: 2018-06-01
+     * x-ms-examples: Factories_ConfigureFactoryRepo
+     */
     /**
      * Sample code: Factories_ConfigureFactoryRepo.
      *

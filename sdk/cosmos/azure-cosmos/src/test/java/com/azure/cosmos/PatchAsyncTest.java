@@ -3,6 +3,9 @@
 
 package com.azure.cosmos;
 
+import com.azure.cosmos.models.CosmosBulkItemRequestOptions;
+import com.azure.cosmos.models.CosmosBulkOperations;
+import com.azure.cosmos.models.CosmosBulkPatchItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.PartitionKey;
 import io.netty.handler.codec.http.HttpResponseStatus;
@@ -11,7 +14,6 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -147,10 +149,10 @@ public class PatchAsyncTest extends BatchTestBase {
         CosmosPatchOperations cosmosPatchOperations2 = CosmosPatchOperations.create();
         cosmosPatchOperations2.replace("/description", "xx");
 
-        BulkPatchItemRequestOptions contentResponseDisableRequestOption = new BulkPatchItemRequestOptions()
+        CosmosBulkPatchItemRequestOptions contentResponseDisableRequestOption = new CosmosBulkPatchItemRequestOptions()
             .setContentResponseOnWriteEnabled(false);
 
-        BulkItemRequestOptions contentItemResponseDisableRequestOption = new BulkItemRequestOptions()
+        CosmosBulkItemRequestOptions contentItemResponseDisableRequestOption = new CosmosBulkItemRequestOptions()
             .setContentResponseOnWriteEnabled(false);
 
         CosmosPatchOperations cosmosPatchOperationsContinue = CosmosPatchOperations.create();
@@ -158,40 +160,40 @@ public class PatchAsyncTest extends BatchTestBase {
         cosmosPatchOperationsContinue.replace("/cost", costFinalValue);
 
         int costFalseValue = costInterimValue - 1;
-        BulkPatchItemRequestOptions conditionFailureRequestOption = new BulkPatchItemRequestOptions()
+        CosmosBulkPatchItemRequestOptions conditionFailureRequestOption = new CosmosBulkPatchItemRequestOptions()
             .setFilterPredicate("from root where root.cost = " + costFalseValue);
 
-        BulkPatchItemRequestOptions conditionSuccessRequestOption = new BulkPatchItemRequestOptions()
+        CosmosBulkPatchItemRequestOptions conditionSuccessRequestOption = new CosmosBulkPatchItemRequestOptions()
             .setFilterPredicate("from root where root.cost = " + costInterimValue);
 
         operations.add(
-            BulkOperations.getCreateItemOperation(testDocToCreate, new PartitionKey(this.partitionKey1)));
+            CosmosBulkOperations.getCreateItemOperation(testDocToCreate, new PartitionKey(this.partitionKey1)));
 
         operations.add(
-            BulkOperations.getReplaceItemOperation(
+            CosmosBulkOperations.getReplaceItemOperation(
                 testDocToReplace.getId(),
                 testDocToReplace,
                 new PartitionKey(this.partitionKey1),
                 contentItemResponseDisableRequestOption));
 
-        BulkPatchItemRequestOptions patchContentResponseDisableRequestOption = new BulkPatchItemRequestOptions()
+        CosmosBulkPatchItemRequestOptions patchContentResponseDisableRequestOption = new CosmosBulkPatchItemRequestOptions()
             .setContentResponseOnWriteEnabled(false);
 
         operations.add(
-            BulkOperations.getPatchItemOperation(
+            CosmosBulkOperations.getPatchItemOperation(
                 testDocForPatch.id,
                 new PartitionKey(this.partitionKey1),
                 cosmosPatchOperations1,
                 patchContentResponseDisableRequestOption));
 
         operations.add(
-            BulkOperations.getPatchItemOperation(
+            CosmosBulkOperations.getPatchItemOperation(
                 testDocForPatch.id,
                 new PartitionKey(this.partitionKey1),
                 cosmosPatchOperations2));
 
         operations.add(
-            BulkOperations.getPatchItemOperation(
+            CosmosBulkOperations.getPatchItemOperation(
                 testDocForPatch.id,
                 new PartitionKey(this.partitionKey1),
                 cosmosPatchOperationsContinue,
@@ -200,7 +202,7 @@ public class PatchAsyncTest extends BatchTestBase {
         );
 
         operations.add(
-            BulkOperations.getPatchItemOperation(
+            CosmosBulkOperations.getPatchItemOperation(
                 testDocForPatch.id,
                 new PartitionKey(this.partitionKey1),
                 cosmosPatchOperationsContinue,

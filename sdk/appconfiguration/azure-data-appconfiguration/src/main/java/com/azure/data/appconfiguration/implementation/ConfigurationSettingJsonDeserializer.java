@@ -5,6 +5,7 @@ package com.azure.data.appconfiguration.implementation;
 
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JacksonAdapter;
+import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.FeatureFlagConfigurationSetting;
 import com.azure.data.appconfiguration.models.FeatureFlagFilter;
@@ -57,7 +58,7 @@ public final class ConfigurationSettingJsonDeserializer extends JsonDeserializer
     private static final JacksonAdapter MAPPER;
     private static final SimpleModule MODULE;
     static {
-        MAPPER = new JacksonAdapter();
+        MAPPER = (JacksonAdapter) JacksonAdapter.createDefaultSerializerAdapter();
         MODULE = new SimpleModule()
                      .addDeserializer(ConfigurationSetting.class, new ConfigurationSettingJsonDeserializer())
                      .addDeserializer(SecretReferenceConfigurationSetting.class,

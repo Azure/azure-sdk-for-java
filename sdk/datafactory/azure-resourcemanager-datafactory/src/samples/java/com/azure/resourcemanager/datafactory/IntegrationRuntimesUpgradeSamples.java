@@ -8,6 +8,11 @@ import com.azure.core.util.Context;
 
 /** Samples for IntegrationRuntimes Upgrade. */
 public final class IntegrationRuntimesUpgradeSamples {
+    /*
+     * operationId: IntegrationRuntimes_Upgrade
+     * api-version: 2018-06-01
+     * x-ms-examples: IntegrationRuntimes_Upgrade
+     */
     /**
      * Sample code: IntegrationRuntimes_Upgrade.
      *

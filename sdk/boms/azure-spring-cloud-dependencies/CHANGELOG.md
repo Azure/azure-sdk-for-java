@@ -1,9 +1,15 @@
 # Release History
 
-## 2.8.0 (Unreleased)
+## 2.8.0 (2021-08-25)
 This release is compatible with Spring Boot 2.5.0 - 2.5.3 and Spring Cloud 2020.0.3.
 ### Dependency Upgrades
 - Upgrade to [spring-boot-dependencies:2.5.3](https://repo.maven.apache.org/maven2/org/springframework/boot/spring-boot-dependencies/2.5.3/spring-boot-dependencies-2.5.3.pom).
+- Upgrade to [Azure Core 1.19.0](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core/CHANGELOG.md#1190-2021-08-06).
+- Upgrade to [Azure Identity 1.3.5](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/identity/azure-identity/CHANGELOG.md).
+- Upgrade to [Azure Service Bus 7.4.0](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/servicebus/azure-messaging-servicebus/CHANGELOG.md#740-2021-08-20).
+- Upgrade to [Azure Event Hubs 5.10.0](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/eventhubs/azure-messaging-eventhubs/CHANGELOG.md#5100-2021-08-19).
+- Upgrade to [Azure Event Hubs Checkpoint Store Blob 1.9.0](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/eventhubs/azure-messaging-eventhubs-checkpointstore-blob/CHANGELOG.md#190-2021-08-19).
+- Upgrade to [Spring Cloud Azure App Configuration 2.1.0](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/appconfiguration/azure-spring-cloud-appconfiguration-config/CHANGELOG.md).
 
 ## 2.7.0 (2021-07-20)
 This release is compatible with Spring Boot 2.5 and Spring Cloud 2020.0.3.

@@ -9,6 +9,11 @@ import com.azure.resourcemanager.datafactory.models.UserAccessPolicy;
 
 /** Samples for Factories GetDataPlaneAccess. */
 public final class FactoriesGetDataPlaneAccessSamples {
+    /*
+     * operationId: Factories_GetDataPlaneAccess
+     * api-version: 2018-06-01
+     * x-ms-examples: Factories_GetDataPlaneAccess
+     */
     /**
      * Sample code: Factories_GetDataPlaneAccess.
      *
