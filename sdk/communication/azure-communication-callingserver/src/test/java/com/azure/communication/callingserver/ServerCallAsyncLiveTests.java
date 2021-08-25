@@ -44,7 +44,7 @@ public class ServerCallAsyncLiveTests extends CallingServerTestBase {
 =======
     public void runAllClientFunctionsForConnectiongStringClient(HttpClient httpClient) {
         String groupId = getGroupId("runAllClientFunctionsForConnectiongStringClient");
-        CallingServerClientBuilder builder = getConversationClientUsingTokenCredential(httpClient);
+        CallingServerClientBuilder builder = getCallingServerClientUsingTokenCredential(httpClient);
         CallingServerAsyncClient callingServerAsyncClient = setupAsyncClient(builder, "runAllClientFunctionsForConnectiongStringClient");
 >>>>>>> 6751dd5260... Update ServerCall live tests and re-record
         runAllClientFunctionsAsync(groupId, callingServerAsyncClient);
@@ -55,10 +55,14 @@ public class ServerCallAsyncLiveTests extends CallingServerTestBase {
     public void runAllClientFunctionsForTokenCredentialClient(HttpClient httpClient) {
         String groupId = getGroupId("runAllClientFunctionsForTokenCredentialClient");
 <<<<<<< HEAD
+<<<<<<< HEAD
         CallingServerClientBuilder builder = getCallingServerClientUsingTokenCredential(httpClient);
 =======
         CallingServerClientBuilder builder = getConversationClientUsingConnectionString(httpClient);
 >>>>>>> 6751dd5260... Update ServerCall live tests and re-record
+=======
+        CallingServerClientBuilder builder = getCallingServerClientUsingConnectionString(httpClient);
+>>>>>>> 43c1ebe677... Remove duplicate code from CallingServerTestBase
         CallingServerAsyncClient callingServerAsyncClient = setupAsyncClient(builder, "runAllClientFunctionsForTokenCredentialClient");
         runAllClientFunctionsAsync(groupId, callingServerAsyncClient);
     }

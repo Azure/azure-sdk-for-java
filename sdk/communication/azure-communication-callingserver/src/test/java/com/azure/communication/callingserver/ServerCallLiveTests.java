@@ -48,7 +48,7 @@ public class ServerCallLiveTests extends CallingServerTestBase {
         String groupId = getGroupId("runAllClientFunctionsForConnectionStringClient");
 =======
     public void runAllClientFunctionsForConnectiongStringClient(HttpClient httpClient) {
-        CallingServerClientBuilder builder = getCallClientUsingConnectionString(httpClient);
+        CallingServerClientBuilder builder = getCallingServerClientUsingConnectionString(httpClient);
         CallingServerClient connectionStringClient = setupClient(builder, "runAllClientFunctionsForConnectiongStringClient");
         String groupId = getGroupId("runAllClientFunctionsForConnectiongStringClient");
 >>>>>>> 6751dd5260... Update ServerCall live tests and re-record
@@ -59,12 +59,16 @@ public class ServerCallLiveTests extends CallingServerTestBase {
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void runAllClientFunctionsForTokenCredentialClient(HttpClient httpClient) {
 <<<<<<< HEAD
+<<<<<<< HEAD
         CallingServerClientBuilder builder = getCallingServerClientUsingTokenCredential(httpClient);
         CallingServerClient tokenClient = setupClient(builder, "runAllClientFunctionsForTokenCredentialClient");
         String groupId = getGroupId("runAllClientFunctionsForTokenCredentialClient");
         runAllClientFunctions(groupId, tokenClient);
 =======
         CallingServerClientBuilder builder = getCallClientUsingTokenCredential(httpClient);
+=======
+        CallingServerClientBuilder builder = getCallingServerClientUsingTokenCredential(httpClient);
+>>>>>>> 43c1ebe677... Remove duplicate code from CallingServerTestBase
         CallingServerClient tokenClient = setupClient(builder, "runAllClientFunctionsForTokenCredentialClient");
         String groupId = getGroupId("runAllClientFunctionsForTokenCredentialClient");
         runAllClientFunctions(groupId, tokenClient);
