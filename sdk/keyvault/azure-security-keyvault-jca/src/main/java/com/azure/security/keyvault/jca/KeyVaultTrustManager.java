@@ -94,7 +94,7 @@ public final class KeyVaultTrustManager extends X509ExtendedTrustManager {
         X509TrustManager trustManager = null;
         try {
             TrustManagerFactory factory = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm(), "SunJSSE");
-            factory.init((KeyStore) null);
+            factory.init((KeyStore) null); // Do not override the system property javax.net.ssl.trustStoreType. Then this factory will create a key store of type specified by keystore.type in java.security file, and load it with local jdk key store.
             trustManager = (X509TrustManager) factory.getTrustManagers()[0];
         } catch (NoSuchAlgorithmException | NoSuchProviderException | KeyStoreException ex) {
             LOGGER.log(WARNING, "Unable to get the default trust manager factory.", ex);
