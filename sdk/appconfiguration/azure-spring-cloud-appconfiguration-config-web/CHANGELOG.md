@@ -2,6 +2,7 @@
 
 ## 2.0.1-beta.1 (Unreleased)
 
+* Update to JUnit 5 from JUnit 4
 
 ## 2.0.0 (2021-07-20)
 

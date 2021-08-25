@@ -2,6 +2,9 @@
 
 ## 2.0.1-beta.1 (Unreleased)
 
+* Add Health Indicator with the property `management.endpoint.health.azure-app-configuration.enabled` to enable the endpoint.
+* Added Secret Resolver with use of `KeyVaultSecretProvider` which enables overriding connecting to Key Vault with client provided values.
+* Update to JUnit 5 from JUnit 4
 
 ## 2.0.0 (2021-07-20)
 
