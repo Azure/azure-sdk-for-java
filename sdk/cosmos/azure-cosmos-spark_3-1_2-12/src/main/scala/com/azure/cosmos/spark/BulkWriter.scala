@@ -4,6 +4,7 @@ package com.azure.cosmos.spark
 
 // scalastyle:off underscore.import
 import com.azure.cosmos._
+import com.azure.cosmos.models.{CosmosBulkExecutionOptions, CosmosBulkExecutionThresholdsState, CosmosBulkItemRequestOptions, CosmosBulkOperations}
 
 import scala.collection.mutable
 import scala.concurrent.duration.Duration
@@ -65,7 +66,7 @@ class BulkWriter(container: CosmosAsyncContainer,
   private val totalScheduledMetrics = new AtomicLong(0)
   private val totalSuccessfulIngestionMetrics = new AtomicLong(0)
 
-  private val bulkOptions = new BulkExecutionOptions(BulkWriter.bulkProcessingThresholds)
+  private val cosmosBulkExecutionOptions = new CosmosBulkExecutionOptions(BulkWriter.bulkProcessingThresholds)
   private val operationContext = initializeOperationContext()
 
   private def initializeOperationContext(): SparkTaskContext = {
@@ -86,7 +87,7 @@ class BulkWriter(container: CosmosAsyncContainer,
       val operationContextAndListenerTuple = new OperationContextAndListenerTuple(taskDiagnosticsContext, listener)
       ImplementationBridgeHelpers.CosmosBulkExecutionOptionsHelper
         .getCosmosBulkExecutionOptionsAccessor
-        .setOperationContext(bulkOptions, operationContextAndListenerTuple)
+        .setOperationContext(cosmosBulkExecutionOptions, operationContextAndListenerTuple)
 
       taskDiagnosticsContext
     } else{
@@ -103,7 +104,7 @@ class BulkWriter(container: CosmosAsyncContainer,
       container
           .processBulkOperations[Object](
             bulkInputEmitter.asFlux(),
-            bulkOptions)
+            cosmosBulkExecutionOptions)
           .asScala
 
     bulkOperationResponseFlux.subscribe(
@@ -243,18 +244,18 @@ class BulkWriter(container: CosmosAsyncContainer,
 
     val bulkItemOperation = writeConfig.itemWriteStrategy match {
       case ItemWriteStrategy.ItemOverwrite =>
-        BulkOperations.getUpsertItemOperation(objectNode, partitionKeyValue, operationContext)
+        CosmosBulkOperations.getUpsertItemOperation(objectNode, partitionKeyValue, operationContext)
       case ItemWriteStrategy.ItemAppend =>
-        BulkOperations.getCreateItemOperation(objectNode, partitionKeyValue, operationContext)
+        CosmosBulkOperations.getCreateItemOperation(objectNode, partitionKeyValue, operationContext)
       case ItemWriteStrategy.ItemDelete =>
-        BulkOperations.getDeleteItemOperation(operationContext.itemId, partitionKeyValue, operationContext)
+        CosmosBulkOperations.getDeleteItemOperation(operationContext.itemId, partitionKeyValue, operationContext)
       case ItemWriteStrategy.ItemDeleteIfNotModified =>
-        BulkOperations.getDeleteItemOperation(
+        CosmosBulkOperations.getDeleteItemOperation(
           operationContext.itemId,
           partitionKeyValue,
           operationContext.eTag match {
-            case Some(eTag) => new BulkItemRequestOptions().setIfMatchETag(eTag)
-            case _ =>  new BulkItemRequestOptions()
+            case Some(eTag) => new CosmosBulkItemRequestOptions().setIfMatchETag(eTag)
+            case _ =>  new CosmosBulkItemRequestOptions()
           },
           operationContext)
       case _ =>
@@ -515,7 +516,7 @@ private object BulkWriter {
   val emitFailureHandler: EmitFailureHandler =
         (_, emitResult) => if (emitResult.equals(EmitResult.FAIL_NON_SERIALIZED)) true else false
 
-  val bulkProcessingThresholds = new BulkExecutionThresholds()
+  val bulkProcessingThresholds = new CosmosBulkExecutionThresholdsState()
 }
 
 //scalastyle:on multiple.string.literals

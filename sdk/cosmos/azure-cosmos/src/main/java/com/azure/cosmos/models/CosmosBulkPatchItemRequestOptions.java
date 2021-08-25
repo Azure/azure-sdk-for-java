@@ -1,22 +1,20 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.cosmos;
+package com.azure.cosmos.models;
 
+import com.azure.cosmos.CosmosClientBuilder;
+import com.azure.cosmos.CosmosItemOperation;
 import com.azure.cosmos.implementation.RequestOptions;
 import com.azure.cosmos.util.Beta;
 
 /**
- * @deprecated forRemoval = true, since = "4.19"
- * This class is not necessary anymore and will be removed. Please use {@link com.azure.cosmos.models.CosmosBulkPatchItemRequestOptions}
- *
  * Encapsulates options that can be specified for an patch operation used in Bulk execution. It can be passed while
- * creating bulk patch request using {@link BulkOperations}.
+ * creating bulk patch request using {@link CosmosBulkOperations}.
  */
-@Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-@Deprecated() //forRemoval = true, since = "4.19"
-public final class BulkPatchItemRequestOptions
-        extends BulkItemRequestOptionsBase {
+@Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+public final class CosmosBulkPatchItemRequestOptions
+        extends CosmosBulkItemRequestOptionsBase {
     private String filterPredicate;
 
     /**
@@ -24,7 +22,7 @@ public final class BulkPatchItemRequestOptions
      *
      * @return the FilterPredicate associated with the request.
      */
-    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public String getFilterPredicate() {
         return this.filterPredicate;
     }
@@ -35,8 +33,8 @@ public final class BulkPatchItemRequestOptions
      * @param filterPredicate the filterPredicate associated with the request.
      * @return the current request options
      */
-    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    public BulkPatchItemRequestOptions setFilterPredicate(String filterPredicate) {
+    @Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public CosmosBulkPatchItemRequestOptions setFilterPredicate(String filterPredicate) {
         this.filterPredicate = filterPredicate;
         return this;
     }
@@ -52,16 +50,16 @@ public final class BulkPatchItemRequestOptions
      *
      * By-default, this is null.
      *
-     * NOTE: This flag is also present on {@link com.azure.cosmos.CosmosClientBuilder}, however if specified
-     * here, it will override the value specified in {@link com.azure.cosmos.CosmosClientBuilder} for this request.
+     * NOTE: This flag is also present on {@link CosmosClientBuilder}, however if specified
+     * here, it will override the value specified in {@link CosmosClientBuilder} for this request.
      *
      * @param contentResponseOnWriteEnabled a boolean indicating whether payload will be included
      * in the response or not for this operation.
      *
      * @return the current request options.
      */
-    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    public BulkPatchItemRequestOptions setContentResponseOnWriteEnabled(Boolean contentResponseOnWriteEnabled) {
+    @Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public CosmosBulkPatchItemRequestOptions setContentResponseOnWriteEnabled(Boolean contentResponseOnWriteEnabled) {
         super.setContentResponseOnWriteEnabledCore(contentResponseOnWriteEnabled);
         return this;
     }
@@ -72,8 +70,8 @@ public final class BulkPatchItemRequestOptions
      * @param ifNoneMatchEtag the ifNoneMatchETag associated with the request.
      * @return the current request options.
      */
-    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    public BulkPatchItemRequestOptions setIfNoneMatchETag(final String ifNoneMatchEtag) {
+    @Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public CosmosBulkPatchItemRequestOptions setIfNoneMatchETag(final String ifNoneMatchEtag) {
         super.setIfNoneMatchETagCore(ifNoneMatchEtag);
         return this;
     }
@@ -84,8 +82,8 @@ public final class BulkPatchItemRequestOptions
      * @param ifMatchETag the ifMatchETag associated with the request.
      * @return the current request options
      */
-    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    public BulkPatchItemRequestOptions setIfMatchETag(final String ifMatchETag) {
+    @Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public CosmosBulkPatchItemRequestOptions setIfMatchETag(final String ifMatchETag) {
         super.setIfMatchETagCore(ifMatchETag);
         return this;
     }

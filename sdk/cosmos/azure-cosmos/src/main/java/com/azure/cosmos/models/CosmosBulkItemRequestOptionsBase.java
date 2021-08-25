@@ -1,26 +1,25 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.cosmos;
+package com.azure.cosmos.models;
 
+import com.azure.cosmos.CosmosClientBuilder;
+import com.azure.cosmos.CosmosItemOperation;
 import com.azure.cosmos.implementation.RequestOptions;
 import com.azure.cosmos.util.Beta;
 
 /**
- * @deprecated forRemoval = true, since = "4.19"
- *
  * Encapsulates options that can be specified for an operation used in Bulk execution. It can be passed while
- * creating bulk request using {@link BulkOperations}.
+ * creating bulk request using {@link CosmosBulkOperations}.
  */
-@Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-@Deprecated() //forRemoval = true, since = "4.19"
-class BulkItemRequestOptionsBase {
+@Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+class CosmosBulkItemRequestOptionsBase {
 
     private String ifMatchETag;
     private String ifNoneMatchETag;
     private Boolean contentResponseOnWriteEnabled;
 
-    protected BulkItemRequestOptionsBase(){
+    protected CosmosBulkItemRequestOptionsBase(){
     }
 
     /**
@@ -28,7 +27,7 @@ class BulkItemRequestOptionsBase {
      *
      * @return ifMatchETag the ifMatchETag associated with the request.
      */
-    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public String getIfMatchETag() {
         return this.ifMatchETag;
     }
@@ -38,7 +37,7 @@ class BulkItemRequestOptionsBase {
      *
      * @param ifMatchETag the ifMatchETag associated with the request.
      */
-    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public void setIfMatchETagCore(final String ifMatchETag){
         this.ifMatchETag = ifMatchETag;
         return;
@@ -49,7 +48,7 @@ class BulkItemRequestOptionsBase {
      *
      * @return the ifNoneMatchETag associated with the request.
      */
-    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public String getIfNoneMatchETag() {
         return this.ifNoneMatchETag;
     }
@@ -59,7 +58,7 @@ class BulkItemRequestOptionsBase {
      *
      * @param ifNoneMatchEtag the ifNoneMatchETag associated with the request.
      */
-    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public void setIfNoneMatchETagCore(final String ifNoneMatchEtag){
         this.ifNoneMatchETag = ifNoneMatchEtag;
         return;
@@ -78,7 +77,7 @@ class BulkItemRequestOptionsBase {
      *
      * @return a boolean indicating whether payload will be included in the response or not for this operation.
      */
-    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public Boolean isContentResponseOnWriteEnabled() {
         return contentResponseOnWriteEnabled;
     }
@@ -94,13 +93,13 @@ class BulkItemRequestOptionsBase {
      *
      * By-default, this is null.
      *
-     * NOTE: This flag is also present on {@link com.azure.cosmos.CosmosClientBuilder}, however if specified
-     * here, it will override the value specified in {@link com.azure.cosmos.CosmosClientBuilder} for this request.
+     * NOTE: This flag is also present on {@link CosmosClientBuilder}, however if specified
+     * here, it will override the value specified in {@link CosmosClientBuilder} for this request.
      *
      * @param contentResponseOnWriteEnabled a boolean indicating whether payload will be included
      * in the response or not for this operation.
      */
-    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public void setContentResponseOnWriteEnabledCore(Boolean contentResponseOnWriteEnabled){
         this.contentResponseOnWriteEnabled = contentResponseOnWriteEnabled;
         return;
