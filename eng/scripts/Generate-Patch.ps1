@@ -107,7 +107,7 @@ function UpdateChangeLog($ArtifactName, $ServiceDirectoryName, $Version) {
   $Content += ""
   $Content += "### Dependency Updates"
   $Content += ""
-  $Content += "Upgraded `azure-core` and other dependencies for the library."
+  $Content += "Upgraded ``azure-core`` and other dependencies for the library."
   $Content += ""
   $newChangeLogEntry = New-ChangeLogEntry -Version $Version -Status $ReleaseStatus -Content $Content
   if ($newChangeLogEntry) {
