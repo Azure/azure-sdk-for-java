@@ -13,8 +13,9 @@ import com.azure.spring.integration.core.api.CheckpointConfig;
 import com.azure.spring.integration.core.api.CheckpointMode;
 import com.azure.spring.integration.core.api.PartitionSupplier;
 import com.azure.spring.integration.core.api.StartPosition;
+import com.azure.spring.integration.eventhub.api.ProcessorConsumerFactory;
+import com.azure.spring.integration.eventhub.api.ProducerFactory;
 import com.azure.spring.integration.eventhub.converter.EventHubMessageConverter;
-import com.azure.spring.integration.eventhub.api.EventHubClientFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.lang.NonNull;
@@ -22,11 +23,11 @@ import org.springframework.messaging.Message;
 import org.springframework.util.Assert;
 import reactor.core.publisher.Mono;
 
-import java.util.Map;
-import java.util.List;
-import java.util.HashMap;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -42,17 +43,20 @@ public class AbstractEventHubTemplate {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AbstractEventHubTemplate.class);
 
-    private final EventHubClientFactory clientFactory;
+    private ProducerFactory producerFactory;
+
+    private ProcessorConsumerFactory processorConsumerFactory;
 
     private EventHubMessageConverter messageConverter = new EventHubMessageConverter();
 
     private StartPosition startPosition = StartPosition.LATEST;
 
     private CheckpointConfig checkpointConfig = CheckpointConfig.builder()
-        .checkpointMode(CheckpointMode.RECORD).build();
+                                                                .checkpointMode(CheckpointMode.RECORD).build();
 
-    AbstractEventHubTemplate(EventHubClientFactory clientFactory) {
-        this.clientFactory = clientFactory;
+    AbstractEventHubTemplate(ProducerFactory producerFactory, ProcessorConsumerFactory processorConsumerFactory) {
+        this.producerFactory = producerFactory;
+        this.processorConsumerFactory = processorConsumerFactory;
     }
 
     private static EventPosition buildEventPosition(StartPosition startPosition) {
@@ -68,14 +72,14 @@ public class AbstractEventHubTemplate {
                                     PartitionSupplier partitionSupplier) {
         Assert.hasText(eventHubName, "eventHubName can't be null or empty");
         List<EventData> eventData = messages.stream().map(m -> messageConverter.fromMessage(m, EventData.class))
-            .collect(Collectors.toList());
+                                            .collect(Collectors.toList());
         return doSend(eventHubName, partitionSupplier, eventData);
     }
 
     private Mono<Void> doSend(String eventHubName, PartitionSupplier partitionSupplier,
                               List<EventData> events) {
 
-        EventHubProducerAsyncClient producer = this.clientFactory.getOrCreateProducerClient(eventHubName);
+        EventHubProducerAsyncClient producer = this.producerFactory.getOrCreateProducerClient(eventHubName);
 
         CreateBatchOptions options = buildCreateBatchOptions(partitionSupplier);
 
@@ -99,16 +103,16 @@ public class AbstractEventHubTemplate {
 
     protected void createEventProcessorClient(String name, String consumerGroup, EventHubProcessor eventHubProcessor) {
         eventHubProcessor.setEventPosition(buildEventPosition(startPosition));
-        this.clientFactory.createEventProcessorClient(name, consumerGroup, eventHubProcessor);
+        this.processorConsumerFactory.createEventProcessorClient(name, consumerGroup, eventHubProcessor);
     }
 
     protected void startEventProcessorClient(String name, String consumerGroup) {
-        this.clientFactory.getEventProcessorClient(name, consumerGroup).ifPresent(EventProcessorClient::start);
+        this.processorConsumerFactory.getEventProcessorClient(name, consumerGroup).ifPresent(EventProcessorClient::start);
     }
 
     protected void stopEventProcessorClient(String name, String consumerGroup) {
-        this.clientFactory.getEventProcessorClient(name, consumerGroup).ifPresent(eventProcessor -> {
-            this.clientFactory.removeEventProcessorClient(name, consumerGroup);
+        this.processorConsumerFactory.getEventProcessorClient(name, consumerGroup).ifPresent(eventProcessor -> {
+            this.processorConsumerFactory.removeEventProcessorClient(name, consumerGroup);
             eventProcessor.stop();
         });
     }

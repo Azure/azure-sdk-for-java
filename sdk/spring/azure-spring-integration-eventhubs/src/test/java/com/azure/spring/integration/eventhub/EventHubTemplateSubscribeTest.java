@@ -6,6 +6,8 @@ package com.azure.spring.integration.eventhub;
 import com.azure.messaging.eventhubs.EventProcessorClient;
 import com.azure.spring.integration.eventhub.api.EventHubClientFactory;
 import com.azure.spring.integration.eventhub.api.EventHubOperation;
+import com.azure.spring.integration.eventhub.api.ProcessorConsumerFactory;
+import com.azure.spring.integration.eventhub.api.ProducerFactory;
 import com.azure.spring.integration.eventhub.impl.EventHubProcessor;
 import com.azure.spring.integration.eventhub.impl.EventHubTemplate;
 import com.azure.spring.integration.test.support.SubscribeByGroupOperationTest;
@@ -28,7 +30,9 @@ import static org.mockito.Mockito.when;
 public class EventHubTemplateSubscribeTest extends SubscribeByGroupOperationTest<EventHubOperation> {
 
     @Mock
-    private EventHubClientFactory mockClientFactory;
+    ProducerFactory producerFactory;
+    @Mock
+    ProcessorConsumerFactory processorConsumerFactory;
 
     @Mock
     private EventProcessorClient eventProcessorClient;
@@ -38,10 +42,10 @@ public class EventHubTemplateSubscribeTest extends SubscribeByGroupOperationTest
     @BeforeEach
     public void setUp() {
         this.closeable = MockitoAnnotations.openMocks(this);
-        this.subscribeByGroupOperation = new EventHubTemplate(mockClientFactory);
-        when(this.mockClientFactory.createEventProcessorClient(anyString(), anyString(), isA(EventHubProcessor.class)))
+        this.subscribeByGroupOperation = new EventHubTemplate(producerFactory,processorConsumerFactory);
+        when(this.processorConsumerFactory.createEventProcessorClient(anyString(), anyString(), isA(EventHubProcessor.class)))
             .thenReturn(this.eventProcessorClient);
-        when(this.mockClientFactory.getEventProcessorClient(anyString(), anyString()))
+        when(this.processorConsumerFactory.getEventProcessorClient(anyString(), anyString()))
             .thenReturn(Optional.of(this.eventProcessorClient));
         doNothing().when(this.eventProcessorClient).stop();
         doNothing().when(this.eventProcessorClient).start();
@@ -54,13 +58,13 @@ public class EventHubTemplateSubscribeTest extends SubscribeByGroupOperationTest
 
     @Override
     protected void verifySubscriberCreatorCalled() {
-        verify(this.mockClientFactory, atLeastOnce()).createEventProcessorClient(anyString(), anyString(),
+        verify(this.processorConsumerFactory, atLeastOnce()).createEventProcessorClient(anyString(), anyString(),
             isA(EventHubProcessor.class));
     }
 
     @Override
     protected void verifySubscriberCreatorNotCalled() {
-        verify(this.mockClientFactory, never()).createEventProcessorClient(anyString(), anyString(),
+        verify(this.processorConsumerFactory, never()).createEventProcessorClient(anyString(), anyString(),
             isA(EventHubProcessor.class));
     }
 
@@ -71,7 +75,7 @@ public class EventHubTemplateSubscribeTest extends SubscribeByGroupOperationTest
 
     @Override
     protected void verifySubscriberUnregistered(int times) {
-        verify(this.mockClientFactory, times(times)).removeEventProcessorClient(anyString(), anyString());
+        verify(this.processorConsumerFactory, times(times)).removeEventProcessorClient(anyString(), anyString());
         verify(this.eventProcessorClient, times(times)).stop();
     }
 }

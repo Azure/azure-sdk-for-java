@@ -12,9 +12,13 @@ import com.azure.spring.cloud.context.core.config.AzureProperties;
 import com.azure.spring.cloud.context.core.impl.EventHubNamespaceManager;
 import com.azure.spring.cloud.context.core.impl.StorageAccountManager;
 import com.azure.spring.cloud.context.core.storage.StorageConnectionStringProvider;
-import com.azure.spring.integration.eventhub.api.EventHubClientFactory;
+import com.azure.spring.integration.eventhub.api.ConsumerFactory;
 import com.azure.spring.integration.eventhub.api.EventHubOperation;
-import com.azure.spring.integration.eventhub.factory.DefaultEventHubClientFactory;
+import com.azure.spring.integration.eventhub.api.ProcessorConsumerFactory;
+import com.azure.spring.integration.eventhub.api.ProducerFactory;
+import com.azure.spring.integration.eventhub.factory.DefaultEventHubConsumerClientFactory;
+import com.azure.spring.integration.eventhub.factory.DefaultEventHubProcessorConsumerClientFactory;
+import com.azure.spring.integration.eventhub.factory.DefaultEventHubProducerClientFactory;
 import com.azure.spring.integration.eventhub.factory.EventHubConnectionStringProvider;
 import com.azure.spring.integration.eventhub.impl.EventHubTemplate;
 import org.slf4j.Logger;
@@ -90,9 +94,43 @@ public class AzureEventHubAutoConfiguration {
         return null;
     }
 
+    //    @Bean
+    //    @ConditionalOnMissingBean
+    //    public EventHubClientFactory eventhubClientFactory(
+    //        @Autowired(required = false) EnvironmentProvider environmentProvider,
+    //        @Autowired(required = false) StorageAccountManager storageAccountManager,
+    //        EventHubConnectionStringProvider eventHubConnectionStringProvider,
+    //        AzureEventHubProperties properties
+    //    ) {
+    //        if (eventHubConnectionStringProvider == null) {
+    //            LOGGER.info("No event hub connection string provided.");
+    //            return null;
+    //        }
+    //
+    //        final String eventHubConnectionString = eventHubConnectionStringProvider.getConnectionString();
+    //        final String storageConnectionString = getStorageConnectionString(properties,
+    //            storageAccountManager,
+    //            environmentProvider == null ? null : environmentProvider.getEnvironment());
+    //
+    //        return new DefaultEventHubClientFactory(eventHubConnectionString, storageConnectionString,
+    //            properties.getCheckpointContainer());
+    //    }
+
     @Bean
     @ConditionalOnMissingBean
-    public EventHubClientFactory eventhubClientFactory(
+    public ConsumerFactory eventhubConsumerFactory(EventHubConnectionStringProvider eventHubConnectionStringProvider) {
+        if (eventHubConnectionStringProvider == null) {
+            LOGGER.info("No event hub connection string provided.");
+            return null;
+        }
+        final String eventHubConnectionString = eventHubConnectionStringProvider.getConnectionString();
+        return new DefaultEventHubConsumerClientFactory(eventHubConnectionString);
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    //TODO  Check whether the storage account is configured
+    public ProcessorConsumerFactory eventhubProcessorConsumerFactory(
         @Autowired(required = false) EnvironmentProvider environmentProvider,
         @Autowired(required = false) StorageAccountManager storageAccountManager,
         EventHubConnectionStringProvider eventHubConnectionStringProvider,
@@ -108,14 +146,30 @@ public class AzureEventHubAutoConfiguration {
             storageAccountManager,
             environmentProvider == null ? null : environmentProvider.getEnvironment());
 
-        return new DefaultEventHubClientFactory(eventHubConnectionString, storageConnectionString,
+        return new DefaultEventHubProcessorConsumerClientFactory(eventHubConnectionString, storageConnectionString,
             properties.getCheckpointContainer());
     }
 
     @Bean
     @ConditionalOnMissingBean
-    public EventHubOperation eventHubOperation(EventHubClientFactory clientFactory) {
-        return new EventHubTemplate(clientFactory);
+    public ProducerFactory eventhubProducerFactory(EventHubConnectionStringProvider eventHubConnectionStringProvider) {
+        if (eventHubConnectionStringProvider == null) {
+            LOGGER.info("No event hub connection string provided.");
+            return null;
+        }
+        final String eventHubConnectionString = eventHubConnectionStringProvider.getConnectionString();
+        return new DefaultEventHubProducerClientFactory(eventHubConnectionString);
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    public EventHubOperation eventHubOperation(ProducerFactory producerFactory, ProcessorConsumerFactory processorConsumerFactory) {
+
+        //TODO  When processorConsumerFactory is empty, build the EventHubTemplate with ConsumerFactory?
+
+        //TODO When processorConsumerFactory is not empty, processorConsumerFactory builds the EventHubTemplate?
+
+        return new EventHubTemplate(producerFactory, processorConsumerFactory);
     }
 
 

@@ -9,6 +9,8 @@ import com.azure.messaging.eventhubs.EventHubProducerAsyncClient;
 import com.azure.messaging.eventhubs.models.CreateBatchOptions;
 import com.azure.spring.integration.eventhub.api.EventHubClientFactory;
 import com.azure.spring.integration.eventhub.api.EventHubOperation;
+import com.azure.spring.integration.eventhub.api.ProcessorConsumerFactory;
+import com.azure.spring.integration.eventhub.api.ProducerFactory;
 import com.azure.spring.integration.eventhub.impl.EventHubRuntimeException;
 import com.azure.spring.integration.eventhub.impl.EventHubTemplate;
 import com.azure.spring.integration.test.support.reactor.SendOperationTest;
@@ -30,7 +32,9 @@ public class EventHubTemplateSendTest extends SendOperationTest<EventHubOperatio
     @Mock
     EventDataBatch eventDataBatch;
     @Mock
-    EventHubClientFactory mockClientFactory;
+    ProducerFactory producerFactory;
+    @Mock
+    ProcessorConsumerFactory processorConsumerFactory;
     @Mock
     EventHubProducerAsyncClient mockProducerClient;
 
@@ -39,14 +43,14 @@ public class EventHubTemplateSendTest extends SendOperationTest<EventHubOperatio
     @BeforeEach
     public void setUp() {
         this.closeable = MockitoAnnotations.openMocks(this);
-        when(this.mockClientFactory.getOrCreateProducerClient(eq(this.destination)))
+        when(this.producerFactory.getOrCreateProducerClient(eq(this.destination)))
             .thenReturn(this.mockProducerClient);
         when(this.mockProducerClient.createBatch(any(CreateBatchOptions.class)))
             .thenReturn(Mono.just(this.eventDataBatch));
         when(this.mockProducerClient.send(any(EventDataBatch.class))).thenReturn(this.mono);
         when(this.eventDataBatch.tryAdd(any(EventData.class))).thenReturn(true);
 
-        this.sendOperation = new EventHubTemplate(mockClientFactory);
+        this.sendOperation = new EventHubTemplate(producerFactory,processorConsumerFactory);
     }
 
     @AfterEach
@@ -61,13 +65,13 @@ public class EventHubTemplateSendTest extends SendOperationTest<EventHubOperatio
 
     @Override
     protected void whenSendWithException() {
-        when(this.mockClientFactory.getOrCreateProducerClient(this.destination))
+        when(this.producerFactory.getOrCreateProducerClient(this.destination))
             .thenThrow(EventHubRuntimeException.class);
     }
 
     @Override
     protected void verifyGetClientCreator(int times) {
-        verify(this.mockClientFactory, times(times)).getOrCreateProducerClient(this.destination);
+        verify(this.producerFactory, times(times)).getOrCreateProducerClient(this.destination);
     }
 
     @Override
