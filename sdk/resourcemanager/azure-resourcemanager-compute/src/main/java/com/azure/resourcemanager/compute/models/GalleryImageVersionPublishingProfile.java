@@ -50,6 +50,13 @@ public final class GalleryImageVersionPublishingProfile extends GalleryArtifactP
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public GalleryImageVersionPublishingProfile withReplicationMode(ReplicationMode replicationMode) {
+        super.withReplicationMode(replicationMode);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *
