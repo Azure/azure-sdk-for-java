@@ -32,6 +32,12 @@ public final class MetricDimension {
     @JsonProperty(value = "internalName")
     private String internalName;
 
+    /*
+     * Flag to indicate export for Shoebox
+     */
+    @JsonProperty(value = "toBeExportedForShoebox")
+    private Boolean toBeExportedForShoebox;
+
     /**
      * Get the name property: Name of the dimension.
      *
@@ -89,6 +95,26 @@ public final class MetricDimension {
      */
     public MetricDimension withInternalName(String internalName) {
         this.internalName = internalName;
+        return this;
+    }
+
+    /**
+     * Get the toBeExportedForShoebox property: Flag to indicate export for Shoebox.
+     *
+     * @return the toBeExportedForShoebox value.
+     */
+    public Boolean toBeExportedForShoebox() {
+        return this.toBeExportedForShoebox;
+    }
+
+    /**
+     * Set the toBeExportedForShoebox property: Flag to indicate export for Shoebox.
+     *
+     * @param toBeExportedForShoebox the toBeExportedForShoebox value to set.
+     * @return the MetricDimension object itself.
+     */
+    public MetricDimension withToBeExportedForShoebox(Boolean toBeExportedForShoebox) {
+        this.toBeExportedForShoebox = toBeExportedForShoebox;
         return this;
     }
 

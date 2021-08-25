@@ -47,6 +47,57 @@ public final class MetricSpecification {
     private String aggregationType;
 
     /*
+     * Supported aggregation types. Valid values: Average, Minimum, Maximum,
+     * Total, Count.
+     */
+    @JsonProperty(value = "supportedAggregationTypes")
+    private List<String> supportedAggregationTypes;
+
+    /*
+     * Supported time grains. Valid values: PT1M, PT5M, PT15M, PT30M, PT1H,
+     * PT6H, PT12H, P1D
+     */
+    @JsonProperty(value = "supportedTimeGrainTypes")
+    private List<String> supportedTimeGrainTypes;
+
+    /*
+     * Flag to indicate use of regional Mdm accounts
+     */
+    @JsonProperty(value = "enableRegionalMdmAccount")
+    private Boolean enableRegionalMdmAccount;
+
+    /*
+     * Source mdm account
+     */
+    @JsonProperty(value = "sourceMdmAccount")
+    private String sourceMdmAccount;
+
+    /*
+     * Source mdm namespace
+     */
+    @JsonProperty(value = "sourceMdmNamespace")
+    private String sourceMdmNamespace;
+
+    /*
+     * Metric filter regex pattern
+     */
+    @JsonProperty(value = "metricFilterPattern")
+    private String metricFilterPattern;
+
+    /*
+     * Flag to determine is Zero is returned for time duration where no metric
+     * is emitted
+     */
+    @JsonProperty(value = "fillGapWithZero")
+    private Boolean fillGapWithZero;
+
+    /*
+     * Metric category
+     */
+    @JsonProperty(value = "category")
+    private String category;
+
+    /*
      * Internal metric name.
      */
     @JsonProperty(value = "internalMetricName")
@@ -57,6 +108,12 @@ public final class MetricSpecification {
      */
     @JsonProperty(value = "dimensions")
     private List<MetricDimension> dimensions;
+
+    /*
+     * Locked aggregation type of the metric
+     */
+    @JsonProperty(value = "lockedAggregationType")
+    private String lockedAggregationType;
 
     /**
      * Get the name property: Name of the metric.
@@ -161,6 +218,172 @@ public final class MetricSpecification {
     }
 
     /**
+     * Get the supportedAggregationTypes property: Supported aggregation types. Valid values: Average, Minimum, Maximum,
+     * Total, Count.
+     *
+     * @return the supportedAggregationTypes value.
+     */
+    public List<String> supportedAggregationTypes() {
+        return this.supportedAggregationTypes;
+    }
+
+    /**
+     * Set the supportedAggregationTypes property: Supported aggregation types. Valid values: Average, Minimum, Maximum,
+     * Total, Count.
+     *
+     * @param supportedAggregationTypes the supportedAggregationTypes value to set.
+     * @return the MetricSpecification object itself.
+     */
+    public MetricSpecification withSupportedAggregationTypes(List<String> supportedAggregationTypes) {
+        this.supportedAggregationTypes = supportedAggregationTypes;
+        return this;
+    }
+
+    /**
+     * Get the supportedTimeGrainTypes property: Supported time grains. Valid values: PT1M, PT5M, PT15M, PT30M, PT1H,
+     * PT6H, PT12H, P1D.
+     *
+     * @return the supportedTimeGrainTypes value.
+     */
+    public List<String> supportedTimeGrainTypes() {
+        return this.supportedTimeGrainTypes;
+    }
+
+    /**
+     * Set the supportedTimeGrainTypes property: Supported time grains. Valid values: PT1M, PT5M, PT15M, PT30M, PT1H,
+     * PT6H, PT12H, P1D.
+     *
+     * @param supportedTimeGrainTypes the supportedTimeGrainTypes value to set.
+     * @return the MetricSpecification object itself.
+     */
+    public MetricSpecification withSupportedTimeGrainTypes(List<String> supportedTimeGrainTypes) {
+        this.supportedTimeGrainTypes = supportedTimeGrainTypes;
+        return this;
+    }
+
+    /**
+     * Get the enableRegionalMdmAccount property: Flag to indicate use of regional Mdm accounts.
+     *
+     * @return the enableRegionalMdmAccount value.
+     */
+    public Boolean enableRegionalMdmAccount() {
+        return this.enableRegionalMdmAccount;
+    }
+
+    /**
+     * Set the enableRegionalMdmAccount property: Flag to indicate use of regional Mdm accounts.
+     *
+     * @param enableRegionalMdmAccount the enableRegionalMdmAccount value to set.
+     * @return the MetricSpecification object itself.
+     */
+    public MetricSpecification withEnableRegionalMdmAccount(Boolean enableRegionalMdmAccount) {
+        this.enableRegionalMdmAccount = enableRegionalMdmAccount;
+        return this;
+    }
+
+    /**
+     * Get the sourceMdmAccount property: Source mdm account.
+     *
+     * @return the sourceMdmAccount value.
+     */
+    public String sourceMdmAccount() {
+        return this.sourceMdmAccount;
+    }
+
+    /**
+     * Set the sourceMdmAccount property: Source mdm account.
+     *
+     * @param sourceMdmAccount the sourceMdmAccount value to set.
+     * @return the MetricSpecification object itself.
+     */
+    public MetricSpecification withSourceMdmAccount(String sourceMdmAccount) {
+        this.sourceMdmAccount = sourceMdmAccount;
+        return this;
+    }
+
+    /**
+     * Get the sourceMdmNamespace property: Source mdm namespace.
+     *
+     * @return the sourceMdmNamespace value.
+     */
+    public String sourceMdmNamespace() {
+        return this.sourceMdmNamespace;
+    }
+
+    /**
+     * Set the sourceMdmNamespace property: Source mdm namespace.
+     *
+     * @param sourceMdmNamespace the sourceMdmNamespace value to set.
+     * @return the MetricSpecification object itself.
+     */
+    public MetricSpecification withSourceMdmNamespace(String sourceMdmNamespace) {
+        this.sourceMdmNamespace = sourceMdmNamespace;
+        return this;
+    }
+
+    /**
+     * Get the metricFilterPattern property: Metric filter regex pattern.
+     *
+     * @return the metricFilterPattern value.
+     */
+    public String metricFilterPattern() {
+        return this.metricFilterPattern;
+    }
+
+    /**
+     * Set the metricFilterPattern property: Metric filter regex pattern.
+     *
+     * @param metricFilterPattern the metricFilterPattern value to set.
+     * @return the MetricSpecification object itself.
+     */
+    public MetricSpecification withMetricFilterPattern(String metricFilterPattern) {
+        this.metricFilterPattern = metricFilterPattern;
+        return this;
+    }
+
+    /**
+     * Get the fillGapWithZero property: Flag to determine is Zero is returned for time duration where no metric is
+     * emitted.
+     *
+     * @return the fillGapWithZero value.
+     */
+    public Boolean fillGapWithZero() {
+        return this.fillGapWithZero;
+    }
+
+    /**
+     * Set the fillGapWithZero property: Flag to determine is Zero is returned for time duration where no metric is
+     * emitted.
+     *
+     * @param fillGapWithZero the fillGapWithZero value to set.
+     * @return the MetricSpecification object itself.
+     */
+    public MetricSpecification withFillGapWithZero(Boolean fillGapWithZero) {
+        this.fillGapWithZero = fillGapWithZero;
+        return this;
+    }
+
+    /**
+     * Get the category property: Metric category.
+     *
+     * @return the category value.
+     */
+    public String category() {
+        return this.category;
+    }
+
+    /**
+     * Set the category property: Metric category.
+     *
+     * @param category the category value to set.
+     * @return the MetricSpecification object itself.
+     */
+    public MetricSpecification withCategory(String category) {
+        this.category = category;
+        return this;
+    }
+
+    /**
      * Get the internalMetricName property: Internal metric name.
      *
      * @return the internalMetricName value.
@@ -197,6 +420,26 @@ public final class MetricSpecification {
      */
     public MetricSpecification withDimensions(List<MetricDimension> dimensions) {
         this.dimensions = dimensions;
+        return this;
+    }
+
+    /**
+     * Get the lockedAggregationType property: Locked aggregation type of the metric.
+     *
+     * @return the lockedAggregationType value.
+     */
+    public String lockedAggregationType() {
+        return this.lockedAggregationType;
+    }
+
+    /**
+     * Set the lockedAggregationType property: Locked aggregation type of the metric.
+     *
+     * @param lockedAggregationType the lockedAggregationType value to set.
+     * @return the MetricSpecification object itself.
+     */
+    public MetricSpecification withLockedAggregationType(String lockedAggregationType) {
+        this.lockedAggregationType = lockedAggregationType;
         return this;
     }
 

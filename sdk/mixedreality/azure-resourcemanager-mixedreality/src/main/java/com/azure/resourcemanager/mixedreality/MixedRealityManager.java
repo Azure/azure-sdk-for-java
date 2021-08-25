@@ -9,7 +9,6 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.AddDatePolicy;
-import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
@@ -17,15 +16,18 @@ import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
+import com.azure.core.management.http.policy.ArmChallengeAuthenticationPolicy;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.mixedreality.fluent.MixedRealityClient;
 import com.azure.resourcemanager.mixedreality.implementation.MixedRealityClientBuilder;
+import com.azure.resourcemanager.mixedreality.implementation.ObjectAnchorsAccountsImpl;
 import com.azure.resourcemanager.mixedreality.implementation.OperationsImpl;
 import com.azure.resourcemanager.mixedreality.implementation.RemoteRenderingAccountsImpl;
 import com.azure.resourcemanager.mixedreality.implementation.ResourceProvidersImpl;
 import com.azure.resourcemanager.mixedreality.implementation.SpatialAnchorsAccountsImpl;
+import com.azure.resourcemanager.mixedreality.models.ObjectAnchorsAccounts;
 import com.azure.resourcemanager.mixedreality.models.Operations;
 import com.azure.resourcemanager.mixedreality.models.RemoteRenderingAccounts;
 import com.azure.resourcemanager.mixedreality.models.ResourceProviders;
@@ -45,6 +47,8 @@ public final class MixedRealityManager {
     private SpatialAnchorsAccounts spatialAnchorsAccounts;
 
     private RemoteRenderingAccounts remoteRenderingAccounts;
+
+    private ObjectAnchorsAccounts objectAnchorsAccounts;
 
     private final MixedRealityClient clientObject;
 
@@ -89,6 +93,7 @@ public final class MixedRealityManager {
         private HttpClient httpClient;
         private HttpLogOptions httpLogOptions;
         private final List<HttpPipelinePolicy> policies = new ArrayList<>();
+        private final List<String> scopes = new ArrayList<>();
         private RetryPolicy retryPolicy;
         private Duration defaultPollInterval;
 
@@ -125,6 +130,17 @@ public final class MixedRealityManager {
          */
         public Configurable withPolicy(HttpPipelinePolicy policy) {
             this.policies.add(Objects.requireNonNull(policy, "'policy' cannot be null."));
+            return this;
+        }
+
+        /**
+         * Adds the scope to permission sets.
+         *
+         * @param scope the scope.
+         * @return the configurable object itself.
+         */
+        public Configurable withScope(String scope) {
+            this.scopes.add(Objects.requireNonNull(scope, "'scope' cannot be null."));
             return this;
         }
 
@@ -184,6 +200,9 @@ public final class MixedRealityManager {
                 userAgentBuilder.append(" (auto-generated)");
             }
 
+            if (scopes.isEmpty()) {
+                scopes.add(profile.getEnvironment().getManagementEndpoint() + "/.default");
+            }
             if (retryPolicy == null) {
                 retryPolicy = new RetryPolicy("Retry-After", ChronoUnit.SECONDS);
             }
@@ -193,10 +212,7 @@ public final class MixedRealityManager {
             HttpPolicyProviders.addBeforeRetryPolicies(policies);
             policies.add(retryPolicy);
             policies.add(new AddDatePolicy());
-            policies
-                .add(
-                    new BearerTokenAuthenticationPolicy(
-                        credential, profile.getEnvironment().getManagementEndpoint() + "/.default"));
+            policies.add(new ArmChallengeAuthenticationPolicy(credential, scopes.toArray(new String[0])));
             policies.addAll(this.policies);
             HttpPolicyProviders.addAfterRetryPolicies(policies);
             policies.add(new HttpLoggingPolicy(httpLogOptions));
@@ -241,6 +257,14 @@ public final class MixedRealityManager {
                 new RemoteRenderingAccountsImpl(clientObject.getRemoteRenderingAccounts(), this);
         }
         return remoteRenderingAccounts;
+    }
+
+    /** @return Resource collection API of ObjectAnchorsAccounts. */
+    public ObjectAnchorsAccounts objectAnchorsAccounts() {
+        if (this.objectAnchorsAccounts == null) {
+            this.objectAnchorsAccounts = new ObjectAnchorsAccountsImpl(clientObject.getObjectAnchorsAccounts(), this);
+        }
+        return objectAnchorsAccounts;
     }
 
     /**
