@@ -143,10 +143,14 @@ if($null -eq $RemoteName) {
 }
 Write-Information "RemoteName is: $RemoteName"
 
-## Creating a new branch
-git checkout -b $BranchName $RemoteName/main
-
 try {
+  ## Creating a new branch
+  $CmdOutput = git checkout -b $BranchName $RemoteName/main
+  if($LASTEXITCODE -ne 0) {
+    LogError "Could not checkout branch $BranchName, please check if it already exists and delete as necessary. Exitting..."
+    exit
+  }
+  
   ## Hard reseting it to the contents of the release tag.
   ## Fetching all the tags from the remote branch
   $CmdOutput = git fetch $RemoteName --tags
@@ -186,7 +190,7 @@ try {
   }
   
   UpdateChangeLog -ArtifactName $ArtifactName -Version $PatchVersion -ServiceDirectory $ServiceDirectoryName
-  
+  git diff 
   git add $RepoRoot
   git commit -m "Updating the SDK dependencies for $ArtifactName"
   git push -f $RemoteName $BranchName
