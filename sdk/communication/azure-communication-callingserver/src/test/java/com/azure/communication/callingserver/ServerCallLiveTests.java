@@ -41,19 +41,21 @@ public class ServerCallLiveTests extends CallingServerTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void runAllClientFunctions(HttpClient httpClient) {
-        String testName = "runAllClientFunctions";
-        String groupId = getGroupId(testName);
+    public void runAllClientFunctionsForConnectiongStringClient(HttpClient httpClient) {
+        CallingServerClientBuilder builder = getCallClientUsingConnectionString(httpClient);
+        CallingServerClient connectionStringClient = setupClient(builder, "runAllClientFunctionsForConnectiongStringClient");
+        String groupId = getGroupId("runAllClientFunctionsForConnectiongStringClient");
+        runAllClientFunctions(groupId, connectionStringClient);
+    }
 
-        // Run with TokenCredential client
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void runAllClientFunctionsForTokenCredentialClient(HttpClient httpClient) {
         CallingServerClientBuilder builder = getCallClientUsingTokenCredential(httpClient);
-        CallingServerClient tokenClient = setupClient(builder, testName);
+        CallingServerClient tokenClient = setupClient(builder, "runAllClientFunctionsForTokenCredentialClient");
+        String groupId = getGroupId("runAllClientFunctionsForTokenCredentialClient");
         runAllClientFunctions(groupId, tokenClient);
 
-        // Run with connection string client
-        builder = getCallClientUsingConnectionString(httpClient);
-        CallingServerClient connectionStringClient = setupClient(builder, testName);
-        runAllClientFunctions(groupId, connectionStringClient);
     }
 
     private void runAllClientFunctions(String groupId, CallingServerClient client) {
