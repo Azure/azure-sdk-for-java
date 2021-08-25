@@ -41,20 +41,35 @@ public class ServerCallLiveTests extends CallingServerTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+<<<<<<< HEAD
     public void runAllClientFunctionsForConnectionStringClient(HttpClient httpClient) {
         CallingServerClientBuilder builder = getCallingServerClientUsingConnectionString(httpClient);
         CallingServerClient connectionStringClient = setupClient(builder, "runAllClientFunctionsForConnectionStringClient");
         String groupId = getGroupId("runAllClientFunctionsForConnectionStringClient");
+=======
+    public void runAllClientFunctionsForConnectiongStringClient(HttpClient httpClient) {
+        CallingServerClientBuilder builder = getCallClientUsingConnectionString(httpClient);
+        CallingServerClient connectionStringClient = setupClient(builder, "runAllClientFunctionsForConnectiongStringClient");
+        String groupId = getGroupId("runAllClientFunctionsForConnectiongStringClient");
+>>>>>>> 6751dd5260... Update ServerCall live tests and re-record
         runAllClientFunctions(groupId, connectionStringClient);
     }
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void runAllClientFunctionsForTokenCredentialClient(HttpClient httpClient) {
+<<<<<<< HEAD
         CallingServerClientBuilder builder = getCallingServerClientUsingTokenCredential(httpClient);
         CallingServerClient tokenClient = setupClient(builder, "runAllClientFunctionsForTokenCredentialClient");
         String groupId = getGroupId("runAllClientFunctionsForTokenCredentialClient");
         runAllClientFunctions(groupId, tokenClient);
+=======
+        CallingServerClientBuilder builder = getCallClientUsingTokenCredential(httpClient);
+        CallingServerClient tokenClient = setupClient(builder, "runAllClientFunctionsForTokenCredentialClient");
+        String groupId = getGroupId("runAllClientFunctionsForTokenCredentialClient");
+        runAllClientFunctions(groupId, tokenClient);
+
+>>>>>>> 6751dd5260... Update ServerCall live tests and re-record
     }
 
     private void runAllClientFunctions(String groupId, CallingServerClient client) {

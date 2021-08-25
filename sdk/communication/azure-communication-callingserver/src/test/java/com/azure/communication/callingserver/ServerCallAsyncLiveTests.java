@@ -36,10 +36,17 @@ public class ServerCallAsyncLiveTests extends CallingServerTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+<<<<<<< HEAD
     public void runAllClientFunctionsForConnectionStringClient(HttpClient httpClient) {
         String groupId = getGroupId("runAllClientFunctionsForConnectiongStringClient");
         CallingServerClientBuilder builder = getCallingServerClientUsingConnectionString(httpClient);
         CallingServerAsyncClient callingServerAsyncClient = setupAsyncClient(builder, "runAllClientFunctionsForConnectionStringClient");
+=======
+    public void runAllClientFunctionsForConnectiongStringClient(HttpClient httpClient) {
+        String groupId = getGroupId("runAllClientFunctionsForConnectiongStringClient");
+        CallingServerClientBuilder builder = getConversationClientUsingTokenCredential(httpClient);
+        CallingServerAsyncClient callingServerAsyncClient = setupAsyncClient(builder, "runAllClientFunctionsForConnectiongStringClient");
+>>>>>>> 6751dd5260... Update ServerCall live tests and re-record
         runAllClientFunctionsAsync(groupId, callingServerAsyncClient);
     }
 
@@ -47,7 +54,11 @@ public class ServerCallAsyncLiveTests extends CallingServerTestBase {
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void runAllClientFunctionsForTokenCredentialClient(HttpClient httpClient) {
         String groupId = getGroupId("runAllClientFunctionsForTokenCredentialClient");
+<<<<<<< HEAD
         CallingServerClientBuilder builder = getCallingServerClientUsingTokenCredential(httpClient);
+=======
+        CallingServerClientBuilder builder = getConversationClientUsingConnectionString(httpClient);
+>>>>>>> 6751dd5260... Update ServerCall live tests and re-record
         CallingServerAsyncClient callingServerAsyncClient = setupAsyncClient(builder, "runAllClientFunctionsForTokenCredentialClient");
         runAllClientFunctionsAsync(groupId, callingServerAsyncClient);
     }
