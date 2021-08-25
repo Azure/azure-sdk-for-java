@@ -22,17 +22,7 @@ job: InstallationCheck
         Copy-Item "$(System.DefaultWorkingDirectory)/eng" "install-check-dir/${{ parameters.Artifact.name }}/eng" -Recurse
       workingDirectory: $(Pipeline.Workspace)
       displayName: "Copy Artifacts and Directories"
-    - task: Maven@3
-      displayName: 'Install reporting tools'
-      inputs:
-        mavenPomFile: "$(Pipeline.Workspace)/install-check-dir/${{ parameters.Artifact.name }}/eng/code-quality-reports/pom.xml"
-        options: "$(DefaultOptions)"
-        mavenOptions: "$(MemoryOptions) $(LoggingOptions)"
-        javaHomeOption: 'JDKVersion'
-        jdkVersionOption: '1.11'
-        jdkArchitectureOption: 'x64'
-        publishJUnitResults: false
-        goals: 'install'
+    - template: /eng/pipelines/templates/steps/install-reporting-tools.yml
     - task: Maven@3
       displayName: "Verify Package Installation"
       inputs:
