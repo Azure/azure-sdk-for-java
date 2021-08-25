@@ -50,7 +50,7 @@ jobs:
         jdkVersionOption: $(JavaBuildVersion)
         jdkArchitectureOption: 'x64'
         publishJUnitResults: false
-        goals: 'verify site:site site:stage'
+        goals: 'verify javadoc:aggregate jacoco:report-aggregate'
 
     - task: Maven@3
       condition: succeededOrFailed()
@@ -96,9 +96,11 @@ jobs:
         Copy-Item target/staging $(Build.ArtifactStagingDirectory) -Recurse
         Copy-Item eng/code-quality-reports/src/main/resources/index.html $(Build.ArtifactStagingDirectory)
         Copy-Item eng/code-quality-reports/src/main/resources/dependency-allowlist.html $(Build.ArtifactStagingDirectory)/staging
-
         Copy-Item eng/common/InterdependencyGraph.html $(Build.ArtifactStagingDirectory)/staging
         Copy-Item data.js $(Build.ArtifactStagingDirectory)/staging
+
+        Copy-Item target/site/apidocs $(Build.ArtifactStagingDirectory)/staging -Recurse
+        Copy-Item eng/jacoco-test-coverage/target/site/jacoco-aggregate $(Build.ArtifactStagingDirectory)/staging -Recurse
       displayName: 'Copy reports to artifact staging'
 
     - pwsh: |

@@ -11,6 +11,9 @@
     <profile>
       <id>aggregatereports</id>
       <modules>
+        <!-- JaCoCo aggregate code coverage report generator module -->
+        <module>eng/jacoco-test-coverage</module>
+
         <!-- Anomaly Detector -->
         <module>sdk/anomalydetector/azure-ai-anomalydetector</module>
 
@@ -371,19 +374,19 @@
                   </group>
                   <group>
                     <title>Azure Communication</title>
-                    <packages>com.azure.communication.*</packages>
+                    <packages>com.azure.communication*</packages>
                   </group>
                   <group>
                     <title>Azure Confidential Ledger</title>
-                    <packages>com.azure.security.confidentialledger.*</packages>
+                    <packages>com.azure.security.confidentialledger*</packages>
                   </group>
                   <group>
                     <title>Azure Monitor - OpenTelemetry Exporter</title>
-                    <packages>com.azure.monitor.opentelemetry.exporter.*</packages>
+                    <packages>com.azure.monitor.opentelemetry.exporter*</packages>
                   </group>
                   <group>
                     <title>Azure Monitor - Logs and Metrics query</title>
-                    <packages>com.azure.monitor.query.*</packages>
+                    <packages>com.azure.monitor.query*</packages>
                   </group>
                 </groups>
                 <links combine.children="append">
@@ -457,9 +460,50 @@
                   <version>0.53</version> <!-- {x-version-update;org.apidesign.javadoc:codesnippet-doclet;external_dependency} -->
                 </docletArtifact>
                 <additionalOptions>
-                  <additionalOption>-maxLineLength 120</additionalOption>
-                  <additionalOption>-snippetpath ${project.basedir}/src/samples/java</additionalOption>
-                  <additionalOption>-suppressMissingLinkWarnings</additionalOption>
+                  <additionalOption>-maxLineLength 120
+                    -suppressMissingLinkWarnings
+                    -snippetpath ${project.basedir}/sdk/agrifood/azure-verticals-agrifood-farming/src/samples/java
+                    -snippetpath ${project.basedir}/sdk/appconfiguration/azure-data-appconfiguration/src/samples/java
+                    -snippetpath ${project.basedir}/sdk/attestation/azure-security-attestation/src/samples/java
+                    -snippetpath ${project.basedir}/sdk/confidentialledger/azure-security-confidentialledger/src/samples/java
+                    -snippetpath ${project.basedir}/sdk/containerregistry/azure-containers-containerregistry/src/samples/java
+                    -snippetpath ${project.basedir}/sdk/core/azure-core/src/samples/java
+                    -snippetpath ${project.basedir}/sdk/core/azure-core-amqp/src/samples/java
+                    -snippetpath ${project.basedir}/sdk/core/azure-core-experimental/src/samples/java
+                    -snippetpath ${project.basedir}/sdk/core/azure-core-http-netty/src/samples/java
+                    -snippetpath ${project.basedir}/sdk/core/azure-core-http-okhttp/src/samples/java
+                    <!-- -snippetpath ${project.basedir}/sdk/core/azure-core-serializer-avro-apache/src/samples/java-->
+                    <!-- -snippetpath ${project.basedir}/sdk/core/azure-core-serializer-avro-jackson/src/samples/java-->
+                    <!-- -snippetpath ${project.basedir}/sdk/core/azure-core-serializer-json-gson/src/samples/java-->
+                    <!-- -snippetpath ${project.basedir}/sdk/core/azure-core-serializer-json-jackson/src/samples/java-->
+                    -snippetpath ${project.basedir}/sdk/cosmos/azure-cosmos/src/samples/java
+                    -snippetpath ${project.basedir}/sdk/digitaltwins/azure-digitaltwins-core/src/samples/java
+                    -snippetpath ${project.basedir}/sdk/eventhubs/azure-messaging-eventhubs/src/samples/java
+                    -snippetpath ${project.basedir}/sdk/eventgrid/azure-messaging-eventgrid/src/samples/java
+                    -snippetpath ${project.basedir}/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java
+                    -snippetpath ${project.basedir}/sdk/identity/azure-identity/src/samples/java
+                    -snippetpath ${project.basedir}/sdk/keyvault/azure-security-keyvault-administration/src/samples/java
+                    -snippetpath ${project.basedir}/sdk/keyvault/azure-security-keyvault-certificates/src/samples/java
+                    -snippetpath ${project.basedir}/sdk/keyvault/azure-security-keyvault-keys/src/samples/java
+                    -snippetpath ${project.basedir}/sdk/keyvault/azure-security-keyvault-secrets/src/samples/java
+                    -snippetpath ${project.basedir}/sdk/metricsadvisor/azure-ai-metricsadvisor/src/samples/java
+                    -snippetpath ${project.basedir}/sdk/purview/azure-analytics-purview-catalog/src/samples/java
+                    -snippetpath ${project.basedir}/sdk/purview/azure-analytics-purview-scanning/src/samples/java
+                    -snippetpath ${project.basedir}/sdk/search/azure-search-documents/src/samples/java
+                    -snippetpath ${project.basedir}/sdk/servicebus/azure-messaging-servicebus/src/samples/java
+                    -snippetpath ${project.basedir}/sdk/storage/azure-storage-blob/src/samples/java
+                    -snippetpath ${project.basedir}/sdk/storage/azure-storage-blob-batch/src/samples/java
+                    -snippetpath ${project.basedir}/sdk/storage/azure-storage-blob-changefeed/src/samples/java
+                    -snippetpath ${project.basedir}/sdk/storage/azure-storage-blob-cryptography/src/samples/java
+                    -snippetpath ${project.basedir}/sdk/storage/azure-storage-common/src/samples/java
+                    -snippetpath ${project.basedir}/sdk/storage/azure-storage-file-datalake/src/samples/java
+                    -snippetpath ${project.basedir}/sdk/storage/azure-storage-file-share/src/samples/java
+                    -snippetpath ${project.basedir}/sdk/storage/azure-storage-queue/src/samples/java
+                    -snippetpath ${project.basedir}/sdk/tables/azure-data-tables/src/samples/java
+                    -snippetpath ${project.basedir}/sdk/textanalytics/azure-ai-textanalytics/src/samples/java
+                    -snippetpath ${project.basedir}/sdk/translation/azure-ai-documenttranslator/src/samples/java
+                    -snippetpath ${project.basedir}/sdk/webpubsub/azure-messaging-webpubsub/src/samples/java
+                  </additionalOption>
                 </additionalOptions>
                 <failOnError>true</failOnError>
                 <failOnWarnings>true</failOnWarnings>
@@ -476,6 +520,29 @@
               <groupId>org.apache.maven.plugins</groupId>
               <artifactId>maven-project-info-reports-plugin</artifactId>
               <version>3.0.0</version>
+            </plugin>
+
+            <plugin>
+              <groupId>org.jacoco</groupId>
+              <artifactId>jacoco-maven-plugin</artifactId>
+              <version>0.8.5</version> <!-- {x-version-update;org.jacoco:jacoco-maven-plugin;external_dependency} -->
+              <executions>
+                <execution>
+                  <id>report-aggregate</id>
+                  <phase>verify</phase>
+                  <goals>
+                    <goal>report-aggregate</goal>
+                  </goals>
+                  <configuration>
+                    <outputDirectory>${project.reporting.outputDirectory}/test-coverage</outputDirectory>
+                    <excludes>
+                      <exclude>**/com/azure/cosmos/implementation/apachecommons/**/*</exclude>
+                      <exclude>**/com/azure/cosmos/implementation/guava25/**/*</exclude>
+                      <exclude>**/com/azure/cosmos/implementation/guava27/**/*</exclude>
+                    </excludes>
+                  </configuration>
+                </execution>
+              </executions>
             </plugin>
           </plugins>
         </pluginManagement>
@@ -581,74 +648,6 @@
               <fork>true</fork>
               <!-- Set this to true when src/samples and src/test are spotbugs clean in all Track 2 SDKs -->
               <includeTests>false</includeTests>
-            </configuration>
-          </plugin>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-javadoc-plugin</artifactId>
-            <version>3.1.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
-            <reportSets>
-              <reportSet>
-                <id>non-aggregate</id>
-                <reports>
-                  <report>javadoc</report>
-                </reports>
-              </reportSet>
-              <reportSet>
-                <id>aggregate</id>
-                <inherited>false</inherited>
-                <reports>
-                  <report>aggregate</report>
-                </reports>
-                <configuration>
-                  <!-- codesnippets4javadoc does not support scanning sub-directories and doesn't support wildcards for filepaths.
-                      So, path for aggregate reports have to be defined relative to parent pom -->
-                  <additionalOptions>-maxLineLength 120
-                    -snippetpath ${project.basedir}/sdk/appconfiguration/azure-data-appconfiguration/src/samples/java
-                    -snippetpath ${project.basedir}/sdk/confidentialledger/azure-security-confidentialledger/src/samples/java
-                    -snippetpath ${project.basedir}/sdk/containerregistry/azure-containers-containerregistry/src/samples/java
-                    -snippetpath ${project.basedir}/sdk/attestation/azure-security-attestation/src/samples/java
-                    -snippetpath ${project.basedir}/sdk/core/azure-core/src/samples/java
-                    -snippetpath ${project.basedir}/sdk/core/azure-core-amqp/src/samples/java
-                    -snippetpath ${project.basedir}/sdk/core/azure-core-http-netty/src/samples/java
-                    -snippetpath ${project.basedir}/sdk/core/azure-core-http-okhttp/src/samples/java
-                    <!-- -snippetpath ${project.basedir}/sdk/core/azure-core-serializer-avro-apache/src/samples/java-->
-                    <!-- -snippetpath ${project.basedir}/sdk/core/azure-core-serializer-avro-jackson/src/samples/java-->
-                    <!-- -snippetpath ${project.basedir}/sdk/core/azure-core-serializer-json-gson/src/samples/java-->
-                    <!-- -snippetpath ${project.basedir}/sdk/core/azure-core-serializer-json-jackson/src/samples/java-->
-                    -snippetpath ${project.basedir}/sdk/cosmos/azure-cosmos/src/samples/java
-                    -snippetpath ${project.basedir}/sdk/digitaltwins/azure-digitaltwins-core/src/samples/java
-                    -snippetpath ${project.basedir}/sdk/eventhubs/azure-messaging-eventhubs/src/samples/java
-                    -snippetpath ${project.basedir}/sdk/agrifood/azure-verticals-agrifood-farming/src/samples/java
-                    <!-- -snippetpath ${project.basedir}/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java-->
-                    -snippetpath ${project.basedir}/sdk/keyvault/azure-security-keyvault-certificates/src/samples/java
-                    -snippetpath ${project.basedir}/sdk/keyvault/azure-security-keyvault-keys/src/samples/java
-                    -snippetpath ${project.basedir}/sdk/keyvault/azure-security-keyvault-secrets/src/samples/java
-                    -snippetpath ${project.basedir}/sdk/purview/azure-analytics-purview-catalog/src/samples/java
-                    -snippetpath ${project.basedir}/sdk/purview/azure-analytics-purview-scanning/src/samples/java
-                    -snippetpath ${project.basedir}/sdk/servicebus/azure-messaging-servicebus/src/samples/java
-                    -snippetpath ${project.basedir}/sdk/storage/azure-storage-blob/src/samples/java
-                    -snippetpath ${project.basedir}/sdk/storage/azure-storage-blob-batch/src/samples/java
-                    -snippetpath ${project.basedir}/sdk/storage/azure-storage-blob-changefeed/src/samples/java
-                    -snippetpath ${project.basedir}/sdk/storage/azure-storage-blob-cryptography/src/samples/java
-                    -snippetpath ${project.basedir}/sdk/storage/azure-storage-common/src/samples/java
-                    -snippetpath ${project.basedir}/sdk/storage/azure-storage-file-datalake/src/samples/java
-                    -snippetpath ${project.basedir}/sdk/storage/azure-storage-file-share/src/samples/java
-                    -snippetpath ${project.basedir}/sdk/storage/azure-storage-queue/src/samples/java
-                    -snippetpath ${project.basedir}/sdk/textanalytics/azure-ai-textanalytics/src/samples/java
-                    -snippetpath ${project.basedir}/sdk/translation/azure-ai-documenttranslator/src/samples/java
-                    -snippetpath ${project.basedir}/sdk/webpubsub/azure-messaging-webpubsub/src/samples/java
-                  </additionalOptions>
-                  <aggregate>true</aggregate>
-                  <doclint>all</doclint>
-                </configuration>
-              </reportSet>
-            </reportSets>
-            <configuration>
-              <!-- Reporting is run for JDK 11 - https://github.com/Azure/azure-sdk-for-java/blob/main/.azure-pipelines/client.yml#L90
-                   Disabling failOnWarnings for reporting for now due to CodeSnippets4Java issue reported for JDK 9+
-                   https://github.com/Azure/azure-sdk-for-java/issues/3851 -->
-              <failOnWarnings>false</failOnWarnings>
             </configuration>
           </plugin>
           <plugin>
