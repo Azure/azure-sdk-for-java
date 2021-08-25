@@ -1,6 +1,6 @@
 # Release History
 
-## 1.1.0-beta.1 (2021-08-25)
+## 1.0.4 (2021-08-25)
 Added `azure-communication-networktraversal` package
 
 ## 1.0.3 (2021-06-28)
