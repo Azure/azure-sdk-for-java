@@ -35,7 +35,7 @@
 <!--        <module>sdk/communication/azure-communication-sms</module>-->
 
         <!-- Azure Confidential Ledger -->
-        <module>sdk/confidentialledger/azure-security-confidentialledger</module>
+<!--        <module>sdk/confidentialledger/azure-security-confidentialledger</module>-->
 
         <!-- Azure Container Registry -->
         <module>sdk/containerregistry/azure-containers-containerregistry</module>
