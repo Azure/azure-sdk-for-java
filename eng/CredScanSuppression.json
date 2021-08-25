@@ -34,6 +34,7 @@
         },
         {
             "file":[
+                "eng/common/testproxy/dotnet-devcert.pfx",
                 "sdk/cosmos/azure-cosmos/src/test/resources/server.jks",
                 "sdk/cosmos/azure-cosmos/src/test/resources/client.jks",
                 "sdk/identity/azure-identity/src/test/resources/cert-chain.pem",
