@@ -33,7 +33,7 @@ public class CallConnectionLiveTests extends CallingServerTestBase {
         matches = "(?i)(true)",
         disabledReason = "Requires human intervention")
     public void runCreatePlayCancelHangupScenario(HttpClient httpClient) {
-        CallingServerClientBuilder builder = getCallClientUsingConnectionString(httpClient);
+        CallingServerClientBuilder builder = getCallingServerClientUsingConnectionString(httpClient);
         CallingServerClient callingServerClient = setupClient(builder, "runCreatePlayCancelHangupScenario");
 
         try {
@@ -83,7 +83,7 @@ public class CallConnectionLiveTests extends CallingServerTestBase {
         matches = "(?i)(true)",
         disabledReason = "Requires human intervention")
     public void runCreatePlayCancelHangupScenarioWithResponse(HttpClient httpClient) {
-        CallingServerClientBuilder builder = getCallClientUsingConnectionString(httpClient);
+        CallingServerClientBuilder builder = getCallingServerClientUsingConnectionString(httpClient);
         CallingServerClient callingServerClient =
             setupClient(builder, "runCreatePlayCancelHangupScenarioWithResponse");
 
@@ -140,7 +140,7 @@ public class CallConnectionLiveTests extends CallingServerTestBase {
         matches = "(?i)(true)",
         disabledReason = "Requires human intervention")
     public void runCreateAddRemoveHangupScenario(HttpClient httpClient) {
-        CallingServerClientBuilder builder = getCallClientUsingConnectionString(httpClient);
+        CallingServerClientBuilder builder = getCallingServerClientUsingConnectionString(httpClient);
         CallingServerClient callingServerClient = setupClient(builder, "runCreateAddRemoveHangupScenario");
 
         try {
@@ -181,7 +181,7 @@ public class CallConnectionLiveTests extends CallingServerTestBase {
         matches = "(?i)(true)",
         disabledReason = "Requires human intervention")
     public void runCreateAddRemoveHangupScenarioWithResponse(HttpClient httpClient) {
-        CallingServerClientBuilder builder = getCallClientUsingConnectionString(httpClient);
+        CallingServerClientBuilder builder = getCallingServerClientUsingConnectionString(httpClient);
         CallingServerClient callingServerClient =
             setupClient(builder, "runCreateAddRemoveHangupScenarioWithResponse");
 
@@ -235,7 +235,7 @@ public class CallConnectionLiveTests extends CallingServerTestBase {
         matches = "(?i)(true)",
         disabledReason = "Requires human intervention")
     public void runCreateJoinHangupScenario(HttpClient httpClient) {
-        CallingServerClientBuilder builder = getCallClientUsingConnectionString(httpClient);
+        CallingServerClientBuilder builder = getCallingServerClientUsingConnectionString(httpClient);
         CallingServerClient callingServerClient = setupClient(builder, "runCreateJoinHangupScenario");
 
         try {
@@ -284,7 +284,7 @@ public class CallConnectionLiveTests extends CallingServerTestBase {
         matches = "(?i)(true)",
         disabledReason = "Requires human intervention")
     public void runCreateJoinHangupScenarioWithResponse(HttpClient httpClient) {
-        CallingServerClientBuilder builder = getCallClientUsingConnectionString(httpClient);
+        CallingServerClientBuilder builder = getCallingServerClientUsingConnectionString(httpClient);
         CallingServerClient callingServerClient =
             setupClient(builder, "runCreateJoinHangupScenarioWithResponse");
 
