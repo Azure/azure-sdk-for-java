@@ -6,8 +6,10 @@ package com.azure.core.util;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.Response;
+import com.azure.core.implementation.AzureToReactorContextWrapper;
 import com.azure.core.implementation.ByteBufferCollector;
 import com.azure.core.implementation.FileWriteSubscriber;
+import com.azure.core.implementation.ReactorToAzureContextWrapper;
 import com.azure.core.implementation.RetriableDownloadFlux;
 import com.azure.core.implementation.TypeUtil;
 import com.azure.core.util.logging.ClientLogger;
@@ -51,7 +53,6 @@ public final class FluxUtil {
 
     // This wrapper is frequently created, so we are OK with creating a single shared logger instance here,
     // to lessen the cost of this type.
-    private static final ClientLogger LOGGER = new ClientLogger(FluxUtil.class);
 
     /**
      * Checks if a type is Flux&lt;ByteBuffer&gt;.
@@ -284,161 +285,6 @@ public final class FluxUtil {
                                          ? Context.NONE : new ReactorToAzureContextWrapper(contextAttributes, ctx)));
     }
 
-    // This class wraps a reactor context in the Azure-Core Context API, to avoid unnecessary copying
-    private static class ReactorToAzureContextWrapper extends Context {
-        private final Map<String, String> contextAttributes;
-        private final reactor.util.context.ContextView reactorContext;
-        private final int size;
-
-        ReactorToAzureContextWrapper(reactor.util.context.ContextView reactorContext) {
-            this(null, reactorContext);
-        }
-
-        ReactorToAzureContextWrapper(Map<String, String> contextAttributes,
-            reactor.util.context.ContextView reactorContext) {
-            super();
-            this.contextAttributes = contextAttributes;
-            this.reactorContext = reactorContext;
-            this.size = reactorContext.size() + (contextAttributes == null ? 0 : contextAttributes.size());
-        }
-
-        @Override
-        public int size() {
-            return size;
-        }
-
-        @Override
-        public Optional<Object> getData(Object key) {
-            if (key == null) {
-                // going into the exception case
-                return super.getData(null);
-            }
-
-            // Look through the reactor context first
-            Optional<Object> value = reactorContext.getOrEmpty(key);
-            if (value.isPresent()) {
-                return value;
-            }
-
-            // then look through the map that we were given
-            if (contextAttributes != null && contextAttributes.containsKey(key)) {
-                return Optional.ofNullable(contextAttributes.get(key));
-            }
-
-            // otherwise defer up the context chain
-            return super.getData(key);
-        }
-
-        @Override
-        public Map<Object, Object> getValues() {
-            return new AbstractMap<Object, Object>() {
-
-                @Override
-                public int size() {
-                    return size;
-                }
-
-                @Override
-                public boolean isEmpty() {
-                    return size == 0;
-                }
-
-                @Override
-                public boolean containsKey(Object key) {
-                    return (contextAttributes != null && contextAttributes.containsKey(key))
-                               || reactorContext.hasKey(key);
-                }
-
-                @Override
-                public boolean containsValue(Object value) {
-                    throw LOGGER.logExceptionAsWarning(new UnsupportedOperationException());
-                }
-
-                @Override
-                public String get(final Object key) {
-                    if (reactorContext.hasKey(key)) {
-                        return reactorContext.get(key);
-                    } else if (contextAttributes != null && contextAttributes.containsKey(key)) {
-                        return contextAttributes.get(key);
-                    } else {
-                        return null;
-                    }
-                }
-
-                @Override
-                public String put(Object key, Object value) {
-                    throw LOGGER.logExceptionAsWarning(new UnsupportedOperationException());
-                }
-
-                @Override
-                public String remove(Object key) {
-                    throw LOGGER.logExceptionAsWarning(new UnsupportedOperationException());
-                }
-
-                @Override
-                public void putAll(Map<? extends Object, ? extends Object> m) {
-                    throw LOGGER.logExceptionAsWarning(new UnsupportedOperationException());
-                }
-
-                @Override
-                public void clear() {
-                    throw LOGGER.logExceptionAsWarning(new UnsupportedOperationException());
-                }
-
-                @Override
-                public Set<Entry<Object, Object>> entrySet() {
-                    return new AbstractSet<Entry<Object, Object>>() {
-                        @Override
-                        public Iterator<Entry<Object, Object>> iterator() {
-//                            // TODO (jogiles) This is not good code
-//                            Map<Object, Object> map = new HashMap<>(size);
-//
-//                            if (contextAttributes != null) {
-//                                map.putAll(contextAttributes);
-//                            }
-//
-//                            reactorContext.stream().forEach(entry -> map.put(entry.getKey(), entry.getValue()));
-//
-//                            // defer up the chain, if there is any parent (unlikely)
-//                            map.putAll(ReactorToAzureContextWrapper.super.getValues());
-//
-//                            return map.entrySet().iterator();
-
-                            return new Iterator<Entry<Object, Object>>() {
-                                private final Iterator<Entry<Object, Object>> reactorIterator =
-                                    reactorContext.stream().iterator();
-
-                                private final Iterator<Entry<String, String>> contextAttrsIterator =
-                                    contextAttributes == null
-                                        ? Collections.emptyIterator()
-                                        : contextAttributes.entrySet().iterator();
-
-                                @Override
-                                public boolean hasNext() {
-                                    return reactorIterator.hasNext() || contextAttrsIterator.hasNext();
-                                }
-
-                                @Override
-                                @SuppressWarnings("unchecked")
-                                public Entry<Object, Object> next() {
-                                    if (reactorIterator.hasNext()) {
-                                        return reactorIterator.next();
-                                    }
-                                    return (Entry<Object, Object>) (Object) contextAttrsIterator.next();
-                                }
-                            };
-                        }
-
-                        @Override
-                        public int size() {
-                            return size;
-                        }
-                    };
-                }
-            };
-        }
-    }
-
     /**
      * Converts the incoming content to Mono.
      *
@@ -519,46 +365,6 @@ public final class FluxUtil {
             return reactor.util.context.Context.empty();
         }
         return new AzureToReactorContextWrapper(context);
-    }
-
-    private static final class AzureToReactorContextWrapper implements reactor.util.context.Context {
-        private Context azureContext;
-
-        AzureToReactorContextWrapper(final Context azureContext) {
-            this.azureContext = azureContext;
-        }
-
-        @Override
-        @SuppressWarnings("unchecked")
-        public <T> T get(Object key) {
-            return (T) azureContext.getData(key).orElseThrow(() -> new NoSuchElementException());
-        }
-
-        @Override
-        public boolean hasKey(Object key) {
-            return azureContext.getData(key).isPresent();
-        }
-
-        @Override
-        public reactor.util.context.Context put(Object key, Object value) {
-            this.azureContext = azureContext.addData(key, value);
-            return this;
-        }
-
-        @Override
-        public reactor.util.context.Context delete(Object key) {
-            throw new UnsupportedOperationException("Deleting from this Reactor Context is not supported");
-        }
-
-        @Override
-        public int size() {
-            return azureContext.size();
-        }
-
-        @Override
-        public Stream<Entry<Object, Object>> stream() {
-            return azureContext.getValues().entrySet().stream();
-        }
     }
 
     /**
@@ -846,7 +652,6 @@ public final class FluxUtil {
             }
         }
     }
-
 
     // Private Ctr
     private FluxUtil() {

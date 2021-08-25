@@ -187,6 +187,7 @@ public class PagedFluxTest {
 
         final Consumer<com.azure.core.util.Context> contextVerifier = context -> {
             assertNotNull(context);
+            assertEquals(1, context.getValues().size());
             assertEquals(1, context.size());
             assertEquals(expectedContextValue, context.getData(expectedContextKey).orElse("").toString());
         };

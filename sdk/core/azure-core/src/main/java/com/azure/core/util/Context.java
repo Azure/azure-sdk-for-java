@@ -53,12 +53,12 @@ public class Context {
      *
      * @param key The key with which the specified value should be associated.
      * @param value The value to be associated with the specified key.
-     * @throws NullPointerException If {@code key} or {@code value} is {@code null}.
+     * @throws IllegalArgumentException If {@code key} is {@code null}.
      */
     public Context(Object key, Object value) {
         this.parent = null;
         this.key = Objects.requireNonNull(key, "'key' cannot be null.");
-        this.value = Objects.requireNonNull(value, "'value' cannot be null.");
+        this.value = value;
         this.size = 1;
     }
 
@@ -165,14 +165,7 @@ public class Context {
      * @return A map containing all values of the context linked-list.
      */
     public Map<Object, Object> getValues() {
-        if (parent == null) {
-            if (key == null) {
-                return Collections.emptyMap();
-            } else {
-                return Collections.singletonMap(key, value);
-            }
-        }
-        return Collections.unmodifiableMap(getValuesHelper(new HashMap<>()));
+        return getValuesHelper(new HashMap<>());
     }
 
     private Map<Object, Object> getValuesHelper(Map<Object, Object> values) {
