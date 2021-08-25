@@ -9,6 +9,11 @@ import com.azure.resourcemanager.datafactory.models.UpdateIntegrationRuntimeNode
 
 /** Samples for IntegrationRuntimeNodes Update. */
 public final class IntegrationRuntimeNodesUpdateSamples {
+    /*
+     * operationId: IntegrationRuntimeNodes_Update
+     * api-version: 2018-06-01
+     * x-ms-examples: IntegrationRuntimeNodes_Update
+     */
     /**
      * Sample code: IntegrationRuntimeNodes_Update.
      *

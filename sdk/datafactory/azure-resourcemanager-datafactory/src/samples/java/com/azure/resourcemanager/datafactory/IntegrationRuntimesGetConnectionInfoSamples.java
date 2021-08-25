@@ -8,6 +8,11 @@ import com.azure.core.util.Context;
 
 /** Samples for IntegrationRuntimes GetConnectionInfo. */
 public final class IntegrationRuntimesGetConnectionInfoSamples {
+    /*
+     * operationId: IntegrationRuntimes_GetConnectionInfo
+     * api-version: 2018-06-01
+     * x-ms-examples: IntegrationRuntimes_GetConnectionInfo
+     */
     /**
      * Sample code: IntegrationRuntimes_GetConnectionInfo.
      *
