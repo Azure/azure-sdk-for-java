@@ -7,7 +7,7 @@ parameters:
     default: "not-specified"
 
 jobs: 
-  job: InstallationCheck
+  - job: InstallationCheck
     displayName: "Installation Check"
     variables:
       - template: ../variables/globals.yml
