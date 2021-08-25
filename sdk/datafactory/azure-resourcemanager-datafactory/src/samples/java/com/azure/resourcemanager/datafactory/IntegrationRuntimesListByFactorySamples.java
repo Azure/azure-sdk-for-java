@@ -8,6 +8,11 @@ import com.azure.core.util.Context;
 
 /** Samples for IntegrationRuntimes ListByFactory. */
 public final class IntegrationRuntimesListByFactorySamples {
+    /*
+     * operationId: IntegrationRuntimes_ListByFactory
+     * api-version: 2018-06-01
+     * x-ms-examples: IntegrationRuntimes_ListByFactory
+     */
     /**
      * Sample code: IntegrationRuntimes_ListByFactory.
      *

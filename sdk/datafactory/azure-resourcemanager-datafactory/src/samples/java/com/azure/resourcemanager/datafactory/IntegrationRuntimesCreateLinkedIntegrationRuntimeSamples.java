@@ -9,6 +9,11 @@ import com.azure.resourcemanager.datafactory.models.CreateLinkedIntegrationRunti
 
 /** Samples for IntegrationRuntimes CreateLinkedIntegrationRuntime. */
 public final class IntegrationRuntimesCreateLinkedIntegrationRuntimeSamples {
+    /*
+     * operationId: IntegrationRuntimes_CreateLinkedIntegrationRuntime
+     * api-version: 2018-06-01
+     * x-ms-examples: IntegrationRuntimes_CreateLinkedIntegrationRuntime
+     */
     /**
      * Sample code: IntegrationRuntimes_CreateLinkedIntegrationRuntime.
      *

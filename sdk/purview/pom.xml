@@ -59,6 +59,7 @@
       <modules>
         <module>azure-analytics-purview-catalog</module>
         <module>azure-analytics-purview-scanning</module>
+        <module>azure-resourcemanager-purview</module>
       </modules>
     </profile>
   </profiles>

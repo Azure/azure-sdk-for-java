@@ -9,6 +9,11 @@ import com.azure.resourcemanager.datafactory.models.ExposureControlRequest;
 
 /** Samples for ExposureControl GetFeatureValueByFactory. */
 public final class ExposureControlGetFeatureValueByFactorySamples {
+    /*
+     * operationId: ExposureControl_GetFeatureValueByFactory
+     * api-version: 2018-06-01
+     * x-ms-examples: ExposureControl_GetFeatureValueByFactory
+     */
     /**
      * Sample code: ExposureControl_GetFeatureValueByFactory.
      *

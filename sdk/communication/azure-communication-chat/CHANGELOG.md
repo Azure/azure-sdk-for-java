@@ -1,5 +1,8 @@
 # Release History
 
+## 1.1.0-beta.3 (Unreleased)
+
+
 ## 1.1.0-beta.2 (2021-08-10)
 - Fix version of dependency on azure-communication-common
 

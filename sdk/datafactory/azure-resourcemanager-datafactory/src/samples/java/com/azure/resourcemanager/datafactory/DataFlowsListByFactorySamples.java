@@ -8,6 +8,11 @@ import com.azure.core.util.Context;
 
 /** Samples for DataFlows ListByFactory. */
 public final class DataFlowsListByFactorySamples {
+    /*
+     * operationId: DataFlows_ListByFactory
+     * api-version: 2018-06-01
+     * x-ms-examples: DataFlows_ListByFactory
+     */
     /**
      * Sample code: DataFlows_ListByFactory.
      *

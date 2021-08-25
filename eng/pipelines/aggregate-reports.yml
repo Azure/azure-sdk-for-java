@@ -99,8 +99,14 @@ jobs:
 
         Copy-Item eng/common/InterdependencyGraph.html $(Build.ArtifactStagingDirectory)/staging
         Copy-Item data.js $(Build.ArtifactStagingDirectory)/staging
-        Copy-Item eng/bomgenerator/target/dependency_conflictlist.html $(Build.ArtifactStagingDirectory)/staging
       displayName: 'Copy reports to artifact staging'
+
+    - pwsh: |
+      Copy-Item eng/bomgenerator/target/dependency_conflictlist.html $(Build.ArtifactStagingDirectory)/staging
+
+      displayName: 'Copy BOM report to artifact staging'
+      condition: succeededOrFailed()
+
 
     - publish: $(Build.ArtifactStagingDirectory)
       condition: succeededOrFailed()
