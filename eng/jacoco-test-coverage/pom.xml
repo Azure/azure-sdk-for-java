@@ -131,11 +131,11 @@
       <artifactId>azure-core-experimental</artifactId>
       <version>1.0.0-beta.18</version> <!-- {x-version-update;com.azure:azure-core-experimental;current} -->
     </dependency>
-    <dependency>
-      <groupId>com.azure</groupId>
-      <artifactId>azure-core-http-jdk-httpclient</artifactId>
-      <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core-http-jdk-httpclient;current} -->
-    </dependency>
+<!--    <dependency>-->
+<!--      <groupId>com.azure</groupId>-->
+<!--      <artifactId>azure-core-http-jdk-httpclient</artifactId>-->
+<!--      <version>1.0.0-beta.1</version> &lt;!&ndash; {x-version-update;com.azure:azure-core-http-jdk-httpclient;current} &ndash;&gt;-->
+<!--    </dependency>-->
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-netty</artifactId>
@@ -146,11 +146,11 @@
       <artifactId>azure-core-http-okhttp</artifactId>
       <version>1.8.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core-http-okhttp;current} -->
     </dependency>
-    <dependency>
-      <groupId>com.azure</groupId>
-      <artifactId>azure-core-management</artifactId>
-      <version>1.5.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core-management;current} -->
-    </dependency>
+<!--    <dependency>-->
+<!--      <groupId>com.azure</groupId>-->
+<!--      <artifactId>azure-core-management</artifactId>-->
+<!--      <version>1.5.0-beta.1</version> &lt;!&ndash; {x-version-update;com.azure:azure-core-management;current} &ndash;&gt;-->
+<!--    </dependency>-->
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-serializer-avro-apache</artifactId>
