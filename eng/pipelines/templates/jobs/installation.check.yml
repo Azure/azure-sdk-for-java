@@ -11,7 +11,8 @@ job: InstallationCheck
   variables:
     - template: ../variables/globals.yml
   steps:
-    - 
+    - download: current
+      artifact: ${{parameters.ArtifactName}}-signed
     - pwsh: |
         Write-Host "Copy-Item $(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed/${{parameters.Artifact.groupId}}/${{parameters.Artifact.name}}/" "$(Pipeline.Workspace)/install-check-dir/${{parameters.Artifact.name}} -Recurse"
         Copy-Item "${{parameters.ArtifactName}}-signed/${{parameters.Artifact.groupId}}/${{parameters.Artifact.name}}/" "install-check-dir/${{parameters.Artifact.name}}" -Recurse

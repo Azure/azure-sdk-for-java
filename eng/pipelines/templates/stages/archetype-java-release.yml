@@ -116,8 +116,6 @@ stages:
                     PackageName: ${{artifact.name}}
                     ServiceName: ${{parameters.ServiceDirectory}}
                     ForRelease: true
-          - download: current
-            artifact: ${{parameters.ArtifactName}}-signed
 
           - template: /eng/pipelines/templates/jobs/installation.check.yml
             parameters:
