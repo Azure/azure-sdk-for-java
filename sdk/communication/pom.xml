@@ -17,6 +17,7 @@
         <module>azure-communication-chat</module>
         <module>azure-communication-common</module>
         <module>azure-communication-identity</module>
+        <module>azure-communication-networktraversal</module>
         <module>azure-communication-sms</module>
         <module>azure-communication-phonenumbers</module>
       </modules>
@@ -30,7 +31,7 @@
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-communication-chat</artifactId>
-          <version>1.1.0-beta.2</version> <!-- {x-version-update;com.azure:azure-communication-chat;current} -->
+          <version>1.1.0-beta.3</version> <!-- {x-version-update;com.azure:azure-communication-chat;current} -->
         </dependency>
         <dependency>
           <groupId>com.azure</groupId>
@@ -46,6 +47,11 @@
           <groupId>com.azure</groupId>
           <artifactId>azure-communication-phonenumbers</artifactId>
           <version>1.1.0-beta.1</version> <!-- {x-version-update;com.azure:azure-communication-phonenumbers;current} -->
+        </dependency>
+        <dependency>
+          <groupId>com.azure</groupId>
+          <artifactId>azure-communication-networktraversal</artifactId>
+          <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-communication-networktraversal;current} -->
         </dependency>
         <dependency>
           <groupId>com.azure</groupId>
@@ -94,6 +100,7 @@
         <module>azure-communication-chat</module>
         <module>azure-communication-common</module>
         <module>azure-communication-identity</module>
+        <module>azure-communication-networktraversal</module>
         <module>azure-communication-phonenumbers</module>
         <module>azure-communication-sms</module>
         <module>azure-resourcemanager-communication</module>

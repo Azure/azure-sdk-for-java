@@ -8,6 +8,11 @@ import com.azure.core.util.Context;
 
 /** Samples for IntegrationRuntimes ListAuthKeys. */
 public final class IntegrationRuntimesListAuthKeysSamples {
+    /*
+     * operationId: IntegrationRuntimes_ListAuthKeys
+     * api-version: 2018-06-01
+     * x-ms-examples: IntegrationRuntimes_ListAuthKeys
+     */
     /**
      * Sample code: IntegrationRuntimes_ListAuthKeys.
      *

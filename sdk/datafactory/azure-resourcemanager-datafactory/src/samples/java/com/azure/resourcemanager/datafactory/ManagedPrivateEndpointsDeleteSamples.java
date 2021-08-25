@@ -8,6 +8,11 @@ import com.azure.core.util.Context;
 
 /** Samples for ManagedPrivateEndpoints Delete. */
 public final class ManagedPrivateEndpointsDeleteSamples {
+    /*
+     * operationId: ManagedPrivateEndpoints_Delete
+     * api-version: 2018-06-01
+     * x-ms-examples: ManagedVirtualNetworks_Delete
+     */
     /**
      * Sample code: ManagedVirtualNetworks_Delete.
      *

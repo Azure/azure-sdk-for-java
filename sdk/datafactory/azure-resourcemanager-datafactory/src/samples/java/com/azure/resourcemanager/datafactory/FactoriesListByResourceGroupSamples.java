@@ -8,6 +8,11 @@ import com.azure.core.util.Context;
 
 /** Samples for Factories ListByResourceGroup. */
 public final class FactoriesListByResourceGroupSamples {
+    /*
+     * operationId: Factories_ListByResourceGroup
+     * api-version: 2018-06-01
+     * x-ms-examples: Factories_ListByResourceGroup
+     */
     /**
      * Sample code: Factories_ListByResourceGroup.
      *

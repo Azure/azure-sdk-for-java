@@ -5,44 +5,37 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.appservice.fluent.models.DeletedAppRestoreRequestProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Details about restoring a deleted app. */
-@JsonFlatten
 @Fluent
-public class DeletedAppRestoreRequest extends ProxyOnlyResource {
+public final class DeletedAppRestoreRequest extends ProxyOnlyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(DeletedAppRestoreRequest.class);
 
     /*
-     * ARM resource ID of the deleted app. Example:
-     * /subscriptions/{subId}/providers/Microsoft.Web/deletedSites/{deletedSiteId}
+     * DeletedAppRestoreRequest resource specific properties
      */
-    @JsonProperty(value = "properties.deletedSiteId")
-    private String deletedSiteId;
+    @JsonProperty(value = "properties")
+    private DeletedAppRestoreRequestProperties innerProperties;
 
-    /*
-     * If true, deleted site configuration, in addition to content, will be
-     * restored.
+    /**
+     * Get the innerProperties property: DeletedAppRestoreRequest resource specific properties.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.recoverConfiguration")
-    private Boolean recoverConfiguration;
+    private DeletedAppRestoreRequestProperties innerProperties() {
+        return this.innerProperties;
+    }
 
-    /*
-     * Point in time to restore the deleted app from, formatted as a DateTime
-     * string.
-     * If unspecified, default value is the time that the app was deleted.
-     */
-    @JsonProperty(value = "properties.snapshotTime")
-    private String snapshotTime;
-
-    /*
-     * If true, the snapshot is retrieved from DRSecondary endpoint.
-     */
-    @JsonProperty(value = "properties.useDRSecondary")
-    private Boolean useDRSecondary;
+    /** {@inheritDoc} */
+    @Override
+    public DeletedAppRestoreRequest withKind(String kind) {
+        super.withKind(kind);
+        return this;
+    }
 
     /**
      * Get the deletedSiteId property: ARM resource ID of the deleted app. Example:
@@ -51,7 +44,7 @@ public class DeletedAppRestoreRequest extends ProxyOnlyResource {
      * @return the deletedSiteId value.
      */
     public String deletedSiteId() {
-        return this.deletedSiteId;
+        return this.innerProperties() == null ? null : this.innerProperties().deletedSiteId();
     }
 
     /**
@@ -62,7 +55,10 @@ public class DeletedAppRestoreRequest extends ProxyOnlyResource {
      * @return the DeletedAppRestoreRequest object itself.
      */
     public DeletedAppRestoreRequest withDeletedSiteId(String deletedSiteId) {
-        this.deletedSiteId = deletedSiteId;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DeletedAppRestoreRequestProperties();
+        }
+        this.innerProperties().withDeletedSiteId(deletedSiteId);
         return this;
     }
 
@@ -73,7 +69,7 @@ public class DeletedAppRestoreRequest extends ProxyOnlyResource {
      * @return the recoverConfiguration value.
      */
     public Boolean recoverConfiguration() {
-        return this.recoverConfiguration;
+        return this.innerProperties() == null ? null : this.innerProperties().recoverConfiguration();
     }
 
     /**
@@ -84,7 +80,10 @@ public class DeletedAppRestoreRequest extends ProxyOnlyResource {
      * @return the DeletedAppRestoreRequest object itself.
      */
     public DeletedAppRestoreRequest withRecoverConfiguration(Boolean recoverConfiguration) {
-        this.recoverConfiguration = recoverConfiguration;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DeletedAppRestoreRequestProperties();
+        }
+        this.innerProperties().withRecoverConfiguration(recoverConfiguration);
         return this;
     }
 
@@ -95,7 +94,7 @@ public class DeletedAppRestoreRequest extends ProxyOnlyResource {
      * @return the snapshotTime value.
      */
     public String snapshotTime() {
-        return this.snapshotTime;
+        return this.innerProperties() == null ? null : this.innerProperties().snapshotTime();
     }
 
     /**
@@ -106,7 +105,10 @@ public class DeletedAppRestoreRequest extends ProxyOnlyResource {
      * @return the DeletedAppRestoreRequest object itself.
      */
     public DeletedAppRestoreRequest withSnapshotTime(String snapshotTime) {
-        this.snapshotTime = snapshotTime;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DeletedAppRestoreRequestProperties();
+        }
+        this.innerProperties().withSnapshotTime(snapshotTime);
         return this;
     }
 
@@ -116,7 +118,7 @@ public class DeletedAppRestoreRequest extends ProxyOnlyResource {
      * @return the useDRSecondary value.
      */
     public Boolean useDRSecondary() {
-        return this.useDRSecondary;
+        return this.innerProperties() == null ? null : this.innerProperties().useDRSecondary();
     }
 
     /**
@@ -126,14 +128,10 @@ public class DeletedAppRestoreRequest extends ProxyOnlyResource {
      * @return the DeletedAppRestoreRequest object itself.
      */
     public DeletedAppRestoreRequest withUseDRSecondary(Boolean useDRSecondary) {
-        this.useDRSecondary = useDRSecondary;
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public DeletedAppRestoreRequest withKind(String kind) {
-        super.withKind(kind);
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DeletedAppRestoreRequestProperties();
+        }
+        this.innerProperties().withUseDRSecondary(useDRSecondary);
         return this;
     }
 
@@ -145,5 +143,8 @@ public class DeletedAppRestoreRequest extends ProxyOnlyResource {
     @Override
     public void validate() {
         super.validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

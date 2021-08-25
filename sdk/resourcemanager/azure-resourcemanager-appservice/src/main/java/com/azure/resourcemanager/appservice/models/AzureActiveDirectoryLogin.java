@@ -5,74 +5,86 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.appservice.fluent.models.AzureActiveDirectoryLoginProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The AzureActiveDirectoryLogin model. */
-@JsonFlatten
+/** The configuration settings of the Azure Active Directory login flow. */
 @Fluent
-public class AzureActiveDirectoryLogin extends ProxyOnlyResource {
+public final class AzureActiveDirectoryLogin extends ProxyOnlyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureActiveDirectoryLogin.class);
 
     /*
-     * The disableWWWAuthenticate property.
+     * AzureActiveDirectoryLogin resource specific properties
      */
-    @JsonProperty(value = "properties.disableWWWAuthenticate")
-    private Boolean disableWwwAuthenticate;
-
-    /*
-     * The loginParameters property.
-     */
-    @JsonProperty(value = "properties.loginParameters")
-    private List<String> loginParameters;
+    @JsonProperty(value = "properties")
+    private AzureActiveDirectoryLoginProperties innerProperties;
 
     /**
-     * Get the disableWwwAuthenticate property: The disableWWWAuthenticate property.
+     * Get the innerProperties property: AzureActiveDirectoryLogin resource specific properties.
      *
-     * @return the disableWwwAuthenticate value.
+     * @return the innerProperties value.
      */
-    public Boolean disableWwwAuthenticate() {
-        return this.disableWwwAuthenticate;
-    }
-
-    /**
-     * Set the disableWwwAuthenticate property: The disableWWWAuthenticate property.
-     *
-     * @param disableWwwAuthenticate the disableWwwAuthenticate value to set.
-     * @return the AzureActiveDirectoryLogin object itself.
-     */
-    public AzureActiveDirectoryLogin withDisableWwwAuthenticate(Boolean disableWwwAuthenticate) {
-        this.disableWwwAuthenticate = disableWwwAuthenticate;
-        return this;
-    }
-
-    /**
-     * Get the loginParameters property: The loginParameters property.
-     *
-     * @return the loginParameters value.
-     */
-    public List<String> loginParameters() {
-        return this.loginParameters;
-    }
-
-    /**
-     * Set the loginParameters property: The loginParameters property.
-     *
-     * @param loginParameters the loginParameters value to set.
-     * @return the AzureActiveDirectoryLogin object itself.
-     */
-    public AzureActiveDirectoryLogin withLoginParameters(List<String> loginParameters) {
-        this.loginParameters = loginParameters;
-        return this;
+    private AzureActiveDirectoryLoginProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /** {@inheritDoc} */
     @Override
     public AzureActiveDirectoryLogin withKind(String kind) {
         super.withKind(kind);
+        return this;
+    }
+
+    /**
+     * Get the loginParameters property: Login parameters to send to the OpenID Connect authorization endpoint when a
+     * user logs in. Each parameter must be in the form "key=value".
+     *
+     * @return the loginParameters value.
+     */
+    public List<String> loginParameters() {
+        return this.innerProperties() == null ? null : this.innerProperties().loginParameters();
+    }
+
+    /**
+     * Set the loginParameters property: Login parameters to send to the OpenID Connect authorization endpoint when a
+     * user logs in. Each parameter must be in the form "key=value".
+     *
+     * @param loginParameters the loginParameters value to set.
+     * @return the AzureActiveDirectoryLogin object itself.
+     */
+    public AzureActiveDirectoryLogin withLoginParameters(List<String> loginParameters) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AzureActiveDirectoryLoginProperties();
+        }
+        this.innerProperties().withLoginParameters(loginParameters);
+        return this;
+    }
+
+    /**
+     * Get the disableWwwAuthenticate property: &lt;code&gt;true&lt;/code&gt; if the www-authenticate provider should be
+     * omitted from the request; otherwise, &lt;code&gt;false&lt;/code&gt;.
+     *
+     * @return the disableWwwAuthenticate value.
+     */
+    public Boolean disableWwwAuthenticate() {
+        return this.innerProperties() == null ? null : this.innerProperties().disableWwwAuthenticate();
+    }
+
+    /**
+     * Set the disableWwwAuthenticate property: &lt;code&gt;true&lt;/code&gt; if the www-authenticate provider should be
+     * omitted from the request; otherwise, &lt;code&gt;false&lt;/code&gt;.
+     *
+     * @param disableWwwAuthenticate the disableWwwAuthenticate value to set.
+     * @return the AzureActiveDirectoryLogin object itself.
+     */
+    public AzureActiveDirectoryLogin withDisableWwwAuthenticate(Boolean disableWwwAuthenticate) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AzureActiveDirectoryLoginProperties();
+        }
+        this.innerProperties().withDisableWwwAuthenticate(disableWwwAuthenticate);
         return this;
     }
 
@@ -84,5 +96,8 @@ public class AzureActiveDirectoryLogin extends ProxyOnlyResource {
     @Override
     public void validate() {
         super.validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

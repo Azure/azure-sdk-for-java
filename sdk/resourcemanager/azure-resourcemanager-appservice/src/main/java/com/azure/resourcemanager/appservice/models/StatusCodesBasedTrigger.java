@@ -33,12 +33,6 @@ public final class StatusCodesBasedTrigger {
     private Integer win32Status;
 
     /*
-     * Request Path
-     */
-    @JsonProperty(value = "path")
-    private String path;
-
-    /*
      * Request Count.
      */
     @JsonProperty(value = "count")
@@ -49,6 +43,12 @@ public final class StatusCodesBasedTrigger {
      */
     @JsonProperty(value = "timeInterval")
     private String timeInterval;
+
+    /*
+     * Request Path
+     */
+    @JsonProperty(value = "path")
+    private String path;
 
     /**
      * Get the status property: HTTP status code.
@@ -111,26 +111,6 @@ public final class StatusCodesBasedTrigger {
     }
 
     /**
-     * Get the path property: Request Path.
-     *
-     * @return the path value.
-     */
-    public String path() {
-        return this.path;
-    }
-
-    /**
-     * Set the path property: Request Path.
-     *
-     * @param path the path value to set.
-     * @return the StatusCodesBasedTrigger object itself.
-     */
-    public StatusCodesBasedTrigger withPath(String path) {
-        this.path = path;
-        return this;
-    }
-
-    /**
      * Get the count property: Request Count.
      *
      * @return the count value.
@@ -167,6 +147,26 @@ public final class StatusCodesBasedTrigger {
      */
     public StatusCodesBasedTrigger withTimeInterval(String timeInterval) {
         this.timeInterval = timeInterval;
+        return this;
+    }
+
+    /**
+     * Get the path property: Request Path.
+     *
+     * @return the path value.
+     */
+    public String path() {
+        return this.path;
+    }
+
+    /**
+     * Set the path property: Request Path.
+     *
+     * @param path the path value to set.
+     * @return the StatusCodesBasedTrigger object itself.
+     */
+    public StatusCodesBasedTrigger withPath(String path) {
+        this.path = path;
         return this;
     }
 

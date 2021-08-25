@@ -8,6 +8,11 @@ import com.azure.core.util.Context;
 
 /** Samples for IntegrationRuntimeNodes Delete. */
 public final class IntegrationRuntimeNodesDeleteSamples {
+    /*
+     * operationId: IntegrationRuntimeNodes_Delete
+     * api-version: 2018-06-01
+     * x-ms-examples: IntegrationRuntimesNodes_Delete
+     */
     /**
      * Sample code: IntegrationRuntimesNodes_Delete.
      *

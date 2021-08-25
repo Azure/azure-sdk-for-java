@@ -8,6 +8,11 @@ import com.azure.core.util.Context;
 
 /** Samples for Triggers UnsubscribeFromEvents. */
 public final class TriggersUnsubscribeFromEventsSamples {
+    /*
+     * operationId: Triggers_UnsubscribeFromEvents
+     * api-version: 2018-06-01
+     * x-ms-examples: Triggers_UnsubscribeFromEvents
+     */
     /**
      * Sample code: Triggers_UnsubscribeFromEvents.
      *

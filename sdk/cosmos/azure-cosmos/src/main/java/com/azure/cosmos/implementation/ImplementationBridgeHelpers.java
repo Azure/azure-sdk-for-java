@@ -3,9 +3,8 @@
 
 package com.azure.cosmos.implementation;
 
-import com.azure.cosmos.BulkExecutionOptions;
-import com.azure.cosmos.BulkExecutionThresholds;
 import com.azure.cosmos.CosmosAsyncClient;
+import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosClient;
 import com.azure.cosmos.CosmosClientBuilder;
@@ -13,6 +12,9 @@ import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.implementation.batch.PartitionScopeThresholds;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
+import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
+import com.azure.cosmos.models.CosmosBulkExecutionOptions;
+import com.azure.cosmos.models.CosmosBulkExecutionThresholdsState;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
@@ -124,6 +126,36 @@ public class ImplementationBridgeHelpers {
         }
     }
 
+    public static final class CosmosChangeFeedRequestOptionsHelper {
+        private static CosmosChangeFeedRequestOptionsAccessor accessor;
+
+        private CosmosChangeFeedRequestOptionsHelper() {}
+        static {
+            ensureClassLoaded(CosmosChangeFeedRequestOptions.class);
+        }
+
+        public static void setCosmosChangeFeedRequestOptionsAccessor(final CosmosChangeFeedRequestOptionsAccessor newAccessor) {
+            if (accessor != null) {
+                throw new IllegalStateException("CosmosChangeFeedRequestOptions accessor already initialized!");
+            }
+
+            accessor = newAccessor;
+        }
+
+        public static CosmosChangeFeedRequestOptionsAccessor getCosmosChangeFeedRequestOptionsAccessor() {
+            if (accessor == null) {
+                throw new IllegalStateException("CosmosChangeFeedRequestOptions accessor is not initialized yet!");
+            }
+
+            return accessor;
+        }
+
+        public interface CosmosChangeFeedRequestOptionsAccessor {
+            CosmosChangeFeedRequestOptions setHeader(CosmosChangeFeedRequestOptions changeFeedRequestOptions, String name, String value);
+            Map<String, String> getHeader(CosmosChangeFeedRequestOptions changeFeedRequestOptions);
+        }
+    }
+
     public static final class CosmosItemRequestOptionsHelper {
         private static CosmosItemRequestOptionsAccessor accessor;
 
@@ -162,12 +194,12 @@ public class ImplementationBridgeHelpers {
 
         private CosmosBulkExecutionOptionsHelper() {}
         static {
-            ensureClassLoaded(BulkExecutionOptions.class);
+            ensureClassLoaded(CosmosBulkExecutionOptions.class);
         }
 
         public static void setCosmosBulkExecutionOptionsAccessor(final CosmosBulkExecutionOptionsAccessor newAccessor) {
             if (accessor != null) {
-                throw new IllegalStateException("BulkExecutionOptions accessor already initialized!");
+                throw new IllegalStateException("CosmosBulkExecutionOptions accessor already initialized!");
             }
 
             accessor = newAccessor;
@@ -175,7 +207,7 @@ public class ImplementationBridgeHelpers {
 
         public static CosmosBulkExecutionOptionsAccessor getCosmosBulkExecutionOptionsAccessor() {
             if (accessor == null) {
-                throw new IllegalStateException("BulkExecutionOptions accessor is not initialized yet!");
+                throw new IllegalStateException("CosmosBulkExecutionOptions accessor is not initialized yet!");
             }
 
             return accessor;
@@ -183,12 +215,12 @@ public class ImplementationBridgeHelpers {
 
         public interface CosmosBulkExecutionOptionsAccessor {
             void setOperationContext(
-                BulkExecutionOptions options,
+                CosmosBulkExecutionOptions options,
                 OperationContextAndListenerTuple operationContext);
 
-            OperationContextAndListenerTuple getOperationContext(BulkExecutionOptions options);
+            OperationContextAndListenerTuple getOperationContext(CosmosBulkExecutionOptions options);
 
-            <T> T getLegacyBatchScopedContext(BulkExecutionOptions options);
+            <T> T getLegacyBatchScopedContext(CosmosBulkExecutionOptions options);
         }
     }
 
@@ -355,17 +387,17 @@ public class ImplementationBridgeHelpers {
         }
     }
 
-    public static final class BulkExecutionThresholdsHelper {
-        private static BulkExecutionThresholdsAccessor accessor;
+    public static final class CosmosBulkExecutionThresholdsStateHelper {
+        private static CosmosBulkExecutionThresholdsStateAccessor accessor;
 
-        private BulkExecutionThresholdsHelper() {
+        private CosmosBulkExecutionThresholdsStateHelper() {
         }
 
         static {
-            ensureClassLoaded(BulkExecutionThresholds.class);
+            ensureClassLoaded(CosmosBulkExecutionThresholdsState.class);
         }
 
-        public static void setBulkExecutionThresholdsAccessor(final BulkExecutionThresholdsAccessor newAccessor) {
+        public static void setBulkExecutionThresholdsAccessor(final CosmosBulkExecutionThresholdsStateAccessor newAccessor) {
             if (accessor != null) {
                 throw new IllegalStateException("BulkExecutionThresholds accessor already initialized!");
             }
@@ -373,7 +405,7 @@ public class ImplementationBridgeHelpers {
             accessor = newAccessor;
         }
 
-        public static BulkExecutionThresholdsAccessor getBulkExecutionThresholdsAccessor() {
+        public static CosmosBulkExecutionThresholdsStateAccessor getBulkExecutionThresholdsAccessor() {
             if (accessor == null) {
                 throw new IllegalStateException("BulkExecutionThresholds accessor is not initialized yet!");
             }
@@ -381,9 +413,11 @@ public class ImplementationBridgeHelpers {
             return accessor;
         }
 
-        public interface BulkExecutionThresholdsAccessor {
+        public interface CosmosBulkExecutionThresholdsStateAccessor {
             ConcurrentMap<String, PartitionScopeThresholds> getPartitionScopeThresholds(
-                BulkExecutionThresholds thresholds);
+                CosmosBulkExecutionThresholdsState thresholds);
+            CosmosBulkExecutionThresholdsState createWithPartitionScopeThresholds(
+                ConcurrentMap<String, PartitionScopeThresholds> partitionScopeThresholds);
         }
     }
 
@@ -416,6 +450,71 @@ public class ImplementationBridgeHelpers {
         public interface CosmosDiagnosticsAccessor {
             FeedResponseDiagnostics getFeedResponseDiagnostics(CosmosDiagnostics cosmosDiagnostics);
             AtomicBoolean isDiagnosticsCapturedInPagedFlux(CosmosDiagnostics cosmosDiagnostics);
+        }
+    }
+
+    public static final class CosmosAsyncContainerHelper {
+        private static CosmosAsyncContainerAccessor accessor;
+
+        private CosmosAsyncContainerHelper() {
+        }
+
+        static {
+            ensureClassLoaded(CosmosAsyncContainer.class);
+        }
+
+        public static void setCosmosAsyncContainerAccessor(final CosmosAsyncContainerAccessor newAccessor) {
+            if (accessor != null) {
+                throw new IllegalStateException("CosmosAsyncContainerAccessor already initialized!");
+            }
+
+            accessor = newAccessor;
+        }
+
+        public static CosmosAsyncContainerAccessor getCosmosAsyncContainerAccessor() {
+            if (accessor == null) {
+                throw new IllegalStateException("CosmosAsyncContainerAccessor is not initialized yet!");
+            }
+
+            return accessor;
+        }
+
+        public interface CosmosAsyncContainerAccessor {
+            <T> Function<CosmosPagedFluxOptions, Flux<FeedResponse<T>>> queryChangeFeedInternalFunc(
+                CosmosAsyncContainer cosmosAsyncContainer,
+                CosmosChangeFeedRequestOptions cosmosChangeFeedRequestOptions,
+                Class<T> classType);
+        }
+    }
+
+    public static final class FeedResponseHelper {
+        private static FeedResponseAccessor accessor;
+
+        private FeedResponseHelper() {
+        }
+
+        static {
+            ensureClassLoaded(FeedResponse.class);
+        }
+
+        public static void setFeedResponseAccessor(final FeedResponseAccessor newAccessor) {
+            if (accessor != null) {
+                throw new IllegalStateException("FeedResponseAccessor already initialized!");
+            }
+
+            accessor = newAccessor;
+        }
+
+        public static FeedResponseAccessor getFeedResponseAccessor() {
+            if (accessor == null) {
+                throw new IllegalStateException("FeedResponseAccessor is not initialized yet!");
+            }
+
+            return accessor;
+        }
+
+        public interface FeedResponseAccessor {
+            <T> boolean getNoChanges(FeedResponse<T> feedResponse);
         }
     }
 

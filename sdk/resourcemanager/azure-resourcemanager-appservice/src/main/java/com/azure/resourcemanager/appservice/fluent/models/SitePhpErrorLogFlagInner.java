@@ -5,41 +5,37 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.models.ProxyOnlyResource;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Used for getting PHP error logging flag. */
-@JsonFlatten
 @Fluent
-public class SitePhpErrorLogFlagInner extends ProxyOnlyResource {
+public final class SitePhpErrorLogFlagInner extends ProxyOnlyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(SitePhpErrorLogFlagInner.class);
 
     /*
-     * Local log_errors setting.
+     * SitePhpErrorLogFlag resource specific properties
      */
-    @JsonProperty(value = "properties.localLogErrors")
-    private String localLogErrors;
+    @JsonProperty(value = "properties")
+    private SitePhpErrorLogFlagProperties innerProperties;
 
-    /*
-     * Master log_errors setting.
+    /**
+     * Get the innerProperties property: SitePhpErrorLogFlag resource specific properties.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.masterLogErrors")
-    private String masterLogErrors;
+    private SitePhpErrorLogFlagProperties innerProperties() {
+        return this.innerProperties;
+    }
 
-    /*
-     * Local log_errors_max_len setting.
-     */
-    @JsonProperty(value = "properties.localLogErrorsMaxLength")
-    private String localLogErrorsMaxLength;
-
-    /*
-     * Master log_errors_max_len setting.
-     */
-    @JsonProperty(value = "properties.masterLogErrorsMaxLength")
-    private String masterLogErrorsMaxLength;
+    /** {@inheritDoc} */
+    @Override
+    public SitePhpErrorLogFlagInner withKind(String kind) {
+        super.withKind(kind);
+        return this;
+    }
 
     /**
      * Get the localLogErrors property: Local log_errors setting.
@@ -47,7 +43,7 @@ public class SitePhpErrorLogFlagInner extends ProxyOnlyResource {
      * @return the localLogErrors value.
      */
     public String localLogErrors() {
-        return this.localLogErrors;
+        return this.innerProperties() == null ? null : this.innerProperties().localLogErrors();
     }
 
     /**
@@ -57,7 +53,10 @@ public class SitePhpErrorLogFlagInner extends ProxyOnlyResource {
      * @return the SitePhpErrorLogFlagInner object itself.
      */
     public SitePhpErrorLogFlagInner withLocalLogErrors(String localLogErrors) {
-        this.localLogErrors = localLogErrors;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SitePhpErrorLogFlagProperties();
+        }
+        this.innerProperties().withLocalLogErrors(localLogErrors);
         return this;
     }
 
@@ -67,7 +66,7 @@ public class SitePhpErrorLogFlagInner extends ProxyOnlyResource {
      * @return the masterLogErrors value.
      */
     public String masterLogErrors() {
-        return this.masterLogErrors;
+        return this.innerProperties() == null ? null : this.innerProperties().masterLogErrors();
     }
 
     /**
@@ -77,7 +76,10 @@ public class SitePhpErrorLogFlagInner extends ProxyOnlyResource {
      * @return the SitePhpErrorLogFlagInner object itself.
      */
     public SitePhpErrorLogFlagInner withMasterLogErrors(String masterLogErrors) {
-        this.masterLogErrors = masterLogErrors;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SitePhpErrorLogFlagProperties();
+        }
+        this.innerProperties().withMasterLogErrors(masterLogErrors);
         return this;
     }
 
@@ -87,7 +89,7 @@ public class SitePhpErrorLogFlagInner extends ProxyOnlyResource {
      * @return the localLogErrorsMaxLength value.
      */
     public String localLogErrorsMaxLength() {
-        return this.localLogErrorsMaxLength;
+        return this.innerProperties() == null ? null : this.innerProperties().localLogErrorsMaxLength();
     }
 
     /**
@@ -97,7 +99,10 @@ public class SitePhpErrorLogFlagInner extends ProxyOnlyResource {
      * @return the SitePhpErrorLogFlagInner object itself.
      */
     public SitePhpErrorLogFlagInner withLocalLogErrorsMaxLength(String localLogErrorsMaxLength) {
-        this.localLogErrorsMaxLength = localLogErrorsMaxLength;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SitePhpErrorLogFlagProperties();
+        }
+        this.innerProperties().withLocalLogErrorsMaxLength(localLogErrorsMaxLength);
         return this;
     }
 
@@ -107,7 +112,7 @@ public class SitePhpErrorLogFlagInner extends ProxyOnlyResource {
      * @return the masterLogErrorsMaxLength value.
      */
     public String masterLogErrorsMaxLength() {
-        return this.masterLogErrorsMaxLength;
+        return this.innerProperties() == null ? null : this.innerProperties().masterLogErrorsMaxLength();
     }
 
     /**
@@ -117,14 +122,10 @@ public class SitePhpErrorLogFlagInner extends ProxyOnlyResource {
      * @return the SitePhpErrorLogFlagInner object itself.
      */
     public SitePhpErrorLogFlagInner withMasterLogErrorsMaxLength(String masterLogErrorsMaxLength) {
-        this.masterLogErrorsMaxLength = masterLogErrorsMaxLength;
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public SitePhpErrorLogFlagInner withKind(String kind) {
-        super.withKind(kind);
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SitePhpErrorLogFlagProperties();
+        }
+        this.innerProperties().withMasterLogErrorsMaxLength(masterLogErrorsMaxLength);
         return this;
     }
 
@@ -136,5 +137,8 @@ public class SitePhpErrorLogFlagInner extends ProxyOnlyResource {
     @Override
     public void validate() {
         super.validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

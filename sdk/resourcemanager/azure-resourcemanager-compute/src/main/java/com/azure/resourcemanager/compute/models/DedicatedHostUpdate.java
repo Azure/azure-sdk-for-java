@@ -5,8 +5,8 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.compute.fluent.models.DedicatedHostProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
@@ -14,63 +14,31 @@ import java.util.List;
 import java.util.Map;
 
 /** Specifies information about the dedicated host. Only tags, autoReplaceOnFailure and licenseType may be updated. */
-@JsonFlatten
 @Fluent
-public class DedicatedHostUpdate extends UpdateResource {
+public final class DedicatedHostUpdate extends UpdateResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(DedicatedHostUpdate.class);
 
     /*
-     * Fault domain of the dedicated host within a dedicated host group.
+     * Properties of the dedicated host.
      */
-    @JsonProperty(value = "properties.platformFaultDomain")
-    private Integer platformFaultDomain;
+    @JsonProperty(value = "properties")
+    private DedicatedHostProperties innerProperties;
 
-    /*
-     * Specifies whether the dedicated host should be replaced automatically in
-     * case of a failure. The value is defaulted to 'true' when not provided.
+    /**
+     * Get the innerProperties property: Properties of the dedicated host.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.autoReplaceOnFailure")
-    private Boolean autoReplaceOnFailure;
+    private DedicatedHostProperties innerProperties() {
+        return this.innerProperties;
+    }
 
-    /*
-     * A unique id generated and assigned to the dedicated host by the
-     * platform. <br><br> Does not change throughout the lifetime of the host.
-     */
-    @JsonProperty(value = "properties.hostId", access = JsonProperty.Access.WRITE_ONLY)
-    private String hostId;
-
-    /*
-     * A list of references to all virtual machines in the Dedicated Host.
-     */
-    @JsonProperty(value = "properties.virtualMachines", access = JsonProperty.Access.WRITE_ONLY)
-    private List<SubResourceReadOnly> virtualMachines;
-
-    /*
-     * Specifies the software license type that will be applied to the VMs
-     * deployed on the dedicated host. <br><br> Possible values are: <br><br>
-     * **None** <br><br> **Windows_Server_Hybrid** <br><br>
-     * **Windows_Server_Perpetual** <br><br> Default: **None**
-     */
-    @JsonProperty(value = "properties.licenseType")
-    private DedicatedHostLicenseTypes licenseType;
-
-    /*
-     * The date when the host was first provisioned.
-     */
-    @JsonProperty(value = "properties.provisioningTime", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime provisioningTime;
-
-    /*
-     * The provisioning state, which only appears in the response.
-     */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private String provisioningState;
-
-    /*
-     * The dedicated host instance view.
-     */
-    @JsonProperty(value = "properties.instanceView", access = JsonProperty.Access.WRITE_ONLY)
-    private DedicatedHostInstanceView instanceView;
+    /** {@inheritDoc} */
+    @Override
+    public DedicatedHostUpdate withTags(Map<String, String> tags) {
+        super.withTags(tags);
+        return this;
+    }
 
     /**
      * Get the platformFaultDomain property: Fault domain of the dedicated host within a dedicated host group.
@@ -78,7 +46,7 @@ public class DedicatedHostUpdate extends UpdateResource {
      * @return the platformFaultDomain value.
      */
     public Integer platformFaultDomain() {
-        return this.platformFaultDomain;
+        return this.innerProperties() == null ? null : this.innerProperties().platformFaultDomain();
     }
 
     /**
@@ -88,7 +56,10 @@ public class DedicatedHostUpdate extends UpdateResource {
      * @return the DedicatedHostUpdate object itself.
      */
     public DedicatedHostUpdate withPlatformFaultDomain(Integer platformFaultDomain) {
-        this.platformFaultDomain = platformFaultDomain;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DedicatedHostProperties();
+        }
+        this.innerProperties().withPlatformFaultDomain(platformFaultDomain);
         return this;
     }
 
@@ -99,7 +70,7 @@ public class DedicatedHostUpdate extends UpdateResource {
      * @return the autoReplaceOnFailure value.
      */
     public Boolean autoReplaceOnFailure() {
-        return this.autoReplaceOnFailure;
+        return this.innerProperties() == null ? null : this.innerProperties().autoReplaceOnFailure();
     }
 
     /**
@@ -110,7 +81,10 @@ public class DedicatedHostUpdate extends UpdateResource {
      * @return the DedicatedHostUpdate object itself.
      */
     public DedicatedHostUpdate withAutoReplaceOnFailure(Boolean autoReplaceOnFailure) {
-        this.autoReplaceOnFailure = autoReplaceOnFailure;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DedicatedHostProperties();
+        }
+        this.innerProperties().withAutoReplaceOnFailure(autoReplaceOnFailure);
         return this;
     }
 
@@ -121,7 +95,7 @@ public class DedicatedHostUpdate extends UpdateResource {
      * @return the hostId value.
      */
     public String hostId() {
-        return this.hostId;
+        return this.innerProperties() == null ? null : this.innerProperties().hostId();
     }
 
     /**
@@ -130,7 +104,7 @@ public class DedicatedHostUpdate extends UpdateResource {
      * @return the virtualMachines value.
      */
     public List<SubResourceReadOnly> virtualMachines() {
-        return this.virtualMachines;
+        return this.innerProperties() == null ? null : this.innerProperties().virtualMachines();
     }
 
     /**
@@ -142,7 +116,7 @@ public class DedicatedHostUpdate extends UpdateResource {
      * @return the licenseType value.
      */
     public DedicatedHostLicenseTypes licenseType() {
-        return this.licenseType;
+        return this.innerProperties() == null ? null : this.innerProperties().licenseType();
     }
 
     /**
@@ -155,7 +129,10 @@ public class DedicatedHostUpdate extends UpdateResource {
      * @return the DedicatedHostUpdate object itself.
      */
     public DedicatedHostUpdate withLicenseType(DedicatedHostLicenseTypes licenseType) {
-        this.licenseType = licenseType;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DedicatedHostProperties();
+        }
+        this.innerProperties().withLicenseType(licenseType);
         return this;
     }
 
@@ -165,7 +142,7 @@ public class DedicatedHostUpdate extends UpdateResource {
      * @return the provisioningTime value.
      */
     public OffsetDateTime provisioningTime() {
-        return this.provisioningTime;
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningTime();
     }
 
     /**
@@ -174,7 +151,7 @@ public class DedicatedHostUpdate extends UpdateResource {
      * @return the provisioningState value.
      */
     public String provisioningState() {
-        return this.provisioningState;
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
     /**
@@ -183,14 +160,7 @@ public class DedicatedHostUpdate extends UpdateResource {
      * @return the instanceView value.
      */
     public DedicatedHostInstanceView instanceView() {
-        return this.instanceView;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public DedicatedHostUpdate withTags(Map<String, String> tags) {
-        super.withTags(tags);
-        return this;
+        return this.innerProperties() == null ? null : this.innerProperties().instanceView();
     }
 
     /**
@@ -201,11 +171,8 @@ public class DedicatedHostUpdate extends UpdateResource {
     @Override
     public void validate() {
         super.validate();
-        if (virtualMachines() != null) {
-            virtualMachines().forEach(e -> e.validate());
-        }
-        if (instanceView() != null) {
-            instanceView().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

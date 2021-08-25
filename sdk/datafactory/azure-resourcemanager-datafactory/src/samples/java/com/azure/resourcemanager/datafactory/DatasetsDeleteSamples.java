@@ -8,6 +8,11 @@ import com.azure.core.util.Context;
 
 /** Samples for Datasets Delete. */
 public final class DatasetsDeleteSamples {
+    /*
+     * operationId: Datasets_Delete
+     * api-version: 2018-06-01
+     * x-ms-examples: Datasets_Delete
+     */
     /**
      * Sample code: Datasets_Delete.
      *

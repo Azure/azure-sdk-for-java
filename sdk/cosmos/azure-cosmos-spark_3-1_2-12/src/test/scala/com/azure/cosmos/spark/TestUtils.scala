@@ -3,8 +3,8 @@
 package com.azure.cosmos.spark
 
 import com.azure.cosmos.implementation.TestConfigurations
-import com.azure.cosmos.models.{ChangeFeedPolicy, CosmosContainerProperties, PartitionKey, ThroughputProperties}
-import com.azure.cosmos.{BulkOperations, CosmosAsyncClient, CosmosClientBuilder, CosmosException, CosmosItemOperation}
+import com.azure.cosmos.models.{ChangeFeedPolicy, CosmosBulkOperations, CosmosContainerProperties, PartitionKey, ThroughputProperties}
+import com.azure.cosmos.{CosmosAsyncClient, CosmosClientBuilder, CosmosException, CosmosItemOperation}
 import com.fasterxml.jackson.databind.node.ObjectNode
 import org.apache.commons.lang3.RandomStringUtils
 import org.apache.spark.sql.SparkSession
@@ -234,7 +234,7 @@ trait AutoCleanableCosmosContainer extends CosmosContainer with BeforeAndAfterEa
         container.queryItems("SELECT * FROM r", classOf[ObjectNode])
           .asScala
           .doOnNext(item => {
-            val operation = BulkOperations.getDeleteItemOperation(getId(item), new PartitionKey(getPartitionKeyValue(item)))
+            val operation = CosmosBulkOperations.getDeleteItemOperation(getId(item), new PartitionKey(getPartitionKeyValue(item)))
             cnt.incrementAndGet()
             emitter.tryEmitNext(operation)
 
