@@ -81,9 +81,8 @@
 # PRLabel: %azure-spring
 /sdk/keyvault/azure-security-keyvault-jca           @saragluna @yiliuTo @chenrujun @backwind1233 @stliu @ZhuXiaoBing-cn @zhichengliu12581 @moarychan @michaelqi793
 
-# PRLabel: %Monitor - ApplicationInsights
-# ServiceLabel: %Monitor - ApplicationInsights %Service Attention
-/sdk/applicationinsights/Microsoft.Azure.App*/  @omziv @anatse @raronen @ischrei @danhadari @azmonapplicationinsights
+/sdk/loganalytics/microsoft-azure-loganalytics/     @omziv @anatse @raronen @ischrei @danhadari @azmonapplicationinsights
+
 # PRLabel:  %Monitor - Exporter
 /sdk/monitor/azure-monitor-opentelemetry-exporter   @trask @lmolkova @srnagar @samvaity
 
