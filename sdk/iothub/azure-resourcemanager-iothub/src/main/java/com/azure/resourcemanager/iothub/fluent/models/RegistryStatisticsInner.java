@@ -4,20 +4,15 @@
 
 package com.azure.resourcemanager.iothub.fluent.models;
 
-import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Identity registry statistics.
- */
+/** Identity registry statistics. */
 @Immutable
 public final class RegistryStatisticsInner {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(RegistryStatisticsInner.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(RegistryStatisticsInner.class);
 
     /*
      * The total count of devices in the identity registry.
@@ -38,9 +33,8 @@ public final class RegistryStatisticsInner {
     private Long disabledDeviceCount;
 
     /**
-     * Get the totalDeviceCount property: The total count of devices in the
-     * identity registry.
-     * 
+     * Get the totalDeviceCount property: The total count of devices in the identity registry.
+     *
      * @return the totalDeviceCount value.
      */
     public Long totalDeviceCount() {
@@ -48,9 +42,8 @@ public final class RegistryStatisticsInner {
     }
 
     /**
-     * Get the enabledDeviceCount property: The count of enabled devices in the
-     * identity registry.
-     * 
+     * Get the enabledDeviceCount property: The count of enabled devices in the identity registry.
+     *
      * @return the enabledDeviceCount value.
      */
     public Long enabledDeviceCount() {
@@ -58,9 +51,8 @@ public final class RegistryStatisticsInner {
     }
 
     /**
-     * Get the disabledDeviceCount property: The count of disabled devices in
-     * the identity registry.
-     * 
+     * Get the disabledDeviceCount property: The count of disabled devices in the identity registry.
+     *
      * @return the disabledDeviceCount value.
      */
     public Long disabledDeviceCount() {
@@ -69,7 +61,7 @@ public final class RegistryStatisticsInner {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

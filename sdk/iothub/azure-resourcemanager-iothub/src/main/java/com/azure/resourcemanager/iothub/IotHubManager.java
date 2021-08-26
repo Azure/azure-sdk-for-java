@@ -9,8 +9,8 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.AddDatePolicy;
-import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RequestIdPolicy;
@@ -42,10 +42,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-/**
- * Entry point to IotHubManager.
- * Use this API to manage the IoT hubs in your Azure subscription.
- */
+/** Entry point to IotHubManager. Use this API to manage the IoT hubs in your Azure subscription. */
 public final class IotHubManager {
     private Operations operations;
 
@@ -66,17 +63,18 @@ public final class IotHubManager {
     private IotHubManager(HttpPipeline httpPipeline, AzureProfile profile, Duration defaultPollInterval) {
         Objects.requireNonNull(httpPipeline, "'httpPipeline' cannot be null.");
         Objects.requireNonNull(profile, "'profile' cannot be null.");
-        this.clientObject = new IotHubClientBuilder()
-            .pipeline(httpPipeline)
-            .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
-            .subscriptionId(profile.getSubscriptionId())
-            .defaultPollInterval(defaultPollInterval)
-            .buildClient();
+        this.clientObject =
+            new IotHubClientBuilder()
+                .pipeline(httpPipeline)
+                .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
+                .subscriptionId(profile.getSubscriptionId())
+                .defaultPollInterval(defaultPollInterval)
+                .buildClient();
     }
 
     /**
      * Creates an instance of IotHub service API entry point.
-     * 
+     *
      * @param credential the credential to use.
      * @param profile the Azure profile for client.
      * @return the IotHub service API instance.
@@ -89,16 +87,14 @@ public final class IotHubManager {
 
     /**
      * Gets a Configurable instance that can be used to create IotHubManager with optional configuration.
-     * 
+     *
      * @return the Configurable instance allowing configurations.
      */
     public static Configurable configure() {
         return new IotHubManager.Configurable();
     }
 
-    /**
-     * The Configurable allowing configurations to be set.
-     */
+    /** The Configurable allowing configurations to be set. */
     public static final class Configurable {
         private final ClientLogger logger = new ClientLogger(Configurable.class);
 
@@ -193,13 +189,15 @@ public final class IotHubManager {
             Objects.requireNonNull(profile, "'profile' cannot be null.");
 
             StringBuilder userAgentBuilder = new StringBuilder();
-            userAgentBuilder.append("azsdk-java")
+            userAgentBuilder
+                .append("azsdk-java")
                 .append("-")
                 .append("com.azure.resourcemanager.iothub")
                 .append("/")
                 .append("1.1.0");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
-                userAgentBuilder.append(" (")
+                userAgentBuilder
+                    .append(" (")
                     .append(Configuration.getGlobalConfiguration().get("java.version"))
                     .append("; ")
                     .append(Configuration.getGlobalConfiguration().get("os.name"))
@@ -226,16 +224,16 @@ public final class IotHubManager {
             policies.addAll(this.policies);
             HttpPolicyProviders.addAfterRetryPolicies(policies);
             policies.add(new HttpLoggingPolicy(httpLogOptions));
-            HttpPipeline httpPipeline = new HttpPipelineBuilder()
-                .httpClient(httpClient)
-                .policies(policies.toArray(new HttpPipelinePolicy[0])).build();
+            HttpPipeline httpPipeline =
+                new HttpPipelineBuilder()
+                    .httpClient(httpClient)
+                    .policies(policies.toArray(new HttpPipelinePolicy[0]))
+                    .build();
             return new IotHubManager(httpPipeline, profile, defaultPollInterval);
         }
     }
 
-    /**
-     * @return Resource collection API of Operations.
-     */
+    /** @return Resource collection API of Operations. */
     public Operations operations() {
         if (this.operations == null) {
             this.operations = new OperationsImpl(clientObject.getOperations(), this);
@@ -243,9 +241,7 @@ public final class IotHubManager {
         return operations;
     }
 
-    /**
-     * @return Resource collection API of IotHubResources.
-     */
+    /** @return Resource collection API of IotHubResources. */
     public IotHubResources iotHubResources() {
         if (this.iotHubResources == null) {
             this.iotHubResources = new IotHubResourcesImpl(clientObject.getIotHubResources(), this);
@@ -253,19 +249,16 @@ public final class IotHubManager {
         return iotHubResources;
     }
 
-    /**
-     * @return Resource collection API of ResourceProviderCommons.
-     */
+    /** @return Resource collection API of ResourceProviderCommons. */
     public ResourceProviderCommons resourceProviderCommons() {
         if (this.resourceProviderCommons == null) {
-            this.resourceProviderCommons = new ResourceProviderCommonsImpl(clientObject.getResourceProviderCommons(), this);
+            this.resourceProviderCommons =
+                new ResourceProviderCommonsImpl(clientObject.getResourceProviderCommons(), this);
         }
         return resourceProviderCommons;
     }
 
-    /**
-     * @return Resource collection API of Certificates.
-     */
+    /** @return Resource collection API of Certificates. */
     public Certificates certificates() {
         if (this.certificates == null) {
             this.certificates = new CertificatesImpl(clientObject.getCertificates(), this);
@@ -273,9 +266,7 @@ public final class IotHubManager {
         return certificates;
     }
 
-    /**
-     * @return Resource collection API of IotHubs.
-     */
+    /** @return Resource collection API of IotHubs. */
     public IotHubs iotHubs() {
         if (this.iotHubs == null) {
             this.iotHubs = new IotHubsImpl(clientObject.getIotHubs(), this);
@@ -283,28 +274,27 @@ public final class IotHubManager {
         return iotHubs;
     }
 
-    /**
-     * @return Resource collection API of PrivateLinkResourcesOperations.
-     */
+    /** @return Resource collection API of PrivateLinkResourcesOperations. */
     public PrivateLinkResourcesOperations privateLinkResourcesOperations() {
         if (this.privateLinkResourcesOperations == null) {
-            this.privateLinkResourcesOperations = new PrivateLinkResourcesOperationsImpl(clientObject.getPrivateLinkResourcesOperations(), this);
+            this.privateLinkResourcesOperations =
+                new PrivateLinkResourcesOperationsImpl(clientObject.getPrivateLinkResourcesOperations(), this);
         }
         return privateLinkResourcesOperations;
     }
 
-    /**
-     * @return Resource collection API of PrivateEndpointConnections.
-     */
+    /** @return Resource collection API of PrivateEndpointConnections. */
     public PrivateEndpointConnections privateEndpointConnections() {
         if (this.privateEndpointConnections == null) {
-            this.privateEndpointConnections = new PrivateEndpointConnectionsImpl(clientObject.getPrivateEndpointConnections(), this);
+            this.privateEndpointConnections =
+                new PrivateEndpointConnectionsImpl(clientObject.getPrivateEndpointConnections(), this);
         }
         return privateEndpointConnections;
     }
 
     /**
-     * @return Wrapped service client IotHubClient providing direct access to the underlying auto-generated API implementation, based on Azure REST API.
+     * @return Wrapped service client IotHubClient providing direct access to the underlying auto-generated API
+     *     implementation, based on Azure REST API.
      */
     public IotHubClient serviceClient() {
         return this.clientObject;

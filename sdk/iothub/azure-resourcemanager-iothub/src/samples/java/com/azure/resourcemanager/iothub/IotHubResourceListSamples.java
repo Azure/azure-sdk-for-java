@@ -6,15 +6,13 @@ package com.azure.resourcemanager.iothub;
 
 import com.azure.core.util.Context;
 
-/**
- * Samples for IotHubResource List.
- */
+/** Samples for IotHubResource List. */
 public final class IotHubResourceListSamples {
     /**
      * Sample code: IotHubResource_ListBySubscription.
-     * 
-     * @param iotHubManager Entry point to IotHubManager.
-     * Use this API to manage the IoT hubs in your Azure subscription.
+     *
+     * @param iotHubManager Entry point to IotHubManager. Use this API to manage the IoT hubs in your Azure
+     *     subscription.
      */
     public static void iotHubResourceListBySubscription(com.azure.resourcemanager.iothub.IotHubManager iotHubManager) {
         iotHubManager.iotHubResources().list(Context.NONE);

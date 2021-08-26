@@ -11,18 +11,28 @@ import com.azure.resourcemanager.iothub.models.TestAllRoutesInput;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Samples for IotHubResource TestAllRoutes.
- */
+/** Samples for IotHubResource TestAllRoutes. */
 public final class IotHubResourceTestAllRoutesSamples {
     /**
      * Sample code: IotHubResource_TestAllRoutes.
-     * 
-     * @param iotHubManager Entry point to IotHubManager.
-     * Use this API to manage the IoT hubs in your Azure subscription.
+     *
+     * @param iotHubManager Entry point to IotHubManager. Use this API to manage the IoT hubs in your Azure
+     *     subscription.
      */
     public static void iotHubResourceTestAllRoutes(com.azure.resourcemanager.iothub.IotHubManager iotHubManager) {
-        iotHubManager.iotHubResources().testAllRoutesWithResponse("testHub", "myResourceGroup", new TestAllRoutesInput().withRoutingSource(RoutingSource.DEVICE_MESSAGES).withMessage(new RoutingMessage().withBody("Body of message").withAppProperties(mapOf("key1", "value1")).withSystemProperties(mapOf("key1", "value1"))), Context.NONE);
+        iotHubManager
+            .iotHubResources()
+            .testAllRoutesWithResponse(
+                "testHub",
+                "myResourceGroup",
+                new TestAllRoutesInput()
+                    .withRoutingSource(RoutingSource.DEVICE_MESSAGES)
+                    .withMessage(
+                        new RoutingMessage()
+                            .withBody("Body of message")
+                            .withAppProperties(mapOf("key1", "value1"))
+                            .withSystemProperties(mapOf("key1", "value1"))),
+                Context.NONE);
     }
 
     @SuppressWarnings("unchecked")

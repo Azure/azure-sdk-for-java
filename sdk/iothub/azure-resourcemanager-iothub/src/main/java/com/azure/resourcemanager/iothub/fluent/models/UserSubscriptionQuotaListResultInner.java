@@ -5,21 +5,16 @@
 package com.azure.resourcemanager.iothub.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.iothub.models.UserSubscriptionQuota;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * Json-serialized array of User subscription quota response.
- */
+/** Json-serialized array of User subscription quota response. */
 @Fluent
 public final class UserSubscriptionQuotaListResultInner {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(UserSubscriptionQuotaListResultInner.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(UserSubscriptionQuotaListResultInner.class);
 
     /*
      * The value property.
@@ -35,7 +30,7 @@ public final class UserSubscriptionQuotaListResultInner {
 
     /**
      * Get the value property: The value property.
-     * 
+     *
      * @return the value value.
      */
     public List<UserSubscriptionQuota> value() {
@@ -44,7 +39,7 @@ public final class UserSubscriptionQuotaListResultInner {
 
     /**
      * Set the value property: The value property.
-     * 
+     *
      * @param value the value value to set.
      * @return the UserSubscriptionQuotaListResultInner object itself.
      */
@@ -55,7 +50,7 @@ public final class UserSubscriptionQuotaListResultInner {
 
     /**
      * Get the nextLink property: The nextLink property.
-     * 
+     *
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -64,7 +59,7 @@ public final class UserSubscriptionQuotaListResultInner {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -6,34 +6,32 @@ package com.azure.resourcemanager.iothub.models;
 
 import com.azure.resourcemanager.iothub.fluent.models.IotHubQuotaMetricInfoInner;
 
-/**
- * An immutable client-side representation of IotHubQuotaMetricInfo.
- */
+/** An immutable client-side representation of IotHubQuotaMetricInfo. */
 public interface IotHubQuotaMetricInfo {
     /**
      * Gets the name property: The name of the quota metric.
-     * 
+     *
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the currentValue property: The current value for the quota metric.
-     * 
+     *
      * @return the currentValue value.
      */
     Long currentValue();
 
     /**
      * Gets the maxValue property: The maximum value of the quota metric.
-     * 
+     *
      * @return the maxValue value.
      */
     Long maxValue();
 
     /**
      * Gets the inner com.azure.resourcemanager.iothub.fluent.models.IotHubQuotaMetricInfoInner object.
-     * 
+     *
      * @return the inner object.
      */
     IotHubQuotaMetricInfoInner innerModel();

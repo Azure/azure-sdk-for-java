@@ -6,41 +6,39 @@ package com.azure.resourcemanager.iothub.models;
 
 import com.azure.resourcemanager.iothub.fluent.models.PrivateEndpointConnectionInner;
 
-/**
- * An immutable client-side representation of PrivateEndpointConnection.
- */
+/** An immutable client-side representation of PrivateEndpointConnection. */
 public interface PrivateEndpointConnection {
     /**
      * Gets the id property: Fully qualified resource Id for the resource.
-     * 
+     *
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the name property: The name of the resource.
-     * 
+     *
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the type property: The type of the resource.
-     * 
+     *
      * @return the type value.
      */
     String type();
 
     /**
      * Gets the properties property: The properties of a private endpoint connection.
-     * 
+     *
      * @return the properties value.
      */
     PrivateEndpointConnectionProperties properties();
 
     /**
      * Gets the inner com.azure.resourcemanager.iothub.fluent.models.PrivateEndpointConnectionInner object.
-     * 
+     *
      * @return the inner object.
      */
     PrivateEndpointConnectionInner innerModel();

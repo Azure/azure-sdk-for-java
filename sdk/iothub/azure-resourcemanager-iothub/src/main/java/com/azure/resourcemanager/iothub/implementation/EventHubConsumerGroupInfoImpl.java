@@ -4,24 +4,22 @@
 
 package com.azure.resourcemanager.iothub.implementation;
 
-import com.azure.core.annotation.ReturnType;
-import com.azure.core.annotation.ServiceMethod;
-import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.iothub.fluent.models.EventHubConsumerGroupInfoInner;
 import com.azure.resourcemanager.iothub.models.EventHubConsumerGroupBodyDescription;
 import com.azure.resourcemanager.iothub.models.EventHubConsumerGroupInfo;
 import com.azure.resourcemanager.iothub.models.EventHubConsumerGroupName;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Collections;
 import java.util.Map;
 
-public final class EventHubConsumerGroupInfoImpl implements EventHubConsumerGroupInfo, EventHubConsumerGroupInfo.Definition {
+public final class EventHubConsumerGroupInfoImpl
+    implements EventHubConsumerGroupInfo, EventHubConsumerGroupInfo.Definition {
     private EventHubConsumerGroupInfoInner innerObject;
 
     private final com.azure.resourcemanager.iothub.IotHubManager serviceManager;
 
-    EventHubConsumerGroupInfoImpl(EventHubConsumerGroupInfoInner innerObject, com.azure.resourcemanager.iothub.IotHubManager serviceManager) {
+    EventHubConsumerGroupInfoImpl(
+        EventHubConsumerGroupInfoInner innerObject, com.azure.resourcemanager.iothub.IotHubManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -69,7 +67,8 @@ public final class EventHubConsumerGroupInfoImpl implements EventHubConsumerGrou
 
     private EventHubConsumerGroupBodyDescription createConsumerGroupBody;
 
-    public EventHubConsumerGroupInfoImpl withExistingEventHubEndpoint(String resourceGroupName, String resourceName, String eventHubEndpointName) {
+    public EventHubConsumerGroupInfoImpl withExistingEventHubEndpoint(
+        String resourceGroupName, String resourceName, String eventHubEndpointName) {
         this.resourceGroupName = resourceGroupName;
         this.resourceName = resourceName;
         this.eventHubEndpointName = eventHubEndpointName;
@@ -77,12 +76,24 @@ public final class EventHubConsumerGroupInfoImpl implements EventHubConsumerGrou
     }
 
     public EventHubConsumerGroupInfo create() {
-        this.innerObject = serviceManager.serviceClient().getIotHubResources().createEventHubConsumerGroupWithResponse(resourceGroupName, resourceName, eventHubEndpointName, name, createConsumerGroupBody, Context.NONE).getValue();
+        this.innerObject =
+            serviceManager
+                .serviceClient()
+                .getIotHubResources()
+                .createEventHubConsumerGroupWithResponse(
+                    resourceGroupName, resourceName, eventHubEndpointName, name, createConsumerGroupBody, Context.NONE)
+                .getValue();
         return this;
     }
 
     public EventHubConsumerGroupInfo create(Context context) {
-        this.innerObject = serviceManager.serviceClient().getIotHubResources().createEventHubConsumerGroupWithResponse(resourceGroupName, resourceName, eventHubEndpointName, name, createConsumerGroupBody, context).getValue();
+        this.innerObject =
+            serviceManager
+                .serviceClient()
+                .getIotHubResources()
+                .createEventHubConsumerGroupWithResponse(
+                    resourceGroupName, resourceName, eventHubEndpointName, name, createConsumerGroupBody, context)
+                .getValue();
         return this;
     }
 
@@ -94,12 +105,24 @@ public final class EventHubConsumerGroupInfoImpl implements EventHubConsumerGrou
     }
 
     public EventHubConsumerGroupInfo refresh() {
-        this.innerObject = serviceManager.serviceClient().getIotHubResources().getEventHubConsumerGroupWithResponse(resourceGroupName, resourceName, eventHubEndpointName, name, Context.NONE).getValue();
+        this.innerObject =
+            serviceManager
+                .serviceClient()
+                .getIotHubResources()
+                .getEventHubConsumerGroupWithResponse(
+                    resourceGroupName, resourceName, eventHubEndpointName, name, Context.NONE)
+                .getValue();
         return this;
     }
 
     public EventHubConsumerGroupInfo refresh(Context context) {
-        this.innerObject = serviceManager.serviceClient().getIotHubResources().getEventHubConsumerGroupWithResponse(resourceGroupName, resourceName, eventHubEndpointName, name, context).getValue();
+        this.innerObject =
+            serviceManager
+                .serviceClient()
+                .getIotHubResources()
+                .getEventHubConsumerGroupWithResponse(
+                    resourceGroupName, resourceName, eventHubEndpointName, name, context)
+                .getValue();
         return this;
     }
 

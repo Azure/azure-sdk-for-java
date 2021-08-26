@@ -5,20 +5,15 @@
 package com.azure.resourcemanager.iothub.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The available private link resources for an IotHub.
- */
+/** The available private link resources for an IotHub. */
 @Fluent
 public final class PrivateLinkResourcesInner {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(PrivateLinkResourcesInner.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(PrivateLinkResourcesInner.class);
 
     /*
      * The list of available private link resources for an IotHub
@@ -27,9 +22,8 @@ public final class PrivateLinkResourcesInner {
     private List<GroupIdInformationInner> value;
 
     /**
-     * Get the value property: The list of available private link resources for
-     * an IotHub.
-     * 
+     * Get the value property: The list of available private link resources for an IotHub.
+     *
      * @return the value value.
      */
     public List<GroupIdInformationInner> value() {
@@ -37,9 +31,8 @@ public final class PrivateLinkResourcesInner {
     }
 
     /**
-     * Set the value property: The list of available private link resources for
-     * an IotHub.
-     * 
+     * Set the value property: The list of available private link resources for an IotHub.
+     *
      * @param value the value value to set.
      * @return the PrivateLinkResourcesInner object itself.
      */
@@ -50,7 +43,7 @@ public final class PrivateLinkResourcesInner {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

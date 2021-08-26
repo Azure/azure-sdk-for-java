@@ -5,20 +5,15 @@
 package com.azure.resourcemanager.iothub.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/**
- * Routing message.
- */
+/** Routing message. */
 @Fluent
 public final class RoutingMessage {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(RoutingMessage.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(RoutingMessage.class);
 
     /*
      * Body of routing message
@@ -40,7 +35,7 @@ public final class RoutingMessage {
 
     /**
      * Get the body property: Body of routing message.
-     * 
+     *
      * @return the body value.
      */
     public String body() {
@@ -49,7 +44,7 @@ public final class RoutingMessage {
 
     /**
      * Set the body property: Body of routing message.
-     * 
+     *
      * @param body the body value to set.
      * @return the RoutingMessage object itself.
      */
@@ -60,7 +55,7 @@ public final class RoutingMessage {
 
     /**
      * Get the appProperties property: App properties.
-     * 
+     *
      * @return the appProperties value.
      */
     public Map<String, String> appProperties() {
@@ -69,7 +64,7 @@ public final class RoutingMessage {
 
     /**
      * Set the appProperties property: App properties.
-     * 
+     *
      * @param appProperties the appProperties value to set.
      * @return the RoutingMessage object itself.
      */
@@ -80,7 +75,7 @@ public final class RoutingMessage {
 
     /**
      * Get the systemProperties property: System properties.
-     * 
+     *
      * @return the systemProperties value.
      */
     public Map<String, String> systemProperties() {
@@ -89,7 +84,7 @@ public final class RoutingMessage {
 
     /**
      * Set the systemProperties property: System properties.
-     * 
+     *
      * @param systemProperties the systemProperties value to set.
      * @return the RoutingMessage object itself.
      */
@@ -100,7 +95,7 @@ public final class RoutingMessage {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -6,34 +6,32 @@ package com.azure.resourcemanager.iothub.models;
 
 import com.azure.resourcemanager.iothub.fluent.models.RegistryStatisticsInner;
 
-/**
- * An immutable client-side representation of RegistryStatistics.
- */
+/** An immutable client-side representation of RegistryStatistics. */
 public interface RegistryStatistics {
     /**
      * Gets the totalDeviceCount property: The total count of devices in the identity registry.
-     * 
+     *
      * @return the totalDeviceCount value.
      */
     Long totalDeviceCount();
 
     /**
      * Gets the enabledDeviceCount property: The count of enabled devices in the identity registry.
-     * 
+     *
      * @return the enabledDeviceCount value.
      */
     Long enabledDeviceCount();
 
     /**
      * Gets the disabledDeviceCount property: The count of disabled devices in the identity registry.
-     * 
+     *
      * @return the disabledDeviceCount value.
      */
     Long disabledDeviceCount();
 
     /**
      * Gets the inner com.azure.resourcemanager.iothub.fluent.models.RegistryStatisticsInner object.
-     * 
+     *
      * @return the inner object.
      */
     RegistryStatisticsInner innerModel();

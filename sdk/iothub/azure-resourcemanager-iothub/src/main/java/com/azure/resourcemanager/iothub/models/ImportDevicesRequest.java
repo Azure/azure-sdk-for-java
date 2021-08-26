@@ -5,20 +5,14 @@
 package com.azure.resourcemanager.iothub.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Use to provide parameters when requesting an import of all devices in the
- * hub.
- */
+/** Use to provide parameters when requesting an import of all devices in the hub. */
 @Fluent
 public final class ImportDevicesRequest {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(ImportDevicesRequest.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ImportDevicesRequest.class);
 
     /*
      * The input blob container URI.
@@ -73,7 +67,7 @@ public final class ImportDevicesRequest {
 
     /**
      * Get the inputBlobContainerUri property: The input blob container URI.
-     * 
+     *
      * @return the inputBlobContainerUri value.
      */
     public String inputBlobContainerUri() {
@@ -82,7 +76,7 @@ public final class ImportDevicesRequest {
 
     /**
      * Set the inputBlobContainerUri property: The input blob container URI.
-     * 
+     *
      * @param inputBlobContainerUri the inputBlobContainerUri value to set.
      * @return the ImportDevicesRequest object itself.
      */
@@ -93,7 +87,7 @@ public final class ImportDevicesRequest {
 
     /**
      * Get the outputBlobContainerUri property: The output blob container URI.
-     * 
+     *
      * @return the outputBlobContainerUri value.
      */
     public String outputBlobContainerUri() {
@@ -102,7 +96,7 @@ public final class ImportDevicesRequest {
 
     /**
      * Set the outputBlobContainerUri property: The output blob container URI.
-     * 
+     *
      * @param outputBlobContainerUri the outputBlobContainerUri value to set.
      * @return the ImportDevicesRequest object itself.
      */
@@ -112,9 +106,8 @@ public final class ImportDevicesRequest {
     }
 
     /**
-     * Get the inputBlobName property: The blob name to be used when importing
-     * from the provided input blob container.
-     * 
+     * Get the inputBlobName property: The blob name to be used when importing from the provided input blob container.
+     *
      * @return the inputBlobName value.
      */
     public String inputBlobName() {
@@ -122,9 +115,8 @@ public final class ImportDevicesRequest {
     }
 
     /**
-     * Set the inputBlobName property: The blob name to be used when importing
-     * from the provided input blob container.
-     * 
+     * Set the inputBlobName property: The blob name to be used when importing from the provided input blob container.
+     *
      * @param inputBlobName the inputBlobName value to set.
      * @return the ImportDevicesRequest object itself.
      */
@@ -134,9 +126,8 @@ public final class ImportDevicesRequest {
     }
 
     /**
-     * Get the outputBlobName property: The blob name to use for storing the
-     * status of the import job.
-     * 
+     * Get the outputBlobName property: The blob name to use for storing the status of the import job.
+     *
      * @return the outputBlobName value.
      */
     public String outputBlobName() {
@@ -144,9 +135,8 @@ public final class ImportDevicesRequest {
     }
 
     /**
-     * Set the outputBlobName property: The blob name to use for storing the
-     * status of the import job.
-     * 
+     * Set the outputBlobName property: The blob name to use for storing the status of the import job.
+     *
      * @param outputBlobName the outputBlobName value to set.
      * @return the ImportDevicesRequest object itself.
      */
@@ -156,9 +146,9 @@ public final class ImportDevicesRequest {
     }
 
     /**
-     * Get the authenticationType property: Specifies authentication type being
-     * used for connecting to the storage account.
-     * 
+     * Get the authenticationType property: Specifies authentication type being used for connecting to the storage
+     * account.
+     *
      * @return the authenticationType value.
      */
     public AuthenticationType authenticationType() {
@@ -166,9 +156,9 @@ public final class ImportDevicesRequest {
     }
 
     /**
-     * Set the authenticationType property: Specifies authentication type being
-     * used for connecting to the storage account.
-     * 
+     * Set the authenticationType property: Specifies authentication type being used for connecting to the storage
+     * account.
+     *
      * @param authenticationType the authenticationType value to set.
      * @return the ImportDevicesRequest object itself.
      */
@@ -178,9 +168,8 @@ public final class ImportDevicesRequest {
     }
 
     /**
-     * Get the identity property: Managed identity properties of storage
-     * endpoint for import devices.
-     * 
+     * Get the identity property: Managed identity properties of storage endpoint for import devices.
+     *
      * @return the identity value.
      */
     public ManagedIdentity identity() {
@@ -188,9 +177,8 @@ public final class ImportDevicesRequest {
     }
 
     /**
-     * Set the identity property: Managed identity properties of storage
-     * endpoint for import devices.
-     * 
+     * Set the identity property: Managed identity properties of storage endpoint for import devices.
+     *
      * @param identity the identity value to set.
      * @return the ImportDevicesRequest object itself.
      */
@@ -200,9 +188,8 @@ public final class ImportDevicesRequest {
     }
 
     /**
-     * Get the includeConfigurations property: The value indicating whether
-     * configurations should be imported.
-     * 
+     * Get the includeConfigurations property: The value indicating whether configurations should be imported.
+     *
      * @return the includeConfigurations value.
      */
     public Boolean includeConfigurations() {
@@ -210,9 +197,8 @@ public final class ImportDevicesRequest {
     }
 
     /**
-     * Set the includeConfigurations property: The value indicating whether
-     * configurations should be imported.
-     * 
+     * Set the includeConfigurations property: The value indicating whether configurations should be imported.
+     *
      * @param includeConfigurations the includeConfigurations value to set.
      * @return the ImportDevicesRequest object itself.
      */
@@ -222,9 +208,9 @@ public final class ImportDevicesRequest {
     }
 
     /**
-     * Get the configurationsBlobName property: The blob name to be used when
-     * importing configurations from the provided input blob container.
-     * 
+     * Get the configurationsBlobName property: The blob name to be used when importing configurations from the provided
+     * input blob container.
+     *
      * @return the configurationsBlobName value.
      */
     public String configurationsBlobName() {
@@ -232,9 +218,9 @@ public final class ImportDevicesRequest {
     }
 
     /**
-     * Set the configurationsBlobName property: The blob name to be used when
-     * importing configurations from the provided input blob container.
-     * 
+     * Set the configurationsBlobName property: The blob name to be used when importing configurations from the provided
+     * input blob container.
+     *
      * @param configurationsBlobName the configurationsBlobName value to set.
      * @return the ImportDevicesRequest object itself.
      */
@@ -245,15 +231,21 @@ public final class ImportDevicesRequest {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (inputBlobContainerUri() == null) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("Missing required property inputBlobContainerUri in model ImportDevicesRequest"));
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property inputBlobContainerUri in model ImportDevicesRequest"));
         }
         if (outputBlobContainerUri() == null) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("Missing required property outputBlobContainerUri in model ImportDevicesRequest"));
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property outputBlobContainerUri in model ImportDevicesRequest"));
         }
         if (identity() != null) {
             identity().validate();

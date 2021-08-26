@@ -5,21 +5,16 @@
 package com.azure.resourcemanager.iothub.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.iothub.models.CertificateProperties;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The X509 Certificate.
- */
+/** The X509 Certificate. */
 @Fluent
 public final class CertificateDescriptionInner extends ProxyResource {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(CertificateDescriptionInner.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(CertificateDescriptionInner.class);
 
     /*
      * The description of an X509 CA Certificate.
@@ -35,7 +30,7 @@ public final class CertificateDescriptionInner extends ProxyResource {
 
     /**
      * Get the properties property: The description of an X509 CA Certificate.
-     * 
+     *
      * @return the properties value.
      */
     public CertificateProperties properties() {
@@ -44,7 +39,7 @@ public final class CertificateDescriptionInner extends ProxyResource {
 
     /**
      * Set the properties property: The description of an X509 CA Certificate.
-     * 
+     *
      * @param properties the properties value to set.
      * @return the CertificateDescriptionInner object itself.
      */
@@ -55,7 +50,7 @@ public final class CertificateDescriptionInner extends ProxyResource {
 
     /**
      * Get the etag property: The entity tag.
-     * 
+     *
      * @return the etag value.
      */
     public String etag() {
@@ -64,7 +59,7 @@ public final class CertificateDescriptionInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

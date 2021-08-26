@@ -6,17 +6,17 @@ package com.azure.resourcemanager.iothub;
 
 import com.azure.core.util.Context;
 
-/**
- * Samples for Certificates Delete.
- */
+/** Samples for Certificates Delete. */
 public final class CertificatesDeleteSamples {
     /**
      * Sample code: Certificates_Delete.
-     * 
-     * @param iotHubManager Entry point to IotHubManager.
-     * Use this API to manage the IoT hubs in your Azure subscription.
+     *
+     * @param iotHubManager Entry point to IotHubManager. Use this API to manage the IoT hubs in your Azure
+     *     subscription.
      */
     public static void certificatesDelete(com.azure.resourcemanager.iothub.IotHubManager iotHubManager) {
-        iotHubManager.certificates().deleteWithResponse("myResourceGroup", "myhub", "cert", "AAAAAAAADGk=", Context.NONE);
+        iotHubManager
+            .certificates()
+            .deleteWithResponse("myResourceGroup", "myhub", "cert", "AAAAAAAADGk=", Context.NONE);
     }
 }

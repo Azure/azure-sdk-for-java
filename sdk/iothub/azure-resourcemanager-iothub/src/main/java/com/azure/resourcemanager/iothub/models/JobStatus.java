@@ -7,43 +7,27 @@ package com.azure.resourcemanager.iothub.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/**
- * Defines values for JobStatus.
- */
+/** Defines values for JobStatus. */
 public enum JobStatus {
-    /**
-     * Enum value unknown.
-     */
+    /** Enum value unknown. */
     UNKNOWN("unknown"),
 
-    /**
-     * Enum value enqueued.
-     */
+    /** Enum value enqueued. */
     ENQUEUED("enqueued"),
 
-    /**
-     * Enum value running.
-     */
+    /** Enum value running. */
     RUNNING("running"),
 
-    /**
-     * Enum value completed.
-     */
+    /** Enum value completed. */
     COMPLETED("completed"),
 
-    /**
-     * Enum value failed.
-     */
+    /** Enum value failed. */
     FAILED("failed"),
 
-    /**
-     * Enum value cancelled.
-     */
+    /** Enum value cancelled. */
     CANCELLED("cancelled");
 
-    /**
-     * The actual serialized value for a JobStatus instance.
-     */
+    /** The actual serialized value for a JobStatus instance. */
     private final String value;
 
     JobStatus(String value) {
@@ -52,7 +36,7 @@ public enum JobStatus {
 
     /**
      * Parses a serialized value to a JobStatus instance.
-     * 
+     *
      * @param value the serialized value to parse.
      * @return the parsed JobStatus object, or null if unable to parse.
      */

@@ -5,19 +5,14 @@
 package com.azure.resourcemanager.iothub.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Information about the SKU of the IoT hub.
- */
+/** Information about the SKU of the IoT hub. */
 @Fluent
 public final class IotHubSkuInfo {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(IotHubSkuInfo.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(IotHubSkuInfo.class);
 
     /*
      * The name of the SKU.
@@ -40,7 +35,7 @@ public final class IotHubSkuInfo {
 
     /**
      * Get the name property: The name of the SKU.
-     * 
+     *
      * @return the name value.
      */
     public IotHubSku name() {
@@ -49,7 +44,7 @@ public final class IotHubSkuInfo {
 
     /**
      * Set the name property: The name of the SKU.
-     * 
+     *
      * @param name the name value to set.
      * @return the IotHubSkuInfo object itself.
      */
@@ -60,7 +55,7 @@ public final class IotHubSkuInfo {
 
     /**
      * Get the tier property: The billing tier for the IoT hub.
-     * 
+     *
      * @return the tier value.
      */
     public IotHubSkuTier tier() {
@@ -70,7 +65,7 @@ public final class IotHubSkuInfo {
     /**
      * Get the capacity property: The number of provisioned IoT Hub units. See:
      * https://docs.microsoft.com/azure/azure-subscription-service-limits#iot-hub-limits.
-     * 
+     *
      * @return the capacity value.
      */
     public Long capacity() {
@@ -80,7 +75,7 @@ public final class IotHubSkuInfo {
     /**
      * Set the capacity property: The number of provisioned IoT Hub units. See:
      * https://docs.microsoft.com/azure/azure-subscription-service-limits#iot-hub-limits.
-     * 
+     *
      * @param capacity the capacity value to set.
      * @return the IotHubSkuInfo object itself.
      */
@@ -91,12 +86,14 @@ public final class IotHubSkuInfo {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (name() == null) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("Missing required property name in model IotHubSkuInfo"));
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property name in model IotHubSkuInfo"));
         }
     }
 }

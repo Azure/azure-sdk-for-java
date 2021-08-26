@@ -5,19 +5,14 @@
 package com.azure.resourcemanager.iothub.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Use to provide failover region when requesting manual Failover for a hub.
- */
+/** Use to provide failover region when requesting manual Failover for a hub. */
 @Fluent
 public final class FailoverInput {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(FailoverInput.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(FailoverInput.class);
 
     /*
      * Region the hub will be failed over to
@@ -27,7 +22,7 @@ public final class FailoverInput {
 
     /**
      * Get the failoverRegion property: Region the hub will be failed over to.
-     * 
+     *
      * @return the failoverRegion value.
      */
     public String failoverRegion() {
@@ -36,7 +31,7 @@ public final class FailoverInput {
 
     /**
      * Set the failoverRegion property: Region the hub will be failed over to.
-     * 
+     *
      * @param failoverRegion the failoverRegion value to set.
      * @return the FailoverInput object itself.
      */
@@ -47,12 +42,14 @@ public final class FailoverInput {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (failoverRegion() == null) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("Missing required property failoverRegion in model FailoverInput"));
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property failoverRegion in model FailoverInput"));
         }
     }
 }

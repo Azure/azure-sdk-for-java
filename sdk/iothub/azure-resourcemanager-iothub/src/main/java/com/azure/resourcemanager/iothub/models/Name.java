@@ -5,19 +5,14 @@
 package com.azure.resourcemanager.iothub.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Name of Iot Hub type.
- */
+/** Name of Iot Hub type. */
 @Fluent
 public final class Name {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(Name.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(Name.class);
 
     /*
      * IotHub type
@@ -33,7 +28,7 @@ public final class Name {
 
     /**
      * Get the value property: IotHub type.
-     * 
+     *
      * @return the value value.
      */
     public String value() {
@@ -42,7 +37,7 @@ public final class Name {
 
     /**
      * Set the value property: IotHub type.
-     * 
+     *
      * @param value the value value to set.
      * @return the Name object itself.
      */
@@ -53,7 +48,7 @@ public final class Name {
 
     /**
      * Get the localizedValue property: Localized value of name.
-     * 
+     *
      * @return the localizedValue value.
      */
     public String localizedValue() {
@@ -62,7 +57,7 @@ public final class Name {
 
     /**
      * Set the localizedValue property: Localized value of name.
-     * 
+     *
      * @param localizedValue the localizedValue value to set.
      * @return the Name object itself.
      */
@@ -73,7 +68,7 @@ public final class Name {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

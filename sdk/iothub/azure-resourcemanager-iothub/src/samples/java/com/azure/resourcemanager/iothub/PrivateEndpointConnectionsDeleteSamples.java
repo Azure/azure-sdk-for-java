@@ -6,17 +6,17 @@ package com.azure.resourcemanager.iothub;
 
 import com.azure.core.util.Context;
 
-/**
- * Samples for PrivateEndpointConnections Delete.
- */
+/** Samples for PrivateEndpointConnections Delete. */
 public final class PrivateEndpointConnectionsDeleteSamples {
     /**
      * Sample code: PrivateEndpointConnection_Delete.
-     * 
-     * @param iotHubManager Entry point to IotHubManager.
-     * Use this API to manage the IoT hubs in your Azure subscription.
+     *
+     * @param iotHubManager Entry point to IotHubManager. Use this API to manage the IoT hubs in your Azure
+     *     subscription.
      */
     public static void privateEndpointConnectionDelete(com.azure.resourcemanager.iothub.IotHubManager iotHubManager) {
-        iotHubManager.privateEndpointConnections().delete("myResourceGroup", "testHub", "myPrivateEndpointConnection", Context.NONE);
+        iotHubManager
+            .privateEndpointConnections()
+            .delete("myResourceGroup", "testHub", "myPrivateEndpointConnection", Context.NONE);
     }
 }

@@ -61,235 +61,474 @@ import com.azure.resourcemanager.iothub.models.SharedAccessSignatureAuthorizatio
 import com.azure.resourcemanager.iothub.models.TagsResource;
 import com.azure.resourcemanager.iothub.models.TestAllRoutesInput;
 import com.azure.resourcemanager.iothub.models.TestRouteInput;
-import com.fasterxml.jackson.core.type.TypeReference;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/**
- * An instance of this class provides access to all the operations defined in
- * IotHubResourcesClient.
- */
+/** An instance of this class provides access to all the operations defined in IotHubResourcesClient. */
 public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
     private final ClientLogger logger = new ClientLogger(IotHubResourcesClientImpl.class);
 
-    /**
-     * The proxy service used to perform REST calls.
-     */
+    /** The proxy service used to perform REST calls. */
     private final IotHubResourcesService service;
 
-    /**
-     * The service client containing this operation class.
-     */
+    /** The service client containing this operation class. */
     private final IotHubClientImpl client;
 
     /**
      * Initializes an instance of IotHubResourcesClientImpl.
-     * 
+     *
      * @param client the instance of the service client containing this operation class.
      */
     IotHubResourcesClientImpl(IotHubClientImpl client) {
-        this.service = RestProxy.create(IotHubResourcesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service =
+            RestProxy.create(IotHubResourcesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for IotHubClientIotHubResources
-     * to be used by the proxy service to perform REST calls.
+     * The interface defining all the services for IotHubClientIotHubResources to be used by the proxy service to
+     * perform REST calls.
      */
     @Host("{$host}")
     @ServiceInterface(name = "IotHubClientIotHubRe")
     private interface IotHubResourcesService {
-        @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/IotHubs/{resourceName}")
+        @Headers({"Content-Type: application/json"})
+        @Get(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/IotHubs"
+                + "/{resourceName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorDetailsException.class)
-        Mono<Response<IotHubDescriptionInner>> getByResourceGroup(@HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("resourceName") String resourceName, @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<IotHubDescriptionInner>> getByResourceGroup(
+            @HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("resourceName") String resourceName,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({ "Content-Type: application/json" })
-        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/IotHubs/{resourceName}")
+        @Headers({"Content-Type: application/json"})
+        @Put(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/IotHubs"
+                + "/{resourceName}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ErrorDetailsException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("resourceName") String resourceName, @HeaderParam("If-Match") String ifMatch, @BodyParam("application/json") IotHubDescriptionInner iotHubDescription, @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
+            @HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("resourceName") String resourceName,
+            @HeaderParam("If-Match") String ifMatch,
+            @BodyParam("application/json") IotHubDescriptionInner iotHubDescription,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({ "Content-Type: application/json" })
-        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/IotHubs/{resourceName}")
+        @Headers({"Content-Type: application/json"})
+        @Patch(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/IotHubs"
+                + "/{resourceName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> update(@HostParam("$host") String endpoint, @PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("resourceName") String resourceName, @QueryParam("api-version") String apiVersion, @BodyParam("application/json") TagsResource iotHubTags, @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<Flux<ByteBuffer>>> update(
+            @HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("resourceName") String resourceName,
+            @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") TagsResource iotHubTags,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({ "Content-Type: application/json" })
-        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/IotHubs/{resourceName}")
+        @Headers({"Content-Type: application/json"})
+        @Delete(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/IotHubs"
+                + "/{resourceName}")
         @ExpectedResponses({200, 202, 204, 404})
         @UnexpectedResponseExceptionType(ErrorDetailsException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("resourceName") String resourceName, @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<Flux<ByteBuffer>>> delete(
+            @HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("resourceName") String resourceName,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({"Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Devices/IotHubs")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorDetailsException.class)
-        Mono<Response<IotHubDescriptionListResult>> list(@HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<IotHubDescriptionListResult>> list(
+            @HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({"Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/IotHubs")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorDetailsException.class)
-        Mono<Response<IotHubDescriptionListResult>> listByResourceGroup(@HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroupName") String resourceGroupName, @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<IotHubDescriptionListResult>> listByResourceGroup(
+            @HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/IotHubs/{resourceName}/IotHubStats")
+        @Headers({"Content-Type: application/json"})
+        @Get(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/IotHubs"
+                + "/{resourceName}/IotHubStats")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorDetailsException.class)
-        Mono<Response<RegistryStatisticsInner>> getStats(@HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("resourceName") String resourceName, @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<RegistryStatisticsInner>> getStats(
+            @HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("resourceName") String resourceName,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/IotHubs/{resourceName}/skus")
+        @Headers({"Content-Type: application/json"})
+        @Get(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/IotHubs"
+                + "/{resourceName}/skus")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorDetailsException.class)
-        Mono<Response<IotHubSkuDescriptionListResult>> getValidSkus(@HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("resourceName") String resourceName, @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<IotHubSkuDescriptionListResult>> getValidSkus(
+            @HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("resourceName") String resourceName,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/IotHubs/{resourceName}/eventHubEndpoints/{eventHubEndpointName}/ConsumerGroups")
+        @Headers({"Content-Type: application/json"})
+        @Get(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/IotHubs"
+                + "/{resourceName}/eventHubEndpoints/{eventHubEndpointName}/ConsumerGroups")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorDetailsException.class)
-        Mono<Response<EventHubConsumerGroupsListResult>> listEventHubConsumerGroups(@HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("resourceName") String resourceName, @PathParam("eventHubEndpointName") String eventHubEndpointName, @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<EventHubConsumerGroupsListResult>> listEventHubConsumerGroups(
+            @HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("resourceName") String resourceName,
+            @PathParam("eventHubEndpointName") String eventHubEndpointName,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/IotHubs/{resourceName}/eventHubEndpoints/{eventHubEndpointName}/ConsumerGroups/{name}")
+        @Headers({"Content-Type: application/json"})
+        @Get(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/IotHubs"
+                + "/{resourceName}/eventHubEndpoints/{eventHubEndpointName}/ConsumerGroups/{name}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorDetailsException.class)
-        Mono<Response<EventHubConsumerGroupInfoInner>> getEventHubConsumerGroup(@HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("resourceName") String resourceName, @PathParam("eventHubEndpointName") String eventHubEndpointName, @PathParam("name") String name, @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<EventHubConsumerGroupInfoInner>> getEventHubConsumerGroup(
+            @HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("resourceName") String resourceName,
+            @PathParam("eventHubEndpointName") String eventHubEndpointName,
+            @PathParam("name") String name,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({ "Content-Type: application/json" })
-        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/IotHubs/{resourceName}/eventHubEndpoints/{eventHubEndpointName}/ConsumerGroups/{name}")
+        @Headers({"Content-Type: application/json"})
+        @Put(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/IotHubs"
+                + "/{resourceName}/eventHubEndpoints/{eventHubEndpointName}/ConsumerGroups/{name}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorDetailsException.class)
-        Mono<Response<EventHubConsumerGroupInfoInner>> createEventHubConsumerGroup(@HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("resourceName") String resourceName, @PathParam("eventHubEndpointName") String eventHubEndpointName, @PathParam("name") String name, @BodyParam("application/json") EventHubConsumerGroupBodyDescription consumerGroupBody, @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<EventHubConsumerGroupInfoInner>> createEventHubConsumerGroup(
+            @HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("resourceName") String resourceName,
+            @PathParam("eventHubEndpointName") String eventHubEndpointName,
+            @PathParam("name") String name,
+            @BodyParam("application/json") EventHubConsumerGroupBodyDescription consumerGroupBody,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({ "Content-Type: application/json" })
-        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/IotHubs/{resourceName}/eventHubEndpoints/{eventHubEndpointName}/ConsumerGroups/{name}")
+        @Headers({"Content-Type: application/json"})
+        @Delete(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/IotHubs"
+                + "/{resourceName}/eventHubEndpoints/{eventHubEndpointName}/ConsumerGroups/{name}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorDetailsException.class)
-        Mono<Response<Void>> deleteEventHubConsumerGroup(@HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("resourceName") String resourceName, @PathParam("eventHubEndpointName") String eventHubEndpointName, @PathParam("name") String name, @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<Void>> deleteEventHubConsumerGroup(
+            @HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("resourceName") String resourceName,
+            @PathParam("eventHubEndpointName") String eventHubEndpointName,
+            @PathParam("name") String name,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/IotHubs/{resourceName}/jobs")
+        @Headers({"Content-Type: application/json"})
+        @Get(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/IotHubs"
+                + "/{resourceName}/jobs")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorDetailsException.class)
-        Mono<Response<JobResponseListResult>> listJobs(@HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("resourceName") String resourceName, @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<JobResponseListResult>> listJobs(
+            @HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("resourceName") String resourceName,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/IotHubs/{resourceName}/jobs/{jobId}")
+        @Headers({"Content-Type: application/json"})
+        @Get(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/IotHubs"
+                + "/{resourceName}/jobs/{jobId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorDetailsException.class)
-        Mono<Response<JobResponseInner>> getJob(@HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("resourceName") String resourceName, @PathParam("jobId") String jobId, @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<JobResponseInner>> getJob(
+            @HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("resourceName") String resourceName,
+            @PathParam("jobId") String jobId,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/IotHubs/{resourceName}/quotaMetrics")
+        @Headers({"Content-Type: application/json"})
+        @Get(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/IotHubs"
+                + "/{resourceName}/quotaMetrics")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorDetailsException.class)
-        Mono<Response<IotHubQuotaMetricInfoListResult>> getQuotaMetrics(@HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("resourceName") String resourceName, @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<IotHubQuotaMetricInfoListResult>> getQuotaMetrics(
+            @HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("resourceName") String resourceName,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/IotHubs/{iotHubName}/routingEndpointsHealth")
+        @Headers({"Content-Type: application/json"})
+        @Get(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/IotHubs"
+                + "/{iotHubName}/routingEndpointsHealth")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorDetailsException.class)
-        Mono<Response<EndpointHealthDataListResult>> getEndpointHealth(@HostParam("$host") String endpoint, @PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("iotHubName") String iotHubName, @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<EndpointHealthDataListResult>> getEndpointHealth(
+            @HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("iotHubName") String iotHubName,
+            @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({"Content-Type: application/json"})
         @Post("/subscriptions/{subscriptionId}/providers/Microsoft.Devices/checkNameAvailability")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorDetailsException.class)
-        Mono<Response<IotHubNameAvailabilityInfoInner>> checkNameAvailability(@HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @BodyParam("application/json") OperationInputs operationInputs, @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<IotHubNameAvailabilityInfoInner>> checkNameAvailability(
+            @HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @BodyParam("application/json") OperationInputs operationInputs,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({ "Content-Type: application/json" })
-        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/IotHubs/{iotHubName}/routing/routes/$testall")
+        @Headers({"Content-Type: application/json"})
+        @Post(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/IotHubs"
+                + "/{iotHubName}/routing/routes/$testall")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorDetailsException.class)
-        Mono<Response<TestAllRoutesResultInner>> testAllRoutes(@HostParam("$host") String endpoint, @PathParam("iotHubName") String iotHubName, @PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion, @BodyParam("application/json") TestAllRoutesInput input, @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<TestAllRoutesResultInner>> testAllRoutes(
+            @HostParam("$host") String endpoint,
+            @PathParam("iotHubName") String iotHubName,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") TestAllRoutesInput input,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({ "Content-Type: application/json" })
-        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/IotHubs/{iotHubName}/routing/routes/$testnew")
+        @Headers({"Content-Type: application/json"})
+        @Post(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/IotHubs"
+                + "/{iotHubName}/routing/routes/$testnew")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorDetailsException.class)
-        Mono<Response<TestRouteResultInner>> testRoute(@HostParam("$host") String endpoint, @PathParam("iotHubName") String iotHubName, @PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion, @BodyParam("application/json") TestRouteInput input, @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<TestRouteResultInner>> testRoute(
+            @HostParam("$host") String endpoint,
+            @PathParam("iotHubName") String iotHubName,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") TestRouteInput input,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({ "Content-Type: application/json" })
-        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/IotHubs/{resourceName}/listkeys")
+        @Headers({"Content-Type: application/json"})
+        @Post(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/IotHubs"
+                + "/{resourceName}/listkeys")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorDetailsException.class)
-        Mono<Response<SharedAccessSignatureAuthorizationRuleListResult>> listKeys(@HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("resourceName") String resourceName, @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<SharedAccessSignatureAuthorizationRuleListResult>> listKeys(
+            @HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("resourceName") String resourceName,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({ "Content-Type: application/json" })
-        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/IotHubs/{resourceName}/IotHubKeys/{keyName}/listkeys")
+        @Headers({"Content-Type: application/json"})
+        @Post(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/IotHubs"
+                + "/{resourceName}/IotHubKeys/{keyName}/listkeys")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorDetailsException.class)
-        Mono<Response<SharedAccessSignatureAuthorizationRuleInner>> getKeysForKeyName(@HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("resourceName") String resourceName, @PathParam("keyName") String keyName, @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<SharedAccessSignatureAuthorizationRuleInner>> getKeysForKeyName(
+            @HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("resourceName") String resourceName,
+            @PathParam("keyName") String keyName,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({ "Content-Type: application/json" })
-        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/IotHubs/{resourceName}/exportDevices")
+        @Headers({"Content-Type: application/json"})
+        @Post(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/IotHubs"
+                + "/{resourceName}/exportDevices")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorDetailsException.class)
-        Mono<Response<JobResponseInner>> exportDevices(@HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("resourceName") String resourceName, @BodyParam("application/json") ExportDevicesRequest exportDevicesParameters, @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<JobResponseInner>> exportDevices(
+            @HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("resourceName") String resourceName,
+            @BodyParam("application/json") ExportDevicesRequest exportDevicesParameters,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({ "Content-Type: application/json" })
-        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/IotHubs/{resourceName}/importDevices")
+        @Headers({"Content-Type: application/json"})
+        @Post(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/IotHubs"
+                + "/{resourceName}/importDevices")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorDetailsException.class)
-        Mono<Response<JobResponseInner>> importDevices(@HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("resourceName") String resourceName, @BodyParam("application/json") ImportDevicesRequest importDevicesParameters, @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<JobResponseInner>> importDevices(
+            @HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("resourceName") String resourceName,
+            @BodyParam("application/json") ImportDevicesRequest importDevicesParameters,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({"Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorDetailsException.class)
-        Mono<Response<IotHubDescriptionListResult>> listBySubscriptionNext(@PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint, @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<IotHubDescriptionListResult>> listBySubscriptionNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({"Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorDetailsException.class)
-        Mono<Response<IotHubDescriptionListResult>> listByResourceGroupNext(@PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint, @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<IotHubDescriptionListResult>> listByResourceGroupNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({"Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorDetailsException.class)
-        Mono<Response<IotHubSkuDescriptionListResult>> getValidSkusNext(@PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint, @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<IotHubSkuDescriptionListResult>> getValidSkusNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({"Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorDetailsException.class)
-        Mono<Response<EventHubConsumerGroupsListResult>> listEventHubConsumerGroupsNext(@PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint, @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<EventHubConsumerGroupsListResult>> listEventHubConsumerGroupsNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({"Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorDetailsException.class)
-        Mono<Response<JobResponseListResult>> listJobsNext(@PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint, @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<JobResponseListResult>> listJobsNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({"Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorDetailsException.class)
-        Mono<Response<IotHubQuotaMetricInfoListResult>> getQuotaMetricsNext(@PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint, @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<IotHubQuotaMetricInfoListResult>> getQuotaMetricsNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({"Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorDetailsException.class)
-        Mono<Response<EndpointHealthDataListResult>> getEndpointHealthNext(@PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint, @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<EndpointHealthDataListResult>> getEndpointHealthNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({"Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorDetailsException.class)
-        Mono<Response<SharedAccessSignatureAuthorizationRuleListResult>> listKeysNext(@PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint, @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<SharedAccessSignatureAuthorizationRuleListResult>> listKeysNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept,
+            Context context);
     }
 
     /**
      * Get the non-security related metadata of an IoT hub.
-     * 
+     *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -298,27 +537,46 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @return the non-security related metadata of an IoT hub.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<IotHubDescriptionInner>> getByResourceGroupWithResponseAsync(String resourceGroupName, String resourceName) {
+    private Mono<Response<IotHubDescriptionInner>> getByResourceGroupWithResponseAsync(
+        String resourceGroupName, String resourceName) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getByResourceGroup(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, resourceName, accept, context))
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .getByResourceGroup(
+                            this.client.getEndpoint(),
+                            this.client.getApiVersion(),
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            resourceName,
+                            accept,
+                            context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the non-security related metadata of an IoT hub.
-     * 
+     *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
      * @param context The context to associate with this operation.
@@ -328,27 +586,43 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @return the non-security related metadata of an IoT hub.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<IotHubDescriptionInner>> getByResourceGroupWithResponseAsync(String resourceGroupName, String resourceName, Context context) {
+    private Mono<Response<IotHubDescriptionInner>> getByResourceGroupWithResponseAsync(
+        String resourceGroupName, String resourceName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.getByResourceGroup(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, resourceName, accept, context);
+        return service
+            .getByResourceGroup(
+                this.client.getEndpoint(),
+                this.client.getApiVersion(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                resourceName,
+                accept,
+                context);
     }
 
     /**
      * Get the non-security related metadata of an IoT hub.
-     * 
+     *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -359,18 +633,19 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<IotHubDescriptionInner> getByResourceGroupAsync(String resourceGroupName, String resourceName) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, resourceName)
-            .flatMap((Response<IotHubDescriptionInner> res) -> {
-                if (res.getValue() != null) {
-                    return Mono.just(res.getValue());
-                } else {
-                    return Mono.empty();
-                }
-            });
+            .flatMap(
+                (Response<IotHubDescriptionInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
      * Get the non-security related metadata of an IoT hub.
-     * 
+     *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -385,7 +660,7 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
 
     /**
      * Get the non-security related metadata of an IoT hub.
-     * 
+     *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
      * @param context The context to associate with this operation.
@@ -395,53 +670,84 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @return the non-security related metadata of an IoT hub.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<IotHubDescriptionInner> getByResourceGroupWithResponse(String resourceGroupName, String resourceName, Context context) {
+    public Response<IotHubDescriptionInner> getByResourceGroupWithResponse(
+        String resourceGroupName, String resourceName, Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, resourceName, context).block();
     }
 
     /**
-     * Create or update the metadata of an Iot hub. The usual pattern to modify a property is to retrieve the IoT hub metadata and security metadata, and then combine them with the modified values in a new body to update the IoT hub. If certain properties are missing in the JSON, updating IoT Hub may cause these values to fallback to default, which may lead to unexpected behavior.
-     * 
+     * Create or update the metadata of an Iot hub. The usual pattern to modify a property is to retrieve the IoT hub
+     * metadata and security metadata, and then combine them with the modified values in a new body to update the IoT
+     * hub. If certain properties are missing in the JSON, updating IoT Hub may cause these values to fallback to
+     * default, which may lead to unexpected behavior.
+     *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
      * @param iotHubDescription The IoT hub metadata and security metadata.
-     * @param ifMatch ETag of the IoT Hub. Do not specify for creating a brand new IoT Hub. Required to update an existing IoT Hub.
+     * @param ifMatch ETag of the IoT Hub. Do not specify for creating a brand new IoT Hub. Required to update an
+     *     existing IoT Hub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the description of the IoT hub.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String resourceName, IotHubDescriptionInner iotHubDescription, String ifMatch) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
+        String resourceGroupName, String resourceName, IotHubDescriptionInner iotHubDescription, String ifMatch) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (iotHubDescription == null) {
-            return Mono.error(new IllegalArgumentException("Parameter iotHubDescription is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter iotHubDescription is required and cannot be null."));
         } else {
             iotHubDescription.validate();
         }
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, resourceName, ifMatch, iotHubDescription, accept, context))
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .createOrUpdate(
+                            this.client.getEndpoint(),
+                            this.client.getApiVersion(),
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            resourceName,
+                            ifMatch,
+                            iotHubDescription,
+                            accept,
+                            context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * Create or update the metadata of an Iot hub. The usual pattern to modify a property is to retrieve the IoT hub metadata and security metadata, and then combine them with the modified values in a new body to update the IoT hub. If certain properties are missing in the JSON, updating IoT Hub may cause these values to fallback to default, which may lead to unexpected behavior.
-     * 
+     * Create or update the metadata of an Iot hub. The usual pattern to modify a property is to retrieve the IoT hub
+     * metadata and security metadata, and then combine them with the modified values in a new body to update the IoT
+     * hub. If certain properties are missing in the JSON, updating IoT Hub may cause these values to fallback to
+     * default, which may lead to unexpected behavior.
+     *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
      * @param iotHubDescription The IoT hub metadata and security metadata.
-     * @param ifMatch ETag of the IoT Hub. Do not specify for creating a brand new IoT Hub. Required to update an existing IoT Hub.
+     * @param ifMatch ETag of the IoT Hub. Do not specify for creating a brand new IoT Hub. Required to update an
+     *     existing IoT Hub.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
@@ -449,54 +755,94 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @return the description of the IoT hub.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String resourceName, IotHubDescriptionInner iotHubDescription, String ifMatch, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
+        String resourceGroupName,
+        String resourceName,
+        IotHubDescriptionInner iotHubDescription,
+        String ifMatch,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (iotHubDescription == null) {
-            return Mono.error(new IllegalArgumentException("Parameter iotHubDescription is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter iotHubDescription is required and cannot be null."));
         } else {
             iotHubDescription.validate();
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.createOrUpdate(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, resourceName, ifMatch, iotHubDescription, accept, context);
+        return service
+            .createOrUpdate(
+                this.client.getEndpoint(),
+                this.client.getApiVersion(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                resourceName,
+                ifMatch,
+                iotHubDescription,
+                accept,
+                context);
     }
 
     /**
-     * Create or update the metadata of an Iot hub. The usual pattern to modify a property is to retrieve the IoT hub metadata and security metadata, and then combine them with the modified values in a new body to update the IoT hub. If certain properties are missing in the JSON, updating IoT Hub may cause these values to fallback to default, which may lead to unexpected behavior.
-     * 
+     * Create or update the metadata of an Iot hub. The usual pattern to modify a property is to retrieve the IoT hub
+     * metadata and security metadata, and then combine them with the modified values in a new body to update the IoT
+     * hub. If certain properties are missing in the JSON, updating IoT Hub may cause these values to fallback to
+     * default, which may lead to unexpected behavior.
+     *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
      * @param iotHubDescription The IoT hub metadata and security metadata.
-     * @param ifMatch ETag of the IoT Hub. Do not specify for creating a brand new IoT Hub. Required to update an existing IoT Hub.
+     * @param ifMatch ETag of the IoT Hub. Do not specify for creating a brand new IoT Hub. Required to update an
+     *     existing IoT Hub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the description of the IoT hub.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PollerFlux<PollResult<IotHubDescriptionInner>, IotHubDescriptionInner> beginCreateOrUpdateAsync(String resourceGroupName, String resourceName, IotHubDescriptionInner iotHubDescription, String ifMatch) {
-        Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, resourceName, iotHubDescription, ifMatch);
-        return this.client.<IotHubDescriptionInner, IotHubDescriptionInner>getLroResult(mono, this.client.getHttpPipeline(), IotHubDescriptionInner.class, IotHubDescriptionInner.class, Context.NONE);
+    private PollerFlux<PollResult<IotHubDescriptionInner>, IotHubDescriptionInner> beginCreateOrUpdateAsync(
+        String resourceGroupName, String resourceName, IotHubDescriptionInner iotHubDescription, String ifMatch) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            createOrUpdateWithResponseAsync(resourceGroupName, resourceName, iotHubDescription, ifMatch);
+        return this
+            .client
+            .<IotHubDescriptionInner, IotHubDescriptionInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                IotHubDescriptionInner.class,
+                IotHubDescriptionInner.class,
+                Context.NONE);
     }
 
     /**
-     * Create or update the metadata of an Iot hub. The usual pattern to modify a property is to retrieve the IoT hub metadata and security metadata, and then combine them with the modified values in a new body to update the IoT hub. If certain properties are missing in the JSON, updating IoT Hub may cause these values to fallback to default, which may lead to unexpected behavior.
-     * 
+     * Create or update the metadata of an Iot hub. The usual pattern to modify a property is to retrieve the IoT hub
+     * metadata and security metadata, and then combine them with the modified values in a new body to update the IoT
+     * hub. If certain properties are missing in the JSON, updating IoT Hub may cause these values to fallback to
+     * default, which may lead to unexpected behavior.
+     *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
      * @param iotHubDescription The IoT hub metadata and security metadata.
-     * @param ifMatch ETag of the IoT Hub. Do not specify for creating a brand new IoT Hub. Required to update an existing IoT Hub.
+     * @param ifMatch ETag of the IoT Hub. Do not specify for creating a brand new IoT Hub. Required to update an
+     *     existing IoT Hub.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
@@ -504,36 +850,58 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @return the description of the IoT hub.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PollerFlux<PollResult<IotHubDescriptionInner>, IotHubDescriptionInner> beginCreateOrUpdateAsync(String resourceGroupName, String resourceName, IotHubDescriptionInner iotHubDescription, String ifMatch, Context context) {
+    private PollerFlux<PollResult<IotHubDescriptionInner>, IotHubDescriptionInner> beginCreateOrUpdateAsync(
+        String resourceGroupName,
+        String resourceName,
+        IotHubDescriptionInner iotHubDescription,
+        String ifMatch,
+        Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, resourceName, iotHubDescription, ifMatch, context);
-        return this.client.<IotHubDescriptionInner, IotHubDescriptionInner>getLroResult(mono, this.client.getHttpPipeline(), IotHubDescriptionInner.class, IotHubDescriptionInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            createOrUpdateWithResponseAsync(resourceGroupName, resourceName, iotHubDescription, ifMatch, context);
+        return this
+            .client
+            .<IotHubDescriptionInner, IotHubDescriptionInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                IotHubDescriptionInner.class,
+                IotHubDescriptionInner.class,
+                context);
     }
 
     /**
-     * Create or update the metadata of an Iot hub. The usual pattern to modify a property is to retrieve the IoT hub metadata and security metadata, and then combine them with the modified values in a new body to update the IoT hub. If certain properties are missing in the JSON, updating IoT Hub may cause these values to fallback to default, which may lead to unexpected behavior.
-     * 
+     * Create or update the metadata of an Iot hub. The usual pattern to modify a property is to retrieve the IoT hub
+     * metadata and security metadata, and then combine them with the modified values in a new body to update the IoT
+     * hub. If certain properties are missing in the JSON, updating IoT Hub may cause these values to fallback to
+     * default, which may lead to unexpected behavior.
+     *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
      * @param iotHubDescription The IoT hub metadata and security metadata.
-     * @param ifMatch ETag of the IoT Hub. Do not specify for creating a brand new IoT Hub. Required to update an existing IoT Hub.
+     * @param ifMatch ETag of the IoT Hub. Do not specify for creating a brand new IoT Hub. Required to update an
+     *     existing IoT Hub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the description of the IoT hub.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<IotHubDescriptionInner>, IotHubDescriptionInner> beginCreateOrUpdate(String resourceGroupName, String resourceName, IotHubDescriptionInner iotHubDescription, String ifMatch) {
-        return beginCreateOrUpdateAsync(resourceGroupName, resourceName, iotHubDescription, ifMatch)
-            .getSyncPoller();}
+    public SyncPoller<PollResult<IotHubDescriptionInner>, IotHubDescriptionInner> beginCreateOrUpdate(
+        String resourceGroupName, String resourceName, IotHubDescriptionInner iotHubDescription, String ifMatch) {
+        return beginCreateOrUpdateAsync(resourceGroupName, resourceName, iotHubDescription, ifMatch).getSyncPoller();
+    }
 
     /**
-     * Create or update the metadata of an Iot hub. The usual pattern to modify a property is to retrieve the IoT hub metadata and security metadata, and then combine them with the modified values in a new body to update the IoT hub. If certain properties are missing in the JSON, updating IoT Hub may cause these values to fallback to default, which may lead to unexpected behavior.
-     * 
+     * Create or update the metadata of an Iot hub. The usual pattern to modify a property is to retrieve the IoT hub
+     * metadata and security metadata, and then combine them with the modified values in a new body to update the IoT
+     * hub. If certain properties are missing in the JSON, updating IoT Hub may cause these values to fallback to
+     * default, which may lead to unexpected behavior.
+     *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
      * @param iotHubDescription The IoT hub metadata and security metadata.
-     * @param ifMatch ETag of the IoT Hub. Do not specify for creating a brand new IoT Hub. Required to update an existing IoT Hub.
+     * @param ifMatch ETag of the IoT Hub. Do not specify for creating a brand new IoT Hub. Required to update an
+     *     existing IoT Hub.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
@@ -541,32 +909,46 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @return the description of the IoT hub.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<IotHubDescriptionInner>, IotHubDescriptionInner> beginCreateOrUpdate(String resourceGroupName, String resourceName, IotHubDescriptionInner iotHubDescription, String ifMatch, Context context) {
+    public SyncPoller<PollResult<IotHubDescriptionInner>, IotHubDescriptionInner> beginCreateOrUpdate(
+        String resourceGroupName,
+        String resourceName,
+        IotHubDescriptionInner iotHubDescription,
+        String ifMatch,
+        Context context) {
         return beginCreateOrUpdateAsync(resourceGroupName, resourceName, iotHubDescription, ifMatch, context)
-            .getSyncPoller();}
+            .getSyncPoller();
+    }
 
     /**
-     * Create or update the metadata of an Iot hub. The usual pattern to modify a property is to retrieve the IoT hub metadata and security metadata, and then combine them with the modified values in a new body to update the IoT hub. If certain properties are missing in the JSON, updating IoT Hub may cause these values to fallback to default, which may lead to unexpected behavior.
-     * 
+     * Create or update the metadata of an Iot hub. The usual pattern to modify a property is to retrieve the IoT hub
+     * metadata and security metadata, and then combine them with the modified values in a new body to update the IoT
+     * hub. If certain properties are missing in the JSON, updating IoT Hub may cause these values to fallback to
+     * default, which may lead to unexpected behavior.
+     *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
      * @param iotHubDescription The IoT hub metadata and security metadata.
-     * @param ifMatch ETag of the IoT Hub. Do not specify for creating a brand new IoT Hub. Required to update an existing IoT Hub.
+     * @param ifMatch ETag of the IoT Hub. Do not specify for creating a brand new IoT Hub. Required to update an
+     *     existing IoT Hub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the description of the IoT hub.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<IotHubDescriptionInner> createOrUpdateAsync(String resourceGroupName, String resourceName, IotHubDescriptionInner iotHubDescription, String ifMatch) {
+    private Mono<IotHubDescriptionInner> createOrUpdateAsync(
+        String resourceGroupName, String resourceName, IotHubDescriptionInner iotHubDescription, String ifMatch) {
         return beginCreateOrUpdateAsync(resourceGroupName, resourceName, iotHubDescription, ifMatch)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
-     * Create or update the metadata of an Iot hub. The usual pattern to modify a property is to retrieve the IoT hub metadata and security metadata, and then combine them with the modified values in a new body to update the IoT hub. If certain properties are missing in the JSON, updating IoT Hub may cause these values to fallback to default, which may lead to unexpected behavior.
-     * 
+     * Create or update the metadata of an Iot hub. The usual pattern to modify a property is to retrieve the IoT hub
+     * metadata and security metadata, and then combine them with the modified values in a new body to update the IoT
+     * hub. If certain properties are missing in the JSON, updating IoT Hub may cause these values to fallback to
+     * default, which may lead to unexpected behavior.
+     *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
      * @param iotHubDescription The IoT hub metadata and security metadata.
@@ -576,7 +958,8 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @return the description of the IoT hub.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<IotHubDescriptionInner> createOrUpdateAsync(String resourceGroupName, String resourceName, IotHubDescriptionInner iotHubDescription) {
+    private Mono<IotHubDescriptionInner> createOrUpdateAsync(
+        String resourceGroupName, String resourceName, IotHubDescriptionInner iotHubDescription) {
         final String ifMatch = null;
         return beginCreateOrUpdateAsync(resourceGroupName, resourceName, iotHubDescription, ifMatch)
             .last()
@@ -584,12 +967,16 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
     }
 
     /**
-     * Create or update the metadata of an Iot hub. The usual pattern to modify a property is to retrieve the IoT hub metadata and security metadata, and then combine them with the modified values in a new body to update the IoT hub. If certain properties are missing in the JSON, updating IoT Hub may cause these values to fallback to default, which may lead to unexpected behavior.
-     * 
+     * Create or update the metadata of an Iot hub. The usual pattern to modify a property is to retrieve the IoT hub
+     * metadata and security metadata, and then combine them with the modified values in a new body to update the IoT
+     * hub. If certain properties are missing in the JSON, updating IoT Hub may cause these values to fallback to
+     * default, which may lead to unexpected behavior.
+     *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
      * @param iotHubDescription The IoT hub metadata and security metadata.
-     * @param ifMatch ETag of the IoT Hub. Do not specify for creating a brand new IoT Hub. Required to update an existing IoT Hub.
+     * @param ifMatch ETag of the IoT Hub. Do not specify for creating a brand new IoT Hub. Required to update an
+     *     existing IoT Hub.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
@@ -597,32 +984,45 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @return the description of the IoT hub.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<IotHubDescriptionInner> createOrUpdateAsync(String resourceGroupName, String resourceName, IotHubDescriptionInner iotHubDescription, String ifMatch, Context context) {
+    private Mono<IotHubDescriptionInner> createOrUpdateAsync(
+        String resourceGroupName,
+        String resourceName,
+        IotHubDescriptionInner iotHubDescription,
+        String ifMatch,
+        Context context) {
         return beginCreateOrUpdateAsync(resourceGroupName, resourceName, iotHubDescription, ifMatch, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
-     * Create or update the metadata of an Iot hub. The usual pattern to modify a property is to retrieve the IoT hub metadata and security metadata, and then combine them with the modified values in a new body to update the IoT hub. If certain properties are missing in the JSON, updating IoT Hub may cause these values to fallback to default, which may lead to unexpected behavior.
-     * 
+     * Create or update the metadata of an Iot hub. The usual pattern to modify a property is to retrieve the IoT hub
+     * metadata and security metadata, and then combine them with the modified values in a new body to update the IoT
+     * hub. If certain properties are missing in the JSON, updating IoT Hub may cause these values to fallback to
+     * default, which may lead to unexpected behavior.
+     *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
      * @param iotHubDescription The IoT hub metadata and security metadata.
-     * @param ifMatch ETag of the IoT Hub. Do not specify for creating a brand new IoT Hub. Required to update an existing IoT Hub.
+     * @param ifMatch ETag of the IoT Hub. Do not specify for creating a brand new IoT Hub. Required to update an
+     *     existing IoT Hub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the description of the IoT hub.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public IotHubDescriptionInner createOrUpdate(String resourceGroupName, String resourceName, IotHubDescriptionInner iotHubDescription, String ifMatch) {
+    public IotHubDescriptionInner createOrUpdate(
+        String resourceGroupName, String resourceName, IotHubDescriptionInner iotHubDescription, String ifMatch) {
         return createOrUpdateAsync(resourceGroupName, resourceName, iotHubDescription, ifMatch).block();
     }
 
     /**
-     * Create or update the metadata of an Iot hub. The usual pattern to modify a property is to retrieve the IoT hub metadata and security metadata, and then combine them with the modified values in a new body to update the IoT hub. If certain properties are missing in the JSON, updating IoT Hub may cause these values to fallback to default, which may lead to unexpected behavior.
-     * 
+     * Create or update the metadata of an Iot hub. The usual pattern to modify a property is to retrieve the IoT hub
+     * metadata and security metadata, and then combine them with the modified values in a new body to update the IoT
+     * hub. If certain properties are missing in the JSON, updating IoT Hub may cause these values to fallback to
+     * default, which may lead to unexpected behavior.
+     *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
      * @param iotHubDescription The IoT hub metadata and security metadata.
@@ -632,18 +1032,23 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @return the description of the IoT hub.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public IotHubDescriptionInner createOrUpdate(String resourceGroupName, String resourceName, IotHubDescriptionInner iotHubDescription) {
+    public IotHubDescriptionInner createOrUpdate(
+        String resourceGroupName, String resourceName, IotHubDescriptionInner iotHubDescription) {
         final String ifMatch = null;
         return createOrUpdateAsync(resourceGroupName, resourceName, iotHubDescription, ifMatch).block();
     }
 
     /**
-     * Create or update the metadata of an Iot hub. The usual pattern to modify a property is to retrieve the IoT hub metadata and security metadata, and then combine them with the modified values in a new body to update the IoT hub. If certain properties are missing in the JSON, updating IoT Hub may cause these values to fallback to default, which may lead to unexpected behavior.
-     * 
+     * Create or update the metadata of an Iot hub. The usual pattern to modify a property is to retrieve the IoT hub
+     * metadata and security metadata, and then combine them with the modified values in a new body to update the IoT
+     * hub. If certain properties are missing in the JSON, updating IoT Hub may cause these values to fallback to
+     * default, which may lead to unexpected behavior.
+     *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
      * @param iotHubDescription The IoT hub metadata and security metadata.
-     * @param ifMatch ETag of the IoT Hub. Do not specify for creating a brand new IoT Hub. Required to update an existing IoT Hub.
+     * @param ifMatch ETag of the IoT Hub. Do not specify for creating a brand new IoT Hub. Required to update an
+     *     existing IoT Hub.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
@@ -651,13 +1056,18 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @return the description of the IoT hub.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public IotHubDescriptionInner createOrUpdate(String resourceGroupName, String resourceName, IotHubDescriptionInner iotHubDescription, String ifMatch, Context context) {
+    public IotHubDescriptionInner createOrUpdate(
+        String resourceGroupName,
+        String resourceName,
+        IotHubDescriptionInner iotHubDescription,
+        String ifMatch,
+        Context context) {
         return createOrUpdateAsync(resourceGroupName, resourceName, iotHubDescription, ifMatch, context).block();
     }
 
     /**
      * Update an existing IoT Hub tags. to update other fields use the CreateOrUpdate method.
-     * 
+     *
      * @param resourceGroupName Resource group identifier.
      * @param resourceName Name of iot hub to update.
      * @param iotHubTags Updated tag information to set into the iot hub instance.
@@ -667,15 +1077,23 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @return the description of the IoT hub.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String resourceName, TagsResource iotHubTags) {
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
+        String resourceGroupName, String resourceName, TagsResource iotHubTags) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
@@ -686,13 +1104,25 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
             iotHubTags.validate();
         }
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.update(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, resourceName, this.client.getApiVersion(), iotHubTags, accept, context))
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .update(
+                            this.client.getEndpoint(),
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            resourceName,
+                            this.client.getApiVersion(),
+                            iotHubTags,
+                            accept,
+                            context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Update an existing IoT Hub tags. to update other fields use the CreateOrUpdate method.
-     * 
+     *
      * @param resourceGroupName Resource group identifier.
      * @param resourceName Name of iot hub to update.
      * @param iotHubTags Updated tag information to set into the iot hub instance.
@@ -703,15 +1133,23 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @return the description of the IoT hub.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String resourceName, TagsResource iotHubTags, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
+        String resourceGroupName, String resourceName, TagsResource iotHubTags, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
@@ -723,12 +1161,21 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.update(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, resourceName, this.client.getApiVersion(), iotHubTags, accept, context);
+        return service
+            .update(
+                this.client.getEndpoint(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                resourceName,
+                this.client.getApiVersion(),
+                iotHubTags,
+                accept,
+                context);
     }
 
     /**
      * Update an existing IoT Hub tags. to update other fields use the CreateOrUpdate method.
-     * 
+     *
      * @param resourceGroupName Resource group identifier.
      * @param resourceName Name of iot hub to update.
      * @param iotHubTags Updated tag information to set into the iot hub instance.
@@ -738,14 +1185,22 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @return the description of the IoT hub.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PollerFlux<PollResult<IotHubDescriptionInner>, IotHubDescriptionInner> beginUpdateAsync(String resourceGroupName, String resourceName, TagsResource iotHubTags) {
+    private PollerFlux<PollResult<IotHubDescriptionInner>, IotHubDescriptionInner> beginUpdateAsync(
+        String resourceGroupName, String resourceName, TagsResource iotHubTags) {
         Mono<Response<Flux<ByteBuffer>>> mono = updateWithResponseAsync(resourceGroupName, resourceName, iotHubTags);
-        return this.client.<IotHubDescriptionInner, IotHubDescriptionInner>getLroResult(mono, this.client.getHttpPipeline(), IotHubDescriptionInner.class, IotHubDescriptionInner.class, Context.NONE);
+        return this
+            .client
+            .<IotHubDescriptionInner, IotHubDescriptionInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                IotHubDescriptionInner.class,
+                IotHubDescriptionInner.class,
+                Context.NONE);
     }
 
     /**
      * Update an existing IoT Hub tags. to update other fields use the CreateOrUpdate method.
-     * 
+     *
      * @param resourceGroupName Resource group identifier.
      * @param resourceName Name of iot hub to update.
      * @param iotHubTags Updated tag information to set into the iot hub instance.
@@ -756,15 +1211,24 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @return the description of the IoT hub.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PollerFlux<PollResult<IotHubDescriptionInner>, IotHubDescriptionInner> beginUpdateAsync(String resourceGroupName, String resourceName, TagsResource iotHubTags, Context context) {
+    private PollerFlux<PollResult<IotHubDescriptionInner>, IotHubDescriptionInner> beginUpdateAsync(
+        String resourceGroupName, String resourceName, TagsResource iotHubTags, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono = updateWithResponseAsync(resourceGroupName, resourceName, iotHubTags, context);
-        return this.client.<IotHubDescriptionInner, IotHubDescriptionInner>getLroResult(mono, this.client.getHttpPipeline(), IotHubDescriptionInner.class, IotHubDescriptionInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            updateWithResponseAsync(resourceGroupName, resourceName, iotHubTags, context);
+        return this
+            .client
+            .<IotHubDescriptionInner, IotHubDescriptionInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                IotHubDescriptionInner.class,
+                IotHubDescriptionInner.class,
+                context);
     }
 
     /**
      * Update an existing IoT Hub tags. to update other fields use the CreateOrUpdate method.
-     * 
+     *
      * @param resourceGroupName Resource group identifier.
      * @param resourceName Name of iot hub to update.
      * @param iotHubTags Updated tag information to set into the iot hub instance.
@@ -774,13 +1238,14 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @return the description of the IoT hub.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<IotHubDescriptionInner>, IotHubDescriptionInner> beginUpdate(String resourceGroupName, String resourceName, TagsResource iotHubTags) {
-        return beginUpdateAsync(resourceGroupName, resourceName, iotHubTags)
-            .getSyncPoller();}
+    public SyncPoller<PollResult<IotHubDescriptionInner>, IotHubDescriptionInner> beginUpdate(
+        String resourceGroupName, String resourceName, TagsResource iotHubTags) {
+        return beginUpdateAsync(resourceGroupName, resourceName, iotHubTags).getSyncPoller();
+    }
 
     /**
      * Update an existing IoT Hub tags. to update other fields use the CreateOrUpdate method.
-     * 
+     *
      * @param resourceGroupName Resource group identifier.
      * @param resourceName Name of iot hub to update.
      * @param iotHubTags Updated tag information to set into the iot hub instance.
@@ -791,13 +1256,14 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @return the description of the IoT hub.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<IotHubDescriptionInner>, IotHubDescriptionInner> beginUpdate(String resourceGroupName, String resourceName, TagsResource iotHubTags, Context context) {
-        return beginUpdateAsync(resourceGroupName, resourceName, iotHubTags, context)
-            .getSyncPoller();}
+    public SyncPoller<PollResult<IotHubDescriptionInner>, IotHubDescriptionInner> beginUpdate(
+        String resourceGroupName, String resourceName, TagsResource iotHubTags, Context context) {
+        return beginUpdateAsync(resourceGroupName, resourceName, iotHubTags, context).getSyncPoller();
+    }
 
     /**
      * Update an existing IoT Hub tags. to update other fields use the CreateOrUpdate method.
-     * 
+     *
      * @param resourceGroupName Resource group identifier.
      * @param resourceName Name of iot hub to update.
      * @param iotHubTags Updated tag information to set into the iot hub instance.
@@ -807,7 +1273,8 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @return the description of the IoT hub.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<IotHubDescriptionInner> updateAsync(String resourceGroupName, String resourceName, TagsResource iotHubTags) {
+    private Mono<IotHubDescriptionInner> updateAsync(
+        String resourceGroupName, String resourceName, TagsResource iotHubTags) {
         return beginUpdateAsync(resourceGroupName, resourceName, iotHubTags)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -815,7 +1282,7 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
 
     /**
      * Update an existing IoT Hub tags. to update other fields use the CreateOrUpdate method.
-     * 
+     *
      * @param resourceGroupName Resource group identifier.
      * @param resourceName Name of iot hub to update.
      * @param iotHubTags Updated tag information to set into the iot hub instance.
@@ -826,7 +1293,8 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @return the description of the IoT hub.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<IotHubDescriptionInner> updateAsync(String resourceGroupName, String resourceName, TagsResource iotHubTags, Context context) {
+    private Mono<IotHubDescriptionInner> updateAsync(
+        String resourceGroupName, String resourceName, TagsResource iotHubTags, Context context) {
         return beginUpdateAsync(resourceGroupName, resourceName, iotHubTags, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -834,7 +1302,7 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
 
     /**
      * Update an existing IoT Hub tags. to update other fields use the CreateOrUpdate method.
-     * 
+     *
      * @param resourceGroupName Resource group identifier.
      * @param resourceName Name of iot hub to update.
      * @param iotHubTags Updated tag information to set into the iot hub instance.
@@ -850,7 +1318,7 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
 
     /**
      * Update an existing IoT Hub tags. to update other fields use the CreateOrUpdate method.
-     * 
+     *
      * @param resourceGroupName Resource group identifier.
      * @param resourceName Name of iot hub to update.
      * @param iotHubTags Updated tag information to set into the iot hub instance.
@@ -861,13 +1329,14 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @return the description of the IoT hub.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public IotHubDescriptionInner update(String resourceGroupName, String resourceName, TagsResource iotHubTags, Context context) {
+    public IotHubDescriptionInner update(
+        String resourceGroupName, String resourceName, TagsResource iotHubTags, Context context) {
         return updateAsync(resourceGroupName, resourceName, iotHubTags, context).block();
     }
 
     /**
      * Delete an IoT hub.
-     * 
+     *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -878,25 +1347,43 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String resourceName) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, resourceName, accept, context))
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .delete(
+                            this.client.getEndpoint(),
+                            this.client.getApiVersion(),
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            resourceName,
+                            accept,
+                            context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Delete an IoT hub.
-     * 
+     *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
      * @param context The context to associate with this operation.
@@ -906,27 +1393,43 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @return the description of the IoT hub.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String resourceName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
+        String resourceGroupName, String resourceName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.delete(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, resourceName, accept, context);
+        return service
+            .delete(
+                this.client.getEndpoint(),
+                this.client.getApiVersion(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                resourceName,
+                accept,
+                context);
     }
 
     /**
      * Delete an IoT hub.
-     * 
+     *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -935,14 +1438,22 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @return the description of the IoT hub.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PollerFlux<PollResult<IotHubDescriptionInner>, IotHubDescriptionInner> beginDeleteAsync(String resourceGroupName, String resourceName) {
+    private PollerFlux<PollResult<IotHubDescriptionInner>, IotHubDescriptionInner> beginDeleteAsync(
+        String resourceGroupName, String resourceName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, resourceName);
-        return this.client.<IotHubDescriptionInner, IotHubDescriptionInner>getLroResult(mono, this.client.getHttpPipeline(), IotHubDescriptionInner.class, IotHubDescriptionInner.class, Context.NONE);
+        return this
+            .client
+            .<IotHubDescriptionInner, IotHubDescriptionInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                IotHubDescriptionInner.class,
+                IotHubDescriptionInner.class,
+                Context.NONE);
     }
 
     /**
      * Delete an IoT hub.
-     * 
+     *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
      * @param context The context to associate with this operation.
@@ -952,15 +1463,23 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @return the description of the IoT hub.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PollerFlux<PollResult<IotHubDescriptionInner>, IotHubDescriptionInner> beginDeleteAsync(String resourceGroupName, String resourceName, Context context) {
+    private PollerFlux<PollResult<IotHubDescriptionInner>, IotHubDescriptionInner> beginDeleteAsync(
+        String resourceGroupName, String resourceName, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, resourceName, context);
-        return this.client.<IotHubDescriptionInner, IotHubDescriptionInner>getLroResult(mono, this.client.getHttpPipeline(), IotHubDescriptionInner.class, IotHubDescriptionInner.class, context);
+        return this
+            .client
+            .<IotHubDescriptionInner, IotHubDescriptionInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                IotHubDescriptionInner.class,
+                IotHubDescriptionInner.class,
+                context);
     }
 
     /**
      * Delete an IoT hub.
-     * 
+     *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -969,13 +1488,14 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @return the description of the IoT hub.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<IotHubDescriptionInner>, IotHubDescriptionInner> beginDelete(String resourceGroupName, String resourceName) {
-        return beginDeleteAsync(resourceGroupName, resourceName)
-            .getSyncPoller();}
+    public SyncPoller<PollResult<IotHubDescriptionInner>, IotHubDescriptionInner> beginDelete(
+        String resourceGroupName, String resourceName) {
+        return beginDeleteAsync(resourceGroupName, resourceName).getSyncPoller();
+    }
 
     /**
      * Delete an IoT hub.
-     * 
+     *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
      * @param context The context to associate with this operation.
@@ -985,13 +1505,14 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @return the description of the IoT hub.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<IotHubDescriptionInner>, IotHubDescriptionInner> beginDelete(String resourceGroupName, String resourceName, Context context) {
-        return beginDeleteAsync(resourceGroupName, resourceName, context)
-            .getSyncPoller();}
+    public SyncPoller<PollResult<IotHubDescriptionInner>, IotHubDescriptionInner> beginDelete(
+        String resourceGroupName, String resourceName, Context context) {
+        return beginDeleteAsync(resourceGroupName, resourceName, context).getSyncPoller();
+    }
 
     /**
      * Delete an IoT hub.
-     * 
+     *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1001,14 +1522,12 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<IotHubDescriptionInner> deleteAsync(String resourceGroupName, String resourceName) {
-        return beginDeleteAsync(resourceGroupName, resourceName)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+        return beginDeleteAsync(resourceGroupName, resourceName).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Delete an IoT hub.
-     * 
+     *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
      * @param context The context to associate with this operation.
@@ -1026,7 +1545,7 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
 
     /**
      * Delete an IoT hub.
-     * 
+     *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1041,7 +1560,7 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
 
     /**
      * Delete an IoT hub.
-     * 
+     *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
      * @param context The context to associate with this operation.
@@ -1057,7 +1576,7 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
 
     /**
      * Get all the IoT hubs in a subscription.
-     * 
+     *
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the IoT hubs in a subscription.
@@ -1065,26 +1584,43 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<IotHubDescriptionInner>> listSinglePageAsync() {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
-            .<PagedResponse<IotHubDescriptionInner>>map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                res.getValue().nextLink(),
-                null))
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .list(
+                            this.client.getEndpoint(),
+                            this.client.getApiVersion(),
+                            this.client.getSubscriptionId(),
+                            accept,
+                            context))
+            .<PagedResponse<IotHubDescriptionInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get all the IoT hubs in a subscription.
-     * 
+     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
@@ -1094,26 +1630,40 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<IotHubDescriptionInner>> listSinglePageAsync(Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.list(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context)
-            .map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                res.getValue().nextLink(),
-                null));
+        return service
+            .list(
+                this.client.getEndpoint(),
+                this.client.getApiVersion(),
+                this.client.getSubscriptionId(),
+                accept,
+                context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
     }
 
     /**
      * Get all the IoT hubs in a subscription.
-     * 
+     *
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the IoT hubs in a subscription.
@@ -1121,13 +1671,12 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<IotHubDescriptionInner> listAsync() {
         return new PagedFlux<>(
-            () -> listSinglePageAsync(),
-            nextLink -> listBySubscriptionNextSinglePageAsync(nextLink));
+            () -> listSinglePageAsync(), nextLink -> listBySubscriptionNextSinglePageAsync(nextLink));
     }
 
     /**
      * Get all the IoT hubs in a subscription.
-     * 
+     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
@@ -1137,13 +1686,12 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<IotHubDescriptionInner> listAsync(Context context) {
         return new PagedFlux<>(
-            () -> listSinglePageAsync(context),
-            nextLink -> listBySubscriptionNextSinglePageAsync(nextLink, context));
+            () -> listSinglePageAsync(context), nextLink -> listBySubscriptionNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Get all the IoT hubs in a subscription.
-     * 
+     *
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the IoT hubs in a subscription.
@@ -1155,7 +1703,7 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
 
     /**
      * Get all the IoT hubs in a subscription.
-     * 
+     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
@@ -1169,7 +1717,7 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
 
     /**
      * Get all the IoT hubs in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
@@ -1179,29 +1727,48 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<IotHubDescriptionInner>> listByResourceGroupSinglePageAsync(String resourceGroupName) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.listByResourceGroup(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, accept, context))
-            .<PagedResponse<IotHubDescriptionInner>>map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                res.getValue().nextLink(),
-                null))
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .listByResourceGroup(
+                            this.client.getEndpoint(),
+                            this.client.getApiVersion(),
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            accept,
+                            context))
+            .<PagedResponse<IotHubDescriptionInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get all the IoT hubs in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1210,31 +1777,48 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @return all the IoT hubs in a resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<IotHubDescriptionInner>> listByResourceGroupSinglePageAsync(String resourceGroupName, Context context) {
+    private Mono<PagedResponse<IotHubDescriptionInner>> listByResourceGroupSinglePageAsync(
+        String resourceGroupName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.listByResourceGroup(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, accept, context)
-            .map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                res.getValue().nextLink(),
-                null));
+        return service
+            .listByResourceGroup(
+                this.client.getEndpoint(),
+                this.client.getApiVersion(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                accept,
+                context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
     }
 
     /**
      * Get all the IoT hubs in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
@@ -1250,7 +1834,7 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
 
     /**
      * Get all the IoT hubs in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1267,7 +1851,7 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
 
     /**
      * Get all the IoT hubs in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
@@ -1281,7 +1865,7 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
 
     /**
      * Get all the IoT hubs in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1296,7 +1880,7 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
 
     /**
      * Get the statistics from an IoT hub.
-     * 
+     *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1305,27 +1889,46 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @return the statistics from an IoT hub.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<RegistryStatisticsInner>> getStatsWithResponseAsync(String resourceGroupName, String resourceName) {
+    private Mono<Response<RegistryStatisticsInner>> getStatsWithResponseAsync(
+        String resourceGroupName, String resourceName) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getStats(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, resourceName, accept, context))
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .getStats(
+                            this.client.getEndpoint(),
+                            this.client.getApiVersion(),
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            resourceName,
+                            accept,
+                            context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the statistics from an IoT hub.
-     * 
+     *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
      * @param context The context to associate with this operation.
@@ -1335,27 +1938,43 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @return the statistics from an IoT hub.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<RegistryStatisticsInner>> getStatsWithResponseAsync(String resourceGroupName, String resourceName, Context context) {
+    private Mono<Response<RegistryStatisticsInner>> getStatsWithResponseAsync(
+        String resourceGroupName, String resourceName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.getStats(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, resourceName, accept, context);
+        return service
+            .getStats(
+                this.client.getEndpoint(),
+                this.client.getApiVersion(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                resourceName,
+                accept,
+                context);
     }
 
     /**
      * Get the statistics from an IoT hub.
-     * 
+     *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1366,18 +1985,19 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<RegistryStatisticsInner> getStatsAsync(String resourceGroupName, String resourceName) {
         return getStatsWithResponseAsync(resourceGroupName, resourceName)
-            .flatMap((Response<RegistryStatisticsInner> res) -> {
-                if (res.getValue() != null) {
-                    return Mono.just(res.getValue());
-                } else {
-                    return Mono.empty();
-                }
-            });
+            .flatMap(
+                (Response<RegistryStatisticsInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
      * Get the statistics from an IoT hub.
-     * 
+     *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1392,7 +2012,7 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
 
     /**
      * Get the statistics from an IoT hub.
-     * 
+     *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
      * @param context The context to associate with this operation.
@@ -1402,13 +2022,14 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @return the statistics from an IoT hub.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<RegistryStatisticsInner> getStatsWithResponse(String resourceGroupName, String resourceName, Context context) {
+    public Response<RegistryStatisticsInner> getStatsWithResponse(
+        String resourceGroupName, String resourceName, Context context) {
         return getStatsWithResponseAsync(resourceGroupName, resourceName, context).block();
     }
 
     /**
      * Get the list of valid SKUs for an IoT hub.
-     * 
+     *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1417,34 +2038,55 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @return the list of valid SKUs for an IoT hub.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<IotHubSkuDescriptionInner>> getValidSkusSinglePageAsync(String resourceGroupName, String resourceName) {
+    private Mono<PagedResponse<IotHubSkuDescriptionInner>> getValidSkusSinglePageAsync(
+        String resourceGroupName, String resourceName) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getValidSkus(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, resourceName, accept, context))
-            .<PagedResponse<IotHubSkuDescriptionInner>>map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                res.getValue().nextLink(),
-                null))
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .getValidSkus(
+                            this.client.getEndpoint(),
+                            this.client.getApiVersion(),
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            resourceName,
+                            accept,
+                            context))
+            .<PagedResponse<IotHubSkuDescriptionInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the list of valid SKUs for an IoT hub.
-     * 
+     *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
      * @param context The context to associate with this operation.
@@ -1454,34 +2096,52 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @return the list of valid SKUs for an IoT hub.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<IotHubSkuDescriptionInner>> getValidSkusSinglePageAsync(String resourceGroupName, String resourceName, Context context) {
+    private Mono<PagedResponse<IotHubSkuDescriptionInner>> getValidSkusSinglePageAsync(
+        String resourceGroupName, String resourceName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.getValidSkus(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, resourceName, accept, context)
-            .map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                res.getValue().nextLink(),
-                null));
+        return service
+            .getValidSkus(
+                this.client.getEndpoint(),
+                this.client.getApiVersion(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                resourceName,
+                accept,
+                context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
     }
 
     /**
      * Get the list of valid SKUs for an IoT hub.
-     * 
+     *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1498,7 +2158,7 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
 
     /**
      * Get the list of valid SKUs for an IoT hub.
-     * 
+     *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
      * @param context The context to associate with this operation.
@@ -1508,7 +2168,8 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @return the list of valid SKUs for an IoT hub.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<IotHubSkuDescriptionInner> getValidSkusAsync(String resourceGroupName, String resourceName, Context context) {
+    private PagedFlux<IotHubSkuDescriptionInner> getValidSkusAsync(
+        String resourceGroupName, String resourceName, Context context) {
         return new PagedFlux<>(
             () -> getValidSkusSinglePageAsync(resourceGroupName, resourceName, context),
             nextLink -> getValidSkusNextSinglePageAsync(nextLink, context));
@@ -1516,7 +2177,7 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
 
     /**
      * Get the list of valid SKUs for an IoT hub.
-     * 
+     *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1531,7 +2192,7 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
 
     /**
      * Get the list of valid SKUs for an IoT hub.
-     * 
+     *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
      * @param context The context to associate with this operation.
@@ -1541,13 +2202,14 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @return the list of valid SKUs for an IoT hub.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<IotHubSkuDescriptionInner> getValidSkus(String resourceGroupName, String resourceName, Context context) {
+    public PagedIterable<IotHubSkuDescriptionInner> getValidSkus(
+        String resourceGroupName, String resourceName, Context context) {
         return new PagedIterable<>(getValidSkusAsync(resourceGroupName, resourceName, context));
     }
 
     /**
      * Get a list of the consumer groups in the Event Hub-compatible device-to-cloud endpoint in an IoT hub.
-     * 
+     *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
      * @param eventHubEndpointName The name of the Event Hub-compatible endpoint.
@@ -1557,37 +2219,60 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @return a list of the consumer groups in the Event Hub-compatible device-to-cloud endpoint in an IoT hub.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<EventHubConsumerGroupInfoInner>> listEventHubConsumerGroupsSinglePageAsync(String resourceGroupName, String resourceName, String eventHubEndpointName) {
+    private Mono<PagedResponse<EventHubConsumerGroupInfoInner>> listEventHubConsumerGroupsSinglePageAsync(
+        String resourceGroupName, String resourceName, String eventHubEndpointName) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (eventHubEndpointName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter eventHubEndpointName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter eventHubEndpointName is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.listEventHubConsumerGroups(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, resourceName, eventHubEndpointName, accept, context))
-            .<PagedResponse<EventHubConsumerGroupInfoInner>>map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                res.getValue().nextLink(),
-                null))
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .listEventHubConsumerGroups(
+                            this.client.getEndpoint(),
+                            this.client.getApiVersion(),
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            resourceName,
+                            eventHubEndpointName,
+                            accept,
+                            context))
+            .<PagedResponse<EventHubConsumerGroupInfoInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get a list of the consumer groups in the Event Hub-compatible device-to-cloud endpoint in an IoT hub.
-     * 
+     *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
      * @param eventHubEndpointName The name of the Event Hub-compatible endpoint.
@@ -1598,37 +2283,57 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @return a list of the consumer groups in the Event Hub-compatible device-to-cloud endpoint in an IoT hub.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<EventHubConsumerGroupInfoInner>> listEventHubConsumerGroupsSinglePageAsync(String resourceGroupName, String resourceName, String eventHubEndpointName, Context context) {
+    private Mono<PagedResponse<EventHubConsumerGroupInfoInner>> listEventHubConsumerGroupsSinglePageAsync(
+        String resourceGroupName, String resourceName, String eventHubEndpointName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (eventHubEndpointName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter eventHubEndpointName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter eventHubEndpointName is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.listEventHubConsumerGroups(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, resourceName, eventHubEndpointName, accept, context)
-            .map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                res.getValue().nextLink(),
-                null));
+        return service
+            .listEventHubConsumerGroups(
+                this.client.getEndpoint(),
+                this.client.getApiVersion(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                resourceName,
+                eventHubEndpointName,
+                accept,
+                context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
     }
 
     /**
      * Get a list of the consumer groups in the Event Hub-compatible device-to-cloud endpoint in an IoT hub.
-     * 
+     *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
      * @param eventHubEndpointName The name of the Event Hub-compatible endpoint.
@@ -1638,7 +2343,8 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @return a list of the consumer groups in the Event Hub-compatible device-to-cloud endpoint in an IoT hub.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<EventHubConsumerGroupInfoInner> listEventHubConsumerGroupsAsync(String resourceGroupName, String resourceName, String eventHubEndpointName) {
+    private PagedFlux<EventHubConsumerGroupInfoInner> listEventHubConsumerGroupsAsync(
+        String resourceGroupName, String resourceName, String eventHubEndpointName) {
         return new PagedFlux<>(
             () -> listEventHubConsumerGroupsSinglePageAsync(resourceGroupName, resourceName, eventHubEndpointName),
             nextLink -> listEventHubConsumerGroupsNextSinglePageAsync(nextLink));
@@ -1646,7 +2352,7 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
 
     /**
      * Get a list of the consumer groups in the Event Hub-compatible device-to-cloud endpoint in an IoT hub.
-     * 
+     *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
      * @param eventHubEndpointName The name of the Event Hub-compatible endpoint.
@@ -1657,15 +2363,18 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @return a list of the consumer groups in the Event Hub-compatible device-to-cloud endpoint in an IoT hub.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<EventHubConsumerGroupInfoInner> listEventHubConsumerGroupsAsync(String resourceGroupName, String resourceName, String eventHubEndpointName, Context context) {
+    private PagedFlux<EventHubConsumerGroupInfoInner> listEventHubConsumerGroupsAsync(
+        String resourceGroupName, String resourceName, String eventHubEndpointName, Context context) {
         return new PagedFlux<>(
-            () -> listEventHubConsumerGroupsSinglePageAsync(resourceGroupName, resourceName, eventHubEndpointName, context),
+            () ->
+                listEventHubConsumerGroupsSinglePageAsync(
+                    resourceGroupName, resourceName, eventHubEndpointName, context),
             nextLink -> listEventHubConsumerGroupsNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Get a list of the consumer groups in the Event Hub-compatible device-to-cloud endpoint in an IoT hub.
-     * 
+     *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
      * @param eventHubEndpointName The name of the Event Hub-compatible endpoint.
@@ -1675,13 +2384,15 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @return a list of the consumer groups in the Event Hub-compatible device-to-cloud endpoint in an IoT hub.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<EventHubConsumerGroupInfoInner> listEventHubConsumerGroups(String resourceGroupName, String resourceName, String eventHubEndpointName) {
-        return new PagedIterable<>(listEventHubConsumerGroupsAsync(resourceGroupName, resourceName, eventHubEndpointName));
+    public PagedIterable<EventHubConsumerGroupInfoInner> listEventHubConsumerGroups(
+        String resourceGroupName, String resourceName, String eventHubEndpointName) {
+        return new PagedIterable<>(
+            listEventHubConsumerGroupsAsync(resourceGroupName, resourceName, eventHubEndpointName));
     }
 
     /**
      * Get a list of the consumer groups in the Event Hub-compatible device-to-cloud endpoint in an IoT hub.
-     * 
+     *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
      * @param eventHubEndpointName The name of the Event Hub-compatible endpoint.
@@ -1692,13 +2403,15 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @return a list of the consumer groups in the Event Hub-compatible device-to-cloud endpoint in an IoT hub.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<EventHubConsumerGroupInfoInner> listEventHubConsumerGroups(String resourceGroupName, String resourceName, String eventHubEndpointName, Context context) {
-        return new PagedIterable<>(listEventHubConsumerGroupsAsync(resourceGroupName, resourceName, eventHubEndpointName, context));
+    public PagedIterable<EventHubConsumerGroupInfoInner> listEventHubConsumerGroups(
+        String resourceGroupName, String resourceName, String eventHubEndpointName, Context context) {
+        return new PagedIterable<>(
+            listEventHubConsumerGroupsAsync(resourceGroupName, resourceName, eventHubEndpointName, context));
     }
 
     /**
      * Get a consumer group from the Event Hub-compatible device-to-cloud endpoint for an IoT hub.
-     * 
+     *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
      * @param eventHubEndpointName The name of the Event Hub-compatible endpoint in the IoT hub.
@@ -1709,33 +2422,55 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @return a consumer group from the Event Hub-compatible device-to-cloud endpoint for an IoT hub.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<EventHubConsumerGroupInfoInner>> getEventHubConsumerGroupWithResponseAsync(String resourceGroupName, String resourceName, String eventHubEndpointName, String name) {
+    private Mono<Response<EventHubConsumerGroupInfoInner>> getEventHubConsumerGroupWithResponseAsync(
+        String resourceGroupName, String resourceName, String eventHubEndpointName, String name) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (eventHubEndpointName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter eventHubEndpointName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter eventHubEndpointName is required and cannot be null."));
         }
         if (name == null) {
             return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getEventHubConsumerGroup(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, resourceName, eventHubEndpointName, name, accept, context))
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .getEventHubConsumerGroup(
+                            this.client.getEndpoint(),
+                            this.client.getApiVersion(),
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            resourceName,
+                            eventHubEndpointName,
+                            name,
+                            accept,
+                            context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get a consumer group from the Event Hub-compatible device-to-cloud endpoint for an IoT hub.
-     * 
+     *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
      * @param eventHubEndpointName The name of the Event Hub-compatible endpoint in the IoT hub.
@@ -1747,33 +2482,52 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @return a consumer group from the Event Hub-compatible device-to-cloud endpoint for an IoT hub.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<EventHubConsumerGroupInfoInner>> getEventHubConsumerGroupWithResponseAsync(String resourceGroupName, String resourceName, String eventHubEndpointName, String name, Context context) {
+    private Mono<Response<EventHubConsumerGroupInfoInner>> getEventHubConsumerGroupWithResponseAsync(
+        String resourceGroupName, String resourceName, String eventHubEndpointName, String name, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (eventHubEndpointName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter eventHubEndpointName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter eventHubEndpointName is required and cannot be null."));
         }
         if (name == null) {
             return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.getEventHubConsumerGroup(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, resourceName, eventHubEndpointName, name, accept, context);
+        return service
+            .getEventHubConsumerGroup(
+                this.client.getEndpoint(),
+                this.client.getApiVersion(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                resourceName,
+                eventHubEndpointName,
+                name,
+                accept,
+                context);
     }
 
     /**
      * Get a consumer group from the Event Hub-compatible device-to-cloud endpoint for an IoT hub.
-     * 
+     *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
      * @param eventHubEndpointName The name of the Event Hub-compatible endpoint in the IoT hub.
@@ -1784,20 +2538,22 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @return a consumer group from the Event Hub-compatible device-to-cloud endpoint for an IoT hub.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<EventHubConsumerGroupInfoInner> getEventHubConsumerGroupAsync(String resourceGroupName, String resourceName, String eventHubEndpointName, String name) {
+    private Mono<EventHubConsumerGroupInfoInner> getEventHubConsumerGroupAsync(
+        String resourceGroupName, String resourceName, String eventHubEndpointName, String name) {
         return getEventHubConsumerGroupWithResponseAsync(resourceGroupName, resourceName, eventHubEndpointName, name)
-            .flatMap((Response<EventHubConsumerGroupInfoInner> res) -> {
-                if (res.getValue() != null) {
-                    return Mono.just(res.getValue());
-                } else {
-                    return Mono.empty();
-                }
-            });
+            .flatMap(
+                (Response<EventHubConsumerGroupInfoInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
      * Get a consumer group from the Event Hub-compatible device-to-cloud endpoint for an IoT hub.
-     * 
+     *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
      * @param eventHubEndpointName The name of the Event Hub-compatible endpoint in the IoT hub.
@@ -1808,13 +2564,14 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @return a consumer group from the Event Hub-compatible device-to-cloud endpoint for an IoT hub.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public EventHubConsumerGroupInfoInner getEventHubConsumerGroup(String resourceGroupName, String resourceName, String eventHubEndpointName, String name) {
+    public EventHubConsumerGroupInfoInner getEventHubConsumerGroup(
+        String resourceGroupName, String resourceName, String eventHubEndpointName, String name) {
         return getEventHubConsumerGroupAsync(resourceGroupName, resourceName, eventHubEndpointName, name).block();
     }
 
     /**
      * Get a consumer group from the Event Hub-compatible device-to-cloud endpoint for an IoT hub.
-     * 
+     *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
      * @param eventHubEndpointName The name of the Event Hub-compatible endpoint in the IoT hub.
@@ -1826,13 +2583,16 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @return a consumer group from the Event Hub-compatible device-to-cloud endpoint for an IoT hub.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<EventHubConsumerGroupInfoInner> getEventHubConsumerGroupWithResponse(String resourceGroupName, String resourceName, String eventHubEndpointName, String name, Context context) {
-        return getEventHubConsumerGroupWithResponseAsync(resourceGroupName, resourceName, eventHubEndpointName, name, context).block();
+    public Response<EventHubConsumerGroupInfoInner> getEventHubConsumerGroupWithResponse(
+        String resourceGroupName, String resourceName, String eventHubEndpointName, String name, Context context) {
+        return getEventHubConsumerGroupWithResponseAsync(
+                resourceGroupName, resourceName, eventHubEndpointName, name, context)
+            .block();
     }
 
     /**
      * Add a consumer group to an Event Hub-compatible endpoint in an IoT hub.
-     * 
+     *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
      * @param eventHubEndpointName The name of the Event Hub-compatible endpoint in the IoT hub.
@@ -1844,38 +2604,66 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @return the properties of the EventHubConsumerGroupInfo object.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<EventHubConsumerGroupInfoInner>> createEventHubConsumerGroupWithResponseAsync(String resourceGroupName, String resourceName, String eventHubEndpointName, String name, EventHubConsumerGroupBodyDescription consumerGroupBody) {
+    private Mono<Response<EventHubConsumerGroupInfoInner>> createEventHubConsumerGroupWithResponseAsync(
+        String resourceGroupName,
+        String resourceName,
+        String eventHubEndpointName,
+        String name,
+        EventHubConsumerGroupBodyDescription consumerGroupBody) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (eventHubEndpointName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter eventHubEndpointName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter eventHubEndpointName is required and cannot be null."));
         }
         if (name == null) {
             return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
         }
         if (consumerGroupBody == null) {
-            return Mono.error(new IllegalArgumentException("Parameter consumerGroupBody is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter consumerGroupBody is required and cannot be null."));
         } else {
             consumerGroupBody.validate();
         }
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.createEventHubConsumerGroup(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, resourceName, eventHubEndpointName, name, consumerGroupBody, accept, context))
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .createEventHubConsumerGroup(
+                            this.client.getEndpoint(),
+                            this.client.getApiVersion(),
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            resourceName,
+                            eventHubEndpointName,
+                            name,
+                            consumerGroupBody,
+                            accept,
+                            context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Add a consumer group to an Event Hub-compatible endpoint in an IoT hub.
-     * 
+     *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
      * @param eventHubEndpointName The name of the Event Hub-compatible endpoint in the IoT hub.
@@ -1888,38 +2676,64 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @return the properties of the EventHubConsumerGroupInfo object.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<EventHubConsumerGroupInfoInner>> createEventHubConsumerGroupWithResponseAsync(String resourceGroupName, String resourceName, String eventHubEndpointName, String name, EventHubConsumerGroupBodyDescription consumerGroupBody, Context context) {
+    private Mono<Response<EventHubConsumerGroupInfoInner>> createEventHubConsumerGroupWithResponseAsync(
+        String resourceGroupName,
+        String resourceName,
+        String eventHubEndpointName,
+        String name,
+        EventHubConsumerGroupBodyDescription consumerGroupBody,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (eventHubEndpointName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter eventHubEndpointName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter eventHubEndpointName is required and cannot be null."));
         }
         if (name == null) {
             return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
         }
         if (consumerGroupBody == null) {
-            return Mono.error(new IllegalArgumentException("Parameter consumerGroupBody is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter consumerGroupBody is required and cannot be null."));
         } else {
             consumerGroupBody.validate();
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.createEventHubConsumerGroup(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, resourceName, eventHubEndpointName, name, consumerGroupBody, accept, context);
+        return service
+            .createEventHubConsumerGroup(
+                this.client.getEndpoint(),
+                this.client.getApiVersion(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                resourceName,
+                eventHubEndpointName,
+                name,
+                consumerGroupBody,
+                accept,
+                context);
     }
 
     /**
      * Add a consumer group to an Event Hub-compatible endpoint in an IoT hub.
-     * 
+     *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
      * @param eventHubEndpointName The name of the Event Hub-compatible endpoint in the IoT hub.
@@ -1931,20 +2745,27 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @return the properties of the EventHubConsumerGroupInfo object.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<EventHubConsumerGroupInfoInner> createEventHubConsumerGroupAsync(String resourceGroupName, String resourceName, String eventHubEndpointName, String name, EventHubConsumerGroupBodyDescription consumerGroupBody) {
-        return createEventHubConsumerGroupWithResponseAsync(resourceGroupName, resourceName, eventHubEndpointName, name, consumerGroupBody)
-            .flatMap((Response<EventHubConsumerGroupInfoInner> res) -> {
-                if (res.getValue() != null) {
-                    return Mono.just(res.getValue());
-                } else {
-                    return Mono.empty();
-                }
-            });
+    private Mono<EventHubConsumerGroupInfoInner> createEventHubConsumerGroupAsync(
+        String resourceGroupName,
+        String resourceName,
+        String eventHubEndpointName,
+        String name,
+        EventHubConsumerGroupBodyDescription consumerGroupBody) {
+        return createEventHubConsumerGroupWithResponseAsync(
+                resourceGroupName, resourceName, eventHubEndpointName, name, consumerGroupBody)
+            .flatMap(
+                (Response<EventHubConsumerGroupInfoInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
      * Add a consumer group to an Event Hub-compatible endpoint in an IoT hub.
-     * 
+     *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
      * @param eventHubEndpointName The name of the Event Hub-compatible endpoint in the IoT hub.
@@ -1956,13 +2777,20 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @return the properties of the EventHubConsumerGroupInfo object.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public EventHubConsumerGroupInfoInner createEventHubConsumerGroup(String resourceGroupName, String resourceName, String eventHubEndpointName, String name, EventHubConsumerGroupBodyDescription consumerGroupBody) {
-        return createEventHubConsumerGroupAsync(resourceGroupName, resourceName, eventHubEndpointName, name, consumerGroupBody).block();
+    public EventHubConsumerGroupInfoInner createEventHubConsumerGroup(
+        String resourceGroupName,
+        String resourceName,
+        String eventHubEndpointName,
+        String name,
+        EventHubConsumerGroupBodyDescription consumerGroupBody) {
+        return createEventHubConsumerGroupAsync(
+                resourceGroupName, resourceName, eventHubEndpointName, name, consumerGroupBody)
+            .block();
     }
 
     /**
      * Add a consumer group to an Event Hub-compatible endpoint in an IoT hub.
-     * 
+     *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
      * @param eventHubEndpointName The name of the Event Hub-compatible endpoint in the IoT hub.
@@ -1975,13 +2803,21 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @return the properties of the EventHubConsumerGroupInfo object.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<EventHubConsumerGroupInfoInner> createEventHubConsumerGroupWithResponse(String resourceGroupName, String resourceName, String eventHubEndpointName, String name, EventHubConsumerGroupBodyDescription consumerGroupBody, Context context) {
-        return createEventHubConsumerGroupWithResponseAsync(resourceGroupName, resourceName, eventHubEndpointName, name, consumerGroupBody, context).block();
+    public Response<EventHubConsumerGroupInfoInner> createEventHubConsumerGroupWithResponse(
+        String resourceGroupName,
+        String resourceName,
+        String eventHubEndpointName,
+        String name,
+        EventHubConsumerGroupBodyDescription consumerGroupBody,
+        Context context) {
+        return createEventHubConsumerGroupWithResponseAsync(
+                resourceGroupName, resourceName, eventHubEndpointName, name, consumerGroupBody, context)
+            .block();
     }
 
     /**
      * Delete a consumer group from an Event Hub-compatible endpoint in an IoT hub.
-     * 
+     *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
      * @param eventHubEndpointName The name of the Event Hub-compatible endpoint in the IoT hub.
@@ -1992,33 +2828,55 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteEventHubConsumerGroupWithResponseAsync(String resourceGroupName, String resourceName, String eventHubEndpointName, String name) {
+    private Mono<Response<Void>> deleteEventHubConsumerGroupWithResponseAsync(
+        String resourceGroupName, String resourceName, String eventHubEndpointName, String name) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (eventHubEndpointName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter eventHubEndpointName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter eventHubEndpointName is required and cannot be null."));
         }
         if (name == null) {
             return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.deleteEventHubConsumerGroup(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, resourceName, eventHubEndpointName, name, accept, context))
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .deleteEventHubConsumerGroup(
+                            this.client.getEndpoint(),
+                            this.client.getApiVersion(),
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            resourceName,
+                            eventHubEndpointName,
+                            name,
+                            accept,
+                            context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Delete a consumer group from an Event Hub-compatible endpoint in an IoT hub.
-     * 
+     *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
      * @param eventHubEndpointName The name of the Event Hub-compatible endpoint in the IoT hub.
@@ -2030,33 +2888,52 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteEventHubConsumerGroupWithResponseAsync(String resourceGroupName, String resourceName, String eventHubEndpointName, String name, Context context) {
+    private Mono<Response<Void>> deleteEventHubConsumerGroupWithResponseAsync(
+        String resourceGroupName, String resourceName, String eventHubEndpointName, String name, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (eventHubEndpointName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter eventHubEndpointName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter eventHubEndpointName is required and cannot be null."));
         }
         if (name == null) {
             return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.deleteEventHubConsumerGroup(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, resourceName, eventHubEndpointName, name, accept, context);
+        return service
+            .deleteEventHubConsumerGroup(
+                this.client.getEndpoint(),
+                this.client.getApiVersion(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                resourceName,
+                eventHubEndpointName,
+                name,
+                accept,
+                context);
     }
 
     /**
      * Delete a consumer group from an Event Hub-compatible endpoint in an IoT hub.
-     * 
+     *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
      * @param eventHubEndpointName The name of the Event Hub-compatible endpoint in the IoT hub.
@@ -2067,14 +2944,15 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteEventHubConsumerGroupAsync(String resourceGroupName, String resourceName, String eventHubEndpointName, String name) {
+    private Mono<Void> deleteEventHubConsumerGroupAsync(
+        String resourceGroupName, String resourceName, String eventHubEndpointName, String name) {
         return deleteEventHubConsumerGroupWithResponseAsync(resourceGroupName, resourceName, eventHubEndpointName, name)
             .flatMap((Response<Void> res) -> Mono.empty());
     }
 
     /**
      * Delete a consumer group from an Event Hub-compatible endpoint in an IoT hub.
-     * 
+     *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
      * @param eventHubEndpointName The name of the Event Hub-compatible endpoint in the IoT hub.
@@ -2084,13 +2962,14 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteEventHubConsumerGroup(String resourceGroupName, String resourceName, String eventHubEndpointName, String name) {
+    public void deleteEventHubConsumerGroup(
+        String resourceGroupName, String resourceName, String eventHubEndpointName, String name) {
         deleteEventHubConsumerGroupAsync(resourceGroupName, resourceName, eventHubEndpointName, name).block();
     }
 
     /**
      * Delete a consumer group from an Event Hub-compatible endpoint in an IoT hub.
-     * 
+     *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
      * @param eventHubEndpointName The name of the Event Hub-compatible endpoint in the IoT hub.
@@ -2102,13 +2981,17 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteEventHubConsumerGroupWithResponse(String resourceGroupName, String resourceName, String eventHubEndpointName, String name, Context context) {
-        return deleteEventHubConsumerGroupWithResponseAsync(resourceGroupName, resourceName, eventHubEndpointName, name, context).block();
+    public Response<Void> deleteEventHubConsumerGroupWithResponse(
+        String resourceGroupName, String resourceName, String eventHubEndpointName, String name, Context context) {
+        return deleteEventHubConsumerGroupWithResponseAsync(
+                resourceGroupName, resourceName, eventHubEndpointName, name, context)
+            .block();
     }
 
     /**
-     * Get a list of all the jobs in an IoT hub. For more information, see: https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-identity-registry.
-     * 
+     * Get a list of all the jobs in an IoT hub. For more information, see:
+     * https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-identity-registry.
+     *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2117,34 +3000,56 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @return a list of all the jobs in an IoT hub.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<JobResponseInner>> listJobsSinglePageAsync(String resourceGroupName, String resourceName) {
+    private Mono<PagedResponse<JobResponseInner>> listJobsSinglePageAsync(
+        String resourceGroupName, String resourceName) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.listJobs(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, resourceName, accept, context))
-            .<PagedResponse<JobResponseInner>>map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                res.getValue().nextLink(),
-                null))
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .listJobs(
+                            this.client.getEndpoint(),
+                            this.client.getApiVersion(),
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            resourceName,
+                            accept,
+                            context))
+            .<PagedResponse<JobResponseInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * Get a list of all the jobs in an IoT hub. For more information, see: https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-identity-registry.
-     * 
+     * Get a list of all the jobs in an IoT hub. For more information, see:
+     * https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-identity-registry.
+     *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
      * @param context The context to associate with this operation.
@@ -2154,34 +3059,53 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @return a list of all the jobs in an IoT hub.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<JobResponseInner>> listJobsSinglePageAsync(String resourceGroupName, String resourceName, Context context) {
+    private Mono<PagedResponse<JobResponseInner>> listJobsSinglePageAsync(
+        String resourceGroupName, String resourceName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.listJobs(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, resourceName, accept, context)
-            .map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                res.getValue().nextLink(),
-                null));
+        return service
+            .listJobs(
+                this.client.getEndpoint(),
+                this.client.getApiVersion(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                resourceName,
+                accept,
+                context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
     }
 
     /**
-     * Get a list of all the jobs in an IoT hub. For more information, see: https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-identity-registry.
-     * 
+     * Get a list of all the jobs in an IoT hub. For more information, see:
+     * https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-identity-registry.
+     *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2197,8 +3121,9 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
     }
 
     /**
-     * Get a list of all the jobs in an IoT hub. For more information, see: https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-identity-registry.
-     * 
+     * Get a list of all the jobs in an IoT hub. For more information, see:
+     * https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-identity-registry.
+     *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
      * @param context The context to associate with this operation.
@@ -2215,8 +3140,9 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
     }
 
     /**
-     * Get a list of all the jobs in an IoT hub. For more information, see: https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-identity-registry.
-     * 
+     * Get a list of all the jobs in an IoT hub. For more information, see:
+     * https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-identity-registry.
+     *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2230,8 +3156,9 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
     }
 
     /**
-     * Get a list of all the jobs in an IoT hub. For more information, see: https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-identity-registry.
-     * 
+     * Get a list of all the jobs in an IoT hub. For more information, see:
+     * https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-identity-registry.
+     *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
      * @param context The context to associate with this operation.
@@ -2246,8 +3173,9 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
     }
 
     /**
-     * Get the details of a job from an IoT hub. For more information, see: https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-identity-registry.
-     * 
+     * Get the details of a job from an IoT hub. For more information, see:
+     * https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-identity-registry.
+     *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
      * @param jobId The job identifier.
@@ -2257,15 +3185,23 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @return the details of a job from an IoT hub.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<JobResponseInner>> getJobWithResponseAsync(String resourceGroupName, String resourceName, String jobId) {
+    private Mono<Response<JobResponseInner>> getJobWithResponseAsync(
+        String resourceGroupName, String resourceName, String jobId) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
@@ -2274,13 +3210,26 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
             return Mono.error(new IllegalArgumentException("Parameter jobId is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getJob(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, resourceName, jobId, accept, context))
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .getJob(
+                            this.client.getEndpoint(),
+                            this.client.getApiVersion(),
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            resourceName,
+                            jobId,
+                            accept,
+                            context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * Get the details of a job from an IoT hub. For more information, see: https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-identity-registry.
-     * 
+     * Get the details of a job from an IoT hub. For more information, see:
+     * https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-identity-registry.
+     *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
      * @param jobId The job identifier.
@@ -2291,15 +3240,23 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @return the details of a job from an IoT hub.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<JobResponseInner>> getJobWithResponseAsync(String resourceGroupName, String resourceName, String jobId, Context context) {
+    private Mono<Response<JobResponseInner>> getJobWithResponseAsync(
+        String resourceGroupName, String resourceName, String jobId, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
@@ -2309,12 +3266,22 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.getJob(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, resourceName, jobId, accept, context);
+        return service
+            .getJob(
+                this.client.getEndpoint(),
+                this.client.getApiVersion(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                resourceName,
+                jobId,
+                accept,
+                context);
     }
 
     /**
-     * Get the details of a job from an IoT hub. For more information, see: https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-identity-registry.
-     * 
+     * Get the details of a job from an IoT hub. For more information, see:
+     * https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-identity-registry.
+     *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
      * @param jobId The job identifier.
@@ -2326,18 +3293,20 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<JobResponseInner> getJobAsync(String resourceGroupName, String resourceName, String jobId) {
         return getJobWithResponseAsync(resourceGroupName, resourceName, jobId)
-            .flatMap((Response<JobResponseInner> res) -> {
-                if (res.getValue() != null) {
-                    return Mono.just(res.getValue());
-                } else {
-                    return Mono.empty();
-                }
-            });
+            .flatMap(
+                (Response<JobResponseInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
-     * Get the details of a job from an IoT hub. For more information, see: https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-identity-registry.
-     * 
+     * Get the details of a job from an IoT hub. For more information, see:
+     * https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-identity-registry.
+     *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
      * @param jobId The job identifier.
@@ -2352,8 +3321,9 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
     }
 
     /**
-     * Get the details of a job from an IoT hub. For more information, see: https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-identity-registry.
-     * 
+     * Get the details of a job from an IoT hub. For more information, see:
+     * https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-identity-registry.
+     *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
      * @param jobId The job identifier.
@@ -2364,13 +3334,14 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @return the details of a job from an IoT hub.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<JobResponseInner> getJobWithResponse(String resourceGroupName, String resourceName, String jobId, Context context) {
+    public Response<JobResponseInner> getJobWithResponse(
+        String resourceGroupName, String resourceName, String jobId, Context context) {
         return getJobWithResponseAsync(resourceGroupName, resourceName, jobId, context).block();
     }
 
     /**
      * Get the quota metrics for an IoT hub.
-     * 
+     *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2379,34 +3350,55 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @return the quota metrics for an IoT hub.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<IotHubQuotaMetricInfoInner>> getQuotaMetricsSinglePageAsync(String resourceGroupName, String resourceName) {
+    private Mono<PagedResponse<IotHubQuotaMetricInfoInner>> getQuotaMetricsSinglePageAsync(
+        String resourceGroupName, String resourceName) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getQuotaMetrics(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, resourceName, accept, context))
-            .<PagedResponse<IotHubQuotaMetricInfoInner>>map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                res.getValue().nextLink(),
-                null))
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .getQuotaMetrics(
+                            this.client.getEndpoint(),
+                            this.client.getApiVersion(),
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            resourceName,
+                            accept,
+                            context))
+            .<PagedResponse<IotHubQuotaMetricInfoInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the quota metrics for an IoT hub.
-     * 
+     *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
      * @param context The context to associate with this operation.
@@ -2416,34 +3408,52 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @return the quota metrics for an IoT hub.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<IotHubQuotaMetricInfoInner>> getQuotaMetricsSinglePageAsync(String resourceGroupName, String resourceName, Context context) {
+    private Mono<PagedResponse<IotHubQuotaMetricInfoInner>> getQuotaMetricsSinglePageAsync(
+        String resourceGroupName, String resourceName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.getQuotaMetrics(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, resourceName, accept, context)
-            .map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                res.getValue().nextLink(),
-                null));
+        return service
+            .getQuotaMetrics(
+                this.client.getEndpoint(),
+                this.client.getApiVersion(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                resourceName,
+                accept,
+                context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
     }
 
     /**
      * Get the quota metrics for an IoT hub.
-     * 
+     *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2460,7 +3470,7 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
 
     /**
      * Get the quota metrics for an IoT hub.
-     * 
+     *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
      * @param context The context to associate with this operation.
@@ -2470,7 +3480,8 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @return the quota metrics for an IoT hub.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<IotHubQuotaMetricInfoInner> getQuotaMetricsAsync(String resourceGroupName, String resourceName, Context context) {
+    private PagedFlux<IotHubQuotaMetricInfoInner> getQuotaMetricsAsync(
+        String resourceGroupName, String resourceName, Context context) {
         return new PagedFlux<>(
             () -> getQuotaMetricsSinglePageAsync(resourceGroupName, resourceName, context),
             nextLink -> getQuotaMetricsNextSinglePageAsync(nextLink, context));
@@ -2478,7 +3489,7 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
 
     /**
      * Get the quota metrics for an IoT hub.
-     * 
+     *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2493,7 +3504,7 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
 
     /**
      * Get the quota metrics for an IoT hub.
-     * 
+     *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
      * @param context The context to associate with this operation.
@@ -2503,13 +3514,14 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @return the quota metrics for an IoT hub.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<IotHubQuotaMetricInfoInner> getQuotaMetrics(String resourceGroupName, String resourceName, Context context) {
+    public PagedIterable<IotHubQuotaMetricInfoInner> getQuotaMetrics(
+        String resourceGroupName, String resourceName, Context context) {
         return new PagedIterable<>(getQuotaMetricsAsync(resourceGroupName, resourceName, context));
     }
 
     /**
      * Get the health for routing endpoints.
-     * 
+     *
      * @param resourceGroupName The resourceGroupName parameter.
      * @param iotHubName The iotHubName parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2518,34 +3530,55 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @return the health for routing endpoints.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<EndpointHealthDataInner>> getEndpointHealthSinglePageAsync(String resourceGroupName, String iotHubName) {
+    private Mono<PagedResponse<EndpointHealthDataInner>> getEndpointHealthSinglePageAsync(
+        String resourceGroupName, String iotHubName) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (iotHubName == null) {
             return Mono.error(new IllegalArgumentException("Parameter iotHubName is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getEndpointHealth(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, iotHubName, this.client.getApiVersion(), accept, context))
-            .<PagedResponse<EndpointHealthDataInner>>map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                res.getValue().nextLink(),
-                null))
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .getEndpointHealth(
+                            this.client.getEndpoint(),
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            iotHubName,
+                            this.client.getApiVersion(),
+                            accept,
+                            context))
+            .<PagedResponse<EndpointHealthDataInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the health for routing endpoints.
-     * 
+     *
      * @param resourceGroupName The resourceGroupName parameter.
      * @param iotHubName The iotHubName parameter.
      * @param context The context to associate with this operation.
@@ -2555,34 +3588,52 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @return the health for routing endpoints.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<EndpointHealthDataInner>> getEndpointHealthSinglePageAsync(String resourceGroupName, String iotHubName, Context context) {
+    private Mono<PagedResponse<EndpointHealthDataInner>> getEndpointHealthSinglePageAsync(
+        String resourceGroupName, String iotHubName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (iotHubName == null) {
             return Mono.error(new IllegalArgumentException("Parameter iotHubName is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.getEndpointHealth(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, iotHubName, this.client.getApiVersion(), accept, context)
-            .map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                res.getValue().nextLink(),
-                null));
+        return service
+            .getEndpointHealth(
+                this.client.getEndpoint(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                iotHubName,
+                this.client.getApiVersion(),
+                accept,
+                context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
     }
 
     /**
      * Get the health for routing endpoints.
-     * 
+     *
      * @param resourceGroupName The resourceGroupName parameter.
      * @param iotHubName The iotHubName parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2599,7 +3650,7 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
 
     /**
      * Get the health for routing endpoints.
-     * 
+     *
      * @param resourceGroupName The resourceGroupName parameter.
      * @param iotHubName The iotHubName parameter.
      * @param context The context to associate with this operation.
@@ -2609,7 +3660,8 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @return the health for routing endpoints.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<EndpointHealthDataInner> getEndpointHealthAsync(String resourceGroupName, String iotHubName, Context context) {
+    private PagedFlux<EndpointHealthDataInner> getEndpointHealthAsync(
+        String resourceGroupName, String iotHubName, Context context) {
         return new PagedFlux<>(
             () -> getEndpointHealthSinglePageAsync(resourceGroupName, iotHubName, context),
             nextLink -> getEndpointHealthNextSinglePageAsync(nextLink, context));
@@ -2617,7 +3669,7 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
 
     /**
      * Get the health for routing endpoints.
-     * 
+     *
      * @param resourceGroupName The resourceGroupName parameter.
      * @param iotHubName The iotHubName parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2632,7 +3684,7 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
 
     /**
      * Get the health for routing endpoints.
-     * 
+     *
      * @param resourceGroupName The resourceGroupName parameter.
      * @param iotHubName The iotHubName parameter.
      * @param context The context to associate with this operation.
@@ -2642,41 +3694,62 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @return the health for routing endpoints.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<EndpointHealthDataInner> getEndpointHealth(String resourceGroupName, String iotHubName, Context context) {
+    public PagedIterable<EndpointHealthDataInner> getEndpointHealth(
+        String resourceGroupName, String iotHubName, Context context) {
         return new PagedIterable<>(getEndpointHealthAsync(resourceGroupName, iotHubName, context));
     }
 
     /**
      * Check if an IoT hub name is available.
-     * 
-     * @param operationInputs Set the name parameter in the OperationInputs structure to the name of the IoT hub to check.
+     *
+     * @param operationInputs Set the name parameter in the OperationInputs structure to the name of the IoT hub to
+     *     check.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the properties indicating whether a given IoT hub name is available.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<IotHubNameAvailabilityInfoInner>> checkNameAvailabilityWithResponseAsync(OperationInputs operationInputs) {
+    private Mono<Response<IotHubNameAvailabilityInfoInner>> checkNameAvailabilityWithResponseAsync(
+        OperationInputs operationInputs) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (operationInputs == null) {
-            return Mono.error(new IllegalArgumentException("Parameter operationInputs is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter operationInputs is required and cannot be null."));
         } else {
             operationInputs.validate();
         }
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.checkNameAvailability(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(), operationInputs, accept, context))
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .checkNameAvailability(
+                            this.client.getEndpoint(),
+                            this.client.getApiVersion(),
+                            this.client.getSubscriptionId(),
+                            operationInputs,
+                            accept,
+                            context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Check if an IoT hub name is available.
-     * 
-     * @param operationInputs Set the name parameter in the OperationInputs structure to the name of the IoT hub to check.
+     *
+     * @param operationInputs Set the name parameter in the OperationInputs structure to the name of the IoT hub to
+     *     check.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
@@ -2684,27 +3757,43 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @return the properties indicating whether a given IoT hub name is available.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<IotHubNameAvailabilityInfoInner>> checkNameAvailabilityWithResponseAsync(OperationInputs operationInputs, Context context) {
+    private Mono<Response<IotHubNameAvailabilityInfoInner>> checkNameAvailabilityWithResponseAsync(
+        OperationInputs operationInputs, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (operationInputs == null) {
-            return Mono.error(new IllegalArgumentException("Parameter operationInputs is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter operationInputs is required and cannot be null."));
         } else {
             operationInputs.validate();
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.checkNameAvailability(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(), operationInputs, accept, context);
+        return service
+            .checkNameAvailability(
+                this.client.getEndpoint(),
+                this.client.getApiVersion(),
+                this.client.getSubscriptionId(),
+                operationInputs,
+                accept,
+                context);
     }
 
     /**
      * Check if an IoT hub name is available.
-     * 
-     * @param operationInputs Set the name parameter in the OperationInputs structure to the name of the IoT hub to check.
+     *
+     * @param operationInputs Set the name parameter in the OperationInputs structure to the name of the IoT hub to
+     *     check.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2713,19 +3802,21 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<IotHubNameAvailabilityInfoInner> checkNameAvailabilityAsync(OperationInputs operationInputs) {
         return checkNameAvailabilityWithResponseAsync(operationInputs)
-            .flatMap((Response<IotHubNameAvailabilityInfoInner> res) -> {
-                if (res.getValue() != null) {
-                    return Mono.just(res.getValue());
-                } else {
-                    return Mono.empty();
-                }
-            });
+            .flatMap(
+                (Response<IotHubNameAvailabilityInfoInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
      * Check if an IoT hub name is available.
-     * 
-     * @param operationInputs Set the name parameter in the OperationInputs structure to the name of the IoT hub to check.
+     *
+     * @param operationInputs Set the name parameter in the OperationInputs structure to the name of the IoT hub to
+     *     check.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2738,8 +3829,9 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
 
     /**
      * Check if an IoT hub name is available.
-     * 
-     * @param operationInputs Set the name parameter in the OperationInputs structure to the name of the IoT hub to check.
+     *
+     * @param operationInputs Set the name parameter in the OperationInputs structure to the name of the IoT hub to
+     *     check.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
@@ -2747,13 +3839,14 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @return the properties indicating whether a given IoT hub name is available.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<IotHubNameAvailabilityInfoInner> checkNameAvailabilityWithResponse(OperationInputs operationInputs, Context context) {
+    public Response<IotHubNameAvailabilityInfoInner> checkNameAvailabilityWithResponse(
+        OperationInputs operationInputs, Context context) {
         return checkNameAvailabilityWithResponseAsync(operationInputs, context).block();
     }
 
     /**
      * Test all routes configured in this Iot Hub.
-     * 
+     *
      * @param iotHubName IotHub to be tested.
      * @param resourceGroupName resource group which Iot Hub belongs to.
      * @param input Input for testing all routes.
@@ -2763,18 +3856,26 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @return result of testing all routes.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<TestAllRoutesResultInner>> testAllRoutesWithResponseAsync(String iotHubName, String resourceGroupName, TestAllRoutesInput input) {
+    private Mono<Response<TestAllRoutesResultInner>> testAllRoutesWithResponseAsync(
+        String iotHubName, String resourceGroupName, TestAllRoutesInput input) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (iotHubName == null) {
             return Mono.error(new IllegalArgumentException("Parameter iotHubName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (input == null) {
             return Mono.error(new IllegalArgumentException("Parameter input is required and cannot be null."));
@@ -2782,13 +3883,25 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
             input.validate();
         }
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.testAllRoutes(this.client.getEndpoint(), iotHubName, this.client.getSubscriptionId(), resourceGroupName, this.client.getApiVersion(), input, accept, context))
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .testAllRoutes(
+                            this.client.getEndpoint(),
+                            iotHubName,
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            this.client.getApiVersion(),
+                            input,
+                            accept,
+                            context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Test all routes configured in this Iot Hub.
-     * 
+     *
      * @param iotHubName IotHub to be tested.
      * @param resourceGroupName resource group which Iot Hub belongs to.
      * @param input Input for testing all routes.
@@ -2799,18 +3912,26 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @return result of testing all routes.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<TestAllRoutesResultInner>> testAllRoutesWithResponseAsync(String iotHubName, String resourceGroupName, TestAllRoutesInput input, Context context) {
+    private Mono<Response<TestAllRoutesResultInner>> testAllRoutesWithResponseAsync(
+        String iotHubName, String resourceGroupName, TestAllRoutesInput input, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (iotHubName == null) {
             return Mono.error(new IllegalArgumentException("Parameter iotHubName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (input == null) {
             return Mono.error(new IllegalArgumentException("Parameter input is required and cannot be null."));
@@ -2819,12 +3940,21 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.testAllRoutes(this.client.getEndpoint(), iotHubName, this.client.getSubscriptionId(), resourceGroupName, this.client.getApiVersion(), input, accept, context);
+        return service
+            .testAllRoutes(
+                this.client.getEndpoint(),
+                iotHubName,
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                this.client.getApiVersion(),
+                input,
+                accept,
+                context);
     }
 
     /**
      * Test all routes configured in this Iot Hub.
-     * 
+     *
      * @param iotHubName IotHub to be tested.
      * @param resourceGroupName resource group which Iot Hub belongs to.
      * @param input Input for testing all routes.
@@ -2834,20 +3964,22 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @return result of testing all routes.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<TestAllRoutesResultInner> testAllRoutesAsync(String iotHubName, String resourceGroupName, TestAllRoutesInput input) {
+    private Mono<TestAllRoutesResultInner> testAllRoutesAsync(
+        String iotHubName, String resourceGroupName, TestAllRoutesInput input) {
         return testAllRoutesWithResponseAsync(iotHubName, resourceGroupName, input)
-            .flatMap((Response<TestAllRoutesResultInner> res) -> {
-                if (res.getValue() != null) {
-                    return Mono.just(res.getValue());
-                } else {
-                    return Mono.empty();
-                }
-            });
+            .flatMap(
+                (Response<TestAllRoutesResultInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
      * Test all routes configured in this Iot Hub.
-     * 
+     *
      * @param iotHubName IotHub to be tested.
      * @param resourceGroupName resource group which Iot Hub belongs to.
      * @param input Input for testing all routes.
@@ -2857,13 +3989,14 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @return result of testing all routes.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public TestAllRoutesResultInner testAllRoutes(String iotHubName, String resourceGroupName, TestAllRoutesInput input) {
+    public TestAllRoutesResultInner testAllRoutes(
+        String iotHubName, String resourceGroupName, TestAllRoutesInput input) {
         return testAllRoutesAsync(iotHubName, resourceGroupName, input).block();
     }
 
     /**
      * Test all routes configured in this Iot Hub.
-     * 
+     *
      * @param iotHubName IotHub to be tested.
      * @param resourceGroupName resource group which Iot Hub belongs to.
      * @param input Input for testing all routes.
@@ -2874,13 +4007,14 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @return result of testing all routes.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<TestAllRoutesResultInner> testAllRoutesWithResponse(String iotHubName, String resourceGroupName, TestAllRoutesInput input, Context context) {
+    public Response<TestAllRoutesResultInner> testAllRoutesWithResponse(
+        String iotHubName, String resourceGroupName, TestAllRoutesInput input, Context context) {
         return testAllRoutesWithResponseAsync(iotHubName, resourceGroupName, input, context).block();
     }
 
     /**
      * Test the new route for this Iot Hub.
-     * 
+     *
      * @param iotHubName IotHub to be tested.
      * @param resourceGroupName resource group which Iot Hub belongs to.
      * @param input Route that needs to be tested.
@@ -2890,18 +4024,26 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @return result of testing one route.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<TestRouteResultInner>> testRouteWithResponseAsync(String iotHubName, String resourceGroupName, TestRouteInput input) {
+    private Mono<Response<TestRouteResultInner>> testRouteWithResponseAsync(
+        String iotHubName, String resourceGroupName, TestRouteInput input) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (iotHubName == null) {
             return Mono.error(new IllegalArgumentException("Parameter iotHubName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (input == null) {
             return Mono.error(new IllegalArgumentException("Parameter input is required and cannot be null."));
@@ -2909,13 +4051,25 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
             input.validate();
         }
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.testRoute(this.client.getEndpoint(), iotHubName, this.client.getSubscriptionId(), resourceGroupName, this.client.getApiVersion(), input, accept, context))
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .testRoute(
+                            this.client.getEndpoint(),
+                            iotHubName,
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            this.client.getApiVersion(),
+                            input,
+                            accept,
+                            context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Test the new route for this Iot Hub.
-     * 
+     *
      * @param iotHubName IotHub to be tested.
      * @param resourceGroupName resource group which Iot Hub belongs to.
      * @param input Route that needs to be tested.
@@ -2926,18 +4080,26 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @return result of testing one route.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<TestRouteResultInner>> testRouteWithResponseAsync(String iotHubName, String resourceGroupName, TestRouteInput input, Context context) {
+    private Mono<Response<TestRouteResultInner>> testRouteWithResponseAsync(
+        String iotHubName, String resourceGroupName, TestRouteInput input, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (iotHubName == null) {
             return Mono.error(new IllegalArgumentException("Parameter iotHubName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (input == null) {
             return Mono.error(new IllegalArgumentException("Parameter input is required and cannot be null."));
@@ -2946,12 +4108,21 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.testRoute(this.client.getEndpoint(), iotHubName, this.client.getSubscriptionId(), resourceGroupName, this.client.getApiVersion(), input, accept, context);
+        return service
+            .testRoute(
+                this.client.getEndpoint(),
+                iotHubName,
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                this.client.getApiVersion(),
+                input,
+                accept,
+                context);
     }
 
     /**
      * Test the new route for this Iot Hub.
-     * 
+     *
      * @param iotHubName IotHub to be tested.
      * @param resourceGroupName resource group which Iot Hub belongs to.
      * @param input Route that needs to be tested.
@@ -2961,20 +4132,22 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @return result of testing one route.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<TestRouteResultInner> testRouteAsync(String iotHubName, String resourceGroupName, TestRouteInput input) {
+    private Mono<TestRouteResultInner> testRouteAsync(
+        String iotHubName, String resourceGroupName, TestRouteInput input) {
         return testRouteWithResponseAsync(iotHubName, resourceGroupName, input)
-            .flatMap((Response<TestRouteResultInner> res) -> {
-                if (res.getValue() != null) {
-                    return Mono.just(res.getValue());
-                } else {
-                    return Mono.empty();
-                }
-            });
+            .flatMap(
+                (Response<TestRouteResultInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
      * Test the new route for this Iot Hub.
-     * 
+     *
      * @param iotHubName IotHub to be tested.
      * @param resourceGroupName resource group which Iot Hub belongs to.
      * @param input Route that needs to be tested.
@@ -2990,7 +4163,7 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
 
     /**
      * Test the new route for this Iot Hub.
-     * 
+     *
      * @param iotHubName IotHub to be tested.
      * @param resourceGroupName resource group which Iot Hub belongs to.
      * @param input Route that needs to be tested.
@@ -3001,13 +4174,15 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @return result of testing one route.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<TestRouteResultInner> testRouteWithResponse(String iotHubName, String resourceGroupName, TestRouteInput input, Context context) {
+    public Response<TestRouteResultInner> testRouteWithResponse(
+        String iotHubName, String resourceGroupName, TestRouteInput input, Context context) {
         return testRouteWithResponseAsync(iotHubName, resourceGroupName, input, context).block();
     }
 
     /**
-     * Get the security metadata for an IoT hub. For more information, see: https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-security.
-     * 
+     * Get the security metadata for an IoT hub. For more information, see:
+     * https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-security.
+     *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3016,34 +4191,56 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @return the security metadata for an IoT hub.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<SharedAccessSignatureAuthorizationRuleInner>> listKeysSinglePageAsync(String resourceGroupName, String resourceName) {
+    private Mono<PagedResponse<SharedAccessSignatureAuthorizationRuleInner>> listKeysSinglePageAsync(
+        String resourceGroupName, String resourceName) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.listKeys(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, resourceName, accept, context))
-            .<PagedResponse<SharedAccessSignatureAuthorizationRuleInner>>map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                res.getValue().nextLink(),
-                null))
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .listKeys(
+                            this.client.getEndpoint(),
+                            this.client.getApiVersion(),
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            resourceName,
+                            accept,
+                            context))
+            .<PagedResponse<SharedAccessSignatureAuthorizationRuleInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * Get the security metadata for an IoT hub. For more information, see: https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-security.
-     * 
+     * Get the security metadata for an IoT hub. For more information, see:
+     * https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-security.
+     *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
      * @param context The context to associate with this operation.
@@ -3053,34 +4250,53 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @return the security metadata for an IoT hub.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<SharedAccessSignatureAuthorizationRuleInner>> listKeysSinglePageAsync(String resourceGroupName, String resourceName, Context context) {
+    private Mono<PagedResponse<SharedAccessSignatureAuthorizationRuleInner>> listKeysSinglePageAsync(
+        String resourceGroupName, String resourceName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.listKeys(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, resourceName, accept, context)
-            .map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                res.getValue().nextLink(),
-                null));
+        return service
+            .listKeys(
+                this.client.getEndpoint(),
+                this.client.getApiVersion(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                resourceName,
+                accept,
+                context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
     }
 
     /**
-     * Get the security metadata for an IoT hub. For more information, see: https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-security.
-     * 
+     * Get the security metadata for an IoT hub. For more information, see:
+     * https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-security.
+     *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3089,15 +4305,17 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @return the security metadata for an IoT hub.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<SharedAccessSignatureAuthorizationRuleInner> listKeysAsync(String resourceGroupName, String resourceName) {
+    private PagedFlux<SharedAccessSignatureAuthorizationRuleInner> listKeysAsync(
+        String resourceGroupName, String resourceName) {
         return new PagedFlux<>(
             () -> listKeysSinglePageAsync(resourceGroupName, resourceName),
             nextLink -> listKeysNextSinglePageAsync(nextLink));
     }
 
     /**
-     * Get the security metadata for an IoT hub. For more information, see: https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-security.
-     * 
+     * Get the security metadata for an IoT hub. For more information, see:
+     * https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-security.
+     *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
      * @param context The context to associate with this operation.
@@ -3107,15 +4325,17 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @return the security metadata for an IoT hub.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<SharedAccessSignatureAuthorizationRuleInner> listKeysAsync(String resourceGroupName, String resourceName, Context context) {
+    private PagedFlux<SharedAccessSignatureAuthorizationRuleInner> listKeysAsync(
+        String resourceGroupName, String resourceName, Context context) {
         return new PagedFlux<>(
             () -> listKeysSinglePageAsync(resourceGroupName, resourceName, context),
             nextLink -> listKeysNextSinglePageAsync(nextLink, context));
     }
 
     /**
-     * Get the security metadata for an IoT hub. For more information, see: https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-security.
-     * 
+     * Get the security metadata for an IoT hub. For more information, see:
+     * https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-security.
+     *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3124,13 +4344,15 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @return the security metadata for an IoT hub.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<SharedAccessSignatureAuthorizationRuleInner> listKeys(String resourceGroupName, String resourceName) {
+    public PagedIterable<SharedAccessSignatureAuthorizationRuleInner> listKeys(
+        String resourceGroupName, String resourceName) {
         return new PagedIterable<>(listKeysAsync(resourceGroupName, resourceName));
     }
 
     /**
-     * Get the security metadata for an IoT hub. For more information, see: https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-security.
-     * 
+     * Get the security metadata for an IoT hub. For more information, see:
+     * https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-security.
+     *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
      * @param context The context to associate with this operation.
@@ -3140,13 +4362,15 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @return the security metadata for an IoT hub.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<SharedAccessSignatureAuthorizationRuleInner> listKeys(String resourceGroupName, String resourceName, Context context) {
+    public PagedIterable<SharedAccessSignatureAuthorizationRuleInner> listKeys(
+        String resourceGroupName, String resourceName, Context context) {
         return new PagedIterable<>(listKeysAsync(resourceGroupName, resourceName, context));
     }
 
     /**
-     * Get a shared access policy by name from an IoT hub. For more information, see: https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-security.
-     * 
+     * Get a shared access policy by name from an IoT hub. For more information, see:
+     * https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-security.
+     *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
      * @param keyName The name of the shared access policy.
@@ -3156,15 +4380,23 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @return a shared access policy by name from an IoT hub.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<SharedAccessSignatureAuthorizationRuleInner>> getKeysForKeyNameWithResponseAsync(String resourceGroupName, String resourceName, String keyName) {
+    private Mono<Response<SharedAccessSignatureAuthorizationRuleInner>> getKeysForKeyNameWithResponseAsync(
+        String resourceGroupName, String resourceName, String keyName) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
@@ -3173,13 +4405,26 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
             return Mono.error(new IllegalArgumentException("Parameter keyName is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getKeysForKeyName(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, resourceName, keyName, accept, context))
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .getKeysForKeyName(
+                            this.client.getEndpoint(),
+                            this.client.getApiVersion(),
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            resourceName,
+                            keyName,
+                            accept,
+                            context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * Get a shared access policy by name from an IoT hub. For more information, see: https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-security.
-     * 
+     * Get a shared access policy by name from an IoT hub. For more information, see:
+     * https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-security.
+     *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
      * @param keyName The name of the shared access policy.
@@ -3190,15 +4435,23 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @return a shared access policy by name from an IoT hub.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<SharedAccessSignatureAuthorizationRuleInner>> getKeysForKeyNameWithResponseAsync(String resourceGroupName, String resourceName, String keyName, Context context) {
+    private Mono<Response<SharedAccessSignatureAuthorizationRuleInner>> getKeysForKeyNameWithResponseAsync(
+        String resourceGroupName, String resourceName, String keyName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
@@ -3208,12 +4461,22 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.getKeysForKeyName(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, resourceName, keyName, accept, context);
+        return service
+            .getKeysForKeyName(
+                this.client.getEndpoint(),
+                this.client.getApiVersion(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                resourceName,
+                keyName,
+                accept,
+                context);
     }
 
     /**
-     * Get a shared access policy by name from an IoT hub. For more information, see: https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-security.
-     * 
+     * Get a shared access policy by name from an IoT hub. For more information, see:
+     * https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-security.
+     *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
      * @param keyName The name of the shared access policy.
@@ -3223,20 +4486,23 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @return a shared access policy by name from an IoT hub.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<SharedAccessSignatureAuthorizationRuleInner> getKeysForKeyNameAsync(String resourceGroupName, String resourceName, String keyName) {
+    private Mono<SharedAccessSignatureAuthorizationRuleInner> getKeysForKeyNameAsync(
+        String resourceGroupName, String resourceName, String keyName) {
         return getKeysForKeyNameWithResponseAsync(resourceGroupName, resourceName, keyName)
-            .flatMap((Response<SharedAccessSignatureAuthorizationRuleInner> res) -> {
-                if (res.getValue() != null) {
-                    return Mono.just(res.getValue());
-                } else {
-                    return Mono.empty();
-                }
-            });
+            .flatMap(
+                (Response<SharedAccessSignatureAuthorizationRuleInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
-     * Get a shared access policy by name from an IoT hub. For more information, see: https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-security.
-     * 
+     * Get a shared access policy by name from an IoT hub. For more information, see:
+     * https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-security.
+     *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
      * @param keyName The name of the shared access policy.
@@ -3246,13 +4512,15 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @return a shared access policy by name from an IoT hub.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SharedAccessSignatureAuthorizationRuleInner getKeysForKeyName(String resourceGroupName, String resourceName, String keyName) {
+    public SharedAccessSignatureAuthorizationRuleInner getKeysForKeyName(
+        String resourceGroupName, String resourceName, String keyName) {
         return getKeysForKeyNameAsync(resourceGroupName, resourceName, keyName).block();
     }
 
     /**
-     * Get a shared access policy by name from an IoT hub. For more information, see: https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-security.
-     * 
+     * Get a shared access policy by name from an IoT hub. For more information, see:
+     * https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-security.
+     *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
      * @param keyName The name of the shared access policy.
@@ -3263,13 +4531,16 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @return a shared access policy by name from an IoT hub.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SharedAccessSignatureAuthorizationRuleInner> getKeysForKeyNameWithResponse(String resourceGroupName, String resourceName, String keyName, Context context) {
+    public Response<SharedAccessSignatureAuthorizationRuleInner> getKeysForKeyNameWithResponse(
+        String resourceGroupName, String resourceName, String keyName, Context context) {
         return getKeysForKeyNameWithResponseAsync(resourceGroupName, resourceName, keyName, context).block();
     }
 
     /**
-     * Exports all the device identities in the IoT hub identity registry to an Azure Storage blob container. For more information, see: https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-identity-registry#import-and-export-device-identities.
-     * 
+     * Exports all the device identities in the IoT hub identity registry to an Azure Storage blob container. For more
+     * information, see:
+     * https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-identity-registry#import-and-export-device-identities.
+     *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
      * @param exportDevicesParameters The parameters that specify the export devices operation.
@@ -3279,32 +4550,56 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @return the properties of the Job Response object.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<JobResponseInner>> exportDevicesWithResponseAsync(String resourceGroupName, String resourceName, ExportDevicesRequest exportDevicesParameters) {
+    private Mono<Response<JobResponseInner>> exportDevicesWithResponseAsync(
+        String resourceGroupName, String resourceName, ExportDevicesRequest exportDevicesParameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (exportDevicesParameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter exportDevicesParameters is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException("Parameter exportDevicesParameters is required and cannot be null."));
         } else {
             exportDevicesParameters.validate();
         }
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.exportDevices(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, resourceName, exportDevicesParameters, accept, context))
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .exportDevices(
+                            this.client.getEndpoint(),
+                            this.client.getApiVersion(),
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            resourceName,
+                            exportDevicesParameters,
+                            accept,
+                            context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * Exports all the device identities in the IoT hub identity registry to an Azure Storage blob container. For more information, see: https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-identity-registry#import-and-export-device-identities.
-     * 
+     * Exports all the device identities in the IoT hub identity registry to an Azure Storage blob container. For more
+     * information, see:
+     * https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-identity-registry#import-and-export-device-identities.
+     *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
      * @param exportDevicesParameters The parameters that specify the export devices operation.
@@ -3315,32 +4610,53 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @return the properties of the Job Response object.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<JobResponseInner>> exportDevicesWithResponseAsync(String resourceGroupName, String resourceName, ExportDevicesRequest exportDevicesParameters, Context context) {
+    private Mono<Response<JobResponseInner>> exportDevicesWithResponseAsync(
+        String resourceGroupName, String resourceName, ExportDevicesRequest exportDevicesParameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (exportDevicesParameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter exportDevicesParameters is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException("Parameter exportDevicesParameters is required and cannot be null."));
         } else {
             exportDevicesParameters.validate();
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.exportDevices(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, resourceName, exportDevicesParameters, accept, context);
+        return service
+            .exportDevices(
+                this.client.getEndpoint(),
+                this.client.getApiVersion(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                resourceName,
+                exportDevicesParameters,
+                accept,
+                context);
     }
 
     /**
-     * Exports all the device identities in the IoT hub identity registry to an Azure Storage blob container. For more information, see: https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-identity-registry#import-and-export-device-identities.
-     * 
+     * Exports all the device identities in the IoT hub identity registry to an Azure Storage blob container. For more
+     * information, see:
+     * https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-identity-registry#import-and-export-device-identities.
+     *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
      * @param exportDevicesParameters The parameters that specify the export devices operation.
@@ -3350,20 +4666,24 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @return the properties of the Job Response object.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<JobResponseInner> exportDevicesAsync(String resourceGroupName, String resourceName, ExportDevicesRequest exportDevicesParameters) {
+    private Mono<JobResponseInner> exportDevicesAsync(
+        String resourceGroupName, String resourceName, ExportDevicesRequest exportDevicesParameters) {
         return exportDevicesWithResponseAsync(resourceGroupName, resourceName, exportDevicesParameters)
-            .flatMap((Response<JobResponseInner> res) -> {
-                if (res.getValue() != null) {
-                    return Mono.just(res.getValue());
-                } else {
-                    return Mono.empty();
-                }
-            });
+            .flatMap(
+                (Response<JobResponseInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
-     * Exports all the device identities in the IoT hub identity registry to an Azure Storage blob container. For more information, see: https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-identity-registry#import-and-export-device-identities.
-     * 
+     * Exports all the device identities in the IoT hub identity registry to an Azure Storage blob container. For more
+     * information, see:
+     * https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-identity-registry#import-and-export-device-identities.
+     *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
      * @param exportDevicesParameters The parameters that specify the export devices operation.
@@ -3373,13 +4693,16 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @return the properties of the Job Response object.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public JobResponseInner exportDevices(String resourceGroupName, String resourceName, ExportDevicesRequest exportDevicesParameters) {
+    public JobResponseInner exportDevices(
+        String resourceGroupName, String resourceName, ExportDevicesRequest exportDevicesParameters) {
         return exportDevicesAsync(resourceGroupName, resourceName, exportDevicesParameters).block();
     }
 
     /**
-     * Exports all the device identities in the IoT hub identity registry to an Azure Storage blob container. For more information, see: https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-identity-registry#import-and-export-device-identities.
-     * 
+     * Exports all the device identities in the IoT hub identity registry to an Azure Storage blob container. For more
+     * information, see:
+     * https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-identity-registry#import-and-export-device-identities.
+     *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
      * @param exportDevicesParameters The parameters that specify the export devices operation.
@@ -3390,13 +4713,17 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @return the properties of the Job Response object.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<JobResponseInner> exportDevicesWithResponse(String resourceGroupName, String resourceName, ExportDevicesRequest exportDevicesParameters, Context context) {
-        return exportDevicesWithResponseAsync(resourceGroupName, resourceName, exportDevicesParameters, context).block();
+    public Response<JobResponseInner> exportDevicesWithResponse(
+        String resourceGroupName, String resourceName, ExportDevicesRequest exportDevicesParameters, Context context) {
+        return exportDevicesWithResponseAsync(resourceGroupName, resourceName, exportDevicesParameters, context)
+            .block();
     }
 
     /**
-     * Import, update, or delete device identities in the IoT hub identity registry from a blob. For more information, see: https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-identity-registry#import-and-export-device-identities.
-     * 
+     * Import, update, or delete device identities in the IoT hub identity registry from a blob. For more information,
+     * see:
+     * https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-identity-registry#import-and-export-device-identities.
+     *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
      * @param importDevicesParameters The parameters that specify the import devices operation.
@@ -3406,32 +4733,56 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @return the properties of the Job Response object.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<JobResponseInner>> importDevicesWithResponseAsync(String resourceGroupName, String resourceName, ImportDevicesRequest importDevicesParameters) {
+    private Mono<Response<JobResponseInner>> importDevicesWithResponseAsync(
+        String resourceGroupName, String resourceName, ImportDevicesRequest importDevicesParameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (importDevicesParameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter importDevicesParameters is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException("Parameter importDevicesParameters is required and cannot be null."));
         } else {
             importDevicesParameters.validate();
         }
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.importDevices(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, resourceName, importDevicesParameters, accept, context))
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .importDevices(
+                            this.client.getEndpoint(),
+                            this.client.getApiVersion(),
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            resourceName,
+                            importDevicesParameters,
+                            accept,
+                            context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * Import, update, or delete device identities in the IoT hub identity registry from a blob. For more information, see: https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-identity-registry#import-and-export-device-identities.
-     * 
+     * Import, update, or delete device identities in the IoT hub identity registry from a blob. For more information,
+     * see:
+     * https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-identity-registry#import-and-export-device-identities.
+     *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
      * @param importDevicesParameters The parameters that specify the import devices operation.
@@ -3442,32 +4793,53 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @return the properties of the Job Response object.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<JobResponseInner>> importDevicesWithResponseAsync(String resourceGroupName, String resourceName, ImportDevicesRequest importDevicesParameters, Context context) {
+    private Mono<Response<JobResponseInner>> importDevicesWithResponseAsync(
+        String resourceGroupName, String resourceName, ImportDevicesRequest importDevicesParameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (importDevicesParameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter importDevicesParameters is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException("Parameter importDevicesParameters is required and cannot be null."));
         } else {
             importDevicesParameters.validate();
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.importDevices(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, resourceName, importDevicesParameters, accept, context);
+        return service
+            .importDevices(
+                this.client.getEndpoint(),
+                this.client.getApiVersion(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                resourceName,
+                importDevicesParameters,
+                accept,
+                context);
     }
 
     /**
-     * Import, update, or delete device identities in the IoT hub identity registry from a blob. For more information, see: https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-identity-registry#import-and-export-device-identities.
-     * 
+     * Import, update, or delete device identities in the IoT hub identity registry from a blob. For more information,
+     * see:
+     * https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-identity-registry#import-and-export-device-identities.
+     *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
      * @param importDevicesParameters The parameters that specify the import devices operation.
@@ -3477,20 +4849,24 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @return the properties of the Job Response object.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<JobResponseInner> importDevicesAsync(String resourceGroupName, String resourceName, ImportDevicesRequest importDevicesParameters) {
+    private Mono<JobResponseInner> importDevicesAsync(
+        String resourceGroupName, String resourceName, ImportDevicesRequest importDevicesParameters) {
         return importDevicesWithResponseAsync(resourceGroupName, resourceName, importDevicesParameters)
-            .flatMap((Response<JobResponseInner> res) -> {
-                if (res.getValue() != null) {
-                    return Mono.just(res.getValue());
-                } else {
-                    return Mono.empty();
-                }
-            });
+            .flatMap(
+                (Response<JobResponseInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
-     * Import, update, or delete device identities in the IoT hub identity registry from a blob. For more information, see: https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-identity-registry#import-and-export-device-identities.
-     * 
+     * Import, update, or delete device identities in the IoT hub identity registry from a blob. For more information,
+     * see:
+     * https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-identity-registry#import-and-export-device-identities.
+     *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
      * @param importDevicesParameters The parameters that specify the import devices operation.
@@ -3500,13 +4876,16 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @return the properties of the Job Response object.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public JobResponseInner importDevices(String resourceGroupName, String resourceName, ImportDevicesRequest importDevicesParameters) {
+    public JobResponseInner importDevices(
+        String resourceGroupName, String resourceName, ImportDevicesRequest importDevicesParameters) {
         return importDevicesAsync(resourceGroupName, resourceName, importDevicesParameters).block();
     }
 
     /**
-     * Import, update, or delete device identities in the IoT hub identity registry from a blob. For more information, see: https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-identity-registry#import-and-export-device-identities.
-     * 
+     * Import, update, or delete device identities in the IoT hub identity registry from a blob. For more information,
+     * see:
+     * https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-identity-registry#import-and-export-device-identities.
+     *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
      * @param importDevicesParameters The parameters that specify the import devices operation.
@@ -3517,13 +4896,15 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @return the properties of the Job Response object.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<JobResponseInner> importDevicesWithResponse(String resourceGroupName, String resourceName, ImportDevicesRequest importDevicesParameters, Context context) {
-        return importDevicesWithResponseAsync(resourceGroupName, resourceName, importDevicesParameters, context).block();
+    public Response<JobResponseInner> importDevicesWithResponse(
+        String resourceGroupName, String resourceName, ImportDevicesRequest importDevicesParameters, Context context) {
+        return importDevicesWithResponseAsync(resourceGroupName, resourceName, importDevicesParameters, context)
+            .block();
     }
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
@@ -3536,23 +4917,30 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.listBySubscriptionNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<IotHubDescriptionInner>>map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                res.getValue().nextLink(),
-                null))
+        return FluxUtil
+            .withContext(
+                context -> service.listBySubscriptionNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<IotHubDescriptionInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3561,28 +4949,35 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @return the JSON-serialized array of IotHubDescription objects with a next link.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<IotHubDescriptionInner>> listBySubscriptionNextSinglePageAsync(String nextLink, Context context) {
+    private Mono<PagedResponse<IotHubDescriptionInner>> listBySubscriptionNextSinglePageAsync(
+        String nextLink, Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.listBySubscriptionNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                res.getValue().nextLink(),
-                null));
+        return service
+            .listBySubscriptionNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
     }
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
@@ -3595,23 +4990,30 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<IotHubDescriptionInner>>map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                res.getValue().nextLink(),
-                null))
+        return FluxUtil
+            .withContext(
+                context -> service.listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<IotHubDescriptionInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3620,28 +5022,35 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @return the JSON-serialized array of IotHubDescription objects with a next link.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<IotHubDescriptionInner>> listByResourceGroupNextSinglePageAsync(String nextLink, Context context) {
+    private Mono<PagedResponse<IotHubDescriptionInner>> listByResourceGroupNextSinglePageAsync(
+        String nextLink, Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                res.getValue().nextLink(),
-                null));
+        return service
+            .listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
     }
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
@@ -3654,23 +5063,29 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getValidSkusNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<IotHubSkuDescriptionInner>>map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                res.getValue().nextLink(),
-                null))
+        return FluxUtil
+            .withContext(context -> service.getValidSkusNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<IotHubSkuDescriptionInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3679,28 +5094,35 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @return the JSON-serialized array of IotHubSkuDescription objects with a next link.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<IotHubSkuDescriptionInner>> getValidSkusNextSinglePageAsync(String nextLink, Context context) {
+    private Mono<PagedResponse<IotHubSkuDescriptionInner>> getValidSkusNextSinglePageAsync(
+        String nextLink, Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.getValidSkusNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                res.getValue().nextLink(),
-                null));
+        return service
+            .getValidSkusNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
     }
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
@@ -3708,28 +5130,36 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @return the JSON-serialized array of Event Hub-compatible consumer group names with a next link.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<EventHubConsumerGroupInfoInner>> listEventHubConsumerGroupsNextSinglePageAsync(String nextLink) {
+    private Mono<PagedResponse<EventHubConsumerGroupInfoInner>> listEventHubConsumerGroupsNextSinglePageAsync(
+        String nextLink) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.listEventHubConsumerGroupsNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<EventHubConsumerGroupInfoInner>>map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                res.getValue().nextLink(),
-                null))
+        return FluxUtil
+            .withContext(
+                context -> service.listEventHubConsumerGroupsNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<EventHubConsumerGroupInfoInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3738,28 +5168,35 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @return the JSON-serialized array of Event Hub-compatible consumer group names with a next link.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<EventHubConsumerGroupInfoInner>> listEventHubConsumerGroupsNextSinglePageAsync(String nextLink, Context context) {
+    private Mono<PagedResponse<EventHubConsumerGroupInfoInner>> listEventHubConsumerGroupsNextSinglePageAsync(
+        String nextLink, Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.listEventHubConsumerGroupsNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                res.getValue().nextLink(),
-                null));
+        return service
+            .listEventHubConsumerGroupsNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
     }
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
@@ -3772,23 +5209,29 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.listJobsNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<JobResponseInner>>map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                res.getValue().nextLink(),
-                null))
+        return FluxUtil
+            .withContext(context -> service.listJobsNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<JobResponseInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3802,23 +5245,29 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.listJobsNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                res.getValue().nextLink(),
-                null));
+        return service
+            .listJobsNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
     }
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
@@ -3831,23 +5280,29 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getQuotaMetricsNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<IotHubQuotaMetricInfoInner>>map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                res.getValue().nextLink(),
-                null))
+        return FluxUtil
+            .withContext(context -> service.getQuotaMetricsNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<IotHubQuotaMetricInfoInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3856,28 +5311,35 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @return the JSON-serialized array of IotHubQuotaMetricInfo objects with a next link.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<IotHubQuotaMetricInfoInner>> getQuotaMetricsNextSinglePageAsync(String nextLink, Context context) {
+    private Mono<PagedResponse<IotHubQuotaMetricInfoInner>> getQuotaMetricsNextSinglePageAsync(
+        String nextLink, Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.getQuotaMetricsNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                res.getValue().nextLink(),
-                null));
+        return service
+            .getQuotaMetricsNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
     }
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
@@ -3890,23 +5352,29 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getEndpointHealthNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<EndpointHealthDataInner>>map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                res.getValue().nextLink(),
-                null))
+        return FluxUtil
+            .withContext(context -> service.getEndpointHealthNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<EndpointHealthDataInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3915,28 +5383,35 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @return the JSON-serialized array of EndpointHealthData objects with a next link.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<EndpointHealthDataInner>> getEndpointHealthNextSinglePageAsync(String nextLink, Context context) {
+    private Mono<PagedResponse<EndpointHealthDataInner>> getEndpointHealthNextSinglePageAsync(
+        String nextLink, Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.getEndpointHealthNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                res.getValue().nextLink(),
-                null));
+        return service
+            .getEndpointHealthNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
     }
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
@@ -3944,28 +5419,35 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @return the list of shared access policies with a next link.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<SharedAccessSignatureAuthorizationRuleInner>> listKeysNextSinglePageAsync(String nextLink) {
+    private Mono<PagedResponse<SharedAccessSignatureAuthorizationRuleInner>> listKeysNextSinglePageAsync(
+        String nextLink) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.listKeysNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<SharedAccessSignatureAuthorizationRuleInner>>map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                res.getValue().nextLink(),
-                null))
+        return FluxUtil
+            .withContext(context -> service.listKeysNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<SharedAccessSignatureAuthorizationRuleInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3974,22 +5456,29 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @return the list of shared access policies with a next link.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<SharedAccessSignatureAuthorizationRuleInner>> listKeysNextSinglePageAsync(String nextLink, Context context) {
+    private Mono<PagedResponse<SharedAccessSignatureAuthorizationRuleInner>> listKeysNextSinglePageAsync(
+        String nextLink, Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.listKeysNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                res.getValue().nextLink(),
-                null));
+        return service
+            .listKeysNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
     }
 }

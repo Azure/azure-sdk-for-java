@@ -5,19 +5,14 @@
 package com.azure.resourcemanager.iothub.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * IP Rule to be applied as part of Network Rule Set.
- */
+/** IP Rule to be applied as part of Network Rule Set. */
 @Fluent
 public final class NetworkRuleSetIpRule {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(NetworkRuleSetIpRule.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(NetworkRuleSetIpRule.class);
 
     /*
      * Name of the IP filter rule.
@@ -40,7 +35,7 @@ public final class NetworkRuleSetIpRule {
 
     /**
      * Get the filterName property: Name of the IP filter rule.
-     * 
+     *
      * @return the filterName value.
      */
     public String filterName() {
@@ -49,7 +44,7 @@ public final class NetworkRuleSetIpRule {
 
     /**
      * Set the filterName property: Name of the IP filter rule.
-     * 
+     *
      * @param filterName the filterName value to set.
      * @return the NetworkRuleSetIpRule object itself.
      */
@@ -60,7 +55,7 @@ public final class NetworkRuleSetIpRule {
 
     /**
      * Get the action property: IP Filter Action.
-     * 
+     *
      * @return the action value.
      */
     public NetworkRuleIpAction action() {
@@ -69,7 +64,7 @@ public final class NetworkRuleSetIpRule {
 
     /**
      * Set the action property: IP Filter Action.
-     * 
+     *
      * @param action the action value to set.
      * @return the NetworkRuleSetIpRule object itself.
      */
@@ -79,9 +74,8 @@ public final class NetworkRuleSetIpRule {
     }
 
     /**
-     * Get the ipMask property: A string that contains the IP address range in
-     * CIDR notation for the rule.
-     * 
+     * Get the ipMask property: A string that contains the IP address range in CIDR notation for the rule.
+     *
      * @return the ipMask value.
      */
     public String ipMask() {
@@ -89,9 +83,8 @@ public final class NetworkRuleSetIpRule {
     }
 
     /**
-     * Set the ipMask property: A string that contains the IP address range in
-     * CIDR notation for the rule.
-     * 
+     * Set the ipMask property: A string that contains the IP address range in CIDR notation for the rule.
+     *
      * @param ipMask the ipMask value to set.
      * @return the NetworkRuleSetIpRule object itself.
      */
@@ -102,15 +95,19 @@ public final class NetworkRuleSetIpRule {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (filterName() == null) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("Missing required property filterName in model NetworkRuleSetIpRule"));
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property filterName in model NetworkRuleSetIpRule"));
         }
         if (ipMask() == null) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("Missing required property ipMask in model NetworkRuleSetIpRule"));
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property ipMask in model NetworkRuleSetIpRule"));
         }
     }
 }

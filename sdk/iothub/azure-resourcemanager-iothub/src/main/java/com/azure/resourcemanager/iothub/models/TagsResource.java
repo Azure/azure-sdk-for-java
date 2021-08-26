@@ -5,21 +5,15 @@
 package com.azure.resourcemanager.iothub.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/**
- * A container holding only the Tags for a resource, allowing the user to
- * update the tags on an IoT Hub instance.
- */
+/** A container holding only the Tags for a resource, allowing the user to update the tags on an IoT Hub instance. */
 @Fluent
 public final class TagsResource {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(TagsResource.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(TagsResource.class);
 
     /*
      * Resource tags
@@ -29,7 +23,7 @@ public final class TagsResource {
 
     /**
      * Get the tags property: Resource tags.
-     * 
+     *
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -38,7 +32,7 @@ public final class TagsResource {
 
     /**
      * Set the tags property: Resource tags.
-     * 
+     *
      * @param tags the tags value to set.
      * @return the TagsResource object itself.
      */
@@ -49,7 +43,7 @@ public final class TagsResource {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

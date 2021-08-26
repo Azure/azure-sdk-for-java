@@ -7,27 +7,25 @@ package com.azure.resourcemanager.iothub.models;
 import com.azure.resourcemanager.iothub.fluent.models.UserSubscriptionQuotaListResultInner;
 import java.util.List;
 
-/**
- * An immutable client-side representation of UserSubscriptionQuotaListResult.
- */
+/** An immutable client-side representation of UserSubscriptionQuotaListResult. */
 public interface UserSubscriptionQuotaListResult {
     /**
      * Gets the value property: The value property.
-     * 
+     *
      * @return the value value.
      */
     List<UserSubscriptionQuota> value();
 
     /**
      * Gets the nextLink property: The nextLink property.
-     * 
+     *
      * @return the nextLink value.
      */
     String nextLink();
 
     /**
      * Gets the inner com.azure.resourcemanager.iothub.fluent.models.UserSubscriptionQuotaListResultInner object.
-     * 
+     *
      * @return the inner object.
      */
     UserSubscriptionQuotaListResultInner innerModel();

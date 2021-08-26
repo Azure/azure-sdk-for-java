@@ -7,20 +7,18 @@ package com.azure.resourcemanager.iothub.models;
 import com.azure.resourcemanager.iothub.fluent.models.TestAllRoutesResultInner;
 import java.util.List;
 
-/**
- * An immutable client-side representation of TestAllRoutesResult.
- */
+/** An immutable client-side representation of TestAllRoutesResult. */
 public interface TestAllRoutesResult {
     /**
      * Gets the routes property: JSON-serialized array of matched routes.
-     * 
+     *
      * @return the routes value.
      */
     List<MatchedRoute> routes();
 
     /**
      * Gets the inner com.azure.resourcemanager.iothub.fluent.models.TestAllRoutesResultInner object.
-     * 
+     *
      * @return the inner object.
      */
     TestAllRoutesResultInner innerModel();

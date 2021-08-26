@@ -5,21 +5,16 @@
 package com.azure.resourcemanager.iothub.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.iothub.fluent.models.IotHubQuotaMetricInfoInner;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The JSON-serialized array of IotHubQuotaMetricInfo objects with a next link.
- */
+/** The JSON-serialized array of IotHubQuotaMetricInfo objects with a next link. */
 @Fluent
 public final class IotHubQuotaMetricInfoListResult {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(IotHubQuotaMetricInfoListResult.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(IotHubQuotaMetricInfoListResult.class);
 
     /*
      * The array of quota metrics objects.
@@ -35,7 +30,7 @@ public final class IotHubQuotaMetricInfoListResult {
 
     /**
      * Get the value property: The array of quota metrics objects.
-     * 
+     *
      * @return the value value.
      */
     public List<IotHubQuotaMetricInfoInner> value() {
@@ -44,7 +39,7 @@ public final class IotHubQuotaMetricInfoListResult {
 
     /**
      * Set the value property: The array of quota metrics objects.
-     * 
+     *
      * @param value the value value to set.
      * @return the IotHubQuotaMetricInfoListResult object itself.
      */
@@ -55,7 +50,7 @@ public final class IotHubQuotaMetricInfoListResult {
 
     /**
      * Get the nextLink property: The next link.
-     * 
+     *
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -64,7 +59,7 @@ public final class IotHubQuotaMetricInfoListResult {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

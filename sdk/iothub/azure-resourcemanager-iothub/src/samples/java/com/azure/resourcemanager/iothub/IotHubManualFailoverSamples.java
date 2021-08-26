@@ -7,17 +7,18 @@ package com.azure.resourcemanager.iothub;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.iothub.models.FailoverInput;
 
-/**
- * Samples for IotHub ManualFailover.
- */
+/** Samples for IotHub ManualFailover. */
 public final class IotHubManualFailoverSamples {
     /**
      * Sample code: IotHub_ManualFailover.
-     * 
-     * @param iotHubManager Entry point to IotHubManager.
-     * Use this API to manage the IoT hubs in your Azure subscription.
+     *
+     * @param iotHubManager Entry point to IotHubManager. Use this API to manage the IoT hubs in your Azure
+     *     subscription.
      */
     public static void iotHubManualFailover(com.azure.resourcemanager.iothub.IotHubManager iotHubManager) {
-        iotHubManager.iotHubs().manualFailover("testHub", "myResourceGroup", new FailoverInput().withFailoverRegion("testHub"), Context.NONE);
+        iotHubManager
+            .iotHubs()
+            .manualFailover(
+                "testHub", "myResourceGroup", new FailoverInput().withFailoverRegion("testHub"), Context.NONE);
     }
 }

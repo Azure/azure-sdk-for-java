@@ -6,34 +6,32 @@ package com.azure.resourcemanager.iothub.models;
 
 import com.azure.resourcemanager.iothub.fluent.models.IotHubNameAvailabilityInfoInner;
 
-/**
- * An immutable client-side representation of IotHubNameAvailabilityInfo.
- */
+/** An immutable client-side representation of IotHubNameAvailabilityInfo. */
 public interface IotHubNameAvailabilityInfo {
     /**
      * Gets the nameAvailable property: The value which indicates whether the provided name is available.
-     * 
+     *
      * @return the nameAvailable value.
      */
     Boolean nameAvailable();
 
     /**
      * Gets the reason property: The reason for unavailability.
-     * 
+     *
      * @return the reason value.
      */
     IotHubNameUnavailabilityReason reason();
 
     /**
      * Gets the message property: The detailed reason message.
-     * 
+     *
      * @return the message value.
      */
     String message();
 
     /**
      * Gets the inner com.azure.resourcemanager.iothub.fluent.models.IotHubNameAvailabilityInfoInner object.
-     * 
+     *
      * @return the inner object.
      */
     IotHubNameAvailabilityInfoInner innerModel();

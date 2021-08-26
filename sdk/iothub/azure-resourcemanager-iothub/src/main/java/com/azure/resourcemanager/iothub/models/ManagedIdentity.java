@@ -5,19 +5,14 @@
 package com.azure.resourcemanager.iothub.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The properties of the Managed identity.
- */
+/** The properties of the Managed identity. */
 @Fluent
 public class ManagedIdentity {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(ManagedIdentity.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagedIdentity.class);
 
     /*
      * The user assigned identity.
@@ -27,7 +22,7 @@ public class ManagedIdentity {
 
     /**
      * Get the userAssignedIdentity property: The user assigned identity.
-     * 
+     *
      * @return the userAssignedIdentity value.
      */
     public String userAssignedIdentity() {
@@ -36,7 +31,7 @@ public class ManagedIdentity {
 
     /**
      * Set the userAssignedIdentity property: The user assigned identity.
-     * 
+     *
      * @param userAssignedIdentity the userAssignedIdentity value to set.
      * @return the ManagedIdentity object itself.
      */
@@ -47,7 +42,7 @@ public class ManagedIdentity {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

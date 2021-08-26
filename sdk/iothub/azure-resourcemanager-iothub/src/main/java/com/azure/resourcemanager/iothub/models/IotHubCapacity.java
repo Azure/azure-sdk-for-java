@@ -4,20 +4,15 @@
 
 package com.azure.resourcemanager.iothub.models;
 
-import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * IoT Hub capacity information.
- */
+/** IoT Hub capacity information. */
 @Immutable
 public final class IotHubCapacity {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(IotHubCapacity.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(IotHubCapacity.class);
 
     /*
      * The minimum number of units.
@@ -45,7 +40,7 @@ public final class IotHubCapacity {
 
     /**
      * Get the minimum property: The minimum number of units.
-     * 
+     *
      * @return the minimum value.
      */
     public Long minimum() {
@@ -54,7 +49,7 @@ public final class IotHubCapacity {
 
     /**
      * Get the maximum property: The maximum number of units.
-     * 
+     *
      * @return the maximum value.
      */
     public Long maximum() {
@@ -63,7 +58,7 @@ public final class IotHubCapacity {
 
     /**
      * Get the defaultProperty property: The default number of units.
-     * 
+     *
      * @return the defaultProperty value.
      */
     public Long defaultProperty() {
@@ -72,7 +67,7 @@ public final class IotHubCapacity {
 
     /**
      * Get the scaleType property: The type of the scaling enabled.
-     * 
+     *
      * @return the scaleType value.
      */
     public IotHubScaleType scaleType() {
@@ -81,7 +76,7 @@ public final class IotHubCapacity {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

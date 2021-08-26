@@ -33,80 +33,139 @@ import com.azure.resourcemanager.iothub.models.CertificateVerificationDescriptio
 import com.azure.resourcemanager.iothub.models.ErrorDetailsException;
 import reactor.core.publisher.Mono;
 
-/**
- * An instance of this class provides access to all the operations defined in
- * CertificatesClient.
- */
+/** An instance of this class provides access to all the operations defined in CertificatesClient. */
 public final class CertificatesClientImpl implements CertificatesClient {
     private final ClientLogger logger = new ClientLogger(CertificatesClientImpl.class);
 
-    /**
-     * The proxy service used to perform REST calls.
-     */
+    /** The proxy service used to perform REST calls. */
     private final CertificatesService service;
 
-    /**
-     * The service client containing this operation class.
-     */
+    /** The service client containing this operation class. */
     private final IotHubClientImpl client;
 
     /**
      * Initializes an instance of CertificatesClientImpl.
-     * 
+     *
      * @param client the instance of the service client containing this operation class.
      */
     CertificatesClientImpl(IotHubClientImpl client) {
-        this.service = RestProxy.create(CertificatesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service =
+            RestProxy.create(CertificatesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for IotHubClientCertificates to
-     * be used by the proxy service to perform REST calls.
+     * The interface defining all the services for IotHubClientCertificates to be used by the proxy service to perform
+     * REST calls.
      */
     @Host("{$host}")
     @ServiceInterface(name = "IotHubClientCertific")
     private interface CertificatesService {
-        @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/IotHubs/{resourceName}/certificates")
+        @Headers({"Content-Type: application/json"})
+        @Get(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/IotHubs"
+                + "/{resourceName}/certificates")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorDetailsException.class)
-        Mono<Response<CertificateListDescriptionInner>> listByIotHub(@HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("resourceName") String resourceName, @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<CertificateListDescriptionInner>> listByIotHub(
+            @HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("resourceName") String resourceName,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/IotHubs/{resourceName}/certificates/{certificateName}")
+        @Headers({"Content-Type: application/json"})
+        @Get(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/IotHubs"
+                + "/{resourceName}/certificates/{certificateName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorDetailsException.class)
-        Mono<Response<CertificateDescriptionInner>> get(@HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("resourceName") String resourceName, @PathParam("certificateName") String certificateName, @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<CertificateDescriptionInner>> get(
+            @HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("resourceName") String resourceName,
+            @PathParam("certificateName") String certificateName,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({ "Content-Type: application/json" })
-        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/IotHubs/{resourceName}/certificates/{certificateName}")
+        @Headers({"Content-Type: application/json"})
+        @Put(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/IotHubs"
+                + "/{resourceName}/certificates/{certificateName}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ErrorDetailsException.class)
-        Mono<Response<CertificateDescriptionInner>> createOrUpdate(@HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("resourceName") String resourceName, @PathParam("certificateName") String certificateName, @HeaderParam("If-Match") String ifMatch, @BodyParam("application/json") CertificateDescriptionInner certificateDescription, @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<CertificateDescriptionInner>> createOrUpdate(
+            @HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("resourceName") String resourceName,
+            @PathParam("certificateName") String certificateName,
+            @HeaderParam("If-Match") String ifMatch,
+            @BodyParam("application/json") CertificateDescriptionInner certificateDescription,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({ "Content-Type: application/json" })
-        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/IotHubs/{resourceName}/certificates/{certificateName}")
+        @Headers({"Content-Type: application/json"})
+        @Delete(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/IotHubs"
+                + "/{resourceName}/certificates/{certificateName}")
         @ExpectedResponses({200, 204})
         @UnexpectedResponseExceptionType(ErrorDetailsException.class)
-        Mono<Response<Void>> delete(@HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("resourceName") String resourceName, @PathParam("certificateName") String certificateName, @HeaderParam("If-Match") String ifMatch, @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<Void>> delete(
+            @HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("resourceName") String resourceName,
+            @PathParam("certificateName") String certificateName,
+            @HeaderParam("If-Match") String ifMatch,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({ "Content-Type: application/json" })
-        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/IotHubs/{resourceName}/certificates/{certificateName}/generateVerificationCode")
+        @Headers({"Content-Type: application/json"})
+        @Post(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/IotHubs"
+                + "/{resourceName}/certificates/{certificateName}/generateVerificationCode")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorDetailsException.class)
-        Mono<Response<CertificateWithNonceDescriptionInner>> generateVerificationCode(@HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("resourceName") String resourceName, @PathParam("certificateName") String certificateName, @HeaderParam("If-Match") String ifMatch, @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<CertificateWithNonceDescriptionInner>> generateVerificationCode(
+            @HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("resourceName") String resourceName,
+            @PathParam("certificateName") String certificateName,
+            @HeaderParam("If-Match") String ifMatch,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({ "Content-Type: application/json" })
-        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/IotHubs/{resourceName}/certificates/{certificateName}/verify")
+        @Headers({"Content-Type: application/json"})
+        @Post(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/IotHubs"
+                + "/{resourceName}/certificates/{certificateName}/verify")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorDetailsException.class)
-        Mono<Response<CertificateDescriptionInner>> verify(@HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("resourceName") String resourceName, @PathParam("certificateName") String certificateName, @HeaderParam("If-Match") String ifMatch, @BodyParam("application/json") CertificateVerificationDescription certificateVerificationBody, @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<CertificateDescriptionInner>> verify(
+            @HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("resourceName") String resourceName,
+            @PathParam("certificateName") String certificateName,
+            @HeaderParam("If-Match") String ifMatch,
+            @BodyParam("application/json") CertificateVerificationDescription certificateVerificationBody,
+            @HeaderParam("Accept") String accept,
+            Context context);
     }
 
     /**
      * Returns the list of certificates.
-     * 
+     *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -115,27 +174,46 @@ public final class CertificatesClientImpl implements CertificatesClient {
      * @return the JSON-serialized array of Certificate objects.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<CertificateListDescriptionInner>> listByIotHubWithResponseAsync(String resourceGroupName, String resourceName) {
+    private Mono<Response<CertificateListDescriptionInner>> listByIotHubWithResponseAsync(
+        String resourceGroupName, String resourceName) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.listByIotHub(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, resourceName, accept, context))
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .listByIotHub(
+                            this.client.getEndpoint(),
+                            this.client.getApiVersion(),
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            resourceName,
+                            accept,
+                            context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Returns the list of certificates.
-     * 
+     *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
      * @param context The context to associate with this operation.
@@ -145,27 +223,43 @@ public final class CertificatesClientImpl implements CertificatesClient {
      * @return the JSON-serialized array of Certificate objects.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<CertificateListDescriptionInner>> listByIotHubWithResponseAsync(String resourceGroupName, String resourceName, Context context) {
+    private Mono<Response<CertificateListDescriptionInner>> listByIotHubWithResponseAsync(
+        String resourceGroupName, String resourceName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.listByIotHub(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, resourceName, accept, context);
+        return service
+            .listByIotHub(
+                this.client.getEndpoint(),
+                this.client.getApiVersion(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                resourceName,
+                accept,
+                context);
     }
 
     /**
      * Returns the list of certificates.
-     * 
+     *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -176,18 +270,19 @@ public final class CertificatesClientImpl implements CertificatesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<CertificateListDescriptionInner> listByIotHubAsync(String resourceGroupName, String resourceName) {
         return listByIotHubWithResponseAsync(resourceGroupName, resourceName)
-            .flatMap((Response<CertificateListDescriptionInner> res) -> {
-                if (res.getValue() != null) {
-                    return Mono.just(res.getValue());
-                } else {
-                    return Mono.empty();
-                }
-            });
+            .flatMap(
+                (Response<CertificateListDescriptionInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
      * Returns the list of certificates.
-     * 
+     *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -202,7 +297,7 @@ public final class CertificatesClientImpl implements CertificatesClient {
 
     /**
      * Returns the list of certificates.
-     * 
+     *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
      * @param context The context to associate with this operation.
@@ -212,13 +307,14 @@ public final class CertificatesClientImpl implements CertificatesClient {
      * @return the JSON-serialized array of Certificate objects.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CertificateListDescriptionInner> listByIotHubWithResponse(String resourceGroupName, String resourceName, Context context) {
+    public Response<CertificateListDescriptionInner> listByIotHubWithResponse(
+        String resourceGroupName, String resourceName, Context context) {
         return listByIotHubWithResponseAsync(resourceGroupName, resourceName, context).block();
     }
 
     /**
      * Returns the certificate.
-     * 
+     *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
      * @param certificateName The name of the certificate.
@@ -228,30 +324,51 @@ public final class CertificatesClientImpl implements CertificatesClient {
      * @return the X509 Certificate.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<CertificateDescriptionInner>> getWithResponseAsync(String resourceGroupName, String resourceName, String certificateName) {
+    private Mono<Response<CertificateDescriptionInner>> getWithResponseAsync(
+        String resourceGroupName, String resourceName, String certificateName) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (certificateName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter certificateName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter certificateName is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, resourceName, certificateName, accept, context))
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .get(
+                            this.client.getEndpoint(),
+                            this.client.getApiVersion(),
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            resourceName,
+                            certificateName,
+                            accept,
+                            context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Returns the certificate.
-     * 
+     *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
      * @param certificateName The name of the certificate.
@@ -262,30 +379,48 @@ public final class CertificatesClientImpl implements CertificatesClient {
      * @return the X509 Certificate.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<CertificateDescriptionInner>> getWithResponseAsync(String resourceGroupName, String resourceName, String certificateName, Context context) {
+    private Mono<Response<CertificateDescriptionInner>> getWithResponseAsync(
+        String resourceGroupName, String resourceName, String certificateName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (certificateName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter certificateName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter certificateName is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.get(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, resourceName, certificateName, accept, context);
+        return service
+            .get(
+                this.client.getEndpoint(),
+                this.client.getApiVersion(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                resourceName,
+                certificateName,
+                accept,
+                context);
     }
 
     /**
      * Returns the certificate.
-     * 
+     *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
      * @param certificateName The name of the certificate.
@@ -295,20 +430,22 @@ public final class CertificatesClientImpl implements CertificatesClient {
      * @return the X509 Certificate.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<CertificateDescriptionInner> getAsync(String resourceGroupName, String resourceName, String certificateName) {
+    private Mono<CertificateDescriptionInner> getAsync(
+        String resourceGroupName, String resourceName, String certificateName) {
         return getWithResponseAsync(resourceGroupName, resourceName, certificateName)
-            .flatMap((Response<CertificateDescriptionInner> res) -> {
-                if (res.getValue() != null) {
-                    return Mono.just(res.getValue());
-                } else {
-                    return Mono.empty();
-                }
-            });
+            .flatMap(
+                (Response<CertificateDescriptionInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
      * Returns the certificate.
-     * 
+     *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
      * @param certificateName The name of the certificate.
@@ -324,7 +461,7 @@ public final class CertificatesClientImpl implements CertificatesClient {
 
     /**
      * Returns the certificate.
-     * 
+     *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
      * @param certificateName The name of the certificate.
@@ -335,58 +472,90 @@ public final class CertificatesClientImpl implements CertificatesClient {
      * @return the X509 Certificate.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CertificateDescriptionInner> getWithResponse(String resourceGroupName, String resourceName, String certificateName, Context context) {
+    public Response<CertificateDescriptionInner> getWithResponse(
+        String resourceGroupName, String resourceName, String certificateName, Context context) {
         return getWithResponseAsync(resourceGroupName, resourceName, certificateName, context).block();
     }
 
     /**
      * Adds new or replaces existing certificate.
-     * 
+     *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
      * @param certificateName The name of the certificate.
      * @param certificateDescription The certificate body.
-     * @param ifMatch ETag of the Certificate. Do not specify for creating a brand new certificate. Required to update an existing certificate.
+     * @param ifMatch ETag of the Certificate. Do not specify for creating a brand new certificate. Required to update
+     *     an existing certificate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the X509 Certificate.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<CertificateDescriptionInner>> createOrUpdateWithResponseAsync(String resourceGroupName, String resourceName, String certificateName, CertificateDescriptionInner certificateDescription, String ifMatch) {
+    private Mono<Response<CertificateDescriptionInner>> createOrUpdateWithResponseAsync(
+        String resourceGroupName,
+        String resourceName,
+        String certificateName,
+        CertificateDescriptionInner certificateDescription,
+        String ifMatch) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (certificateName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter certificateName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter certificateName is required and cannot be null."));
         }
         if (certificateDescription == null) {
-            return Mono.error(new IllegalArgumentException("Parameter certificateDescription is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException("Parameter certificateDescription is required and cannot be null."));
         } else {
             certificateDescription.validate();
         }
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, resourceName, certificateName, ifMatch, certificateDescription, accept, context))
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .createOrUpdate(
+                            this.client.getEndpoint(),
+                            this.client.getApiVersion(),
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            resourceName,
+                            certificateName,
+                            ifMatch,
+                            certificateDescription,
+                            accept,
+                            context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Adds new or replaces existing certificate.
-     * 
+     *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
      * @param certificateName The name of the certificate.
      * @param certificateDescription The certificate body.
-     * @param ifMatch ETag of the Certificate. Do not specify for creating a brand new certificate. Required to update an existing certificate.
+     * @param ifMatch ETag of the Certificate. Do not specify for creating a brand new certificate. Required to update
+     *     an existing certificate.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
@@ -394,60 +563,95 @@ public final class CertificatesClientImpl implements CertificatesClient {
      * @return the X509 Certificate.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<CertificateDescriptionInner>> createOrUpdateWithResponseAsync(String resourceGroupName, String resourceName, String certificateName, CertificateDescriptionInner certificateDescription, String ifMatch, Context context) {
+    private Mono<Response<CertificateDescriptionInner>> createOrUpdateWithResponseAsync(
+        String resourceGroupName,
+        String resourceName,
+        String certificateName,
+        CertificateDescriptionInner certificateDescription,
+        String ifMatch,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (certificateName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter certificateName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter certificateName is required and cannot be null."));
         }
         if (certificateDescription == null) {
-            return Mono.error(new IllegalArgumentException("Parameter certificateDescription is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException("Parameter certificateDescription is required and cannot be null."));
         } else {
             certificateDescription.validate();
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.createOrUpdate(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, resourceName, certificateName, ifMatch, certificateDescription, accept, context);
+        return service
+            .createOrUpdate(
+                this.client.getEndpoint(),
+                this.client.getApiVersion(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                resourceName,
+                certificateName,
+                ifMatch,
+                certificateDescription,
+                accept,
+                context);
     }
 
     /**
      * Adds new or replaces existing certificate.
-     * 
+     *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
      * @param certificateName The name of the certificate.
      * @param certificateDescription The certificate body.
-     * @param ifMatch ETag of the Certificate. Do not specify for creating a brand new certificate. Required to update an existing certificate.
+     * @param ifMatch ETag of the Certificate. Do not specify for creating a brand new certificate. Required to update
+     *     an existing certificate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the X509 Certificate.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<CertificateDescriptionInner> createOrUpdateAsync(String resourceGroupName, String resourceName, String certificateName, CertificateDescriptionInner certificateDescription, String ifMatch) {
-        return createOrUpdateWithResponseAsync(resourceGroupName, resourceName, certificateName, certificateDescription, ifMatch)
-            .flatMap((Response<CertificateDescriptionInner> res) -> {
-                if (res.getValue() != null) {
-                    return Mono.just(res.getValue());
-                } else {
-                    return Mono.empty();
-                }
-            });
+    private Mono<CertificateDescriptionInner> createOrUpdateAsync(
+        String resourceGroupName,
+        String resourceName,
+        String certificateName,
+        CertificateDescriptionInner certificateDescription,
+        String ifMatch) {
+        return createOrUpdateWithResponseAsync(
+                resourceGroupName, resourceName, certificateName, certificateDescription, ifMatch)
+            .flatMap(
+                (Response<CertificateDescriptionInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
      * Adds new or replaces existing certificate.
-     * 
+     *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
      * @param certificateName The name of the certificate.
@@ -458,21 +662,27 @@ public final class CertificatesClientImpl implements CertificatesClient {
      * @return the X509 Certificate.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<CertificateDescriptionInner> createOrUpdateAsync(String resourceGroupName, String resourceName, String certificateName, CertificateDescriptionInner certificateDescription) {
+    private Mono<CertificateDescriptionInner> createOrUpdateAsync(
+        String resourceGroupName,
+        String resourceName,
+        String certificateName,
+        CertificateDescriptionInner certificateDescription) {
         final String ifMatch = null;
-        return createOrUpdateWithResponseAsync(resourceGroupName, resourceName, certificateName, certificateDescription, ifMatch)
-            .flatMap((Response<CertificateDescriptionInner> res) -> {
-                if (res.getValue() != null) {
-                    return Mono.just(res.getValue());
-                } else {
-                    return Mono.empty();
-                }
-            });
+        return createOrUpdateWithResponseAsync(
+                resourceGroupName, resourceName, certificateName, certificateDescription, ifMatch)
+            .flatMap(
+                (Response<CertificateDescriptionInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
      * Adds new or replaces existing certificate.
-     * 
+     *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
      * @param certificateName The name of the certificate.
@@ -483,19 +693,25 @@ public final class CertificatesClientImpl implements CertificatesClient {
      * @return the X509 Certificate.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CertificateDescriptionInner createOrUpdate(String resourceGroupName, String resourceName, String certificateName, CertificateDescriptionInner certificateDescription) {
+    public CertificateDescriptionInner createOrUpdate(
+        String resourceGroupName,
+        String resourceName,
+        String certificateName,
+        CertificateDescriptionInner certificateDescription) {
         final String ifMatch = null;
-        return createOrUpdateAsync(resourceGroupName, resourceName, certificateName, certificateDescription, ifMatch).block();
+        return createOrUpdateAsync(resourceGroupName, resourceName, certificateName, certificateDescription, ifMatch)
+            .block();
     }
 
     /**
      * Adds new or replaces existing certificate.
-     * 
+     *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
      * @param certificateName The name of the certificate.
      * @param certificateDescription The certificate body.
-     * @param ifMatch ETag of the Certificate. Do not specify for creating a brand new certificate. Required to update an existing certificate.
+     * @param ifMatch ETag of the Certificate. Do not specify for creating a brand new certificate. Required to update
+     *     an existing certificate.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
@@ -503,13 +719,21 @@ public final class CertificatesClientImpl implements CertificatesClient {
      * @return the X509 Certificate.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CertificateDescriptionInner> createOrUpdateWithResponse(String resourceGroupName, String resourceName, String certificateName, CertificateDescriptionInner certificateDescription, String ifMatch, Context context) {
-        return createOrUpdateWithResponseAsync(resourceGroupName, resourceName, certificateName, certificateDescription, ifMatch, context).block();
+    public Response<CertificateDescriptionInner> createOrUpdateWithResponse(
+        String resourceGroupName,
+        String resourceName,
+        String certificateName,
+        CertificateDescriptionInner certificateDescription,
+        String ifMatch,
+        Context context) {
+        return createOrUpdateWithResponseAsync(
+                resourceGroupName, resourceName, certificateName, certificateDescription, ifMatch, context)
+            .block();
     }
 
     /**
      * Deletes an existing X509 certificate or does nothing if it does not exist.
-     * 
+     *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
      * @param certificateName The name of the certificate.
@@ -520,33 +744,55 @@ public final class CertificatesClientImpl implements CertificatesClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String resourceName, String certificateName, String ifMatch) {
+    private Mono<Response<Void>> deleteWithResponseAsync(
+        String resourceGroupName, String resourceName, String certificateName, String ifMatch) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (certificateName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter certificateName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter certificateName is required and cannot be null."));
         }
         if (ifMatch == null) {
             return Mono.error(new IllegalArgumentException("Parameter ifMatch is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, resourceName, certificateName, ifMatch, accept, context))
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .delete(
+                            this.client.getEndpoint(),
+                            this.client.getApiVersion(),
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            resourceName,
+                            certificateName,
+                            ifMatch,
+                            accept,
+                            context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Deletes an existing X509 certificate or does nothing if it does not exist.
-     * 
+     *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
      * @param certificateName The name of the certificate.
@@ -558,33 +804,52 @@ public final class CertificatesClientImpl implements CertificatesClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String resourceName, String certificateName, String ifMatch, Context context) {
+    private Mono<Response<Void>> deleteWithResponseAsync(
+        String resourceGroupName, String resourceName, String certificateName, String ifMatch, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (certificateName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter certificateName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter certificateName is required and cannot be null."));
         }
         if (ifMatch == null) {
             return Mono.error(new IllegalArgumentException("Parameter ifMatch is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.delete(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, resourceName, certificateName, ifMatch, accept, context);
+        return service
+            .delete(
+                this.client.getEndpoint(),
+                this.client.getApiVersion(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                resourceName,
+                certificateName,
+                ifMatch,
+                accept,
+                context);
     }
 
     /**
      * Deletes an existing X509 certificate or does nothing if it does not exist.
-     * 
+     *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
      * @param certificateName The name of the certificate.
@@ -595,14 +860,15 @@ public final class CertificatesClientImpl implements CertificatesClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(String resourceGroupName, String resourceName, String certificateName, String ifMatch) {
+    private Mono<Void> deleteAsync(
+        String resourceGroupName, String resourceName, String certificateName, String ifMatch) {
         return deleteWithResponseAsync(resourceGroupName, resourceName, certificateName, ifMatch)
             .flatMap((Response<Void> res) -> Mono.empty());
     }
 
     /**
      * Deletes an existing X509 certificate or does nothing if it does not exist.
-     * 
+     *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
      * @param certificateName The name of the certificate.
@@ -618,7 +884,7 @@ public final class CertificatesClientImpl implements CertificatesClient {
 
     /**
      * Deletes an existing X509 certificate or does nothing if it does not exist.
-     * 
+     *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
      * @param certificateName The name of the certificate.
@@ -630,13 +896,15 @@ public final class CertificatesClientImpl implements CertificatesClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(String resourceGroupName, String resourceName, String certificateName, String ifMatch, Context context) {
+    public Response<Void> deleteWithResponse(
+        String resourceGroupName, String resourceName, String certificateName, String ifMatch, Context context) {
         return deleteWithResponseAsync(resourceGroupName, resourceName, certificateName, ifMatch, context).block();
     }
 
     /**
-     * Generates verification code for proof of possession flow. The verification code will be used to generate a leaf certificate.
-     * 
+     * Generates verification code for proof of possession flow. The verification code will be used to generate a leaf
+     * certificate.
+     *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
      * @param certificateName The name of the certificate.
@@ -647,33 +915,56 @@ public final class CertificatesClientImpl implements CertificatesClient {
      * @return the X509 Certificate.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<CertificateWithNonceDescriptionInner>> generateVerificationCodeWithResponseAsync(String resourceGroupName, String resourceName, String certificateName, String ifMatch) {
+    private Mono<Response<CertificateWithNonceDescriptionInner>> generateVerificationCodeWithResponseAsync(
+        String resourceGroupName, String resourceName, String certificateName, String ifMatch) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (certificateName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter certificateName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter certificateName is required and cannot be null."));
         }
         if (ifMatch == null) {
             return Mono.error(new IllegalArgumentException("Parameter ifMatch is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.generateVerificationCode(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, resourceName, certificateName, ifMatch, accept, context))
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .generateVerificationCode(
+                            this.client.getEndpoint(),
+                            this.client.getApiVersion(),
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            resourceName,
+                            certificateName,
+                            ifMatch,
+                            accept,
+                            context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * Generates verification code for proof of possession flow. The verification code will be used to generate a leaf certificate.
-     * 
+     * Generates verification code for proof of possession flow. The verification code will be used to generate a leaf
+     * certificate.
+     *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
      * @param certificateName The name of the certificate.
@@ -685,33 +976,53 @@ public final class CertificatesClientImpl implements CertificatesClient {
      * @return the X509 Certificate.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<CertificateWithNonceDescriptionInner>> generateVerificationCodeWithResponseAsync(String resourceGroupName, String resourceName, String certificateName, String ifMatch, Context context) {
+    private Mono<Response<CertificateWithNonceDescriptionInner>> generateVerificationCodeWithResponseAsync(
+        String resourceGroupName, String resourceName, String certificateName, String ifMatch, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (certificateName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter certificateName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter certificateName is required and cannot be null."));
         }
         if (ifMatch == null) {
             return Mono.error(new IllegalArgumentException("Parameter ifMatch is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.generateVerificationCode(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, resourceName, certificateName, ifMatch, accept, context);
+        return service
+            .generateVerificationCode(
+                this.client.getEndpoint(),
+                this.client.getApiVersion(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                resourceName,
+                certificateName,
+                ifMatch,
+                accept,
+                context);
     }
 
     /**
-     * Generates verification code for proof of possession flow. The verification code will be used to generate a leaf certificate.
-     * 
+     * Generates verification code for proof of possession flow. The verification code will be used to generate a leaf
+     * certificate.
+     *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
      * @param certificateName The name of the certificate.
@@ -722,20 +1033,23 @@ public final class CertificatesClientImpl implements CertificatesClient {
      * @return the X509 Certificate.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<CertificateWithNonceDescriptionInner> generateVerificationCodeAsync(String resourceGroupName, String resourceName, String certificateName, String ifMatch) {
+    private Mono<CertificateWithNonceDescriptionInner> generateVerificationCodeAsync(
+        String resourceGroupName, String resourceName, String certificateName, String ifMatch) {
         return generateVerificationCodeWithResponseAsync(resourceGroupName, resourceName, certificateName, ifMatch)
-            .flatMap((Response<CertificateWithNonceDescriptionInner> res) -> {
-                if (res.getValue() != null) {
-                    return Mono.just(res.getValue());
-                } else {
-                    return Mono.empty();
-                }
-            });
+            .flatMap(
+                (Response<CertificateWithNonceDescriptionInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
-     * Generates verification code for proof of possession flow. The verification code will be used to generate a leaf certificate.
-     * 
+     * Generates verification code for proof of possession flow. The verification code will be used to generate a leaf
+     * certificate.
+     *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
      * @param certificateName The name of the certificate.
@@ -746,13 +1060,15 @@ public final class CertificatesClientImpl implements CertificatesClient {
      * @return the X509 Certificate.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CertificateWithNonceDescriptionInner generateVerificationCode(String resourceGroupName, String resourceName, String certificateName, String ifMatch) {
+    public CertificateWithNonceDescriptionInner generateVerificationCode(
+        String resourceGroupName, String resourceName, String certificateName, String ifMatch) {
         return generateVerificationCodeAsync(resourceGroupName, resourceName, certificateName, ifMatch).block();
     }
 
     /**
-     * Generates verification code for proof of possession flow. The verification code will be used to generate a leaf certificate.
-     * 
+     * Generates verification code for proof of possession flow. The verification code will be used to generate a leaf
+     * certificate.
+     *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
      * @param certificateName The name of the certificate.
@@ -764,13 +1080,17 @@ public final class CertificatesClientImpl implements CertificatesClient {
      * @return the X509 Certificate.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CertificateWithNonceDescriptionInner> generateVerificationCodeWithResponse(String resourceGroupName, String resourceName, String certificateName, String ifMatch, Context context) {
-        return generateVerificationCodeWithResponseAsync(resourceGroupName, resourceName, certificateName, ifMatch, context).block();
+    public Response<CertificateWithNonceDescriptionInner> generateVerificationCodeWithResponse(
+        String resourceGroupName, String resourceName, String certificateName, String ifMatch, Context context) {
+        return generateVerificationCodeWithResponseAsync(
+                resourceGroupName, resourceName, certificateName, ifMatch, context)
+            .block();
     }
 
     /**
-     * Verifies the certificate's private key possession by providing the leaf cert issued by the verifying pre uploaded certificate.
-     * 
+     * Verifies the certificate's private key possession by providing the leaf cert issued by the verifying pre uploaded
+     * certificate.
+     *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
      * @param certificateName The name of the certificate.
@@ -782,38 +1102,69 @@ public final class CertificatesClientImpl implements CertificatesClient {
      * @return the X509 Certificate.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<CertificateDescriptionInner>> verifyWithResponseAsync(String resourceGroupName, String resourceName, String certificateName, String ifMatch, CertificateVerificationDescription certificateVerificationBody) {
+    private Mono<Response<CertificateDescriptionInner>> verifyWithResponseAsync(
+        String resourceGroupName,
+        String resourceName,
+        String certificateName,
+        String ifMatch,
+        CertificateVerificationDescription certificateVerificationBody) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (certificateName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter certificateName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter certificateName is required and cannot be null."));
         }
         if (ifMatch == null) {
             return Mono.error(new IllegalArgumentException("Parameter ifMatch is required and cannot be null."));
         }
         if (certificateVerificationBody == null) {
-            return Mono.error(new IllegalArgumentException("Parameter certificateVerificationBody is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter certificateVerificationBody is required and cannot be null."));
         } else {
             certificateVerificationBody.validate();
         }
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.verify(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, resourceName, certificateName, ifMatch, certificateVerificationBody, accept, context))
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .verify(
+                            this.client.getEndpoint(),
+                            this.client.getApiVersion(),
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            resourceName,
+                            certificateName,
+                            ifMatch,
+                            certificateVerificationBody,
+                            accept,
+                            context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * Verifies the certificate's private key possession by providing the leaf cert issued by the verifying pre uploaded certificate.
-     * 
+     * Verifies the certificate's private key possession by providing the leaf cert issued by the verifying pre uploaded
+     * certificate.
+     *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
      * @param certificateName The name of the certificate.
@@ -826,38 +1177,67 @@ public final class CertificatesClientImpl implements CertificatesClient {
      * @return the X509 Certificate.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<CertificateDescriptionInner>> verifyWithResponseAsync(String resourceGroupName, String resourceName, String certificateName, String ifMatch, CertificateVerificationDescription certificateVerificationBody, Context context) {
+    private Mono<Response<CertificateDescriptionInner>> verifyWithResponseAsync(
+        String resourceGroupName,
+        String resourceName,
+        String certificateName,
+        String ifMatch,
+        CertificateVerificationDescription certificateVerificationBody,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (certificateName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter certificateName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter certificateName is required and cannot be null."));
         }
         if (ifMatch == null) {
             return Mono.error(new IllegalArgumentException("Parameter ifMatch is required and cannot be null."));
         }
         if (certificateVerificationBody == null) {
-            return Mono.error(new IllegalArgumentException("Parameter certificateVerificationBody is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter certificateVerificationBody is required and cannot be null."));
         } else {
             certificateVerificationBody.validate();
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.verify(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, resourceName, certificateName, ifMatch, certificateVerificationBody, accept, context);
+        return service
+            .verify(
+                this.client.getEndpoint(),
+                this.client.getApiVersion(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                resourceName,
+                certificateName,
+                ifMatch,
+                certificateVerificationBody,
+                accept,
+                context);
     }
 
     /**
-     * Verifies the certificate's private key possession by providing the leaf cert issued by the verifying pre uploaded certificate.
-     * 
+     * Verifies the certificate's private key possession by providing the leaf cert issued by the verifying pre uploaded
+     * certificate.
+     *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
      * @param certificateName The name of the certificate.
@@ -869,20 +1249,28 @@ public final class CertificatesClientImpl implements CertificatesClient {
      * @return the X509 Certificate.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<CertificateDescriptionInner> verifyAsync(String resourceGroupName, String resourceName, String certificateName, String ifMatch, CertificateVerificationDescription certificateVerificationBody) {
-        return verifyWithResponseAsync(resourceGroupName, resourceName, certificateName, ifMatch, certificateVerificationBody)
-            .flatMap((Response<CertificateDescriptionInner> res) -> {
-                if (res.getValue() != null) {
-                    return Mono.just(res.getValue());
-                } else {
-                    return Mono.empty();
-                }
-            });
+    private Mono<CertificateDescriptionInner> verifyAsync(
+        String resourceGroupName,
+        String resourceName,
+        String certificateName,
+        String ifMatch,
+        CertificateVerificationDescription certificateVerificationBody) {
+        return verifyWithResponseAsync(
+                resourceGroupName, resourceName, certificateName, ifMatch, certificateVerificationBody)
+            .flatMap(
+                (Response<CertificateDescriptionInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
-     * Verifies the certificate's private key possession by providing the leaf cert issued by the verifying pre uploaded certificate.
-     * 
+     * Verifies the certificate's private key possession by providing the leaf cert issued by the verifying pre uploaded
+     * certificate.
+     *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
      * @param certificateName The name of the certificate.
@@ -894,13 +1282,20 @@ public final class CertificatesClientImpl implements CertificatesClient {
      * @return the X509 Certificate.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CertificateDescriptionInner verify(String resourceGroupName, String resourceName, String certificateName, String ifMatch, CertificateVerificationDescription certificateVerificationBody) {
-        return verifyAsync(resourceGroupName, resourceName, certificateName, ifMatch, certificateVerificationBody).block();
+    public CertificateDescriptionInner verify(
+        String resourceGroupName,
+        String resourceName,
+        String certificateName,
+        String ifMatch,
+        CertificateVerificationDescription certificateVerificationBody) {
+        return verifyAsync(resourceGroupName, resourceName, certificateName, ifMatch, certificateVerificationBody)
+            .block();
     }
 
     /**
-     * Verifies the certificate's private key possession by providing the leaf cert issued by the verifying pre uploaded certificate.
-     * 
+     * Verifies the certificate's private key possession by providing the leaf cert issued by the verifying pre uploaded
+     * certificate.
+     *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
      * @param certificateName The name of the certificate.
@@ -913,7 +1308,15 @@ public final class CertificatesClientImpl implements CertificatesClient {
      * @return the X509 Certificate.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CertificateDescriptionInner> verifyWithResponse(String resourceGroupName, String resourceName, String certificateName, String ifMatch, CertificateVerificationDescription certificateVerificationBody, Context context) {
-        return verifyWithResponseAsync(resourceGroupName, resourceName, certificateName, ifMatch, certificateVerificationBody, context).block();
+    public Response<CertificateDescriptionInner> verifyWithResponse(
+        String resourceGroupName,
+        String resourceName,
+        String certificateName,
+        String ifMatch,
+        CertificateVerificationDescription certificateVerificationBody,
+        Context context) {
+        return verifyWithResponseAsync(
+                resourceGroupName, resourceName, certificateName, ifMatch, certificateVerificationBody, context)
+            .block();
     }
 }

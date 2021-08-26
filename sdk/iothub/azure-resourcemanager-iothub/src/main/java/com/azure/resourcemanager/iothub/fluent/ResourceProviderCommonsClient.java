@@ -9,17 +9,14 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.iothub.fluent.models.UserSubscriptionQuotaListResultInner;
-import reactor.core.publisher.Mono;
 
-/**
- * An instance of this class provides access to all the operations defined in
- * ResourceProviderCommonsClient.
- */
+/** An instance of this class provides access to all the operations defined in ResourceProviderCommonsClient. */
 public interface ResourceProviderCommonsClient {
     /**
      * Get the number of free and paid iot hubs in the subscription.
-     * 
-     * @throws com.azure.resourcemanager.iothub.models.ErrorDetailsException thrown if the request is rejected by server.
+     *
+     * @throws com.azure.resourcemanager.iothub.models.ErrorDetailsException thrown if the request is rejected by
+     *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the number of free and paid iot hubs in the subscription.
      */
@@ -28,10 +25,11 @@ public interface ResourceProviderCommonsClient {
 
     /**
      * Get the number of free and paid iot hubs in the subscription.
-     * 
+     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.iothub.models.ErrorDetailsException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.iothub.models.ErrorDetailsException thrown if the request is rejected by
+     *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the number of free and paid iot hubs in the subscription.
      */

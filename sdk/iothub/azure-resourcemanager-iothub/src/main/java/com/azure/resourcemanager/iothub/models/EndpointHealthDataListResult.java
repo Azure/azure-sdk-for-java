@@ -5,21 +5,16 @@
 package com.azure.resourcemanager.iothub.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.iothub.fluent.models.EndpointHealthDataInner;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The JSON-serialized array of EndpointHealthData objects with a next link.
- */
+/** The JSON-serialized array of EndpointHealthData objects with a next link. */
 @Fluent
 public final class EndpointHealthDataListResult {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(EndpointHealthDataListResult.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(EndpointHealthDataListResult.class);
 
     /*
      * JSON-serialized array of Endpoint health data
@@ -35,7 +30,7 @@ public final class EndpointHealthDataListResult {
 
     /**
      * Get the value property: JSON-serialized array of Endpoint health data.
-     * 
+     *
      * @return the value value.
      */
     public List<EndpointHealthDataInner> value() {
@@ -44,7 +39,7 @@ public final class EndpointHealthDataListResult {
 
     /**
      * Set the value property: JSON-serialized array of Endpoint health data.
-     * 
+     *
      * @param value the value value to set.
      * @return the EndpointHealthDataListResult object itself.
      */
@@ -55,7 +50,7 @@ public final class EndpointHealthDataListResult {
 
     /**
      * Get the nextLink property: Link to more results.
-     * 
+     *
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -64,7 +59,7 @@ public final class EndpointHealthDataListResult {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

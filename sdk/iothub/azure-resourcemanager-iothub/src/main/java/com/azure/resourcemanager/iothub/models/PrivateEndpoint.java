@@ -4,20 +4,15 @@
 
 package com.azure.resourcemanager.iothub.models;
 
-import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The private endpoint property of a private endpoint connection.
- */
+/** The private endpoint property of a private endpoint connection. */
 @Immutable
 public final class PrivateEndpoint {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(PrivateEndpoint.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(PrivateEndpoint.class);
 
     /*
      * The resource identifier.
@@ -27,7 +22,7 @@ public final class PrivateEndpoint {
 
     /**
      * Get the id property: The resource identifier.
-     * 
+     *
      * @return the id value.
      */
     public String id() {
@@ -36,7 +31,7 @@ public final class PrivateEndpoint {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

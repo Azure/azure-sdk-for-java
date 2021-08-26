@@ -4,37 +4,25 @@
 
 package com.azure.resourcemanager.iothub.implementation;
 
-import com.azure.core.annotation.ExpectedResponses;
-import com.azure.core.annotation.Get;
-import com.azure.core.annotation.HeaderParam;
-import com.azure.core.annotation.Headers;
-import com.azure.core.annotation.HostParam;
-import com.azure.core.annotation.PathParam;
-import com.azure.core.annotation.QueryParam;
-import com.azure.core.annotation.ReturnType;
-import com.azure.core.annotation.ServiceMethod;
-import com.azure.core.annotation.UnexpectedResponseExceptionType;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.iothub.fluent.ResourceProviderCommonsClient;
 import com.azure.resourcemanager.iothub.fluent.models.UserSubscriptionQuotaListResultInner;
-import com.azure.resourcemanager.iothub.models.ErrorDetailsException;
 import com.azure.resourcemanager.iothub.models.ResourceProviderCommons;
 import com.azure.resourcemanager.iothub.models.UserSubscriptionQuotaListResult;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import reactor.core.publisher.Mono;
 
 public final class ResourceProviderCommonsImpl implements ResourceProviderCommons {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(ResourceProviderCommonsImpl.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ResourceProviderCommonsImpl.class);
 
     private final ResourceProviderCommonsClient innerClient;
 
     private final com.azure.resourcemanager.iothub.IotHubManager serviceManager;
 
-    public ResourceProviderCommonsImpl(ResourceProviderCommonsClient innerClient, com.azure.resourcemanager.iothub.IotHubManager serviceManager) {
+    public ResourceProviderCommonsImpl(
+        ResourceProviderCommonsClient innerClient, com.azure.resourcemanager.iothub.IotHubManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
@@ -49,9 +37,14 @@ public final class ResourceProviderCommonsImpl implements ResourceProviderCommon
     }
 
     public Response<UserSubscriptionQuotaListResult> getSubscriptionQuotaWithResponse(Context context) {
-        Response<UserSubscriptionQuotaListResultInner> inner = this.serviceClient().getSubscriptionQuotaWithResponse(context);
+        Response<UserSubscriptionQuotaListResultInner> inner =
+            this.serviceClient().getSubscriptionQuotaWithResponse(context);
         if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(), new UserSubscriptionQuotaListResultImpl(inner.getValue(), this.manager()));
+            return new SimpleResponse<>(
+                inner.getRequest(),
+                inner.getStatusCode(),
+                inner.getHeaders(),
+                new UserSubscriptionQuotaListResultImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }

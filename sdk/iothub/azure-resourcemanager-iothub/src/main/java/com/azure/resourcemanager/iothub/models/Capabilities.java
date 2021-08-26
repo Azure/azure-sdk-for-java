@@ -8,23 +8,17 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/**
- * Defines values for Capabilities.
- */
+/** Defines values for Capabilities. */
 public final class Capabilities extends ExpandableStringEnum<Capabilities> {
-    /**
-     * Static value None for Capabilities.
-     */
+    /** Static value None for Capabilities. */
     public static final Capabilities NONE = fromString("None");
 
-    /**
-     * Static value DeviceManagement for Capabilities.
-     */
+    /** Static value DeviceManagement for Capabilities. */
     public static final Capabilities DEVICE_MANAGEMENT = fromString("DeviceManagement");
 
     /**
      * Creates or finds a Capabilities from its string representation.
-     * 
+     *
      * @param name a name to look for.
      * @return the corresponding Capabilities.
      */
@@ -33,9 +27,7 @@ public final class Capabilities extends ExpandableStringEnum<Capabilities> {
         return fromString(name, Capabilities.class);
     }
 
-    /**
-     * @return known Capabilities values.
-     */
+    /** @return known Capabilities values. */
     public static Collection<Capabilities> values() {
         return values(Capabilities.class);
     }

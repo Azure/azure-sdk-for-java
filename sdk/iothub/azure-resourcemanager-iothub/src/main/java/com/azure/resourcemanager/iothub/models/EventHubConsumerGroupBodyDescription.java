@@ -5,19 +5,14 @@
 package com.azure.resourcemanager.iothub.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The EventHub consumer group.
- */
+/** The EventHub consumer group. */
 @Fluent
 public final class EventHubConsumerGroupBodyDescription {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(EventHubConsumerGroupBodyDescription.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(EventHubConsumerGroupBodyDescription.class);
 
     /*
      * The EventHub consumer group name.
@@ -27,7 +22,7 @@ public final class EventHubConsumerGroupBodyDescription {
 
     /**
      * Get the properties property: The EventHub consumer group name.
-     * 
+     *
      * @return the properties value.
      */
     public EventHubConsumerGroupName properties() {
@@ -36,7 +31,7 @@ public final class EventHubConsumerGroupBodyDescription {
 
     /**
      * Set the properties property: The EventHub consumer group name.
-     * 
+     *
      * @param properties the properties value to set.
      * @return the EventHubConsumerGroupBodyDescription object itself.
      */
@@ -47,12 +42,15 @@ public final class EventHubConsumerGroupBodyDescription {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (properties() == null) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("Missing required property properties in model EventHubConsumerGroupBodyDescription"));
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property properties in model EventHubConsumerGroupBodyDescription"));
         } else {
             properties().validate();
         }

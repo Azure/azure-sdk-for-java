@@ -5,19 +5,14 @@
 package com.azure.resourcemanager.iothub.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The properties related to an event hub endpoint.
- */
+/** The properties related to an event hub endpoint. */
 @Fluent
 public final class RoutingEventHubProperties {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(RoutingEventHubProperties.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(RoutingEventHubProperties.class);
 
     /*
      * Id of the event hub endpoint
@@ -79,7 +74,7 @@ public final class RoutingEventHubProperties {
 
     /**
      * Get the id property: Id of the event hub endpoint.
-     * 
+     *
      * @return the id value.
      */
     public String id() {
@@ -88,7 +83,7 @@ public final class RoutingEventHubProperties {
 
     /**
      * Set the id property: Id of the event hub endpoint.
-     * 
+     *
      * @param id the id value to set.
      * @return the RoutingEventHubProperties object itself.
      */
@@ -98,9 +93,8 @@ public final class RoutingEventHubProperties {
     }
 
     /**
-     * Get the connectionString property: The connection string of the event
-     * hub endpoint.
-     * 
+     * Get the connectionString property: The connection string of the event hub endpoint.
+     *
      * @return the connectionString value.
      */
     public String connectionString() {
@@ -108,9 +102,8 @@ public final class RoutingEventHubProperties {
     }
 
     /**
-     * Set the connectionString property: The connection string of the event
-     * hub endpoint.
-     * 
+     * Set the connectionString property: The connection string of the event hub endpoint.
+     *
      * @param connectionString the connectionString value to set.
      * @return the RoutingEventHubProperties object itself.
      */
@@ -120,9 +113,8 @@ public final class RoutingEventHubProperties {
     }
 
     /**
-     * Get the endpointUri property: The url of the event hub endpoint. It must
-     * include the protocol sb://.
-     * 
+     * Get the endpointUri property: The url of the event hub endpoint. It must include the protocol sb://.
+     *
      * @return the endpointUri value.
      */
     public String endpointUri() {
@@ -130,9 +122,8 @@ public final class RoutingEventHubProperties {
     }
 
     /**
-     * Set the endpointUri property: The url of the event hub endpoint. It must
-     * include the protocol sb://.
-     * 
+     * Set the endpointUri property: The url of the event hub endpoint. It must include the protocol sb://.
+     *
      * @param endpointUri the endpointUri value to set.
      * @return the RoutingEventHubProperties object itself.
      */
@@ -143,7 +134,7 @@ public final class RoutingEventHubProperties {
 
     /**
      * Get the entityPath property: Event hub name on the event hub namespace.
-     * 
+     *
      * @return the entityPath value.
      */
     public String entityPath() {
@@ -152,7 +143,7 @@ public final class RoutingEventHubProperties {
 
     /**
      * Set the entityPath property: Event hub name on the event hub namespace.
-     * 
+     *
      * @param entityPath the entityPath value to set.
      * @return the RoutingEventHubProperties object itself.
      */
@@ -162,9 +153,8 @@ public final class RoutingEventHubProperties {
     }
 
     /**
-     * Get the authenticationType property: Method used to authenticate against
-     * the event hub endpoint.
-     * 
+     * Get the authenticationType property: Method used to authenticate against the event hub endpoint.
+     *
      * @return the authenticationType value.
      */
     public AuthenticationType authenticationType() {
@@ -172,9 +162,8 @@ public final class RoutingEventHubProperties {
     }
 
     /**
-     * Set the authenticationType property: Method used to authenticate against
-     * the event hub endpoint.
-     * 
+     * Set the authenticationType property: Method used to authenticate against the event hub endpoint.
+     *
      * @param authenticationType the authenticationType value to set.
      * @return the RoutingEventHubProperties object itself.
      */
@@ -184,9 +173,8 @@ public final class RoutingEventHubProperties {
     }
 
     /**
-     * Get the identity property: Managed identity properties of routing event
-     * hub endpoint.
-     * 
+     * Get the identity property: Managed identity properties of routing event hub endpoint.
+     *
      * @return the identity value.
      */
     public ManagedIdentity identity() {
@@ -194,9 +182,8 @@ public final class RoutingEventHubProperties {
     }
 
     /**
-     * Set the identity property: Managed identity properties of routing event
-     * hub endpoint.
-     * 
+     * Set the identity property: Managed identity properties of routing event hub endpoint.
+     *
      * @param identity the identity value to set.
      * @return the RoutingEventHubProperties object itself.
      */
@@ -206,12 +193,10 @@ public final class RoutingEventHubProperties {
     }
 
     /**
-     * Get the name property: The name that identifies this endpoint. The name
-     * can only include alphanumeric characters, periods, underscores, hyphens
-     * and has a maximum length of 64 characters. The following names are
-     * reserved:  events, fileNotifications, $default. Endpoint names must be
-     * unique across endpoint types.
-     * 
+     * Get the name property: The name that identifies this endpoint. The name can only include alphanumeric characters,
+     * periods, underscores, hyphens and has a maximum length of 64 characters. The following names are reserved:
+     * events, fileNotifications, $default. Endpoint names must be unique across endpoint types.
+     *
      * @return the name value.
      */
     public String name() {
@@ -219,12 +204,10 @@ public final class RoutingEventHubProperties {
     }
 
     /**
-     * Set the name property: The name that identifies this endpoint. The name
-     * can only include alphanumeric characters, periods, underscores, hyphens
-     * and has a maximum length of 64 characters. The following names are
-     * reserved:  events, fileNotifications, $default. Endpoint names must be
-     * unique across endpoint types.
-     * 
+     * Set the name property: The name that identifies this endpoint. The name can only include alphanumeric characters,
+     * periods, underscores, hyphens and has a maximum length of 64 characters. The following names are reserved:
+     * events, fileNotifications, $default. Endpoint names must be unique across endpoint types.
+     *
      * @param name the name value to set.
      * @return the RoutingEventHubProperties object itself.
      */
@@ -234,9 +217,8 @@ public final class RoutingEventHubProperties {
     }
 
     /**
-     * Get the subscriptionId property: The subscription identifier of the
-     * event hub endpoint.
-     * 
+     * Get the subscriptionId property: The subscription identifier of the event hub endpoint.
+     *
      * @return the subscriptionId value.
      */
     public String subscriptionId() {
@@ -244,9 +226,8 @@ public final class RoutingEventHubProperties {
     }
 
     /**
-     * Set the subscriptionId property: The subscription identifier of the
-     * event hub endpoint.
-     * 
+     * Set the subscriptionId property: The subscription identifier of the event hub endpoint.
+     *
      * @param subscriptionId the subscriptionId value to set.
      * @return the RoutingEventHubProperties object itself.
      */
@@ -256,9 +237,8 @@ public final class RoutingEventHubProperties {
     }
 
     /**
-     * Get the resourceGroup property: The name of the resource group of the
-     * event hub endpoint.
-     * 
+     * Get the resourceGroup property: The name of the resource group of the event hub endpoint.
+     *
      * @return the resourceGroup value.
      */
     public String resourceGroup() {
@@ -266,9 +246,8 @@ public final class RoutingEventHubProperties {
     }
 
     /**
-     * Set the resourceGroup property: The name of the resource group of the
-     * event hub endpoint.
-     * 
+     * Set the resourceGroup property: The name of the resource group of the event hub endpoint.
+     *
      * @param resourceGroup the resourceGroup value to set.
      * @return the RoutingEventHubProperties object itself.
      */
@@ -279,7 +258,7 @@ public final class RoutingEventHubProperties {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -287,7 +266,9 @@ public final class RoutingEventHubProperties {
             identity().validate();
         }
         if (name() == null) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("Missing required property name in model RoutingEventHubProperties"));
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property name in model RoutingEventHubProperties"));
         }
     }
 }

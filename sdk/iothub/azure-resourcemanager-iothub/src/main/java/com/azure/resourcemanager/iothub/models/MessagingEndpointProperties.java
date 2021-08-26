@@ -5,20 +5,15 @@
 package com.azure.resourcemanager.iothub.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.Duration;
 
-/**
- * The properties of the messaging endpoints used by this IoT hub.
- */
+/** The properties of the messaging endpoints used by this IoT hub. */
 @Fluent
 public final class MessagingEndpointProperties {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(MessagingEndpointProperties.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(MessagingEndpointProperties.class);
 
     /*
      * The lock duration. See:
@@ -45,7 +40,7 @@ public final class MessagingEndpointProperties {
     /**
      * Get the lockDurationAsIso8601 property: The lock duration. See:
      * https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-file-upload.
-     * 
+     *
      * @return the lockDurationAsIso8601 value.
      */
     public Duration lockDurationAsIso8601() {
@@ -55,7 +50,7 @@ public final class MessagingEndpointProperties {
     /**
      * Set the lockDurationAsIso8601 property: The lock duration. See:
      * https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-file-upload.
-     * 
+     *
      * @param lockDurationAsIso8601 the lockDurationAsIso8601 value to set.
      * @return the MessagingEndpointProperties object itself.
      */
@@ -65,10 +60,9 @@ public final class MessagingEndpointProperties {
     }
 
     /**
-     * Get the ttlAsIso8601 property: The period of time for which a message is
-     * available to consume before it is expired by the IoT hub. See:
-     * https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-file-upload.
-     * 
+     * Get the ttlAsIso8601 property: The period of time for which a message is available to consume before it is
+     * expired by the IoT hub. See: https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-file-upload.
+     *
      * @return the ttlAsIso8601 value.
      */
     public Duration ttlAsIso8601() {
@@ -76,10 +70,9 @@ public final class MessagingEndpointProperties {
     }
 
     /**
-     * Set the ttlAsIso8601 property: The period of time for which a message is
-     * available to consume before it is expired by the IoT hub. See:
-     * https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-file-upload.
-     * 
+     * Set the ttlAsIso8601 property: The period of time for which a message is available to consume before it is
+     * expired by the IoT hub. See: https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-file-upload.
+     *
      * @param ttlAsIso8601 the ttlAsIso8601 value to set.
      * @return the MessagingEndpointProperties object itself.
      */
@@ -89,10 +82,9 @@ public final class MessagingEndpointProperties {
     }
 
     /**
-     * Get the maxDeliveryCount property: The number of times the IoT hub
-     * attempts to deliver a message. See:
+     * Get the maxDeliveryCount property: The number of times the IoT hub attempts to deliver a message. See:
      * https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-file-upload.
-     * 
+     *
      * @return the maxDeliveryCount value.
      */
     public Integer maxDeliveryCount() {
@@ -100,10 +92,9 @@ public final class MessagingEndpointProperties {
     }
 
     /**
-     * Set the maxDeliveryCount property: The number of times the IoT hub
-     * attempts to deliver a message. See:
+     * Set the maxDeliveryCount property: The number of times the IoT hub attempts to deliver a message. See:
      * https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-file-upload.
-     * 
+     *
      * @param maxDeliveryCount the maxDeliveryCount value to set.
      * @return the MessagingEndpointProperties object itself.
      */
@@ -114,7 +105,7 @@ public final class MessagingEndpointProperties {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

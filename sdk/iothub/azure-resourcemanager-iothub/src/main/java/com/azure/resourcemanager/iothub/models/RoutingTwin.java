@@ -5,19 +5,14 @@
 package com.azure.resourcemanager.iothub.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Twin reference input parameter. This is an optional parameter.
- */
+/** Twin reference input parameter. This is an optional parameter. */
 @Fluent
 public final class RoutingTwin {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(RoutingTwin.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(RoutingTwin.class);
 
     /*
      * Twin Tags
@@ -33,7 +28,7 @@ public final class RoutingTwin {
 
     /**
      * Get the tags property: Twin Tags.
-     * 
+     *
      * @return the tags value.
      */
     public Object tags() {
@@ -42,7 +37,7 @@ public final class RoutingTwin {
 
     /**
      * Set the tags property: Twin Tags.
-     * 
+     *
      * @param tags the tags value to set.
      * @return the RoutingTwin object itself.
      */
@@ -53,7 +48,7 @@ public final class RoutingTwin {
 
     /**
      * Get the properties property: The properties property.
-     * 
+     *
      * @return the properties value.
      */
     public RoutingTwinProperties properties() {
@@ -62,7 +57,7 @@ public final class RoutingTwin {
 
     /**
      * Set the properties property: The properties property.
-     * 
+     *
      * @param properties the properties value to set.
      * @return the RoutingTwin object itself.
      */
@@ -73,7 +68,7 @@ public final class RoutingTwin {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

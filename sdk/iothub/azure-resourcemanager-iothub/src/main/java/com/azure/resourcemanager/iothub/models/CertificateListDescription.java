@@ -7,20 +7,18 @@ package com.azure.resourcemanager.iothub.models;
 import com.azure.resourcemanager.iothub.fluent.models.CertificateListDescriptionInner;
 import java.util.List;
 
-/**
- * An immutable client-side representation of CertificateListDescription.
- */
+/** An immutable client-side representation of CertificateListDescription. */
 public interface CertificateListDescription {
     /**
      * Gets the value property: The array of Certificate objects.
-     * 
+     *
      * @return the value value.
      */
     List<CertificateDescription> value();
 
     /**
      * Gets the inner com.azure.resourcemanager.iothub.fluent.models.CertificateListDescriptionInner object.
-     * 
+     *
      * @return the inner object.
      */
     CertificateListDescriptionInner innerModel();

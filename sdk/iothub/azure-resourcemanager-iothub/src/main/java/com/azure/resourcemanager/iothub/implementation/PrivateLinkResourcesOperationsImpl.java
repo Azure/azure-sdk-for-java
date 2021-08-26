@@ -4,16 +4,6 @@
 
 package com.azure.resourcemanager.iothub.implementation;
 
-import com.azure.core.annotation.ExpectedResponses;
-import com.azure.core.annotation.Get;
-import com.azure.core.annotation.HeaderParam;
-import com.azure.core.annotation.Headers;
-import com.azure.core.annotation.HostParam;
-import com.azure.core.annotation.PathParam;
-import com.azure.core.annotation.QueryParam;
-import com.azure.core.annotation.ReturnType;
-import com.azure.core.annotation.ServiceMethod;
-import com.azure.core.annotation.UnexpectedResponseExceptionType;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
@@ -21,22 +11,21 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.iothub.fluent.PrivateLinkResourcesOperationsClient;
 import com.azure.resourcemanager.iothub.fluent.models.GroupIdInformationInner;
 import com.azure.resourcemanager.iothub.fluent.models.PrivateLinkResourcesInner;
-import com.azure.resourcemanager.iothub.models.ErrorDetailsException;
 import com.azure.resourcemanager.iothub.models.GroupIdInformation;
 import com.azure.resourcemanager.iothub.models.PrivateLinkResources;
 import com.azure.resourcemanager.iothub.models.PrivateLinkResourcesOperations;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import reactor.core.publisher.Mono;
 
 public final class PrivateLinkResourcesOperationsImpl implements PrivateLinkResourcesOperations {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(PrivateLinkResourcesOperationsImpl.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(PrivateLinkResourcesOperationsImpl.class);
 
     private final PrivateLinkResourcesOperationsClient innerClient;
 
     private final com.azure.resourcemanager.iothub.IotHubManager serviceManager;
 
-    public PrivateLinkResourcesOperationsImpl(PrivateLinkResourcesOperationsClient innerClient, com.azure.resourcemanager.iothub.IotHubManager serviceManager) {
+    public PrivateLinkResourcesOperationsImpl(
+        PrivateLinkResourcesOperationsClient innerClient,
+        com.azure.resourcemanager.iothub.IotHubManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
@@ -50,10 +39,16 @@ public final class PrivateLinkResourcesOperationsImpl implements PrivateLinkReso
         }
     }
 
-    public Response<PrivateLinkResources> listWithResponse(String resourceGroupName, String resourceName, Context context) {
-        Response<PrivateLinkResourcesInner> inner = this.serviceClient().listWithResponse(resourceGroupName, resourceName, context);
+    public Response<PrivateLinkResources> listWithResponse(
+        String resourceGroupName, String resourceName, Context context) {
+        Response<PrivateLinkResourcesInner> inner =
+            this.serviceClient().listWithResponse(resourceGroupName, resourceName, context);
         if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(), new PrivateLinkResourcesImpl(inner.getValue(), this.manager()));
+            return new SimpleResponse<>(
+                inner.getRequest(),
+                inner.getStatusCode(),
+                inner.getHeaders(),
+                new PrivateLinkResourcesImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
@@ -68,10 +63,16 @@ public final class PrivateLinkResourcesOperationsImpl implements PrivateLinkReso
         }
     }
 
-    public Response<GroupIdInformation> getWithResponse(String resourceGroupName, String resourceName, String groupId, Context context) {
-        Response<GroupIdInformationInner> inner = this.serviceClient().getWithResponse(resourceGroupName, resourceName, groupId, context);
+    public Response<GroupIdInformation> getWithResponse(
+        String resourceGroupName, String resourceName, String groupId, Context context) {
+        Response<GroupIdInformationInner> inner =
+            this.serviceClient().getWithResponse(resourceGroupName, resourceName, groupId, context);
         if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(), new GroupIdInformationImpl(inner.getValue(), this.manager()));
+            return new SimpleResponse<>(
+                inner.getRequest(),
+                inner.getStatusCode(),
+                inner.getHeaders(),
+                new GroupIdInformationImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }

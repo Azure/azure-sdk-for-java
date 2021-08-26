@@ -5,19 +5,14 @@
 package com.azure.resourcemanager.iothub.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The RoutingTwinProperties model.
- */
+/** The RoutingTwinProperties model. */
 @Fluent
 public final class RoutingTwinProperties {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(RoutingTwinProperties.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(RoutingTwinProperties.class);
 
     /*
      * Twin desired properties
@@ -33,7 +28,7 @@ public final class RoutingTwinProperties {
 
     /**
      * Get the desired property: Twin desired properties.
-     * 
+     *
      * @return the desired value.
      */
     public Object desired() {
@@ -42,7 +37,7 @@ public final class RoutingTwinProperties {
 
     /**
      * Set the desired property: Twin desired properties.
-     * 
+     *
      * @param desired the desired value to set.
      * @return the RoutingTwinProperties object itself.
      */
@@ -53,7 +48,7 @@ public final class RoutingTwinProperties {
 
     /**
      * Get the reported property: Twin desired properties.
-     * 
+     *
      * @return the reported value.
      */
     public Object reported() {
@@ -62,7 +57,7 @@ public final class RoutingTwinProperties {
 
     /**
      * Set the reported property: Twin desired properties.
-     * 
+     *
      * @param reported the reported value to set.
      * @return the RoutingTwinProperties object itself.
      */
@@ -73,7 +68,7 @@ public final class RoutingTwinProperties {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

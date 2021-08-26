@@ -13,7 +13,9 @@ public final class CertificateWithNonceDescriptionImpl implements CertificateWit
 
     private final com.azure.resourcemanager.iothub.IotHubManager serviceManager;
 
-    CertificateWithNonceDescriptionImpl(CertificateWithNonceDescriptionInner innerObject, com.azure.resourcemanager.iothub.IotHubManager serviceManager) {
+    CertificateWithNonceDescriptionImpl(
+        CertificateWithNonceDescriptionInner innerObject,
+        com.azure.resourcemanager.iothub.IotHubManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

@@ -5,21 +5,16 @@
 package com.azure.resourcemanager.iothub.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.iothub.models.MatchedRoute;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * Result of testing all routes.
- */
+/** Result of testing all routes. */
 @Fluent
 public final class TestAllRoutesResultInner {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(TestAllRoutesResultInner.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(TestAllRoutesResultInner.class);
 
     /*
      * JSON-serialized array of matched routes
@@ -29,7 +24,7 @@ public final class TestAllRoutesResultInner {
 
     /**
      * Get the routes property: JSON-serialized array of matched routes.
-     * 
+     *
      * @return the routes value.
      */
     public List<MatchedRoute> routes() {
@@ -38,7 +33,7 @@ public final class TestAllRoutesResultInner {
 
     /**
      * Set the routes property: JSON-serialized array of matched routes.
-     * 
+     *
      * @param routes the routes value to set.
      * @return the TestAllRoutesResultInner object itself.
      */
@@ -49,7 +44,7 @@ public final class TestAllRoutesResultInner {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

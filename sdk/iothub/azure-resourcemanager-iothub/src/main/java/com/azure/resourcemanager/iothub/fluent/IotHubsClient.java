@@ -6,73 +6,78 @@ package com.azure.resourcemanager.iothub.fluent;
 
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
-import com.azure.core.http.rest.Response;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
-import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.iothub.models.FailoverInput;
-import com.fasterxml.jackson.core.type.TypeReference;
-import java.nio.ByteBuffer;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 
-/**
- * An instance of this class provides access to all the operations defined in
- * IotHubsClient.
- */
+/** An instance of this class provides access to all the operations defined in IotHubsClient. */
 public interface IotHubsClient {
     /**
-     * Manually initiate a failover for the IoT Hub to its secondary region. To learn more, see https://aka.ms/manualfailover.
-     * 
+     * Manually initiate a failover for the IoT Hub to its secondary region. To learn more, see
+     * https://aka.ms/manualfailover.
+     *
      * @param iotHubName Name of the IoT hub to failover.
      * @param resourceGroupName Name of the resource group containing the IoT hub resource.
-     * @param failoverInput Region to failover to. Must be the Azure paired region. Get the value from the secondary location in the locations property. To learn more, see https://aka.ms/manualfailover/region.
+     * @param failoverInput Region to failover to. Must be the Azure paired region. Get the value from the secondary
+     *     location in the locations property. To learn more, see https://aka.ms/manualfailover/region.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.iothub.models.ErrorDetailsException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.iothub.models.ErrorDetailsException thrown if the request is rejected by
+     *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<Void>, Void> beginManualFailover(String iotHubName, String resourceGroupName, FailoverInput failoverInput);
+    SyncPoller<PollResult<Void>, Void> beginManualFailover(
+        String iotHubName, String resourceGroupName, FailoverInput failoverInput);
 
     /**
-     * Manually initiate a failover for the IoT Hub to its secondary region. To learn more, see https://aka.ms/manualfailover.
-     * 
+     * Manually initiate a failover for the IoT Hub to its secondary region. To learn more, see
+     * https://aka.ms/manualfailover.
+     *
      * @param iotHubName Name of the IoT hub to failover.
      * @param resourceGroupName Name of the resource group containing the IoT hub resource.
-     * @param failoverInput Region to failover to. Must be the Azure paired region. Get the value from the secondary location in the locations property. To learn more, see https://aka.ms/manualfailover/region.
+     * @param failoverInput Region to failover to. Must be the Azure paired region. Get the value from the secondary
+     *     location in the locations property. To learn more, see https://aka.ms/manualfailover/region.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.iothub.models.ErrorDetailsException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.iothub.models.ErrorDetailsException thrown if the request is rejected by
+     *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<Void>, Void> beginManualFailover(String iotHubName, String resourceGroupName, FailoverInput failoverInput, Context context);
+    SyncPoller<PollResult<Void>, Void> beginManualFailover(
+        String iotHubName, String resourceGroupName, FailoverInput failoverInput, Context context);
 
     /**
-     * Manually initiate a failover for the IoT Hub to its secondary region. To learn more, see https://aka.ms/manualfailover.
-     * 
+     * Manually initiate a failover for the IoT Hub to its secondary region. To learn more, see
+     * https://aka.ms/manualfailover.
+     *
      * @param iotHubName Name of the IoT hub to failover.
      * @param resourceGroupName Name of the resource group containing the IoT hub resource.
-     * @param failoverInput Region to failover to. Must be the Azure paired region. Get the value from the secondary location in the locations property. To learn more, see https://aka.ms/manualfailover/region.
+     * @param failoverInput Region to failover to. Must be the Azure paired region. Get the value from the secondary
+     *     location in the locations property. To learn more, see https://aka.ms/manualfailover/region.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.iothub.models.ErrorDetailsException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.iothub.models.ErrorDetailsException thrown if the request is rejected by
+     *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     void manualFailover(String iotHubName, String resourceGroupName, FailoverInput failoverInput);
 
     /**
-     * Manually initiate a failover for the IoT Hub to its secondary region. To learn more, see https://aka.ms/manualfailover.
-     * 
+     * Manually initiate a failover for the IoT Hub to its secondary region. To learn more, see
+     * https://aka.ms/manualfailover.
+     *
      * @param iotHubName Name of the IoT hub to failover.
      * @param resourceGroupName Name of the resource group containing the IoT hub resource.
-     * @param failoverInput Region to failover to. Must be the Azure paired region. Get the value from the secondary location in the locations property. To learn more, see https://aka.ms/manualfailover/region.
+     * @param failoverInput Region to failover to. Must be the Azure paired region. Get the value from the secondary
+     *     location in the locations property. To learn more, see https://aka.ms/manualfailover/region.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.iothub.models.ErrorDetailsException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.iothub.models.ErrorDetailsException thrown if the request is rejected by
+     *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)

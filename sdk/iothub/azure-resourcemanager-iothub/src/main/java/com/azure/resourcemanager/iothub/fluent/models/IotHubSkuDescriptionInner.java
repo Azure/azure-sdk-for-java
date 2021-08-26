@@ -5,21 +5,16 @@
 package com.azure.resourcemanager.iothub.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.iothub.models.IotHubCapacity;
 import com.azure.resourcemanager.iothub.models.IotHubSkuInfo;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * SKU properties.
- */
+/** SKU properties. */
 @Fluent
 public final class IotHubSkuDescriptionInner {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(IotHubSkuDescriptionInner.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(IotHubSkuDescriptionInner.class);
 
     /*
      * The type of the resource.
@@ -41,7 +36,7 @@ public final class IotHubSkuDescriptionInner {
 
     /**
      * Get the resourceType property: The type of the resource.
-     * 
+     *
      * @return the resourceType value.
      */
     public String resourceType() {
@@ -50,7 +45,7 @@ public final class IotHubSkuDescriptionInner {
 
     /**
      * Get the sku property: The type of the resource.
-     * 
+     *
      * @return the sku value.
      */
     public IotHubSkuInfo sku() {
@@ -59,7 +54,7 @@ public final class IotHubSkuDescriptionInner {
 
     /**
      * Set the sku property: The type of the resource.
-     * 
+     *
      * @param sku the sku value to set.
      * @return the IotHubSkuDescriptionInner object itself.
      */
@@ -70,7 +65,7 @@ public final class IotHubSkuDescriptionInner {
 
     /**
      * Get the capacity property: IotHub capacity.
-     * 
+     *
      * @return the capacity value.
      */
     public IotHubCapacity capacity() {
@@ -79,7 +74,7 @@ public final class IotHubSkuDescriptionInner {
 
     /**
      * Set the capacity property: IotHub capacity.
-     * 
+     *
      * @param capacity the capacity value to set.
      * @return the IotHubSkuDescriptionInner object itself.
      */
@@ -90,17 +85,22 @@ public final class IotHubSkuDescriptionInner {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (sku() == null) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("Missing required property sku in model IotHubSkuDescriptionInner"));
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property sku in model IotHubSkuDescriptionInner"));
         } else {
             sku().validate();
         }
         if (capacity() == null) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("Missing required property capacity in model IotHubSkuDescriptionInner"));
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property capacity in model IotHubSkuDescriptionInner"));
         } else {
             capacity().validate();
         }

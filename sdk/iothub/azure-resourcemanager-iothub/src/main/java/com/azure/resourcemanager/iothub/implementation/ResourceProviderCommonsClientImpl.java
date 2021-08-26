@@ -26,51 +26,50 @@ import com.azure.resourcemanager.iothub.fluent.models.UserSubscriptionQuotaListR
 import com.azure.resourcemanager.iothub.models.ErrorDetailsException;
 import reactor.core.publisher.Mono;
 
-/**
- * An instance of this class provides access to all the operations defined in
- * ResourceProviderCommonsClient.
- */
+/** An instance of this class provides access to all the operations defined in ResourceProviderCommonsClient. */
 public final class ResourceProviderCommonsClientImpl implements ResourceProviderCommonsClient {
     private final ClientLogger logger = new ClientLogger(ResourceProviderCommonsClientImpl.class);
 
-    /**
-     * The proxy service used to perform REST calls.
-     */
+    /** The proxy service used to perform REST calls. */
     private final ResourceProviderCommonsService service;
 
-    /**
-     * The service client containing this operation class.
-     */
+    /** The service client containing this operation class. */
     private final IotHubClientImpl client;
 
     /**
      * Initializes an instance of ResourceProviderCommonsClientImpl.
-     * 
+     *
      * @param client the instance of the service client containing this operation class.
      */
     ResourceProviderCommonsClientImpl(IotHubClientImpl client) {
-        this.service = RestProxy.create(ResourceProviderCommonsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service =
+            RestProxy
+                .create(ResourceProviderCommonsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for
-     * IotHubClientResourceProviderCommons to be used by the proxy service to
-     * perform REST calls.
+     * The interface defining all the services for IotHubClientResourceProviderCommons to be used by the proxy service
+     * to perform REST calls.
      */
     @Host("{$host}")
     @ServiceInterface(name = "IotHubClientResource")
     private interface ResourceProviderCommonsService {
-        @Headers({ "Content-Type: application/json" })
+        @Headers({"Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Devices/usages")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorDetailsException.class)
-        Mono<Response<UserSubscriptionQuotaListResultInner>> getSubscriptionQuota(@HostParam("$host") String endpoint, @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<UserSubscriptionQuotaListResultInner>> getSubscriptionQuota(
+            @HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
+            Context context);
     }
 
     /**
      * Get the number of free and paid iot hubs in the subscription.
-     * 
+     *
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the number of free and paid iot hubs in the subscription.
@@ -78,19 +77,34 @@ public final class ResourceProviderCommonsClientImpl implements ResourceProvider
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<UserSubscriptionQuotaListResultInner>> getSubscriptionQuotaWithResponseAsync() {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getSubscriptionQuota(this.client.getEndpoint(), this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .getSubscriptionQuota(
+                            this.client.getEndpoint(),
+                            this.client.getSubscriptionId(),
+                            this.client.getApiVersion(),
+                            accept,
+                            context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the number of free and paid iot hubs in the subscription.
-     * 
+     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
@@ -98,21 +112,34 @@ public final class ResourceProviderCommonsClientImpl implements ResourceProvider
      * @return the number of free and paid iot hubs in the subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<UserSubscriptionQuotaListResultInner>> getSubscriptionQuotaWithResponseAsync(Context context) {
+    private Mono<Response<UserSubscriptionQuotaListResultInner>> getSubscriptionQuotaWithResponseAsync(
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.getSubscriptionQuota(this.client.getEndpoint(), this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
+        return service
+            .getSubscriptionQuota(
+                this.client.getEndpoint(),
+                this.client.getSubscriptionId(),
+                this.client.getApiVersion(),
+                accept,
+                context);
     }
 
     /**
      * Get the number of free and paid iot hubs in the subscription.
-     * 
+     *
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the number of free and paid iot hubs in the subscription.
@@ -120,18 +147,19 @@ public final class ResourceProviderCommonsClientImpl implements ResourceProvider
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<UserSubscriptionQuotaListResultInner> getSubscriptionQuotaAsync() {
         return getSubscriptionQuotaWithResponseAsync()
-            .flatMap((Response<UserSubscriptionQuotaListResultInner> res) -> {
-                if (res.getValue() != null) {
-                    return Mono.just(res.getValue());
-                } else {
-                    return Mono.empty();
-                }
-            });
+            .flatMap(
+                (Response<UserSubscriptionQuotaListResultInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
      * Get the number of free and paid iot hubs in the subscription.
-     * 
+     *
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the number of free and paid iot hubs in the subscription.
@@ -143,7 +171,7 @@ public final class ResourceProviderCommonsClientImpl implements ResourceProvider
 
     /**
      * Get the number of free and paid iot hubs in the subscription.
-     * 
+     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.

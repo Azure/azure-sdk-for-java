@@ -8,63 +8,41 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/**
- * Defines values for JobType.
- */
+/** Defines values for JobType. */
 public final class JobType extends ExpandableStringEnum<JobType> {
-    /**
-     * Static value unknown for JobType.
-     */
+    /** Static value unknown for JobType. */
     public static final JobType UNKNOWN = fromString("unknown");
 
-    /**
-     * Static value export for JobType.
-     */
+    /** Static value export for JobType. */
     public static final JobType EXPORT = fromString("export");
 
-    /**
-     * Static value import for JobType.
-     */
+    /** Static value import for JobType. */
     public static final JobType IMPORT = fromString("import");
 
-    /**
-     * Static value backup for JobType.
-     */
+    /** Static value backup for JobType. */
     public static final JobType BACKUP = fromString("backup");
 
-    /**
-     * Static value readDeviceProperties for JobType.
-     */
+    /** Static value readDeviceProperties for JobType. */
     public static final JobType READ_DEVICE_PROPERTIES = fromString("readDeviceProperties");
 
-    /**
-     * Static value writeDeviceProperties for JobType.
-     */
+    /** Static value writeDeviceProperties for JobType. */
     public static final JobType WRITE_DEVICE_PROPERTIES = fromString("writeDeviceProperties");
 
-    /**
-     * Static value updateDeviceConfiguration for JobType.
-     */
+    /** Static value updateDeviceConfiguration for JobType. */
     public static final JobType UPDATE_DEVICE_CONFIGURATION = fromString("updateDeviceConfiguration");
 
-    /**
-     * Static value rebootDevice for JobType.
-     */
+    /** Static value rebootDevice for JobType. */
     public static final JobType REBOOT_DEVICE = fromString("rebootDevice");
 
-    /**
-     * Static value factoryResetDevice for JobType.
-     */
+    /** Static value factoryResetDevice for JobType. */
     public static final JobType FACTORY_RESET_DEVICE = fromString("factoryResetDevice");
 
-    /**
-     * Static value firmwareUpdate for JobType.
-     */
+    /** Static value firmwareUpdate for JobType. */
     public static final JobType FIRMWARE_UPDATE = fromString("firmwareUpdate");
 
     /**
      * Creates or finds a JobType from its string representation.
-     * 
+     *
      * @param name a name to look for.
      * @return the corresponding JobType.
      */
@@ -73,9 +51,7 @@ public final class JobType extends ExpandableStringEnum<JobType> {
         return fromString(name, JobType.class);
     }
 
-    /**
-     * @return known JobType values.
-     */
+    /** @return known JobType values. */
     public static Collection<JobType> values() {
         return values(JobType.class);
     }

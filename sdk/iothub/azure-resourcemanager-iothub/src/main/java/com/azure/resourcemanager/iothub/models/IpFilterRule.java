@@ -5,19 +5,14 @@
 package com.azure.resourcemanager.iothub.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The IP filter rules for the IoT hub.
- */
+/** The IP filter rules for the IoT hub. */
 @Fluent
 public final class IpFilterRule {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(IpFilterRule.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(IpFilterRule.class);
 
     /*
      * The name of the IP filter rule.
@@ -40,7 +35,7 @@ public final class IpFilterRule {
 
     /**
      * Get the filterName property: The name of the IP filter rule.
-     * 
+     *
      * @return the filterName value.
      */
     public String filterName() {
@@ -49,7 +44,7 @@ public final class IpFilterRule {
 
     /**
      * Set the filterName property: The name of the IP filter rule.
-     * 
+     *
      * @param filterName the filterName value to set.
      * @return the IpFilterRule object itself.
      */
@@ -59,9 +54,8 @@ public final class IpFilterRule {
     }
 
     /**
-     * Get the action property: The desired action for requests captured by
-     * this rule.
-     * 
+     * Get the action property: The desired action for requests captured by this rule.
+     *
      * @return the action value.
      */
     public IpFilterActionType action() {
@@ -69,9 +63,8 @@ public final class IpFilterRule {
     }
 
     /**
-     * Set the action property: The desired action for requests captured by
-     * this rule.
-     * 
+     * Set the action property: The desired action for requests captured by this rule.
+     *
      * @param action the action value to set.
      * @return the IpFilterRule object itself.
      */
@@ -81,9 +74,8 @@ public final class IpFilterRule {
     }
 
     /**
-     * Get the ipMask property: A string that contains the IP address range in
-     * CIDR notation for the rule.
-     * 
+     * Get the ipMask property: A string that contains the IP address range in CIDR notation for the rule.
+     *
      * @return the ipMask value.
      */
     public String ipMask() {
@@ -91,9 +83,8 @@ public final class IpFilterRule {
     }
 
     /**
-     * Set the ipMask property: A string that contains the IP address range in
-     * CIDR notation for the rule.
-     * 
+     * Set the ipMask property: A string that contains the IP address range in CIDR notation for the rule.
+     *
      * @param ipMask the ipMask value to set.
      * @return the IpFilterRule object itself.
      */
@@ -104,18 +95,24 @@ public final class IpFilterRule {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (filterName() == null) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("Missing required property filterName in model IpFilterRule"));
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property filterName in model IpFilterRule"));
         }
         if (action() == null) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("Missing required property action in model IpFilterRule"));
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property action in model IpFilterRule"));
         }
         if (ipMask() == null) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("Missing required property ipMask in model IpFilterRule"));
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property ipMask in model IpFilterRule"));
         }
     }
 }

@@ -7,27 +7,15 @@ package com.azure.resourcemanager.iothub.implementation;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
-import com.azure.core.http.policy.AzureKeyCredentialPolicy;
-import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.CookiePolicy;
-import com.azure.core.http.policy.HttpLoggingPolicy;
-import com.azure.core.http.policy.HttpPipelinePolicy;
-import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.serializer.SerializerFactory;
-import com.azure.core.util.CoreUtils;
 import com.azure.core.util.serializer.SerializerAdapter;
 import java.time.Duration;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
-/**
- * A builder for creating a new instance of the IotHubClientImpl type.
- */
+/** A builder for creating a new instance of the IotHubClientImpl type. */
 @ServiceClientBuilder(serviceClients = {IotHubClientImpl.class})
 public final class IotHubClientBuilder {
     /*
@@ -37,7 +25,7 @@ public final class IotHubClientBuilder {
 
     /**
      * Sets The subscription identifier.
-     * 
+     *
      * @param subscriptionId the subscriptionId value.
      * @return the IotHubClientBuilder.
      */
@@ -53,7 +41,7 @@ public final class IotHubClientBuilder {
 
     /**
      * Sets server parameter.
-     * 
+     *
      * @param endpoint the endpoint value.
      * @return the IotHubClientBuilder.
      */
@@ -69,7 +57,7 @@ public final class IotHubClientBuilder {
 
     /**
      * Sets The environment to connect to.
-     * 
+     *
      * @param environment the environment value.
      * @return the IotHubClientBuilder.
      */
@@ -85,7 +73,7 @@ public final class IotHubClientBuilder {
 
     /**
      * Sets The default poll interval for long-running operation.
-     * 
+     *
      * @param defaultPollInterval the defaultPollInterval value.
      * @return the IotHubClientBuilder.
      */
@@ -101,7 +89,7 @@ public final class IotHubClientBuilder {
 
     /**
      * Sets The HTTP pipeline to send requests through.
-     * 
+     *
      * @param pipeline the pipeline value.
      * @return the IotHubClientBuilder.
      */
@@ -117,7 +105,7 @@ public final class IotHubClientBuilder {
 
     /**
      * Sets The serializer to serialize an object into a string.
-     * 
+     *
      * @param serializerAdapter the serializerAdapter value.
      * @return the IotHubClientBuilder.
      */
@@ -128,7 +116,7 @@ public final class IotHubClientBuilder {
 
     /**
      * Builds an instance of IotHubClientImpl with the provided parameters.
-     * 
+     *
      * @return an instance of IotHubClientImpl.
      */
     public IotHubClientImpl buildClient() {
@@ -142,12 +130,17 @@ public final class IotHubClientBuilder {
             this.defaultPollInterval = Duration.ofSeconds(30);
         }
         if (pipeline == null) {
-            this.pipeline = new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy()).build();
+            this.pipeline =
+                new HttpPipelineBuilder()
+                    .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
+                    .build();
         }
         if (serializerAdapter == null) {
             this.serializerAdapter = SerializerFactory.createDefaultManagementSerializerAdapter();
         }
-        IotHubClientImpl client = new IotHubClientImpl(pipeline, serializerAdapter, defaultPollInterval, environment, subscriptionId, endpoint);
+        IotHubClientImpl client =
+            new IotHubClientImpl(
+                pipeline, serializerAdapter, defaultPollInterval, environment, subscriptionId, endpoint);
         return client;
     }
 }

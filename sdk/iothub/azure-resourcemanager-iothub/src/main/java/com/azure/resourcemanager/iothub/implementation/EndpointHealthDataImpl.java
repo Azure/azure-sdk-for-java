@@ -14,7 +14,8 @@ public final class EndpointHealthDataImpl implements EndpointHealthData {
 
     private final com.azure.resourcemanager.iothub.IotHubManager serviceManager;
 
-    EndpointHealthDataImpl(EndpointHealthDataInner innerObject, com.azure.resourcemanager.iothub.IotHubManager serviceManager) {
+    EndpointHealthDataImpl(
+        EndpointHealthDataInner innerObject, com.azure.resourcemanager.iothub.IotHubManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

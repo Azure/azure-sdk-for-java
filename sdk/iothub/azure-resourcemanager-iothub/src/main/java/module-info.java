@@ -4,10 +4,16 @@
 
 module com.azure.resourcemanager.iothub {
     requires transitive com.azure.core.management;
+
     exports com.azure.resourcemanager.iothub;
     exports com.azure.resourcemanager.iothub.fluent;
     exports com.azure.resourcemanager.iothub.fluent.models;
     exports com.azure.resourcemanager.iothub.models;
-    opens com.azure.resourcemanager.iothub.fluent.models to com.azure.core, com.fasterxml.jackson.databind;
-    opens com.azure.resourcemanager.iothub.models to com.azure.core, com.fasterxml.jackson.databind;
+
+    opens com.azure.resourcemanager.iothub.fluent.models to
+        com.azure.core,
+        com.fasterxml.jackson.databind;
+    opens com.azure.resourcemanager.iothub.models to
+        com.azure.core,
+        com.fasterxml.jackson.databind;
 }

@@ -5,22 +5,16 @@
 package com.azure.resourcemanager.iothub.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.iothub.fluent.models.EventHubConsumerGroupInfoInner;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The JSON-serialized array of Event Hub-compatible consumer group names with
- * a next link.
- */
+/** The JSON-serialized array of Event Hub-compatible consumer group names with a next link. */
 @Fluent
 public final class EventHubConsumerGroupsListResult {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(EventHubConsumerGroupsListResult.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(EventHubConsumerGroupsListResult.class);
 
     /*
      * List of consumer groups objects
@@ -36,7 +30,7 @@ public final class EventHubConsumerGroupsListResult {
 
     /**
      * Get the value property: List of consumer groups objects.
-     * 
+     *
      * @return the value value.
      */
     public List<EventHubConsumerGroupInfoInner> value() {
@@ -45,7 +39,7 @@ public final class EventHubConsumerGroupsListResult {
 
     /**
      * Set the value property: List of consumer groups objects.
-     * 
+     *
      * @param value the value value to set.
      * @return the EventHubConsumerGroupsListResult object itself.
      */
@@ -56,7 +50,7 @@ public final class EventHubConsumerGroupsListResult {
 
     /**
      * Get the nextLink property: The next link.
-     * 
+     *
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -65,7 +59,7 @@ public final class EventHubConsumerGroupsListResult {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

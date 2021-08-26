@@ -8,28 +8,21 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/**
- * Defines values for RoutingStorageContainerPropertiesEncoding.
- */
-public final class RoutingStorageContainerPropertiesEncoding extends ExpandableStringEnum<RoutingStorageContainerPropertiesEncoding> {
-    /**
-     * Static value Avro for RoutingStorageContainerPropertiesEncoding.
-     */
+/** Defines values for RoutingStorageContainerPropertiesEncoding. */
+public final class RoutingStorageContainerPropertiesEncoding
+    extends ExpandableStringEnum<RoutingStorageContainerPropertiesEncoding> {
+    /** Static value Avro for RoutingStorageContainerPropertiesEncoding. */
     public static final RoutingStorageContainerPropertiesEncoding AVRO = fromString("Avro");
 
-    /**
-     * Static value AvroDeflate for RoutingStorageContainerPropertiesEncoding.
-     */
+    /** Static value AvroDeflate for RoutingStorageContainerPropertiesEncoding. */
     public static final RoutingStorageContainerPropertiesEncoding AVRO_DEFLATE = fromString("AvroDeflate");
 
-    /**
-     * Static value JSON for RoutingStorageContainerPropertiesEncoding.
-     */
+    /** Static value JSON for RoutingStorageContainerPropertiesEncoding. */
     public static final RoutingStorageContainerPropertiesEncoding JSON = fromString("JSON");
 
     /**
      * Creates or finds a RoutingStorageContainerPropertiesEncoding from its string representation.
-     * 
+     *
      * @param name a name to look for.
      * @return the corresponding RoutingStorageContainerPropertiesEncoding.
      */
@@ -38,9 +31,7 @@ public final class RoutingStorageContainerPropertiesEncoding extends ExpandableS
         return fromString(name, RoutingStorageContainerPropertiesEncoding.class);
     }
 
-    /**
-     * @return known RoutingStorageContainerPropertiesEncoding values.
-     */
+    /** @return known RoutingStorageContainerPropertiesEncoding values. */
     public static Collection<RoutingStorageContainerPropertiesEncoding> values() {
         return values(RoutingStorageContainerPropertiesEncoding.class);
     }

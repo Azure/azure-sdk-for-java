@@ -6,17 +6,18 @@ package com.azure.resourcemanager.iothub;
 
 import com.azure.core.util.Context;
 
-/**
- * Samples for Certificates GenerateVerificationCode.
- */
+/** Samples for Certificates GenerateVerificationCode. */
 public final class CertificatesGenerateVerificationCodeSamples {
     /**
      * Sample code: Certificates_GenerateVerificationCode.
-     * 
-     * @param iotHubManager Entry point to IotHubManager.
-     * Use this API to manage the IoT hubs in your Azure subscription.
+     *
+     * @param iotHubManager Entry point to IotHubManager. Use this API to manage the IoT hubs in your Azure
+     *     subscription.
      */
-    public static void certificatesGenerateVerificationCode(com.azure.resourcemanager.iothub.IotHubManager iotHubManager) {
-        iotHubManager.certificates().generateVerificationCodeWithResponse("myResourceGroup", "testHub", "cert", "AAAAAAAADGk=", Context.NONE);
+    public static void certificatesGenerateVerificationCode(
+        com.azure.resourcemanager.iothub.IotHubManager iotHubManager) {
+        iotHubManager
+            .certificates()
+            .generateVerificationCodeWithResponse("myResourceGroup", "testHub", "cert", "AAAAAAAADGk=", Context.NONE);
     }
 }
