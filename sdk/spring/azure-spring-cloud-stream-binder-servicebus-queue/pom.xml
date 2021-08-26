@@ -12,7 +12,7 @@
 
   <groupId>com.azure.spring</groupId>
   <artifactId>azure-spring-cloud-stream-binder-servicebus-queue</artifactId>
-  <version>2.8.0</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-stream-binder-servicebus-queue;current} -->
+  <version>2.9.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-stream-binder-servicebus-queue;current} -->
 
   <name>Azure Spring Cloud Stream Service Bus Queue Binder</name>
   <description>Azure Service Bus Queue binder for Spring Cloud Stream</description>
