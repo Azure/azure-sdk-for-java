@@ -49,7 +49,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-import static com.azure.core.util.FluxUtil.fluxError;
 import static com.azure.core.util.FluxUtil.monoError;
 
 /**
@@ -573,7 +572,9 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
      */
     @Override
     public Flux<ByteBuffer> query(String expression) {
-        return fluxError(logger, new UnsupportedOperationException("Cannot query data encrypted on client side"));
+        // This is eagerly thrown instead of waiting for the subscription to happen.
+        throw logger.logExceptionAsError(new UnsupportedOperationException(
+            "Cannot query data encrypted on client side"));
     }
 
     /**
@@ -581,6 +582,8 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
      */
     @Override
     public Mono<BlobQueryAsyncResponse> queryWithResponse(BlobQueryOptions queryOptions) {
-        return monoError(logger, new UnsupportedOperationException("Cannot query data encrypted on client side"));
+        // This is eagerly thrown instead of waiting for the subscription to happen.
+        throw logger.logExceptionAsError(new UnsupportedOperationException(
+            "Cannot query data encrypted on client side"));
     }
 }
