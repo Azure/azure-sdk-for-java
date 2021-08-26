@@ -19,7 +19,7 @@ public final class IncomingRelationshipConverter {
         if (input == null) {
             return null;
         }
-
+        
         return new IncomingRelationship(
             input.getRelationshipId(),
             input.getSourceId(),
@@ -44,5 +44,5 @@ public final class IncomingRelationshipConverter {
         return mappedIncomingRelationship;
     }
 
-    private IncomingRelationshipConverter() { }
+    private IncomingRelationshipConverter() {}
 }

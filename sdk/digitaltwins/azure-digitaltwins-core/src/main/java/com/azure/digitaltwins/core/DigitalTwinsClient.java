@@ -9,24 +9,11 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
-import com.azure.core.models.JsonPatchDocument;
 import com.azure.core.util.Context;
-import com.azure.digitaltwins.core.models.CreateOrReplaceDigitalTwinOptions;
-import com.azure.digitaltwins.core.models.CreateOrReplaceRelationshipOptions;
-import com.azure.digitaltwins.core.models.DeleteDigitalTwinOptions;
-import com.azure.digitaltwins.core.models.DeleteRelationshipOptions;
-import com.azure.digitaltwins.core.models.DigitalTwinsEventRoute;
-import com.azure.digitaltwins.core.models.DigitalTwinsModelData;
-import com.azure.digitaltwins.core.models.DigitalTwinsResponse;
-import com.azure.digitaltwins.core.models.IncomingRelationship;
-import com.azure.digitaltwins.core.models.ListDigitalTwinsEventRoutesOptions;
-import com.azure.digitaltwins.core.models.ListModelsOptions;
-import com.azure.digitaltwins.core.models.PublishComponentTelemetryOptions;
-import com.azure.digitaltwins.core.models.PublishTelemetryOptions;
-import com.azure.digitaltwins.core.models.QueryOptions;
-import com.azure.digitaltwins.core.models.UpdateComponentOptions;
-import com.azure.digitaltwins.core.models.UpdateDigitalTwinOptions;
-import com.azure.digitaltwins.core.models.UpdateRelationshipOptions;
+import com.azure.core.models.JsonPatchDocument;
+import com.azure.digitaltwins.core.models.*;
+
+import java.util.List;
 
 /**
  * This class provides a client for interacting synchronously with an Azure Digital Twins instance.
@@ -34,7 +21,7 @@ import com.azure.digitaltwins.core.models.UpdateRelationshipOptions;
  *
  * <p><strong>Code Samples</strong></p>
  *
- * {@codesnippet com.azure.digitaltwins.core.DigitalTwinsClient.instantiation}
+ * {@codesnippet com.azure.digitaltwins.core.syncClient.instantiation}
  *
  * <p>
  * This client allows for management of digital twins, their components, and their relationships. It also allows for managing
@@ -70,11 +57,11 @@ public final class DigitalTwinsClient {
      *
      * <p>A strongly typed digital twin object such as {@link BasicDigitalTwin} can be provided as the input parameter:</p>
      *
-     * {@codesnippet com.azure.digitaltwins.core.DigitalTwinsClient.createDigitalTwins#String-Object-Class#BasicDigitalTwin}
+     * {@codesnippet com.azure.digitaltwins.core.syncClient.createDigitalTwins#String-Object-Class#BasicDigitalTwin}
      *
      * <p>Or alternatively String can be used as input and output type:</p>
      *
-     * {@codesnippet com.azure.digitaltwins.core.DigitalTwinsClient.createDigitalTwins#String-Object-Class#String}
+     * {@codesnippet com.azure.digitaltwins.core.syncClient.createDigitalTwins#String-Object-Class#String}
      *
      * @param digitalTwinId The Id of the digital twin. The Id is unique within the service and case sensitive.
      * @param clazz The model class to serialize the request with and deserialize the response with.
@@ -83,7 +70,8 @@ public final class DigitalTwinsClient {
      * @return The deserialized application/json object representing the digital twin created.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public <T> T createOrReplaceDigitalTwin(String digitalTwinId, T digitalTwin, Class<T> clazz) {
+    public <T> T createOrReplaceDigitalTwin(String digitalTwinId, T digitalTwin, Class<T> clazz)
+    {
         return createOrReplaceDigitalTwinWithResponse(digitalTwinId, digitalTwin, clazz, null, Context.NONE).getValue();
     }
 
@@ -95,11 +83,11 @@ public final class DigitalTwinsClient {
      *
      * <p>A strongly typed digital twin object type such as {@link BasicDigitalTwin} can be provided as the input parameter:</p>
      *
-     * {@codesnippet com.azure.digitaltwins.core.DigitalTwinsClient.createDigitalTwinsWithResponse#String-Object-Class-Options-Context#BasicDigitalTwin}
+     * {@codesnippet com.azure.digitaltwins.core.syncClient.createDigitalTwinsWithResponse#String-Object-Class-Options-Context#BasicDigitalTwin}
      *
      * <p>Or alternatively String can be used as input and output type:</p>
      *
-     * {@codesnippet com.azure.digitaltwins.core.DigitalTwinsClient.createDigitalTwins#String-Object-Class#String}
+     * {@codesnippet com.azure.digitaltwins.core.syncClient.createDigitalTwins#String-Object-Class#String}
      *
      * @param digitalTwinId The Id of the digital twin. The Id is unique within the service and case sensitive.
      * @param digitalTwin The application/json object representing the digital twin to create.
@@ -110,7 +98,8 @@ public final class DigitalTwinsClient {
      * @return A {@link DigitalTwinsResponse} containing the deserialized application/json object representing the digital twin created.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public <T> Response<T> createOrReplaceDigitalTwinWithResponse(String digitalTwinId, T digitalTwin, Class<T> clazz, CreateOrReplaceDigitalTwinOptions options, Context context) {
+    public <T> Response<T> createOrReplaceDigitalTwinWithResponse(String digitalTwinId, T digitalTwin, Class<T> clazz, CreateOrReplaceDigitalTwinOptions options, Context context)
+    {
         return digitalTwinsAsyncClient.createOrReplaceDigitalTwinWithResponse(digitalTwinId, digitalTwin, clazz, options, context).block();
     }
 
@@ -124,11 +113,11 @@ public final class DigitalTwinsClient {
      * to indicate what type is used to deserialize the response.
      * </p>
      *
-     * {@codesnippet com.azure.digitaltwins.core.DigitalTwinsClient.getDigitalTwin#String-Class#BasicDigitalTwin}
+     * {@codesnippet com.azure.digitaltwins.core.syncClient.getDigitalTwin#String-Class#BasicDigitalTwin}
      *
      * <p>Alternatively String can be used to get the response in a json string format.</p>
      *
-     * {@codesnippet com.azure.digitaltwins.core.DigitalTwinsClient.getDigitalTwin#String-Class#String}
+     * {@codesnippet com.azure.digitaltwins.core.syncClient.getDigitalTwin#String-Class#String}
      *
      * @param digitalTwinId The Id of the digital twin. The Id is unique within the service and case sensitive.
      * @param clazz The model class to deserialize the response with.
@@ -136,7 +125,8 @@ public final class DigitalTwinsClient {
      * @return The deserialized application/json object representing the digital twin.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public <T> T getDigitalTwin(String digitalTwinId, Class<T> clazz) {
+    public <T> T getDigitalTwin(String digitalTwinId, Class<T> clazz)
+    {
         return getDigitalTwinWithResponse(digitalTwinId, clazz, Context.NONE).getValue();
     }
 
@@ -150,11 +140,11 @@ public final class DigitalTwinsClient {
      * to indicate what type is used to deserialize the response.
      * </p>
      *
-     * {@codesnippet com.azure.digitaltwins.core.DigitalTwinsClient.getDigitalTwinWithResponse#String-Class-Options-Context#BasicDigitalTwin}
+     * {@codesnippet com.azure.digitaltwins.core.syncClient.getDigitalTwinWithResponse#String-Class-Options-Context#BasicDigitalTwin}
      *
      * <p>Alternatively String can be used to get the response in a json string format.</p>
      *
-     * {@codesnippet com.azure.digitaltwins.core.DigitalTwinsClient.getDigitalTwinWithResponse#String-Class-Options-Context#String}
+     * {@codesnippet com.azure.digitaltwins.core.syncClient.getDigitalTwinWithResponse#String-Class-Options-Context#String}
      *
      * @param digitalTwinId The Id of the digital twin. The Id is unique within the service and case sensitive.
      * @param clazz The model class to deserialize the response with.
@@ -163,7 +153,8 @@ public final class DigitalTwinsClient {
      * @return A {@link DigitalTwinsResponse} containing the deserialized application/json object representing the digital twin.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public <T> DigitalTwinsResponse<T> getDigitalTwinWithResponse(String digitalTwinId, Class<T> clazz, Context context) {
+    public <T> DigitalTwinsResponse<T> getDigitalTwinWithResponse(String digitalTwinId, Class<T> clazz, Context context)
+    {
         return digitalTwinsAsyncClient.getDigitalTwinWithResponse(digitalTwinId, clazz, context).block();
     }
 
@@ -174,14 +165,15 @@ public final class DigitalTwinsClient {
      *
      * <p>Update digital twin by providing list of intended patch operations.</p>
      *
-     * {@codesnippet com.azure.digitaltwins.core.DigitalTwinsClient.updateDigitalTwin#String-JsonPatchDocument}
+     * {@codesnippet com.azure.digitaltwins.core.syncClient.updateDigitalTwin#String-List}
      *
      * @param digitalTwinId The Id of the digital twin. The Id is unique within the service and case sensitive.
      * @param jsonPatch The JSON patch to apply to the specified digital twin.
      *                                    This argument can be created using {@link JsonPatchDocument}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void updateDigitalTwin(String digitalTwinId, JsonPatchDocument jsonPatch) {
+    public void updateDigitalTwin(String digitalTwinId, JsonPatchDocument jsonPatch)
+    {
         updateDigitalTwinWithResponse(digitalTwinId, jsonPatch, null, Context.NONE);
     }
 
@@ -192,7 +184,7 @@ public final class DigitalTwinsClient {
      *
      * <p>Update digital twin by providing list of intended patch operations.</p>
      *
-     * {@codesnippet com.azure.digitaltwins.core.DigitalTwinsClient.updateDigitalTwinWithResponse#String-JsonPatchDocument-UpdateDigitalTwinOptions-Context}
+     * {@codesnippet com.azure.digitaltwins.core.syncClient.updateDigitalTwinWithResponse#String-List-Options-Context}
      *
      * @param digitalTwinId The Id of the digital twin. The Id is unique within the service and case sensitive.
      * @param jsonPatch The JSON patch to apply to the specified digital twin.
@@ -203,7 +195,8 @@ public final class DigitalTwinsClient {
      * ETag for this resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DigitalTwinsResponse<Void> updateDigitalTwinWithResponse(String digitalTwinId, JsonPatchDocument jsonPatch, UpdateDigitalTwinOptions options, Context context) {
+    public DigitalTwinsResponse<Void> updateDigitalTwinWithResponse(String digitalTwinId, JsonPatchDocument jsonPatch, UpdateDigitalTwinOptions options, Context context)
+    {
         return digitalTwinsAsyncClient.updateDigitalTwinWithResponse(digitalTwinId, jsonPatch, options, context).block();
     }
 
@@ -212,12 +205,13 @@ public final class DigitalTwinsClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.digitaltwins.core.DigitalTwinsClient.deleteDigitalTwin#String}
+     * {@codesnippet com.azure.digitaltwins.core.syncClient.deleteDigitalTwin#String}
      *
      * @param digitalTwinId The Id of the digital twin. The Id is unique within the service and case sensitive.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteDigitalTwin(String digitalTwinId) {
+    public void deleteDigitalTwin(String digitalTwinId)
+    {
         deleteDigitalTwinWithResponse(digitalTwinId, null, Context.NONE);
     }
 
@@ -226,7 +220,7 @@ public final class DigitalTwinsClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.digitaltwins.core.DigitalTwinsClient.deleteDigitalTwinWithResponse#String-DeleteDigitalTwinOptions-Context}
+     * {@codesnippet com.azure.digitaltwins.core.syncClient.deleteDigitalTwinWithResponse#String-Options-Context}
      *
      * @param digitalTwinId The Id of the digital twin. The Id is unique within the service and case sensitive.
      * @param options The optional parameters for this request. If null, the default option values will be used.
@@ -234,7 +228,8 @@ public final class DigitalTwinsClient {
      * @return The Http response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteDigitalTwinWithResponse(String digitalTwinId, DeleteDigitalTwinOptions options, Context context) {
+    public Response<Void> deleteDigitalTwinWithResponse(String digitalTwinId, DeleteDigitalTwinOptions options, Context context)
+    {
         return digitalTwinsAsyncClient.deleteDigitalTwinWithResponse(digitalTwinId, options, context).block();
     }
 
@@ -250,11 +245,11 @@ public final class DigitalTwinsClient {
      *
      * <p>A strongly typed digital twin object such as {@link BasicRelationship} can be provided as the input parameter to deserialize the response into.</p>
      *
-     * {@codesnippet com.azure.digitaltwins.core.DigitalTwinsClient.createOrReplaceRelationship#String-String-Object-Class#BasicRelationship}
+     * {@codesnippet com.azure.digitaltwins.core.syncClient.createOrReplaceRelationship#String-String-Object-Class#BasicRelationship}
      *
      * <p>Or alternatively String can be used as input and output deserialization type:</p>
      *
-     * {@codesnippet com.azure.digitaltwins.core.DigitalTwinsClient.createOrReplaceRelationship#String-String-Object-Class#String}
+     * {@codesnippet com.azure.digitaltwins.core.syncClient.createOrReplaceRelationship#String-String-Object-Class#String}
      *
      * @param digitalTwinId The Id of the source digital twin.
      * @param relationshipId The Id of the relationship to be created.
@@ -276,11 +271,11 @@ public final class DigitalTwinsClient {
      *
      * <p>A strongly typed digital twin object such as {@link BasicRelationship} can be provided as the input parameter to deserialize the response into.</p>
      *
-     * {@codesnippet com.azure.digitaltwins.core.DigitalTwinsClient.createOrReplaceRelationshipWithResponse#String-String-Object-Class-Options-Context#BasicRelationship}
+     * {@codesnippet com.azure.digitaltwins.core.syncClient.createOrReplaceRelationshipWithResponse#String-String-Object-Class-Options-Context#BasicRelationship}
      *
      * <p>Or alternatively String can be used as input and output deserialization type:</p>
      *
-     * {@codesnippet com.azure.digitaltwins.core.DigitalTwinsClient.createOrReplaceRelationshipWithResponse#String-String-Object-Class-Options-Context#String}
+     * {@codesnippet com.azure.digitaltwins.core.syncClient.createOrReplaceRelationshipWithResponse#String-String-Object-Class-Options-Context#String}
      *
      * @param digitalTwinId The Id of the source digital twin.
      * @param relationshipId The Id of the relationship to be created.
@@ -303,11 +298,11 @@ public final class DigitalTwinsClient {
      *
      * <p>A strongly typed digital twin object such as {@link BasicRelationship} can be provided as the input parameter to deserialize the response into.</p>
      *
-     * {@codesnippet com.azure.digitaltwins.core.DigitalTwinsClient.getRelationship#String#BasicRelationship}
+     * {@codesnippet com.azure.digitaltwins.core.syncClient.getRelationship#String#BasicRelationship}
      *
      * <p>Or alternatively String can be used as input and output deserialization type:</p>
      *
-     * {@codesnippet com.azure.digitaltwins.core.DigitalTwinsClient.getRelationship#String#String}
+     * {@codesnippet com.azure.digitaltwins.core.syncClient.getRelationship#String#String}
      *
      * @param digitalTwinId The Id of the source digital twin.
      * @param relationshipId The Id of the relationship to retrieve.
@@ -327,11 +322,11 @@ public final class DigitalTwinsClient {
      *
      * <p>A strongly typed digital twin object such as {@link BasicRelationship} can be provided as the input parameter to deserialize the response into.</p>
      *
-     * {@codesnippet com.azure.digitaltwins.core.DigitalTwinsClient.getRelationshipWithResponse#String-String-Class-Options-Context#BasicRelationship}
+     * {@codesnippet com.azure.digitaltwins.core.syncClient.getRelationshipWithResponse#String-String-Class-Options-Context#BasicRelationship}
      *
      * <p>Or alternatively String can be used as input and output deserialization type:</p>
      *
-     * {@codesnippet com.azure.digitaltwins.core.DigitalTwinsClient.getRelationshipWithResponse#String-String-Class-Options-Context#String}
+     * {@codesnippet com.azure.digitaltwins.core.syncClient.getRelationshipWithResponse#String-String-Class-Options-Context#String}
      *
      * @param digitalTwinId The Id of the source digital twin.
      * @param relationshipId The Id of the relationship to retrieve.
@@ -350,7 +345,7 @@ public final class DigitalTwinsClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.digitaltwins.core.DigitalTwinsClient.updateRelationship#String-String-JsonPatchDocument}
+     * {@codesnippet com.azure.digitaltwins.core.syncClient.updateRelationship#String-String-List}
      *
      * @param digitalTwinId The Id of the source digital twin.
      * @param relationshipId The Id of the relationship to be updated.
@@ -367,7 +362,7 @@ public final class DigitalTwinsClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.digitaltwins.core.DigitalTwinsClient.updateRelationshipWithResponse#String-String-JsonPatchDocument-UpdateRelationshipOptions-Context}
+     * {@codesnippet com.azure.digitaltwins.core.syncClient.updateRelationshipWithResponse#String-String-List-Options-Context}
      *
      * @param digitalTwinId The Id of the source digital twin.
      * @param relationshipId The Id of the relationship to be updated.
@@ -388,7 +383,7 @@ public final class DigitalTwinsClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.digitaltwins.core.DigitalTwinsClient.deleteRelationship#String-String}
+     * {@codesnippet com.azure.digitaltwins.core.syncClient.deleteRelationship#String-String}
      *
      * @param digitalTwinId The Id of the source digital twin.
      * @param relationshipId The Id of the relationship to delete.
@@ -403,7 +398,7 @@ public final class DigitalTwinsClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.digitaltwins.core.DigitalTwinsClient.deleteRelationshipWithResponse#String-String-DeleteRelationshipOptions-Context}
+     * {@codesnippet com.azure.digitaltwins.core.syncClient.deleteRelationshipWithResponse#String-String-Options-Context}
      *
      * @param digitalTwinId The Id of the source digital twin.
      * @param relationshipId The Id of the relationship to delete.
@@ -423,11 +418,11 @@ public final class DigitalTwinsClient {
      *
      * <p>A strongly typed digital twin object such as {@link BasicRelationship} can be provided as the input parameter to deserialize the response into.</p>
      *
-     * {@codesnippet com.azure.digitaltwins.core.DigitalTwinsClient.listRelationships#String-Class#BasicRelationship#IterateByItem}
+     * {@codesnippet com.azure.digitaltwins.core.syncClient.listRelationships#String-Class#BasicRelationship#IterateByItem}
      *
      * <p>Or alternatively String can be used as input and output deserialization type:</p>
      *
-     * {@codesnippet com.azure.digitaltwins.core.DigitalTwinsClient.listRelationships#String-Class#String#IterateByItem}
+     * {@codesnippet com.azure.digitaltwins.core.syncClient.listRelationships#String-Class#String#IterateByItem}
      *
      * @param digitalTwinId The Id of the source digital twin.
      * @param clazz The model class to deserialize each relationship into. Since a digital twin might have relationships
@@ -447,11 +442,11 @@ public final class DigitalTwinsClient {
      *
      * <p>A strongly typed digital twin object such as {@link BasicRelationship} can be provided as the input parameter to deserialize the response into.</p>
      *
-     * {@codesnippet com.azure.digitaltwins.core.DigitalTwinsClient.listRelationships#String-String-Class-Options-Context#BasicRelationship#IterateByItem}
+     * {@codesnippet com.azure.digitaltwins.core.syncClient.listRelationships#String-String-Class-Options-Context#BasicRelationship#IterateByItem}
      *
      * <p>Or alternatively String can be used as input and output deserialization type:</p>
      *
-     * {@codesnippet com.azure.digitaltwins.core.DigitalTwinsClient.listRelationships#String-String-Class-Options-Context#String#IterateByItem}
+     * {@codesnippet com.azure.digitaltwins.core.syncClient.listRelationships#String-String-Class-Options-Context#String#IterateByItem}
      *
      * @param digitalTwinId The Id of the source digital twin.
      * @param relationshipName The name of a relationship to filter to.
@@ -471,7 +466,7 @@ public final class DigitalTwinsClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.digitaltwins.core.DigitalTwinsClient.listIncomingRelationships#String}
+     * {@codesnippet com.azure.digitaltwins.core.syncClient.listIncomingRelationships#String}
      *
      * @param digitalTwinId The Id of the target digital twin.
      * @return A {@link PagedIterable} of application/json strings representing the relationships directed towards the
@@ -487,7 +482,7 @@ public final class DigitalTwinsClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.digitaltwins.core.DigitalTwinsClient.listIncomingRelationships#String-Context}
+     * {@codesnippet com.azure.digitaltwins.core.syncClient.listIncomingRelationships#String-Options-Context}
      *
      * @param digitalTwinId The Id of the target digital twin.
      * @param context Additional context that is passed through the Http pipeline during the service call.
@@ -508,7 +503,7 @@ public final class DigitalTwinsClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.digitaltwins.core.DigitalTwinsClient.createModels#Iterable}
+     * {@codesnippet com.azure.digitaltwins.core.syncClient.createModels#Iterable}
      *
      * @param dtdlModels The list of models to create. Each string corresponds to exactly one model.
      * @return A List of created models. Each {@link DigitalTwinsModelData} instance in this list
@@ -524,7 +519,7 @@ public final class DigitalTwinsClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.digitaltwins.core.DigitalTwinsClient.createModelsWithResponse#Iterable-Context}
+     * {@codesnippet com.azure.digitaltwins.core.syncClient.createModelsWithResponse#Iterable}
      *
      * @param dtdlModels The list of models to create. Each string corresponds to exactly one model.
      * @param context Additional context that is passed through the Http pipeline during the service call.
@@ -541,7 +536,7 @@ public final class DigitalTwinsClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.digitaltwins.core.DigitalTwinsClient.getModel#String}
+     * {@codesnippet com.azure.digitaltwins.core.syncClient.getModel#String}
      *
      * @param modelId The Id of the model.
      * @return A {@link DigitalTwinsModelData} instance that contains the model and its metadata.
@@ -556,7 +551,7 @@ public final class DigitalTwinsClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.digitaltwins.core.DigitalTwinsClient.getModelWithResponse#String-Context}
+     * {@codesnippet com.azure.digitaltwins.core.syncClient.getModelWithResponse#String}
      *
      * @param modelId The Id of the model.
      * @param context Additional context that is passed through the Http pipeline during the service call.
@@ -572,7 +567,7 @@ public final class DigitalTwinsClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.digitaltwins.core.DigitalTwinsClient.listModels}
+     * {@codesnippet com.azure.digitaltwins.core.syncClient.listModels}
      *
      * @return A {@link PagedFlux} of {@link DigitalTwinsModelData} that enumerates all the models.
      */
@@ -586,7 +581,7 @@ public final class DigitalTwinsClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.digitaltwins.core.DigitalTwinsClient.listModels#ListModelsOptions-Context}
+     * {@codesnippet com.azure.digitaltwins.core.syncClient.listModels#Options}
      *
      * @param options The optional parameters for this request. If null, the default option values will be used.
      * @param context Additional context that is passed through the Http pipeline during the service call.
@@ -603,7 +598,7 @@ public final class DigitalTwinsClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.digitaltwins.core.DigitalTwinsClient.deleteModel#String}
+     * {@codesnippet com.azure.digitaltwins.core.syncClient.deleteModel#String}
      *
      * @param modelId The Id for the model. The Id is globally unique and case sensitive.
      */
@@ -617,7 +612,7 @@ public final class DigitalTwinsClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.digitaltwins.core.DigitalTwinsClient.deleteModelWithResponse#String-Context}
+     * {@codesnippet com.azure.digitaltwins.core.syncClient.deleteModelWithResponse#String}
      *
      * @param modelId The Id for the model. The Id is globally unique and case sensitive.
      * @param context Additional context that is passed through the Http pipeline during the service call.
@@ -633,7 +628,7 @@ public final class DigitalTwinsClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.digitaltwins.core.DigitalTwinsClient.decommissionModel#String}
+     * {@codesnippet com.azure.digitaltwins.core.syncClient.decommissionModel#String}
      *
      * @param modelId The Id of the model to decommission.
      */
@@ -647,7 +642,7 @@ public final class DigitalTwinsClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.digitaltwins.core.DigitalTwinsClient.decommissionModelWithResponse#String-Context}
+     * {@codesnippet com.azure.digitaltwins.core.syncClient.decommissionModelWithResponse#String}
      *
      * @param modelId The Id of the model to decommission.
      * @param context Additional context that is passed through the Http pipeline during the service call.
@@ -667,7 +662,7 @@ public final class DigitalTwinsClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.digitaltwins.core.DigitalTwinsClient.getComponent#String-String-Class}
+     * {@codesnippet com.azure.digitaltwins.core.syncClient.getComponent#String-String-Class}
      *
      * @param digitalTwinId The Id of the digital twin to get the component from.
      * @param componentName The name of the component on the digital twin to retrieve.
@@ -685,7 +680,7 @@ public final class DigitalTwinsClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.digitaltwins.core.DigitalTwinsClient.getComponentWithResponse#String-String-Class-Context}
+     * {@codesnippet com.azure.digitaltwins.core.syncClient.getComponentWithResponse#String-String-Class-Options-Context}
      *
      * @param digitalTwinId The Id of the digital twin to get the component from.
      * @param componentName The name of the component on the digital twin to retrieve.
@@ -704,7 +699,7 @@ public final class DigitalTwinsClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.digitaltwins.core.DigitalTwinsClient.updateComponent#String-String-JsonPatchDocument}
+     * {@codesnippet com.azure.digitaltwins.core.syncClient.updateComponent#String-String-List}
      *
      * @param digitalTwinId The Id of the digital twin that has the component to patch.
      * @param componentName The name of the component on the digital twin.
@@ -721,7 +716,7 @@ public final class DigitalTwinsClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.digitaltwins.core.DigitalTwinsClient.updateComponentWithResponse#String-String-JsonPatchDocument-UpdateComponentOptions-Context}
+     * {@codesnippet com.azure.digitaltwins.core.syncClient.updateComponentWithResponse#String-String-List-Options-Context}
      *
      * @param digitalTwinId The Id of the digital twin that has the component to patch.
      * @param componentName The name of the component on the digital twin.
@@ -748,11 +743,11 @@ public final class DigitalTwinsClient {
      *
      * <p>A strongly typed digital twin object such as {@link BasicDigitalTwin} can be provided as the input parameter to deserialize the response into.</p>
      *
-     * {@codesnippet com.azure.digitaltwins.core.DigitalTwinsClient.query#String#BasicDigitalTwin}
+     * {@codesnippet com.azure.digitaltwins.core.syncClient.query#String#BasicDigitalTwin}
      *
      * <p>Or alternatively String can be used as input and output deserialization type:</p>
      *
-     * {@codesnippet com.azure.digitaltwins.core.DigitalTwinsClient.query#String#String}
+     * {@codesnippet com.azure.digitaltwins.core.syncClient.query#String#String}
      *
      * Note that there may be a delay between before changes in your instance are reflected in queries.
      * For more details on query limitations, see
@@ -776,11 +771,11 @@ public final class DigitalTwinsClient {
      *
      * <p>A strongly typed digital twin object such as {@link BasicDigitalTwin} can be provided as the input parameter to deserialize the response into.</p>
      *
-     * {@codesnippet com.azure.digitaltwins.core.DigitalTwinsClient.query#String-Options-Context#BasicDigitalTwin}
+     * {@codesnippet com.azure.digitaltwins.core.syncClient.query#String-Options-Context#BasicDigitalTwin}
      *
      * <p>Or alternatively String can be used as input and output deserialization type:</p>
      *
-     * {@codesnippet com.azure.digitaltwins.core.DigitalTwinsClient.query#String-Options-Context#String}
+     * {@codesnippet com.azure.digitaltwins.core.syncClient.query#String-Options-Context#String}
      *
      * Note that there may be a delay between before changes in your instance are reflected in queries.
      * For more details on query limitations, see
@@ -808,7 +803,7 @@ public final class DigitalTwinsClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.digitaltwins.core.DigitalTwinsClient.createOrReplaceEventRoute#String-DigitalTwinsEventRoute}
+     * {@codesnippet com.azure.digitaltwins.core.syncClient.createOrReplaceEventRoute#String-EventRoute}
      *
      * @param eventRouteId The id of the event route to create.
      * @param eventRoute The event route to create.
@@ -824,7 +819,7 @@ public final class DigitalTwinsClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.digitaltwins.core.DigitalTwinsClient.createOrReplaceEventRouteWithResponse#String-DigitalTwinsEventRoute-Context}
+     * {@codesnippet com.azure.digitaltwins.core.syncClient.createOrReplaceEventRouteWithResponse#String-EventRoute-Options-Context}
      *
      * @param eventRouteId The id of the event route to create.
      * @param eventRoute The event route to create.
@@ -841,7 +836,7 @@ public final class DigitalTwinsClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.digitaltwins.core.DigitalTwinsClient.getEventRoute#String}
+     * {@codesnippet com.azure.digitaltwins.core.syncClient.getEventRoute#String}
      *
      * @param eventRouteId The Id of the event route to get.
      * @return The retrieved event route.
@@ -856,7 +851,7 @@ public final class DigitalTwinsClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.digitaltwins.core.DigitalTwinsClient.getEventRouteWithResponse#String-Context}
+     * {@codesnippet com.azure.digitaltwins.core.syncClient.getEventRouteWithResponse#String-Options-Context}
      *
      * @param eventRouteId The Id of the event route to get.
      * @param context Additional context that is passed through the Http pipeline during the service call.
@@ -872,12 +867,13 @@ public final class DigitalTwinsClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.digitaltwins.core.DigitalTwinsClient.deleteEventRoute#String}
+     * {@codesnippet com.azure.digitaltwins.core.syncClient.deleteEventRoute#String}
      *
      * @param eventRouteId The Id of the event route to delete.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteEventRoute(String eventRouteId) {
+    public void deleteEventRoute(String eventRouteId)
+    {
         deleteEventRouteWithResponse(eventRouteId, Context.NONE);
     }
 
@@ -886,14 +882,15 @@ public final class DigitalTwinsClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.digitaltwins.core.DigitalTwinsClient.deleteEventRouteWithResponse#String-Context}
+     * {@codesnippet com.azure.digitaltwins.core.syncClient.deleteEventRouteWithResponse#String-Options-Context}
      *
      * @param eventRouteId The Id of the event route to delete.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A {@link Response} containing no parsed value.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteEventRouteWithResponse(String eventRouteId, Context context) {
+    public Response<Void> deleteEventRouteWithResponse(String eventRouteId, Context context)
+    {
         return this.digitalTwinsAsyncClient.deleteEventRouteWithResponse(eventRouteId, context).block();
     }
 
@@ -902,7 +899,7 @@ public final class DigitalTwinsClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.digitaltwins.core.DigitalTwinsClient.listEventRoutes}
+     * {@codesnippet com.azure.digitaltwins.core.syncClient.listEventRoutes}
      *
      * @return A {@link PagedIterable} containing all the event routes that exist in your digital twins instance.
      * This PagedIterable may take multiple service requests to iterate over all event routes.
@@ -917,7 +914,7 @@ public final class DigitalTwinsClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.digitaltwins.core.DigitalTwinsClient.listEventRoutes#ListDigitalTwinsEventRoutesOptions-Context}
+     * {@codesnippet com.azure.digitaltwins.core.syncClient.listEventRoutes#Options-Context}
      *
      * @param options The optional parameters for this request. If null, the default option values will be used.
      * @param context Additional context that is passed through the Http pipeline during the service call.
@@ -940,11 +937,11 @@ public final class DigitalTwinsClient {
      *
      * <p>A strongly typed object such as {@link java.util.Hashtable} can be provided as the input parameter for the telemetry payload.</p>
      *
-     * {@codesnippet com.azure.digitaltwins.core.DigitalTwinsClient.publishTelemetry#String-String-Object#Object}
+     * {@codesnippet com.azure.digitaltwins.core.syncClient.publishTelemetry#String-String-Object#Object}
      *
      * <p>Or alternatively String can be used as input type to construct the json string telemetry payload:</p>
      *
-     * {@codesnippet com.azure.digitaltwins.core.DigitalTwinsClient.publishTelemetry#String-String-Object#String}
+     * {@codesnippet com.azure.digitaltwins.core.syncClient.publishTelemetry#String-String-Object#String}
      *
      * The result is then consumed by one or many destination endpoints (subscribers) defined under {@link DigitalTwinsEventRoute}
      * These event routes need to be set before publishing a telemetry message, in order for the telemetry message to be consumed.
@@ -964,11 +961,11 @@ public final class DigitalTwinsClient {
      *
      * <p>A strongly typed object such as {@link java.util.Hashtable} can be provided as the input parameter for the telemetry payload.</p>
      *
-     * {@codesnippet com.azure.digitaltwins.core.DigitalTwinsClient.publishTelemetryWithResponse#String-String-Object-Options-Context#Object}
+     * {@codesnippet com.azure.digitaltwins.core.syncClient.publishTelemetryWithResponse#String-String-Object-Options-Context#Object}
      *
      * <p>Or alternatively String can be used as input type to construct the json string telemetry payload:</p>
      *
-     * {@codesnippet com.azure.digitaltwins.core.DigitalTwinsClient.publishTelemetryWithResponse#String-String-Object-Options-Context#String}
+     * {@codesnippet com.azure.digitaltwins.core.syncClient.publishTelemetryWithResponse#String-String-Object-Options-Context#String}
      *
      * The result is then consumed by one or many destination endpoints (subscribers) defined under {@link DigitalTwinsEventRoute}
      * These event routes need to be set before publishing a telemetry message, in order for the telemetry message to be consumed.
@@ -991,11 +988,11 @@ public final class DigitalTwinsClient {
      *
      * <p>A strongly typed object such as {@link java.util.Hashtable} can be provided as the input parameter for the telemetry payload.</p>
      *
-     * {@codesnippet com.azure.digitaltwins.core.DigitalTwinsClient.publishComponentTelemetry#String-String-String-Object#Object}
+     * {@codesnippet com.azure.digitaltwins.core.syncClient.publishComponentTelemetry#String-String-String-Object#Object}
      *
      * <p>Or alternatively String can be used as input type to construct the json string telemetry payload:</p>
      *
-     * {@codesnippet com.azure.digitaltwins.core.DigitalTwinsClient.publishComponentTelemetry#String-String-String-Object#String}
+     * {@codesnippet com.azure.digitaltwins.core.syncClient.publishComponentTelemetry#String-String-String-Object#String}
      *
      * The result is then consumed by one or many destination endpoints (subscribers) defined under {@link DigitalTwinsEventRoute}
      * These event routes need to be set before publishing a telemetry message, in order for the telemetry message to be consumed.
@@ -1016,11 +1013,11 @@ public final class DigitalTwinsClient {
      *
      * <p>A strongly typed object such as {@link java.util.Hashtable} can be provided as the input parameter for the telemetry payload.</p>
      *
-     * {@codesnippet com.azure.digitaltwins.core.DigitalTwinsClient.publishComponentTelemetryWithResponse#String-String-String-Object-Options-Context#Object}
+     * {@codesnippet com.azure.digitaltwins.core.syncClient.publishComponentTelemetryWithResponse#String-String-String-Object-Options-Context#Object}
      *
      * <p>Or alternatively String can be used as input type to construct the json string telemetry payload:</p>
      *
-     * {@codesnippet com.azure.digitaltwins.core.DigitalTwinsClient.publishComponentTelemetryWithResponse#String-String-String-Object-Options-Context#String}
+     * {@codesnippet com.azure.digitaltwins.core.syncClient.publishComponentTelemetryWithResponse#String-String-String-Object-Options-Context#String}
      *
      * The result is then consumed by one or many destination endpoints (subscribers) defined under {@link DigitalTwinsEventRoute}
      * These event routes need to be set before publishing a telemetry message, in order for the telemetry message to be consumed.

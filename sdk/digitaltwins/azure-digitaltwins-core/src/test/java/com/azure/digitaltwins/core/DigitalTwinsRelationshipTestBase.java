@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
+import static com.azure.digitaltwins.core.TestAssetsHelper.*;
 import static java.util.Arrays.asList;
 
 /**
@@ -58,25 +59,25 @@ public abstract class DigitalTwinsRelationshipTestBase extends DigitalTwinsTestB
     public abstract void deleteRelationshipSucceedsWhenETagMatches(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion) throws JsonProcessingException;
 
     void createModelsRunner(String floorModelId, String roomModelId, String hvacModelId, Consumer<List<String>> createModelsTestRunner) {
-        String floorModel = TestAssetsHelper.getFloorModelPayload(floorModelId, roomModelId, hvacModelId);
-        String roomModel = TestAssetsHelper.getRoomModelPayload(roomModelId, floorModelId);
-        String hvacModel = TestAssetsHelper.getHvacModelPayload(hvacModelId, floorModelId);
+        String floorModel = getFloorModelPayload(floorModelId, roomModelId, hvacModelId);
+        String roomModel = getRoomModelPayload(roomModelId, floorModelId);
+        String hvacModel = getHvacModelPayload(hvacModelId, floorModelId);
 
         createModelsTestRunner.accept(asList(floorModel, roomModel, hvacModel));
     }
 
     void createFloorTwinRunner(String floorTwinId, String floorModelId, BiConsumer<String, BasicDigitalTwin> createFloorTwinTestRunner) throws JsonProcessingException {
-        String floorTwin = TestAssetsHelper.getFloorTwinPayload(floorModelId);
+        String floorTwin = getFloorTwinPayload(floorModelId);
         createTwinRunner(floorTwinId, deserializeJsonString(floorTwin, BasicDigitalTwin.class), createFloorTwinTestRunner);
     }
 
     void createRoomTwinRunner(String roomTwinId, String roomModelId, BiConsumer<String, BasicDigitalTwin> createRoomTwinTestRunner) throws JsonProcessingException {
-        String roomTwin = TestAssetsHelper.getRoomTwinPayload(roomModelId);
+        String roomTwin = getRoomTwinPayload(roomModelId);
         createTwinRunner(roomTwinId, deserializeJsonString(roomTwin, BasicDigitalTwin.class), createRoomTwinTestRunner);
     }
 
     void createHvacTwinRunner(String hvacTwinId, String hvacModelId, BiConsumer<String, BasicDigitalTwin> createHvacTwinTestRunner) throws JsonProcessingException {
-        String hvacTwin = TestAssetsHelper.getHvacTwinPayload(hvacModelId);
+        String hvacTwin = getHvacTwinPayload(hvacModelId);
         createTwinRunner(hvacTwinId, deserializeJsonString(hvacTwin, BasicDigitalTwin.class), createHvacTwinTestRunner);
     }
 

@@ -1,6 +1,3 @@
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License.
-
 package com.azure.digitaltwins.core.helpers;
 
 import com.azure.digitaltwins.core.DigitalTwinsAsyncClient;
@@ -34,7 +31,7 @@ public class UniqueIdHelper {
         int maxAttempts = 10;
         int maxRandomDigits = 8; // Not to be confused with max random value. This value determines the length of the string of random integers
 
-        for (int attemptsMade = 0; attemptsMade < maxAttempts; attemptsMade++) {
+        for (int attemptsMade = 0 ; attemptsMade < maxAttempts ; attemptsMade++) {
             String id = baseName + randomIntegerStringGenerator.apply(maxRandomDigits);
             try {
                 getResource.apply(id);

@@ -8,7 +8,7 @@ import com.azure.digitaltwins.core.models.DigitalTwinsJsonPropertyNames;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import static com.fasterxml.jackson.annotation.JsonInclude.Include;
+import static com.fasterxml.jackson.annotation.JsonInclude.*;
 
 @Fluent
 @JsonInclude(Include.NON_NULL)

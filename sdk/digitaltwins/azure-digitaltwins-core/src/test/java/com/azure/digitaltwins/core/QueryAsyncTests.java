@@ -1,6 +1,3 @@
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License.
-
 package com.azure.digitaltwins.core;
 
 import com.azure.core.http.HttpClient;
@@ -33,8 +30,8 @@ public class QueryAsyncTests extends QueryTestBase {
     public void validQuerySucceeds(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion) throws InterruptedException {
         DigitalTwinsAsyncClient asyncClient = getAsyncClient(httpClient, serviceVersion);
         int pageSize = 5;
-        String floorModelId = UniqueIdHelper.getUniqueModelId(TestAssetDefaults.FLOOR_MODEL_ID_PREFIX, asyncClient, getRandomIntegerStringGenerator());
-        String roomModelId = UniqueIdHelper.getUniqueModelId(TestAssetDefaults.ROOM_MODEL_ID_PREFIX, asyncClient, getRandomIntegerStringGenerator());
+        String floorModelId = UniqueIdHelper.getUniqueModelId(TestAssetDefaults.FLOOR_MODEL_ID_PREFIX, asyncClient, randomIntegerStringGenerator);
+        String roomModelId = UniqueIdHelper.getUniqueModelId(TestAssetDefaults.ROOM_MODEL_ID_PREFIX, asyncClient, randomIntegerStringGenerator);
         List<String> roomTwinIds = new ArrayList<>();
 
         try {
@@ -51,7 +48,7 @@ public class QueryAsyncTests extends QueryTestBase {
             String roomTwin = TestAssetsHelper.getRoomTwinPayload(roomModelId);
 
             for (int i = 0; i < pageSize + 1; i++) {
-                String roomTwinId = UniqueIdHelper.getUniqueDigitalTwinId(TestAssetDefaults.ROOM_TWIN_ID_PREFIX, asyncClient, getRandomIntegerStringGenerator());
+                String roomTwinId = UniqueIdHelper.getUniqueDigitalTwinId(TestAssetDefaults.ROOM_TWIN_ID_PREFIX, asyncClient, randomIntegerStringGenerator);
                 roomTwinIds.add(roomTwinId);
                 StepVerifier.create(asyncClient.createOrReplaceDigitalTwinWithResponse(roomTwinId, roomTwin, String.class, null))
                     .assertNext(response ->

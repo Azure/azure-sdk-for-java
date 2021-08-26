@@ -79,7 +79,7 @@ public final class DigitalTwinsImpl {
      */
     @Host("{$host}")
     @ServiceInterface(name = "AzureDigitalTwinsAPI")
-    public interface DigitalTwinsService {
+    private interface DigitalTwinsService {
         @Get("/digitaltwins/{id}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)

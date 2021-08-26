@@ -1,14 +1,11 @@
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License.
-
 package com.azure.digitaltwins.core;
 
 import com.azure.core.http.HttpClient;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.digitaltwins.core.helpers.UniqueIdHelper;
-import com.azure.digitaltwins.core.models.DigitalTwinsModelData;
 import com.azure.digitaltwins.core.models.ListModelsOptions;
+import com.azure.digitaltwins.core.models.DigitalTwinsModelData;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -91,7 +88,7 @@ public class ModelsTest extends ModelsTestBase {
         DigitalTwinsClient client = getClient(httpClient, serviceVersion);
 
         final List<String> modelsToCreate = new ArrayList<>();
-        final String wardModelId = UniqueIdHelper.getUniqueModelId(TestAssetDefaults.WARD_MODEL_ID, client, getRandomIntegerStringGenerator());
+        final String wardModelId = UniqueIdHelper.getUniqueModelId(TestAssetDefaults.WARD_MODEL_ID, client, randomIntegerStringGenerator);
         final String wardModelPayload = TestAssetsHelper.getWardModelPayload(wardModelId);
         modelsToCreate.add(wardModelPayload);
 
@@ -146,10 +143,10 @@ public class ModelsTest extends ModelsTestBase {
     }
 
     private void createModelsRunner(DigitalTwinsClient client, Consumer<List<String>> createModelsTestRunner) {
-        String buildingModelId = UniqueIdHelper.getUniqueModelId(TestAssetDefaults.BUILDING_MODEL_ID, client, getRandomIntegerStringGenerator());
-        String floorModelId = UniqueIdHelper.getUniqueModelId(TestAssetDefaults.FLOOR_MODEL_ID, client, getRandomIntegerStringGenerator());
-        String hvacModelId = UniqueIdHelper.getUniqueModelId(TestAssetDefaults.HVAC_MODEL_ID, client, getRandomIntegerStringGenerator());
-        String wardModelId = UniqueIdHelper.getUniqueModelId(TestAssetDefaults.WARD_MODEL_ID, client, getRandomIntegerStringGenerator());
+        String buildingModelId = UniqueIdHelper.getUniqueModelId(TestAssetDefaults.BUILDING_MODEL_ID, client, randomIntegerStringGenerator);
+        String floorModelId = UniqueIdHelper.getUniqueModelId(TestAssetDefaults.FLOOR_MODEL_ID, client, randomIntegerStringGenerator);
+        String hvacModelId = UniqueIdHelper.getUniqueModelId(TestAssetDefaults.HVAC_MODEL_ID, client, randomIntegerStringGenerator);
+        String wardModelId = UniqueIdHelper.getUniqueModelId(TestAssetDefaults.WARD_MODEL_ID, client, randomIntegerStringGenerator);
 
         createModelsRunner(buildingModelId, floorModelId, hvacModelId, wardModelId, createModelsTestRunner);
     }

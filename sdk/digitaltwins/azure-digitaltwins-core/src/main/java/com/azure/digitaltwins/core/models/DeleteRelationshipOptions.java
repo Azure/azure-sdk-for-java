@@ -5,6 +5,7 @@ package com.azure.digitaltwins.core.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.Context;
+import com.azure.digitaltwins.core.implementation.models.DigitalTwinsDeleteRelationshipOptions;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
