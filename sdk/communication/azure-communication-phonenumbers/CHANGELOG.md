@@ -1,7 +1,7 @@
 # Release History
 
-## 1.1.0-beta.1 (Unreleased)
-
+## 1.1.0-beta.1 (2021-08-26)
+- Using released version of azure-communication-common.
 
 ## 1.0.3 (2021-06-09)
 Updated `azure-communication-phonenumbers` version
