@@ -37,6 +37,7 @@ public class ServerCallAsyncLiveTests extends CallingServerTestBase {
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
 <<<<<<< HEAD
+<<<<<<< HEAD
     public void runAllClientFunctionsForConnectionStringClient(HttpClient httpClient) {
         String groupId = getGroupId("runAllClientFunctionsForConnectiongStringClient");
         CallingServerClientBuilder builder = getCallingServerClientUsingConnectionString(httpClient);
@@ -47,6 +48,12 @@ public class ServerCallAsyncLiveTests extends CallingServerTestBase {
         CallingServerClientBuilder builder = getCallingServerClientUsingTokenCredential(httpClient);
         CallingServerAsyncClient callingServerAsyncClient = setupAsyncClient(builder, "runAllClientFunctionsForConnectiongStringClient");
 >>>>>>> 6751dd5260... Update ServerCall live tests and re-record
+=======
+    public void runAllClientFunctionsForConnectionStringClient(HttpClient httpClient) {
+        String groupId = getGroupId("runAllClientFunctionsForConnectiongStringClient");
+        CallingServerClientBuilder builder = getCallingServerClientUsingConnectionString(httpClient);
+        CallingServerAsyncClient callingServerAsyncClient = setupAsyncClient(builder, "runAllClientFunctionsForConnectionStringClient");
+>>>>>>> 95397e61e5... Add TokenCredential tests in CallConnection and DownloadContent tests. Update changelog & readme
         runAllClientFunctionsAsync(groupId, callingServerAsyncClient);
     }
 
@@ -56,6 +63,7 @@ public class ServerCallAsyncLiveTests extends CallingServerTestBase {
         String groupId = getGroupId("runAllClientFunctionsForTokenCredentialClient");
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
         CallingServerClientBuilder builder = getCallingServerClientUsingTokenCredential(httpClient);
 =======
         CallingServerClientBuilder builder = getConversationClientUsingConnectionString(httpClient);
@@ -63,6 +71,9 @@ public class ServerCallAsyncLiveTests extends CallingServerTestBase {
 =======
         CallingServerClientBuilder builder = getCallingServerClientUsingConnectionString(httpClient);
 >>>>>>> 43c1ebe677... Remove duplicate code from CallingServerTestBase
+=======
+        CallingServerClientBuilder builder = getCallingServerClientUsingTokenCredential(httpClient);
+>>>>>>> 95397e61e5... Add TokenCredential tests in CallConnection and DownloadContent tests. Update changelog & readme
         CallingServerAsyncClient callingServerAsyncClient = setupAsyncClient(builder, "runAllClientFunctionsForTokenCredentialClient");
         runAllClientFunctionsAsync(groupId, callingServerAsyncClient);
     }

@@ -42,6 +42,7 @@ public class ServerCallLiveTests extends CallingServerTestBase {
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
 <<<<<<< HEAD
+<<<<<<< HEAD
     public void runAllClientFunctionsForConnectionStringClient(HttpClient httpClient) {
         CallingServerClientBuilder builder = getCallingServerClientUsingConnectionString(httpClient);
         CallingServerClient connectionStringClient = setupClient(builder, "runAllClientFunctionsForConnectionStringClient");
@@ -52,6 +53,12 @@ public class ServerCallLiveTests extends CallingServerTestBase {
         CallingServerClient connectionStringClient = setupClient(builder, "runAllClientFunctionsForConnectiongStringClient");
         String groupId = getGroupId("runAllClientFunctionsForConnectiongStringClient");
 >>>>>>> 6751dd5260... Update ServerCall live tests and re-record
+=======
+    public void runAllClientFunctionsForConnectionStringClient(HttpClient httpClient) {
+        CallingServerClientBuilder builder = getCallingServerClientUsingConnectionString(httpClient);
+        CallingServerClient connectionStringClient = setupClient(builder, "runAllClientFunctionsForConnectionStringClient");
+        String groupId = getGroupId("runAllClientFunctionsForConnectionStringClient");
+>>>>>>> 95397e61e5... Add TokenCredential tests in CallConnection and DownloadContent tests. Update changelog & readme
         runAllClientFunctions(groupId, connectionStringClient);
     }
 
