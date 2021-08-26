@@ -1,24 +1,20 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.cosmos;
+package com.azure.cosmos.models;
 
 import com.azure.cosmos.implementation.RequestOptions;
 import com.azure.cosmos.util.Beta;
 
 /**
- *
- * @deprecated forRemoval = true, since = "4.19"
- *
- * Encapsulates options that can be specified for an operation within a {@link TransactionalBatch}.
+ * Encapsulates options that can be specified for an operation within a {@link CosmosBatch}.
  */
-@Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-@Deprecated() //forRemoval = true, since = "4.19"
-class TransactionalBatchItemRequestOptionsBase {
+@Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+class CosmosBatchItemRequestOptionsBase {
     private String ifMatchETag;
     private String ifNoneMatchETag;
 
-    protected TransactionalBatchItemRequestOptionsBase(){
+    protected CosmosBatchItemRequestOptionsBase(){
     }
 
     /**
@@ -26,8 +22,7 @@ class TransactionalBatchItemRequestOptionsBase {
      *
      * @return ifMatchETag the ifMatchETag associated with the request.
      */
-    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    @Deprecated() //forRemoval = true, since = "4.19"
+    @Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public String getIfMatchETag() {
         return this.ifMatchETag;
     }
@@ -37,8 +32,7 @@ class TransactionalBatchItemRequestOptionsBase {
      *
      * @param ifMatchETag the ifMatchETag associated with the request.
      */
-    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    @Deprecated() //forRemoval = true, since = "4.19"
+    @Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public void setIfMatchETagCore(final String ifMatchETag){
         this.ifMatchETag = ifMatchETag;
         return;
@@ -49,8 +43,7 @@ class TransactionalBatchItemRequestOptionsBase {
      *
      * @return the ifNoneMatchETag associated with the request.
      */
-    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    @Deprecated() //forRemoval = true, since = "4.19"
+    @Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public String getIfNoneMatchETag() {
         return this.ifNoneMatchETag;
     }
@@ -60,8 +53,7 @@ class TransactionalBatchItemRequestOptionsBase {
      *
      * @param ifNoneMatchEtag the ifNoneMatchETag associated with the request.
      */
-    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    @Deprecated() //forRemoval = true, since = "4.19"
+    @Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public void setIfNoneMatchETagCore(final String ifNoneMatchEtag){
         this.ifNoneMatchETag = ifNoneMatchEtag;
         return;

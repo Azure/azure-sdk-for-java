@@ -24,6 +24,7 @@ public final class BulkItemRequestOptions
      * @return the current request options
      */
     @Beta(value = Beta.SinceVersion.V4_9_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Deprecated() //forRemoval = true, since = "4.19"
     public BulkItemRequestOptions setIfMatchETag(final String ifMatchETag) {
         super.setIfMatchETagCore(ifMatchETag);
         return this;
@@ -36,6 +37,7 @@ public final class BulkItemRequestOptions
      * @return the current request options.
      */
     @Beta(value = Beta.SinceVersion.V4_9_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Deprecated() //forRemoval = true, since = "4.19"
     public BulkItemRequestOptions setIfNoneMatchETag(final String ifNoneMatchEtag) {
         super.setIfNoneMatchETagCore(ifNoneMatchEtag);
         return this;
@@ -61,6 +63,7 @@ public final class BulkItemRequestOptions
      * @return the current request options.
      */
     @Beta(value = Beta.SinceVersion.V4_9_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Deprecated() //forRemoval = true, since = "4.19"
     public BulkItemRequestOptions setContentResponseOnWriteEnabled(Boolean contentResponseOnWriteEnabled) {
         super.setContentResponseOnWriteEnabledCore(contentResponseOnWriteEnabled);
         return this;

@@ -1,21 +1,17 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.cosmos;
+package com.azure.cosmos.models;
 
+import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.util.Beta;
 import reactor.core.publisher.Flux;
 
 /**
- * @deprecated forRemoval = true, since = "4.19"
- * This class is not necessary anymore and will be removed. Please use {@link com.azure.cosmos.models.CosmosBulkOperationResponse}
- *
  * Request, response and the exception(if any) for a {@link CosmosItemOperation} request when processed using Bulk by calling
- * {@link CosmosAsyncContainer#processBulkOperations(Flux, BulkProcessingOptions)}.
+ * {@link CosmosAsyncContainer#executeBulkOperations(Flux, CosmosBulkExecutionOptions)}.
  */
-@Beta(value = Beta.SinceVersion.V4_9_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-@Deprecated() //forRemoval = true, since = "4.19"
-@SuppressWarnings("DeprecatedIsStillUsed")
+@Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
 public final class CosmosBulkOperationResponse<TContext> {
 
     private final CosmosItemOperation operation;
@@ -58,26 +54,22 @@ public final class CosmosBulkOperationResponse<TContext> {
         this.batchContext = batchContext;
     }
 
-    @Beta(value = Beta.SinceVersion.V4_9_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    @Deprecated() //forRemoval = true, since = "4.19"
+    @Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public CosmosItemOperation getOperation() {
         return operation;
     }
 
-    @Beta(value = Beta.SinceVersion.V4_9_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    @Deprecated() //forRemoval = true, since = "4.19"
+    @Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public CosmosBulkItemResponse getResponse() {
         return response;
     }
 
-    @Beta(value = Beta.SinceVersion.V4_9_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    @Deprecated() //forRemoval = true, since = "4.19"
+    @Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public Exception getException() {
         return exception;
     }
 
-    @Beta(value = Beta.SinceVersion.V4_9_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    @Deprecated() //forRemoval = true, since = "4.19"
+    @Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public TContext getBatchContext() {
         return batchContext;
     }
