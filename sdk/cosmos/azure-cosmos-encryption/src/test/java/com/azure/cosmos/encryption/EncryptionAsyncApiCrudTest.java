@@ -435,6 +435,21 @@ public class EncryptionAsyncApiCrudTest extends TestSuiteBase {
         }
     }
 
+    @Test(groups = {"encryption"}, timeOut = TIMEOUT)
+    public void invalidDataEncryptionKeyAlgorithm() {
+        try {
+            TestEncryptionKeyStoreProvider testEncryptionKeyStoreProvider = new TestEncryptionKeyStoreProvider();
+            EncryptionKeyWrapMetadata metadata =
+                new EncryptionKeyWrapMetadata(testEncryptionKeyStoreProvider.getProviderName(), "key1",
+                    "tempmetadata1");
+            this.cosmosEncryptionAsyncDatabase.createClientEncryptionKey("key1",
+                "InvalidAlgorithm", metadata).block();
+            fail("client encryption key create should fail on invalid algorithm");
+        } catch (IllegalArgumentException ex) {
+            assertThat(ex.getMessage()).isEqualTo("Invalid Encryption Algorithm 'InvalidAlgorithm'");
+        }
+    }
+
     static void validateResponseWithOneFieldEncryption(EncryptionPojo originalItem, EncryptionPojo result) {
         assertThat(result.getId()).isEqualTo(originalItem.getId());
         assertThat(result.getNonSensitive()).isEqualTo(originalItem.getNonSensitive());
