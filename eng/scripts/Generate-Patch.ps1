@@ -79,34 +79,10 @@ function GetPatchVersion($ReleaseVersion) {
   }
 }
 
-function GetUpstreamRemoteName($MainRemoteUrl) {
+function GetRemoteName($MainRemoteUrl) {
   foreach($Remote in git remote show) {
     $RemoteUrl = git remote get-url $Remote
     if($RemoteUrl -eq $MainRemoteUrl) {
-      return $Remote
-    }
-  }
-  return $null
-}
-
-function GetOriginRemoteName($MainRemoteUrl) {
-  $UserRemote = "origin"
-  $RemoteUrl = git remote get-url $UserRemote
-  if($LASTEXITCODE -ne 0) {
-    LogWarning "Could not find the remote with name origin. Finding the first remote."
-  }
-  else {
-    return $UserRemote
-  }
-
-  $Remotes = git remote show
-  if($Remotes.Count == 1) { 
-    return Remotes[0];
-  }
-  
-  foreach($Remote in git remote show) {
-    $RemoteUrl = git remote get-url $Remote
-    if($RemoteUrl -ne $MainRemoteUrl) {
       return $Remote
     }
   }
@@ -153,19 +129,12 @@ if('' -eq $PatchVersion) {
 }
 Write-Information "PatchVersion is: $PatchVersion"
 
-$RemoteName = GetUpstreamRemoteName -MainRemoteUrl $MainRemoteUrl
+$RemoteName = GetRemoteName -MainRemoteUrl $MainRemoteUrl
 if($null -eq $RemoteName) {
     LogError "Could not fetch the remote name for the URL $MainRemoteUrl Exitting ..."
     exit
 }
 Write-Information "RemoteName is: $RemoteName"
-
-$UserRemote = GetOriginRemoteName -MainRemoteUrl $MainRemoteUrl
-if($null -eq $UserRemote) {
-    LogError "Could not fetch the remote name for the user remote fork. Exitting ..."
-    exit
-}
-Write-Information "UserRemote is: $UserRemote"
 
 if('' -eq $BranchName) {
   $ArtifactNameToLower = $ArtifactName.ToLower()
@@ -174,6 +143,7 @@ if('' -eq $BranchName) {
 Write-Information "BranchName is: $BranchName"
 
 try {
+  Write-Information "Reseting the $ArtifactName sources to the release $ReleaseTag."
   ## Creating a new branch
   $CmdOutput = git checkout -b $BranchName $RemoteName/main
   if($LASTEXITCODE -ne 0) {
@@ -183,7 +153,9 @@ try {
   
   ## Hard reseting it to the contents of the release tag.
   ## Fetching all the tags from the remote branch
+  Write-Information "Fetching all the tags from $RemoteName"
   $CmdOutput = git fetch $RemoteName --tags
+  
   $cmdOutput = git restore --source $ReleaseTag -W -S $ArtifactDirPath
   if($LASTEXITCODE -ne 0) {
     LogError "Could not restore the changes for release tag $ReleaseTag"
@@ -204,34 +176,61 @@ try {
   }
 
   ## Commit these changes.
-  git commit -a -m "Reset changes to the patch version."
-  
+  $cmdOutput = git commit -a -m "Reset changes to the patch version."
+  if($LASTEXITCODE -ne 0) {
+    LogError "Could not commit the changes locally. to branch $BranchName. Exitting..."
+    exit
+  }
+
+  Write-Information "Creating the patch release"
   ## Create the patch release
-  python $SetVersionFilePath --bt client --new-version $PatchVersion --ar $ArtifactName --gi $GroupId
+  $cmdOutput = python $SetVersionFilePath --bt client --new-version $PatchVersion --ar $ArtifactName --gi $GroupId
   if($LASTEXITCODE -ne 0) {
     LogError "Could not set the patch version."
     exit
   }
-  
-  python $UpdateVersionFilePath --ut all --bt client --sr
+
+  $cmdOutput = python $UpdateVersionFilePath --ut all --bt client --sr
     if($LASTEXITCODE -ne 0) {
-    LogError "Could not update the versions in the pom files."
+    LogError "Could not update the versions in the pom files.. Exitting..."
     exit
   }
   
-  UpdateChangeLog -ArtifactName $ArtifactName -Version $PatchVersion -ServiceDirectory $ServiceDirectoryName
+  $cmdOutput = UpdateChangeLog -ArtifactName $ArtifactName -Version $PatchVersion -ServiceDirectory $ServiceDirectoryName
+  if($LASTEXITCODE -ne 0) {
+    LogError "Could not update the changelog.. Exitting..."
+    exit
+  }
   
   $UpdateBranchName = $BranchName
-  if($RemoteUrl -eq $OriginRemote) {
+  if($RemoteName -eq $UserRemote) {
     ## Both the remotes are pointing to the same URL, so we need to create a separate branch for this.
     $UpdateBranchName = "$BranchName_patch"
     Write-Information "Patch branch: $UpdateBranchName"
-    git checkout -b $UpdateBranchName
+    $cmdOutput = git checkout -b $UpdateBranchName
+    if($LASTEXITCODE -ne 0) {
+      LogError "Could not checkout the branch $UpdateBranchName locally. Exitting..."
+      exit
+    }
   }
   
-  git add $RepoRoot
-  git commit -m "Updating the SDK dependencies for $ArtifactName"
-  # git push -f $OriginRemote $UpdateBranchName
+  $cmdOutput = git add $RepoRoot
+  if($LASTEXITCODE -ne 0) {
+    LogError "Could not add the changes. Exitting..."
+    exit 
+  }
+  
+  $cmdOutput = git commit -m "Updating the SDK dependencies for $ArtifactName"
+  if($LASTEXITCODE -ne 0) {
+    LogError "Could not commit changes to $UpdateBranchName locally. Exitting..."
+    exit 
+  }
+
+  $cmdOutput = git push -f $RemoteName $BranchName
+  if($LASTEXITCODE -ne 0) {
+    LogError "Could not push the changes to $RemoteName\$UpdateBranchName. Exitting..."
+    exit 
+  }
 }
 catch {
   # TODO: Add rollback in case of failure.
