@@ -157,7 +157,6 @@ import com.azure.resourcemanager.network.models.VirtualWanVpnProfileParameters;
 import com.azure.resourcemanager.resources.fluentcore.AzureServiceClient;
 import java.nio.ByteBuffer;
 import java.time.Duration;
-import java.util.List;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -1820,7 +1819,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
      *
      * @param resourceGroupName The name of the resource group.
      * @param bastionHostname The name of the Bastion Host.
-     * @param vms List of VM references.
+     * @param bslRequest Post request for all the Bastion Shareable Link endpoints.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1828,7 +1827,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BastionShareableLinkInner>> putBastionShareableLinkSinglePageAsync(
-        String resourceGroupName, String bastionHostname, List<BastionShareableLinkInner> vms) {
+        String resourceGroupName, String bastionHostname, BastionShareableLinkListRequest bslRequest) {
         if (this.getEndpoint() == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter this.getEndpoint() is required and cannot be null."));
@@ -1846,13 +1845,13 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
                 .error(
                     new IllegalArgumentException("Parameter this.getSubscriptionId() is required and cannot be null."));
         }
-        if (vms != null) {
-            vms.forEach(e -> e.validate());
+        if (bslRequest == null) {
+            return Mono.error(new IllegalArgumentException("Parameter bslRequest is required and cannot be null."));
+        } else {
+            bslRequest.validate();
         }
         final String apiVersion = "2021-02-01";
         final String accept = "application/json";
-        BastionShareableLinkListRequest bslRequest = new BastionShareableLinkListRequest();
-        bslRequest.withVms(vms);
         return FluxUtil
             .withContext(
                 context -> {
@@ -1898,7 +1897,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
      *
      * @param resourceGroupName The name of the resource group.
      * @param bastionHostname The name of the Bastion Host.
-     * @param vms List of VM references.
+     * @param bslRequest Post request for all the Bastion Shareable Link endpoints.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1907,7 +1906,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BastionShareableLinkInner>> putBastionShareableLinkSinglePageAsync(
-        String resourceGroupName, String bastionHostname, List<BastionShareableLinkInner> vms, Context context) {
+        String resourceGroupName, String bastionHostname, BastionShareableLinkListRequest bslRequest, Context context) {
         if (this.getEndpoint() == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter this.getEndpoint() is required and cannot be null."));
@@ -1925,13 +1924,13 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
                 .error(
                     new IllegalArgumentException("Parameter this.getSubscriptionId() is required and cannot be null."));
         }
-        if (vms != null) {
-            vms.forEach(e -> e.validate());
+        if (bslRequest == null) {
+            return Mono.error(new IllegalArgumentException("Parameter bslRequest is required and cannot be null."));
+        } else {
+            bslRequest.validate();
         }
         final String apiVersion = "2021-02-01";
         final String accept = "application/json";
-        BastionShareableLinkListRequest bslRequest = new BastionShareableLinkListRequest();
-        bslRequest.withVms(vms);
         context = this.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             service
@@ -1973,7 +1972,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
      *
      * @param resourceGroupName The name of the resource group.
      * @param bastionHostname The name of the Bastion Host.
-     * @param vms List of VM references.
+     * @param bslRequest Post request for all the Bastion Shareable Link endpoints.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1981,10 +1980,10 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<BastionShareableLinkInner> putBastionShareableLinkAsync(
-        String resourceGroupName, String bastionHostname, List<BastionShareableLinkInner> vms) {
+        String resourceGroupName, String bastionHostname, BastionShareableLinkListRequest bslRequest) {
         return new PagedFlux<>(
-            () -> putBastionShareableLinkSinglePageAsync(resourceGroupName, bastionHostname, vms),
-            nextLink -> putBastionShareableLinkNextSinglePageAsync(nextLink, vms));
+            () -> putBastionShareableLinkSinglePageAsync(resourceGroupName, bastionHostname, bslRequest),
+            nextLink -> putBastionShareableLinkNextSinglePageAsync(nextLink));
     }
 
     /**
@@ -1992,26 +1991,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
      *
      * @param resourceGroupName The name of the resource group.
      * @param bastionHostname The name of the Bastion Host.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for all the Bastion Shareable Link endpoints.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BastionShareableLinkInner> putBastionShareableLinkAsync(
-        String resourceGroupName, String bastionHostname) {
-        final List<BastionShareableLinkInner> vms = null;
-        return new PagedFlux<>(
-            () -> putBastionShareableLinkSinglePageAsync(resourceGroupName, bastionHostname, vms),
-            nextLink -> putBastionShareableLinkNextSinglePageAsync(nextLink, vms));
-    }
-
-    /**
-     * Creates a Bastion Shareable Links for all the VMs specified in the request.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param bastionHostname The name of the Bastion Host.
-     * @param vms List of VM references.
+     * @param bslRequest Post request for all the Bastion Shareable Link endpoints.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2020,10 +2000,10 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<BastionShareableLinkInner> putBastionShareableLinkAsync(
-        String resourceGroupName, String bastionHostname, List<BastionShareableLinkInner> vms, Context context) {
+        String resourceGroupName, String bastionHostname, BastionShareableLinkListRequest bslRequest, Context context) {
         return new PagedFlux<>(
-            () -> putBastionShareableLinkSinglePageAsync(resourceGroupName, bastionHostname, vms, context),
-            nextLink -> putBastionShareableLinkNextSinglePageAsync(nextLink, vms, context));
+            () -> putBastionShareableLinkSinglePageAsync(resourceGroupName, bastionHostname, bslRequest, context),
+            nextLink -> putBastionShareableLinkNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -2031,6 +2011,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
      *
      * @param resourceGroupName The name of the resource group.
      * @param bastionHostname The name of the Bastion Host.
+     * @param bslRequest Post request for all the Bastion Shareable Link endpoints.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2038,9 +2019,8 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BastionShareableLinkInner> putBastionShareableLink(
-        String resourceGroupName, String bastionHostname) {
-        final List<BastionShareableLinkInner> vms = null;
-        return new PagedIterable<>(putBastionShareableLinkAsync(resourceGroupName, bastionHostname, vms));
+        String resourceGroupName, String bastionHostname, BastionShareableLinkListRequest bslRequest) {
+        return new PagedIterable<>(putBastionShareableLinkAsync(resourceGroupName, bastionHostname, bslRequest));
     }
 
     /**
@@ -2048,7 +2028,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
      *
      * @param resourceGroupName The name of the resource group.
      * @param bastionHostname The name of the Bastion Host.
-     * @param vms List of VM references.
+     * @param bslRequest Post request for all the Bastion Shareable Link endpoints.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2057,8 +2037,9 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BastionShareableLinkInner> putBastionShareableLink(
-        String resourceGroupName, String bastionHostname, List<BastionShareableLinkInner> vms, Context context) {
-        return new PagedIterable<>(putBastionShareableLinkAsync(resourceGroupName, bastionHostname, vms, context));
+        String resourceGroupName, String bastionHostname, BastionShareableLinkListRequest bslRequest, Context context) {
+        return new PagedIterable<>(
+            putBastionShareableLinkAsync(resourceGroupName, bastionHostname, bslRequest, context));
     }
 
     /**
@@ -2066,7 +2047,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
      *
      * @param resourceGroupName The name of the resource group.
      * @param bastionHostname The name of the Bastion Host.
-     * @param vms List of VM references.
+     * @param bslRequest Post request for all the Bastion Shareable Link endpoints.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2074,7 +2055,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteBastionShareableLinkWithResponseAsync(
-        String resourceGroupName, String bastionHostname, List<BastionShareableLinkInner> vms) {
+        String resourceGroupName, String bastionHostname, BastionShareableLinkListRequest bslRequest) {
         if (this.getEndpoint() == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter this.getEndpoint() is required and cannot be null."));
@@ -2092,13 +2073,13 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
                 .error(
                     new IllegalArgumentException("Parameter this.getSubscriptionId() is required and cannot be null."));
         }
-        if (vms != null) {
-            vms.forEach(e -> e.validate());
+        if (bslRequest == null) {
+            return Mono.error(new IllegalArgumentException("Parameter bslRequest is required and cannot be null."));
+        } else {
+            bslRequest.validate();
         }
         final String apiVersion = "2021-02-01";
         final String accept = "application/json";
-        BastionShareableLinkListRequest bslRequest = new BastionShareableLinkListRequest();
-        bslRequest.withVms(vms);
         return FluxUtil
             .withContext(
                 context ->
@@ -2120,7 +2101,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
      *
      * @param resourceGroupName The name of the resource group.
      * @param bastionHostname The name of the Bastion Host.
-     * @param vms List of VM references.
+     * @param bslRequest Post request for all the Bastion Shareable Link endpoints.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2129,7 +2110,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteBastionShareableLinkWithResponseAsync(
-        String resourceGroupName, String bastionHostname, List<BastionShareableLinkInner> vms, Context context) {
+        String resourceGroupName, String bastionHostname, BastionShareableLinkListRequest bslRequest, Context context) {
         if (this.getEndpoint() == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter this.getEndpoint() is required and cannot be null."));
@@ -2147,13 +2128,13 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
                 .error(
                     new IllegalArgumentException("Parameter this.getSubscriptionId() is required and cannot be null."));
         }
-        if (vms != null) {
-            vms.forEach(e -> e.validate());
+        if (bslRequest == null) {
+            return Mono.error(new IllegalArgumentException("Parameter bslRequest is required and cannot be null."));
+        } else {
+            bslRequest.validate();
         }
         final String apiVersion = "2021-02-01";
         final String accept = "application/json";
-        BastionShareableLinkListRequest bslRequest = new BastionShareableLinkListRequest();
-        bslRequest.withVms(vms);
         context = this.mergeContext(context);
         return service
             .deleteBastionShareableLink(
@@ -2172,7 +2153,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
      *
      * @param resourceGroupName The name of the resource group.
      * @param bastionHostname The name of the Bastion Host.
-     * @param vms List of VM references.
+     * @param bslRequest Post request for all the Bastion Shareable Link endpoints.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2180,9 +2161,9 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<Void>, Void> beginDeleteBastionShareableLinkAsync(
-        String resourceGroupName, String bastionHostname, List<BastionShareableLinkInner> vms) {
+        String resourceGroupName, String bastionHostname, BastionShareableLinkListRequest bslRequest) {
         Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteBastionShareableLinkWithResponseAsync(resourceGroupName, bastionHostname, vms);
+            deleteBastionShareableLinkWithResponseAsync(resourceGroupName, bastionHostname, bslRequest);
         return this.<Void, Void>getLroResult(mono, this.getHttpPipeline(), Void.class, Void.class, Context.NONE);
     }
 
@@ -2191,7 +2172,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
      *
      * @param resourceGroupName The name of the resource group.
      * @param bastionHostname The name of the Bastion Host.
-     * @param vms List of VM references.
+     * @param bslRequest Post request for all the Bastion Shareable Link endpoints.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2200,10 +2181,10 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PollerFlux<PollResult<Void>, Void> beginDeleteBastionShareableLinkAsync(
-        String resourceGroupName, String bastionHostname, List<BastionShareableLinkInner> vms, Context context) {
+        String resourceGroupName, String bastionHostname, BastionShareableLinkListRequest bslRequest, Context context) {
         context = this.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteBastionShareableLinkWithResponseAsync(resourceGroupName, bastionHostname, vms, context);
+            deleteBastionShareableLinkWithResponseAsync(resourceGroupName, bastionHostname, bslRequest, context);
         return this.<Void, Void>getLroResult(mono, this.getHttpPipeline(), Void.class, Void.class, context);
     }
 
@@ -2212,7 +2193,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
      *
      * @param resourceGroupName The name of the resource group.
      * @param bastionHostname The name of the Bastion Host.
-     * @param vms List of VM references.
+     * @param bslRequest Post request for all the Bastion Shareable Link endpoints.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2220,8 +2201,8 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SyncPoller<PollResult<Void>, Void> beginDeleteBastionShareableLink(
-        String resourceGroupName, String bastionHostname, List<BastionShareableLinkInner> vms) {
-        return beginDeleteBastionShareableLinkAsync(resourceGroupName, bastionHostname, vms).getSyncPoller();
+        String resourceGroupName, String bastionHostname, BastionShareableLinkListRequest bslRequest) {
+        return beginDeleteBastionShareableLinkAsync(resourceGroupName, bastionHostname, bslRequest).getSyncPoller();
     }
 
     /**
@@ -2229,7 +2210,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
      *
      * @param resourceGroupName The name of the resource group.
      * @param bastionHostname The name of the Bastion Host.
-     * @param vms List of VM references.
+     * @param bslRequest Post request for all the Bastion Shareable Link endpoints.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2238,8 +2219,9 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SyncPoller<PollResult<Void>, Void> beginDeleteBastionShareableLink(
-        String resourceGroupName, String bastionHostname, List<BastionShareableLinkInner> vms, Context context) {
-        return beginDeleteBastionShareableLinkAsync(resourceGroupName, bastionHostname, vms, context).getSyncPoller();
+        String resourceGroupName, String bastionHostname, BastionShareableLinkListRequest bslRequest, Context context) {
+        return beginDeleteBastionShareableLinkAsync(resourceGroupName, bastionHostname, bslRequest, context)
+            .getSyncPoller();
     }
 
     /**
@@ -2247,7 +2229,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
      *
      * @param resourceGroupName The name of the resource group.
      * @param bastionHostname The name of the Bastion Host.
-     * @param vms List of VM references.
+     * @param bslRequest Post request for all the Bastion Shareable Link endpoints.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2255,8 +2237,8 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteBastionShareableLinkAsync(
-        String resourceGroupName, String bastionHostname, List<BastionShareableLinkInner> vms) {
-        return beginDeleteBastionShareableLinkAsync(resourceGroupName, bastionHostname, vms)
+        String resourceGroupName, String bastionHostname, BastionShareableLinkListRequest bslRequest) {
+        return beginDeleteBastionShareableLinkAsync(resourceGroupName, bastionHostname, bslRequest)
             .last()
             .flatMap(this::getLroFinalResultOrError);
     }
@@ -2266,25 +2248,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
      *
      * @param resourceGroupName The name of the resource group.
      * @param bastionHostname The name of the Bastion Host.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteBastionShareableLinkAsync(String resourceGroupName, String bastionHostname) {
-        final List<BastionShareableLinkInner> vms = null;
-        return beginDeleteBastionShareableLinkAsync(resourceGroupName, bastionHostname, vms)
-            .last()
-            .flatMap(this::getLroFinalResultOrError);
-    }
-
-    /**
-     * Deletes the Bastion Shareable Links for all the VMs specified in the request.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param bastionHostname The name of the Bastion Host.
-     * @param vms List of VM references.
+     * @param bslRequest Post request for all the Bastion Shareable Link endpoints.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2293,8 +2257,8 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteBastionShareableLinkAsync(
-        String resourceGroupName, String bastionHostname, List<BastionShareableLinkInner> vms, Context context) {
-        return beginDeleteBastionShareableLinkAsync(resourceGroupName, bastionHostname, vms, context)
+        String resourceGroupName, String bastionHostname, BastionShareableLinkListRequest bslRequest, Context context) {
+        return beginDeleteBastionShareableLinkAsync(resourceGroupName, bastionHostname, bslRequest, context)
             .last()
             .flatMap(this::getLroFinalResultOrError);
     }
@@ -2304,15 +2268,15 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
      *
      * @param resourceGroupName The name of the resource group.
      * @param bastionHostname The name of the Bastion Host.
-     * @param vms List of VM references.
+     * @param bslRequest Post request for all the Bastion Shareable Link endpoints.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteBastionShareableLink(
-        String resourceGroupName, String bastionHostname, List<BastionShareableLinkInner> vms) {
-        deleteBastionShareableLinkAsync(resourceGroupName, bastionHostname, vms).block();
+        String resourceGroupName, String bastionHostname, BastionShareableLinkListRequest bslRequest) {
+        deleteBastionShareableLinkAsync(resourceGroupName, bastionHostname, bslRequest).block();
     }
 
     /**
@@ -2320,22 +2284,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
      *
      * @param resourceGroupName The name of the resource group.
      * @param bastionHostname The name of the Bastion Host.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteBastionShareableLink(String resourceGroupName, String bastionHostname) {
-        final List<BastionShareableLinkInner> vms = null;
-        deleteBastionShareableLinkAsync(resourceGroupName, bastionHostname, vms).block();
-    }
-
-    /**
-     * Deletes the Bastion Shareable Links for all the VMs specified in the request.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param bastionHostname The name of the Bastion Host.
-     * @param vms List of VM references.
+     * @param bslRequest Post request for all the Bastion Shareable Link endpoints.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2343,8 +2292,8 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteBastionShareableLink(
-        String resourceGroupName, String bastionHostname, List<BastionShareableLinkInner> vms, Context context) {
-        deleteBastionShareableLinkAsync(resourceGroupName, bastionHostname, vms, context).block();
+        String resourceGroupName, String bastionHostname, BastionShareableLinkListRequest bslRequest, Context context) {
+        deleteBastionShareableLinkAsync(resourceGroupName, bastionHostname, bslRequest, context).block();
     }
 
     /**
@@ -2352,7 +2301,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
      *
      * @param resourceGroupName The name of the resource group.
      * @param bastionHostname The name of the Bastion Host.
-     * @param vms List of VM references.
+     * @param bslRequest Post request for all the Bastion Shareable Link endpoints.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2360,7 +2309,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BastionShareableLinkInner>> getBastionShareableLinkSinglePageAsync(
-        String resourceGroupName, String bastionHostname, List<BastionShareableLinkInner> vms) {
+        String resourceGroupName, String bastionHostname, BastionShareableLinkListRequest bslRequest) {
         if (this.getEndpoint() == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter this.getEndpoint() is required and cannot be null."));
@@ -2378,13 +2327,13 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
                 .error(
                     new IllegalArgumentException("Parameter this.getSubscriptionId() is required and cannot be null."));
         }
-        if (vms != null) {
-            vms.forEach(e -> e.validate());
+        if (bslRequest == null) {
+            return Mono.error(new IllegalArgumentException("Parameter bslRequest is required and cannot be null."));
+        } else {
+            bslRequest.validate();
         }
         final String apiVersion = "2021-02-01";
         final String accept = "application/json";
-        BastionShareableLinkListRequest bslRequest = new BastionShareableLinkListRequest();
-        bslRequest.withVms(vms);
         return FluxUtil
             .withContext(
                 context ->
@@ -2415,7 +2364,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
      *
      * @param resourceGroupName The name of the resource group.
      * @param bastionHostname The name of the Bastion Host.
-     * @param vms List of VM references.
+     * @param bslRequest Post request for all the Bastion Shareable Link endpoints.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2424,7 +2373,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BastionShareableLinkInner>> getBastionShareableLinkSinglePageAsync(
-        String resourceGroupName, String bastionHostname, List<BastionShareableLinkInner> vms, Context context) {
+        String resourceGroupName, String bastionHostname, BastionShareableLinkListRequest bslRequest, Context context) {
         if (this.getEndpoint() == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter this.getEndpoint() is required and cannot be null."));
@@ -2442,13 +2391,13 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
                 .error(
                     new IllegalArgumentException("Parameter this.getSubscriptionId() is required and cannot be null."));
         }
-        if (vms != null) {
-            vms.forEach(e -> e.validate());
+        if (bslRequest == null) {
+            return Mono.error(new IllegalArgumentException("Parameter bslRequest is required and cannot be null."));
+        } else {
+            bslRequest.validate();
         }
         final String apiVersion = "2021-02-01";
         final String accept = "application/json";
-        BastionShareableLinkListRequest bslRequest = new BastionShareableLinkListRequest();
-        bslRequest.withVms(vms);
         context = this.mergeContext(context);
         return service
             .getBastionShareableLink(
@@ -2476,7 +2425,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
      *
      * @param resourceGroupName The name of the resource group.
      * @param bastionHostname The name of the Bastion Host.
-     * @param vms List of VM references.
+     * @param bslRequest Post request for all the Bastion Shareable Link endpoints.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2484,10 +2433,10 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<BastionShareableLinkInner> getBastionShareableLinkAsync(
-        String resourceGroupName, String bastionHostname, List<BastionShareableLinkInner> vms) {
+        String resourceGroupName, String bastionHostname, BastionShareableLinkListRequest bslRequest) {
         return new PagedFlux<>(
-            () -> getBastionShareableLinkSinglePageAsync(resourceGroupName, bastionHostname, vms),
-            nextLink -> getBastionShareableLinkNextSinglePageAsync(nextLink, vms));
+            () -> getBastionShareableLinkSinglePageAsync(resourceGroupName, bastionHostname, bslRequest),
+            nextLink -> getBastionShareableLinkNextSinglePageAsync(nextLink));
     }
 
     /**
@@ -2495,26 +2444,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
      *
      * @param resourceGroupName The name of the resource group.
      * @param bastionHostname The name of the Bastion Host.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for all the Bastion Shareable Link endpoints.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BastionShareableLinkInner> getBastionShareableLinkAsync(
-        String resourceGroupName, String bastionHostname) {
-        final List<BastionShareableLinkInner> vms = null;
-        return new PagedFlux<>(
-            () -> getBastionShareableLinkSinglePageAsync(resourceGroupName, bastionHostname, vms),
-            nextLink -> getBastionShareableLinkNextSinglePageAsync(nextLink, vms));
-    }
-
-    /**
-     * Return the Bastion Shareable Links for all the VMs specified in the request.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param bastionHostname The name of the Bastion Host.
-     * @param vms List of VM references.
+     * @param bslRequest Post request for all the Bastion Shareable Link endpoints.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2523,10 +2453,10 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<BastionShareableLinkInner> getBastionShareableLinkAsync(
-        String resourceGroupName, String bastionHostname, List<BastionShareableLinkInner> vms, Context context) {
+        String resourceGroupName, String bastionHostname, BastionShareableLinkListRequest bslRequest, Context context) {
         return new PagedFlux<>(
-            () -> getBastionShareableLinkSinglePageAsync(resourceGroupName, bastionHostname, vms, context),
-            nextLink -> getBastionShareableLinkNextSinglePageAsync(nextLink, vms, context));
+            () -> getBastionShareableLinkSinglePageAsync(resourceGroupName, bastionHostname, bslRequest, context),
+            nextLink -> getBastionShareableLinkNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -2534,6 +2464,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
      *
      * @param resourceGroupName The name of the resource group.
      * @param bastionHostname The name of the Bastion Host.
+     * @param bslRequest Post request for all the Bastion Shareable Link endpoints.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2541,9 +2472,8 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BastionShareableLinkInner> getBastionShareableLink(
-        String resourceGroupName, String bastionHostname) {
-        final List<BastionShareableLinkInner> vms = null;
-        return new PagedIterable<>(getBastionShareableLinkAsync(resourceGroupName, bastionHostname, vms));
+        String resourceGroupName, String bastionHostname, BastionShareableLinkListRequest bslRequest) {
+        return new PagedIterable<>(getBastionShareableLinkAsync(resourceGroupName, bastionHostname, bslRequest));
     }
 
     /**
@@ -2551,7 +2481,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
      *
      * @param resourceGroupName The name of the resource group.
      * @param bastionHostname The name of the Bastion Host.
-     * @param vms List of VM references.
+     * @param bslRequest Post request for all the Bastion Shareable Link endpoints.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2560,8 +2490,9 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BastionShareableLinkInner> getBastionShareableLink(
-        String resourceGroupName, String bastionHostname, List<BastionShareableLinkInner> vms, Context context) {
-        return new PagedIterable<>(getBastionShareableLinkAsync(resourceGroupName, bastionHostname, vms, context));
+        String resourceGroupName, String bastionHostname, BastionShareableLinkListRequest bslRequest, Context context) {
+        return new PagedIterable<>(
+            getBastionShareableLinkAsync(resourceGroupName, bastionHostname, bslRequest, context));
     }
 
     /**
@@ -2778,7 +2709,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
      *
      * @param resourceGroupName The name of the resource group.
      * @param bastionHostname The name of the Bastion Host.
-     * @param sessionIdsSessionIds List of session IDs.
+     * @param sessionIds The list of sessionids to disconnect.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2786,7 +2717,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BastionSessionStateInner>> disconnectActiveSessionsSinglePageAsync(
-        String resourceGroupName, String bastionHostname, List<String> sessionIdsSessionIds) {
+        String resourceGroupName, String bastionHostname, SessionIds sessionIds) {
         if (this.getEndpoint() == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter this.getEndpoint() is required and cannot be null."));
@@ -2804,10 +2735,13 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
                 .error(
                     new IllegalArgumentException("Parameter this.getSubscriptionId() is required and cannot be null."));
         }
+        if (sessionIds == null) {
+            return Mono.error(new IllegalArgumentException("Parameter sessionIds is required and cannot be null."));
+        } else {
+            sessionIds.validate();
+        }
         final String apiVersion = "2021-02-01";
         final String accept = "application/json";
-        SessionIds sessionIds = new SessionIds();
-        sessionIds.withSessionIds(sessionIdsSessionIds);
         return FluxUtil
             .withContext(
                 context ->
@@ -2838,7 +2772,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
      *
      * @param resourceGroupName The name of the resource group.
      * @param bastionHostname The name of the Bastion Host.
-     * @param sessionIdsSessionIds List of session IDs.
+     * @param sessionIds The list of sessionids to disconnect.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2847,7 +2781,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BastionSessionStateInner>> disconnectActiveSessionsSinglePageAsync(
-        String resourceGroupName, String bastionHostname, List<String> sessionIdsSessionIds, Context context) {
+        String resourceGroupName, String bastionHostname, SessionIds sessionIds, Context context) {
         if (this.getEndpoint() == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter this.getEndpoint() is required and cannot be null."));
@@ -2865,10 +2799,13 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
                 .error(
                     new IllegalArgumentException("Parameter this.getSubscriptionId() is required and cannot be null."));
         }
+        if (sessionIds == null) {
+            return Mono.error(new IllegalArgumentException("Parameter sessionIds is required and cannot be null."));
+        } else {
+            sessionIds.validate();
+        }
         final String apiVersion = "2021-02-01";
         final String accept = "application/json";
-        SessionIds sessionIds = new SessionIds();
-        sessionIds.withSessionIds(sessionIdsSessionIds);
         context = this.mergeContext(context);
         return service
             .disconnectActiveSessions(
@@ -2896,7 +2833,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
      *
      * @param resourceGroupName The name of the resource group.
      * @param bastionHostname The name of the Bastion Host.
-     * @param sessionIdsSessionIds List of session IDs.
+     * @param sessionIds The list of sessionids to disconnect.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2904,10 +2841,10 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<BastionSessionStateInner> disconnectActiveSessionsAsync(
-        String resourceGroupName, String bastionHostname, List<String> sessionIdsSessionIds) {
+        String resourceGroupName, String bastionHostname, SessionIds sessionIds) {
         return new PagedFlux<>(
-            () -> disconnectActiveSessionsSinglePageAsync(resourceGroupName, bastionHostname, sessionIdsSessionIds),
-            nextLink -> disconnectActiveSessionsNextSinglePageAsync(nextLink, sessionIdsSessionIds));
+            () -> disconnectActiveSessionsSinglePageAsync(resourceGroupName, bastionHostname, sessionIds),
+            nextLink -> disconnectActiveSessionsNextSinglePageAsync(nextLink));
     }
 
     /**
@@ -2915,26 +2852,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
      *
      * @param resourceGroupName The name of the resource group.
      * @param bastionHostname The name of the Bastion Host.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for DisconnectActiveSessions.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BastionSessionStateInner> disconnectActiveSessionsAsync(
-        String resourceGroupName, String bastionHostname) {
-        final List<String> sessionIdsSessionIds = null;
-        return new PagedFlux<>(
-            () -> disconnectActiveSessionsSinglePageAsync(resourceGroupName, bastionHostname, sessionIdsSessionIds),
-            nextLink -> disconnectActiveSessionsNextSinglePageAsync(nextLink, sessionIdsSessionIds));
-    }
-
-    /**
-     * Returns the list of currently active sessions on the Bastion.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param bastionHostname The name of the Bastion Host.
-     * @param sessionIdsSessionIds List of session IDs.
+     * @param sessionIds The list of sessionids to disconnect.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2943,12 +2861,10 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<BastionSessionStateInner> disconnectActiveSessionsAsync(
-        String resourceGroupName, String bastionHostname, List<String> sessionIdsSessionIds, Context context) {
+        String resourceGroupName, String bastionHostname, SessionIds sessionIds, Context context) {
         return new PagedFlux<>(
-            () ->
-                disconnectActiveSessionsSinglePageAsync(
-                    resourceGroupName, bastionHostname, sessionIdsSessionIds, context),
-            nextLink -> disconnectActiveSessionsNextSinglePageAsync(nextLink, sessionIdsSessionIds, context));
+            () -> disconnectActiveSessionsSinglePageAsync(resourceGroupName, bastionHostname, sessionIds, context),
+            nextLink -> disconnectActiveSessionsNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -2956,6 +2872,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
      *
      * @param resourceGroupName The name of the resource group.
      * @param bastionHostname The name of the Bastion Host.
+     * @param sessionIds The list of sessionids to disconnect.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2963,10 +2880,8 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BastionSessionStateInner> disconnectActiveSessions(
-        String resourceGroupName, String bastionHostname) {
-        final List<String> sessionIdsSessionIds = null;
-        return new PagedIterable<>(
-            disconnectActiveSessionsAsync(resourceGroupName, bastionHostname, sessionIdsSessionIds));
+        String resourceGroupName, String bastionHostname, SessionIds sessionIds) {
+        return new PagedIterable<>(disconnectActiveSessionsAsync(resourceGroupName, bastionHostname, sessionIds));
     }
 
     /**
@@ -2974,7 +2889,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
      *
      * @param resourceGroupName The name of the resource group.
      * @param bastionHostname The name of the Bastion Host.
-     * @param sessionIdsSessionIds List of session IDs.
+     * @param sessionIds The list of sessionids to disconnect.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2983,9 +2898,9 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BastionSessionStateInner> disconnectActiveSessions(
-        String resourceGroupName, String bastionHostname, List<String> sessionIdsSessionIds, Context context) {
+        String resourceGroupName, String bastionHostname, SessionIds sessionIds, Context context) {
         return new PagedIterable<>(
-            disconnectActiveSessionsAsync(resourceGroupName, bastionHostname, sessionIdsSessionIds, context));
+            disconnectActiveSessionsAsync(resourceGroupName, bastionHostname, sessionIds, context));
     }
 
     /**
@@ -3587,15 +3502,13 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
      * Get the next page of items.
      *
      * @param nextLink The nextLink parameter.
-     * @param vms List of VM references.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for all the Bastion Shareable Link endpoints.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BastionShareableLinkInner>> putBastionShareableLinkNextSinglePageAsync(
-        String nextLink, List<BastionShareableLinkInner> vms) {
+    private Mono<PagedResponse<BastionShareableLinkInner>> putBastionShareableLinkNextSinglePageAsync(String nextLink) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
@@ -3603,12 +3516,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
             return Mono
                 .error(new IllegalArgumentException("Parameter this.getEndpoint() is required and cannot be null."));
         }
-        if (vms != null) {
-            vms.forEach(e -> e.validate());
-        }
         final String accept = "application/json";
-        BastionShareableLinkListRequest bslRequest = new BastionShareableLinkListRequest();
-        bslRequest.withVms(vms);
         return FluxUtil
             .withContext(context -> service.putBastionShareableLinkNext(nextLink, this.getEndpoint(), accept, context))
             .<PagedResponse<BastionShareableLinkInner>>map(
@@ -3627,7 +3535,6 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
      * Get the next page of items.
      *
      * @param nextLink The nextLink parameter.
-     * @param vms List of VM references.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -3636,7 +3543,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BastionShareableLinkInner>> putBastionShareableLinkNextSinglePageAsync(
-        String nextLink, List<BastionShareableLinkInner> vms, Context context) {
+        String nextLink, Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
@@ -3644,12 +3551,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
             return Mono
                 .error(new IllegalArgumentException("Parameter this.getEndpoint() is required and cannot be null."));
         }
-        if (vms != null) {
-            vms.forEach(e -> e.validate());
-        }
         final String accept = "application/json";
-        BastionShareableLinkListRequest bslRequest = new BastionShareableLinkListRequest();
-        bslRequest.withVms(vms);
         context = this.mergeContext(context);
         return service
             .putBastionShareableLinkNext(nextLink, this.getEndpoint(), accept, context)
@@ -3668,15 +3570,13 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
      * Get the next page of items.
      *
      * @param nextLink The nextLink parameter.
-     * @param vms List of VM references.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for all the Bastion Shareable Link endpoints.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BastionShareableLinkInner>> getBastionShareableLinkNextSinglePageAsync(
-        String nextLink, List<BastionShareableLinkInner> vms) {
+    private Mono<PagedResponse<BastionShareableLinkInner>> getBastionShareableLinkNextSinglePageAsync(String nextLink) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
@@ -3684,12 +3584,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
             return Mono
                 .error(new IllegalArgumentException("Parameter this.getEndpoint() is required and cannot be null."));
         }
-        if (vms != null) {
-            vms.forEach(e -> e.validate());
-        }
         final String accept = "application/json";
-        BastionShareableLinkListRequest bslRequest = new BastionShareableLinkListRequest();
-        bslRequest.withVms(vms);
         return FluxUtil
             .withContext(context -> service.getBastionShareableLinkNext(nextLink, this.getEndpoint(), accept, context))
             .<PagedResponse<BastionShareableLinkInner>>map(
@@ -3708,7 +3603,6 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
      * Get the next page of items.
      *
      * @param nextLink The nextLink parameter.
-     * @param vms List of VM references.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -3717,7 +3611,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BastionShareableLinkInner>> getBastionShareableLinkNextSinglePageAsync(
-        String nextLink, List<BastionShareableLinkInner> vms, Context context) {
+        String nextLink, Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
@@ -3725,12 +3619,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
             return Mono
                 .error(new IllegalArgumentException("Parameter this.getEndpoint() is required and cannot be null."));
         }
-        if (vms != null) {
-            vms.forEach(e -> e.validate());
-        }
         final String accept = "application/json";
-        BastionShareableLinkListRequest bslRequest = new BastionShareableLinkListRequest();
-        bslRequest.withVms(vms);
         context = this.mergeContext(context);
         return service
             .getBastionShareableLinkNext(nextLink, this.getEndpoint(), accept, context)
@@ -3817,15 +3706,13 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
      * Get the next page of items.
      *
      * @param nextLink The nextLink parameter.
-     * @param sessionIdsSessionIds List of session IDs.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for DisconnectActiveSessions.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BastionSessionStateInner>> disconnectActiveSessionsNextSinglePageAsync(
-        String nextLink, List<String> sessionIdsSessionIds) {
+    private Mono<PagedResponse<BastionSessionStateInner>> disconnectActiveSessionsNextSinglePageAsync(String nextLink) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
@@ -3834,8 +3721,6 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
                 .error(new IllegalArgumentException("Parameter this.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        SessionIds sessionIds = new SessionIds();
-        sessionIds.withSessionIds(sessionIdsSessionIds);
         return FluxUtil
             .withContext(context -> service.disconnectActiveSessionsNext(nextLink, this.getEndpoint(), accept, context))
             .<PagedResponse<BastionSessionStateInner>>map(
@@ -3854,7 +3739,6 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
      * Get the next page of items.
      *
      * @param nextLink The nextLink parameter.
-     * @param sessionIdsSessionIds List of session IDs.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -3863,7 +3747,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BastionSessionStateInner>> disconnectActiveSessionsNextSinglePageAsync(
-        String nextLink, List<String> sessionIdsSessionIds, Context context) {
+        String nextLink, Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
@@ -3872,8 +3756,6 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
                 .error(new IllegalArgumentException("Parameter this.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        SessionIds sessionIds = new SessionIds();
-        sessionIds.withSessionIds(sessionIdsSessionIds);
         context = this.mergeContext(context);
         return service
             .disconnectActiveSessionsNext(nextLink, this.getEndpoint(), accept, context)

@@ -41,7 +41,6 @@ import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDe
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
 import java.nio.ByteBuffer;
-import java.util.Map;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -781,7 +780,7 @@ public final class NetworkProfilesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param networkProfileName The name of the network profile.
-     * @param tags Resource tags.
+     * @param parameters Parameters supplied to update network profile tags.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -789,7 +788,7 @@ public final class NetworkProfilesClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<NetworkProfileInner>> updateTagsWithResponseAsync(
-        String resourceGroupName, String networkProfileName, Map<String, String> tags) {
+        String resourceGroupName, String networkProfileName, TagsObject parameters) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -810,10 +809,13 @@ public final class NetworkProfilesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
         final String apiVersion = "2021-02-01";
         final String accept = "application/json";
-        TagsObject parameters = new TagsObject();
-        parameters.withTags(tags);
         return FluxUtil
             .withContext(
                 context ->
@@ -835,7 +837,7 @@ public final class NetworkProfilesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param networkProfileName The name of the network profile.
-     * @param tags Resource tags.
+     * @param parameters Parameters supplied to update network profile tags.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -844,7 +846,7 @@ public final class NetworkProfilesClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<NetworkProfileInner>> updateTagsWithResponseAsync(
-        String resourceGroupName, String networkProfileName, Map<String, String> tags, Context context) {
+        String resourceGroupName, String networkProfileName, TagsObject parameters, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -865,10 +867,13 @@ public final class NetworkProfilesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
         final String apiVersion = "2021-02-01";
         final String accept = "application/json";
-        TagsObject parameters = new TagsObject();
-        parameters.withTags(tags);
         context = this.client.mergeContext(context);
         return service
             .updateTags(
@@ -887,7 +892,7 @@ public final class NetworkProfilesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param networkProfileName The name of the network profile.
-     * @param tags Resource tags.
+     * @param parameters Parameters supplied to update network profile tags.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -895,8 +900,8 @@ public final class NetworkProfilesClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<NetworkProfileInner> updateTagsAsync(
-        String resourceGroupName, String networkProfileName, Map<String, String> tags) {
-        return updateTagsWithResponseAsync(resourceGroupName, networkProfileName, tags)
+        String resourceGroupName, String networkProfileName, TagsObject parameters) {
+        return updateTagsWithResponseAsync(resourceGroupName, networkProfileName, parameters)
             .flatMap(
                 (Response<NetworkProfileInner> res) -> {
                     if (res.getValue() != null) {
@@ -912,23 +917,15 @@ public final class NetworkProfilesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param networkProfileName The name of the network profile.
+     * @param parameters Parameters supplied to update network profile tags.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return network profile resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<NetworkProfileInner> updateTagsAsync(String resourceGroupName, String networkProfileName) {
-        final Map<String, String> tags = null;
-        return updateTagsWithResponseAsync(resourceGroupName, networkProfileName, tags)
-            .flatMap(
-                (Response<NetworkProfileInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+    public NetworkProfileInner updateTags(String resourceGroupName, String networkProfileName, TagsObject parameters) {
+        return updateTagsAsync(resourceGroupName, networkProfileName, parameters).block();
     }
 
     /**
@@ -936,23 +933,7 @@ public final class NetworkProfilesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param networkProfileName The name of the network profile.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return network profile resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public NetworkProfileInner updateTags(String resourceGroupName, String networkProfileName) {
-        final Map<String, String> tags = null;
-        return updateTagsAsync(resourceGroupName, networkProfileName, tags).block();
-    }
-
-    /**
-     * Updates network profile tags.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param networkProfileName The name of the network profile.
-     * @param tags Resource tags.
+     * @param parameters Parameters supplied to update network profile tags.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -961,8 +942,8 @@ public final class NetworkProfilesClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<NetworkProfileInner> updateTagsWithResponse(
-        String resourceGroupName, String networkProfileName, Map<String, String> tags, Context context) {
-        return updateTagsWithResponseAsync(resourceGroupName, networkProfileName, tags, context).block();
+        String resourceGroupName, String networkProfileName, TagsObject parameters, Context context) {
+        return updateTagsWithResponseAsync(resourceGroupName, networkProfileName, parameters, context).block();
     }
 
     /**

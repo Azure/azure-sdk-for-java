@@ -4,7 +4,11 @@
 
 ### Features Added
 
-- Supported `LoadBalancerOutboundRule` for `LoadBalancer`
+- Supported `LoadBalancerOutboundRule` for `LoadBalancer`.
+
+### Breaking Changes
+
+- Removed unused class `NetworkOperationStatus`, `VirtualHubEffectiveRoute`.
 
 ## 2.7.0 (2021-08-12)
 

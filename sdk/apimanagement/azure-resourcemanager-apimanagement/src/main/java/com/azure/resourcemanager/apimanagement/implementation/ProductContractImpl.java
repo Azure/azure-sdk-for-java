@@ -27,6 +27,10 @@ public final class ProductContractImpl implements ProductContract, ProductContra
         return this.innerModel().type();
     }
 
+    public String displayName() {
+        return this.innerModel().displayName();
+    }
+
     public String description() {
         return this.innerModel().description();
     }
@@ -49,10 +53,6 @@ public final class ProductContractImpl implements ProductContract, ProductContra
 
     public ProductState state() {
         return this.innerModel().state();
-    }
-
-    public String displayName() {
-        return this.innerModel().displayName();
     }
 
     public ProductContractInner innerModel() {
@@ -166,6 +166,16 @@ public final class ProductContractImpl implements ProductContract, ProductContra
         return this;
     }
 
+    public ProductContractImpl withDisplayName(String displayName) {
+        if (isInCreateMode()) {
+            this.innerModel().withDisplayName(displayName);
+            return this;
+        } else {
+            this.updateParameters.withDisplayName(displayName);
+            return this;
+        }
+    }
+
     public ProductContractImpl withDescription(String description) {
         if (isInCreateMode()) {
             this.innerModel().withDescription(description);
@@ -222,16 +232,6 @@ public final class ProductContractImpl implements ProductContract, ProductContra
             return this;
         } else {
             this.updateParameters.withState(state);
-            return this;
-        }
-    }
-
-    public ProductContractImpl withDisplayName(String displayName) {
-        if (isInCreateMode()) {
-            this.innerModel().withDisplayName(displayName);
-            return this;
-        } else {
-            this.updateParameters.withDisplayName(displayName);
             return this;
         }
     }
