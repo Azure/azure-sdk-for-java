@@ -93,12 +93,12 @@ jobs:
       displayName: Generate Interdependency Report Data
 
     - pwsh: |
+        Copy-Item target/site/apidocs/* -Destination $(Build.ArtifactStagingDirectory)/staging/apidocs -Recurse
+        Copy-Item eng/jacoco-test-coverage/target/site/jacoco-aggregate/* -Destination $(Build.ArtifactStagingDirectory)/staging/test-coverage -Recurse
         Copy-Item eng/code-quality-reports/src/main/resources/index.html $(Build.ArtifactStagingDirectory)
         Copy-Item eng/code-quality-reports/src/main/resources/dependency-allowlist.html $(Build.ArtifactStagingDirectory)/staging
         Copy-Item eng/common/InterdependencyGraph.html $(Build.ArtifactStagingDirectory)/staging
         Copy-Item data.js $(Build.ArtifactStagingDirectory)/staging
-        Copy-Item target/site/apidocs/* $(Build.ArtifactStagingDirectory)/staging/apidocs -Recurse
-        Copy-Item eng/jacoco-test-coverage/target/site/jacoco-aggregate/* $(Build.ArtifactStagingDirectory)/staging/test-coverage -Recurse
       displayName: 'Copy reports to artifact staging'
 
     - pwsh: |
