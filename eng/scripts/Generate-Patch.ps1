@@ -12,7 +12,7 @@
 # 3. ReleaseVersion         - The latest release version of the library which is to be patched. This is a required parameter.
 # 4. PatchVersion           - The version of the patch. This is not a required parameter.
 #                             In case the argument in not provided the patch version is inferred from the release version by bumping the patch version in the release version as per semver guidance.
-# 5. BranchName             - The name of the remote branch where the changes will be pushed. This is not a required parameter.
+# 5. BranchName             - The name of the remote branch where the patch changes will be pushed. This is not a required parameter.
 #                             In case the argument is not provided the branch name is release/{ArtifactName}_{ReleaseVersion}.
 #                             The script pushes the branch to remote URL https://github.com/Azure/azure-sdk-for-java.git
 #
@@ -79,10 +79,34 @@ function GetPatchVersion($ReleaseVersion) {
   }
 }
 
-function GetRemoteName($MainRemoteUrl) {
+function GetUpstreamRemoteName($MainRemoteUrl) {
   foreach($Remote in git remote show) {
     $RemoteUrl = git remote get-url $Remote
     if($RemoteUrl -eq $MainRemoteUrl) {
+      return $Remote
+    }
+  }
+  return $null
+}
+
+function GetOriginRemoteName($MainRemoteUrl) {
+  $UserRemote = "origin"
+  $RemoteUrl = git remote get-url $UserRemote
+  if($LASTEXITCODE -ne 0) {
+    LogWarning "Could not find the remote with name origin. Finding the first remote."
+  }
+  else {
+    return $UserRemote
+  }
+
+  $Remotes = git remote show
+  if($Remotes.Count == 1) { 
+    return Remotes[0];
+  }
+  
+  foreach($Remote in git remote show) {
+    $RemoteUrl = git remote get-url $Remote
+    if($RemoteUrl -ne $MainRemoteUrl) {
       return $Remote
     }
   }
@@ -129,19 +153,25 @@ if('' -eq $PatchVersion) {
 }
 Write-Information "PatchVersion is: $PatchVersion"
 
-if('' -eq $BranchName) {
-  $ArtifactNameToLower = $ArtifactName.ToLower()
-  $BranchName = "release/$ArtifactNameToLower/$PatchVersion"
-}
-Write-Information "BranchName is: $BranchName"
-
-
-$RemoteName = GetRemoteName -MainRemoteUrl $MainRemoteUrl
+$RemoteName = GetUpstreamRemoteName -MainRemoteUrl $MainRemoteUrl
 if($null -eq $RemoteName) {
     LogError "Could not fetch the remote name for the URL $MainRemoteUrl Exitting ..."
     exit
 }
 Write-Information "RemoteName is: $RemoteName"
+
+$UserRemote = GetOriginRemoteName -MainRemoteUrl $MainRemoteUrl
+if($null -eq $UserRemote) {
+    LogError "Could not fetch the remote name for the user remote fork. Exitting ..."
+    exit
+}
+Write-Information "UserRemote is: $UserRemote"
+
+if('' -eq $BranchName) {
+  $ArtifactNameToLower = $ArtifactName.ToLower()
+  $BranchName = "release/$ArtifactNameToLower/$PatchVersion"
+}
+Write-Information "BranchName is: $BranchName"
 
 try {
   ## Creating a new branch
@@ -190,10 +220,18 @@ try {
   }
   
   UpdateChangeLog -ArtifactName $ArtifactName -Version $PatchVersion -ServiceDirectory $ServiceDirectoryName
-  git diff 
+  
+  $UpdateBranchName = $BranchName
+  if($RemoteUrl -eq $OriginRemote) {
+    ## Both the remotes are pointing to the same URL, so we need to create a separate branch for this.
+    $UpdateBranchName = "$BranchName_patch"
+    Write-Information "Patch branch: $UpdateBranchName"
+    git checkout -b $UpdateBranchName
+  }
+  
   git add $RepoRoot
   git commit -m "Updating the SDK dependencies for $ArtifactName"
-  git push -f $RemoteName $BranchName
+  # git push -f $OriginRemote $UpdateBranchName
 }
 catch {
   # TODO: Add rollback in case of failure.
