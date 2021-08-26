@@ -32,7 +32,7 @@ public final class KeyVaultTrustManager extends X509ExtendedTrustManager {
     /**
      * Stores the default trust manager.
      */
-    private static final X509TrustManager defaultTrustManager = defaultTrustManager();
+    private static final X509TrustManager DEFAULT_TRUST_MANAGER = defaultTrustManager();
 
     /**
      * Stores the default trust manager with key vault key store.
@@ -78,7 +78,7 @@ public final class KeyVaultTrustManager extends X509ExtendedTrustManager {
 
     }
 
-    private void initKeyVaultKS(){
+    private void initKeyVaultKS() {
         try {
             this.keyStore = KeyStore.getInstance(KeyVaultKeyStore.KEY_STORE_TYPE);
             this.keyStore.load(null, null);
@@ -136,7 +136,7 @@ public final class KeyVaultTrustManager extends X509ExtendedTrustManager {
          * Step 1 - see if the default trust manager passes.
          */
         try {
-            defaultTrustManager.checkClientTrusted(chain, authType);
+            DEFAULT_TRUST_MANAGER.checkClientTrusted(chain, authType);
         } catch (CertificateException ce) {
             pass = false;
         }
@@ -157,7 +157,7 @@ public final class KeyVaultTrustManager extends X509ExtendedTrustManager {
          * Step 3 - see if the certificate exists in key vault.
          */
         if (!pass) {
-           pass = tryKeyVault(chain, authType);
+            pass = tryKeyVault(chain, authType);
         }
 
         /*
@@ -176,7 +176,7 @@ public final class KeyVaultTrustManager extends X509ExtendedTrustManager {
         }
     }
 
-    private boolean tryKeyVault(X509Certificate[] chain, String authType){
+    private boolean tryKeyVault(X509Certificate[] chain, String authType) {
         String alias = null;
         try {
             alias = keyStore.getCertificateAlias(chain[0]);
@@ -211,7 +211,7 @@ public final class KeyVaultTrustManager extends X509ExtendedTrustManager {
          * Step 1 - see if the default trust manager passes.
          */
         try {
-            defaultTrustManager.checkServerTrusted(chain, authType);
+            DEFAULT_TRUST_MANAGER.checkServerTrusted(chain, authType);
         } catch (CertificateException ce) {
             pass = false;
         }
@@ -232,7 +232,7 @@ public final class KeyVaultTrustManager extends X509ExtendedTrustManager {
          * Step 3 - see if the certificate exists in key vault.
          */
         if (!pass) {
-           pass = tryKeyVault(chain, authType);
+            pass = tryKeyVault(chain, authType);
         }
 
         /*
