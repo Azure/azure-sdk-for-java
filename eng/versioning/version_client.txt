@@ -53,7 +53,7 @@ com.azure:azure-analytics-synapse-managedprivateendpoints;1.0.0-beta.4;1.0.0-bet
 com.azure:azure-analytics-synapse-monitoring;1.0.0-beta.3;1.0.0-beta.4
 com.azure:azure-communication-chat;1.0.0;1.1.0-beta.3
 com.azure:azure-communication-callingserver;1.0.0-beta.3;1.0.0-beta.4
-com.azure:azure-communication-common;1.0.3;1.0.3
+com.azure:azure-communication-common;1.0.4;1.0.4
 com.azure:azure-communication-sms;1.0.3;1.1.0-beta.1
 com.azure:azure-communication-identity;1.1.1;1.1.1
 com.azure:azure-communication-phonenumbers;1.0.3;1.1.0-beta.1
