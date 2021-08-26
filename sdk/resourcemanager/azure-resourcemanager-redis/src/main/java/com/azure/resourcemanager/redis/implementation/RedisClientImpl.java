@@ -35,15 +35,15 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.redis.fluent.RedisClient;
-import com.azure.resourcemanager.redis.fluent.models.NotificationListResponseInner;
 import com.azure.resourcemanager.redis.fluent.models.RedisAccessKeysInner;
 import com.azure.resourcemanager.redis.fluent.models.RedisForceRebootResponseInner;
 import com.azure.resourcemanager.redis.fluent.models.RedisResourceInner;
+import com.azure.resourcemanager.redis.fluent.models.UpgradeNotificationInner;
 import com.azure.resourcemanager.redis.models.CheckNameAvailabilityParameters;
 import com.azure.resourcemanager.redis.models.ExportRdbParameters;
 import com.azure.resourcemanager.redis.models.ImportRdbParameters;
+import com.azure.resourcemanager.redis.models.NotificationListResponse;
 import com.azure.resourcemanager.redis.models.RedisCreateParameters;
-import com.azure.resourcemanager.redis.models.RedisKeyType;
 import com.azure.resourcemanager.redis.models.RedisListResult;
 import com.azure.resourcemanager.redis.models.RedisRebootParameters;
 import com.azure.resourcemanager.redis.models.RedisRegenerateKeyParameters;
@@ -104,7 +104,7 @@ public final class RedisClientImpl
                 + "/listUpgradeNotifications")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<NotificationListResponseInner>> listUpgradeNotifications(
+        Mono<Response<NotificationListResponse>> listUpgradeNotifications(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("name") String name,
@@ -278,6 +278,16 @@ public final class RedisClientImpl
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<NotificationListResponse>> listUpgradeNotificationsNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({"Content-Type: application/json"})
+        @Get("{nextLink}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<RedisListResult>> listByResourceGroupNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink,
             @HostParam("$host") String endpoint,
@@ -440,7 +450,7 @@ public final class RedisClientImpl
      * @return any upgrade notifications for a Redis cache.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<NotificationListResponseInner>> listUpgradeNotificationsWithResponseAsync(
+    private Mono<PagedResponse<UpgradeNotificationInner>> listUpgradeNotificationsSinglePageAsync(
         String resourceGroupName, String name, double history) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -475,6 +485,15 @@ public final class RedisClientImpl
                             history,
                             accept,
                             context))
+            .<PagedResponse<UpgradeNotificationInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -491,7 +510,7 @@ public final class RedisClientImpl
      * @return any upgrade notifications for a Redis cache.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<NotificationListResponseInner>> listUpgradeNotificationsWithResponseAsync(
+    private Mono<PagedResponse<UpgradeNotificationInner>> listUpgradeNotificationsSinglePageAsync(
         String resourceGroupName, String name, double history, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -523,7 +542,16 @@ public final class RedisClientImpl
                 this.client.getSubscriptionId(),
                 history,
                 accept,
-                context);
+                context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
     }
 
     /**
@@ -537,35 +565,12 @@ public final class RedisClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return any upgrade notifications for a Redis cache.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<NotificationListResponseInner> listUpgradeNotificationsAsync(
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<UpgradeNotificationInner> listUpgradeNotificationsAsync(
         String resourceGroupName, String name, double history) {
-        return listUpgradeNotificationsWithResponseAsync(resourceGroupName, name, history)
-            .flatMap(
-                (Response<NotificationListResponseInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Gets any upgrade notifications for a Redis cache.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param name The name of the Redis cache.
-     * @param history how many minutes in past to look for upgrade notifications.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any upgrade notifications for a Redis cache.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public NotificationListResponseInner listUpgradeNotifications(
-        String resourceGroupName, String name, double history) {
-        return listUpgradeNotificationsAsync(resourceGroupName, name, history).block();
+        return new PagedFlux<>(
+            () -> listUpgradeNotificationsSinglePageAsync(resourceGroupName, name, history),
+            nextLink -> listUpgradeNotificationsNextSinglePageAsync(nextLink));
     }
 
     /**
@@ -580,10 +585,47 @@ public final class RedisClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return any upgrade notifications for a Redis cache.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<NotificationListResponseInner> listUpgradeNotificationsWithResponse(
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    private PagedFlux<UpgradeNotificationInner> listUpgradeNotificationsAsync(
         String resourceGroupName, String name, double history, Context context) {
-        return listUpgradeNotificationsWithResponseAsync(resourceGroupName, name, history, context).block();
+        return new PagedFlux<>(
+            () -> listUpgradeNotificationsSinglePageAsync(resourceGroupName, name, history, context),
+            nextLink -> listUpgradeNotificationsNextSinglePageAsync(nextLink, context));
+    }
+
+    /**
+     * Gets any upgrade notifications for a Redis cache.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param name The name of the Redis cache.
+     * @param history how many minutes in past to look for upgrade notifications.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return any upgrade notifications for a Redis cache.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<UpgradeNotificationInner> listUpgradeNotifications(
+        String resourceGroupName, String name, double history) {
+        return new PagedIterable<>(listUpgradeNotificationsAsync(resourceGroupName, name, history));
+    }
+
+    /**
+     * Gets any upgrade notifications for a Redis cache.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param name The name of the Redis cache.
+     * @param history how many minutes in past to look for upgrade notifications.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return any upgrade notifications for a Redis cache.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<UpgradeNotificationInner> listUpgradeNotifications(
+        String resourceGroupName, String name, double history, Context context) {
+        return new PagedIterable<>(listUpgradeNotificationsAsync(resourceGroupName, name, history, context));
     }
 
     /**
@@ -1841,7 +1883,7 @@ public final class RedisClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the Redis cache.
-     * @param keyType The Redis access key to regenerate.
+     * @param parameters Specifies which key to regenerate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1849,7 +1891,7 @@ public final class RedisClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<RedisAccessKeysInner>> regenerateKeyWithResponseAsync(
-        String resourceGroupName, String name, RedisKeyType keyType) {
+        String resourceGroupName, String name, RedisRegenerateKeyParameters parameters) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -1869,12 +1911,12 @@ public final class RedisClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        if (keyType == null) {
-            return Mono.error(new IllegalArgumentException("Parameter keyType is required and cannot be null."));
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
         }
         final String accept = "application/json";
-        RedisRegenerateKeyParameters parameters = new RedisRegenerateKeyParameters();
-        parameters.withKeyType(keyType);
         return FluxUtil
             .withContext(
                 context ->
@@ -1896,7 +1938,7 @@ public final class RedisClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the Redis cache.
-     * @param keyType The Redis access key to regenerate.
+     * @param parameters Specifies which key to regenerate.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1905,7 +1947,7 @@ public final class RedisClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<RedisAccessKeysInner>> regenerateKeyWithResponseAsync(
-        String resourceGroupName, String name, RedisKeyType keyType, Context context) {
+        String resourceGroupName, String name, RedisRegenerateKeyParameters parameters, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -1925,12 +1967,12 @@ public final class RedisClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        if (keyType == null) {
-            return Mono.error(new IllegalArgumentException("Parameter keyType is required and cannot be null."));
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
         }
         final String accept = "application/json";
-        RedisRegenerateKeyParameters parameters = new RedisRegenerateKeyParameters();
-        parameters.withKeyType(keyType);
         context = this.client.mergeContext(context);
         return service
             .regenerateKey(
@@ -1949,15 +1991,16 @@ public final class RedisClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the Redis cache.
-     * @param keyType The Redis access key to regenerate.
+     * @param parameters Specifies which key to regenerate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return redis cache access keys.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RedisAccessKeysInner> regenerateKeyAsync(String resourceGroupName, String name, RedisKeyType keyType) {
-        return regenerateKeyWithResponseAsync(resourceGroupName, name, keyType)
+    public Mono<RedisAccessKeysInner> regenerateKeyAsync(
+        String resourceGroupName, String name, RedisRegenerateKeyParameters parameters) {
+        return regenerateKeyWithResponseAsync(resourceGroupName, name, parameters)
             .flatMap(
                 (Response<RedisAccessKeysInner> res) -> {
                     if (res.getValue() != null) {
@@ -1973,15 +2016,16 @@ public final class RedisClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the Redis cache.
-     * @param keyType The Redis access key to regenerate.
+     * @param parameters Specifies which key to regenerate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return redis cache access keys.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public RedisAccessKeysInner regenerateKey(String resourceGroupName, String name, RedisKeyType keyType) {
-        return regenerateKeyAsync(resourceGroupName, name, keyType).block();
+    public RedisAccessKeysInner regenerateKey(
+        String resourceGroupName, String name, RedisRegenerateKeyParameters parameters) {
+        return regenerateKeyAsync(resourceGroupName, name, parameters).block();
     }
 
     /**
@@ -1989,7 +2033,7 @@ public final class RedisClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the Redis cache.
-     * @param keyType The Redis access key to regenerate.
+     * @param parameters Specifies which key to regenerate.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1998,8 +2042,8 @@ public final class RedisClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RedisAccessKeysInner> regenerateKeyWithResponse(
-        String resourceGroupName, String name, RedisKeyType keyType, Context context) {
-        return regenerateKeyWithResponseAsync(resourceGroupName, name, keyType, context).block();
+        String resourceGroupName, String name, RedisRegenerateKeyParameters parameters, Context context) {
+        return regenerateKeyWithResponseAsync(resourceGroupName, name, parameters, context).block();
     }
 
     /**
@@ -2683,6 +2727,79 @@ public final class RedisClientImpl
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void exportData(String resourceGroupName, String name, ExportRdbParameters parameters, Context context) {
         exportDataAsync(resourceGroupName, name, parameters, context).block();
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * @param nextLink The nextLink parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of listUpgradeNotifications.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<UpgradeNotificationInner>> listUpgradeNotificationsNextSinglePageAsync(String nextLink) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context -> service.listUpgradeNotificationsNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<UpgradeNotificationInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * @param nextLink The nextLink parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of listUpgradeNotifications.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<UpgradeNotificationInner>> listUpgradeNotificationsNextSinglePageAsync(
+        String nextLink, Context context) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .listUpgradeNotificationsNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
     }
 
     /**

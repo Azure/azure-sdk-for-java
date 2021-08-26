@@ -8,6 +8,11 @@ import com.azure.core.util.Context;
 
 /** Samples for PipelineRuns Get. */
 public final class PipelineRunsGetSamples {
+    /*
+     * operationId: PipelineRuns_Get
+     * api-version: 2018-06-01
+     * x-ms-examples: PipelineRuns_Get
+     */
     /**
      * Sample code: PipelineRuns_Get.
      *

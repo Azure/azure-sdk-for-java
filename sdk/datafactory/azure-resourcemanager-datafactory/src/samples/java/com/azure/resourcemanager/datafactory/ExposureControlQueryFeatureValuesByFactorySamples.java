@@ -11,6 +11,11 @@ import java.util.Arrays;
 
 /** Samples for ExposureControl QueryFeatureValuesByFactory. */
 public final class ExposureControlQueryFeatureValuesByFactorySamples {
+    /*
+     * operationId: ExposureControl_QueryFeatureValuesByFactory
+     * api-version: 2018-06-01
+     * x-ms-examples: ExposureControl_QueryFeatureValuesByFactory
+     */
     /**
      * Sample code: ExposureControl_QueryFeatureValuesByFactory.
      *

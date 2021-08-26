@@ -3,7 +3,7 @@
 
 package com.azure.cosmos.implementation.batch;
 
-import com.azure.cosmos.BulkExecutionOptions;
+import com.azure.cosmos.models.CosmosBulkExecutionOptions;
 import org.testng.annotations.Test;
 
 import java.util.Random;
@@ -20,7 +20,7 @@ public class PartitionScopeThresholdsTest {
         int maxBatchSize = rnd.nextInt(1_000);
         maxBatchSize = 1_000;
         PartitionScopeThresholds thresholds =
-            new PartitionScopeThresholds(pkRangeId, new BulkExecutionOptions().setMaxMicroBatchSize(maxBatchSize));
+            new PartitionScopeThresholds(pkRangeId, new CosmosBulkExecutionOptions().setMaxMicroBatchSize(maxBatchSize));
 
         assertThat(thresholds.getTargetMicroBatchSizeSnapshot())
             .isEqualTo(maxBatchSize);
@@ -43,7 +43,7 @@ public class PartitionScopeThresholdsTest {
     public void alwaysThrottledShouldResultInBatSizeOfOne() {
         String pkRangeId = UUID.randomUUID().toString();
         PartitionScopeThresholds thresholds =
-            new PartitionScopeThresholds(pkRangeId, new BulkExecutionOptions());
+            new PartitionScopeThresholds(pkRangeId, new CosmosBulkExecutionOptions());
 
         assertThat(thresholds.getTargetMicroBatchSizeSnapshot())
             .isEqualTo(BatchRequestResponseConstants.MAX_OPERATIONS_IN_DIRECT_MODE_BATCH_REQUEST);

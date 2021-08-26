@@ -8,6 +8,11 @@ import com.azure.core.util.Context;
 
 /** Samples for IntegrationRuntimes GetMonitoringData. */
 public final class IntegrationRuntimesGetMonitoringDataSamples {
+    /*
+     * operationId: IntegrationRuntimes_GetMonitoringData
+     * api-version: 2018-06-01
+     * x-ms-examples: IntegrationRuntimes_GetMonitoringData
+     */
     /**
      * Sample code: IntegrationRuntimes_GetMonitoringData.
      *
