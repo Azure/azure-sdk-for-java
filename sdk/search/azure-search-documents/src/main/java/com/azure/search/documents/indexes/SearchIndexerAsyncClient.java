@@ -21,6 +21,9 @@ import com.azure.search.documents.indexes.implementation.SearchServiceClientImpl
 import com.azure.search.documents.indexes.implementation.models.ListDataSourcesResult;
 import com.azure.search.documents.indexes.implementation.models.ListIndexersResult;
 import com.azure.search.documents.indexes.implementation.models.ListSkillsetsResult;
+import com.azure.search.documents.indexes.models.CreateOrUpdateDataSourceConnectionOptions;
+import com.azure.search.documents.indexes.models.CreateOrUpdateIndexerOptions;
+import com.azure.search.documents.indexes.models.CreateOrUpdateSkillsetOptions;
 import com.azure.search.documents.indexes.models.SearchIndexer;
 import com.azure.search.documents.indexes.models.SearchIndexerDataSourceConnection;
 import com.azure.search.documents.indexes.models.SearchIndexerSkillset;
@@ -133,11 +136,37 @@ public class SearchIndexerAsyncClient {
     public Mono<Response<SearchIndexerDataSourceConnection>> createOrUpdateDataSourceConnectionWithResponse(
         SearchIndexerDataSourceConnection dataSource, boolean onlyIfUnchanged) {
         return withContext(context ->
-            createOrUpdateDataSourceConnectionWithResponse(dataSource, onlyIfUnchanged, context));
+            createOrUpdateDataSourceConnectionWithResponse(dataSource, onlyIfUnchanged, null, context));
+    }
+
+    /**
+     * Creates a new Azure Cognitive Search data source or updates a data source if it already exists.
+     *
+     * <p><strong>Code Sample</strong></p>
+     *
+     * <p> Create or update search indexer data source connection named "dataSource". </p>
+     *
+     * {@codesnippet com.azure.search.documents.indexes.SearchIndexerAsyncClient.createOrUpdateDataSourceConnectionWithResponse#CreateOrUpdateDataSourceConnectionOptions}
+     *
+     * @param options The options used to create or update the {@link SearchIndexerDataSourceConnection data source
+     * connection}.
+     * @return a data source response.
+     * @throws NullPointerException If {code options} is null.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<SearchIndexerDataSourceConnection>> createOrUpdateDataSourceConnectionWithResponse(
+        CreateOrUpdateDataSourceConnectionOptions options) {
+        if (options == null) {
+            return monoError(logger, new NullPointerException("'options' cannot be null."));
+        }
+
+        return withContext(context -> createOrUpdateDataSourceConnectionWithResponse(options.getDataSourceConnection(),
+            options.isOnlyIfUnchanged(), options.getIgnoreResetRequirements(), context));
     }
 
     Mono<Response<SearchIndexerDataSourceConnection>> createOrUpdateDataSourceConnectionWithResponse(
-        SearchIndexerDataSourceConnection dataSource, boolean onlyIfUnchanged, Context context) {
+        SearchIndexerDataSourceConnection dataSource, boolean onlyIfUnchanged, Boolean ignoreResetRequirements,
+        Context context) {
         Objects.requireNonNull(dataSource, "'DataSource' cannot be null.");
         String ifMatch = onlyIfUnchanged ? dataSource.getETag() : null;
         if (dataSource.getConnectionString() == null) {
@@ -146,7 +175,7 @@ public class SearchIndexerAsyncClient {
         try {
             return restClient.getDataSources()
                 .createOrUpdateWithResponseAsync(dataSource.getName(), SearchIndexerDataSourceConverter.map(dataSource),
-                    ifMatch, null, null, null, context)
+                    ifMatch, null, ignoreResetRequirements, null, context)
                 .onErrorMap(MappingUtils::exceptionMapper)
                 .map(MappingUtils::mappingExternalDataSource);
         } catch (RuntimeException ex) {
@@ -354,14 +383,14 @@ public class SearchIndexerAsyncClient {
     public Mono<Response<Void>> deleteDataSourceConnectionWithResponse(SearchIndexerDataSourceConnection dataSource,
         boolean onlyIfUnchanged) {
         Objects.requireNonNull(dataSource, "'DataSource' cannot be null");
-        String etag = onlyIfUnchanged ? dataSource.getETag() : null;
-        return withContext(context -> deleteDataSourceConnectionWithResponse(dataSource.getName(), etag, context));
+        String eTag = onlyIfUnchanged ? dataSource.getETag() : null;
+        return withContext(context -> deleteDataSourceConnectionWithResponse(dataSource.getName(), eTag, context));
     }
 
-    Mono<Response<Void>> deleteDataSourceConnectionWithResponse(String dataSourceName, String etag, Context context) {
+    Mono<Response<Void>> deleteDataSourceConnectionWithResponse(String dataSourceName, String eTag, Context context) {
         try {
             return restClient.getDataSources()
-                .deleteWithResponseAsync(dataSourceName, etag, null, null, context)
+                .deleteWithResponseAsync(dataSourceName, eTag, null, null, context)
                 .onErrorMap(MappingUtils::exceptionMapper)
                 .map(Function.identity());
         } catch (RuntimeException ex) {
@@ -448,17 +477,40 @@ public class SearchIndexerAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SearchIndexer>> createOrUpdateIndexerWithResponse(SearchIndexer indexer,
         boolean onlyIfUnchanged) {
-        return withContext(context -> createOrUpdateIndexerWithResponse(indexer, onlyIfUnchanged, context));
+        return withContext(context -> createOrUpdateIndexerWithResponse(indexer, onlyIfUnchanged, null, null, context));
+    }
+
+    /**
+     * Creates a new Azure Cognitive Search indexer or updates an indexer if it already exists.
+     *
+     * <p><strong>Code Sample</strong></p>
+     *
+     * <p> Create or update search indexer named "searchIndexer". </p>
+     *
+     * {@codesnippet com.azure.search.documents.indexes.SearchIndexerAsyncClient.createOrUpdateIndexerWithResponse#CreateOrUpdateIndexerOptions}
+     *
+     * @param options The options used to create or update the {@link SearchIndexer indexer}.
+     * @return a response containing the created Indexer.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<SearchIndexer>> createOrUpdateIndexerWithResponse(CreateOrUpdateIndexerOptions options) {
+        if (options == null) {
+            return monoError(logger, new NullPointerException("'options' cannot be null."));
+        }
+
+        return withContext(context -> createOrUpdateIndexerWithResponse(options.getIndexer(),
+            options.isOnlyIfUnchanged(), options.getDisableCacheReprocessingChangeDetection(),
+            options.getIgnoreResetRequirements(), context));
     }
 
     Mono<Response<SearchIndexer>> createOrUpdateIndexerWithResponse(SearchIndexer indexer, boolean onlyIfUnchanged,
-        Context context) {
+        Boolean disableCacheReprocessingChangeDetection, Boolean ignoreResetRequirements, Context context) {
         Objects.requireNonNull(indexer, "'Indexer' cannot be 'null'");
         String ifMatch = onlyIfUnchanged ? indexer.getETag() : null;
         try {
             return restClient.getIndexers()
                 .createOrUpdateWithResponseAsync(indexer.getName(), SearchIndexerConverter.map(indexer), ifMatch, null,
-                    null, null, null, context)
+                    disableCacheReprocessingChangeDetection, ignoreResetRequirements, null, context)
                 .onErrorMap(MappingUtils::exceptionMapper)
                 .map(MappingUtils::mappingExternalSearchIndexer);
         } catch (RuntimeException ex) {
@@ -614,22 +666,22 @@ public class SearchIndexerAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteIndexerWithResponse(SearchIndexer indexer, boolean onlyIfUnchanged) {
         Objects.requireNonNull(indexer, "'Indexer' cannot be null");
-        String etag = onlyIfUnchanged ? indexer.getETag() : null;
-        return withContext(context -> deleteIndexerWithResponse(indexer.getName(), etag, context));
+        String eTag = onlyIfUnchanged ? indexer.getETag() : null;
+        return withContext(context -> deleteIndexerWithResponse(indexer.getName(), eTag, context));
     }
 
     /**
      * Deletes an Azure Cognitive Search indexer.
      *
      * @param indexerName the name of the indexer to delete
-     * @param etag Optional. The etag to match.
+     * @param eTag Optional. The eTag to match.
      * @param context the context
      * @return a response signalling completion.
      */
-    Mono<Response<Void>> deleteIndexerWithResponse(String indexerName, String etag, Context context) {
+    Mono<Response<Void>> deleteIndexerWithResponse(String indexerName, String eTag, Context context) {
         try {
             return restClient.getIndexers()
-                .deleteWithResponseAsync(indexerName, etag, null, null, context)
+                .deleteWithResponseAsync(indexerName, eTag, null, null, context)
                 .onErrorMap(MappingUtils::exceptionMapper)
                 .map(Function.identity());
         } catch (RuntimeException ex) {
@@ -961,16 +1013,44 @@ public class SearchIndexerAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SearchIndexerSkillset>> createOrUpdateSkillsetWithResponse(SearchIndexerSkillset skillset,
         boolean onlyIfUnchanged) {
-        return withContext(context -> createOrUpdateSkillsetWithResponse(skillset, onlyIfUnchanged, context));
+        return withContext(context -> createOrUpdateSkillsetWithResponse(skillset, onlyIfUnchanged, null, null,
+            context));
+    }
+
+    /**
+     * Creates a new Azure Cognitive Search skillset or updates a skillset if it already exists.
+     *
+     * <p><strong>Code Sample</strong></p>
+     *
+     * <p> Create or update search indexer skillset "searchIndexerSkillset". </p>
+     *
+     * {@codesnippet com.azure.search.documents.indexes.SearchIndexerAsyncClient.createOrUpdateSkillsetWithResponse#CreateOrUpdateSkillsetOptions}
+     *
+     * @param options The options used to create or update the {@link SearchIndexerSkillset skillset}.
+     * @return a response containing the skillset that was created or updated.
+     * @throws NullPointerException If {@code options} is null.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<SearchIndexerSkillset>> createOrUpdateSkillsetWithResponse(
+        CreateOrUpdateSkillsetOptions options) {
+        if (options == null) {
+            return monoError(logger, new NullPointerException("'options' cannot be null."));
+        }
+
+        return withContext(context -> createOrUpdateSkillsetWithResponse(options.getSkillset(),
+            options.isOnlyIfUnchanged(), options.getDisableCacheReprocessingChangeDetection(),
+            options.getIgnoreResetRequirements(), context));
     }
 
     Mono<Response<SearchIndexerSkillset>> createOrUpdateSkillsetWithResponse(SearchIndexerSkillset skillset,
-        boolean onlyIfUnchanged, Context context) {
+        boolean onlyIfUnchanged, Boolean disableCacheReprocessingChangeDetection, Boolean ignoreResetRequirements,
+        Context context) {
         Objects.requireNonNull(skillset, "'Skillset' cannot be null.");
         String ifMatch = onlyIfUnchanged ? skillset.getETag() : null;
         try {
             return restClient.getSkillsets()
-                .createOrUpdateWithResponseAsync(skillset.getName(), skillset, ifMatch, null, null, null, null, context)
+                .createOrUpdateWithResponseAsync(skillset.getName(), skillset, ifMatch, null,
+                    disableCacheReprocessingChangeDetection, ignoreResetRequirements, null, context)
                 .onErrorMap(MappingUtils::exceptionMapper);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -1012,14 +1092,14 @@ public class SearchIndexerAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteSkillsetWithResponse(SearchIndexerSkillset skillset, boolean onlyIfUnchanged) {
         Objects.requireNonNull(skillset, "'Skillset' cannot be null.");
-        String etag = onlyIfUnchanged ? skillset.getETag() : null;
-        return withContext(context -> deleteSkillsetWithResponse(skillset.getName(), etag, context));
+        String eTag = onlyIfUnchanged ? skillset.getETag() : null;
+        return withContext(context -> deleteSkillsetWithResponse(skillset.getName(), eTag, context));
     }
 
-    Mono<Response<Void>> deleteSkillsetWithResponse(String skillsetName, String etag, Context context) {
+    Mono<Response<Void>> deleteSkillsetWithResponse(String skillsetName, String eTag, Context context) {
         try {
             return restClient.getSkillsets()
-                .deleteWithResponseAsync(skillsetName, etag, null, null, context)
+                .deleteWithResponseAsync(skillsetName, eTag, null, null, context)
                 .onErrorMap(MappingUtils::exceptionMapper)
                 .map(Function.identity());
         } catch (RuntimeException ex) {

@@ -10,10 +10,15 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
+import com.azure.search.documents.indexes.models.CreateOrUpdateDataSourceConnectionOptions;
+import com.azure.search.documents.indexes.models.CreateOrUpdateIndexerOptions;
+import com.azure.search.documents.indexes.models.CreateOrUpdateSkillsetOptions;
 import com.azure.search.documents.indexes.models.SearchIndexer;
 import com.azure.search.documents.indexes.models.SearchIndexerDataSourceConnection;
 import com.azure.search.documents.indexes.models.SearchIndexerSkillset;
 import com.azure.search.documents.indexes.models.SearchIndexerStatus;
+
+import java.util.Objects;
 
 /**
  * This class provides a client that contains the operations for creating, getting, listing, updating, or deleting data
@@ -76,16 +81,40 @@ public class SearchIndexerClient {
      *
      * @param dataSourceConnection the {@link SearchIndexerDataSourceConnection} to create or update
      * @param onlyIfUnchanged {@code true} to update if the {@code dataSourceConnection} is the same as the current
-     * service value.
-     * {@code false} to always update existing value.
+     * service value. {@code false} to always update existing value.
      * @param context additional context that is passed through the HTTP pipeline during the service call
      * @return a response containing data source that was created or updated.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SearchIndexerDataSourceConnection> createOrUpdateDataSourceConnectionWithResponse(
         SearchIndexerDataSourceConnection dataSourceConnection, boolean onlyIfUnchanged, Context context) {
-        return asyncClient.createOrUpdateDataSourceConnectionWithResponse(dataSourceConnection, onlyIfUnchanged,
+        return asyncClient.createOrUpdateDataSourceConnectionWithResponse(dataSourceConnection, onlyIfUnchanged, null,
             context).block();
+    }
+
+    /**
+     * Creates a new Azure Cognitive Search data source or updates a data source if it already exists.
+     *
+     * <p><strong>Code Sample</strong></p>
+     *
+     * <p> Create or update search indexer data source connection named "dataSource". </p>
+     *
+     * {@codesnippet com.azure.search.documents.indexes.SearchIndexerClient.createOrUpdateDataSourceConnectionWithResponse#CreateOrUpdateDataSourceConnectionOptions-Context}
+     *
+     * @param options The options used to create or update the {@link SearchIndexerDataSourceConnection data source
+     * connection}.
+     * @param context additional context that is passed through the HTTP pipeline during the service call
+     * @return a data source response.
+     * @throws NullPointerException If {code options} is null.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<SearchIndexerDataSourceConnection> createOrUpdateDataSourceConnectionWithResponse(
+        CreateOrUpdateDataSourceConnectionOptions options, Context context) {
+        Objects.requireNonNull(options, "'options' cannot be null.");
+
+        return asyncClient.createOrUpdateDataSourceConnectionWithResponse(options.getDataSourceConnection(),
+            options.isOnlyIfUnchanged(), options.getIgnoreResetRequirements(), context)
+            .block();
     }
 
     /**
@@ -257,16 +286,15 @@ public class SearchIndexerClient {
      *
      * @param dataSourceConnection the {@link SearchIndexerDataSourceConnection} to be deleted.
      * @param onlyIfUnchanged {@code true} to delete if the {@code dataSourceConnection} is the same as the current
-     * service value.
-     * {@code false} to always delete existing value.
+     * service value. {@code false} to always delete existing value.
      * @param context additional context that is passed through the HTTP pipeline during the service call
      * @return an empty response
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteDataSourceConnectionWithResponse(SearchIndexerDataSourceConnection dataSourceConnection,
         boolean onlyIfUnchanged, Context context) {
-        String etag = onlyIfUnchanged ? dataSourceConnection.getETag() : null;
-        return asyncClient.deleteDataSourceConnectionWithResponse(dataSourceConnection.getName(), etag, context)
+        String eTag = onlyIfUnchanged ? dataSourceConnection.getETag() : null;
+        return asyncClient.deleteDataSourceConnectionWithResponse(dataSourceConnection.getName(), eTag, context)
             .block();
     }
 
@@ -340,7 +368,30 @@ public class SearchIndexerClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SearchIndexer> createOrUpdateIndexerWithResponse(SearchIndexer indexer, boolean onlyIfUnchanged,
         Context context) {
-        return asyncClient.createOrUpdateIndexerWithResponse(indexer, onlyIfUnchanged, context).block();
+        return asyncClient.createOrUpdateIndexerWithResponse(indexer, onlyIfUnchanged, null, null, context).block();
+    }
+
+    /**
+     * Creates a new Azure Cognitive Search indexer or updates an indexer if it already exists.
+     *
+     * <p><strong>Code Sample</strong></p>
+     *
+     * <p> Create or update search indexer named "searchIndexer". </p>
+     *
+     * {@codesnippet com.azure.search.documents.indexes.SearchIndexerClient.createOrUpdateIndexerWithResponse#CreateOrUpdateIndexerOptions-Context}
+     *
+     * @param options The options used to create or update the {@link SearchIndexer indexer}.
+     * @param context additional context that is passed through the HTTP pipeline during the service call
+     * @return A response object containing the Indexer.
+     * @throws NullPointerException If {@code options} is null.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<SearchIndexer> createOrUpdateIndexerWithResponse(CreateOrUpdateIndexerOptions options,
+        Context context) {
+        Objects.requireNonNull(options, "'options' cannot be null.");
+        return asyncClient.createOrUpdateIndexerWithResponse(options.getIndexer(), options.isOnlyIfUnchanged(),
+            options.getDisableCacheReprocessingChangeDetection(), options.getIgnoreResetRequirements(), context)
+            .block();
     }
 
     /**
@@ -465,7 +516,7 @@ public class SearchIndexerClient {
      *
      * <p><strong>Code Sample</strong></p>
      *
-     * <p> Delete search indexe named "searchIndexer".  </p>
+     * <p> Delete search index named "searchIndexer".  </p>
      *
      * {@codesnippet com.azure.search.documents.indexes.SearchIndexerClient.deleteIndexerWithResponse#SearchIndexer-boolean-Context}
      *
@@ -477,8 +528,8 @@ public class SearchIndexerClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteIndexerWithResponse(SearchIndexer indexer, boolean onlyIfUnchanged, Context context) {
-        String etag = onlyIfUnchanged ? indexer.getETag() : null;
-        return asyncClient.deleteIndexerWithResponse(indexer.getName(), etag, context).block();
+        String eTag = onlyIfUnchanged ? indexer.getETag() : null;
+        return asyncClient.deleteIndexerWithResponse(indexer.getName(), eTag, context).block();
     }
 
     /**
@@ -756,7 +807,31 @@ public class SearchIndexerClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SearchIndexerSkillset> createOrUpdateSkillsetWithResponse(SearchIndexerSkillset skillset,
         boolean onlyIfUnchanged, Context context) {
-        return asyncClient.createOrUpdateSkillsetWithResponse(skillset, onlyIfUnchanged, context)
+        return asyncClient.createOrUpdateSkillsetWithResponse(skillset, onlyIfUnchanged, null, null, context)
+            .block();
+    }
+
+    /**
+     * Creates a new Azure Cognitive Search skillset or updates a skillset if it already exists.
+     *
+     * <p><strong>Code Sample</strong></p>
+     *
+     * <p> Create or update search indexer skillset "searchIndexerSkillset". </p>
+     *
+     * {@codesnippet com.azure.search.documents.indexes.SearchIndexerClient.createOrUpdateSkillsetWithResponse#CreateOrUpdateSkillsetOptions-Context}
+     *
+     * @param options The options used to create or update the {@link SearchIndexerSkillset skillset}.
+     * @param context additional context that is passed through the HTTP pipeline during the service call
+     * @return a response containing the skillset that was created or updated.
+     * @throws NullPointerException If {@code options} is null.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<SearchIndexerSkillset> createOrUpdateSkillsetWithResponse(CreateOrUpdateSkillsetOptions options,
+        Context context) {
+        Objects.requireNonNull(options, "'options' cannot be null.");
+
+        return asyncClient.createOrUpdateSkillsetWithResponse(options.getSkillset(), options.isOnlyIfUnchanged(),
+            options.getDisableCacheReprocessingChangeDetection(), options.getIgnoreResetRequirements(), context)
             .block();
     }
 
@@ -794,8 +869,8 @@ public class SearchIndexerClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteSkillsetWithResponse(SearchIndexerSkillset skillset, boolean onlyIfUnchanged,
         Context context) {
-        String etag = onlyIfUnchanged ? skillset.getETag() : null;
-        return asyncClient.deleteSkillsetWithResponse(skillset.getName(), etag, context).block();
+        String eTag = onlyIfUnchanged ? skillset.getETag() : null;
+        return asyncClient.deleteSkillsetWithResponse(skillset.getName(), eTag, context).block();
     }
 
 }
