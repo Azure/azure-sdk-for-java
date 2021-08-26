@@ -44,7 +44,6 @@ import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDe
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
 import java.nio.ByteBuffer;
-import java.util.Map;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -924,7 +923,7 @@ public final class VirtualNetworksClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
-     * @param tags Resource tags.
+     * @param parameters Parameters supplied to update virtual network tags.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -932,7 +931,7 @@ public final class VirtualNetworksClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<VirtualNetworkInner>> updateTagsWithResponseAsync(
-        String resourceGroupName, String virtualNetworkName, Map<String, String> tags) {
+        String resourceGroupName, String virtualNetworkName, TagsObject parameters) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -953,10 +952,13 @@ public final class VirtualNetworksClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
         final String apiVersion = "2021-02-01";
         final String accept = "application/json";
-        TagsObject parameters = new TagsObject();
-        parameters.withTags(tags);
         return FluxUtil
             .withContext(
                 context ->
@@ -978,7 +980,7 @@ public final class VirtualNetworksClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
-     * @param tags Resource tags.
+     * @param parameters Parameters supplied to update virtual network tags.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -987,7 +989,7 @@ public final class VirtualNetworksClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<VirtualNetworkInner>> updateTagsWithResponseAsync(
-        String resourceGroupName, String virtualNetworkName, Map<String, String> tags, Context context) {
+        String resourceGroupName, String virtualNetworkName, TagsObject parameters, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -1008,10 +1010,13 @@ public final class VirtualNetworksClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
         final String apiVersion = "2021-02-01";
         final String accept = "application/json";
-        TagsObject parameters = new TagsObject();
-        parameters.withTags(tags);
         context = this.client.mergeContext(context);
         return service
             .updateTags(
@@ -1030,7 +1035,7 @@ public final class VirtualNetworksClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
-     * @param tags Resource tags.
+     * @param parameters Parameters supplied to update virtual network tags.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1038,8 +1043,8 @@ public final class VirtualNetworksClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<VirtualNetworkInner> updateTagsAsync(
-        String resourceGroupName, String virtualNetworkName, Map<String, String> tags) {
-        return updateTagsWithResponseAsync(resourceGroupName, virtualNetworkName, tags)
+        String resourceGroupName, String virtualNetworkName, TagsObject parameters) {
+        return updateTagsWithResponseAsync(resourceGroupName, virtualNetworkName, parameters)
             .flatMap(
                 (Response<VirtualNetworkInner> res) -> {
                     if (res.getValue() != null) {
@@ -1055,23 +1060,15 @@ public final class VirtualNetworksClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
+     * @param parameters Parameters supplied to update virtual network tags.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return virtual Network resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<VirtualNetworkInner> updateTagsAsync(String resourceGroupName, String virtualNetworkName) {
-        final Map<String, String> tags = null;
-        return updateTagsWithResponseAsync(resourceGroupName, virtualNetworkName, tags)
-            .flatMap(
-                (Response<VirtualNetworkInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+    public VirtualNetworkInner updateTags(String resourceGroupName, String virtualNetworkName, TagsObject parameters) {
+        return updateTagsAsync(resourceGroupName, virtualNetworkName, parameters).block();
     }
 
     /**
@@ -1079,23 +1076,7 @@ public final class VirtualNetworksClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtual Network resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public VirtualNetworkInner updateTags(String resourceGroupName, String virtualNetworkName) {
-        final Map<String, String> tags = null;
-        return updateTagsAsync(resourceGroupName, virtualNetworkName, tags).block();
-    }
-
-    /**
-     * Updates a virtual network tags.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualNetworkName The name of the virtual network.
-     * @param tags Resource tags.
+     * @param parameters Parameters supplied to update virtual network tags.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1104,8 +1085,8 @@ public final class VirtualNetworksClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<VirtualNetworkInner> updateTagsWithResponse(
-        String resourceGroupName, String virtualNetworkName, Map<String, String> tags, Context context) {
-        return updateTagsWithResponseAsync(resourceGroupName, virtualNetworkName, tags, context).block();
+        String resourceGroupName, String virtualNetworkName, TagsObject parameters, Context context) {
+        return updateTagsWithResponseAsync(resourceGroupName, virtualNetworkName, parameters, context).block();
     }
 
     /**

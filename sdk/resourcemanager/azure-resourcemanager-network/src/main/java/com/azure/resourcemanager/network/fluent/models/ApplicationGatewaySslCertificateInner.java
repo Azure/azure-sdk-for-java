@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ProvisioningState;
@@ -13,10 +12,15 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** SSL certificates of an application gateway. */
-@JsonFlatten
 @Fluent
-public class ApplicationGatewaySslCertificateInner extends SubResource {
+public final class ApplicationGatewaySslCertificateInner extends SubResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ApplicationGatewaySslCertificateInner.class);
+
+    /*
+     * Properties of the application gateway SSL certificate.
+     */
+    @JsonProperty(value = "properties")
+    private ApplicationGatewaySslCertificatePropertiesFormat innerProperties;
 
     /*
      * Name of the SSL certificate that is unique within an Application
@@ -37,38 +41,14 @@ public class ApplicationGatewaySslCertificateInner extends SubResource {
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
-    /*
-     * Base-64 encoded pfx certificate. Only applicable in PUT Request.
+    /**
+     * Get the innerProperties property: Properties of the application gateway SSL certificate.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.data")
-    private String data;
-
-    /*
-     * Password for the pfx file specified in data. Only applicable in PUT
-     * request.
-     */
-    @JsonProperty(value = "properties.password")
-    private String password;
-
-    /*
-     * Base-64 encoded Public cert data corresponding to pfx specified in data.
-     * Only applicable in GET request.
-     */
-    @JsonProperty(value = "properties.publicCertData", access = JsonProperty.Access.WRITE_ONLY)
-    private String publicCertData;
-
-    /*
-     * Secret Id of (base-64 encoded unencrypted pfx) 'Secret' or 'Certificate'
-     * object stored in KeyVault.
-     */
-    @JsonProperty(value = "properties.keyVaultSecretId")
-    private String keyVaultSecretId;
-
-    /*
-     * The provisioning state of the SSL certificate resource.
-     */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningState provisioningState;
+    private ApplicationGatewaySslCertificatePropertiesFormat innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the name property: Name of the SSL certificate that is unique within an Application Gateway.
@@ -108,13 +88,20 @@ public class ApplicationGatewaySslCertificateInner extends SubResource {
         return this.type;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public ApplicationGatewaySslCertificateInner withId(String id) {
+        super.withId(id);
+        return this;
+    }
+
     /**
      * Get the data property: Base-64 encoded pfx certificate. Only applicable in PUT Request.
      *
      * @return the data value.
      */
     public String data() {
-        return this.data;
+        return this.innerProperties() == null ? null : this.innerProperties().data();
     }
 
     /**
@@ -124,7 +111,10 @@ public class ApplicationGatewaySslCertificateInner extends SubResource {
      * @return the ApplicationGatewaySslCertificateInner object itself.
      */
     public ApplicationGatewaySslCertificateInner withData(String data) {
-        this.data = data;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApplicationGatewaySslCertificatePropertiesFormat();
+        }
+        this.innerProperties().withData(data);
         return this;
     }
 
@@ -134,7 +124,7 @@ public class ApplicationGatewaySslCertificateInner extends SubResource {
      * @return the password value.
      */
     public String password() {
-        return this.password;
+        return this.innerProperties() == null ? null : this.innerProperties().password();
     }
 
     /**
@@ -144,7 +134,10 @@ public class ApplicationGatewaySslCertificateInner extends SubResource {
      * @return the ApplicationGatewaySslCertificateInner object itself.
      */
     public ApplicationGatewaySslCertificateInner withPassword(String password) {
-        this.password = password;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApplicationGatewaySslCertificatePropertiesFormat();
+        }
+        this.innerProperties().withPassword(password);
         return this;
     }
 
@@ -155,7 +148,7 @@ public class ApplicationGatewaySslCertificateInner extends SubResource {
      * @return the publicCertData value.
      */
     public String publicCertData() {
-        return this.publicCertData;
+        return this.innerProperties() == null ? null : this.innerProperties().publicCertData();
     }
 
     /**
@@ -165,7 +158,7 @@ public class ApplicationGatewaySslCertificateInner extends SubResource {
      * @return the keyVaultSecretId value.
      */
     public String keyVaultSecretId() {
-        return this.keyVaultSecretId;
+        return this.innerProperties() == null ? null : this.innerProperties().keyVaultSecretId();
     }
 
     /**
@@ -176,7 +169,10 @@ public class ApplicationGatewaySslCertificateInner extends SubResource {
      * @return the ApplicationGatewaySslCertificateInner object itself.
      */
     public ApplicationGatewaySslCertificateInner withKeyVaultSecretId(String keyVaultSecretId) {
-        this.keyVaultSecretId = keyVaultSecretId;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApplicationGatewaySslCertificatePropertiesFormat();
+        }
+        this.innerProperties().withKeyVaultSecretId(keyVaultSecretId);
         return this;
     }
 
@@ -186,14 +182,7 @@ public class ApplicationGatewaySslCertificateInner extends SubResource {
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
-        return this.provisioningState;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public ApplicationGatewaySslCertificateInner withId(String id) {
-        super.withId(id);
-        return this;
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
     /**
@@ -202,5 +191,8 @@ public class ApplicationGatewaySslCertificateInner extends SubResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

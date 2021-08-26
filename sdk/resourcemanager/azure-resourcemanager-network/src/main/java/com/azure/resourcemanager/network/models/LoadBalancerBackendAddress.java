@@ -5,17 +5,22 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.network.fluent.models.LoadBalancerBackendAddressPropertiesFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Load balancer backend addresses. */
-@JsonFlatten
 @Fluent
-public class LoadBalancerBackendAddress {
+public final class LoadBalancerBackendAddress {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(LoadBalancerBackendAddress.class);
+
+    /*
+     * Properties of load balancer backend address pool.
+     */
+    @JsonProperty(value = "properties")
+    private LoadBalancerBackendAddressPropertiesFormat innerProperties;
 
     /*
      * Name of the backend address.
@@ -23,36 +28,14 @@ public class LoadBalancerBackendAddress {
     @JsonProperty(value = "name")
     private String name;
 
-    /*
-     * Reference to an existing virtual network.
+    /**
+     * Get the innerProperties property: Properties of load balancer backend address pool.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.virtualNetwork")
-    private SubResource virtualNetwork;
-
-    /*
-     * Reference to an existing subnet.
-     */
-    @JsonProperty(value = "properties.subnet")
-    private SubResource subnet;
-
-    /*
-     * IP Address belonging to the referenced virtual network.
-     */
-    @JsonProperty(value = "properties.ipAddress")
-    private String ipAddress;
-
-    /*
-     * Reference to IP address defined in network interfaces.
-     */
-    @JsonProperty(value = "properties.networkInterfaceIPConfiguration", access = JsonProperty.Access.WRITE_ONLY)
-    private SubResource networkInterfaceIpConfiguration;
-
-    /*
-     * Reference to the frontend ip address configuration defined in regional
-     * loadbalancer.
-     */
-    @JsonProperty(value = "properties.loadBalancerFrontendIPConfiguration")
-    private SubResource loadBalancerFrontendIpConfiguration;
+    private LoadBalancerBackendAddressPropertiesFormat innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the name property: Name of the backend address.
@@ -80,7 +63,7 @@ public class LoadBalancerBackendAddress {
      * @return the virtualNetwork value.
      */
     public SubResource virtualNetwork() {
-        return this.virtualNetwork;
+        return this.innerProperties() == null ? null : this.innerProperties().virtualNetwork();
     }
 
     /**
@@ -90,7 +73,10 @@ public class LoadBalancerBackendAddress {
      * @return the LoadBalancerBackendAddress object itself.
      */
     public LoadBalancerBackendAddress withVirtualNetwork(SubResource virtualNetwork) {
-        this.virtualNetwork = virtualNetwork;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new LoadBalancerBackendAddressPropertiesFormat();
+        }
+        this.innerProperties().withVirtualNetwork(virtualNetwork);
         return this;
     }
 
@@ -100,7 +86,7 @@ public class LoadBalancerBackendAddress {
      * @return the subnet value.
      */
     public SubResource subnet() {
-        return this.subnet;
+        return this.innerProperties() == null ? null : this.innerProperties().subnet();
     }
 
     /**
@@ -110,7 +96,10 @@ public class LoadBalancerBackendAddress {
      * @return the LoadBalancerBackendAddress object itself.
      */
     public LoadBalancerBackendAddress withSubnet(SubResource subnet) {
-        this.subnet = subnet;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new LoadBalancerBackendAddressPropertiesFormat();
+        }
+        this.innerProperties().withSubnet(subnet);
         return this;
     }
 
@@ -120,7 +109,7 @@ public class LoadBalancerBackendAddress {
      * @return the ipAddress value.
      */
     public String ipAddress() {
-        return this.ipAddress;
+        return this.innerProperties() == null ? null : this.innerProperties().ipAddress();
     }
 
     /**
@@ -130,7 +119,10 @@ public class LoadBalancerBackendAddress {
      * @return the LoadBalancerBackendAddress object itself.
      */
     public LoadBalancerBackendAddress withIpAddress(String ipAddress) {
-        this.ipAddress = ipAddress;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new LoadBalancerBackendAddressPropertiesFormat();
+        }
+        this.innerProperties().withIpAddress(ipAddress);
         return this;
     }
 
@@ -140,7 +132,7 @@ public class LoadBalancerBackendAddress {
      * @return the networkInterfaceIpConfiguration value.
      */
     public SubResource networkInterfaceIpConfiguration() {
-        return this.networkInterfaceIpConfiguration;
+        return this.innerProperties() == null ? null : this.innerProperties().networkInterfaceIpConfiguration();
     }
 
     /**
@@ -150,7 +142,7 @@ public class LoadBalancerBackendAddress {
      * @return the loadBalancerFrontendIpConfiguration value.
      */
     public SubResource loadBalancerFrontendIpConfiguration() {
-        return this.loadBalancerFrontendIpConfiguration;
+        return this.innerProperties() == null ? null : this.innerProperties().loadBalancerFrontendIpConfiguration();
     }
 
     /**
@@ -162,7 +154,10 @@ public class LoadBalancerBackendAddress {
      */
     public LoadBalancerBackendAddress withLoadBalancerFrontendIpConfiguration(
         SubResource loadBalancerFrontendIpConfiguration) {
-        this.loadBalancerFrontendIpConfiguration = loadBalancerFrontendIpConfiguration;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new LoadBalancerBackendAddressPropertiesFormat();
+        }
+        this.innerProperties().withLoadBalancerFrontendIpConfiguration(loadBalancerFrontendIpConfiguration);
         return this;
     }
 
@@ -172,5 +167,8 @@ public class LoadBalancerBackendAddress {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

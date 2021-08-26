@@ -12,10 +12,10 @@ import com.azure.core.util.Context;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.network.fluent.models.DdosCustomPolicyInner;
+import com.azure.resourcemanager.network.models.TagsObject;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
 import java.nio.ByteBuffer;
-import java.util.Map;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -280,7 +280,7 @@ public interface DdosCustomPoliciesClient extends InnerSupportsGet<DdosCustomPol
      *
      * @param resourceGroupName The name of the resource group.
      * @param ddosCustomPolicyName The name of the DDoS custom policy.
-     * @param tags Resource tags.
+     * @param parameters Parameters supplied to update DDoS custom policy resource tags.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -288,14 +288,14 @@ public interface DdosCustomPoliciesClient extends InnerSupportsGet<DdosCustomPol
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<DdosCustomPolicyInner>> updateTagsWithResponseAsync(
-        String resourceGroupName, String ddosCustomPolicyName, Map<String, String> tags);
+        String resourceGroupName, String ddosCustomPolicyName, TagsObject parameters);
 
     /**
      * Update a DDoS custom policy tags.
      *
      * @param resourceGroupName The name of the resource group.
      * @param ddosCustomPolicyName The name of the DDoS custom policy.
-     * @param tags Resource tags.
+     * @param parameters Parameters supplied to update DDoS custom policy resource tags.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -303,40 +303,28 @@ public interface DdosCustomPoliciesClient extends InnerSupportsGet<DdosCustomPol
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<DdosCustomPolicyInner> updateTagsAsync(
-        String resourceGroupName, String ddosCustomPolicyName, Map<String, String> tags);
+        String resourceGroupName, String ddosCustomPolicyName, TagsObject parameters);
 
     /**
      * Update a DDoS custom policy tags.
      *
      * @param resourceGroupName The name of the resource group.
      * @param ddosCustomPolicyName The name of the DDoS custom policy.
+     * @param parameters Parameters supplied to update DDoS custom policy resource tags.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a DDoS custom policy in a resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<DdosCustomPolicyInner> updateTagsAsync(String resourceGroupName, String ddosCustomPolicyName);
+    DdosCustomPolicyInner updateTags(String resourceGroupName, String ddosCustomPolicyName, TagsObject parameters);
 
     /**
      * Update a DDoS custom policy tags.
      *
      * @param resourceGroupName The name of the resource group.
      * @param ddosCustomPolicyName The name of the DDoS custom policy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a DDoS custom policy in a resource group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    DdosCustomPolicyInner updateTags(String resourceGroupName, String ddosCustomPolicyName);
-
-    /**
-     * Update a DDoS custom policy tags.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param ddosCustomPolicyName The name of the DDoS custom policy.
-     * @param tags Resource tags.
+     * @param parameters Parameters supplied to update DDoS custom policy resource tags.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -345,5 +333,5 @@ public interface DdosCustomPoliciesClient extends InnerSupportsGet<DdosCustomPol
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<DdosCustomPolicyInner> updateTagsWithResponse(
-        String resourceGroupName, String ddosCustomPolicyName, Map<String, String> tags, Context context);
+        String resourceGroupName, String ddosCustomPolicyName, TagsObject parameters, Context context);
 }

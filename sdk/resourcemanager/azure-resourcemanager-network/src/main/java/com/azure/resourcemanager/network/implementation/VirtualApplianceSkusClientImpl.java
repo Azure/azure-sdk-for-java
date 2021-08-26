@@ -233,7 +233,7 @@ public final class VirtualApplianceSkusClientImpl implements VirtualApplianceSku
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the NetworkVirtualApplianceSkus resource.
+     * @return available NetworkVirtualApplianceSkus.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<NetworkVirtualApplianceSkuInner>> getWithResponseAsync(String skuName) {
@@ -276,7 +276,7 @@ public final class VirtualApplianceSkusClientImpl implements VirtualApplianceSku
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the NetworkVirtualApplianceSkus resource.
+     * @return available NetworkVirtualApplianceSkus.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<NetworkVirtualApplianceSkuInner>> getWithResponseAsync(String skuName, Context context) {
@@ -309,7 +309,7 @@ public final class VirtualApplianceSkusClientImpl implements VirtualApplianceSku
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the NetworkVirtualApplianceSkus resource.
+     * @return available NetworkVirtualApplianceSkus.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<NetworkVirtualApplianceSkuInner> getAsync(String skuName) {
@@ -331,7 +331,7 @@ public final class VirtualApplianceSkusClientImpl implements VirtualApplianceSku
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the NetworkVirtualApplianceSkus resource.
+     * @return available NetworkVirtualApplianceSkus.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NetworkVirtualApplianceSkuInner get(String skuName) {
@@ -346,7 +346,7 @@ public final class VirtualApplianceSkusClientImpl implements VirtualApplianceSku
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the NetworkVirtualApplianceSkus resource.
+     * @return available NetworkVirtualApplianceSkus.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<NetworkVirtualApplianceSkuInner> getWithResponse(String skuName, Context context) {

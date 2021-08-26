@@ -41,7 +41,6 @@ import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDe
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
 import java.nio.ByteBuffer;
-import java.util.Map;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -911,7 +910,7 @@ public final class NetworkSecurityGroupsClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param networkSecurityGroupName The name of the network security group.
-     * @param tags Resource tags.
+     * @param parameters Parameters supplied to update network security group tags.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -919,7 +918,7 @@ public final class NetworkSecurityGroupsClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<NetworkSecurityGroupInner>> updateTagsWithResponseAsync(
-        String resourceGroupName, String networkSecurityGroupName, Map<String, String> tags) {
+        String resourceGroupName, String networkSecurityGroupName, TagsObject parameters) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -941,10 +940,13 @@ public final class NetworkSecurityGroupsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
         final String apiVersion = "2021-02-01";
         final String accept = "application/json";
-        TagsObject parameters = new TagsObject();
-        parameters.withTags(tags);
         return FluxUtil
             .withContext(
                 context ->
@@ -966,7 +968,7 @@ public final class NetworkSecurityGroupsClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param networkSecurityGroupName The name of the network security group.
-     * @param tags Resource tags.
+     * @param parameters Parameters supplied to update network security group tags.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -975,7 +977,7 @@ public final class NetworkSecurityGroupsClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<NetworkSecurityGroupInner>> updateTagsWithResponseAsync(
-        String resourceGroupName, String networkSecurityGroupName, Map<String, String> tags, Context context) {
+        String resourceGroupName, String networkSecurityGroupName, TagsObject parameters, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -997,10 +999,13 @@ public final class NetworkSecurityGroupsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
         final String apiVersion = "2021-02-01";
         final String accept = "application/json";
-        TagsObject parameters = new TagsObject();
-        parameters.withTags(tags);
         context = this.client.mergeContext(context);
         return service
             .updateTags(
@@ -1019,7 +1024,7 @@ public final class NetworkSecurityGroupsClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param networkSecurityGroupName The name of the network security group.
-     * @param tags Resource tags.
+     * @param parameters Parameters supplied to update network security group tags.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1027,8 +1032,8 @@ public final class NetworkSecurityGroupsClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<NetworkSecurityGroupInner> updateTagsAsync(
-        String resourceGroupName, String networkSecurityGroupName, Map<String, String> tags) {
-        return updateTagsWithResponseAsync(resourceGroupName, networkSecurityGroupName, tags)
+        String resourceGroupName, String networkSecurityGroupName, TagsObject parameters) {
+        return updateTagsWithResponseAsync(resourceGroupName, networkSecurityGroupName, parameters)
             .flatMap(
                 (Response<NetworkSecurityGroupInner> res) -> {
                     if (res.getValue() != null) {
@@ -1044,23 +1049,16 @@ public final class NetworkSecurityGroupsClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param networkSecurityGroupName The name of the network security group.
+     * @param parameters Parameters supplied to update network security group tags.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return networkSecurityGroup resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<NetworkSecurityGroupInner> updateTagsAsync(String resourceGroupName, String networkSecurityGroupName) {
-        final Map<String, String> tags = null;
-        return updateTagsWithResponseAsync(resourceGroupName, networkSecurityGroupName, tags)
-            .flatMap(
-                (Response<NetworkSecurityGroupInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+    public NetworkSecurityGroupInner updateTags(
+        String resourceGroupName, String networkSecurityGroupName, TagsObject parameters) {
+        return updateTagsAsync(resourceGroupName, networkSecurityGroupName, parameters).block();
     }
 
     /**
@@ -1068,23 +1066,7 @@ public final class NetworkSecurityGroupsClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param networkSecurityGroupName The name of the network security group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return networkSecurityGroup resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public NetworkSecurityGroupInner updateTags(String resourceGroupName, String networkSecurityGroupName) {
-        final Map<String, String> tags = null;
-        return updateTagsAsync(resourceGroupName, networkSecurityGroupName, tags).block();
-    }
-
-    /**
-     * Updates a network security group tags.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param networkSecurityGroupName The name of the network security group.
-     * @param tags Resource tags.
+     * @param parameters Parameters supplied to update network security group tags.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1093,8 +1075,8 @@ public final class NetworkSecurityGroupsClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<NetworkSecurityGroupInner> updateTagsWithResponse(
-        String resourceGroupName, String networkSecurityGroupName, Map<String, String> tags, Context context) {
-        return updateTagsWithResponseAsync(resourceGroupName, networkSecurityGroupName, tags, context).block();
+        String resourceGroupName, String networkSecurityGroupName, TagsObject parameters, Context context) {
+        return updateTagsWithResponseAsync(resourceGroupName, networkSecurityGroupName, parameters, context).block();
     }
 
     /**

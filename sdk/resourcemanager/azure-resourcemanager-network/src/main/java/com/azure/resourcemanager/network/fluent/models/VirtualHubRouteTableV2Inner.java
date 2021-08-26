@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ProvisioningState;
@@ -15,10 +14,15 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** VirtualHubRouteTableV2 Resource. */
-@JsonFlatten
 @Fluent
-public class VirtualHubRouteTableV2Inner extends SubResource {
+public final class VirtualHubRouteTableV2Inner extends SubResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualHubRouteTableV2Inner.class);
+
+    /*
+     * Properties of the virtual hub route table v2.
+     */
+    @JsonProperty(value = "properties")
+    private VirtualHubRouteTableV2Properties innerProperties;
 
     /*
      * The name of the resource that is unique within a resource group. This
@@ -33,23 +37,14 @@ public class VirtualHubRouteTableV2Inner extends SubResource {
     @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
-    /*
-     * List of all routes.
+    /**
+     * Get the innerProperties property: Properties of the virtual hub route table v2.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.routes")
-    private List<VirtualHubRouteV2> routes;
-
-    /*
-     * List of all connections attached to this route table v2.
-     */
-    @JsonProperty(value = "properties.attachedConnections")
-    private List<String> attachedConnections;
-
-    /*
-     * The provisioning state of the virtual hub route table v2 resource.
-     */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningState provisioningState;
+    private VirtualHubRouteTableV2Properties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the name property: The name of the resource that is unique within a resource group. This name can be used to
@@ -82,13 +77,20 @@ public class VirtualHubRouteTableV2Inner extends SubResource {
         return this.etag;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public VirtualHubRouteTableV2Inner withId(String id) {
+        super.withId(id);
+        return this;
+    }
+
     /**
      * Get the routes property: List of all routes.
      *
      * @return the routes value.
      */
     public List<VirtualHubRouteV2> routes() {
-        return this.routes;
+        return this.innerProperties() == null ? null : this.innerProperties().routes();
     }
 
     /**
@@ -98,7 +100,10 @@ public class VirtualHubRouteTableV2Inner extends SubResource {
      * @return the VirtualHubRouteTableV2Inner object itself.
      */
     public VirtualHubRouteTableV2Inner withRoutes(List<VirtualHubRouteV2> routes) {
-        this.routes = routes;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualHubRouteTableV2Properties();
+        }
+        this.innerProperties().withRoutes(routes);
         return this;
     }
 
@@ -108,7 +113,7 @@ public class VirtualHubRouteTableV2Inner extends SubResource {
      * @return the attachedConnections value.
      */
     public List<String> attachedConnections() {
-        return this.attachedConnections;
+        return this.innerProperties() == null ? null : this.innerProperties().attachedConnections();
     }
 
     /**
@@ -118,7 +123,10 @@ public class VirtualHubRouteTableV2Inner extends SubResource {
      * @return the VirtualHubRouteTableV2Inner object itself.
      */
     public VirtualHubRouteTableV2Inner withAttachedConnections(List<String> attachedConnections) {
-        this.attachedConnections = attachedConnections;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualHubRouteTableV2Properties();
+        }
+        this.innerProperties().withAttachedConnections(attachedConnections);
         return this;
     }
 
@@ -128,14 +136,7 @@ public class VirtualHubRouteTableV2Inner extends SubResource {
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
-        return this.provisioningState;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public VirtualHubRouteTableV2Inner withId(String id) {
-        super.withId(id);
-        return this;
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
     /**
@@ -144,8 +145,8 @@ public class VirtualHubRouteTableV2Inner extends SubResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (routes() != null) {
-            routes().forEach(e -> e.validate());
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

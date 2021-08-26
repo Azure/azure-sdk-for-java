@@ -41,7 +41,6 @@ import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDe
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
 import java.nio.ByteBuffer;
-import java.util.Map;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -889,7 +888,7 @@ public final class ApplicationSecurityGroupsClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param applicationSecurityGroupName The name of the application security group.
-     * @param tags Resource tags.
+     * @param parameters Parameters supplied to update application security group tags.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -897,7 +896,7 @@ public final class ApplicationSecurityGroupsClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ApplicationSecurityGroupInner>> updateTagsWithResponseAsync(
-        String resourceGroupName, String applicationSecurityGroupName, Map<String, String> tags) {
+        String resourceGroupName, String applicationSecurityGroupName, TagsObject parameters) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -920,10 +919,13 @@ public final class ApplicationSecurityGroupsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
         final String apiVersion = "2021-02-01";
         final String accept = "application/json";
-        TagsObject parameters = new TagsObject();
-        parameters.withTags(tags);
         return FluxUtil
             .withContext(
                 context ->
@@ -945,7 +947,7 @@ public final class ApplicationSecurityGroupsClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param applicationSecurityGroupName The name of the application security group.
-     * @param tags Resource tags.
+     * @param parameters Parameters supplied to update application security group tags.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -954,7 +956,7 @@ public final class ApplicationSecurityGroupsClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ApplicationSecurityGroupInner>> updateTagsWithResponseAsync(
-        String resourceGroupName, String applicationSecurityGroupName, Map<String, String> tags, Context context) {
+        String resourceGroupName, String applicationSecurityGroupName, TagsObject parameters, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -977,10 +979,13 @@ public final class ApplicationSecurityGroupsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
         final String apiVersion = "2021-02-01";
         final String accept = "application/json";
-        TagsObject parameters = new TagsObject();
-        parameters.withTags(tags);
         context = this.client.mergeContext(context);
         return service
             .updateTags(
@@ -999,7 +1004,7 @@ public final class ApplicationSecurityGroupsClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param applicationSecurityGroupName The name of the application security group.
-     * @param tags Resource tags.
+     * @param parameters Parameters supplied to update application security group tags.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1007,8 +1012,8 @@ public final class ApplicationSecurityGroupsClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ApplicationSecurityGroupInner> updateTagsAsync(
-        String resourceGroupName, String applicationSecurityGroupName, Map<String, String> tags) {
-        return updateTagsWithResponseAsync(resourceGroupName, applicationSecurityGroupName, tags)
+        String resourceGroupName, String applicationSecurityGroupName, TagsObject parameters) {
+        return updateTagsWithResponseAsync(resourceGroupName, applicationSecurityGroupName, parameters)
             .flatMap(
                 (Response<ApplicationSecurityGroupInner> res) -> {
                     if (res.getValue() != null) {
@@ -1024,24 +1029,16 @@ public final class ApplicationSecurityGroupsClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param applicationSecurityGroupName The name of the application security group.
+     * @param parameters Parameters supplied to update application security group tags.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an application security group in a resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ApplicationSecurityGroupInner> updateTagsAsync(
-        String resourceGroupName, String applicationSecurityGroupName) {
-        final Map<String, String> tags = null;
-        return updateTagsWithResponseAsync(resourceGroupName, applicationSecurityGroupName, tags)
-            .flatMap(
-                (Response<ApplicationSecurityGroupInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+    public ApplicationSecurityGroupInner updateTags(
+        String resourceGroupName, String applicationSecurityGroupName, TagsObject parameters) {
+        return updateTagsAsync(resourceGroupName, applicationSecurityGroupName, parameters).block();
     }
 
     /**
@@ -1049,23 +1046,7 @@ public final class ApplicationSecurityGroupsClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param applicationSecurityGroupName The name of the application security group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an application security group in a resource group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ApplicationSecurityGroupInner updateTags(String resourceGroupName, String applicationSecurityGroupName) {
-        final Map<String, String> tags = null;
-        return updateTagsAsync(resourceGroupName, applicationSecurityGroupName, tags).block();
-    }
-
-    /**
-     * Updates an application security group's tags.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param applicationSecurityGroupName The name of the application security group.
-     * @param tags Resource tags.
+     * @param parameters Parameters supplied to update application security group tags.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1074,8 +1055,9 @@ public final class ApplicationSecurityGroupsClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ApplicationSecurityGroupInner> updateTagsWithResponse(
-        String resourceGroupName, String applicationSecurityGroupName, Map<String, String> tags, Context context) {
-        return updateTagsWithResponseAsync(resourceGroupName, applicationSecurityGroupName, tags, context).block();
+        String resourceGroupName, String applicationSecurityGroupName, TagsObject parameters, Context context) {
+        return updateTagsWithResponseAsync(resourceGroupName, applicationSecurityGroupName, parameters, context)
+            .block();
     }
 
     /**
