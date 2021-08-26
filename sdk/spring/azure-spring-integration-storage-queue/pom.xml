@@ -13,7 +13,7 @@
 
   <groupId>com.azure.spring</groupId>
   <artifactId>azure-spring-integration-storage-queue</artifactId>
-  <version>2.8.0</version> <!-- {x-version-update;com.azure.spring:azure-spring-integration-storage-queue;current} -->
+  <version>2.9.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-integration-storage-queue;current} -->
 
   <name>Azure Spring Integration Storage Queue</name>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
