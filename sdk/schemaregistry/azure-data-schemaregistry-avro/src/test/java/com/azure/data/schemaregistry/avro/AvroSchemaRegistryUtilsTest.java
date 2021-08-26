@@ -3,38 +3,45 @@
 
 package com.azure.data.schemaregistry.avro;
 
+import com.azure.core.util.serializer.TypeReference;
+import com.azure.data.schemaregistry.avro.generatedtestsources.HandOfCards;
 import com.azure.data.schemaregistry.avro.generatedtestsources.PlayingCard;
+import com.azure.data.schemaregistry.avro.generatedtestsources.PlayingCardSuit;
 import org.apache.avro.Schema;
 import org.apache.avro.generic.GenericData;
 import org.apache.avro.io.DecoderFactory;
 import org.apache.avro.io.EncoderFactory;
+import org.apache.avro.message.RawMessageEncoder;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.stream.Stream;
 
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Tests for {@link AvroSchemaRegistryUtils}.
  */
 public class AvroSchemaRegistryUtilsTest {
 
-    @Mock
-    private EncoderFactory encoderFactory;
-
-    @Mock
-    private DecoderFactory decoderFactory;
-
-    @Mock
-    private Schema.Parser parser;
+    private final Schema.Parser parser = new Schema.Parser();
+    private final EncoderFactory encoderFactory = EncoderFactory.get();
+    private final DecoderFactory decoderFactory = DecoderFactory.get();
 
     private AutoCloseable mocksCloseable;
 
@@ -105,7 +112,7 @@ public class AvroSchemaRegistryUtilsTest {
         // Arrange
         final AvroSchemaRegistryUtils registryUtils = new AvroSchemaRegistryUtils(false, parser,
             encoderFactory, decoderFactory);
-        final Schema expected = PlayingCard.getClassSchema();
+        final Schema expected = Schema.create(Schema.Type.STRING);
         final GenericData.Array<PlayingCard> genericArray = new GenericData.Array<>(10, expected);
 
         // Act
@@ -117,4 +124,130 @@ public class AvroSchemaRegistryUtilsTest {
         assertEquals(expected.getFullName(), fullName);
     }
 
+    /**
+     * Tests that we can encode an object.
+     *
+     * @throws IOException If card cannot be serialized.
+     */
+    @Test
+    public void encodesObject() throws IOException {
+        // Arrange
+        final AvroSchemaRegistryUtils registryUtils = new AvroSchemaRegistryUtils(false, parser,
+            encoderFactory, decoderFactory);
+
+        final PlayingCard card = PlayingCard.newBuilder()
+            .setPlayingCardSuit(PlayingCardSuit.DIAMONDS)
+            .setIsFaceCard(true).setCardValue(13)
+            .build();
+
+        // Using the raw message encoder because the default card.getByteBuffer() uses BinaryMessageEncoder which adds
+        // a header.
+        final RawMessageEncoder<PlayingCard> rawMessageEncoder = new RawMessageEncoder<>(card.getSpecificData(),
+            card.getSchema());
+        final byte[] expectedData = rawMessageEncoder.encode(card).array();
+
+        // Act
+        final byte[] encoded = registryUtils.encode(card);
+
+        // Assert
+        assertArrayEquals(expectedData, encoded);
+    }
+
+
+    /**
+     * Tests that we can encode and decode an object using {@link AvroSchemaRegistryUtils#encode(Object)} and {@link
+     * AvroSchemaRegistryUtils#decode(byte[], byte[], TypeReference)}.
+     *
+     * @throws IOException If card cannot be serialized.
+     */
+    @Test
+    public void encodesAndDecodesObject() throws IOException {
+        // Arrange
+        final AvroSchemaRegistryUtils registryUtils = new AvroSchemaRegistryUtils(false, parser,
+            encoderFactory, decoderFactory);
+
+        final PlayingCard expected = PlayingCard.newBuilder()
+            .setPlayingCardSuit(PlayingCardSuit.DIAMONDS)
+            .setIsFaceCard(true)
+            .setCardValue(13)
+            .build();
+
+        // Using the raw message encoder because the default card.getByteBuffer() uses BinaryMessageEncoder which adds
+        // a header.
+        final byte[] encoded = registryUtils.encode(expected);
+        final byte[] schemaBytes = expected.getSchema().toString().getBytes(StandardCharsets.UTF_8);
+
+        // Act
+        final PlayingCard actual = registryUtils.decode(encoded, schemaBytes,
+            TypeReference.createInstance(PlayingCard.class));
+
+        // Assert
+        assertCardEquals(expected, actual);
+    }
+
+    /**
+     * Tests that we can decode an object.
+     *
+     * @throws IOException If card cannot be decoded
+     */
+    @Test
+    public void decodeObject() throws IOException {
+        // Arrange
+        final AvroSchemaRegistryUtils registryUtils = new AvroSchemaRegistryUtils(false, parser,
+            encoderFactory, decoderFactory);
+
+        final PlayingCard card = PlayingCard.newBuilder()
+            .setPlayingCardSuit(PlayingCardSuit.DIAMONDS)
+            .setIsFaceCard(true).setCardValue(13)
+            .build();
+        final PlayingCard card2 = PlayingCard.newBuilder()
+            .setPlayingCardSuit(PlayingCardSuit.SPADES)
+            .setIsFaceCard(false).setCardValue(25)
+            .build();
+        final HandOfCards expected = HandOfCards.newBuilder()
+            .setCards(Arrays.asList(card, card2))
+            .build();
+
+        final byte[] expectedData = expected.toByteBuffer().array();
+
+        final String schemaString = expected.getSchema().toString();
+        final byte[] schemaBytes = schemaString.getBytes(StandardCharsets.UTF_8);
+
+        // Act
+        final HandOfCards actual = registryUtils.decode(expectedData, schemaBytes,
+            TypeReference.createInstance(HandOfCards.class));
+
+        // Assert
+        assertNotNull(actual);
+        assertNotNull(actual.getCards());
+        assertEquals(expected.getCards().size(), actual.getCards().size());
+
+        final List<PlayingCard> list = new ArrayList<>(actual.getCards());
+
+        expected.getCards().forEach(expectedCard -> {
+            final int expectedSize = list.size() - 1;
+
+            assertTrue(list.removeIf(playingCard -> {
+                return expectedCard.getIsFaceCard() == playingCard.getIsFaceCard()
+                    && expectedCard.getCardValue() == playingCard.getCardValue()
+                    && expectedCard.getPlayingCardSuit() == playingCard.getPlayingCardSuit();
+            }));
+
+            assertEquals(expectedSize, list.size());
+        });
+
+        assertTrue(list.isEmpty());
+    }
+
+    private static void assertCardEquals(PlayingCard expected, PlayingCard actual) {
+        if (expected == null) {
+            assertNull(actual);
+            return;
+        }
+
+        assertNotNull(actual);
+        assertEquals(expected.getPlayingCardSuit(), actual.getPlayingCardSuit());
+        assertEquals(expected.getCardValue(), actual.getCardValue());
+        assertEquals(expected.getIsFaceCard(), actual.getIsFaceCard());
+    }
 }
