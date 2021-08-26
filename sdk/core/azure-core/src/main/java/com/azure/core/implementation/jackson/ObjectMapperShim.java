@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.lang.reflect.Field;
+import java.lang.reflect.Member;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -25,6 +26,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.BiConsumer;
 import java.util.function.Function;
 
 /**
@@ -45,11 +47,13 @@ public final class ObjectMapperShim {
      * Creates and configures JSON {@code ObjectMapper} capable of serializing azure.core types, with flattening and additional properties support.
      *
      * @param innerMapperShim inner mapper to use for non-azure specific serialization.
+     * @param configure applies additional configuration to {@code ObjectMapper}.
      * @return Instance of shimmed {@code ObjectMapperShim}.
      */
-    public static ObjectMapperShim createJsonMapper(ObjectMapperShim innerMapperShim) {
+    public static ObjectMapperShim createJsonMapper(ObjectMapperShim innerMapperShim, BiConsumer<ObjectMapper, ObjectMapper> configure) {
         try {
-            ObjectMapper mapper = ObjectMapperFactory.INSTANCE.createJsonMapper(innerMapperShim);
+            ObjectMapper mapper = ObjectMapperFactory.INSTANCE.createJsonMapper(innerMapperShim.mapper);
+            configure.accept(mapper, innerMapperShim.mapper);
             return new ObjectMapperShim(mapper);
         } catch (LinkageError ex) {
             throw LOGGER.logThrowableAsError(new LinkageError(JACKSON_VERSION.getHelpInfo(), ex));
@@ -127,17 +131,12 @@ public final class ObjectMapperShim {
     }
 
     private final ObjectMapper mapper;
+    private final MemberNameConverterImpl memberNameConverter;
 
-    private ObjectMapperShim(ObjectMapper mapper) {
+
+    public ObjectMapperShim(ObjectMapper mapper) {
         this.mapper = mapper;
-    }
-
-    /**
-     * Gets wrapped {@code ObjectMapper} instance. Use with caution.
-     * @return
-     */
-    public ObjectMapper getMapper() {
-        return this.mapper;
+        this.memberNameConverter = new MemberNameConverterImpl(mapper);
     }
 
     /**
@@ -254,7 +253,6 @@ public final class ObjectMapperShim {
      * Reads JSON tree from byte array.
      * @param content serialized JSON tree.
      * @return {@code JsonNode} instance
-     * @throws IOException
      */
     public JsonNode readTree(byte[] content) throws IOException {
         try {
@@ -364,6 +362,23 @@ public final class ObjectMapperShim {
         headerCollectionHandlers.forEach(h -> h.injectValuesIntoDeclaringField(deserializedHeaders, LOGGER));
 
         return deserializedHeaders;
+    }
+
+    public String convertMemberName(Member member) {
+        try {
+            return memberNameConverter.convertMemberName(member);
+        } catch (LinkageError ex) {
+            throw LOGGER.logThrowableAsError(new LinkageError(JACKSON_VERSION.getHelpInfo(), ex));
+        }
+    }
+
+    public <T extends JsonNode> T valueToTree(Object fromValue)
+        throws IllegalArgumentException {
+        try {
+            return mapper.valueToTree(fromValue);
+        } catch (LinkageError ex) {
+            throw LOGGER.logThrowableAsError(new LinkageError(JACKSON_VERSION.getHelpInfo(), ex));
+        }
     }
 
     /*

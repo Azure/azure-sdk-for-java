@@ -14,6 +14,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.lang.reflect.Type;
 import java.util.List;
+import java.util.function.BiConsumer;
 import java.util.regex.Pattern;
 
 /**
@@ -28,14 +29,16 @@ public class JacksonAdapter implements SerializerAdapter {
      */
     private final ObjectMapperShim mapper;
 
-    /**
-     * An instance of {@link ObjectMapperShim} that does not do flattening.
-     */
-    private final ObjectMapperShim simpleMapper;
-
     private final ObjectMapperShim xmlMapper;
 
     private final ObjectMapperShim headerMapper;
+
+    /**
+     * Raw mappers are needed only to support deprecated simpleMapper() and
+     * serializer().
+     */
+    private ObjectMapper rawOuterMapper;
+    private ObjectMapper rawInnerMapper;
 
     /*
      * The lazily-created serializer for this ServiceClient.
@@ -46,19 +49,43 @@ public class JacksonAdapter implements SerializerAdapter {
      * Creates a new JacksonAdapter instance with default mapper settings.
      */
     public JacksonAdapter() {
-        this.simpleMapper = ObjectMapperShim.createSimpleMapper();
+        this((outerMapper, innerMapper) -> { });
+    }
+
+    /**
+     * Creates a new JacksonAdapter instance with default mapper settings and additional
+     * configuration.
+     *
+     * @param configure Function that applies additional configuration to outer
+     *                  mapper using inner (simple) mapper for module chaining.
+     */
+    public JacksonAdapter(BiConsumer<ObjectMapper, ObjectMapper> configure) {
         this.headerMapper = ObjectMapperShim.createHeaderMapper();
         this.xmlMapper = ObjectMapperShim.createXmlMapper();
-        this.mapper = ObjectMapperShim.createJsonMapper(this.simpleMapper);
+        this.mapper = ObjectMapperShim.createJsonMapper(ObjectMapperShim.createSimpleMapper(),
+            (outerMapper, innerMapper) -> captureRawMappersAndConfigure(outerMapper, innerMapper, configure));
+    }
+
+    /**
+     *  Temporary way to capture raw ObjectMapper instances, allows to support deprecated simpleMapper()
+     *  and serializer()
+     */
+    private void captureRawMappersAndConfigure(ObjectMapper outerMapper, ObjectMapper innerMapper, BiConsumer<ObjectMapper, ObjectMapper> configure) {
+        this.rawOuterMapper = outerMapper;
+        this.rawInnerMapper = innerMapper;
+
+        configure.accept(outerMapper, innerMapper);
     }
 
     /**
      * Gets a static instance of {@link ObjectMapper} that doesn't handle flattening.
      *
      * @return an instance of {@link ObjectMapper}.
+     * @deprecated deprecated in favor of {@code JacksonAdapter(BiConsumer<ObjectMapper, ObjectMapper>)} constructor.
      */
+    @Deprecated
     protected ObjectMapper simpleMapper() {
-        return simpleMapper.getMapper();
+        return rawInnerMapper;
     }
 
     /**
@@ -74,14 +101,12 @@ public class JacksonAdapter implements SerializerAdapter {
     }
 
     /**
-     * @return the original serializer type
+     * @return the original serializer type.
+     * @deprecated deprecated in favor of using {@link ObjectMapperShim} or {@link JacksonAdapter}.
      */
+    @Deprecated
     public ObjectMapper serializer() {
-        return mapper.getMapper();
-    }
-
-    private ObjectMapperShim serializerShim() {
-        return mapper;
+        return rawOuterMapper;
     }
 
     @Override
@@ -93,7 +118,7 @@ public class JacksonAdapter implements SerializerAdapter {
         if (encoding == SerializerEncoding.XML) {
             return xmlMapper.writeValueAsString(object);
         } else {
-            return serializerShim().writeValueAsString(object);
+            return mapper.writeValueAsString(object);
         }
     }
 
@@ -106,7 +131,7 @@ public class JacksonAdapter implements SerializerAdapter {
         if (encoding == SerializerEncoding.XML) {
             return xmlMapper.writeValueAsBytes(object);
         } else {
-            return serializerShim() .writeValueAsBytes(object);
+            return mapper.writeValueAsBytes(object);
         }
     }
 
@@ -119,7 +144,7 @@ public class JacksonAdapter implements SerializerAdapter {
         if ((encoding == SerializerEncoding.XML)) {
             xmlMapper.writeValue(outputStream, object);
         } else {
-            serializerShim().writeValue(outputStream, object);
+            mapper.writeValue(outputStream, object);
         }
     }
 
@@ -151,7 +176,7 @@ public class JacksonAdapter implements SerializerAdapter {
         if (encoding == SerializerEncoding.XML) {
             return xmlMapper.readValue(value, type);
         } else {
-            return serializerShim().readValue(value, type);
+            return mapper.readValue(value, type);
         }
     }
 
@@ -164,7 +189,7 @@ public class JacksonAdapter implements SerializerAdapter {
         if (encoding == SerializerEncoding.XML) {
             return xmlMapper.readValue(bytes, type);
         } else {
-            return serializerShim().readValue(bytes, type);
+            return mapper.readValue(bytes, type);
         }
     }
 
@@ -178,7 +203,7 @@ public class JacksonAdapter implements SerializerAdapter {
         if (encoding == SerializerEncoding.XML) {
             return xmlMapper.readValue(inputStream, type);
         } else {
-            return serializerShim().readValue(inputStream, type);
+            return mapper.readValue(inputStream, type);
         }
     }
 

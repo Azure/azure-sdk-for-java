@@ -19,8 +19,7 @@ public class OptionSerializerTests {
     private static final JacksonAdapter ADAPTER;
 
     static {
-        JacksonAdapter adapter = new JacksonAdapter();
-        adapter.serializer().registerModule(new OptionModule());
+        JacksonAdapter adapter = new JacksonAdapter((mapper, innerMapper) -> mapper.registerModule(new OptionModule()));
 
         ADAPTER = adapter;
     }

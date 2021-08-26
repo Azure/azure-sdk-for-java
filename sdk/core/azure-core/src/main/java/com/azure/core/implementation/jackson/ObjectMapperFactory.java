@@ -65,8 +65,7 @@ final class ObjectMapperFactory {
         }
     }
 
-    public ObjectMapper createJsonMapper(ObjectMapperShim innerMapperShim) {
-        ObjectMapper innerMapper = innerMapperShim.getMapper();
+    public ObjectMapper createJsonMapper(ObjectMapper innerMapper) {
         ObjectMapper flatteningMapper = initializeMapperBuilder(JsonMapper.builder())
             .addModule(FlatteningSerializer.getModule(innerMapper))
             .addModule(FlatteningDeserializer.getModule(innerMapper))
