@@ -360,6 +360,33 @@ public final class CallConnection {
     }
 
     /**
+     * Get participant from the call using identifier.
+     *
+     * @param participant The identifier of the participant to be removed from the call.
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Response for a successful get participant request.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public List<CallParticipant> getParticipantById(CommunicationIdentifier participant) {
+        return callConnectionAsync.getParticipantById(participant).block();
+    }
+
+    /**
+     * Get participant from the call using identifier.
+     *
+     * @param participant The identifier of the participant to be removed from the call.
+     * @param context A {@link Context} representing the request context.
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Response for a successful get participant request.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public Response<List<CallParticipant>> getParticipantByIdWithResponse(CommunicationIdentifier participant, final Context context) {
+        return callConnectionAsync.getParticipantByIdWithResponse(participant, context).block();
+    }
+
+    /**
      * Hold the participant and play default music.
      *
      * @param participantId The participant id.
@@ -469,5 +496,51 @@ public final class CallConnection {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> keepAliveWithResponse(final Context context) {
         return callConnectionAsync.keepAliveWithResponse(context).block();
+    }
+
+    /**
+     * Play audio to a participant.
+     *
+     * @param participantId The participant id.
+     * @param audioFileUri The uri of the audio file.
+     * @param audioFileId An id for the media in the AudioFileUri, using which we cache the media.
+     * @param callbackUri The callback Uri to receive PlayAudio status notifications.
+     * @param operationContext The operation context.
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Response payload for play audio operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PlayAudioResult PlayAudioToParticipant(
+        String participantId,
+        String audioFileUri,
+        String audioFileId,
+        String callbackUri,
+        String operationContext
+    ) {
+        return callConnectionAsync.PlayAudioToParticipant(participantId, audioFileUri, audioFileId, callbackUri, operationContext).block();
+    }
+
+    /**
+     * Play audio to a participant.
+     *
+     * @param participantId The participant id.
+     * @param audioFileUri The uri of the audio file.
+     * @param audioFileId An id for the media in the AudioFileUri, using which we cache the media.
+     * @param callbackUri The callback Uri to receive PlayAudio status notifications.
+     * @param operationContext The operation context.
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Response payload for play audio operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<PlayAudioResult> PlayAudioToParticipantWithResponse(
+        String participantId,
+        String audioFileUri,
+        String audioFileId,
+        String callbackUri,
+        String operationContext,
+        final Context context) {
+        return callConnectionAsync.PlayAudioToParticipantWithResponse(participantId, audioFileUri, audioFileId, callbackUri, operationContext, context).block();
     }
 }

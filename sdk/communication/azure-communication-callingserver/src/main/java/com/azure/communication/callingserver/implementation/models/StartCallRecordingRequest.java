@@ -16,6 +16,24 @@ public final class StartCallRecordingRequest {
     @JsonProperty(value = "recordingStateCallbackUri")
     private String recordingStateCallbackUri;
 
+    /*
+     * Content type of call recording.
+     */
+    @JsonProperty(value = "recordingContentType")
+    private RecordingContentType recordingContentType;
+
+    /*
+     * Channel type of call recording.
+     */
+    @JsonProperty(value = "recordingChannelType")
+    private RecordingChannelType recordingChannelType;
+
+    /*
+     * Format type of call recording.
+     */
+    @JsonProperty(value = "recordingFormatType")
+    private RecordingFormatType recordingFormatType;
+
     /**
      * Get the recordingStateCallbackUri property: The uri to send notifications to.
      *
@@ -33,6 +51,66 @@ public final class StartCallRecordingRequest {
      */
     public StartCallRecordingRequest setRecordingStateCallbackUri(String recordingStateCallbackUri) {
         this.recordingStateCallbackUri = recordingStateCallbackUri;
+        return this;
+    }
+
+    /**
+     * Get the recordingContentType property: Content type of call recording.
+     *
+     * @return the recordingContentType value.
+     */
+    public RecordingContentType getRecordingContentType() {
+        return this.recordingContentType;
+    }
+
+    /**
+     * Set the recordingContentType property: Content type of call recording.
+     *
+     * @param recordingContentType the recordingContentType value to set.
+     * @return the StartCallRecordingRequest object itself.
+     */
+    public StartCallRecordingRequest setRecordingContentType(RecordingContentType recordingContentType) {
+        this.recordingContentType = recordingContentType;
+        return this;
+    }
+
+    /**
+     * Get the recordingChannelType property: Channel type of call recording.
+     *
+     * @return the recordingChannelType value.
+     */
+    public RecordingChannelType getRecordingChannelType() {
+        return this.recordingChannelType;
+    }
+
+    /**
+     * Set the recordingChannelType property: Channel type of call recording.
+     *
+     * @param recordingChannelType the recordingChannelType value to set.
+     * @return the StartCallRecordingRequest object itself.
+     */
+    public StartCallRecordingRequest setRecordingChannelType(RecordingChannelType recordingChannelType) {
+        this.recordingChannelType = recordingChannelType;
+        return this;
+    }
+
+    /**
+     * Get the recordingFormatType property: Format type of call recording.
+     *
+     * @return the recordingFormatType value.
+     */
+    public RecordingFormatType getRecordingFormatType() {
+        return this.recordingFormatType;
+    }
+
+    /**
+     * Set the recordingFormatType property: Format type of call recording.
+     *
+     * @param recordingFormatType the recordingFormatType value to set.
+     * @return the StartCallRecordingRequest object itself.
+     */
+    public StartCallRecordingRequest setRecordingFormatType(RecordingFormatType recordingFormatType) {
+        this.recordingFormatType = recordingFormatType;
         return this;
     }
 }

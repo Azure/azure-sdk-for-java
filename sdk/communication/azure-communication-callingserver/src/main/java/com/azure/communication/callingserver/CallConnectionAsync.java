@@ -8,6 +8,7 @@ import com.azure.communication.callingserver.implementation.converters.CallConne
 import com.azure.communication.callingserver.implementation.converters.CallingServerErrorConverter;
 import com.azure.communication.callingserver.implementation.converters.CallParticipantConverter;
 import com.azure.communication.callingserver.implementation.converters.CancelAllMediaOperationsResultConverter;
+import com.azure.communication.callingserver.implementation.converters.GetParticipantByIdRequestConverter;
 import com.azure.communication.callingserver.implementation.converters.AddParticipantRequestConverter;
 import com.azure.communication.callingserver.implementation.converters.PlayAudioResultConverter;
 import com.azure.communication.callingserver.implementation.converters.RemoveParticipantByIdRequestConverter;
@@ -17,10 +18,10 @@ import com.azure.communication.callingserver.implementation.converters.TransferC
 import com.azure.communication.callingserver.implementation.models.AddParticipantRequest;
 import com.azure.communication.callingserver.implementation.models.CancelAllMediaOperationsRequest;
 import com.azure.communication.callingserver.implementation.models.CommunicationErrorResponseException;
+import com.azure.communication.callingserver.implementation.models.GetParticipantByIdRequest;
 import com.azure.communication.callingserver.implementation.models.PlayAudioRequest;
 import com.azure.communication.callingserver.implementation.models.RemoveParticipantByIdRequest;
 import com.azure.communication.callingserver.implementation.models.StartHoldMusicRequest;
-import com.azure.communication.callingserver.implementation.models.StopHoldMusicRequest;
 import com.azure.communication.callingserver.implementation.models.TransferCallRequest;
 import com.azure.communication.callingserver.models.AddParticipantResult;
 import com.azure.communication.callingserver.models.CallConnectionProperties;
@@ -670,6 +671,62 @@ public final class CallConnectionAsync {
     }
 
     /**
+     * Get participant from the call using identifier.
+     *
+     * @param participant The identifier of the participant to be removed from the call.
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Response for a successful get participant request.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public Mono<List<CallParticipant>> getParticipantById(CommunicationIdentifier participant) {
+        try {
+            GetParticipantByIdRequest request = GetParticipantByIdRequestConverter.convert(participant);
+            return callConnectionInternal.getParticipantByIdAsync(callConnectionId, request)
+                .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException)
+                .flatMap(result -> Mono.just(
+                    result.stream().map(CallParticipantConverter::convert).collect(Collectors.toList())));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    /**
+     * Get participant from the call using identifier.
+     *
+     * @param participant The identifier of the participant to be removed from the call.
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Response for a successful get participant request.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public Mono<Response<List<CallParticipant>>> getParticipantByIdWithResponse(CommunicationIdentifier participant) {
+        return getParticipantByIdWithResponse(participant, null);
+    }
+
+    Mono<Response<List<CallParticipant>>> getParticipantByIdWithResponse(CommunicationIdentifier participant, Context context) {
+        try {
+            GetParticipantByIdRequest request = GetParticipantByIdRequestConverter.convert(participant);
+            return withContext(contextValue -> {
+                contextValue = context == null ? contextValue : context;
+                return callConnectionInternal.getParticipantByIdWithResponseAsync(callConnectionId, request, contextValue)
+                    .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException)
+                    .map(response ->
+                        new SimpleResponse<>(response, 
+                            response.getValue()
+                            .stream()
+                            .map(CallParticipantConverter::convert)
+                            .collect(Collectors.toList()
+                        )
+                    )
+                );
+            });
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    /**
      * Hold the participant and play default music.
      *
      * @param participantId The participant id.
@@ -872,4 +929,91 @@ public final class CallConnectionAsync {
         }
     }
 
+    /**
+     * Play audio to a participant.
+     *
+     * @param participantId The participant id.
+     * @param audioFileUri The uri of the audio file.
+     * @param audioFileId An id for the media in the AudioFileUri, using which we cache the media.
+     * @param callbackUri The callback Uri to receive PlayAudio status notifications.
+     * @param operationContext The operation context.
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Response payload for play audio operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PlayAudioResult> PlayAudioToParticipant(
+        String participantId,
+        String audioFileUri,
+        String audioFileId,
+        String callbackUri,
+        String operationContext
+    ) {
+        try {
+            PlayAudioRequest playAudioRequest =
+                new PlayAudioRequest()
+                    .setAudioFileUri(audioFileUri)
+                    .setAudioFileId(audioFileId)
+                    .setLoop(false)
+                    .setOperationContext(operationContext)
+                    .setCallbackUri(callbackUri);
+
+            return callConnectionInternal.participantPlayAudioAsync(callConnectionId, participantId, playAudioRequest)
+                .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException)
+                .flatMap(result -> Mono.just(PlayAudioResultConverter.convert(result)));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    /**
+     * Play audio to a participant.
+     *
+     * @param participantId The participant id.
+     * @param audioFileUri The uri of the audio file.
+     * @param audioFileId An id for the media in the AudioFileUri, using which we cache the media.
+     * @param callbackUri The callback Uri to receive PlayAudio status notifications.
+     * @param operationContext The operation context.
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Response payload for play audio operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<PlayAudioResult>> PlayAudioToParticipantWithResponse(
+        String participantId,
+        String audioFileUri,
+        String audioFileId,
+        String callbackUri,
+        String operationContext
+    ) {
+        return PlayAudioToParticipantWithResponse(participantId, audioFileUri, audioFileId, callbackUri, operationContext, null);
+    }
+
+    Mono<Response<PlayAudioResult>> PlayAudioToParticipantWithResponse(
+        String participantId,
+        String audioFileUri,
+        String audioFileId,
+        String callbackUri,
+        String operationContext,  
+        Context context) {
+        try {
+            PlayAudioRequest playAudioRequest =
+                new PlayAudioRequest()
+                    .setAudioFileUri(audioFileUri)
+                    .setAudioFileId(audioFileId)
+                    .setLoop(false)
+                    .setOperationContext(operationContext)
+                    .setCallbackUri(callbackUri);
+
+            return withContext(contextValue -> {
+                contextValue = context == null ? contextValue : context;
+                return callConnectionInternal.participantPlayAudioWithResponseAsync(callConnectionId, participantId, playAudioRequest, contextValue)
+                    .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException)
+                    .map(response ->
+                    new SimpleResponse<>(response, PlayAudioResultConverter.convert(response.getValue())));
+            });
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
 }

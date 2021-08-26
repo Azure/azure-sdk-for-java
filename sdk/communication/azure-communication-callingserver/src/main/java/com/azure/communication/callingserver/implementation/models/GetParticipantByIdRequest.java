@@ -7,17 +7,17 @@ package com.azure.communication.callingserver.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The remove participant by identifier request. */
+/** The get participant by identifier request. */
 @Fluent
-public final class RemoveParticipantByIdRequest {
+public final class GetParticipantByIdRequest {
     /*
-     * The identifier of the participant to be removed from the call.
+     * The identifier of the participant.
      */
     @JsonProperty(value = "identifier", required = true)
     private CommunicationIdentifierModel identifier;
 
     /**
-     * Get the identifier property: The identifier of the participant to be removed from the call.
+     * Get the identifier property: The identifier of the participant.
      *
      * @return the identifier value.
      */
@@ -26,12 +26,12 @@ public final class RemoveParticipantByIdRequest {
     }
 
     /**
-     * Set the identifier property: The identifier of the participant to be removed from the call.
+     * Set the identifier property: The identifier of the participant.
      *
      * @param identifier the identifier value to set.
-     * @return the RemoveParticipantByIdRequest object itself.
+     * @return the GetParticipantByIdRequest object itself.
      */
-    public RemoveParticipantByIdRequest setIdentifier(CommunicationIdentifierModel identifier) {
+    public GetParticipantByIdRequest setIdentifier(CommunicationIdentifierModel identifier) {
         this.identifier = identifier;
         return this;
     }
