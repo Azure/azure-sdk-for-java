@@ -317,7 +317,7 @@
     "dir": "azure-resourcemanager-storage",
     "source": "specification/storage/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.storage",
-    "args": "--payload-flattening-threshold=2 --tag=package-2021-02"
+    "args": "--payload-flattening-threshold=2 --tag=package-2021-04"
   },
   "storsimple8000series": {
     "dir": "azure-resourcemanager-storsimple8000series",
