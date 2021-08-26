@@ -36,12 +36,27 @@ public class DownloadContentAsyncLiveTests extends CallingServerTestBase {
         named = "SKIP_LIVE_TEST",
         matches = "(?i)(true)",
         disabledReason = "Requires human intervention")
-    public void downloadMetadataAsync(HttpClient httpClient) {
+    public void downloadMetadataWithConnectionStringAsyncClient(HttpClient httpClient) {
         CallingServerClientBuilder builder = getCallingServerClientUsingConnectionString(httpClient);
-        CallingServerAsyncClient conversationAsyncClient = setupAsyncClient(builder, "downloadMetadataAsync");
+        CallingServerAsyncClient conversationAsyncClient = setupAsyncClient(builder, "downloadMetadataWithConnectionStringAsyncClient");
+        downloadMetadata(conversationAsyncClient);
+    }
 
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    @DisabledIfEnvironmentVariable(
+        named = "SKIP_LIVE_TEST",
+        matches = "(?i)(true)",
+        disabledReason = "Requires human intervention")
+    public void downloadMetadataWithTokenCredentialAsyncClient(HttpClient httpClient) {
+        CallingServerClientBuilder builder = getCallingServerClientUsingTokenCredential(httpClient);
+        CallingServerAsyncClient conversationAsyncClient = setupAsyncClient(builder, "downloadMetadataWithTokenCredentialAsyncClient");
+        downloadMetadata(conversationAsyncClient);
+    }
+
+    private void downloadMetadata(CallingServerAsyncClient callingServerAsyncClient) {
         try {
-            validateMetadata(conversationAsyncClient.downloadStream(METADATA_URL));
+            validateMetadata(callingServerAsyncClient.downloadStream(METADATA_URL));
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
             throw e;

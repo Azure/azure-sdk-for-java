@@ -32,10 +32,26 @@ public class DownloadContentLiveTests extends CallingServerTestBase {
         named = "SKIP_LIVE_TEST",
         matches = "(?i)(true)",
         disabledReason = "Requires human intervention")
-    public void downloadMetadata(HttpClient httpClient) throws UnsupportedEncodingException {
+    public void downloadMetadataWithConnectionStringClient(HttpClient httpClient) throws UnsupportedEncodingException {
         CallingServerClientBuilder builder = getCallingServerClientUsingConnectionString(httpClient);
-        CallingServerClient conversationClient = setupClient(builder, "downloadMetadata");
+        CallingServerClient conversationClient = setupClient(builder, "downloadMetadataWithConnectionStringClient");
+        downloadMetadata(conversationClient);
+    }
 
+    
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    @DisabledIfEnvironmentVariable(
+        named = "SKIP_LIVE_TEST",
+        matches = "(?i)(true)",
+        disabledReason = "Requires human intervention")
+    public void downloadMetadataWithTokenCredentialClient(HttpClient httpClient) throws UnsupportedEncodingException {
+        CallingServerClientBuilder builder = getCallingServerClientUsingTokenCredential(httpClient);
+        CallingServerClient conversationClient = setupClient(builder, "downloadMetadataWithTokenCredentialClient");
+        downloadMetadata(conversationClient);
+    }
+
+    private void downloadMetadata(CallingServerClient conversationClient) throws UnsupportedEncodingException {
         try {
             ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
             conversationClient.downloadTo(METADATA_URL, byteArrayOutputStream, null);

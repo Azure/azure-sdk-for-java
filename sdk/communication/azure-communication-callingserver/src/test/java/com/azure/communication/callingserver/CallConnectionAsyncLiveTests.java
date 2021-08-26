@@ -243,11 +243,27 @@ public class CallConnectionAsyncLiveTests extends CallingServerTestBase {
         named = "SKIP_LIVE_TEST",
         matches = "(?i)(true)",
         disabledReason = "Requires human intervention")
-    public void runCreateJoinHangupScenarioAsync(HttpClient httpClient) {
+    public void runCreateJoinHangupScenarioWithConnectionStringAsyncClient(HttpClient httpClient) {
         CallingServerClientBuilder builder = getCallingServerClientUsingConnectionString(httpClient);
         CallingServerAsyncClient callingServerAsyncClient =
-            setupAsyncClient(builder, "runCreateJoinHangupScenarioAsync");
+            setupAsyncClient(builder, "runCreateJoinHangupScenarioWithConnectionStringAsyncClient");
+        runCreateJoinHangupScenarioAsync(callingServerAsyncClient);
+    }
 
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    @DisabledIfEnvironmentVariable(
+        named = "SKIP_LIVE_TEST",
+        matches = "(?i)(true)",
+        disabledReason = "Requires human intervention")
+    public void runCreateJoinHangupScenarioWithTokenCredentialAsyncClient(HttpClient httpClient) {
+        CallingServerClientBuilder builder = getCallingServerClientUsingTokenCredential(httpClient);
+        CallingServerAsyncClient callingServerAsyncClient =
+            setupAsyncClient(builder, "runCreateJoinHangupScenarioWithTokenCredentialAsyncClient");
+        runCreateJoinHangupScenarioAsync(callingServerAsyncClient);
+    }
+    
+    private void runCreateJoinHangupScenarioAsync(CallingServerAsyncClient callingServerAsyncClient) {
         try {
             // Establish a call
             CreateCallOptions options = new CreateCallOptions(

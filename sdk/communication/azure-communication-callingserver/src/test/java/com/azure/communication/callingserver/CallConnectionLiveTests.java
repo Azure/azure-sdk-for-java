@@ -234,10 +234,26 @@ public class CallConnectionLiveTests extends CallingServerTestBase {
         named = "SKIP_LIVE_TEST",
         matches = "(?i)(true)",
         disabledReason = "Requires human intervention")
-    public void runCreateJoinHangupScenario(HttpClient httpClient) {
+    public void runCreateJoinHangupScenarioWithConnectionStringClient(HttpClient httpClient) {
         CallingServerClientBuilder builder = getCallingServerClientUsingConnectionString(httpClient);
-        CallingServerClient callingServerClient = setupClient(builder, "runCreateJoinHangupScenario");
+        CallingServerClient callingServerClient = setupClient(builder, "runCreateJoinHangupScenarioWithConnectionStringClient");
+        runCreateJoinHangupScenario(callingServerClient);
+    }
 
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    @DisabledIfEnvironmentVariable(
+        named = "SKIP_LIVE_TEST",
+        matches = "(?i)(true)",
+        disabledReason = "Requires human intervention")
+    public void runCreateJoinHangupScenarioWithTokenCredentialClient(HttpClient httpClient) {
+        CallingServerClientBuilder builder = getCallingServerClientUsingConnectionString(httpClient);
+        CallingServerClient callingServerClient = setupClient(builder, "runCreateJoinHangupScenarioWithTokenCredentialClient");
+        runCreateJoinHangupScenario(callingServerClient);
+    }
+
+    private void runCreateJoinHangupScenario(CallingServerClient callingServerClient)
+    {
         try {
             // Establish a call
             CreateCallOptions createCallOptions = new CreateCallOptions(

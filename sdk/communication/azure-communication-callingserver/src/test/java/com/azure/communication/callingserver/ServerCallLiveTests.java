@@ -41,10 +41,10 @@ public class ServerCallLiveTests extends CallingServerTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void runAllClientFunctionsForConnectiongStringClient(HttpClient httpClient) {
+    public void runAllClientFunctionsForConnectionStringClient(HttpClient httpClient) {
         CallingServerClientBuilder builder = getCallingServerClientUsingConnectionString(httpClient);
-        CallingServerClient connectionStringClient = setupClient(builder, "runAllClientFunctionsForConnectiongStringClient");
-        String groupId = getGroupId("runAllClientFunctionsForConnectiongStringClient");
+        CallingServerClient connectionStringClient = setupClient(builder, "runAllClientFunctionsForConnectionStringClient");
+        String groupId = getGroupId("runAllClientFunctionsForConnectionStringClient");
         runAllClientFunctions(groupId, connectionStringClient);
     }
 

@@ -57,7 +57,7 @@ builder.connectionString(connectionString);
 CallingServerClient callingServerClient = builder.buildClient();
 ```
 
-Alternatively, SMS clients can also be authenticated using a valid token credential. With this option,
+Alternatively, calling clients can also be authenticated using a valid token credential. With this option,
 `AZURE_CLIENT_SECRET`, `AZURE_CLIENT_ID` and `AZURE_TENANT_ID` environment variables need to be set up for authentication. 
 <!-- embedme src/samples/java/com/azure/communication/callingserver/ReadmeSample.java#L117-128 -->
 ```java
@@ -69,10 +69,10 @@ String endpoint = "https://<resource-name>.communication.azure.com";
 TokenCredential tokenCredential = new DefaultAzureCredentialBuilder().build();
 
 // Initialize the calling server client
-final CallingServerClientBuilder builder = new CallingServerClientBuilder();
-builder.endpoint(endpoint);
-builder.credential(tokenCredential);
-CallingServerClient callingServerClient = builder.buildClient();
+CallingServerClient callingServerClient  = new CallingServerClientBuilder()
+    .endpoint(endpoint)
+    .credential(tokenCredential)
+    .buildClient();
 ```
 
 ### Create call, Add participant and Hangup a call
