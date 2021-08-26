@@ -6,7 +6,6 @@ package com.azure.cosmos.encryption;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosClientBuilder;
-import com.azure.cosmos.encryption.TestSuiteBase.TestEncryptionKeyStoreProvider;
 import com.azure.cosmos.models.ClientEncryptionPolicy;
 import com.azure.cosmos.models.CosmosClientEncryptionKeyProperties;
 import com.azure.cosmos.models.CosmosContainerProperties;
@@ -14,7 +13,6 @@ import com.azure.cosmos.models.CosmosDatabaseProperties;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.EncryptionKeyWrapMetadata;
 import com.azure.cosmos.models.PartitionKey;
-import com.azure.cosmos.rx.TestSuiteBase;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -27,8 +25,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.UUID;
 
-import static com.azure.cosmos.encryption.TestSuiteBase.getPaths;
-import static com.azure.cosmos.encryption.TestSuiteBase.validateResponse;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class DotNetCompatibleTest extends TestSuiteBase {
