@@ -121,10 +121,10 @@ public class ReadmeSamples {
         TokenCredential tokenCredential = new DefaultAzureCredentialBuilder().build();
 
         // Initialize the calling server client
-        final CallingServerClientBuilder builder = new CallingServerClientBuilder();
-        builder.endpoint(endpoint);
-        builder.credential(tokenCredential);
-        CallingServerClient callingServerClient = builder.buildClient();
+        CallingServerClient callingServerClient  = new CallingServerClientBuilder()
+            .endpoint(endpoint)
+            .credential(tokenCredential)
+            .buildClient();
 
         return callingServerClient;
     }
