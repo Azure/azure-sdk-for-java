@@ -145,6 +145,12 @@
       <version>1.7.2</version> <!-- {x-version-update;com.azure:azure-core-http-okhttp;dependency} -->
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>org.mockito</groupId>
+      <artifactId>mockito-core</artifactId>
+      <version>3.9.0</version> <!-- {x-version-update;org.mockito:mockito-core;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
   </dependencies>
 
   <profiles>
@@ -289,14 +295,10 @@
             <configuration>
               <argLine>
                 --add-exports com.azure.core/com.azure.core.implementation.http=ALL-UNNAMED
-                --add-exports com.azure.core/com.azure.core.implementation.serializer.jackson=ALL-UNNAMED
-                --add-exports com.azure.core/com.azure.core.implementation.util=ALL-UNNAMED
                 --add-opens com.azure.storage.common/com.azure.storage.common.implementation=ALL-UNNAMED
                 --add-opens com.azure.storage.blob/com.azure.storage.blob.specialized=ALL-UNNAMED
                 --add-opens com.azure.storage.blob.cryptography/com.azure.storage.blob.specialized.cryptography=ALL-UNNAMED
                 --add-reads com.azure.core=ALL-UNNAMED
-                --add-reads com.azure.core.test=ALL-UNNAMED
-                --add-reads com.azure.core.amqp=ALL-UNNAMED
                 --add-reads com.azure.storage.common=ALL-UNNAMED
                 --add-reads com.azure.storage.blob=ALL-UNNAMED
               </argLine>

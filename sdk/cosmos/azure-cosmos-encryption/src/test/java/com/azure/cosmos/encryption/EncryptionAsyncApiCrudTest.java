@@ -435,6 +435,21 @@ public class EncryptionAsyncApiCrudTest extends TestSuiteBase {
         }
     }
 
+    @Test(groups = {"encryption"}, timeOut = TIMEOUT)
+    public void invalidDataEncryptionKeyAlgorithm() {
+        try {
+            TestEncryptionKeyStoreProvider testEncryptionKeyStoreProvider = new TestEncryptionKeyStoreProvider();
+            EncryptionKeyWrapMetadata metadata =
+                new EncryptionKeyWrapMetadata(testEncryptionKeyStoreProvider.getProviderName(), "key1",
+                    "tempmetadata1");
+            this.cosmosEncryptionAsyncDatabase.createClientEncryptionKey("key1",
+                "InvalidAlgorithm", metadata).block();
+            fail("client encryption key create should fail on invalid algorithm");
+        } catch (IllegalArgumentException ex) {
+            assertThat(ex.getMessage()).isEqualTo("Invalid Encryption Algorithm 'InvalidAlgorithm'");
+        }
+    }
+
     static void validateResponseWithOneFieldEncryption(EncryptionPojo originalItem, EncryptionPojo result) {
         assertThat(result.getId()).isEqualTo(originalItem.getId());
         assertThat(result.getNonSensitive()).isEqualTo(originalItem.getNonSensitive());
@@ -454,7 +469,7 @@ public class EncryptionAsyncApiCrudTest extends TestSuiteBase {
         includedPath.setClientEncryptionKeyId("key1");
         includedPath.setPath("/sensitiveString");
         includedPath.setEncryptionType(CosmosEncryptionType.DETERMINISTIC);
-        includedPath.setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAES_256_CBC_HMAC_SHA_256);
+        includedPath.setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256);
 
         List<ClientEncryptionIncludedPath> paths = new ArrayList<>();
         paths.add(includedPath);
@@ -476,9 +491,9 @@ public class EncryptionAsyncApiCrudTest extends TestSuiteBase {
         cosmosEncryptionAsyncClient.getCosmosAsyncClient().createDatabase(databaseId).block();
         CosmosEncryptionAsyncDatabase encryptionAsyncDatabase = cosmosEncryptionAsyncClient.getCosmosEncryptionAsyncDatabase(databaseId);
         encryptionAsyncDatabase.createClientEncryptionKey("key1",
-            CosmosEncryptionAlgorithm.AEAES_256_CBC_HMAC_SHA_256, metadata1).block();
+            CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256, metadata1).block();
         encryptionAsyncDatabase.createClientEncryptionKey("key2",
-            CosmosEncryptionAlgorithm.AEAES_256_CBC_HMAC_SHA_256, metadata2).block();
+            CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256, metadata2).block();
     }
 
     private CosmosEncryptionAsyncContainer getNewEncryptionContainerProxyObject(String databaseId, String containerId) {
