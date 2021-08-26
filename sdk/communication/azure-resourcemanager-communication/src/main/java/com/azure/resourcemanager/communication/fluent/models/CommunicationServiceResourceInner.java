@@ -6,18 +6,19 @@ package com.azure.resourcemanager.communication.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.communication.models.LocationResource;
 import com.azure.resourcemanager.communication.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** A class representing a CommunicationService resource. */
 @JsonFlatten
 @Fluent
-public class CommunicationServiceResourceInner extends LocationResource {
+public class CommunicationServiceResourceInner extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(CommunicationServiceResourceInner.class);
 
     /*
@@ -64,10 +65,17 @@ public class CommunicationServiceResourceInner extends LocationResource {
     private String immutableResourceId;
 
     /*
+     * The Azure location where the CommunicationService is running.
+     */
+    @JsonProperty(value = "location")
+    private String location;
+
+    /*
      * Tags of the service which is a list of key value pairs that describe the
      * resource.
      */
     @JsonProperty(value = "tags")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
     /**
@@ -146,6 +154,26 @@ public class CommunicationServiceResourceInner extends LocationResource {
     }
 
     /**
+     * Get the location property: The Azure location where the CommunicationService is running.
+     *
+     * @return the location value.
+     */
+    public String location() {
+        return this.location;
+    }
+
+    /**
+     * Set the location property: The Azure location where the CommunicationService is running.
+     *
+     * @param location the location value to set.
+     * @return the CommunicationServiceResourceInner object itself.
+     */
+    public CommunicationServiceResourceInner withLocation(String location) {
+        this.location = location;
+        return this;
+    }
+
+    /**
      * Get the tags property: Tags of the service which is a list of key value pairs that describe the resource.
      *
      * @return the tags value.
@@ -165,20 +193,11 @@ public class CommunicationServiceResourceInner extends LocationResource {
         return this;
     }
 
-    /** {@inheritDoc} */
-    @Override
-    public CommunicationServiceResourceInner withLocation(String location) {
-        super.withLocation(location);
-        return this;
-    }
-
     /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
-    @Override
     public void validate() {
-        super.validate();
     }
 }
