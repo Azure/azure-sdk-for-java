@@ -4,6 +4,7 @@
 package com.azure.data.schemaregistry.avro;
 
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.serializer.TypeReference;
 import org.apache.avro.Schema;
 import org.apache.avro.generic.GenericContainer;
 import org.apache.avro.generic.GenericDatumReader;
@@ -13,12 +14,16 @@ import org.apache.avro.io.DatumReader;
 import org.apache.avro.io.DatumWriter;
 import org.apache.avro.io.DecoderFactory;
 import org.apache.avro.io.EncoderFactory;
+import org.apache.avro.message.BadHeaderException;
+import org.apache.avro.message.BinaryMessageDecoder;
+import org.apache.avro.specific.SpecificData;
 import org.apache.avro.specific.SpecificDatumReader;
 import org.apache.avro.specific.SpecificDatumWriter;
 import org.apache.avro.specific.SpecificRecord;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 
@@ -27,6 +32,9 @@ import java.util.Objects;
  */
 class AvroSchemaRegistryUtils {
     private final ClientLogger logger = new ClientLogger(AvroSchemaRegistryUtils.class);
+
+    private static final int V1_HEADER_LENGTH = 10;
+    private static final byte[] V1_HEADER = new byte[]{-61, 1};
 
     private final boolean avroSpecificReader;
     private final Schema.Parser parser;
@@ -57,7 +65,7 @@ class AvroSchemaRegistryUtils {
      * @return avro schema
      */
     Schema parseSchemaString(String schemaString) {
-        return parser.parse(schemaString);
+        return this.parser.parse(schemaString);
     }
 
     /**
@@ -93,16 +101,16 @@ class AvroSchemaRegistryUtils {
      *
      * @return A set of bytes that represent the object.
      */
-    byte[] encode(Object object) throws IOException {
-        Schema schema = AvroSchemaUtils.getSchema(object);
+    <T> byte[] encode(T object) throws IOException {
+        final Schema schema = AvroSchemaUtils.getSchema(object);
+        final ByteArrayOutputStream out = new ByteArrayOutputStream();
 
-        ByteArrayOutputStream out = new ByteArrayOutputStream();
         try {
             if (object instanceof byte[]) {
                 out.write((byte[]) object); // todo: real avro byte arrays require writing array size to buffer
             } else {
                 BinaryEncoder encoder = encoderFactory.directBinaryEncoder(out, null);
-                DatumWriter<Object> writer;
+                DatumWriter<T> writer;
                 if (object instanceof SpecificRecord) {
                     writer = new SpecificDatumWriter<>(schema);
                 } else {
@@ -114,8 +122,7 @@ class AvroSchemaRegistryUtils {
             return out.toByteArray();
         } catch (IOException | RuntimeException e) {
             // Avro serialization can throw AvroRuntimeException, NullPointerException, ClassCastException, etc
-            throw logger.logExceptionAsError(
-                new IllegalStateException("Error serializing Avro message", e));
+            throw logger.logExceptionAsError(new IllegalStateException("Error serializing Avro message", e));
         } finally {
             out.close();
         }
@@ -127,20 +134,29 @@ class AvroSchemaRegistryUtils {
      *
      * @return deserialized object
      */
-    <T> T decode(byte[] b, byte[] schemaBytes) {
+    <T> T decode(byte[] b, byte[] schemaBytes, TypeReference<T> typeReference) {
         Objects.requireNonNull(b, "'b' must not be null.");
         Objects.requireNonNull(schemaBytes, "'schemaBytes' must not be null.");
 
         String schemaString = new String(schemaBytes, StandardCharsets.UTF_8);
         Schema schemaObject = parseSchemaString(schemaString);
 
-        DatumReader<T> reader = getDatumReader(schemaObject);
+        if (isSingleObjectEncoded(schemaBytes)) {
+            BinaryMessageDecoder<T> messageDecoder = new BinaryMessageDecoder<>(SpecificData.get(), schemaObject);
+            try {
+                return messageDecoder.decode(schemaBytes);
+            } catch (IOException e) {
+                throw logger.logExceptionAsError(new UncheckedIOException(
+                    "Unable to deserialize Avro schema object using binary message decoder.", e));
+            }
+        }
+
+        DatumReader<T> reader = getDatumReader(schemaObject, typeReference);
 
         try {
-            T result = reader.read(null, decoderFactory.binaryDecoder(b, null));
-            return result;
+            return reader.read(null, decoderFactory.binaryDecoder(b, null));
         } catch (IOException | RuntimeException e) {
-            throw logger.logExceptionAsError(new IllegalStateException("Error deserializing Avro message.", e));
+            throw logger.logExceptionAsError(new IllegalStateException("Error deserializing raw Avro message.", e));
         }
     }
 
@@ -151,14 +167,45 @@ class AvroSchemaRegistryUtils {
      *
      * @return correct Avro DatumReader object given encoder configuration
      */
-    private <T> DatumReader<T> getDatumReader(Schema writerSchema) {
-        boolean writerSchemaIsPrimitive = AvroSchemaUtils.getPrimitiveSchemas().containsKey(writerSchema.getType());
+    @SuppressWarnings("unchecked")
+    private <T> DatumReader<T> getDatumReader(Schema writerSchema, TypeReference<T> typeReference) {
+        boolean writerSchemaIsPrimitive = writerSchema.getType() != null
+            && AvroSchemaUtils.getPrimitiveSchemas().containsKey(writerSchema.getType());
 
-        // do not use SpecificDatumReader if writerSchema is a primitive
-        if (avroSpecificReader && !writerSchemaIsPrimitive) {
+        if (writerSchemaIsPrimitive) {
+            if (avroSpecificReader) {
+                return new SpecificDatumReader<>(writerSchema);
+            } else {
+                return new GenericDatumReader<>(writerSchema);
+            }
+        }
+
+        // Suppressing this warning because we know that the Type is a representation of the Class<T>
+        final Class<T> clazz = (Class<T>) typeReference.getJavaType();
+        if (SpecificRecord.class.isAssignableFrom(clazz)) {
             return new SpecificDatumReader<>(writerSchema);
         } else {
             return new GenericDatumReader<>(writerSchema);
         }
+    }
+
+    /**
+     * True if the object has the single object payload header. The header is comprised of:
+     * <ul>
+     *     <li>2 byte marker, C3 01</li>
+     *     <li>8 byte little-endian CRC-64-AVRO fingerprint of the object's schema</li>
+     * </ul>
+     *
+     * @param schemaBytes Bytes to read from.
+     * @return true if the object has the single object payload header; false otherwise.
+     *
+     * @see <a href="https://avro.apache.org/docs/current/spec.html#single_object_encoding">Single Object Encoding</a>
+     */
+    private static boolean isSingleObjectEncoded(byte[] schemaBytes) {
+        if (schemaBytes.length < V1_HEADER_LENGTH) {
+            return false;
+        }
+
+        return V1_HEADER[0] == schemaBytes[0] && V1_HEADER[1] == schemaBytes[1];
     }
 }
