@@ -33,6 +33,14 @@ public final class BackendContractImpl implements BackendContract, BackendContra
         return this.innerModel().type();
     }
 
+    public String url() {
+        return this.innerModel().url();
+    }
+
+    public BackendProtocol protocol() {
+        return this.innerModel().protocol();
+    }
+
     public String title() {
         return this.innerModel().title();
     }
@@ -59,14 +67,6 @@ public final class BackendContractImpl implements BackendContract, BackendContra
 
     public BackendTlsProperties tls() {
         return this.innerModel().tls();
-    }
-
-    public String url() {
-        return this.innerModel().url();
-    }
-
-    public BackendProtocol protocol() {
-        return this.innerModel().protocol();
     }
 
     public BackendContractInner innerModel() {
@@ -190,6 +190,26 @@ public final class BackendContractImpl implements BackendContract, BackendContra
             .reconnectWithResponse(resourceGroupName, serviceName, backendId, parameters, context);
     }
 
+    public BackendContractImpl withUrl(String url) {
+        if (isInCreateMode()) {
+            this.innerModel().withUrl(url);
+            return this;
+        } else {
+            this.updateParameters.withUrl(url);
+            return this;
+        }
+    }
+
+    public BackendContractImpl withProtocol(BackendProtocol protocol) {
+        if (isInCreateMode()) {
+            this.innerModel().withProtocol(protocol);
+            return this;
+        } else {
+            this.updateParameters.withProtocol(protocol);
+            return this;
+        }
+    }
+
     public BackendContractImpl withTitle(String title) {
         if (isInCreateMode()) {
             this.innerModel().withTitle(title);
@@ -256,26 +276,6 @@ public final class BackendContractImpl implements BackendContract, BackendContra
             return this;
         } else {
             this.updateParameters.withTls(tls);
-            return this;
-        }
-    }
-
-    public BackendContractImpl withUrl(String url) {
-        if (isInCreateMode()) {
-            this.innerModel().withUrl(url);
-            return this;
-        } else {
-            this.updateParameters.withUrl(url);
-            return this;
-        }
-    }
-
-    public BackendContractImpl withProtocol(BackendProtocol protocol) {
-        if (isInCreateMode()) {
-            this.innerModel().withProtocol(protocol);
-            return this;
-        } else {
-            this.updateParameters.withProtocol(protocol);
             return this;
         }
     }
