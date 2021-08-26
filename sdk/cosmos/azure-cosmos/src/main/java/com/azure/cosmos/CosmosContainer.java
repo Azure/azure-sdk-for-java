@@ -4,6 +4,7 @@
 package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.throughputControl.config.GlobalThroughputControlGroup;
+import com.azure.cosmos.models.CosmosBulkExecutionOptions;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosContainerRequestOptions;
@@ -22,7 +23,6 @@ import com.azure.cosmos.models.ThroughputResponse;
 import com.azure.cosmos.util.Beta;
 import com.azure.cosmos.util.CosmosPagedFlux;
 import com.azure.cosmos.util.CosmosPagedIterable;
-import com.azure.cosmos.util.UtilBridgeInternal;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -636,8 +636,8 @@ public class CosmosContainer {
      *
      * @return A list of {@link CosmosBulkOperationResponse} which contains operation and it's response or exception.
      * <p>
-     *     To create a operation which can be executed here, use {@link BulkOperations}. For eg.
-     *     for a upsert operation use {@link BulkOperations#getUpsertItemOperation(Object, PartitionKey)}
+     *     To create a operation which can be executed here, use {@link com.azure.cosmos.models.CosmosBulkOperations}. For eg.
+     *     for a upsert operation use {@link com.azure.cosmos.models.CosmosBulkOperations#getUpsertItemOperation(Object, PartitionKey)}
      * </p>
      * <p>
      *     We can get the corresponding operation using {@link CosmosBulkOperationResponse#getOperation()} and
@@ -699,6 +699,11 @@ public class CosmosContainer {
     /**
      * Executes list of operations in Bulk.
      *
+     * @deprecated forRemoval = true, since = "4.19"
+     * This overload will be removed. Please use one of the following overloads instead
+     * - {@link CosmosContainer#processBulkOperations(Iterable)}
+     * - {@link CosmosContainer#processBulkOperations(Iterable, CosmosBulkExecutionOptions)}
+     *
      * @param <TContext> The context for the bulk processing.
      *
      * @param operations list of operation which will be executed by this container.
@@ -720,9 +725,41 @@ public class CosmosContainer {
      * get the exception.
      */
     @Beta(value = Beta.SinceVersion.V4_18_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Deprecated() //forRemoval = true, since = "4.19"
     public <TContext> List<CosmosBulkOperationResponse<TContext>> processBulkOperations(
         Iterable<CosmosItemOperation> operations,
         BulkExecutionOptions bulkOptions) {
+
+        return this.blockBulkResponse(asyncContainer.processBulkOperations(Flux.fromIterable(operations), bulkOptions));
+    }
+
+    /**
+     * Executes list of operations in Bulk.
+     *
+     * @param <TContext> The context for the bulk processing.
+     *
+     * @param operations list of operation which will be executed by this container.
+     * @param bulkOptions Options that apply for this Bulk request which specifies options regarding execution like
+     *                    concurrency, batching size, interval and context.
+     *
+     * @return A list of {@link CosmosBulkOperationResponse} which contains operation and it's response or exception.
+     * <p>
+     *     To create a operation which can be executed here, use {@link com.azure.cosmos.models.CosmosBulkOperations}. For eg.
+     *     for a upsert operation use {@link com.azure.cosmos.models.CosmosBulkOperations#getUpsertItemOperation(Object, PartitionKey)}
+     * </p>
+     * <p>
+     *     We can get the corresponding operation using {@link CosmosBulkOperationResponse#getOperation()} and
+     *     it's response using {@link CosmosBulkOperationResponse#getResponse()}. If the operation was executed
+     *     successfully, the value returned by {@link CosmosBulkItemResponse#isSuccessStatusCode()} will be true. To get
+     *     actual status use {@link CosmosBulkItemResponse#getStatusCode()}.
+     * </p>
+     * To check if the operation had any exception, use {@link CosmosBulkOperationResponse#getException()} to
+     * get the exception.
+     */
+    @Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public <TContext> List<CosmosBulkOperationResponse<TContext>> processBulkOperations(
+        Iterable<CosmosItemOperation> operations,
+        CosmosBulkExecutionOptions bulkOptions) {
 
         return this.blockBulkResponse(asyncContainer.processBulkOperations(Flux.fromIterable(operations), bulkOptions));
     }

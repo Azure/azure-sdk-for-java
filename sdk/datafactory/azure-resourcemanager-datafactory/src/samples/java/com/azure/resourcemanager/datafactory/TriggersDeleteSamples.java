@@ -8,6 +8,11 @@ import com.azure.core.util.Context;
 
 /** Samples for Triggers Delete. */
 public final class TriggersDeleteSamples {
+    /*
+     * operationId: Triggers_Delete
+     * api-version: 2018-06-01
+     * x-ms-examples: Triggers_Delete
+     */
     /**
      * Sample code: Triggers_Delete.
      *

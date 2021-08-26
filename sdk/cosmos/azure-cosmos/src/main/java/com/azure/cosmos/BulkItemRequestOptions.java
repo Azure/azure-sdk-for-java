@@ -6,10 +6,14 @@ package com.azure.cosmos;
 import com.azure.cosmos.util.Beta;
 
 /**
+ * @deprecated forRemoval = true, since = "4.19"
+ * This class is not necessary anymore and will be removed. Please use {@link com.azure.cosmos.models.CosmosBulkItemRequestOptions}
+ *
  * Encapsulates options that can be specified for an operation used in Bulk execution. It can be passed while
  * creating bulk request using {@link BulkOperations}.
  */
 @Beta(value = Beta.SinceVersion.V4_9_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+@Deprecated() //forRemoval = true, since = "4.19"
 public final class BulkItemRequestOptions
         extends BulkItemRequestOptionsBase {
 

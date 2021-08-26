@@ -1,6 +1,6 @@
 # Release History
 
-## 2.0.0-beta.1 (Unreleased)
+## 2.0.0 (2021-08-25)
 ### New Features
 - Support key less certificate. ([#22105](https://github.com/Azure/azure-sdk-for-java/issues/22105))
 

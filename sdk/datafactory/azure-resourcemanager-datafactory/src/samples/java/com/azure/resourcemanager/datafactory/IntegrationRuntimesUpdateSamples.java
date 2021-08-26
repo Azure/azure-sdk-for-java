@@ -10,6 +10,11 @@ import com.azure.resourcemanager.datafactory.models.IntegrationRuntimeResource;
 
 /** Samples for IntegrationRuntimes Update. */
 public final class IntegrationRuntimesUpdateSamples {
+    /*
+     * operationId: IntegrationRuntimes_Update
+     * api-version: 2018-06-01
+     * x-ms-examples: IntegrationRuntimes_Update
+     */
     /**
      * Sample code: IntegrationRuntimes_Update.
      *

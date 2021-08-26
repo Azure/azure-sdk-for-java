@@ -13,7 +13,7 @@
 
   <groupId>com.azure.spring</groupId>
   <artifactId>azure-spring-boot-starter-active-directory-b2c</artifactId>
-  <version>3.8.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-boot-starter-active-directory-b2c;current} -->
+  <version>3.8.0</version> <!-- {x-version-update;com.azure.spring:azure-spring-boot-starter-active-directory-b2c;current} -->
 
   <name>Azure Spring Boot Starter for Azure AD B2C Spring Security Integration</name>
   <description>Spring Boot Starter for Azure AD B2C and Spring Security Integration</description>
@@ -22,7 +22,7 @@
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>azure-spring-boot-starter</artifactId>
-      <version>3.8.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-boot-starter;current} -->
+      <version>3.8.0</version> <!-- {x-version-update;com.azure.spring:azure-spring-boot-starter;current} -->
     </dependency>
 
     <!-- Below poms will be replaced to azure-spring-boot-starter pom when no milestone tag. -->

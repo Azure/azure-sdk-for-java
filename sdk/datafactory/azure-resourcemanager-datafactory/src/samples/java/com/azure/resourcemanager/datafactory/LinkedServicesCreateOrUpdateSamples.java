@@ -13,6 +13,40 @@ import java.io.IOException;
 
 /** Samples for LinkedServices CreateOrUpdate. */
 public final class LinkedServicesCreateOrUpdateSamples {
+    /*
+     * operationId: LinkedServices_CreateOrUpdate
+     * api-version: 2018-06-01
+     * x-ms-examples: LinkedServices_Create
+     */
+    /**
+     * Sample code: LinkedServices_Create.
+     *
+     * @param manager Entry point to DataFactoryManager.
+     */
+    public static void linkedServicesCreate(com.azure.resourcemanager.datafactory.DataFactoryManager manager)
+        throws IOException {
+        manager
+            .linkedServices()
+            .define("exampleLinkedService")
+            .withExistingFactory("exampleResourceGroup", "exampleFactoryName")
+            .withProperties(
+                new AzureStorageLinkedService()
+                    .withConnectionString(
+                        SerializerFactory
+                            .createDefaultManagementSerializerAdapter()
+                            .deserialize(
+                                "{\"type\":\"SecureString\",\"value\":\"DefaultEndpointsProtocol=https;AccountName=examplestorageaccount;AccountKey=<storage"
+                                    + " key>\"}",
+                                Object.class,
+                                SerializerEncoding.JSON)))
+            .create();
+    }
+
+    /*
+     * operationId: LinkedServices_CreateOrUpdate
+     * api-version: 2018-06-01
+     * x-ms-examples: LinkedServices_Update
+     */
     /**
      * Sample code: LinkedServices_Update.
      *

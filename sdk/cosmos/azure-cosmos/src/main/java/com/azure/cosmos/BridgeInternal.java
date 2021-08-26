@@ -38,6 +38,7 @@ import com.azure.cosmos.implementation.patch.PatchOperation;
 import com.azure.cosmos.implementation.query.QueryInfo;
 import com.azure.cosmos.implementation.query.metrics.ClientSideMetrics;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
+import com.azure.cosmos.models.CosmosBulkExecutionOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosStoredProcedureProperties;
 import com.azure.cosmos.models.FeedResponse;
@@ -833,5 +834,11 @@ public final class BridgeInternal {
         } else {
             return null;
         }
+    }
+
+    //  This is only temporary, and will be removed once we delete BulkExecutionOptions
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static CosmosBulkExecutionOptions createCosmosBulkExecutionOptions(BulkExecutionOptions bulkExecutionOptions) {
+        return bulkExecutionOptions.toCosmosBulkExecutionOptions();
     }
 }

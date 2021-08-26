@@ -8,6 +8,11 @@ import com.azure.core.util.Context;
 
 /** Samples for ManagedPrivateEndpoints Get. */
 public final class ManagedPrivateEndpointsGetSamples {
+    /*
+     * operationId: ManagedPrivateEndpoints_Get
+     * api-version: 2018-06-01
+     * x-ms-examples: ManagedPrivateEndpoints_Get
+     */
     /**
      * Sample code: ManagedPrivateEndpoints_Get.
      *
