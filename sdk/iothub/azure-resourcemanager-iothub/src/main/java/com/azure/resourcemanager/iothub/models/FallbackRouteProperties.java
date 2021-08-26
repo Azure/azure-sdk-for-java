@@ -5,17 +5,21 @@
 package com.azure.resourcemanager.iothub.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /**
- * The properties of the fallback route. IoT Hub uses these properties when it routes messages to the fallback endpoint.
+ * The properties of the fallback route. IoT Hub uses these properties when it
+ * routes messages to the fallback endpoint.
  */
 @Fluent
 public final class FallbackRouteProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(FallbackRouteProperties.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(FallbackRouteProperties.class);
 
     /*
      * The name of the route. The name can only include alphanumeric
@@ -55,9 +59,10 @@ public final class FallbackRouteProperties {
     private boolean isEnabled;
 
     /**
-     * Get the name property: The name of the route. The name can only include alphanumeric characters, periods,
-     * underscores, hyphens, has a maximum length of 64 characters, and must be unique.
-     *
+     * Get the name property: The name of the route. The name can only include
+     * alphanumeric characters, periods, underscores, hyphens, has a maximum
+     * length of 64 characters, and must be unique.
+     * 
      * @return the name value.
      */
     public String name() {
@@ -65,9 +70,10 @@ public final class FallbackRouteProperties {
     }
 
     /**
-     * Set the name property: The name of the route. The name can only include alphanumeric characters, periods,
-     * underscores, hyphens, has a maximum length of 64 characters, and must be unique.
-     *
+     * Set the name property: The name of the route. The name can only include
+     * alphanumeric characters, periods, underscores, hyphens, has a maximum
+     * length of 64 characters, and must be unique.
+     * 
      * @param name the name value to set.
      * @return the FallbackRouteProperties object itself.
      */
@@ -77,8 +83,9 @@ public final class FallbackRouteProperties {
     }
 
     /**
-     * Get the source property: The source to which the routing rule is to be applied to. For example, DeviceMessages.
-     *
+     * Get the source property: The source to which the routing rule is to be
+     * applied to. For example, DeviceMessages.
+     * 
      * @return the source value.
      */
     public RoutingSource source() {
@@ -86,8 +93,9 @@ public final class FallbackRouteProperties {
     }
 
     /**
-     * Set the source property: The source to which the routing rule is to be applied to. For example, DeviceMessages.
-     *
+     * Set the source property: The source to which the routing rule is to be
+     * applied to. For example, DeviceMessages.
+     * 
      * @param source the source value to set.
      * @return the FallbackRouteProperties object itself.
      */
@@ -97,10 +105,11 @@ public final class FallbackRouteProperties {
     }
 
     /**
-     * Get the condition property: The condition which is evaluated in order to apply the fallback route. If the
-     * condition is not provided it will evaluate to true by default. For grammar, See:
+     * Get the condition property: The condition which is evaluated in order to
+     * apply the fallback route. If the condition is not provided it will
+     * evaluate to true by default. For grammar, See:
      * https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-query-language.
-     *
+     * 
      * @return the condition value.
      */
     public String condition() {
@@ -108,10 +117,11 @@ public final class FallbackRouteProperties {
     }
 
     /**
-     * Set the condition property: The condition which is evaluated in order to apply the fallback route. If the
-     * condition is not provided it will evaluate to true by default. For grammar, See:
+     * Set the condition property: The condition which is evaluated in order to
+     * apply the fallback route. If the condition is not provided it will
+     * evaluate to true by default. For grammar, See:
      * https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-query-language.
-     *
+     * 
      * @param condition the condition value to set.
      * @return the FallbackRouteProperties object itself.
      */
@@ -121,9 +131,10 @@ public final class FallbackRouteProperties {
     }
 
     /**
-     * Get the endpointNames property: The list of endpoints to which the messages that satisfy the condition are routed
-     * to. Currently only 1 endpoint is allowed.
-     *
+     * Get the endpointNames property: The list of endpoints to which the
+     * messages that satisfy the condition are routed to. Currently only 1
+     * endpoint is allowed.
+     * 
      * @return the endpointNames value.
      */
     public List<String> endpointNames() {
@@ -131,9 +142,10 @@ public final class FallbackRouteProperties {
     }
 
     /**
-     * Set the endpointNames property: The list of endpoints to which the messages that satisfy the condition are routed
-     * to. Currently only 1 endpoint is allowed.
-     *
+     * Set the endpointNames property: The list of endpoints to which the
+     * messages that satisfy the condition are routed to. Currently only 1
+     * endpoint is allowed.
+     * 
      * @param endpointNames the endpointNames value to set.
      * @return the FallbackRouteProperties object itself.
      */
@@ -143,8 +155,9 @@ public final class FallbackRouteProperties {
     }
 
     /**
-     * Get the isEnabled property: Used to specify whether the fallback route is enabled.
-     *
+     * Get the isEnabled property: Used to specify whether the fallback route
+     * is enabled.
+     * 
      * @return the isEnabled value.
      */
     public boolean isEnabled() {
@@ -152,8 +165,9 @@ public final class FallbackRouteProperties {
     }
 
     /**
-     * Set the isEnabled property: Used to specify whether the fallback route is enabled.
-     *
+     * Set the isEnabled property: Used to specify whether the fallback route
+     * is enabled.
+     * 
      * @param isEnabled the isEnabled value to set.
      * @return the FallbackRouteProperties object itself.
      */
@@ -164,20 +178,15 @@ public final class FallbackRouteProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (source() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property source in model FallbackRouteProperties"));
+            throw logger.logExceptionAsError(new IllegalArgumentException("Missing required property source in model FallbackRouteProperties"));
         }
         if (endpointNames() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property endpointNames in model FallbackRouteProperties"));
+            throw logger.logExceptionAsError(new IllegalArgumentException("Missing required property endpointNames in model FallbackRouteProperties"));
         }
     }
 }

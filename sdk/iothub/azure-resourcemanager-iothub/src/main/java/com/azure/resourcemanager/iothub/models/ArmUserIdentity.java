@@ -4,15 +4,20 @@
 
 package com.azure.resourcemanager.iothub.models;
 
+import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The ArmUserIdentity model. */
+/**
+ * The ArmUserIdentity model.
+ */
 @Immutable
 public class ArmUserIdentity {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ArmUserIdentity.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(ArmUserIdentity.class);
 
     /*
      * The principalId property.
@@ -28,7 +33,7 @@ public class ArmUserIdentity {
 
     /**
      * Get the principalId property: The principalId property.
-     *
+     * 
      * @return the principalId value.
      */
     public String principalId() {
@@ -37,7 +42,7 @@ public class ArmUserIdentity {
 
     /**
      * Get the clientId property: The clientId property.
-     *
+     * 
      * @return the clientId value.
      */
     public String clientId() {
@@ -46,7 +51,7 @@ public class ArmUserIdentity {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

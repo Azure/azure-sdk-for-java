@@ -6,17 +6,17 @@ package com.azure.resourcemanager.iothub;
 
 import com.azure.core.util.Context;
 
-/** Samples for PrivateEndpointConnections Get. */
+/**
+ * Samples for PrivateEndpointConnections Get.
+ */
 public final class PrivateEndpointConnectionsGetSamples {
     /**
      * Sample code: PrivateEndpointConnection_Get.
-     *
-     * @param iotHubManager Entry point to IotHubManager. Use this API to manage the IoT hubs in your Azure
-     *     subscription.
+     * 
+     * @param iotHubManager Entry point to IotHubManager.
+     * Use this API to manage the IoT hubs in your Azure subscription.
      */
     public static void privateEndpointConnectionGet(com.azure.resourcemanager.iothub.IotHubManager iotHubManager) {
-        iotHubManager
-            .privateEndpointConnections()
-            .getWithResponse("myResourceGroup", "testHub", "myPrivateEndpointConnection", Context.NONE);
+        iotHubManager.privateEndpointConnections().getWithResponse("myResourceGroup", "testHub", "myPrivateEndpointConnection", Context.NONE);
     }
 }

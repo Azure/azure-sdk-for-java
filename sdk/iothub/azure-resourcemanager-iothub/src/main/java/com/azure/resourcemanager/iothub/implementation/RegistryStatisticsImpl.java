@@ -12,8 +12,7 @@ public final class RegistryStatisticsImpl implements RegistryStatistics {
 
     private final com.azure.resourcemanager.iothub.IotHubManager serviceManager;
 
-    RegistryStatisticsImpl(
-        RegistryStatisticsInner innerObject, com.azure.resourcemanager.iothub.IotHubManager serviceManager) {
+    RegistryStatisticsImpl(RegistryStatisticsInner innerObject, com.azure.resourcemanager.iothub.IotHubManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

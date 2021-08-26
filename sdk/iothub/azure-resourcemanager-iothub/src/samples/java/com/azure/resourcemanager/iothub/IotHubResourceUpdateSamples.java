@@ -9,20 +9,18 @@ import com.azure.resourcemanager.iothub.models.IotHubDescription;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for IotHubResource Update. */
+/**
+ * Samples for IotHubResource Update.
+ */
 public final class IotHubResourceUpdateSamples {
     /**
      * Sample code: IotHubResource_Update.
-     *
-     * @param iotHubManager Entry point to IotHubManager. Use this API to manage the IoT hubs in your Azure
-     *     subscription.
+     * 
+     * @param iotHubManager Entry point to IotHubManager.
+     * Use this API to manage the IoT hubs in your Azure subscription.
      */
     public static void iotHubResourceUpdate(com.azure.resourcemanager.iothub.IotHubManager iotHubManager) {
-        IotHubDescription resource =
-            iotHubManager
-                .iotHubResources()
-                .getByResourceGroupWithResponse("myResourceGroup", "myHub", Context.NONE)
-                .getValue();
+        IotHubDescription resource = iotHubManager.iotHubResources().getByResourceGroupWithResponse("myResourceGroup", "myHub", Context.NONE).getValue();
         resource.update().withTags(mapOf("foo", "bar")).apply();
     }
 

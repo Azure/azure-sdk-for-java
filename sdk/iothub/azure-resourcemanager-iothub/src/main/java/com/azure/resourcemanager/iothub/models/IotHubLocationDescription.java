@@ -5,14 +5,20 @@
 package com.azure.resourcemanager.iothub.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Public representation of one of the locations where a resource is provisioned. */
+/**
+ * Public representation of one of the locations where a resource is
+ * provisioned.
+ */
 @Fluent
 public final class IotHubLocationDescription {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IotHubLocationDescription.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(IotHubLocationDescription.class);
 
     /*
      * The name of the Azure region
@@ -31,7 +37,7 @@ public final class IotHubLocationDescription {
 
     /**
      * Get the location property: The name of the Azure region.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -40,7 +46,7 @@ public final class IotHubLocationDescription {
 
     /**
      * Set the location property: The name of the Azure region.
-     *
+     * 
      * @param location the location value to set.
      * @return the IotHubLocationDescription object itself.
      */
@@ -50,10 +56,11 @@ public final class IotHubLocationDescription {
     }
 
     /**
-     * Get the role property: The role of the region, can be either primary or secondary. The primary region is where
-     * the IoT hub is currently provisioned. The secondary region is the Azure disaster recovery (DR) paired region and
-     * also the region where the IoT hub can failover to.
-     *
+     * Get the role property: The role of the region, can be either primary or
+     * secondary. The primary region is where the IoT hub is currently
+     * provisioned. The secondary region is the Azure disaster recovery (DR)
+     * paired region and also the region where the IoT hub can failover to.
+     * 
      * @return the role value.
      */
     public IotHubReplicaRoleType role() {
@@ -61,10 +68,11 @@ public final class IotHubLocationDescription {
     }
 
     /**
-     * Set the role property: The role of the region, can be either primary or secondary. The primary region is where
-     * the IoT hub is currently provisioned. The secondary region is the Azure disaster recovery (DR) paired region and
-     * also the region where the IoT hub can failover to.
-     *
+     * Set the role property: The role of the region, can be either primary or
+     * secondary. The primary region is where the IoT hub is currently
+     * provisioned. The secondary region is the Azure disaster recovery (DR)
+     * paired region and also the region where the IoT hub can failover to.
+     * 
      * @param role the role value to set.
      * @return the IotHubLocationDescription object itself.
      */
@@ -75,7 +83,7 @@ public final class IotHubLocationDescription {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

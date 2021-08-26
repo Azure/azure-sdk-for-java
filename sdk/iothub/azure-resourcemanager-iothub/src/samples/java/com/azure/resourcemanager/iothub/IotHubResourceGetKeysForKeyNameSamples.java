@@ -6,17 +6,17 @@ package com.azure.resourcemanager.iothub;
 
 import com.azure.core.util.Context;
 
-/** Samples for IotHubResource GetKeysForKeyName. */
+/**
+ * Samples for IotHubResource GetKeysForKeyName.
+ */
 public final class IotHubResourceGetKeysForKeyNameSamples {
     /**
      * Sample code: IotHubResource_GetKeysForKeyName.
-     *
-     * @param iotHubManager Entry point to IotHubManager. Use this API to manage the IoT hubs in your Azure
-     *     subscription.
+     * 
+     * @param iotHubManager Entry point to IotHubManager.
+     * Use this API to manage the IoT hubs in your Azure subscription.
      */
     public static void iotHubResourceGetKeysForKeyName(com.azure.resourcemanager.iothub.IotHubManager iotHubManager) {
-        iotHubManager
-            .iotHubResources()
-            .getKeysForKeyNameWithResponse("myResourceGroup", "testHub", "iothubowner", Context.NONE);
+        iotHubManager.iotHubResources().getKeysForKeyNameWithResponse("myResourceGroup", "testHub", "iothubowner", Context.NONE);
     }
 }

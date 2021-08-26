@@ -5,14 +5,19 @@
 package com.azure.resourcemanager.iothub.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The properties related to a storage container endpoint. */
+/**
+ * The properties related to a storage container endpoint.
+ */
 @Fluent
 public final class RoutingStorageContainerProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RoutingStorageContainerProperties.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(RoutingStorageContainerProperties.class);
 
     /*
      * Id of the storage container endpoint
@@ -104,7 +109,7 @@ public final class RoutingStorageContainerProperties {
 
     /**
      * Get the id property: Id of the storage container endpoint.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -113,7 +118,7 @@ public final class RoutingStorageContainerProperties {
 
     /**
      * Set the id property: Id of the storage container endpoint.
-     *
+     * 
      * @param id the id value to set.
      * @return the RoutingStorageContainerProperties object itself.
      */
@@ -123,8 +128,9 @@ public final class RoutingStorageContainerProperties {
     }
 
     /**
-     * Get the connectionString property: The connection string of the storage account.
-     *
+     * Get the connectionString property: The connection string of the storage
+     * account.
+     * 
      * @return the connectionString value.
      */
     public String connectionString() {
@@ -132,8 +138,9 @@ public final class RoutingStorageContainerProperties {
     }
 
     /**
-     * Set the connectionString property: The connection string of the storage account.
-     *
+     * Set the connectionString property: The connection string of the storage
+     * account.
+     * 
      * @param connectionString the connectionString value to set.
      * @return the RoutingStorageContainerProperties object itself.
      */
@@ -143,8 +150,9 @@ public final class RoutingStorageContainerProperties {
     }
 
     /**
-     * Get the endpointUri property: The url of the storage endpoint. It must include the protocol https://.
-     *
+     * Get the endpointUri property: The url of the storage endpoint. It must
+     * include the protocol https://.
+     * 
      * @return the endpointUri value.
      */
     public String endpointUri() {
@@ -152,8 +160,9 @@ public final class RoutingStorageContainerProperties {
     }
 
     /**
-     * Set the endpointUri property: The url of the storage endpoint. It must include the protocol https://.
-     *
+     * Set the endpointUri property: The url of the storage endpoint. It must
+     * include the protocol https://.
+     * 
      * @param endpointUri the endpointUri value to set.
      * @return the RoutingStorageContainerProperties object itself.
      */
@@ -163,8 +172,9 @@ public final class RoutingStorageContainerProperties {
     }
 
     /**
-     * Get the authenticationType property: Method used to authenticate against the storage endpoint.
-     *
+     * Get the authenticationType property: Method used to authenticate against
+     * the storage endpoint.
+     * 
      * @return the authenticationType value.
      */
     public AuthenticationType authenticationType() {
@@ -172,8 +182,9 @@ public final class RoutingStorageContainerProperties {
     }
 
     /**
-     * Set the authenticationType property: Method used to authenticate against the storage endpoint.
-     *
+     * Set the authenticationType property: Method used to authenticate against
+     * the storage endpoint.
+     * 
      * @param authenticationType the authenticationType value to set.
      * @return the RoutingStorageContainerProperties object itself.
      */
@@ -183,8 +194,9 @@ public final class RoutingStorageContainerProperties {
     }
 
     /**
-     * Get the identity property: Managed identity properties of routing storage endpoint.
-     *
+     * Get the identity property: Managed identity properties of routing
+     * storage endpoint.
+     * 
      * @return the identity value.
      */
     public ManagedIdentity identity() {
@@ -192,8 +204,9 @@ public final class RoutingStorageContainerProperties {
     }
 
     /**
-     * Set the identity property: Managed identity properties of routing storage endpoint.
-     *
+     * Set the identity property: Managed identity properties of routing
+     * storage endpoint.
+     * 
      * @param identity the identity value to set.
      * @return the RoutingStorageContainerProperties object itself.
      */
@@ -203,10 +216,12 @@ public final class RoutingStorageContainerProperties {
     }
 
     /**
-     * Get the name property: The name that identifies this endpoint. The name can only include alphanumeric characters,
-     * periods, underscores, hyphens and has a maximum length of 64 characters. The following names are reserved:
-     * events, fileNotifications, $default. Endpoint names must be unique across endpoint types.
-     *
+     * Get the name property: The name that identifies this endpoint. The name
+     * can only include alphanumeric characters, periods, underscores, hyphens
+     * and has a maximum length of 64 characters. The following names are
+     * reserved:  events, fileNotifications, $default. Endpoint names must be
+     * unique across endpoint types.
+     * 
      * @return the name value.
      */
     public String name() {
@@ -214,10 +229,12 @@ public final class RoutingStorageContainerProperties {
     }
 
     /**
-     * Set the name property: The name that identifies this endpoint. The name can only include alphanumeric characters,
-     * periods, underscores, hyphens and has a maximum length of 64 characters. The following names are reserved:
-     * events, fileNotifications, $default. Endpoint names must be unique across endpoint types.
-     *
+     * Set the name property: The name that identifies this endpoint. The name
+     * can only include alphanumeric characters, periods, underscores, hyphens
+     * and has a maximum length of 64 characters. The following names are
+     * reserved:  events, fileNotifications, $default. Endpoint names must be
+     * unique across endpoint types.
+     * 
      * @param name the name value to set.
      * @return the RoutingStorageContainerProperties object itself.
      */
@@ -227,8 +244,9 @@ public final class RoutingStorageContainerProperties {
     }
 
     /**
-     * Get the subscriptionId property: The subscription identifier of the storage account.
-     *
+     * Get the subscriptionId property: The subscription identifier of the
+     * storage account.
+     * 
      * @return the subscriptionId value.
      */
     public String subscriptionId() {
@@ -236,8 +254,9 @@ public final class RoutingStorageContainerProperties {
     }
 
     /**
-     * Set the subscriptionId property: The subscription identifier of the storage account.
-     *
+     * Set the subscriptionId property: The subscription identifier of the
+     * storage account.
+     * 
      * @param subscriptionId the subscriptionId value to set.
      * @return the RoutingStorageContainerProperties object itself.
      */
@@ -247,8 +266,9 @@ public final class RoutingStorageContainerProperties {
     }
 
     /**
-     * Get the resourceGroup property: The name of the resource group of the storage account.
-     *
+     * Get the resourceGroup property: The name of the resource group of the
+     * storage account.
+     * 
      * @return the resourceGroup value.
      */
     public String resourceGroup() {
@@ -256,8 +276,9 @@ public final class RoutingStorageContainerProperties {
     }
 
     /**
-     * Set the resourceGroup property: The name of the resource group of the storage account.
-     *
+     * Set the resourceGroup property: The name of the resource group of the
+     * storage account.
+     * 
      * @param resourceGroup the resourceGroup value to set.
      * @return the RoutingStorageContainerProperties object itself.
      */
@@ -267,8 +288,9 @@ public final class RoutingStorageContainerProperties {
     }
 
     /**
-     * Get the containerName property: The name of storage container in the storage account.
-     *
+     * Get the containerName property: The name of storage container in the
+     * storage account.
+     * 
      * @return the containerName value.
      */
     public String containerName() {
@@ -276,8 +298,9 @@ public final class RoutingStorageContainerProperties {
     }
 
     /**
-     * Set the containerName property: The name of storage container in the storage account.
-     *
+     * Set the containerName property: The name of storage container in the
+     * storage account.
+     * 
      * @param containerName the containerName value to set.
      * @return the RoutingStorageContainerProperties object itself.
      */
@@ -287,9 +310,10 @@ public final class RoutingStorageContainerProperties {
     }
 
     /**
-     * Get the fileNameFormat property: File name format for the blob. Default format is
-     * {iothub}/{partition}/{YYYY}/{MM}/{DD}/{HH}/{mm}. All parameters are mandatory but can be reordered.
-     *
+     * Get the fileNameFormat property: File name format for the blob. Default
+     * format is {iothub}/{partition}/{YYYY}/{MM}/{DD}/{HH}/{mm}. All
+     * parameters are mandatory but can be reordered.
+     * 
      * @return the fileNameFormat value.
      */
     public String fileNameFormat() {
@@ -297,9 +321,10 @@ public final class RoutingStorageContainerProperties {
     }
 
     /**
-     * Set the fileNameFormat property: File name format for the blob. Default format is
-     * {iothub}/{partition}/{YYYY}/{MM}/{DD}/{HH}/{mm}. All parameters are mandatory but can be reordered.
-     *
+     * Set the fileNameFormat property: File name format for the blob. Default
+     * format is {iothub}/{partition}/{YYYY}/{MM}/{DD}/{HH}/{mm}. All
+     * parameters are mandatory but can be reordered.
+     * 
      * @param fileNameFormat the fileNameFormat value to set.
      * @return the RoutingStorageContainerProperties object itself.
      */
@@ -309,9 +334,10 @@ public final class RoutingStorageContainerProperties {
     }
 
     /**
-     * Get the batchFrequencyInSeconds property: Time interval at which blobs are written to storage. Value should be
-     * between 60 and 720 seconds. Default value is 300 seconds.
-     *
+     * Get the batchFrequencyInSeconds property: Time interval at which blobs
+     * are written to storage. Value should be between 60 and 720 seconds.
+     * Default value is 300 seconds.
+     * 
      * @return the batchFrequencyInSeconds value.
      */
     public Integer batchFrequencyInSeconds() {
@@ -319,9 +345,10 @@ public final class RoutingStorageContainerProperties {
     }
 
     /**
-     * Set the batchFrequencyInSeconds property: Time interval at which blobs are written to storage. Value should be
-     * between 60 and 720 seconds. Default value is 300 seconds.
-     *
+     * Set the batchFrequencyInSeconds property: Time interval at which blobs
+     * are written to storage. Value should be between 60 and 720 seconds.
+     * Default value is 300 seconds.
+     * 
      * @param batchFrequencyInSeconds the batchFrequencyInSeconds value to set.
      * @return the RoutingStorageContainerProperties object itself.
      */
@@ -331,9 +358,10 @@ public final class RoutingStorageContainerProperties {
     }
 
     /**
-     * Get the maxChunkSizeInBytes property: Maximum number of bytes for each blob written to storage. Value should be
-     * between 10485760(10MB) and 524288000(500MB). Default value is 314572800(300MB).
-     *
+     * Get the maxChunkSizeInBytes property: Maximum number of bytes for each
+     * blob written to storage. Value should be between 10485760(10MB) and
+     * 524288000(500MB). Default value is 314572800(300MB).
+     * 
      * @return the maxChunkSizeInBytes value.
      */
     public Integer maxChunkSizeInBytes() {
@@ -341,9 +369,10 @@ public final class RoutingStorageContainerProperties {
     }
 
     /**
-     * Set the maxChunkSizeInBytes property: Maximum number of bytes for each blob written to storage. Value should be
-     * between 10485760(10MB) and 524288000(500MB). Default value is 314572800(300MB).
-     *
+     * Set the maxChunkSizeInBytes property: Maximum number of bytes for each
+     * blob written to storage. Value should be between 10485760(10MB) and
+     * 524288000(500MB). Default value is 314572800(300MB).
+     * 
      * @param maxChunkSizeInBytes the maxChunkSizeInBytes value to set.
      * @return the RoutingStorageContainerProperties object itself.
      */
@@ -353,9 +382,10 @@ public final class RoutingStorageContainerProperties {
     }
 
     /**
-     * Get the encoding property: Encoding that is used to serialize messages to blobs. Supported values are 'avro',
-     * 'avrodeflate', and 'JSON'. Default value is 'avro'.
-     *
+     * Get the encoding property: Encoding that is used to serialize messages
+     * to blobs. Supported values are 'avro', 'avrodeflate', and 'JSON'.
+     * Default value is 'avro'.
+     * 
      * @return the encoding value.
      */
     public RoutingStorageContainerPropertiesEncoding encoding() {
@@ -363,9 +393,10 @@ public final class RoutingStorageContainerProperties {
     }
 
     /**
-     * Set the encoding property: Encoding that is used to serialize messages to blobs. Supported values are 'avro',
-     * 'avrodeflate', and 'JSON'. Default value is 'avro'.
-     *
+     * Set the encoding property: Encoding that is used to serialize messages
+     * to blobs. Supported values are 'avro', 'avrodeflate', and 'JSON'.
+     * Default value is 'avro'.
+     * 
      * @param encoding the encoding value to set.
      * @return the RoutingStorageContainerProperties object itself.
      */
@@ -376,7 +407,7 @@ public final class RoutingStorageContainerProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -384,16 +415,10 @@ public final class RoutingStorageContainerProperties {
             identity().validate();
         }
         if (name() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property name in model RoutingStorageContainerProperties"));
+            throw logger.logExceptionAsError(new IllegalArgumentException("Missing required property name in model RoutingStorageContainerProperties"));
         }
         if (containerName() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property containerName in model RoutingStorageContainerProperties"));
+            throw logger.logExceptionAsError(new IllegalArgumentException("Missing required property containerName in model RoutingStorageContainerProperties"));
         }
     }
 }

@@ -5,16 +5,21 @@
 package com.azure.resourcemanager.iothub.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** The properties of the EventHubConsumerGroupInfo object. */
+/**
+ * The properties of the EventHubConsumerGroupInfo object.
+ */
 @Fluent
 public final class EventHubConsumerGroupInfoInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EventHubConsumerGroupInfoInner.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(EventHubConsumerGroupInfoInner.class);
 
     /*
      * The tags.
@@ -30,7 +35,7 @@ public final class EventHubConsumerGroupInfoInner extends ProxyResource {
 
     /**
      * Get the properties property: The tags.
-     *
+     * 
      * @return the properties value.
      */
     public Map<String, Object> properties() {
@@ -39,7 +44,7 @@ public final class EventHubConsumerGroupInfoInner extends ProxyResource {
 
     /**
      * Set the properties property: The tags.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the EventHubConsumerGroupInfoInner object itself.
      */
@@ -50,7 +55,7 @@ public final class EventHubConsumerGroupInfoInner extends ProxyResource {
 
     /**
      * Get the etag property: The etag.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
@@ -59,7 +64,7 @@ public final class EventHubConsumerGroupInfoInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

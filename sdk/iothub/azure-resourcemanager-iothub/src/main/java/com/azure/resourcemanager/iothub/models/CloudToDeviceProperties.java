@@ -5,15 +5,20 @@
 package com.azure.resourcemanager.iothub.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.Duration;
 
-/** The IoT hub cloud-to-device messaging properties. */
+/**
+ * The IoT hub cloud-to-device messaging properties.
+ */
 @Fluent
 public final class CloudToDeviceProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CloudToDeviceProperties.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(CloudToDeviceProperties.class);
 
     /*
      * The max delivery count for cloud-to-device messages in the device queue.
@@ -38,9 +43,10 @@ public final class CloudToDeviceProperties {
     private FeedbackProperties feedback;
 
     /**
-     * Get the maxDeliveryCount property: The max delivery count for cloud-to-device messages in the device queue. See:
+     * Get the maxDeliveryCount property: The max delivery count for
+     * cloud-to-device messages in the device queue. See:
      * https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-messaging#cloud-to-device-messages.
-     *
+     * 
      * @return the maxDeliveryCount value.
      */
     public Integer maxDeliveryCount() {
@@ -48,9 +54,10 @@ public final class CloudToDeviceProperties {
     }
 
     /**
-     * Set the maxDeliveryCount property: The max delivery count for cloud-to-device messages in the device queue. See:
+     * Set the maxDeliveryCount property: The max delivery count for
+     * cloud-to-device messages in the device queue. See:
      * https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-messaging#cloud-to-device-messages.
-     *
+     * 
      * @param maxDeliveryCount the maxDeliveryCount value to set.
      * @return the CloudToDeviceProperties object itself.
      */
@@ -60,9 +67,10 @@ public final class CloudToDeviceProperties {
     }
 
     /**
-     * Get the defaultTtlAsIso8601 property: The default time to live for cloud-to-device messages in the device queue.
-     * See: https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-messaging#cloud-to-device-messages.
-     *
+     * Get the defaultTtlAsIso8601 property: The default time to live for
+     * cloud-to-device messages in the device queue. See:
+     * https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-messaging#cloud-to-device-messages.
+     * 
      * @return the defaultTtlAsIso8601 value.
      */
     public Duration defaultTtlAsIso8601() {
@@ -70,9 +78,10 @@ public final class CloudToDeviceProperties {
     }
 
     /**
-     * Set the defaultTtlAsIso8601 property: The default time to live for cloud-to-device messages in the device queue.
-     * See: https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-messaging#cloud-to-device-messages.
-     *
+     * Set the defaultTtlAsIso8601 property: The default time to live for
+     * cloud-to-device messages in the device queue. See:
+     * https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-messaging#cloud-to-device-messages.
+     * 
      * @param defaultTtlAsIso8601 the defaultTtlAsIso8601 value to set.
      * @return the CloudToDeviceProperties object itself.
      */
@@ -82,8 +91,9 @@ public final class CloudToDeviceProperties {
     }
 
     /**
-     * Get the feedback property: The properties of the feedback queue for cloud-to-device messages.
-     *
+     * Get the feedback property: The properties of the feedback queue for
+     * cloud-to-device messages.
+     * 
      * @return the feedback value.
      */
     public FeedbackProperties feedback() {
@@ -91,8 +101,9 @@ public final class CloudToDeviceProperties {
     }
 
     /**
-     * Set the feedback property: The properties of the feedback queue for cloud-to-device messages.
-     *
+     * Set the feedback property: The properties of the feedback queue for
+     * cloud-to-device messages.
+     * 
      * @param feedback the feedback value to set.
      * @return the CloudToDeviceProperties object itself.
      */
@@ -103,7 +114,7 @@ public final class CloudToDeviceProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

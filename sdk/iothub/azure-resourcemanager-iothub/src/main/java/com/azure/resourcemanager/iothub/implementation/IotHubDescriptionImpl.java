@@ -4,12 +4,28 @@
 
 package com.azure.resourcemanager.iothub.implementation;
 
+import com.azure.core.annotation.BodyParam;
+import com.azure.core.annotation.ExpectedResponses;
+import com.azure.core.annotation.HeaderParam;
+import com.azure.core.annotation.Headers;
+import com.azure.core.annotation.HostParam;
+import com.azure.core.annotation.PathParam;
+import com.azure.core.annotation.Post;
+import com.azure.core.annotation.QueryParam;
+import com.azure.core.annotation.ReturnType;
+import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.annotation.UnexpectedResponseExceptionType;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.management.Region;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.iothub.fluent.models.IotHubDescriptionInner;
+import com.azure.resourcemanager.iothub.fluent.models.JobResponseInner;
+import com.azure.resourcemanager.iothub.fluent.models.SharedAccessSignatureAuthorizationRuleInner;
 import com.azure.resourcemanager.iothub.models.ArmIdentity;
+import com.azure.resourcemanager.iothub.models.ErrorDetailsException;
 import com.azure.resourcemanager.iothub.models.ExportDevicesRequest;
 import com.azure.resourcemanager.iothub.models.ImportDevicesRequest;
 import com.azure.resourcemanager.iothub.models.IotHubDescription;
@@ -17,12 +33,14 @@ import com.azure.resourcemanager.iothub.models.IotHubProperties;
 import com.azure.resourcemanager.iothub.models.IotHubSkuInfo;
 import com.azure.resourcemanager.iothub.models.JobResponse;
 import com.azure.resourcemanager.iothub.models.SharedAccessSignatureAuthorizationRule;
+import com.azure.resourcemanager.iothub.models.SharedAccessSignatureAuthorizationRuleListResult;
 import com.azure.resourcemanager.iothub.models.TagsResource;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Collections;
 import java.util.Map;
+import reactor.core.publisher.Mono;
 
-public final class IotHubDescriptionImpl
-    implements IotHubDescription, IotHubDescription.Definition, IotHubDescription.Update {
+public final class IotHubDescriptionImpl implements IotHubDescription, IotHubDescription.Definition, IotHubDescription.Update {
     private IotHubDescriptionInner innerObject;
 
     private final com.azure.resourcemanager.iothub.IotHubManager serviceManager;
@@ -98,20 +116,12 @@ public final class IotHubDescriptionImpl
     }
 
     public IotHubDescription create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getIotHubResources()
-                .createOrUpdate(resourceGroupName, resourceName, this.innerModel(), createIfMatch, Context.NONE);
+        this.innerObject = serviceManager.serviceClient().getIotHubResources().createOrUpdate(resourceGroupName, resourceName, this.innerModel(), createIfMatch, Context.NONE);
         return this;
     }
 
     public IotHubDescription create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getIotHubResources()
-                .createOrUpdate(resourceGroupName, resourceName, this.innerModel(), createIfMatch, context);
+        this.innerObject = serviceManager.serviceClient().getIotHubResources().createOrUpdate(resourceGroupName, resourceName, this.innerModel(), createIfMatch, context);
         return this;
     }
 
@@ -128,25 +138,16 @@ public final class IotHubDescriptionImpl
     }
 
     public IotHubDescription apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getIotHubResources()
-                .update(resourceGroupName, resourceName, updateIotHubTags, Context.NONE);
+        this.innerObject = serviceManager.serviceClient().getIotHubResources().update(resourceGroupName, resourceName, updateIotHubTags, Context.NONE);
         return this;
     }
 
     public IotHubDescription apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getIotHubResources()
-                .update(resourceGroupName, resourceName, updateIotHubTags, context);
+        this.innerObject = serviceManager.serviceClient().getIotHubResources().update(resourceGroupName, resourceName, updateIotHubTags, context);
         return this;
     }
 
-    IotHubDescriptionImpl(
-        IotHubDescriptionInner innerObject, com.azure.resourcemanager.iothub.IotHubManager serviceManager) {
+    IotHubDescriptionImpl(IotHubDescriptionInner innerObject, com.azure.resourcemanager.iothub.IotHubManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
         this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
@@ -154,22 +155,12 @@ public final class IotHubDescriptionImpl
     }
 
     public IotHubDescription refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getIotHubResources()
-                .getByResourceGroupWithResponse(resourceGroupName, resourceName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getIotHubResources().getByResourceGroupWithResponse(resourceGroupName, resourceName, Context.NONE).getValue();
         return this;
     }
 
     public IotHubDescription refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getIotHubResources()
-                .getByResourceGroupWithResponse(resourceGroupName, resourceName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getIotHubResources().getByResourceGroupWithResponse(resourceGroupName, resourceName, context).getValue();
         return this;
     }
 
@@ -185,22 +176,16 @@ public final class IotHubDescriptionImpl
         return serviceManager.iotHubResources().exportDevices(resourceGroupName, resourceName, exportDevicesParameters);
     }
 
-    public Response<JobResponse> exportDevicesWithResponse(
-        ExportDevicesRequest exportDevicesParameters, Context context) {
-        return serviceManager
-            .iotHubResources()
-            .exportDevicesWithResponse(resourceGroupName, resourceName, exportDevicesParameters, context);
+    public Response<JobResponse> exportDevicesWithResponse(ExportDevicesRequest exportDevicesParameters, Context context) {
+        return serviceManager.iotHubResources().exportDevicesWithResponse(resourceGroupName, resourceName, exportDevicesParameters, context);
     }
 
     public JobResponse importDevices(ImportDevicesRequest importDevicesParameters) {
         return serviceManager.iotHubResources().importDevices(resourceGroupName, resourceName, importDevicesParameters);
     }
 
-    public Response<JobResponse> importDevicesWithResponse(
-        ImportDevicesRequest importDevicesParameters, Context context) {
-        return serviceManager
-            .iotHubResources()
-            .importDevicesWithResponse(resourceGroupName, resourceName, importDevicesParameters, context);
+    public Response<JobResponse> importDevicesWithResponse(ImportDevicesRequest importDevicesParameters, Context context) {
+        return serviceManager.iotHubResources().importDevicesWithResponse(resourceGroupName, resourceName, importDevicesParameters, context);
     }
 
     public IotHubDescriptionImpl withRegion(Region location) {

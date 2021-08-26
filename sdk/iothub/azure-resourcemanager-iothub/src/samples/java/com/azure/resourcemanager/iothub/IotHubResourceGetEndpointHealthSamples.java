@@ -6,13 +6,15 @@ package com.azure.resourcemanager.iothub;
 
 import com.azure.core.util.Context;
 
-/** Samples for IotHubResource GetEndpointHealth. */
+/**
+ * Samples for IotHubResource GetEndpointHealth.
+ */
 public final class IotHubResourceGetEndpointHealthSamples {
     /**
      * Sample code: IotHubResource_GetEndpointHealth.
-     *
-     * @param iotHubManager Entry point to IotHubManager. Use this API to manage the IoT hubs in your Azure
-     *     subscription.
+     * 
+     * @param iotHubManager Entry point to IotHubManager.
+     * Use this API to manage the IoT hubs in your Azure subscription.
      */
     public static void iotHubResourceGetEndpointHealth(com.azure.resourcemanager.iothub.IotHubManager iotHubManager) {
         iotHubManager.iotHubResources().getEndpointHealth("myResourceGroup", "testHub", Context.NONE);

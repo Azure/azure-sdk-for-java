@@ -5,14 +5,19 @@
 package com.azure.resourcemanager.iothub.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** User subscription quota response. */
+/**
+ * User subscription quota response.
+ */
 @Fluent
 public final class UserSubscriptionQuota {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(UserSubscriptionQuota.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(UserSubscriptionQuota.class);
 
     /*
      * IotHub type id
@@ -52,7 +57,7 @@ public final class UserSubscriptionQuota {
 
     /**
      * Get the id property: IotHub type id.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -61,7 +66,7 @@ public final class UserSubscriptionQuota {
 
     /**
      * Set the id property: IotHub type id.
-     *
+     * 
      * @param id the id value to set.
      * @return the UserSubscriptionQuota object itself.
      */
@@ -72,7 +77,7 @@ public final class UserSubscriptionQuota {
 
     /**
      * Get the type property: Response type.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -81,7 +86,7 @@ public final class UserSubscriptionQuota {
 
     /**
      * Set the type property: Response type.
-     *
+     * 
      * @param type the type value to set.
      * @return the UserSubscriptionQuota object itself.
      */
@@ -92,7 +97,7 @@ public final class UserSubscriptionQuota {
 
     /**
      * Get the unit property: Unit of IotHub type.
-     *
+     * 
      * @return the unit value.
      */
     public String unit() {
@@ -101,7 +106,7 @@ public final class UserSubscriptionQuota {
 
     /**
      * Set the unit property: Unit of IotHub type.
-     *
+     * 
      * @param unit the unit value to set.
      * @return the UserSubscriptionQuota object itself.
      */
@@ -112,7 +117,7 @@ public final class UserSubscriptionQuota {
 
     /**
      * Get the currentValue property: Current number of IotHub type.
-     *
+     * 
      * @return the currentValue value.
      */
     public Integer currentValue() {
@@ -121,7 +126,7 @@ public final class UserSubscriptionQuota {
 
     /**
      * Set the currentValue property: Current number of IotHub type.
-     *
+     * 
      * @param currentValue the currentValue value to set.
      * @return the UserSubscriptionQuota object itself.
      */
@@ -132,7 +137,7 @@ public final class UserSubscriptionQuota {
 
     /**
      * Get the limit property: Numerical limit on IotHub type.
-     *
+     * 
      * @return the limit value.
      */
     public Integer limit() {
@@ -141,7 +146,7 @@ public final class UserSubscriptionQuota {
 
     /**
      * Set the limit property: Numerical limit on IotHub type.
-     *
+     * 
      * @param limit the limit value to set.
      * @return the UserSubscriptionQuota object itself.
      */
@@ -152,7 +157,7 @@ public final class UserSubscriptionQuota {
 
     /**
      * Get the name property: IotHub type.
-     *
+     * 
      * @return the name value.
      */
     public Name name() {
@@ -161,7 +166,7 @@ public final class UserSubscriptionQuota {
 
     /**
      * Set the name property: IotHub type.
-     *
+     * 
      * @param name the name value to set.
      * @return the UserSubscriptionQuota object itself.
      */
@@ -172,7 +177,7 @@ public final class UserSubscriptionQuota {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

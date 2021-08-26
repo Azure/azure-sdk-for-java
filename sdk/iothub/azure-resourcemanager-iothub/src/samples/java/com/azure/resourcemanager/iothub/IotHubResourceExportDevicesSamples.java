@@ -7,21 +7,17 @@ package com.azure.resourcemanager.iothub;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.iothub.models.ExportDevicesRequest;
 
-/** Samples for IotHubResource ExportDevices. */
+/**
+ * Samples for IotHubResource ExportDevices.
+ */
 public final class IotHubResourceExportDevicesSamples {
     /**
      * Sample code: IotHubResource_ExportDevices.
-     *
-     * @param iotHubManager Entry point to IotHubManager. Use this API to manage the IoT hubs in your Azure
-     *     subscription.
+     * 
+     * @param iotHubManager Entry point to IotHubManager.
+     * Use this API to manage the IoT hubs in your Azure subscription.
      */
     public static void iotHubResourceExportDevices(com.azure.resourcemanager.iothub.IotHubManager iotHubManager) {
-        iotHubManager
-            .iotHubResources()
-            .exportDevicesWithResponse(
-                "myResourceGroup",
-                "testHub",
-                new ExportDevicesRequest().withExportBlobContainerUri("testBlob").withExcludeKeys(true),
-                Context.NONE);
+        iotHubManager.iotHubResources().exportDevicesWithResponse("myResourceGroup", "testHub", new ExportDevicesRequest().withExportBlobContainerUri("testBlob").withExcludeKeys(true), Context.NONE);
     }
 }

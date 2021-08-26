@@ -7,11 +7,13 @@ package com.azure.resourcemanager.iothub.models;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.management.exception.ManagementException;
 
-/** Exception thrown for an invalid response with ErrorDetails information. */
+/**
+ * Exception thrown for an invalid response with ErrorDetails information.
+ */
 public final class ErrorDetailsException extends ManagementException {
     /**
      * Initializes a new instance of the ErrorDetailsException class.
-     *
+     * 
      * @param message the exception message or the response content if a message is not available.
      * @param response the HTTP response.
      */
@@ -21,7 +23,7 @@ public final class ErrorDetailsException extends ManagementException {
 
     /**
      * Initializes a new instance of the ErrorDetailsException class.
-     *
+     * 
      * @param message the exception message or the response content if a message is not available.
      * @param response the HTTP response.
      * @param value the deserialized response value.

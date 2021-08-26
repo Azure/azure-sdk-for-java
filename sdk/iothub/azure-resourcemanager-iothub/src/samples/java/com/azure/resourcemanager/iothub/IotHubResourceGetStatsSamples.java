@@ -6,13 +6,15 @@ package com.azure.resourcemanager.iothub;
 
 import com.azure.core.util.Context;
 
-/** Samples for IotHubResource GetStats. */
+/**
+ * Samples for IotHubResource GetStats.
+ */
 public final class IotHubResourceGetStatsSamples {
     /**
      * Sample code: IotHubResource_GetStats.
-     *
-     * @param iotHubManager Entry point to IotHubManager. Use this API to manage the IoT hubs in your Azure
-     *     subscription.
+     * 
+     * @param iotHubManager Entry point to IotHubManager.
+     * Use this API to manage the IoT hubs in your Azure subscription.
      */
     public static void iotHubResourceGetStats(com.azure.resourcemanager.iothub.IotHubManager iotHubManager) {
         iotHubManager.iotHubResources().getStatsWithResponse("myResourceGroup", "testHub", Context.NONE);

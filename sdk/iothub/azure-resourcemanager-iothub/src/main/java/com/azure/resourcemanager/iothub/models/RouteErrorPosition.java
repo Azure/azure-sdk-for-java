@@ -5,14 +5,19 @@
 package com.azure.resourcemanager.iothub.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Position where the route error happened. */
+/**
+ * Position where the route error happened.
+ */
 @Fluent
 public final class RouteErrorPosition {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RouteErrorPosition.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(RouteErrorPosition.class);
 
     /*
      * Line where the route error happened
@@ -28,7 +33,7 @@ public final class RouteErrorPosition {
 
     /**
      * Get the line property: Line where the route error happened.
-     *
+     * 
      * @return the line value.
      */
     public Integer line() {
@@ -37,7 +42,7 @@ public final class RouteErrorPosition {
 
     /**
      * Set the line property: Line where the route error happened.
-     *
+     * 
      * @param line the line value to set.
      * @return the RouteErrorPosition object itself.
      */
@@ -48,7 +53,7 @@ public final class RouteErrorPosition {
 
     /**
      * Get the column property: Column where the route error happened.
-     *
+     * 
      * @return the column value.
      */
     public Integer column() {
@@ -57,7 +62,7 @@ public final class RouteErrorPosition {
 
     /**
      * Set the column property: Column where the route error happened.
-     *
+     * 
      * @param column the column value to set.
      * @return the RouteErrorPosition object itself.
      */
@@ -68,7 +73,7 @@ public final class RouteErrorPosition {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

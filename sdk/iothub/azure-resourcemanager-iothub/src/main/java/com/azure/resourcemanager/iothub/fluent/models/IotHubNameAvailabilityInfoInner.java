@@ -5,15 +5,20 @@
 package com.azure.resourcemanager.iothub.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.iothub.models.IotHubNameUnavailabilityReason;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The properties indicating whether a given IoT hub name is available. */
+/**
+ * The properties indicating whether a given IoT hub name is available.
+ */
 @Fluent
 public final class IotHubNameAvailabilityInfoInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IotHubNameAvailabilityInfoInner.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(IotHubNameAvailabilityInfoInner.class);
 
     /*
      * The value which indicates whether the provided name is available.
@@ -34,8 +39,9 @@ public final class IotHubNameAvailabilityInfoInner {
     private String message;
 
     /**
-     * Get the nameAvailable property: The value which indicates whether the provided name is available.
-     *
+     * Get the nameAvailable property: The value which indicates whether the
+     * provided name is available.
+     * 
      * @return the nameAvailable value.
      */
     public Boolean nameAvailable() {
@@ -44,7 +50,7 @@ public final class IotHubNameAvailabilityInfoInner {
 
     /**
      * Get the reason property: The reason for unavailability.
-     *
+     * 
      * @return the reason value.
      */
     public IotHubNameUnavailabilityReason reason() {
@@ -53,7 +59,7 @@ public final class IotHubNameAvailabilityInfoInner {
 
     /**
      * Get the message property: The detailed reason message.
-     *
+     * 
      * @return the message value.
      */
     public String message() {
@@ -62,7 +68,7 @@ public final class IotHubNameAvailabilityInfoInner {
 
     /**
      * Set the message property: The detailed reason message.
-     *
+     * 
      * @param message the message value to set.
      * @return the IotHubNameAvailabilityInfoInner object itself.
      */
@@ -73,7 +79,7 @@ public final class IotHubNameAvailabilityInfoInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

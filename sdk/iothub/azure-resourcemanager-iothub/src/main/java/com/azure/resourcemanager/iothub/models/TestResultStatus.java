@@ -8,20 +8,28 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for TestResultStatus. */
+/**
+ * Defines values for TestResultStatus.
+ */
 public final class TestResultStatus extends ExpandableStringEnum<TestResultStatus> {
-    /** Static value undefined for TestResultStatus. */
+    /**
+     * Static value undefined for TestResultStatus.
+     */
     public static final TestResultStatus UNDEFINED = fromString("undefined");
 
-    /** Static value false for TestResultStatus. */
+    /**
+     * Static value false for TestResultStatus.
+     */
     public static final TestResultStatus FALSE = fromString("false");
 
-    /** Static value true for TestResultStatus. */
+    /**
+     * Static value true for TestResultStatus.
+     */
     public static final TestResultStatus TRUE = fromString("true");
 
     /**
      * Creates or finds a TestResultStatus from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding TestResultStatus.
      */
@@ -30,7 +38,9 @@ public final class TestResultStatus extends ExpandableStringEnum<TestResultStatu
         return fromString(name, TestResultStatus.class);
     }
 
-    /** @return known TestResultStatus values. */
+    /**
+     * @return known TestResultStatus values.
+     */
     public static Collection<TestResultStatus> values() {
         return values(TestResultStatus.class);
     }

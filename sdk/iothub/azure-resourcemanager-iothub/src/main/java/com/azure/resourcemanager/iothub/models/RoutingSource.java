@@ -8,29 +8,43 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for RoutingSource. */
+/**
+ * Defines values for RoutingSource.
+ */
 public final class RoutingSource extends ExpandableStringEnum<RoutingSource> {
-    /** Static value Invalid for RoutingSource. */
+    /**
+     * Static value Invalid for RoutingSource.
+     */
     public static final RoutingSource INVALID = fromString("Invalid");
 
-    /** Static value DeviceMessages for RoutingSource. */
+    /**
+     * Static value DeviceMessages for RoutingSource.
+     */
     public static final RoutingSource DEVICE_MESSAGES = fromString("DeviceMessages");
 
-    /** Static value TwinChangeEvents for RoutingSource. */
+    /**
+     * Static value TwinChangeEvents for RoutingSource.
+     */
     public static final RoutingSource TWIN_CHANGE_EVENTS = fromString("TwinChangeEvents");
 
-    /** Static value DeviceLifecycleEvents for RoutingSource. */
+    /**
+     * Static value DeviceLifecycleEvents for RoutingSource.
+     */
     public static final RoutingSource DEVICE_LIFECYCLE_EVENTS = fromString("DeviceLifecycleEvents");
 
-    /** Static value DeviceJobLifecycleEvents for RoutingSource. */
+    /**
+     * Static value DeviceJobLifecycleEvents for RoutingSource.
+     */
     public static final RoutingSource DEVICE_JOB_LIFECYCLE_EVENTS = fromString("DeviceJobLifecycleEvents");
 
-    /** Static value DeviceConnectionStateEvents for RoutingSource. */
+    /**
+     * Static value DeviceConnectionStateEvents for RoutingSource.
+     */
     public static final RoutingSource DEVICE_CONNECTION_STATE_EVENTS = fromString("DeviceConnectionStateEvents");
 
     /**
      * Creates or finds a RoutingSource from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding RoutingSource.
      */
@@ -39,7 +53,9 @@ public final class RoutingSource extends ExpandableStringEnum<RoutingSource> {
         return fromString(name, RoutingSource.class);
     }
 
-    /** @return known RoutingSource values. */
+    /**
+     * @return known RoutingSource values.
+     */
     public static Collection<RoutingSource> values() {
         return values(RoutingSource.class);
     }

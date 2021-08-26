@@ -7,15 +7,23 @@ package com.azure.resourcemanager.iothub.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for IotHubNameUnavailabilityReason. */
+/**
+ * Defines values for IotHubNameUnavailabilityReason.
+ */
 public enum IotHubNameUnavailabilityReason {
-    /** Enum value Invalid. */
+    /**
+     * Enum value Invalid.
+     */
     INVALID("Invalid"),
 
-    /** Enum value AlreadyExists. */
+    /**
+     * Enum value AlreadyExists.
+     */
     ALREADY_EXISTS("AlreadyExists");
 
-    /** The actual serialized value for a IotHubNameUnavailabilityReason instance. */
+    /**
+     * The actual serialized value for a IotHubNameUnavailabilityReason instance.
+     */
     private final String value;
 
     IotHubNameUnavailabilityReason(String value) {
@@ -24,7 +32,7 @@ public enum IotHubNameUnavailabilityReason {
 
     /**
      * Parses a serialized value to a IotHubNameUnavailabilityReason instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed IotHubNameUnavailabilityReason object, or null if unable to parse.
      */

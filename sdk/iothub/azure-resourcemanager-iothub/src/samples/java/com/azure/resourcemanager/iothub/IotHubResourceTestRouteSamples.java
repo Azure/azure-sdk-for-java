@@ -13,33 +13,18 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for IotHubResource TestRoute. */
+/**
+ * Samples for IotHubResource TestRoute.
+ */
 public final class IotHubResourceTestRouteSamples {
     /**
      * Sample code: IotHubResource_TestRoute.
-     *
-     * @param iotHubManager Entry point to IotHubManager. Use this API to manage the IoT hubs in your Azure
-     *     subscription.
+     * 
+     * @param iotHubManager Entry point to IotHubManager.
+     * Use this API to manage the IoT hubs in your Azure subscription.
      */
     public static void iotHubResourceTestRoute(com.azure.resourcemanager.iothub.IotHubManager iotHubManager) {
-        iotHubManager
-            .iotHubResources()
-            .testRouteWithResponse(
-                "testHub",
-                "myResourceGroup",
-                new TestRouteInput()
-                    .withMessage(
-                        new RoutingMessage()
-                            .withBody("Body of message")
-                            .withAppProperties(mapOf("key1", "value1"))
-                            .withSystemProperties(mapOf("key1", "value1")))
-                    .withRoute(
-                        new RouteProperties()
-                            .withName("Routeid")
-                            .withSource(RoutingSource.DEVICE_MESSAGES)
-                            .withEndpointNames(Arrays.asList("id1"))
-                            .withIsEnabled(true)),
-                Context.NONE);
+        iotHubManager.iotHubResources().testRouteWithResponse("testHub", "myResourceGroup", new TestRouteInput().withMessage(new RoutingMessage().withBody("Body of message").withAppProperties(mapOf("key1", "value1")).withSystemProperties(mapOf("key1", "value1"))).withRoute(new RouteProperties().withName("Routeid").withSource(RoutingSource.DEVICE_MESSAGES).withEndpointNames(Arrays.asList("id1")).withIsEnabled(true)), Context.NONE);
     }
 
     @SuppressWarnings("unchecked")

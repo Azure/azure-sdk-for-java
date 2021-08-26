@@ -5,14 +5,19 @@
 package com.azure.resourcemanager.iothub.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The EventHub consumer group name. */
+/**
+ * The EventHub consumer group name.
+ */
 @Fluent
 public final class EventHubConsumerGroupName {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EventHubConsumerGroupName.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(EventHubConsumerGroupName.class);
 
     /*
      * EventHub consumer group name
@@ -22,7 +27,7 @@ public final class EventHubConsumerGroupName {
 
     /**
      * Get the name property: EventHub consumer group name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -31,7 +36,7 @@ public final class EventHubConsumerGroupName {
 
     /**
      * Set the name property: EventHub consumer group name.
-     *
+     * 
      * @param name the name value to set.
      * @return the EventHubConsumerGroupName object itself.
      */
@@ -42,14 +47,12 @@ public final class EventHubConsumerGroupName {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (name() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property name in model EventHubConsumerGroupName"));
+            throw logger.logExceptionAsError(new IllegalArgumentException("Missing required property name in model EventHubConsumerGroupName"));
         }
     }
 }

@@ -5,15 +5,20 @@
 package com.azure.resourcemanager.iothub.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The properties for a group information object. */
+/**
+ * The properties for a group information object.
+ */
 @Fluent
 public final class GroupIdInformationProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(GroupIdInformationProperties.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(GroupIdInformationProperties.class);
 
     /*
      * The group id
@@ -35,7 +40,7 @@ public final class GroupIdInformationProperties {
 
     /**
      * Get the groupId property: The group id.
-     *
+     * 
      * @return the groupId value.
      */
     public String groupId() {
@@ -44,7 +49,7 @@ public final class GroupIdInformationProperties {
 
     /**
      * Set the groupId property: The group id.
-     *
+     * 
      * @param groupId the groupId value to set.
      * @return the GroupIdInformationProperties object itself.
      */
@@ -54,8 +59,9 @@ public final class GroupIdInformationProperties {
     }
 
     /**
-     * Get the requiredMembers property: The required members for a specific group id.
-     *
+     * Get the requiredMembers property: The required members for a specific
+     * group id.
+     * 
      * @return the requiredMembers value.
      */
     public List<String> requiredMembers() {
@@ -63,8 +69,9 @@ public final class GroupIdInformationProperties {
     }
 
     /**
-     * Set the requiredMembers property: The required members for a specific group id.
-     *
+     * Set the requiredMembers property: The required members for a specific
+     * group id.
+     * 
      * @param requiredMembers the requiredMembers value to set.
      * @return the GroupIdInformationProperties object itself.
      */
@@ -74,8 +81,9 @@ public final class GroupIdInformationProperties {
     }
 
     /**
-     * Get the requiredZoneNames property: The required DNS zones for a specific group id.
-     *
+     * Get the requiredZoneNames property: The required DNS zones for a
+     * specific group id.
+     * 
      * @return the requiredZoneNames value.
      */
     public List<String> requiredZoneNames() {
@@ -83,8 +91,9 @@ public final class GroupIdInformationProperties {
     }
 
     /**
-     * Set the requiredZoneNames property: The required DNS zones for a specific group id.
-     *
+     * Set the requiredZoneNames property: The required DNS zones for a
+     * specific group id.
+     * 
      * @param requiredZoneNames the requiredZoneNames value to set.
      * @return the GroupIdInformationProperties object itself.
      */
@@ -95,7 +104,7 @@ public final class GroupIdInformationProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

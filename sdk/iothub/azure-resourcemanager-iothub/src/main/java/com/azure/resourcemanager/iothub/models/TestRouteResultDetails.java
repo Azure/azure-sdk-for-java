@@ -5,15 +5,20 @@
 package com.azure.resourcemanager.iothub.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Detailed result of testing a route. */
+/**
+ * Detailed result of testing a route.
+ */
 @Fluent
 public final class TestRouteResultDetails {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TestRouteResultDetails.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(TestRouteResultDetails.class);
 
     /*
      * JSON-serialized list of route compilation errors
@@ -22,8 +27,9 @@ public final class TestRouteResultDetails {
     private List<RouteCompilationError> compilationErrors;
 
     /**
-     * Get the compilationErrors property: JSON-serialized list of route compilation errors.
-     *
+     * Get the compilationErrors property: JSON-serialized list of route
+     * compilation errors.
+     * 
      * @return the compilationErrors value.
      */
     public List<RouteCompilationError> compilationErrors() {
@@ -31,8 +37,9 @@ public final class TestRouteResultDetails {
     }
 
     /**
-     * Set the compilationErrors property: JSON-serialized list of route compilation errors.
-     *
+     * Set the compilationErrors property: JSON-serialized list of route
+     * compilation errors.
+     * 
      * @param compilationErrors the compilationErrors value to set.
      * @return the TestRouteResultDetails object itself.
      */
@@ -43,7 +50,7 @@ public final class TestRouteResultDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

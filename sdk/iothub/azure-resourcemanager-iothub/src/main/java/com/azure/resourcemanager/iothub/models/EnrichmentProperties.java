@@ -5,15 +5,21 @@
 package com.azure.resourcemanager.iothub.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The properties of an enrichment that your IoT hub applies to messages delivered to endpoints. */
+/**
+ * The properties of an enrichment that your IoT hub applies to messages
+ * delivered to endpoints.
+ */
 @Fluent
 public final class EnrichmentProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EnrichmentProperties.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(EnrichmentProperties.class);
 
     /*
      * The key or name for the enrichment property.
@@ -36,7 +42,7 @@ public final class EnrichmentProperties {
 
     /**
      * Get the key property: The key or name for the enrichment property.
-     *
+     * 
      * @return the key value.
      */
     public String key() {
@@ -45,7 +51,7 @@ public final class EnrichmentProperties {
 
     /**
      * Set the key property: The key or name for the enrichment property.
-     *
+     * 
      * @param key the key value to set.
      * @return the EnrichmentProperties object itself.
      */
@@ -56,7 +62,7 @@ public final class EnrichmentProperties {
 
     /**
      * Get the value property: The value for the enrichment property.
-     *
+     * 
      * @return the value value.
      */
     public String value() {
@@ -65,7 +71,7 @@ public final class EnrichmentProperties {
 
     /**
      * Set the value property: The value for the enrichment property.
-     *
+     * 
      * @param value the value value to set.
      * @return the EnrichmentProperties object itself.
      */
@@ -75,8 +81,9 @@ public final class EnrichmentProperties {
     }
 
     /**
-     * Get the endpointNames property: The list of endpoints for which the enrichment is applied to the message.
-     *
+     * Get the endpointNames property: The list of endpoints for which the
+     * enrichment is applied to the message.
+     * 
      * @return the endpointNames value.
      */
     public List<String> endpointNames() {
@@ -84,8 +91,9 @@ public final class EnrichmentProperties {
     }
 
     /**
-     * Set the endpointNames property: The list of endpoints for which the enrichment is applied to the message.
-     *
+     * Set the endpointNames property: The list of endpoints for which the
+     * enrichment is applied to the message.
+     * 
      * @param endpointNames the endpointNames value to set.
      * @return the EnrichmentProperties object itself.
      */
@@ -96,25 +104,18 @@ public final class EnrichmentProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (key() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property key in model EnrichmentProperties"));
+            throw logger.logExceptionAsError(new IllegalArgumentException("Missing required property key in model EnrichmentProperties"));
         }
         if (value() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property value in model EnrichmentProperties"));
+            throw logger.logExceptionAsError(new IllegalArgumentException("Missing required property value in model EnrichmentProperties"));
         }
         if (endpointNames() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property endpointNames in model EnrichmentProperties"));
+            throw logger.logExceptionAsError(new IllegalArgumentException("Missing required property endpointNames in model EnrichmentProperties"));
         }
     }
 }

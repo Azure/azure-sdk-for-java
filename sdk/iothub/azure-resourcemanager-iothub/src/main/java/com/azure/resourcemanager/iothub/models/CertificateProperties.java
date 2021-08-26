@@ -5,16 +5,21 @@
 package com.azure.resourcemanager.iothub.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.DateTimeRfc1123;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** The description of an X509 CA Certificate. */
+/**
+ * The description of an X509 CA Certificate.
+ */
 @Fluent
 public final class CertificateProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CertificateProperties.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(CertificateProperties.class);
 
     /*
      * The certificate's subject name.
@@ -37,7 +42,7 @@ public final class CertificateProperties {
     /*
      * Determines whether certificate has been verified.
      */
-    @JsonProperty(value = "isVerified", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "isVerified")
     private Boolean isVerified;
 
     /*
@@ -60,7 +65,7 @@ public final class CertificateProperties {
 
     /**
      * Get the subject property: The certificate's subject name.
-     *
+     * 
      * @return the subject value.
      */
     public String subject() {
@@ -69,7 +74,7 @@ public final class CertificateProperties {
 
     /**
      * Get the expiry property: The certificate's expiration date and time.
-     *
+     * 
      * @return the expiry value.
      */
     public OffsetDateTime expiry() {
@@ -81,7 +86,7 @@ public final class CertificateProperties {
 
     /**
      * Get the thumbprint property: The certificate's thumbprint.
-     *
+     * 
      * @return the thumbprint value.
      */
     public String thumbprint() {
@@ -89,8 +94,9 @@ public final class CertificateProperties {
     }
 
     /**
-     * Get the isVerified property: Determines whether certificate has been verified.
-     *
+     * Get the isVerified property: Determines whether certificate has been
+     * verified.
+     * 
      * @return the isVerified value.
      */
     public Boolean isVerified() {
@@ -98,8 +104,20 @@ public final class CertificateProperties {
     }
 
     /**
+     * Set the isVerified property: Determines whether certificate has been
+     * verified.
+     * 
+     * @param isVerified the isVerified value to set.
+     * @return the CertificateProperties object itself.
+     */
+    public CertificateProperties withIsVerified(Boolean isVerified) {
+        this.isVerified = isVerified;
+        return this;
+    }
+
+    /**
      * Get the created property: The certificate's create date and time.
-     *
+     * 
      * @return the created value.
      */
     public OffsetDateTime created() {
@@ -111,7 +129,7 @@ public final class CertificateProperties {
 
     /**
      * Get the updated property: The certificate's last update date and time.
-     *
+     * 
      * @return the updated value.
      */
     public OffsetDateTime updated() {
@@ -123,7 +141,7 @@ public final class CertificateProperties {
 
     /**
      * Get the certificate property: The certificate content.
-     *
+     * 
      * @return the certificate value.
      */
     public String certificate() {
@@ -132,7 +150,7 @@ public final class CertificateProperties {
 
     /**
      * Set the certificate property: The certificate content.
-     *
+     * 
      * @param certificate the certificate value to set.
      * @return the CertificateProperties object itself.
      */
@@ -143,7 +161,7 @@ public final class CertificateProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

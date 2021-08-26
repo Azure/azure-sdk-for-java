@@ -4,13 +4,16 @@
 
 package com.azure.resourcemanager.iothub.implementation;
 
+import com.azure.core.annotation.ReturnType;
+import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.iothub.fluent.models.CertificateDescriptionInner;
 import com.azure.resourcemanager.iothub.models.CertificateDescription;
 import com.azure.resourcemanager.iothub.models.CertificateProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-public final class CertificateDescriptionImpl
-    implements CertificateDescription, CertificateDescription.Definition, CertificateDescription.Update {
+public final class CertificateDescriptionImpl implements CertificateDescription, CertificateDescription.Definition, CertificateDescription.Update {
     private CertificateDescriptionInner innerObject;
 
     private final com.azure.resourcemanager.iothub.IotHubManager serviceManager;
@@ -60,24 +63,12 @@ public final class CertificateDescriptionImpl
     }
 
     public CertificateDescription create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getCertificates()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, resourceName, certificateName, this.innerModel(), createIfMatch, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getCertificates().createOrUpdateWithResponse(resourceGroupName, resourceName, certificateName, this.innerModel(), createIfMatch, Context.NONE).getValue();
         return this;
     }
 
     public CertificateDescription create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getCertificates()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, resourceName, certificateName, this.innerModel(), createIfMatch, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getCertificates().createOrUpdateWithResponse(resourceGroupName, resourceName, certificateName, this.innerModel(), createIfMatch, context).getValue();
         return this;
     }
 
@@ -94,29 +85,16 @@ public final class CertificateDescriptionImpl
     }
 
     public CertificateDescription apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getCertificates()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, resourceName, certificateName, this.innerModel(), updateIfMatch, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getCertificates().createOrUpdateWithResponse(resourceGroupName, resourceName, certificateName, this.innerModel(), updateIfMatch, Context.NONE).getValue();
         return this;
     }
 
     public CertificateDescription apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getCertificates()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, resourceName, certificateName, this.innerModel(), updateIfMatch, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getCertificates().createOrUpdateWithResponse(resourceGroupName, resourceName, certificateName, this.innerModel(), updateIfMatch, context).getValue();
         return this;
     }
 
-    CertificateDescriptionImpl(
-        CertificateDescriptionInner innerObject, com.azure.resourcemanager.iothub.IotHubManager serviceManager) {
+    CertificateDescriptionImpl(CertificateDescriptionInner innerObject, com.azure.resourcemanager.iothub.IotHubManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
         this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
@@ -125,22 +103,12 @@ public final class CertificateDescriptionImpl
     }
 
     public CertificateDescription refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getCertificates()
-                .getWithResponse(resourceGroupName, resourceName, certificateName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getCertificates().getWithResponse(resourceGroupName, resourceName, certificateName, Context.NONE).getValue();
         return this;
     }
 
     public CertificateDescription refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getCertificates()
-                .getWithResponse(resourceGroupName, resourceName, certificateName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getCertificates().getWithResponse(resourceGroupName, resourceName, certificateName, context).getValue();
         return this;
     }
 

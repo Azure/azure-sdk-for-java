@@ -12,8 +12,7 @@ public final class IotHubQuotaMetricInfoImpl implements IotHubQuotaMetricInfo {
 
     private final com.azure.resourcemanager.iothub.IotHubManager serviceManager;
 
-    IotHubQuotaMetricInfoImpl(
-        IotHubQuotaMetricInfoInner innerObject, com.azure.resourcemanager.iothub.IotHubManager serviceManager) {
+    IotHubQuotaMetricInfoImpl(IotHubQuotaMetricInfoInner innerObject, com.azure.resourcemanager.iothub.IotHubManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

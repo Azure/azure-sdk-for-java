@@ -5,16 +5,21 @@
 package com.azure.resourcemanager.iothub.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.iothub.models.PrivateEndpointConnectionProperties;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The private endpoint connection of an IotHub. */
+/**
+ * The private endpoint connection of an IotHub.
+ */
 @Fluent
 public final class PrivateEndpointConnectionInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PrivateEndpointConnectionInner.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(PrivateEndpointConnectionInner.class);
 
     /*
      * The properties of a private endpoint connection
@@ -23,8 +28,9 @@ public final class PrivateEndpointConnectionInner extends ProxyResource {
     private PrivateEndpointConnectionProperties properties;
 
     /**
-     * Get the properties property: The properties of a private endpoint connection.
-     *
+     * Get the properties property: The properties of a private endpoint
+     * connection.
+     * 
      * @return the properties value.
      */
     public PrivateEndpointConnectionProperties properties() {
@@ -32,8 +38,9 @@ public final class PrivateEndpointConnectionInner extends ProxyResource {
     }
 
     /**
-     * Set the properties property: The properties of a private endpoint connection.
-     *
+     * Set the properties property: The properties of a private endpoint
+     * connection.
+     * 
      * @param properties the properties value to set.
      * @return the PrivateEndpointConnectionInner object itself.
      */
@@ -44,15 +51,12 @@ public final class PrivateEndpointConnectionInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (properties() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property properties in model PrivateEndpointConnectionInner"));
+            throw logger.logExceptionAsError(new IllegalArgumentException("Missing required property properties in model PrivateEndpointConnectionInner"));
         } else {
             properties().validate();
         }

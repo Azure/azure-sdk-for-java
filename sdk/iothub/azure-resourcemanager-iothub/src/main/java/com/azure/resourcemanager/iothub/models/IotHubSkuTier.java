@@ -7,18 +7,28 @@ package com.azure.resourcemanager.iothub.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for IotHubSkuTier. */
+/**
+ * Defines values for IotHubSkuTier.
+ */
 public enum IotHubSkuTier {
-    /** Enum value Free. */
+    /**
+     * Enum value Free.
+     */
     FREE("Free"),
 
-    /** Enum value Standard. */
+    /**
+     * Enum value Standard.
+     */
     STANDARD("Standard"),
 
-    /** Enum value Basic. */
+    /**
+     * Enum value Basic.
+     */
     BASIC("Basic");
 
-    /** The actual serialized value for a IotHubSkuTier instance. */
+    /**
+     * The actual serialized value for a IotHubSkuTier instance.
+     */
     private final String value;
 
     IotHubSkuTier(String value) {
@@ -27,7 +37,7 @@ public enum IotHubSkuTier {
 
     /**
      * Parses a serialized value to a IotHubSkuTier instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed IotHubSkuTier object, or null if unable to parse.
      */

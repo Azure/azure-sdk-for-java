@@ -15,9 +15,7 @@ public final class UserSubscriptionQuotaListResultImpl implements UserSubscripti
 
     private final com.azure.resourcemanager.iothub.IotHubManager serviceManager;
 
-    UserSubscriptionQuotaListResultImpl(
-        UserSubscriptionQuotaListResultInner innerObject,
-        com.azure.resourcemanager.iothub.IotHubManager serviceManager) {
+    UserSubscriptionQuotaListResultImpl(UserSubscriptionQuotaListResultInner innerObject, com.azure.resourcemanager.iothub.IotHubManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

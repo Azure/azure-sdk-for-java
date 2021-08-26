@@ -5,7 +5,9 @@
 package com.azure.resourcemanager.iothub.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -16,7 +18,8 @@ import java.util.List;
  */
 @Fluent
 public final class RoutingProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RoutingProperties.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(RoutingProperties.class);
 
     /*
      * The properties related to the custom endpoints to which your IoT hub
@@ -55,10 +58,12 @@ public final class RoutingProperties {
     private List<EnrichmentProperties> enrichments;
 
     /**
-     * Get the endpoints property: The properties related to the custom endpoints to which your IoT hub routes messages
-     * based on the routing rules. A maximum of 10 custom endpoints are allowed across all endpoint types for paid hubs
-     * and only 1 custom endpoint is allowed across all endpoint types for free hubs.
-     *
+     * Get the endpoints property: The properties related to the custom
+     * endpoints to which your IoT hub routes messages based on the routing
+     * rules. A maximum of 10 custom endpoints are allowed across all endpoint
+     * types for paid hubs and only 1 custom endpoint is allowed across all
+     * endpoint types for free hubs.
+     * 
      * @return the endpoints value.
      */
     public RoutingEndpoints endpoints() {
@@ -66,10 +71,12 @@ public final class RoutingProperties {
     }
 
     /**
-     * Set the endpoints property: The properties related to the custom endpoints to which your IoT hub routes messages
-     * based on the routing rules. A maximum of 10 custom endpoints are allowed across all endpoint types for paid hubs
-     * and only 1 custom endpoint is allowed across all endpoint types for free hubs.
-     *
+     * Set the endpoints property: The properties related to the custom
+     * endpoints to which your IoT hub routes messages based on the routing
+     * rules. A maximum of 10 custom endpoints are allowed across all endpoint
+     * types for paid hubs and only 1 custom endpoint is allowed across all
+     * endpoint types for free hubs.
+     * 
      * @param endpoints the endpoints value to set.
      * @return the RoutingProperties object itself.
      */
@@ -79,10 +86,11 @@ public final class RoutingProperties {
     }
 
     /**
-     * Get the routes property: The list of user-provided routing rules that the IoT hub uses to route messages to
-     * built-in and custom endpoints. A maximum of 100 routing rules are allowed for paid hubs and a maximum of 5
-     * routing rules are allowed for free hubs.
-     *
+     * Get the routes property: The list of user-provided routing rules that
+     * the IoT hub uses to route messages to built-in and custom endpoints. A
+     * maximum of 100 routing rules are allowed for paid hubs and a maximum of
+     * 5 routing rules are allowed for free hubs.
+     * 
      * @return the routes value.
      */
     public List<RouteProperties> routes() {
@@ -90,10 +98,11 @@ public final class RoutingProperties {
     }
 
     /**
-     * Set the routes property: The list of user-provided routing rules that the IoT hub uses to route messages to
-     * built-in and custom endpoints. A maximum of 100 routing rules are allowed for paid hubs and a maximum of 5
-     * routing rules are allowed for free hubs.
-     *
+     * Set the routes property: The list of user-provided routing rules that
+     * the IoT hub uses to route messages to built-in and custom endpoints. A
+     * maximum of 100 routing rules are allowed for paid hubs and a maximum of
+     * 5 routing rules are allowed for free hubs.
+     * 
      * @param routes the routes value to set.
      * @return the RoutingProperties object itself.
      */
@@ -103,11 +112,13 @@ public final class RoutingProperties {
     }
 
     /**
-     * Get the fallbackRoute property: The properties of the route that is used as a fall-back route when none of the
-     * conditions specified in the 'routes' section are met. This is an optional parameter. When this property is not
-     * set, the messages which do not meet any of the conditions specified in the 'routes' section get routed to the
-     * built-in eventhub endpoint.
-     *
+     * Get the fallbackRoute property: The properties of the route that is used
+     * as a fall-back route when none of the conditions specified in the
+     * 'routes' section are met. This is an optional parameter. When this
+     * property is not set, the messages which do not meet any of the
+     * conditions specified in the 'routes' section get routed to the built-in
+     * eventhub endpoint.
+     * 
      * @return the fallbackRoute value.
      */
     public FallbackRouteProperties fallbackRoute() {
@@ -115,11 +126,13 @@ public final class RoutingProperties {
     }
 
     /**
-     * Set the fallbackRoute property: The properties of the route that is used as a fall-back route when none of the
-     * conditions specified in the 'routes' section are met. This is an optional parameter. When this property is not
-     * set, the messages which do not meet any of the conditions specified in the 'routes' section get routed to the
-     * built-in eventhub endpoint.
-     *
+     * Set the fallbackRoute property: The properties of the route that is used
+     * as a fall-back route when none of the conditions specified in the
+     * 'routes' section are met. This is an optional parameter. When this
+     * property is not set, the messages which do not meet any of the
+     * conditions specified in the 'routes' section get routed to the built-in
+     * eventhub endpoint.
+     * 
      * @param fallbackRoute the fallbackRoute value to set.
      * @return the RoutingProperties object itself.
      */
@@ -129,9 +142,10 @@ public final class RoutingProperties {
     }
 
     /**
-     * Get the enrichments property: The list of user-provided enrichments that the IoT hub applies to messages to be
-     * delivered to built-in and custom endpoints. See: https://aka.ms/telemetryoneventgrid.
-     *
+     * Get the enrichments property: The list of user-provided enrichments that
+     * the IoT hub applies to messages to be delivered to built-in and custom
+     * endpoints. See: https://aka.ms/telemetryoneventgrid.
+     * 
      * @return the enrichments value.
      */
     public List<EnrichmentProperties> enrichments() {
@@ -139,9 +153,10 @@ public final class RoutingProperties {
     }
 
     /**
-     * Set the enrichments property: The list of user-provided enrichments that the IoT hub applies to messages to be
-     * delivered to built-in and custom endpoints. See: https://aka.ms/telemetryoneventgrid.
-     *
+     * Set the enrichments property: The list of user-provided enrichments that
+     * the IoT hub applies to messages to be delivered to built-in and custom
+     * endpoints. See: https://aka.ms/telemetryoneventgrid.
+     * 
      * @param enrichments the enrichments value to set.
      * @return the RoutingProperties object itself.
      */
@@ -152,7 +167,7 @@ public final class RoutingProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

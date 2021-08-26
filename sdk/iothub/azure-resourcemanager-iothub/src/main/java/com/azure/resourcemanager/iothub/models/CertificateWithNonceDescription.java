@@ -6,47 +6,48 @@ package com.azure.resourcemanager.iothub.models;
 
 import com.azure.resourcemanager.iothub.fluent.models.CertificateWithNonceDescriptionInner;
 
-/** An immutable client-side representation of CertificateWithNonceDescription. */
+/**
+ * An immutable client-side representation of CertificateWithNonceDescription.
+ */
 public interface CertificateWithNonceDescription {
     /**
      * Gets the id property: Fully qualified resource Id for the resource.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the name property: The name of the resource.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the type property: The type of the resource.
-     *
+     * 
      * @return the type value.
      */
     String type();
 
     /**
-     * Gets the properties property: The description of an X509 CA Certificate including the challenge nonce issued for
-     * the Proof-Of-Possession flow.
-     *
+     * Gets the properties property: The description of an X509 CA Certificate including the challenge nonce issued for the Proof-Of-Possession flow.
+     * 
      * @return the properties value.
      */
     CertificatePropertiesWithNonce properties();
 
     /**
      * Gets the etag property: The entity tag.
-     *
+     * 
      * @return the etag value.
      */
     String etag();
 
     /**
      * Gets the inner com.azure.resourcemanager.iothub.fluent.models.CertificateWithNonceDescriptionInner object.
-     *
+     * 
      * @return the inner object.
      */
     CertificateWithNonceDescriptionInner innerModel();

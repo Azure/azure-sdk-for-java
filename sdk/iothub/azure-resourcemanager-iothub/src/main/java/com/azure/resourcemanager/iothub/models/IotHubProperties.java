@@ -5,18 +5,23 @@
 package com.azure.resourcemanager.iothub.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.iothub.fluent.models.PrivateEndpointConnectionInner;
 import com.azure.resourcemanager.iothub.fluent.models.SharedAccessSignatureAuthorizationRuleInner;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/** The properties of an IoT hub. */
+/**
+ * The properties of an IoT hub.
+ */
 @Fluent
 public final class IotHubProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IotHubProperties.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(IotHubProperties.class);
 
     /*
      * The shared access policies you can use to secure a connection to the IoT
@@ -172,9 +177,9 @@ public final class IotHubProperties {
     private List<IotHubLocationDescription> locations;
 
     /**
-     * Get the authorizationPolicies property: The shared access policies you can use to secure a connection to the IoT
-     * hub.
-     *
+     * Get the authorizationPolicies property: The shared access policies you
+     * can use to secure a connection to the IoT hub.
+     * 
      * @return the authorizationPolicies value.
      */
     public List<SharedAccessSignatureAuthorizationRuleInner> authorizationPolicies() {
@@ -182,22 +187,21 @@ public final class IotHubProperties {
     }
 
     /**
-     * Set the authorizationPolicies property: The shared access policies you can use to secure a connection to the IoT
-     * hub.
-     *
+     * Set the authorizationPolicies property: The shared access policies you
+     * can use to secure a connection to the IoT hub.
+     * 
      * @param authorizationPolicies the authorizationPolicies value to set.
      * @return the IotHubProperties object itself.
      */
-    public IotHubProperties withAuthorizationPolicies(
-        List<SharedAccessSignatureAuthorizationRuleInner> authorizationPolicies) {
+    public IotHubProperties withAuthorizationPolicies(List<SharedAccessSignatureAuthorizationRuleInner> authorizationPolicies) {
         this.authorizationPolicies = authorizationPolicies;
         return this;
     }
 
     /**
-     * Get the disableLocalAuth property: If true, SAS tokens with Iot hub scoped SAS keys cannot be used for
-     * authentication.
-     *
+     * Get the disableLocalAuth property: If true, SAS tokens with Iot hub
+     * scoped SAS keys cannot be used for authentication.
+     * 
      * @return the disableLocalAuth value.
      */
     public Boolean disableLocalAuth() {
@@ -205,9 +209,9 @@ public final class IotHubProperties {
     }
 
     /**
-     * Set the disableLocalAuth property: If true, SAS tokens with Iot hub scoped SAS keys cannot be used for
-     * authentication.
-     *
+     * Set the disableLocalAuth property: If true, SAS tokens with Iot hub
+     * scoped SAS keys cannot be used for authentication.
+     * 
      * @param disableLocalAuth the disableLocalAuth value to set.
      * @return the IotHubProperties object itself.
      */
@@ -217,9 +221,10 @@ public final class IotHubProperties {
     }
 
     /**
-     * Get the disableDeviceSas property: If true, all device(including Edge devices but excluding modules) scoped SAS
-     * keys cannot be used for authentication.
-     *
+     * Get the disableDeviceSas property: If true, all device(including Edge
+     * devices but excluding modules) scoped SAS keys cannot be used for
+     * authentication.
+     * 
      * @return the disableDeviceSas value.
      */
     public Boolean disableDeviceSas() {
@@ -227,9 +232,10 @@ public final class IotHubProperties {
     }
 
     /**
-     * Set the disableDeviceSas property: If true, all device(including Edge devices but excluding modules) scoped SAS
-     * keys cannot be used for authentication.
-     *
+     * Set the disableDeviceSas property: If true, all device(including Edge
+     * devices but excluding modules) scoped SAS keys cannot be used for
+     * authentication.
+     * 
      * @param disableDeviceSas the disableDeviceSas value to set.
      * @return the IotHubProperties object itself.
      */
@@ -239,8 +245,9 @@ public final class IotHubProperties {
     }
 
     /**
-     * Get the disableModuleSas property: If true, all module scoped SAS keys cannot be used for authentication.
-     *
+     * Get the disableModuleSas property: If true, all module scoped SAS keys
+     * cannot be used for authentication.
+     * 
      * @return the disableModuleSas value.
      */
     public Boolean disableModuleSas() {
@@ -248,8 +255,9 @@ public final class IotHubProperties {
     }
 
     /**
-     * Set the disableModuleSas property: If true, all module scoped SAS keys cannot be used for authentication.
-     *
+     * Set the disableModuleSas property: If true, all module scoped SAS keys
+     * cannot be used for authentication.
+     * 
      * @param disableModuleSas the disableModuleSas value to set.
      * @return the IotHubProperties object itself.
      */
@@ -259,9 +267,10 @@ public final class IotHubProperties {
     }
 
     /**
-     * Get the restrictOutboundNetworkAccess property: If true, egress from IotHub will be restricted to only the
-     * allowed FQDNs that are configured via allowedFqdnList.
-     *
+     * Get the restrictOutboundNetworkAccess property: If true, egress from
+     * IotHub will be restricted to only the allowed FQDNs that are configured
+     * via allowedFqdnList.
+     * 
      * @return the restrictOutboundNetworkAccess value.
      */
     public Boolean restrictOutboundNetworkAccess() {
@@ -269,10 +278,12 @@ public final class IotHubProperties {
     }
 
     /**
-     * Set the restrictOutboundNetworkAccess property: If true, egress from IotHub will be restricted to only the
-     * allowed FQDNs that are configured via allowedFqdnList.
-     *
-     * @param restrictOutboundNetworkAccess the restrictOutboundNetworkAccess value to set.
+     * Set the restrictOutboundNetworkAccess property: If true, egress from
+     * IotHub will be restricted to only the allowed FQDNs that are configured
+     * via allowedFqdnList.
+     * 
+     * @param restrictOutboundNetworkAccess the restrictOutboundNetworkAccess
+     * value to set.
      * @return the IotHubProperties object itself.
      */
     public IotHubProperties withRestrictOutboundNetworkAccess(Boolean restrictOutboundNetworkAccess) {
@@ -281,8 +292,9 @@ public final class IotHubProperties {
     }
 
     /**
-     * Get the allowedFqdnList property: List of allowed FQDNs(Fully Qualified Domain Name) for egress from Iot Hub.
-     *
+     * Get the allowedFqdnList property: List of allowed FQDNs(Fully Qualified
+     * Domain Name) for egress from Iot Hub.
+     * 
      * @return the allowedFqdnList value.
      */
     public List<String> allowedFqdnList() {
@@ -290,8 +302,9 @@ public final class IotHubProperties {
     }
 
     /**
-     * Set the allowedFqdnList property: List of allowed FQDNs(Fully Qualified Domain Name) for egress from Iot Hub.
-     *
+     * Set the allowedFqdnList property: List of allowed FQDNs(Fully Qualified
+     * Domain Name) for egress from Iot Hub.
+     * 
      * @param allowedFqdnList the allowedFqdnList value to set.
      * @return the IotHubProperties object itself.
      */
@@ -301,8 +314,9 @@ public final class IotHubProperties {
     }
 
     /**
-     * Get the publicNetworkAccess property: Whether requests from Public Network are allowed.
-     *
+     * Get the publicNetworkAccess property: Whether requests from Public
+     * Network are allowed.
+     * 
      * @return the publicNetworkAccess value.
      */
     public PublicNetworkAccess publicNetworkAccess() {
@@ -310,8 +324,9 @@ public final class IotHubProperties {
     }
 
     /**
-     * Set the publicNetworkAccess property: Whether requests from Public Network are allowed.
-     *
+     * Set the publicNetworkAccess property: Whether requests from Public
+     * Network are allowed.
+     * 
      * @param publicNetworkAccess the publicNetworkAccess value to set.
      * @return the IotHubProperties object itself.
      */
@@ -322,7 +337,7 @@ public final class IotHubProperties {
 
     /**
      * Get the ipFilterRules property: The IP filter rules.
-     *
+     * 
      * @return the ipFilterRules value.
      */
     public List<IpFilterRule> ipFilterRules() {
@@ -331,7 +346,7 @@ public final class IotHubProperties {
 
     /**
      * Set the ipFilterRules property: The IP filter rules.
-     *
+     * 
      * @param ipFilterRules the ipFilterRules value to set.
      * @return the IotHubProperties object itself.
      */
@@ -342,7 +357,7 @@ public final class IotHubProperties {
 
     /**
      * Get the networkRuleSets property: Network Rule Set Properties of IotHub.
-     *
+     * 
      * @return the networkRuleSets value.
      */
     public NetworkRuleSetProperties networkRuleSets() {
@@ -351,7 +366,7 @@ public final class IotHubProperties {
 
     /**
      * Set the networkRuleSets property: Network Rule Set Properties of IotHub.
-     *
+     * 
      * @param networkRuleSets the networkRuleSets value to set.
      * @return the IotHubProperties object itself.
      */
@@ -361,9 +376,10 @@ public final class IotHubProperties {
     }
 
     /**
-     * Get the minTlsVersion property: Specifies the minimum TLS version to support for this hub. Can be set to "1.2" to
-     * have clients that use a TLS version below 1.2 to be rejected.
-     *
+     * Get the minTlsVersion property: Specifies the minimum TLS version to
+     * support for this hub. Can be set to "1.2" to have clients that use a TLS
+     * version below 1.2 to be rejected.
+     * 
      * @return the minTlsVersion value.
      */
     public String minTlsVersion() {
@@ -371,9 +387,10 @@ public final class IotHubProperties {
     }
 
     /**
-     * Set the minTlsVersion property: Specifies the minimum TLS version to support for this hub. Can be set to "1.2" to
-     * have clients that use a TLS version below 1.2 to be rejected.
-     *
+     * Set the minTlsVersion property: Specifies the minimum TLS version to
+     * support for this hub. Can be set to "1.2" to have clients that use a TLS
+     * version below 1.2 to be rejected.
+     * 
      * @param minTlsVersion the minTlsVersion value to set.
      * @return the IotHubProperties object itself.
      */
@@ -383,8 +400,9 @@ public final class IotHubProperties {
     }
 
     /**
-     * Get the privateEndpointConnections property: Private endpoint connections created on this IotHub.
-     *
+     * Get the privateEndpointConnections property: Private endpoint
+     * connections created on this IotHub.
+     * 
      * @return the privateEndpointConnections value.
      */
     public List<PrivateEndpointConnectionInner> privateEndpointConnections() {
@@ -392,20 +410,21 @@ public final class IotHubProperties {
     }
 
     /**
-     * Set the privateEndpointConnections property: Private endpoint connections created on this IotHub.
-     *
-     * @param privateEndpointConnections the privateEndpointConnections value to set.
+     * Set the privateEndpointConnections property: Private endpoint
+     * connections created on this IotHub.
+     * 
+     * @param privateEndpointConnections the privateEndpointConnections value
+     * to set.
      * @return the IotHubProperties object itself.
      */
-    public IotHubProperties withPrivateEndpointConnections(
-        List<PrivateEndpointConnectionInner> privateEndpointConnections) {
+    public IotHubProperties withPrivateEndpointConnections(List<PrivateEndpointConnectionInner> privateEndpointConnections) {
         this.privateEndpointConnections = privateEndpointConnections;
         return this;
     }
 
     /**
      * Get the provisioningState property: The provisioning state.
-     *
+     * 
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -414,7 +433,7 @@ public final class IotHubProperties {
 
     /**
      * Get the state property: The hub state.
-     *
+     * 
      * @return the state value.
      */
     public String state() {
@@ -423,7 +442,7 @@ public final class IotHubProperties {
 
     /**
      * Get the hostname property: The name of the host.
-     *
+     * 
      * @return the hostname value.
      */
     public String hostname() {
@@ -431,10 +450,11 @@ public final class IotHubProperties {
     }
 
     /**
-     * Get the eventHubEndpoints property: The Event Hub-compatible endpoint properties. The only possible keys to this
-     * dictionary is events. This key has to be present in the dictionary while making create or update calls for the
-     * IoT hub.
-     *
+     * Get the eventHubEndpoints property: The Event Hub-compatible endpoint
+     * properties. The only possible keys to this dictionary is events. This
+     * key has to be present in the dictionary while making create or update
+     * calls for the IoT hub.
+     * 
      * @return the eventHubEndpoints value.
      */
     public Map<String, EventHubProperties> eventHubEndpoints() {
@@ -442,10 +462,11 @@ public final class IotHubProperties {
     }
 
     /**
-     * Set the eventHubEndpoints property: The Event Hub-compatible endpoint properties. The only possible keys to this
-     * dictionary is events. This key has to be present in the dictionary while making create or update calls for the
-     * IoT hub.
-     *
+     * Set the eventHubEndpoints property: The Event Hub-compatible endpoint
+     * properties. The only possible keys to this dictionary is events. This
+     * key has to be present in the dictionary while making create or update
+     * calls for the IoT hub.
+     * 
      * @param eventHubEndpoints the eventHubEndpoints value to set.
      * @return the IotHubProperties object itself.
      */
@@ -455,9 +476,10 @@ public final class IotHubProperties {
     }
 
     /**
-     * Get the routing property: The routing related properties of the IoT hub. See:
+     * Get the routing property: The routing related properties of the IoT hub.
+     * See:
      * https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-messaging.
-     *
+     * 
      * @return the routing value.
      */
     public RoutingProperties routing() {
@@ -465,9 +487,10 @@ public final class IotHubProperties {
     }
 
     /**
-     * Set the routing property: The routing related properties of the IoT hub. See:
+     * Set the routing property: The routing related properties of the IoT hub.
+     * See:
      * https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-messaging.
-     *
+     * 
      * @param routing the routing value to set.
      * @return the IotHubProperties object itself.
      */
@@ -477,11 +500,13 @@ public final class IotHubProperties {
     }
 
     /**
-     * Get the storageEndpoints property: The list of Azure Storage endpoints where you can upload files. Currently you
-     * can configure only one Azure Storage account and that MUST have its key as $default. Specifying more than one
-     * storage account causes an error to be thrown. Not specifying a value for this property when the
-     * enableFileUploadNotifications property is set to True, causes an error to be thrown.
-     *
+     * Get the storageEndpoints property: The list of Azure Storage endpoints
+     * where you can upload files. Currently you can configure only one Azure
+     * Storage account and that MUST have its key as $default. Specifying more
+     * than one storage account causes an error to be thrown. Not specifying a
+     * value for this property when the enableFileUploadNotifications property
+     * is set to True, causes an error to be thrown.
+     * 
      * @return the storageEndpoints value.
      */
     public Map<String, StorageEndpointProperties> storageEndpoints() {
@@ -489,11 +514,13 @@ public final class IotHubProperties {
     }
 
     /**
-     * Set the storageEndpoints property: The list of Azure Storage endpoints where you can upload files. Currently you
-     * can configure only one Azure Storage account and that MUST have its key as $default. Specifying more than one
-     * storage account causes an error to be thrown. Not specifying a value for this property when the
-     * enableFileUploadNotifications property is set to True, causes an error to be thrown.
-     *
+     * Set the storageEndpoints property: The list of Azure Storage endpoints
+     * where you can upload files. Currently you can configure only one Azure
+     * Storage account and that MUST have its key as $default. Specifying more
+     * than one storage account causes an error to be thrown. Not specifying a
+     * value for this property when the enableFileUploadNotifications property
+     * is set to True, causes an error to be thrown.
+     * 
      * @param storageEndpoints the storageEndpoints value to set.
      * @return the IotHubProperties object itself.
      */
@@ -503,8 +530,9 @@ public final class IotHubProperties {
     }
 
     /**
-     * Get the messagingEndpoints property: The messaging endpoint properties for the file upload notification queue.
-     *
+     * Get the messagingEndpoints property: The messaging endpoint properties
+     * for the file upload notification queue.
+     * 
      * @return the messagingEndpoints value.
      */
     public Map<String, MessagingEndpointProperties> messagingEndpoints() {
@@ -512,8 +540,9 @@ public final class IotHubProperties {
     }
 
     /**
-     * Set the messagingEndpoints property: The messaging endpoint properties for the file upload notification queue.
-     *
+     * Set the messagingEndpoints property: The messaging endpoint properties
+     * for the file upload notification queue.
+     * 
      * @param messagingEndpoints the messagingEndpoints value to set.
      * @return the IotHubProperties object itself.
      */
@@ -523,8 +552,9 @@ public final class IotHubProperties {
     }
 
     /**
-     * Get the enableFileUploadNotifications property: If True, file upload notifications are enabled.
-     *
+     * Get the enableFileUploadNotifications property: If True, file upload
+     * notifications are enabled.
+     * 
      * @return the enableFileUploadNotifications value.
      */
     public Boolean enableFileUploadNotifications() {
@@ -532,9 +562,11 @@ public final class IotHubProperties {
     }
 
     /**
-     * Set the enableFileUploadNotifications property: If True, file upload notifications are enabled.
-     *
-     * @param enableFileUploadNotifications the enableFileUploadNotifications value to set.
+     * Set the enableFileUploadNotifications property: If True, file upload
+     * notifications are enabled.
+     * 
+     * @param enableFileUploadNotifications the enableFileUploadNotifications
+     * value to set.
      * @return the IotHubProperties object itself.
      */
     public IotHubProperties withEnableFileUploadNotifications(Boolean enableFileUploadNotifications) {
@@ -543,8 +575,9 @@ public final class IotHubProperties {
     }
 
     /**
-     * Get the cloudToDevice property: The IoT hub cloud-to-device messaging properties.
-     *
+     * Get the cloudToDevice property: The IoT hub cloud-to-device messaging
+     * properties.
+     * 
      * @return the cloudToDevice value.
      */
     public CloudToDeviceProperties cloudToDevice() {
@@ -552,8 +585,9 @@ public final class IotHubProperties {
     }
 
     /**
-     * Set the cloudToDevice property: The IoT hub cloud-to-device messaging properties.
-     *
+     * Set the cloudToDevice property: The IoT hub cloud-to-device messaging
+     * properties.
+     * 
      * @param cloudToDevice the cloudToDevice value to set.
      * @return the IotHubProperties object itself.
      */
@@ -564,7 +598,7 @@ public final class IotHubProperties {
 
     /**
      * Get the comments property: IoT hub comments.
-     *
+     * 
      * @return the comments value.
      */
     public String comments() {
@@ -573,7 +607,7 @@ public final class IotHubProperties {
 
     /**
      * Set the comments property: IoT hub comments.
-     *
+     * 
      * @param comments the comments value to set.
      * @return the IotHubProperties object itself.
      */
@@ -583,8 +617,9 @@ public final class IotHubProperties {
     }
 
     /**
-     * Get the features property: The capabilities and features enabled for the IoT hub.
-     *
+     * Get the features property: The capabilities and features enabled for the
+     * IoT hub.
+     * 
      * @return the features value.
      */
     public Capabilities features() {
@@ -592,8 +627,9 @@ public final class IotHubProperties {
     }
 
     /**
-     * Set the features property: The capabilities and features enabled for the IoT hub.
-     *
+     * Set the features property: The capabilities and features enabled for the
+     * IoT hub.
+     * 
      * @param features the features value to set.
      * @return the IotHubProperties object itself.
      */
@@ -604,7 +640,7 @@ public final class IotHubProperties {
 
     /**
      * Get the locations property: Primary and secondary location for iot hub.
-     *
+     * 
      * @return the locations value.
      */
     public List<IotHubLocationDescription> locations() {
@@ -613,7 +649,7 @@ public final class IotHubProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -630,37 +666,16 @@ public final class IotHubProperties {
             privateEndpointConnections().forEach(e -> e.validate());
         }
         if (eventHubEndpoints() != null) {
-            eventHubEndpoints()
-                .values()
-                .forEach(
-                    e -> {
-                        if (e != null) {
-                            e.validate();
-                        }
-                    });
+            eventHubEndpoints().values().forEach(e -> { if (e != null) { e.validate(); } });
         }
         if (routing() != null) {
             routing().validate();
         }
         if (storageEndpoints() != null) {
-            storageEndpoints()
-                .values()
-                .forEach(
-                    e -> {
-                        if (e != null) {
-                            e.validate();
-                        }
-                    });
+            storageEndpoints().values().forEach(e -> { if (e != null) { e.validate(); } });
         }
         if (messagingEndpoints() != null) {
-            messagingEndpoints()
-                .values()
-                .forEach(
-                    e -> {
-                        if (e != null) {
-                            e.validate();
-                        }
-                    });
+            messagingEndpoints().values().forEach(e -> { if (e != null) { e.validate(); } });
         }
         if (cloudToDevice() != null) {
             cloudToDevice().validate();

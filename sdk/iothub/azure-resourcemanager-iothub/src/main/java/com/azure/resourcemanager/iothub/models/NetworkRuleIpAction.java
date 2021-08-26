@@ -8,14 +8,18 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for NetworkRuleIpAction. */
+/**
+ * Defines values for NetworkRuleIpAction.
+ */
 public final class NetworkRuleIpAction extends ExpandableStringEnum<NetworkRuleIpAction> {
-    /** Static value Allow for NetworkRuleIpAction. */
+    /**
+     * Static value Allow for NetworkRuleIpAction.
+     */
     public static final NetworkRuleIpAction ALLOW = fromString("Allow");
 
     /**
      * Creates or finds a NetworkRuleIpAction from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding NetworkRuleIpAction.
      */
@@ -24,7 +28,9 @@ public final class NetworkRuleIpAction extends ExpandableStringEnum<NetworkRuleI
         return fromString(name, NetworkRuleIpAction.class);
     }
 
-    /** @return known NetworkRuleIpAction values. */
+    /**
+     * @return known NetworkRuleIpAction values.
+     */
     public static Collection<NetworkRuleIpAction> values() {
         return values(NetworkRuleIpAction.class);
     }

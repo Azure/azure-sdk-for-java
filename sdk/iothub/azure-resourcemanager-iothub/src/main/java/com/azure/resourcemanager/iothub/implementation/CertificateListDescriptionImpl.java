@@ -17,8 +17,7 @@ public final class CertificateListDescriptionImpl implements CertificateListDesc
 
     private final com.azure.resourcemanager.iothub.IotHubManager serviceManager;
 
-    CertificateListDescriptionImpl(
-        CertificateListDescriptionInner innerObject, com.azure.resourcemanager.iothub.IotHubManager serviceManager) {
+    CertificateListDescriptionImpl(CertificateListDescriptionInner innerObject, com.azure.resourcemanager.iothub.IotHubManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -26,12 +25,7 @@ public final class CertificateListDescriptionImpl implements CertificateListDesc
     public List<CertificateDescription> value() {
         List<CertificateDescriptionInner> inner = this.innerModel().value();
         if (inner != null) {
-            return Collections
-                .unmodifiableList(
-                    inner
-                        .stream()
-                        .map(inner1 -> new CertificateDescriptionImpl(inner1, this.manager()))
-                        .collect(Collectors.toList()));
+            return Collections.unmodifiableList(inner.stream().map(inner1 -> new CertificateDescriptionImpl(inner1, this.manager())).collect(Collectors.toList()));
         } else {
             return Collections.emptyList();
         }

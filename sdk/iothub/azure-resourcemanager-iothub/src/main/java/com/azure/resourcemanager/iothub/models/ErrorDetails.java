@@ -4,16 +4,21 @@
 
 package com.azure.resourcemanager.iothub.models;
 
+import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.management.exception.ManagementError;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Error details. */
+/**
+ * Error details.
+ */
 @Immutable
 public final class ErrorDetails extends ManagementError {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ErrorDetails.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(ErrorDetails.class);
 
     /*
      * The HTTP status code.
@@ -23,7 +28,7 @@ public final class ErrorDetails extends ManagementError {
 
     /**
      * Get the httpStatusCode property: The HTTP status code.
-     *
+     * 
      * @return the httpStatusCode value.
      */
     public String getHttpStatusCode() {
@@ -32,7 +37,7 @@ public final class ErrorDetails extends ManagementError {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

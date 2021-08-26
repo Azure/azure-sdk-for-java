@@ -13,8 +13,7 @@ public final class PrivateEndpointConnectionImpl implements PrivateEndpointConne
 
     private final com.azure.resourcemanager.iothub.IotHubManager serviceManager;
 
-    PrivateEndpointConnectionImpl(
-        PrivateEndpointConnectionInner innerObject, com.azure.resourcemanager.iothub.IotHubManager serviceManager) {
+    PrivateEndpointConnectionImpl(PrivateEndpointConnectionInner innerObject, com.azure.resourcemanager.iothub.IotHubManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

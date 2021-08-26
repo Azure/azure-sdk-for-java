@@ -5,14 +5,19 @@
 package com.azure.resourcemanager.iothub.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Input for testing route. */
+/**
+ * Input for testing route.
+ */
 @Fluent
 public final class TestRouteInput {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TestRouteInput.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(TestRouteInput.class);
 
     /*
      * Routing message
@@ -34,7 +39,7 @@ public final class TestRouteInput {
 
     /**
      * Get the message property: Routing message.
-     *
+     * 
      * @return the message value.
      */
     public RoutingMessage message() {
@@ -43,7 +48,7 @@ public final class TestRouteInput {
 
     /**
      * Set the message property: Routing message.
-     *
+     * 
      * @param message the message value to set.
      * @return the TestRouteInput object itself.
      */
@@ -54,7 +59,7 @@ public final class TestRouteInput {
 
     /**
      * Get the route property: Route properties.
-     *
+     * 
      * @return the route value.
      */
     public RouteProperties route() {
@@ -63,7 +68,7 @@ public final class TestRouteInput {
 
     /**
      * Set the route property: Route properties.
-     *
+     * 
      * @param route the route value to set.
      * @return the TestRouteInput object itself.
      */
@@ -74,7 +79,7 @@ public final class TestRouteInput {
 
     /**
      * Get the twin property: Routing Twin Reference.
-     *
+     * 
      * @return the twin value.
      */
     public RoutingTwin twin() {
@@ -83,7 +88,7 @@ public final class TestRouteInput {
 
     /**
      * Set the twin property: Routing Twin Reference.
-     *
+     * 
      * @param twin the twin value to set.
      * @return the TestRouteInput object itself.
      */
@@ -94,7 +99,7 @@ public final class TestRouteInput {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -102,9 +107,7 @@ public final class TestRouteInput {
             message().validate();
         }
         if (route() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property route in model TestRouteInput"));
+            throw logger.logExceptionAsError(new IllegalArgumentException("Missing required property route in model TestRouteInput"));
         } else {
             route().validate();
         }

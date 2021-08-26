@@ -4,19 +4,24 @@
 
 package com.azure.resourcemanager.iothub.fluent.models;
 
+import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.DateTimeRfc1123;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.iothub.models.JobStatus;
 import com.azure.resourcemanager.iothub.models.JobType;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** The properties of the Job Response object. */
+/**
+ * The properties of the Job Response object.
+ */
 @Immutable
 public final class JobResponseInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(JobResponseInner.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(JobResponseInner.class);
 
     /*
      * The job identifier.
@@ -68,7 +73,7 @@ public final class JobResponseInner {
 
     /**
      * Get the jobId property: The job identifier.
-     *
+     * 
      * @return the jobId value.
      */
     public String jobId() {
@@ -77,7 +82,7 @@ public final class JobResponseInner {
 
     /**
      * Get the startTimeUtc property: The start time of the job.
-     *
+     * 
      * @return the startTimeUtc value.
      */
     public OffsetDateTime startTimeUtc() {
@@ -89,7 +94,7 @@ public final class JobResponseInner {
 
     /**
      * Get the endTimeUtc property: The time the job stopped processing.
-     *
+     * 
      * @return the endTimeUtc value.
      */
     public OffsetDateTime endTimeUtc() {
@@ -101,7 +106,7 @@ public final class JobResponseInner {
 
     /**
      * Get the type property: The type of the job.
-     *
+     * 
      * @return the type value.
      */
     public JobType type() {
@@ -110,7 +115,7 @@ public final class JobResponseInner {
 
     /**
      * Get the status property: The status of the job.
-     *
+     * 
      * @return the status value.
      */
     public JobStatus status() {
@@ -118,8 +123,9 @@ public final class JobResponseInner {
     }
 
     /**
-     * Get the failureReason property: If status == failed, this string containing the reason for the failure.
-     *
+     * Get the failureReason property: If status == failed, this string
+     * containing the reason for the failure.
+     * 
      * @return the failureReason value.
      */
     public String failureReason() {
@@ -128,7 +134,7 @@ public final class JobResponseInner {
 
     /**
      * Get the statusMessage property: The status message for the job.
-     *
+     * 
      * @return the statusMessage value.
      */
     public String statusMessage() {
@@ -136,8 +142,9 @@ public final class JobResponseInner {
     }
 
     /**
-     * Get the parentJobId property: The job identifier of the parent job, if any.
-     *
+     * Get the parentJobId property: The job identifier of the parent job, if
+     * any.
+     * 
      * @return the parentJobId value.
      */
     public String parentJobId() {
@@ -146,7 +153,7 @@ public final class JobResponseInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

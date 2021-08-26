@@ -7,18 +7,17 @@ package com.azure.resourcemanager.iothub;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.iothub.models.OperationInputs;
 
-/** Samples for IotHubResource CheckNameAvailability. */
+/**
+ * Samples for IotHubResource CheckNameAvailability.
+ */
 public final class IotHubResourceCheckNameAvailabilitySamples {
     /**
      * Sample code: IotHubResource_CheckNameAvailability.
-     *
-     * @param iotHubManager Entry point to IotHubManager. Use this API to manage the IoT hubs in your Azure
-     *     subscription.
+     * 
+     * @param iotHubManager Entry point to IotHubManager.
+     * Use this API to manage the IoT hubs in your Azure subscription.
      */
-    public static void iotHubResourceCheckNameAvailability(
-        com.azure.resourcemanager.iothub.IotHubManager iotHubManager) {
-        iotHubManager
-            .iotHubResources()
-            .checkNameAvailabilityWithResponse(new OperationInputs().withName("test-request"), Context.NONE);
+    public static void iotHubResourceCheckNameAvailability(com.azure.resourcemanager.iothub.IotHubManager iotHubManager) {
+        iotHubManager.iotHubResources().checkNameAvailabilityWithResponse(new OperationInputs().withName("test-request"), Context.NONE);
     }
 }

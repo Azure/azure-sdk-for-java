@@ -5,15 +5,20 @@
 package com.azure.resourcemanager.iothub.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.Duration;
 
-/** The properties of the feedback queue for cloud-to-device messages. */
+/**
+ * The properties of the feedback queue for cloud-to-device messages.
+ */
 @Fluent
 public final class FeedbackProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(FeedbackProperties.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(FeedbackProperties.class);
 
     /*
      * The lock duration for the feedback queue. See:
@@ -39,9 +44,10 @@ public final class FeedbackProperties {
     private Integer maxDeliveryCount;
 
     /**
-     * Get the lockDurationAsIso8601 property: The lock duration for the feedback queue. See:
+     * Get the lockDurationAsIso8601 property: The lock duration for the
+     * feedback queue. See:
      * https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-messaging#cloud-to-device-messages.
-     *
+     * 
      * @return the lockDurationAsIso8601 value.
      */
     public Duration lockDurationAsIso8601() {
@@ -49,9 +55,10 @@ public final class FeedbackProperties {
     }
 
     /**
-     * Set the lockDurationAsIso8601 property: The lock duration for the feedback queue. See:
+     * Set the lockDurationAsIso8601 property: The lock duration for the
+     * feedback queue. See:
      * https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-messaging#cloud-to-device-messages.
-     *
+     * 
      * @param lockDurationAsIso8601 the lockDurationAsIso8601 value to set.
      * @return the FeedbackProperties object itself.
      */
@@ -61,10 +68,10 @@ public final class FeedbackProperties {
     }
 
     /**
-     * Get the ttlAsIso8601 property: The period of time for which a message is available to consume before it is
-     * expired by the IoT hub. See:
+     * Get the ttlAsIso8601 property: The period of time for which a message is
+     * available to consume before it is expired by the IoT hub. See:
      * https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-messaging#cloud-to-device-messages.
-     *
+     * 
      * @return the ttlAsIso8601 value.
      */
     public Duration ttlAsIso8601() {
@@ -72,10 +79,10 @@ public final class FeedbackProperties {
     }
 
     /**
-     * Set the ttlAsIso8601 property: The period of time for which a message is available to consume before it is
-     * expired by the IoT hub. See:
+     * Set the ttlAsIso8601 property: The period of time for which a message is
+     * available to consume before it is expired by the IoT hub. See:
      * https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-messaging#cloud-to-device-messages.
-     *
+     * 
      * @param ttlAsIso8601 the ttlAsIso8601 value to set.
      * @return the FeedbackProperties object itself.
      */
@@ -85,9 +92,10 @@ public final class FeedbackProperties {
     }
 
     /**
-     * Get the maxDeliveryCount property: The number of times the IoT hub attempts to deliver a message on the feedback
-     * queue. See: https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-messaging#cloud-to-device-messages.
-     *
+     * Get the maxDeliveryCount property: The number of times the IoT hub
+     * attempts to deliver a message on the feedback queue. See:
+     * https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-messaging#cloud-to-device-messages.
+     * 
      * @return the maxDeliveryCount value.
      */
     public Integer maxDeliveryCount() {
@@ -95,9 +103,10 @@ public final class FeedbackProperties {
     }
 
     /**
-     * Set the maxDeliveryCount property: The number of times the IoT hub attempts to deliver a message on the feedback
-     * queue. See: https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-messaging#cloud-to-device-messages.
-     *
+     * Set the maxDeliveryCount property: The number of times the IoT hub
+     * attempts to deliver a message on the feedback queue. See:
+     * https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-messaging#cloud-to-device-messages.
+     * 
      * @param maxDeliveryCount the maxDeliveryCount value to set.
      * @return the FeedbackProperties object itself.
      */
@@ -108,7 +117,7 @@ public final class FeedbackProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

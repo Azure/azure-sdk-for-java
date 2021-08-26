@@ -5,14 +5,19 @@
 package com.azure.resourcemanager.iothub.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Range of route errors. */
+/**
+ * Range of route errors.
+ */
 @Fluent
 public final class RouteErrorRange {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RouteErrorRange.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(RouteErrorRange.class);
 
     /*
      * Start where the route error happened
@@ -28,7 +33,7 @@ public final class RouteErrorRange {
 
     /**
      * Get the start property: Start where the route error happened.
-     *
+     * 
      * @return the start value.
      */
     public RouteErrorPosition start() {
@@ -37,7 +42,7 @@ public final class RouteErrorRange {
 
     /**
      * Set the start property: Start where the route error happened.
-     *
+     * 
      * @param start the start value to set.
      * @return the RouteErrorRange object itself.
      */
@@ -48,7 +53,7 @@ public final class RouteErrorRange {
 
     /**
      * Get the end property: End where the route error happened.
-     *
+     * 
      * @return the end value.
      */
     public RouteErrorPosition end() {
@@ -57,7 +62,7 @@ public final class RouteErrorRange {
 
     /**
      * Set the end property: End where the route error happened.
-     *
+     * 
      * @param end the end value to set.
      * @return the RouteErrorRange object itself.
      */
@@ -68,7 +73,7 @@ public final class RouteErrorRange {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -5,16 +5,21 @@
 package com.azure.resourcemanager.iothub.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.iothub.fluent.models.IotHubSkuDescriptionInner;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The JSON-serialized array of IotHubSkuDescription objects with a next link. */
+/**
+ * The JSON-serialized array of IotHubSkuDescription objects with a next link.
+ */
 @Fluent
 public final class IotHubSkuDescriptionListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IotHubSkuDescriptionListResult.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(IotHubSkuDescriptionListResult.class);
 
     /*
      * The array of IotHubSkuDescription.
@@ -30,7 +35,7 @@ public final class IotHubSkuDescriptionListResult {
 
     /**
      * Get the value property: The array of IotHubSkuDescription.
-     *
+     * 
      * @return the value value.
      */
     public List<IotHubSkuDescriptionInner> value() {
@@ -39,7 +44,7 @@ public final class IotHubSkuDescriptionListResult {
 
     /**
      * Set the value property: The array of IotHubSkuDescription.
-     *
+     * 
      * @param value the value value to set.
      * @return the IotHubSkuDescriptionListResult object itself.
      */
@@ -50,7 +55,7 @@ public final class IotHubSkuDescriptionListResult {
 
     /**
      * Get the nextLink property: The next link.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +64,7 @@ public final class IotHubSkuDescriptionListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

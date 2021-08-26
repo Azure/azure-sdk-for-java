@@ -6,17 +6,17 @@ package com.azure.resourcemanager.iothub;
 
 import com.azure.core.util.Context;
 
-/** Samples for PrivateLinkResourcesOperation Get. */
+/**
+ * Samples for PrivateLinkResourcesOperation Get.
+ */
 public final class PrivateLinkResourcesOperationGetSamples {
     /**
      * Sample code: PrivateLinkResources_List.
-     *
-     * @param iotHubManager Entry point to IotHubManager. Use this API to manage the IoT hubs in your Azure
-     *     subscription.
+     * 
+     * @param iotHubManager Entry point to IotHubManager.
+     * Use this API to manage the IoT hubs in your Azure subscription.
      */
     public static void privateLinkResourcesList(com.azure.resourcemanager.iothub.IotHubManager iotHubManager) {
-        iotHubManager
-            .privateLinkResourcesOperations()
-            .getWithResponse("myResourceGroup", "testHub", "iotHub", Context.NONE);
+        iotHubManager.privateLinkResourcesOperations().getWithResponse("myResourceGroup", "testHub", "iotHub", Context.NONE);
     }
 }
