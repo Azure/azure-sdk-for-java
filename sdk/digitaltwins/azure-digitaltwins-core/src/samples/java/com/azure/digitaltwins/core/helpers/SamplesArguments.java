@@ -1,25 +1,16 @@
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License.
-
 package com.azure.digitaltwins.core.helpers;
 
 import com.azure.core.http.policy.HttpLogDetailLevel;
-import org.apache.commons.cli.CommandLine;
-import org.apache.commons.cli.CommandLineParser;
-import org.apache.commons.cli.DefaultParser;
-import org.apache.commons.cli.HelpFormatter;
-import org.apache.commons.cli.Option;
-import org.apache.commons.cli.Options;
-import org.apache.commons.cli.ParseException;
+import org.apache.commons.cli.*;
 
 public class SamplesArguments {
 
-    private static final String DIGITALTWINS_URL = "DigitalTwinsEndpoint";
-    private static final String TENANT_ID = "tenantId";
-    private static final String CLIENT_ID = "clientId";
-    private static final String CLIENT_SECRET = "clientSecret";
-    private static final String LOG_DETAIL_LEVEL = "logLevel";
-    private static final String EVENT_ROUTE_ENDPOINT_NAME = "eventRouteEndpointName";
+    private final String DIGITALTWINS_URL = "DigitalTwinsEndpoint";
+    private final String TENANT_ID = "tenantId";
+    private final String CLIENT_ID = "clientId";
+    private final String CLIENT_SECRET = "clientSecret";
+    private final String LOG_DETAIL_LEVEL = "logLevel";
+    private final String EVENT_ROUTE_ENDPOINT_NAME = "eventRouteEndpointName";
 
     private String digitalTwinEndpoint;
     private String tenantId;
@@ -58,7 +49,8 @@ public class SamplesArguments {
 
         try {
             cmd = parser.parse(options, args);
-        } catch (ParseException e) {
+        }
+        catch (ParseException e) {
             System.out.println(e.getMessage());
             formatter.printHelp("java <sampleClass>.jar", options);
 
@@ -79,7 +71,8 @@ public class SamplesArguments {
                 int providedLogDetailLevel = Integer.parseInt(inputLogLevel);
 
                 this.httpLogDetailLevel = convertFromInt(providedLogDetailLevel);
-            } catch (NumberFormatException e) {
+            }
+            catch (NumberFormatException e) {
                 System.out.println("Provided log detail level must be an integer ranging from 0 - 4");
                 formatter.printHelp("java <sampleClass>.jar", options);
 
@@ -113,7 +106,8 @@ public class SamplesArguments {
     }
 
     private static HttpLogDetailLevel convertFromInt(int input) throws NumberFormatException {
-        switch (input) {
+        switch (input)
+        {
             case 0:
                 return HttpLogDetailLevel.NONE;
             case 1:
@@ -124,8 +118,8 @@ public class SamplesArguments {
                 return HttpLogDetailLevel.BODY;
             case 4:
                 return HttpLogDetailLevel.BODY_AND_HEADERS;
-            default:
-                throw new NumberFormatException("Provided log detail level must be an integer ranging from 0 - 4");
         }
+
+        throw new NumberFormatException("Provided log detail level must be an integer ranging from 0 - 4");
     }
 }

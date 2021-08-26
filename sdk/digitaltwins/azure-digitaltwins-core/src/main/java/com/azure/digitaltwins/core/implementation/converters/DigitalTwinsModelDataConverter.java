@@ -24,7 +24,7 @@ public final class DigitalTwinsModelDataConverter {
 
         String modelStringValue = null;
 
-        if (input.getModel() != null) {
+        if (input.getModel() != null){
             try {
                 modelStringValue = new ObjectMapper().writeValueAsString(input.getModel());
             } catch (JsonProcessingException e) {
@@ -41,5 +41,5 @@ public final class DigitalTwinsModelDataConverter {
             input.isDecommissioned());
     }
 
-    private DigitalTwinsModelDataConverter() { }
+    private DigitalTwinsModelDataConverter() {}
 }

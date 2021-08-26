@@ -22,97 +22,97 @@ public class SamplesConstants {
     public static final String RELATIONSHIP_TARGET_MODEL_ID = "RELATIONSHIP_TARGET_MODEL_TO_BE_REPLACED";
 
     public static final String TEMPORARY_MODEL_WITH_RELATIONSHIP_PAYLOAD =
-        "{"
-            + "\"@id\":\"" + MODEL_ID + "\","
-            + "\"@type\": \"Interface\","
-            + "\"@context\": \"dtmi:dtdl:context;2\","
-            + "\"displayName\": \"" + MODEL_DISPLAY_NAME + "\","
-            + "\"contents\": ["
-                + "{"
-                    + "\"@type\": \"Relationship\","
-                    + "\"name\": \"" + RELATIONSHIP_NAME + "\","
-                    + "\"target\": \"" + RELATIONSHIP_TARGET_MODEL_ID  + "\","
-                    + "\"properties\": ["
-                    + "{"
-                        + "\"@type\": \"Property\","
-                        + "\"name\": \"Prop1\","
-                        + "\"schema\": \"string\""
-                    + "},"
-                    + "{"
-                        + "\"@type\": \"Property\","
-                        + "\"name\": \"Prop2\","
-                        + "\"schema\": \"integer\""
-                    + "}]"
-                + "}"
-            + "]"
-        + "}";
+        "{" +
+            "\"@id\":\"" + MODEL_ID + "\"," +
+            "\"@type\": \"Interface\"," +
+            "\"@context\": \"dtmi:dtdl:context;2\"," +
+            "\"displayName\": \"" + MODEL_DISPLAY_NAME + "\"," +
+            "\"contents\": [" +
+                "{" +
+                    "\"@type\": \"Relationship\"," +
+                    "\"name\": \"" + RELATIONSHIP_NAME + "\"," +
+                    "\"target\": \"" + RELATIONSHIP_TARGET_MODEL_ID  + "\"," +
+                    "\"properties\": [" +
+                    "{" +
+                        "\"@type\": \"Property\"," +
+                        "\"name\": \"Prop1\"," +
+                        "\"schema\": \"string\"" +
+                    "}," +
+                    "{" +
+                        "\"@type\": \"Property\"," +
+                        "\"name\": \"Prop2\"," +
+                        "\"schema\": \"integer\"" +
+                    "}]" +
+                "}" +
+            "]" +
+        "}";
 
     public static final String TEMPORARY_TWIN_PAYLOAD =
-        "{"
-            + "\"$metadata\" :{"
-                + "\"$model\": \"" + MODEL_ID + "\""
-            + "},"
-            + "\"Prop1\": \"Value\","
-            + "\"Prop2\": 987,"
-            + "\"Component1\":{"
-                + "\"$metadata\":{},"
-                + "\"ComponentProp1\": \"Value\","
-                + "\"ComponentProp2\": 123"
-            + "}"
-        + "}";
+        "{" +
+            "\"$metadata\" :{" +
+                "\"$model\": \""+ MODEL_ID + "\"" +
+            "}," +
+            "\"Prop1\": \"Value\"," +
+            "\"Prop2\": 987," +
+            "\"Component1\":{" +
+                "\"$metadata\":{}," +
+                "\"ComponentProp1\": \"Value\"," +
+                "\"ComponentProp2\": 123" +
+            "}" +
+        "}";
 
     public static final String TEMPORARY_COMPONENT_MODEL_PAYLOAD =
-        "{"
-            + "\"@id\": \"" + COMPONENT_ID + "\","
-            + "\"@type\": \"Interface\","
-            + "\"@context\": \"dtmi:dtdl:context;2\","
-            + "\"displayName\": \"Component1\","
-            + "\"contents\": ["
-                + "{"
-                    + "\"@type\": \"Property\","
-                    + "\"name\": \"ComponentProp1\","
-                    + "\"schema\": \"string\""
-                + "},"
-                + "{"
-                    + "\"@type\": \"Property\","
-                    + "\"name\": \"ComponentProp2\","
-                    + "\"schema\": \"integer\""
-                + "},"
-                + "{"
-                    + "\"@type\": \"Telemetry\","
-                    + "\"name\": \"ComponentTelemetry1\","
-                    + "\"schema\": \"integer\""
-                + "}"
-            + "]"
-        + "}";
+        "{" +
+            "\"@id\": \"" + COMPONENT_ID + "\","+
+            "\"@type\": \"Interface\"," +
+            "\"@context\": \"dtmi:dtdl:context;2\"," +
+            "\"displayName\": \"Component1\"," +
+            "\"contents\": [" +
+                "{" +
+                    "\"@type\": \"Property\"," +
+                    "\"name\": \"ComponentProp1\"," +
+                    "\"schema\": \"string\"" +
+                "}," +
+                "{" +
+                    "\"@type\": \"Property\"," +
+                    "\"name\": \"ComponentProp2\"," +
+                    "\"schema\": \"integer\"" +
+                "}," +
+                "{" +
+                    "\"@type\": \"Telemetry\"," +
+                    "\"name\": \"ComponentTelemetry1\"," +
+                    "\"schema\": \"integer\"" +
+                "}" +
+            "]" +
+        "}";
 
     public static final String TEMPORARY_MODEL_WITH_COMPONENT_PAYLOAD =
-        "{"
-            + "\"@id\": \"" + MODEL_ID + "\","
-            + "\"@type\": \"Interface\","
-            + "\"@context\": \"dtmi:dtdl:context;2\","
-            + "\"displayName\": \"TempModel\","
-            + "\"contents\": ["
-                + "{"
-                    + "\"@type\": \"Property\","
-                    + "\"name\": \"Prop1\","
-                    + "\"schema\": \"string\""
-                + "},"
-                + "{"
-                    + "\"@type\": \"Property\","
-                    + "\"name\": \"Prop2\","
-                    + "\"schema\": \"integer\""
-                + "},"
-                + "{"
-                    + "\"@type\": \"Component\","
-                    + "\"name\": \"Component1\","
-                    + "\"schema\": \"" + COMPONENT_ID + "\""
-                + "},"
-                + "{"
-                    + "\"@type\": \"Telemetry\","
-                    + "\"name\": \"Telemetry1\","
-                    + "\"schema\": \"integer\""
-                + "}"
-            + "]"
-        + "}";
+        "{" +
+            "\"@id\": \""+ MODEL_ID + "\"," +
+            "\"@type\": \"Interface\"," +
+            "\"@context\": \"dtmi:dtdl:context;2\"," +
+            "\"displayName\": \"TempModel\"," +
+            "\"contents\": [" +
+                "{" +
+                    "\"@type\": \"Property\"," +
+                    "\"name\": \"Prop1\"," +
+                    "\"schema\": \"string\"" +
+                "}," +
+                "{" +
+                    "\"@type\": \"Property\"," +
+                    "\"name\": \"Prop2\"," +
+                    "\"schema\": \"integer\"" +
+                "}," +
+                "{" +
+                    "\"@type\": \"Component\"," +
+                    "\"name\": \"Component1\"," +
+                    "\"schema\": \"" + COMPONENT_ID + "\"" +
+                "}," +
+                "{" +
+                    "\"@type\": \"Telemetry\"," +
+                    "\"name\": \"Telemetry1\"," +
+                    "\"schema\": \"integer\"" +
+                "}" +
+            "]" +
+        "}";
 }

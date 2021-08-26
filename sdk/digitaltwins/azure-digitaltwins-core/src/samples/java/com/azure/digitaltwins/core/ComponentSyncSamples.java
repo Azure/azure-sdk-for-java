@@ -1,12 +1,9 @@
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License.
-
 package com.azure.digitaltwins.core;
 
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.rest.Response;
-import com.azure.core.models.JsonPatchDocument;
 import com.azure.core.util.Context;
+import com.azure.core.models.JsonPatchDocument;
 import com.azure.digitaltwins.core.helpers.ConsoleLogger;
 import com.azure.digitaltwins.core.helpers.SamplesArguments;
 import com.azure.digitaltwins.core.helpers.SamplesConstants;
@@ -29,16 +26,12 @@ import java.util.function.Function;
 
 public class ComponentSyncSamples {
     private static DigitalTwinsClient client;
-    private static final ObjectMapper MAPPER = new ObjectMapper();
+    private static final ObjectMapper mapper = new ObjectMapper();
 
-    private static Function<Integer, String> randomIntegerStringGenerator;
-
-    static {
-        randomIntegerStringGenerator = (maxLength) -> {
-            int randInt = new Random().nextInt((int) Math.pow(10, 8) - 1) + 1;
-            return String.valueOf(randInt);
-        };
-    }
+    public static Function<Integer, String> randomIntegerStringGenerator = (maxLength) -> {
+        int randInt = new Random().nextInt((int)Math.pow(10, 8) - 1) + 1;
+        return String.valueOf(randInt);
+    };
 
     public static void main(String[] args) throws IOException {
 
@@ -60,7 +53,7 @@ public class ComponentSyncSamples {
 
         // This mapper gets used to deserialize a digital twin that has a date time within a property metadata, so it
         // needs to have this module in order to correctly deserialize that date time
-        MAPPER.registerModule(new JavaTimeModule());
+        mapper.registerModule(new JavaTimeModule());
 
         runComponentSample();
     }
@@ -118,7 +111,7 @@ public class ComponentSyncSamples {
         Response<String> getStringDigitalTwinResponse = client.getDigitalTwinWithResponse(basicDigitalTwinId, String.class, Context.NONE);
         ConsoleLogger.print("Successfully retrieved digital twin as a json string \n" + getStringDigitalTwinResponse.getValue());
 
-        BasicDigitalTwin deserializedDigitalTwin = MAPPER.readValue(getStringDigitalTwinResponse.getValue(), BasicDigitalTwin.class);
+        BasicDigitalTwin deserializedDigitalTwin = mapper.readValue(getStringDigitalTwinResponse.getValue(), BasicDigitalTwin.class);
         ConsoleLogger.print("Deserialized the string response into a BasicDigitalTwin with Id: " + deserializedDigitalTwin.getId());
 
         // You can also get a digital twin using the built in deserializer into a BasicDigitalTwin.
@@ -130,9 +123,9 @@ public class ComponentSyncSamples {
 
             BasicDigitalTwin basicDigitalTwin = basicDigitalTwinResponse.getValue();
 
-            String component1RawText = MAPPER.writeValueAsString(basicDigitalTwin.getContents().get("Component1"));
+            String component1RawText = mapper.writeValueAsString(basicDigitalTwin.getContents().get("Component1"));
 
-            HashMap component1 = MAPPER.readValue(component1RawText, HashMap.class);
+            HashMap component1 = mapper.readValue(component1RawText, HashMap.class);
 
             ConsoleLogger.print("Retrieved digital twin using generic API to use built in deserialization into a BasicDigitalTwin with Id: " + basicDigitalTwin.getId() + ":\n\t"
                 + "ETag: " + basicDigitalTwin.getETag() + "\n\t"
@@ -165,14 +158,16 @@ public class ComponentSyncSamples {
         // Clean up
         try {
             client.deleteDigitalTwin(basicDigitalTwinId);
-        } catch (ErrorResponseException ex) {
+        }
+        catch (ErrorResponseException ex) {
             ConsoleLogger.printFatal("Failed to delete digital twin due to" + ex);
         }
 
         try {
             client.deleteModel(modelId);
             client.deleteModel(componentModelId);
-        } catch (ErrorResponseException ex) {
+        }
+        catch (ErrorResponseException ex) {
             ConsoleLogger.printFatal("Failed to delete models due to" + ex);
         }
     }

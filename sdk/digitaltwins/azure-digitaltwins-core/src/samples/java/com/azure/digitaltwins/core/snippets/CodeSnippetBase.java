@@ -1,6 +1,3 @@
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License.
-
 package com.azure.digitaltwins.core.snippets;
 
 public abstract class CodeSnippetBase {
@@ -126,10 +123,9 @@ public abstract class CodeSnippetBase {
     /**
      * Implementation not provided for this method
      *
-     * @param fileName file name.
      * @return {@code null}
      */
-    protected String loadModelFromFile(String fileName) {
+    protected String loadModelFromFile(String fileName){
         return null;
     }
 }
