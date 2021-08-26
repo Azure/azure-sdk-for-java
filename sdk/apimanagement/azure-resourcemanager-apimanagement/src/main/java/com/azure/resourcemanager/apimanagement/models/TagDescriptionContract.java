@@ -31,6 +31,20 @@ public interface TagDescriptionContract {
     String type();
 
     /**
+     * Gets the tagId property: Identifier of the tag in the form of /tags/{tagId}.
+     *
+     * @return the tagId value.
+     */
+    String tagId();
+
+    /**
+     * Gets the displayName property: Tag name.
+     *
+     * @return the displayName value.
+     */
+    String displayName();
+
+    /**
      * Gets the description property: Description of the Tag.
      *
      * @return the description value.
@@ -50,20 +64,6 @@ public interface TagDescriptionContract {
      * @return the externalDocsDescription value.
      */
     String externalDocsDescription();
-
-    /**
-     * Gets the tagId property: Identifier of the tag in the form of /tags/{tagId}.
-     *
-     * @return the tagId value.
-     */
-    String tagId();
-
-    /**
-     * Gets the displayName property: Tag name.
-     *
-     * @return the displayName value.
-     */
-    String displayName();
 
     /**
      * Gets the inner com.azure.resourcemanager.apimanagement.fluent.models.TagDescriptionContractInner object.

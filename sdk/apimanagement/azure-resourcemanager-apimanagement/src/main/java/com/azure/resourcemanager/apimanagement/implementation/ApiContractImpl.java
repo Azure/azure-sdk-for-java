@@ -37,6 +37,35 @@ public final class ApiContractImpl implements ApiContract, ApiContract.Definitio
         return this.innerModel().type();
     }
 
+    public String sourceApiId() {
+        return this.innerModel().sourceApiId();
+    }
+
+    public String displayName() {
+        return this.innerModel().displayName();
+    }
+
+    public String serviceUrl() {
+        return this.innerModel().serviceUrl();
+    }
+
+    public String path() {
+        return this.innerModel().path();
+    }
+
+    public List<Protocol> protocols() {
+        List<Protocol> inner = this.innerModel().protocols();
+        if (inner != null) {
+            return Collections.unmodifiableList(inner);
+        } else {
+            return Collections.emptyList();
+        }
+    }
+
+    public ApiVersionSetContractDetails apiVersionSet() {
+        return this.innerModel().apiVersionSet();
+    }
+
     public String description() {
         return this.innerModel().description();
     }
@@ -83,35 +112,6 @@ public final class ApiContractImpl implements ApiContract, ApiContract.Definitio
 
     public Boolean subscriptionRequired() {
         return this.innerModel().subscriptionRequired();
-    }
-
-    public String sourceApiId() {
-        return this.innerModel().sourceApiId();
-    }
-
-    public String displayName() {
-        return this.innerModel().displayName();
-    }
-
-    public String serviceUrl() {
-        return this.innerModel().serviceUrl();
-    }
-
-    public String path() {
-        return this.innerModel().path();
-    }
-
-    public List<Protocol> protocols() {
-        List<Protocol> inner = this.innerModel().protocols();
-        if (inner != null) {
-            return Collections.unmodifiableList(inner);
-        } else {
-            return Collections.emptyList();
-        }
-    }
-
-    public ApiVersionSetContractDetails apiVersionSet() {
-        return this.innerModel().apiVersionSet();
     }
 
     public ApiContractInner innerModel() {
@@ -224,6 +224,76 @@ public final class ApiContractImpl implements ApiContract, ApiContract.Definitio
         return this;
     }
 
+    public ApiContractImpl withValue(String value) {
+        this.createParameters.withValue(value);
+        return this;
+    }
+
+    public ApiContractImpl withFormat(ContentFormat format) {
+        this.createParameters.withFormat(format);
+        return this;
+    }
+
+    public ApiContractImpl withWsdlSelector(ApiCreateOrUpdatePropertiesWsdlSelector wsdlSelector) {
+        this.createParameters.withWsdlSelector(wsdlSelector);
+        return this;
+    }
+
+    public ApiContractImpl withSoapApiType(SoapApiType soapApiType) {
+        this.createParameters.withSoapApiType(soapApiType);
+        return this;
+    }
+
+    public ApiContractImpl withSourceApiId(String sourceApiId) {
+        this.createParameters.withSourceApiId(sourceApiId);
+        return this;
+    }
+
+    public ApiContractImpl withDisplayName(String displayName) {
+        if (isInCreateMode()) {
+            this.createParameters.withDisplayName(displayName);
+            return this;
+        } else {
+            this.updateParameters.withDisplayName(displayName);
+            return this;
+        }
+    }
+
+    public ApiContractImpl withServiceUrl(String serviceUrl) {
+        if (isInCreateMode()) {
+            this.createParameters.withServiceUrl(serviceUrl);
+            return this;
+        } else {
+            this.updateParameters.withServiceUrl(serviceUrl);
+            return this;
+        }
+    }
+
+    public ApiContractImpl withPath(String path) {
+        if (isInCreateMode()) {
+            this.createParameters.withPath(path);
+            return this;
+        } else {
+            this.updateParameters.withPath(path);
+            return this;
+        }
+    }
+
+    public ApiContractImpl withProtocols(List<Protocol> protocols) {
+        if (isInCreateMode()) {
+            this.createParameters.withProtocols(protocols);
+            return this;
+        } else {
+            this.updateParameters.withProtocols(protocols);
+            return this;
+        }
+    }
+
+    public ApiContractImpl withApiVersionSet(ApiVersionSetContractDetails apiVersionSet) {
+        this.createParameters.withApiVersionSet(apiVersionSet);
+        return this;
+    }
+
     public ApiContractImpl withDescription(String description) {
         if (isInCreateMode()) {
             this.createParameters.withDescription(description);
@@ -333,76 +403,6 @@ public final class ApiContractImpl implements ApiContract, ApiContract.Definitio
             this.updateParameters.withSubscriptionRequired(subscriptionRequired);
             return this;
         }
-    }
-
-    public ApiContractImpl withSourceApiId(String sourceApiId) {
-        this.createParameters.withSourceApiId(sourceApiId);
-        return this;
-    }
-
-    public ApiContractImpl withDisplayName(String displayName) {
-        if (isInCreateMode()) {
-            this.createParameters.withDisplayName(displayName);
-            return this;
-        } else {
-            this.updateParameters.withDisplayName(displayName);
-            return this;
-        }
-    }
-
-    public ApiContractImpl withServiceUrl(String serviceUrl) {
-        if (isInCreateMode()) {
-            this.createParameters.withServiceUrl(serviceUrl);
-            return this;
-        } else {
-            this.updateParameters.withServiceUrl(serviceUrl);
-            return this;
-        }
-    }
-
-    public ApiContractImpl withPath(String path) {
-        if (isInCreateMode()) {
-            this.createParameters.withPath(path);
-            return this;
-        } else {
-            this.updateParameters.withPath(path);
-            return this;
-        }
-    }
-
-    public ApiContractImpl withProtocols(List<Protocol> protocols) {
-        if (isInCreateMode()) {
-            this.createParameters.withProtocols(protocols);
-            return this;
-        } else {
-            this.updateParameters.withProtocols(protocols);
-            return this;
-        }
-    }
-
-    public ApiContractImpl withApiVersionSet(ApiVersionSetContractDetails apiVersionSet) {
-        this.createParameters.withApiVersionSet(apiVersionSet);
-        return this;
-    }
-
-    public ApiContractImpl withValue(String value) {
-        this.createParameters.withValue(value);
-        return this;
-    }
-
-    public ApiContractImpl withFormat(ContentFormat format) {
-        this.createParameters.withFormat(format);
-        return this;
-    }
-
-    public ApiContractImpl withWsdlSelector(ApiCreateOrUpdatePropertiesWsdlSelector wsdlSelector) {
-        this.createParameters.withWsdlSelector(wsdlSelector);
-        return this;
-    }
-
-    public ApiContractImpl withSoapApiType(SoapApiType soapApiType) {
-        this.createParameters.withSoapApiType(soapApiType);
-        return this;
     }
 
     public ApiContractImpl withIfMatch(String ifMatch) {

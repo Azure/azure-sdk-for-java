@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.OperationDisplay;
 import com.azure.resourcemanager.network.models.OperationPropertiesFormatServiceSpecification;
@@ -13,9 +12,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Network REST API operation definition. */
-@JsonFlatten
 @Fluent
-public class OperationInner {
+public final class OperationInner {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationInner.class);
 
     /*
@@ -37,10 +35,10 @@ public class OperationInner {
     private String origin;
 
     /*
-     * Specification of the service.
+     * Operation properties format.
      */
-    @JsonProperty(value = "properties.serviceSpecification")
-    private OperationPropertiesFormatServiceSpecification serviceSpecification;
+    @JsonProperty(value = "properties")
+    private OperationPropertiesFormat innerProperties;
 
     /**
      * Get the name property: Operation name: {provider}/{resource}/{operation}.
@@ -103,12 +101,21 @@ public class OperationInner {
     }
 
     /**
+     * Get the innerProperties property: Operation properties format.
+     *
+     * @return the innerProperties value.
+     */
+    private OperationPropertiesFormat innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
      * Get the serviceSpecification property: Specification of the service.
      *
      * @return the serviceSpecification value.
      */
     public OperationPropertiesFormatServiceSpecification serviceSpecification() {
-        return this.serviceSpecification;
+        return this.innerProperties() == null ? null : this.innerProperties().serviceSpecification();
     }
 
     /**
@@ -118,7 +125,10 @@ public class OperationInner {
      * @return the OperationInner object itself.
      */
     public OperationInner withServiceSpecification(OperationPropertiesFormatServiceSpecification serviceSpecification) {
-        this.serviceSpecification = serviceSpecification;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new OperationPropertiesFormat();
+        }
+        this.innerProperties().withServiceSpecification(serviceSpecification);
         return this;
     }
 
@@ -131,8 +141,8 @@ public class OperationInner {
         if (display() != null) {
             display().validate();
         }
-        if (serviceSpecification() != null) {
-            serviceSpecification().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

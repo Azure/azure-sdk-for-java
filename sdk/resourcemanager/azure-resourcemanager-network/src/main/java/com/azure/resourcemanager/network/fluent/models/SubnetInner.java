@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.Delegation;
@@ -20,10 +19,15 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Subnet in a virtual network resource. */
-@JsonFlatten
 @Fluent
-public class SubnetInner extends SubResource {
+public final class SubnetInner extends SubResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(SubnetInner.class);
+
+    /*
+     * Properties of the subnet.
+     */
+    @JsonProperty(value = "properties")
+    private SubnetPropertiesFormatInner innerProperties;
 
     /*
      * The name of the resource that is unique within a resource group. This
@@ -44,123 +48,14 @@ public class SubnetInner extends SubResource {
     @JsonProperty(value = "type")
     private String type;
 
-    /*
-     * The address prefix for the subnet.
+    /**
+     * Get the innerProperties property: Properties of the subnet.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.addressPrefix")
-    private String addressPrefix;
-
-    /*
-     * List of address prefixes for the subnet.
-     */
-    @JsonProperty(value = "properties.addressPrefixes")
-    private List<String> addressPrefixes;
-
-    /*
-     * The reference to the NetworkSecurityGroup resource.
-     */
-    @JsonProperty(value = "properties.networkSecurityGroup")
-    private NetworkSecurityGroupInner networkSecurityGroup;
-
-    /*
-     * The reference to the RouteTable resource.
-     */
-    @JsonProperty(value = "properties.routeTable")
-    private RouteTableInner routeTable;
-
-    /*
-     * Nat gateway associated with this subnet.
-     */
-    @JsonProperty(value = "properties.natGateway")
-    private SubResource natGateway;
-
-    /*
-     * An array of service endpoints.
-     */
-    @JsonProperty(value = "properties.serviceEndpoints")
-    private List<ServiceEndpointPropertiesFormat> serviceEndpoints;
-
-    /*
-     * An array of service endpoint policies.
-     */
-    @JsonProperty(value = "properties.serviceEndpointPolicies")
-    private List<ServiceEndpointPolicyInner> serviceEndpointPolicies;
-
-    /*
-     * An array of references to private endpoints.
-     */
-    @JsonProperty(value = "properties.privateEndpoints", access = JsonProperty.Access.WRITE_ONLY)
-    private List<PrivateEndpointInner> privateEndpoints;
-
-    /*
-     * An array of references to the network interface IP configurations using
-     * subnet.
-     */
-    @JsonProperty(value = "properties.ipConfigurations", access = JsonProperty.Access.WRITE_ONLY)
-    private List<IpConfigurationInner> ipConfigurations;
-
-    /*
-     * Array of IP configuration profiles which reference this subnet.
-     */
-    @JsonProperty(value = "properties.ipConfigurationProfiles", access = JsonProperty.Access.WRITE_ONLY)
-    private List<IpConfigurationProfileInner> ipConfigurationProfiles;
-
-    /*
-     * Array of IpAllocation which reference this subnet.
-     */
-    @JsonProperty(value = "properties.ipAllocations")
-    private List<SubResource> ipAllocations;
-
-    /*
-     * An array of references to the external resources using subnet.
-     */
-    @JsonProperty(value = "properties.resourceNavigationLinks", access = JsonProperty.Access.WRITE_ONLY)
-    private List<ResourceNavigationLink> resourceNavigationLinks;
-
-    /*
-     * An array of references to services injecting into this subnet.
-     */
-    @JsonProperty(value = "properties.serviceAssociationLinks", access = JsonProperty.Access.WRITE_ONLY)
-    private List<ServiceAssociationLink> serviceAssociationLinks;
-
-    /*
-     * An array of references to the delegations on the subnet.
-     */
-    @JsonProperty(value = "properties.delegations")
-    private List<Delegation> delegations;
-
-    /*
-     * A read-only string identifying the intention of use for this subnet
-     * based on delegations and other user-defined properties.
-     */
-    @JsonProperty(value = "properties.purpose", access = JsonProperty.Access.WRITE_ONLY)
-    private String purpose;
-
-    /*
-     * The provisioning state of the subnet resource.
-     */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningState provisioningState;
-
-    /*
-     * Enable or Disable apply network policies on private end point in the
-     * subnet.
-     */
-    @JsonProperty(value = "properties.privateEndpointNetworkPolicies")
-    private VirtualNetworkPrivateEndpointNetworkPolicies privateEndpointNetworkPolicies;
-
-    /*
-     * Enable or Disable apply network policies on private link service in the
-     * subnet.
-     */
-    @JsonProperty(value = "properties.privateLinkServiceNetworkPolicies")
-    private VirtualNetworkPrivateLinkServiceNetworkPolicies privateLinkServiceNetworkPolicies;
-
-    /*
-     * Application gateway IP configurations of virtual network resource.
-     */
-    @JsonProperty(value = "properties.applicationGatewayIpConfigurations")
-    private List<ApplicationGatewayIpConfigurationInner> applicationGatewayIpConfigurations;
+    private SubnetPropertiesFormatInner innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the name property: The name of the resource that is unique within a resource group. This name can be used to
@@ -213,13 +108,20 @@ public class SubnetInner extends SubResource {
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public SubnetInner withId(String id) {
+        super.withId(id);
+        return this;
+    }
+
     /**
      * Get the addressPrefix property: The address prefix for the subnet.
      *
      * @return the addressPrefix value.
      */
     public String addressPrefix() {
-        return this.addressPrefix;
+        return this.innerProperties() == null ? null : this.innerProperties().addressPrefix();
     }
 
     /**
@@ -229,7 +131,10 @@ public class SubnetInner extends SubResource {
      * @return the SubnetInner object itself.
      */
     public SubnetInner withAddressPrefix(String addressPrefix) {
-        this.addressPrefix = addressPrefix;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SubnetPropertiesFormatInner();
+        }
+        this.innerProperties().withAddressPrefix(addressPrefix);
         return this;
     }
 
@@ -239,7 +144,7 @@ public class SubnetInner extends SubResource {
      * @return the addressPrefixes value.
      */
     public List<String> addressPrefixes() {
-        return this.addressPrefixes;
+        return this.innerProperties() == null ? null : this.innerProperties().addressPrefixes();
     }
 
     /**
@@ -249,7 +154,10 @@ public class SubnetInner extends SubResource {
      * @return the SubnetInner object itself.
      */
     public SubnetInner withAddressPrefixes(List<String> addressPrefixes) {
-        this.addressPrefixes = addressPrefixes;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SubnetPropertiesFormatInner();
+        }
+        this.innerProperties().withAddressPrefixes(addressPrefixes);
         return this;
     }
 
@@ -259,7 +167,7 @@ public class SubnetInner extends SubResource {
      * @return the networkSecurityGroup value.
      */
     public NetworkSecurityGroupInner networkSecurityGroup() {
-        return this.networkSecurityGroup;
+        return this.innerProperties() == null ? null : this.innerProperties().networkSecurityGroup();
     }
 
     /**
@@ -269,7 +177,10 @@ public class SubnetInner extends SubResource {
      * @return the SubnetInner object itself.
      */
     public SubnetInner withNetworkSecurityGroup(NetworkSecurityGroupInner networkSecurityGroup) {
-        this.networkSecurityGroup = networkSecurityGroup;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SubnetPropertiesFormatInner();
+        }
+        this.innerProperties().withNetworkSecurityGroup(networkSecurityGroup);
         return this;
     }
 
@@ -279,7 +190,7 @@ public class SubnetInner extends SubResource {
      * @return the routeTable value.
      */
     public RouteTableInner routeTable() {
-        return this.routeTable;
+        return this.innerProperties() == null ? null : this.innerProperties().routeTable();
     }
 
     /**
@@ -289,7 +200,10 @@ public class SubnetInner extends SubResource {
      * @return the SubnetInner object itself.
      */
     public SubnetInner withRouteTable(RouteTableInner routeTable) {
-        this.routeTable = routeTable;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SubnetPropertiesFormatInner();
+        }
+        this.innerProperties().withRouteTable(routeTable);
         return this;
     }
 
@@ -299,7 +213,7 @@ public class SubnetInner extends SubResource {
      * @return the natGateway value.
      */
     public SubResource natGateway() {
-        return this.natGateway;
+        return this.innerProperties() == null ? null : this.innerProperties().natGateway();
     }
 
     /**
@@ -309,7 +223,10 @@ public class SubnetInner extends SubResource {
      * @return the SubnetInner object itself.
      */
     public SubnetInner withNatGateway(SubResource natGateway) {
-        this.natGateway = natGateway;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SubnetPropertiesFormatInner();
+        }
+        this.innerProperties().withNatGateway(natGateway);
         return this;
     }
 
@@ -319,7 +236,7 @@ public class SubnetInner extends SubResource {
      * @return the serviceEndpoints value.
      */
     public List<ServiceEndpointPropertiesFormat> serviceEndpoints() {
-        return this.serviceEndpoints;
+        return this.innerProperties() == null ? null : this.innerProperties().serviceEndpoints();
     }
 
     /**
@@ -329,7 +246,10 @@ public class SubnetInner extends SubResource {
      * @return the SubnetInner object itself.
      */
     public SubnetInner withServiceEndpoints(List<ServiceEndpointPropertiesFormat> serviceEndpoints) {
-        this.serviceEndpoints = serviceEndpoints;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SubnetPropertiesFormatInner();
+        }
+        this.innerProperties().withServiceEndpoints(serviceEndpoints);
         return this;
     }
 
@@ -339,7 +259,7 @@ public class SubnetInner extends SubResource {
      * @return the serviceEndpointPolicies value.
      */
     public List<ServiceEndpointPolicyInner> serviceEndpointPolicies() {
-        return this.serviceEndpointPolicies;
+        return this.innerProperties() == null ? null : this.innerProperties().serviceEndpointPolicies();
     }
 
     /**
@@ -349,7 +269,10 @@ public class SubnetInner extends SubResource {
      * @return the SubnetInner object itself.
      */
     public SubnetInner withServiceEndpointPolicies(List<ServiceEndpointPolicyInner> serviceEndpointPolicies) {
-        this.serviceEndpointPolicies = serviceEndpointPolicies;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SubnetPropertiesFormatInner();
+        }
+        this.innerProperties().withServiceEndpointPolicies(serviceEndpointPolicies);
         return this;
     }
 
@@ -359,7 +282,7 @@ public class SubnetInner extends SubResource {
      * @return the privateEndpoints value.
      */
     public List<PrivateEndpointInner> privateEndpoints() {
-        return this.privateEndpoints;
+        return this.innerProperties() == null ? null : this.innerProperties().privateEndpoints();
     }
 
     /**
@@ -369,7 +292,7 @@ public class SubnetInner extends SubResource {
      * @return the ipConfigurations value.
      */
     public List<IpConfigurationInner> ipConfigurations() {
-        return this.ipConfigurations;
+        return this.innerProperties() == null ? null : this.innerProperties().ipConfigurations();
     }
 
     /**
@@ -378,7 +301,7 @@ public class SubnetInner extends SubResource {
      * @return the ipConfigurationProfiles value.
      */
     public List<IpConfigurationProfileInner> ipConfigurationProfiles() {
-        return this.ipConfigurationProfiles;
+        return this.innerProperties() == null ? null : this.innerProperties().ipConfigurationProfiles();
     }
 
     /**
@@ -387,7 +310,7 @@ public class SubnetInner extends SubResource {
      * @return the ipAllocations value.
      */
     public List<SubResource> ipAllocations() {
-        return this.ipAllocations;
+        return this.innerProperties() == null ? null : this.innerProperties().ipAllocations();
     }
 
     /**
@@ -397,7 +320,10 @@ public class SubnetInner extends SubResource {
      * @return the SubnetInner object itself.
      */
     public SubnetInner withIpAllocations(List<SubResource> ipAllocations) {
-        this.ipAllocations = ipAllocations;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SubnetPropertiesFormatInner();
+        }
+        this.innerProperties().withIpAllocations(ipAllocations);
         return this;
     }
 
@@ -407,7 +333,7 @@ public class SubnetInner extends SubResource {
      * @return the resourceNavigationLinks value.
      */
     public List<ResourceNavigationLink> resourceNavigationLinks() {
-        return this.resourceNavigationLinks;
+        return this.innerProperties() == null ? null : this.innerProperties().resourceNavigationLinks();
     }
 
     /**
@@ -416,7 +342,7 @@ public class SubnetInner extends SubResource {
      * @return the serviceAssociationLinks value.
      */
     public List<ServiceAssociationLink> serviceAssociationLinks() {
-        return this.serviceAssociationLinks;
+        return this.innerProperties() == null ? null : this.innerProperties().serviceAssociationLinks();
     }
 
     /**
@@ -425,7 +351,7 @@ public class SubnetInner extends SubResource {
      * @return the delegations value.
      */
     public List<Delegation> delegations() {
-        return this.delegations;
+        return this.innerProperties() == null ? null : this.innerProperties().delegations();
     }
 
     /**
@@ -435,7 +361,10 @@ public class SubnetInner extends SubResource {
      * @return the SubnetInner object itself.
      */
     public SubnetInner withDelegations(List<Delegation> delegations) {
-        this.delegations = delegations;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SubnetPropertiesFormatInner();
+        }
+        this.innerProperties().withDelegations(delegations);
         return this;
     }
 
@@ -446,7 +375,7 @@ public class SubnetInner extends SubResource {
      * @return the purpose value.
      */
     public String purpose() {
-        return this.purpose;
+        return this.innerProperties() == null ? null : this.innerProperties().purpose();
     }
 
     /**
@@ -455,7 +384,7 @@ public class SubnetInner extends SubResource {
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
-        return this.provisioningState;
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
     /**
@@ -465,7 +394,7 @@ public class SubnetInner extends SubResource {
      * @return the privateEndpointNetworkPolicies value.
      */
     public VirtualNetworkPrivateEndpointNetworkPolicies privateEndpointNetworkPolicies() {
-        return this.privateEndpointNetworkPolicies;
+        return this.innerProperties() == null ? null : this.innerProperties().privateEndpointNetworkPolicies();
     }
 
     /**
@@ -477,7 +406,10 @@ public class SubnetInner extends SubResource {
      */
     public SubnetInner withPrivateEndpointNetworkPolicies(
         VirtualNetworkPrivateEndpointNetworkPolicies privateEndpointNetworkPolicies) {
-        this.privateEndpointNetworkPolicies = privateEndpointNetworkPolicies;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SubnetPropertiesFormatInner();
+        }
+        this.innerProperties().withPrivateEndpointNetworkPolicies(privateEndpointNetworkPolicies);
         return this;
     }
 
@@ -488,7 +420,7 @@ public class SubnetInner extends SubResource {
      * @return the privateLinkServiceNetworkPolicies value.
      */
     public VirtualNetworkPrivateLinkServiceNetworkPolicies privateLinkServiceNetworkPolicies() {
-        return this.privateLinkServiceNetworkPolicies;
+        return this.innerProperties() == null ? null : this.innerProperties().privateLinkServiceNetworkPolicies();
     }
 
     /**
@@ -500,7 +432,10 @@ public class SubnetInner extends SubResource {
      */
     public SubnetInner withPrivateLinkServiceNetworkPolicies(
         VirtualNetworkPrivateLinkServiceNetworkPolicies privateLinkServiceNetworkPolicies) {
-        this.privateLinkServiceNetworkPolicies = privateLinkServiceNetworkPolicies;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SubnetPropertiesFormatInner();
+        }
+        this.innerProperties().withPrivateLinkServiceNetworkPolicies(privateLinkServiceNetworkPolicies);
         return this;
     }
 
@@ -511,7 +446,7 @@ public class SubnetInner extends SubResource {
      * @return the applicationGatewayIpConfigurations value.
      */
     public List<ApplicationGatewayIpConfigurationInner> applicationGatewayIpConfigurations() {
-        return this.applicationGatewayIpConfigurations;
+        return this.innerProperties() == null ? null : this.innerProperties().applicationGatewayIpConfigurations();
     }
 
     /**
@@ -523,14 +458,10 @@ public class SubnetInner extends SubResource {
      */
     public SubnetInner withApplicationGatewayIpConfigurations(
         List<ApplicationGatewayIpConfigurationInner> applicationGatewayIpConfigurations) {
-        this.applicationGatewayIpConfigurations = applicationGatewayIpConfigurations;
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public SubnetInner withId(String id) {
-        super.withId(id);
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SubnetPropertiesFormatInner();
+        }
+        this.innerProperties().withApplicationGatewayIpConfigurations(applicationGatewayIpConfigurations);
         return this;
     }
 
@@ -540,38 +471,8 @@ public class SubnetInner extends SubResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (networkSecurityGroup() != null) {
-            networkSecurityGroup().validate();
-        }
-        if (routeTable() != null) {
-            routeTable().validate();
-        }
-        if (serviceEndpoints() != null) {
-            serviceEndpoints().forEach(e -> e.validate());
-        }
-        if (serviceEndpointPolicies() != null) {
-            serviceEndpointPolicies().forEach(e -> e.validate());
-        }
-        if (privateEndpoints() != null) {
-            privateEndpoints().forEach(e -> e.validate());
-        }
-        if (ipConfigurations() != null) {
-            ipConfigurations().forEach(e -> e.validate());
-        }
-        if (ipConfigurationProfiles() != null) {
-            ipConfigurationProfiles().forEach(e -> e.validate());
-        }
-        if (resourceNavigationLinks() != null) {
-            resourceNavigationLinks().forEach(e -> e.validate());
-        }
-        if (serviceAssociationLinks() != null) {
-            serviceAssociationLinks().forEach(e -> e.validate());
-        }
-        if (delegations() != null) {
-            delegations().forEach(e -> e.validate());
-        }
-        if (applicationGatewayIpConfigurations() != null) {
-            applicationGatewayIpConfigurations().forEach(e -> e.validate());
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }
