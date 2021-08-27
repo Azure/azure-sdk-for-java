@@ -42,6 +42,8 @@ final class GenericResourceImpl
     private String resourceType;
     private String apiVersion;
 
+    private GenericResourceInner updateParameter = new GenericResourceInner();
+
     GenericResourceImpl(String key,
                         GenericResourceInner innerModel,
                         final ResourceManager resourceManager) {
@@ -119,32 +121,54 @@ final class GenericResourceImpl
                 this.apiVersion());
     }
 
+    @Override
+    public GenericResourceImpl update() {
+        this.updateParameter = new GenericResourceInner();
+        return super.update();
+    }
+
     public GenericResourceImpl withProperties(Object properties) {
-        innerModel().withProperties(properties);
+        if (isInCreateMode()) {
+            innerModel().withProperties(properties);
+        } else {
+            updateParameter.withProperties(properties);
+        }
         return this;
     }
 
     @Override
     public GenericResourceImpl withKind(String kind) {
-        innerModel().withKind(kind);
+        if (isInCreateMode()) {
+            innerModel().withKind(kind);
+        } else {
+            updateParameter.withKind(kind);
+        }
         return this;
     }
 
     @Override
     public GenericResourceImpl withSku(Sku sku) {
-        innerModel().withSku(sku);
+        if (isInCreateMode()) {
+            innerModel().withSku(sku);
+        } else {
+            updateParameter.withSku(sku);
+        }
         return this;
     }
 
     @Override
     public GenericResourceImpl withIdentity(Identity identity) {
-        innerModel().withIdentity(identity);
+        if (isInCreateMode()) {
+            innerModel().withIdentity(identity);
+        } else {
+            updateParameter.withIdentity(identity);
+        }
         return this;
     }
 
     @Override
     public GenericResourceImpl withoutIdentity() {
-        innerModel().withIdentity(new Identity().withType(ResourceIdentityType.NONE));
+        this.withIdentity(new Identity().withType(ResourceIdentityType.NONE));
         return this;
     }
 
@@ -160,7 +184,7 @@ final class GenericResourceImpl
     }
 
     public GenericResourceImpl withPlan(String name, String publisher, String product, String promotionCode) {
-        innerModel().withPlan(
+        this.withPlan(
             new Plan()
                 .withName(name)
                 .withPublisher(publisher)
@@ -170,13 +194,21 @@ final class GenericResourceImpl
     }
 
     public GenericResourceImpl withPlan(Plan plan) {
-        innerModel().withPlan(plan);
+        if (isInCreateMode()) {
+            innerModel().withPlan(plan);
+        } else {
+            updateParameter.withPlan(plan);
+        }
         return this;
     }
 
     @Override
     public GenericResourceImpl withoutPlan() {
-        innerModel().withPlan(null);
+        if (isInCreateMode()) {
+            innerModel().withPlan(null);
+        } else {
+            updateParameter.withPlan(null);
+        }
         return this;
     }
 
@@ -230,9 +262,6 @@ final class GenericResourceImpl
         return observable
                 .flatMap(api -> {
                     String name = this.name();
-                    if (!isInCreateMode()) {
-                        name = ResourceUtils.nameFromResourceId(innerModel().id());
-                    }
                     return resourceClient.createOrUpdateAsync(
                             resourceGroupName(),
                             resourceProviderNamespace,
@@ -244,6 +273,27 @@ final class GenericResourceImpl
                             .subscribeOn(ResourceManagerUtils.InternalRuntimeContext.getReactorScheduler())
                             .map(innerToFluentMap(this));
                 });
+    }
+
+    @Override
+    public Mono<GenericResource> updateResourceAsync() {
+        Mono<String> observable = this.getApiVersionAsync();
+        final ResourcesClient resourceClient = this.manager().serviceClient().getResources();
+        return observable
+            .flatMap(api -> {
+                String name = ResourceUtils.nameFromResourceId(innerModel().id());
+                updateParameter.withTags(innerModel().tags());
+                return resourceClient.updateAsync(
+                        resourceGroupName(),
+                        resourceProviderNamespace,
+                        parentResourcePath(),
+                        resourceType,
+                        name,
+                        api,
+                        updateParameter)
+                    .subscribeOn(ResourceManagerUtils.InternalRuntimeContext.getReactorScheduler())
+                    .map(innerToFluentMap(this));
+            });
     }
 
     private Mono<String> getApiVersionAsync() {
