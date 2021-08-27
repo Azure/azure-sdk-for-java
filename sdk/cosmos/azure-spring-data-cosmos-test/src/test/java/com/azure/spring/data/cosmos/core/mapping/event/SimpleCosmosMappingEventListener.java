@@ -4,7 +4,7 @@ package com.azure.spring.data.cosmos.core.mapping.event;
 
 import java.util.ArrayList;
 
-public class SimpleMappingEventListener extends AbstractCosmosEventListener<Object> {
+public class SimpleCosmosMappingEventListener extends AbstractCosmosEventListener<Object> {
 
     public ArrayList<AfterLoadEvent<Object>> onAfterLoadEvents = new ArrayList<>();
 

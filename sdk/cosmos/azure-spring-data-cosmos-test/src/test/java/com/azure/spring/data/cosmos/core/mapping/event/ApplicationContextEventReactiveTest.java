@@ -8,7 +8,6 @@ import com.azure.spring.data.cosmos.common.TestConstants;
 import com.azure.spring.data.cosmos.core.CosmosTemplate;
 import com.azure.spring.data.cosmos.domain.Address;
 import com.azure.spring.data.cosmos.repository.TestRepositoryConfig;
-import com.azure.spring.data.cosmos.repository.repository.AddressRepository;
 import com.azure.spring.data.cosmos.repository.repository.ReactiveAddressRepository;
 import org.assertj.core.util.Lists;
 import org.junit.Before;
@@ -42,7 +41,7 @@ public class ApplicationContextEventReactiveTest {
     @Autowired
     private CosmosTemplate template;
     @Autowired
-    private SimpleMappingEventListener simpleMappingEventListener;
+    private SimpleCosmosMappingEventListener simpleCosmosMappingEventListener;
 
     @Rule
     public ExpectedException expectedException = ExpectedException.none();
@@ -52,23 +51,23 @@ public class ApplicationContextEventReactiveTest {
         collectionManager.ensureContainersCreatedAndEmpty(template, Address.class);
         repository.saveAll(Lists.newArrayList(TEST_ADDRESS1_PARTITION1, TEST_ADDRESS1_PARTITION2,
             TEST_ADDRESS2_PARTITION1)).collectList().block();
-        simpleMappingEventListener.onAfterLoadEvents = new ArrayList<>();
+        simpleCosmosMappingEventListener.onAfterLoadEvents = new ArrayList<>();
     }
 
     @Test
     public void shouldPublishAfterLoadEventOnFindById() {
         repository.findById(TEST_ADDRESS1_PARTITION1.getPostalCode(), new PartitionKey(TEST_ADDRESS1_PARTITION1.getCity())).block();
-        assertThat(simpleMappingEventListener.onAfterLoadEvents).hasSize(1);
-        assertThat(simpleMappingEventListener.onAfterLoadEvents.get(0).getContainerName()).isEqualTo("Address");
+        assertThat(simpleCosmosMappingEventListener.onAfterLoadEvents).hasSize(1);
+        assertThat(simpleCosmosMappingEventListener.onAfterLoadEvents.get(0).getContainerName()).isEqualTo("Address");
     }
 
     @Test
     public void shouldPublishAfterLoadEventOnFindAll() {
         repository.findAll().collectList().block();
-        assertThat(simpleMappingEventListener.onAfterLoadEvents).hasSize(3);
-        assertThat(simpleMappingEventListener.onAfterLoadEvents.get(0).getContainerName()).isEqualTo("Address");
-        assertThat(simpleMappingEventListener.onAfterLoadEvents.get(1).getContainerName()).isEqualTo("Address");
-        assertThat(simpleMappingEventListener.onAfterLoadEvents.get(2).getContainerName()).isEqualTo("Address");
+        assertThat(simpleCosmosMappingEventListener.onAfterLoadEvents).hasSize(3);
+        assertThat(simpleCosmosMappingEventListener.onAfterLoadEvents.get(0).getContainerName()).isEqualTo("Address");
+        assertThat(simpleCosmosMappingEventListener.onAfterLoadEvents.get(1).getContainerName()).isEqualTo("Address");
+        assertThat(simpleCosmosMappingEventListener.onAfterLoadEvents.get(2).getContainerName()).isEqualTo("Address");
     }
 
     @Test
@@ -76,40 +75,40 @@ public class ApplicationContextEventReactiveTest {
         List<String> cities = new ArrayList<>();
         cities.add(TEST_ADDRESS1_PARTITION1.getCity());
         repository.findByCityIn(cities).collectList().block();
-        assertThat(simpleMappingEventListener.onAfterLoadEvents).hasSize(2);
-        assertThat(simpleMappingEventListener.onAfterLoadEvents.get(0).getContainerName()).isEqualTo("Address");
-        assertThat(simpleMappingEventListener.onAfterLoadEvents.get(1).getContainerName()).isEqualTo("Address");
+        assertThat(simpleCosmosMappingEventListener.onAfterLoadEvents).hasSize(2);
+        assertThat(simpleCosmosMappingEventListener.onAfterLoadEvents.get(0).getContainerName()).isEqualTo("Address");
+        assertThat(simpleCosmosMappingEventListener.onAfterLoadEvents.get(1).getContainerName()).isEqualTo("Address");
     }
 
     @Test
     public void shouldPublishAfterLoadEventForAnnotatedCustomQueries() {
         repository.annotatedFindListByCity(TEST_ADDRESS1_PARTITION1.getCity()).collectList().block();
-        assertThat(simpleMappingEventListener.onAfterLoadEvents).hasSize(2);
-        assertThat(simpleMappingEventListener.onAfterLoadEvents.get(0).getContainerName()).isEqualTo("Address");
-        assertThat(simpleMappingEventListener.onAfterLoadEvents.get(1).getContainerName()).isEqualTo("Address");
+        assertThat(simpleCosmosMappingEventListener.onAfterLoadEvents).hasSize(2);
+        assertThat(simpleCosmosMappingEventListener.onAfterLoadEvents.get(0).getContainerName()).isEqualTo("Address");
+        assertThat(simpleCosmosMappingEventListener.onAfterLoadEvents.get(1).getContainerName()).isEqualTo("Address");
     }
 
     @Test
     public void shouldNotPublishAfterLoadEventForInserts() {
         repository.save(TEST_ADDRESS4_PARTITION3).block();
-        assertThat(simpleMappingEventListener.onAfterLoadEvents.isEmpty()).isTrue();
+        assertThat(simpleCosmosMappingEventListener.onAfterLoadEvents.isEmpty()).isTrue();
     }
 
     @Test
     public void shouldNotPublishAfterLoadEventForUpdates() {
         repository.save(new Address(TEST_ADDRESS1_PARTITION1.getPostalCode(), TestConstants.STREET_0, TEST_ADDRESS1_PARTITION1.getCity())).block();
-        assertThat(simpleMappingEventListener.onAfterLoadEvents.isEmpty()).isTrue();
+        assertThat(simpleCosmosMappingEventListener.onAfterLoadEvents.isEmpty()).isTrue();
     }
 
     @Test
     public void shouldNotPublishAfterLoadEventForDeletes() {
         repository.delete(TEST_ADDRESS1_PARTITION1).block();
-        assertThat(simpleMappingEventListener.onAfterLoadEvents.isEmpty()).isTrue();
+        assertThat(simpleCosmosMappingEventListener.onAfterLoadEvents.isEmpty()).isTrue();
     }
 
     @Test
     public void shouldNotPublishAfterLoadEventForCustomDeleteQuery() {
         repository.deleteByCity(TEST_ADDRESS1_PARTITION1.getCity()).block();
-        assertThat(simpleMappingEventListener.onAfterLoadEvents.isEmpty()).isTrue();
+        assertThat(simpleCosmosMappingEventListener.onAfterLoadEvents.isEmpty()).isTrue();
     }
 }

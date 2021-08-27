@@ -11,7 +11,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.NullNode;
 import org.junit.Test;
 
-public class AbstractCosmosEventListenerUnitTests {
+public class CosmosEventListenerUnitTests {
 
 	@Test
 	public void afterLoadEffectGetsHandledCorrectly() {

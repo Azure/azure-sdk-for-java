@@ -786,8 +786,12 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
     }
 
     private void maybeEmitEvent(CosmosMappingEvent<?> event) {
-        if (canPublishEvent()) {
-            this.applicationContext.publishEvent(event);
+        try {
+            if (canPublishEvent()) {
+                this.applicationContext.publishEvent(event);
+            }
+        } catch (Exception ex) {
+            LOGGER.warn("Encountered an exception while trying to emit spring application event", ex);
         }
     }
 

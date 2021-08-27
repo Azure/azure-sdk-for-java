@@ -3,13 +3,12 @@
 package com.azure.spring.data.cosmos.repository;
 
 import com.azure.cosmos.CosmosClientBuilder;
-import com.azure.spring.data.cosmos.common.DynamicContainer;
 import com.azure.spring.data.cosmos.common.ResponseDiagnosticsTestUtils;
 import com.azure.spring.data.cosmos.common.TestConstants;
 import com.azure.spring.data.cosmos.config.AbstractCosmosConfiguration;
 import com.azure.spring.data.cosmos.config.CosmosConfig;
 import com.azure.spring.data.cosmos.core.mapping.EnableCosmosAuditing;
-import com.azure.spring.data.cosmos.core.mapping.event.SimpleMappingEventListener;
+import com.azure.spring.data.cosmos.core.mapping.event.SimpleCosmosMappingEventListener;
 import com.azure.spring.data.cosmos.repository.config.EnableCosmosRepositories;
 import com.azure.spring.data.cosmos.repository.config.EnableReactiveCosmosRepositories;
 import org.springframework.beans.factory.annotation.Value;
@@ -84,7 +83,7 @@ public class TestRepositoryConfig extends AbstractCosmosConfiguration {
     }
 
     @Bean
-    SimpleMappingEventListener simpleMappingEventListener() {
-        return new SimpleMappingEventListener();
+    SimpleCosmosMappingEventListener simpleMappingEventListener() {
+        return new SimpleCosmosMappingEventListener();
     }
 }
