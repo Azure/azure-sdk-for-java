@@ -2,6 +2,10 @@
 
 ## 2.8.0-beta.1 (Unreleased)
 
+### Dependency Updates
+
+- Updated `api-version` to `2021-03-01`.
+
 ### Features Added
 
 - Supported `LoadBalancerOutboundRule` for `LoadBalancer`.

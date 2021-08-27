@@ -14,6 +14,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.network.fluent.models.BastionHostInner;
+import com.azure.resourcemanager.network.models.TagsObject;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
@@ -275,6 +276,111 @@ public interface BastionHostsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     BastionHostInner createOrUpdate(
         String resourceGroupName, String bastionHostname, BastionHostInner parameters, Context context);
+
+    /**
+     * Updates Tags for BastionHost resource.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param bastionHostname The name of the Bastion Host.
+     * @param parameters Parameters supplied to update BastionHost tags.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return bastion Host resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Flux<ByteBuffer>>> updateTagsWithResponseAsync(
+        String resourceGroupName, String bastionHostname, TagsObject parameters);
+
+    /**
+     * Updates Tags for BastionHost resource.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param bastionHostname The name of the Bastion Host.
+     * @param parameters Parameters supplied to update BastionHost tags.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return bastion Host resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    PollerFlux<PollResult<BastionHostInner>, BastionHostInner> beginUpdateTagsAsync(
+        String resourceGroupName, String bastionHostname, TagsObject parameters);
+
+    /**
+     * Updates Tags for BastionHost resource.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param bastionHostname The name of the Bastion Host.
+     * @param parameters Parameters supplied to update BastionHost tags.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return bastion Host resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SyncPoller<PollResult<BastionHostInner>, BastionHostInner> beginUpdateTags(
+        String resourceGroupName, String bastionHostname, TagsObject parameters);
+
+    /**
+     * Updates Tags for BastionHost resource.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param bastionHostname The name of the Bastion Host.
+     * @param parameters Parameters supplied to update BastionHost tags.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return bastion Host resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SyncPoller<PollResult<BastionHostInner>, BastionHostInner> beginUpdateTags(
+        String resourceGroupName, String bastionHostname, TagsObject parameters, Context context);
+
+    /**
+     * Updates Tags for BastionHost resource.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param bastionHostname The name of the Bastion Host.
+     * @param parameters Parameters supplied to update BastionHost tags.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return bastion Host resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<BastionHostInner> updateTagsAsync(String resourceGroupName, String bastionHostname, TagsObject parameters);
+
+    /**
+     * Updates Tags for BastionHost resource.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param bastionHostname The name of the Bastion Host.
+     * @param parameters Parameters supplied to update BastionHost tags.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return bastion Host resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    BastionHostInner updateTags(String resourceGroupName, String bastionHostname, TagsObject parameters);
+
+    /**
+     * Updates Tags for BastionHost resource.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param bastionHostname The name of the Bastion Host.
+     * @param parameters Parameters supplied to update BastionHost tags.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return bastion Host resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    BastionHostInner updateTags(
+        String resourceGroupName, String bastionHostname, TagsObject parameters, Context context);
 
     /**
      * Lists all Bastion Hosts in a subscription.
