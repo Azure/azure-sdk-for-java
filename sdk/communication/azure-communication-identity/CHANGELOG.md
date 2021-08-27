@@ -1,7 +1,9 @@
 # Release History
 
 ## 1.2.0-beta.1 (2021-08-27)
-- Using released version of azure-communication-common.
+### Other Changes
+#### Dependency updates
+- Upgraded `azure-communication-common` to 1.0.4
 
 ## 1.1.1 (2021-06-09)
 Updated `azure-communication-identity` version
