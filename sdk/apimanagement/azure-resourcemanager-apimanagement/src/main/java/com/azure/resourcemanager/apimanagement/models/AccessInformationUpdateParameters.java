@@ -5,22 +5,30 @@
 package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.apimanagement.fluent.models.AccessInformationUpdateParameterProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Tenant access information update parameters. */
-@JsonFlatten
 @Fluent
-public class AccessInformationUpdateParameters {
+public final class AccessInformationUpdateParameters {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(AccessInformationUpdateParameters.class);
 
     /*
-     * Determines whether direct access is enabled.
+     * Tenant access information update parameter properties.
      */
-    @JsonProperty(value = "properties.enabled")
-    private Boolean enabled;
+    @JsonProperty(value = "properties")
+    private AccessInformationUpdateParameterProperties innerProperties;
+
+    /**
+     * Get the innerProperties property: Tenant access information update parameter properties.
+     *
+     * @return the innerProperties value.
+     */
+    private AccessInformationUpdateParameterProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the enabled property: Determines whether direct access is enabled.
@@ -28,7 +36,7 @@ public class AccessInformationUpdateParameters {
      * @return the enabled value.
      */
     public Boolean enabled() {
-        return this.enabled;
+        return this.innerProperties() == null ? null : this.innerProperties().enabled();
     }
 
     /**
@@ -38,7 +46,10 @@ public class AccessInformationUpdateParameters {
      * @return the AccessInformationUpdateParameters object itself.
      */
     public AccessInformationUpdateParameters withEnabled(Boolean enabled) {
-        this.enabled = enabled;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AccessInformationUpdateParameterProperties();
+        }
+        this.innerProperties().withEnabled(enabled);
         return this;
     }
 
@@ -48,5 +59,8 @@ public class AccessInformationUpdateParameters {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

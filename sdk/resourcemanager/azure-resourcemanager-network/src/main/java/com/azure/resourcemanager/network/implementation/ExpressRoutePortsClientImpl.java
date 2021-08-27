@@ -44,7 +44,6 @@ import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDe
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
 import java.nio.ByteBuffer;
-import java.util.Map;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -446,7 +445,7 @@ public final class ExpressRoutePortsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return expressRoutePort resource definition.
+     * @return expressRoute Port.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ExpressRoutePortInner>> getByResourceGroupWithResponseAsync(
@@ -497,7 +496,7 @@ public final class ExpressRoutePortsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return expressRoutePort resource definition.
+     * @return expressRoute Port.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ExpressRoutePortInner>> getByResourceGroupWithResponseAsync(
@@ -544,7 +543,7 @@ public final class ExpressRoutePortsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return expressRoutePort resource definition.
+     * @return expressRoute Port.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ExpressRoutePortInner> getByResourceGroupAsync(String resourceGroupName, String expressRoutePortName) {
@@ -567,7 +566,7 @@ public final class ExpressRoutePortsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return expressRoutePort resource definition.
+     * @return expressRoute Port.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ExpressRoutePortInner getByResourceGroup(String resourceGroupName, String expressRoutePortName) {
@@ -583,7 +582,7 @@ public final class ExpressRoutePortsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return expressRoutePort resource definition.
+     * @return expressRoute Port.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ExpressRoutePortInner> getByResourceGroupWithResponse(
@@ -600,7 +599,7 @@ public final class ExpressRoutePortsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return expressRoutePort resource definition.
+     * @return expressRoute Port.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -658,7 +657,7 @@ public final class ExpressRoutePortsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return expressRoutePort resource definition.
+     * @return expressRoute Port.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -712,7 +711,7 @@ public final class ExpressRoutePortsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return expressRoutePort resource definition.
+     * @return expressRoute Port.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<ExpressRoutePortInner>, ExpressRoutePortInner> beginCreateOrUpdateAsync(
@@ -739,7 +738,7 @@ public final class ExpressRoutePortsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return expressRoutePort resource definition.
+     * @return expressRoute Port.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PollerFlux<PollResult<ExpressRoutePortInner>, ExpressRoutePortInner> beginCreateOrUpdateAsync(
@@ -762,7 +761,7 @@ public final class ExpressRoutePortsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return expressRoutePort resource definition.
+     * @return expressRoute Port.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SyncPoller<PollResult<ExpressRoutePortInner>, ExpressRoutePortInner> beginCreateOrUpdate(
@@ -780,7 +779,7 @@ public final class ExpressRoutePortsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return expressRoutePort resource definition.
+     * @return expressRoute Port.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SyncPoller<PollResult<ExpressRoutePortInner>, ExpressRoutePortInner> beginCreateOrUpdate(
@@ -797,7 +796,7 @@ public final class ExpressRoutePortsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return expressRoutePort resource definition.
+     * @return expressRoute Port.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ExpressRoutePortInner> createOrUpdateAsync(
@@ -817,7 +816,7 @@ public final class ExpressRoutePortsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return expressRoutePort resource definition.
+     * @return expressRoute Port.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ExpressRoutePortInner> createOrUpdateAsync(
@@ -836,7 +835,7 @@ public final class ExpressRoutePortsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return expressRoutePort resource definition.
+     * @return expressRoute Port.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ExpressRoutePortInner createOrUpdate(
@@ -854,7 +853,7 @@ public final class ExpressRoutePortsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return expressRoutePort resource definition.
+     * @return expressRoute Port.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ExpressRoutePortInner createOrUpdate(
@@ -867,15 +866,15 @@ public final class ExpressRoutePortsClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param expressRoutePortName The name of the ExpressRoutePort resource.
-     * @param tags Resource tags.
+     * @param parameters Parameters supplied to update ExpressRoutePort resource tags.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return expressRoutePort resource definition.
+     * @return expressRoute Port.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ExpressRoutePortInner>> updateTagsWithResponseAsync(
-        String resourceGroupName, String expressRoutePortName, Map<String, String> tags) {
+        String resourceGroupName, String expressRoutePortName, TagsObject parameters) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -896,10 +895,13 @@ public final class ExpressRoutePortsClientImpl
             return Mono
                 .error(new IllegalArgumentException("Parameter expressRoutePortName is required and cannot be null."));
         }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
         final String apiVersion = "2021-02-01";
         final String accept = "application/json";
-        TagsObject parameters = new TagsObject();
-        parameters.withTags(tags);
         return FluxUtil
             .withContext(
                 context ->
@@ -921,16 +923,16 @@ public final class ExpressRoutePortsClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param expressRoutePortName The name of the ExpressRoutePort resource.
-     * @param tags Resource tags.
+     * @param parameters Parameters supplied to update ExpressRoutePort resource tags.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return expressRoutePort resource definition.
+     * @return expressRoute Port.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ExpressRoutePortInner>> updateTagsWithResponseAsync(
-        String resourceGroupName, String expressRoutePortName, Map<String, String> tags, Context context) {
+        String resourceGroupName, String expressRoutePortName, TagsObject parameters, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -951,10 +953,13 @@ public final class ExpressRoutePortsClientImpl
             return Mono
                 .error(new IllegalArgumentException("Parameter expressRoutePortName is required and cannot be null."));
         }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
         final String apiVersion = "2021-02-01";
         final String accept = "application/json";
-        TagsObject parameters = new TagsObject();
-        parameters.withTags(tags);
         context = this.client.mergeContext(context);
         return service
             .updateTags(
@@ -973,16 +978,16 @@ public final class ExpressRoutePortsClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param expressRoutePortName The name of the ExpressRoutePort resource.
-     * @param tags Resource tags.
+     * @param parameters Parameters supplied to update ExpressRoutePort resource tags.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return expressRoutePort resource definition.
+     * @return expressRoute Port.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ExpressRoutePortInner> updateTagsAsync(
-        String resourceGroupName, String expressRoutePortName, Map<String, String> tags) {
-        return updateTagsWithResponseAsync(resourceGroupName, expressRoutePortName, tags)
+        String resourceGroupName, String expressRoutePortName, TagsObject parameters) {
+        return updateTagsWithResponseAsync(resourceGroupName, expressRoutePortName, parameters)
             .flatMap(
                 (Response<ExpressRoutePortInner> res) -> {
                     if (res.getValue() != null) {
@@ -998,23 +1003,16 @@ public final class ExpressRoutePortsClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param expressRoutePortName The name of the ExpressRoutePort resource.
+     * @param parameters Parameters supplied to update ExpressRoutePort resource tags.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return expressRoutePort resource definition.
+     * @return expressRoute Port.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ExpressRoutePortInner> updateTagsAsync(String resourceGroupName, String expressRoutePortName) {
-        final Map<String, String> tags = null;
-        return updateTagsWithResponseAsync(resourceGroupName, expressRoutePortName, tags)
-            .flatMap(
-                (Response<ExpressRoutePortInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+    public ExpressRoutePortInner updateTags(
+        String resourceGroupName, String expressRoutePortName, TagsObject parameters) {
+        return updateTagsAsync(resourceGroupName, expressRoutePortName, parameters).block();
     }
 
     /**
@@ -1022,33 +1020,17 @@ public final class ExpressRoutePortsClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param expressRoutePortName The name of the ExpressRoutePort resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return expressRoutePort resource definition.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ExpressRoutePortInner updateTags(String resourceGroupName, String expressRoutePortName) {
-        final Map<String, String> tags = null;
-        return updateTagsAsync(resourceGroupName, expressRoutePortName, tags).block();
-    }
-
-    /**
-     * Update ExpressRoutePort tags.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param expressRoutePortName The name of the ExpressRoutePort resource.
-     * @param tags Resource tags.
+     * @param parameters Parameters supplied to update ExpressRoutePort resource tags.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return expressRoutePort resource definition.
+     * @return expressRoute Port.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ExpressRoutePortInner> updateTagsWithResponse(
-        String resourceGroupName, String expressRoutePortName, Map<String, String> tags, Context context) {
-        return updateTagsWithResponseAsync(resourceGroupName, expressRoutePortName, tags, context).block();
+        String resourceGroupName, String expressRoutePortName, TagsObject parameters, Context context) {
+        return updateTagsWithResponseAsync(resourceGroupName, expressRoutePortName, parameters, context).block();
     }
 
     /**
@@ -1058,7 +1040,7 @@ public final class ExpressRoutePortsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for ListExpressRoutePorts API service call.
+     * @return expressRoute Port List Result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ExpressRoutePortInner>> listByResourceGroupSinglePageAsync(String resourceGroupName) {
@@ -1111,7 +1093,7 @@ public final class ExpressRoutePortsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for ListExpressRoutePorts API service call.
+     * @return expressRoute Port List Result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ExpressRoutePortInner>> listByResourceGroupSinglePageAsync(
@@ -1161,7 +1143,7 @@ public final class ExpressRoutePortsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for ListExpressRoutePorts API service call.
+     * @return expressRoute Port List Result.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ExpressRoutePortInner> listByResourceGroupAsync(String resourceGroupName) {
@@ -1178,7 +1160,7 @@ public final class ExpressRoutePortsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for ListExpressRoutePorts API service call.
+     * @return expressRoute Port List Result.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ExpressRoutePortInner> listByResourceGroupAsync(String resourceGroupName, Context context) {
@@ -1194,7 +1176,7 @@ public final class ExpressRoutePortsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for ListExpressRoutePorts API service call.
+     * @return expressRoute Port List Result.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ExpressRoutePortInner> listByResourceGroup(String resourceGroupName) {
@@ -1209,7 +1191,7 @@ public final class ExpressRoutePortsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for ListExpressRoutePorts API service call.
+     * @return expressRoute Port List Result.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ExpressRoutePortInner> listByResourceGroup(String resourceGroupName, Context context) {
@@ -1221,7 +1203,7 @@ public final class ExpressRoutePortsClientImpl
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for ListExpressRoutePorts API service call.
+     * @return expressRoute Port List Result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ExpressRoutePortInner>> listSinglePageAsync() {
@@ -1263,7 +1245,7 @@ public final class ExpressRoutePortsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for ListExpressRoutePorts API service call.
+     * @return expressRoute Port List Result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ExpressRoutePortInner>> listSinglePageAsync(Context context) {
@@ -1300,7 +1282,7 @@ public final class ExpressRoutePortsClientImpl
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for ListExpressRoutePorts API service call.
+     * @return expressRoute Port List Result.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ExpressRoutePortInner> listAsync() {
@@ -1314,7 +1296,7 @@ public final class ExpressRoutePortsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for ListExpressRoutePorts API service call.
+     * @return expressRoute Port List Result.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ExpressRoutePortInner> listAsync(Context context) {
@@ -1327,7 +1309,7 @@ public final class ExpressRoutePortsClientImpl
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for ListExpressRoutePorts API service call.
+     * @return expressRoute Port List Result.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ExpressRoutePortInner> list() {
@@ -1341,7 +1323,7 @@ public final class ExpressRoutePortsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for ListExpressRoutePorts API service call.
+     * @return expressRoute Port List Result.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ExpressRoutePortInner> list(Context context) {
@@ -1353,7 +1335,7 @@ public final class ExpressRoutePortsClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param expressRoutePortName The name of ExpressRoutePort.
-     * @param customerName The customer name.
+     * @param request Request parameters supplied to generate a letter of authorization.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1361,7 +1343,7 @@ public final class ExpressRoutePortsClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<GenerateExpressRoutePortsLoaResultInner>> generateLoaWithResponseAsync(
-        String resourceGroupName, String expressRoutePortName, String customerName) {
+        String resourceGroupName, String expressRoutePortName, GenerateExpressRoutePortsLoaRequest request) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -1382,13 +1364,13 @@ public final class ExpressRoutePortsClientImpl
             return Mono
                 .error(new IllegalArgumentException("Parameter expressRoutePortName is required and cannot be null."));
         }
-        if (customerName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter customerName is required and cannot be null."));
+        if (request == null) {
+            return Mono.error(new IllegalArgumentException("Parameter request is required and cannot be null."));
+        } else {
+            request.validate();
         }
         final String apiVersion = "2021-02-01";
         final String accept = "application/json";
-        GenerateExpressRoutePortsLoaRequest request = new GenerateExpressRoutePortsLoaRequest();
-        request.withCustomerName(customerName);
         return FluxUtil
             .withContext(
                 context ->
@@ -1410,7 +1392,7 @@ public final class ExpressRoutePortsClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param expressRoutePortName The name of ExpressRoutePort.
-     * @param customerName The customer name.
+     * @param request Request parameters supplied to generate a letter of authorization.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1419,7 +1401,10 @@ public final class ExpressRoutePortsClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<GenerateExpressRoutePortsLoaResultInner>> generateLoaWithResponseAsync(
-        String resourceGroupName, String expressRoutePortName, String customerName, Context context) {
+        String resourceGroupName,
+        String expressRoutePortName,
+        GenerateExpressRoutePortsLoaRequest request,
+        Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -1440,13 +1425,13 @@ public final class ExpressRoutePortsClientImpl
             return Mono
                 .error(new IllegalArgumentException("Parameter expressRoutePortName is required and cannot be null."));
         }
-        if (customerName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter customerName is required and cannot be null."));
+        if (request == null) {
+            return Mono.error(new IllegalArgumentException("Parameter request is required and cannot be null."));
+        } else {
+            request.validate();
         }
         final String apiVersion = "2021-02-01";
         final String accept = "application/json";
-        GenerateExpressRoutePortsLoaRequest request = new GenerateExpressRoutePortsLoaRequest();
-        request.withCustomerName(customerName);
         context = this.client.mergeContext(context);
         return service
             .generateLoa(
@@ -1465,7 +1450,7 @@ public final class ExpressRoutePortsClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param expressRoutePortName The name of ExpressRoutePort.
-     * @param customerName The customer name.
+     * @param request Request parameters supplied to generate a letter of authorization.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1473,8 +1458,8 @@ public final class ExpressRoutePortsClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<GenerateExpressRoutePortsLoaResultInner> generateLoaAsync(
-        String resourceGroupName, String expressRoutePortName, String customerName) {
-        return generateLoaWithResponseAsync(resourceGroupName, expressRoutePortName, customerName)
+        String resourceGroupName, String expressRoutePortName, GenerateExpressRoutePortsLoaRequest request) {
+        return generateLoaWithResponseAsync(resourceGroupName, expressRoutePortName, request)
             .flatMap(
                 (Response<GenerateExpressRoutePortsLoaResultInner> res) -> {
                     if (res.getValue() != null) {
@@ -1490,7 +1475,7 @@ public final class ExpressRoutePortsClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param expressRoutePortName The name of ExpressRoutePort.
-     * @param customerName The customer name.
+     * @param request Request parameters supplied to generate a letter of authorization.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1498,8 +1483,8 @@ public final class ExpressRoutePortsClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public GenerateExpressRoutePortsLoaResultInner generateLoa(
-        String resourceGroupName, String expressRoutePortName, String customerName) {
-        return generateLoaAsync(resourceGroupName, expressRoutePortName, customerName).block();
+        String resourceGroupName, String expressRoutePortName, GenerateExpressRoutePortsLoaRequest request) {
+        return generateLoaAsync(resourceGroupName, expressRoutePortName, request).block();
     }
 
     /**
@@ -1507,7 +1492,7 @@ public final class ExpressRoutePortsClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param expressRoutePortName The name of ExpressRoutePort.
-     * @param customerName The customer name.
+     * @param request Request parameters supplied to generate a letter of authorization.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1516,8 +1501,11 @@ public final class ExpressRoutePortsClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<GenerateExpressRoutePortsLoaResultInner> generateLoaWithResponse(
-        String resourceGroupName, String expressRoutePortName, String customerName, Context context) {
-        return generateLoaWithResponseAsync(resourceGroupName, expressRoutePortName, customerName, context).block();
+        String resourceGroupName,
+        String expressRoutePortName,
+        GenerateExpressRoutePortsLoaRequest request,
+        Context context) {
+        return generateLoaWithResponseAsync(resourceGroupName, expressRoutePortName, request, context).block();
     }
 
     /**
@@ -1527,7 +1515,7 @@ public final class ExpressRoutePortsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for ListExpressRoutePorts API service call.
+     * @return expressRoute Port List Result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ExpressRoutePortInner>> listByResourceGroupNextSinglePageAsync(String nextLink) {
@@ -1564,7 +1552,7 @@ public final class ExpressRoutePortsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for ListExpressRoutePorts API service call.
+     * @return expressRoute Port List Result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ExpressRoutePortInner>> listByResourceGroupNextSinglePageAsync(
@@ -1600,7 +1588,7 @@ public final class ExpressRoutePortsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for ListExpressRoutePorts API service call.
+     * @return expressRoute Port List Result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ExpressRoutePortInner>> listNextSinglePageAsync(String nextLink) {
@@ -1636,7 +1624,7 @@ public final class ExpressRoutePortsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for ListExpressRoutePorts API service call.
+     * @return expressRoute Port List Result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ExpressRoutePortInner>> listNextSinglePageAsync(String nextLink, Context context) {

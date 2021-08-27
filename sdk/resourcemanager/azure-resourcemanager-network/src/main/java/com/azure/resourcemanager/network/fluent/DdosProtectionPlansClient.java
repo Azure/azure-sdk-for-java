@@ -14,11 +14,11 @@ import com.azure.core.util.Context;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.network.fluent.models.DdosProtectionPlanInner;
+import com.azure.resourcemanager.network.models.TagsObject;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
 import java.nio.ByteBuffer;
-import java.util.Map;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -286,7 +286,7 @@ public interface DdosProtectionPlansClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param ddosProtectionPlanName The name of the DDoS protection plan.
-     * @param tags Resource tags.
+     * @param parameters Parameters supplied to the update DDoS protection plan resource tags.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -294,14 +294,14 @@ public interface DdosProtectionPlansClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<DdosProtectionPlanInner>> updateTagsWithResponseAsync(
-        String resourceGroupName, String ddosProtectionPlanName, Map<String, String> tags);
+        String resourceGroupName, String ddosProtectionPlanName, TagsObject parameters);
 
     /**
      * Update a DDoS protection plan tags.
      *
      * @param resourceGroupName The name of the resource group.
      * @param ddosProtectionPlanName The name of the DDoS protection plan.
-     * @param tags Resource tags.
+     * @param parameters Parameters supplied to the update DDoS protection plan resource tags.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -309,40 +309,28 @@ public interface DdosProtectionPlansClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<DdosProtectionPlanInner> updateTagsAsync(
-        String resourceGroupName, String ddosProtectionPlanName, Map<String, String> tags);
+        String resourceGroupName, String ddosProtectionPlanName, TagsObject parameters);
 
     /**
      * Update a DDoS protection plan tags.
      *
      * @param resourceGroupName The name of the resource group.
      * @param ddosProtectionPlanName The name of the DDoS protection plan.
+     * @param parameters Parameters supplied to the update DDoS protection plan resource tags.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a DDoS protection plan in a resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<DdosProtectionPlanInner> updateTagsAsync(String resourceGroupName, String ddosProtectionPlanName);
+    DdosProtectionPlanInner updateTags(String resourceGroupName, String ddosProtectionPlanName, TagsObject parameters);
 
     /**
      * Update a DDoS protection plan tags.
      *
      * @param resourceGroupName The name of the resource group.
      * @param ddosProtectionPlanName The name of the DDoS protection plan.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a DDoS protection plan in a resource group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    DdosProtectionPlanInner updateTags(String resourceGroupName, String ddosProtectionPlanName);
-
-    /**
-     * Update a DDoS protection plan tags.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param ddosProtectionPlanName The name of the DDoS protection plan.
-     * @param tags Resource tags.
+     * @param parameters Parameters supplied to the update DDoS protection plan resource tags.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -351,7 +339,7 @@ public interface DdosProtectionPlansClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<DdosProtectionPlanInner> updateTagsWithResponse(
-        String resourceGroupName, String ddosProtectionPlanName, Map<String, String> tags, Context context);
+        String resourceGroupName, String ddosProtectionPlanName, TagsObject parameters, Context context);
 
     /**
      * Gets all DDoS protection plans in a subscription.
