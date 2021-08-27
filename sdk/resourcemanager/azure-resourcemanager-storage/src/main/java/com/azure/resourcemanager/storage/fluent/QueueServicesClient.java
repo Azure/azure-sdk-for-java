@@ -10,7 +10,6 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.storage.fluent.models.ListQueueServicesInner;
 import com.azure.resourcemanager.storage.fluent.models.QueueServicePropertiesInner;
-import com.azure.resourcemanager.storage.models.CorsRules;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in QueueServicesClient. */
@@ -84,9 +83,8 @@ public interface QueueServicesClient {
      *     insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
      *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param cors Specifies CORS rules for the Queue service. You can include up to five CorsRule elements in the
-     *     request. If no CorsRule elements are included in the request body, all CORS rules will be deleted, and CORS
-     *     will be disabled for the Queue service.
+     * @param parameters The properties of a storage account’s Queue service, only properties for Storage Analytics and
+     *     CORS (Cross-Origin Resource Sharing) rules can be specified.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -94,7 +92,7 @@ public interface QueueServicesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<QueueServicePropertiesInner>> setServicePropertiesWithResponseAsync(
-        String resourceGroupName, String accountName, CorsRules cors);
+        String resourceGroupName, String accountName, QueueServicePropertiesInner parameters);
 
     /**
      * Sets the properties of a storage account’s Queue service, including properties for Storage Analytics and CORS
@@ -104,9 +102,8 @@ public interface QueueServicesClient {
      *     insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
      *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param cors Specifies CORS rules for the Queue service. You can include up to five CorsRule elements in the
-     *     request. If no CorsRule elements are included in the request body, all CORS rules will be deleted, and CORS
-     *     will be disabled for the Queue service.
+     * @param parameters The properties of a storage account’s Queue service, only properties for Storage Analytics and
+     *     CORS (Cross-Origin Resource Sharing) rules can be specified.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -114,7 +111,7 @@ public interface QueueServicesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<QueueServicePropertiesInner> setServicePropertiesAsync(
-        String resourceGroupName, String accountName, CorsRules cors);
+        String resourceGroupName, String accountName, QueueServicePropertiesInner parameters);
 
     /**
      * Sets the properties of a storage account’s Queue service, including properties for Storage Analytics and CORS
@@ -124,13 +121,16 @@ public interface QueueServicesClient {
      *     insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
      *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param parameters The properties of a storage account’s Queue service, only properties for Storage Analytics and
+     *     CORS (Cross-Origin Resource Sharing) rules can be specified.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the properties of a storage account’s Queue service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<QueueServicePropertiesInner> setServicePropertiesAsync(String resourceGroupName, String accountName);
+    QueueServicePropertiesInner setServiceProperties(
+        String resourceGroupName, String accountName, QueueServicePropertiesInner parameters);
 
     /**
      * Sets the properties of a storage account’s Queue service, including properties for Storage Analytics and CORS
@@ -140,25 +140,8 @@ public interface QueueServicesClient {
      *     insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
      *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of a storage account’s Queue service.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    QueueServicePropertiesInner setServiceProperties(String resourceGroupName, String accountName);
-
-    /**
-     * Sets the properties of a storage account’s Queue service, including properties for Storage Analytics and CORS
-     * (Cross-Origin Resource Sharing) rules.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
-     * @param accountName The name of the storage account within the specified resource group. Storage account names
-     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param cors Specifies CORS rules for the Queue service. You can include up to five CorsRule elements in the
-     *     request. If no CorsRule elements are included in the request body, all CORS rules will be deleted, and CORS
-     *     will be disabled for the Queue service.
+     * @param parameters The properties of a storage account’s Queue service, only properties for Storage Analytics and
+     *     CORS (Cross-Origin Resource Sharing) rules can be specified.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -167,7 +150,7 @@ public interface QueueServicesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<QueueServicePropertiesInner> setServicePropertiesWithResponse(
-        String resourceGroupName, String accountName, CorsRules cors, Context context);
+        String resourceGroupName, String accountName, QueueServicePropertiesInner parameters, Context context);
 
     /**
      * Gets the properties of a storage account’s Queue service, including properties for Storage Analytics and CORS

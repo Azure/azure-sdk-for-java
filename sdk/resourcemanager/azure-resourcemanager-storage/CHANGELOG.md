@@ -2,6 +2,14 @@
 
 ## 2.8.0-beta.1 (Unreleased)
 
+### Dependency Updates
+
+- Updated `api-version` to `2021-04-01`.
+
+### Breaking Changes
+
+- Removed class `GetShareExpand`, `ListSharesExpand`, `PutSharesExpand`. Parameter is now comma-separated strings.
+- Moved `destination` field from `BlobInventoryPolicySchema` class to its `rules` (`BlobInventoryPolicyRule` class).
 
 ## 2.7.0 (2021-08-12)
 
