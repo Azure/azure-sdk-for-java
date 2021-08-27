@@ -28,10 +28,11 @@ import java.util.List;
 
 import static java.util.Collections.singletonList;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class AzureEventHubAutoConfigurationTest {
 
@@ -102,6 +103,23 @@ public class AzureEventHubAutoConfigurationTest {
                               assertThat(context).hasSingleBean(EventHubOperation.class);
                               assertThat(context).hasSingleBean(EventHubNamespaceManager.class);
                               assertThat(context).hasSingleBean(StorageAccountManager.class);
+                          });
+    }
+
+    @Test
+    public void testStorageNotConfiguredWithClientFactorySuccessfullyCreated() {
+        this.contextRunner.withUserConfiguration(
+                TestConfigWithAzureResourceManagerAndConnectionProvider.class,
+                AzureEventHubAutoConfiguration.class)
+                          .withPropertyValues(
+                              AZURE_PROPERTY_PREFIX + "resource-group=rg1",
+                              EVENT_HUB_PROPERTY_PREFIX + "namespace=ns1"
+                          )
+                          .run(context -> {
+                              assertThat(context).hasSingleBean(EventHubClientFactory.class);
+                              EventHubClientFactory eventHubClientFactory =
+                                  context.getBean(EventHubClientFactory.class);
+                              assertNotNull(eventHubClientFactory);
                           });
     }
 
