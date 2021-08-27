@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.4 (2021-08-27)
+## 1.0.4 (2021-08-30)
 ### Dependency updates
 - Added `azure-communication-networktraversal` package
 
