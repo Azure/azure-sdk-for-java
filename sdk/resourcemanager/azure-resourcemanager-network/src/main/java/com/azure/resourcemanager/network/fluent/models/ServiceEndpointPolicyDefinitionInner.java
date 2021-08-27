@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ProvisioningState;
@@ -14,10 +13,15 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Service Endpoint policy definitions. */
-@JsonFlatten
 @Fluent
-public class ServiceEndpointPolicyDefinitionInner extends SubResource {
+public final class ServiceEndpointPolicyDefinitionInner extends SubResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ServiceEndpointPolicyDefinitionInner.class);
+
+    /*
+     * Properties of the service endpoint policy definition.
+     */
+    @JsonProperty(value = "properties")
+    private ServiceEndpointPolicyDefinitionPropertiesFormat innerProperties;
 
     /*
      * The name of the resource that is unique within a resource group. This
@@ -33,29 +37,19 @@ public class ServiceEndpointPolicyDefinitionInner extends SubResource {
     private String etag;
 
     /*
-     * A description for this rule. Restricted to 140 chars.
+     * The type of the resource.
      */
-    @JsonProperty(value = "properties.description")
-    private String description;
+    @JsonProperty(value = "type")
+    private String type;
 
-    /*
-     * Service endpoint name.
+    /**
+     * Get the innerProperties property: Properties of the service endpoint policy definition.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.service")
-    private String service;
-
-    /*
-     * A list of service resources.
-     */
-    @JsonProperty(value = "properties.serviceResources")
-    private List<String> serviceResources;
-
-    /*
-     * The provisioning state of the service endpoint policy definition
-     * resource.
-     */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningState provisioningState;
+    private ServiceEndpointPolicyDefinitionPropertiesFormat innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the name property: The name of the resource that is unique within a resource group. This name can be used to
@@ -89,72 +83,23 @@ public class ServiceEndpointPolicyDefinitionInner extends SubResource {
     }
 
     /**
-     * Get the description property: A description for this rule. Restricted to 140 chars.
+     * Get the type property: The type of the resource.
      *
-     * @return the description value.
+     * @return the type value.
      */
-    public String description() {
-        return this.description;
+    public String type() {
+        return this.type;
     }
 
     /**
-     * Set the description property: A description for this rule. Restricted to 140 chars.
+     * Set the type property: The type of the resource.
      *
-     * @param description the description value to set.
+     * @param type the type value to set.
      * @return the ServiceEndpointPolicyDefinitionInner object itself.
      */
-    public ServiceEndpointPolicyDefinitionInner withDescription(String description) {
-        this.description = description;
+    public ServiceEndpointPolicyDefinitionInner withType(String type) {
+        this.type = type;
         return this;
-    }
-
-    /**
-     * Get the service property: Service endpoint name.
-     *
-     * @return the service value.
-     */
-    public String service() {
-        return this.service;
-    }
-
-    /**
-     * Set the service property: Service endpoint name.
-     *
-     * @param service the service value to set.
-     * @return the ServiceEndpointPolicyDefinitionInner object itself.
-     */
-    public ServiceEndpointPolicyDefinitionInner withService(String service) {
-        this.service = service;
-        return this;
-    }
-
-    /**
-     * Get the serviceResources property: A list of service resources.
-     *
-     * @return the serviceResources value.
-     */
-    public List<String> serviceResources() {
-        return this.serviceResources;
-    }
-
-    /**
-     * Set the serviceResources property: A list of service resources.
-     *
-     * @param serviceResources the serviceResources value to set.
-     * @return the ServiceEndpointPolicyDefinitionInner object itself.
-     */
-    public ServiceEndpointPolicyDefinitionInner withServiceResources(List<String> serviceResources) {
-        this.serviceResources = serviceResources;
-        return this;
-    }
-
-    /**
-     * Get the provisioningState property: The provisioning state of the service endpoint policy definition resource.
-     *
-     * @return the provisioningState value.
-     */
-    public ProvisioningState provisioningState() {
-        return this.provisioningState;
     }
 
     /** {@inheritDoc} */
@@ -165,10 +110,91 @@ public class ServiceEndpointPolicyDefinitionInner extends SubResource {
     }
 
     /**
+     * Get the description property: A description for this rule. Restricted to 140 chars.
+     *
+     * @return the description value.
+     */
+    public String description() {
+        return this.innerProperties() == null ? null : this.innerProperties().description();
+    }
+
+    /**
+     * Set the description property: A description for this rule. Restricted to 140 chars.
+     *
+     * @param description the description value to set.
+     * @return the ServiceEndpointPolicyDefinitionInner object itself.
+     */
+    public ServiceEndpointPolicyDefinitionInner withDescription(String description) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ServiceEndpointPolicyDefinitionPropertiesFormat();
+        }
+        this.innerProperties().withDescription(description);
+        return this;
+    }
+
+    /**
+     * Get the service property: Service endpoint name.
+     *
+     * @return the service value.
+     */
+    public String service() {
+        return this.innerProperties() == null ? null : this.innerProperties().service();
+    }
+
+    /**
+     * Set the service property: Service endpoint name.
+     *
+     * @param service the service value to set.
+     * @return the ServiceEndpointPolicyDefinitionInner object itself.
+     */
+    public ServiceEndpointPolicyDefinitionInner withService(String service) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ServiceEndpointPolicyDefinitionPropertiesFormat();
+        }
+        this.innerProperties().withService(service);
+        return this;
+    }
+
+    /**
+     * Get the serviceResources property: A list of service resources.
+     *
+     * @return the serviceResources value.
+     */
+    public List<String> serviceResources() {
+        return this.innerProperties() == null ? null : this.innerProperties().serviceResources();
+    }
+
+    /**
+     * Set the serviceResources property: A list of service resources.
+     *
+     * @param serviceResources the serviceResources value to set.
+     * @return the ServiceEndpointPolicyDefinitionInner object itself.
+     */
+    public ServiceEndpointPolicyDefinitionInner withServiceResources(List<String> serviceResources) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ServiceEndpointPolicyDefinitionPropertiesFormat();
+        }
+        this.innerProperties().withServiceResources(serviceResources);
+        return this;
+    }
+
+    /**
+     * Get the provisioningState property: The provisioning state of the service endpoint policy definition resource.
+     *
+     * @return the provisioningState value.
+     */
+    public ProvisioningState provisioningState() {
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

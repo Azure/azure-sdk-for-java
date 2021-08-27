@@ -11,7 +11,6 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.redis.fluent.models.RedisFirewallRuleInner;
-import com.azure.resourcemanager.redis.models.RedisFirewallRuleCreateParameters;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in FirewallRulesClient. */
@@ -71,7 +70,7 @@ public interface FirewallRulesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<RedisFirewallRuleInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String cacheName, String ruleName, RedisFirewallRuleCreateParameters parameters);
+        String resourceGroupName, String cacheName, String ruleName, RedisFirewallRuleInner parameters);
 
     /**
      * Create or update a redis cache firewall rule.
@@ -88,7 +87,7 @@ public interface FirewallRulesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<RedisFirewallRuleInner> createOrUpdateAsync(
-        String resourceGroupName, String cacheName, String ruleName, RedisFirewallRuleCreateParameters parameters);
+        String resourceGroupName, String cacheName, String ruleName, RedisFirewallRuleInner parameters);
 
     /**
      * Create or update a redis cache firewall rule.
@@ -105,7 +104,7 @@ public interface FirewallRulesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     RedisFirewallRuleInner createOrUpdate(
-        String resourceGroupName, String cacheName, String ruleName, RedisFirewallRuleCreateParameters parameters);
+        String resourceGroupName, String cacheName, String ruleName, RedisFirewallRuleInner parameters);
 
     /**
      * Create or update a redis cache firewall rule.
@@ -126,7 +125,7 @@ public interface FirewallRulesClient {
         String resourceGroupName,
         String cacheName,
         String ruleName,
-        RedisFirewallRuleCreateParameters parameters,
+        RedisFirewallRuleInner parameters,
         Context context);
 
     /**

@@ -8,6 +8,11 @@ import com.azure.core.util.Context;
 
 /** Samples for LinkedServices ListByFactory. */
 public final class LinkedServicesListByFactorySamples {
+    /*
+     * operationId: LinkedServices_ListByFactory
+     * api-version: 2018-06-01
+     * x-ms-examples: LinkedServices_ListByFactory
+     */
     /**
      * Sample code: LinkedServices_ListByFactory.
      *

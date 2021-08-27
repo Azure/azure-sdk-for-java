@@ -8,6 +8,11 @@ import com.azure.core.util.Context;
 
 /** Samples for TriggerRuns Cancel. */
 public final class TriggerRunsCancelSamples {
+    /*
+     * operationId: TriggerRuns_Cancel
+     * api-version: 2018-06-01
+     * x-ms-examples: Triggers_Cancel
+     */
     /**
      * Sample code: Triggers_Cancel.
      *

@@ -2,19 +2,13 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.config.properties;
 
-import static com.azure.spring.cloud.config.properties.AppConfigurationProperties.LABEL_SEPARATOR;
-
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.Arrays;
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import javax.annotation.PostConstruct;
 
-import org.springframework.lang.Nullable;
-import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
 import com.azure.spring.cloud.config.resource.Connection;
@@ -24,17 +18,16 @@ import com.azure.spring.cloud.config.resource.Connection;
  */
 public class ConfigStore {
 
-    private static final String EMPTY_LABEL = "\0";
+    private static final String DEFAULT_KEYS = "/application/";
 
-    private static final String[] EMPTY_LABEL_ARRAY = { EMPTY_LABEL };
+    private static final String EMPTY_LABEL = "\0";
 
     private String endpoint; // Config store endpoint
 
     private String connectionString;
 
     // Label values separated by comma in the Azure Config Service, can be empty
-    @Nullable
-    private String label;
+    private List<AppConfigurationStoreSelects> selects = new ArrayList<>();
 
     private boolean failFast = true;
 
@@ -43,10 +36,6 @@ public class ConfigStore {
     private boolean enabled = true;
 
     private AppConfigurationStoreMonitoring monitoring = new AppConfigurationStoreMonitoring();
-
-    public ConfigStore() {
-        label = null;
-    }
 
     public String getEndpoint() {
         return this.endpoint;
@@ -64,14 +53,6 @@ public class ConfigStore {
         this.connectionString = connectionString;
     }
 
-    public String getLabel() {
-        return label;
-    }
-
-    public void setLabel(String label) {
-        this.label = label;
-    }
-
     public boolean isFailFast() {
         return failFast;
     }
@@ -86,6 +67,20 @@ public class ConfigStore {
 
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
+    }
+
+    /**
+     * @return the selects
+     */
+    public List<AppConfigurationStoreSelects> getSelects() {
+        return selects;
+    }
+
+    /**
+     * @param selects the selects to set
+     */
+    public void setSelects(List<AppConfigurationStoreSelects> selects) {
+        this.selects = selects;
     }
 
     /**
@@ -115,8 +110,12 @@ public class ConfigStore {
      */
     @PostConstruct
     public void validateAndInit() {
-        if (StringUtils.hasText(label)) {
-            Assert.isTrue(!label.contains("*"), "Label must not contain asterisk(*).");
+        if (selects.isEmpty()) {
+            selects.add(new AppConfigurationStoreSelects().setKeyFilter(DEFAULT_KEYS));
+        }
+
+        for (AppConfigurationStoreSelects selectedKeys : selects) {
+            selectedKeys.validateAndInit();
         }
 
         if (StringUtils.hasText(connectionString)) {
@@ -131,43 +130,5 @@ public class ConfigStore {
         }
 
         monitoring.validateAndInit();
-    }
-
-    /**
-     * @param profiles List of current Spring profiles to default to using is null label is set.
-     * @return List of reversed label values, which are split by the separator, the latter label has higher priority
-     */
-    public String[] getLabels(List<String> profiles) {
-        if (this.getLabel() == null && profiles.size() > 0) {
-            Collections.reverse(profiles);
-            return profiles.toArray(new String[profiles.size()]);
-        } else if (!StringUtils.hasText(this.getLabel())) {
-            return EMPTY_LABEL_ARRAY;
-        }
-
-        // The use of trim makes label= dev,prod and label= dev, prod equal.
-        List<String> labels = Arrays.stream(this.getLabel().split(LABEL_SEPARATOR))
-            .map(label -> mapLabel(label))
-            .distinct()
-            .collect(Collectors.toList());
-
-        if (this.getLabel().endsWith(",")) {
-            labels.add(EMPTY_LABEL);
-        }
-
-        Collections.reverse(labels);
-        if (labels.isEmpty()) {
-            return EMPTY_LABEL_ARRAY;
-        } else {
-            String[] t = new String[labels.size()];
-            return labels.toArray(t);
-        }
-    }
-
-    private String mapLabel(String label) {
-        if (label == null || label.equals("")) {
-            return EMPTY_LABEL;
-        }
-        return label.trim();
     }
 }

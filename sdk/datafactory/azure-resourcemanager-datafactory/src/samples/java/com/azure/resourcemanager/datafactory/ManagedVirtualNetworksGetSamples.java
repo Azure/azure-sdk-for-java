@@ -8,6 +8,11 @@ import com.azure.core.util.Context;
 
 /** Samples for ManagedVirtualNetworks Get. */
 public final class ManagedVirtualNetworksGetSamples {
+    /*
+     * operationId: ManagedVirtualNetworks_Get
+     * api-version: 2018-06-01
+     * x-ms-examples: ManagedVirtualNetworks_Get
+     */
     /**
      * Sample code: ManagedVirtualNetworks_Get.
      *

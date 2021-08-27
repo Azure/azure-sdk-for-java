@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ApplicationGatewayRequestRoutingRuleType;
@@ -14,10 +13,15 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Request routing rule of an application gateway. */
-@JsonFlatten
 @Fluent
-public class ApplicationGatewayRequestRoutingRuleInner extends SubResource {
+public final class ApplicationGatewayRequestRoutingRuleInner extends SubResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ApplicationGatewayRequestRoutingRuleInner.class);
+
+    /*
+     * Properties of the application gateway request routing rule.
+     */
+    @JsonProperty(value = "properties")
+    private ApplicationGatewayRequestRoutingRulePropertiesFormat innerProperties;
 
     /*
      * Name of the request routing rule that is unique within an Application
@@ -38,59 +42,14 @@ public class ApplicationGatewayRequestRoutingRuleInner extends SubResource {
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
-    /*
-     * Rule type.
+    /**
+     * Get the innerProperties property: Properties of the application gateway request routing rule.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.ruleType")
-    private ApplicationGatewayRequestRoutingRuleType ruleType;
-
-    /*
-     * Priority of the request routing rule.
-     */
-    @JsonProperty(value = "properties.priority")
-    private Integer priority;
-
-    /*
-     * Backend address pool resource of the application gateway.
-     */
-    @JsonProperty(value = "properties.backendAddressPool")
-    private SubResource backendAddressPool;
-
-    /*
-     * Backend http settings resource of the application gateway.
-     */
-    @JsonProperty(value = "properties.backendHttpSettings")
-    private SubResource backendHttpSettings;
-
-    /*
-     * Http listener resource of the application gateway.
-     */
-    @JsonProperty(value = "properties.httpListener")
-    private SubResource httpListener;
-
-    /*
-     * URL path map resource of the application gateway.
-     */
-    @JsonProperty(value = "properties.urlPathMap")
-    private SubResource urlPathMap;
-
-    /*
-     * Rewrite Rule Set resource in Basic rule of the application gateway.
-     */
-    @JsonProperty(value = "properties.rewriteRuleSet")
-    private SubResource rewriteRuleSet;
-
-    /*
-     * Redirect configuration resource of the application gateway.
-     */
-    @JsonProperty(value = "properties.redirectConfiguration")
-    private SubResource redirectConfiguration;
-
-    /*
-     * The provisioning state of the request routing rule resource.
-     */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningState provisioningState;
+    private ApplicationGatewayRequestRoutingRulePropertiesFormat innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the name property: Name of the request routing rule that is unique within an Application Gateway.
@@ -130,13 +89,20 @@ public class ApplicationGatewayRequestRoutingRuleInner extends SubResource {
         return this.type;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public ApplicationGatewayRequestRoutingRuleInner withId(String id) {
+        super.withId(id);
+        return this;
+    }
+
     /**
      * Get the ruleType property: Rule type.
      *
      * @return the ruleType value.
      */
     public ApplicationGatewayRequestRoutingRuleType ruleType() {
-        return this.ruleType;
+        return this.innerProperties() == null ? null : this.innerProperties().ruleType();
     }
 
     /**
@@ -146,7 +112,10 @@ public class ApplicationGatewayRequestRoutingRuleInner extends SubResource {
      * @return the ApplicationGatewayRequestRoutingRuleInner object itself.
      */
     public ApplicationGatewayRequestRoutingRuleInner withRuleType(ApplicationGatewayRequestRoutingRuleType ruleType) {
-        this.ruleType = ruleType;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApplicationGatewayRequestRoutingRulePropertiesFormat();
+        }
+        this.innerProperties().withRuleType(ruleType);
         return this;
     }
 
@@ -156,7 +125,7 @@ public class ApplicationGatewayRequestRoutingRuleInner extends SubResource {
      * @return the priority value.
      */
     public Integer priority() {
-        return this.priority;
+        return this.innerProperties() == null ? null : this.innerProperties().priority();
     }
 
     /**
@@ -166,7 +135,10 @@ public class ApplicationGatewayRequestRoutingRuleInner extends SubResource {
      * @return the ApplicationGatewayRequestRoutingRuleInner object itself.
      */
     public ApplicationGatewayRequestRoutingRuleInner withPriority(Integer priority) {
-        this.priority = priority;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApplicationGatewayRequestRoutingRulePropertiesFormat();
+        }
+        this.innerProperties().withPriority(priority);
         return this;
     }
 
@@ -176,7 +148,7 @@ public class ApplicationGatewayRequestRoutingRuleInner extends SubResource {
      * @return the backendAddressPool value.
      */
     public SubResource backendAddressPool() {
-        return this.backendAddressPool;
+        return this.innerProperties() == null ? null : this.innerProperties().backendAddressPool();
     }
 
     /**
@@ -186,7 +158,10 @@ public class ApplicationGatewayRequestRoutingRuleInner extends SubResource {
      * @return the ApplicationGatewayRequestRoutingRuleInner object itself.
      */
     public ApplicationGatewayRequestRoutingRuleInner withBackendAddressPool(SubResource backendAddressPool) {
-        this.backendAddressPool = backendAddressPool;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApplicationGatewayRequestRoutingRulePropertiesFormat();
+        }
+        this.innerProperties().withBackendAddressPool(backendAddressPool);
         return this;
     }
 
@@ -196,7 +171,7 @@ public class ApplicationGatewayRequestRoutingRuleInner extends SubResource {
      * @return the backendHttpSettings value.
      */
     public SubResource backendHttpSettings() {
-        return this.backendHttpSettings;
+        return this.innerProperties() == null ? null : this.innerProperties().backendHttpSettings();
     }
 
     /**
@@ -206,7 +181,10 @@ public class ApplicationGatewayRequestRoutingRuleInner extends SubResource {
      * @return the ApplicationGatewayRequestRoutingRuleInner object itself.
      */
     public ApplicationGatewayRequestRoutingRuleInner withBackendHttpSettings(SubResource backendHttpSettings) {
-        this.backendHttpSettings = backendHttpSettings;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApplicationGatewayRequestRoutingRulePropertiesFormat();
+        }
+        this.innerProperties().withBackendHttpSettings(backendHttpSettings);
         return this;
     }
 
@@ -216,7 +194,7 @@ public class ApplicationGatewayRequestRoutingRuleInner extends SubResource {
      * @return the httpListener value.
      */
     public SubResource httpListener() {
-        return this.httpListener;
+        return this.innerProperties() == null ? null : this.innerProperties().httpListener();
     }
 
     /**
@@ -226,7 +204,10 @@ public class ApplicationGatewayRequestRoutingRuleInner extends SubResource {
      * @return the ApplicationGatewayRequestRoutingRuleInner object itself.
      */
     public ApplicationGatewayRequestRoutingRuleInner withHttpListener(SubResource httpListener) {
-        this.httpListener = httpListener;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApplicationGatewayRequestRoutingRulePropertiesFormat();
+        }
+        this.innerProperties().withHttpListener(httpListener);
         return this;
     }
 
@@ -236,7 +217,7 @@ public class ApplicationGatewayRequestRoutingRuleInner extends SubResource {
      * @return the urlPathMap value.
      */
     public SubResource urlPathMap() {
-        return this.urlPathMap;
+        return this.innerProperties() == null ? null : this.innerProperties().urlPathMap();
     }
 
     /**
@@ -246,7 +227,10 @@ public class ApplicationGatewayRequestRoutingRuleInner extends SubResource {
      * @return the ApplicationGatewayRequestRoutingRuleInner object itself.
      */
     public ApplicationGatewayRequestRoutingRuleInner withUrlPathMap(SubResource urlPathMap) {
-        this.urlPathMap = urlPathMap;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApplicationGatewayRequestRoutingRulePropertiesFormat();
+        }
+        this.innerProperties().withUrlPathMap(urlPathMap);
         return this;
     }
 
@@ -256,7 +240,7 @@ public class ApplicationGatewayRequestRoutingRuleInner extends SubResource {
      * @return the rewriteRuleSet value.
      */
     public SubResource rewriteRuleSet() {
-        return this.rewriteRuleSet;
+        return this.innerProperties() == null ? null : this.innerProperties().rewriteRuleSet();
     }
 
     /**
@@ -266,7 +250,10 @@ public class ApplicationGatewayRequestRoutingRuleInner extends SubResource {
      * @return the ApplicationGatewayRequestRoutingRuleInner object itself.
      */
     public ApplicationGatewayRequestRoutingRuleInner withRewriteRuleSet(SubResource rewriteRuleSet) {
-        this.rewriteRuleSet = rewriteRuleSet;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApplicationGatewayRequestRoutingRulePropertiesFormat();
+        }
+        this.innerProperties().withRewriteRuleSet(rewriteRuleSet);
         return this;
     }
 
@@ -276,7 +263,7 @@ public class ApplicationGatewayRequestRoutingRuleInner extends SubResource {
      * @return the redirectConfiguration value.
      */
     public SubResource redirectConfiguration() {
-        return this.redirectConfiguration;
+        return this.innerProperties() == null ? null : this.innerProperties().redirectConfiguration();
     }
 
     /**
@@ -286,7 +273,33 @@ public class ApplicationGatewayRequestRoutingRuleInner extends SubResource {
      * @return the ApplicationGatewayRequestRoutingRuleInner object itself.
      */
     public ApplicationGatewayRequestRoutingRuleInner withRedirectConfiguration(SubResource redirectConfiguration) {
-        this.redirectConfiguration = redirectConfiguration;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApplicationGatewayRequestRoutingRulePropertiesFormat();
+        }
+        this.innerProperties().withRedirectConfiguration(redirectConfiguration);
+        return this;
+    }
+
+    /**
+     * Get the loadDistributionPolicy property: Load Distribution Policy resource of the application gateway.
+     *
+     * @return the loadDistributionPolicy value.
+     */
+    public SubResource loadDistributionPolicy() {
+        return this.innerProperties() == null ? null : this.innerProperties().loadDistributionPolicy();
+    }
+
+    /**
+     * Set the loadDistributionPolicy property: Load Distribution Policy resource of the application gateway.
+     *
+     * @param loadDistributionPolicy the loadDistributionPolicy value to set.
+     * @return the ApplicationGatewayRequestRoutingRuleInner object itself.
+     */
+    public ApplicationGatewayRequestRoutingRuleInner withLoadDistributionPolicy(SubResource loadDistributionPolicy) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApplicationGatewayRequestRoutingRulePropertiesFormat();
+        }
+        this.innerProperties().withLoadDistributionPolicy(loadDistributionPolicy);
         return this;
     }
 
@@ -296,14 +309,7 @@ public class ApplicationGatewayRequestRoutingRuleInner extends SubResource {
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
-        return this.provisioningState;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public ApplicationGatewayRequestRoutingRuleInner withId(String id) {
-        super.withId(id);
-        return this;
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
     /**
@@ -312,5 +318,8 @@ public class ApplicationGatewayRequestRoutingRuleInner extends SubResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

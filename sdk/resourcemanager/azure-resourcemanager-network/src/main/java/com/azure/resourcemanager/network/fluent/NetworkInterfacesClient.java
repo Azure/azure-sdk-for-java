@@ -17,11 +17,11 @@ import com.azure.resourcemanager.network.fluent.models.EffectiveNetworkSecurityG
 import com.azure.resourcemanager.network.fluent.models.EffectiveRouteListResultInner;
 import com.azure.resourcemanager.network.fluent.models.NetworkInterfaceInner;
 import com.azure.resourcemanager.network.fluent.models.NetworkInterfaceIpConfigurationInner;
+import com.azure.resourcemanager.network.models.TagsObject;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
 import java.nio.ByteBuffer;
-import java.util.Map;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -492,7 +492,7 @@ public interface NetworkInterfacesClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param networkInterfaceName The name of the network interface.
-     * @param tags Resource tags.
+     * @param parameters Parameters supplied to update network interface tags.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -500,14 +500,14 @@ public interface NetworkInterfacesClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<NetworkInterfaceInner>> updateTagsWithResponseAsync(
-        String resourceGroupName, String networkInterfaceName, Map<String, String> tags);
+        String resourceGroupName, String networkInterfaceName, TagsObject parameters);
 
     /**
      * Updates a network interface tags.
      *
      * @param resourceGroupName The name of the resource group.
      * @param networkInterfaceName The name of the network interface.
-     * @param tags Resource tags.
+     * @param parameters Parameters supplied to update network interface tags.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -515,40 +515,28 @@ public interface NetworkInterfacesClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<NetworkInterfaceInner> updateTagsAsync(
-        String resourceGroupName, String networkInterfaceName, Map<String, String> tags);
+        String resourceGroupName, String networkInterfaceName, TagsObject parameters);
 
     /**
      * Updates a network interface tags.
      *
      * @param resourceGroupName The name of the resource group.
      * @param networkInterfaceName The name of the network interface.
+     * @param parameters Parameters supplied to update network interface tags.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a network interface in a resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<NetworkInterfaceInner> updateTagsAsync(String resourceGroupName, String networkInterfaceName);
+    NetworkInterfaceInner updateTags(String resourceGroupName, String networkInterfaceName, TagsObject parameters);
 
     /**
      * Updates a network interface tags.
      *
      * @param resourceGroupName The name of the resource group.
      * @param networkInterfaceName The name of the network interface.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a network interface in a resource group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    NetworkInterfaceInner updateTags(String resourceGroupName, String networkInterfaceName);
-
-    /**
-     * Updates a network interface tags.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param networkInterfaceName The name of the network interface.
-     * @param tags Resource tags.
+     * @param parameters Parameters supplied to update network interface tags.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -557,7 +545,7 @@ public interface NetworkInterfacesClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<NetworkInterfaceInner> updateTagsWithResponse(
-        String resourceGroupName, String networkInterfaceName, Map<String, String> tags, Context context);
+        String resourceGroupName, String networkInterfaceName, TagsObject parameters, Context context);
 
     /**
      * Gets all network interfaces in a subscription.
