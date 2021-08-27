@@ -74,8 +74,8 @@ class ServiceBusReceiveLinkProcessorTest {
     @Captor
     private ArgumentCaptor<Supplier<Integer>> creditSupplierCaptor;
 
-    private final TestPublisher<AmqpEndpointState> endpointProcessor = TestPublisher.create();
-    private final TestPublisher<Message> messagePublisher = TestPublisher.create();
+    private final TestPublisher<AmqpEndpointState> endpointProcessor = TestPublisher.createCold();
+    private final TestPublisher<Message> messagePublisher = TestPublisher.createCold();
     private ServiceBusReceiveLinkProcessor linkProcessor;
     private ServiceBusReceiveLinkProcessor linkProcessorNoPrefetch;
 
@@ -524,7 +524,7 @@ class ServiceBusReceiveLinkProcessorTest {
     }
 
     @Test
-    void receivesUntilFirstLinkClosed() throws InterruptedException {
+    void receivesUntilFirstLinkClosed() {
         // Arrange
         ServiceBusReceiveLinkProcessor processor = Flux.just(link1).subscribeWith(linkProcessor);
 
@@ -542,11 +542,13 @@ class ServiceBusReceiveLinkProcessorTest {
             .expectNext(message1)
             .then(() -> messagePublisher.next(message2))
             .expectNext(message2)
-            .then(() -> endpointProcessor.complete())
+            .thenAwait(Duration.ofSeconds(1))
+            .then(() -> {
+                endpointProcessor.next(AmqpEndpointState.CLOSED);
+                endpointProcessor.complete();
+            })
             .expectComplete()
             .verify(shortWait);
-
-        TimeUnit.SECONDS.sleep(shortWait.getSeconds());
 
         assertTrue(processor.isTerminated());
         assertFalse(processor.hasError());

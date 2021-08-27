@@ -1,7 +1,14 @@
 ## Release History
 
-## 3.10.0-beta.1 (Unreleased)
+## 3.11.0-beta.1 (Unreleased)
 
+
+### 3.10.0 (2021-08-16)
+> [!IMPORTANT]
+> We strongly recommend our customers to use version 3.10.0 and above.
+#### New Features
+* Updated `Spring Boot` to version 2.5.3.
+* Updated `azure-cosmos` to version 4.18.0.
 
 ### 3.9.0 (2021-07-08)
 #### New Features

@@ -10,6 +10,7 @@ import com.azure.storage.blob.options.BlobParallelUploadOptions
 import com.azure.storage.blob.specialized.BlockBlobAsyncClient
 import com.azure.storage.common.implementation.Constants
 import com.azure.storage.common.test.shared.extensions.LiveOnly
+import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion
 import reactor.core.publisher.Flux
 import spock.lang.ResourceLock
 import spock.lang.Shared
@@ -24,6 +25,7 @@ import java.nio.charset.StandardCharsets
  */
 @ResourceLock("LargeBlobTest")
 @LiveOnly
+@RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
 class LargeBlobTest extends Specification {
 
     @Shared

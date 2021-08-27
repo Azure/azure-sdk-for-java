@@ -5,24 +5,37 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.models.ProxyOnlyResource;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** A top level domain object. */
-@JsonFlatten
 @Fluent
-public class TopLevelDomainInner extends ProxyOnlyResource {
+public final class TopLevelDomainInner extends ProxyOnlyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(TopLevelDomainInner.class);
 
     /*
-     * If <code>true</code>, then the top level domain supports domain privacy;
-     * otherwise, <code>false</code>.
+     * TopLevelDomain resource specific properties
      */
-    @JsonProperty(value = "properties.privacy")
-    private Boolean privacy;
+    @JsonProperty(value = "properties")
+    private TopLevelDomainProperties innerProperties;
+
+    /**
+     * Get the innerProperties property: TopLevelDomain resource specific properties.
+     *
+     * @return the innerProperties value.
+     */
+    private TopLevelDomainProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public TopLevelDomainInner withKind(String kind) {
+        super.withKind(kind);
+        return this;
+    }
 
     /**
      * Get the privacy property: If &lt;code&gt;true&lt;/code&gt;, then the top level domain supports domain privacy;
@@ -31,7 +44,7 @@ public class TopLevelDomainInner extends ProxyOnlyResource {
      * @return the privacy value.
      */
     public Boolean privacy() {
-        return this.privacy;
+        return this.innerProperties() == null ? null : this.innerProperties().privacy();
     }
 
     /**
@@ -42,14 +55,10 @@ public class TopLevelDomainInner extends ProxyOnlyResource {
      * @return the TopLevelDomainInner object itself.
      */
     public TopLevelDomainInner withPrivacy(Boolean privacy) {
-        this.privacy = privacy;
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public TopLevelDomainInner withKind(String kind) {
-        super.withKind(kind);
+        if (this.innerProperties() == null) {
+            this.innerProperties = new TopLevelDomainProperties();
+        }
+        this.innerProperties().withPrivacy(privacy);
         return this;
     }
 
@@ -61,5 +70,8 @@ public class TopLevelDomainInner extends ProxyOnlyResource {
     @Override
     public void validate() {
         super.validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

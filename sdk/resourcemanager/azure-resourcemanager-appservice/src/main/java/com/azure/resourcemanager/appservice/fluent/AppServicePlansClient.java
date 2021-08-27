@@ -21,7 +21,7 @@ import com.azure.resourcemanager.appservice.fluent.models.HybridConnectionKeyInn
 import com.azure.resourcemanager.appservice.fluent.models.HybridConnectionLimitsInner;
 import com.azure.resourcemanager.appservice.fluent.models.SiteInner;
 import com.azure.resourcemanager.appservice.fluent.models.VnetGatewayInner;
-import com.azure.resourcemanager.appservice.fluent.models.VnetInfoInner;
+import com.azure.resourcemanager.appservice.fluent.models.VnetInfoResourceInner;
 import com.azure.resourcemanager.appservice.fluent.models.VnetRouteInner;
 import com.azure.resourcemanager.appservice.models.AppServicePlanPatchResource;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
@@ -136,8 +136,7 @@ public interface AppServicePlansClient
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return app Service plan.
      */
@@ -150,8 +149,7 @@ public interface AppServicePlansClient
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return app Service plan.
      */
@@ -164,8 +162,7 @@ public interface AppServicePlansClient
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return app Service plan.
      */
@@ -179,8 +176,7 @@ public interface AppServicePlansClient
      * @param name Name of the App Service plan.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return app Service plan.
      */
@@ -1114,10 +1110,10 @@ public interface AppServicePlansClient
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return array of VnetInfo.
+     * @return array of VnetInfoResource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<List<VnetInfoInner>>> listVnetsWithResponseAsync(String resourceGroupName, String name);
+    Mono<Response<List<VnetInfoResourceInner>>> listVnetsWithResponseAsync(String resourceGroupName, String name);
 
     /**
      * Description for Get all Virtual Networks associated with an App Service plan.
@@ -1128,10 +1124,10 @@ public interface AppServicePlansClient
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return array of VnetInfo.
+     * @return array of VnetInfoResource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<List<VnetInfoInner>> listVnetsAsync(String resourceGroupName, String name);
+    Mono<List<VnetInfoResourceInner>> listVnetsAsync(String resourceGroupName, String name);
 
     /**
      * Description for Get all Virtual Networks associated with an App Service plan.
@@ -1142,10 +1138,10 @@ public interface AppServicePlansClient
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return array of VnetInfo.
+     * @return array of VnetInfoResource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    List<VnetInfoInner> listVnets(String resourceGroupName, String name);
+    List<VnetInfoResourceInner> listVnets(String resourceGroupName, String name);
 
     /**
      * Description for Get all Virtual Networks associated with an App Service plan.
@@ -1157,10 +1153,10 @@ public interface AppServicePlansClient
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return array of VnetInfo.
+     * @return array of VnetInfoResource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<List<VnetInfoInner>> listVnetsWithResponse(String resourceGroupName, String name, Context context);
+    Response<List<VnetInfoResourceInner>> listVnetsWithResponse(String resourceGroupName, String name, Context context);
 
     /**
      * Description for Get a Virtual Network associated with an App Service plan.
@@ -1169,13 +1165,12 @@ public interface AppServicePlansClient
      * @param name Name of the App Service plan.
      * @param vnetName Name of the Virtual Network.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtual Network information contract.
+     * @return virtual Network information ARM resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<VnetInfoInner>> getVnetFromServerFarmWithResponseAsync(
+    Mono<Response<VnetInfoResourceInner>> getVnetFromServerFarmWithResponseAsync(
         String resourceGroupName, String name, String vnetName);
 
     /**
@@ -1185,13 +1180,12 @@ public interface AppServicePlansClient
      * @param name Name of the App Service plan.
      * @param vnetName Name of the Virtual Network.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtual Network information contract.
+     * @return virtual Network information ARM resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<VnetInfoInner> getVnetFromServerFarmAsync(String resourceGroupName, String name, String vnetName);
+    Mono<VnetInfoResourceInner> getVnetFromServerFarmAsync(String resourceGroupName, String name, String vnetName);
 
     /**
      * Description for Get a Virtual Network associated with an App Service plan.
@@ -1200,13 +1194,12 @@ public interface AppServicePlansClient
      * @param name Name of the App Service plan.
      * @param vnetName Name of the Virtual Network.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtual Network information contract.
+     * @return virtual Network information ARM resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    VnetInfoInner getVnetFromServerFarm(String resourceGroupName, String name, String vnetName);
+    VnetInfoResourceInner getVnetFromServerFarm(String resourceGroupName, String name, String vnetName);
 
     /**
      * Description for Get a Virtual Network associated with an App Service plan.
@@ -1216,13 +1209,12 @@ public interface AppServicePlansClient
      * @param vnetName Name of the Virtual Network.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtual Network information contract.
+     * @return virtual Network information ARM resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<VnetInfoInner> getVnetFromServerFarmWithResponse(
+    Response<VnetInfoResourceInner> getVnetFromServerFarmWithResponse(
         String resourceGroupName, String name, String vnetName, Context context);
 
     /**
@@ -1454,8 +1446,7 @@ public interface AppServicePlansClient
      * @param vnetName Name of the Virtual Network.
      * @param routeName Name of the Virtual Network route.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return array of VnetRoute.
      */
@@ -1471,8 +1462,7 @@ public interface AppServicePlansClient
      * @param vnetName Name of the Virtual Network.
      * @param routeName Name of the Virtual Network route.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return array of VnetRoute.
      */
@@ -1488,8 +1478,7 @@ public interface AppServicePlansClient
      * @param vnetName Name of the Virtual Network.
      * @param routeName Name of the Virtual Network route.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return array of VnetRoute.
      */
@@ -1505,8 +1494,7 @@ public interface AppServicePlansClient
      * @param routeName Name of the Virtual Network route.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return array of VnetRoute.
      */
@@ -1523,8 +1511,7 @@ public interface AppServicePlansClient
      * @param routeName Name of the Virtual Network route.
      * @param route Definition of the Virtual Network route.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return virtual Network route contract used to pass routing information for a Virtual Network.
      */
@@ -1541,8 +1528,7 @@ public interface AppServicePlansClient
      * @param routeName Name of the Virtual Network route.
      * @param route Definition of the Virtual Network route.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return virtual Network route contract used to pass routing information for a Virtual Network.
      */
@@ -1559,8 +1545,7 @@ public interface AppServicePlansClient
      * @param routeName Name of the Virtual Network route.
      * @param route Definition of the Virtual Network route.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return virtual Network route contract used to pass routing information for a Virtual Network.
      */
@@ -1578,8 +1563,7 @@ public interface AppServicePlansClient
      * @param route Definition of the Virtual Network route.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return virtual Network route contract used to pass routing information for a Virtual Network.
      */
@@ -1600,8 +1584,7 @@ public interface AppServicePlansClient
      * @param vnetName Name of the Virtual Network.
      * @param routeName Name of the Virtual Network route.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -1617,8 +1600,7 @@ public interface AppServicePlansClient
      * @param vnetName Name of the Virtual Network.
      * @param routeName Name of the Virtual Network route.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -1633,8 +1615,7 @@ public interface AppServicePlansClient
      * @param vnetName Name of the Virtual Network.
      * @param routeName Name of the Virtual Network route.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1649,8 +1630,7 @@ public interface AppServicePlansClient
      * @param routeName Name of the Virtual Network route.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -1667,8 +1647,7 @@ public interface AppServicePlansClient
      * @param routeName Name of the Virtual Network route.
      * @param route Definition of the Virtual Network route.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return virtual Network route contract used to pass routing information for a Virtual Network.
      */
@@ -1685,8 +1664,7 @@ public interface AppServicePlansClient
      * @param routeName Name of the Virtual Network route.
      * @param route Definition of the Virtual Network route.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return virtual Network route contract used to pass routing information for a Virtual Network.
      */
@@ -1703,8 +1681,7 @@ public interface AppServicePlansClient
      * @param routeName Name of the Virtual Network route.
      * @param route Definition of the Virtual Network route.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return virtual Network route contract used to pass routing information for a Virtual Network.
      */
@@ -1722,8 +1699,7 @@ public interface AppServicePlansClient
      * @param route Definition of the Virtual Network route.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return virtual Network route contract used to pass routing information for a Virtual Network.
      */

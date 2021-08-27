@@ -52,10 +52,11 @@ import static com.azure.core.http.netty.implementation.Utility.closeConnection;
  */
 class NettyAsyncHttpClient implements HttpClient {
     private static final String AZURE_RESPONSE_TIMEOUT = "azure-response-timeout";
-    private final boolean disableBufferCopy;
-    private final long readTimeout;
-    private final long writeTimeout;
-    private final long responseTimeout;
+
+    final boolean disableBufferCopy;
+    final long readTimeout;
+    final long writeTimeout;
+    final long responseTimeout;
 
     final reactor.netty.http.client.HttpClient nettyClient;
 
@@ -177,7 +178,7 @@ class NettyAsyncHttpClient implements HttpClient {
         return (reactorNettyResponse, reactorNettyConnection) -> {
             /*
              * If we are eagerly reading the response into memory we can ignore the disable buffer copy flag as we
-             * MUST deep copy the buffer to ensure it can safely be used downstream.
+             * MUST deeply copy the buffer to ensure it can safely be used downstream.
              */
             if (eagerlyReadResponse) {
                 // Setup the body flux and dispose the connection once it has been received.

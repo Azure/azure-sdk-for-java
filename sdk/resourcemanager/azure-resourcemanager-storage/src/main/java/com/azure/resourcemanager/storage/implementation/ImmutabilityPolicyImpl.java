@@ -57,8 +57,8 @@ class ImmutabilityPolicyImpl
                 this.accountName,
                 this.containerName,
                 null,
-                this.cImmutabilityPeriodSinceCreationInDays,
-                null)
+                new ImmutabilityPolicyInner()
+                    .withImmutabilityPeriodSinceCreationInDays(this.cImmutabilityPeriodSinceCreationInDays))
             .map(innerToFluentMap(this));
     }
 
@@ -71,8 +71,8 @@ class ImmutabilityPolicyImpl
                 this.accountName,
                 this.containerName,
                 this.eTagState.ifMatchValueOnUpdate(this.innerModel().etag()),
-                this.uImmutabilityPeriodSinceCreationInDays,
-                null)
+                new ImmutabilityPolicyInner()
+                    .withImmutabilityPeriodSinceCreationInDays(this.uImmutabilityPeriodSinceCreationInDays))
             .map(innerToFluentMap(this))
             .map(
                 self -> {

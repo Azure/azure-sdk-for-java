@@ -21,7 +21,7 @@ public class BigDataPoolResourceInfo extends TrackedResource {
     private String provisioningState;
 
     /*
-     * Auto-scaling properties
+     * Spark pool auto-scaling properties Auto-scaling properties
      */
     @JsonProperty(value = "properties.autoScale")
     private AutoScaleProperties autoScale;
@@ -33,7 +33,7 @@ public class BigDataPoolResourceInfo extends TrackedResource {
     private OffsetDateTime creationDate;
 
     /*
-     * Auto-pausing properties
+     * Spark pool auto-pausing properties Auto-pausing properties
      */
     @JsonProperty(value = "properties.autoPause")
     private AutoPauseProperties autoPause;
@@ -75,7 +75,7 @@ public class BigDataPoolResourceInfo extends TrackedResource {
     private Integer nodeCount;
 
     /*
-     * Library version requirements
+     * Spark pool library version requirements Library version requirements
      */
     @JsonProperty(value = "properties.libraryRequirements")
     private LibraryRequirements libraryRequirements;
@@ -87,7 +87,8 @@ public class BigDataPoolResourceInfo extends TrackedResource {
     private List<LibraryInfo> customLibraries;
 
     /*
-     * Spark configuration file to specify additional properties
+     * Spark pool library version requirements Spark configuration file to
+     * specify additional properties
      */
     @JsonProperty(value = "properties.sparkConfigProperties")
     private LibraryRequirements sparkConfigProperties;
@@ -143,7 +144,7 @@ public class BigDataPoolResourceInfo extends TrackedResource {
     }
 
     /**
-     * Get the autoScale property: Auto-scaling properties.
+     * Get the autoScale property: Spark pool auto-scaling properties Auto-scaling properties.
      *
      * @return the autoScale value.
      */
@@ -152,7 +153,7 @@ public class BigDataPoolResourceInfo extends TrackedResource {
     }
 
     /**
-     * Set the autoScale property: Auto-scaling properties.
+     * Set the autoScale property: Spark pool auto-scaling properties Auto-scaling properties.
      *
      * @param autoScale the autoScale value to set.
      * @return the BigDataPoolResourceInfo object itself.
@@ -183,7 +184,7 @@ public class BigDataPoolResourceInfo extends TrackedResource {
     }
 
     /**
-     * Get the autoPause property: Auto-pausing properties.
+     * Get the autoPause property: Spark pool auto-pausing properties Auto-pausing properties.
      *
      * @return the autoPause value.
      */
@@ -192,7 +193,7 @@ public class BigDataPoolResourceInfo extends TrackedResource {
     }
 
     /**
-     * Set the autoPause property: Auto-pausing properties.
+     * Set the autoPause property: Spark pool auto-pausing properties Auto-pausing properties.
      *
      * @param autoPause the autoPause value to set.
      * @return the BigDataPoolResourceInfo object itself.
@@ -323,7 +324,7 @@ public class BigDataPoolResourceInfo extends TrackedResource {
     }
 
     /**
-     * Get the libraryRequirements property: Library version requirements.
+     * Get the libraryRequirements property: Spark pool library version requirements Library version requirements.
      *
      * @return the libraryRequirements value.
      */
@@ -332,7 +333,7 @@ public class BigDataPoolResourceInfo extends TrackedResource {
     }
 
     /**
-     * Set the libraryRequirements property: Library version requirements.
+     * Set the libraryRequirements property: Spark pool library version requirements Library version requirements.
      *
      * @param libraryRequirements the libraryRequirements value to set.
      * @return the BigDataPoolResourceInfo object itself.
@@ -363,7 +364,8 @@ public class BigDataPoolResourceInfo extends TrackedResource {
     }
 
     /**
-     * Get the sparkConfigProperties property: Spark configuration file to specify additional properties.
+     * Get the sparkConfigProperties property: Spark pool library version requirements Spark configuration file to
+     * specify additional properties.
      *
      * @return the sparkConfigProperties value.
      */
@@ -372,7 +374,8 @@ public class BigDataPoolResourceInfo extends TrackedResource {
     }
 
     /**
-     * Set the sparkConfigProperties property: Spark configuration file to specify additional properties.
+     * Set the sparkConfigProperties property: Spark pool library version requirements Spark configuration file to
+     * specify additional properties.
      *
      * @param sparkConfigProperties the sparkConfigProperties value to set.
      * @return the BigDataPoolResourceInfo object itself.

@@ -43,6 +43,8 @@ import reactor.test.publisher.TestPublisher;
 import java.io.IOException;
 import java.time.Duration;
 import java.util.Map;
+import java.util.concurrent.RejectedExecutionException;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Supplier;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -179,13 +181,56 @@ class ReactorReceiverTest {
      */
     @Test
     void updateEndpointState() {
+        final Event closeEvent = mock(Event.class);
+        final Receiver closeReceiver = mock(Receiver.class);
+        when(closeEvent.getLink()).thenReturn(closeReceiver);
+        when(closeEvent.getReceiver()).thenReturn(closeReceiver);
+
+        when(closeReceiver.getLocalState()).thenReturn(EndpointState.ACTIVE);
+        when(closeReceiver.getRemoteCondition()).thenReturn(null);
+
         StepVerifier.create(reactorReceiver.getEndpointStates())
             .expectNext(AmqpEndpointState.UNINITIALIZED)
             .then(() -> receiverHandler.onLinkRemoteOpen(event))
             .expectNext(AmqpEndpointState.ACTIVE)
             .then(() -> receiverHandler.close())
             .expectNext(AmqpEndpointState.CLOSED)
+            .then(() -> receiverHandler.onLinkRemoteClose(closeEvent))
             .verifyComplete();
+    }
+
+
+    /**
+     * Verifies EndpointStates are propagated.
+     */
+    @Test
+    void updateEndpointStateWithError() {
+        final Event closeEvent = mock(Event.class);
+        final Receiver closeReceiver = mock(Receiver.class);
+        final AmqpErrorCondition condition = AmqpErrorCondition.CONNECTION_FORCED;
+        final ErrorCondition errorCondition = new ErrorCondition(
+            Symbol.valueOf(condition.getErrorCondition()), "Forced error condition");
+        when(closeEvent.getLink()).thenReturn(closeReceiver);
+        when(closeEvent.getReceiver()).thenReturn(closeReceiver);
+
+        when(closeReceiver.getLocalState()).thenReturn(EndpointState.ACTIVE);
+        when(closeReceiver.getRemoteCondition()).thenReturn(errorCondition);
+
+        StepVerifier.create(reactorReceiver.getEndpointStates())
+            .expectNext(AmqpEndpointState.UNINITIALIZED)
+            .then(() -> receiverHandler.onLinkRemoteOpen(event))
+            .expectNext(AmqpEndpointState.ACTIVE)
+            .then(() -> receiverHandler.close())
+            .expectNext(AmqpEndpointState.CLOSED)
+            .then(() -> receiverHandler.onLinkRemoteClose(closeEvent))
+            .expectErrorSatisfies(error -> {
+                assertTrue(error instanceof AmqpException);
+                assertEquals(condition, ((AmqpException) error).getErrorCondition());
+            })
+            .verify();
+
+        verify(closeReceiver).close();
+        verify(closeReceiver).setCondition(errorCondition);
     }
 
     /**
@@ -423,26 +468,44 @@ class ReactorReceiverTest {
         final Link link = mock(Link.class);
 
         when(link.getLocalState()).thenReturn(EndpointState.ACTIVE);
-
         when(event.getLink()).thenReturn(link);
-
-        doAnswer(invocationOnMock -> {
-            receiverHandler.onLinkRemoteClose(event);
-            return null;
-        }).when(receiver).close();
 
         // Act and Assert
         StepVerifier.create(reactorReceiver.getEndpointStates())
             .expectNext(AmqpEndpointState.UNINITIALIZED)
             .then(() -> receiverHandler.onLinkFinal(event))
             .expectNext(AmqpEndpointState.CLOSED)
-            .verifyComplete();
+            .expectComplete()
+            .verify();
 
         StepVerifier.create(reactorReceiver.getEndpointStates())
             .expectNext(AmqpEndpointState.CLOSED)
             .verifyComplete();
 
         assertTrue(reactorReceiver.isDisposed());
+    }
+
+    /**
+     * An error in scheduling the close work will close the receiver.
+     */
+    @Test
+    void disposesOnErrorSchedulingCloseWork() throws IOException {
+        // Arrange
+        final AtomicBoolean wasClosed = new AtomicBoolean();
+        doAnswer(invocationOnMock -> {
+            if (wasClosed.get()) {
+                throw new RejectedExecutionException("Test-resource-exception");
+            } else {
+                final Runnable runnable = invocationOnMock.getArgument(0);
+                runnable.run();
+                return null;
+            }
+        }).when(reactorDispatcher).invoke(any(Runnable.class));
+
+        // Act and Assert
+        StepVerifier.create(reactorReceiver.closeAsync().doOnSubscribe(subscribed -> wasClosed.set(true)))
+            .expectComplete()
+            .verify();
     }
 
     /**

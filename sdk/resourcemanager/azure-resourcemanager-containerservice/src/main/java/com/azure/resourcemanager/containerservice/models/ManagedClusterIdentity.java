@@ -7,6 +7,7 @@ package com.azure.resourcemanager.containerservice.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
@@ -30,24 +31,20 @@ public class ManagedClusterIdentity {
     private String tenantId;
 
     /*
-     * The type of identity used for the managed cluster. Type 'SystemAssigned'
-     * will use an implicitly created identity in master components and an
-     * auto-created user assigned identity in MC_ resource group in agent
-     * nodes. Type 'None' will not use MSI for the managed cluster, service
-     * principal will be used instead.
+     * The type of identity used for the managed cluster. For more information
+     * see [use managed identities in
+     * AKS](https://docs.microsoft.com/azure/aks/use-managed-identity).
      */
     @JsonProperty(value = "type")
     private ResourceIdentityType type;
 
     /*
-     * The user identity associated with the managed cluster. This identity
-     * will be used in control plane and only one user assigned identity is
-     * allowed. The user identity dictionary key references will be ARM
-     * resource ids in the form:
+     * The keys must be ARM resource IDs in the form:
      * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
      */
     @JsonProperty(value = "userAssignedIdentities")
-    private Map<String, ManagedClusterIdentityUserAssignedIdentities> userAssignedIdentities;
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
+    private Map<String, ManagedServiceIdentityUserAssignedIdentitiesValue> userAssignedIdentities;
 
     /**
      * Get the principalId property: The principal id of the system assigned identity which is used by master
@@ -69,9 +66,8 @@ public class ManagedClusterIdentity {
     }
 
     /**
-     * Get the type property: The type of identity used for the managed cluster. Type 'SystemAssigned' will use an
-     * implicitly created identity in master components and an auto-created user assigned identity in MC_ resource group
-     * in agent nodes. Type 'None' will not use MSI for the managed cluster, service principal will be used instead.
+     * Get the type property: The type of identity used for the managed cluster. For more information see [use managed
+     * identities in AKS](https://docs.microsoft.com/azure/aks/use-managed-identity).
      *
      * @return the type value.
      */
@@ -80,9 +76,8 @@ public class ManagedClusterIdentity {
     }
 
     /**
-     * Set the type property: The type of identity used for the managed cluster. Type 'SystemAssigned' will use an
-     * implicitly created identity in master components and an auto-created user assigned identity in MC_ resource group
-     * in agent nodes. Type 'None' will not use MSI for the managed cluster, service principal will be used instead.
+     * Set the type property: The type of identity used for the managed cluster. For more information see [use managed
+     * identities in AKS](https://docs.microsoft.com/azure/aks/use-managed-identity).
      *
      * @param type the type value to set.
      * @return the ManagedClusterIdentity object itself.
@@ -93,28 +88,24 @@ public class ManagedClusterIdentity {
     }
 
     /**
-     * Get the userAssignedIdentities property: The user identity associated with the managed cluster. This identity
-     * will be used in control plane and only one user assigned identity is allowed. The user identity dictionary key
-     * references will be ARM resource ids in the form:
+     * Get the userAssignedIdentities property: The keys must be ARM resource IDs in the form:
      * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
      *
      * @return the userAssignedIdentities value.
      */
-    public Map<String, ManagedClusterIdentityUserAssignedIdentities> userAssignedIdentities() {
+    public Map<String, ManagedServiceIdentityUserAssignedIdentitiesValue> userAssignedIdentities() {
         return this.userAssignedIdentities;
     }
 
     /**
-     * Set the userAssignedIdentities property: The user identity associated with the managed cluster. This identity
-     * will be used in control plane and only one user assigned identity is allowed. The user identity dictionary key
-     * references will be ARM resource ids in the form:
+     * Set the userAssignedIdentities property: The keys must be ARM resource IDs in the form:
      * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
      *
      * @param userAssignedIdentities the userAssignedIdentities value to set.
      * @return the ManagedClusterIdentity object itself.
      */
     public ManagedClusterIdentity withUserAssignedIdentities(
-        Map<String, ManagedClusterIdentityUserAssignedIdentities> userAssignedIdentities) {
+        Map<String, ManagedServiceIdentityUserAssignedIdentitiesValue> userAssignedIdentities) {
         this.userAssignedIdentities = userAssignedIdentities;
         return this;
     }

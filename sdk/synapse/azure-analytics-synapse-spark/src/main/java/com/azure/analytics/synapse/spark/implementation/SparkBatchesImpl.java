@@ -51,53 +51,53 @@ public final class SparkBatchesImpl {
      * The interface defining all the services for SparkClientSparkBatches to be used by the proxy service to perform
      * REST calls.
      */
-    @Host("{endpoint}/livyApi/versions/{livyApiVersion}/sparkPools/{sparkPoolName}")
+    @Host("{endpoint}")
     @ServiceInterface(name = "SparkClientSparkBatc")
     private interface SparkBatchesService {
-        @Get("/batches")
+        @Get("/livyApi/versions/{livyApiVersion}/sparkPools/{sparkPoolName}/batches")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<SparkBatchJobCollection>> getSparkBatchJobs(
                 @HostParam("endpoint") String endpoint,
-                @HostParam("livyApiVersion") String livyApiVersion,
-                @HostParam("sparkPoolName") String sparkPoolName,
+                @PathParam(value = "livyApiVersion", encoded = true) String livyApiVersion,
+                @PathParam(value = "sparkPoolName", encoded = true) String sparkPoolName,
                 @QueryParam("from") Integer from,
                 @QueryParam("size") Integer size,
                 @QueryParam("detailed") Boolean detailed,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
-        @Post("/batches")
+        @Post("/livyApi/versions/{livyApiVersion}/sparkPools/{sparkPoolName}/batches")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<SparkBatchJob>> createSparkBatchJob(
                 @HostParam("endpoint") String endpoint,
-                @HostParam("livyApiVersion") String livyApiVersion,
-                @HostParam("sparkPoolName") String sparkPoolName,
+                @PathParam(value = "livyApiVersion", encoded = true) String livyApiVersion,
+                @PathParam(value = "sparkPoolName", encoded = true) String sparkPoolName,
                 @QueryParam("detailed") Boolean detailed,
                 @BodyParam("application/json") SparkBatchJobOptions sparkBatchJobOptions,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
-        @Get("/batches/{batchId}")
+        @Get("/livyApi/versions/{livyApiVersion}/sparkPools/{sparkPoolName}/batches/{batchId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<SparkBatchJob>> getSparkBatchJob(
                 @HostParam("endpoint") String endpoint,
-                @HostParam("livyApiVersion") String livyApiVersion,
-                @HostParam("sparkPoolName") String sparkPoolName,
+                @PathParam(value = "livyApiVersion", encoded = true) String livyApiVersion,
+                @PathParam(value = "sparkPoolName", encoded = true) String sparkPoolName,
                 @PathParam("batchId") int batchId,
                 @QueryParam("detailed") Boolean detailed,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
-        @Delete("/batches/{batchId}")
+        @Delete("/livyApi/versions/{livyApiVersion}/sparkPools/{sparkPoolName}/batches/{batchId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> cancelSparkBatchJob(
                 @HostParam("endpoint") String endpoint,
-                @HostParam("livyApiVersion") String livyApiVersion,
-                @HostParam("sparkPoolName") String sparkPoolName,
+                @PathParam(value = "livyApiVersion", encoded = true) String livyApiVersion,
+                @PathParam(value = "sparkPoolName", encoded = true) String sparkPoolName,
                 @PathParam("batchId") int batchId,
                 Context context);
     }

@@ -48,6 +48,10 @@ public final class TenantConfigurationSyncStateContractImpl implements TenantCon
         return this.innerModel().configurationChangeDate();
     }
 
+    public String lastOperationId() {
+        return this.innerModel().lastOperationId();
+    }
+
     public TenantConfigurationSyncStateContractInner innerModel() {
         return this.innerObject;
     }

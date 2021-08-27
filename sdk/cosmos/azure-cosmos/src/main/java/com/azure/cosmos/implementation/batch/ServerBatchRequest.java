@@ -3,10 +3,10 @@
 
 package com.azure.cosmos.implementation.batch;
 
-import com.azure.cosmos.CosmosItemOperation;
 import com.azure.cosmos.implementation.JsonSerializable;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
+import com.azure.cosmos.models.CosmosItemOperation;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 
 import java.util.List;
@@ -63,8 +63,8 @@ public abstract class ServerBatchRequest {
 
             if (operation instanceof ItemBatchOperation<?>) {
                 operationJsonSerializable = ((ItemBatchOperation<?>) operation).serializeOperation();
-            } else if (operation instanceof ItemBulkOperation<?>) {
-                operationJsonSerializable = ((ItemBulkOperation<?>) operation).serializeOperation();
+            } else if (operation instanceof ItemBulkOperation<?, ?>) {
+                operationJsonSerializable = ((ItemBulkOperation<?, ?>) operation).serializeOperation();
             } else {
                 throw new UnsupportedOperationException("Unknown CosmosItemOperation.");
             }

@@ -12,7 +12,7 @@
 
     <groupId>com.azure.spring</groupId>
     <artifactId>azure-spring-cloud-appconfiguration-config</artifactId>
-    <version>2.0.1-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-appconfiguration-config;current} -->
+    <version>2.1.0</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-appconfiguration-config;current} -->
     <name>Azure Spring Cloud App Configuration Config</name>
     <description>Integration of Spring Cloud Config and Azure App Configuration Service</description>
 
@@ -62,27 +62,27 @@
         <dependency>
             <groupId>com.azure</groupId>
             <artifactId>azure-core</artifactId>
-            <version>1.18.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+            <version>1.19.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
         </dependency>
         <dependency>
             <groupId>com.azure</groupId>
             <artifactId>azure-data-appconfiguration</artifactId>
-            <version>1.2.0</version> <!-- {x-version-update;com.azure:azure-data-appconfiguration;dependency} -->
+            <version>1.2.1</version> <!-- {x-version-update;com.azure:azure-data-appconfiguration;dependency} -->
         </dependency>
         <dependency>
             <groupId>com.azure</groupId>
             <artifactId>azure-identity</artifactId>
-            <version>1.3.4</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+            <version>1.3.5</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
         </dependency>
         <dependency>
             <groupId>com.azure</groupId>
             <artifactId>azure-security-keyvault-secrets</artifactId>
-            <version>4.3.1</version> <!-- {x-version-update;com.azure:azure-security-keyvault-secrets;dependency} -->
+            <version>4.3.2</version> <!-- {x-version-update;com.azure:azure-security-keyvault-secrets;dependency} -->
         </dependency>
         <dependency>
             <groupId>com.azure</groupId>
             <artifactId>azure-core-http-netty</artifactId>
-            <version>1.10.1</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
+            <version>1.10.2</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
         </dependency>
         <dependency>
             <groupId>org.hibernate.validator</groupId>
@@ -104,48 +104,15 @@
             <artifactId>spring-boot-actuator-autoconfigure</artifactId>
             <version>2.5.3</version> <!-- {x-version-update;org.springframework.boot:spring-boot-actuator-autoconfigure;external_dependency} -->
         </dependency>
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.13.2</version> <!-- {x-version-update;junit:junit;external_dependency} -->
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.mockito</groupId>
-            <artifactId>mockito-core</artifactId>
-            <version>3.9.0</version><!-- {x-version-update;org.mockito:mockito-core;external_dependency} -->
-            <scope>test</scope>
-        </dependency>
+
+        <!-- Test Dependencies -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <version>2.5.3</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-test;external_dependency} -->
             <scope>test</scope>
         </dependency>
-        <dependency>
-            <groupId>org.junit.vintage</groupId>
-            <artifactId>junit-vintage-engine</artifactId>
-            <version>5.7.2</version> <!-- {x-version-update;org.junit.vintage:junit-vintage-engine;external_dependency} -->
-            <scope>test</scope>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.hamcrest</groupId>
-                    <artifactId>hamcrest-core</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>org.powermock</groupId>
-            <artifactId>powermock-module-junit4</artifactId>
-            <version>2.0.2</version> <!-- {x-version-update;org.powermock:powermock-module-junit4;external_dependency} -->
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.powermock</groupId>
-            <artifactId>powermock-api-mockito2</artifactId>
-            <version>2.0.2</version> <!-- {x-version-update;org.powermock:powermock-api-mockito2;external_dependency} -->
-            <scope>test</scope>
-        </dependency>
+        
         <!-- Added this dependency to include necessary annotations used 
             by reactor core. Without this dependency, javadoc throws a warning as it 
             cannot find enum When.MAYBE which is used in @Nullable annotation in reactor 

@@ -5,73 +5,83 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.appservice.fluent.models.AzureStaticWebAppsProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The AzureStaticWebApps model. */
-@JsonFlatten
+/** The configuration settings of the Azure Static Web Apps provider. */
 @Fluent
-public class AzureStaticWebApps extends ProxyOnlyResource {
+public final class AzureStaticWebApps extends ProxyOnlyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureStaticWebApps.class);
 
     /*
-     * The enabled property.
+     * AzureStaticWebApps resource specific properties
      */
-    @JsonProperty(value = "properties.enabled")
-    private Boolean enabled;
-
-    /*
-     * The registration property.
-     */
-    @JsonProperty(value = "properties.registration")
-    private AzureStaticWebAppsRegistration registration;
+    @JsonProperty(value = "properties")
+    private AzureStaticWebAppsProperties innerProperties;
 
     /**
-     * Get the enabled property: The enabled property.
+     * Get the innerProperties property: AzureStaticWebApps resource specific properties.
      *
-     * @return the enabled value.
+     * @return the innerProperties value.
      */
-    public Boolean enabled() {
-        return this.enabled;
-    }
-
-    /**
-     * Set the enabled property: The enabled property.
-     *
-     * @param enabled the enabled value to set.
-     * @return the AzureStaticWebApps object itself.
-     */
-    public AzureStaticWebApps withEnabled(Boolean enabled) {
-        this.enabled = enabled;
-        return this;
-    }
-
-    /**
-     * Get the registration property: The registration property.
-     *
-     * @return the registration value.
-     */
-    public AzureStaticWebAppsRegistration registration() {
-        return this.registration;
-    }
-
-    /**
-     * Set the registration property: The registration property.
-     *
-     * @param registration the registration value to set.
-     * @return the AzureStaticWebApps object itself.
-     */
-    public AzureStaticWebApps withRegistration(AzureStaticWebAppsRegistration registration) {
-        this.registration = registration;
-        return this;
+    private AzureStaticWebAppsProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /** {@inheritDoc} */
     @Override
     public AzureStaticWebApps withKind(String kind) {
         super.withKind(kind);
+        return this;
+    }
+
+    /**
+     * Get the enabled property: &lt;code&gt;false&lt;/code&gt; if the Azure Static Web Apps provider should not be
+     * enabled despite the set registration; otherwise, &lt;code&gt;true&lt;/code&gt;.
+     *
+     * @return the enabled value.
+     */
+    public Boolean enabled() {
+        return this.innerProperties() == null ? null : this.innerProperties().enabled();
+    }
+
+    /**
+     * Set the enabled property: &lt;code&gt;false&lt;/code&gt; if the Azure Static Web Apps provider should not be
+     * enabled despite the set registration; otherwise, &lt;code&gt;true&lt;/code&gt;.
+     *
+     * @param enabled the enabled value to set.
+     * @return the AzureStaticWebApps object itself.
+     */
+    public AzureStaticWebApps withEnabled(Boolean enabled) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AzureStaticWebAppsProperties();
+        }
+        this.innerProperties().withEnabled(enabled);
+        return this;
+    }
+
+    /**
+     * Get the registration property: The configuration settings of the Azure Static Web Apps registration.
+     *
+     * @return the registration value.
+     */
+    public AzureStaticWebAppsRegistration registration() {
+        return this.innerProperties() == null ? null : this.innerProperties().registration();
+    }
+
+    /**
+     * Set the registration property: The configuration settings of the Azure Static Web Apps registration.
+     *
+     * @param registration the registration value to set.
+     * @return the AzureStaticWebApps object itself.
+     */
+    public AzureStaticWebApps withRegistration(AzureStaticWebAppsRegistration registration) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AzureStaticWebAppsProperties();
+        }
+        this.innerProperties().withRegistration(registration);
         return this;
     }
 
@@ -83,8 +93,8 @@ public class AzureStaticWebApps extends ProxyOnlyResource {
     @Override
     public void validate() {
         super.validate();
-        if (registration() != null) {
-            registration().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

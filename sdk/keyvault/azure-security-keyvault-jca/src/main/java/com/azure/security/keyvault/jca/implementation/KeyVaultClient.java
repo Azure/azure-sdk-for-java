@@ -221,18 +221,17 @@ public class KeyVaultClient {
             if (response != null) {
                 certificateListResult = (CertificateListResult) JsonConverterUtil.fromJson(response,
                     CertificateListResult.class);
-            } else {
-                url = null;
             }
-            if (certificateListResult != null && certificateListResult.getValue().size() > 0) {
+            if (certificateListResult != null) {
+                url = certificateListResult.getNextLink();
                 for (CertificateItem certificateItem : certificateListResult.getValue()) {
                     String id = certificateItem.getId();
                     String alias = id.substring(id.indexOf("certificates") + "certificates".length() + 1);
                     result.add(alias);
                 }
-                url = certificateListResult.getNextLink();
+            } else {
+                url = null;
             }
-
         }
         return result;
     }
@@ -310,7 +309,10 @@ public class KeyVaultClient {
             // and we can't access private key(which is not exportable), we will use
             // the Azure Key Vault Secrets API to obtain the private key (keyless).
             LOGGER.exiting("KeyVaultClient", "getKey", null);
-            return new KeyVaultPrivateKey(keyType, certificateBundle.getKid());
+            return Optional.ofNullable(certificateBundle)
+                           .map(CertificateBundle::getKid)
+                           .map(kid -> new KeyVaultPrivateKey(keyType, kid))
+                           .orElse(null);
         }
         String certificateSecretUri = certificateBundle.getSid();
         HashMap<String, String> headers = new HashMap<>();

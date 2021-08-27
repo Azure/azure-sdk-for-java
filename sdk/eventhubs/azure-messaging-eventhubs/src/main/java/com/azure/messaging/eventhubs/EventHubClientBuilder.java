@@ -19,9 +19,9 @@ import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.amqp.models.CbsAuthorizationType;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.annotation.ServiceClientProtocol;
-import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.AzureNamedKeyCredential;
 import com.azure.core.credential.AzureSasCredential;
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.exception.AzureException;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
@@ -493,6 +493,16 @@ public class EventHubClientBuilder {
     }
 
     /**
+     * Package-private method that gets the prefetch count.
+     *
+     * @return Gets the prefetch count or {@code null} if it has not been set.
+     * @see #DEFAULT_PREFETCH_COUNT for default prefetch count.
+     */
+    Integer getPrefetchCount() {
+        return prefetchCount;
+    }
+
+    /**
      * Package-private method that sets the scheduler for the created Event Hub client.
      *
      * @param scheduler Scheduler to set.
@@ -726,10 +736,12 @@ public class EventHubClientBuilder {
     }
 
     private ConnectionOptions getConnectionOptions() {
-        configuration = configuration == null ? Configuration.getGlobalConfiguration().clone() : configuration;
+        Configuration buildConfiguration = configuration == null
+                ? Configuration.getGlobalConfiguration().clone()
+                : configuration;
 
         if (credentials == null) {
-            final String connectionString = configuration.get(AZURE_EVENT_HUBS_CONNECTION_STRING);
+            final String connectionString = buildConfiguration.get(AZURE_EVENT_HUBS_CONNECTION_STRING);
 
             if (CoreUtils.isNullOrEmpty(connectionString)) {
                 throw logger.logExceptionAsError(new IllegalArgumentException("Credentials have not been set. "
@@ -742,7 +754,7 @@ public class EventHubClientBuilder {
         }
 
         if (proxyOptions == null) {
-            proxyOptions = getDefaultProxyConfiguration(configuration);
+            proxyOptions = getDefaultProxyConfiguration(buildConfiguration);
         }
 
         // If the proxy has been configured by the user but they have overridden the TransportType with something that
@@ -790,10 +802,11 @@ public class EventHubClientBuilder {
             return ProxyOptions.SYSTEM_DEFAULTS;
         }
 
-        return getProxyOptions(authentication, proxyAddress);
+        return getProxyOptions(authentication, proxyAddress, configuration);
     }
 
-    private ProxyOptions getProxyOptions(ProxyAuthenticationType authentication, String proxyAddress) {
+    private ProxyOptions getProxyOptions(ProxyAuthenticationType authentication, String proxyAddress,
+                                         Configuration configuration) {
         String host;
         int port;
         if (HOST_PORT_PATTERN.matcher(proxyAddress.trim()).find()) {
@@ -807,8 +820,11 @@ public class EventHubClientBuilder {
         } else {
             com.azure.core.http.ProxyOptions coreProxyOptions = com.azure.core.http.ProxyOptions
                 .fromConfiguration(configuration);
-            return new ProxyOptions(authentication, new Proxy(coreProxyOptions.getType().toProxyType(),
-                coreProxyOptions.getAddress()), coreProxyOptions.getUsername(), coreProxyOptions.getPassword());
+            Proxy.Type proxyType = coreProxyOptions.getType().toProxyType();
+            InetSocketAddress coreProxyAddress = coreProxyOptions.getAddress();
+            String username = coreProxyOptions.getUsername();
+            String password = coreProxyOptions.getPassword();
+            return new ProxyOptions(authentication, new Proxy(proxyType, coreProxyAddress), username, password);
         }
     }
 }

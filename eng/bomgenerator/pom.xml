@@ -32,15 +32,25 @@
     <dependency>
       <groupId>org.apache.maven</groupId>
       <artifactId>maven-core</artifactId>
-      <version>3.5.4</version> <!-- {x-version-update;org.apache.maven:maven-core;external} -->
+      <version>3.5.4</version> <!-- {x-version-update;org.apache.maven:maven-core;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-log4j12</artifactId>
-      <version>1.7.5</version>  <!-- {x-version-update;org.slf4j:slf4j-log4j12;external} -->
+      <version>1.7.5</version>  <!-- {x-version-update;org.slf4j:slf4j-log4j12;external_dependency} -->
     </dependency>
   </dependencies>
   <build>
+  <resources>
+    <resource>
+      <directory>src/main/resources</directory>
+      <filtering>true</filtering>
+    </resource>
+    <resource>
+      <directory>src/test/resources</directory>
+      <filtering>true</filtering>
+    </resource>
+  </resources>
     <plugins>
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
@@ -48,13 +58,22 @@
         <version>1.6.0</version>
         <executions>
           <execution>
+            <id>generate-bom</id>
+            <phase>package</phase>
             <goals>
               <goal>java</goal>
             </goals>
           </execution>
         </executions>
         <configuration>
+          <workingDirectory>${project.basedir}</workingDirectory>
           <mainClass>com.azure.tools.bomgenerator.Main</mainClass>
+          <arguments>
+            <argument>-inputFile=${project.basedir}/../versioning/version_client.txt</argument>
+            <argument>-outputFile=${project.basedir}/target/newbom.xml</argument>
+            <argument>-pomFile=${project.basedir}/../../sdk/boms/azure-sdk-bom/pom.xml</argument>
+            <argument>-reportFile=${project.basedir}/target/dependency_conflictlist.html</argument>
+          </arguments>
           <cleanupDaemonThreads>false</cleanupDaemonThreads>
         </configuration>
       </plugin>

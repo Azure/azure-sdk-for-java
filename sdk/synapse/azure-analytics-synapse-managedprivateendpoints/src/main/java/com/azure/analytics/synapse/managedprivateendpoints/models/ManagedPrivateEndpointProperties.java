@@ -6,10 +6,17 @@ package com.azure.analytics.synapse.managedprivateendpoints.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
 /** Properties of a managed private endpoint. */
 @Fluent
 public final class ManagedPrivateEndpointProperties {
+    /*
+     * The name of managed private endpoint
+     */
+    @JsonProperty(value = "name")
+    private String name;
+
     /*
      * The ARM resource ID of the resource to which the managed private
      * endpoint is created
@@ -40,6 +47,38 @@ public final class ManagedPrivateEndpointProperties {
      */
     @JsonProperty(value = "isReserved", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean isReserved;
+
+    /*
+     * List of fully qualified domain names
+     */
+    @JsonProperty(value = "fqdns")
+    private List<String> fqdns;
+
+    /*
+     * Denotes whether the managed private endpoint is compliant
+     */
+    @JsonProperty(value = "isCompliant")
+    private Boolean isCompliant;
+
+    /**
+     * Get the name property: The name of managed private endpoint.
+     *
+     * @return the name value.
+     */
+    public String getName() {
+        return this.name;
+    }
+
+    /**
+     * Set the name property: The name of managed private endpoint.
+     *
+     * @param name the name value to set.
+     * @return the ManagedPrivateEndpointProperties object itself.
+     */
+    public ManagedPrivateEndpointProperties setName(String name) {
+        this.name = name;
+        return this;
+    }
 
     /**
      * Get the privateLinkResourceId property: The ARM resource ID of the resource to which the managed private endpoint
@@ -119,5 +158,45 @@ public final class ManagedPrivateEndpointProperties {
      */
     public Boolean isReserved() {
         return this.isReserved;
+    }
+
+    /**
+     * Get the fqdns property: List of fully qualified domain names.
+     *
+     * @return the fqdns value.
+     */
+    public List<String> getFqdns() {
+        return this.fqdns;
+    }
+
+    /**
+     * Set the fqdns property: List of fully qualified domain names.
+     *
+     * @param fqdns the fqdns value to set.
+     * @return the ManagedPrivateEndpointProperties object itself.
+     */
+    public ManagedPrivateEndpointProperties setFqdns(List<String> fqdns) {
+        this.fqdns = fqdns;
+        return this;
+    }
+
+    /**
+     * Get the isCompliant property: Denotes whether the managed private endpoint is compliant.
+     *
+     * @return the isCompliant value.
+     */
+    public Boolean isCompliant() {
+        return this.isCompliant;
+    }
+
+    /**
+     * Set the isCompliant property: Denotes whether the managed private endpoint is compliant.
+     *
+     * @param isCompliant the isCompliant value to set.
+     * @return the ManagedPrivateEndpointProperties object itself.
+     */
+    public ManagedPrivateEndpointProperties setIsCompliant(Boolean isCompliant) {
+        this.isCompliant = isCompliant;
+        return this;
     }
 }

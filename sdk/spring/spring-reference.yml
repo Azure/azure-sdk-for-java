@@ -402,7 +402,7 @@
                 groupId: com.azure.spring
                 artifactId: azure-spring-cloud-starter-servicebus
                 version: 2.2.0
-    - name: Service Bus Jms
+    - name: Service Bus JMS
       description: Microsoft Azure Service Bus is a fully managed enterprise integration message broker. Service Bus can decouple applications and services. Service Bus offers a reliable and secure platform for asynchronous transfer of data and state. Data is transferred between different applications and services using messages.
       msdocs: https://docs.microsoft.com/azure/service-bus-messaging/how-to-use-java-message-service-20
       clientSource:

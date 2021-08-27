@@ -30,6 +30,7 @@ import com.azure.messaging.eventgrid.systemevents.ContainerRegistryChartDeletedE
 import com.azure.messaging.eventgrid.systemevents.ContainerRegistryChartPushedEventData;
 import com.azure.messaging.eventgrid.systemevents.ContainerRegistryImageDeletedEventData;
 import com.azure.messaging.eventgrid.systemevents.ContainerRegistryImagePushedEventData;
+import com.azure.messaging.eventgrid.systemevents.ContainerServiceNewKubernetesVersionAvailableEventData;
 import com.azure.messaging.eventgrid.systemevents.EventHubCaptureFileCreatedEventData;
 import com.azure.messaging.eventgrid.systemevents.IotHubDeviceConnectedEventData;
 import com.azure.messaging.eventgrid.systemevents.IotHubDeviceCreatedEventData;
@@ -462,6 +463,13 @@ public final class SystemEventNames {
         "Microsoft.Communication.ChatParticipantAddedToThreadWithUser";
 
     /**
+     * Schema of the Data property of an EventGridEvent for a Microsoft.ContainerService.NewKubernetesVersionAvailable
+     * event.
+     */
+    public static final String CONTAINER_SERVICE_NEW_KUBERNETES_VERSION_AVAILABLE =
+            "Microsoft.ContainerService.NewKubernetesVersionAvailable";
+
+    /**
      * @deprecated As of 4.1.0, replaced by {@link #COMMUNICATION_CHAT_PARTICIPANT_REMOVED_FROM_THREAD}.
      */
     @Deprecated
@@ -695,6 +703,10 @@ public final class SystemEventNames {
             put(POLICY_INSIGHTS_POLICY_STATE_CREATED, PolicyInsightsPolicyStateCreatedEventData.class);
             put(POLICY_INSIGHTS_POLICY_STATE_CHANGED, PolicyInsightsPolicyStateChangedEventData.class);
             put(POLICY_INSIGHTS_POLICY_STATE_DELETED, PolicyInsightsPolicyStateDeletedEventData.class);
+
+            // Container Service
+            put(CONTAINER_SERVICE_NEW_KUBERNETES_VERSION_AVAILABLE,
+                    ContainerServiceNewKubernetesVersionAvailableEventData.class);
         }
     };
 

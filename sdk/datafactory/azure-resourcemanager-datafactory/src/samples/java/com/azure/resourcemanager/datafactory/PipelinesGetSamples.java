@@ -8,14 +8,18 @@ import com.azure.core.util.Context;
 
 /** Samples for Pipelines Get. */
 public final class PipelinesGetSamples {
+    /*
+     * operationId: Pipelines_Get
+     * api-version: 2018-06-01
+     * x-ms-examples: Pipelines_Get
+     */
     /**
      * Sample code: Pipelines_Get.
      *
-     * @param dataFactoryManager Entry point to DataFactoryManager. The Azure Data Factory V2 management API provides a
-     *     RESTful set of web services that interact with Azure Data Factory V2 services.
+     * @param manager Entry point to DataFactoryManager.
      */
-    public static void pipelinesGet(com.azure.resourcemanager.datafactory.DataFactoryManager dataFactoryManager) {
-        dataFactoryManager
+    public static void pipelinesGet(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
+        manager
             .pipelines()
             .getWithResponse("exampleResourceGroup", "exampleFactoryName", "examplePipeline", null, Context.NONE);
     }

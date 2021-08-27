@@ -9,7 +9,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import java.util.List;
 
 /** Copy activity sources of tabular type. */
 @JsonTypeInfo(
@@ -88,10 +87,11 @@ public class TabularSource extends CopySource {
 
     /*
      * Specifies the additional columns to be added to source data. Type: array
-     * of objects (or Expression with resultType array of objects).
+     * of objects(AdditionalColumns) (or Expression with resultType array of
+     * objects).
      */
     @JsonProperty(value = "additionalColumns")
-    private List<AdditionalColumns> additionalColumns;
+    private Object additionalColumns;
 
     /**
      * Get the queryTimeout property: Query timeout. Type: string (or Expression with resultType string), pattern:
@@ -117,22 +117,22 @@ public class TabularSource extends CopySource {
 
     /**
      * Get the additionalColumns property: Specifies the additional columns to be added to source data. Type: array of
-     * objects (or Expression with resultType array of objects).
+     * objects(AdditionalColumns) (or Expression with resultType array of objects).
      *
      * @return the additionalColumns value.
      */
-    public List<AdditionalColumns> getAdditionalColumns() {
+    public Object getAdditionalColumns() {
         return this.additionalColumns;
     }
 
     /**
      * Set the additionalColumns property: Specifies the additional columns to be added to source data. Type: array of
-     * objects (or Expression with resultType array of objects).
+     * objects(AdditionalColumns) (or Expression with resultType array of objects).
      *
      * @param additionalColumns the additionalColumns value to set.
      * @return the TabularSource object itself.
      */
-    public TabularSource setAdditionalColumns(List<AdditionalColumns> additionalColumns) {
+    public TabularSource setAdditionalColumns(Object additionalColumns) {
         this.additionalColumns = additionalColumns;
         return this;
     }

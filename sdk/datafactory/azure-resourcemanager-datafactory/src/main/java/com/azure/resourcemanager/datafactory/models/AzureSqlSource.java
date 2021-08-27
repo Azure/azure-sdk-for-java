@@ -11,7 +11,6 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import java.util.List;
 import java.util.Map;
 
 /** A copy activity Azure SQL source. */
@@ -199,7 +198,7 @@ public final class AzureSqlSource extends TabularSource {
 
     /** {@inheritDoc} */
     @Override
-    public AzureSqlSource withAdditionalColumns(List<AdditionalColumns> additionalColumns) {
+    public AzureSqlSource withAdditionalColumns(Object additionalColumns) {
         super.withAdditionalColumns(additionalColumns);
         return this;
     }

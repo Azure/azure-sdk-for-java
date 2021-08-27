@@ -7,6 +7,7 @@ import com.azure.security.keyvault.jca.implementation.certificates.ClasspathCert
 import com.azure.security.keyvault.jca.implementation.certificates.JreCertificates;
 import com.azure.security.keyvault.jca.implementation.certificates.KeyVaultCertificates;
 import com.azure.security.keyvault.jca.implementation.certificates.SpecificPathCertificates;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.security.Key;
@@ -16,6 +17,7 @@ import java.security.KeyStoreSpi;
 import java.security.NoSuchAlgorithmException;
 import java.security.UnrecoverableEntryException;
 import java.security.cert.Certificate;
+import java.security.cert.CertificateException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -137,6 +139,28 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
         classpathCertificates = new ClasspathCertificates();
         allCertificates = Arrays.asList(
             jreCertificates, wellKnowCertificates, customCertificates, keyVaultCertificates, classpathCertificates);
+    }
+
+    /**
+     * get key vault key store by system property
+     *
+     * @return KeyVault key store
+     * @throws CertificateException if any of the certificates in the
+     *          keystore could not be loaded
+     * @throws NoSuchAlgorithmException when algorithm is unavailable.
+     * @throws KeyStoreException when no Provider supports a KeyStoreSpi implementation for the specified type
+     * @throws IOException when an I/O error occurs.
+     */
+    public static KeyStore getKeyVaultKeyStoreBySystemProperty() throws CertificateException, NoSuchAlgorithmException, KeyStoreException, IOException {
+        KeyStore keyStore = KeyStore.getInstance(KeyVaultJcaProvider.PROVIDER_NAME);
+        KeyVaultLoadStoreParameter parameter = new KeyVaultLoadStoreParameter(
+            System.getProperty("azure.keyvault.uri"),
+            System.getProperty("azure.keyvault.tenant-id"),
+            System.getProperty("azure.keyvault.client-id"),
+            System.getProperty("azure.keyvault.client-secret"),
+            System.getProperty("azure.keyvault.managed-identity"));
+        keyStore.load(parameter);
+        return keyStore;
     }
 
     @Override

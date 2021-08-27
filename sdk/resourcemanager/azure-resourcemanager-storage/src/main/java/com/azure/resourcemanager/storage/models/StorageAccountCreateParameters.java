@@ -5,16 +5,16 @@
 package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.storage.fluent.models.StorageAccountPropertiesCreateParameters;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** The parameters used when creating a storage account. */
-@JsonFlatten
 @Fluent
-public class StorageAccountCreateParameters {
+public final class StorageAccountCreateParameters {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(StorageAccountCreateParameters.class);
 
     /*
@@ -55,6 +55,7 @@ public class StorageAccountCreateParameters {
      * with a length no greater than 256 characters.
      */
     @JsonProperty(value = "tags")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
     /*
@@ -64,108 +65,10 @@ public class StorageAccountCreateParameters {
     private Identity identity;
 
     /*
-     * SasPolicy assigned to the storage account.
+     * The parameters used to create the storage account.
      */
-    @JsonProperty(value = "properties.sasPolicy")
-    private SasPolicy sasPolicy;
-
-    /*
-     * KeyPolicy assigned to the storage account.
-     */
-    @JsonProperty(value = "properties.keyPolicy")
-    private KeyPolicy keyPolicy;
-
-    /*
-     * User domain assigned to the storage account. Name is the CNAME source.
-     * Only one custom domain is supported per storage account at this time. To
-     * clear the existing custom domain, use an empty string for the custom
-     * domain name property.
-     */
-    @JsonProperty(value = "properties.customDomain")
-    private CustomDomain customDomain;
-
-    /*
-     * Not applicable. Azure Storage encryption is enabled for all storage
-     * accounts and cannot be disabled.
-     */
-    @JsonProperty(value = "properties.encryption")
-    private Encryption encryption;
-
-    /*
-     * Network rule set
-     */
-    @JsonProperty(value = "properties.networkAcls")
-    private NetworkRuleSet networkRuleSet;
-
-    /*
-     * Required for storage accounts where kind = BlobStorage. The access tier
-     * used for billing.
-     */
-    @JsonProperty(value = "properties.accessTier")
-    private AccessTier accessTier;
-
-    /*
-     * Provides the identity based authentication settings for Azure Files.
-     */
-    @JsonProperty(value = "properties.azureFilesIdentityBasedAuthentication")
-    private AzureFilesIdentityBasedAuthentication azureFilesIdentityBasedAuthentication;
-
-    /*
-     * Allows https traffic only to storage service if sets to true. The
-     * default value is true since API version 2019-04-01.
-     */
-    @JsonProperty(value = "properties.supportsHttpsTrafficOnly")
-    private Boolean enableHttpsTrafficOnly;
-
-    /*
-     * Account HierarchicalNamespace enabled if sets to true.
-     */
-    @JsonProperty(value = "properties.isHnsEnabled")
-    private Boolean isHnsEnabled;
-
-    /*
-     * Allow large file shares if sets to Enabled. It cannot be disabled once
-     * it is enabled.
-     */
-    @JsonProperty(value = "properties.largeFileSharesState")
-    private LargeFileSharesState largeFileSharesState;
-
-    /*
-     * Maintains information about the network routing choice opted by the user
-     * for data transfer
-     */
-    @JsonProperty(value = "properties.routingPreference")
-    private RoutingPreference routingPreference;
-
-    /*
-     * Allow or disallow public access to all blobs or containers in the
-     * storage account. The default interpretation is true for this property.
-     */
-    @JsonProperty(value = "properties.allowBlobPublicAccess")
-    private Boolean allowBlobPublicAccess;
-
-    /*
-     * Set the minimum TLS version to be permitted on requests to storage. The
-     * default interpretation is TLS 1.0 for this property.
-     */
-    @JsonProperty(value = "properties.minimumTlsVersion")
-    private MinimumTlsVersion minimumTlsVersion;
-
-    /*
-     * Indicates whether the storage account permits requests to be authorized
-     * with the account access key via Shared Key. If false, then all requests,
-     * including shared access signatures, must be authorized with Azure Active
-     * Directory (Azure AD). The default value is null, which is equivalent to
-     * true.
-     */
-    @JsonProperty(value = "properties.allowSharedKeyAccess")
-    private Boolean allowSharedKeyAccess;
-
-    /*
-     * NFS 3.0 protocol support enabled if set to true.
-     */
-    @JsonProperty(value = "properties.isNfsV3Enabled")
-    private Boolean enableNfsV3;
+    @JsonProperty(value = "properties")
+    private StorageAccountPropertiesCreateParameters innerProperties;
 
     /**
      * Get the sku property: Required. Gets or sets the SKU name.
@@ -302,12 +205,21 @@ public class StorageAccountCreateParameters {
     }
 
     /**
+     * Get the innerProperties property: The parameters used to create the storage account.
+     *
+     * @return the innerProperties value.
+     */
+    private StorageAccountPropertiesCreateParameters innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
      * Get the sasPolicy property: SasPolicy assigned to the storage account.
      *
      * @return the sasPolicy value.
      */
     public SasPolicy sasPolicy() {
-        return this.sasPolicy;
+        return this.innerProperties() == null ? null : this.innerProperties().sasPolicy();
     }
 
     /**
@@ -317,7 +229,10 @@ public class StorageAccountCreateParameters {
      * @return the StorageAccountCreateParameters object itself.
      */
     public StorageAccountCreateParameters withSasPolicy(SasPolicy sasPolicy) {
-        this.sasPolicy = sasPolicy;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new StorageAccountPropertiesCreateParameters();
+        }
+        this.innerProperties().withSasPolicy(sasPolicy);
         return this;
     }
 
@@ -327,7 +242,7 @@ public class StorageAccountCreateParameters {
      * @return the keyPolicy value.
      */
     public KeyPolicy keyPolicy() {
-        return this.keyPolicy;
+        return this.innerProperties() == null ? null : this.innerProperties().keyPolicy();
     }
 
     /**
@@ -337,7 +252,10 @@ public class StorageAccountCreateParameters {
      * @return the StorageAccountCreateParameters object itself.
      */
     public StorageAccountCreateParameters withKeyPolicy(KeyPolicy keyPolicy) {
-        this.keyPolicy = keyPolicy;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new StorageAccountPropertiesCreateParameters();
+        }
+        this.innerProperties().withKeyPolicy(keyPolicy);
         return this;
     }
 
@@ -349,7 +267,7 @@ public class StorageAccountCreateParameters {
      * @return the customDomain value.
      */
     public CustomDomain customDomain() {
-        return this.customDomain;
+        return this.innerProperties() == null ? null : this.innerProperties().customDomain();
     }
 
     /**
@@ -361,7 +279,10 @@ public class StorageAccountCreateParameters {
      * @return the StorageAccountCreateParameters object itself.
      */
     public StorageAccountCreateParameters withCustomDomain(CustomDomain customDomain) {
-        this.customDomain = customDomain;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new StorageAccountPropertiesCreateParameters();
+        }
+        this.innerProperties().withCustomDomain(customDomain);
         return this;
     }
 
@@ -372,7 +293,7 @@ public class StorageAccountCreateParameters {
      * @return the encryption value.
      */
     public Encryption encryption() {
-        return this.encryption;
+        return this.innerProperties() == null ? null : this.innerProperties().encryption();
     }
 
     /**
@@ -383,7 +304,10 @@ public class StorageAccountCreateParameters {
      * @return the StorageAccountCreateParameters object itself.
      */
     public StorageAccountCreateParameters withEncryption(Encryption encryption) {
-        this.encryption = encryption;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new StorageAccountPropertiesCreateParameters();
+        }
+        this.innerProperties().withEncryption(encryption);
         return this;
     }
 
@@ -393,7 +317,7 @@ public class StorageAccountCreateParameters {
      * @return the networkRuleSet value.
      */
     public NetworkRuleSet networkRuleSet() {
-        return this.networkRuleSet;
+        return this.innerProperties() == null ? null : this.innerProperties().networkRuleSet();
     }
 
     /**
@@ -403,7 +327,10 @@ public class StorageAccountCreateParameters {
      * @return the StorageAccountCreateParameters object itself.
      */
     public StorageAccountCreateParameters withNetworkRuleSet(NetworkRuleSet networkRuleSet) {
-        this.networkRuleSet = networkRuleSet;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new StorageAccountPropertiesCreateParameters();
+        }
+        this.innerProperties().withNetworkRuleSet(networkRuleSet);
         return this;
     }
 
@@ -414,7 +341,7 @@ public class StorageAccountCreateParameters {
      * @return the accessTier value.
      */
     public AccessTier accessTier() {
-        return this.accessTier;
+        return this.innerProperties() == null ? null : this.innerProperties().accessTier();
     }
 
     /**
@@ -425,7 +352,10 @@ public class StorageAccountCreateParameters {
      * @return the StorageAccountCreateParameters object itself.
      */
     public StorageAccountCreateParameters withAccessTier(AccessTier accessTier) {
-        this.accessTier = accessTier;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new StorageAccountPropertiesCreateParameters();
+        }
+        this.innerProperties().withAccessTier(accessTier);
         return this;
     }
 
@@ -436,7 +366,7 @@ public class StorageAccountCreateParameters {
      * @return the azureFilesIdentityBasedAuthentication value.
      */
     public AzureFilesIdentityBasedAuthentication azureFilesIdentityBasedAuthentication() {
-        return this.azureFilesIdentityBasedAuthentication;
+        return this.innerProperties() == null ? null : this.innerProperties().azureFilesIdentityBasedAuthentication();
     }
 
     /**
@@ -448,7 +378,10 @@ public class StorageAccountCreateParameters {
      */
     public StorageAccountCreateParameters withAzureFilesIdentityBasedAuthentication(
         AzureFilesIdentityBasedAuthentication azureFilesIdentityBasedAuthentication) {
-        this.azureFilesIdentityBasedAuthentication = azureFilesIdentityBasedAuthentication;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new StorageAccountPropertiesCreateParameters();
+        }
+        this.innerProperties().withAzureFilesIdentityBasedAuthentication(azureFilesIdentityBasedAuthentication);
         return this;
     }
 
@@ -459,7 +392,7 @@ public class StorageAccountCreateParameters {
      * @return the enableHttpsTrafficOnly value.
      */
     public Boolean enableHttpsTrafficOnly() {
-        return this.enableHttpsTrafficOnly;
+        return this.innerProperties() == null ? null : this.innerProperties().enableHttpsTrafficOnly();
     }
 
     /**
@@ -470,7 +403,10 @@ public class StorageAccountCreateParameters {
      * @return the StorageAccountCreateParameters object itself.
      */
     public StorageAccountCreateParameters withEnableHttpsTrafficOnly(Boolean enableHttpsTrafficOnly) {
-        this.enableHttpsTrafficOnly = enableHttpsTrafficOnly;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new StorageAccountPropertiesCreateParameters();
+        }
+        this.innerProperties().withEnableHttpsTrafficOnly(enableHttpsTrafficOnly);
         return this;
     }
 
@@ -480,7 +416,7 @@ public class StorageAccountCreateParameters {
      * @return the isHnsEnabled value.
      */
     public Boolean isHnsEnabled() {
-        return this.isHnsEnabled;
+        return this.innerProperties() == null ? null : this.innerProperties().isHnsEnabled();
     }
 
     /**
@@ -490,7 +426,10 @@ public class StorageAccountCreateParameters {
      * @return the StorageAccountCreateParameters object itself.
      */
     public StorageAccountCreateParameters withIsHnsEnabled(Boolean isHnsEnabled) {
-        this.isHnsEnabled = isHnsEnabled;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new StorageAccountPropertiesCreateParameters();
+        }
+        this.innerProperties().withIsHnsEnabled(isHnsEnabled);
         return this;
     }
 
@@ -501,7 +440,7 @@ public class StorageAccountCreateParameters {
      * @return the largeFileSharesState value.
      */
     public LargeFileSharesState largeFileSharesState() {
-        return this.largeFileSharesState;
+        return this.innerProperties() == null ? null : this.innerProperties().largeFileSharesState();
     }
 
     /**
@@ -512,7 +451,10 @@ public class StorageAccountCreateParameters {
      * @return the StorageAccountCreateParameters object itself.
      */
     public StorageAccountCreateParameters withLargeFileSharesState(LargeFileSharesState largeFileSharesState) {
-        this.largeFileSharesState = largeFileSharesState;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new StorageAccountPropertiesCreateParameters();
+        }
+        this.innerProperties().withLargeFileSharesState(largeFileSharesState);
         return this;
     }
 
@@ -523,7 +465,7 @@ public class StorageAccountCreateParameters {
      * @return the routingPreference value.
      */
     public RoutingPreference routingPreference() {
-        return this.routingPreference;
+        return this.innerProperties() == null ? null : this.innerProperties().routingPreference();
     }
 
     /**
@@ -534,7 +476,10 @@ public class StorageAccountCreateParameters {
      * @return the StorageAccountCreateParameters object itself.
      */
     public StorageAccountCreateParameters withRoutingPreference(RoutingPreference routingPreference) {
-        this.routingPreference = routingPreference;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new StorageAccountPropertiesCreateParameters();
+        }
+        this.innerProperties().withRoutingPreference(routingPreference);
         return this;
     }
 
@@ -545,7 +490,7 @@ public class StorageAccountCreateParameters {
      * @return the allowBlobPublicAccess value.
      */
     public Boolean allowBlobPublicAccess() {
-        return this.allowBlobPublicAccess;
+        return this.innerProperties() == null ? null : this.innerProperties().allowBlobPublicAccess();
     }
 
     /**
@@ -556,7 +501,10 @@ public class StorageAccountCreateParameters {
      * @return the StorageAccountCreateParameters object itself.
      */
     public StorageAccountCreateParameters withAllowBlobPublicAccess(Boolean allowBlobPublicAccess) {
-        this.allowBlobPublicAccess = allowBlobPublicAccess;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new StorageAccountPropertiesCreateParameters();
+        }
+        this.innerProperties().withAllowBlobPublicAccess(allowBlobPublicAccess);
         return this;
     }
 
@@ -567,7 +515,7 @@ public class StorageAccountCreateParameters {
      * @return the minimumTlsVersion value.
      */
     public MinimumTlsVersion minimumTlsVersion() {
-        return this.minimumTlsVersion;
+        return this.innerProperties() == null ? null : this.innerProperties().minimumTlsVersion();
     }
 
     /**
@@ -578,7 +526,10 @@ public class StorageAccountCreateParameters {
      * @return the StorageAccountCreateParameters object itself.
      */
     public StorageAccountCreateParameters withMinimumTlsVersion(MinimumTlsVersion minimumTlsVersion) {
-        this.minimumTlsVersion = minimumTlsVersion;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new StorageAccountPropertiesCreateParameters();
+        }
+        this.innerProperties().withMinimumTlsVersion(minimumTlsVersion);
         return this;
     }
 
@@ -590,7 +541,7 @@ public class StorageAccountCreateParameters {
      * @return the allowSharedKeyAccess value.
      */
     public Boolean allowSharedKeyAccess() {
-        return this.allowSharedKeyAccess;
+        return this.innerProperties() == null ? null : this.innerProperties().allowSharedKeyAccess();
     }
 
     /**
@@ -602,7 +553,10 @@ public class StorageAccountCreateParameters {
      * @return the StorageAccountCreateParameters object itself.
      */
     public StorageAccountCreateParameters withAllowSharedKeyAccess(Boolean allowSharedKeyAccess) {
-        this.allowSharedKeyAccess = allowSharedKeyAccess;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new StorageAccountPropertiesCreateParameters();
+        }
+        this.innerProperties().withAllowSharedKeyAccess(allowSharedKeyAccess);
         return this;
     }
 
@@ -612,7 +566,7 @@ public class StorageAccountCreateParameters {
      * @return the enableNfsV3 value.
      */
     public Boolean enableNfsV3() {
-        return this.enableNfsV3;
+        return this.innerProperties() == null ? null : this.innerProperties().enableNfsV3();
     }
 
     /**
@@ -622,7 +576,35 @@ public class StorageAccountCreateParameters {
      * @return the StorageAccountCreateParameters object itself.
      */
     public StorageAccountCreateParameters withEnableNfsV3(Boolean enableNfsV3) {
-        this.enableNfsV3 = enableNfsV3;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new StorageAccountPropertiesCreateParameters();
+        }
+        this.innerProperties().withEnableNfsV3(enableNfsV3);
+        return this;
+    }
+
+    /**
+     * Get the allowCrossTenantReplication property: Allow or disallow cross AAD tenant object replication. The default
+     * interpretation is true for this property.
+     *
+     * @return the allowCrossTenantReplication value.
+     */
+    public Boolean allowCrossTenantReplication() {
+        return this.innerProperties() == null ? null : this.innerProperties().allowCrossTenantReplication();
+    }
+
+    /**
+     * Set the allowCrossTenantReplication property: Allow or disallow cross AAD tenant object replication. The default
+     * interpretation is true for this property.
+     *
+     * @param allowCrossTenantReplication the allowCrossTenantReplication value to set.
+     * @return the StorageAccountCreateParameters object itself.
+     */
+    public StorageAccountCreateParameters withAllowCrossTenantReplication(Boolean allowCrossTenantReplication) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new StorageAccountPropertiesCreateParameters();
+        }
+        this.innerProperties().withAllowCrossTenantReplication(allowCrossTenantReplication);
         return this;
     }
 
@@ -658,26 +640,8 @@ public class StorageAccountCreateParameters {
         if (identity() != null) {
             identity().validate();
         }
-        if (sasPolicy() != null) {
-            sasPolicy().validate();
-        }
-        if (keyPolicy() != null) {
-            keyPolicy().validate();
-        }
-        if (customDomain() != null) {
-            customDomain().validate();
-        }
-        if (encryption() != null) {
-            encryption().validate();
-        }
-        if (networkRuleSet() != null) {
-            networkRuleSet().validate();
-        }
-        if (azureFilesIdentityBasedAuthentication() != null) {
-            azureFilesIdentityBasedAuthentication().validate();
-        }
-        if (routingPreference() != null) {
-            routingPreference().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

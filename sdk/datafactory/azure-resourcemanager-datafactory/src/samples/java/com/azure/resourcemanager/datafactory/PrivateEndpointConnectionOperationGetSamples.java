@@ -8,15 +8,19 @@ import com.azure.core.util.Context;
 
 /** Samples for PrivateEndpointConnectionOperation Get. */
 public final class PrivateEndpointConnectionOperationGetSamples {
+    /*
+     * operationId: PrivateEndpointConnection_Get
+     * api-version: 2018-06-01
+     * x-ms-examples: Get a private endpoint connection for a datafactory.
+     */
     /**
      * Sample code: Get a private endpoint connection for a datafactory.
      *
-     * @param dataFactoryManager Entry point to DataFactoryManager. The Azure Data Factory V2 management API provides a
-     *     RESTful set of web services that interact with Azure Data Factory V2 services.
+     * @param manager Entry point to DataFactoryManager.
      */
     public static void getAPrivateEndpointConnectionForADatafactory(
-        com.azure.resourcemanager.datafactory.DataFactoryManager dataFactoryManager) {
-        dataFactoryManager
+        com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
+        manager
             .privateEndpointConnectionOperations()
             .getWithResponse("exampleResourceGroup", "exampleFactoryName", "connection", null, Context.NONE);
     }

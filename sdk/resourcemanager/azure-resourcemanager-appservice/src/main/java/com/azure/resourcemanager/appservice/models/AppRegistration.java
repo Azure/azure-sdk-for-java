@@ -5,73 +5,81 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.appservice.fluent.models.AppRegistrationProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The AppRegistration model. */
-@JsonFlatten
+/** The configuration settings of the app registration for providers that have app ids and app secrets. */
 @Fluent
-public class AppRegistration extends ProxyOnlyResource {
+public final class AppRegistration extends ProxyOnlyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(AppRegistration.class);
 
     /*
-     * The appId property.
+     * AppRegistration resource specific properties
      */
-    @JsonProperty(value = "properties.appId")
-    private String appId;
-
-    /*
-     * The appSecretSettingName property.
-     */
-    @JsonProperty(value = "properties.appSecretSettingName")
-    private String appSecretSettingName;
+    @JsonProperty(value = "properties")
+    private AppRegistrationProperties innerProperties;
 
     /**
-     * Get the appId property: The appId property.
+     * Get the innerProperties property: AppRegistration resource specific properties.
      *
-     * @return the appId value.
+     * @return the innerProperties value.
      */
-    public String appId() {
-        return this.appId;
-    }
-
-    /**
-     * Set the appId property: The appId property.
-     *
-     * @param appId the appId value to set.
-     * @return the AppRegistration object itself.
-     */
-    public AppRegistration withAppId(String appId) {
-        this.appId = appId;
-        return this;
-    }
-
-    /**
-     * Get the appSecretSettingName property: The appSecretSettingName property.
-     *
-     * @return the appSecretSettingName value.
-     */
-    public String appSecretSettingName() {
-        return this.appSecretSettingName;
-    }
-
-    /**
-     * Set the appSecretSettingName property: The appSecretSettingName property.
-     *
-     * @param appSecretSettingName the appSecretSettingName value to set.
-     * @return the AppRegistration object itself.
-     */
-    public AppRegistration withAppSecretSettingName(String appSecretSettingName) {
-        this.appSecretSettingName = appSecretSettingName;
-        return this;
+    private AppRegistrationProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /** {@inheritDoc} */
     @Override
     public AppRegistration withKind(String kind) {
         super.withKind(kind);
+        return this;
+    }
+
+    /**
+     * Get the appId property: The App ID of the app used for login.
+     *
+     * @return the appId value.
+     */
+    public String appId() {
+        return this.innerProperties() == null ? null : this.innerProperties().appId();
+    }
+
+    /**
+     * Set the appId property: The App ID of the app used for login.
+     *
+     * @param appId the appId value to set.
+     * @return the AppRegistration object itself.
+     */
+    public AppRegistration withAppId(String appId) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AppRegistrationProperties();
+        }
+        this.innerProperties().withAppId(appId);
+        return this;
+    }
+
+    /**
+     * Get the appSecretSettingName property: The app setting name that contains the app secret.
+     *
+     * @return the appSecretSettingName value.
+     */
+    public String appSecretSettingName() {
+        return this.innerProperties() == null ? null : this.innerProperties().appSecretSettingName();
+    }
+
+    /**
+     * Set the appSecretSettingName property: The app setting name that contains the app secret.
+     *
+     * @param appSecretSettingName the appSecretSettingName value to set.
+     * @return the AppRegistration object itself.
+     */
+    public AppRegistration withAppSecretSettingName(String appSecretSettingName) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AppRegistrationProperties();
+        }
+        this.innerProperties().withAppSecretSettingName(appSecretSettingName);
         return this;
     }
 
@@ -83,5 +91,8 @@ public class AppRegistration extends ProxyOnlyResource {
     @Override
     public void validate() {
         super.validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

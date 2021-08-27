@@ -27,7 +27,6 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.storage.fluent.TableServicesClient;
 import com.azure.resourcemanager.storage.fluent.models.ListTableServicesInner;
 import com.azure.resourcemanager.storage.fluent.models.TableServicePropertiesInner;
-import com.azure.resourcemanager.storage.models.CorsRules;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in TableServicesClient. */
@@ -273,9 +272,8 @@ public final class TableServicesClientImpl implements TableServicesClient {
      *     insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
      *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param cors Specifies CORS rules for the Table service. You can include up to five CorsRule elements in the
-     *     request. If no CorsRule elements are included in the request body, all CORS rules will be deleted, and CORS
-     *     will be disabled for the Table service.
+     * @param parameters The properties of a storage account’s Table service, only properties for Storage Analytics and
+     *     CORS (Cross-Origin Resource Sharing) rules can be specified.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -283,7 +281,7 @@ public final class TableServicesClientImpl implements TableServicesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<TableServicePropertiesInner>> setServicePropertiesWithResponseAsync(
-        String resourceGroupName, String accountName, CorsRules cors) {
+        String resourceGroupName, String accountName, TableServicePropertiesInner parameters) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -303,13 +301,13 @@ public final class TableServicesClientImpl implements TableServicesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        if (cors != null) {
-            cors.validate();
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
         }
         final String tableServiceName = "default";
         final String accept = "application/json";
-        TableServicePropertiesInner parameters = new TableServicePropertiesInner();
-        parameters.withCors(cors);
         return FluxUtil
             .withContext(
                 context ->
@@ -335,9 +333,8 @@ public final class TableServicesClientImpl implements TableServicesClient {
      *     insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
      *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param cors Specifies CORS rules for the Table service. You can include up to five CorsRule elements in the
-     *     request. If no CorsRule elements are included in the request body, all CORS rules will be deleted, and CORS
-     *     will be disabled for the Table service.
+     * @param parameters The properties of a storage account’s Table service, only properties for Storage Analytics and
+     *     CORS (Cross-Origin Resource Sharing) rules can be specified.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -346,7 +343,7 @@ public final class TableServicesClientImpl implements TableServicesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<TableServicePropertiesInner>> setServicePropertiesWithResponseAsync(
-        String resourceGroupName, String accountName, CorsRules cors, Context context) {
+        String resourceGroupName, String accountName, TableServicePropertiesInner parameters, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -366,13 +363,13 @@ public final class TableServicesClientImpl implements TableServicesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        if (cors != null) {
-            cors.validate();
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
         }
         final String tableServiceName = "default";
         final String accept = "application/json";
-        TableServicePropertiesInner parameters = new TableServicePropertiesInner();
-        parameters.withCors(cors);
         context = this.client.mergeContext(context);
         return service
             .setServiceProperties(
@@ -395,9 +392,8 @@ public final class TableServicesClientImpl implements TableServicesClient {
      *     insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
      *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param cors Specifies CORS rules for the Table service. You can include up to five CorsRule elements in the
-     *     request. If no CorsRule elements are included in the request body, all CORS rules will be deleted, and CORS
-     *     will be disabled for the Table service.
+     * @param parameters The properties of a storage account’s Table service, only properties for Storage Analytics and
+     *     CORS (Cross-Origin Resource Sharing) rules can be specified.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -405,8 +401,8 @@ public final class TableServicesClientImpl implements TableServicesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<TableServicePropertiesInner> setServicePropertiesAsync(
-        String resourceGroupName, String accountName, CorsRules cors) {
-        return setServicePropertiesWithResponseAsync(resourceGroupName, accountName, cors)
+        String resourceGroupName, String accountName, TableServicePropertiesInner parameters) {
+        return setServicePropertiesWithResponseAsync(resourceGroupName, accountName, parameters)
             .flatMap(
                 (Response<TableServicePropertiesInner> res) -> {
                     if (res.getValue() != null) {
@@ -425,23 +421,17 @@ public final class TableServicesClientImpl implements TableServicesClient {
      *     insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
      *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param parameters The properties of a storage account’s Table service, only properties for Storage Analytics and
+     *     CORS (Cross-Origin Resource Sharing) rules can be specified.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the properties of a storage account’s Table service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<TableServicePropertiesInner> setServicePropertiesAsync(String resourceGroupName, String accountName) {
-        final CorsRules cors = null;
-        return setServicePropertiesWithResponseAsync(resourceGroupName, accountName, cors)
-            .flatMap(
-                (Response<TableServicePropertiesInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+    public TableServicePropertiesInner setServiceProperties(
+        String resourceGroupName, String accountName, TableServicePropertiesInner parameters) {
+        return setServicePropertiesAsync(resourceGroupName, accountName, parameters).block();
     }
 
     /**
@@ -452,28 +442,8 @@ public final class TableServicesClientImpl implements TableServicesClient {
      *     insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
      *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of a storage account’s Table service.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public TableServicePropertiesInner setServiceProperties(String resourceGroupName, String accountName) {
-        final CorsRules cors = null;
-        return setServicePropertiesAsync(resourceGroupName, accountName, cors).block();
-    }
-
-    /**
-     * Sets the properties of a storage account’s Table service, including properties for Storage Analytics and CORS
-     * (Cross-Origin Resource Sharing) rules.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
-     * @param accountName The name of the storage account within the specified resource group. Storage account names
-     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param cors Specifies CORS rules for the Table service. You can include up to five CorsRule elements in the
-     *     request. If no CorsRule elements are included in the request body, all CORS rules will be deleted, and CORS
-     *     will be disabled for the Table service.
+     * @param parameters The properties of a storage account’s Table service, only properties for Storage Analytics and
+     *     CORS (Cross-Origin Resource Sharing) rules can be specified.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -482,8 +452,8 @@ public final class TableServicesClientImpl implements TableServicesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<TableServicePropertiesInner> setServicePropertiesWithResponse(
-        String resourceGroupName, String accountName, CorsRules cors, Context context) {
-        return setServicePropertiesWithResponseAsync(resourceGroupName, accountName, cors, context).block();
+        String resourceGroupName, String accountName, TableServicePropertiesInner parameters, Context context) {
+        return setServicePropertiesWithResponseAsync(resourceGroupName, accountName, parameters, context).block();
     }
 
     /**

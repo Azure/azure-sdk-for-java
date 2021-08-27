@@ -5,16 +5,15 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.network.fluent.models.LoadBalancerVipSwapRequestFrontendIpConfigurationProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** VIP swap request's frontend IP configuration object. */
-@JsonFlatten
 @Fluent
-public class LoadBalancerVipSwapRequestFrontendIpConfiguration {
+public final class LoadBalancerVipSwapRequestFrontendIpConfiguration {
     @JsonIgnore
     private final ClientLogger logger = new ClientLogger(LoadBalancerVipSwapRequestFrontendIpConfiguration.class);
 
@@ -25,10 +24,10 @@ public class LoadBalancerVipSwapRequestFrontendIpConfiguration {
     private String id;
 
     /*
-     * A reference to public IP address resource.
+     * The properties of VIP swap request's frontend IP configuration object.
      */
-    @JsonProperty(value = "properties.publicIPAddress")
-    private SubResource publicIpAddress;
+    @JsonProperty(value = "properties")
+    private LoadBalancerVipSwapRequestFrontendIpConfigurationProperties innerProperties;
 
     /**
      * Get the id property: The ID of frontend IP configuration resource.
@@ -51,12 +50,21 @@ public class LoadBalancerVipSwapRequestFrontendIpConfiguration {
     }
 
     /**
+     * Get the innerProperties property: The properties of VIP swap request's frontend IP configuration object.
+     *
+     * @return the innerProperties value.
+     */
+    private LoadBalancerVipSwapRequestFrontendIpConfigurationProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
      * Get the publicIpAddress property: A reference to public IP address resource.
      *
      * @return the publicIpAddress value.
      */
     public SubResource publicIpAddress() {
-        return this.publicIpAddress;
+        return this.innerProperties() == null ? null : this.innerProperties().publicIpAddress();
     }
 
     /**
@@ -66,7 +74,10 @@ public class LoadBalancerVipSwapRequestFrontendIpConfiguration {
      * @return the LoadBalancerVipSwapRequestFrontendIpConfiguration object itself.
      */
     public LoadBalancerVipSwapRequestFrontendIpConfiguration withPublicIpAddress(SubResource publicIpAddress) {
-        this.publicIpAddress = publicIpAddress;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new LoadBalancerVipSwapRequestFrontendIpConfigurationProperties();
+        }
+        this.innerProperties().withPublicIpAddress(publicIpAddress);
         return this;
     }
 
@@ -76,5 +87,8 @@ public class LoadBalancerVipSwapRequestFrontendIpConfiguration {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

@@ -1,14 +1,41 @@
 # Release History
 
-## 1.19.0-beta.2 (Unreleased)
+## 1.20.0-beta.1 (Unreleased)
 
-### Feature Added
- - Added a new constructor `HttpHeaders(int initialCapacity)` which allows configuration of the initial backing map 
-   capacity may allow short-circuiting scenarios where the map would need to be resized and copied in memory.
+### Features Added
+
+- Added `HttpAuthorization` which supports configuring a generic `Authorization` header on a request.
+
+## 1.19.0 (2021-08-06)
+
+### Features Added
+
+- Added `HttpRequestLogger`, `HttpResponseLogger`, and correlating context classes to enable support for custom
+  logging in `HttpLoggingPolicy`. ([#16088](https://github.com/Azure/azure-sdk-for-java/pull/16088))
+- Added new constructor overload to `AzureSasCredential` to enable passing a `Function` which encodes the SAS
+  credential. ([#23033](https://github.com/Azure/azure-sdk-for-java/pull/23033))
+- Added a new constructor `HttpHeaders(int initialCapacity)` which allows configuration of the initial backing map 
+  capacity may allow short-circuiting scenarios where the map would need to be resized and copied in memory.
+- Added Maven profiles to enable the creation of an uber JAR with OS specific dependencies of
+  `netty-tcnative-boringssl-static` instead of including all OS dependencies. ([#21223](https://github.com/Azure/azure-sdk-for-java/pull/21223))
+- Added support to `@QueryParam` to support "exploded" query parameters. ([#21203](https://github.com/Azure/azure-sdk-for-java/pull/21203))
+- Added support to create tracing spans with customizations. ([#23159](https://github.com/Azure/azure-sdk-for-java/pull/23159))
 
 ### Fixed
 
+- Fixed a bug where `Tracer.DIAGNOSTIC_ID_KEY`'s value was spelt incorrect.
+- Fixed a bug where loading system and Java proxies used `java.net.useSystemProxies` incorrectly. ([#23151](https://github.com/Azure/azure-sdk-for-java/pull/23151))
 - Fixed a bug with context propagation through EventHub and ServiceBus between Java and other languages.
+- Fixed a bug where classes annotated with `@JsonFlatten` would incorrectly split `Map` keys on `.` and flatten them. ([#22591](https://github.com/Azure/azure-sdk-for-java/pull/22591))
+- Fixed a bug where creating a `ClientLogger` would throw `InvalidPathException` when constructing a `DefaultLogger`
+  with a name that contained illegal path characters on Windows.
+- Fixed a bug where `FluxUtil.writeFile` would attempt to write to `ByteBuffer`s to the same location in file.
+
+### Dependency Updates
+
+- Upgraded Jackson from `2.12.3` to `2.12.4`.
+- Upgraded Reactor from `3.4.6` to `3.4.8`.
+- Upgraded SLF4J from `1.7.30` to `1.7.32`.
 
 ## 1.19.0-beta.1 (2021-07-07)
 

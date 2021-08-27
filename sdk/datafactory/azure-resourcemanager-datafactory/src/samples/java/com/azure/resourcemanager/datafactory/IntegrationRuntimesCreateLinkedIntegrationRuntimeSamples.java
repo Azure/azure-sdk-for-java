@@ -9,15 +9,19 @@ import com.azure.resourcemanager.datafactory.models.CreateLinkedIntegrationRunti
 
 /** Samples for IntegrationRuntimes CreateLinkedIntegrationRuntime. */
 public final class IntegrationRuntimesCreateLinkedIntegrationRuntimeSamples {
+    /*
+     * operationId: IntegrationRuntimes_CreateLinkedIntegrationRuntime
+     * api-version: 2018-06-01
+     * x-ms-examples: IntegrationRuntimes_CreateLinkedIntegrationRuntime
+     */
     /**
      * Sample code: IntegrationRuntimes_CreateLinkedIntegrationRuntime.
      *
-     * @param dataFactoryManager Entry point to DataFactoryManager. The Azure Data Factory V2 management API provides a
-     *     RESTful set of web services that interact with Azure Data Factory V2 services.
+     * @param manager Entry point to DataFactoryManager.
      */
     public static void integrationRuntimesCreateLinkedIntegrationRuntime(
-        com.azure.resourcemanager.datafactory.DataFactoryManager dataFactoryManager) {
-        dataFactoryManager
+        com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
+        manager
             .integrationRuntimes()
             .createLinkedIntegrationRuntimeWithResponse(
                 "exampleResourceGroup",

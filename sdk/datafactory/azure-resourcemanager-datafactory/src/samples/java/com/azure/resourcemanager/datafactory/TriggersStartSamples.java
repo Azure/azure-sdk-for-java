@@ -8,15 +8,17 @@ import com.azure.core.util.Context;
 
 /** Samples for Triggers Start. */
 public final class TriggersStartSamples {
+    /*
+     * operationId: Triggers_Start
+     * api-version: 2018-06-01
+     * x-ms-examples: Triggers_Start
+     */
     /**
      * Sample code: Triggers_Start.
      *
-     * @param dataFactoryManager Entry point to DataFactoryManager. The Azure Data Factory V2 management API provides a
-     *     RESTful set of web services that interact with Azure Data Factory V2 services.
+     * @param manager Entry point to DataFactoryManager.
      */
-    public static void triggersStart(com.azure.resourcemanager.datafactory.DataFactoryManager dataFactoryManager) {
-        dataFactoryManager
-            .triggers()
-            .start("exampleResourceGroup", "exampleFactoryName", "exampleTrigger", Context.NONE);
+    public static void triggersStart(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
+        manager.triggers().start("exampleResourceGroup", "exampleFactoryName", "exampleTrigger", Context.NONE);
     }
 }

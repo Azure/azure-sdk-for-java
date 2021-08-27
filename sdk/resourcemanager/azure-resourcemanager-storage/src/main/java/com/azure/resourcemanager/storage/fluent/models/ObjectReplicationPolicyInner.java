@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.storage.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.storage.models.ObjectReplicationPolicyRule;
@@ -15,40 +14,24 @@ import java.time.OffsetDateTime;
 import java.util.List;
 
 /** The replication policy between two storage accounts. Multiple rules can be defined in one policy. */
-@JsonFlatten
 @Fluent
-public class ObjectReplicationPolicyInner extends ProxyResource {
+public final class ObjectReplicationPolicyInner extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ObjectReplicationPolicyInner.class);
 
     /*
-     * A unique id for object replication policy.
+     * Returns the Storage Account Object Replication Policy.
      */
-    @JsonProperty(value = "properties.policyId", access = JsonProperty.Access.WRITE_ONLY)
-    private String policyId;
+    @JsonProperty(value = "properties")
+    private ObjectReplicationPolicyProperties innerProperties;
 
-    /*
-     * Indicates when the policy is enabled on the source account.
+    /**
+     * Get the innerProperties property: Returns the Storage Account Object Replication Policy.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.enabledTime", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime enabledTime;
-
-    /*
-     * Required. Source account name.
-     */
-    @JsonProperty(value = "properties.sourceAccount")
-    private String sourceAccount;
-
-    /*
-     * Required. Destination account name.
-     */
-    @JsonProperty(value = "properties.destinationAccount")
-    private String destinationAccount;
-
-    /*
-     * The storage account object replication rules.
-     */
-    @JsonProperty(value = "properties.rules")
-    private List<ObjectReplicationPolicyRule> rules;
+    private ObjectReplicationPolicyProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the policyId property: A unique id for object replication policy.
@@ -56,7 +39,7 @@ public class ObjectReplicationPolicyInner extends ProxyResource {
      * @return the policyId value.
      */
     public String policyId() {
-        return this.policyId;
+        return this.innerProperties() == null ? null : this.innerProperties().policyId();
     }
 
     /**
@@ -65,46 +48,56 @@ public class ObjectReplicationPolicyInner extends ProxyResource {
      * @return the enabledTime value.
      */
     public OffsetDateTime enabledTime() {
-        return this.enabledTime;
+        return this.innerProperties() == null ? null : this.innerProperties().enabledTime();
     }
 
     /**
-     * Get the sourceAccount property: Required. Source account name.
+     * Get the sourceAccount property: Required. Source account name. It should be full resource id if
+     * allowCrossTenantReplication set to false.
      *
      * @return the sourceAccount value.
      */
     public String sourceAccount() {
-        return this.sourceAccount;
+        return this.innerProperties() == null ? null : this.innerProperties().sourceAccount();
     }
 
     /**
-     * Set the sourceAccount property: Required. Source account name.
+     * Set the sourceAccount property: Required. Source account name. It should be full resource id if
+     * allowCrossTenantReplication set to false.
      *
      * @param sourceAccount the sourceAccount value to set.
      * @return the ObjectReplicationPolicyInner object itself.
      */
     public ObjectReplicationPolicyInner withSourceAccount(String sourceAccount) {
-        this.sourceAccount = sourceAccount;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ObjectReplicationPolicyProperties();
+        }
+        this.innerProperties().withSourceAccount(sourceAccount);
         return this;
     }
 
     /**
-     * Get the destinationAccount property: Required. Destination account name.
+     * Get the destinationAccount property: Required. Destination account name. It should be full resource id if
+     * allowCrossTenantReplication set to false.
      *
      * @return the destinationAccount value.
      */
     public String destinationAccount() {
-        return this.destinationAccount;
+        return this.innerProperties() == null ? null : this.innerProperties().destinationAccount();
     }
 
     /**
-     * Set the destinationAccount property: Required. Destination account name.
+     * Set the destinationAccount property: Required. Destination account name. It should be full resource id if
+     * allowCrossTenantReplication set to false.
      *
      * @param destinationAccount the destinationAccount value to set.
      * @return the ObjectReplicationPolicyInner object itself.
      */
     public ObjectReplicationPolicyInner withDestinationAccount(String destinationAccount) {
-        this.destinationAccount = destinationAccount;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ObjectReplicationPolicyProperties();
+        }
+        this.innerProperties().withDestinationAccount(destinationAccount);
         return this;
     }
 
@@ -114,7 +107,7 @@ public class ObjectReplicationPolicyInner extends ProxyResource {
      * @return the rules value.
      */
     public List<ObjectReplicationPolicyRule> rules() {
-        return this.rules;
+        return this.innerProperties() == null ? null : this.innerProperties().rules();
     }
 
     /**
@@ -124,7 +117,10 @@ public class ObjectReplicationPolicyInner extends ProxyResource {
      * @return the ObjectReplicationPolicyInner object itself.
      */
     public ObjectReplicationPolicyInner withRules(List<ObjectReplicationPolicyRule> rules) {
-        this.rules = rules;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ObjectReplicationPolicyProperties();
+        }
+        this.innerProperties().withRules(rules);
         return this;
     }
 
@@ -134,8 +130,8 @@ public class ObjectReplicationPolicyInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (rules() != null) {
-            rules().forEach(e -> e.validate());
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

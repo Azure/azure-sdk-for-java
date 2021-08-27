@@ -8,15 +8,18 @@ import com.azure.core.util.Context;
 
 /** Samples for Triggers UnsubscribeFromEvents. */
 public final class TriggersUnsubscribeFromEventsSamples {
+    /*
+     * operationId: Triggers_UnsubscribeFromEvents
+     * api-version: 2018-06-01
+     * x-ms-examples: Triggers_UnsubscribeFromEvents
+     */
     /**
      * Sample code: Triggers_UnsubscribeFromEvents.
      *
-     * @param dataFactoryManager Entry point to DataFactoryManager. The Azure Data Factory V2 management API provides a
-     *     RESTful set of web services that interact with Azure Data Factory V2 services.
+     * @param manager Entry point to DataFactoryManager.
      */
-    public static void triggersUnsubscribeFromEvents(
-        com.azure.resourcemanager.datafactory.DataFactoryManager dataFactoryManager) {
-        dataFactoryManager
+    public static void triggersUnsubscribeFromEvents(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
+        manager
             .triggers()
             .unsubscribeFromEvents("exampleResourceGroup", "exampleFactoryName", "exampleTrigger", Context.NONE);
     }

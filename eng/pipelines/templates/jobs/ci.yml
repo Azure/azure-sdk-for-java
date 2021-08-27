@@ -36,7 +36,7 @@ jobs:
       - template: ../variables/globals.yml
 
     pool:
-      name: azsdk-pool-mms-ubuntu-1804-general
+      name: azsdk-pool-mms-ubuntu-2004-general
 
     strategy:
       matrix:
