@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.spring.core.factory;
 
 import com.azure.core.management.AzureEnvironment;
@@ -23,11 +26,11 @@ import java.util.stream.Collectors;
  * Abstract azure service client builder factory, it's the implementation of {@link AzureServiceClientBuilderFactory} to
  * provide the template methods to extend any service on the top of azure core.
  *
- * @param <T> Service client builder
+ * @param <T> Type of the service client builder
  */
 public abstract class AbstractAzureServiceClientBuilderFactory<T> implements AzureServiceClientBuilderFactory<T> {
 
-    private static Logger LOGGER = LoggerFactory.getLogger(AbstractAzureServiceClientBuilderFactory.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(AbstractAzureServiceClientBuilderFactory.class);
 
     protected abstract T createBuilderInstance();
 
@@ -53,6 +56,8 @@ public abstract class AbstractAzureServiceClientBuilderFactory<T> implements Azu
      * 1. create a builder instance 2. configure builder 2.1 configure azure core level configuration 2.1.1 configure
      * http client getHttpClientInstance 2.2 configure service level configuration 3. customize builder 4. return
      * builder
+     *
+     * @return the service client builder
      */
     public T build() {
         T builder = createBuilderInstance();
@@ -126,8 +131,8 @@ public abstract class AbstractAzureServiceClientBuilderFactory<T> implements Azu
 
     protected String getApplicationId() {
         final ClientProperties clientProperties = getAzureProperties().getClient();
-        return this.applicationId != null ? this.applicationId : (clientProperties != null ?
-                                                                      clientProperties.getApplicationId() : null);
+        return this.applicationId != null ? this.applicationId : (clientProperties != null
+                                                                      ? clientProperties.getApplicationId() : null);
     }
 
     public void setApplicationId(String applicationId) {

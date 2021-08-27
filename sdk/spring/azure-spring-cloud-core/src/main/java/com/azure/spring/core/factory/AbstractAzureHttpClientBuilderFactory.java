@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.spring.core.factory;
 
 import com.azure.core.http.HttpClient;
@@ -19,6 +22,11 @@ import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.stream.Collectors;
 
+/**
+ * Abstract factory of the http client builder.
+ *
+ * @param <T> The type of the http client builder.
+ */
 public abstract class AbstractAzureHttpClientBuilderFactory<T> extends AbstractAzureServiceClientBuilderFactory<T> {
 
     private final HttpClientOptions httpClientOptions = new HttpClientOptions();
@@ -62,13 +70,17 @@ public abstract class AbstractAzureHttpClientBuilderFactory<T> extends AbstractA
     }
 
     protected void configureHttpTransportProperties(T builder) {
-        final HttpClientProperties properties = (HttpClientProperties) getAzureProperties().getClient();
-        if (properties == null) {
+        final ClientProperties clientProperties = getAzureProperties().getClient();
+        if (clientProperties == null) {
             return;
         }
-        httpClientOptions.setWriteTimeout(properties.getWriteTimeout());
-        httpClientOptions.responseTimeout(properties.getResponseTimeout());
-        httpClientOptions.readTimeout(properties.getReadTimeout());
+        final HttpClientProperties properties;
+        if (clientProperties instanceof HttpClientProperties) {
+            properties = (HttpClientProperties) clientProperties;
+            httpClientOptions.setWriteTimeout(properties.getWriteTimeout());
+            httpClientOptions.responseTimeout(properties.getResponseTimeout());
+            httpClientOptions.readTimeout(properties.getReadTimeout());
+        }
     }
 
     @Override
@@ -127,7 +139,7 @@ public abstract class AbstractAzureHttpClientBuilderFactory<T> extends AbstractA
         if (StringUtils.hasText(proxyProperties.getUsername()) && StringUtils.hasText(proxyProperties.getPassword())) {
             proxyOptions.setCredentials(proxyProperties.getUsername(), proxyProperties.getPassword());
         }
-        // TODO non proxy hosts
+        // TODO (xiada) non proxy hosts
         return proxyOptions;
     }
 

@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.spring.core.credential.descriptor;
 
 import com.azure.spring.core.credential.AzureCredentialType;
@@ -7,6 +10,9 @@ import com.azure.spring.core.credential.resolver.AzureKeyCredentialResolver;
 
 import java.util.function.Consumer;
 
+/**
+ * A descriptor describes the key authentication.
+ */
 public class KeyAuthenticationDescriptor implements AuthenticationDescriptor<AzureKeyCredentialProvider> {
 
     private final Consumer<AzureKeyCredentialProvider> consumer;

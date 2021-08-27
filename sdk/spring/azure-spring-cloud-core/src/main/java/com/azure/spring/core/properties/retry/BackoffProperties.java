@@ -1,5 +1,11 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.spring.core.properties.retry;
 
+/**
+ * Backoff properties when a retry fails.
+ */
 public class BackoffProperties {
 
     private long delay;

@@ -133,9 +133,9 @@ extends:
         groupId: com.azure.spring
         safeName: azurespringcloudresourcemanager
         skipPublishDocMs: true
-      - name: azure-spring-boot-starter
+      - name: azure-spring-cloud-starter
         groupId: com.azure.spring
-        safeName: azurespringbootstarter
+        safeName: azurespringcloudstarter
         skipPublishDocMs: true
         skipUpdatePackageJson: true
       - name: azure-spring-boot-starter-active-directory
