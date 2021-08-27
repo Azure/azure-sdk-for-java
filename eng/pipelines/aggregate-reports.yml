@@ -32,7 +32,7 @@ jobs:
       displayName: 'Build All Libraries'
       inputs:
         mavenPomFile: pom.xml
-        options: '$(DefaultOptions) -T 2C -DskipTests -Dgpg.skip -Dmaven.javadoc.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Djacoco.skip=true -Drevapi.skip=true -Paggregatereports'
+        options: '$(DefaultOptions) -T 2C -DskipTests -Dgpg.skip -Dmaven.javadoc.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Djacoco.skip=true -Drevapi.skip=true -Pjavadoc'
         mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
         javaHomeOption: 'JDKVersion'
         jdkVersionOption: $(JavaBuildVersion)
@@ -44,7 +44,7 @@ jobs:
       displayName: 'Generate Reports'
       inputs:
         mavenPomFile: pom.xml
-        options: '$(DefaultOptions) -Dinclude-non-shipping-modules -Dgpg.skip -Paggregatereports -Pjacoco'
+        options: '$(DefaultOptions) -Dinclude-non-shipping-modules -Dgpg.skip -Pjavadoc -Pjacoco'
         mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
         javaHomeOption: 'JDKVersion'
         jdkVersionOption: $(JavaBuildVersion)
