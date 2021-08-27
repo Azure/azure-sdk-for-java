@@ -5,8 +5,6 @@ package com.azure.spring.data.cosmos.core.convert;
 import com.azure.spring.data.cosmos.Constants;
 import com.azure.spring.data.cosmos.core.mapping.CosmosPersistentEntity;
 import com.azure.spring.data.cosmos.core.mapping.CosmosPersistentProperty;
-import com.azure.spring.data.cosmos.core.mapping.event.AfterLoadEvent;
-import com.azure.spring.data.cosmos.core.mapping.event.CosmosMappingEvent;
 import com.azure.spring.data.cosmos.exception.CosmosAccessException;
 import com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation;
 import com.fasterxml.jackson.core.JsonProcessingException;

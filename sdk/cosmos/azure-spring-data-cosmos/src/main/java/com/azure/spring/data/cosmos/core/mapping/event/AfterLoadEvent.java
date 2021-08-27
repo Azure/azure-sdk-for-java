@@ -5,7 +5,10 @@ package com.azure.spring.data.cosmos.core.mapping.event;
 import com.fasterxml.jackson.databind.JsonNode;
 import org.springframework.util.Assert;
 
-/*
+/**
+ * Spring Application Event that fires for all reads after a document is loaded and before it is serialized to
+ * a domain object
+ *
  * Ported to cosmos from spring-data-mongo
  * https://github.com/spring-projects/spring-data-mongodb/blob/main/spring-data-mongodb/src/main/java/org/springframework/data/mongodb/core/mapping/event/AfterLoadEvent.java
  */

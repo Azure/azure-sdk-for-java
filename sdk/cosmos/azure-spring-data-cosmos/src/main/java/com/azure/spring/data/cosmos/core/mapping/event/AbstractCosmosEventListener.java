@@ -7,9 +7,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationListener;
 import org.springframework.core.GenericTypeResolver;
 
-/*
+/**
+ * Abstract Event Listener. Can be extended and registered as a bean to capture spring application events
+ *
  * Ported to cosmos from spring-data-mongo
  * https://github.com/spring-projects/spring-data-mongodb/blob/main/spring-data-mongodb/src/main/java/org/springframework/data/mongodb/core/mapping/event/AbstractMongoEventListener.java
+ *
  */
 public abstract class AbstractCosmosEventListener<E> implements ApplicationListener<CosmosMappingEvent<?>> {
 

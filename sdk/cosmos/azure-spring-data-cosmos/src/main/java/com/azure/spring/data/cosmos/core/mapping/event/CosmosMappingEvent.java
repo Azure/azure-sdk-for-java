@@ -6,7 +6,9 @@ import com.fasterxml.jackson.databind.JsonNode;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.lang.Nullable;
 
-/*
+/**
+ * Base Class that all cosmos related spring application events extend
+ *
  * Ported to cosmos from spring-data-mongo
  * https://github.com/spring-projects/spring-data-mongodb/blob/main/spring-data-mongodb/src/main/java/org/springframework/data/mongodb/core/mapping/event/MongoMappingEvent.java
  */
@@ -54,4 +56,5 @@ public class CosmosMappingEvent<T> extends ApplicationEvent {
     @Override
     public T getSource() {
         return (T) super.getSource();
-    }}
+    }
+}
