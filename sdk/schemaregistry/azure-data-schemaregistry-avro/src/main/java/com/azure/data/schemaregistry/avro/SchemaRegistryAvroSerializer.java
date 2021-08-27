@@ -114,7 +114,7 @@ public final class SchemaRegistryAvroSerializer implements ObjectSerializer {
                         int length = buffer.limit() - SCHEMA_ID_SIZE;
                         byte[] b = Arrays.copyOfRange(buffer.array(), start, start + length);
 
-                        sink.next(avroSchemaRegistryUtils.decode(b, payloadSchema));
+                        sink.next(avroSchemaRegistryUtils.decode(b, payloadSchema, typeReference));
                     });
             });
     }
