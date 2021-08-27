@@ -36,6 +36,12 @@ public final class ServiceEndpointPolicyDefinitionInner extends SubResource {
     @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
+    /*
+     * The type of the resource.
+     */
+    @JsonProperty(value = "type")
+    private String type;
+
     /**
      * Get the innerProperties property: Properties of the service endpoint policy definition.
      *
@@ -74,6 +80,26 @@ public final class ServiceEndpointPolicyDefinitionInner extends SubResource {
      */
     public String etag() {
         return this.etag;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     *
+     * @return the type value.
+     */
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Set the type property: The type of the resource.
+     *
+     * @param type the type value to set.
+     * @return the ServiceEndpointPolicyDefinitionInner object itself.
+     */
+    public ServiceEndpointPolicyDefinitionInner withType(String type) {
+        this.type = type;
+        return this;
     }
 
     /** {@inheritDoc} */

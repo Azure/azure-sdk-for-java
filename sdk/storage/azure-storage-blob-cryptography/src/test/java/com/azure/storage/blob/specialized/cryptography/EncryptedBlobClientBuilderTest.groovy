@@ -36,14 +36,14 @@ class EncryptedBlobClientBuilderTest extends Specification {
     static def endpoint = "https://account.blob.core.windows.net/"
     static def requestRetryOptions = new RequestRetryOptions(RetryPolicyType.FIXED, 2, 2, 1000, 4000, null)
     private static final Map<String, String> PROPERTIES =
-        CoreUtils.getProperties("azure-storage-blob-cryptography.properties");
-    private static final String SDK_NAME = "name";
-    private static final String SDK_VERSION = "version";
-    private static String clientName = PROPERTIES.getOrDefault(SDK_NAME, "UnknownName");
-    private static String clientVersion = PROPERTIES.getOrDefault(SDK_VERSION, "UnknownVersion");
+        CoreUtils.getProperties("azure-storage-blob-cryptography.properties")
+    private static final String SDK_NAME = "name"
+    private static final String SDK_VERSION = "version"
+    private static String clientName = PROPERTIES.getOrDefault(SDK_NAME, "UnknownName")
+    private static String clientVersion = PROPERTIES.getOrDefault(SDK_VERSION, "UnknownVersion")
 
     static HttpRequest request(String url) {
-        return new HttpRequest(HttpMethod.HEAD, new URL(url), new HttpHeaders().put("Content-Length", "0"),
+        return new HttpRequest(HttpMethod.HEAD, new URL(url), new HttpHeaders().set("Content-Length", "0"),
             Flux.empty())
     }
 
@@ -61,7 +61,7 @@ class EncryptedBlobClientBuilderTest extends Specification {
             .containerName("container")
             .blobName("blob")
             .credential(credentials)
-            .key(new FakeKey("keyId", randomData), "keyWrapAlgorithm")
+            .key(new FakeKey("keyId", ), "keyWrapAlgorithm")
             .httpClient(new FreshDateTestClient())
             .retryOptions(requestRetryOptions)
             .buildEncryptedBlobClient()
@@ -76,6 +76,7 @@ class EncryptedBlobClientBuilderTest extends Specification {
      * Tests that a user application id will be honored in the UA string when using the encrypted blob client builder's default
      * pipeline.
      */
+    @SuppressWarnings('GrDeprecatedAPIUsage')
     @Unroll
     def "Encrypted blob client custom application id in UA string"() {
         when:
@@ -112,7 +113,7 @@ class EncryptedBlobClientBuilderTest extends Specification {
     @Unroll
     def "Encrypted blob client custom headers client options"() {
         setup:
-        List<Header> headers = new ArrayList<>();
+        List<Header> headers = new ArrayList<>()
         headers.add(new Header("custom", "header"))
         headers.add(new Header("Authorization", "notthis"))
         headers.add(new Header("User-Agent", "overwritten"))
@@ -276,7 +277,7 @@ class EncryptedBlobClientBuilderTest extends Specification {
         private final Pattern pattern
 
         UAStringTestClient(String regex) {
-            this.pattern = Pattern.compile(regex);
+            this.pattern = Pattern.compile(regex)
         }
 
         @Override
@@ -284,7 +285,7 @@ class EncryptedBlobClientBuilderTest extends Specification {
             if (CoreUtils.isNullOrEmpty(request.getHeaders().getValue("User-Agent"))) {
                 throw new RuntimeException("Failed to set 'User-Agent' header.")
             }
-            Matcher matcher = pattern.matcher(request.getHeaders().getValue("User-Agent"));
+            Matcher matcher = pattern.matcher(request.getHeaders().getValue("User-Agent"))
             assert matcher.matches()
             return Mono.just(new MockHttpResponse(request, 200))
         }
@@ -315,10 +316,10 @@ class EncryptedBlobClientBuilderTest extends Specification {
 
     private static final class ApplicationIdUAStringTestClient implements HttpClient {
 
-        private final String expectedUA;
+        private final String expectedUA
 
         ApplicationIdUAStringTestClient(String expectedUA) {
-            this.expectedUA = expectedUA;
+            this.expectedUA = expectedUA
         }
 
         @Override
@@ -333,10 +334,10 @@ class EncryptedBlobClientBuilderTest extends Specification {
 
     private static final class ClientOptionsHeadersTestClient implements HttpClient {
 
-        private final Iterable<Header> headers;
+        private final Iterable<Header> headers
 
         ClientOptionsHeadersTestClient(Iterable<Header> headers) {
-            this.headers = headers;
+            this.headers = headers
         }
 
         @Override

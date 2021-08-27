@@ -281,6 +281,29 @@ public final class ApplicationGatewayRequestRoutingRuleInner extends SubResource
     }
 
     /**
+     * Get the loadDistributionPolicy property: Load Distribution Policy resource of the application gateway.
+     *
+     * @return the loadDistributionPolicy value.
+     */
+    public SubResource loadDistributionPolicy() {
+        return this.innerProperties() == null ? null : this.innerProperties().loadDistributionPolicy();
+    }
+
+    /**
+     * Set the loadDistributionPolicy property: Load Distribution Policy resource of the application gateway.
+     *
+     * @param loadDistributionPolicy the loadDistributionPolicy value to set.
+     * @return the ApplicationGatewayRequestRoutingRuleInner object itself.
+     */
+    public ApplicationGatewayRequestRoutingRuleInner withLoadDistributionPolicy(SubResource loadDistributionPolicy) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApplicationGatewayRequestRoutingRulePropertiesFormat();
+        }
+        this.innerProperties().withLoadDistributionPolicy(loadDistributionPolicy);
+        return this;
+    }
+
+    /**
      * Get the provisioningState property: The provisioning state of the request routing rule resource.
      *
      * @return the provisioningState value.

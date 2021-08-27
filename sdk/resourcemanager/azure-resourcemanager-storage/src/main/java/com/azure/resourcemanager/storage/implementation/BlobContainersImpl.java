@@ -8,6 +8,7 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.WrapperImpl;
 import com.azure.resourcemanager.storage.StorageManager;
 import com.azure.resourcemanager.storage.fluent.BlobContainersClient;
+import com.azure.resourcemanager.storage.fluent.models.LegalHoldInner;
 import com.azure.resourcemanager.storage.models.BlobContainer;
 import com.azure.resourcemanager.storage.models.BlobContainers;
 import com.azure.resourcemanager.storage.models.ImmutabilityPolicy;
@@ -81,7 +82,7 @@ public class BlobContainersImpl extends WrapperImpl<BlobContainersClient> implem
         String resourceGroupName, String accountName, String containerName, List<String> tags) {
         BlobContainersClient client = this.innerModel();
         return client
-            .setLegalHoldAsync(resourceGroupName, accountName, containerName, tags)
+            .setLegalHoldAsync(resourceGroupName, accountName, containerName, new LegalHoldInner().withTags(tags))
             .map(legalHoldInner -> new LegalHoldImpl(legalHoldInner, manager()));
     }
 
@@ -90,7 +91,7 @@ public class BlobContainersImpl extends WrapperImpl<BlobContainersClient> implem
         String resourceGroupName, String accountName, String containerName, List<String> tags) {
         BlobContainersClient client = this.innerModel();
         return client
-            .clearLegalHoldAsync(resourceGroupName, accountName, containerName, tags)
+            .clearLegalHoldAsync(resourceGroupName, accountName, containerName, new LegalHoldInner().withTags(tags))
             .map(legalHoldInner -> new LegalHoldImpl(legalHoldInner, manager()));
     }
 
@@ -168,8 +169,9 @@ public class BlobContainersImpl extends WrapperImpl<BlobContainersClient> implem
                 accountName,
                 containerName,
                 eTagValue,
-                immutabilityPeriodSinceCreationInDays,
-                allowProtectedAppendWrites)
+                new ImmutabilityPolicyInner()
+                    .withImmutabilityPeriodSinceCreationInDays(immutabilityPeriodSinceCreationInDays)
+                    .withAllowProtectedAppendWrites(allowProtectedAppendWrites))
             .map(policyInner -> new ImmutabilityPolicyImpl(policyInner, this.manager));
     }
 
