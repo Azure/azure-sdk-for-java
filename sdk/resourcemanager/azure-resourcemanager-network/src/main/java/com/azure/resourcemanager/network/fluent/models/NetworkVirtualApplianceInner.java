@@ -267,6 +267,29 @@ public final class NetworkVirtualApplianceInner extends Resource {
     }
 
     /**
+     * Get the sshPublicKey property: Public key for SSH login.
+     *
+     * @return the sshPublicKey value.
+     */
+    public String sshPublicKey() {
+        return this.innerProperties() == null ? null : this.innerProperties().sshPublicKey();
+    }
+
+    /**
+     * Set the sshPublicKey property: Public key for SSH login.
+     *
+     * @param sshPublicKey the sshPublicKey value to set.
+     * @return the NetworkVirtualApplianceInner object itself.
+     */
+    public NetworkVirtualApplianceInner withSshPublicKey(String sshPublicKey) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new NetworkVirtualAppliancePropertiesFormat();
+        }
+        this.innerProperties().withSshPublicKey(sshPublicKey);
+        return this;
+    }
+
+    /**
      * Get the virtualApplianceNics property: List of Virtual Appliance Network Interfaces.
      *
      * @return the virtualApplianceNics value.

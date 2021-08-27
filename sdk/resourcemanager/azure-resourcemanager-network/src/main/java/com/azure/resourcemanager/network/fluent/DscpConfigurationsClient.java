@@ -35,7 +35,7 @@ public interface DscpConfigurationsClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return dSCP Configuration in a resource group.
+     * @return differentiated Services Code Point configuration for any given network interface.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -50,7 +50,7 @@ public interface DscpConfigurationsClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return dSCP Configuration in a resource group.
+     * @return differentiated Services Code Point configuration for any given network interface.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     PollerFlux<PollResult<DscpConfigurationInner>, DscpConfigurationInner> beginCreateOrUpdateAsync(
@@ -65,7 +65,7 @@ public interface DscpConfigurationsClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return dSCP Configuration in a resource group.
+     * @return differentiated Services Code Point configuration for any given network interface.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     SyncPoller<PollResult<DscpConfigurationInner>, DscpConfigurationInner> beginCreateOrUpdate(
@@ -81,7 +81,7 @@ public interface DscpConfigurationsClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return dSCP Configuration in a resource group.
+     * @return differentiated Services Code Point configuration for any given network interface.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     SyncPoller<PollResult<DscpConfigurationInner>, DscpConfigurationInner> beginCreateOrUpdate(
@@ -96,7 +96,7 @@ public interface DscpConfigurationsClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return dSCP Configuration in a resource group.
+     * @return differentiated Services Code Point configuration for any given network interface.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<DscpConfigurationInner> createOrUpdateAsync(
@@ -111,7 +111,7 @@ public interface DscpConfigurationsClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return dSCP Configuration in a resource group.
+     * @return differentiated Services Code Point configuration for any given network interface.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     DscpConfigurationInner createOrUpdate(
@@ -127,7 +127,7 @@ public interface DscpConfigurationsClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return dSCP Configuration in a resource group.
+     * @return differentiated Services Code Point configuration for any given network interface.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     DscpConfigurationInner createOrUpdate(
