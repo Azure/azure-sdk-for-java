@@ -379,7 +379,8 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
             assert channel != null : "impossible";
             this.releaseToPool(channel);
             requestRecord.channelTaskQueueLength(RntbdUtils.tryGetExecutorTaskQueueSize(channel.eventLoop()));
-            channel.write(requestRecord.stage(RntbdRequestRecord.Stage.PIPELINED));
+            channel.write(requestRecord.stage(RntbdRequestRecord.Stage.PIPELINED))
+                .addListener(ignore -> this.releaseToPool(channel));
             return requestRecord;
         }
 

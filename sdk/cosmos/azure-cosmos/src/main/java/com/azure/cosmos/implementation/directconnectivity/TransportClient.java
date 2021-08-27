@@ -3,10 +3,13 @@
 
 package com.azure.cosmos.implementation.directconnectivity;
 
+import com.azure.cosmos.implementation.CosmosSchedulers;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.throughputControl.ThroughputControlStore;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Scheduler;
+import reactor.core.scheduler.Schedulers;
 
 // We suppress the "try" warning here because the close() method's signature
 // allows it to throw InterruptedException which is strongly advised against
@@ -29,10 +32,12 @@ public abstract class TransportClient implements AutoCloseable {
         if (this.throughputControlStore != null) {
             return this.throughputControlStore.processRequest(
                 request,
-                Mono.defer(() -> this.invokeStoreAsync(physicalAddress, request)));
+                Mono.defer(
+                    () -> this.invokeStoreAsync(physicalAddress, request).publishOn(CosmosSchedulers.TRANSPORT_CLIENT_BOUNDED_ELASTIC)));
         }
 
-        return this.invokeStoreAsync(physicalAddress, request);
+        return this.invokeStoreAsync(physicalAddress, request)
+            .publishOn(CosmosSchedulers.TRANSPORT_CLIENT_BOUNDED_ELASTIC);
     }
 
     protected abstract Mono<StoreResponse> invokeStoreAsync(

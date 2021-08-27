@@ -8,6 +8,7 @@ import reactor.core.scheduler.Schedulers;
 
 public class CosmosSchedulers {
     private final static String COSMOS_PARALLEL_THREAD_NAME =  "cosmos-parallel";
+    private final static String TRANSPORT_CLIENT_BOUNDED_ELASTIC_THREAD_NAME = "transport-client-bounded-elastic";
 
     // Using a custom parallel scheduler to be able to schedule retries etc.
     // without being vulnerable to scenarios where applications abuse the
@@ -16,4 +17,10 @@ public class CosmosSchedulers {
         COSMOS_PARALLEL_THREAD_NAME,
         Schedulers.DEFAULT_POOL_SIZE,
         true);
+
+    public final static Scheduler TRANSPORT_CLIENT_BOUNDED_ELASTIC = Schedulers.newBoundedElastic(
+        Schedulers.DEFAULT_BOUNDED_ELASTIC_SIZE,
+        Schedulers.DEFAULT_BOUNDED_ELASTIC_QUEUESIZE,
+        TRANSPORT_CLIENT_BOUNDED_ELASTIC_THREAD_NAME
+    );
 }
