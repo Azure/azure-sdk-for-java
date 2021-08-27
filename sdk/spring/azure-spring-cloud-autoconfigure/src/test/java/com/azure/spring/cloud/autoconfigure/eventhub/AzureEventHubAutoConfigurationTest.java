@@ -28,7 +28,6 @@ import java.util.List;
 
 import static java.util.Collections.singletonList;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
@@ -107,7 +106,7 @@ public class AzureEventHubAutoConfigurationTest {
     }
 
     @Test
-    public void testStorageNotConfiguredWithClientFactorySuccessfullyCreated() {
+    public void testEventHubOperationProvidedNotStorageUnder () {
         this.contextRunner.withUserConfiguration(
                 TestConfigWithAzureResourceManagerAndConnectionProvider.class,
                 AzureEventHubAutoConfiguration.class)
@@ -116,10 +115,25 @@ public class AzureEventHubAutoConfigurationTest {
                               EVENT_HUB_PROPERTY_PREFIX + "namespace=ns1"
                           )
                           .run(context -> {
-                              assertThat(context).hasSingleBean(EventHubClientFactory.class);
-                              EventHubClientFactory eventHubClientFactory =
-                                  context.getBean(EventHubClientFactory.class);
-                              assertNotNull(eventHubClientFactory);
+                              assertThat(context).hasSingleBean(EventHubNamespaceManager.class);
+                              assertThat(context).hasSingleBean(EventHubOperation.class);
+                          });
+    }
+
+    @Test
+    public void testEventHubOperationProvidedNotStorageUnderMSI() {
+        this.contextRunner.withUserConfiguration(
+                TestConfigWithAzureResourceManagerAndConnectionProvider.class,
+                AzureEventHubAutoConfiguration.class)
+                          .withPropertyValues(
+                              AZURE_PROPERTY_PREFIX + "resource-group=rg1",
+                              AZURE_PROPERTY_PREFIX + "msi-enabled=true",
+                              EVENT_HUB_PROPERTY_PREFIX + "namespace=ns1",
+                              AZURE_PROPERTY_PREFIX + "subscription-id=sub"
+                          )
+                          .run(context -> {
+                              assertThat(context).hasSingleBean(EventHubNamespaceManager.class);
+                              assertThat(context).hasSingleBean(EventHubOperation.class);
                           });
     }
 

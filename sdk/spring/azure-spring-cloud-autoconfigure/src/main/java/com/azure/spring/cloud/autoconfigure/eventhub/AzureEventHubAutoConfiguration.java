@@ -55,6 +55,7 @@ public class AzureEventHubAutoConfiguration {
     @Bean
     @ConditionalOnMissingBean
     @ConditionalOnBean(AzureResourceManager.class)
+    @ConditionalOnProperty(value = "spring.cloud.azure.eventhub.checkpoint-storage-account")
     public StorageAccountManager storageAccountManager(AzureResourceManager azureResourceManager,
                                                        AzureProperties azureProperties) {
         return new StorageAccountManager(azureResourceManager, azureProperties);
