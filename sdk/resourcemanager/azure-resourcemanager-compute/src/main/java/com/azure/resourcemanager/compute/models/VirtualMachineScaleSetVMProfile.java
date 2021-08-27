@@ -116,6 +116,13 @@ public final class VirtualMachineScaleSetVMProfile {
     @JsonProperty(value = "capacityReservation")
     private CapacityReservationProfile capacityReservation;
 
+    /*
+     * Specifies the gallery applications that should be made available to the
+     * VM/VMSS
+     */
+    @JsonProperty(value = "applicationProfile")
+    private ApplicationProfile applicationProfile;
+
     /**
      * Get the osProfile property: Specifies the operating system settings for the virtual machines in the scale set.
      *
@@ -416,6 +423,28 @@ public final class VirtualMachineScaleSetVMProfile {
     }
 
     /**
+     * Get the applicationProfile property: Specifies the gallery applications that should be made available to the
+     * VM/VMSS.
+     *
+     * @return the applicationProfile value.
+     */
+    public ApplicationProfile applicationProfile() {
+        return this.applicationProfile;
+    }
+
+    /**
+     * Set the applicationProfile property: Specifies the gallery applications that should be made available to the
+     * VM/VMSS.
+     *
+     * @param applicationProfile the applicationProfile value to set.
+     * @return the VirtualMachineScaleSetVMProfile object itself.
+     */
+    public VirtualMachineScaleSetVMProfile withApplicationProfile(ApplicationProfile applicationProfile) {
+        this.applicationProfile = applicationProfile;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -447,6 +476,9 @@ public final class VirtualMachineScaleSetVMProfile {
         }
         if (capacityReservation() != null) {
             capacityReservation().validate();
+        }
+        if (applicationProfile() != null) {
+            applicationProfile().validate();
         }
     }
 }

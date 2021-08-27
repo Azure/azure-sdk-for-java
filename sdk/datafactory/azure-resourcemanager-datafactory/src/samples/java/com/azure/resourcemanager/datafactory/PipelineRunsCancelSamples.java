@@ -8,6 +8,11 @@ import com.azure.core.util.Context;
 
 /** Samples for PipelineRuns Cancel. */
 public final class PipelineRunsCancelSamples {
+    /*
+     * operationId: PipelineRuns_Cancel
+     * api-version: 2018-06-01
+     * x-ms-examples: PipelineRuns_Cancel
+     */
     /**
      * Sample code: PipelineRuns_Cancel.
      *

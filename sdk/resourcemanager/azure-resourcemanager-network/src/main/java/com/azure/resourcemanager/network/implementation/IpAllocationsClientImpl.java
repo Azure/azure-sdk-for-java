@@ -41,7 +41,6 @@ import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDe
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
 import java.nio.ByteBuffer;
-import java.util.Map;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -875,7 +874,7 @@ public final class IpAllocationsClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param ipAllocationName The name of the IpAllocation.
-     * @param tags Resource tags.
+     * @param parameters Parameters supplied to update IpAllocation tags.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -883,7 +882,7 @@ public final class IpAllocationsClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<IpAllocationInner>> updateTagsWithResponseAsync(
-        String resourceGroupName, String ipAllocationName, Map<String, String> tags) {
+        String resourceGroupName, String ipAllocationName, TagsObject parameters) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -904,10 +903,13 @@ public final class IpAllocationsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
         final String apiVersion = "2021-02-01";
         final String accept = "application/json";
-        TagsObject parameters = new TagsObject();
-        parameters.withTags(tags);
         return FluxUtil
             .withContext(
                 context ->
@@ -929,7 +931,7 @@ public final class IpAllocationsClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param ipAllocationName The name of the IpAllocation.
-     * @param tags Resource tags.
+     * @param parameters Parameters supplied to update IpAllocation tags.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -938,7 +940,7 @@ public final class IpAllocationsClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<IpAllocationInner>> updateTagsWithResponseAsync(
-        String resourceGroupName, String ipAllocationName, Map<String, String> tags, Context context) {
+        String resourceGroupName, String ipAllocationName, TagsObject parameters, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -959,10 +961,13 @@ public final class IpAllocationsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
         final String apiVersion = "2021-02-01";
         final String accept = "application/json";
-        TagsObject parameters = new TagsObject();
-        parameters.withTags(tags);
         context = this.client.mergeContext(context);
         return service
             .updateTags(
@@ -981,7 +986,7 @@ public final class IpAllocationsClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param ipAllocationName The name of the IpAllocation.
-     * @param tags Resource tags.
+     * @param parameters Parameters supplied to update IpAllocation tags.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -989,8 +994,8 @@ public final class IpAllocationsClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<IpAllocationInner> updateTagsAsync(
-        String resourceGroupName, String ipAllocationName, Map<String, String> tags) {
-        return updateTagsWithResponseAsync(resourceGroupName, ipAllocationName, tags)
+        String resourceGroupName, String ipAllocationName, TagsObject parameters) {
+        return updateTagsWithResponseAsync(resourceGroupName, ipAllocationName, parameters)
             .flatMap(
                 (Response<IpAllocationInner> res) -> {
                     if (res.getValue() != null) {
@@ -1006,23 +1011,15 @@ public final class IpAllocationsClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param ipAllocationName The name of the IpAllocation.
+     * @param parameters Parameters supplied to update IpAllocation tags.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return ipAllocation resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<IpAllocationInner> updateTagsAsync(String resourceGroupName, String ipAllocationName) {
-        final Map<String, String> tags = null;
-        return updateTagsWithResponseAsync(resourceGroupName, ipAllocationName, tags)
-            .flatMap(
-                (Response<IpAllocationInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+    public IpAllocationInner updateTags(String resourceGroupName, String ipAllocationName, TagsObject parameters) {
+        return updateTagsAsync(resourceGroupName, ipAllocationName, parameters).block();
     }
 
     /**
@@ -1030,23 +1027,7 @@ public final class IpAllocationsClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param ipAllocationName The name of the IpAllocation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return ipAllocation resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public IpAllocationInner updateTags(String resourceGroupName, String ipAllocationName) {
-        final Map<String, String> tags = null;
-        return updateTagsAsync(resourceGroupName, ipAllocationName, tags).block();
-    }
-
-    /**
-     * Updates a IpAllocation tags.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param ipAllocationName The name of the IpAllocation.
-     * @param tags Resource tags.
+     * @param parameters Parameters supplied to update IpAllocation tags.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1055,8 +1036,8 @@ public final class IpAllocationsClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<IpAllocationInner> updateTagsWithResponse(
-        String resourceGroupName, String ipAllocationName, Map<String, String> tags, Context context) {
-        return updateTagsWithResponseAsync(resourceGroupName, ipAllocationName, tags, context).block();
+        String resourceGroupName, String ipAllocationName, TagsObject parameters, Context context) {
+        return updateTagsWithResponseAsync(resourceGroupName, ipAllocationName, parameters, context).block();
     }
 
     /**

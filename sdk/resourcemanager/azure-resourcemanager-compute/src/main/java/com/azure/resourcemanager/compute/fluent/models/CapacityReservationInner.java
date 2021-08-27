@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.models.CapacityReservationInstanceView;
@@ -18,10 +17,15 @@ import java.util.List;
 import java.util.Map;
 
 /** Specifies information about the capacity reservation. */
-@JsonFlatten
 @Fluent
-public class CapacityReservationInner extends Resource {
+public final class CapacityReservationInner extends Resource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(CapacityReservationInner.class);
+
+    /*
+     * Properties of the Capacity reservation.
+     */
+    @JsonProperty(value = "properties")
+    private CapacityReservationProperties innerProperties;
 
     /*
      * SKU of the resource for which capacity needs be reserved. The SKU name
@@ -45,37 +49,14 @@ public class CapacityReservationInner extends Resource {
     @JsonProperty(value = "zones")
     private List<String> zones;
 
-    /*
-     * A unique id generated and assigned to the capacity reservation by the
-     * platform which does not change throughout the lifetime of the resource.
+    /**
+     * Get the innerProperties property: Properties of the Capacity reservation.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.reservationId", access = JsonProperty.Access.WRITE_ONLY)
-    private String reservationId;
-
-    /*
-     * A list of all virtual machine resource ids that are associated with the
-     * capacity reservation.
-     */
-    @JsonProperty(value = "properties.virtualMachinesAssociated", access = JsonProperty.Access.WRITE_ONLY)
-    private List<SubResourceReadOnly> virtualMachinesAssociated;
-
-    /*
-     * The date time when the capacity reservation was last updated.
-     */
-    @JsonProperty(value = "properties.provisioningTime", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime provisioningTime;
-
-    /*
-     * The provisioning state, which only appears in the response.
-     */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private String provisioningState;
-
-    /*
-     * The Capacity reservation instance view.
-     */
-    @JsonProperty(value = "properties.instanceView", access = JsonProperty.Access.WRITE_ONLY)
-    private CapacityReservationInstanceView instanceView;
+    private CapacityReservationProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the sku property: SKU of the resource for which capacity needs be reserved. The SKU name and capacity is
@@ -129,53 +110,6 @@ public class CapacityReservationInner extends Resource {
         return this;
     }
 
-    /**
-     * Get the reservationId property: A unique id generated and assigned to the capacity reservation by the platform
-     * which does not change throughout the lifetime of the resource.
-     *
-     * @return the reservationId value.
-     */
-    public String reservationId() {
-        return this.reservationId;
-    }
-
-    /**
-     * Get the virtualMachinesAssociated property: A list of all virtual machine resource ids that are associated with
-     * the capacity reservation.
-     *
-     * @return the virtualMachinesAssociated value.
-     */
-    public List<SubResourceReadOnly> virtualMachinesAssociated() {
-        return this.virtualMachinesAssociated;
-    }
-
-    /**
-     * Get the provisioningTime property: The date time when the capacity reservation was last updated.
-     *
-     * @return the provisioningTime value.
-     */
-    public OffsetDateTime provisioningTime() {
-        return this.provisioningTime;
-    }
-
-    /**
-     * Get the provisioningState property: The provisioning state, which only appears in the response.
-     *
-     * @return the provisioningState value.
-     */
-    public String provisioningState() {
-        return this.provisioningState;
-    }
-
-    /**
-     * Get the instanceView property: The Capacity reservation instance view.
-     *
-     * @return the instanceView value.
-     */
-    public CapacityReservationInstanceView instanceView() {
-        return this.instanceView;
-    }
-
     /** {@inheritDoc} */
     @Override
     public CapacityReservationInner withLocation(String location) {
@@ -191,23 +125,67 @@ public class CapacityReservationInner extends Resource {
     }
 
     /**
+     * Get the reservationId property: A unique id generated and assigned to the capacity reservation by the platform
+     * which does not change throughout the lifetime of the resource.
+     *
+     * @return the reservationId value.
+     */
+    public String reservationId() {
+        return this.innerProperties() == null ? null : this.innerProperties().reservationId();
+    }
+
+    /**
+     * Get the virtualMachinesAssociated property: A list of all virtual machine resource ids that are associated with
+     * the capacity reservation.
+     *
+     * @return the virtualMachinesAssociated value.
+     */
+    public List<SubResourceReadOnly> virtualMachinesAssociated() {
+        return this.innerProperties() == null ? null : this.innerProperties().virtualMachinesAssociated();
+    }
+
+    /**
+     * Get the provisioningTime property: The date time when the capacity reservation was last updated.
+     *
+     * @return the provisioningTime value.
+     */
+    public OffsetDateTime provisioningTime() {
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningTime();
+    }
+
+    /**
+     * Get the provisioningState property: The provisioning state, which only appears in the response.
+     *
+     * @return the provisioningState value.
+     */
+    public String provisioningState() {
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    }
+
+    /**
+     * Get the instanceView property: The Capacity reservation instance view.
+     *
+     * @return the instanceView value.
+     */
+    public CapacityReservationInstanceView instanceView() {
+        return this.innerProperties() == null ? null : this.innerProperties().instanceView();
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
         if (sku() == null) {
             throw logger
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property sku in model CapacityReservationInner"));
         } else {
             sku().validate();
-        }
-        if (virtualMachinesAssociated() != null) {
-            virtualMachinesAssociated().forEach(e -> e.validate());
-        }
-        if (instanceView() != null) {
-            instanceView().validate();
         }
     }
 }

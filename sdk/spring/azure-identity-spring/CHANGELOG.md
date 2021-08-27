@@ -1,9 +1,23 @@
 # Release History
 
-## 1.8.0-beta.1 (Unreleased)
+## 1.9.0-beta.1 (Unreleased)
 This release is compatible with Spring Boot 2.5.0 - 2.5.4.
 ### Dependency Upgrades
 - Upgrade to [spring-boot-dependencies:2.5.4](https://repo.maven.apache.org/maven2/org/springframework/boot/spring-boot-dependencies/2.5.4/spring-boot-dependencies-2.5.4.pom).
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 1.8.0 (2021-08-25)
+This release is compatible with Spring Boot 2.5.0 - 2.5.3.
+### Dependency Upgrades
+- Upgrade to [spring-boot-dependencies:2.5.3](https://repo.maven.apache.org/maven2/org/springframework/boot/spring-boot-dependencies/2.5.3/spring-boot-dependencies-2.5.3.pom).
+
 
 ## 1.7.0 (2021-07-20)
 No changes from 1.6.0. 

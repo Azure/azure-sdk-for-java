@@ -8,6 +8,11 @@ import com.azure.resourcemanager.datafactory.models.SelfHostedIntegrationRuntime
 
 /** Samples for IntegrationRuntimes CreateOrUpdate. */
 public final class IntegrationRuntimesCreateOrUpdateSamples {
+    /*
+     * operationId: IntegrationRuntimes_CreateOrUpdate
+     * api-version: 2018-06-01
+     * x-ms-examples: IntegrationRuntimes_Create
+     */
     /**
      * Sample code: IntegrationRuntimes_Create.
      *

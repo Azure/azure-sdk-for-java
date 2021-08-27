@@ -1,10 +1,19 @@
 # Release History
 
-
-## 3.8.0 (Unreleased)
+## 3.9.0-beta.1 (Unreleased)
 This release is compatible with Spring Boot 2.5.0 - 2.5.4.
 ### Dependency Upgrades
 - Upgrade to [spring-boot-dependencies:2.5.4](https://repo.maven.apache.org/maven2/org/springframework/boot/spring-boot-dependencies/2.5.4/spring-boot-dependencies-2.5.4.pom).
+
+## 3.8.0 (2021-08-25)
+This release is compatible with Spring Boot 2.5.0 - 2.5.3.
+### Dependency Upgrades
+- Upgrade to [spring-boot-dependencies:2.5.3](https://repo.maven.apache.org/maven2/org/springframework/boot/spring-boot-dependencies/2.5.3/spring-boot-dependencies-2.5.3.pom).
+- Upgrade to [Azure Core 1.19.0](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core/CHANGELOG.md#1190-2021-08-06).
+- Upgrade to [Azure Identity 1.3.5](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/identity/azure-identity/CHANGELOG.md).
+- Upgrade to [Azure Key Vault Secret 4.3.2](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/keyvault/azure-security-keyvault-secrets/CHANGELOG.md).
+- Upgrade to [Azure Key Vault JCA 2.0.0](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/keyvault/azure-security-keyvault-jca/CHANGELOG.md).
+- Upgrade to [Azure Spring Data Cosmos 3.10.0](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/cosmos/azure-spring-data-cosmos/CHANGELOG.md#3100-2021-08-16).
 
 
 ## 3.7.0 (2021-07-20)

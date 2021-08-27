@@ -5,112 +5,30 @@
 package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.apimanagement.fluent.models.IssueUpdateContractProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** Issue update Parameters. */
-@JsonFlatten
 @Fluent
-public class IssueUpdateContract {
+public final class IssueUpdateContract {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(IssueUpdateContract.class);
 
     /*
-     * Date and time when the issue was created.
+     * Issue entity Update contract properties.
      */
-    @JsonProperty(value = "properties.createdDate")
-    private OffsetDateTime createdDate;
-
-    /*
-     * Status of the issue.
-     */
-    @JsonProperty(value = "properties.state")
-    private State state;
-
-    /*
-     * A resource identifier for the API the issue was created for.
-     */
-    @JsonProperty(value = "properties.apiId")
-    private String apiId;
-
-    /*
-     * The issue title.
-     */
-    @JsonProperty(value = "properties.title")
-    private String title;
-
-    /*
-     * Text describing the issue.
-     */
-    @JsonProperty(value = "properties.description")
-    private String description;
-
-    /*
-     * A resource identifier for the user created the issue.
-     */
-    @JsonProperty(value = "properties.userId")
-    private String userId;
+    @JsonProperty(value = "properties")
+    private IssueUpdateContractProperties innerProperties;
 
     /**
-     * Get the createdDate property: Date and time when the issue was created.
+     * Get the innerProperties property: Issue entity Update contract properties.
      *
-     * @return the createdDate value.
+     * @return the innerProperties value.
      */
-    public OffsetDateTime createdDate() {
-        return this.createdDate;
-    }
-
-    /**
-     * Set the createdDate property: Date and time when the issue was created.
-     *
-     * @param createdDate the createdDate value to set.
-     * @return the IssueUpdateContract object itself.
-     */
-    public IssueUpdateContract withCreatedDate(OffsetDateTime createdDate) {
-        this.createdDate = createdDate;
-        return this;
-    }
-
-    /**
-     * Get the state property: Status of the issue.
-     *
-     * @return the state value.
-     */
-    public State state() {
-        return this.state;
-    }
-
-    /**
-     * Set the state property: Status of the issue.
-     *
-     * @param state the state value to set.
-     * @return the IssueUpdateContract object itself.
-     */
-    public IssueUpdateContract withState(State state) {
-        this.state = state;
-        return this;
-    }
-
-    /**
-     * Get the apiId property: A resource identifier for the API the issue was created for.
-     *
-     * @return the apiId value.
-     */
-    public String apiId() {
-        return this.apiId;
-    }
-
-    /**
-     * Set the apiId property: A resource identifier for the API the issue was created for.
-     *
-     * @param apiId the apiId value to set.
-     * @return the IssueUpdateContract object itself.
-     */
-    public IssueUpdateContract withApiId(String apiId) {
-        this.apiId = apiId;
-        return this;
+    private IssueUpdateContractProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /**
@@ -119,7 +37,7 @@ public class IssueUpdateContract {
      * @return the title value.
      */
     public String title() {
-        return this.title;
+        return this.innerProperties() == null ? null : this.innerProperties().title();
     }
 
     /**
@@ -129,7 +47,10 @@ public class IssueUpdateContract {
      * @return the IssueUpdateContract object itself.
      */
     public IssueUpdateContract withTitle(String title) {
-        this.title = title;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new IssueUpdateContractProperties();
+        }
+        this.innerProperties().withTitle(title);
         return this;
     }
 
@@ -139,7 +60,7 @@ public class IssueUpdateContract {
      * @return the description value.
      */
     public String description() {
-        return this.description;
+        return this.innerProperties() == null ? null : this.innerProperties().description();
     }
 
     /**
@@ -149,7 +70,10 @@ public class IssueUpdateContract {
      * @return the IssueUpdateContract object itself.
      */
     public IssueUpdateContract withDescription(String description) {
-        this.description = description;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new IssueUpdateContractProperties();
+        }
+        this.innerProperties().withDescription(description);
         return this;
     }
 
@@ -159,7 +83,7 @@ public class IssueUpdateContract {
      * @return the userId value.
      */
     public String userId() {
-        return this.userId;
+        return this.innerProperties() == null ? null : this.innerProperties().userId();
     }
 
     /**
@@ -169,7 +93,79 @@ public class IssueUpdateContract {
      * @return the IssueUpdateContract object itself.
      */
     public IssueUpdateContract withUserId(String userId) {
-        this.userId = userId;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new IssueUpdateContractProperties();
+        }
+        this.innerProperties().withUserId(userId);
+        return this;
+    }
+
+    /**
+     * Get the createdDate property: Date and time when the issue was created.
+     *
+     * @return the createdDate value.
+     */
+    public OffsetDateTime createdDate() {
+        return this.innerProperties() == null ? null : this.innerProperties().createdDate();
+    }
+
+    /**
+     * Set the createdDate property: Date and time when the issue was created.
+     *
+     * @param createdDate the createdDate value to set.
+     * @return the IssueUpdateContract object itself.
+     */
+    public IssueUpdateContract withCreatedDate(OffsetDateTime createdDate) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new IssueUpdateContractProperties();
+        }
+        this.innerProperties().withCreatedDate(createdDate);
+        return this;
+    }
+
+    /**
+     * Get the state property: Status of the issue.
+     *
+     * @return the state value.
+     */
+    public State state() {
+        return this.innerProperties() == null ? null : this.innerProperties().state();
+    }
+
+    /**
+     * Set the state property: Status of the issue.
+     *
+     * @param state the state value to set.
+     * @return the IssueUpdateContract object itself.
+     */
+    public IssueUpdateContract withState(State state) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new IssueUpdateContractProperties();
+        }
+        this.innerProperties().withState(state);
+        return this;
+    }
+
+    /**
+     * Get the apiId property: A resource identifier for the API the issue was created for.
+     *
+     * @return the apiId value.
+     */
+    public String apiId() {
+        return this.innerProperties() == null ? null : this.innerProperties().apiId();
+    }
+
+    /**
+     * Set the apiId property: A resource identifier for the API the issue was created for.
+     *
+     * @param apiId the apiId value to set.
+     * @return the IssueUpdateContract object itself.
+     */
+    public IssueUpdateContract withApiId(String apiId) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new IssueUpdateContractProperties();
+        }
+        this.innerProperties().withApiId(apiId);
         return this;
     }
 
@@ -179,5 +175,8 @@ public class IssueUpdateContract {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

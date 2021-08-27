@@ -1,9 +1,22 @@
 # Release History
 
-## 3.8.0-beta.1 (Unreleased)
+## 3.9.0-beta.1 (Unreleased)
 This release is compatible with Spring Boot 2.5.0 - 2.5.4.
 ### Dependency Upgrades
 - Upgrade to [spring-boot-dependencies:2.5.4](https://repo.maven.apache.org/maven2/org/springframework/boot/spring-boot-dependencies/2.5.4/spring-boot-dependencies-2.5.4.pom).
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 3.8.0 (2021-08-25)
+This release is compatible with Spring Boot 2.5.0 - 2.5.3.
+### Dependency Upgrades
+- Upgrade to [spring-boot-dependencies:2.5.3](https://repo.maven.apache.org/maven2/org/springframework/boot/spring-boot-dependencies/2.5.3/spring-boot-dependencies-2.5.3.pom).
 ### Deprecations
 - Deprecate `AADB2CJwtBearerTokenAuthenticationConverter`, use `AADJwtBearerTokenAuthenticationConverter` instead.
 

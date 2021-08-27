@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
@@ -19,10 +18,15 @@ import java.util.List;
 import java.util.Map;
 
 /** NetworkVirtualAppliance Resource. */
-@JsonFlatten
 @Fluent
-public class NetworkVirtualApplianceInner extends Resource {
+public final class NetworkVirtualApplianceInner extends Resource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(NetworkVirtualApplianceInner.class);
+
+    /*
+     * Properties of the Network Virtual Appliance.
+     */
+    @JsonProperty(value = "properties")
+    private NetworkVirtualAppliancePropertiesFormat innerProperties;
 
     /*
      * The service principal that has read access to cloud-init and config
@@ -38,76 +42,19 @@ public class NetworkVirtualApplianceInner extends Resource {
     private String etag;
 
     /*
-     * Network Virtual Appliance SKU.
-     */
-    @JsonProperty(value = "properties.nvaSku")
-    private VirtualApplianceSkuProperties nvaSku;
-
-    /*
-     * Address Prefix.
-     */
-    @JsonProperty(value = "properties.addressPrefix", access = JsonProperty.Access.WRITE_ONLY)
-    private String addressPrefix;
-
-    /*
-     * BootStrapConfigurationBlobs storage URLs.
-     */
-    @JsonProperty(value = "properties.bootStrapConfigurationBlobs")
-    private List<String> bootStrapConfigurationBlobs;
-
-    /*
-     * The Virtual Hub where Network Virtual Appliance is being deployed.
-     */
-    @JsonProperty(value = "properties.virtualHub")
-    private SubResource virtualHub;
-
-    /*
-     * CloudInitConfigurationBlob storage URLs.
-     */
-    @JsonProperty(value = "properties.cloudInitConfigurationBlobs")
-    private List<String> cloudInitConfigurationBlobs;
-
-    /*
-     * CloudInitConfiguration string in plain text.
-     */
-    @JsonProperty(value = "properties.cloudInitConfiguration")
-    private String cloudInitConfiguration;
-
-    /*
-     * VirtualAppliance ASN.
-     */
-    @JsonProperty(value = "properties.virtualApplianceAsn")
-    private Long virtualApplianceAsn;
-
-    /*
-     * List of Virtual Appliance Network Interfaces.
-     */
-    @JsonProperty(value = "properties.virtualApplianceNics", access = JsonProperty.Access.WRITE_ONLY)
-    private List<VirtualApplianceNicProperties> virtualApplianceNics;
-
-    /*
-     * List of references to VirtualApplianceSite.
-     */
-    @JsonProperty(value = "properties.virtualApplianceSites", access = JsonProperty.Access.WRITE_ONLY)
-    private List<SubResource> virtualApplianceSites;
-
-    /*
-     * List of references to InboundSecurityRules.
-     */
-    @JsonProperty(value = "properties.inboundSecurityRules", access = JsonProperty.Access.WRITE_ONLY)
-    private List<SubResource> inboundSecurityRules;
-
-    /*
-     * The provisioning state of the resource.
-     */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningState provisioningState;
-
-    /*
      * Resource ID.
      */
     @JsonProperty(value = "id")
     private String id;
+
+    /**
+     * Get the innerProperties property: Properties of the Network Virtual Appliance.
+     *
+     * @return the innerProperties value.
+     */
+    private NetworkVirtualAppliancePropertiesFormat innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the identity property: The service principal that has read access to cloud-init and config blob.
@@ -136,171 +83,6 @@ public class NetworkVirtualApplianceInner extends Resource {
      */
     public String etag() {
         return this.etag;
-    }
-
-    /**
-     * Get the nvaSku property: Network Virtual Appliance SKU.
-     *
-     * @return the nvaSku value.
-     */
-    public VirtualApplianceSkuProperties nvaSku() {
-        return this.nvaSku;
-    }
-
-    /**
-     * Set the nvaSku property: Network Virtual Appliance SKU.
-     *
-     * @param nvaSku the nvaSku value to set.
-     * @return the NetworkVirtualApplianceInner object itself.
-     */
-    public NetworkVirtualApplianceInner withNvaSku(VirtualApplianceSkuProperties nvaSku) {
-        this.nvaSku = nvaSku;
-        return this;
-    }
-
-    /**
-     * Get the addressPrefix property: Address Prefix.
-     *
-     * @return the addressPrefix value.
-     */
-    public String addressPrefix() {
-        return this.addressPrefix;
-    }
-
-    /**
-     * Get the bootStrapConfigurationBlobs property: BootStrapConfigurationBlobs storage URLs.
-     *
-     * @return the bootStrapConfigurationBlobs value.
-     */
-    public List<String> bootStrapConfigurationBlobs() {
-        return this.bootStrapConfigurationBlobs;
-    }
-
-    /**
-     * Set the bootStrapConfigurationBlobs property: BootStrapConfigurationBlobs storage URLs.
-     *
-     * @param bootStrapConfigurationBlobs the bootStrapConfigurationBlobs value to set.
-     * @return the NetworkVirtualApplianceInner object itself.
-     */
-    public NetworkVirtualApplianceInner withBootStrapConfigurationBlobs(List<String> bootStrapConfigurationBlobs) {
-        this.bootStrapConfigurationBlobs = bootStrapConfigurationBlobs;
-        return this;
-    }
-
-    /**
-     * Get the virtualHub property: The Virtual Hub where Network Virtual Appliance is being deployed.
-     *
-     * @return the virtualHub value.
-     */
-    public SubResource virtualHub() {
-        return this.virtualHub;
-    }
-
-    /**
-     * Set the virtualHub property: The Virtual Hub where Network Virtual Appliance is being deployed.
-     *
-     * @param virtualHub the virtualHub value to set.
-     * @return the NetworkVirtualApplianceInner object itself.
-     */
-    public NetworkVirtualApplianceInner withVirtualHub(SubResource virtualHub) {
-        this.virtualHub = virtualHub;
-        return this;
-    }
-
-    /**
-     * Get the cloudInitConfigurationBlobs property: CloudInitConfigurationBlob storage URLs.
-     *
-     * @return the cloudInitConfigurationBlobs value.
-     */
-    public List<String> cloudInitConfigurationBlobs() {
-        return this.cloudInitConfigurationBlobs;
-    }
-
-    /**
-     * Set the cloudInitConfigurationBlobs property: CloudInitConfigurationBlob storage URLs.
-     *
-     * @param cloudInitConfigurationBlobs the cloudInitConfigurationBlobs value to set.
-     * @return the NetworkVirtualApplianceInner object itself.
-     */
-    public NetworkVirtualApplianceInner withCloudInitConfigurationBlobs(List<String> cloudInitConfigurationBlobs) {
-        this.cloudInitConfigurationBlobs = cloudInitConfigurationBlobs;
-        return this;
-    }
-
-    /**
-     * Get the cloudInitConfiguration property: CloudInitConfiguration string in plain text.
-     *
-     * @return the cloudInitConfiguration value.
-     */
-    public String cloudInitConfiguration() {
-        return this.cloudInitConfiguration;
-    }
-
-    /**
-     * Set the cloudInitConfiguration property: CloudInitConfiguration string in plain text.
-     *
-     * @param cloudInitConfiguration the cloudInitConfiguration value to set.
-     * @return the NetworkVirtualApplianceInner object itself.
-     */
-    public NetworkVirtualApplianceInner withCloudInitConfiguration(String cloudInitConfiguration) {
-        this.cloudInitConfiguration = cloudInitConfiguration;
-        return this;
-    }
-
-    /**
-     * Get the virtualApplianceAsn property: VirtualAppliance ASN.
-     *
-     * @return the virtualApplianceAsn value.
-     */
-    public Long virtualApplianceAsn() {
-        return this.virtualApplianceAsn;
-    }
-
-    /**
-     * Set the virtualApplianceAsn property: VirtualAppliance ASN.
-     *
-     * @param virtualApplianceAsn the virtualApplianceAsn value to set.
-     * @return the NetworkVirtualApplianceInner object itself.
-     */
-    public NetworkVirtualApplianceInner withVirtualApplianceAsn(Long virtualApplianceAsn) {
-        this.virtualApplianceAsn = virtualApplianceAsn;
-        return this;
-    }
-
-    /**
-     * Get the virtualApplianceNics property: List of Virtual Appliance Network Interfaces.
-     *
-     * @return the virtualApplianceNics value.
-     */
-    public List<VirtualApplianceNicProperties> virtualApplianceNics() {
-        return this.virtualApplianceNics;
-    }
-
-    /**
-     * Get the virtualApplianceSites property: List of references to VirtualApplianceSite.
-     *
-     * @return the virtualApplianceSites value.
-     */
-    public List<SubResource> virtualApplianceSites() {
-        return this.virtualApplianceSites;
-    }
-
-    /**
-     * Get the inboundSecurityRules property: List of references to InboundSecurityRules.
-     *
-     * @return the inboundSecurityRules value.
-     */
-    public List<SubResource> inboundSecurityRules() {
-        return this.inboundSecurityRules;
-    }
-
-    /**
-     * Get the provisioningState property: The provisioning state of the resource.
-     *
-     * @return the provisioningState value.
-     */
-    public ProvisioningState provisioningState() {
-        return this.provisioningState;
     }
 
     /**
@@ -338,19 +120,199 @@ public class NetworkVirtualApplianceInner extends Resource {
     }
 
     /**
+     * Get the nvaSku property: Network Virtual Appliance SKU.
+     *
+     * @return the nvaSku value.
+     */
+    public VirtualApplianceSkuProperties nvaSku() {
+        return this.innerProperties() == null ? null : this.innerProperties().nvaSku();
+    }
+
+    /**
+     * Set the nvaSku property: Network Virtual Appliance SKU.
+     *
+     * @param nvaSku the nvaSku value to set.
+     * @return the NetworkVirtualApplianceInner object itself.
+     */
+    public NetworkVirtualApplianceInner withNvaSku(VirtualApplianceSkuProperties nvaSku) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new NetworkVirtualAppliancePropertiesFormat();
+        }
+        this.innerProperties().withNvaSku(nvaSku);
+        return this;
+    }
+
+    /**
+     * Get the addressPrefix property: Address Prefix.
+     *
+     * @return the addressPrefix value.
+     */
+    public String addressPrefix() {
+        return this.innerProperties() == null ? null : this.innerProperties().addressPrefix();
+    }
+
+    /**
+     * Get the bootStrapConfigurationBlobs property: BootStrapConfigurationBlobs storage URLs.
+     *
+     * @return the bootStrapConfigurationBlobs value.
+     */
+    public List<String> bootStrapConfigurationBlobs() {
+        return this.innerProperties() == null ? null : this.innerProperties().bootStrapConfigurationBlobs();
+    }
+
+    /**
+     * Set the bootStrapConfigurationBlobs property: BootStrapConfigurationBlobs storage URLs.
+     *
+     * @param bootStrapConfigurationBlobs the bootStrapConfigurationBlobs value to set.
+     * @return the NetworkVirtualApplianceInner object itself.
+     */
+    public NetworkVirtualApplianceInner withBootStrapConfigurationBlobs(List<String> bootStrapConfigurationBlobs) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new NetworkVirtualAppliancePropertiesFormat();
+        }
+        this.innerProperties().withBootStrapConfigurationBlobs(bootStrapConfigurationBlobs);
+        return this;
+    }
+
+    /**
+     * Get the virtualHub property: The Virtual Hub where Network Virtual Appliance is being deployed.
+     *
+     * @return the virtualHub value.
+     */
+    public SubResource virtualHub() {
+        return this.innerProperties() == null ? null : this.innerProperties().virtualHub();
+    }
+
+    /**
+     * Set the virtualHub property: The Virtual Hub where Network Virtual Appliance is being deployed.
+     *
+     * @param virtualHub the virtualHub value to set.
+     * @return the NetworkVirtualApplianceInner object itself.
+     */
+    public NetworkVirtualApplianceInner withVirtualHub(SubResource virtualHub) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new NetworkVirtualAppliancePropertiesFormat();
+        }
+        this.innerProperties().withVirtualHub(virtualHub);
+        return this;
+    }
+
+    /**
+     * Get the cloudInitConfigurationBlobs property: CloudInitConfigurationBlob storage URLs.
+     *
+     * @return the cloudInitConfigurationBlobs value.
+     */
+    public List<String> cloudInitConfigurationBlobs() {
+        return this.innerProperties() == null ? null : this.innerProperties().cloudInitConfigurationBlobs();
+    }
+
+    /**
+     * Set the cloudInitConfigurationBlobs property: CloudInitConfigurationBlob storage URLs.
+     *
+     * @param cloudInitConfigurationBlobs the cloudInitConfigurationBlobs value to set.
+     * @return the NetworkVirtualApplianceInner object itself.
+     */
+    public NetworkVirtualApplianceInner withCloudInitConfigurationBlobs(List<String> cloudInitConfigurationBlobs) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new NetworkVirtualAppliancePropertiesFormat();
+        }
+        this.innerProperties().withCloudInitConfigurationBlobs(cloudInitConfigurationBlobs);
+        return this;
+    }
+
+    /**
+     * Get the cloudInitConfiguration property: CloudInitConfiguration string in plain text.
+     *
+     * @return the cloudInitConfiguration value.
+     */
+    public String cloudInitConfiguration() {
+        return this.innerProperties() == null ? null : this.innerProperties().cloudInitConfiguration();
+    }
+
+    /**
+     * Set the cloudInitConfiguration property: CloudInitConfiguration string in plain text.
+     *
+     * @param cloudInitConfiguration the cloudInitConfiguration value to set.
+     * @return the NetworkVirtualApplianceInner object itself.
+     */
+    public NetworkVirtualApplianceInner withCloudInitConfiguration(String cloudInitConfiguration) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new NetworkVirtualAppliancePropertiesFormat();
+        }
+        this.innerProperties().withCloudInitConfiguration(cloudInitConfiguration);
+        return this;
+    }
+
+    /**
+     * Get the virtualApplianceAsn property: VirtualAppliance ASN.
+     *
+     * @return the virtualApplianceAsn value.
+     */
+    public Long virtualApplianceAsn() {
+        return this.innerProperties() == null ? null : this.innerProperties().virtualApplianceAsn();
+    }
+
+    /**
+     * Set the virtualApplianceAsn property: VirtualAppliance ASN.
+     *
+     * @param virtualApplianceAsn the virtualApplianceAsn value to set.
+     * @return the NetworkVirtualApplianceInner object itself.
+     */
+    public NetworkVirtualApplianceInner withVirtualApplianceAsn(Long virtualApplianceAsn) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new NetworkVirtualAppliancePropertiesFormat();
+        }
+        this.innerProperties().withVirtualApplianceAsn(virtualApplianceAsn);
+        return this;
+    }
+
+    /**
+     * Get the virtualApplianceNics property: List of Virtual Appliance Network Interfaces.
+     *
+     * @return the virtualApplianceNics value.
+     */
+    public List<VirtualApplianceNicProperties> virtualApplianceNics() {
+        return this.innerProperties() == null ? null : this.innerProperties().virtualApplianceNics();
+    }
+
+    /**
+     * Get the virtualApplianceSites property: List of references to VirtualApplianceSite.
+     *
+     * @return the virtualApplianceSites value.
+     */
+    public List<SubResource> virtualApplianceSites() {
+        return this.innerProperties() == null ? null : this.innerProperties().virtualApplianceSites();
+    }
+
+    /**
+     * Get the inboundSecurityRules property: List of references to InboundSecurityRules.
+     *
+     * @return the inboundSecurityRules value.
+     */
+    public List<SubResource> inboundSecurityRules() {
+        return this.innerProperties() == null ? null : this.innerProperties().inboundSecurityRules();
+    }
+
+    /**
+     * Get the provisioningState property: The provisioning state of the resource.
+     *
+     * @return the provisioningState value.
+     */
+    public ProvisioningState provisioningState() {
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
         if (identity() != null) {
             identity().validate();
-        }
-        if (nvaSku() != null) {
-            nvaSku().validate();
-        }
-        if (virtualApplianceNics() != null) {
-            virtualApplianceNics().forEach(e -> e.validate());
         }
     }
 }

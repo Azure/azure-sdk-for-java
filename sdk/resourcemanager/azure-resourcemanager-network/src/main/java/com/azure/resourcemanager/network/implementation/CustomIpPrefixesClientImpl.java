@@ -41,7 +41,6 @@ import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDe
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
 import java.nio.ByteBuffer;
-import java.util.Map;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -880,7 +879,7 @@ public final class CustomIpPrefixesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param customIpPrefixName The name of the custom IP prefix.
-     * @param tags Resource tags.
+     * @param parameters Parameters supplied to update custom IP prefix tags.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -888,7 +887,7 @@ public final class CustomIpPrefixesClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<CustomIpPrefixInner>> updateTagsWithResponseAsync(
-        String resourceGroupName, String customIpPrefixName, Map<String, String> tags) {
+        String resourceGroupName, String customIpPrefixName, TagsObject parameters) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -909,10 +908,13 @@ public final class CustomIpPrefixesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
         final String apiVersion = "2021-02-01";
         final String accept = "application/json";
-        TagsObject parameters = new TagsObject();
-        parameters.withTags(tags);
         return FluxUtil
             .withContext(
                 context ->
@@ -934,7 +936,7 @@ public final class CustomIpPrefixesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param customIpPrefixName The name of the custom IP prefix.
-     * @param tags Resource tags.
+     * @param parameters Parameters supplied to update custom IP prefix tags.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -943,7 +945,7 @@ public final class CustomIpPrefixesClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<CustomIpPrefixInner>> updateTagsWithResponseAsync(
-        String resourceGroupName, String customIpPrefixName, Map<String, String> tags, Context context) {
+        String resourceGroupName, String customIpPrefixName, TagsObject parameters, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -964,10 +966,13 @@ public final class CustomIpPrefixesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
         final String apiVersion = "2021-02-01";
         final String accept = "application/json";
-        TagsObject parameters = new TagsObject();
-        parameters.withTags(tags);
         context = this.client.mergeContext(context);
         return service
             .updateTags(
@@ -986,7 +991,7 @@ public final class CustomIpPrefixesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param customIpPrefixName The name of the custom IP prefix.
-     * @param tags Resource tags.
+     * @param parameters Parameters supplied to update custom IP prefix tags.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -994,8 +999,8 @@ public final class CustomIpPrefixesClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CustomIpPrefixInner> updateTagsAsync(
-        String resourceGroupName, String customIpPrefixName, Map<String, String> tags) {
-        return updateTagsWithResponseAsync(resourceGroupName, customIpPrefixName, tags)
+        String resourceGroupName, String customIpPrefixName, TagsObject parameters) {
+        return updateTagsWithResponseAsync(resourceGroupName, customIpPrefixName, parameters)
             .flatMap(
                 (Response<CustomIpPrefixInner> res) -> {
                     if (res.getValue() != null) {
@@ -1011,23 +1016,15 @@ public final class CustomIpPrefixesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param customIpPrefixName The name of the custom IP prefix.
+     * @param parameters Parameters supplied to update custom IP prefix tags.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return custom IP prefix resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CustomIpPrefixInner> updateTagsAsync(String resourceGroupName, String customIpPrefixName) {
-        final Map<String, String> tags = null;
-        return updateTagsWithResponseAsync(resourceGroupName, customIpPrefixName, tags)
-            .flatMap(
-                (Response<CustomIpPrefixInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+    public CustomIpPrefixInner updateTags(String resourceGroupName, String customIpPrefixName, TagsObject parameters) {
+        return updateTagsAsync(resourceGroupName, customIpPrefixName, parameters).block();
     }
 
     /**
@@ -1035,23 +1032,7 @@ public final class CustomIpPrefixesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param customIpPrefixName The name of the custom IP prefix.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return custom IP prefix resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public CustomIpPrefixInner updateTags(String resourceGroupName, String customIpPrefixName) {
-        final Map<String, String> tags = null;
-        return updateTagsAsync(resourceGroupName, customIpPrefixName, tags).block();
-    }
-
-    /**
-     * Updates custom IP prefix tags.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param customIpPrefixName The name of the custom IP prefix.
-     * @param tags Resource tags.
+     * @param parameters Parameters supplied to update custom IP prefix tags.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1060,8 +1041,8 @@ public final class CustomIpPrefixesClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CustomIpPrefixInner> updateTagsWithResponse(
-        String resourceGroupName, String customIpPrefixName, Map<String, String> tags, Context context) {
-        return updateTagsWithResponseAsync(resourceGroupName, customIpPrefixName, tags, context).block();
+        String resourceGroupName, String customIpPrefixName, TagsObject parameters, Context context) {
+        return updateTagsWithResponseAsync(resourceGroupName, customIpPrefixName, parameters, context).block();
     }
 
     /**

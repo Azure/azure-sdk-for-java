@@ -12,6 +12,7 @@ import com.azure.resourcemanager.network.models.ServiceProviderProvisioningState
 import com.azure.resourcemanager.network.fluent.models.ExpressRouteCircuitAuthorizationInner;
 import com.azure.resourcemanager.network.fluent.models.ExpressRouteCircuitInner;
 import com.azure.resourcemanager.network.fluent.models.ExpressRouteCircuitPeeringInner;
+import com.azure.resourcemanager.network.models.TagsObject;
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 
 import java.util.ArrayList;
@@ -141,7 +142,7 @@ class ExpressRouteCircuitImpl
             .manager()
             .serviceClient()
             .getExpressRouteCircuits()
-            .updateTagsAsync(resourceGroupName(), name(), innerModel().tags());
+            .updateTagsAsync(resourceGroupName(), name(), new TagsObject().withTags(innerModel().tags()));
     }
 
     // Getters

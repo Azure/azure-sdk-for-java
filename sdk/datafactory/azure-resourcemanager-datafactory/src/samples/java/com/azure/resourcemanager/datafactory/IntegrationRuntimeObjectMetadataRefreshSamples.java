@@ -8,6 +8,11 @@ import com.azure.core.util.Context;
 
 /** Samples for IntegrationRuntimeObjectMetadata Refresh. */
 public final class IntegrationRuntimeObjectMetadataRefreshSamples {
+    /*
+     * operationId: IntegrationRuntimeObjectMetadata_Refresh
+     * api-version: 2018-06-01
+     * x-ms-examples: IntegrationRuntimeObjectMetadata_Refresh
+     */
     /**
      * Sample code: IntegrationRuntimeObjectMetadata_Refresh.
      *

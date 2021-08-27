@@ -1,10 +1,20 @@
 # Release History
 
-
-## 3.1.0-beta.1 (Unreleased)
+## 3.2.0-beta.1 (Unreleased)
 This release is compatible with Spring Boot 2.5.0 - 2.5.4.
 ### Dependency Upgrades
 - Upgrade to [spring-boot-dependencies:2.5.4](https://repo.maven.apache.org/maven2/org/springframework/boot/spring-boot-dependencies/2.5.4/spring-boot-dependencies-2.5.4.pom).
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+## 3.1.0-beta.1 (Unreleased)
+This release is compatible with Spring Boot 2.5.0 - 2.5.3.
+### Dependency Upgrades
+- Upgrade to [spring-boot-dependencies:2.5.3](https://repo.maven.apache.org/maven2/org/springframework/boot/spring-boot-dependencies/2.5.3/spring-boot-dependencies-2.5.3.pom).
 ### New Features
 - Support key less certificate. ([#22105](https://github.com/Azure/azure-sdk-for-java/issues/22105))
 

@@ -29,6 +29,4 @@ public class AppConfigurationAutoConfiguration {
             return new AppConfigurationRefresh(properties, clientStore);
         }
     }
-    
-   
 }

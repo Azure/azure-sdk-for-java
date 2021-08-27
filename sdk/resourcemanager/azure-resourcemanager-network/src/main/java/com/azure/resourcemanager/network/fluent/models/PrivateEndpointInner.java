@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.CustomDnsConfigPropertiesFormat;
@@ -18,9 +17,8 @@ import java.util.List;
 import java.util.Map;
 
 /** Private endpoint resource. */
-@JsonFlatten
 @Fluent
-public class PrivateEndpointInner extends Resource {
+public final class PrivateEndpointInner extends Resource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(PrivateEndpointInner.class);
 
     /*
@@ -30,49 +28,16 @@ public class PrivateEndpointInner extends Resource {
     private ExtendedLocation extendedLocation;
 
     /*
+     * Properties of the private endpoint.
+     */
+    @JsonProperty(value = "properties")
+    private PrivateEndpointPropertiesInner innerProperties;
+
+    /*
      * A unique read-only string that changes whenever the resource is updated.
      */
     @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
-
-    /*
-     * The ID of the subnet from which the private IP will be allocated.
-     */
-    @JsonProperty(value = "properties.subnet")
-    private SubnetInner subnet;
-
-    /*
-     * An array of references to the network interfaces created for this
-     * private endpoint.
-     */
-    @JsonProperty(value = "properties.networkInterfaces", access = JsonProperty.Access.WRITE_ONLY)
-    private List<NetworkInterfaceInner> networkInterfaces;
-
-    /*
-     * The provisioning state of the private endpoint resource.
-     */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningState provisioningState;
-
-    /*
-     * A grouping of information about the connection to the remote resource.
-     */
-    @JsonProperty(value = "properties.privateLinkServiceConnections")
-    private List<PrivateLinkServiceConnection> privateLinkServiceConnections;
-
-    /*
-     * A grouping of information about the connection to the remote resource.
-     * Used when the network admin does not have access to approve connections
-     * to the remote resource.
-     */
-    @JsonProperty(value = "properties.manualPrivateLinkServiceConnections")
-    private List<PrivateLinkServiceConnection> manualPrivateLinkServiceConnections;
-
-    /*
-     * An array of custom dns configurations.
-     */
-    @JsonProperty(value = "properties.customDnsConfigs")
-    private List<CustomDnsConfigPropertiesFormat> customDnsConfigs;
 
     /*
      * Resource ID.
@@ -101,117 +66,21 @@ public class PrivateEndpointInner extends Resource {
     }
 
     /**
+     * Get the innerProperties property: Properties of the private endpoint.
+     *
+     * @return the innerProperties value.
+     */
+    private PrivateEndpointPropertiesInner innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
      * Get the etag property: A unique read-only string that changes whenever the resource is updated.
      *
      * @return the etag value.
      */
     public String etag() {
         return this.etag;
-    }
-
-    /**
-     * Get the subnet property: The ID of the subnet from which the private IP will be allocated.
-     *
-     * @return the subnet value.
-     */
-    public SubnetInner subnet() {
-        return this.subnet;
-    }
-
-    /**
-     * Set the subnet property: The ID of the subnet from which the private IP will be allocated.
-     *
-     * @param subnet the subnet value to set.
-     * @return the PrivateEndpointInner object itself.
-     */
-    public PrivateEndpointInner withSubnet(SubnetInner subnet) {
-        this.subnet = subnet;
-        return this;
-    }
-
-    /**
-     * Get the networkInterfaces property: An array of references to the network interfaces created for this private
-     * endpoint.
-     *
-     * @return the networkInterfaces value.
-     */
-    public List<NetworkInterfaceInner> networkInterfaces() {
-        return this.networkInterfaces;
-    }
-
-    /**
-     * Get the provisioningState property: The provisioning state of the private endpoint resource.
-     *
-     * @return the provisioningState value.
-     */
-    public ProvisioningState provisioningState() {
-        return this.provisioningState;
-    }
-
-    /**
-     * Get the privateLinkServiceConnections property: A grouping of information about the connection to the remote
-     * resource.
-     *
-     * @return the privateLinkServiceConnections value.
-     */
-    public List<PrivateLinkServiceConnection> privateLinkServiceConnections() {
-        return this.privateLinkServiceConnections;
-    }
-
-    /**
-     * Set the privateLinkServiceConnections property: A grouping of information about the connection to the remote
-     * resource.
-     *
-     * @param privateLinkServiceConnections the privateLinkServiceConnections value to set.
-     * @return the PrivateEndpointInner object itself.
-     */
-    public PrivateEndpointInner withPrivateLinkServiceConnections(
-        List<PrivateLinkServiceConnection> privateLinkServiceConnections) {
-        this.privateLinkServiceConnections = privateLinkServiceConnections;
-        return this;
-    }
-
-    /**
-     * Get the manualPrivateLinkServiceConnections property: A grouping of information about the connection to the
-     * remote resource. Used when the network admin does not have access to approve connections to the remote resource.
-     *
-     * @return the manualPrivateLinkServiceConnections value.
-     */
-    public List<PrivateLinkServiceConnection> manualPrivateLinkServiceConnections() {
-        return this.manualPrivateLinkServiceConnections;
-    }
-
-    /**
-     * Set the manualPrivateLinkServiceConnections property: A grouping of information about the connection to the
-     * remote resource. Used when the network admin does not have access to approve connections to the remote resource.
-     *
-     * @param manualPrivateLinkServiceConnections the manualPrivateLinkServiceConnections value to set.
-     * @return the PrivateEndpointInner object itself.
-     */
-    public PrivateEndpointInner withManualPrivateLinkServiceConnections(
-        List<PrivateLinkServiceConnection> manualPrivateLinkServiceConnections) {
-        this.manualPrivateLinkServiceConnections = manualPrivateLinkServiceConnections;
-        return this;
-    }
-
-    /**
-     * Get the customDnsConfigs property: An array of custom dns configurations.
-     *
-     * @return the customDnsConfigs value.
-     */
-    public List<CustomDnsConfigPropertiesFormat> customDnsConfigs() {
-        return this.customDnsConfigs;
-    }
-
-    /**
-     * Set the customDnsConfigs property: An array of custom dns configurations.
-     *
-     * @param customDnsConfigs the customDnsConfigs value to set.
-     * @return the PrivateEndpointInner object itself.
-     */
-    public PrivateEndpointInner withCustomDnsConfigs(List<CustomDnsConfigPropertiesFormat> customDnsConfigs) {
-        this.customDnsConfigs = customDnsConfigs;
-        return this;
     }
 
     /**
@@ -249,6 +118,123 @@ public class PrivateEndpointInner extends Resource {
     }
 
     /**
+     * Get the subnet property: The ID of the subnet from which the private IP will be allocated.
+     *
+     * @return the subnet value.
+     */
+    public SubnetInner subnet() {
+        return this.innerProperties() == null ? null : this.innerProperties().subnet();
+    }
+
+    /**
+     * Set the subnet property: The ID of the subnet from which the private IP will be allocated.
+     *
+     * @param subnet the subnet value to set.
+     * @return the PrivateEndpointInner object itself.
+     */
+    public PrivateEndpointInner withSubnet(SubnetInner subnet) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PrivateEndpointPropertiesInner();
+        }
+        this.innerProperties().withSubnet(subnet);
+        return this;
+    }
+
+    /**
+     * Get the networkInterfaces property: An array of references to the network interfaces created for this private
+     * endpoint.
+     *
+     * @return the networkInterfaces value.
+     */
+    public List<NetworkInterfaceInner> networkInterfaces() {
+        return this.innerProperties() == null ? null : this.innerProperties().networkInterfaces();
+    }
+
+    /**
+     * Get the provisioningState property: The provisioning state of the private endpoint resource.
+     *
+     * @return the provisioningState value.
+     */
+    public ProvisioningState provisioningState() {
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    }
+
+    /**
+     * Get the privateLinkServiceConnections property: A grouping of information about the connection to the remote
+     * resource.
+     *
+     * @return the privateLinkServiceConnections value.
+     */
+    public List<PrivateLinkServiceConnection> privateLinkServiceConnections() {
+        return this.innerProperties() == null ? null : this.innerProperties().privateLinkServiceConnections();
+    }
+
+    /**
+     * Set the privateLinkServiceConnections property: A grouping of information about the connection to the remote
+     * resource.
+     *
+     * @param privateLinkServiceConnections the privateLinkServiceConnections value to set.
+     * @return the PrivateEndpointInner object itself.
+     */
+    public PrivateEndpointInner withPrivateLinkServiceConnections(
+        List<PrivateLinkServiceConnection> privateLinkServiceConnections) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PrivateEndpointPropertiesInner();
+        }
+        this.innerProperties().withPrivateLinkServiceConnections(privateLinkServiceConnections);
+        return this;
+    }
+
+    /**
+     * Get the manualPrivateLinkServiceConnections property: A grouping of information about the connection to the
+     * remote resource. Used when the network admin does not have access to approve connections to the remote resource.
+     *
+     * @return the manualPrivateLinkServiceConnections value.
+     */
+    public List<PrivateLinkServiceConnection> manualPrivateLinkServiceConnections() {
+        return this.innerProperties() == null ? null : this.innerProperties().manualPrivateLinkServiceConnections();
+    }
+
+    /**
+     * Set the manualPrivateLinkServiceConnections property: A grouping of information about the connection to the
+     * remote resource. Used when the network admin does not have access to approve connections to the remote resource.
+     *
+     * @param manualPrivateLinkServiceConnections the manualPrivateLinkServiceConnections value to set.
+     * @return the PrivateEndpointInner object itself.
+     */
+    public PrivateEndpointInner withManualPrivateLinkServiceConnections(
+        List<PrivateLinkServiceConnection> manualPrivateLinkServiceConnections) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PrivateEndpointPropertiesInner();
+        }
+        this.innerProperties().withManualPrivateLinkServiceConnections(manualPrivateLinkServiceConnections);
+        return this;
+    }
+
+    /**
+     * Get the customDnsConfigs property: An array of custom dns configurations.
+     *
+     * @return the customDnsConfigs value.
+     */
+    public List<CustomDnsConfigPropertiesFormat> customDnsConfigs() {
+        return this.innerProperties() == null ? null : this.innerProperties().customDnsConfigs();
+    }
+
+    /**
+     * Set the customDnsConfigs property: An array of custom dns configurations.
+     *
+     * @param customDnsConfigs the customDnsConfigs value to set.
+     * @return the PrivateEndpointInner object itself.
+     */
+    public PrivateEndpointInner withCustomDnsConfigs(List<CustomDnsConfigPropertiesFormat> customDnsConfigs) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PrivateEndpointPropertiesInner();
+        }
+        this.innerProperties().withCustomDnsConfigs(customDnsConfigs);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -257,20 +243,8 @@ public class PrivateEndpointInner extends Resource {
         if (extendedLocation() != null) {
             extendedLocation().validate();
         }
-        if (subnet() != null) {
-            subnet().validate();
-        }
-        if (networkInterfaces() != null) {
-            networkInterfaces().forEach(e -> e.validate());
-        }
-        if (privateLinkServiceConnections() != null) {
-            privateLinkServiceConnections().forEach(e -> e.validate());
-        }
-        if (manualPrivateLinkServiceConnections() != null) {
-            manualPrivateLinkServiceConnections().forEach(e -> e.validate());
-        }
-        if (customDnsConfigs() != null) {
-            customDnsConfigs().forEach(e -> e.validate());
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

@@ -4,6 +4,7 @@
 package com.azure.cosmos.models;
 
 import com.azure.cosmos.implementation.CosmosPagedFluxOptions;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.changefeed.implementation.ChangeFeedMode;
 import com.azure.cosmos.implementation.changefeed.implementation.ChangeFeedStartFromInternal;
 import com.azure.cosmos.implementation.changefeed.implementation.ChangeFeedState;
@@ -34,6 +35,7 @@ public final class CosmosChangeFeedRequestOptions {
     private boolean isSplitHandlingDisabled;
     private boolean quotaInfoEnabled;
     private String throughputControlGroupName;
+    private Map<String, String> customOptions;
 
     private CosmosChangeFeedRequestOptions(
         FeedRangeInternal feedRange,
@@ -431,5 +433,50 @@ public final class CosmosChangeFeedRequestOptions {
     public CosmosChangeFeedRequestOptions setThroughputControlGroupName(String throughputControlGroupName) {
         this.throughputControlGroupName = throughputControlGroupName;
         return this;
+    }
+
+    /**
+     * Sets the custom change feed request option value by key
+     *
+     * @param name  a string representing the custom option's name
+     * @param value a string representing the custom option's value
+     *
+     * @return the CosmosChangeFeedRequestOptions.
+     */
+    CosmosChangeFeedRequestOptions setHeader(String name, String value) {
+        if (this.customOptions == null) {
+            this.customOptions = new HashMap<>();
+        }
+        this.customOptions.put(name, value);
+        return this;
+    }
+
+    /**
+     * Gets the custom change feed request options
+     *
+     * @return Map of custom request options
+     */
+    Map<String, String> getHeaders() {
+        return this.customOptions;
+    }
+
+    ///////////////////////////////////////////////////////////////////////////////////////////
+    // the following helper/accessor only helps to access this class outside of this package.//
+    ///////////////////////////////////////////////////////////////////////////////////////////
+
+    static {
+        ImplementationBridgeHelpers.CosmosChangeFeedRequestOptionsHelper.setCosmosChangeFeedRequestOptionsAccessor(
+            new ImplementationBridgeHelpers.CosmosChangeFeedRequestOptionsHelper.CosmosChangeFeedRequestOptionsAccessor() {
+
+                @Override
+                public CosmosChangeFeedRequestOptions setHeader(CosmosChangeFeedRequestOptions changeFeedRequestOptions, String name, String value) {
+                    return changeFeedRequestOptions.setHeader(name, value);
+                }
+
+                @Override
+                public Map<String, String> getHeader(CosmosChangeFeedRequestOptions changeFeedRequestOptions) {
+                    return changeFeedRequestOptions.getHeaders();
+                }
+            });
     }
 }

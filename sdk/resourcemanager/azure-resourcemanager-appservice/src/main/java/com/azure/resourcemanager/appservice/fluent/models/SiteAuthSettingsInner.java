@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.models.BuiltInAuthenticationProvider;
 import com.azure.resourcemanager.appservice.models.ProxyOnlyResource;
@@ -15,337 +14,31 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Configuration settings for the Azure App Service Authentication / Authorization feature. */
-@JsonFlatten
 @Fluent
-public class SiteAuthSettingsInner extends ProxyOnlyResource {
+public final class SiteAuthSettingsInner extends ProxyOnlyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(SiteAuthSettingsInner.class);
 
     /*
-     * <code>true</code> if the Authentication / Authorization feature is
-     * enabled for the current app; otherwise, <code>false</code>.
+     * SiteAuthSettings resource specific properties
      */
-    @JsonProperty(value = "properties.enabled")
-    private Boolean enabled;
+    @JsonProperty(value = "properties")
+    private SiteAuthSettingsProperties innerProperties;
 
-    /*
-     * The RuntimeVersion of the Authentication / Authorization feature in use
-     * for the current app.
-     * The setting in this value can control the behavior of certain features
-     * in the Authentication / Authorization module.
+    /**
+     * Get the innerProperties property: SiteAuthSettings resource specific properties.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.runtimeVersion")
-    private String runtimeVersion;
+    private SiteAuthSettingsProperties innerProperties() {
+        return this.innerProperties;
+    }
 
-    /*
-     * The ConfigVersion of the Authentication / Authorization feature in use
-     * for the current app.
-     * The setting in this value can control the behavior of the control plane
-     * for Authentication / Authorization.
-     */
-    @JsonProperty(value = "properties.configVersion")
-    private String configVersion;
-
-    /*
-     * The action to take when an unauthenticated client attempts to access the
-     * app.
-     */
-    @JsonProperty(value = "properties.unauthenticatedClientAction")
-    private UnauthenticatedClientAction unauthenticatedClientAction;
-
-    /*
-     * <code>true</code> to durably store platform-specific security tokens
-     * that are obtained during login flows; otherwise, <code>false</code>.
-     * The default is <code>false</code>.
-     */
-    @JsonProperty(value = "properties.tokenStoreEnabled")
-    private Boolean tokenStoreEnabled;
-
-    /*
-     * External URLs that can be redirected to as part of logging in or logging
-     * out of the app. Note that the query string part of the URL is ignored.
-     * This is an advanced setting typically only needed by Windows Store
-     * application backends.
-     * Note that URLs within the current domain are always implicitly allowed.
-     */
-    @JsonProperty(value = "properties.allowedExternalRedirectUrls")
-    private List<String> allowedExternalRedirectUrls;
-
-    /*
-     * The default authentication provider to use when multiple providers are
-     * configured.
-     * This setting is only needed if multiple providers are configured and the
-     * unauthenticated client
-     * action is set to "RedirectToLoginPage".
-     */
-    @JsonProperty(value = "properties.defaultProvider")
-    private BuiltInAuthenticationProvider defaultProvider;
-
-    /*
-     * The number of hours after session token expiration that a session token
-     * can be used to
-     * call the token refresh API. The default is 72 hours.
-     */
-    @JsonProperty(value = "properties.tokenRefreshExtensionHours")
-    private Double tokenRefreshExtensionHours;
-
-    /*
-     * The Client ID of this relying party application, known as the client_id.
-     * This setting is required for enabling OpenID Connection authentication
-     * with Azure Active Directory or
-     * other 3rd party OpenID Connect providers.
-     * More information on OpenID Connect:
-     * http://openid.net/specs/openid-connect-core-1_0.html
-     */
-    @JsonProperty(value = "properties.clientId")
-    private String clientId;
-
-    /*
-     * The Client Secret of this relying party application (in Azure Active
-     * Directory, this is also referred to as the Key).
-     * This setting is optional. If no client secret is configured, the OpenID
-     * Connect implicit auth flow is used to authenticate end users.
-     * Otherwise, the OpenID Connect Authorization Code Flow is used to
-     * authenticate end users.
-     * More information on OpenID Connect:
-     * http://openid.net/specs/openid-connect-core-1_0.html
-     */
-    @JsonProperty(value = "properties.clientSecret")
-    private String clientSecret;
-
-    /*
-     * The app setting name that contains the client secret of the relying
-     * party application.
-     */
-    @JsonProperty(value = "properties.clientSecretSettingName")
-    private String clientSecretSettingName;
-
-    /*
-     * An alternative to the client secret, that is the thumbprint of a
-     * certificate used for signing purposes. This property acts as
-     * a replacement for the Client Secret. It is also optional.
-     */
-    @JsonProperty(value = "properties.clientSecretCertificateThumbprint")
-    private String clientSecretCertificateThumbprint;
-
-    /*
-     * The OpenID Connect Issuer URI that represents the entity which issues
-     * access tokens for this application.
-     * When using Azure Active Directory, this value is the URI of the
-     * directory tenant, e.g. https://sts.windows.net/{tenant-guid}/.
-     * This URI is a case-sensitive identifier for the token issuer.
-     * More information on OpenID Connect Discovery:
-     * http://openid.net/specs/openid-connect-discovery-1_0.html
-     */
-    @JsonProperty(value = "properties.issuer")
-    private String issuer;
-
-    /*
-     * Gets a value indicating whether the issuer should be a valid HTTPS url
-     * and be validated as such.
-     */
-    @JsonProperty(value = "properties.validateIssuer")
-    private Boolean validateIssuer;
-
-    /*
-     * Allowed audience values to consider when validating JWTs issued by
-     * Azure Active Directory. Note that the <code>ClientID</code> value is
-     * always considered an
-     * allowed audience, regardless of this setting.
-     */
-    @JsonProperty(value = "properties.allowedAudiences")
-    private List<String> allowedAudiences;
-
-    /*
-     * Login parameters to send to the OpenID Connect authorization endpoint
-     * when
-     * a user logs in. Each parameter must be in the form "key=value".
-     */
-    @JsonProperty(value = "properties.additionalLoginParams")
-    private List<String> additionalLoginParams;
-
-    /*
-     * Gets a JSON string containing the Azure AD Acl settings.
-     */
-    @JsonProperty(value = "properties.aadClaimsAuthorization")
-    private String aadClaimsAuthorization;
-
-    /*
-     * The OpenID Connect Client ID for the Google web application.
-     * This setting is required for enabling Google Sign-In.
-     * Google Sign-In documentation:
-     * https://developers.google.com/identity/sign-in/web/
-     */
-    @JsonProperty(value = "properties.googleClientId")
-    private String googleClientId;
-
-    /*
-     * The client secret associated with the Google web application.
-     * This setting is required for enabling Google Sign-In.
-     * Google Sign-In documentation:
-     * https://developers.google.com/identity/sign-in/web/
-     */
-    @JsonProperty(value = "properties.googleClientSecret")
-    private String googleClientSecret;
-
-    /*
-     * The app setting name that contains the client secret associated with
-     * the Google web application.
-     */
-    @JsonProperty(value = "properties.googleClientSecretSettingName")
-    private String googleClientSecretSettingName;
-
-    /*
-     * The OAuth 2.0 scopes that will be requested as part of Google Sign-In
-     * authentication.
-     * This setting is optional. If not specified, "openid", "profile", and
-     * "email" are used as default scopes.
-     * Google Sign-In documentation:
-     * https://developers.google.com/identity/sign-in/web/
-     */
-    @JsonProperty(value = "properties.googleOAuthScopes")
-    private List<String> googleOAuthScopes;
-
-    /*
-     * The App ID of the Facebook app used for login.
-     * This setting is required for enabling Facebook Login.
-     * Facebook Login documentation:
-     * https://developers.facebook.com/docs/facebook-login
-     */
-    @JsonProperty(value = "properties.facebookAppId")
-    private String facebookAppId;
-
-    /*
-     * The App Secret of the Facebook app used for Facebook Login.
-     * This setting is required for enabling Facebook Login.
-     * Facebook Login documentation:
-     * https://developers.facebook.com/docs/facebook-login
-     */
-    @JsonProperty(value = "properties.facebookAppSecret")
-    private String facebookAppSecret;
-
-    /*
-     * The app setting name that contains the app secret used for Facebook
-     * Login.
-     */
-    @JsonProperty(value = "properties.facebookAppSecretSettingName")
-    private String facebookAppSecretSettingName;
-
-    /*
-     * The OAuth 2.0 scopes that will be requested as part of Facebook Login
-     * authentication.
-     * This setting is optional.
-     * Facebook Login documentation:
-     * https://developers.facebook.com/docs/facebook-login
-     */
-    @JsonProperty(value = "properties.facebookOAuthScopes")
-    private List<String> facebookOAuthScopes;
-
-    /*
-     * The Client Id of the GitHub app used for login.
-     * This setting is required for enabling Github login
-     */
-    @JsonProperty(value = "properties.gitHubClientId")
-    private String gitHubClientId;
-
-    /*
-     * The Client Secret of the GitHub app used for Github Login.
-     * This setting is required for enabling Github login.
-     */
-    @JsonProperty(value = "properties.gitHubClientSecret")
-    private String gitHubClientSecret;
-
-    /*
-     * The app setting name that contains the client secret of the Github
-     * app used for GitHub Login.
-     */
-    @JsonProperty(value = "properties.gitHubClientSecretSettingName")
-    private String gitHubClientSecretSettingName;
-
-    /*
-     * The OAuth 2.0 scopes that will be requested as part of GitHub Login
-     * authentication.
-     * This setting is optional
-     */
-    @JsonProperty(value = "properties.gitHubOAuthScopes")
-    private List<String> gitHubOAuthScopes;
-
-    /*
-     * The OAuth 1.0a consumer key of the Twitter application used for sign-in.
-     * This setting is required for enabling Twitter Sign-In.
-     * Twitter Sign-In documentation: https://dev.twitter.com/web/sign-in
-     */
-    @JsonProperty(value = "properties.twitterConsumerKey")
-    private String twitterConsumerKey;
-
-    /*
-     * The OAuth 1.0a consumer secret of the Twitter application used for
-     * sign-in.
-     * This setting is required for enabling Twitter Sign-In.
-     * Twitter Sign-In documentation: https://dev.twitter.com/web/sign-in
-     */
-    @JsonProperty(value = "properties.twitterConsumerSecret")
-    private String twitterConsumerSecret;
-
-    /*
-     * The app setting name that contains the OAuth 1.0a consumer secret of the
-     * Twitter
-     * application used for sign-in.
-     */
-    @JsonProperty(value = "properties.twitterConsumerSecretSettingName")
-    private String twitterConsumerSecretSettingName;
-
-    /*
-     * The OAuth 2.0 client ID that was created for the app used for
-     * authentication.
-     * This setting is required for enabling Microsoft Account authentication.
-     * Microsoft Account OAuth documentation:
-     * https://dev.onedrive.com/auth/msa_oauth.htm
-     */
-    @JsonProperty(value = "properties.microsoftAccountClientId")
-    private String microsoftAccountClientId;
-
-    /*
-     * The OAuth 2.0 client secret that was created for the app used for
-     * authentication.
-     * This setting is required for enabling Microsoft Account authentication.
-     * Microsoft Account OAuth documentation:
-     * https://dev.onedrive.com/auth/msa_oauth.htm
-     */
-    @JsonProperty(value = "properties.microsoftAccountClientSecret")
-    private String microsoftAccountClientSecret;
-
-    /*
-     * The app setting name containing the OAuth 2.0 client secret that was
-     * created for the
-     * app used for authentication.
-     */
-    @JsonProperty(value = "properties.microsoftAccountClientSecretSettingName")
-    private String microsoftAccountClientSecretSettingName;
-
-    /*
-     * The OAuth 2.0 scopes that will be requested as part of Microsoft Account
-     * authentication.
-     * This setting is optional. If not specified, "wl.basic" is used as the
-     * default scope.
-     * Microsoft Account Scopes and permissions documentation:
-     * https://msdn.microsoft.com/en-us/library/dn631845.aspx
-     */
-    @JsonProperty(value = "properties.microsoftAccountOAuthScopes")
-    private List<String> microsoftAccountOAuthScopes;
-
-    /*
-     * "true" if the auth config settings should be read from a file,
-     * "false" otherwise
-     */
-    @JsonProperty(value = "properties.isAuthFromFile")
-    private String isAuthFromFile;
-
-    /*
-     * The path of the config file containing auth settings.
-     * If the path is relative, base will the site's root directory.
-     */
-    @JsonProperty(value = "properties.authFilePath")
-    private String authFilePath;
+    /** {@inheritDoc} */
+    @Override
+    public SiteAuthSettingsInner withKind(String kind) {
+        super.withKind(kind);
+        return this;
+    }
 
     /**
      * Get the enabled property: &lt;code&gt;true&lt;/code&gt; if the Authentication / Authorization feature is enabled
@@ -354,7 +47,7 @@ public class SiteAuthSettingsInner extends ProxyOnlyResource {
      * @return the enabled value.
      */
     public Boolean enabled() {
-        return this.enabled;
+        return this.innerProperties() == null ? null : this.innerProperties().enabled();
     }
 
     /**
@@ -365,7 +58,10 @@ public class SiteAuthSettingsInner extends ProxyOnlyResource {
      * @return the SiteAuthSettingsInner object itself.
      */
     public SiteAuthSettingsInner withEnabled(Boolean enabled) {
-        this.enabled = enabled;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SiteAuthSettingsProperties();
+        }
+        this.innerProperties().withEnabled(enabled);
         return this;
     }
 
@@ -377,7 +73,7 @@ public class SiteAuthSettingsInner extends ProxyOnlyResource {
      * @return the runtimeVersion value.
      */
     public String runtimeVersion() {
-        return this.runtimeVersion;
+        return this.innerProperties() == null ? null : this.innerProperties().runtimeVersion();
     }
 
     /**
@@ -389,31 +85,10 @@ public class SiteAuthSettingsInner extends ProxyOnlyResource {
      * @return the SiteAuthSettingsInner object itself.
      */
     public SiteAuthSettingsInner withRuntimeVersion(String runtimeVersion) {
-        this.runtimeVersion = runtimeVersion;
-        return this;
-    }
-
-    /**
-     * Get the configVersion property: The ConfigVersion of the Authentication / Authorization feature in use for the
-     * current app. The setting in this value can control the behavior of the control plane for Authentication /
-     * Authorization.
-     *
-     * @return the configVersion value.
-     */
-    public String configVersion() {
-        return this.configVersion;
-    }
-
-    /**
-     * Set the configVersion property: The ConfigVersion of the Authentication / Authorization feature in use for the
-     * current app. The setting in this value can control the behavior of the control plane for Authentication /
-     * Authorization.
-     *
-     * @param configVersion the configVersion value to set.
-     * @return the SiteAuthSettingsInner object itself.
-     */
-    public SiteAuthSettingsInner withConfigVersion(String configVersion) {
-        this.configVersion = configVersion;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SiteAuthSettingsProperties();
+        }
+        this.innerProperties().withRuntimeVersion(runtimeVersion);
         return this;
     }
 
@@ -424,7 +99,7 @@ public class SiteAuthSettingsInner extends ProxyOnlyResource {
      * @return the unauthenticatedClientAction value.
      */
     public UnauthenticatedClientAction unauthenticatedClientAction() {
-        return this.unauthenticatedClientAction;
+        return this.innerProperties() == null ? null : this.innerProperties().unauthenticatedClientAction();
     }
 
     /**
@@ -436,7 +111,10 @@ public class SiteAuthSettingsInner extends ProxyOnlyResource {
      */
     public SiteAuthSettingsInner withUnauthenticatedClientAction(
         UnauthenticatedClientAction unauthenticatedClientAction) {
-        this.unauthenticatedClientAction = unauthenticatedClientAction;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SiteAuthSettingsProperties();
+        }
+        this.innerProperties().withUnauthenticatedClientAction(unauthenticatedClientAction);
         return this;
     }
 
@@ -448,7 +126,7 @@ public class SiteAuthSettingsInner extends ProxyOnlyResource {
      * @return the tokenStoreEnabled value.
      */
     public Boolean tokenStoreEnabled() {
-        return this.tokenStoreEnabled;
+        return this.innerProperties() == null ? null : this.innerProperties().tokenStoreEnabled();
     }
 
     /**
@@ -460,7 +138,10 @@ public class SiteAuthSettingsInner extends ProxyOnlyResource {
      * @return the SiteAuthSettingsInner object itself.
      */
     public SiteAuthSettingsInner withTokenStoreEnabled(Boolean tokenStoreEnabled) {
-        this.tokenStoreEnabled = tokenStoreEnabled;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SiteAuthSettingsProperties();
+        }
+        this.innerProperties().withTokenStoreEnabled(tokenStoreEnabled);
         return this;
     }
 
@@ -473,7 +154,7 @@ public class SiteAuthSettingsInner extends ProxyOnlyResource {
      * @return the allowedExternalRedirectUrls value.
      */
     public List<String> allowedExternalRedirectUrls() {
-        return this.allowedExternalRedirectUrls;
+        return this.innerProperties() == null ? null : this.innerProperties().allowedExternalRedirectUrls();
     }
 
     /**
@@ -486,7 +167,10 @@ public class SiteAuthSettingsInner extends ProxyOnlyResource {
      * @return the SiteAuthSettingsInner object itself.
      */
     public SiteAuthSettingsInner withAllowedExternalRedirectUrls(List<String> allowedExternalRedirectUrls) {
-        this.allowedExternalRedirectUrls = allowedExternalRedirectUrls;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SiteAuthSettingsProperties();
+        }
+        this.innerProperties().withAllowedExternalRedirectUrls(allowedExternalRedirectUrls);
         return this;
     }
 
@@ -498,7 +182,7 @@ public class SiteAuthSettingsInner extends ProxyOnlyResource {
      * @return the defaultProvider value.
      */
     public BuiltInAuthenticationProvider defaultProvider() {
-        return this.defaultProvider;
+        return this.innerProperties() == null ? null : this.innerProperties().defaultProvider();
     }
 
     /**
@@ -510,7 +194,10 @@ public class SiteAuthSettingsInner extends ProxyOnlyResource {
      * @return the SiteAuthSettingsInner object itself.
      */
     public SiteAuthSettingsInner withDefaultProvider(BuiltInAuthenticationProvider defaultProvider) {
-        this.defaultProvider = defaultProvider;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SiteAuthSettingsProperties();
+        }
+        this.innerProperties().withDefaultProvider(defaultProvider);
         return this;
     }
 
@@ -521,7 +208,7 @@ public class SiteAuthSettingsInner extends ProxyOnlyResource {
      * @return the tokenRefreshExtensionHours value.
      */
     public Double tokenRefreshExtensionHours() {
-        return this.tokenRefreshExtensionHours;
+        return this.innerProperties() == null ? null : this.innerProperties().tokenRefreshExtensionHours();
     }
 
     /**
@@ -532,7 +219,10 @@ public class SiteAuthSettingsInner extends ProxyOnlyResource {
      * @return the SiteAuthSettingsInner object itself.
      */
     public SiteAuthSettingsInner withTokenRefreshExtensionHours(Double tokenRefreshExtensionHours) {
-        this.tokenRefreshExtensionHours = tokenRefreshExtensionHours;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SiteAuthSettingsProperties();
+        }
+        this.innerProperties().withTokenRefreshExtensionHours(tokenRefreshExtensionHours);
         return this;
     }
 
@@ -544,7 +234,7 @@ public class SiteAuthSettingsInner extends ProxyOnlyResource {
      * @return the clientId value.
      */
     public String clientId() {
-        return this.clientId;
+        return this.innerProperties() == null ? null : this.innerProperties().clientId();
     }
 
     /**
@@ -556,7 +246,10 @@ public class SiteAuthSettingsInner extends ProxyOnlyResource {
      * @return the SiteAuthSettingsInner object itself.
      */
     public SiteAuthSettingsInner withClientId(String clientId) {
-        this.clientId = clientId;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SiteAuthSettingsProperties();
+        }
+        this.innerProperties().withClientId(clientId);
         return this;
     }
 
@@ -570,7 +263,7 @@ public class SiteAuthSettingsInner extends ProxyOnlyResource {
      * @return the clientSecret value.
      */
     public String clientSecret() {
-        return this.clientSecret;
+        return this.innerProperties() == null ? null : this.innerProperties().clientSecret();
     }
 
     /**
@@ -584,7 +277,10 @@ public class SiteAuthSettingsInner extends ProxyOnlyResource {
      * @return the SiteAuthSettingsInner object itself.
      */
     public SiteAuthSettingsInner withClientSecret(String clientSecret) {
-        this.clientSecret = clientSecret;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SiteAuthSettingsProperties();
+        }
+        this.innerProperties().withClientSecret(clientSecret);
         return this;
     }
 
@@ -595,7 +291,7 @@ public class SiteAuthSettingsInner extends ProxyOnlyResource {
      * @return the clientSecretSettingName value.
      */
     public String clientSecretSettingName() {
-        return this.clientSecretSettingName;
+        return this.innerProperties() == null ? null : this.innerProperties().clientSecretSettingName();
     }
 
     /**
@@ -606,7 +302,10 @@ public class SiteAuthSettingsInner extends ProxyOnlyResource {
      * @return the SiteAuthSettingsInner object itself.
      */
     public SiteAuthSettingsInner withClientSecretSettingName(String clientSecretSettingName) {
-        this.clientSecretSettingName = clientSecretSettingName;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SiteAuthSettingsProperties();
+        }
+        this.innerProperties().withClientSecretSettingName(clientSecretSettingName);
         return this;
     }
 
@@ -618,7 +317,7 @@ public class SiteAuthSettingsInner extends ProxyOnlyResource {
      * @return the clientSecretCertificateThumbprint value.
      */
     public String clientSecretCertificateThumbprint() {
-        return this.clientSecretCertificateThumbprint;
+        return this.innerProperties() == null ? null : this.innerProperties().clientSecretCertificateThumbprint();
     }
 
     /**
@@ -630,7 +329,10 @@ public class SiteAuthSettingsInner extends ProxyOnlyResource {
      * @return the SiteAuthSettingsInner object itself.
      */
     public SiteAuthSettingsInner withClientSecretCertificateThumbprint(String clientSecretCertificateThumbprint) {
-        this.clientSecretCertificateThumbprint = clientSecretCertificateThumbprint;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SiteAuthSettingsProperties();
+        }
+        this.innerProperties().withClientSecretCertificateThumbprint(clientSecretCertificateThumbprint);
         return this;
     }
 
@@ -643,7 +345,7 @@ public class SiteAuthSettingsInner extends ProxyOnlyResource {
      * @return the issuer value.
      */
     public String issuer() {
-        return this.issuer;
+        return this.innerProperties() == null ? null : this.innerProperties().issuer();
     }
 
     /**
@@ -656,7 +358,10 @@ public class SiteAuthSettingsInner extends ProxyOnlyResource {
      * @return the SiteAuthSettingsInner object itself.
      */
     public SiteAuthSettingsInner withIssuer(String issuer) {
-        this.issuer = issuer;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SiteAuthSettingsProperties();
+        }
+        this.innerProperties().withIssuer(issuer);
         return this;
     }
 
@@ -667,7 +372,7 @@ public class SiteAuthSettingsInner extends ProxyOnlyResource {
      * @return the validateIssuer value.
      */
     public Boolean validateIssuer() {
-        return this.validateIssuer;
+        return this.innerProperties() == null ? null : this.innerProperties().validateIssuer();
     }
 
     /**
@@ -678,7 +383,10 @@ public class SiteAuthSettingsInner extends ProxyOnlyResource {
      * @return the SiteAuthSettingsInner object itself.
      */
     public SiteAuthSettingsInner withValidateIssuer(Boolean validateIssuer) {
-        this.validateIssuer = validateIssuer;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SiteAuthSettingsProperties();
+        }
+        this.innerProperties().withValidateIssuer(validateIssuer);
         return this;
     }
 
@@ -690,7 +398,7 @@ public class SiteAuthSettingsInner extends ProxyOnlyResource {
      * @return the allowedAudiences value.
      */
     public List<String> allowedAudiences() {
-        return this.allowedAudiences;
+        return this.innerProperties() == null ? null : this.innerProperties().allowedAudiences();
     }
 
     /**
@@ -702,7 +410,10 @@ public class SiteAuthSettingsInner extends ProxyOnlyResource {
      * @return the SiteAuthSettingsInner object itself.
      */
     public SiteAuthSettingsInner withAllowedAudiences(List<String> allowedAudiences) {
-        this.allowedAudiences = allowedAudiences;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SiteAuthSettingsProperties();
+        }
+        this.innerProperties().withAllowedAudiences(allowedAudiences);
         return this;
     }
 
@@ -713,7 +424,7 @@ public class SiteAuthSettingsInner extends ProxyOnlyResource {
      * @return the additionalLoginParams value.
      */
     public List<String> additionalLoginParams() {
-        return this.additionalLoginParams;
+        return this.innerProperties() == null ? null : this.innerProperties().additionalLoginParams();
     }
 
     /**
@@ -724,7 +435,10 @@ public class SiteAuthSettingsInner extends ProxyOnlyResource {
      * @return the SiteAuthSettingsInner object itself.
      */
     public SiteAuthSettingsInner withAdditionalLoginParams(List<String> additionalLoginParams) {
-        this.additionalLoginParams = additionalLoginParams;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SiteAuthSettingsProperties();
+        }
+        this.innerProperties().withAdditionalLoginParams(additionalLoginParams);
         return this;
     }
 
@@ -734,7 +448,7 @@ public class SiteAuthSettingsInner extends ProxyOnlyResource {
      * @return the aadClaimsAuthorization value.
      */
     public String aadClaimsAuthorization() {
-        return this.aadClaimsAuthorization;
+        return this.innerProperties() == null ? null : this.innerProperties().aadClaimsAuthorization();
     }
 
     /**
@@ -744,7 +458,10 @@ public class SiteAuthSettingsInner extends ProxyOnlyResource {
      * @return the SiteAuthSettingsInner object itself.
      */
     public SiteAuthSettingsInner withAadClaimsAuthorization(String aadClaimsAuthorization) {
-        this.aadClaimsAuthorization = aadClaimsAuthorization;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SiteAuthSettingsProperties();
+        }
+        this.innerProperties().withAadClaimsAuthorization(aadClaimsAuthorization);
         return this;
     }
 
@@ -756,7 +473,7 @@ public class SiteAuthSettingsInner extends ProxyOnlyResource {
      * @return the googleClientId value.
      */
     public String googleClientId() {
-        return this.googleClientId;
+        return this.innerProperties() == null ? null : this.innerProperties().googleClientId();
     }
 
     /**
@@ -768,7 +485,10 @@ public class SiteAuthSettingsInner extends ProxyOnlyResource {
      * @return the SiteAuthSettingsInner object itself.
      */
     public SiteAuthSettingsInner withGoogleClientId(String googleClientId) {
-        this.googleClientId = googleClientId;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SiteAuthSettingsProperties();
+        }
+        this.innerProperties().withGoogleClientId(googleClientId);
         return this;
     }
 
@@ -780,7 +500,7 @@ public class SiteAuthSettingsInner extends ProxyOnlyResource {
      * @return the googleClientSecret value.
      */
     public String googleClientSecret() {
-        return this.googleClientSecret;
+        return this.innerProperties() == null ? null : this.innerProperties().googleClientSecret();
     }
 
     /**
@@ -792,7 +512,10 @@ public class SiteAuthSettingsInner extends ProxyOnlyResource {
      * @return the SiteAuthSettingsInner object itself.
      */
     public SiteAuthSettingsInner withGoogleClientSecret(String googleClientSecret) {
-        this.googleClientSecret = googleClientSecret;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SiteAuthSettingsProperties();
+        }
+        this.innerProperties().withGoogleClientSecret(googleClientSecret);
         return this;
     }
 
@@ -803,7 +526,7 @@ public class SiteAuthSettingsInner extends ProxyOnlyResource {
      * @return the googleClientSecretSettingName value.
      */
     public String googleClientSecretSettingName() {
-        return this.googleClientSecretSettingName;
+        return this.innerProperties() == null ? null : this.innerProperties().googleClientSecretSettingName();
     }
 
     /**
@@ -814,7 +537,10 @@ public class SiteAuthSettingsInner extends ProxyOnlyResource {
      * @return the SiteAuthSettingsInner object itself.
      */
     public SiteAuthSettingsInner withGoogleClientSecretSettingName(String googleClientSecretSettingName) {
-        this.googleClientSecretSettingName = googleClientSecretSettingName;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SiteAuthSettingsProperties();
+        }
+        this.innerProperties().withGoogleClientSecretSettingName(googleClientSecretSettingName);
         return this;
     }
 
@@ -826,7 +552,7 @@ public class SiteAuthSettingsInner extends ProxyOnlyResource {
      * @return the googleOAuthScopes value.
      */
     public List<String> googleOAuthScopes() {
-        return this.googleOAuthScopes;
+        return this.innerProperties() == null ? null : this.innerProperties().googleOAuthScopes();
     }
 
     /**
@@ -838,7 +564,10 @@ public class SiteAuthSettingsInner extends ProxyOnlyResource {
      * @return the SiteAuthSettingsInner object itself.
      */
     public SiteAuthSettingsInner withGoogleOAuthScopes(List<String> googleOAuthScopes) {
-        this.googleOAuthScopes = googleOAuthScopes;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SiteAuthSettingsProperties();
+        }
+        this.innerProperties().withGoogleOAuthScopes(googleOAuthScopes);
         return this;
     }
 
@@ -849,7 +578,7 @@ public class SiteAuthSettingsInner extends ProxyOnlyResource {
      * @return the facebookAppId value.
      */
     public String facebookAppId() {
-        return this.facebookAppId;
+        return this.innerProperties() == null ? null : this.innerProperties().facebookAppId();
     }
 
     /**
@@ -860,7 +589,10 @@ public class SiteAuthSettingsInner extends ProxyOnlyResource {
      * @return the SiteAuthSettingsInner object itself.
      */
     public SiteAuthSettingsInner withFacebookAppId(String facebookAppId) {
-        this.facebookAppId = facebookAppId;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SiteAuthSettingsProperties();
+        }
+        this.innerProperties().withFacebookAppId(facebookAppId);
         return this;
     }
 
@@ -872,7 +604,7 @@ public class SiteAuthSettingsInner extends ProxyOnlyResource {
      * @return the facebookAppSecret value.
      */
     public String facebookAppSecret() {
-        return this.facebookAppSecret;
+        return this.innerProperties() == null ? null : this.innerProperties().facebookAppSecret();
     }
 
     /**
@@ -884,7 +616,10 @@ public class SiteAuthSettingsInner extends ProxyOnlyResource {
      * @return the SiteAuthSettingsInner object itself.
      */
     public SiteAuthSettingsInner withFacebookAppSecret(String facebookAppSecret) {
-        this.facebookAppSecret = facebookAppSecret;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SiteAuthSettingsProperties();
+        }
+        this.innerProperties().withFacebookAppSecret(facebookAppSecret);
         return this;
     }
 
@@ -895,7 +630,7 @@ public class SiteAuthSettingsInner extends ProxyOnlyResource {
      * @return the facebookAppSecretSettingName value.
      */
     public String facebookAppSecretSettingName() {
-        return this.facebookAppSecretSettingName;
+        return this.innerProperties() == null ? null : this.innerProperties().facebookAppSecretSettingName();
     }
 
     /**
@@ -906,7 +641,10 @@ public class SiteAuthSettingsInner extends ProxyOnlyResource {
      * @return the SiteAuthSettingsInner object itself.
      */
     public SiteAuthSettingsInner withFacebookAppSecretSettingName(String facebookAppSecretSettingName) {
-        this.facebookAppSecretSettingName = facebookAppSecretSettingName;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SiteAuthSettingsProperties();
+        }
+        this.innerProperties().withFacebookAppSecretSettingName(facebookAppSecretSettingName);
         return this;
     }
 
@@ -918,7 +656,7 @@ public class SiteAuthSettingsInner extends ProxyOnlyResource {
      * @return the facebookOAuthScopes value.
      */
     public List<String> facebookOAuthScopes() {
-        return this.facebookOAuthScopes;
+        return this.innerProperties() == null ? null : this.innerProperties().facebookOAuthScopes();
     }
 
     /**
@@ -930,7 +668,10 @@ public class SiteAuthSettingsInner extends ProxyOnlyResource {
      * @return the SiteAuthSettingsInner object itself.
      */
     public SiteAuthSettingsInner withFacebookOAuthScopes(List<String> facebookOAuthScopes) {
-        this.facebookOAuthScopes = facebookOAuthScopes;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SiteAuthSettingsProperties();
+        }
+        this.innerProperties().withFacebookOAuthScopes(facebookOAuthScopes);
         return this;
     }
 
@@ -941,7 +682,7 @@ public class SiteAuthSettingsInner extends ProxyOnlyResource {
      * @return the gitHubClientId value.
      */
     public String gitHubClientId() {
-        return this.gitHubClientId;
+        return this.innerProperties() == null ? null : this.innerProperties().gitHubClientId();
     }
 
     /**
@@ -952,7 +693,10 @@ public class SiteAuthSettingsInner extends ProxyOnlyResource {
      * @return the SiteAuthSettingsInner object itself.
      */
     public SiteAuthSettingsInner withGitHubClientId(String gitHubClientId) {
-        this.gitHubClientId = gitHubClientId;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SiteAuthSettingsProperties();
+        }
+        this.innerProperties().withGitHubClientId(gitHubClientId);
         return this;
     }
 
@@ -963,7 +707,7 @@ public class SiteAuthSettingsInner extends ProxyOnlyResource {
      * @return the gitHubClientSecret value.
      */
     public String gitHubClientSecret() {
-        return this.gitHubClientSecret;
+        return this.innerProperties() == null ? null : this.innerProperties().gitHubClientSecret();
     }
 
     /**
@@ -974,7 +718,10 @@ public class SiteAuthSettingsInner extends ProxyOnlyResource {
      * @return the SiteAuthSettingsInner object itself.
      */
     public SiteAuthSettingsInner withGitHubClientSecret(String gitHubClientSecret) {
-        this.gitHubClientSecret = gitHubClientSecret;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SiteAuthSettingsProperties();
+        }
+        this.innerProperties().withGitHubClientSecret(gitHubClientSecret);
         return this;
     }
 
@@ -985,7 +732,7 @@ public class SiteAuthSettingsInner extends ProxyOnlyResource {
      * @return the gitHubClientSecretSettingName value.
      */
     public String gitHubClientSecretSettingName() {
-        return this.gitHubClientSecretSettingName;
+        return this.innerProperties() == null ? null : this.innerProperties().gitHubClientSecretSettingName();
     }
 
     /**
@@ -996,7 +743,10 @@ public class SiteAuthSettingsInner extends ProxyOnlyResource {
      * @return the SiteAuthSettingsInner object itself.
      */
     public SiteAuthSettingsInner withGitHubClientSecretSettingName(String gitHubClientSecretSettingName) {
-        this.gitHubClientSecretSettingName = gitHubClientSecretSettingName;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SiteAuthSettingsProperties();
+        }
+        this.innerProperties().withGitHubClientSecretSettingName(gitHubClientSecretSettingName);
         return this;
     }
 
@@ -1007,7 +757,7 @@ public class SiteAuthSettingsInner extends ProxyOnlyResource {
      * @return the gitHubOAuthScopes value.
      */
     public List<String> gitHubOAuthScopes() {
-        return this.gitHubOAuthScopes;
+        return this.innerProperties() == null ? null : this.innerProperties().gitHubOAuthScopes();
     }
 
     /**
@@ -1018,7 +768,10 @@ public class SiteAuthSettingsInner extends ProxyOnlyResource {
      * @return the SiteAuthSettingsInner object itself.
      */
     public SiteAuthSettingsInner withGitHubOAuthScopes(List<String> gitHubOAuthScopes) {
-        this.gitHubOAuthScopes = gitHubOAuthScopes;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SiteAuthSettingsProperties();
+        }
+        this.innerProperties().withGitHubOAuthScopes(gitHubOAuthScopes);
         return this;
     }
 
@@ -1030,7 +783,7 @@ public class SiteAuthSettingsInner extends ProxyOnlyResource {
      * @return the twitterConsumerKey value.
      */
     public String twitterConsumerKey() {
-        return this.twitterConsumerKey;
+        return this.innerProperties() == null ? null : this.innerProperties().twitterConsumerKey();
     }
 
     /**
@@ -1042,7 +795,10 @@ public class SiteAuthSettingsInner extends ProxyOnlyResource {
      * @return the SiteAuthSettingsInner object itself.
      */
     public SiteAuthSettingsInner withTwitterConsumerKey(String twitterConsumerKey) {
-        this.twitterConsumerKey = twitterConsumerKey;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SiteAuthSettingsProperties();
+        }
+        this.innerProperties().withTwitterConsumerKey(twitterConsumerKey);
         return this;
     }
 
@@ -1054,7 +810,7 @@ public class SiteAuthSettingsInner extends ProxyOnlyResource {
      * @return the twitterConsumerSecret value.
      */
     public String twitterConsumerSecret() {
-        return this.twitterConsumerSecret;
+        return this.innerProperties() == null ? null : this.innerProperties().twitterConsumerSecret();
     }
 
     /**
@@ -1066,7 +822,10 @@ public class SiteAuthSettingsInner extends ProxyOnlyResource {
      * @return the SiteAuthSettingsInner object itself.
      */
     public SiteAuthSettingsInner withTwitterConsumerSecret(String twitterConsumerSecret) {
-        this.twitterConsumerSecret = twitterConsumerSecret;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SiteAuthSettingsProperties();
+        }
+        this.innerProperties().withTwitterConsumerSecret(twitterConsumerSecret);
         return this;
     }
 
@@ -1077,7 +836,7 @@ public class SiteAuthSettingsInner extends ProxyOnlyResource {
      * @return the twitterConsumerSecretSettingName value.
      */
     public String twitterConsumerSecretSettingName() {
-        return this.twitterConsumerSecretSettingName;
+        return this.innerProperties() == null ? null : this.innerProperties().twitterConsumerSecretSettingName();
     }
 
     /**
@@ -1088,7 +847,10 @@ public class SiteAuthSettingsInner extends ProxyOnlyResource {
      * @return the SiteAuthSettingsInner object itself.
      */
     public SiteAuthSettingsInner withTwitterConsumerSecretSettingName(String twitterConsumerSecretSettingName) {
-        this.twitterConsumerSecretSettingName = twitterConsumerSecretSettingName;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SiteAuthSettingsProperties();
+        }
+        this.innerProperties().withTwitterConsumerSecretSettingName(twitterConsumerSecretSettingName);
         return this;
     }
 
@@ -1100,7 +862,7 @@ public class SiteAuthSettingsInner extends ProxyOnlyResource {
      * @return the microsoftAccountClientId value.
      */
     public String microsoftAccountClientId() {
-        return this.microsoftAccountClientId;
+        return this.innerProperties() == null ? null : this.innerProperties().microsoftAccountClientId();
     }
 
     /**
@@ -1112,7 +874,10 @@ public class SiteAuthSettingsInner extends ProxyOnlyResource {
      * @return the SiteAuthSettingsInner object itself.
      */
     public SiteAuthSettingsInner withMicrosoftAccountClientId(String microsoftAccountClientId) {
-        this.microsoftAccountClientId = microsoftAccountClientId;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SiteAuthSettingsProperties();
+        }
+        this.innerProperties().withMicrosoftAccountClientId(microsoftAccountClientId);
         return this;
     }
 
@@ -1124,7 +889,7 @@ public class SiteAuthSettingsInner extends ProxyOnlyResource {
      * @return the microsoftAccountClientSecret value.
      */
     public String microsoftAccountClientSecret() {
-        return this.microsoftAccountClientSecret;
+        return this.innerProperties() == null ? null : this.innerProperties().microsoftAccountClientSecret();
     }
 
     /**
@@ -1136,7 +901,10 @@ public class SiteAuthSettingsInner extends ProxyOnlyResource {
      * @return the SiteAuthSettingsInner object itself.
      */
     public SiteAuthSettingsInner withMicrosoftAccountClientSecret(String microsoftAccountClientSecret) {
-        this.microsoftAccountClientSecret = microsoftAccountClientSecret;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SiteAuthSettingsProperties();
+        }
+        this.innerProperties().withMicrosoftAccountClientSecret(microsoftAccountClientSecret);
         return this;
     }
 
@@ -1147,7 +915,7 @@ public class SiteAuthSettingsInner extends ProxyOnlyResource {
      * @return the microsoftAccountClientSecretSettingName value.
      */
     public String microsoftAccountClientSecretSettingName() {
-        return this.microsoftAccountClientSecretSettingName;
+        return this.innerProperties() == null ? null : this.innerProperties().microsoftAccountClientSecretSettingName();
     }
 
     /**
@@ -1159,7 +927,10 @@ public class SiteAuthSettingsInner extends ProxyOnlyResource {
      */
     public SiteAuthSettingsInner withMicrosoftAccountClientSecretSettingName(
         String microsoftAccountClientSecretSettingName) {
-        this.microsoftAccountClientSecretSettingName = microsoftAccountClientSecretSettingName;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SiteAuthSettingsProperties();
+        }
+        this.innerProperties().withMicrosoftAccountClientSecretSettingName(microsoftAccountClientSecretSettingName);
         return this;
     }
 
@@ -1171,7 +942,7 @@ public class SiteAuthSettingsInner extends ProxyOnlyResource {
      * @return the microsoftAccountOAuthScopes value.
      */
     public List<String> microsoftAccountOAuthScopes() {
-        return this.microsoftAccountOAuthScopes;
+        return this.innerProperties() == null ? null : this.innerProperties().microsoftAccountOAuthScopes();
     }
 
     /**
@@ -1183,7 +954,10 @@ public class SiteAuthSettingsInner extends ProxyOnlyResource {
      * @return the SiteAuthSettingsInner object itself.
      */
     public SiteAuthSettingsInner withMicrosoftAccountOAuthScopes(List<String> microsoftAccountOAuthScopes) {
-        this.microsoftAccountOAuthScopes = microsoftAccountOAuthScopes;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SiteAuthSettingsProperties();
+        }
+        this.innerProperties().withMicrosoftAccountOAuthScopes(microsoftAccountOAuthScopes);
         return this;
     }
 
@@ -1194,7 +968,7 @@ public class SiteAuthSettingsInner extends ProxyOnlyResource {
      * @return the isAuthFromFile value.
      */
     public String isAuthFromFile() {
-        return this.isAuthFromFile;
+        return this.innerProperties() == null ? null : this.innerProperties().isAuthFromFile();
     }
 
     /**
@@ -1205,7 +979,10 @@ public class SiteAuthSettingsInner extends ProxyOnlyResource {
      * @return the SiteAuthSettingsInner object itself.
      */
     public SiteAuthSettingsInner withIsAuthFromFile(String isAuthFromFile) {
-        this.isAuthFromFile = isAuthFromFile;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SiteAuthSettingsProperties();
+        }
+        this.innerProperties().withIsAuthFromFile(isAuthFromFile);
         return this;
     }
 
@@ -1216,7 +993,7 @@ public class SiteAuthSettingsInner extends ProxyOnlyResource {
      * @return the authFilePath value.
      */
     public String authFilePath() {
-        return this.authFilePath;
+        return this.innerProperties() == null ? null : this.innerProperties().authFilePath();
     }
 
     /**
@@ -1227,14 +1004,37 @@ public class SiteAuthSettingsInner extends ProxyOnlyResource {
      * @return the SiteAuthSettingsInner object itself.
      */
     public SiteAuthSettingsInner withAuthFilePath(String authFilePath) {
-        this.authFilePath = authFilePath;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SiteAuthSettingsProperties();
+        }
+        this.innerProperties().withAuthFilePath(authFilePath);
         return this;
     }
 
-    /** {@inheritDoc} */
-    @Override
-    public SiteAuthSettingsInner withKind(String kind) {
-        super.withKind(kind);
+    /**
+     * Get the configVersion property: The ConfigVersion of the Authentication / Authorization feature in use for the
+     * current app. The setting in this value can control the behavior of the control plane for Authentication /
+     * Authorization.
+     *
+     * @return the configVersion value.
+     */
+    public String configVersion() {
+        return this.innerProperties() == null ? null : this.innerProperties().configVersion();
+    }
+
+    /**
+     * Set the configVersion property: The ConfigVersion of the Authentication / Authorization feature in use for the
+     * current app. The setting in this value can control the behavior of the control plane for Authentication /
+     * Authorization.
+     *
+     * @param configVersion the configVersion value to set.
+     * @return the SiteAuthSettingsInner object itself.
+     */
+    public SiteAuthSettingsInner withConfigVersion(String configVersion) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SiteAuthSettingsProperties();
+        }
+        this.innerProperties().withConfigVersion(configVersion);
         return this;
     }
 
@@ -1246,5 +1046,8 @@ public class SiteAuthSettingsInner extends ProxyOnlyResource {
     @Override
     public void validate() {
         super.validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

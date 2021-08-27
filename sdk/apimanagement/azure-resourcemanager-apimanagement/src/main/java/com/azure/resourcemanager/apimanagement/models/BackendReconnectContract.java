@@ -5,25 +5,32 @@
 package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.apimanagement.fluent.models.BackendReconnectProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.Duration;
 
 /** Reconnect request parameters. */
-@JsonFlatten
 @Fluent
-public class BackendReconnectContract extends ProxyResource {
+public final class BackendReconnectContract extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(BackendReconnectContract.class);
 
     /*
-     * Duration in ISO8601 format after which reconnect will be initiated.
-     * Minimum duration of the Reconnect is PT2M.
+     * Reconnect request properties.
      */
-    @JsonProperty(value = "properties.after")
-    private Duration after;
+    @JsonProperty(value = "properties")
+    private BackendReconnectProperties innerProperties;
+
+    /**
+     * Get the innerProperties property: Reconnect request properties.
+     *
+     * @return the innerProperties value.
+     */
+    private BackendReconnectProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the after property: Duration in ISO8601 format after which reconnect will be initiated. Minimum duration of
@@ -32,7 +39,7 @@ public class BackendReconnectContract extends ProxyResource {
      * @return the after value.
      */
     public Duration after() {
-        return this.after;
+        return this.innerProperties() == null ? null : this.innerProperties().after();
     }
 
     /**
@@ -43,7 +50,10 @@ public class BackendReconnectContract extends ProxyResource {
      * @return the BackendReconnectContract object itself.
      */
     public BackendReconnectContract withAfter(Duration after) {
-        this.after = after;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new BackendReconnectProperties();
+        }
+        this.innerProperties().withAfter(after);
         return this;
     }
 
@@ -53,5 +63,8 @@ public class BackendReconnectContract extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }
