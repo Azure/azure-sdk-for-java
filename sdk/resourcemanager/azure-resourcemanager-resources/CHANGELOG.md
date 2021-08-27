@@ -2,7 +2,7 @@
 
 ## 2.8.0-beta.1 (Unreleased)
 
-- Updated to use `PATCH` HTTP method for the update flow of `GenericResource`.
+- Updated to use `PATCH` HTTP method for the update flow of `GenericResource`. For tagging resource, it is advised to use `TagOperations` instead.
 
 ## 2.7.0 (2021-08-12)
 
