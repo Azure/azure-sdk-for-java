@@ -69,7 +69,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-communication-identity</artifactId>
-      <version>1.1.1</version> <!-- {x-version-update;com.azure:azure-communication-identity;current} -->
+      <version>1.1.2</version> <!-- {x-version-update;com.azure:azure-communication-identity;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
