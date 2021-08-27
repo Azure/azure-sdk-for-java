@@ -8,7 +8,7 @@
 
 ### Bugs Fixed
 
-- Fixed bug about ETag for `ImmutabilityPolicy`.
+- Fixed bug on ETag for `ImmutabilityPolicy`.
 
 ### Breaking Changes
 
