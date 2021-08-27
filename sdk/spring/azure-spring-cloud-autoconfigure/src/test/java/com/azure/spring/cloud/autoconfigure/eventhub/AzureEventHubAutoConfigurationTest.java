@@ -106,7 +106,7 @@ public class AzureEventHubAutoConfigurationTest {
     }
 
     @Test
-    public void testEventHubOperationProvidedNotStorageUnder () {
+    public void testEventHubOperationProvidedNotStorageUnderSP() {
         this.contextRunner.withUserConfiguration(
                 TestConfigWithAzureResourceManagerAndConnectionProvider.class,
                 AzureEventHubAutoConfiguration.class)
@@ -117,6 +117,7 @@ public class AzureEventHubAutoConfigurationTest {
                           .run(context -> {
                               assertThat(context).hasSingleBean(EventHubNamespaceManager.class);
                               assertThat(context).hasSingleBean(EventHubOperation.class);
+                              assertThat(context).doesNotHaveBean(StorageAccountManager.class);
                           });
     }
 
@@ -134,6 +135,7 @@ public class AzureEventHubAutoConfigurationTest {
                           .run(context -> {
                               assertThat(context).hasSingleBean(EventHubNamespaceManager.class);
                               assertThat(context).hasSingleBean(EventHubOperation.class);
+                              assertThat(context).doesNotHaveBean(StorageAccountManager.class);
                           });
     }
 

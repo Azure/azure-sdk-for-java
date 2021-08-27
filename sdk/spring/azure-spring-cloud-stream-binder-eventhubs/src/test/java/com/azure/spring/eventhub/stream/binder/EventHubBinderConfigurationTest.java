@@ -7,13 +7,12 @@ import com.azure.spring.cloud.autoconfigure.context.AzureContextAutoConfiguratio
 import com.azure.spring.cloud.autoconfigure.context.AzureEnvironmentAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.eventhub.AzureEventHubAutoConfiguration;
 import com.azure.spring.cloud.context.core.impl.EventHubNamespaceManager;
+import com.azure.spring.cloud.context.core.impl.StorageAccountManager;
 import com.azure.spring.eventhub.stream.binder.config.EventHubBinderConfiguration;
 import com.azure.spring.integration.eventhub.api.EventHubClientFactory;
 import com.azure.spring.integration.eventhub.api.EventHubOperation;
 import com.azure.spring.integration.eventhub.factory.EventHubConnectionStringProvider;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.MockitoAnnotations;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 
@@ -36,11 +35,6 @@ public class EventHubBinderConfigurationTest {
         .withConfiguration(AutoConfigurations.of(AzureEventHubAutoConfiguration.class))
         .withConfiguration(AutoConfigurations.of(EventHubBinderConfiguration.class));
 
-    @BeforeEach
-    public void init() {
-        MockitoAnnotations.openMocks(this);
-    }
-
     @Test
     public void testStorageNotConfiguredToGetClientFactoryBeanOnConnectionString() {
         contextRunner
@@ -48,6 +42,7 @@ public class EventHubBinderConfigurationTest {
             .run(context -> {
                 assertThat(context).hasSingleBean(EventHubClientFactory.class);
                 assertThat(context).hasSingleBean(EventHubOperation.class);
+                assertThat(context).doesNotHaveBean(StorageAccountManager.class);
             });
     }
 
@@ -65,6 +60,7 @@ public class EventHubBinderConfigurationTest {
                 assertThat(context).hasSingleBean(EventHubClientFactory.class);
                 assertThat(context).hasSingleBean(EventHubNamespaceManager.class);
                 assertThat(context).hasSingleBean(EventHubOperation.class);
+                assertThat(context).doesNotHaveBean(StorageAccountManager.class);
             });
     }
 
