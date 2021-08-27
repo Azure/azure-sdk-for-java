@@ -6,6 +6,10 @@
 
 - Updated `api-version` to `2021-04-01`.
 
+### Bugs Fixed
+
+- Fixed bug about ETag for `ImmutabilityPolicy`.
+
 ### Breaking Changes
 
 - Removed class `GetShareExpand`, `ListSharesExpand`, `PutSharesExpand`. Parameter is now comma-separated strings.
