@@ -44,7 +44,7 @@ jobs:
       displayName: 'Generate Reports'
       inputs:
         mavenPomFile: pom.xml
-        options: '$(DefaultOptions) -Dinclude-non-shipping-modules -Dgpg.skip -Pjavadoc -Pjacoco'
+        options: '$(DefaultOptions) -Dinclude-non-shipping-modules -Dgpg.skip -Drevapi.skip -Pjavadoc -Pjacoco'
         mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
         javaHomeOption: 'JDKVersion'
         jdkVersionOption: $(JavaBuildVersion)
