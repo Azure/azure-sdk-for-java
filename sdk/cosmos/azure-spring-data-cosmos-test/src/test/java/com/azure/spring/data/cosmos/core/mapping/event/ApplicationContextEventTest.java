@@ -67,7 +67,7 @@ public class ApplicationContextEventTest {
         Iterable<Address> addresses = repository.findAll();
 
         //actual Iterable is a BlockingIterable so we need to use it for processing to occur
-        assertThat(addresses.iterator().hasNext()).isTrue();
+        addresses.iterator().forEachRemaining(Address::getCity);
 
         assertThat(simpleCosmosMappingEventListener.onAfterLoadEvents).hasSize(3);
         assertThat(simpleCosmosMappingEventListener.onAfterLoadEvents.get(0).getContainerName()).isEqualTo("Address");
@@ -82,7 +82,7 @@ public class ApplicationContextEventTest {
         Iterable<Address> addresses = repository.findByCityIn(cities);
 
         //actual Iterable is a BlockingIterable so we need to use it for processing to occur
-        assertThat(addresses.iterator().hasNext()).isTrue();
+        addresses.iterator().forEachRemaining(Address::getCity);
 
         assertThat(simpleCosmosMappingEventListener.onAfterLoadEvents).hasSize(2);
         assertThat(simpleCosmosMappingEventListener.onAfterLoadEvents.get(0).getContainerName()).isEqualTo("Address");
