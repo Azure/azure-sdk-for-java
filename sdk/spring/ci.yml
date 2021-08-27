@@ -121,9 +121,9 @@ extends:
   parameters:
     ServiceDirectory: spring
     Artifacts:
-      - name: azure-spring-cloud-context
+      - name: azure-spring-cloud-core
         groupId: com.azure.spring
-        safeName: azurespringcloudcontext
+        safeName: azurespringcloudcore
         skipPublishDocMs: true
       - name: azure-spring-cloud-autoconfigure
         groupId: com.azure.spring

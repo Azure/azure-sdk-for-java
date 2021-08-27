@@ -11,10 +11,10 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>com.azure.spring</groupId>
-  <artifactId>azure-spring-cloud-context</artifactId>
-  <version>2.8.0</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-context;current} -->
+  <artifactId>azure-spring-cloud-core</artifactId>
+  <version>2.8.0</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-core;current} -->
 
-  <name>Azure Spring Cloud Context</name>
+  <name>Azure Spring Cloud Core</name>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
   <properties>
@@ -34,6 +34,17 @@
       <artifactId>azure-identity</artifactId>
       <version>1.3.5</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <scope>compile</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-core</artifactId>
+      <version>1.19.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+    </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-core-management</artifactId>
+      <version>1.5.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core-management;current} -->
     </dependency>
 
     <dependency>

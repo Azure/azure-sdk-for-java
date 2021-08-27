@@ -156,7 +156,7 @@ com.azure.spring:azure-spring-boot-starter-storage;3.7.0;3.8.0
 com.azure.spring:azure-spring-boot-starter;3.7.0;3.8.0
 com.azure.spring:azure-spring-boot;3.7.0;3.8.0
 com.azure.spring:azure-spring-cloud-autoconfigure;2.7.0;2.8.0
-com.azure.spring:azure-spring-cloud-context;2.7.0;2.8.0
+com.azure.spring:azure-spring-cloud-core;2.7.0;2.8.0
 com.azure.spring:azure-spring-cloud-resourcemanager;2.7.0;2.8.0-beta.1
 com.azure.spring:azure-spring-cloud-dependencies;2.7.0;2.8.0
 com.azure.spring:azure-spring-cloud-messaging;2.7.0;2.8.0
