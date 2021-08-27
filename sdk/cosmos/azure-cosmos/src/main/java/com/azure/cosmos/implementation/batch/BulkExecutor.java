@@ -6,20 +6,21 @@ package com.azure.cosmos.implementation.batch;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosBridgeInternal;
-import com.azure.cosmos.CosmosBulkItemResponse;
-import com.azure.cosmos.CosmosBulkOperationResponse;
 import com.azure.cosmos.CosmosException;
-import com.azure.cosmos.CosmosItemOperation;
 import com.azure.cosmos.ThrottlingRetryOptions;
-import com.azure.cosmos.TransactionalBatchOperationResult;
-import com.azure.cosmos.TransactionalBatchResponse;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.CosmosDaemonThreadFactory;
-import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.RequestOptions;
+import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
+import com.azure.cosmos.models.CosmosBatchOperationResult;
+import com.azure.cosmos.models.CosmosBatchResponse;
 import com.azure.cosmos.models.CosmosBulkExecutionOptions;
+import com.azure.cosmos.models.CosmosBulkItemResponse;
+import com.azure.cosmos.models.CosmosBulkOperationResponse;
+import com.azure.cosmos.models.CosmosItemOperation;
+import com.azure.cosmos.models.ModelBridgeInternal;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.Exceptions;
@@ -76,7 +77,7 @@ public final class BulkExecutor<TContext> {
     private final String operationContextText;
     private final OperationContextAndListenerTuple operationListener;
     private final ThrottlingRetryOptions throttlingRetryOptions;
-    private final Flux<CosmosItemOperation> inputOperations;
+    private final Flux<com.azure.cosmos.models.CosmosItemOperation> inputOperations;
 
     // Options for bulk execution.
     private final Long maxMicroBatchIntervalInMs;
@@ -340,7 +341,7 @@ public final class BulkExecutor<TContext> {
 
         return this.executeBatchRequest(serverRequest)
             .flatMapMany(response ->
-                Flux.fromIterable(response.getResults()).flatMap((TransactionalBatchOperationResult result) ->
+                Flux.fromIterable(response.getResults()).flatMap((CosmosBatchOperationResult result) ->
                     handleTransactionalBatchOperationResult(response, result, groupSink, thresholds)))
             .onErrorResume((Throwable throwable) -> {
 
@@ -357,12 +358,12 @@ public final class BulkExecutor<TContext> {
 
     // Helper functions
     private Mono<CosmosBulkOperationResponse<TContext>> handleTransactionalBatchOperationResult(
-        TransactionalBatchResponse response,
-        TransactionalBatchOperationResult operationResult,
+        CosmosBatchResponse response,
+        CosmosBatchOperationResult operationResult,
         FluxSink<CosmosItemOperation> groupSink,
         PartitionScopeThresholds thresholds) {
 
-        CosmosBulkItemResponse cosmosBulkItemResponse = BridgeInternal.createCosmosBulkItemResponse(operationResult, response);
+        CosmosBulkItemResponse cosmosBulkItemResponse = ModelBridgeInternal.createCosmosBulkItemResponse(operationResult, response);
         CosmosItemOperation itemOperation = operationResult.getOperation();
         TContext actualContext = this.getActualContext(itemOperation);
 
@@ -376,7 +377,7 @@ public final class BulkExecutor<TContext> {
                         if (result.shouldRetry) {
                             return this.enqueueForRetry(result.backOffTime, groupSink, itemOperation, thresholds);
                         } else {
-                            return Mono.just(BridgeInternal.createCosmosBulkOperationResponse(
+                            return Mono.just(ModelBridgeInternal.createCosmosBulkOperationResponse(
                                 itemOperation, cosmosBulkItemResponse, actualContext));
                         }
                     });
@@ -387,7 +388,7 @@ public final class BulkExecutor<TContext> {
         }
 
         thresholds.recordSuccessfulOperation();
-        return Mono.just(BridgeInternal.createCosmosBulkOperationResponse(
+        return Mono.just(ModelBridgeInternal.createCosmosBulkOperationResponse(
             itemOperation,
             cosmosBulkItemResponse,
             actualContext));
@@ -445,7 +446,7 @@ public final class BulkExecutor<TContext> {
         }
 
         TContext actualContext = this.getActualContext(itemOperation);
-        return Mono.just(BridgeInternal.createCosmosBulkOperationResponse(itemOperation, exception, actualContext));
+        return Mono.just(ModelBridgeInternal.createCosmosBulkOperationResponse(itemOperation, exception, actualContext));
     }
 
     private Mono<CosmosBulkOperationResponse<TContext>> enqueueForRetry(
@@ -481,13 +482,13 @@ public final class BulkExecutor<TContext> {
             if (result.shouldRetry) {
                 return this.enqueueForRetry(result.backOffTime, groupSink, itemBulkOperation, thresholds);
             } else {
-                return Mono.just(BridgeInternal.createCosmosBulkOperationResponse(
+                return Mono.just(ModelBridgeInternal.createCosmosBulkOperationResponse(
                     itemOperation, exception, actualContext));
             }
         });
     }
 
-    private Mono<TransactionalBatchResponse> executeBatchRequest(PartitionKeyRangeServerBatchRequest serverRequest) {
+    private Mono<CosmosBatchResponse> executeBatchRequest(PartitionKeyRangeServerBatchRequest serverRequest) {
         RequestOptions options = new RequestOptions();
         options.setOperationContextAndListenerTuple(operationListener);
 

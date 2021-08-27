@@ -1,22 +1,17 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.cosmos;
+package com.azure.cosmos.models;
 
 import com.azure.cosmos.implementation.RequestOptions;
 import com.azure.cosmos.util.Beta;
 
 /**
- *
- * @deprecated forRemoval = true, since = "4.19"
- * This class is not necessary anymore and will be removed. Please use {@link com.azure.cosmos.models.CosmosBatchPatchItemRequestOptions}
- *
- * Encapsulates options that can be specified for an operation within a {@link TransactionalBatch}.
+ * Encapsulates options that can be specified for an operation within a {@link CosmosBatch}.
  */
-@Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-@Deprecated() //forRemoval = true, since = "4.19"
-public final class TransactionalBatchPatchItemRequestOptions
-        extends TransactionalBatchItemRequestOptionsBase {
+@Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+public final class CosmosBatchPatchItemRequestOptions
+        extends CosmosBatchItemRequestOptionsBase {
     private String filterPredicate;
 
     /**
@@ -24,8 +19,7 @@ public final class TransactionalBatchPatchItemRequestOptions
      *
      * @return the FilterPredicate associated with the request.
      */
-    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    @Deprecated() //forRemoval = true, since = "4.19"
+    @Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public String getFilterPredicate() {
         return this.filterPredicate;
     }
@@ -36,9 +30,8 @@ public final class TransactionalBatchPatchItemRequestOptions
      * @param filterPredicate the filterPredicate associated with the request.
      * @return the current request options
      */
-    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    @Deprecated() //forRemoval = true, since = "4.19"
-    public TransactionalBatchPatchItemRequestOptions setFilterPredicate(String filterPredicate) {
+    @Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public CosmosBatchPatchItemRequestOptions setFilterPredicate(String filterPredicate) {
         this.filterPredicate = filterPredicate;
         return this;
     }
@@ -49,9 +42,8 @@ public final class TransactionalBatchPatchItemRequestOptions
      * @param ifMatchETag the ifMatchETag associated with the request.
      * @return the current request options
      */
-    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    @Deprecated() //forRemoval = true, since = "4.19"
-    public TransactionalBatchPatchItemRequestOptions setIfMatchETag(final String ifMatchETag) {
+    @Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public CosmosBatchPatchItemRequestOptions setIfMatchETag(final String ifMatchETag) {
         super.setIfMatchETagCore(ifMatchETag);
         return this;
     }
@@ -62,9 +54,8 @@ public final class TransactionalBatchPatchItemRequestOptions
      * @param ifNoneMatchEtag the ifNoneMatchETag associated with the request.
      * @return the current request options
      */
-    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    @Deprecated() //forRemoval = true, since = "4.19"
-    public TransactionalBatchPatchItemRequestOptions setIfNoneMatchETag(final String ifNoneMatchEtag) {
+    @Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public CosmosBatchPatchItemRequestOptions setIfNoneMatchETag(final String ifNoneMatchEtag) {
         super.setIfNoneMatchETagCore(ifNoneMatchEtag);
         return this;
     }

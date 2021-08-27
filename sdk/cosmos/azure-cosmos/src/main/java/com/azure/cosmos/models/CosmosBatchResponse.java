@@ -1,8 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.cosmos;
+package com.azure.cosmos.models;
 
+import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.implementation.batch.BatchExecUtils;
 import com.azure.cosmos.util.Beta;
 
@@ -15,26 +16,20 @@ import java.util.Map;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 /**
- *
- * @deprecated forRemoval = true, since = "4.19"
- * This class is not necessary anymore and will be removed. Please use {@link com.azure.cosmos.models.CosmosBatchResponse}
- *
- * Response of a {@link TransactionalBatch} request.
+ * Response of a {@link CosmosBatch} request.
  */
-@Beta(value = Beta.SinceVersion.V4_7_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-@Deprecated() //forRemoval = true, since = "4.19"
-@SuppressWarnings("DeprecatedIsStillUsed")
-public class TransactionalBatchResponse {
+@Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+public class CosmosBatchResponse {
 
     private final Map<String, String> responseHeaders;
     private final int statusCode;
     private final String errorMessage;
-    private final List<TransactionalBatchOperationResult> results;
+    private final List<CosmosBatchOperationResult> results;
     private final int subStatusCode;
     private final CosmosDiagnostics cosmosDiagnostics;
 
     /**
-     * Initializes a new instance of the {@link TransactionalBatchResponse} class.
+     * Initializes a new instance of the {@link CosmosBatchResponse} class.
      *
      * @param statusCode the response status code.
      * @param subStatusCode the response sub-status code.
@@ -42,7 +37,7 @@ public class TransactionalBatchResponse {
      * @param responseHeaders the response http headers
      * @param cosmosDiagnostics the diagnostic
      */
-    TransactionalBatchResponse(
+    CosmosBatchResponse(
         final int statusCode,
         final int subStatusCode,
         final String errorMessage,
@@ -65,8 +60,7 @@ public class TransactionalBatchResponse {
      *
      * @return diagnostics information for the current request to Azure Cosmos DB service.
      */
-    @Beta(value = Beta.SinceVersion.V4_7_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    @Deprecated() //forRemoval = true, since = "4.19"
+    @Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public CosmosDiagnostics getDiagnostics() {
         return cosmosDiagnostics;
     }
@@ -76,8 +70,7 @@ public class TransactionalBatchResponse {
      *
      * @return the number of operations results in this response.
      */
-    @Beta(value = Beta.SinceVersion.V4_7_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    @Deprecated() //forRemoval = true, since = "4.19"
+    @Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public int size() {
         return this.results == null ? 0 : this.results.size();
     }
@@ -87,8 +80,7 @@ public class TransactionalBatchResponse {
      *
      * @return a value indicating whether the batch was successfully processed.
      */
-    @Beta(value = Beta.SinceVersion.V4_7_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    @Deprecated() //forRemoval = true, since = "4.19"
+    @Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public boolean isSuccessStatusCode() {
         return this.statusCode >= 200 && this.statusCode <= 299;
     }
@@ -98,8 +90,7 @@ public class TransactionalBatchResponse {
      *
      * @return the activity ID that identifies the server request made to execute the batch.
      */
-    @Beta(value = Beta.SinceVersion.V4_7_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    @Deprecated() //forRemoval = true, since = "4.19"
+    @Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public String getActivityId() {
         return BatchExecUtils.getActivityId(this.responseHeaders);
     }
@@ -109,8 +100,7 @@ public class TransactionalBatchResponse {
      *
      * @return the reason for the failure of the batch request, if any, or {@code null}.
      */
-    @Beta(value = Beta.SinceVersion.V4_7_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    @Deprecated() //forRemoval = true, since = "4.19"
+    @Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public String getErrorMessage() {
         return this.errorMessage;
     }
@@ -123,8 +113,7 @@ public class TransactionalBatchResponse {
      *
      * @return the request charge.
      */
-    @Beta(value = Beta.SinceVersion.V4_7_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    @Deprecated() //forRemoval = true, since = "4.19"
+    @Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public double getRequestCharge() {
        return BatchExecUtils.getRequestCharge(this.responseHeaders);
     }
@@ -134,8 +123,7 @@ public class TransactionalBatchResponse {
      *
      * @return the status code.
      */
-    @Beta(value = Beta.SinceVersion.V4_7_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    @Deprecated() //forRemoval = true, since = "4.19"
+    @Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public int getStatusCode() {
         return this.statusCode;
     }
@@ -145,8 +133,7 @@ public class TransactionalBatchResponse {
      *
      * @return the session token.
      */
-    @Beta(value = Beta.SinceVersion.V4_7_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    @Deprecated() //forRemoval = true, since = "4.19"
+    @Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public String getSessionToken() {
         return BatchExecUtils.getSessionToken(this.responseHeaders);
     }
@@ -156,8 +143,7 @@ public class TransactionalBatchResponse {
      *
      * @return the response headers.
      */
-    @Beta(value = Beta.SinceVersion.V4_7_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    @Deprecated() //forRemoval = true, since = "4.19"
+    @Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public Map<String, String> getResponseHeaders() {
         return this.responseHeaders;
     }
@@ -167,8 +153,7 @@ public class TransactionalBatchResponse {
      *
      * @return the amount of time to wait before retrying this or any other request due to throttling.
      */
-    @Beta(value = Beta.SinceVersion.V4_7_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    @Deprecated() //forRemoval = true, since = "4.19"
+    @Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public Duration getRetryAfterDuration() {
         return BatchExecUtils.getRetryAfterDuration(this.responseHeaders);
     }
@@ -178,8 +163,7 @@ public class TransactionalBatchResponse {
      *
      * @return the sub status code.
      */
-    @Beta(value = Beta.SinceVersion.V4_7_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    @Deprecated() //forRemoval = true, since = "4.19"
+    @Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public int getSubStatusCode() {
         return this.subStatusCode;
     }
@@ -190,9 +174,8 @@ public class TransactionalBatchResponse {
      *
      * @return Results of operations in a batch.
      */
-    @Beta(value = Beta.SinceVersion.V4_7_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    @Deprecated() //forRemoval = true, since = "4.19"
-    public List<TransactionalBatchOperationResult> getResults() {
+    @Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public List<CosmosBatchOperationResult> getResults() {
         return Collections.unmodifiableList(this.results);
     }
 
@@ -202,8 +185,7 @@ public class TransactionalBatchResponse {
      *
      * @return length of the response.
      */
-    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    @Deprecated() //forRemoval = true, since = "4.19"
+    @Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public int getResponseLength() {
         return BatchExecUtils.getResponseLength(this.responseHeaders);
     }
@@ -213,8 +195,7 @@ public class TransactionalBatchResponse {
      *
      * @return end-to-end request latency for the current request to Azure Cosmos DB service.
      */
-    @Beta(value = Beta.SinceVersion.V4_7_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    @Deprecated() //forRemoval = true, since = "4.19"
+    @Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public Duration getDuration() {
         if (cosmosDiagnostics == null) {
             return Duration.ZERO;
@@ -223,7 +204,7 @@ public class TransactionalBatchResponse {
         return this.cosmosDiagnostics.getDuration();
     }
 
-    void addAll(List<? extends TransactionalBatchOperationResult> collection) {
+    void addAll(List<? extends CosmosBatchOperationResult> collection) {
         this.results.addAll(collection);
     }
 }

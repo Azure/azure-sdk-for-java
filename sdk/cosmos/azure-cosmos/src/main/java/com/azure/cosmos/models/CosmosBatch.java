@@ -1,28 +1,23 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.cosmos;
+package com.azure.cosmos.models;
 
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
+import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
 import com.azure.cosmos.implementation.batch.ItemBatchOperation;
-import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.util.Beta;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 /**
- *
- * @deprecated forRemoval = true, since = "4.19"
- * This class is not necessary anymore and will be removed. Please use {@link com.azure.cosmos.models.CosmosBatch}
- *
  * Represents a batch of operations against items with the same {@link PartitionKey} in a container that will be performed
- * in a transactional manner at the Azure Cosmos DB service.
+ * in a Cosmos manner at the Azure Cosmos DB service.
  * <p>
- * Use {@link TransactionalBatch#createTransactionalBatch(PartitionKey)} to create an instance of TransactionalBatch.
+ * Use {@link CosmosBatch#createCosmosBatch(PartitionKey)} to create an instance of {@link CosmosBatch}.
  * <b>Example</b>
  * This example atomically modifies a set of items as a batch.
  * <pre>{@code
@@ -43,13 +38,13 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
  * ToDoActivity test2 = new ToDoActivity(activityType, "shopping", "Done");
  * ToDoActivity test3 = new ToDoActivity(activityType, "swimming", "ToBeDone");
  *
- * TransactionalBatch batch = TransactionalBatch.createTransactionalBatch(new Cosmos.PartitionKey(activityType));
+ * CosmosBatch batch = CosmosBatch.createCosmosBatch(new Cosmos.PartitionKey(activityType));
  * batch.createItemOperation<ToDoActivity>(test1);
  * batch.replaceItemOperation<ToDoActivity>(test2.id, test2);
  * batch.upsertItemOperation<ToDoActivity>(test3);
  * batch.deleteItemOperation("reading");
  *
- * TransactionalBatchResponse response = container.executeTransactionalBatch(batch);
+ * CosmosBatchResponse response = container.executeTransactionalBatch(batch);
  *
  * if (!response.isSuccessStatusCode()) {
  *      // Handle and log exception
@@ -58,7 +53,7 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
  *
  * // Look up interested results - e.g., via typed access on operation results
  *
- * TransactionalBatchOperationResult result = response.get(0);
+ * CosmosBatchOperationResult result = response.get(0);
  * ToDoActivity readActivity = result.getItem(ToDoActivity.class);
  *
  * }</pre>
@@ -68,33 +63,32 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
  * <pre>{@code
  * String activityType = "personal";
  *
- * TransactionalBatch batch = TransactionalBatch.createTransactionalBatch(new Cosmos.PartitionKey(activityType));
+ * CosmosBatch batch = CosmosBatch.createCosmosBatch(new Cosmos.PartitionKey(activityType));
  * batch.readItemOperation("playing");
  * batch.readItemOperation("walking");
  * batch.readItemOperation("jogging");
  * batch.readItemOperation("running");
  *
- * TransactionalBatchResponse response = container.executeTransactionalBatch(batch);
+ * CosmosBatchResponse response = container.executeTransactionalBatch(batch);
  * List<ToDoActivity> resultItems = new ArrayList<ToDoActivity>();
  *
  * for (int i = 0; i < response.size(); i++) {
- *     TransactionalBatchOperationResult result = response.get(0);
+ *     CosmosBatchOperationResult result = response.get(0);
  *     resultItems.add(result.getItem(ToDoActivity.class));
  * }
  *
  * }</pre>
  * <p>
  * <b>See:</b>
- * <a href="https://docs.microsoft.com/azure/cosmos-db/concepts-limits">Limits on TransactionalBatch requests</a>.
+ * <a href="https://docs.microsoft.com/azure/cosmos-db/concepts-limits">Limits on CosmosBatch requests</a>.
  */
-@Beta(value = Beta.SinceVersion.V4_7_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-@Deprecated() //forRemoval = true, since = "4.19"
-public final class TransactionalBatch {
+@Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+public final class CosmosBatch {
 
     private final List<ItemBatchOperation<?>> operations;
     private final PartitionKey partitionKey;
 
-    TransactionalBatch(PartitionKey partitionKey) {
+    CosmosBatch(PartitionKey partitionKey) {
         checkNotNull(partitionKey, "expected non-null partitionKey");
 
         this.operations = new ArrayList<>();
@@ -102,18 +96,17 @@ public final class TransactionalBatch {
     }
 
     /**
-     * Initializes a new instance of {@link TransactionalBatch}
+     * Initializes a new instance of {@link CosmosBatch}
      * that will contain operations to be performed across multiple items in the container with the provided partition
      * key in a transactional manner
      *
      * @param partitionKey the partition key for all items in the batch.
      *
-     * @return A new instance of {@link TransactionalBatch}.
+     * @return A new instance of {@link CosmosBatch}.
      */
-    @Beta(value = Beta.SinceVersion.V4_7_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    @Deprecated() //forRemoval = true, since = "4.19"
-    public static TransactionalBatch createTransactionalBatch(PartitionKey partitionKey) {
-        return new TransactionalBatch(partitionKey);
+    @Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public static CosmosBatch createCosmosBatch(PartitionKey partitionKey) {
+        return new CosmosBatch(partitionKey);
     }
 
     /**
@@ -122,13 +115,12 @@ public final class TransactionalBatch {
      * @param item A JSON serializable object that must contain an id property.
      * @param <T> The type of item to be created.
      *
-     * @return The transactional batch instance with the operation added.
+     * @return The Cosmos batch instance with the operation added.
      */
-    @Beta(value = Beta.SinceVersion.V4_7_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    @Deprecated() //forRemoval = true, since = "4.19"
+    @Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public <T> CosmosItemOperation createItemOperation(T item) {
         checkNotNull(item, "expected non-null item");
-        return this.createItemOperation(item, new TransactionalBatchItemRequestOptions());
+        return this.createItemOperation(item, new CosmosBatchItemRequestOptions());
     }
 
     /**
@@ -139,19 +131,18 @@ public final class TransactionalBatch {
      * @param item A JSON serializable object that must contain an id property.
      * @param requestOptions The options for the item request.
      *
-     * @return The transactional batch instance with the operation added.
+     * @return The Cosmos batch instance with the operation added.
      */
-    @Beta(value = Beta.SinceVersion.V4_7_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    @Deprecated() //forRemoval = true, since = "4.19"
-    public <T> CosmosItemOperation createItemOperation(T item, TransactionalBatchItemRequestOptions requestOptions) {
+    @Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public <T> CosmosItemOperation createItemOperation(T item, CosmosBatchItemRequestOptions requestOptions) {
 
         checkNotNull(item, "expected non-null item");
         if (requestOptions == null) {
-            requestOptions = new TransactionalBatchItemRequestOptions();
+            requestOptions = new CosmosBatchItemRequestOptions();
         }
 
         ItemBatchOperation<T> operation = new ItemBatchOperation<T>(
-            com.azure.cosmos.models.CosmosItemOperationType.CREATE,
+            CosmosItemOperationType.CREATE,
             null,
             this.getPartitionKeyValue(),
             requestOptions.toRequestOptions(),
@@ -160,7 +151,7 @@ public final class TransactionalBatch {
 
         this.operations.add(operation);
 
-        return BridgeInternal.toDeprecatedCosmosItemOperation(operation);
+        return operation;
     }
 
     /**
@@ -168,13 +159,12 @@ public final class TransactionalBatch {
      *
      * @param id The unique id of the item.
      *
-     * @return The transactional batch instance with the operation added.
+     * @return The Cosmos batch instance with the operation added.
      */
-    @Beta(value = Beta.SinceVersion.V4_7_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    @Deprecated() //forRemoval = true, since = "4.19"
+    @Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public CosmosItemOperation deleteItemOperation(String id) {
         checkNotNull(id, "expected non-null id");
-        return this.deleteItemOperation(id, new TransactionalBatchItemRequestOptions());
+        return this.deleteItemOperation(id, new CosmosBatchItemRequestOptions());
     }
 
     /**
@@ -183,19 +173,18 @@ public final class TransactionalBatch {
      * @param id The unique id of the item.
      * @param requestOptions The options for the item request.
      *
-     * @return The transactional batch instance with the operation added.
+     * @return The Cosmos batch instance with the operation added.
      */
-    @Beta(value = Beta.SinceVersion.V4_7_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    @Deprecated() //forRemoval = true, since = "4.19"
-    public CosmosItemOperation deleteItemOperation(String id, TransactionalBatchItemRequestOptions requestOptions) {
+    @Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public CosmosItemOperation deleteItemOperation(String id, CosmosBatchItemRequestOptions requestOptions) {
 
         checkNotNull(id, "expected non-null id");
         if (requestOptions == null) {
-            requestOptions = new TransactionalBatchItemRequestOptions();
+            requestOptions = new CosmosBatchItemRequestOptions();
         }
 
         ItemBatchOperation<?> operation = new ItemBatchOperation<>(
-            com.azure.cosmos.models.CosmosItemOperationType.DELETE,
+            CosmosItemOperationType.DELETE,
             id,
             this.getPartitionKeyValue(),
             requestOptions.toRequestOptions(),
@@ -204,7 +193,7 @@ public final class TransactionalBatch {
 
         this.operations.add(operation);
 
-        return BridgeInternal.toDeprecatedCosmosItemOperation(operation);
+        return operation;
     }
 
     /**
@@ -212,13 +201,12 @@ public final class TransactionalBatch {
      *
      * @param id The unique id of the item.
      *
-     * @return The transactional batch instance with the operation added.
+     * @return The Cosmos batch instance with the operation added.
      */
-    @Beta(value = Beta.SinceVersion.V4_7_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    @Deprecated() //forRemoval = true, since = "4.19"
+    @Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public CosmosItemOperation readItemOperation(String id) {
         checkNotNull(id, "expected non-null id");
-        return this.readItemOperation(id, new TransactionalBatchItemRequestOptions());
+        return this.readItemOperation(id, new CosmosBatchItemRequestOptions());
     }
 
     /**
@@ -227,19 +215,18 @@ public final class TransactionalBatch {
      * @param id The unique id of the item.
      * @param requestOptions The options for the item request.
      *
-     * @return The transactional batch instance with the operation added.
+     * @return The Cosmos batch instance with the operation added.
      */
-    @Beta(value = Beta.SinceVersion.V4_7_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    @Deprecated() //forRemoval = true, since = "4.19"
-    public CosmosItemOperation readItemOperation(String id, TransactionalBatchItemRequestOptions requestOptions) {
+    @Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public CosmosItemOperation readItemOperation(String id, CosmosBatchItemRequestOptions requestOptions) {
 
         checkNotNull(id, "expected non-null id");
         if (requestOptions == null) {
-            requestOptions = new TransactionalBatchItemRequestOptions();
+            requestOptions = new CosmosBatchItemRequestOptions();
         }
 
         ItemBatchOperation<?> operation = new ItemBatchOperation<>(
-            com.azure.cosmos.models.CosmosItemOperationType.READ,
+            CosmosItemOperationType.READ,
             id,
             this.getPartitionKeyValue(),
             requestOptions.toRequestOptions(),
@@ -248,7 +235,7 @@ public final class TransactionalBatch {
 
         this.operations.add(operation);
 
-        return BridgeInternal.toDeprecatedCosmosItemOperation(operation);
+        return operation;
     }
 
     /**
@@ -258,14 +245,13 @@ public final class TransactionalBatch {
      * @param item A JSON serializable object that must contain an id property.
      * @param <T> The type of item to be replaced.
      *
-     * @return The transactional batch instance with the operation added.
+     * @return The Cosmos batch instance with the operation added.
      */
-    @Beta(value = Beta.SinceVersion.V4_7_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    @Deprecated() //forRemoval = true, since = "4.19"
+    @Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public <T> CosmosItemOperation replaceItemOperation(String id, T item) {
         checkNotNull(id, "expected non-null id");
         checkNotNull(item, "expected non-null item");
-        return this.replaceItemOperation(id, item, new TransactionalBatchItemRequestOptions());
+        return this.replaceItemOperation(id, item, new CosmosBatchItemRequestOptions());
     }
 
     /**
@@ -277,21 +263,20 @@ public final class TransactionalBatch {
      * @param item A JSON serializable object that must contain an id property.
      * @param requestOptions The options for the item request.
      *
-     * @return The transactional batch instance with the operation added.
+     * @return The Cosmos batch instance with the operation added.
      */
-    @Beta(value = Beta.SinceVersion.V4_7_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    @Deprecated() //forRemoval = true, since = "4.19"
+    @Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public <T> CosmosItemOperation replaceItemOperation(
-        String id, T item, TransactionalBatchItemRequestOptions requestOptions) {
+        String id, T item, CosmosBatchItemRequestOptions requestOptions) {
 
         checkNotNull(id, "expected non-null id");
         checkNotNull(item, "expected non-null item");
         if (requestOptions == null) {
-            requestOptions = new TransactionalBatchItemRequestOptions();
+            requestOptions = new CosmosBatchItemRequestOptions();
         }
 
         ItemBatchOperation<T> operation = new ItemBatchOperation<T>(
-            com.azure.cosmos.models.CosmosItemOperationType.REPLACE,
+            CosmosItemOperationType.REPLACE,
             id,
             this.getPartitionKeyValue(),
             requestOptions.toRequestOptions(),
@@ -300,7 +285,7 @@ public final class TransactionalBatch {
 
         this.operations.add(operation);
 
-        return BridgeInternal.toDeprecatedCosmosItemOperation(operation);
+        return operation;
     }
 
     /**
@@ -309,13 +294,12 @@ public final class TransactionalBatch {
      * @param item A JSON serializable object that must contain an id property.
      * @param <T> The type of item to be upserted.
      *
-     * @return The transactional batch instance with the operation added.
+     * @return The Cosmos batch instance with the operation added.
      */
-    @Beta(value = Beta.SinceVersion.V4_7_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    @Deprecated() //forRemoval = true, since = "4.19"
+    @Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public <T> CosmosItemOperation upsertItemOperation(T item) {
         checkNotNull(item, "expected non-null item");
-        return this.upsertItemOperation(item, new TransactionalBatchItemRequestOptions());
+        return this.upsertItemOperation(item, new CosmosBatchItemRequestOptions());
     }
 
     /**
@@ -326,19 +310,18 @@ public final class TransactionalBatch {
      * @param item A JSON serializable object that must contain an id property.
      * @param requestOptions The options for the item request.
      *
-     * @return The transactional batch instance with the operation added.
+     * @return The Cosmos batch instance with the operation added.
      */
-    @Beta(value = Beta.SinceVersion.V4_7_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    @Deprecated() //forRemoval = true, since = "4.19"
-    public <T> CosmosItemOperation upsertItemOperation(T item, TransactionalBatchItemRequestOptions requestOptions) {
+    @Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public <T> CosmosItemOperation upsertItemOperation(T item, CosmosBatchItemRequestOptions requestOptions) {
 
         checkNotNull(item, "expected non-null item");
         if (requestOptions == null) {
-            requestOptions = new TransactionalBatchItemRequestOptions();
+            requestOptions = new CosmosBatchItemRequestOptions();
         }
 
         ItemBatchOperation<T> operation = new ItemBatchOperation<T>(
-            com.azure.cosmos.models.CosmosItemOperationType.UPSERT,
+            CosmosItemOperationType.UPSERT,
             null,
             this.getPartitionKeyValue(),
             requestOptions.toRequestOptions(),
@@ -347,7 +330,7 @@ public final class TransactionalBatch {
 
         this.operations.add(operation);
 
-        return BridgeInternal.toDeprecatedCosmosItemOperation(operation);
+        return operation;
     }
 
     /**
@@ -358,13 +341,12 @@ public final class TransactionalBatch {
      *
      * @return The added operation.
      */
-    @Beta(value = Beta.SinceVersion.V4_11_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    @Deprecated() //forRemoval = true, since = "4.19"
+    @Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public CosmosItemOperation patchItemOperation(String id, CosmosPatchOperations cosmosPatchOperations) {
         checkNotNull(id, "expected non-null id");
         checkNotNull(cosmosPatchOperations, "expected non-null cosmosPatchOperations");
 
-        return this.patchItemOperation(id, cosmosPatchOperations, new TransactionalBatchPatchItemRequestOptions());
+        return this.patchItemOperation(id, cosmosPatchOperations, new CosmosBatchPatchItemRequestOptions());
     }
 
     /**
@@ -376,22 +358,21 @@ public final class TransactionalBatch {
      *
      * @return The added operation.
      */
-    @Beta(value = Beta.SinceVersion.V4_11_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    @Deprecated() //forRemoval = true, since = "4.19"
+    @Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public CosmosItemOperation patchItemOperation(
         String id,
         CosmosPatchOperations cosmosPatchOperations,
-        TransactionalBatchPatchItemRequestOptions requestOptions) {
+        CosmosBatchPatchItemRequestOptions requestOptions) {
 
         checkNotNull(id, "expected non-null id");
         checkNotNull(cosmosPatchOperations, "expected non-null cosmosPatchOperations");
 
         if (requestOptions == null) {
-            requestOptions = new TransactionalBatchPatchItemRequestOptions();
+            requestOptions = new CosmosBatchPatchItemRequestOptions();
         }
 
         ItemBatchOperation<?> operation = new ItemBatchOperation<>(
-            com.azure.cosmos.models.CosmosItemOperationType.PATCH,
+            CosmosItemOperationType.PATCH,
             id,
             this.getPartitionKeyValue(),
             requestOptions.toRequestOptions(),
@@ -400,7 +381,7 @@ public final class TransactionalBatch {
 
         this.operations.add(operation);
 
-        return BridgeInternal.toDeprecatedCosmosItemOperation(operation);
+        return operation;
     }
 
     /**
@@ -408,14 +389,9 @@ public final class TransactionalBatch {
      *
      * @return The list of operations which are to be executed.
      */
-    @Beta(value = Beta.SinceVersion.V4_7_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    @Deprecated() //forRemoval = true, since = "4.19"
+    @Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public List<CosmosItemOperation> getOperations() {
-        return Collections.unmodifiableList(operations.stream().map(BridgeInternal::toDeprecatedCosmosItemOperation).collect(Collectors.toList()));
-    }
-
-    List<ItemBatchOperation<?>> getOperationsInternal() {
-        return operations;
+        return UnmodifiableList.unmodifiableList(operations);
     }
 
     /**
@@ -423,9 +399,26 @@ public final class TransactionalBatch {
      *
      * @return The partition key for this batch.
      */
-    @Beta(value = Beta.SinceVersion.V4_7_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    @Deprecated() //forRemoval = true, since = "4.19"
+    @Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public PartitionKey getPartitionKeyValue() {
         return partitionKey;
+    }
+
+    List<ItemBatchOperation<?>> getOperationsInternal() {
+        return operations;
+    }
+
+    ///////////////////////////////////////////////////////////////////////////////////////////
+    // the following helper/accessor only helps to access this class outside of this package.//
+    ///////////////////////////////////////////////////////////////////////////////////////////
+
+    static {
+        ImplementationBridgeHelpers.CosmosBatchHelper.setCosmosBatchAccessor(
+            new ImplementationBridgeHelpers.CosmosBatchHelper.CosmosBatchAccessor() {
+                @Override
+                public List<ItemBatchOperation<?>> getOperationsInternal(CosmosBatch cosmosBatch) {
+                    return cosmosBatch.getOperationsInternal();
+                }
+            });
     }
 }

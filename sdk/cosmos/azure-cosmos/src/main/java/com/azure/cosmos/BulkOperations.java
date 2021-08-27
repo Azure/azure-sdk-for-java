@@ -4,6 +4,7 @@
 package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.batch.ItemBulkOperation;
+import com.azure.cosmos.models.CosmosItemOperationType;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.util.Beta;
 import reactor.core.publisher.Flux;
@@ -37,6 +38,7 @@ public final class BulkOperations {
      * @return the bulk operation.
      */
     @Beta(value = Beta.SinceVersion.V4_9_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Deprecated() //forRemoval = true, since = "4.19"
     public static <T> CosmosItemOperation getCreateItemOperation(T item, PartitionKey partitionKey) {
         checkNotNull(item, "expected non-null item");
         checkNotNull(partitionKey, "expected non-null partitionKey");
@@ -56,6 +58,7 @@ public final class BulkOperations {
      * @return the bulk operation.
      */
     @Beta(value = Beta.SinceVersion.V4_18_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Deprecated() //forRemoval = true, since = "4.19"
     public static <T, TContext> CosmosItemOperation getCreateItemOperation(
         T item,
         PartitionKey partitionKey,
@@ -78,6 +81,7 @@ public final class BulkOperations {
      * @return the bulk operation.
      */
     @Beta(value = Beta.SinceVersion.V4_9_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Deprecated() //forRemoval = true, since = "4.19"
     public static <T> CosmosItemOperation getCreateItemOperation(
         T item,
         PartitionKey partitionKey,
@@ -103,6 +107,7 @@ public final class BulkOperations {
      * @return the bulk operation.
      */
     @Beta(value = Beta.SinceVersion.V4_18_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Deprecated() //forRemoval = true, since = "4.19"
     public static <T, TContext> CosmosItemOperation getCreateItemOperation(
         T item,
         PartitionKey partitionKey,
@@ -116,7 +121,7 @@ public final class BulkOperations {
             requestOptions = new BulkItemRequestOptions();
         }
 
-        return new ItemBulkOperation<>(
+        ItemBulkOperation<T, TContext> ttContextItemBulkOperation = new ItemBulkOperation<>(
             CosmosItemOperationType.CREATE,
             null,
             partitionKey,
@@ -124,6 +129,7 @@ public final class BulkOperations {
             item,
             context
         );
+        return BridgeInternal.toDeprecatedCosmosItemOperation(ttContextItemBulkOperation);
     }
 
     /**
@@ -135,6 +141,7 @@ public final class BulkOperations {
      * @return the bulk operation.
      */
     @Beta(value = Beta.SinceVersion.V4_9_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Deprecated() //forRemoval = true, since = "4.19"
     public static CosmosItemOperation getDeleteItemOperation(String id, PartitionKey partitionKey) {
         checkNotNull(id, "expected non-null id");
         checkNotNull(partitionKey, "expected non-null partitionKey");
@@ -154,6 +161,7 @@ public final class BulkOperations {
      * @return the bulk operation.
      */
     @Beta(value = Beta.SinceVersion.V4_18_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Deprecated() //forRemoval = true, since = "4.19"
     public static <TContext> CosmosItemOperation getDeleteItemOperation(
         String id,
         PartitionKey partitionKey,
@@ -175,6 +183,7 @@ public final class BulkOperations {
      * @return the bulk operation.
      */
     @Beta(value = Beta.SinceVersion.V4_9_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Deprecated() //forRemoval = true, since = "4.19"
     public static CosmosItemOperation getDeleteItemOperation(
         String id,
         PartitionKey partitionKey,
@@ -203,6 +212,7 @@ public final class BulkOperations {
      * @return the bulk operation.
      */
     @Beta(value = Beta.SinceVersion.V4_18_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Deprecated() //forRemoval = true, since = "4.19"
     public static <TContext> CosmosItemOperation getDeleteItemOperation(
         String id,
         PartitionKey partitionKey,
@@ -216,7 +226,7 @@ public final class BulkOperations {
             requestOptions = new BulkItemRequestOptions();
         }
 
-        return new ItemBulkOperation<>(
+        ItemBulkOperation<Object, TContext> objectTContextItemBulkOperation = new ItemBulkOperation<>(
             CosmosItemOperationType.DELETE,
             id,
             partitionKey,
@@ -224,6 +234,7 @@ public final class BulkOperations {
             null,
             context
         );
+        return BridgeInternal.toDeprecatedCosmosItemOperation(objectTContextItemBulkOperation);
     }
 
     /**
@@ -235,6 +246,7 @@ public final class BulkOperations {
      * @return the bulk operation.
      */
     @Beta(value = Beta.SinceVersion.V4_9_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Deprecated() //forRemoval = true, since = "4.19"
     public static CosmosItemOperation getReadItemOperation(String id, PartitionKey partitionKey) {
         checkNotNull(id, "expected non-null id");
         checkNotNull(partitionKey, "expected non-null partitionKey");
@@ -254,6 +266,7 @@ public final class BulkOperations {
      * @return the bulk operation.
      */
     @Beta(value = Beta.SinceVersion.V4_18_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Deprecated() //forRemoval = true, since = "4.19"
     public static <TContext> CosmosItemOperation getReadItemOperation(
         String id,
         PartitionKey partitionKey,
@@ -275,6 +288,7 @@ public final class BulkOperations {
      * @return the bulk operation.
      */
     @Beta(value = Beta.SinceVersion.V4_9_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Deprecated() //forRemoval = true, since = "4.19"
     public static CosmosItemOperation getReadItemOperation(
         String id,
         PartitionKey partitionKey,
@@ -299,6 +313,7 @@ public final class BulkOperations {
      * @return the bulk operation.
      */
     @Beta(value = Beta.SinceVersion.V4_18_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Deprecated() //forRemoval = true, since = "4.19"
     public static <TContext> CosmosItemOperation getReadItemOperation(
         String id,
         PartitionKey partitionKey,
@@ -312,7 +327,7 @@ public final class BulkOperations {
             requestOptions = new BulkItemRequestOptions();
         }
 
-        return new ItemBulkOperation<>(
+        ItemBulkOperation<Object, TContext> objectTContextItemBulkOperation = new ItemBulkOperation<>(
             CosmosItemOperationType.READ,
             id,
             partitionKey,
@@ -320,6 +335,7 @@ public final class BulkOperations {
             null,
             context
         );
+        return BridgeInternal.toDeprecatedCosmosItemOperation(objectTContextItemBulkOperation);
     }
 
     /**
@@ -334,6 +350,7 @@ public final class BulkOperations {
      * @return the bulk operation.
      */
     @Beta(value = Beta.SinceVersion.V4_9_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Deprecated() //forRemoval = true, since = "4.19"
     public static <T> CosmosItemOperation getReplaceItemOperation(String id, T item, PartitionKey partitionKey) {
         checkNotNull(item, "expected non-null item");
         checkNotNull(id, "expected non-null id");
@@ -356,6 +373,7 @@ public final class BulkOperations {
      * @return the bulk operation.
      */
     @Beta(value = Beta.SinceVersion.V4_18_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Deprecated() //forRemoval = true, since = "4.19"
     public static <T, TContext> CosmosItemOperation getReplaceItemOperation(
         String id,
         T item,
@@ -382,6 +400,7 @@ public final class BulkOperations {
      * @return the bulk operation.
      */
     @Beta(value = Beta.SinceVersion.V4_9_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Deprecated() //forRemoval = true, since = "4.19"
     public static <T> CosmosItemOperation getReplaceItemOperation(
         String id,
         T item,
@@ -410,6 +429,7 @@ public final class BulkOperations {
      * @return the bulk operation.
      */
     @Beta(value = Beta.SinceVersion.V4_18_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Deprecated() //forRemoval = true, since = "4.19"
     public static <T, TContext> CosmosItemOperation getReplaceItemOperation(
         String id,
         T item,
@@ -425,7 +445,7 @@ public final class BulkOperations {
             requestOptions = new BulkItemRequestOptions();
         }
 
-        return new ItemBulkOperation<>(
+        ItemBulkOperation<T, TContext> ttContextItemBulkOperation = new ItemBulkOperation<>(
             CosmosItemOperationType.REPLACE,
             id,
             partitionKey,
@@ -433,6 +453,7 @@ public final class BulkOperations {
             item,
             context
         );
+        return BridgeInternal.toDeprecatedCosmosItemOperation(ttContextItemBulkOperation);
     }
 
     /**
@@ -446,6 +467,7 @@ public final class BulkOperations {
      * @return the bulk operation.
      */
     @Beta(value = Beta.SinceVersion.V4_9_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Deprecated() //forRemoval = true, since = "4.19"
     public static <T> CosmosItemOperation getUpsertItemOperation(T item, PartitionKey partitionKey) {
         checkNotNull(item, "expected non-null item");
         checkNotNull(partitionKey, "expected non-null partitionKey");
@@ -466,6 +488,7 @@ public final class BulkOperations {
      * @return the bulk operation.
      */
     @Beta(value = Beta.SinceVersion.V4_18_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Deprecated() //forRemoval = true, since = "4.19"
     public static <T, TContext> CosmosItemOperation getUpsertItemOperation(
         T item,
         PartitionKey partitionKey,
@@ -489,6 +512,7 @@ public final class BulkOperations {
      * @return the bulk operation.
      */
     @Beta(value = Beta.SinceVersion.V4_9_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Deprecated() //forRemoval = true, since = "4.19"
     public static <T> CosmosItemOperation getUpsertItemOperation(
         T item,
         PartitionKey partitionKey,
@@ -514,6 +538,7 @@ public final class BulkOperations {
      * @return the bulk operation.
      */
     @Beta(value = Beta.SinceVersion.V4_18_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Deprecated() //forRemoval = true, since = "4.19"
     public static <T, TContext> CosmosItemOperation getUpsertItemOperation(
         T item,
         PartitionKey partitionKey,
@@ -527,7 +552,7 @@ public final class BulkOperations {
             requestOptions = new BulkItemRequestOptions();
         }
 
-        return new ItemBulkOperation<>(
+        ItemBulkOperation<T, TContext> ttContextItemBulkOperation = new ItemBulkOperation<>(
             CosmosItemOperationType.UPSERT,
             null,
             partitionKey,
@@ -535,6 +560,7 @@ public final class BulkOperations {
             item,
             context
         );
+        return BridgeInternal.toDeprecatedCosmosItemOperation(ttContextItemBulkOperation);
     }
 
     /**
@@ -547,6 +573,7 @@ public final class BulkOperations {
      * @return the bulk operation.
      */
     @Beta(value = Beta.SinceVersion.V4_11_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Deprecated() //forRemoval = true, since = "4.19"
     public static CosmosItemOperation getPatchItemOperation(
         String id,
         PartitionKey partitionKey,
@@ -578,6 +605,7 @@ public final class BulkOperations {
      * @return the bulk operation.
      */
     @Beta(value = Beta.SinceVersion.V4_18_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Deprecated() //forRemoval = true, since = "4.19"
     public static <TContext> CosmosItemOperation getPatchItemOperation(
         String id,
         PartitionKey partitionKey,
@@ -607,6 +635,7 @@ public final class BulkOperations {
      * @return the bulk operation.
      */
     @Beta(value = Beta.SinceVersion.V4_11_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Deprecated() //forRemoval = true, since = "4.19"
     public static CosmosItemOperation getPatchItemOperation(
         String id,
         PartitionKey partitionKey,
@@ -634,6 +663,7 @@ public final class BulkOperations {
      * @return the bulk operation.
      */
     @Beta(value = Beta.SinceVersion.V4_18_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Deprecated() //forRemoval = true, since = "4.19"
     public static <TContext> CosmosItemOperation getPatchItemOperation(
         String id,
         PartitionKey partitionKey,
@@ -649,7 +679,8 @@ public final class BulkOperations {
             requestOptions = new BulkPatchItemRequestOptions();
         }
 
-        return new ItemBulkOperation<>(
+        ItemBulkOperation<CosmosPatchOperations, TContext> cosmosPatchOperationsTContextItemBulkOperation =
+            new ItemBulkOperation<>(
             CosmosItemOperationType.PATCH,
             id,
             partitionKey,
@@ -657,5 +688,6 @@ public final class BulkOperations {
             cosmosPatchOperations,
             context
         );
+        return BridgeInternal.toDeprecatedCosmosItemOperation(cosmosPatchOperationsTContextItemBulkOperation);
     }
 }

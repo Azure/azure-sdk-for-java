@@ -55,7 +55,7 @@ public class PatchTest extends TestSuiteBase {
 
         assertThat(testItem.children[1].status).isNull();
 
-        CosmosPatchOperations cosmosPatchOperations = CosmosPatchOperations.create();
+        com.azure.cosmos.models.CosmosPatchOperations cosmosPatchOperations = com.azure.cosmos.models.CosmosPatchOperations.create();
         cosmosPatchOperations.add("/children/1/CamelCase", "patched");
         cosmosPatchOperations.remove("/description");
         cosmosPatchOperations.replace("/taskNum", newTaskNum);
@@ -117,7 +117,7 @@ public class PatchTest extends TestSuiteBase {
 
         assertThat(testItem.children[1].status).isNull();
 
-        CosmosPatchOperations cosmosPatchOperations = CosmosPatchOperations.create();
+        com.azure.cosmos.models.CosmosPatchOperations cosmosPatchOperations = com.azure.cosmos.models.CosmosPatchOperations.create();
         cosmosPatchOperations.add("/children/1/CamelCase", "patched");
         cosmosPatchOperations.remove("/description");
         cosmosPatchOperations.replace("/taskNum", newTaskNum);
@@ -160,7 +160,7 @@ public class PatchTest extends TestSuiteBase {
 
         assertThat(testItem.children[1].status).isNull();
 
-        CosmosPatchOperations cosmosPatchOperations = CosmosPatchOperations.create();
+        com.azure.cosmos.models.CosmosPatchOperations cosmosPatchOperations = com.azure.cosmos.models.CosmosPatchOperations.create();
         cosmosPatchOperations.add("/children/1/CamelCase", "alpha");
         cosmosPatchOperations.remove("/description");
         cosmosPatchOperations.replace("/taskNum", newTaskNum);
@@ -180,7 +180,7 @@ public class PatchTest extends TestSuiteBase {
         assertThat(response.getItem()).isNull(); // skip content is true
 
         // Right now
-        CosmosPatchOperations cosmosPatchOperations2 = CosmosPatchOperations.create();
+        com.azure.cosmos.models.CosmosPatchOperations cosmosPatchOperations2 = com.azure.cosmos.models.CosmosPatchOperations.create();
         cosmosPatchOperations2.set("/valid", false);
 
         CosmosItemResponse<ToDoActivity> response2 = this.container.patchItem(
@@ -214,7 +214,7 @@ public class PatchTest extends TestSuiteBase {
     public void itemPatchFailure() {
         // Create an item
         ToDoActivity testItem = ToDoActivity.createRandomItem(this.container);
-        CosmosPatchOperations cosmosPatchOperations = CosmosPatchOperations.create();
+        com.azure.cosmos.models.CosmosPatchOperations cosmosPatchOperations = com.azure.cosmos.models.CosmosPatchOperations.create();
         cosmosPatchOperations.add("/nonExistentParent/child", "bar");
         cosmosPatchOperations.remove("/cost");
 
