@@ -1677,8 +1677,8 @@ public class SearchJavaDocCodeSnippets {
             new FieldMapping("hotelName").setTargetFieldName("HotelName")));
         CreateOrUpdateIndexerOptions options = new CreateOrUpdateIndexerOptions(searchIndexerFromService)
             .setOnlyIfUnchanged(true)
-            .setDisableCacheReprocessingChangeDetection(false)
-            .setIgnoreResetRequirements(true);
+            .setCacheReprocessingChangeDetectionDisabled(false)
+            .setResetRequirementsIgnored(true);
         Response<SearchIndexer> indexerFromService = searchIndexerClient.createOrUpdateIndexerWithResponse(
             options, new Context(key1, value1));
         System.out.printf("The status code of the response is %s.%nThe indexer name is %s. "
@@ -1924,7 +1924,7 @@ public class SearchJavaDocCodeSnippets {
         dataSource.setContainer(new SearchIndexerDataContainer("updatecontainer"));
         CreateOrUpdateDataSourceConnectionOptions options = new CreateOrUpdateDataSourceConnectionOptions(dataSource)
             .setOnlyIfUnchanged(true)
-            .setIgnoreResetRequirements(true);
+            .setResetRequirementsIgnored(true);
 
         Response<SearchIndexerDataSourceConnection> updateDataSource = searchIndexerClient
             .createOrUpdateDataSourceConnectionWithResponse(options, new Context(key1, value1));
@@ -2134,8 +2134,8 @@ public class SearchJavaDocCodeSnippets {
         indexerSkillset.setDescription("This is new description!");
         CreateOrUpdateSkillsetOptions options = new CreateOrUpdateSkillsetOptions(indexerSkillset)
             .setOnlyIfUnchanged(true)
-            .setDisableCacheReprocessingChangeDetection(false)
-            .setIgnoreResetRequirements(true);
+            .setCacheReprocessingChangeDetectionDisabled(false)
+            .setResetRequirementsIgnored(true);
         Response<SearchIndexerSkillset> updateSkillsetResponse = searchIndexerClient.createOrUpdateSkillsetWithResponse(
             options, new Context(key1, value1));
         System.out.printf("The status code of the response is %s.%nThe indexer skillset name is %s. "
@@ -2304,8 +2304,8 @@ public class SearchJavaDocCodeSnippets {
                 return searchIndexerAsyncClient.createOrUpdateIndexerWithResponse(
                     new CreateOrUpdateIndexerOptions(searchIndexerFromService)
                         .setOnlyIfUnchanged(true)
-                        .setDisableCacheReprocessingChangeDetection(false)
-                        .setIgnoreResetRequirements(true));
+                        .setCacheReprocessingChangeDetectionDisabled(false)
+                        .setResetRequirementsIgnored(true));
             })
             .subscribe(indexerFromService ->
                 System.out.printf("The status code of the response is %s.%nThe indexer name is %s. "
@@ -2523,7 +2523,7 @@ public class SearchJavaDocCodeSnippets {
                 return searchIndexerAsyncClient.createOrUpdateDataSourceConnectionWithResponse(
                     new CreateOrUpdateDataSourceConnectionOptions(dataSource)
                         .setOnlyIfUnchanged(true)
-                        .setIgnoreResetRequirements(true));
+                        .setResetRequirementsIgnored(true));
             })
             .subscribe(updateDataSource ->
                 System.out.printf("The status code of the response is %s.%nThe dataSource name is %s. "
@@ -2704,8 +2704,8 @@ public class SearchJavaDocCodeSnippets {
                 return searchIndexerAsyncClient.createOrUpdateSkillsetWithResponse(
                     new CreateOrUpdateSkillsetOptions(indexerSkillset)
                         .setOnlyIfUnchanged(true)
-                        .setDisableCacheReprocessingChangeDetection(false)
-                        .setIgnoreResetRequirements(true));
+                        .setCacheReprocessingChangeDetectionDisabled(false)
+                        .setResetRequirementsIgnored(true));
             })
             .subscribe(updateSkillsetResponse ->
                 System.out.printf("The status code of the response is %s.%nThe indexer skillset name is %s. "

@@ -105,7 +105,7 @@ public class SearchIndexerClient {
      * connection}.
      * @param context additional context that is passed through the HTTP pipeline during the service call
      * @return a data source response.
-     * @throws NullPointerException If {code options} is null.
+     * @throws NullPointerException If {@code options} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SearchIndexerDataSourceConnection> createOrUpdateDataSourceConnectionWithResponse(
@@ -113,7 +113,7 @@ public class SearchIndexerClient {
         Objects.requireNonNull(options, "'options' cannot be null.");
 
         return asyncClient.createOrUpdateDataSourceConnectionWithResponse(options.getDataSourceConnection(),
-            options.isOnlyIfUnchanged(), options.getIgnoreResetRequirements(), context)
+            options.isOnlyIfUnchanged(), options.isResetRequirementsIgnored(), context)
             .block();
     }
 
@@ -124,7 +124,7 @@ public class SearchIndexerClient {
      *
      * <p> Create search indexer data source connection named "dataSource".  </p>
      *
-     * {@codesnippet com.azure.search.documents.indexes.SearchIndexerClient.createOrUpdateDataSourceConnection#SearchIndexerDataSourceConnection}
+     * {@codesnippet com.azure.search.documents.indexes.SearchIndexerClient.createDataSourceConnection#SearchIndexerDataSourceConnection}
      *
      * @param dataSourceConnection The definition of the data source to create
      * @return the data source that was created.
@@ -390,7 +390,7 @@ public class SearchIndexerClient {
         Context context) {
         Objects.requireNonNull(options, "'options' cannot be null.");
         return asyncClient.createOrUpdateIndexerWithResponse(options.getIndexer(), options.isOnlyIfUnchanged(),
-            options.getDisableCacheReprocessingChangeDetection(), options.getIgnoreResetRequirements(), context)
+            options.isCacheReprocessingChangeDetectionDisabled(), options.isResetRequirementsIgnored(), context)
             .block();
     }
 
@@ -831,7 +831,7 @@ public class SearchIndexerClient {
         Objects.requireNonNull(options, "'options' cannot be null.");
 
         return asyncClient.createOrUpdateSkillsetWithResponse(options.getSkillset(), options.isOnlyIfUnchanged(),
-            options.getDisableCacheReprocessingChangeDetection(), options.getIgnoreResetRequirements(), context)
+            options.isCacheReprocessingChangeDetectionDisabled(), options.isResetRequirementsIgnored(), context)
             .block();
     }
 

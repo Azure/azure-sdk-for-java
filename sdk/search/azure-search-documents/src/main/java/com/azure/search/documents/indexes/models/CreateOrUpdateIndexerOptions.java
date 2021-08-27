@@ -13,8 +13,8 @@ public class CreateOrUpdateIndexerOptions {
     private final SearchIndexer indexer;
 
     private boolean onlyIfUnchanged;
-    private Boolean disableCacheReprocessingChangeDetection;
-    private Boolean ignoreResetRequirements;
+    private Boolean cacheReprocessingChangeDetectionDisabled;
+    private Boolean resetRequirementsIgnored;
 
     /**
      * Creates the property bag used to create or update an {@link SearchIndexer indexer}.
@@ -63,13 +63,13 @@ public class CreateOrUpdateIndexerOptions {
      * Sets an optional flag that determines whether the created or updated {@link SearchIndexer indexer} disables cache
      * reprocessing change detection.
      *
-     * @param disableCacheReprocessingChangeDetection An optional flag that determines whether the created or updated
+     * @param cacheReprocessingChangeDetectionDisabled An optional flag that determines whether the created or updated
      * {@link SearchIndexer indexer} disables cache reprocessing change detection.
      * @return The updated CreateOrUpdateIndexerOptions object.
      */
-    public CreateOrUpdateIndexerOptions setDisableCacheReprocessingChangeDetection(
-        Boolean disableCacheReprocessingChangeDetection) {
-        this.disableCacheReprocessingChangeDetection = disableCacheReprocessingChangeDetection;
+    public CreateOrUpdateIndexerOptions setCacheReprocessingChangeDetectionDisabled(
+        Boolean cacheReprocessingChangeDetectionDisabled) {
+        this.cacheReprocessingChangeDetectionDisabled = cacheReprocessingChangeDetectionDisabled;
         return this;
     }
 
@@ -80,20 +80,20 @@ public class CreateOrUpdateIndexerOptions {
      * @return Whether the created or updated {@link SearchIndexer indexer} disables cache reprocessing change
      * detection.
      */
-    public Boolean getDisableCacheReprocessingChangeDetection() {
-        return disableCacheReprocessingChangeDetection;
+    public Boolean isCacheReprocessingChangeDetectionDisabled() {
+        return cacheReprocessingChangeDetectionDisabled;
     }
 
     /**
      * Sets an optional flag that determines whether the created or updated {@link SearchIndexer indexer} ignores cache
      * reset requirements.
      *
-     * @param ignoreResetRequirements An optional flag that determines whether the created or updated {@link
+     * @param resetRequirementsIgnored An optional flag that determines whether the created or updated {@link
      * SearchIndexer indexer} ignores cache reset requirements.
      * @return The updated CreateOrUpdateIndexerOptions object.
      */
-    public CreateOrUpdateIndexerOptions setIgnoreResetRequirements(Boolean ignoreResetRequirements) {
-        this.ignoreResetRequirements = ignoreResetRequirements;
+    public CreateOrUpdateIndexerOptions setResetRequirementsIgnored(Boolean resetRequirementsIgnored) {
+        this.resetRequirementsIgnored = resetRequirementsIgnored;
         return this;
     }
 
@@ -103,7 +103,7 @@ public class CreateOrUpdateIndexerOptions {
      *
      * @return Whether the created or updated {@link SearchIndexer indexer} ignores cache reset requirements.
      */
-    public Boolean getIgnoreResetRequirements() {
-        return ignoreResetRequirements;
+    public Boolean isResetRequirementsIgnored() {
+        return resetRequirementsIgnored;
     }
 }

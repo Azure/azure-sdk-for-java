@@ -30,7 +30,6 @@ import com.azure.search.documents.indexes.models.SearchIndexerSkillset;
 import com.azure.search.documents.indexes.models.SearchIndexerStatus;
 import reactor.core.publisher.Mono;
 
-import java.util.Objects;
 import java.util.function.Function;
 
 import static com.azure.core.util.FluxUtil.monoError;
@@ -151,7 +150,7 @@ public class SearchIndexerAsyncClient {
      * @param options The options used to create or update the {@link SearchIndexerDataSourceConnection data source
      * connection}.
      * @return a data source response.
-     * @throws NullPointerException If {code options} is null.
+     * @throws NullPointerException If {@code options} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SearchIndexerDataSourceConnection>> createOrUpdateDataSourceConnectionWithResponse(
@@ -161,13 +160,15 @@ public class SearchIndexerAsyncClient {
         }
 
         return withContext(context -> createOrUpdateDataSourceConnectionWithResponse(options.getDataSourceConnection(),
-            options.isOnlyIfUnchanged(), options.getIgnoreResetRequirements(), context));
+            options.isOnlyIfUnchanged(), options.isResetRequirementsIgnored(), context));
     }
 
     Mono<Response<SearchIndexerDataSourceConnection>> createOrUpdateDataSourceConnectionWithResponse(
         SearchIndexerDataSourceConnection dataSource, boolean onlyIfUnchanged, Boolean ignoreResetRequirements,
         Context context) {
-        Objects.requireNonNull(dataSource, "'DataSource' cannot be null.");
+        if (dataSource == null) {
+            return monoError(logger, new NullPointerException("'dataSource' cannot be null."));
+        }
         String ifMatch = onlyIfUnchanged ? dataSource.getETag() : null;
         if (dataSource.getConnectionString() == null) {
             dataSource.setConnectionString("<unchanged>");
@@ -190,7 +191,7 @@ public class SearchIndexerAsyncClient {
      *
      * <p> Create search indexer data source connection named "dataSource".  </p>
      *
-     * {@codesnippet com.azure.search.documents.indexes.SearchIndexerAsyncClient.createOrUpdateDataSourceConnection#SearchIndexerDataSourceConnection}
+     * {@codesnippet com.azure.search.documents.indexes.SearchIndexerAsyncClient.createDataSourceConnection#SearchIndexerDataSourceConnection}
      *
      * @param dataSource The definition of the dataSource to create.
      * @return a Mono which performs the network request upon subscription.
@@ -382,7 +383,9 @@ public class SearchIndexerAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteDataSourceConnectionWithResponse(SearchIndexerDataSourceConnection dataSource,
         boolean onlyIfUnchanged) {
-        Objects.requireNonNull(dataSource, "'DataSource' cannot be null");
+        if (dataSource == null) {
+            return monoError(logger, new NullPointerException("'dataSource' cannot be null."));
+        }
         String eTag = onlyIfUnchanged ? dataSource.getETag() : null;
         return withContext(context -> deleteDataSourceConnectionWithResponse(dataSource.getName(), eTag, context));
     }
@@ -491,6 +494,7 @@ public class SearchIndexerAsyncClient {
      *
      * @param options The options used to create or update the {@link SearchIndexer indexer}.
      * @return a response containing the created Indexer.
+     * @throws NullPointerException If {@code options} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SearchIndexer>> createOrUpdateIndexerWithResponse(CreateOrUpdateIndexerOptions options) {
@@ -499,13 +503,15 @@ public class SearchIndexerAsyncClient {
         }
 
         return withContext(context -> createOrUpdateIndexerWithResponse(options.getIndexer(),
-            options.isOnlyIfUnchanged(), options.getDisableCacheReprocessingChangeDetection(),
-            options.getIgnoreResetRequirements(), context));
+            options.isOnlyIfUnchanged(), options.isCacheReprocessingChangeDetectionDisabled(),
+            options.isResetRequirementsIgnored(), context));
     }
 
     Mono<Response<SearchIndexer>> createOrUpdateIndexerWithResponse(SearchIndexer indexer, boolean onlyIfUnchanged,
         Boolean disableCacheReprocessingChangeDetection, Boolean ignoreResetRequirements, Context context) {
-        Objects.requireNonNull(indexer, "'Indexer' cannot be 'null'");
+        if (indexer == null) {
+            return monoError(logger, new NullPointerException("'indexer' cannot be null."));
+        }
         String ifMatch = onlyIfUnchanged ? indexer.getETag() : null;
         try {
             return restClient.getIndexers()
@@ -665,7 +671,9 @@ public class SearchIndexerAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteIndexerWithResponse(SearchIndexer indexer, boolean onlyIfUnchanged) {
-        Objects.requireNonNull(indexer, "'Indexer' cannot be null");
+        if (indexer == null) {
+            return monoError(logger, new NullPointerException("'indexer' cannot be null."));
+        }
         String eTag = onlyIfUnchanged ? indexer.getETag() : null;
         return withContext(context -> deleteIndexerWithResponse(indexer.getName(), eTag, context));
     }
@@ -857,7 +865,9 @@ public class SearchIndexerAsyncClient {
     }
 
     Mono<Response<SearchIndexerSkillset>> createSkillsetWithResponse(SearchIndexerSkillset skillset, Context context) {
-        Objects.requireNonNull(skillset, "'Skillset' cannot be null.");
+        if (skillset == null) {
+            return monoError(logger, new NullPointerException("'skillset' cannot be null."));
+        }
         try {
             return restClient.getSkillsets()
                 .createWithResponseAsync(skillset, null, context)
@@ -1038,14 +1048,16 @@ public class SearchIndexerAsyncClient {
         }
 
         return withContext(context -> createOrUpdateSkillsetWithResponse(options.getSkillset(),
-            options.isOnlyIfUnchanged(), options.getDisableCacheReprocessingChangeDetection(),
-            options.getIgnoreResetRequirements(), context));
+            options.isOnlyIfUnchanged(), options.isCacheReprocessingChangeDetectionDisabled(),
+            options.isResetRequirementsIgnored(), context));
     }
 
     Mono<Response<SearchIndexerSkillset>> createOrUpdateSkillsetWithResponse(SearchIndexerSkillset skillset,
         boolean onlyIfUnchanged, Boolean disableCacheReprocessingChangeDetection, Boolean ignoreResetRequirements,
         Context context) {
-        Objects.requireNonNull(skillset, "'Skillset' cannot be null.");
+        if (skillset == null) {
+            return monoError(logger, new NullPointerException("'skillset' cannot be null."));
+        }
         String ifMatch = onlyIfUnchanged ? skillset.getETag() : null;
         try {
             return restClient.getSkillsets()
@@ -1091,7 +1103,9 @@ public class SearchIndexerAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteSkillsetWithResponse(SearchIndexerSkillset skillset, boolean onlyIfUnchanged) {
-        Objects.requireNonNull(skillset, "'Skillset' cannot be null.");
+        if (skillset == null) {
+            return monoError(logger, new NullPointerException("'skillset' cannot be null."));
+        }
         String eTag = onlyIfUnchanged ? skillset.getETag() : null;
         return withContext(context -> deleteSkillsetWithResponse(skillset.getName(), eTag, context));
     }
@@ -1106,5 +1120,4 @@ public class SearchIndexerAsyncClient {
             return monoError(logger, ex);
         }
     }
-
 }
