@@ -14,7 +14,7 @@
 
     <groupId>com.azure</groupId>
     <artifactId>azure-security-keyvault-jca</artifactId>
-    <version>2.0.0</version> <!-- {x-version-update;com.azure:azure-security-keyvault-jca;current} -->
+    <version>2.1.0-beta.1</version> <!-- {x-version-update;com.azure:azure-security-keyvault-jca;current} -->
     <name>JCA Provider for Azure Key Vault</name>
     <description>The Java Crypto Architecture (JCA) Provider for Azure Key Vault</description>
 
