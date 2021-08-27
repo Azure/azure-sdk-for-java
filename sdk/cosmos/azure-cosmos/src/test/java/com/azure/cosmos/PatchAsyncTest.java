@@ -3,9 +3,14 @@
 
 package com.azure.cosmos;
 
+import com.azure.cosmos.models.CosmosBatch;
+import com.azure.cosmos.models.CosmosBatchPatchItemRequestOptions;
+import com.azure.cosmos.models.CosmosBatchResponse;
 import com.azure.cosmos.models.CosmosBulkItemRequestOptions;
+import com.azure.cosmos.models.CosmosBulkOperationResponse;
 import com.azure.cosmos.models.CosmosBulkOperations;
 import com.azure.cosmos.models.CosmosBulkPatchItemRequestOptions;
+import com.azure.cosmos.models.CosmosItemOperation;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.PartitionKey;
 import io.netty.handler.codec.http.HttpResponseStatus;
@@ -45,14 +50,14 @@ public class PatchAsyncTest extends BatchTestBase {
     @Test(groups = {  "emulator"  }, timeOut = TIMEOUT)
     public void patchInBatch() {
         BatchTestBase.TestDoc testDoc = this.populateTestDoc(this.partitionKey1);
-        CosmosPatchOperations cosmosPatchOperations = CosmosPatchOperations.create();
+        com.azure.cosmos.models.CosmosPatchOperations cosmosPatchOperations = com.azure.cosmos.models.CosmosPatchOperations.create();
         cosmosPatchOperations.set("/cost", testDoc.getCost() + 12);
 
-        TransactionalBatch batch = TransactionalBatch.createTransactionalBatch(this.getPartitionKey(this.partitionKey1));
+        CosmosBatch batch = CosmosBatch.createCosmosBatch(this.getPartitionKey(this.partitionKey1));
         batch.createItemOperation(testDoc);
         batch.patchItemOperation(testDoc.getId(), cosmosPatchOperations);
 
-        TransactionalBatchResponse batchResponse = container.executeTransactionalBatch(batch).block();
+        CosmosBatchResponse batchResponse = container.executeCosmosBatch(batch).block();
 
         this.verifyBatchProcessed(batchResponse, 2);
 
@@ -73,23 +78,23 @@ public class PatchAsyncTest extends BatchTestBase {
     public void conditionalPatchInBatch() {
         BatchTestBase.TestDoc testDoc = this.populateTestDoc(this.partitionKey1);
 
-        CosmosPatchOperations cosmosPatchOperationsFirst = CosmosPatchOperations.create();
+        com.azure.cosmos.models.CosmosPatchOperations cosmosPatchOperationsFirst = com.azure.cosmos.models.CosmosPatchOperations.create();
         int costValue = testDoc.getCost() + 12;
         cosmosPatchOperationsFirst.set("/cost", costValue);
 
-        CosmosPatchOperations cosmosPatchOperationsSecond = CosmosPatchOperations.create();
+        com.azure.cosmos.models.CosmosPatchOperations cosmosPatchOperationsSecond = com.azure.cosmos.models.CosmosPatchOperations.create();
         cosmosPatchOperationsSecond.set("/cost", 0);
 
-        TransactionalBatch batchFail = TransactionalBatch.createTransactionalBatch(this.getPartitionKey(this.partitionKey1));
+        com.azure.cosmos.models.CosmosBatch batchFail = com.azure.cosmos.models.CosmosBatch.createCosmosBatch(this.getPartitionKey(this.partitionKey1));
         batchFail.createItemOperation(testDoc);
         batchFail.patchItemOperation(testDoc.getId(), cosmosPatchOperationsFirst);
 
-        TransactionalBatchPatchItemRequestOptions transactionalBatchPatchItemRequestOptionsFail = new TransactionalBatchPatchItemRequestOptions();
+        CosmosBatchPatchItemRequestOptions transactionalBatchPatchItemRequestOptionsFail = new CosmosBatchPatchItemRequestOptions();
         int costFalse = costValue-1;
         transactionalBatchPatchItemRequestOptionsFail.setFilterPredicate("from root where root.cost = " + costFalse);
         batchFail.patchItemOperation(testDoc.getId(), cosmosPatchOperationsSecond, transactionalBatchPatchItemRequestOptionsFail);
 
-        TransactionalBatchResponse batchResponseFail = container.executeTransactionalBatch(batchFail).onErrorMap(throwable -> {
+        CosmosBatchResponse batchResponseFail = container.executeCosmosBatch(batchFail).onErrorMap(throwable -> {
             return throwable;
         }).block();
 
@@ -98,15 +103,15 @@ public class PatchAsyncTest extends BatchTestBase {
         assertThat(batchResponseFail.getResults().get(1).getStatusCode()).isEqualTo(HttpResponseStatus.FAILED_DEPENDENCY.code());
         assertThat(batchResponseFail.getResults().get(2).getStatusCode()).isEqualTo(HttpResponseStatus.PRECONDITION_FAILED.code());
 
-        TransactionalBatchPatchItemRequestOptions transactionalBatchPatchItemRequestOptionsTrue = new TransactionalBatchPatchItemRequestOptions();
+        CosmosBatchPatchItemRequestOptions transactionalBatchPatchItemRequestOptionsTrue = new CosmosBatchPatchItemRequestOptions();
         transactionalBatchPatchItemRequestOptionsTrue.setFilterPredicate("from root where root.cost = " + costValue);
 
-        TransactionalBatch batchPass = TransactionalBatch.createTransactionalBatch(this.getPartitionKey(this.partitionKey1));
+        com.azure.cosmos.models.CosmosBatch batchPass = com.azure.cosmos.models.CosmosBatch.createCosmosBatch(this.getPartitionKey(this.partitionKey1));
         batchPass.createItemOperation(testDoc);
         batchPass.patchItemOperation(testDoc.getId(), cosmosPatchOperationsFirst);
         batchPass.patchItemOperation(testDoc.getId(), cosmosPatchOperationsSecond, transactionalBatchPatchItemRequestOptionsTrue);
 
-        TransactionalBatchResponse batchResponsePass = container.executeTransactionalBatch(batchPass).onErrorMap(throwable -> {
+        CosmosBatchResponse batchResponsePass = container.executeCosmosBatch(batchPass).onErrorMap(throwable -> {
             return throwable;
         }).block();
 
@@ -142,11 +147,11 @@ public class PatchAsyncTest extends BatchTestBase {
             container.createItem(testDocForPatch, new PartitionKey(this.partitionKey1), null).block();
         assertThat(createItemResponse.getStatusCode()).isEqualTo(HttpResponseStatus.CREATED.code());
 
-        CosmosPatchOperations cosmosPatchOperations1 = CosmosPatchOperations.create();
+        com.azure.cosmos.models.CosmosPatchOperations cosmosPatchOperations1 = com.azure.cosmos.models.CosmosPatchOperations.create();
         int costInterimValue = 100;
         cosmosPatchOperations1.replace("/cost", costInterimValue);
 
-        CosmosPatchOperations cosmosPatchOperations2 = CosmosPatchOperations.create();
+        com.azure.cosmos.models.CosmosPatchOperations cosmosPatchOperations2 = com.azure.cosmos.models.CosmosPatchOperations.create();
         cosmosPatchOperations2.replace("/description", "xx");
 
         CosmosBulkPatchItemRequestOptions contentResponseDisableRequestOption = new CosmosBulkPatchItemRequestOptions()
@@ -155,7 +160,7 @@ public class PatchAsyncTest extends BatchTestBase {
         CosmosBulkItemRequestOptions contentItemResponseDisableRequestOption = new CosmosBulkItemRequestOptions()
             .setContentResponseOnWriteEnabled(false);
 
-        CosmosPatchOperations cosmosPatchOperationsContinue = CosmosPatchOperations.create();
+        com.azure.cosmos.models.CosmosPatchOperations cosmosPatchOperationsContinue = com.azure.cosmos.models.CosmosPatchOperations.create();
         int costFinalValue = 200;
         cosmosPatchOperationsContinue.replace("/cost", costFinalValue);
 
@@ -211,7 +216,7 @@ public class PatchAsyncTest extends BatchTestBase {
         );
 
         List<CosmosBulkOperationResponse<Object>> bulkResponses =
-            container.processBulkOperations(Flux.fromIterable(operations)).collectList().block();
+            container.executeBulkOperations(Flux.fromIterable(operations)).collectList().block();
         assertThat(bulkResponses.size()).isEqualTo(operations.size());
 
         assertThat(bulkResponses.get(0).getResponse().getStatusCode()).isEqualTo(HttpResponseStatus.CREATED.code());

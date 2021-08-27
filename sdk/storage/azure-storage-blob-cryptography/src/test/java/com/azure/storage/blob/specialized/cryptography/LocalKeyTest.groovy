@@ -11,7 +11,7 @@ import com.azure.storage.common.implementation.Constants
 import javax.crypto.spec.SecretKeySpec
 
 class LocalKeyTest extends APISpec {
-    CryptographyServiceVersion cryptographyServiceVersion = CryptographyServiceVersion.V7_2;
+    CryptographyServiceVersion cryptographyServiceVersion = CryptographyServiceVersion.V7_2
     BlobContainerClient cc
     EncryptedBlobClient bec // encrypted client for download
 
@@ -26,7 +26,7 @@ class LocalKeyTest extends APISpec {
         AsyncKeyEncryptionKey akek = new KeyEncryptionKeyClientBuilder()
             .serviceVersion(cryptographyServiceVersion)
             .buildAsyncKeyEncryptionKey(localKey)
-            .block();
+            .block()
 
         cc = getServiceClientBuilder(env.primaryAccount)
             .buildClient()

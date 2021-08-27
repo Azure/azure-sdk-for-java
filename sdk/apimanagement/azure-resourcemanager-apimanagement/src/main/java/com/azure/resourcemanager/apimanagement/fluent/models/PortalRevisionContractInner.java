@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.apimanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.apimanagement.models.PortalRevisionStatus;
@@ -14,46 +13,24 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** Portal revisions contract details. */
-@JsonFlatten
 @Fluent
-public class PortalRevisionContractInner extends ProxyResource {
+public final class PortalRevisionContractInner extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(PortalRevisionContractInner.class);
 
     /*
-     * Portal revision description.
+     * Properties of the portal revisions.
      */
-    @JsonProperty(value = "properties.description")
-    private String description;
+    @JsonProperty(value = "properties")
+    private PortalRevisionContractProperties innerProperties;
 
-    /*
-     * Portal revision publishing status details.
+    /**
+     * Get the innerProperties property: Properties of the portal revisions.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.statusDetails", access = JsonProperty.Access.WRITE_ONLY)
-    private String statusDetails;
-
-    /*
-     * Portal revision publishing status
-     */
-    @JsonProperty(value = "properties.status", access = JsonProperty.Access.WRITE_ONLY)
-    private PortalRevisionStatus status;
-
-    /*
-     * Indicates if the Portal Revision is public.
-     */
-    @JsonProperty(value = "properties.isCurrent")
-    private Boolean isCurrent;
-
-    /*
-     * Portal revision creation date and time.
-     */
-    @JsonProperty(value = "properties.createdDateTime", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime createdDateTime;
-
-    /*
-     * Last updated date and time.
-     */
-    @JsonProperty(value = "properties.updatedDateTime", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime updatedDateTime;
+    private PortalRevisionContractProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the description property: Portal revision description.
@@ -61,7 +38,7 @@ public class PortalRevisionContractInner extends ProxyResource {
      * @return the description value.
      */
     public String description() {
-        return this.description;
+        return this.innerProperties() == null ? null : this.innerProperties().description();
     }
 
     /**
@@ -71,7 +48,10 @@ public class PortalRevisionContractInner extends ProxyResource {
      * @return the PortalRevisionContractInner object itself.
      */
     public PortalRevisionContractInner withDescription(String description) {
-        this.description = description;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PortalRevisionContractProperties();
+        }
+        this.innerProperties().withDescription(description);
         return this;
     }
 
@@ -81,7 +61,7 @@ public class PortalRevisionContractInner extends ProxyResource {
      * @return the statusDetails value.
      */
     public String statusDetails() {
-        return this.statusDetails;
+        return this.innerProperties() == null ? null : this.innerProperties().statusDetails();
     }
 
     /**
@@ -90,7 +70,7 @@ public class PortalRevisionContractInner extends ProxyResource {
      * @return the status value.
      */
     public PortalRevisionStatus status() {
-        return this.status;
+        return this.innerProperties() == null ? null : this.innerProperties().status();
     }
 
     /**
@@ -99,7 +79,7 @@ public class PortalRevisionContractInner extends ProxyResource {
      * @return the isCurrent value.
      */
     public Boolean isCurrent() {
-        return this.isCurrent;
+        return this.innerProperties() == null ? null : this.innerProperties().isCurrent();
     }
 
     /**
@@ -109,7 +89,10 @@ public class PortalRevisionContractInner extends ProxyResource {
      * @return the PortalRevisionContractInner object itself.
      */
     public PortalRevisionContractInner withIsCurrent(Boolean isCurrent) {
-        this.isCurrent = isCurrent;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PortalRevisionContractProperties();
+        }
+        this.innerProperties().withIsCurrent(isCurrent);
         return this;
     }
 
@@ -119,7 +102,7 @@ public class PortalRevisionContractInner extends ProxyResource {
      * @return the createdDateTime value.
      */
     public OffsetDateTime createdDateTime() {
-        return this.createdDateTime;
+        return this.innerProperties() == null ? null : this.innerProperties().createdDateTime();
     }
 
     /**
@@ -128,7 +111,7 @@ public class PortalRevisionContractInner extends ProxyResource {
      * @return the updatedDateTime value.
      */
     public OffsetDateTime updatedDateTime() {
-        return this.updatedDateTime;
+        return this.innerProperties() == null ? null : this.innerProperties().updatedDateTime();
     }
 
     /**
@@ -137,5 +120,8 @@ public class PortalRevisionContractInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

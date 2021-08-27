@@ -1,5 +1,15 @@
 # Release History
 
+## 3.9.0-beta.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
 ## 3.8.0 (2021-08-25)
 This release is compatible with Spring Boot 2.5.0 - 2.5.3.
 ### Dependency Upgrades

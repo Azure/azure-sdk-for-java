@@ -86,7 +86,7 @@ public final class ApiManagementSkusClientImpl implements ApiManagementSkusClien
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of Microsoft.
+     * @return the list of Microsoft.ApiManagement SKUs available for your Subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ApiManagementSkuInner>> listSinglePageAsync() {
@@ -132,7 +132,7 @@ public final class ApiManagementSkusClientImpl implements ApiManagementSkusClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of Microsoft.
+     * @return the list of Microsoft.ApiManagement SKUs available for your Subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ApiManagementSkuInner>> listSinglePageAsync(Context context) {
@@ -173,7 +173,7 @@ public final class ApiManagementSkusClientImpl implements ApiManagementSkusClien
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of Microsoft.
+     * @return the list of Microsoft.ApiManagement SKUs available for your Subscription.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ApiManagementSkuInner> listAsync() {
@@ -187,7 +187,7 @@ public final class ApiManagementSkusClientImpl implements ApiManagementSkusClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of Microsoft.
+     * @return the list of Microsoft.ApiManagement SKUs available for your Subscription.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ApiManagementSkuInner> listAsync(Context context) {
@@ -200,7 +200,7 @@ public final class ApiManagementSkusClientImpl implements ApiManagementSkusClien
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of Microsoft.
+     * @return the list of Microsoft.ApiManagement SKUs available for your Subscription.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ApiManagementSkuInner> list() {
@@ -214,7 +214,7 @@ public final class ApiManagementSkusClientImpl implements ApiManagementSkusClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of Microsoft.
+     * @return the list of Microsoft.ApiManagement SKUs available for your Subscription.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ApiManagementSkuInner> list(Context context) {
