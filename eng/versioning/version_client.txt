@@ -146,6 +146,7 @@ com.azure.spring:azure-spring-cloud-feature-management-web;2.0.0;2.1.0-beta.1
 com.azure.spring:azure-spring-cloud-feature-management;2.0.0;2.1.0-beta.1
 com.azure.spring:azure-spring-cloud-starter-appconfiguration-config;2.0.0;2.1.0
 com.azure.spring:azure-spring-boot-bom;3.7.0;3.8.0
+com.azure.spring:azure-spring-cloud-dependencies;2.7.0;2.8.0
 com.azure.spring:azure-spring-boot-starter-active-directory-b2c;3.7.0;3.8.0
 com.azure.spring:azure-spring-boot-starter-active-directory;3.7.0;3.8.0
 com.azure.spring:azure-spring-boot-starter-cosmos;3.7.0;3.8.0
@@ -153,12 +154,10 @@ com.azure.spring:azure-spring-boot-starter-keyvault-certificates;3.0.1;3.1.0
 com.azure.spring:azure-spring-boot-starter-keyvault-secrets;3.7.0;3.8.0
 com.azure.spring:azure-spring-boot-starter-servicebus-jms;3.7.0;3.8.0
 com.azure.spring:azure-spring-boot-starter-storage;3.7.0;3.8.0
-com.azure.spring:azure-spring-boot-starter;3.7.0;3.8.0
-com.azure.spring:azure-spring-boot;3.7.0;3.8.0
 com.azure.spring:azure-spring-cloud-autoconfigure;2.7.0;2.8.0
 com.azure.spring:azure-spring-cloud-core;2.7.0;2.8.0
 com.azure.spring:azure-spring-cloud-resourcemanager;2.7.0;2.8.0-beta.1
-com.azure.spring:azure-spring-cloud-dependencies;2.7.0;2.8.0
+com.azure.spring:azure-spring-cloud-starter;3.7.0;3.8.0
 com.azure.spring:azure-spring-cloud-messaging;2.7.0;2.8.0
 com.azure.spring:azure-spring-cloud-starter-cache;2.7.0;2.8.0
 com.azure.spring:azure-spring-cloud-starter-eventhubs-kafka;2.7.0;2.8.0

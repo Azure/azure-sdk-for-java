@@ -12,10 +12,10 @@
   </parent>
 
   <groupId>com.azure.spring</groupId>
-  <artifactId>azure-spring-boot-starter</artifactId>
-  <version>3.8.0</version> <!-- {x-version-update;com.azure.spring:azure-spring-boot-starter;current} -->
+  <artifactId>azure-spring-cloud-starter</artifactId>
+  <version>3.8.0</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-starter;current} -->
 
-  <name>Azure Spring Boot Starter</name>
+  <name>Azure Spring Cloud Starter</name>
   <description>Core starter, including auto-configuration support</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 

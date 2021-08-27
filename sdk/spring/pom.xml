@@ -119,7 +119,7 @@
       <modules>
         <module>azure-spring-cloud-core</module>
         <module>azure-spring-cloud-autoconfigure</module>
-        <module>azure-spring-boot-starter</module>
+        <module>azure-spring-cloud-starter</module>
         <module>azure-spring-boot-starter-active-directory</module>
         <module>azure-spring-boot-starter-active-directory-b2c</module>
         <module>azure-spring-boot-starter-cosmos</module>
