@@ -70,7 +70,10 @@ public interface ObjectReplicationPoliciesOperationsClient {
      *     insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
      *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param objectReplicationPolicyId The ID of object replication policy or 'default' if the policy ID is unknown.
+     * @param objectReplicationPolicyId For the destination account, provide the value 'default'. Configure the policy
+     *     on the destination account first. For the source account, provide the value of the policy ID that is returned
+     *     when you download the policy that was defined on the destination account. The policy is downloaded as a JSON
+     *     file.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -87,7 +90,10 @@ public interface ObjectReplicationPoliciesOperationsClient {
      *     insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
      *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param objectReplicationPolicyId The ID of object replication policy or 'default' if the policy ID is unknown.
+     * @param objectReplicationPolicyId For the destination account, provide the value 'default'. Configure the policy
+     *     on the destination account first. For the source account, provide the value of the policy ID that is returned
+     *     when you download the policy that was defined on the destination account. The policy is downloaded as a JSON
+     *     file.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -104,7 +110,10 @@ public interface ObjectReplicationPoliciesOperationsClient {
      *     insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
      *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param objectReplicationPolicyId The ID of object replication policy or 'default' if the policy ID is unknown.
+     * @param objectReplicationPolicyId For the destination account, provide the value 'default'. Configure the policy
+     *     on the destination account first. For the source account, provide the value of the policy ID that is returned
+     *     when you download the policy that was defined on the destination account. The policy is downloaded as a JSON
+     *     file.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -120,7 +129,10 @@ public interface ObjectReplicationPoliciesOperationsClient {
      *     insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
      *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param objectReplicationPolicyId The ID of object replication policy or 'default' if the policy ID is unknown.
+     * @param objectReplicationPolicyId For the destination account, provide the value 'default'. Configure the policy
+     *     on the destination account first. For the source account, provide the value of the policy ID that is returned
+     *     when you download the policy that was defined on the destination account. The policy is downloaded as a JSON
+     *     file.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -138,7 +150,10 @@ public interface ObjectReplicationPoliciesOperationsClient {
      *     insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
      *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param objectReplicationPolicyId The ID of object replication policy or 'default' if the policy ID is unknown.
+     * @param objectReplicationPolicyId For the destination account, provide the value 'default'. Configure the policy
+     *     on the destination account first. For the source account, provide the value of the policy ID that is returned
+     *     when you download the policy that was defined on the destination account. The policy is downloaded as a JSON
+     *     file.
      * @param properties The object replication policy set to a storage account. A unique policy ID will be created if
      *     absent.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -160,7 +175,10 @@ public interface ObjectReplicationPoliciesOperationsClient {
      *     insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
      *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param objectReplicationPolicyId The ID of object replication policy or 'default' if the policy ID is unknown.
+     * @param objectReplicationPolicyId For the destination account, provide the value 'default'. Configure the policy
+     *     on the destination account first. For the source account, provide the value of the policy ID that is returned
+     *     when you download the policy that was defined on the destination account. The policy is downloaded as a JSON
+     *     file.
      * @param properties The object replication policy set to a storage account. A unique policy ID will be created if
      *     absent.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -182,7 +200,10 @@ public interface ObjectReplicationPoliciesOperationsClient {
      *     insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
      *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param objectReplicationPolicyId The ID of object replication policy or 'default' if the policy ID is unknown.
+     * @param objectReplicationPolicyId For the destination account, provide the value 'default'. Configure the policy
+     *     on the destination account first. For the source account, provide the value of the policy ID that is returned
+     *     when you download the policy that was defined on the destination account. The policy is downloaded as a JSON
+     *     file.
      * @param properties The object replication policy set to a storage account. A unique policy ID will be created if
      *     absent.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -204,7 +225,10 @@ public interface ObjectReplicationPoliciesOperationsClient {
      *     insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
      *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param objectReplicationPolicyId The ID of object replication policy or 'default' if the policy ID is unknown.
+     * @param objectReplicationPolicyId For the destination account, provide the value 'default'. Configure the policy
+     *     on the destination account first. For the source account, provide the value of the policy ID that is returned
+     *     when you download the policy that was defined on the destination account. The policy is downloaded as a JSON
+     *     file.
      * @param properties The object replication policy set to a storage account. A unique policy ID will be created if
      *     absent.
      * @param context The context to associate with this operation.
@@ -228,7 +252,10 @@ public interface ObjectReplicationPoliciesOperationsClient {
      *     insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
      *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param objectReplicationPolicyId The ID of object replication policy or 'default' if the policy ID is unknown.
+     * @param objectReplicationPolicyId For the destination account, provide the value 'default'. Configure the policy
+     *     on the destination account first. For the source account, provide the value of the policy ID that is returned
+     *     when you download the policy that was defined on the destination account. The policy is downloaded as a JSON
+     *     file.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -245,7 +272,10 @@ public interface ObjectReplicationPoliciesOperationsClient {
      *     insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
      *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param objectReplicationPolicyId The ID of object replication policy or 'default' if the policy ID is unknown.
+     * @param objectReplicationPolicyId For the destination account, provide the value 'default'. Configure the policy
+     *     on the destination account first. For the source account, provide the value of the policy ID that is returned
+     *     when you download the policy that was defined on the destination account. The policy is downloaded as a JSON
+     *     file.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -261,7 +291,10 @@ public interface ObjectReplicationPoliciesOperationsClient {
      *     insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
      *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param objectReplicationPolicyId The ID of object replication policy or 'default' if the policy ID is unknown.
+     * @param objectReplicationPolicyId For the destination account, provide the value 'default'. Configure the policy
+     *     on the destination account first. For the source account, provide the value of the policy ID that is returned
+     *     when you download the policy that was defined on the destination account. The policy is downloaded as a JSON
+     *     file.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -276,7 +309,10 @@ public interface ObjectReplicationPoliciesOperationsClient {
      *     insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
      *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param objectReplicationPolicyId The ID of object replication policy or 'default' if the policy ID is unknown.
+     * @param objectReplicationPolicyId For the destination account, provide the value 'default'. Configure the policy
+     *     on the destination account first. For the source account, provide the value of the policy ID that is returned
+     *     when you download the policy that was defined on the destination account. The policy is downloaded as a JSON
+     *     file.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.

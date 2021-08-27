@@ -56,7 +56,7 @@ public class CosmosBulkTest  extends BatchTestBase {
     public void createItem_withBulk() {
         int totalRequest = getTotalRequest();
 
-        List<CosmosItemOperation> cosmosItemOperations = new ArrayList<>();
+        List<com.azure.cosmos.models.CosmosItemOperation> cosmosItemOperations = new ArrayList<>();
         for (int i = 0; i < totalRequest; i++) {
             String partitionKey = UUID.randomUUID().toString();
             TestDoc testDoc = this.populateTestDoc(partitionKey);
@@ -71,13 +71,13 @@ public class CosmosBulkTest  extends BatchTestBase {
         cosmosBulkExecutionOptions.setMaxMicroBatchSize(100);
         cosmosBulkExecutionOptions.setMaxMicroBatchConcurrency(5);
 
-        List<CosmosBulkOperationResponse<CosmosBulkAsyncTest>> bulkResponse = bulkContainer
-            .processBulkOperations(cosmosItemOperations, cosmosBulkExecutionOptions);
+        List<com.azure.cosmos.models.CosmosBulkOperationResponse<CosmosBulkAsyncTest>> bulkResponse = bulkContainer
+            .executeBulkOperations(cosmosItemOperations, cosmosBulkExecutionOptions);
 
         assertThat(bulkResponse.size()).isEqualTo(totalRequest * 2);
 
-        for (CosmosBulkOperationResponse<CosmosBulkAsyncTest> cosmosBulkOperationResponse : bulkResponse) {
-            CosmosBulkItemResponse cosmosBulkItemResponse = cosmosBulkOperationResponse.getResponse();
+        for (com.azure.cosmos.models.CosmosBulkOperationResponse<CosmosBulkAsyncTest> cosmosBulkOperationResponse : bulkResponse) {
+            com.azure.cosmos.models.CosmosBulkItemResponse cosmosBulkItemResponse = cosmosBulkOperationResponse.getResponse();
 
             assertThat(cosmosBulkItemResponse.getStatusCode()).isEqualTo(HttpResponseStatus.CREATED.code());
             assertThat(cosmosBulkItemResponse.getRequestCharge()).isGreaterThan(0);
@@ -92,7 +92,7 @@ public class CosmosBulkTest  extends BatchTestBase {
     public void upsertItem_withbulk() {
         int totalRequest = getTotalRequest();
 
-        List<CosmosItemOperation> cosmosItemOperations = new ArrayList<>();
+        List<com.azure.cosmos.models.CosmosItemOperation> cosmosItemOperations = new ArrayList<>();
 
         for (int i = 0; i < totalRequest; i++) {
             String partitionKey = UUID.randomUUID().toString();
@@ -106,13 +106,13 @@ public class CosmosBulkTest  extends BatchTestBase {
         cosmosBulkExecutionOptions.setMaxMicroBatchSize(100);
         cosmosBulkExecutionOptions.setMaxMicroBatchConcurrency(1);
 
-        List<CosmosBulkOperationResponse<Object>> bulkResponse = bulkContainer
-            .processBulkOperations(cosmosItemOperations);
+        List<com.azure.cosmos.models.CosmosBulkOperationResponse<Object>> bulkResponse = bulkContainer
+            .executeBulkOperations(cosmosItemOperations);
 
         assertThat(bulkResponse.size()).isEqualTo(totalRequest);
 
-        for (CosmosBulkOperationResponse<Object> cosmosBulkOperationResponse : bulkResponse) {
-            CosmosBulkItemResponse cosmosBulkItemResponse = cosmosBulkOperationResponse.getResponse();
+        for (com.azure.cosmos.models.CosmosBulkOperationResponse<Object> cosmosBulkOperationResponse : bulkResponse) {
+            com.azure.cosmos.models.CosmosBulkItemResponse cosmosBulkItemResponse = cosmosBulkOperationResponse.getResponse();
 
             assertThat(cosmosBulkItemResponse.getStatusCode()).isEqualTo(HttpResponseStatus.CREATED.code());
             assertThat(cosmosBulkItemResponse.getRequestCharge()).isGreaterThan(0);
@@ -133,7 +133,7 @@ public class CosmosBulkTest  extends BatchTestBase {
     public void deleteItem_withBulk() {
         int totalRequest = getTotalRequest();
 
-        List<CosmosItemOperation> cosmosItemOperations = new ArrayList<>();
+        List<com.azure.cosmos.models.CosmosItemOperation> cosmosItemOperations = new ArrayList<>();
 
         for (int i = 0; i < totalRequest; i++) {
             String partitionKey = UUID.randomUUID().toString();
@@ -144,9 +144,9 @@ public class CosmosBulkTest  extends BatchTestBase {
         }
         createItemsAndVerify(cosmosItemOperations);
 
-        List<CosmosItemOperation> deleteCosmosItemOperation = new ArrayList<>();
+        List<com.azure.cosmos.models.CosmosItemOperation> deleteCosmosItemOperation = new ArrayList<>();
 
-        for(CosmosItemOperation cosmosItemOperation : cosmosItemOperations) {
+        for(com.azure.cosmos.models.CosmosItemOperation cosmosItemOperation : cosmosItemOperations) {
             TestDoc testDoc = cosmosItemOperation.getItem();
             deleteCosmosItemOperation.add(
                 CosmosBulkOperations.getDeleteItemOperation(testDoc.getId(), cosmosItemOperation.getPartitionKeyValue()));
@@ -156,13 +156,13 @@ public class CosmosBulkTest  extends BatchTestBase {
         cosmosBulkExecutionOptions.setMaxMicroBatchSize(30);
         cosmosBulkExecutionOptions.setMaxMicroBatchConcurrency(1);
 
-        List<CosmosBulkOperationResponse<TestDoc>> bulkResponse  = bulkContainer
-            .processBulkOperations(deleteCosmosItemOperation, cosmosBulkExecutionOptions);
+        List<com.azure.cosmos.models.CosmosBulkOperationResponse<TestDoc>> bulkResponse  = bulkContainer
+            .executeBulkOperations(deleteCosmosItemOperation, cosmosBulkExecutionOptions);
 
         assertThat(bulkResponse.size()).isEqualTo(totalRequest);
 
-        for (CosmosBulkOperationResponse<TestDoc> cosmosBulkOperationResponse : bulkResponse) {
-            CosmosBulkItemResponse cosmosBulkItemResponse = cosmosBulkOperationResponse.getResponse();
+        for (com.azure.cosmos.models.CosmosBulkOperationResponse<TestDoc> cosmosBulkOperationResponse : bulkResponse) {
+            com.azure.cosmos.models.CosmosBulkItemResponse cosmosBulkItemResponse = cosmosBulkOperationResponse.getResponse();
 
             assertThat(cosmosBulkItemResponse.getStatusCode()).isEqualTo(HttpResponseStatus.NO_CONTENT.code());
             assertThat(cosmosBulkItemResponse.getRequestCharge()).isGreaterThan(0);
@@ -177,7 +177,7 @@ public class CosmosBulkTest  extends BatchTestBase {
     public void readItem_withBulk() {
         int totalRequest = getTotalRequest();
 
-        List<CosmosItemOperation> cosmosItemOperations = new ArrayList<>();
+        List<com.azure.cosmos.models.CosmosItemOperation> cosmosItemOperations = new ArrayList<>();
 
         for (int i = 0; i < totalRequest; i++) {
             String partitionKey = UUID.randomUUID().toString();
@@ -189,9 +189,9 @@ public class CosmosBulkTest  extends BatchTestBase {
 
         createItemsAndVerify(cosmosItemOperations);
 
-        List<CosmosItemOperation> readCosmosItemOperations = new ArrayList<>();
+        List<com.azure.cosmos.models.CosmosItemOperation> readCosmosItemOperations = new ArrayList<>();
 
-        for(CosmosItemOperation cosmosItemOperation : cosmosItemOperations) {
+        for(com.azure.cosmos.models.CosmosItemOperation cosmosItemOperation : cosmosItemOperations) {
             TestDoc testDoc = cosmosItemOperation.getItem();
             readCosmosItemOperations.add(
                 CosmosBulkOperations.getReadItemOperation(testDoc.getId(), cosmosItemOperation.getPartitionKeyValue()));
@@ -201,14 +201,14 @@ public class CosmosBulkTest  extends BatchTestBase {
         cosmosBulkExecutionOptions.setMaxMicroBatchSize(30);
         cosmosBulkExecutionOptions.setMaxMicroBatchConcurrency(5);
 
-        List<CosmosBulkOperationResponse<Object>> bulkResponse  = bulkContainer
-            .processBulkOperations(readCosmosItemOperations, cosmosBulkExecutionOptions);
+        List<com.azure.cosmos.models.CosmosBulkOperationResponse<Object>> bulkResponse  = bulkContainer
+            .executeBulkOperations(readCosmosItemOperations, cosmosBulkExecutionOptions);
 
         assertThat(bulkResponse.size()).isEqualTo(totalRequest);
 
-        for (CosmosBulkOperationResponse<Object> cosmosBulkOperationResponse : bulkResponse) {
+        for (com.azure.cosmos.models.CosmosBulkOperationResponse<Object> cosmosBulkOperationResponse : bulkResponse) {
 
-            CosmosBulkItemResponse cosmosBulkItemResponse = cosmosBulkOperationResponse.getResponse();
+            com.azure.cosmos.models.CosmosBulkItemResponse cosmosBulkItemResponse = cosmosBulkOperationResponse.getResponse();
             assertThat(cosmosBulkItemResponse.getStatusCode()).isEqualTo(HttpResponseStatus.OK.code());
             assertThat(cosmosBulkItemResponse.getRequestCharge()).isGreaterThan(0);
             assertThat(cosmosBulkItemResponse.getCosmosDiagnostics().toString()).isNotNull();
@@ -225,7 +225,7 @@ public class CosmosBulkTest  extends BatchTestBase {
     public void replaceItem_withBulk() {
         int totalRequest = getTotalRequest();
 
-        List<CosmosItemOperation> cosmosItemOperations = new ArrayList<>();
+        List<com.azure.cosmos.models.CosmosItemOperation> cosmosItemOperations = new ArrayList<>();
 
         for (int i = 0; i < totalRequest; i++) {
             String partitionKey = UUID.randomUUID().toString();
@@ -237,9 +237,9 @@ public class CosmosBulkTest  extends BatchTestBase {
 
         createItemsAndVerify(cosmosItemOperations);
 
-        List<CosmosItemOperation> replaceCosmosItemOperations = new ArrayList<>();
+        List<com.azure.cosmos.models.CosmosItemOperation> replaceCosmosItemOperations = new ArrayList<>();
 
-        for(CosmosItemOperation cosmosItemOperation : cosmosItemOperations) {
+        for(com.azure.cosmos.models.CosmosItemOperation cosmosItemOperation : cosmosItemOperations) {
             TestDoc testDoc = cosmosItemOperation.getItem();
             replaceCosmosItemOperations.add(CosmosBulkOperations.getReplaceItemOperation(
                 testDoc.getId(),
@@ -247,14 +247,14 @@ public class CosmosBulkTest  extends BatchTestBase {
                 cosmosItemOperation.getPartitionKeyValue()));
         }
 
-        List<CosmosBulkOperationResponse<Object>> bulkResponse  = bulkContainer
-            .processBulkOperations(replaceCosmosItemOperations);
+        List<com.azure.cosmos.models.CosmosBulkOperationResponse<Object>> bulkResponse  = bulkContainer
+            .executeBulkOperations(replaceCosmosItemOperations);
 
         assertThat(bulkResponse.size()).isEqualTo(totalRequest);
 
-        for (CosmosBulkOperationResponse<Object> cosmosBulkOperationResponse : bulkResponse) {
+        for (com.azure.cosmos.models.CosmosBulkOperationResponse<Object> cosmosBulkOperationResponse : bulkResponse) {
 
-            CosmosBulkItemResponse cosmosBulkItemResponse = cosmosBulkOperationResponse.getResponse();
+            com.azure.cosmos.models.CosmosBulkItemResponse cosmosBulkItemResponse = cosmosBulkOperationResponse.getResponse();
             assertThat(cosmosBulkItemResponse.getStatusCode()).isEqualTo(HttpResponseStatus.OK.code());
             assertThat(cosmosBulkItemResponse.getRequestCharge()).isGreaterThan(0);
             assertThat(cosmosBulkItemResponse.getCosmosDiagnostics().toString()).isNotNull();
@@ -270,21 +270,21 @@ public class CosmosBulkTest  extends BatchTestBase {
         }
     }
 
-    private void createItemsAndVerify(List<CosmosItemOperation> cosmosItemOperations) {
+    private void createItemsAndVerify(List<com.azure.cosmos.models.CosmosItemOperation> cosmosItemOperations) {
         CosmosBulkExecutionOptions cosmosBulkExecutionOptions = new CosmosBulkExecutionOptions();
         cosmosBulkExecutionOptions.setMaxMicroBatchSize(100);
         cosmosBulkExecutionOptions.setMaxMicroBatchConcurrency(5);
 
-        List<CosmosBulkOperationResponse<Object>> bulkResponse = bulkContainer
-            .processBulkOperations(cosmosItemOperations, cosmosBulkExecutionOptions);
+        List<com.azure.cosmos.models.CosmosBulkOperationResponse<Object>> bulkResponse = bulkContainer
+            .executeBulkOperations(cosmosItemOperations, cosmosBulkExecutionOptions);
 
         assertThat(bulkResponse.size()).isEqualTo(cosmosItemOperations.size());
 
         HashSet<Integer> distinctIndex = new HashSet<>();
 
-        for (CosmosBulkOperationResponse<Object> cosmosBulkOperationResponse : bulkResponse) {
+        for (com.azure.cosmos.models.CosmosBulkOperationResponse<Object> cosmosBulkOperationResponse : bulkResponse) {
 
-            CosmosBulkItemResponse cosmosBulkItemResponse = cosmosBulkOperationResponse.getResponse();
+            com.azure.cosmos.models.CosmosBulkItemResponse cosmosBulkItemResponse = cosmosBulkOperationResponse.getResponse();
             assertThat(cosmosBulkItemResponse.getStatusCode()).isEqualTo(HttpResponseStatus.CREATED.code());
             assertThat(cosmosBulkItemResponse.getRequestCharge()).isGreaterThan(0);
             assertThat(cosmosBulkItemResponse.getCosmosDiagnostics().toString()).isNotNull();
@@ -333,13 +333,13 @@ public class CosmosBulkTest  extends BatchTestBase {
             CosmosBulkItemRequestOptions firstReplaceOptions = new CosmosBulkItemRequestOptions();
             firstReplaceOptions.setIfMatchETag(response.getETag());
 
-            List<CosmosItemOperation> cosmosItemOperations = new ArrayList<>();
+            List<com.azure.cosmos.models.CosmosItemOperation> cosmosItemOperations = new ArrayList<>();
             cosmosItemOperations.add(CosmosBulkOperations.getCreateItemOperation(testDocToCreate, new PartitionKey(this.partitionKey1)));
             cosmosItemOperations.add(CosmosBulkOperations.getReplaceItemOperation(
                 testDocToReplace.getId(), testDocToReplace, new PartitionKey(this.partitionKey1), firstReplaceOptions));
 
-            List<CosmosBulkOperationResponse<Object>> bulkResponses = bulkContainer
-                .processBulkOperations(cosmosItemOperations);
+            List<com.azure.cosmos.models.CosmosBulkOperationResponse<Object>> bulkResponses = bulkContainer
+                .executeBulkOperations(cosmosItemOperations);
 
             assertThat(bulkResponses.size()).isEqualTo(cosmosItemOperations.size());
 
@@ -358,12 +358,12 @@ public class CosmosBulkTest  extends BatchTestBase {
             CosmosBulkItemRequestOptions replaceOptions = new CosmosBulkItemRequestOptions();
             replaceOptions.setIfMatchETag(String.valueOf(this.getRandom().nextInt()));
 
-            List<CosmosItemOperation> cosmosItemOperations = new ArrayList<>();
+            List<com.azure.cosmos.models.CosmosItemOperation> cosmosItemOperations = new ArrayList<>();
             cosmosItemOperations.add(CosmosBulkOperations.getReplaceItemOperation(
                 testDocToReplace.getId(), testDocToReplace, new PartitionKey(this.partitionKey1), replaceOptions));
 
-            List<CosmosBulkOperationResponse<Object>> bulkResponses = bulkContainer
-                .processBulkOperations(cosmosItemOperations);
+            List<com.azure.cosmos.models.CosmosBulkOperationResponse<Object>> bulkResponses = bulkContainer
+                .executeBulkOperations(cosmosItemOperations);
 
             assertThat(bulkResponses.size()).isEqualTo(cosmosItemOperations.size());
 
@@ -387,15 +387,15 @@ public class CosmosBulkTest  extends BatchTestBase {
 
             BatchTestBase.TestDoc testDocToCreate = this.populateTestDoc(this.partitionKey1);
 
-            List<CosmosItemOperation> cosmosItemOperations = new ArrayList<>();
+            List<com.azure.cosmos.models.CosmosItemOperation> cosmosItemOperations = new ArrayList<>();
             cosmosItemOperations.add(CosmosBulkOperations.getReadItemOperation(
                 this.TestDocPk1ExistingA.getId(),
                 this.getPartitionKey(this.partitionKey1),
                 readOptions));
             cosmosItemOperations.add(CosmosBulkOperations.getCreateItemOperation(testDocToCreate, new PartitionKey(this.partitionKey1)));
 
-            List<CosmosBulkOperationResponse<Object>> bulkResponses = bulkContainer
-                .processBulkOperations(cosmosItemOperations);
+            List<com.azure.cosmos.models.CosmosBulkOperationResponse<Object>> bulkResponses = bulkContainer
+                .executeBulkOperations(cosmosItemOperations);
 
             assertThat(bulkResponses.size()).isEqualTo(cosmosItemOperations.size());
 
@@ -410,7 +410,7 @@ public class CosmosBulkTest  extends BatchTestBase {
     @Test(groups = {"simple"}, timeOut = TIMEOUT)
     public void bulkWithInvalidCreateTest() {
         // partition key mismatch between doc and and value passed in to the operation
-        CosmosItemOperation operation =
+        com.azure.cosmos.models.CosmosItemOperation operation =
             CosmosBulkOperations.getCreateItemOperation(
                 this.populateTestDoc(UUID.randomUUID().toString()), new PartitionKey(this.partitionKey1));
 
@@ -422,7 +422,7 @@ public class CosmosBulkTest  extends BatchTestBase {
 
     @Test(groups = {"simple"}, timeOut = TIMEOUT)
     public void bulkWithReadOfNonExistentEntityTest() {
-        CosmosItemOperation operation = CosmosBulkOperations.getReadItemOperation(
+        com.azure.cosmos.models.CosmosItemOperation operation = CosmosBulkOperations.getReadItemOperation(
             UUID.randomUUID().toString(),
             new PartitionKey(this.partitionKey1));
 
@@ -442,7 +442,7 @@ public class CosmosBulkTest  extends BatchTestBase {
         CosmosBulkItemRequestOptions staleReplaceOptions = new CosmosBulkItemRequestOptions();
         staleReplaceOptions.setIfMatchETag(UUID.randomUUID().toString());
 
-        CosmosItemOperation operation = CosmosBulkOperations.getReplaceItemOperation(
+        com.azure.cosmos.models.CosmosItemOperation operation = CosmosBulkOperations.getReplaceItemOperation(
             staleTestDocToReplace.getId(),
             staleTestDocToReplace,
             new PartitionKey(this.partitionKey1),
@@ -460,7 +460,7 @@ public class CosmosBulkTest  extends BatchTestBase {
     @Test(groups = {"simple"}, timeOut = TIMEOUT)
     public void bulkWithDeleteOfNonExistentEntity() {
 
-        CosmosItemOperation operation =
+        com.azure.cosmos.models.CosmosItemOperation operation =
             CosmosBulkOperations.getDeleteItemOperation(
                 UUID.randomUUID().toString(), new PartitionKey(this.partitionKey1));
 
@@ -478,7 +478,7 @@ public class CosmosBulkTest  extends BatchTestBase {
         TestDoc conflictingTestDocToCreate = this.getTestDocCopy(this.TestDocPk1ExistingA);
         conflictingTestDocToCreate.setCost(conflictingTestDocToCreate.getCost());
 
-        CosmosItemOperation operation = CosmosBulkOperations.getCreateItemOperation(
+        com.azure.cosmos.models.CosmosItemOperation operation = CosmosBulkOperations.getCreateItemOperation(
             conflictingTestDocToCreate,
             new PartitionKey(this.partitionKey1));
 
@@ -493,20 +493,20 @@ public class CosmosBulkTest  extends BatchTestBase {
 
     private void runWithError(
         CosmosContainer container,
-        Function<List<CosmosItemOperation>, Boolean> appendOperation,
+        Function<List<com.azure.cosmos.models.CosmosItemOperation>, Boolean> appendOperation,
         HttpResponseStatus expectedFailedOperationStatusCode) {
 
         TestDoc testDocToCreate = this.populateTestDoc(this.partitionKey1);
         TestDoc anotherTestDocToCreate = this.populateTestDoc(this.partitionKey1);
 
-        List<CosmosItemOperation> operations = new ArrayList<>();
+        List<com.azure.cosmos.models.CosmosItemOperation> operations = new ArrayList<>();
         operations.add(CosmosBulkOperations.getCreateItemOperation(testDocToCreate, new PartitionKey(this.partitionKey1)));
 
         appendOperation.apply(operations);
 
         operations.add(CosmosBulkOperations.getCreateItemOperation(anotherTestDocToCreate, new PartitionKey(this.partitionKey1)));
 
-        List<CosmosBulkOperationResponse<Object>> bulkResponses = bulkContainer.processBulkOperations(operations);
+        List<com.azure.cosmos.models.CosmosBulkOperationResponse<Object>> bulkResponses = bulkContainer.executeBulkOperations(operations);
 
         assertThat(bulkResponses.size()).isEqualTo(operations.size());
 
@@ -536,7 +536,7 @@ public class CosmosBulkTest  extends BatchTestBase {
         testDocToReplace.setCost(testDocToReplace.getCost() + 1);
         TestDoc testDocToUpsert = this.populateTestDoc(this.partitionKey1);
 
-        List<CosmosItemOperation> operations = new ArrayList<>();
+        List<com.azure.cosmos.models.CosmosItemOperation> operations = new ArrayList<>();
         operations.add(
             CosmosBulkOperations.getCreateItemOperation(testDocToCreate, new PartitionKey(this.partitionKey1)));
         operations.add(
@@ -546,7 +546,7 @@ public class CosmosBulkTest  extends BatchTestBase {
         operations.add(
             CosmosBulkOperations.getDeleteItemOperation(this.TestDocPk1ExistingC.getId(), new PartitionKey(this.partitionKey1)));
 
-        List<CosmosBulkOperationResponse<Object>> bulkResponses = bulkContainer.processBulkOperations(operations);
+        List<com.azure.cosmos.models.CosmosBulkOperationResponse<Object>> bulkResponses = bulkContainer.executeBulkOperations(operations);
 
         assertThat(bulkResponses.size()).isEqualTo(operations.size());
 
@@ -579,7 +579,7 @@ public class CosmosBulkTest  extends BatchTestBase {
         CosmosBulkItemRequestOptions contentResponseDisableRequestOption = new CosmosBulkItemRequestOptions()
             .setContentResponseOnWriteEnabled(false);
 
-        List<CosmosItemOperation> operations = new ArrayList<>();
+        List<com.azure.cosmos.models.CosmosItemOperation> operations = new ArrayList<>();
         operations.add(
             CosmosBulkOperations.getCreateItemOperation(testDocToCreate, new PartitionKey(this.partitionKey1)));
 
@@ -606,7 +606,7 @@ public class CosmosBulkTest  extends BatchTestBase {
 
         operations.add(CosmosBulkOperations.getReadItemOperation(this.TestDocPk1ExistingB.getId(), new PartitionKey(this.partitionKey1)));
 
-        List<CosmosBulkOperationResponse<Object>> bulkResponses = bulkContainer.processBulkOperations(operations);
+        List<com.azure.cosmos.models.CosmosBulkOperationResponse<Object>> bulkResponses = bulkContainer.executeBulkOperations(operations);
         assertThat(bulkResponses.size()).isEqualTo(operations.size());
 
         assertThat(bulkResponses.get(0).getResponse().getStatusCode()).isEqualTo(HttpResponseStatus.CREATED.code());

@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.apimanagement.models;
 
+import com.azure.core.management.exception.ManagementError;
 import com.azure.resourcemanager.apimanagement.fluent.models.OperationResultContractInner;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -11,11 +12,32 @@ import java.util.List;
 /** An immutable client-side representation of OperationResultContract. */
 public interface OperationResultContract {
     /**
-     * Gets the id property: Operation result identifier.
+     * Gets the id property: Fully qualified resource Id for the resource.
      *
      * @return the id value.
      */
     String id();
+
+    /**
+     * Gets the name property: The name of the resource.
+     *
+     * @return the name value.
+     */
+    String name();
+
+    /**
+     * Gets the type property: The type of the resource.
+     *
+     * @return the type value.
+     */
+    String type();
+
+    /**
+     * Gets the idPropertiesId property: Operation result identifier.
+     *
+     * @return the idPropertiesId value.
+     */
+    String idPropertiesId();
 
     /**
      * Gets the status property: Status of an async operation.
@@ -52,7 +74,7 @@ public interface OperationResultContract {
      *
      * @return the error value.
      */
-    ErrorResponseBody error();
+    ManagementError error();
 
     /**
      * Gets the actionLog property: This property if only provided as part of the TenantConfiguration_Validate

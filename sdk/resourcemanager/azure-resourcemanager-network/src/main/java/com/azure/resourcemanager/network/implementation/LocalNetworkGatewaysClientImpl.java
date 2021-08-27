@@ -40,7 +40,6 @@ import com.azure.resourcemanager.network.models.TagsObject;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
 import java.nio.ByteBuffer;
-import java.util.Map;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -852,7 +851,7 @@ public final class LocalNetworkGatewaysClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param localNetworkGatewayName The name of the local network gateway.
-     * @param tags Resource tags.
+     * @param parameters Parameters supplied to update local network gateway tags.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -860,7 +859,7 @@ public final class LocalNetworkGatewaysClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<LocalNetworkGatewayInner>> updateTagsWithResponseAsync(
-        String resourceGroupName, String localNetworkGatewayName, Map<String, String> tags) {
+        String resourceGroupName, String localNetworkGatewayName, TagsObject parameters) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -882,10 +881,13 @@ public final class LocalNetworkGatewaysClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
         final String apiVersion = "2021-02-01";
         final String accept = "application/json";
-        TagsObject parameters = new TagsObject();
-        parameters.withTags(tags);
         return FluxUtil
             .withContext(
                 context ->
@@ -907,7 +909,7 @@ public final class LocalNetworkGatewaysClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param localNetworkGatewayName The name of the local network gateway.
-     * @param tags Resource tags.
+     * @param parameters Parameters supplied to update local network gateway tags.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -916,7 +918,7 @@ public final class LocalNetworkGatewaysClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<LocalNetworkGatewayInner>> updateTagsWithResponseAsync(
-        String resourceGroupName, String localNetworkGatewayName, Map<String, String> tags, Context context) {
+        String resourceGroupName, String localNetworkGatewayName, TagsObject parameters, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -938,10 +940,13 @@ public final class LocalNetworkGatewaysClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
         final String apiVersion = "2021-02-01";
         final String accept = "application/json";
-        TagsObject parameters = new TagsObject();
-        parameters.withTags(tags);
         context = this.client.mergeContext(context);
         return service
             .updateTags(
@@ -960,7 +965,7 @@ public final class LocalNetworkGatewaysClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param localNetworkGatewayName The name of the local network gateway.
-     * @param tags Resource tags.
+     * @param parameters Parameters supplied to update local network gateway tags.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -968,8 +973,8 @@ public final class LocalNetworkGatewaysClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<LocalNetworkGatewayInner> updateTagsAsync(
-        String resourceGroupName, String localNetworkGatewayName, Map<String, String> tags) {
-        return updateTagsWithResponseAsync(resourceGroupName, localNetworkGatewayName, tags)
+        String resourceGroupName, String localNetworkGatewayName, TagsObject parameters) {
+        return updateTagsWithResponseAsync(resourceGroupName, localNetworkGatewayName, parameters)
             .flatMap(
                 (Response<LocalNetworkGatewayInner> res) -> {
                     if (res.getValue() != null) {
@@ -985,23 +990,16 @@ public final class LocalNetworkGatewaysClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param localNetworkGatewayName The name of the local network gateway.
+     * @param parameters Parameters supplied to update local network gateway tags.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a common class for general resource information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<LocalNetworkGatewayInner> updateTagsAsync(String resourceGroupName, String localNetworkGatewayName) {
-        final Map<String, String> tags = null;
-        return updateTagsWithResponseAsync(resourceGroupName, localNetworkGatewayName, tags)
-            .flatMap(
-                (Response<LocalNetworkGatewayInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+    public LocalNetworkGatewayInner updateTags(
+        String resourceGroupName, String localNetworkGatewayName, TagsObject parameters) {
+        return updateTagsAsync(resourceGroupName, localNetworkGatewayName, parameters).block();
     }
 
     /**
@@ -1009,23 +1007,7 @@ public final class LocalNetworkGatewaysClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param localNetworkGatewayName The name of the local network gateway.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a common class for general resource information.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public LocalNetworkGatewayInner updateTags(String resourceGroupName, String localNetworkGatewayName) {
-        final Map<String, String> tags = null;
-        return updateTagsAsync(resourceGroupName, localNetworkGatewayName, tags).block();
-    }
-
-    /**
-     * Updates a local network gateway tags.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param localNetworkGatewayName The name of the local network gateway.
-     * @param tags Resource tags.
+     * @param parameters Parameters supplied to update local network gateway tags.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1034,8 +1016,8 @@ public final class LocalNetworkGatewaysClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<LocalNetworkGatewayInner> updateTagsWithResponse(
-        String resourceGroupName, String localNetworkGatewayName, Map<String, String> tags, Context context) {
-        return updateTagsWithResponseAsync(resourceGroupName, localNetworkGatewayName, tags, context).block();
+        String resourceGroupName, String localNetworkGatewayName, TagsObject parameters, Context context) {
+        return updateTagsWithResponseAsync(resourceGroupName, localNetworkGatewayName, parameters, context).block();
     }
 
     /**

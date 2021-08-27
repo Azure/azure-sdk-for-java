@@ -5,30 +5,30 @@
 package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.apimanagement.fluent.models.DeployConfigurationParameterProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Deploy Tenant Configuration Contract. */
-@JsonFlatten
 @Fluent
-public class DeployConfigurationParameters {
+public final class DeployConfigurationParameters {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(DeployConfigurationParameters.class);
 
     /*
-     * The name of the Git branch from which the configuration is to be
-     * deployed to the configuration database.
+     * Deploy Configuration Parameter contract properties.
      */
-    @JsonProperty(value = "properties.branch")
-    private String branch;
+    @JsonProperty(value = "properties")
+    private DeployConfigurationParameterProperties innerProperties;
 
-    /*
-     * The value enforcing deleting subscriptions to products that are deleted
-     * in this update.
+    /**
+     * Get the innerProperties property: Deploy Configuration Parameter contract properties.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.force")
-    private Boolean force;
+    private DeployConfigurationParameterProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the branch property: The name of the Git branch from which the configuration is to be deployed to the
@@ -37,7 +37,7 @@ public class DeployConfigurationParameters {
      * @return the branch value.
      */
     public String branch() {
-        return this.branch;
+        return this.innerProperties() == null ? null : this.innerProperties().branch();
     }
 
     /**
@@ -48,7 +48,10 @@ public class DeployConfigurationParameters {
      * @return the DeployConfigurationParameters object itself.
      */
     public DeployConfigurationParameters withBranch(String branch) {
-        this.branch = branch;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DeployConfigurationParameterProperties();
+        }
+        this.innerProperties().withBranch(branch);
         return this;
     }
 
@@ -58,7 +61,7 @@ public class DeployConfigurationParameters {
      * @return the force value.
      */
     public Boolean force() {
-        return this.force;
+        return this.innerProperties() == null ? null : this.innerProperties().force();
     }
 
     /**
@@ -68,7 +71,10 @@ public class DeployConfigurationParameters {
      * @return the DeployConfigurationParameters object itself.
      */
     public DeployConfigurationParameters withForce(Boolean force) {
-        this.force = force;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DeployConfigurationParameterProperties();
+        }
+        this.innerProperties().withForce(force);
         return this;
     }
 
@@ -78,5 +84,8 @@ public class DeployConfigurationParameters {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

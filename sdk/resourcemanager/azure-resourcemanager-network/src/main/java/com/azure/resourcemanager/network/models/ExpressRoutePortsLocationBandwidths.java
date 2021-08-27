@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Real-time inventory of available ExpressRoute port bandwidths. */
+/** ExpressRoutePorts Location Bandwidths Real-time inventory of available ExpressRoute port bandwidths. */
 @Immutable
 public final class ExpressRoutePortsLocationBandwidths {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ExpressRoutePortsLocationBandwidths.class);
