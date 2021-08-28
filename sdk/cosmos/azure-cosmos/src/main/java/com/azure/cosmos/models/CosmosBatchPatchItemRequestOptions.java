@@ -10,9 +10,15 @@ import com.azure.cosmos.util.Beta;
  * Encapsulates options that can be specified for an operation within a {@link CosmosBatch}.
  */
 @Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-public final class CosmosBatchPatchItemRequestOptions
-        extends CosmosBatchItemRequestOptionsBase {
+public final class CosmosBatchPatchItemRequestOptions {
+
+    private String ifMatchETag;
+    private String ifNoneMatchETag;
     private String filterPredicate;
+
+    public CosmosBatchPatchItemRequestOptions() {
+        super();
+    }
 
     /**
      * Gets the FilterPredicate associated with the request in the Azure Cosmos DB service.
@@ -37,32 +43,54 @@ public final class CosmosBatchPatchItemRequestOptions
     }
 
     /**
-     * Sets the If-Match (ETag) associated with the operation in TransactionalBatch.
+     * Gets the If-Match (ETag) associated with the operation in CosmosBatch.
+     *
+     * @return ifMatchETag the ifMatchETag associated with the request.
+     */
+    @Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public String getIfMatchETag() {
+        return this.ifMatchETag;
+    }
+
+    /**
+     * Sets the If-Match (ETag) associated with the operation in CosmosBatch.
      *
      * @param ifMatchETag the ifMatchETag associated with the request.
      * @return the current request options
      */
     @Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public CosmosBatchPatchItemRequestOptions setIfMatchETag(final String ifMatchETag) {
-        super.setIfMatchETagCore(ifMatchETag);
+        this.ifMatchETag = ifMatchETag;
         return this;
     }
 
     /**
-     * Sets the If-None-Match (ETag) associated with the request in operation in TransactionalBatch.
+     * Gets the If-None-Match (ETag) associated with the request in operation in CosmosBatch.
+     *
+     * @return the ifNoneMatchETag associated with the request.
+     */
+    @Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public String getIfNoneMatchETag() {
+        return this.ifNoneMatchETag;
+    }
+
+    /**
+     * Sets the If-None-Match (ETag) associated with the request in operation in CosmosBatch.
      *
      * @param ifNoneMatchEtag the ifNoneMatchETag associated with the request.
      * @return the current request options
      */
     @Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public CosmosBatchPatchItemRequestOptions setIfNoneMatchETag(final String ifNoneMatchEtag) {
-        super.setIfNoneMatchETagCore(ifNoneMatchEtag);
+        this.ifNoneMatchETag = ifNoneMatchEtag;
         return this;
     }
 
     RequestOptions toRequestOptions() {
-        final RequestOptions requestOptions = super.toRequestOptions();
-        requestOptions.setFilterPredicate(getFilterPredicate());
+        final RequestOptions requestOptions = new RequestOptions();
+        requestOptions.setIfMatchETag(this.ifMatchETag);
+        requestOptions.setIfNoneMatchETag(this.ifNoneMatchETag);
+        requestOptions.setFilterPredicate(this.filterPredicate);
         return requestOptions;
     }
 }
