@@ -17,6 +17,7 @@
         <module>sdk/spring</module>
         <module>sdk/cosmos/azure-spring-data-cosmos</module>
         <module>sdk/appconfiguration/azure-spring-cloud-starter-appconfiguration-config</module>
+        <module>sdk/appconfiguration/spring-cloud-starter-azure-appconfiguration-config</module>
       </modules>
     </profile>
 
