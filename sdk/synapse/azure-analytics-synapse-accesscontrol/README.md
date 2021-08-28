@@ -98,7 +98,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 [azsynapse_docs]: https://docs.microsoft.com/azure/synapse-analytics/
 [jdk]: https://docs.microsoft.com/azure/developer/java/fundamentals/?view=azure-java-stable
 [azure_sub]: https://azure.microsoft.com/free/
-[azure_identity]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/identity/azure-identity
+[azure_identity]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/identity/azure-identity
 [maven]: https://maven.apache.org/
 [azure_subscription]: https://azure.microsoft.com/
 [azure_synapse]: https://docs.microsoft.com/azure/synapse-analytics/quickstart-create-workspace
