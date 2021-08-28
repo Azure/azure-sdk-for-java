@@ -1,7 +1,8 @@
 # Release History
 
-## 2.0.1-beta.1 (Unreleased)
+## 2.1.0 (2021-08-25)
 
+* Update to JUnit 5 from JUnit 4
 
 ## 2.0.0 (2021-07-20)
 

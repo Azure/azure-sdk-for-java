@@ -294,6 +294,10 @@
                     <packages>com.azure.containers.containerregistry*</packages>
                   </group>
                   <group>
+                    <title>Azure Security Attestation</title>
+                    <packages>com.azure.security.attestation*</packages>
+                  </group>
+                  <group>
                     <title>Azure Purview Catalog</title>
                     <packages>com.azure.analytics.purview.catalog*</packages>
                   </group>
@@ -604,6 +608,7 @@
                     -snippetpath ${project.basedir}/sdk/appconfiguration/azure-data-appconfiguration/src/samples/java
                     -snippetpath ${project.basedir}/sdk/confidentialledger/azure-security-confidentialledger/src/samples/java
                     -snippetpath ${project.basedir}/sdk/containerregistry/azure-containers-containerregistry/src/samples/java
+                    -snippetpath ${project.basedir}/sdk/attestation/azure-security-attestation/src/samples/java
                     -snippetpath ${project.basedir}/sdk/core/azure-core/src/samples/java
                     -snippetpath ${project.basedir}/sdk/core/azure-core-amqp/src/samples/java
                     -snippetpath ${project.basedir}/sdk/core/azure-core-http-netty/src/samples/java

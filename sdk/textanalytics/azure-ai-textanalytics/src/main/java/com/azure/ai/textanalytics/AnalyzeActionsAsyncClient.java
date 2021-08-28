@@ -292,9 +292,9 @@ class AnalyzeActionsAsyncClient {
                                 .setStringIndexType(StringIndexType.UTF16CODE_UNIT)
                                 .setLoggingOptOut(action.isServiceLogsDisabled())
                                 .setSentenceCount(action.getMaxSentenceCount())
-                                .setSortBy(action.getSentencesOrderBy() == null ? null
+                                .setSortBy(action.getOrderBy() == null ? null
                                                : ExtractiveSummarizationTaskParametersSortBy.fromString(
-                                                   action.getSentencesOrderBy().toString()))
+                                                   action.getOrderBy().toString()))
                         );
                         return extractiveSummarizationTask;
                     }).collect(Collectors.toList()));

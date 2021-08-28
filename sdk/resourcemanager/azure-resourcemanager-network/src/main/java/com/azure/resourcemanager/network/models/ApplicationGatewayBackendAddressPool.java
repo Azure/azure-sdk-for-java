@@ -5,19 +5,24 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.network.fluent.models.ApplicationGatewayBackendAddressPoolPropertiesFormat;
 import com.azure.resourcemanager.network.fluent.models.NetworkInterfaceIpConfigurationInner;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Backend Address Pool of an application gateway. */
-@JsonFlatten
 @Fluent
-public class ApplicationGatewayBackendAddressPool extends SubResource {
+public final class ApplicationGatewayBackendAddressPool extends SubResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ApplicationGatewayBackendAddressPool.class);
+
+    /*
+     * Properties of the application gateway backend address pool.
+     */
+    @JsonProperty(value = "properties")
+    private ApplicationGatewayBackendAddressPoolPropertiesFormat innerProperties;
 
     /*
      * Name of the backend address pool that is unique within an Application
@@ -38,23 +43,14 @@ public class ApplicationGatewayBackendAddressPool extends SubResource {
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
-    /*
-     * Collection of references to IPs defined in network interfaces.
+    /**
+     * Get the innerProperties property: Properties of the application gateway backend address pool.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.backendIPConfigurations", access = JsonProperty.Access.WRITE_ONLY)
-    private List<NetworkInterfaceIpConfigurationInner> backendIpConfigurations;
-
-    /*
-     * Backend addresses.
-     */
-    @JsonProperty(value = "properties.backendAddresses")
-    private List<ApplicationGatewayBackendAddress> backendAddresses;
-
-    /*
-     * The provisioning state of the backend address pool resource.
-     */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningState provisioningState;
+    private ApplicationGatewayBackendAddressPoolPropertiesFormat innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the name property: Name of the backend address pool that is unique within an Application Gateway.
@@ -94,13 +90,20 @@ public class ApplicationGatewayBackendAddressPool extends SubResource {
         return this.type;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public ApplicationGatewayBackendAddressPool withId(String id) {
+        super.withId(id);
+        return this;
+    }
+
     /**
      * Get the backendIpConfigurations property: Collection of references to IPs defined in network interfaces.
      *
      * @return the backendIpConfigurations value.
      */
     public List<NetworkInterfaceIpConfigurationInner> backendIpConfigurations() {
-        return this.backendIpConfigurations;
+        return this.innerProperties() == null ? null : this.innerProperties().backendIpConfigurations();
     }
 
     /**
@@ -109,7 +112,7 @@ public class ApplicationGatewayBackendAddressPool extends SubResource {
      * @return the backendAddresses value.
      */
     public List<ApplicationGatewayBackendAddress> backendAddresses() {
-        return this.backendAddresses;
+        return this.innerProperties() == null ? null : this.innerProperties().backendAddresses();
     }
 
     /**
@@ -120,7 +123,10 @@ public class ApplicationGatewayBackendAddressPool extends SubResource {
      */
     public ApplicationGatewayBackendAddressPool withBackendAddresses(
         List<ApplicationGatewayBackendAddress> backendAddresses) {
-        this.backendAddresses = backendAddresses;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApplicationGatewayBackendAddressPoolPropertiesFormat();
+        }
+        this.innerProperties().withBackendAddresses(backendAddresses);
         return this;
     }
 
@@ -130,14 +136,7 @@ public class ApplicationGatewayBackendAddressPool extends SubResource {
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
-        return this.provisioningState;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public ApplicationGatewayBackendAddressPool withId(String id) {
-        super.withId(id);
-        return this;
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
     /**
@@ -146,11 +145,8 @@ public class ApplicationGatewayBackendAddressPool extends SubResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (backendIpConfigurations() != null) {
-            backendIpConfigurations().forEach(e -> e.validate());
-        }
-        if (backendAddresses() != null) {
-            backendAddresses().forEach(e -> e.validate());
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

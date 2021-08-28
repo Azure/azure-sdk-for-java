@@ -14,6 +14,11 @@ import java.util.Arrays;
 
 /** Samples for TriggerRuns QueryByFactory. */
 public final class TriggerRunsQueryByFactorySamples {
+    /*
+     * operationId: TriggerRuns_QueryByFactory
+     * api-version: 2018-06-01
+     * x-ms-examples: TriggerRuns_QueryByFactory
+     */
     /**
      * Sample code: TriggerRuns_QueryByFactory.
      *

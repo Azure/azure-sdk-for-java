@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.CircuitConnectionStatus;
@@ -14,10 +13,15 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Peer Express Route Circuit Connection in an ExpressRouteCircuitPeering resource. */
-@JsonFlatten
 @Fluent
-public class PeerExpressRouteCircuitConnectionInner extends SubResource {
+public final class PeerExpressRouteCircuitConnectionInner extends SubResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(PeerExpressRouteCircuitConnectionInner.class);
+
+    /*
+     * Properties of the peer express route circuit connection.
+     */
+    @JsonProperty(value = "properties")
+    private PeerExpressRouteCircuitConnectionPropertiesFormat innerProperties;
 
     /*
      * The name of the resource that is unique within a resource group. This
@@ -38,51 +42,14 @@ public class PeerExpressRouteCircuitConnectionInner extends SubResource {
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
-    /*
-     * Reference to Express Route Circuit Private Peering Resource of the
-     * circuit.
+    /**
+     * Get the innerProperties property: Properties of the peer express route circuit connection.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.expressRouteCircuitPeering")
-    private SubResource expressRouteCircuitPeering;
-
-    /*
-     * Reference to Express Route Circuit Private Peering Resource of the
-     * peered circuit.
-     */
-    @JsonProperty(value = "properties.peerExpressRouteCircuitPeering")
-    private SubResource peerExpressRouteCircuitPeering;
-
-    /*
-     * /29 IP address space to carve out Customer addresses for tunnels.
-     */
-    @JsonProperty(value = "properties.addressPrefix")
-    private String addressPrefix;
-
-    /*
-     * Express Route Circuit connection state.
-     */
-    @JsonProperty(value = "properties.circuitConnectionStatus", access = JsonProperty.Access.WRITE_ONLY)
-    private CircuitConnectionStatus circuitConnectionStatus;
-
-    /*
-     * The name of the express route circuit connection resource.
-     */
-    @JsonProperty(value = "properties.connectionName")
-    private String connectionName;
-
-    /*
-     * The resource guid of the authorization used for the express route
-     * circuit connection.
-     */
-    @JsonProperty(value = "properties.authResourceGuid")
-    private String authResourceGuid;
-
-    /*
-     * The provisioning state of the peer express route circuit connection
-     * resource.
-     */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningState provisioningState;
+    private PeerExpressRouteCircuitConnectionPropertiesFormat innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the name property: The name of the resource that is unique within a resource group. This name can be used to
@@ -124,6 +91,13 @@ public class PeerExpressRouteCircuitConnectionInner extends SubResource {
         return this.type;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public PeerExpressRouteCircuitConnectionInner withId(String id) {
+        super.withId(id);
+        return this;
+    }
+
     /**
      * Get the expressRouteCircuitPeering property: Reference to Express Route Circuit Private Peering Resource of the
      * circuit.
@@ -131,7 +105,7 @@ public class PeerExpressRouteCircuitConnectionInner extends SubResource {
      * @return the expressRouteCircuitPeering value.
      */
     public SubResource expressRouteCircuitPeering() {
-        return this.expressRouteCircuitPeering;
+        return this.innerProperties() == null ? null : this.innerProperties().expressRouteCircuitPeering();
     }
 
     /**
@@ -143,7 +117,10 @@ public class PeerExpressRouteCircuitConnectionInner extends SubResource {
      */
     public PeerExpressRouteCircuitConnectionInner withExpressRouteCircuitPeering(
         SubResource expressRouteCircuitPeering) {
-        this.expressRouteCircuitPeering = expressRouteCircuitPeering;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PeerExpressRouteCircuitConnectionPropertiesFormat();
+        }
+        this.innerProperties().withExpressRouteCircuitPeering(expressRouteCircuitPeering);
         return this;
     }
 
@@ -154,7 +131,7 @@ public class PeerExpressRouteCircuitConnectionInner extends SubResource {
      * @return the peerExpressRouteCircuitPeering value.
      */
     public SubResource peerExpressRouteCircuitPeering() {
-        return this.peerExpressRouteCircuitPeering;
+        return this.innerProperties() == null ? null : this.innerProperties().peerExpressRouteCircuitPeering();
     }
 
     /**
@@ -166,7 +143,10 @@ public class PeerExpressRouteCircuitConnectionInner extends SubResource {
      */
     public PeerExpressRouteCircuitConnectionInner withPeerExpressRouteCircuitPeering(
         SubResource peerExpressRouteCircuitPeering) {
-        this.peerExpressRouteCircuitPeering = peerExpressRouteCircuitPeering;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PeerExpressRouteCircuitConnectionPropertiesFormat();
+        }
+        this.innerProperties().withPeerExpressRouteCircuitPeering(peerExpressRouteCircuitPeering);
         return this;
     }
 
@@ -176,7 +156,7 @@ public class PeerExpressRouteCircuitConnectionInner extends SubResource {
      * @return the addressPrefix value.
      */
     public String addressPrefix() {
-        return this.addressPrefix;
+        return this.innerProperties() == null ? null : this.innerProperties().addressPrefix();
     }
 
     /**
@@ -186,7 +166,10 @@ public class PeerExpressRouteCircuitConnectionInner extends SubResource {
      * @return the PeerExpressRouteCircuitConnectionInner object itself.
      */
     public PeerExpressRouteCircuitConnectionInner withAddressPrefix(String addressPrefix) {
-        this.addressPrefix = addressPrefix;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PeerExpressRouteCircuitConnectionPropertiesFormat();
+        }
+        this.innerProperties().withAddressPrefix(addressPrefix);
         return this;
     }
 
@@ -196,7 +179,7 @@ public class PeerExpressRouteCircuitConnectionInner extends SubResource {
      * @return the circuitConnectionStatus value.
      */
     public CircuitConnectionStatus circuitConnectionStatus() {
-        return this.circuitConnectionStatus;
+        return this.innerProperties() == null ? null : this.innerProperties().circuitConnectionStatus();
     }
 
     /**
@@ -205,7 +188,7 @@ public class PeerExpressRouteCircuitConnectionInner extends SubResource {
      * @return the connectionName value.
      */
     public String connectionName() {
-        return this.connectionName;
+        return this.innerProperties() == null ? null : this.innerProperties().connectionName();
     }
 
     /**
@@ -215,7 +198,10 @@ public class PeerExpressRouteCircuitConnectionInner extends SubResource {
      * @return the PeerExpressRouteCircuitConnectionInner object itself.
      */
     public PeerExpressRouteCircuitConnectionInner withConnectionName(String connectionName) {
-        this.connectionName = connectionName;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PeerExpressRouteCircuitConnectionPropertiesFormat();
+        }
+        this.innerProperties().withConnectionName(connectionName);
         return this;
     }
 
@@ -226,7 +212,7 @@ public class PeerExpressRouteCircuitConnectionInner extends SubResource {
      * @return the authResourceGuid value.
      */
     public String authResourceGuid() {
-        return this.authResourceGuid;
+        return this.innerProperties() == null ? null : this.innerProperties().authResourceGuid();
     }
 
     /**
@@ -237,7 +223,10 @@ public class PeerExpressRouteCircuitConnectionInner extends SubResource {
      * @return the PeerExpressRouteCircuitConnectionInner object itself.
      */
     public PeerExpressRouteCircuitConnectionInner withAuthResourceGuid(String authResourceGuid) {
-        this.authResourceGuid = authResourceGuid;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PeerExpressRouteCircuitConnectionPropertiesFormat();
+        }
+        this.innerProperties().withAuthResourceGuid(authResourceGuid);
         return this;
     }
 
@@ -247,14 +236,7 @@ public class PeerExpressRouteCircuitConnectionInner extends SubResource {
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
-        return this.provisioningState;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public PeerExpressRouteCircuitConnectionInner withId(String id) {
-        super.withId(id);
-        return this;
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
     /**
@@ -263,5 +245,8 @@ public class PeerExpressRouteCircuitConnectionInner extends SubResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

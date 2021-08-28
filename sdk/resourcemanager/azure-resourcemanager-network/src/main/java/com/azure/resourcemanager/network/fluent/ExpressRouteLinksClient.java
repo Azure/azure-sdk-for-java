@@ -24,7 +24,7 @@ public interface ExpressRouteLinksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return expressRouteLink child resource definition.
+     * @return expressRouteLink.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<ExpressRouteLinkInner>> getWithResponseAsync(
@@ -39,7 +39,7 @@ public interface ExpressRouteLinksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return expressRouteLink child resource definition.
+     * @return expressRouteLink.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<ExpressRouteLinkInner> getAsync(String resourceGroupName, String expressRoutePortName, String linkName);
@@ -53,7 +53,7 @@ public interface ExpressRouteLinksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return expressRouteLink child resource definition.
+     * @return expressRouteLink.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     ExpressRouteLinkInner get(String resourceGroupName, String expressRoutePortName, String linkName);
@@ -68,7 +68,7 @@ public interface ExpressRouteLinksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return expressRouteLink child resource definition.
+     * @return expressRouteLink.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<ExpressRouteLinkInner> getWithResponse(
@@ -82,7 +82,7 @@ public interface ExpressRouteLinksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for ListExpressRouteLinks API service call.
+     * @return expressRouteLink List Result.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<ExpressRouteLinkInner> listAsync(String resourceGroupName, String expressRoutePortName);
@@ -95,7 +95,7 @@ public interface ExpressRouteLinksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for ListExpressRouteLinks API service call.
+     * @return expressRouteLink List Result.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ExpressRouteLinkInner> list(String resourceGroupName, String expressRoutePortName);
@@ -109,7 +109,7 @@ public interface ExpressRouteLinksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for ListExpressRouteLinks API service call.
+     * @return expressRouteLink List Result.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ExpressRouteLinkInner> list(String resourceGroupName, String expressRoutePortName, Context context);

@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.models.ComputeModeOptions;
 import com.azure.resourcemanager.appservice.models.ProxyOnlyResource;
@@ -15,10 +14,15 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Worker pool of an App Service Environment ARM resource. */
-@JsonFlatten
 @Fluent
-public class WorkerPoolResourceInner extends ProxyOnlyResource {
+public final class WorkerPoolResourceInner extends ProxyOnlyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(WorkerPoolResourceInner.class);
+
+    /*
+     * Core resource properties
+     */
+    @JsonProperty(value = "properties")
+    private WorkerPool innerProperties;
 
     /*
      * Description of a SKU for a scalable resource.
@@ -26,35 +30,14 @@ public class WorkerPoolResourceInner extends ProxyOnlyResource {
     @JsonProperty(value = "sku")
     private SkuDescription sku;
 
-    /*
-     * Worker size ID for referencing this worker pool.
+    /**
+     * Get the innerProperties property: Core resource properties.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.workerSizeId")
-    private Integer workerSizeId;
-
-    /*
-     * Shared or dedicated app hosting.
-     */
-    @JsonProperty(value = "properties.computeMode")
-    private ComputeModeOptions computeMode;
-
-    /*
-     * VM size of the worker pool instances.
-     */
-    @JsonProperty(value = "properties.workerSize")
-    private String workerSize;
-
-    /*
-     * Number of instances in the worker pool.
-     */
-    @JsonProperty(value = "properties.workerCount")
-    private Integer workerCount;
-
-    /*
-     * Names of all instances in the worker pool (read only).
-     */
-    @JsonProperty(value = "properties.instanceNames", access = JsonProperty.Access.WRITE_ONLY)
-    private List<String> instanceNames;
+    private WorkerPool innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the sku property: Description of a SKU for a scalable resource.
@@ -76,13 +59,20 @@ public class WorkerPoolResourceInner extends ProxyOnlyResource {
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public WorkerPoolResourceInner withKind(String kind) {
+        super.withKind(kind);
+        return this;
+    }
+
     /**
      * Get the workerSizeId property: Worker size ID for referencing this worker pool.
      *
      * @return the workerSizeId value.
      */
     public Integer workerSizeId() {
-        return this.workerSizeId;
+        return this.innerProperties() == null ? null : this.innerProperties().workerSizeId();
     }
 
     /**
@@ -92,7 +82,10 @@ public class WorkerPoolResourceInner extends ProxyOnlyResource {
      * @return the WorkerPoolResourceInner object itself.
      */
     public WorkerPoolResourceInner withWorkerSizeId(Integer workerSizeId) {
-        this.workerSizeId = workerSizeId;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WorkerPool();
+        }
+        this.innerProperties().withWorkerSizeId(workerSizeId);
         return this;
     }
 
@@ -102,7 +95,7 @@ public class WorkerPoolResourceInner extends ProxyOnlyResource {
      * @return the computeMode value.
      */
     public ComputeModeOptions computeMode() {
-        return this.computeMode;
+        return this.innerProperties() == null ? null : this.innerProperties().computeMode();
     }
 
     /**
@@ -112,7 +105,10 @@ public class WorkerPoolResourceInner extends ProxyOnlyResource {
      * @return the WorkerPoolResourceInner object itself.
      */
     public WorkerPoolResourceInner withComputeMode(ComputeModeOptions computeMode) {
-        this.computeMode = computeMode;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WorkerPool();
+        }
+        this.innerProperties().withComputeMode(computeMode);
         return this;
     }
 
@@ -122,7 +118,7 @@ public class WorkerPoolResourceInner extends ProxyOnlyResource {
      * @return the workerSize value.
      */
     public String workerSize() {
-        return this.workerSize;
+        return this.innerProperties() == null ? null : this.innerProperties().workerSize();
     }
 
     /**
@@ -132,7 +128,10 @@ public class WorkerPoolResourceInner extends ProxyOnlyResource {
      * @return the WorkerPoolResourceInner object itself.
      */
     public WorkerPoolResourceInner withWorkerSize(String workerSize) {
-        this.workerSize = workerSize;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WorkerPool();
+        }
+        this.innerProperties().withWorkerSize(workerSize);
         return this;
     }
 
@@ -142,7 +141,7 @@ public class WorkerPoolResourceInner extends ProxyOnlyResource {
      * @return the workerCount value.
      */
     public Integer workerCount() {
-        return this.workerCount;
+        return this.innerProperties() == null ? null : this.innerProperties().workerCount();
     }
 
     /**
@@ -152,7 +151,10 @@ public class WorkerPoolResourceInner extends ProxyOnlyResource {
      * @return the WorkerPoolResourceInner object itself.
      */
     public WorkerPoolResourceInner withWorkerCount(Integer workerCount) {
-        this.workerCount = workerCount;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WorkerPool();
+        }
+        this.innerProperties().withWorkerCount(workerCount);
         return this;
     }
 
@@ -162,14 +164,7 @@ public class WorkerPoolResourceInner extends ProxyOnlyResource {
      * @return the instanceNames value.
      */
     public List<String> instanceNames() {
-        return this.instanceNames;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public WorkerPoolResourceInner withKind(String kind) {
-        super.withKind(kind);
-        return this;
+        return this.innerProperties() == null ? null : this.innerProperties().instanceNames();
     }
 
     /**
@@ -180,6 +175,9 @@ public class WorkerPoolResourceInner extends ProxyOnlyResource {
     @Override
     public void validate() {
         super.validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
         if (sku() != null) {
             sku().validate();
         }

@@ -7,7 +7,6 @@ import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.ConflictException;
-import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosContainerResponse;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.SqlQuerySpec;
@@ -60,6 +59,7 @@ import static com.azure.spring.data.cosmos.common.TestConstants.AGE;
 import static com.azure.spring.data.cosmos.common.TestConstants.FIRST_NAME;
 import static com.azure.spring.data.cosmos.common.TestConstants.HOBBIES;
 import static com.azure.spring.data.cosmos.common.TestConstants.LAST_NAME;
+import static com.azure.spring.data.cosmos.common.TestConstants.PASSPORT_IDS_BY_COUNTRY;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
@@ -70,21 +70,17 @@ import static org.junit.Assert.fail;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = TestRepositoryConfig.class)
 public class ReactiveCosmosTemplateIT {
-    private static final Person TEST_PERSON = new Person(TestConstants.ID_1,
-        TestConstants.FIRST_NAME,
-        TestConstants.LAST_NAME, TestConstants.HOBBIES, TestConstants.ADDRESSES, AGE);
+    private static final Person TEST_PERSON = new Person(TestConstants.ID_1, TestConstants.FIRST_NAME,
+        TestConstants.LAST_NAME, TestConstants.HOBBIES, TestConstants.ADDRESSES, AGE, PASSPORT_IDS_BY_COUNTRY);
 
-    private static final Person TEST_PERSON_2 = new Person(TestConstants.ID_2,
-        TestConstants.NEW_FIRST_NAME,
-        TestConstants.NEW_LAST_NAME, TestConstants.HOBBIES, TestConstants.ADDRESSES, AGE);
+    private static final Person TEST_PERSON_2 = new Person(TestConstants.ID_2, TestConstants.NEW_FIRST_NAME,
+        TestConstants.NEW_LAST_NAME, TestConstants.HOBBIES, TestConstants.ADDRESSES, AGE, PASSPORT_IDS_BY_COUNTRY);
 
-    private static final Person TEST_PERSON_3 = new Person(TestConstants.ID_3,
-        TestConstants.NEW_FIRST_NAME,
-        TestConstants.NEW_LAST_NAME, TestConstants.HOBBIES, TestConstants.ADDRESSES, AGE);
+    private static final Person TEST_PERSON_3 = new Person(TestConstants.ID_3, TestConstants.NEW_FIRST_NAME,
+        TestConstants.NEW_LAST_NAME, TestConstants.HOBBIES, TestConstants.ADDRESSES, AGE, PASSPORT_IDS_BY_COUNTRY);
 
-    private static final Person TEST_PERSON_4 = new Person(TestConstants.ID_4,
-        TestConstants.NEW_FIRST_NAME,
-        TestConstants.NEW_LAST_NAME, TestConstants.HOBBIES, TestConstants.ADDRESSES, AGE);
+    private static final Person TEST_PERSON_4 = new Person(TestConstants.ID_4, TestConstants.NEW_FIRST_NAME,
+        TestConstants.NEW_LAST_NAME, TestConstants.HOBBIES, TestConstants.ADDRESSES, AGE, PASSPORT_IDS_BY_COUNTRY);
 
     private static final String PRECONDITION_IS_NOT_MET = "is not met";
     private static final String WRONG_ETAG = "WRONG_ETAG";
@@ -245,7 +241,7 @@ public class ReactiveCosmosTemplateIT {
 
     @Test
     public void testInsertShouldFailIfColumnNotAnnotatedWithAutoGenerate() {
-        final Person person = new Person(null, FIRST_NAME, LAST_NAME, HOBBIES, ADDRESSES, AGE);
+        final Person person = new Person(null, FIRST_NAME, LAST_NAME, HOBBIES, ADDRESSES, AGE, PASSPORT_IDS_BY_COUNTRY);
         Mono<GenIdEntity> entityMono = cosmosTemplate.insert(Person.class.getSimpleName(),
             person, new PartitionKey(person.getLastName()));
         StepVerifier.create(entityMono).verifyError(CosmosAccessException.class);
@@ -280,8 +276,8 @@ public class ReactiveCosmosTemplateIT {
     @Test
     public void testOptimisticLockWhenUpdatingWithWrongEtag() {
         final Person updated = new Person(TEST_PERSON.getId(), TestConstants.UPDATED_FIRST_NAME,
-            TEST_PERSON.getLastName(), TEST_PERSON.getHobbies(),
-            TEST_PERSON.getShippingAddresses(), AGE);
+            TEST_PERSON.getLastName(), TEST_PERSON.getHobbies(), TEST_PERSON.getShippingAddresses(),
+            AGE, PASSPORT_IDS_BY_COUNTRY);
         updated.set_etag(WRONG_ETAG);
 
         try {
@@ -506,6 +502,31 @@ public class ReactiveCosmosTemplateIT {
         final Flux<AuditableEntity> flux = cosmosTemplate.runQuery(sqlQuerySpec, AuditableEntity.class, AuditableEntity.class);
 
         StepVerifier.create(flux).expectNextCount(1).verifyComplete();
+    }
+
+    @Test
+    public void testFindWithEqualCriteriaContainingNestedProperty() {
+        String postalCode = ADDRESSES.get(0).getPostalCode();
+        String subjectWithNestedProperty = "shippingAddresses[0]['postalCode']";
+        Criteria criteria = Criteria.getInstance(CriteriaType.IS_EQUAL, subjectWithNestedProperty,
+            Collections.singletonList(postalCode), Part.IgnoreCaseType.NEVER);
+
+        final Flux<Person> people = cosmosTemplate.find(new CosmosQuery(criteria), Person.class, containerName);
+
+        StepVerifier.create(people).expectNextCount(1).verifyComplete();
+    }
+
+    @Test
+    public void testRunQueryWithEqualCriteriaContainingSpecialChars() {
+        String ivoryCoastPassportId = PASSPORT_IDS_BY_COUNTRY.get("Côte d'Ivoire");
+        String subjectWithSpecialChars = "passportIdsByCountry[\"Côte d'Ivoire\"]";
+        Criteria criteria = Criteria.getInstance(CriteriaType.IS_EQUAL, subjectWithSpecialChars,
+            Collections.singletonList(ivoryCoastPassportId), Part.IgnoreCaseType.NEVER);
+        final SqlQuerySpec sqlQuerySpec = new FindQuerySpecGenerator().generateCosmos(new CosmosQuery(criteria));
+
+        final Flux<Person> people = cosmosTemplate.runQuery(sqlQuerySpec, Person.class, Person.class);
+
+        StepVerifier.create(people).expectNextCount(1).verifyComplete();
     }
 
     @Test

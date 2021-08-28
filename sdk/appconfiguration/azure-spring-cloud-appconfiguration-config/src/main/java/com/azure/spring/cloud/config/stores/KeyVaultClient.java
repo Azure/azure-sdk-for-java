@@ -13,6 +13,7 @@ import com.azure.security.keyvault.secrets.SecretAsyncClient;
 import com.azure.security.keyvault.secrets.SecretClientBuilder;
 import com.azure.security.keyvault.secrets.models.KeyVaultSecret;
 import com.azure.spring.cloud.config.KeyVaultCredentialProvider;
+import com.azure.spring.cloud.config.KeyVaultSecretProvider;
 import com.azure.spring.cloud.config.SecretClientBuilderSetup;
 import com.azure.spring.cloud.config.properties.AppConfigurationProperties;
 import com.azure.spring.cloud.config.resource.AppConfigManagedIdentityProperties;
@@ -32,12 +33,13 @@ public class KeyVaultClient {
 
     private final TokenCredential tokenCredential;
 
-    public KeyVaultClient(
-        AppConfigurationProperties properties,
-        URI uri,
-        KeyVaultCredentialProvider tokenCredentialProvider,
-        SecretClientBuilderSetup keyVaultClientProvider
-    ) {
+    private final KeyVaultSecretProvider keyVaultSecretProvider;
+
+    private Boolean useSecretResolver = false;
+
+    public KeyVaultClient(AppConfigurationProperties properties, URI uri,
+        KeyVaultCredentialProvider tokenCredentialProvider, SecretClientBuilderSetup keyVaultClientProvider,
+        KeyVaultSecretProvider keyVaultSecretProvider) {
         this.properties = properties;
         this.uri = uri;
         if (tokenCredentialProvider != null) {
@@ -46,6 +48,7 @@ public class KeyVaultClient {
             this.tokenCredential = null;
         }
         this.keyVaultClientProvider = keyVaultClientProvider;
+        this.keyVaultSecretProvider = keyVaultSecretProvider;
     }
 
     KeyVaultClient build() {
@@ -63,6 +66,9 @@ public class KeyVaultClient {
         } else if (msiProps != null && StringUtils.isNotEmpty(msiProps.getClientId())) {
             // User Assigned Identity - Client ID through configuration file.
             builder.credential(new ManagedIdentityCredentialBuilder().clientId(msiProps.getClientId()).build());
+        } else if (keyVaultSecretProvider != null) { // This is the Secret Resolver
+            // Use this instead.
+            useSecretResolver = true;
         } else {
             // System Assigned Identity.
             builder.credential(new ManagedIdentityCredentialBuilder().build());
@@ -73,7 +79,9 @@ public class KeyVaultClient {
             keyVaultClientProvider.setup(builder, fullUri);
         }
 
-        secretClient = builder.buildAsyncClient();
+        if (!useSecretResolver) {
+            secretClient = builder.buildAsyncClient();
+        }
 
         return this;
     }
@@ -86,9 +94,14 @@ public class KeyVaultClient {
      * @return Secret values that matches the secretIdentifier
      */
     public KeyVaultSecret getSecret(URI secretIdentifier, int timeout) {
-        if (secretClient == null) {
+        if (secretClient == null && !useSecretResolver) {
             build();
         }
+
+        if (useSecretResolver) { // Secret Resolver
+            return new KeyVaultSecret(null, keyVaultSecretProvider.getSecret(secretIdentifier.getRawPath()));
+        }
+
         String[] tokens = secretIdentifier.getPath().split("/");
 
         String name = (tokens.length >= 3 ? tokens[2] : null);

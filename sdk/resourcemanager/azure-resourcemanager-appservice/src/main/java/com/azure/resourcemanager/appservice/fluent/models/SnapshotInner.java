@@ -4,32 +4,30 @@
 
 package com.azure.resourcemanager.appservice.fluent.models;
 
-import com.azure.core.annotation.Immutable;
-import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.models.ProxyOnlyResource;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** A snapshot of an app. */
-@JsonFlatten
-@Immutable
-public class SnapshotInner extends ProxyOnlyResource {
+@Fluent
+public final class SnapshotInner extends ProxyOnlyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(SnapshotInner.class);
 
     /*
-     * The time the snapshot was taken.
+     * Snapshot resource specific properties
      */
-    @JsonProperty(value = "properties.time", access = JsonProperty.Access.WRITE_ONLY)
-    private String time;
+    @JsonProperty(value = "properties")
+    private SnapshotProperties innerProperties;
 
     /**
-     * Get the time property: The time the snapshot was taken.
+     * Get the innerProperties property: Snapshot resource specific properties.
      *
-     * @return the time value.
+     * @return the innerProperties value.
      */
-    public String time() {
-        return this.time;
+    private SnapshotProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /** {@inheritDoc} */
@@ -40,6 +38,15 @@ public class SnapshotInner extends ProxyOnlyResource {
     }
 
     /**
+     * Get the time property: The time the snapshot was taken.
+     *
+     * @return the time value.
+     */
+    public String time() {
+        return this.innerProperties() == null ? null : this.innerProperties().time();
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -47,5 +54,8 @@ public class SnapshotInner extends ProxyOnlyResource {
     @Override
     public void validate() {
         super.validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

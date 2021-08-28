@@ -6,10 +6,11 @@ package com.azure.resourcemanager.netapp.implementation;
 
 import com.azure.core.management.Region;
 import com.azure.core.util.Context;
+import com.azure.resourcemanager.netapp.fluent.models.MountTargetProperties;
 import com.azure.resourcemanager.netapp.fluent.models.VolumeInner;
 import com.azure.resourcemanager.netapp.models.AuthorizeRequest;
+import com.azure.resourcemanager.netapp.models.AvsDataStore;
 import com.azure.resourcemanager.netapp.models.BreakReplicationRequest;
-import com.azure.resourcemanager.netapp.models.MountTargetProperties;
 import com.azure.resourcemanager.netapp.models.PoolChangeRequest;
 import com.azure.resourcemanager.netapp.models.SecurityStyle;
 import com.azure.resourcemanager.netapp.models.ServiceLevel;
@@ -52,6 +53,10 @@ public final class VolumeImpl implements Volume, Volume.Definition, Volume.Updat
         } else {
             return Collections.emptyMap();
         }
+    }
+
+    public String etag() {
+        return this.innerModel().etag();
     }
 
     public String fileSystemId() {
@@ -166,6 +171,26 @@ public final class VolumeImpl implements Volume, Volume.Definition, Volume.Updat
 
     public String unixPermissions() {
         return this.innerModel().unixPermissions();
+    }
+
+    public Integer cloneProgress() {
+        return this.innerModel().cloneProgress();
+    }
+
+    public AvsDataStore avsDataStore() {
+        return this.innerModel().avsDataStore();
+    }
+
+    public Boolean isDefaultQuotaEnabled() {
+        return this.innerModel().isDefaultQuotaEnabled();
+    }
+
+    public Long defaultUserQuotaInKiBs() {
+        return this.innerModel().defaultUserQuotaInKiBs();
+    }
+
+    public Long defaultGroupQuotaInKiBs() {
+        return this.innerModel().defaultGroupQuotaInKiBs();
     }
 
     public Region region() {
@@ -477,6 +502,41 @@ public final class VolumeImpl implements Volume, Volume.Definition, Volume.Updat
     public VolumeImpl withUnixPermissions(String unixPermissions) {
         this.innerModel().withUnixPermissions(unixPermissions);
         return this;
+    }
+
+    public VolumeImpl withAvsDataStore(AvsDataStore avsDataStore) {
+        this.innerModel().withAvsDataStore(avsDataStore);
+        return this;
+    }
+
+    public VolumeImpl withIsDefaultQuotaEnabled(Boolean isDefaultQuotaEnabled) {
+        if (isInCreateMode()) {
+            this.innerModel().withIsDefaultQuotaEnabled(isDefaultQuotaEnabled);
+            return this;
+        } else {
+            this.updateBody.withIsDefaultQuotaEnabled(isDefaultQuotaEnabled);
+            return this;
+        }
+    }
+
+    public VolumeImpl withDefaultUserQuotaInKiBs(Long defaultUserQuotaInKiBs) {
+        if (isInCreateMode()) {
+            this.innerModel().withDefaultUserQuotaInKiBs(defaultUserQuotaInKiBs);
+            return this;
+        } else {
+            this.updateBody.withDefaultUserQuotaInKiBs(defaultUserQuotaInKiBs);
+            return this;
+        }
+    }
+
+    public VolumeImpl withDefaultGroupQuotaInKiBs(Long defaultGroupQuotaInKiBs) {
+        if (isInCreateMode()) {
+            this.innerModel().withDefaultGroupQuotaInKiBs(defaultGroupQuotaInKiBs);
+            return this;
+        } else {
+            this.updateBody.withDefaultGroupQuotaInKiBs(defaultGroupQuotaInKiBs);
+            return this;
+        }
     }
 
     public VolumeImpl withUsageThreshold(Long usageThreshold) {

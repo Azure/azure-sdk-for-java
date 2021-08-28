@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.models.ProxyOnlyResource;
 import com.azure.resourcemanager.appservice.models.WebJobType;
@@ -14,52 +13,31 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** Web Job Information. */
-@JsonFlatten
 @Fluent
-public class WebJobInner extends ProxyOnlyResource {
+public final class WebJobInner extends ProxyOnlyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(WebJobInner.class);
 
     /*
-     * Run command.
+     * WebJob resource specific properties
      */
-    @JsonProperty(value = "properties.run_command")
-    private String runCommand;
+    @JsonProperty(value = "properties")
+    private WebJobProperties innerProperties;
 
-    /*
-     * Job URL.
+    /**
+     * Get the innerProperties property: WebJob resource specific properties.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.url")
-    private String url;
+    private WebJobProperties innerProperties() {
+        return this.innerProperties;
+    }
 
-    /*
-     * Extra Info URL.
-     */
-    @JsonProperty(value = "properties.extra_info_url")
-    private String extraInfoUrl;
-
-    /*
-     * Job type.
-     */
-    @JsonProperty(value = "properties.web_job_type")
-    private WebJobType webJobType;
-
-    /*
-     * Error information.
-     */
-    @JsonProperty(value = "properties.error")
-    private String error;
-
-    /*
-     * Using SDK?
-     */
-    @JsonProperty(value = "properties.using_sdk")
-    private Boolean usingSdk;
-
-    /*
-     * Job settings.
-     */
-    @JsonProperty(value = "properties.settings")
-    private Map<String, Object> settings;
+    /** {@inheritDoc} */
+    @Override
+    public WebJobInner withKind(String kind) {
+        super.withKind(kind);
+        return this;
+    }
 
     /**
      * Get the runCommand property: Run command.
@@ -67,7 +45,7 @@ public class WebJobInner extends ProxyOnlyResource {
      * @return the runCommand value.
      */
     public String runCommand() {
-        return this.runCommand;
+        return this.innerProperties() == null ? null : this.innerProperties().runCommand();
     }
 
     /**
@@ -77,7 +55,10 @@ public class WebJobInner extends ProxyOnlyResource {
      * @return the WebJobInner object itself.
      */
     public WebJobInner withRunCommand(String runCommand) {
-        this.runCommand = runCommand;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WebJobProperties();
+        }
+        this.innerProperties().withRunCommand(runCommand);
         return this;
     }
 
@@ -87,7 +68,7 @@ public class WebJobInner extends ProxyOnlyResource {
      * @return the url value.
      */
     public String url() {
-        return this.url;
+        return this.innerProperties() == null ? null : this.innerProperties().url();
     }
 
     /**
@@ -97,7 +78,10 @@ public class WebJobInner extends ProxyOnlyResource {
      * @return the WebJobInner object itself.
      */
     public WebJobInner withUrl(String url) {
-        this.url = url;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WebJobProperties();
+        }
+        this.innerProperties().withUrl(url);
         return this;
     }
 
@@ -107,7 +91,7 @@ public class WebJobInner extends ProxyOnlyResource {
      * @return the extraInfoUrl value.
      */
     public String extraInfoUrl() {
-        return this.extraInfoUrl;
+        return this.innerProperties() == null ? null : this.innerProperties().extraInfoUrl();
     }
 
     /**
@@ -117,7 +101,10 @@ public class WebJobInner extends ProxyOnlyResource {
      * @return the WebJobInner object itself.
      */
     public WebJobInner withExtraInfoUrl(String extraInfoUrl) {
-        this.extraInfoUrl = extraInfoUrl;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WebJobProperties();
+        }
+        this.innerProperties().withExtraInfoUrl(extraInfoUrl);
         return this;
     }
 
@@ -127,7 +114,7 @@ public class WebJobInner extends ProxyOnlyResource {
      * @return the webJobType value.
      */
     public WebJobType webJobType() {
-        return this.webJobType;
+        return this.innerProperties() == null ? null : this.innerProperties().webJobType();
     }
 
     /**
@@ -137,7 +124,10 @@ public class WebJobInner extends ProxyOnlyResource {
      * @return the WebJobInner object itself.
      */
     public WebJobInner withWebJobType(WebJobType webJobType) {
-        this.webJobType = webJobType;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WebJobProperties();
+        }
+        this.innerProperties().withWebJobType(webJobType);
         return this;
     }
 
@@ -147,7 +137,7 @@ public class WebJobInner extends ProxyOnlyResource {
      * @return the error value.
      */
     public String error() {
-        return this.error;
+        return this.innerProperties() == null ? null : this.innerProperties().error();
     }
 
     /**
@@ -157,7 +147,10 @@ public class WebJobInner extends ProxyOnlyResource {
      * @return the WebJobInner object itself.
      */
     public WebJobInner withError(String error) {
-        this.error = error;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WebJobProperties();
+        }
+        this.innerProperties().withError(error);
         return this;
     }
 
@@ -167,7 +160,7 @@ public class WebJobInner extends ProxyOnlyResource {
      * @return the usingSdk value.
      */
     public Boolean usingSdk() {
-        return this.usingSdk;
+        return this.innerProperties() == null ? null : this.innerProperties().usingSdk();
     }
 
     /**
@@ -177,7 +170,10 @@ public class WebJobInner extends ProxyOnlyResource {
      * @return the WebJobInner object itself.
      */
     public WebJobInner withUsingSdk(Boolean usingSdk) {
-        this.usingSdk = usingSdk;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WebJobProperties();
+        }
+        this.innerProperties().withUsingSdk(usingSdk);
         return this;
     }
 
@@ -187,7 +183,7 @@ public class WebJobInner extends ProxyOnlyResource {
      * @return the settings value.
      */
     public Map<String, Object> settings() {
-        return this.settings;
+        return this.innerProperties() == null ? null : this.innerProperties().settings();
     }
 
     /**
@@ -197,14 +193,10 @@ public class WebJobInner extends ProxyOnlyResource {
      * @return the WebJobInner object itself.
      */
     public WebJobInner withSettings(Map<String, Object> settings) {
-        this.settings = settings;
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public WebJobInner withKind(String kind) {
-        super.withKind(kind);
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WebJobProperties();
+        }
+        this.innerProperties().withSettings(settings);
         return this;
     }
 
@@ -216,5 +208,8 @@ public class WebJobInner extends ProxyOnlyResource {
     @Override
     public void validate() {
         super.validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

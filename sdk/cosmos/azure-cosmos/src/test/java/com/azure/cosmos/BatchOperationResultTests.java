@@ -4,8 +4,12 @@
 package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.batch.ItemBatchOperation;
+import com.azure.cosmos.models.CosmosBatchOperationResult;
+import com.azure.cosmos.models.CosmosItemOperationType;
+import com.azure.cosmos.models.ModelBridgeInternal;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.testng.annotations.Test;
@@ -25,8 +29,8 @@ public class BatchOperationResultTests {
         null
         );
 
-    private TransactionalBatchOperationResult createTestResult() {
-        TransactionalBatchOperationResult result = BridgeInternal.createTransactionBatchResult(
+    private CosmosBatchOperationResult createTestResult() {
+        CosmosBatchOperationResult result = ModelBridgeInternal.createCosmosBatchResult(
             "TestETag",
             1.4,
             objectNode,
@@ -41,21 +45,25 @@ public class BatchOperationResultTests {
 
     @Test(groups = {"unit"}, timeOut = TIMEOUT)
     public void propertiesAreSetThroughCtor() {
-        TransactionalBatchOperationResult result = createTestResult();
+        CosmosBatchOperationResult result = createTestResult();
 
         assertThat(result.getStatusCode()).isEqualTo(HttpResponseStatus.OK.code());
         assertThat(result.getSubStatusCode()).isEqualTo(HttpConstants.SubStatusCodes.NAME_CACHE_IS_STALE);
         assertThat(result.getETag()).isEqualTo("TestETag");
         assertThat(result.getRequestCharge()).isEqualTo(1.4);
         assertThat(result.getRetryAfterDuration()).isEqualTo(Duration.ofMillis(1234));
-        assertThat(result.getResourceObject()).isSameAs(objectNode);
+        ObjectNode resourceObject = ImplementationBridgeHelpers
+            .CosmosBatchOperationResultHelper
+            .getCosmosBatchOperationResultAccessor()
+            .getResourceObject(result);
+        assertThat(resourceObject).isSameAs(objectNode);
         assertThat(result.getOperation()).isSameAs(operation);
     }
 
     @Test(groups = {"unit"}, timeOut = TIMEOUT)
     public void isSuccessStatusCodeTrueFor200To299() {
         for (int x = 100; x < 999; ++x) {
-            TransactionalBatchOperationResult result = BridgeInternal.createTransactionBatchResult(
+            CosmosBatchOperationResult result = ModelBridgeInternal.createCosmosBatchResult(
                 null,
                 0.0,
                 null,

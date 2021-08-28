@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.models.ProxyOnlyResource;
 import com.azure.resourcemanager.appservice.models.SiteExtensionType;
@@ -15,131 +14,31 @@ import java.time.OffsetDateTime;
 import java.util.List;
 
 /** Site Extension Information. */
-@JsonFlatten
 @Fluent
-public class SiteExtensionInfoInner extends ProxyOnlyResource {
+public final class SiteExtensionInfoInner extends ProxyOnlyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(SiteExtensionInfoInner.class);
 
     /*
-     * Site extension ID.
+     * SiteExtensionInfo resource specific properties
      */
-    @JsonProperty(value = "properties.extension_id")
-    private String extensionId;
+    @JsonProperty(value = "properties")
+    private SiteExtensionInfoProperties innerProperties;
 
-    /*
-     * The title property.
+    /**
+     * Get the innerProperties property: SiteExtensionInfo resource specific properties.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.title")
-    private String title;
+    private SiteExtensionInfoProperties innerProperties() {
+        return this.innerProperties;
+    }
 
-    /*
-     * Site extension type.
-     */
-    @JsonProperty(value = "properties.extension_type")
-    private SiteExtensionType extensionType;
-
-    /*
-     * Summary description.
-     */
-    @JsonProperty(value = "properties.summary")
-    private String summary;
-
-    /*
-     * Detailed description.
-     */
-    @JsonProperty(value = "properties.description")
-    private String description;
-
-    /*
-     * Version information.
-     */
-    @JsonProperty(value = "properties.version")
-    private String version;
-
-    /*
-     * Extension URL.
-     */
-    @JsonProperty(value = "properties.extension_url")
-    private String extensionUrl;
-
-    /*
-     * Project URL.
-     */
-    @JsonProperty(value = "properties.project_url")
-    private String projectUrl;
-
-    /*
-     * Icon URL.
-     */
-    @JsonProperty(value = "properties.icon_url")
-    private String iconUrl;
-
-    /*
-     * License URL.
-     */
-    @JsonProperty(value = "properties.license_url")
-    private String licenseUrl;
-
-    /*
-     * Feed URL.
-     */
-    @JsonProperty(value = "properties.feed_url")
-    private String feedUrl;
-
-    /*
-     * List of authors.
-     */
-    @JsonProperty(value = "properties.authors")
-    private List<String> authors;
-
-    /*
-     * Installer command line parameters.
-     */
-    @JsonProperty(value = "properties.installer_command_line_params")
-    private String installerCommandLineParams;
-
-    /*
-     * Published timestamp.
-     */
-    @JsonProperty(value = "properties.published_date_time")
-    private OffsetDateTime publishedDateTime;
-
-    /*
-     * Count of downloads.
-     */
-    @JsonProperty(value = "properties.download_count")
-    private Integer downloadCount;
-
-    /*
-     * <code>true</code> if the local version is the latest version;
-     * <code>false</code> otherwise.
-     */
-    @JsonProperty(value = "properties.local_is_latest_version")
-    private Boolean localIsLatestVersion;
-
-    /*
-     * Local path.
-     */
-    @JsonProperty(value = "properties.local_path")
-    private String localPath;
-
-    /*
-     * Installed timestamp.
-     */
-    @JsonProperty(value = "properties.installed_date_time")
-    private OffsetDateTime installedDateTime;
-
-    /*
-     * Provisioning state.
-     */
-    @JsonProperty(value = "properties.provisioningState")
-    private String provisioningState;
-
-    /*
-     * Site Extension comment.
-     */
-    @JsonProperty(value = "properties.comment")
-    private String comment;
+    /** {@inheritDoc} */
+    @Override
+    public SiteExtensionInfoInner withKind(String kind) {
+        super.withKind(kind);
+        return this;
+    }
 
     /**
      * Get the extensionId property: Site extension ID.
@@ -147,7 +46,7 @@ public class SiteExtensionInfoInner extends ProxyOnlyResource {
      * @return the extensionId value.
      */
     public String extensionId() {
-        return this.extensionId;
+        return this.innerProperties() == null ? null : this.innerProperties().extensionId();
     }
 
     /**
@@ -157,7 +56,10 @@ public class SiteExtensionInfoInner extends ProxyOnlyResource {
      * @return the SiteExtensionInfoInner object itself.
      */
     public SiteExtensionInfoInner withExtensionId(String extensionId) {
-        this.extensionId = extensionId;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SiteExtensionInfoProperties();
+        }
+        this.innerProperties().withExtensionId(extensionId);
         return this;
     }
 
@@ -167,7 +69,7 @@ public class SiteExtensionInfoInner extends ProxyOnlyResource {
      * @return the title value.
      */
     public String title() {
-        return this.title;
+        return this.innerProperties() == null ? null : this.innerProperties().title();
     }
 
     /**
@@ -177,7 +79,10 @@ public class SiteExtensionInfoInner extends ProxyOnlyResource {
      * @return the SiteExtensionInfoInner object itself.
      */
     public SiteExtensionInfoInner withTitle(String title) {
-        this.title = title;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SiteExtensionInfoProperties();
+        }
+        this.innerProperties().withTitle(title);
         return this;
     }
 
@@ -187,7 +92,7 @@ public class SiteExtensionInfoInner extends ProxyOnlyResource {
      * @return the extensionType value.
      */
     public SiteExtensionType extensionType() {
-        return this.extensionType;
+        return this.innerProperties() == null ? null : this.innerProperties().extensionType();
     }
 
     /**
@@ -197,7 +102,10 @@ public class SiteExtensionInfoInner extends ProxyOnlyResource {
      * @return the SiteExtensionInfoInner object itself.
      */
     public SiteExtensionInfoInner withExtensionType(SiteExtensionType extensionType) {
-        this.extensionType = extensionType;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SiteExtensionInfoProperties();
+        }
+        this.innerProperties().withExtensionType(extensionType);
         return this;
     }
 
@@ -207,7 +115,7 @@ public class SiteExtensionInfoInner extends ProxyOnlyResource {
      * @return the summary value.
      */
     public String summary() {
-        return this.summary;
+        return this.innerProperties() == null ? null : this.innerProperties().summary();
     }
 
     /**
@@ -217,7 +125,10 @@ public class SiteExtensionInfoInner extends ProxyOnlyResource {
      * @return the SiteExtensionInfoInner object itself.
      */
     public SiteExtensionInfoInner withSummary(String summary) {
-        this.summary = summary;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SiteExtensionInfoProperties();
+        }
+        this.innerProperties().withSummary(summary);
         return this;
     }
 
@@ -227,7 +138,7 @@ public class SiteExtensionInfoInner extends ProxyOnlyResource {
      * @return the description value.
      */
     public String description() {
-        return this.description;
+        return this.innerProperties() == null ? null : this.innerProperties().description();
     }
 
     /**
@@ -237,7 +148,10 @@ public class SiteExtensionInfoInner extends ProxyOnlyResource {
      * @return the SiteExtensionInfoInner object itself.
      */
     public SiteExtensionInfoInner withDescription(String description) {
-        this.description = description;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SiteExtensionInfoProperties();
+        }
+        this.innerProperties().withDescription(description);
         return this;
     }
 
@@ -247,7 +161,7 @@ public class SiteExtensionInfoInner extends ProxyOnlyResource {
      * @return the version value.
      */
     public String version() {
-        return this.version;
+        return this.innerProperties() == null ? null : this.innerProperties().version();
     }
 
     /**
@@ -257,7 +171,10 @@ public class SiteExtensionInfoInner extends ProxyOnlyResource {
      * @return the SiteExtensionInfoInner object itself.
      */
     public SiteExtensionInfoInner withVersion(String version) {
-        this.version = version;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SiteExtensionInfoProperties();
+        }
+        this.innerProperties().withVersion(version);
         return this;
     }
 
@@ -267,7 +184,7 @@ public class SiteExtensionInfoInner extends ProxyOnlyResource {
      * @return the extensionUrl value.
      */
     public String extensionUrl() {
-        return this.extensionUrl;
+        return this.innerProperties() == null ? null : this.innerProperties().extensionUrl();
     }
 
     /**
@@ -277,7 +194,10 @@ public class SiteExtensionInfoInner extends ProxyOnlyResource {
      * @return the SiteExtensionInfoInner object itself.
      */
     public SiteExtensionInfoInner withExtensionUrl(String extensionUrl) {
-        this.extensionUrl = extensionUrl;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SiteExtensionInfoProperties();
+        }
+        this.innerProperties().withExtensionUrl(extensionUrl);
         return this;
     }
 
@@ -287,7 +207,7 @@ public class SiteExtensionInfoInner extends ProxyOnlyResource {
      * @return the projectUrl value.
      */
     public String projectUrl() {
-        return this.projectUrl;
+        return this.innerProperties() == null ? null : this.innerProperties().projectUrl();
     }
 
     /**
@@ -297,7 +217,10 @@ public class SiteExtensionInfoInner extends ProxyOnlyResource {
      * @return the SiteExtensionInfoInner object itself.
      */
     public SiteExtensionInfoInner withProjectUrl(String projectUrl) {
-        this.projectUrl = projectUrl;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SiteExtensionInfoProperties();
+        }
+        this.innerProperties().withProjectUrl(projectUrl);
         return this;
     }
 
@@ -307,7 +230,7 @@ public class SiteExtensionInfoInner extends ProxyOnlyResource {
      * @return the iconUrl value.
      */
     public String iconUrl() {
-        return this.iconUrl;
+        return this.innerProperties() == null ? null : this.innerProperties().iconUrl();
     }
 
     /**
@@ -317,7 +240,10 @@ public class SiteExtensionInfoInner extends ProxyOnlyResource {
      * @return the SiteExtensionInfoInner object itself.
      */
     public SiteExtensionInfoInner withIconUrl(String iconUrl) {
-        this.iconUrl = iconUrl;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SiteExtensionInfoProperties();
+        }
+        this.innerProperties().withIconUrl(iconUrl);
         return this;
     }
 
@@ -327,7 +253,7 @@ public class SiteExtensionInfoInner extends ProxyOnlyResource {
      * @return the licenseUrl value.
      */
     public String licenseUrl() {
-        return this.licenseUrl;
+        return this.innerProperties() == null ? null : this.innerProperties().licenseUrl();
     }
 
     /**
@@ -337,7 +263,10 @@ public class SiteExtensionInfoInner extends ProxyOnlyResource {
      * @return the SiteExtensionInfoInner object itself.
      */
     public SiteExtensionInfoInner withLicenseUrl(String licenseUrl) {
-        this.licenseUrl = licenseUrl;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SiteExtensionInfoProperties();
+        }
+        this.innerProperties().withLicenseUrl(licenseUrl);
         return this;
     }
 
@@ -347,7 +276,7 @@ public class SiteExtensionInfoInner extends ProxyOnlyResource {
      * @return the feedUrl value.
      */
     public String feedUrl() {
-        return this.feedUrl;
+        return this.innerProperties() == null ? null : this.innerProperties().feedUrl();
     }
 
     /**
@@ -357,7 +286,10 @@ public class SiteExtensionInfoInner extends ProxyOnlyResource {
      * @return the SiteExtensionInfoInner object itself.
      */
     public SiteExtensionInfoInner withFeedUrl(String feedUrl) {
-        this.feedUrl = feedUrl;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SiteExtensionInfoProperties();
+        }
+        this.innerProperties().withFeedUrl(feedUrl);
         return this;
     }
 
@@ -367,7 +299,7 @@ public class SiteExtensionInfoInner extends ProxyOnlyResource {
      * @return the authors value.
      */
     public List<String> authors() {
-        return this.authors;
+        return this.innerProperties() == null ? null : this.innerProperties().authors();
     }
 
     /**
@@ -377,7 +309,10 @@ public class SiteExtensionInfoInner extends ProxyOnlyResource {
      * @return the SiteExtensionInfoInner object itself.
      */
     public SiteExtensionInfoInner withAuthors(List<String> authors) {
-        this.authors = authors;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SiteExtensionInfoProperties();
+        }
+        this.innerProperties().withAuthors(authors);
         return this;
     }
 
@@ -387,7 +322,7 @@ public class SiteExtensionInfoInner extends ProxyOnlyResource {
      * @return the installerCommandLineParams value.
      */
     public String installerCommandLineParams() {
-        return this.installerCommandLineParams;
+        return this.innerProperties() == null ? null : this.innerProperties().installerCommandLineParams();
     }
 
     /**
@@ -397,7 +332,10 @@ public class SiteExtensionInfoInner extends ProxyOnlyResource {
      * @return the SiteExtensionInfoInner object itself.
      */
     public SiteExtensionInfoInner withInstallerCommandLineParams(String installerCommandLineParams) {
-        this.installerCommandLineParams = installerCommandLineParams;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SiteExtensionInfoProperties();
+        }
+        this.innerProperties().withInstallerCommandLineParams(installerCommandLineParams);
         return this;
     }
 
@@ -407,7 +345,7 @@ public class SiteExtensionInfoInner extends ProxyOnlyResource {
      * @return the publishedDateTime value.
      */
     public OffsetDateTime publishedDateTime() {
-        return this.publishedDateTime;
+        return this.innerProperties() == null ? null : this.innerProperties().publishedDateTime();
     }
 
     /**
@@ -417,7 +355,10 @@ public class SiteExtensionInfoInner extends ProxyOnlyResource {
      * @return the SiteExtensionInfoInner object itself.
      */
     public SiteExtensionInfoInner withPublishedDateTime(OffsetDateTime publishedDateTime) {
-        this.publishedDateTime = publishedDateTime;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SiteExtensionInfoProperties();
+        }
+        this.innerProperties().withPublishedDateTime(publishedDateTime);
         return this;
     }
 
@@ -427,7 +368,7 @@ public class SiteExtensionInfoInner extends ProxyOnlyResource {
      * @return the downloadCount value.
      */
     public Integer downloadCount() {
-        return this.downloadCount;
+        return this.innerProperties() == null ? null : this.innerProperties().downloadCount();
     }
 
     /**
@@ -437,7 +378,10 @@ public class SiteExtensionInfoInner extends ProxyOnlyResource {
      * @return the SiteExtensionInfoInner object itself.
      */
     public SiteExtensionInfoInner withDownloadCount(Integer downloadCount) {
-        this.downloadCount = downloadCount;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SiteExtensionInfoProperties();
+        }
+        this.innerProperties().withDownloadCount(downloadCount);
         return this;
     }
 
@@ -448,7 +392,7 @@ public class SiteExtensionInfoInner extends ProxyOnlyResource {
      * @return the localIsLatestVersion value.
      */
     public Boolean localIsLatestVersion() {
-        return this.localIsLatestVersion;
+        return this.innerProperties() == null ? null : this.innerProperties().localIsLatestVersion();
     }
 
     /**
@@ -459,7 +403,10 @@ public class SiteExtensionInfoInner extends ProxyOnlyResource {
      * @return the SiteExtensionInfoInner object itself.
      */
     public SiteExtensionInfoInner withLocalIsLatestVersion(Boolean localIsLatestVersion) {
-        this.localIsLatestVersion = localIsLatestVersion;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SiteExtensionInfoProperties();
+        }
+        this.innerProperties().withLocalIsLatestVersion(localIsLatestVersion);
         return this;
     }
 
@@ -469,7 +416,7 @@ public class SiteExtensionInfoInner extends ProxyOnlyResource {
      * @return the localPath value.
      */
     public String localPath() {
-        return this.localPath;
+        return this.innerProperties() == null ? null : this.innerProperties().localPath();
     }
 
     /**
@@ -479,7 +426,10 @@ public class SiteExtensionInfoInner extends ProxyOnlyResource {
      * @return the SiteExtensionInfoInner object itself.
      */
     public SiteExtensionInfoInner withLocalPath(String localPath) {
-        this.localPath = localPath;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SiteExtensionInfoProperties();
+        }
+        this.innerProperties().withLocalPath(localPath);
         return this;
     }
 
@@ -489,7 +439,7 @@ public class SiteExtensionInfoInner extends ProxyOnlyResource {
      * @return the installedDateTime value.
      */
     public OffsetDateTime installedDateTime() {
-        return this.installedDateTime;
+        return this.innerProperties() == null ? null : this.innerProperties().installedDateTime();
     }
 
     /**
@@ -499,7 +449,10 @@ public class SiteExtensionInfoInner extends ProxyOnlyResource {
      * @return the SiteExtensionInfoInner object itself.
      */
     public SiteExtensionInfoInner withInstalledDateTime(OffsetDateTime installedDateTime) {
-        this.installedDateTime = installedDateTime;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SiteExtensionInfoProperties();
+        }
+        this.innerProperties().withInstalledDateTime(installedDateTime);
         return this;
     }
 
@@ -509,7 +462,7 @@ public class SiteExtensionInfoInner extends ProxyOnlyResource {
      * @return the provisioningState value.
      */
     public String provisioningState() {
-        return this.provisioningState;
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
     /**
@@ -519,7 +472,10 @@ public class SiteExtensionInfoInner extends ProxyOnlyResource {
      * @return the SiteExtensionInfoInner object itself.
      */
     public SiteExtensionInfoInner withProvisioningState(String provisioningState) {
-        this.provisioningState = provisioningState;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SiteExtensionInfoProperties();
+        }
+        this.innerProperties().withProvisioningState(provisioningState);
         return this;
     }
 
@@ -529,7 +485,7 @@ public class SiteExtensionInfoInner extends ProxyOnlyResource {
      * @return the comment value.
      */
     public String comment() {
-        return this.comment;
+        return this.innerProperties() == null ? null : this.innerProperties().comment();
     }
 
     /**
@@ -539,14 +495,10 @@ public class SiteExtensionInfoInner extends ProxyOnlyResource {
      * @return the SiteExtensionInfoInner object itself.
      */
     public SiteExtensionInfoInner withComment(String comment) {
-        this.comment = comment;
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public SiteExtensionInfoInner withKind(String kind) {
-        super.withKind(kind);
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SiteExtensionInfoProperties();
+        }
+        this.innerProperties().withComment(comment);
         return this;
     }
 
@@ -558,5 +510,8 @@ public class SiteExtensionInfoInner extends ProxyOnlyResource {
     @Override
     public void validate() {
         super.validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }
