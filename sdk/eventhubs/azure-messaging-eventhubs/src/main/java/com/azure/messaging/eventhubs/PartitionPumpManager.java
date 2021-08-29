@@ -60,6 +60,8 @@ import static com.azure.messaging.eventhubs.implementation.ClientConstants.AZ_TR
  */
 class PartitionPumpManager {
     private static final int MAXIMUM_QUEUE_SIZE = 10000;
+    private static final PartitionEvent CUT_PARTITION_EVENT_STREAM = new PartitionEvent(new PartitionContext("cut", "cut", "cut", "cut"),
+        new EventData(new byte[0]), null);
 
     //TODO (conniey): Add a configurable scheduler size, at the moment we are creating a new elastic scheduler
     // for each partition pump that will have at most number of processors * 4.
@@ -76,6 +78,8 @@ class PartitionPumpManager {
     private final int maxBatchSize;
     private final boolean batchReceiveMode;
     private final int prefetch;
+
+
 
     /**
      * Creates an instance of partition pump manager.
@@ -210,7 +214,6 @@ class PartitionPumpManager {
 
             partitionPumps.put(claimedOwnership.getPartitionId(), partitionPump);
             //@formatter:off
-            Flux<Flux<PartitionEvent>> partitionEventFlux;
             Flux<PartitionEvent> receiver = eventHubConsumer
                 .receiveFromPartition(claimedOwnership.getPartitionId(), startFromEventPosition, receiveOptions)
                 .doOnNext(partitionEvent -> {
@@ -221,16 +224,16 @@ class PartitionPumpManager {
                     }
                 });
 
+            final Flux<List<PartitionEvent>> partitionEventBatchFlux;
             if (maxWaitTime != null) {
-                partitionEventFlux = receiver
-                    .windowTimeout(maxBatchSize, maxWaitTime);
+                partitionEventBatchFlux = batchReceiverWithTimeout(receiver, this.maxBatchSize,
+                    this.maxWaitTime, this.prefetch, scheduler);
             } else {
-                partitionEventFlux = receiver
-                    .window(maxBatchSize);
+                partitionEventBatchFlux = batchReceiver(receiver, this.maxBatchSize,
+                    this.prefetch, scheduler);
             }
-            partitionEventFlux
-                .concatMap(Flux::collectList)
-                .publishOn(scheduler, false, prefetch)
+
+            partitionEventBatchFlux
                 .subscribe(partitionEventBatch -> {
                     processEvents(partitionContext, partitionProcessor,
                         eventHubConsumer, partitionEventBatch);
@@ -408,5 +411,78 @@ class PartitionPumpManager {
                 spanObject != null ? spanObject.getClass() : "null"));
         }
         tracerProvider.endSpan(processSpanContext, signal);
+    }
+
+    /**
+     * Convert the given {@code receiver} {@link Flux} sequence into multiple {@link Flux} batches
+     * containing {@code maxBatchSize} elements (or less for the final batch) and starting from
+     * the first item.
+     *
+     * @param receiver The receiver stream to split into {@link Flux} batches.
+     * @param maxBatchSize the maximum number of items to emit in the batch before closing it
+     * @param maxWaitTime the maximum {@link Duration} since the batch was opened before closing it
+     * @param prefetch the prefetch size
+     * @param scheduler the scheduler to publish the batched events
+     *
+     * @return a {@link Flux} of batch {@link List} based on batch size and duration
+     */
+    private static Flux<List<PartitionEvent>> batchReceiverWithTimeout(Flux<PartitionEvent> receiver,
+                                                                int maxBatchSize,
+                                                                Duration maxWaitTime,
+                                                                int prefetch,
+                                                                Scheduler scheduler) {
+        // The standard Flux.windowTimeout operator won't respect backpressure
+        // causing the error:
+        // 'OverflowException: The receiver is overrun by more signals than expected (bounded queue...)'
+        // https://github.com/reactor/reactor-core/issues/1099
+        // Below operator combinations are used to get the same outcome as Flux.windowTimeout
+        // but with backpressure support.
+        //
+        return Flux.defer(() -> {
+            // Reactor takes care of memory visibility, and invocation of lambdas are serial;
+            // hence currentBatchSize doesn't have to be atomic/volatile.
+            final int[] currentBatchSize = new int[1];
+            final Flux<PartitionEvent> receiveCutter = Flux.interval(maxWaitTime)
+                .map(x -> CUT_PARTITION_EVENT_STREAM)
+                .onBackpressureLatest();
+
+            return receiveCutter
+                .mergeWith(receiver.publishOn(scheduler, prefetch))
+                .bufferUntil(e -> {
+                    if (e == CUT_PARTITION_EVENT_STREAM) {
+                        currentBatchSize[0] = 0;
+                        return true;
+                    } else {
+                        currentBatchSize[0]++;
+                        if (currentBatchSize[0] >= maxBatchSize) {
+                            currentBatchSize[0] = 0;
+                            return true;
+                        } else {
+                            return false;
+                        }
+                    }
+                });
+        });
+    }
+
+    /**
+     * Convert the given {@code receiver} {@link Flux} sequence into multiple {@link Flux} batches
+     * containing {@code maxBatchSize} elements (or less for the final batch) and starting from
+     * the first item.
+     *
+     * @param receiver The receiver stream to split into {@link Flux} batches.
+     * @param maxBatchSize the maximum number of items to emit in the batch before closing it
+     * @param prefetch the prefetch size
+     * @param scheduler the scheduler to publish the batched events
+     *
+     * @return a {@link Flux} of batch {@link List} based on batch size
+     */
+    private static Flux<List<PartitionEvent>> batchReceiver(Flux<PartitionEvent> receiver,
+                                                     int maxBatchSize,
+                                                     int prefetch,
+                                                     Scheduler scheduler) {
+        return receiver.window(maxBatchSize)
+                .concatMap(Flux::collectList)
+                .publishOn(scheduler, false, prefetch);
     }
 }
