@@ -3,13 +3,12 @@
 
 package com.azure.cosmos.implementation.directconnectivity;
 
+import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.CosmosSchedulers;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.throughputControl.ThroughputControlStore;
 import reactor.core.publisher.Mono;
-import reactor.core.scheduler.Scheduler;
-import reactor.core.scheduler.Schedulers;
 
 // We suppress the "try" warning here because the close() method's signature
 // allows it to throw InterruptedException which is strongly advised against
@@ -18,6 +17,7 @@ import reactor.core.scheduler.Schedulers;
 // signature for backwards compatibility purposes.
 @SuppressWarnings("try")
 public abstract class TransportClient implements AutoCloseable {
+    private static final boolean switchOffIOThreadForResponse = Configs.shouldSwitchOffIOThreadForResponse();
     private ThroughputControlStore throughputControlStore;
 
     public void enableThroughputControl(ThroughputControlStore throughputControlStore) {
@@ -29,18 +29,29 @@ public abstract class TransportClient implements AutoCloseable {
         if (StringUtils.isEmpty(request.requestContext.resourcePhysicalAddress)) {
             request.requestContext.resourcePhysicalAddress = physicalAddress.toString();
         }
+
         if (this.throughputControlStore != null) {
-            return this.throughputControlStore.processRequest(
-                request,
-                Mono.defer(
-                    () -> this.invokeStoreAsync(physicalAddress, request).publishOn(CosmosSchedulers.TRANSPORT_CLIENT_BOUNDED_ELASTIC)));
+            return this.invokeStoreWithThroughputControlAsync(physicalAddress, request);
         }
 
-        return this.invokeStoreAsync(physicalAddress, request)
-            .publishOn(CosmosSchedulers.TRANSPORT_CLIENT_BOUNDED_ELASTIC);
+        return this.invokeStoreInternalAsync(physicalAddress, request);
     }
 
     protected abstract Mono<StoreResponse> invokeStoreAsync(
         Uri physicalAddress,
         RxDocumentServiceRequest request);
+
+    private Mono<StoreResponse> invokeStoreWithThroughputControlAsync(Uri physicalAddress, RxDocumentServiceRequest request) {
+        return this.throughputControlStore.processRequest(
+            request,
+            Mono.defer(() -> this.invokeStoreInternalAsync(physicalAddress, request)));
+    }
+
+    private Mono<StoreResponse> invokeStoreInternalAsync(Uri physicalAddress, RxDocumentServiceRequest request) {
+        if (switchOffIOThreadForResponse) {
+            return this.invokeStoreAsync(physicalAddress, request).publishOn(CosmosSchedulers.TRANSPORT_CLIENT_BOUNDED_ELASTIC);
+        }
+
+        return this.invokeStoreAsync(physicalAddress, request);
+    }
 }

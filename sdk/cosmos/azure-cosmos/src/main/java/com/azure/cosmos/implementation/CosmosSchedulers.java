@@ -18,6 +18,7 @@ public class CosmosSchedulers {
         Schedulers.DEFAULT_POOL_SIZE,
         true);
 
+    // Custom bounded elastic scheduler to switch off IO thread as soon as possible.
     public final static Scheduler TRANSPORT_CLIENT_BOUNDED_ELASTIC = Schedulers.newBoundedElastic(
         Schedulers.DEFAULT_BOUNDED_ELASTIC_SIZE,
         Schedulers.DEFAULT_BOUNDED_ELASTIC_QUEUESIZE,
