@@ -6,7 +6,6 @@ package com.azure.security.keyvault.jca;
 import com.azure.security.keyvault.jca.implementation.utils.HttpUtil;
 import org.junit.jupiter.api.Test;
 
-import static com.azure.security.keyvault.jca.implementation.utils.HttpUtil.DEFAULT_VERSION;
 import static com.azure.security.keyvault.jca.implementation.utils.HttpUtil.USER_AGENT_VALUE;
 import static com.azure.security.keyvault.jca.implementation.utils.HttpUtil.VERSION;
 import static org.junit.jupiter.api.Assertions.assertEquals;

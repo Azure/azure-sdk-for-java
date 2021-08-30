@@ -3,12 +3,11 @@
 
 package com.azure.security.keyvault.jca.implementation.utils;
 
+import org.junit.jupiter.api.Test;
+
 import static com.azure.security.keyvault.jca.implementation.utils.HttpUtil.DEFAULT_USER_AGENT_VALUE_PREFIX;
-import static com.azure.security.keyvault.jca.implementation.utils.HttpUtil.DEFAULT_VERSION;
 import static com.azure.security.keyvault.jca.implementation.utils.HttpUtil.VERSION;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-
-import org.junit.jupiter.api.Test;
 
 public class HttpUtilTest {
 
