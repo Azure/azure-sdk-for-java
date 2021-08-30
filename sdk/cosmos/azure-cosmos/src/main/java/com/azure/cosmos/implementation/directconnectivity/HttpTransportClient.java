@@ -578,7 +578,7 @@ public class HttpTransportClient extends TransportClient {
     }
 
     private static String getDatabaseFeedUri(String baseAddress) {
-        return createURI(baseAddress, PathsHelper.generatePath(ResourceType.Database, StringUtils.EMPTY, true, null));
+        return createURI(baseAddress, PathsHelper.generatePath(ResourceType.Database, StringUtils.EMPTY, true));
     }
 
     private static String getDatabaseEntryUri(String baseAddress, RxDocumentServiceRequest request) {

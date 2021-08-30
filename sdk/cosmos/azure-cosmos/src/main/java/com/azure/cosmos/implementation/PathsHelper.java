@@ -111,7 +111,15 @@ public class PathsHelper {
         return resourcePath;
     }
 
-    public static String generatePath(ResourceType resourceType, String ownerOrResourceId, boolean isFeed, OperationType operationType) {
+    public static String generatePath(ResourceType resourceType, String ownerOrResourceId, boolean isFeed) {
+        if (resourceType == ResourceType.PartitionKey) {
+            return generatePath(resourceType, ownerOrResourceId, isFeed, OperationType.Delete);
+        } else {
+            return generatePath(resourceType, ownerOrResourceId, isFeed, null);
+        }
+    }
+
+    private static String generatePath(ResourceType resourceType, String ownerOrResourceId, boolean isFeed, OperationType operationType) {
         if (isFeed && (ownerOrResourceId == null || ownerOrResourceId.isEmpty()) &&
             resourceType != ResourceType.Database &&
             resourceType != ResourceType.Offer &&

@@ -71,7 +71,7 @@ public class GatewayAddressCache implements IAddressCache {
     private final DiagnosticsClientContext clientContext;
     private final ServiceConfig serviceConfig = ServiceConfig.getInstance();
 
-    private final String databaseFeedEntryUrl = PathsHelper.generatePath(ResourceType.Database, "", true, null);
+    private final String databaseFeedEntryUrl = PathsHelper.generatePath(ResourceType.Database, "", true);
     private final URI serviceEndpoint;
     private final URI addressEndpoint;
 
@@ -298,7 +298,7 @@ public class GatewayAddressCache implements IAddressCache {
                 JavaStreamUtils.toString(partitionKeyRangeIds, ","));
         }
         request.setAddressRefresh(true, forceRefresh);
-        String entryUrl = PathsHelper.generatePath(ResourceType.Document, collectionRid, true, null);
+        String entryUrl = PathsHelper.generatePath(ResourceType.Document, collectionRid, true);
         HashMap<String, String> addressQuery = new HashMap<>();
 
         addressQuery.put(HttpConstants.QueryStrings.URL, HttpUtils.urlEncode(entryUrl));
