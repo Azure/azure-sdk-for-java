@@ -42,7 +42,7 @@ final class GenericResourceImpl
     private String resourceType;
     private String apiVersion;
 
-    private GenericResourceInner updateParameter = new GenericResourceInner();
+    private GenericResourceInner createUpdateParameter = new GenericResourceInner();
 
     GenericResourceImpl(String key,
                         GenericResourceInner innerModel,
@@ -123,46 +123,30 @@ final class GenericResourceImpl
 
     @Override
     public GenericResourceImpl update() {
-        this.updateParameter = new GenericResourceInner();
+        this.createUpdateParameter = new GenericResourceInner();
         return super.update();
     }
 
     public GenericResourceImpl withProperties(Object properties) {
-        if (isInCreateMode()) {
-            innerModel().withProperties(properties);
-        } else {
-            updateParameter.withProperties(properties);
-        }
+        createUpdateParameter.withProperties(properties);
         return this;
     }
 
     @Override
     public GenericResourceImpl withKind(String kind) {
-        if (isInCreateMode()) {
-            innerModel().withKind(kind);
-        } else {
-            updateParameter.withKind(kind);
-        }
+        createUpdateParameter.withKind(kind);
         return this;
     }
 
     @Override
     public GenericResourceImpl withSku(Sku sku) {
-        if (isInCreateMode()) {
-            innerModel().withSku(sku);
-        } else {
-            updateParameter.withSku(sku);
-        }
+        createUpdateParameter.withSku(sku);
         return this;
     }
 
     @Override
     public GenericResourceImpl withIdentity(Identity identity) {
-        if (isInCreateMode()) {
-            innerModel().withIdentity(identity);
-        } else {
-            updateParameter.withIdentity(identity);
-        }
+        createUpdateParameter.withIdentity(identity);
         return this;
     }
 
@@ -194,21 +178,13 @@ final class GenericResourceImpl
     }
 
     public GenericResourceImpl withPlan(Plan plan) {
-        if (isInCreateMode()) {
-            innerModel().withPlan(plan);
-        } else {
-            updateParameter.withPlan(plan);
-        }
+        createUpdateParameter.withPlan(plan);
         return this;
     }
 
     @Override
     public GenericResourceImpl withoutPlan() {
-        if (isInCreateMode()) {
-            innerModel().withPlan(null);
-        } else {
-            updateParameter.withPlan(null);
-        }
+        createUpdateParameter.withPlan(null);
         return this;
     }
 
@@ -234,6 +210,8 @@ final class GenericResourceImpl
     public Accepted<GenericResource> beginCreate() {
         String apiVersion = this.getApiVersionAsync().block();
         String name = isInCreateMode() ? this.name() : ResourceUtils.nameFromResourceId(innerModel().id());
+        createUpdateParameter.withLocation(innerModel().location());
+        createUpdateParameter.withTags(innerModel().tags());
 
         return AcceptedImpl.newAccepted(logger,
             this.manager().serviceClient().getHttpPipeline(),
@@ -246,7 +224,7 @@ final class GenericResourceImpl
                     resourceType,
                     name,
                     apiVersion,
-                    innerModel()).block(),
+                    createUpdateParameter).block(),
             inner -> new GenericResourceImpl(inner.id(), inner, this.manager()),
             GenericResourceInner.class,
             null,
@@ -262,6 +240,8 @@ final class GenericResourceImpl
         return observable
                 .flatMap(api -> {
                     String name = this.name();
+                    createUpdateParameter.withLocation(innerModel().location());
+                    createUpdateParameter.withTags(innerModel().tags());
                     return resourceClient.createOrUpdateAsync(
                             resourceGroupName(),
                             resourceProviderNamespace,
@@ -269,7 +249,7 @@ final class GenericResourceImpl
                             resourceType,
                             name,
                             api,
-                            innerModel())
+                            createUpdateParameter)
                             .subscribeOn(ResourceManagerUtils.InternalRuntimeContext.getReactorScheduler())
                             .map(innerToFluentMap(this));
                 });
@@ -282,7 +262,7 @@ final class GenericResourceImpl
         return observable
             .flatMap(api -> {
                 String name = ResourceUtils.nameFromResourceId(innerModel().id());
-                updateParameter.withTags(innerModel().tags());
+                createUpdateParameter.withTags(innerModel().tags());
                 return resourceClient.updateAsync(
                         resourceGroupName(),
                         resourceProviderNamespace,
@@ -290,7 +270,7 @@ final class GenericResourceImpl
                         resourceType,
                         name,
                         api,
-                        updateParameter)
+                        createUpdateParameter)
                     .subscribeOn(ResourceManagerUtils.InternalRuntimeContext.getReactorScheduler())
                     .map(innerToFluentMap(this));
             });
