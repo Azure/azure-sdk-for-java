@@ -9,7 +9,7 @@
 
   <groupId>com.azure.resourcemanager</groupId>
   <artifactId>azure-resourcemanager-iothub</artifactId>
-  <version>1.1.0</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-iothub;current} -->
+  <version>1.2.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-iothub;current} -->
   <packaging>jar</packaging>
 
   <name>Microsoft Azure SDK for IotHub Management</name>
