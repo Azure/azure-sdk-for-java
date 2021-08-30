@@ -6,4 +6,5 @@
  */
 module com.azure.security.keyvault.jca.test {
     requires com.azure.security.keyvault.jca;
+    requires com.azure.security.keyvault.jca.implementation.certificates;
 }
