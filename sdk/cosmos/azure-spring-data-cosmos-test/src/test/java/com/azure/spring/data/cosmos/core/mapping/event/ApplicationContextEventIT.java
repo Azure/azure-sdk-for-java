@@ -31,7 +31,7 @@ import static org.assertj.core.api.Assertions.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = TestRepositoryConfig.class)
-public class ApplicationContextEventTest {
+public class ApplicationContextEventIT {
 
     @ClassRule
     public static final IntegrationTestCollectionManager collectionManager = new IntegrationTestCollectionManager();
