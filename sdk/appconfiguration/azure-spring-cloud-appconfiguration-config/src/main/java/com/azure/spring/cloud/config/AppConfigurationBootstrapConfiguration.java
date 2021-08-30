@@ -15,6 +15,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
+import com.azure.spring.cloud.config.pipline.policies.BaseAppConfigurationPolicy;
 import com.azure.spring.cloud.config.properties.AppConfigurationProperties;
 import com.azure.spring.cloud.config.properties.AppConfigurationProviderProperties;
 import com.azure.spring.cloud.config.properties.ConfigStore;
@@ -73,7 +74,7 @@ public class AppConfigurationBootstrapConfiguration {
      */
     @Bean
     public AppConfigurationPropertySourceLocator sourceLocator(AppConfigurationProperties properties,
-        AppConfigurationProviderProperties appProperties, ClientStore clients, 
+        AppConfigurationProviderProperties appProperties, ClientStore clients,
         Optional<KeyVaultCredentialProvider> keyVaultCredentialProviderOptional,
         Optional<SecretClientBuilderSetup> keyVaultClientProviderOptional,
         Optional<KeyVaultSecretProvider> keyVaultSecretProviderOptional) throws IllegalArgumentException {
@@ -85,12 +86,14 @@ public class AppConfigurationBootstrapConfiguration {
         if (!keyVaultCredentialProviderOptional.isPresent()) {
             LOGGER.debug("No KeyVaultCredentialProvider found.");
         } else {
+            BaseAppConfigurationPolicy.setIsKeyVaultConfigured(true);
             keyVaultCredentialProvider = keyVaultCredentialProviderOptional.get();
         }
 
         if (!keyVaultClientProviderOptional.isPresent()) {
             LOGGER.debug("No KeyVaultCredentialProvider found.");
         } else {
+            BaseAppConfigurationPolicy.setIsKeyVaultConfigured(true);
             keyVaultClientProvider = keyVaultClientProviderOptional.get();
         }
 

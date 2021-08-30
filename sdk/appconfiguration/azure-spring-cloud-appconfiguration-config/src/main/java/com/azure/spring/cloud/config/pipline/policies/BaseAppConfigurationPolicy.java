@@ -23,12 +23,17 @@ public class BaseAppConfigurationPolicy implements HttpPipelinePolicy {
 
     private static final String PACKAGE_NAME = BaseAppConfigurationPolicy.class.getPackage().getImplementationTitle();
 
-    public static final String USER_AGENT = String.format("%s/%s", StringUtils.remove(PACKAGE_NAME, " "),
+    private static final String USER_AGENT = String.format("%s/%s", StringUtils.remove(PACKAGE_NAME, " "),
         BaseAppConfigurationPolicy.class.getPackage().getImplementationVersion());
 
     static Boolean watchRequests = false;
 
+    static Boolean isDev = false;
+
+    static Boolean isKeyVaultConfigured = false;
+
     /**
+     * 
      * Checks if Azure App Configuration Tracing is disabled, and if not gets tracing information.
      *
      * @param request The http request that will be traced, used to check operation being run.
@@ -40,10 +45,8 @@ public class BaseAppConfigurationPolicy implements HttpPipelinePolicy {
             return "";
         }
         String requestTypeValue = RequestType.WATCH.toString();
-        if (!watchRequests) {
-            requestTypeValue = request.getUrl().getPath().startsWith("/kv") ? RequestType.STARTUP.toString()
-                : RequestType.WATCH.toString();
-        }
+        requestTypeValue = watchRequests ? RequestType.WATCH.toString() : RequestType.STARTUP.toString();
+        
         if (requestTypeValue.equals(RequestType.WATCH.toString())) {
             watchRequests = true;
         }
@@ -56,6 +59,25 @@ public class BaseAppConfigurationPolicy implements HttpPipelinePolicy {
 
         return tracingInfo;
 
+    }
+
+    private static String getEnvInfo() {
+        String envInfo = "";
+        
+        envInfo = buildEnvTracingInfo(envInfo, isDev, "Dev");
+        envInfo = buildEnvTracingInfo(envInfo, isKeyVaultConfigured, "ConfigureKeyVault");
+
+        return envInfo;
+    }
+
+    private static String buildEnvTracingInfo(String envInfo, Boolean check, String checkString) {
+        if (check) {
+            if (envInfo.length() > 0) {
+                envInfo += ",";
+            }
+            envInfo += checkString;
+        }
+        return envInfo;
     }
 
     /**
@@ -81,10 +103,35 @@ public class BaseAppConfigurationPolicy implements HttpPipelinePolicy {
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
         String sdkUserAgent = context.getHttpRequest().getHeaders().get(HttpHeaders.USER_AGENT).getValue();
-        context.getHttpRequest().getHeaders().put(HttpHeaders.USER_AGENT, USER_AGENT + " " + sdkUserAgent);
-        context.getHttpRequest().getHeaders().put(RequestTracingConstants.CORRELATION_CONTEXT_HEADER.toString(),
+        context.getHttpRequest().getHeaders().set(HttpHeaders.USER_AGENT, USER_AGENT + " " + sdkUserAgent);
+        context.getHttpRequest().getHeaders().set(RequestTracingConstants.CORRELATION_CONTEXT_HEADER.toString(),
             getTracingInfo(context.getHttpRequest()));
+
+        if (isDev || isKeyVaultConfigured) {
+            context.getHttpRequest().getHeaders().set("Env", getEnvInfo());
+        }
         return next.process();
+    }
+
+    /**
+     * @param isDev the isDev to set
+     */
+    public static void setIsDev(Boolean isDev) {
+        BaseAppConfigurationPolicy.isDev = isDev;
+    }
+
+    /**
+     * @param isKeyVaultConfigured the isKeyVaultConfigured to set
+     */
+    public static void setIsKeyVaultConfigured(Boolean isKeyVaultConfigured) {
+        BaseAppConfigurationPolicy.isKeyVaultConfigured = isKeyVaultConfigured;
+    }
+
+    /**
+     * @param watchRequests the watchRequests to set
+     */
+    public static void setWatchRequests(Boolean watchRequests) {
+        BaseAppConfigurationPolicy.watchRequests = watchRequests;
     }
 
 }

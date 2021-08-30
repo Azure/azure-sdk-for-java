@@ -62,6 +62,7 @@ public class ClientStore {
         }
         ExponentialBackoff retryPolicy = new ExponentialBackoff(appProperties.getMaxRetries(),
             Duration.ofMillis(800), Duration.ofSeconds(8));
+        
         ConfigurationClientBuilder builder = getBuilder()
             .addPolicy(new BaseAppConfigurationPolicy())
             .retryPolicy(new RetryPolicy(retryPolicy));

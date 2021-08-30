@@ -106,7 +106,7 @@ public class AppConfigurationPropertySource extends EnumerablePropertySource<Con
         SecretClientBuilderSetup keyVaultClientProvider, KeyVaultSecretProvider keyVaultSecretProvider) {
         // The context alone does not uniquely define a PropertySource, append storeName
         // and label to uniquely define a PropertySource
-        super(context + configStore.getEndpoint() + "/" + selectedKeys.getLabel());
+        super(context + configStore.getEndpoint() + "/" + selectedKeys.getLabelFilterText(profiles));
         this.configStore = configStore;
         this.selectedKeys = selectedKeys;
         this.profiles = profiles;

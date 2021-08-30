@@ -26,22 +26,25 @@ import com.azure.core.http.HttpRequest;
 public class BaseAppConfigurationPolicyTest {
 
     private static final String PRE_USER_AGENT = "PreExistingUserAgent";
+
     @Mock
     HttpPipelineCallContext contextMock;
+
     @Mock
     HttpPipelineNextPolicy nextMock;
 
     @BeforeEach
     public void setup() {
         MockitoAnnotations.openMocks(this);
+        BaseAppConfigurationPolicy.setIsDev(false);
+        BaseAppConfigurationPolicy.setIsKeyVaultConfigured(false);
+        BaseAppConfigurationPolicy.setWatchRequests(false);
     }
-    
+
     @AfterEach
     public void cleanup() throws Exception {
         MockitoAnnotations.openMocks(this).close();
     }
-
-
 
     @Test
     public void startupThenWatchUpdateTest() throws MalformedURLException {
@@ -60,11 +63,11 @@ public class BaseAppConfigurationPolicyTest {
         assertEquals("RequestType=Startup",
             contextMock.getHttpRequest().getHeaders().get("Correlation-Context").getValue());
 
-        url = new URL("https://www.test.url/revisions");
         request = new HttpRequest(HttpMethod.GET, url);
         request.setHeader(HttpHeaders.USER_AGENT, "PreExistingUserAgent");
 
         when(contextMock.getHttpRequest()).thenReturn(request);
+        BaseAppConfigurationPolicy.setWatchRequests(true);
 
         policy.process(contextMock, nextMock);
 
@@ -72,8 +75,7 @@ public class BaseAppConfigurationPolicyTest {
 
         assertEquals("RequestType=Watch",
             contextMock.getHttpRequest().getHeaders().get("Correlation-Context").getValue());
-
-        url = new URL("https://www.test.url/kv");
+        
         request = new HttpRequest(HttpMethod.GET, url);
         request.setHeader(HttpHeaders.USER_AGENT, "PreExistingUserAgent");
 
@@ -84,6 +86,49 @@ public class BaseAppConfigurationPolicyTest {
 
         assertEquals("RequestType=Watch",
             contextMock.getHttpRequest().getHeaders().get("Correlation-Context").getValue());
+    }
+
+    @Test
+    public void devIsConfigured() throws MalformedURLException {
+        BaseAppConfigurationPolicy.setIsDev(true);
+        BaseAppConfigurationPolicy policy = new BaseAppConfigurationPolicy();
+
+        URL url = new URL("https://www.test.url/kv");
+        HttpRequest request = new HttpRequest(HttpMethod.GET, url);
+        request.setHeader(HttpHeaders.USER_AGENT, "PreExistingUserAgent");
+        when(contextMock.getHttpRequest()).thenReturn(request);
+
+        policy.process(contextMock, nextMock);
+        assertEquals("Dev", contextMock.getHttpRequest().getHeaders().get("Env").getValue());
+    }
+
+    @Test
+    public void keyVaultIsConfigured() throws MalformedURLException {
+        BaseAppConfigurationPolicy.setIsKeyVaultConfigured(true);
+        BaseAppConfigurationPolicy policy = new BaseAppConfigurationPolicy();
+
+        URL url = new URL("https://www.test.url/kv");
+        HttpRequest request = new HttpRequest(HttpMethod.GET, url);
+        request.setHeader(HttpHeaders.USER_AGENT, "PreExistingUserAgent");
+        when(contextMock.getHttpRequest()).thenReturn(request);
+
+        policy.process(contextMock, nextMock);
+        assertEquals("ConfigureKeyVault", contextMock.getHttpRequest().getHeaders().get("Env").getValue());
+    }
+
+    @Test
+    public void devAndKeyVaultAreConfigured() throws MalformedURLException {
+        BaseAppConfigurationPolicy.setIsDev(true);
+        BaseAppConfigurationPolicy.setIsKeyVaultConfigured(true);
+        BaseAppConfigurationPolicy policy = new BaseAppConfigurationPolicy();
+
+        URL url = new URL("https://www.test.url/kv");
+        HttpRequest request = new HttpRequest(HttpMethod.GET, url);
+        request.setHeader(HttpHeaders.USER_AGENT, "PreExistingUserAgent");
+        when(contextMock.getHttpRequest()).thenReturn(request);
+
+        policy.process(contextMock, nextMock);
+        assertEquals("Dev,ConfigureKeyVault", contextMock.getHttpRequest().getHeaders().get("Env").getValue());
     }
 
 }

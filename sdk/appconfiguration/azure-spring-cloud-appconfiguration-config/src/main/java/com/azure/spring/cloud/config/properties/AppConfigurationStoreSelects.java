@@ -71,6 +71,19 @@ public class AppConfigurationStoreSelects {
         String[] t = new String[labels.size()];
         return labels.toArray(t);
     }
+    
+    public String getLabelFilterText(List<String> profiles) {
+        String[] labels = getLabelFilter(profiles);
+        String labelText = "";
+        for(String label: labels) {
+            if(!labelText.isEmpty()) {
+                labelText += ",";
+            }
+            labelText += label;
+        }
+        
+        return labelText;
+    }
 
     /**
      * Used for Generating Property Source name only.

@@ -27,6 +27,7 @@ import org.springframework.util.StringUtils;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.SettingSelector;
 import com.azure.spring.cloud.config.feature.management.entity.FeatureSet;
+import com.azure.spring.cloud.config.pipline.policies.BaseAppConfigurationPolicy;
 import com.azure.spring.cloud.config.properties.AppConfigurationProperties;
 import com.azure.spring.cloud.config.properties.AppConfigurationProviderProperties;
 import com.azure.spring.cloud.config.properties.AppConfigurationStoreSelects;
@@ -62,7 +63,7 @@ public class AppConfigurationPropertySourceLocator implements PropertySourceLoca
     private final KeyVaultCredentialProvider keyVaultCredentialProvider;
 
     private final SecretClientBuilderSetup keyVaultClientProvider;
-    
+
     private final KeyVaultSecretProvider keyVaultSecretProvider;
 
     private static AtomicBoolean configloaded = new AtomicBoolean(false);
@@ -71,7 +72,8 @@ public class AppConfigurationPropertySourceLocator implements PropertySourceLoca
 
     public AppConfigurationPropertySourceLocator(AppConfigurationProperties properties,
         AppConfigurationProviderProperties appProperties, ClientStore clients,
-        KeyVaultCredentialProvider keyVaultCredentialProvider, SecretClientBuilderSetup keyVaultClientProvider, KeyVaultSecretProvider keyVaultSecretProvider) {
+        KeyVaultCredentialProvider keyVaultCredentialProvider, SecretClientBuilderSetup keyVaultClientProvider,
+        KeyVaultSecretProvider keyVaultSecretProvider) {
         this.properties = properties;
         this.appProperties = appProperties;
         this.configStores = properties.getStores();
@@ -98,6 +100,12 @@ public class AppConfigurationPropertySourceLocator implements PropertySourceLoca
         }
 
         List<String> profiles = Arrays.asList(env.getActiveProfiles());
+        
+        profiles.stream().forEach(profile -> {
+            if(profile.equalsIgnoreCase("dev") ) {
+              BaseAppConfigurationPolicy.setIsDev(true);   
+            }
+        });
 
         CompositePropertySource composite = new CompositePropertySource(PROPERTY_SOURCE_NAME);
         Collections.reverse(configStores); // Last store has highest precedence
@@ -211,7 +219,8 @@ public class AppConfigurationPropertySourceLocator implements PropertySourceLoca
             for (AppConfigurationStoreSelects selectedKeys : selects) {
                 putStoreContext(store.getEndpoint(), context, storeContextsMap);
                 AppConfigurationPropertySource propertySource = new AppConfigurationPropertySource(context, store,
-                    selectedKeys, profiles, properties, clients, appProperties, keyVaultCredentialProvider, keyVaultClientProvider, keyVaultSecretProvider);
+                    selectedKeys, profiles, properties, clients, appProperties, keyVaultCredentialProvider,
+                    keyVaultClientProvider, keyVaultSecretProvider);
 
                 propertySource.initProperties(featureSet);
                 if (initFeatures) {
@@ -233,7 +242,8 @@ public class AppConfigurationPropertySourceLocator implements PropertySourceLoca
                 if (watchKey != null) {
                     watchKeysSettings.add(watchKey);
                 } else {
-                    watchKeysSettings.add(new ConfigurationSetting().setKey(trigger.getKey()).setLabel(trigger.getLabel()));
+                    watchKeysSettings
+                        .add(new ConfigurationSetting().setKey(trigger.getKey()).setLabel(trigger.getLabel()));
                 }
             }
             if (store.getFeatureFlags().getEnabled()) {
