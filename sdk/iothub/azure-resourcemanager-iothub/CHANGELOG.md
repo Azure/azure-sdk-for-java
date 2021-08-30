@@ -8,7 +8,7 @@
     - Add flag for restricting outbound network access to IotHubProperties
     - Add settable list of allowed fully qualified domain names for egress from IoT Hub to IotHubProperties
 - Upgraded `azure-core` dependency from `1.13.0` to `1.19.0` 
-  - [azure-core changelog](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/core/azure-core/CHANGELOG.md#1160-2021-05-07)
+  - [azure-core changelog](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core/CHANGELOG.md#1190-2021-08-06)
 - Upgraded `azure-core-management` dependency from `1.2.2` to `1.4.0` 
   - [azure-core changelog](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core-management/CHANGELOG.md#140-2021-08-06)
   
