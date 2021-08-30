@@ -251,7 +251,7 @@
             </goals>
             <configuration>
               <outputDirectory>${project.reporting.outputDirectory}/test-coverage</outputDirectory>
-              <excludes>
+              <excludes combine.children="append">
                 <exclude>**/com/azure/cosmos/implementation/apachecommons/**/*</exclude>
                 <exclude>**/com/azure/cosmos/implementation/guava25/**/*</exclude>
                 <exclude>**/com/azure/cosmos/implementation/guava27/**/*</exclude>
