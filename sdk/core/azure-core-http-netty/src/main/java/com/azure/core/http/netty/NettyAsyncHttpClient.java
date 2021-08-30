@@ -16,6 +16,7 @@ import com.azure.core.http.netty.implementation.ResponseTimeoutHandler;
 import com.azure.core.http.netty.implementation.WriteTimeoutHandler;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.ReferenceManager;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.EventLoopGroup;
@@ -67,7 +68,7 @@ class NettyAsyncHttpClient implements HttpClient {
      * @param disableBufferCopy Determines whether deep cloning of response buffers should be disabled.
      */
     NettyAsyncHttpClient(reactor.netty.http.client.HttpClient nettyClient, boolean disableBufferCopy,
-                         long readTimeout, long writeTimeout, long responseTimeout) {
+        long readTimeout, long writeTimeout, long responseTimeout) {
         this.nettyClient = nettyClient;
         this.disableBufferCopy = disableBufferCopy;
         this.readTimeout = readTimeout;
@@ -93,13 +94,13 @@ class NettyAsyncHttpClient implements HttpClient {
 
         Optional<Object> requestResponseTimeout = context.getData(AZURE_RESPONSE_TIMEOUT);
         long effectiveResponseTimeout = requestResponseTimeout
-                .map(timeoutDuration -> ((Duration) timeoutDuration).toMillis())
-                .orElse(this.responseTimeout);
+            .map(timeoutDuration -> ((Duration) timeoutDuration).toMillis())
+            .orElse(this.responseTimeout);
 
         return nettyClient
             .doOnRequest((r, connection) -> addWriteTimeoutHandler(connection, writeTimeout))
             .doAfterRequest((r, connection) ->
-                    addResponseTimeoutHandler(connection, effectiveResponseTimeout))
+                addResponseTimeoutHandler(connection, effectiveResponseTimeout))
             .doOnResponse((response, connection) -> addReadTimeoutHandler(connection, readTimeout))
             .doAfterResponseSuccess((response, connection) -> removeReadTimeoutHandler(connection))
             .request(HttpMethod.valueOf(request.getHttpMethod().toString()))
@@ -176,16 +177,16 @@ class NettyAsyncHttpClient implements HttpClient {
         final HttpRequest restRequest, final boolean eagerlyReadResponse) {
         return (reactorNettyResponse, reactorNettyConnection) -> {
             /*
-             * If we are eagerly reading the response into memory we can ignore the disable buffer copy flag as we
+             * If the response is being eagerly read into memory ignore the "disable buffer copy" flag as we
              * MUST deeply copy the buffer to ensure it can safely be used downstream.
              */
             if (eagerlyReadResponse) {
-                // Setup the body flux and dispose the connection once it has been received.
+                // Configure the body flux and dispose the connection once it has been received.
                 Flux<ByteBuffer> body = reactorNettyConnection.inbound().receive().asByteBuffer()
                     .doFinally(ignored -> closeConnection(reactorNettyConnection));
 
                 return FluxUtil.collectBytesFromNetworkResponse(body,
-                    new NettyToAzureCoreHttpHeadersWrapper(reactorNettyResponse.responseHeaders()))
+                        new NettyToAzureCoreHttpHeadersWrapper(reactorNettyResponse.responseHeaders()))
                     .map(bytes -> new NettyAsyncHttpBufferedResponse(reactorNettyResponse, restRequest, bytes));
 
             } else {
@@ -195,32 +196,32 @@ class NettyAsyncHttpClient implements HttpClient {
     }
 
     /*
-     * Adds the write timeout handler once the request is ready to begin sending.
+     * Adds write timeout handler once the request is ready to begin sending.
      */
     private static void addWriteTimeoutHandler(Connection connection, long timeoutMillis) {
         connection.addHandlerLast(WriteTimeoutHandler.HANDLER_NAME, new WriteTimeoutHandler(timeoutMillis));
     }
 
     /*
-     * First removes the write timeout handler from the connection as the request has finished sending, then adds the
+     * First removes write timeout handler from the connection as the request has finished sending, then adds
      * response timeout handler.
      */
     private static void addResponseTimeoutHandler(Connection connection, long timeoutMillis) {
         connection.removeHandler(WriteTimeoutHandler.HANDLER_NAME)
-                .addHandlerLast(ResponseTimeoutHandler.HANDLER_NAME, new ResponseTimeoutHandler(timeoutMillis));
+            .addHandlerLast(ResponseTimeoutHandler.HANDLER_NAME, new ResponseTimeoutHandler(timeoutMillis));
     }
 
     /*
-     * First removes the response timeout handler from the connection as the response has been received, then adds the
+     * First removes response timeout handler from the connection as the response has been received, then adds
      * read timeout handler.
      */
     private static void addReadTimeoutHandler(Connection connection, long timeoutMillis) {
         connection.removeHandler(ResponseTimeoutHandler.HANDLER_NAME)
-                .addHandlerLast(ReadTimeoutHandler.HANDLER_NAME, new ReadTimeoutHandler(timeoutMillis));
+            .addHandlerLast(ReadTimeoutHandler.HANDLER_NAME, new ReadTimeoutHandler(timeoutMillis));
     }
 
     /*
-     * Removes the read timeout handler as the complete response has been received.
+     * Removes read timeout handler as the complete response has been received.
      */
     private static void removeReadTimeoutHandler(Connection connection) {
         connection.removeHandler(ReadTimeoutHandler.HANDLER_NAME);
