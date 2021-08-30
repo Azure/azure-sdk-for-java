@@ -57,7 +57,7 @@ public class CosmosPropertiesTest {
             context.refresh();
             final CosmosProperties properties = context.getBean(CosmosProperties.class);
             assertThat(properties.getUri()).matches(CosmosProperties.URI_REGEX);
-        };
+        }
     }
 
     @Test
@@ -72,7 +72,7 @@ public class CosmosPropertiesTest {
             context.refresh();
             final CosmosProperties properties = context.getBean(CosmosProperties.class);
             assertThat(properties.getUri()).matches(CosmosProperties.URI_REGEX);
-        };
+        }
     }
 
     @Test
