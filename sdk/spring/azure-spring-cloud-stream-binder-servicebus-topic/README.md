@@ -61,6 +61,34 @@ spring.cloud.azure.servicebus.namespace | Service Bus Namespace. Auto creating i
 spring.cloud.azure.servicebus.transportType | Service Bus transportType, supported value of `AMQP` and `AMQP_WEB_SOCKETS` | No | `AMQP`
 spring.cloud.azure.servicebus.retry-Options | Service Bus retry options | No | Default value of AmqpRetryOptions
 
+##### Partition configuration
+
+The system will obtain the parameter `PartitionSupply` to send the message.
+
+The following are configuration items related to the producer:
+
+**_partition-count_**
+
+The number of target partitions for the data, if partitioning is enabled.
+
+Default: 1
+
+**_partition-key-extractor-name_**
+
+The name of the bean that implements `PartitionKeyExtractorStrategy`. 
+The partition handler will first use the `PartitionKeyExtractorStrategy#extractKey` method to obtain the partition key value.
+
+Default: null
+
+**_partition-key-expression_**
+
+A SpEL expression that determines how to partition outbound data. 
+When interface `PartitionKeyExtractorStrategy` is not implemented, it will be called in the method `PartitionHandler#extractKey`.
+
+Default: null
+
+For more information about setting partition for the producer properties, please refer to the [Producer Properties of Spring Cloud Stream][spring_cloud_stream_current_producer_properties].
+
 ##### Serivce Bus Topic Producer Properties
 
 It supports the following configurations with the format of `spring.cloud.stream.servicebus.topic.bindings.<channelName>.producer`.
