@@ -1,8 +1,7 @@
 # Release History
 
-## 1.0.0-beta.6
+## 1.0.0-beta.6 (Unreleased)
 ### Features Added
-
 - Add support for TokenCredential authentication with CallingServerClientBuilder.
 
 ## 1.0.0-beta.5 (2021-08-30)
