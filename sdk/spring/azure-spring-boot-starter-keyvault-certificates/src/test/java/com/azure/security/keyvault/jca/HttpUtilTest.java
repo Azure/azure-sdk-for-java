@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 
 import static com.azure.security.keyvault.jca.implementation.utils.HttpUtil.DEFAULT_VERSION;
 import static com.azure.security.keyvault.jca.implementation.utils.HttpUtil.USER_AGENT_VALUE;
+import static com.azure.security.keyvault.jca.implementation.utils.HttpUtil.VERSION;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class HttpUtilTest {
@@ -15,6 +16,6 @@ public class HttpUtilTest {
     @Test
     public void getUserAgentPrefixTest() {
         assertEquals("az-sp-kv-ct/", HttpUtil.getUserAgentPrefix());
-        assertEquals("az-sp-kv-ct/" + DEFAULT_VERSION, USER_AGENT_VALUE);
+        assertEquals("az-sp-kv-ct/" + VERSION, USER_AGENT_VALUE);
     }
 }
