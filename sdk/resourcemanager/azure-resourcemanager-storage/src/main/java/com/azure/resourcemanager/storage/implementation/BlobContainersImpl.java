@@ -38,15 +38,20 @@ public class BlobContainersImpl extends WrapperImpl<BlobContainersClient> implem
 
     @Override
     public ImmutabilityPolicyImpl defineImmutabilityPolicy(String name) {
-        return wrapImmutabilityPolicyModel(name);
+        return defineImmutabilityPolicy();
+    }
+
+    @Override
+    public ImmutabilityPolicyImpl defineImmutabilityPolicy() {
+        return wrapImmutabilityPolicyModel();
     }
 
     private BlobContainerImpl wrapContainerModel(String name) {
         return new BlobContainerImpl(name, this.manager());
     }
 
-    private ImmutabilityPolicyImpl wrapImmutabilityPolicyModel(String name) {
-        return new ImmutabilityPolicyImpl(name, this.manager());
+    private ImmutabilityPolicyImpl wrapImmutabilityPolicyModel() {
+        return new ImmutabilityPolicyImpl(this.manager());
     }
 
     private BlobContainerImpl wrapBlobContainerModel(BlobContainerInner inner) {
@@ -226,5 +231,25 @@ public class BlobContainersImpl extends WrapperImpl<BlobContainersClient> implem
                                                        Boolean allowProtectedAppendWrites) {
         return this.extendImmutabilityPolicyAsync(resourceGroupName, accountName, containerName,
             immutabilityPeriodSinceCreationInDays, allowProtectedAppendWrites).block();
+    }
+
+    @Override
+    public void deleteImmutabilityPolicy(String resourceGroupName, String accountName, String containerName,
+                                         String eTagValue) {
+        this.deleteImmutabilityPolicyAsync(resourceGroupName, accountName, containerName, eTagValue).block();
+    }
+
+    @Override
+    public ImmutabilityPolicy lockImmutabilityPolicy(String resourceGroupName, String accountName, String containerName,
+                                                     String eTagValue) {
+        return this.lockImmutabilityPolicyAsync(resourceGroupName, accountName, containerName, eTagValue).block();
+    }
+
+    @Override
+    public ImmutabilityPolicy extendImmutabilityPolicy(String resourceGroupName, String accountName,
+                                                       String containerName, int immutabilityPeriodSinceCreationInDays,
+                                                       Boolean allowProtectedAppendWrites, String eTagValue) {
+        return this.extendImmutabilityPolicyAsync(resourceGroupName, accountName, containerName,
+            immutabilityPeriodSinceCreationInDays, allowProtectedAppendWrites, eTagValue).block();
     }
 }
