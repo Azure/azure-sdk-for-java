@@ -29,14 +29,14 @@ public class HelloWorldAsync {
         String storageAccount = "<storage-account>";
         String fileSystem = "<file-system>";
         String name = "<job-name>";
-        String file = String.format("abfss://%s@%s.dfs.core.windows.net/%s/%s", fileSystem, storageAccount,"<your-batch-job-path>","<your-batch-job-file>");
+        String file = String.format("abfss://%s@%s.dfs.core.windows.net/%s/%s", fileSystem, storageAccount, "<your-batch-job-path>", "<your-batch-job-file>");
         SparkBatchJobOptions options = new SparkBatchJobOptions()
             .setName(name)
             .setFile(file)
             .setClassName("WordCount")
             .setArguments(Arrays.asList(
-                String.format("abfss://%s@%s.dfs.core.windows.net/%s/%s", fileSystem, storageAccount,"<your-batch-job-path>","<your-batch-job-param-file>"),
-                String.format("abfss://%s@%s.dfs.core.windows.net/%s/", fileSystem, storageAccount,"<your-batch-job-result-path>")
+                String.format("abfss://%s@%s.dfs.core.windows.net/%s/%s", fileSystem, storageAccount, "<your-batch-job-path>", "<your-batch-job-param-file>"),
+                String.format("abfss://%s@%s.dfs.core.windows.net/%s/", fileSystem, storageAccount, "<your-batch-job-result-path>")
             ))
             .setDriverMemory("28g")
             .setDriverCores(4)
