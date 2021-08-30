@@ -22,6 +22,9 @@ public final class TextAnalyticsActions {
     private Iterable<ExtractKeyPhrasesAction> extractKeyPhrasesActions;
     private Iterable<AnalyzeSentimentAction> analyzeSentimentActions;
     private Iterable<ExtractSummaryAction> extractSummaryActions;
+    private Iterable<RecognizeCustomEntitiesAction> recognizeCustomEntitiesActions;
+    private Iterable<ClassifySingleCategoryAction> classifySingleCategoryActions;
+    private Iterable<ClassifyMultiCategoriesAction> classifyMultiCategoriesActions;
 
     /**
      * Gets the custom name for the actions.
@@ -197,6 +200,89 @@ public final class TextAnalyticsActions {
     public TextAnalyticsActions setExtractSummaryActions(ExtractSummaryAction... extractSummaryActions) {
         validateActionsNumber(extractSummaryActions, ExtractSummaryAction.class.getName());
         this.extractSummaryActions = extractSummaryActions == null ? null : Arrays.asList(extractSummaryActions);
+        return this;
+    }
+
+    /**
+     * Gets the list of {@link RecognizeCustomEntitiesAction} to be executed.
+     *
+     * @return the list of {@link RecognizeCustomEntitiesAction} to be executed.
+     */
+    public Iterable<RecognizeCustomEntitiesAction> getRecognizeCustomEntitiesActions() {
+        return recognizeCustomEntitiesActions;
+    }
+
+    /**
+     * Sets the list of {@link RecognizeCustomEntitiesAction} to be executed.
+     *
+     * @param recognizeCustomEntitiesActions The list of {@link RecognizeCustomEntitiesAction} to be executed.
+     *
+     * @return The {@link TextAnalyticsActions} object itself.
+     *
+     * @throws IllegalArgumentException if more than one {@link RecognizeCustomEntitiesAction} action are passed in.
+     * Currently service v3.1 and up only accepts up to one action per type.
+     */
+    public TextAnalyticsActions setRecognizeCustomEntitiesActions(
+        RecognizeCustomEntitiesAction... recognizeCustomEntitiesActions) {
+        validateActionsNumber(recognizeCustomEntitiesActions, RecognizeCustomEntitiesAction.class.getName());
+        this.recognizeCustomEntitiesActions = recognizeCustomEntitiesActions == null ? null :
+                                                  Arrays.asList(recognizeCustomEntitiesActions);
+        return this;
+    }
+
+    /**
+     * Gets the list of {@link ClassifySingleCategoryAction} to be executed.
+     *
+     * @return the list of {@link ClassifySingleCategoryAction} to be executed.
+     */
+    public Iterable<ClassifySingleCategoryAction> getClassifySingleCategoryActions() {
+        return classifySingleCategoryActions;
+    }
+
+    /**
+     * Sets the list of {@link ClassifySingleCategoryAction} to be executed.
+     *
+     * @param classifySingleCategoryActions The list of {@link ClassifySingleCategoryAction} to be executed.
+     *
+     * @return The {@link TextAnalyticsActions} object itself.
+     *
+     * @throws IllegalArgumentException if more than one {@link ClassifySingleCategoryAction} action are passed in.
+     * Currently service v3.1 and up only accepts up to one action per type.
+     */
+    public TextAnalyticsActions setClassifySingleCategoryActions(
+        ClassifySingleCategoryAction... classifySingleCategoryActions) {
+        validateActionsNumber(classifySingleCategoryActions, ClassifySingleCategoryAction.class.getName());
+        this.classifySingleCategoryActions = classifySingleCategoryActions == null ? null :
+                                                  Arrays.asList(classifySingleCategoryActions);
+        return this;
+    }
+
+    /**
+     * Gets the list of {@link ClassifyMultiCategoriesAction} to be executed.
+     *
+     * @return the list of {@link ClassifyMultiCategoriesAction} to be executed.
+     */
+    public Iterable<ClassifyMultiCategoriesAction> getClassifyMultiCategoriesActions() {
+        return classifyMultiCategoriesActions;
+    }
+
+    /**
+     * Sets the list of {@link ClassifyMultiCategoriesAction} to be executed.
+     *
+     * @param classifyMultiCategoriesActions The list of {@link ClassifyMultiCategoriesAction} to
+     * be executed.
+     *
+     * @return The {@link TextAnalyticsActions} object itself.
+     *
+     * @throws IllegalArgumentException if more than one {@link ClassifyMultiCategoriesAction} action are
+     * passed in. Currently service v3.1 and up only accepts up to one action per type.
+     */
+    public TextAnalyticsActions setClassifyMultiCategoriesActions(
+        ClassifyMultiCategoriesAction... classifyMultiCategoriesActions) {
+        validateActionsNumber(classifyMultiCategoriesActions,
+            ClassifyMultiCategoriesAction.class.getName());
+        this.classifyMultiCategoriesActions = classifyMultiCategoriesActions == null ? null :
+                                                            Arrays.asList(classifyMultiCategoriesActions);
         return this;
     }
 
