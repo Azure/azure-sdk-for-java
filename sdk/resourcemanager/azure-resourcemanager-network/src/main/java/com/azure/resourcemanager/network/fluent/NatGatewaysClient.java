@@ -14,11 +14,11 @@ import com.azure.core.util.Context;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.network.fluent.models.NatGatewayInner;
+import com.azure.resourcemanager.network.models.TagsObject;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
 import java.nio.ByteBuffer;
-import java.util.Map;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -298,7 +298,7 @@ public interface NatGatewaysClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param natGatewayName The name of the nat gateway.
-     * @param tags Resource tags.
+     * @param parameters Parameters supplied to update nat gateway tags.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -306,54 +306,42 @@ public interface NatGatewaysClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<NatGatewayInner>> updateTagsWithResponseAsync(
-        String resourceGroupName, String natGatewayName, Map<String, String> tags);
+        String resourceGroupName, String natGatewayName, TagsObject parameters);
 
     /**
      * Updates nat gateway tags.
      *
      * @param resourceGroupName The name of the resource group.
      * @param natGatewayName The name of the nat gateway.
-     * @param tags Resource tags.
+     * @param parameters Parameters supplied to update nat gateway tags.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return nat Gateway resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<NatGatewayInner> updateTagsAsync(String resourceGroupName, String natGatewayName, Map<String, String> tags);
+    Mono<NatGatewayInner> updateTagsAsync(String resourceGroupName, String natGatewayName, TagsObject parameters);
 
     /**
      * Updates nat gateway tags.
      *
      * @param resourceGroupName The name of the resource group.
      * @param natGatewayName The name of the nat gateway.
+     * @param parameters Parameters supplied to update nat gateway tags.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return nat Gateway resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<NatGatewayInner> updateTagsAsync(String resourceGroupName, String natGatewayName);
+    NatGatewayInner updateTags(String resourceGroupName, String natGatewayName, TagsObject parameters);
 
     /**
      * Updates nat gateway tags.
      *
      * @param resourceGroupName The name of the resource group.
      * @param natGatewayName The name of the nat gateway.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return nat Gateway resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    NatGatewayInner updateTags(String resourceGroupName, String natGatewayName);
-
-    /**
-     * Updates nat gateway tags.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param natGatewayName The name of the nat gateway.
-     * @param tags Resource tags.
+     * @param parameters Parameters supplied to update nat gateway tags.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -362,7 +350,7 @@ public interface NatGatewaysClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<NatGatewayInner> updateTagsWithResponse(
-        String resourceGroupName, String natGatewayName, Map<String, String> tags, Context context);
+        String resourceGroupName, String natGatewayName, TagsObject parameters, Context context);
 
     /**
      * Gets all the Nat Gateways in a subscription.

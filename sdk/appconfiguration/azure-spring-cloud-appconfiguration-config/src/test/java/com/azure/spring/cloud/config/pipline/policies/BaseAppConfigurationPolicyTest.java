@@ -2,23 +2,27 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.config.pipline.policies;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 
 import java.net.MalformedURLException;
 import java.net.URL;
 
 import org.apache.http.HttpHeaders;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpRequest;
 
+@ExtendWith(MockitoExtension.class)
 public class BaseAppConfigurationPolicyTest {
 
     private static final String PRE_USER_AGENT = "PreExistingUserAgent";
@@ -27,31 +31,20 @@ public class BaseAppConfigurationPolicyTest {
     @Mock
     HttpPipelineNextPolicy nextMock;
 
-    @Before
+    @BeforeEach
     public void setup() {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
+    }
+    
+    @AfterEach
+    public void cleanup() throws Exception {
+        MockitoAnnotations.openMocks(this).close();
     }
 
-    @Test
-    public void processTest() throws MalformedURLException {
-        URL url = new URL("https://www.test.url/kv");
-        HttpRequest request = new HttpRequest(HttpMethod.GET, url);
-        request.setHeader(HttpHeaders.USER_AGENT, "PreExistingUserAgent");
-        BaseAppConfigurationPolicy policy = new BaseAppConfigurationPolicy();
 
-        when(contextMock.getHttpRequest()).thenReturn(request);
-
-        policy.process(contextMock, nextMock);
-
-        String userAgent = contextMock.getHttpRequest().getHeaders().get(HttpHeaders.USER_AGENT).getValue();
-        assertEquals("null/null " + PRE_USER_AGENT, userAgent);
-
-        assertEquals("RequestType=Startup",
-            contextMock.getHttpRequest().getHeaders().get("Correlation-Context").getValue());
-    }
 
     @Test
-    public void watchUpdateTest() throws MalformedURLException {
+    public void startupThenWatchUpdateTest() throws MalformedURLException {
         URL url = new URL("https://www.test.url/kv");
         HttpRequest request = new HttpRequest(HttpMethod.GET, url);
         request.setHeader(HttpHeaders.USER_AGENT, "PreExistingUserAgent");

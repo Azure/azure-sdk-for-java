@@ -5,17 +5,22 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.network.fluent.models.AzureFirewallIpConfigurationPropertiesFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** IP configuration of an Azure Firewall. */
-@JsonFlatten
 @Fluent
-public class AzureFirewallIpConfiguration extends SubResource {
+public final class AzureFirewallIpConfiguration extends SubResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureFirewallIpConfiguration.class);
+
+    /*
+     * Properties of the azure firewall IP configuration.
+     */
+    @JsonProperty(value = "properties")
+    private AzureFirewallIpConfigurationPropertiesFormat innerProperties;
 
     /*
      * Name of the resource that is unique within a resource group. This name
@@ -36,32 +41,14 @@ public class AzureFirewallIpConfiguration extends SubResource {
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
-    /*
-     * The Firewall Internal Load Balancer IP to be used as the next hop in
-     * User Defined Routes.
+    /**
+     * Get the innerProperties property: Properties of the azure firewall IP configuration.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.privateIPAddress", access = JsonProperty.Access.WRITE_ONLY)
-    private String privateIpAddress;
-
-    /*
-     * Reference to the subnet resource. This resource must be named
-     * 'AzureFirewallSubnet' or 'AzureFirewallManagementSubnet'.
-     */
-    @JsonProperty(value = "properties.subnet")
-    private SubResource subnet;
-
-    /*
-     * Reference to the PublicIP resource. This field is a mandatory input if
-     * subnet is not null.
-     */
-    @JsonProperty(value = "properties.publicIPAddress")
-    private SubResource publicIpAddress;
-
-    /*
-     * The provisioning state of the Azure firewall IP configuration resource.
-     */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningState provisioningState;
+    private AzureFirewallIpConfigurationPropertiesFormat innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the name property: Name of the resource that is unique within a resource group. This name can be used to
@@ -103,6 +90,13 @@ public class AzureFirewallIpConfiguration extends SubResource {
         return this.type;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public AzureFirewallIpConfiguration withId(String id) {
+        super.withId(id);
+        return this;
+    }
+
     /**
      * Get the privateIpAddress property: The Firewall Internal Load Balancer IP to be used as the next hop in User
      * Defined Routes.
@@ -110,7 +104,7 @@ public class AzureFirewallIpConfiguration extends SubResource {
      * @return the privateIpAddress value.
      */
     public String privateIpAddress() {
-        return this.privateIpAddress;
+        return this.innerProperties() == null ? null : this.innerProperties().privateIpAddress();
     }
 
     /**
@@ -120,7 +114,7 @@ public class AzureFirewallIpConfiguration extends SubResource {
      * @return the subnet value.
      */
     public SubResource subnet() {
-        return this.subnet;
+        return this.innerProperties() == null ? null : this.innerProperties().subnet();
     }
 
     /**
@@ -131,7 +125,10 @@ public class AzureFirewallIpConfiguration extends SubResource {
      * @return the AzureFirewallIpConfiguration object itself.
      */
     public AzureFirewallIpConfiguration withSubnet(SubResource subnet) {
-        this.subnet = subnet;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AzureFirewallIpConfigurationPropertiesFormat();
+        }
+        this.innerProperties().withSubnet(subnet);
         return this;
     }
 
@@ -142,7 +139,7 @@ public class AzureFirewallIpConfiguration extends SubResource {
      * @return the publicIpAddress value.
      */
     public SubResource publicIpAddress() {
-        return this.publicIpAddress;
+        return this.innerProperties() == null ? null : this.innerProperties().publicIpAddress();
     }
 
     /**
@@ -153,7 +150,10 @@ public class AzureFirewallIpConfiguration extends SubResource {
      * @return the AzureFirewallIpConfiguration object itself.
      */
     public AzureFirewallIpConfiguration withPublicIpAddress(SubResource publicIpAddress) {
-        this.publicIpAddress = publicIpAddress;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AzureFirewallIpConfigurationPropertiesFormat();
+        }
+        this.innerProperties().withPublicIpAddress(publicIpAddress);
         return this;
     }
 
@@ -163,14 +163,7 @@ public class AzureFirewallIpConfiguration extends SubResource {
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
-        return this.provisioningState;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public AzureFirewallIpConfiguration withId(String id) {
-        super.withId(id);
-        return this;
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
     /**
@@ -179,5 +172,8 @@ public class AzureFirewallIpConfiguration extends SubResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

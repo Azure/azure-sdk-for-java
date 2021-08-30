@@ -127,7 +127,7 @@ public final class ManageStorageAccountCustomerManagedKey {
             // Create a container and upload a blob
 
             azureResourceManager.storageBlobContainers().defineContainer(containerName)
-                .withExistingBlobService(rgName, storageAccountName)
+                .withExistingStorageAccount(rgName, storageAccountName)
                 .withPublicAccess(PublicAccess.NONE)
                 .create();
 

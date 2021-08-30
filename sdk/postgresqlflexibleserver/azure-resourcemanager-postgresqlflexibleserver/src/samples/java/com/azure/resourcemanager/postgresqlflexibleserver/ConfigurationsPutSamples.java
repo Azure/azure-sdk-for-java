@@ -6,16 +6,19 @@ package com.azure.resourcemanager.postgresqlflexibleserver;
 
 /** Samples for Configurations Put. */
 public final class ConfigurationsPutSamples {
+    /*
+     * operationId: Configurations_Put
+     * api-version: 2021-06-01
+     * x-ms-examples: Update a user configuration
+     */
     /**
      * Sample code: Update a user configuration.
      *
-     * @param postgreSqlManager Entry point to PostgreSqlManager. The Microsoft Azure management API provides create,
-     *     read, update, and delete functionality for Azure PostgreSQL resources including servers, databases, firewall
-     *     rules, VNET rules, security alert policies, log files and configurations with new business model.
+     * @param manager Entry point to PostgreSqlManager.
      */
     public static void updateAUserConfiguration(
-        com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager postgreSqlManager) {
-        postgreSqlManager
+        com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager manager) {
+        manager
             .configurations()
             .define("event_scheduler")
             .withExistingFlexibleServer("testrg", "testserver")

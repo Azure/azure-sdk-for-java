@@ -1,7 +1,8 @@
 # Release History
 
-## 2.0.1-beta.1 (Unreleased)
+## 2.1.0 (2021-08-25)
 
+* Updated with new release of azure-spring-cloud-appconfiguration-config-web
 
 ## 2.0.0 (2021-07-20)
 

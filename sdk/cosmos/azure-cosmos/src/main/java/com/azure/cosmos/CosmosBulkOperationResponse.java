@@ -7,10 +7,15 @@ import com.azure.cosmos.util.Beta;
 import reactor.core.publisher.Flux;
 
 /**
+ * @deprecated forRemoval = true, since = "4.19"
+ * This class is not necessary anymore and will be removed. Please use {@link com.azure.cosmos.models.CosmosBulkOperationResponse}
+ *
  * Request, response and the exception(if any) for a {@link CosmosItemOperation} request when processed using Bulk by calling
  * {@link CosmosAsyncContainer#processBulkOperations(Flux, BulkProcessingOptions)}.
  */
 @Beta(value = Beta.SinceVersion.V4_9_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+@Deprecated() //forRemoval = true, since = "4.19"
+@SuppressWarnings("DeprecatedIsStillUsed")
 public final class CosmosBulkOperationResponse<TContext> {
 
     private final CosmosItemOperation operation;
@@ -46,22 +51,33 @@ public final class CosmosBulkOperationResponse<TContext> {
         this.batchContext = batchContext;
     }
 
+    CosmosBulkOperationResponse(CosmosItemOperation operation, CosmosBulkItemResponse response, Exception exception, TContext batchContext) {
+        this.operation = operation;
+        this.response = response;
+        this.exception = exception;
+        this.batchContext = batchContext;
+    }
+
     @Beta(value = Beta.SinceVersion.V4_9_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Deprecated() //forRemoval = true, since = "4.19"
     public CosmosItemOperation getOperation() {
         return operation;
     }
 
     @Beta(value = Beta.SinceVersion.V4_9_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Deprecated() //forRemoval = true, since = "4.19"
     public CosmosBulkItemResponse getResponse() {
         return response;
     }
 
     @Beta(value = Beta.SinceVersion.V4_9_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Deprecated() //forRemoval = true, since = "4.19"
     public Exception getException() {
         return exception;
     }
 
     @Beta(value = Beta.SinceVersion.V4_9_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Deprecated() //forRemoval = true, since = "4.19"
     public TContext getBatchContext() {
         return batchContext;
     }

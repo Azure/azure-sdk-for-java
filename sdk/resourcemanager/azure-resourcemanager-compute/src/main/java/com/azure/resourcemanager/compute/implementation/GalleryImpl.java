@@ -9,12 +9,16 @@ import com.azure.resourcemanager.compute.ComputeManager;
 import com.azure.resourcemanager.compute.models.Gallery;
 import com.azure.resourcemanager.compute.models.GalleryImage;
 import com.azure.resourcemanager.compute.fluent.models.GalleryInner;
+import com.azure.resourcemanager.compute.models.GalleryUpdate;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import reactor.core.publisher.Mono;
 
 /** The implementation for Gallery and its create and update interfaces. */
 class GalleryImpl extends GroupableResourceImpl<Gallery, GalleryInner, GalleryImpl, ComputeManager>
     implements Gallery, Gallery.Definition, Gallery.Update {
+
+    private GalleryUpdate updateParameters = new GalleryUpdate();
+
     GalleryImpl(String name, GalleryInner inner, ComputeManager manager) {
         super(name, inner, manager);
     }
@@ -30,11 +34,22 @@ class GalleryImpl extends GroupableResourceImpl<Gallery, GalleryInner, GalleryIm
 
     @Override
     public Mono<Gallery> updateResourceAsync() {
+        if (this.innerModel().tags() != null) {
+            // tags is set by super
+            updateParameters.withTags(this.innerModel().tags());
+        }
+
         return manager()
             .serviceClient()
             .getGalleries()
-            .createOrUpdateAsync(this.resourceGroupName(), this.name(), this.innerModel())
+            .updateAsync(this.resourceGroupName(), this.name(), updateParameters)
             .map(innerToFluentMap(this));
+    }
+
+    @Override
+    public GalleryImpl update() {
+        updateParameters = new GalleryUpdate();
+        return super.update();
     }
 
     @Override
@@ -84,7 +99,11 @@ class GalleryImpl extends GroupableResourceImpl<Gallery, GalleryInner, GalleryIm
 
     @Override
     public GalleryImpl withDescription(String description) {
-        this.innerModel().withDescription(description);
+        if (isInCreateMode()) {
+            this.innerModel().withDescription(description);
+        } else {
+            updateParameters.withDescription(description);
+        }
         return this;
     }
 }

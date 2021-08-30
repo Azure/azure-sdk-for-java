@@ -46,6 +46,10 @@ public final class NetAppAccountImpl implements NetAppAccount, NetAppAccount.Def
         }
     }
 
+    public String etag() {
+        return this.innerModel().etag();
+    }
+
     public SystemData systemData() {
         return this.innerModel().systemData();
     }
