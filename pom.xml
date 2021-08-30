@@ -18,7 +18,35 @@
         <module>sdk/cosmos/azure-spring-data-cosmos</module>
         <module>sdk/appconfiguration/azure-spring-cloud-starter-appconfiguration-config</module>
         <module>sdk/appconfiguration/spring-cloud-starter-azure-appconfiguration-config</module>
+        <module>sdk/appconfiguration/spring-cloud-azure-appconfiguration-config</module>
+        <module>sdk/appconfiguration/azure-spring-cloud-appconfiguration-config-web</module>
       </modules>
+      <build>
+        <plugins>
+          <plugin>
+              <groupId>org.jacoco</groupId>
+              <artifactId>jacoco-maven-plugin</artifactId>
+              <version>0.8.5</version> <!-- {x-version-update;org.jacoco:jacoco-maven-plugin;external_dependency} -->
+              <executions>
+                <execution>
+                  <id>report-aggregate</id>
+                  <phase>verify</phase>
+                  <goals>
+                    <goal>report-aggregate</goal>
+                  </goals>
+                  <configuration>
+                    <outputDirectory>${project.reporting.outputDirectory}/test-coverage</outputDirectory>
+                    <excludes>
+                      <exclude>**/com/azure/cosmos/implementation/apachecommons/**/*</exclude>
+                      <exclude>**/com/azure/cosmos/implementation/guava25/**/*</exclude>
+                      <exclude>**/com/azure/cosmos/implementation/guava27/**/*</exclude>
+                    </excludes>
+                  </configuration>
+                </execution>
+              </executions>
+          </plugin>
+        </plugins>
+      </build>
     </profile>
 
     <profile>
