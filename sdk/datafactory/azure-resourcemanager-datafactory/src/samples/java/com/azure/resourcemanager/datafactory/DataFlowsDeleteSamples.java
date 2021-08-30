@@ -8,6 +8,11 @@ import com.azure.core.util.Context;
 
 /** Samples for DataFlows Delete. */
 public final class DataFlowsDeleteSamples {
+    /*
+     * operationId: DataFlows_Delete
+     * api-version: 2018-06-01
+     * x-ms-examples: DataFlows_Delete
+     */
     /**
      * Sample code: DataFlows_Delete.
      *

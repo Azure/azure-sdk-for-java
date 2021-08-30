@@ -245,6 +245,7 @@
           </execution>
           <execution>
             <id>post-unit-test</id>
+            <phase>package</phase>
             <goals>
               <goal>report</goal>
             </goals>

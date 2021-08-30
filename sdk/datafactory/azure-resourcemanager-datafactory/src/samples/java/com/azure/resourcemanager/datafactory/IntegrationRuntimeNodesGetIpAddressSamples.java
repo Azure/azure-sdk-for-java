@@ -8,6 +8,11 @@ import com.azure.core.util.Context;
 
 /** Samples for IntegrationRuntimeNodes GetIpAddress. */
 public final class IntegrationRuntimeNodesGetIpAddressSamples {
+    /*
+     * operationId: IntegrationRuntimeNodes_GetIpAddress
+     * api-version: 2018-06-01
+     * x-ms-examples: IntegrationRuntimeNodes_GetIpAddress
+     */
     /**
      * Sample code: IntegrationRuntimeNodes_GetIpAddress.
      *

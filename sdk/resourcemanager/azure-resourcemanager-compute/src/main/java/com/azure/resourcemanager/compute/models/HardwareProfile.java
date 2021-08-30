@@ -32,6 +32,16 @@ public final class HardwareProfile {
     @JsonProperty(value = "vmSize")
     private VirtualMachineSizeTypes vmSize;
 
+    /*
+     * Specifies the properties for customizing the size of the virtual
+     * machine. Minimum api-version: 2021-07-01. <br><br> This feature is still
+     * in preview mode and is not supported for VirtualMachineScaleSet.
+     * <br><br> Please follow the instructions in [VM
+     * Customization](https://aka.ms/vmcustomization) for more details.
+     */
+    @JsonProperty(value = "vmSizeProperties")
+    private VMSizeProperties vmSizeProperties;
+
     /**
      * Get the vmSize property: Specifies the size of the virtual machine. &lt;br&gt;&lt;br&gt; The enum data type is
      * currently deprecated and will be removed by December 23rd 2023. &lt;br&gt;&lt;br&gt; Recommended way to get the
@@ -71,10 +81,39 @@ public final class HardwareProfile {
     }
 
     /**
+     * Get the vmSizeProperties property: Specifies the properties for customizing the size of the virtual machine.
+     * Minimum api-version: 2021-07-01. &lt;br&gt;&lt;br&gt; This feature is still in preview mode and is not supported
+     * for VirtualMachineScaleSet. &lt;br&gt;&lt;br&gt; Please follow the instructions in [VM
+     * Customization](https://aka.ms/vmcustomization) for more details.
+     *
+     * @return the vmSizeProperties value.
+     */
+    public VMSizeProperties vmSizeProperties() {
+        return this.vmSizeProperties;
+    }
+
+    /**
+     * Set the vmSizeProperties property: Specifies the properties for customizing the size of the virtual machine.
+     * Minimum api-version: 2021-07-01. &lt;br&gt;&lt;br&gt; This feature is still in preview mode and is not supported
+     * for VirtualMachineScaleSet. &lt;br&gt;&lt;br&gt; Please follow the instructions in [VM
+     * Customization](https://aka.ms/vmcustomization) for more details.
+     *
+     * @param vmSizeProperties the vmSizeProperties value to set.
+     * @return the HardwareProfile object itself.
+     */
+    public HardwareProfile withVmSizeProperties(VMSizeProperties vmSizeProperties) {
+        this.vmSizeProperties = vmSizeProperties;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (vmSizeProperties() != null) {
+            vmSizeProperties().validate();
+        }
     }
 }

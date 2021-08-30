@@ -9,6 +9,11 @@ import com.azure.resourcemanager.datafactory.models.LinkedIntegrationRuntimeRequ
 
 /** Samples for IntegrationRuntimes RemoveLinks. */
 public final class IntegrationRuntimesRemoveLinksSamples {
+    /*
+     * operationId: IntegrationRuntimes_RemoveLinks
+     * api-version: 2018-06-01
+     * x-ms-examples: IntegrationRuntimes_Upgrade
+     */
     /**
      * Sample code: IntegrationRuntimes_Upgrade.
      *

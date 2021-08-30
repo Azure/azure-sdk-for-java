@@ -4,6 +4,8 @@
 
 
 ### 4.18.0 (2021-08-16)
+> [!IMPORTANT]
+> We strongly recommend our customers to use version 4.18.0 and above.
 #### New Features
 * Integrated cosmos diagnostics with open telemetry tracer.
 
@@ -142,9 +144,7 @@
 #### Key Bug Fixes
 * Improved the 449 retry policy to force back-off on initial retry and start with shorter back-offs.
 
-### 4.7.0 (2020-10-17) 
-> [!IMPORTANT] 
-> We strongly recommend our customers to use version 4.7.0 and above.
+### 4.7.0 (2020-10-17)
 #### New Features
 * Added Beta API for transactional batches.
 

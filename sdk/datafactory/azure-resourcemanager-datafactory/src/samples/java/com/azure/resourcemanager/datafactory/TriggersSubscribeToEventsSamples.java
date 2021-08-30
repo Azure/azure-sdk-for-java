@@ -8,6 +8,11 @@ import com.azure.core.util.Context;
 
 /** Samples for Triggers SubscribeToEvents. */
 public final class TriggersSubscribeToEventsSamples {
+    /*
+     * operationId: Triggers_SubscribeToEvents
+     * api-version: 2018-06-01
+     * x-ms-examples: Triggers_SubscribeToEvents
+     */
     /**
      * Sample code: Triggers_SubscribeToEvents.
      *

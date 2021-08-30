@@ -2,18 +2,19 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.config;
 
-import static com.azure.spring.cloud.config.TestConstants.REFRESH_INTERVAL_PROP;
 import static com.azure.spring.cloud.config.TestConstants.CONN_STRING_PROP;
 import static com.azure.spring.cloud.config.TestConstants.CONN_STRING_PROP_NEW;
 import static com.azure.spring.cloud.config.TestConstants.DEFAULT_CONTEXT_PROP;
 import static com.azure.spring.cloud.config.TestConstants.FAIL_FAST_PROP;
+import static com.azure.spring.cloud.config.TestConstants.KEY_PROP;
 import static com.azure.spring.cloud.config.TestConstants.LABEL_PROP;
+import static com.azure.spring.cloud.config.TestConstants.REFRESH_INTERVAL_PROP;
 import static com.azure.spring.cloud.config.TestConstants.STORE_ENDPOINT_PROP;
 import static com.azure.spring.cloud.config.TestConstants.TEST_CONN_STRING;
 import static com.azure.spring.cloud.config.TestUtils.propPair;
 import static com.azure.spring.cloud.config.resource.Connection.ENDPOINT_ERR_MSG;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.Mockito.when;
 
 import java.io.InputStream;
@@ -25,8 +26,9 @@ import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.message.BasicStatusLine;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -44,7 +46,9 @@ public class AppConfigurationPropertiesTest {
     private static final String NO_ENDPOINT_CONN_STRING = "Id=fake-conn-id;Secret=ZmFrZS1jb25uLXNlY3JldA==";
     private static final String NO_ID_CONN_STRING = "Endpoint=https://fake.test.config.io;Secret=ZmFrZS1jb25uLXNlY3JldA==";
     private static final String NO_SECRET_CONN_STRING = "Endpoint=https://fake.test.config.io;Id=fake-conn-id;";
+    private static final String VALID_KEY = "/application/";
     private static final String ILLEGAL_LABELS = "*,my-label";
+    
     @InjectMocks
     private ApplicationContextRunner contextRunner = new ApplicationContextRunner()
         .withConfiguration(AutoConfigurations.of(AppConfigurationBootstrapConfiguration.class));
@@ -72,9 +76,9 @@ public class AppConfigurationPropertiesTest {
     @Mock
     private ObjectMapper mockObjectMapper;
 
-    @Before
+    @BeforeEach
     public void setup() {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
         try {
             when(mockClosableHttpResponse.getStatusLine())
                 .thenReturn(new BasicStatusLine(new ProtocolVersion("", 0, 0), 200, ""));
@@ -83,6 +87,11 @@ public class AppConfigurationPropertiesTest {
         } catch (Exception e) {
             fail();
         }
+    }
+    
+    @AfterEach
+    public void cleanup() throws Exception {
+        MockitoAnnotations.openMocks(this).close();
     }
 
     @Test
@@ -129,11 +138,12 @@ public class AppConfigurationPropertiesTest {
         this.contextRunner
             .withPropertyValues(
                 propPair(CONN_STRING_PROP, TEST_CONN_STRING),
+                propPair(KEY_PROP, VALID_KEY),
                 propPair(LABEL_PROP, ILLEGAL_LABELS)
             )
             .run(context -> assertThat(context)
                 .getFailure()
-                .hasStackTraceContaining("Label must not contain asterisk(*)")
+                .hasStackTraceContaining("LabelFilter must not contain asterisk(*)")
             );
     }
 

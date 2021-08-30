@@ -8,6 +8,11 @@ import com.azure.core.util.Context;
 
 /** Samples for Datasets Get. */
 public final class DatasetsGetSamples {
+    /*
+     * operationId: Datasets_Get
+     * api-version: 2018-06-01
+     * x-ms-examples: Datasets_Get
+     */
     /**
      * Sample code: Datasets_Get.
      *

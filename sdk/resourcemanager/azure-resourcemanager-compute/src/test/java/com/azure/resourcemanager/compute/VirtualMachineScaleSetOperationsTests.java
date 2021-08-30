@@ -1209,11 +1209,29 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
             vmss.virtualMachines().simulateEviction(instance.instanceId());
         }
 
-        ResourceManagerUtils.sleep(Duration.ofMinutes(30));
+        boolean deallocated = false;
+        int pollIntervalInMinutes = 5;
+        for (int i = 0; i < 30; i += pollIntervalInMinutes) {
+            ResourceManagerUtils.sleep(Duration.ofMinutes(pollIntervalInMinutes));
+
+            deallocated = true;
+            for (VirtualMachineScaleSetVM instance: vmInstances) {
+                instance.refresh();
+
+                if (instance.powerState() != PowerState.DEALLOCATED) {
+                    deallocated = false;
+                }
+            }
+
+            if (deallocated) {
+                break;
+            }
+        }
+        Assertions.assertTrue(deallocated);
 
         for (VirtualMachineScaleSetVM instance: vmInstances) {
             instance.refresh();
-            Assertions.assertTrue(instance.osDiskSizeInGB() == 0);
+            Assertions.assertEquals(0, instance.osDiskSizeInGB());
         }
     }
 

@@ -5,17 +5,17 @@ package com.azure.cosmos.implementation;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.cosmos.ConsistencyLevel;
-import com.azure.cosmos.TransactionalBatchResponse;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.batch.ServerBatchRequest;
-import com.azure.cosmos.CosmosPatchOperations;
 import com.azure.cosmos.implementation.caches.RxClientCollectionCache;
 import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
 import com.azure.cosmos.implementation.query.PartitionedQueryExecutionInfo;
 import com.azure.cosmos.implementation.throughputControl.config.ThroughputControlGroupInternal;
+import com.azure.cosmos.models.CosmosBatchResponse;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
 import com.azure.cosmos.models.CosmosItemIdentity;
+import com.azure.cosmos.models.CosmosPatchOperations;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedRange;
 import com.azure.cosmos.models.FeedResponse;
@@ -869,10 +869,10 @@ public interface AsyncDocumentClient {
      * @param disableAutomaticIdGeneration the flag for disabling automatic id generation.
      * @return a {@link Mono} containing the transactionalBatchResponse response which results of all operations.
      */
-    Mono<TransactionalBatchResponse> executeBatchRequest(String collectionLink,
-                                                         ServerBatchRequest serverBatchRequest,
-                                                         RequestOptions options,
-                                                         boolean disableAutomaticIdGeneration);
+    Mono<CosmosBatchResponse> executeBatchRequest(String collectionLink,
+                                                  ServerBatchRequest serverBatchRequest,
+                                                  RequestOptions options,
+                                                  boolean disableAutomaticIdGeneration);
 
     /**
      * Creates a trigger.
