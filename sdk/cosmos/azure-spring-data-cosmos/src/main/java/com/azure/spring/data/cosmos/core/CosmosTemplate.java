@@ -254,7 +254,7 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
             .flatMap(cosmosItemResponse -> {
                 CosmosUtils.fillAndProcessResponseDiagnostics(this.responseDiagnosticsProcessor,
                     cosmosItemResponse.getDiagnostics(), null);
-                return Mono.justOrEmpty(emitOnLoadEventAndConvertToDomainObject(domainType, cosmosItemResponse.getItem()));
+                return Mono.justOrEmpty(emitOnLoadEventAndConvertToDomainObject(domainType, containerName, cosmosItemResponse.getItem()));
             })
             .onErrorResume(throwable ->
                 CosmosExceptionUtils.findAPIExceptionHandler("Failed to find item", throwable))
@@ -291,7 +291,7 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
                 return Mono.justOrEmpty(cosmosItemFeedResponse
                     .getResults()
                     .stream()
-                    .map(cosmosItem -> emitOnLoadEventAndConvertToDomainObject(domainType, cosmosItem))
+                    .map(cosmosItem -> emitOnLoadEventAndConvertToDomainObject(domainType, containerName, cosmosItem))
                     .findFirst());
             })
             .onErrorResume(throwable ->
@@ -413,7 +413,7 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
                     cosmosItemFeedResponse.getCosmosDiagnostics(), cosmosItemFeedResponse);
                 return Flux.fromIterable(cosmosItemFeedResponse.getResults());
             })
-            .map(jsonNode -> emitOnLoadEventAndConvertToDomainObject(domainType, jsonNode))
+            .map(jsonNode -> emitOnLoadEventAndConvertToDomainObject(domainType, containerName, jsonNode))
             .onErrorResume(throwable ->
                 CosmosExceptionUtils.exceptionHandler("Failed to find items", throwable))
             .toIterable();
@@ -813,7 +813,7 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
     public <T> Iterable<T> runQuery(SqlQuerySpec querySpec, Sort sort, Class<?> domainType, Class<T> returnType) {
         querySpec = NativeQueryGenerator.getInstance().generateSortedQuery(querySpec, sort);
         return getJsonNodeFluxFromQuerySpec(getContainerName(domainType), querySpec)
-                   .map(jsonNode -> emitOnLoadEventAndConvertToDomainObject(returnType, jsonNode))
+                   .map(jsonNode -> emitOnLoadEventAndConvertToDomainObject(returnType, getContainerName(domainType), jsonNode))
                    .collectList()
                    .block();
     }
@@ -906,7 +906,7 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
                                       @NonNull String containerName,
                                       @NonNull Class<T> domainType) {
         return findItemsAsFlux(query, containerName, domainType)
-            .map(jsonNode -> emitOnLoadEventAndConvertToDomainObject(domainType, jsonNode))
+            .map(jsonNode -> emitOnLoadEventAndConvertToDomainObject(domainType, containerName, jsonNode))
             .toIterable();
     }
 
@@ -930,9 +930,8 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
             .block();
     }
 
-    private <T> T emitOnLoadEventAndConvertToDomainObject(@NonNull Class<T> domainType, JsonNode responseJsonNode) {
-        CosmosEntityInformation<?, ?> entityInformation = CosmosEntityInformation.getInstance(domainType);
-        maybeEmitEvent(new AfterLoadEvent<>(responseJsonNode, domainType, entityInformation.getContainerName()));
+    private <T> T emitOnLoadEventAndConvertToDomainObject(@NonNull Class<T> domainType, String containerName, JsonNode responseJsonNode) {
+        maybeEmitEvent(new AfterLoadEvent<>(responseJsonNode, domainType, containerName));
         return toDomainObject(domainType, responseJsonNode);
     }
 
