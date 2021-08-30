@@ -544,6 +544,10 @@ public class CosmosContainer {
         return  this.blockDeleteItemResponse(asyncContainer.deleteItem(itemId, partitionKey, options));
     }
 
+    public CosmosItemResponse<Object> deleteAllItemsByPartitionKeyAsync(PartitionKey partitionKey, CosmosItemRequestOptions options) {
+        return this.blockDeleteItemResponse(asyncContainer.deleteAllItemsByPartitionKeyAsync(partitionKey, options));
+    }
+
     /**
      * Deletes an item in the current container.
      *

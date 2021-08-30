@@ -88,6 +88,7 @@ public class CosmosAsyncContainer {
     private final String readItemSpanName;
     private final String upsertItemSpanName;
     private final String deleteItemSpanName;
+    private final String deleteAllItemsByPartitionKeySpanName;
     private final String replaceItemSpanName;
     private final String patchItemSpanName;
     private final String createItemSpanName;
@@ -112,6 +113,7 @@ public class CosmosAsyncContainer {
         this.readItemSpanName = "readItem." + this.id;
         this.upsertItemSpanName = "upsertItem." + this.id;
         this.deleteItemSpanName = "deleteItem." + this.id;
+        this.deleteAllItemsByPartitionKeySpanName = "deleteAllItemsByPartitionKey." + this.id;
         this.replaceItemSpanName = "replaceItem." + this.id;
         this.patchItemSpanName = "patchItem." + this.id;
         this.createItemSpanName = "createItem." + this.id;
@@ -1181,6 +1183,15 @@ public class CosmosAsyncContainer {
         return withContext(context -> deleteItemInternal(itemId, null, requestOptions, context));
     }
 
+    public Mono<CosmosItemResponse<Object>> deleteAllItemsByPartitionKeyAsync(PartitionKey partitionKey, CosmosItemRequestOptions options) {
+        if (options == null) {
+            options = new CosmosItemRequestOptions();
+        }
+        ModelBridgeInternal.setPartitionKey(options, partitionKey);
+        RequestOptions requestOptions = ModelBridgeInternal.toRequestOptions(options);
+        return withContext(context -> deleteAllItemsByPartitionKeyInternal(partitionKey, requestOptions, context));
+    }
+
     /**
      * Deletes the item.
      * <p>
@@ -1359,6 +1370,31 @@ public class CosmosAsyncContainer {
                 requestOptions.getConsistencyLevel(),
                 OperationType.Delete,
                 ResourceType.Document,
+                requestOptions.getThresholdForDiagnosticsOnTracer());
+    }
+
+    private Mono<CosmosItemResponse<Object>> deleteAllItemsByPartitionKeyInternal(
+        PartitionKey partitionKey,
+        RequestOptions requestOptions,
+        Context context) {
+        Mono<CosmosItemResponse<Object>> responseMono = this.getDatabase()
+            .getDocClientWrapper()
+            .deleteAllDocumentsByPartitionKey(getLink(), partitionKey, requestOptions)
+            .map(response -> ModelBridgeInternal.createCosmosAsyncItemResponseWithObjectType(response))
+            .single();
+        return database
+            .getClient()
+            .getTracerProvider()
+            .traceEnabledCosmosItemResponsePublisher(
+                responseMono,
+                context,
+                this.deleteAllItemsByPartitionKeySpanName,
+                this.getId(),
+                database.getId(),
+                database.getClient(),
+                requestOptions.getConsistencyLevel(),
+                OperationType.Delete,
+                ResourceType.PartitionKey,
                 requestOptions.getThresholdForDiagnosticsOnTracer());
     }
 

@@ -62,7 +62,7 @@ class ChangeFeedFetcher<T extends Resource> extends Fetcher<T> {
         } else {
             DocumentClientRetryPolicy retryPolicyInstance = client.getResetSessionTokenRetryPolicy().getRequestPolicy();
             String collectionLink = PathsHelper.generatePath(
-                ResourceType.DocumentCollection, changeFeedState.getContainerRid(), false);
+                ResourceType.DocumentCollection, changeFeedState.getContainerRid(), false, null);
             retryPolicyInstance = new InvalidPartitionExceptionRetryPolicy(
                 client.getCollectionCache(),
                 retryPolicyInstance,
