@@ -4,13 +4,16 @@
 package com.azure.spring.autoconfigure.aad;
 
 import com.azure.spring.aad.AADApplicationType;
-import com.azure.spring.aad.webapp.WebApplicationContextRunnerUtils;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.FilteredClassLoader;
 import org.springframework.boot.test.context.runner.WebApplicationContextRunner;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.server.resource.BearerTokenAuthenticationToken;
 
+import static com.azure.spring.aad.WebApplicationContextRunnerUtils.oauthClientAndResourceServerContextRunner;
+import static com.azure.spring.aad.WebApplicationContextRunnerUtils.webApplicationContextRunner;
+import static com.azure.spring.aad.WebApplicationContextRunnerUtils.withResourceServerPropertyValues;
+import static com.azure.spring.aad.WebApplicationContextRunnerUtils.withWebApplicationOrOAuthClientPropertyValues;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -20,8 +23,7 @@ public class AADAuthenticationPropertiesTest {
 
     @Test
     public void webAppWithOboWithExceptionTest() {
-        WebApplicationContextRunnerUtils
-            .getContextRunnerWithRequiredProperties()
+        webApplicationContextRunner()
             .withPropertyValues(
                 "azure.activedirectory.authorization-clients.graph.authorizationGrantType = on_behalf_of")
             .run(context ->
@@ -30,16 +32,14 @@ public class AADAuthenticationPropertiesTest {
 
     @Test
     public void graphUriConfigurationTest() {
-        WebApplicationContextRunnerUtils
-            .getContextRunnerWithRequiredProperties()
+        webApplicationContextRunner()
             .run(context -> {
                 AADAuthenticationProperties properties = context.getBean(AADAuthenticationProperties.class);
                 assertEquals(properties.getGraphBaseUri(), "https://graph.microsoft.com/");
                 assertEquals(properties.getGraphMembershipUri(), "https://graph.microsoft.com/v1.0/me/memberOf");
             });
 
-        WebApplicationContextRunnerUtils
-            .getContextRunnerWithRequiredProperties()
+        webApplicationContextRunner()
             .withPropertyValues(
                 "azure.activedirectory.graph-base-uri=https://microsoftgraph.chinacloudapi.cn"
             )
@@ -50,8 +50,7 @@ public class AADAuthenticationPropertiesTest {
                     "https://microsoftgraph.chinacloudapi.cn/v1.0/me/memberOf");
             });
 
-        WebApplicationContextRunnerUtils
-            .getContextRunnerWithRequiredProperties()
+        webApplicationContextRunner()
             .withPropertyValues(
                 "azure.activedirectory.graph-base-uri=https://microsoftgraph.chinacloudapi.cn/"
             )
@@ -62,8 +61,7 @@ public class AADAuthenticationPropertiesTest {
                     "https://microsoftgraph.chinacloudapi.cn/v1.0/me/memberOf");
             });
 
-        WebApplicationContextRunnerUtils
-            .getContextRunnerWithRequiredProperties()
+        webApplicationContextRunner()
             .withPropertyValues(
                 "azure.activedirectory.graph-membership-uri=https://graph.microsoft.com/v1.0/me/memberOf"
             )
@@ -73,8 +71,7 @@ public class AADAuthenticationPropertiesTest {
                 assertEquals(properties.getGraphMembershipUri(), "https://graph.microsoft.com/v1.0/me/memberOf");
             });
 
-        WebApplicationContextRunnerUtils
-            .getContextRunnerWithRequiredProperties()
+        webApplicationContextRunner()
             .withPropertyValues(
                 "azure.activedirectory.graph-base-uri=https://microsoftgraph.chinacloudapi.cn/",
                 "azure.activedirectory.graph-membership-uri=https://microsoftgraph.chinacloudapi.cn/v1.0/me/memberOf"
@@ -89,8 +86,7 @@ public class AADAuthenticationPropertiesTest {
 
     @Test
     public void graphUriConfigurationWithExceptionTest() {
-        WebApplicationContextRunnerUtils
-            .getContextRunnerWithRequiredProperties()
+        webApplicationContextRunner()
             .withPropertyValues(
                 "azure.activedirectory.graph-membership-uri=https://microsoftgraph.chinacloudapi.cn/v1.0/me/memberOf"
             )
@@ -101,8 +97,7 @@ public class AADAuthenticationPropertiesTest {
 
     @Test
     public void multiTenantWithAllowedGroupsConfiguredTest1() {
-        WebApplicationContextRunnerUtils
-            .getContextRunnerWithRequiredProperties()
+        webApplicationContextRunner()
             .withPropertyValues(
                 "azure.activedirectory.tenant-id=",
                 "azure.activedirectory.user-group.allowed-groups=group1,group2"
@@ -114,8 +109,7 @@ public class AADAuthenticationPropertiesTest {
 
     @Test
     public void multiTenantWithAllowedGroupsConfiguredTest2() {
-        WebApplicationContextRunnerUtils
-            .getContextRunnerWithRequiredProperties()
+        webApplicationContextRunner()
             .withPropertyValues(
                 "azure.activedirectory.tenant-id=common",
                 "azure.activedirectory.user-group.allowed-groups=group1,group2"
@@ -127,8 +121,7 @@ public class AADAuthenticationPropertiesTest {
 
     @Test
     public void multiTenantWithAllowedGroupsConfiguredTest3() {
-        WebApplicationContextRunnerUtils
-            .getContextRunnerWithRequiredProperties()
+        webApplicationContextRunner()
             .withPropertyValues(
                 "azure.activedirectory.tenant-id=organizations",
                 "azure.activedirectory.user-group.allowed-groups=group1,group2"
@@ -140,8 +133,7 @@ public class AADAuthenticationPropertiesTest {
 
     @Test
     public void multiTenantWithAllowedGroupsIdConfiguredTest1() {
-        WebApplicationContextRunnerUtils
-            .getContextRunnerWithRequiredProperties()
+        webApplicationContextRunner()
             .withPropertyValues(
                 "azure.activedirectory.tenant-id=",
                 "azure.activedirectory.user-group.allowed-group-ids = 7c3a5d22-9093-42d7-b2eb-e72d06bf3718,"
@@ -154,8 +146,7 @@ public class AADAuthenticationPropertiesTest {
 
     @Test
     public void multiTenantWithAllowedGroupsIdConfiguredTest2() {
-        WebApplicationContextRunnerUtils
-            .getContextRunnerWithRequiredProperties()
+        webApplicationContextRunner()
             .withPropertyValues(
                 "azure.activedirectory.tenant-id=common",
                 "azure.activedirectory.user-group.allowed-group-ids = 7c3a5d22-9093-42d7-b2eb-e72d06bf3718,"
@@ -168,8 +159,7 @@ public class AADAuthenticationPropertiesTest {
 
     @Test
     public void multiTenantWithAllowedGroupsIdConfiguredTest3() {
-        WebApplicationContextRunnerUtils
-            .getContextRunnerWithRequiredProperties()
+        webApplicationContextRunner()
             .withPropertyValues(
                 "azure.activedirectory.tenant-id=organizations",
                 "azure.activedirectory.user-group.allowed-group-ids = 7c3a5d22-9093-42d7-b2eb-e72d06bf3718,"
@@ -182,8 +172,7 @@ public class AADAuthenticationPropertiesTest {
 
     @Test
     public void multiTenantWithAllowedGroupsIdConfiguredTest4() {
-        WebApplicationContextRunnerUtils
-            .getContextRunnerWithRequiredProperties()
+        webApplicationContextRunner()
             .withPropertyValues(
                 "azure.activedirectory.tenant-id=consumers",
                 "azure.activedirectory.user-group.allowed-group-ids = 7c3a5d22-9093-42d7-b2eb-e72d06bf3718,"
@@ -196,8 +185,7 @@ public class AADAuthenticationPropertiesTest {
 
     @Test
     public void multiTenantWithAllowedGroupsConfiguredTest4() {
-        WebApplicationContextRunnerUtils
-            .getContextRunnerWithRequiredProperties()
+        webApplicationContextRunner()
             .withPropertyValues(
                 "azure.activedirectory.tenant-id=consumers",
                 "azure.activedirectory.user-group.allowed-groups=group1,group2"
@@ -210,11 +198,8 @@ public class AADAuthenticationPropertiesTest {
     private WebApplicationContextRunner contextRunnerWithConfiguredApplicationType(String applicationType) {
         WebApplicationContextRunner runner = contextRunner
             .withUserConfiguration(AADAutoConfiguration.class)
-            .withPropertyValues(
-                "azure.activedirectory.client-id = fake-client-id",
-                "azure.activedirectory.client-secret = fake-client-secret",
-                "azure.activedirectory.tenant-id = fake-tenant-id",
-                "azure.activedirectory.app-id-uri=fake-app-id-uri");
+            .withPropertyValues(withWebApplicationOrOAuthClientPropertyValues())
+            .withPropertyValues(withResourceServerPropertyValues());
         if (applicationType == null) {
             return runner;
         }
@@ -224,15 +209,13 @@ public class AADAuthenticationPropertiesTest {
 
     @Test
     public void applicationTypeOfWebApplication() {
-        WebApplicationContextRunnerUtils
-            .getContextRunnerWithRequiredProperties()
+        webApplicationContextRunner()
             .run(context -> {
                 AADAuthenticationProperties properties = context.getBean(AADAuthenticationProperties.class);
                 assertEquals(properties.getApplicationType(), AADApplicationType.WEB_APPLICATION);
             });
 
-        WebApplicationContextRunnerUtils
-            .getContextRunnerWithRequiredProperties()
+        webApplicationContextRunner()
             .withPropertyValues(
                 "azure.activedirectory.application-type=web_application")
             .run(context -> {
@@ -266,7 +249,7 @@ public class AADAuthenticationPropertiesTest {
 
     @Test
     public void applicationTypeWithWebApplicationAndResourceServer() {
-        this.contextRunnerWithConfiguredApplicationType("web_application_and_resource_server")
+        oauthClientAndResourceServerContextRunner()
             .run(context -> {
                 AADAuthenticationProperties properties = context.getBean(AADAuthenticationProperties.class);
                 assertEquals(properties.getApplicationType(), AADApplicationType.WEB_APPLICATION_AND_RESOURCE_SERVER);
@@ -312,6 +295,20 @@ public class AADAuthenticationPropertiesTest {
     public void applicationTypeOfInvalidResourceServer() {
         this.contextRunnerWithConfiguredApplicationType("resource_server")
             .withClassLoader(new FilteredClassLoader(BearerTokenAuthenticationToken.class))
+            .run(context -> {
+                assertThrows(IllegalStateException.class, () -> context.getBean(AADAuthenticationProperties.class));
+            });
+    }
+
+    @Test
+    public void invalidAuthorizationCodeWhenOnDemandIsFalse() {
+        webApplicationContextRunner()
+            .withClassLoader(new FilteredClassLoader(BearerTokenAuthenticationToken.class))
+            .withPropertyValues(
+                "azure.activedirectory.authorization-clients.graph.scopes = Graph.Scope",
+                "azure.activedirectory.authorization-clients.graph.on-demand = true",
+                "azure.activedirectory.authorization-clients.graph.authorizationGrantType = azure_delegated"
+            )
             .run(context -> {
                 assertThrows(IllegalStateException.class, () -> context.getBean(AADAuthenticationProperties.class));
             });

@@ -35,7 +35,6 @@ public class AADClientRegistrationRepository implements ClientRegistrationReposi
     public static final String AZURE_CLIENT_REGISTRATION_ID = "azure";
 
     private final Set<String> azureClientAccessTokenScopes;
-    private final Set<String> onDemandRegistrationIds;
     private final Map<String, ClientRegistration> allClients;
 
     public AADClientRegistrationRepository(AADAuthenticationProperties properties) {
@@ -63,18 +62,7 @@ public class AADClientRegistrationRepository implements ClientRegistrationReposi
                               entry.getValue().getScopes(), properties)));
         ClientRegistration azureClient =
             toClientRegistration(AZURE_CLIENT_REGISTRATION_ID, AUTHORIZATION_CODE, authorizationCodeScopes, properties);
-        this.allClients.put(AZURE_CLIENT_REGISTRATION_ID, azureClient);
-        this.onDemandRegistrationIds = getOnDemandRegistrationIds(properties);
-    }
-
-    private Set<String> getOnDemandRegistrationIds(AADAuthenticationProperties properties) {
-        return properties.getAuthorizationClients()
-                         .entrySet()
-                         .stream()
-                         .filter(entry -> entry.getValue().isOnDemand()
-                             && AUTHORIZATION_CODE == entry.getValue().getAuthorizationGrantType())
-                         .map(Map.Entry::getKey)
-                         .collect(Collectors.toSet());
+        allClients.put(AZURE_CLIENT_REGISTRATION_ID, azureClient);
     }
 
     public Set<String> getAzureClientAccessTokenScopes() {
@@ -92,8 +80,7 @@ public class AADClientRegistrationRepository implements ClientRegistrationReposi
         return allClients.values()
                          .stream()
                          .filter(client ->
-                             client.getAuthorizationGrantType().getValue().equals(AUTHORIZATION_CODE.getValue())
-                                 && !onDemandRegistrationIds.contains(client.getRegistrationId()))
+                             client.getAuthorizationGrantType().getValue().equals(AUTHORIZATION_CODE.getValue()))
                          .iterator();
     }
 

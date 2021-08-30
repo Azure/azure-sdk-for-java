@@ -4,6 +4,7 @@
 package com.azure.spring.aad.webapp;
 
 import com.azure.spring.aad.AADClientRegistrationRepository;
+import com.azure.spring.aad.WebApplicationContextRunnerUtils;
 import org.hamcrest.Matcher;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.runner.WebApplicationContextRunner;
@@ -29,7 +30,7 @@ public class AADOAuth2AuthorizationCodeGrantRequestEntityConverterTest {
 
     private WebApplicationContextRunner getContextRunner() {
         return WebApplicationContextRunnerUtils
-            .getContextRunnerWithRequiredProperties()
+            .webApplicationContextRunner()
             .withPropertyValues(
                 "azure.activedirectory.base-uri = fake-uri",
                 "azure.activedirectory.authorization-clients.graph.scopes = Graph.Scope",
