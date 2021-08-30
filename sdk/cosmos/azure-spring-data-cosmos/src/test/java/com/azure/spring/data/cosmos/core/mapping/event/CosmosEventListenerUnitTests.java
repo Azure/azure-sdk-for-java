@@ -4,7 +4,7 @@ package com.azure.spring.data.cosmos.core.mapping.event;
 
 import static org.assertj.core.api.Assertions.*;
 
-import com.azure.spring.data.cosmos.domain.Contact;
+import com.azure.spring.data.cosmos.domain.IPerson;
 import com.azure.spring.data.cosmos.domain.Person;
 import com.azure.spring.data.cosmos.domain.Student;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -34,7 +34,7 @@ public class CosmosEventListenerUnitTests {
     @Test
     public void afterLoadEventGetsFilteredForDomainTypeWorksForSubtypes() {
         SamplePersonEventListener personListener = new SamplePersonEventListener();
-        SampleContactEventListener contactListener = new SampleContactEventListener();
+        SampleIPersonEventListener contactListener = new SampleIPersonEventListener();
         personListener.onApplicationEvent(new AfterLoadEvent<>(NullNode.getInstance(), Person.class, "container-1"));
         contactListener.onApplicationEvent(new AfterLoadEvent<>(NullNode.getInstance(), Person.class, "container-1"));
 
@@ -45,9 +45,9 @@ public class CosmosEventListenerUnitTests {
     @Test
     public void afterLoadEventGetsFilteredForDomainTypeWorksForSubtypes2() {
         SamplePersonEventListener personListener = new SamplePersonEventListener();
-        SampleContactEventListener contactListener = new SampleContactEventListener();
-        personListener.onApplicationEvent(new AfterLoadEvent<>(NullNode.getInstance(), Contact.class, "container-1"));
-        contactListener.onApplicationEvent(new AfterLoadEvent<>(NullNode.getInstance(), Contact.class, "container-1"));
+        SampleIPersonEventListener contactListener = new SampleIPersonEventListener();
+        personListener.onApplicationEvent(new AfterLoadEvent<>(NullNode.getInstance(), IPerson.class, "container-1"));
+        contactListener.onApplicationEvent(new AfterLoadEvent<>(NullNode.getInstance(), IPerson.class, "container-1"));
 
         assertThat(personListener.invokedOnAfterLoad).isFalse();
         assertThat(contactListener.invokedOnAfterLoad).isTrue();
@@ -61,7 +61,7 @@ public class CosmosEventListenerUnitTests {
         assertThat(listener.invokedOnAfterLoad).isFalse();
     }
 
-    class SamplePersonEventListener extends AbstractCosmosEventListener<Person> {
+    static class SamplePersonEventListener extends AbstractCosmosEventListener<Person> {
 
         boolean invokedOnAfterLoad;
 
@@ -71,7 +71,7 @@ public class CosmosEventListenerUnitTests {
         }
     }
 
-    class SampleStudentEventListener extends AbstractCosmosEventListener<Student> {
+    static class SampleStudentEventListener extends AbstractCosmosEventListener<Student> {
 
         boolean invokedOnAfterLoad;
 
@@ -81,12 +81,12 @@ public class CosmosEventListenerUnitTests {
         }
     }
 
-    class SampleContactEventListener extends AbstractCosmosEventListener<Contact> {
+    static class SampleIPersonEventListener extends AbstractCosmosEventListener<IPerson> {
 
         boolean invokedOnAfterLoad;
 
         @Override
-        public void onAfterLoad(AfterLoadEvent<Contact> event) {
+        public void onAfterLoad(AfterLoadEvent<IPerson> event) {
             invokedOnAfterLoad = true;
         }
     }
