@@ -3,44 +3,44 @@
 
 package com.azure.ai.textanalytics.models;
 
-import com.azure.ai.textanalytics.implementation.ClassifySingleCategoryResultPropertiesHelper;
+import com.azure.ai.textanalytics.implementation.CustomClassifySingleCategoryResultPropertiesHelper;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.IterableStream;
 
 /**
- * The {@link ClassifySingleCategoryResult} model.
+ * The {@link CustomClassifySingleCategoryResult} model.
  */
 @Immutable
-public final class ClassifySingleCategoryResult extends TextAnalyticsResult {
+public final class CustomClassifySingleCategoryResult extends TextAnalyticsResult {
     private DocumentClassification documentClassification;
     private IterableStream<TextAnalyticsWarning> warnings;
 
     static {
-        ClassifySingleCategoryResultPropertiesHelper.setAccessor(
-            new ClassifySingleCategoryResultPropertiesHelper.ClassifySingleCategoryResultAccessor() {
+        CustomClassifySingleCategoryResultPropertiesHelper.setAccessor(
+            new CustomClassifySingleCategoryResultPropertiesHelper.ClassifySingleCategoryResultAccessor() {
             @Override
-            public void setDocumentClassification(ClassifySingleCategoryResult classifySingleCategoryResult,
+            public void setDocumentClassification(CustomClassifySingleCategoryResult customClassifySingleCategoryResult,
                 DocumentClassification documentClassification) {
-                classifySingleCategoryResult.setDocumentClassification(documentClassification);
+                customClassifySingleCategoryResult.setDocumentClassification(documentClassification);
             }
 
             @Override
-            public void setWarnings(ClassifySingleCategoryResult classifySingleCategoryResult,
+            public void setWarnings(CustomClassifySingleCategoryResult customClassifySingleCategoryResult,
                 IterableStream<TextAnalyticsWarning> warnings) {
-                classifySingleCategoryResult.setWarnings(warnings);
+                customClassifySingleCategoryResult.setWarnings(warnings);
             }
         });
 
     }
 
     /**
-     * Creates a {@link ClassifySingleCategoryResult} model.
+     * Creates a {@link CustomClassifySingleCategoryResult} model.
      *
      * @param id Unique, non-empty document identifier.
      * @param textDocumentStatistics The text document statistics.
      * @param error The document error.
      */
-    public ClassifySingleCategoryResult(String id, TextDocumentStatistics textDocumentStatistics,
+    public CustomClassifySingleCategoryResult(String id, TextDocumentStatistics textDocumentStatistics,
         TextAnalyticsError error) {
         super(id, textDocumentStatistics, error);
     }

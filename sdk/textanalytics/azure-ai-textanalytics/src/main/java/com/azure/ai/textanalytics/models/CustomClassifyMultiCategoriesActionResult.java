@@ -3,20 +3,19 @@
 
 package com.azure.ai.textanalytics.models;
 
-import com.azure.ai.textanalytics.implementation.ClassifySingleCategoryActionResultPropertiesHelper;
-import com.azure.ai.textanalytics.util.ClassifySingleCategoryResultCollection;
+import com.azure.ai.textanalytics.implementation.CustomClassifyMultiCategoriesActionResultPropertiesHelper;
+import com.azure.ai.textanalytics.util.CustomClassifyMultiCategoriesResultCollection;
 import com.azure.core.annotation.Immutable;
 
 /**
- * The {@link ClassifySingleCategoryActionResult} model.
+ * The {@link CustomClassifyMultiCategoriesActionResult} model.
  */
 @Immutable
-public final class ClassifySingleCategoryActionResult extends TextAnalyticsActionResult {
-
-    private ClassifySingleCategoryResultCollection documentsResults;
+public final class CustomClassifyMultiCategoriesActionResult extends TextAnalyticsActionResult {
+    private CustomClassifyMultiCategoriesResultCollection documentsResults;
 
     static {
-        ClassifySingleCategoryActionResultPropertiesHelper.setAccessor(
+        CustomClassifyMultiCategoriesActionResultPropertiesHelper.setAccessor(
             (actionResult, documentsResults) -> actionResult.setDocumentsResults(documentsResults));
     }
 
@@ -28,12 +27,12 @@ public final class ClassifySingleCategoryActionResult extends TextAnalyticsActio
      * @throws TextAnalyticsException if result has {@code isError} equals to true and when a non-error property
      * was accessed.
      */
-    public ClassifySingleCategoryResultCollection getDocumentsResults() {
+    public CustomClassifyMultiCategoriesResultCollection getDocumentsResults() {
         throwExceptionIfError();
         return documentsResults;
     }
 
-    private void setDocumentsResults(ClassifySingleCategoryResultCollection documentsResults) {
+    private void setDocumentsResults(CustomClassifyMultiCategoriesResultCollection documentsResults) {
         this.documentsResults = documentsResults;
     }
 }

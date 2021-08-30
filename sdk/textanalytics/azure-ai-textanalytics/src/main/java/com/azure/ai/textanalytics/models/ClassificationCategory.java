@@ -11,20 +11,20 @@ import com.fasterxml.jackson.annotation.JsonCreator;
  * The category label enum values.
  */
 @Immutable
-public final class DocumentCategory extends ExpandableStringEnum<DocumentCategory> {
+public final class ClassificationCategory extends ExpandableStringEnum<ClassificationCategory> {
     /**
      * Enum value for politics.
      */
-    public static final DocumentCategory POLITICS = fromString("Politics");
+    public static final ClassificationCategory POLITICS = fromString("Politics");
 
     /**
-     * Creates or finds a {@link DocumentCategory} from its string representation.
+     * Creates or finds a {@link ClassificationCategory} from its string representation.
      *
      * @param name The string name to look for.
-     * @return The corresponding {@link DocumentCategory}.
+     * @return The corresponding {@link ClassificationCategory}.
      */
     @JsonCreator
-    public static DocumentCategory fromString(String name) {
-        return fromString(name, DocumentCategory.class);
+    public static ClassificationCategory fromString(String name) {
+        return fromString(name, ClassificationCategory.class);
     }
 }

@@ -11,14 +11,14 @@ import com.azure.core.annotation.Immutable;
  */
 @Immutable
 public final class DocumentClassification {
-    private DocumentCategory category;
+    private ClassificationCategory category;
     private double confidenceScore;
 
     static {
         DocumentClassificationPropertiesHelper.setAccessor(
             new DocumentClassificationPropertiesHelper.DocumentClassificationAccessor() {
             @Override
-            public void setCategory(DocumentClassification documentClassification, DocumentCategory category) {
+            public void setCategory(DocumentClassification documentClassification, ClassificationCategory category) {
                 documentClassification.setCategory(category);
             }
 
@@ -32,9 +32,9 @@ public final class DocumentClassification {
     /**
      * Gets the classified category of document.
      *
-     * @return The {@link DocumentCategory}.
+     * @return The {@link ClassificationCategory}.
      */
-    public DocumentCategory getCategory() {
+    public ClassificationCategory getCategory() {
         return category;
     }
 
@@ -47,7 +47,7 @@ public final class DocumentClassification {
         return this.confidenceScore;
     }
 
-    private void setCategory(DocumentCategory category) {
+    private void setCategory(ClassificationCategory category) {
         this.category = category;
     }
 

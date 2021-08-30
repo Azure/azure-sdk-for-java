@@ -3,39 +3,38 @@
 
 package com.azure.ai.textanalytics.util;
 
-import com.azure.ai.textanalytics.implementation.RecognizeCustomEntitiesResultCollectionPropertiesHelper;
-import com.azure.ai.textanalytics.models.RecognizeCustomEntitiesResult;
+import com.azure.ai.textanalytics.implementation.CustomRecognizeEntitiesResultCollectionPropertiesHelper;
+import com.azure.ai.textanalytics.models.CustomRecognizeEntitiesResult;
 import com.azure.ai.textanalytics.models.TextDocumentBatchStatistics;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.IterableStream;
 
 /**
- * A collection model that contains a list of {@link RecognizeCustomEntitiesResult} along with project name,
+ * A collection model that contains a list of {@link CustomRecognizeEntitiesResult} along with project name,
  * deployment name and batch's statistics.
  */
 @Immutable
-public final class RecognizeCustomEntitiesResultCollection extends IterableStream<RecognizeCustomEntitiesResult> {
+public final class CustomRecognizeEntitiesResultCollection extends IterableStream<CustomRecognizeEntitiesResult> {
     private String projectName;
     private String deploymentName;
     private TextDocumentBatchStatistics statistics;
 
     static {
-        RecognizeCustomEntitiesResultCollectionPropertiesHelper.setAccessor(
-            new RecognizeCustomEntitiesResultCollectionPropertiesHelper
-                    .RecognizeCustomEntitiesResultCollectionAccessor() {
+        CustomRecognizeEntitiesResultCollectionPropertiesHelper.setAccessor(
+            new CustomRecognizeEntitiesResultCollectionPropertiesHelper.CustomRecognizeEntitiesResultCollectionAccessor() {
             @Override
-            public void setProjectName(RecognizeCustomEntitiesResultCollection resultCollection, String projectName) {
+            public void setProjectName(CustomRecognizeEntitiesResultCollection resultCollection, String projectName) {
                 resultCollection.setProjectName(projectName);
             }
 
             @Override
-            public void setDeploymentName(RecognizeCustomEntitiesResultCollection resultCollection,
+            public void setDeploymentName(CustomRecognizeEntitiesResultCollection resultCollection,
                 String deploymentName) {
                 resultCollection.setDeploymentName(deploymentName);
             }
 
             @Override
-            public void setStatistics(RecognizeCustomEntitiesResultCollection resultCollection,
+            public void setStatistics(CustomRecognizeEntitiesResultCollection resultCollection,
                 TextDocumentBatchStatistics statistics) {
                 resultCollection.setStatistics(statistics);
             }
@@ -43,12 +42,12 @@ public final class RecognizeCustomEntitiesResultCollection extends IterableStrea
     }
 
     /**
-     * Create a {@link RecognizeCustomEntitiesResultCollection} model that maintains a list of
-     * {@link RecognizeCustomEntitiesResult} along with model version and batch's statistics.
+     * Create a {@link CustomRecognizeEntitiesResultCollection} model that maintains a list of
+     * {@link CustomRecognizeEntitiesResult} along with model version and batch's statistics.
      *
-     * @param documentResults A list of {@link RecognizeCustomEntitiesResult}.
+     * @param documentResults A list of {@link CustomRecognizeEntitiesResult}.
      */
-    public RecognizeCustomEntitiesResultCollection(Iterable<RecognizeCustomEntitiesResult> documentResults) {
+    public CustomRecognizeEntitiesResultCollection(Iterable<CustomRecognizeEntitiesResult> documentResults) {
         super(documentResults);
     }
 

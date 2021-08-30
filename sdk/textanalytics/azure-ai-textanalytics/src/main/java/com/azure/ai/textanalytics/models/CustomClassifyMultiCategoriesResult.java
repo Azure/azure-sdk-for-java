@@ -3,32 +3,32 @@
 
 package com.azure.ai.textanalytics.models;
 
-import com.azure.ai.textanalytics.implementation.ClassifyMultiCategoriesResultPropertiesHelper;
+import com.azure.ai.textanalytics.implementation.CustomClassifyMultiCategoriesResultPropertiesHelper;
 import com.azure.core.annotation.Immutable;
 
 /**
- * The {@link ClassifyMultiCategoriesResult} model.
+ * The {@link CustomClassifyMultiCategoriesResult} model.
  */
 @Immutable
-public final class ClassifyMultiCategoriesResult extends TextAnalyticsResult {
+public final class CustomClassifyMultiCategoriesResult extends TextAnalyticsResult {
     private DocumentClassificationCollection documentClassifications;
 
     static {
-        ClassifyMultiCategoriesResultPropertiesHelper.setAccessor(
+        CustomClassifyMultiCategoriesResultPropertiesHelper.setAccessor(
             ((classifyMultiCategoriesResult, documentClassifications) ->
                  classifyMultiCategoriesResult.setDocumentClassifications(documentClassifications))
         );
     }
 
     /**
-     * Creates a {@link ClassifyMultiCategoriesResult} model that describes recognized document classification
+     * Creates a {@link CustomClassifyMultiCategoriesResult} model that describes recognized document classification
      * result.
      *
      * @param id Unique, non-empty document identifier.
      * @param textDocumentStatistics The text document statistics.
      * @param error The document error.
      */
-    public ClassifyMultiCategoriesResult(String id, TextDocumentStatistics textDocumentStatistics,
+    public CustomClassifyMultiCategoriesResult(String id, TextDocumentStatistics textDocumentStatistics,
         TextAnalyticsError error) {
         super(id, textDocumentStatistics, error);
     }

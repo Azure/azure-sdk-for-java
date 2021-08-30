@@ -7,9 +7,9 @@ import com.azure.ai.textanalytics.models.AnalyzeActionsResult;
 import com.azure.ai.textanalytics.models.AnalyzeSentimentActionResult;
 import com.azure.ai.textanalytics.models.ExtractKeyPhrasesActionResult;
 import com.azure.ai.textanalytics.models.ExtractSummaryActionResult;
-import com.azure.ai.textanalytics.models.ClassifySingleCategoryActionResult;
-import com.azure.ai.textanalytics.models.ClassifyMultiCategoriesActionResult;
-import com.azure.ai.textanalytics.models.RecognizeCustomEntitiesActionResult;
+import com.azure.ai.textanalytics.models.CustomClassifySingleCategoryActionResult;
+import com.azure.ai.textanalytics.models.CustomClassifyMultiCategoriesActionResult;
+import com.azure.ai.textanalytics.models.CustomRecognizeEntitiesActionResult;
 import com.azure.ai.textanalytics.models.RecognizeEntitiesActionResult;
 import com.azure.ai.textanalytics.models.RecognizeLinkedEntitiesActionResult;
 import com.azure.ai.textanalytics.models.RecognizePiiEntitiesActionResult;
@@ -40,11 +40,11 @@ public final class AnalyzeActionsResultPropertiesHelper {
         void setExtractSummaryResults(AnalyzeActionsResult analyzeActionsResult,
             IterableStream<ExtractSummaryActionResult> extractSummaryResults);
         void setRecognizeCustomEntitiesResults(AnalyzeActionsResult analyzeActionsResult,
-            IterableStream<RecognizeCustomEntitiesActionResult> recognizeCustomEntitiesResults);
+            IterableStream<CustomRecognizeEntitiesActionResult> recognizeCustomEntitiesResults);
         void setClassifySingleCategoryResults(AnalyzeActionsResult analyzeActionsResult,
-            IterableStream<ClassifySingleCategoryActionResult> classifySingleCategoryResults);
+            IterableStream<CustomClassifySingleCategoryActionResult> classifySingleCategoryResults);
         void setClassifyMultiCategoriesResults(AnalyzeActionsResult analyzeActionsResult,
-            IterableStream<ClassifyMultiCategoriesActionResult> classifyMultiCategoriesResults);
+            IterableStream<CustomClassifyMultiCategoriesActionResult> classifyMultiCategoriesResults);
     }
 
     /**
@@ -88,17 +88,17 @@ public final class AnalyzeActionsResultPropertiesHelper {
     }
 
     public static void setRecognizeCustomEntitiesResults(AnalyzeActionsResult analyzeActionsResult,
-        IterableStream<RecognizeCustomEntitiesActionResult> extractSummaryResults) {
+        IterableStream<CustomRecognizeEntitiesActionResult> extractSummaryResults) {
         accessor.setRecognizeCustomEntitiesResults(analyzeActionsResult, extractSummaryResults);
     }
 
     public static void setClassifySingleCategoryResults(AnalyzeActionsResult analyzeActionsResult,
-        IterableStream<ClassifySingleCategoryActionResult> classifySingleCategoryResults) {
+        IterableStream<CustomClassifySingleCategoryActionResult> classifySingleCategoryResults) {
         accessor.setClassifySingleCategoryResults(analyzeActionsResult, classifySingleCategoryResults);
     }
 
     public static void setClassifyMultiCategoriesResults(AnalyzeActionsResult analyzeActionsResult,
-        IterableStream<ClassifyMultiCategoriesActionResult> classifyMultiCategoriesResults) {
+        IterableStream<CustomClassifyMultiCategoriesActionResult> classifyMultiCategoriesResults) {
         accessor.setClassifyMultiCategoriesResults(analyzeActionsResult, classifyMultiCategoriesResults);
     }
 }

@@ -22,9 +22,9 @@ public final class TextAnalyticsActions {
     private Iterable<ExtractKeyPhrasesAction> extractKeyPhrasesActions;
     private Iterable<AnalyzeSentimentAction> analyzeSentimentActions;
     private Iterable<ExtractSummaryAction> extractSummaryActions;
-    private Iterable<RecognizeCustomEntitiesAction> recognizeCustomEntitiesActions;
-    private Iterable<ClassifySingleCategoryAction> classifySingleCategoryActions;
-    private Iterable<ClassifyMultiCategoriesAction> classifyMultiCategoriesActions;
+    private Iterable<CustomRecognizeEntitiesAction> customRecognizeEntitiesActions;
+    private Iterable<CustomClassifySingleCategoryAction> customClassifySingleCategoryActions;
+    private Iterable<CustomClassifyMultiCategoriesAction> customClassifyMultiCategoriesActions;
 
     /**
      * Gets the custom name for the actions.
@@ -204,85 +204,85 @@ public final class TextAnalyticsActions {
     }
 
     /**
-     * Gets the list of {@link RecognizeCustomEntitiesAction} to be executed.
+     * Gets the list of {@link CustomRecognizeEntitiesAction} to be executed.
      *
-     * @return the list of {@link RecognizeCustomEntitiesAction} to be executed.
+     * @return the list of {@link CustomRecognizeEntitiesAction} to be executed.
      */
-    public Iterable<RecognizeCustomEntitiesAction> getRecognizeCustomEntitiesActions() {
-        return recognizeCustomEntitiesActions;
+    public Iterable<CustomRecognizeEntitiesAction> getCustomRecognizeEntitiesActions() {
+        return customRecognizeEntitiesActions;
     }
 
     /**
-     * Sets the list of {@link RecognizeCustomEntitiesAction} to be executed.
+     * Sets the list of {@link CustomRecognizeEntitiesAction} to be executed.
      *
-     * @param recognizeCustomEntitiesActions The list of {@link RecognizeCustomEntitiesAction} to be executed.
+     * @param customRecognizeEntitiesActions The list of {@link CustomRecognizeEntitiesAction} to be executed.
      *
      * @return The {@link TextAnalyticsActions} object itself.
      *
-     * @throws IllegalArgumentException if more than one {@link RecognizeCustomEntitiesAction} action are passed in.
+     * @throws IllegalArgumentException if more than one {@link CustomRecognizeEntitiesAction} action are passed in.
      * Currently service v3.1 and up only accepts up to one action per type.
      */
-    public TextAnalyticsActions setRecognizeCustomEntitiesActions(
-        RecognizeCustomEntitiesAction... recognizeCustomEntitiesActions) {
-        validateActionsNumber(recognizeCustomEntitiesActions, RecognizeCustomEntitiesAction.class.getName());
-        this.recognizeCustomEntitiesActions = recognizeCustomEntitiesActions == null ? null :
-                                                  Arrays.asList(recognizeCustomEntitiesActions);
+    public TextAnalyticsActions setCustomRecognizeEntitiesActions(
+        CustomRecognizeEntitiesAction... customRecognizeEntitiesActions) {
+        validateActionsNumber(customRecognizeEntitiesActions, CustomRecognizeEntitiesAction.class.getName());
+        this.customRecognizeEntitiesActions = customRecognizeEntitiesActions == null ? null :
+                                                  Arrays.asList(customRecognizeEntitiesActions);
         return this;
     }
 
     /**
-     * Gets the list of {@link ClassifySingleCategoryAction} to be executed.
+     * Gets the list of {@link CustomClassifySingleCategoryAction} to be executed.
      *
-     * @return the list of {@link ClassifySingleCategoryAction} to be executed.
+     * @return the list of {@link CustomClassifySingleCategoryAction} to be executed.
      */
-    public Iterable<ClassifySingleCategoryAction> getClassifySingleCategoryActions() {
-        return classifySingleCategoryActions;
+    public Iterable<CustomClassifySingleCategoryAction> getCustomClassifySingleCategoryActions() {
+        return customClassifySingleCategoryActions;
     }
 
     /**
-     * Sets the list of {@link ClassifySingleCategoryAction} to be executed.
+     * Sets the list of {@link CustomClassifySingleCategoryAction} to be executed.
      *
-     * @param classifySingleCategoryActions The list of {@link ClassifySingleCategoryAction} to be executed.
+     * @param customClassifySingleCategoryActions The list of {@link CustomClassifySingleCategoryAction} to be executed.
      *
      * @return The {@link TextAnalyticsActions} object itself.
      *
-     * @throws IllegalArgumentException if more than one {@link ClassifySingleCategoryAction} action are passed in.
+     * @throws IllegalArgumentException if more than one {@link CustomClassifySingleCategoryAction} action are passed in.
      * Currently service v3.1 and up only accepts up to one action per type.
      */
-    public TextAnalyticsActions setClassifySingleCategoryActions(
-        ClassifySingleCategoryAction... classifySingleCategoryActions) {
-        validateActionsNumber(classifySingleCategoryActions, ClassifySingleCategoryAction.class.getName());
-        this.classifySingleCategoryActions = classifySingleCategoryActions == null ? null :
-                                                  Arrays.asList(classifySingleCategoryActions);
+    public TextAnalyticsActions setCustomClassifySingleCategoryActions(
+        CustomClassifySingleCategoryAction... customClassifySingleCategoryActions) {
+        validateActionsNumber(customClassifySingleCategoryActions, CustomClassifySingleCategoryAction.class.getName());
+        this.customClassifySingleCategoryActions = customClassifySingleCategoryActions == null ? null :
+                                                  Arrays.asList(customClassifySingleCategoryActions);
         return this;
     }
 
     /**
-     * Gets the list of {@link ClassifyMultiCategoriesAction} to be executed.
+     * Gets the list of {@link CustomClassifyMultiCategoriesAction} to be executed.
      *
-     * @return the list of {@link ClassifyMultiCategoriesAction} to be executed.
+     * @return the list of {@link CustomClassifyMultiCategoriesAction} to be executed.
      */
-    public Iterable<ClassifyMultiCategoriesAction> getClassifyMultiCategoriesActions() {
-        return classifyMultiCategoriesActions;
+    public Iterable<CustomClassifyMultiCategoriesAction> getCustomClassifyMultiCategoriesActions() {
+        return customClassifyMultiCategoriesActions;
     }
 
     /**
-     * Sets the list of {@link ClassifyMultiCategoriesAction} to be executed.
+     * Sets the list of {@link CustomClassifyMultiCategoriesAction} to be executed.
      *
-     * @param classifyMultiCategoriesActions The list of {@link ClassifyMultiCategoriesAction} to
+     * @param customClassifyMultiCategoriesActions The list of {@link CustomClassifyMultiCategoriesAction} to
      * be executed.
      *
      * @return The {@link TextAnalyticsActions} object itself.
      *
-     * @throws IllegalArgumentException if more than one {@link ClassifyMultiCategoriesAction} action are
+     * @throws IllegalArgumentException if more than one {@link CustomClassifyMultiCategoriesAction} action are
      * passed in. Currently service v3.1 and up only accepts up to one action per type.
      */
-    public TextAnalyticsActions setClassifyMultiCategoriesActions(
-        ClassifyMultiCategoriesAction... classifyMultiCategoriesActions) {
-        validateActionsNumber(classifyMultiCategoriesActions,
-            ClassifyMultiCategoriesAction.class.getName());
-        this.classifyMultiCategoriesActions = classifyMultiCategoriesActions == null ? null :
-                                                            Arrays.asList(classifyMultiCategoriesActions);
+    public TextAnalyticsActions setCustomClassifyMultiCategoriesActions(
+        CustomClassifyMultiCategoriesAction... customClassifyMultiCategoriesActions) {
+        validateActionsNumber(customClassifyMultiCategoriesActions,
+            CustomClassifyMultiCategoriesAction.class.getName());
+        this.customClassifyMultiCategoriesActions = customClassifyMultiCategoriesActions == null ? null :
+                                                            Arrays.asList(customClassifyMultiCategoriesActions);
         return this;
     }
 

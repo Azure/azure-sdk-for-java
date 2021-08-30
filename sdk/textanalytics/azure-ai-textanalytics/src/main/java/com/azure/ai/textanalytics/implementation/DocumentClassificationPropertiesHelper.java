@@ -3,7 +3,7 @@
 
 package com.azure.ai.textanalytics.implementation;
 
-import com.azure.ai.textanalytics.models.DocumentCategory;
+import com.azure.ai.textanalytics.models.ClassificationCategory;
 import com.azure.ai.textanalytics.models.DocumentClassification;
 
 /**
@@ -18,7 +18,7 @@ public final class DocumentClassificationPropertiesHelper {
      * Type defining the methods to set the non-public properties of an {@link DocumentClassification} instance.
      */
     public interface DocumentClassificationAccessor {
-        void setCategory(DocumentClassification documentClassification, DocumentCategory category);
+        void setCategory(DocumentClassification documentClassification, ClassificationCategory category);
         void setConfidenceScore(DocumentClassification documentClassification, double confidenceScore);
     }
 
@@ -31,7 +31,7 @@ public final class DocumentClassificationPropertiesHelper {
         accessor = documentClassificationAccessor;
     }
 
-    public static void setCategory(DocumentClassification documentClassification, DocumentCategory category) {
+    public static void setCategory(DocumentClassification documentClassification, ClassificationCategory category) {
         accessor.setCategory(documentClassification, category);
     }
 

@@ -3,48 +3,48 @@
 
 package com.azure.ai.textanalytics.models;
 
-import com.azure.ai.textanalytics.implementation.RecognizeCustomEntitiesResultPropertiesHelper;
+import com.azure.ai.textanalytics.implementation.CustomRecognizeEntitiesResultPropertiesHelper;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.IterableStream;
 
 /**
- * The {@link RecognizeCustomEntitiesResult} model.
+ * The {@link CustomRecognizeEntitiesResult} model.
  */
 @Immutable
-public final class RecognizeCustomEntitiesResult extends TextAnalyticsResult {
-    private CustomEntityCollection entities;
+public final class CustomRecognizeEntitiesResult extends TextAnalyticsResult {
+    private CategorizedEntityCollection entities;
 
     static {
-        RecognizeCustomEntitiesResultPropertiesHelper.setAccessor(
+        CustomRecognizeEntitiesResultPropertiesHelper.setAccessor(
             (actionResult, entities) -> actionResult.setEntities(entities));
     }
 
     /**
-     * Creates a {@link RecognizeCustomEntitiesResult} model that describes recognized custom entities result.
+     * Creates a {@link CustomRecognizeEntitiesResult} model that describes recognized custom entities result.
      *
      * @param id Unique, non-empty document identifier.
      * @param textDocumentStatistics The text document statistics.
      * @param error The document error.
      */
-    public RecognizeCustomEntitiesResult(String id, TextDocumentStatistics textDocumentStatistics,
+    public CustomRecognizeEntitiesResult(String id, TextDocumentStatistics textDocumentStatistics,
         TextAnalyticsError error) {
         super(id, textDocumentStatistics, error);
     }
 
     /**
-     * Gets an {@link IterableStream} of {@link CustomEntity}.
+     * Gets an {@link IterableStream} of {@link CategorizedEntity}.
      *
-     * @return An {@link IterableStream} of {@link CustomEntity}.
+     * @return An {@link IterableStream} of {@link CategorizedEntity}.
      *
      * @throws TextAnalyticsException if result has {@code isError} equals to true and when a non-error property
      * was accessed.
      */
-    public CustomEntityCollection getEntities() {
+    public CategorizedEntityCollection getEntities() {
         throwExceptionIfError();
         return entities;
     }
 
-    private void setEntities(CustomEntityCollection entities) {
+    private void setEntities(CategorizedEntityCollection entities) {
         this.entities = entities;
     }
 }
