@@ -49,7 +49,7 @@ stages:
         PrivatePreview:
           SubscriptionConfiguration: $(sub-config-storage-test-resources)
       Clouds: Preview
-      SupportedClouds: Preview, PrivatePreview
+      SupportedClouds: Preview
       TestStepMavenInputs:
         options: '$(DefaultTestOptions) $(AdditionalOptions) -T 1C'
         mavenOptions: '$(DefaultTestMavenOptions)'
