@@ -1475,7 +1475,7 @@ public class CosmosAsyncContainer {
         return withContext(context -> deleteItemInternal(itemId, null, requestOptions, context));
     }
 
-    public Mono<CosmosItemResponse<Object>> deleteAllItemsByPartitionKeyAsync(PartitionKey partitionKey, CosmosItemRequestOptions options) {
+    public Mono<CosmosItemResponse<Object>> deleteAllItemsByPartitionKey(PartitionKey partitionKey, CosmosItemRequestOptions options) {
         if (options == null) {
             options = new CosmosItemRequestOptions();
         }

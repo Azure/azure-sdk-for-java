@@ -1984,7 +1984,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 .deleteAllItemsByPartitionKey(req, retryPolicyInstance, getOperationContextAndListenerTuple(options))
                 .map(serviceResponse -> toResourceResponse(serviceResponse, Document.class)));
         } catch (Exception e) {
-            logger.debug("Failure in deleting a document due to [{}]", e.getMessage());
+            logger.debug("Failure in deleting documents due to [{}]", e.getMessage());
             return Mono.error(e);
         }
     }

@@ -632,8 +632,8 @@ public class CosmosContainer {
         return  this.blockDeleteItemResponse(asyncContainer.deleteItem(itemId, partitionKey, options));
     }
 
-    public CosmosItemResponse<Object> deleteAllItemsByPartitionKeyAsync(PartitionKey partitionKey, CosmosItemRequestOptions options) {
-        return this.blockDeleteItemResponse(asyncContainer.deleteAllItemsByPartitionKeyAsync(partitionKey, options));
+    public CosmosItemResponse<Object> deleteAllItemsByPartitionKey(PartitionKey partitionKey, CosmosItemRequestOptions options) {
+        return this.blockDeleteItemResponse(asyncContainer.deleteAllItemsByPartitionKey(partitionKey, options));
     }
 
     /**
@@ -650,12 +650,12 @@ public class CosmosContainer {
 
     /**
      * Executes the transactional batch.
-     * 
+     *
      * @deprecated forRemoval = true, since = "4.19"
      * This overload will be removed. Please use one of the following APIs instead
      * - {@link CosmosContainer#executeCosmosBatch(CosmosBatch)}
      * - {@link CosmosContainer#executeCosmosBatch(CosmosBatch, CosmosBatchRequestOptions)}
-     * 
+     *
      * @param transactionalBatch Batch having list of operation and partition key which will be executed by this container.
      *
      * @return A TransactionalBatchResponse which contains details of execution of the transactional batch.
@@ -728,7 +728,7 @@ public class CosmosContainer {
      * @deprecated forRemoval = true, since = "4.19"
      * This overload will be removed. Please use one of the following APIs instead
      * - {@link CosmosContainer#executeCosmosBatch(CosmosBatch)}
-     * - {@link CosmosContainer#executeCosmosBatch(CosmosBatch, CosmosBatchRequestOptions)} 
+     * - {@link CosmosContainer#executeCosmosBatch(CosmosBatch, CosmosBatchRequestOptions)}
      *
      * @param transactionalBatch Batch having list of operation and partition key which will be executed by this container.
      * @param requestOptions Options that apply specifically to batch request.

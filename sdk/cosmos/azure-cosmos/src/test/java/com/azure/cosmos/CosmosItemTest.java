@@ -175,7 +175,7 @@ public class CosmosItemTest extends TestSuiteBase {
 
 
         // delete the items with partition key pk1
-        CosmosItemResponse<?> deleteResponse = container.deleteAllItemsByPartitionKeyAsync(
+        CosmosItemResponse<?> deleteResponse = container.deleteAllItemsByPartitionKey(
             new PartitionKey(pkValue1), new CosmosItemRequestOptions());
 
         assertThat(deleteResponse.getStatusCode()).isEqualTo(200);
