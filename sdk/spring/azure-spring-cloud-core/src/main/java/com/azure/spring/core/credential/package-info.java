@@ -2,6 +2,6 @@
 // Licensed under the MIT License.
 
 /**
- * Package com.azure.spring.core.credential.resolver
+ * Package com.azure.spring.core.credential
  */
 package com.azure.spring.core.credential;

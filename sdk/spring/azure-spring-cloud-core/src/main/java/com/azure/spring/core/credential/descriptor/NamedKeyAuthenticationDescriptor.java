@@ -23,7 +23,7 @@ public class NamedKeyAuthenticationDescriptor implements AuthenticationDescripto
 
     @Override
     public AzureCredentialType azureCredentialType() {
-        return AzureCredentialType.KEY_CREDENTIAL;
+        return AzureCredentialType.NAMED_KEY_CREDENTIAL;
     }
 
     @Override

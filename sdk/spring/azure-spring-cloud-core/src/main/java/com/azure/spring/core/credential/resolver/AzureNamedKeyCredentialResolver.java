@@ -21,7 +21,7 @@ public class AzureNamedKeyCredentialResolver implements AzureCredentialResolver<
         }
 
         NamedKeyProperties namedKey = ((NamedKeyAware) properties).getNamedKey();
-        if (!StringUtils.hasText(namedKey.getName()) || !StringUtils.hasText(namedKey.getKey())) {
+        if (namedKey == null || !StringUtils.hasText(namedKey.getName()) || !StringUtils.hasText(namedKey.getKey())) {
             return null;
         }
 
