@@ -19,6 +19,7 @@
         <module>sdk/appconfiguration/azure-spring-cloud-starter-appconfiguration-config</module>
         <module>sdk/appconfiguration/spring-cloud-starter-azure-appconfiguration-config</module>
         <module>sdk/appconfiguration/spring-cloud-azure-appconfiguration-config</module>
+        <module>sdk/appconfiguration/azure-spring-cloud-appconfiguration-config</module>
         <module>sdk/appconfiguration/azure-spring-cloud-appconfiguration-config-web</module>
       </modules>
       <build>
