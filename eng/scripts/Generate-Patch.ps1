@@ -109,10 +109,11 @@ function UpdateChangeLog($ArtifactName, $ServiceDirectoryName, $Version) {
 function ResetSourcesToReleaseTag($ArtifactName, $ServiceDirectoryName, $ReleaseTag, $RepoRoot, $RemoteName) {
   $SdkDirPath = Join-Path $RepoRoot "sdk"
   $ServiceDirPath = Join-Path $SdkDirPath $ServiceDirectoryName
+
   $ArtifactDirPath = Join-Path $ServiceDirPath $ArtifactName
-  $ArtifactPomFile = Join-Path $ArtifactDirPath "pom.xml"
-  
   TestPathThrow -Path $ArtifactDirPath
+
+  $ArtifactPomFile = Join-Path $ArtifactDirPath "pom.xml"
   TestPathThrow -Path $ArtifactPomFile
   
   $ResetSources = $true
@@ -136,6 +137,7 @@ function ResetSourcesToReleaseTag($ArtifactName, $ServiceDirectoryName, $Release
   $EngDir = Join-Path $RepoRoot "eng"  
   $CodeQualityReports = Join-Path $EngDir "code-quality-reports" "src" "main" "resources"
   $CheckStyleSuppressionFilePath = Join-Path $CodeQualityReports "checkstyle" "checkstyle-suppressions.xml"
+  $CheckStyleFilePath = Join-Path $CodeQualityReports "checkstyle" "checkstyle.xml"
   $SpotBugsFilePath = Join-Path $CodeQualityReports "spotbugs" "spotbugs-exclude.xml"
 
   Write-Information "Fetching all the tags from $RemoteName"
@@ -159,6 +161,11 @@ function ResetSourcesToReleaseTag($ArtifactName, $ServiceDirectoryName, $Release
     $cmdOutput = git restore --source $ReleaseTag -W -S $CheckStyleSuppressionFilePath
   }
 
+  if(Test-Path $CheckStyleFilePath) {
+    $cmdOutput = git restore --source $ReleaseTag -W -S $CheckStyleFilePath
+  }
+
+
   if(Test-Path $SpotBugsFilePath) {
     $cmdOutput = git restore --source $ReleaseTag -W -S $SpotBugsFilePath
   }
@@ -166,7 +173,7 @@ function ResetSourcesToReleaseTag($ArtifactName, $ServiceDirectoryName, $Release
    ## Commit these changes.
   $cmdOutput = git commit -a -m "Reset changes to the patch version."
   if($LASTEXITCODE -ne 0) {
-    LogError "Could not commit the changes locally.Exitting..."
+    LogError "Could not commit the changes locally.Exiting..."
     exit
   }
 }
@@ -190,13 +197,13 @@ function CreatePatchRelease($ArtifactName, $ServiceDirectoryName, $PatchVersion,
 
   $cmdOutput = python $UpdateVersionFilePath --ut all --bt client --sr
     if($LASTEXITCODE -ne 0) {
-    LogError "Could not update the versions in the pom files.. Exitting..."
+    LogError "Could not update the versions in the pom files.. Exiting..."
     exit
   }
   
   $cmdOutput = UpdateChangeLog -ArtifactName $ArtifactName -Version $PatchVersion -ServiceDirectory $ServiceDirectoryName
   if($LASTEXITCODE -ne 0) {
-    LogError "Could not update the changelog.. Exitting..."
+    LogError "Could not update the changelog.. Exiting..."
     exit
   }
   
@@ -205,7 +212,7 @@ function CreatePatchRelease($ArtifactName, $ServiceDirectoryName, $PatchVersion,
 if('' -eq $PatchVersion) {
   $PatchVersion = GetPatchVersion -ReleaseVersion $ReleaseVersion
   if('' -eq $PatchVersion) {
-    LogError "Could not fetch the patch version. Exitting ..."
+    LogError "Could not fetch the patch version. Exiting ..."
     exit
   }
 }
@@ -213,7 +220,7 @@ Write-Information "PatchVersion is: $PatchVersion"
 
 $RemoteName = GetRemoteName -MainRemoteUrl $MainRemoteUrl
 if($null -eq $RemoteName) {
-    LogError "Could not fetch the remote name for the URL $MainRemoteUrl Exitting ..."
+    LogError "Could not fetch the remote name for the URL $MainRemoteUrl Exiting ..."
     exit
 }
 Write-Information "RemoteName is: $RemoteName"
@@ -224,12 +231,12 @@ if('' -eq $BranchName) {
 }
 
 try {
-  Write-Information "Reseting the $ArtifactName sources to the release $ReleaseTag."
+  Write-Information "Resetting the $ArtifactName sources to the release $ReleaseTag."
 
   ## Creating a new branch
   $CmdOutput = git checkout -b $BranchName $RemoteName/main
   if($LASTEXITCODE -ne 0) {
-    LogError "Could not checkout branch $BranchName, please check if it already exists and delete as necessary. Exitting..."
+    LogError "Could not checkout branch $BranchName, please check if it already exists and delete as necessary. Exiting..."
     exit
   }
   
@@ -240,19 +247,19 @@ try {
   CreatePatchRelease -ArtifactName $ArtifactName -ServiceDirectoryName $ServiceDirectoryName -PatchVersion $PatchVersion -RepoRoot $RepoRoot
   $cmdOutput = git add $RepoRoot
   if($LASTEXITCODE -ne 0) {
-    LogError "Could not add the changes. Exitting..."
+    LogError "Could not add the changes. Exiting..."
     exit 
   }
   
   $cmdOutput = git commit -m "Updating the SDK dependencies for $ArtifactName"
   if($LASTEXITCODE -ne 0) {
-    LogError "Could not commit changes to $UpdateBranchName locally. Exitting..."
+    LogError "Could not commit changes to $UpdateBranchName locally. Exiting..."
     exit 
   }
 
   $cmdOutput = git push -f $RemoteName $BranchName
   if($LASTEXITCODE -ne 0) {
-    LogError "Could not push the changes to $RemoteName\$BranchName. Exitting..."
+    LogError "Could not push the changes to $RemoteName\$BranchName. Exiting..."
     exit 
   }
 }
