@@ -25,6 +25,8 @@ import java.util.List;
  */
 @Immutable
 public class ChainedTokenCredential implements TokenCredential {
+    private static final String TROUBLESHOOT_MESSAGE = "To mitigate this issue, please refer to the troubleshooting "
+        + "guidelines here at https://aka.ms/azure-identity-java-default-azure-credential-troubleshoot";
     private final ClientLogger logger = new ClientLogger(getClass());
     private final List<TokenCredential> credentials;
     private final String unavailableError = this.getClass().getSimpleName() + " authentication failed. ---> ";
@@ -73,8 +75,8 @@ public class ChainedTokenCredential implements TokenCredential {
                 CredentialUnavailableException last = exceptions.get(exceptions.size() - 1);
                 for (int z = exceptions.size() - 2; z >= 0; z--) {
                     CredentialUnavailableException current = exceptions.get(z);
-                    last = new CredentialUnavailableException(current.getMessage() + "\r\n" + last.getMessage(),
-                        last.getCause());
+                    last = new CredentialUnavailableException(current.getMessage() + "\r\n" + last.getMessage()
+                        + (z == 0 ? TROUBLESHOOT_MESSAGE : ""));
                 }
                 return Mono.error(last);
             }));

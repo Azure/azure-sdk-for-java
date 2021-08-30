@@ -247,6 +247,9 @@ public class IntelliJCacheAccessor {
                 break;
             }
         }
+        logger.verbose("IntelliJ Authentication => Reading in Azure Tools for IntelliJ Plugin's metadata file"
+            + " located at `%s`. This file contains authentication scheme details used when logging via"
+            + " Azure Plugin in IntelliJ IDE.", authFile.getAbsolutePath());
         if (authFile == null || !authFile.exists()) {
             throw logger.logExceptionAsError(
                     new CredentialUnavailableException(INTELLIJ_CREDENTIAL_NOT_AVAILABLE_ERROR));
@@ -256,16 +259,24 @@ public class IntelliJCacheAccessor {
 
         String authType = authMethodDetails.getAuthMethod();
         if (CoreUtils.isNullOrEmpty(authType)) {
+            logger.verbose("IntelliJ Authentication => Authentication Type could not be found in Azure Tools for"
+                + " IntelliJ Plugin's metadata file located at `%s`.", authFile.getAbsolutePath());
             throw logger.logExceptionAsError(
                     new CredentialUnavailableException(INTELLIJ_CREDENTIAL_NOT_AVAILABLE_ERROR));
         }
         if (authType.equalsIgnoreCase("SP")) {
             if (CoreUtils.isNullOrEmpty(authMethodDetails.getCredFilePath())) {
+                logger.verbose("IntelliJ Authentication => Service Principal Authentication Detected but file path to "
+                    + "service principal could not be found in Azure Tools for IntelliJ Plugin's metadata file located"
+                    + " at `%s`.", authFile.getAbsolutePath());
                 throw logger.logExceptionAsError(
                         new CredentialUnavailableException(INTELLIJ_CREDENTIAL_NOT_AVAILABLE_ERROR));
             }
         } else if (authType.equalsIgnoreCase("DC")) {
             if (CoreUtils.isNullOrEmpty(authMethodDetails.getAccountEmail())) {
+                logger.verbose("IntelliJ Authentication => Device Code Authentication Detected but user email info used"
+                    + " for logging in could not be found in Azure Tools for IntelliJ Plugin's metadata file located"
+                    + " at `%s`.", authFile.getAbsolutePath());
                 throw logger.logExceptionAsError(
                         new CredentialUnavailableException(INTELLIJ_CREDENTIAL_NOT_AVAILABLE_ERROR));
             }

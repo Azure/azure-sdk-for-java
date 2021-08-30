@@ -1,9 +1,87 @@
+## Troubleshooting Azure Identity Authentication Issues
+The Azure Identity SDK offers various `TokenCredential` implementations. These implementations tend to throw `CredentialUnavailable` and `ClientAuthentication` exceptions. 
+The `CredentialUnavailableException` indicates that the credential cannot execute in the current environment setup due to lack of required configuration.
+The `ClientAuthenticationException` indicates that the credential was able to run/execute but ran into an authentication issue from the server's end. This can happen due to invalid configuration/details passed in to the credential at construction time.
+This troubleshooting guide covers mitigation steps to resolve these exceptions thrown by various `TokenCredential` implementations in the Azure Identity Java client library.
+
 ## Table of contents
+  - [Troubleshooting Default Azure Credential Authentication Issues](#troubleshooting-default-azure-credential-authentication-issues)
+  - [Troubleshooting Environment Credential Authentication Issues](#troubleshooting-environment-credential-authentication-issues)
   - [Troubleshooting Service Principal Authentication Issues](#troubleshooting-service-principal-authentication-issues)
+  - [Troubleshooting Username Password Authentication Issues](#troubleshooting-username-password-authentication-issues)
   - [Troubleshooting Mananged Identity Authenticaiton Issues](#troubleshooting-mananged-identity-authenticaiton-issues)
   - [Troubleshooting Visual Studio Code Authenticaiton Issues](#troubleshooting-visual-studio-code-authenticaiton-issues)
   - [Troubleshooting Azure CLI Authenticaiton Issues](#troubleshooting-azure-cli-authenticaiton-issues)
   - [Troubleshooting Azure Powershell Authenticaiton Issues](#troubleshooting-azure-powershell-authenticaiton-issues)
+
+
+
+## Troubleshooting Default Azure Credential Authentication Issues.
+
+### Credential Unavailable Exception
+The `DefaultAzureCredential` attempts to retrieve an access token by sequentially invoking a chain of credentials. The `CredentialUnavailableException` in this scenario signifies that all the credentials in the chain failed to retrieve the token in the current environment setup/configuration. You need to follow the configurtion instructions for the respective credential you're looking to use via `DefaultAzureCredential` chain, so that the credential can work in your environment.
+
+Please follow the configuration instructions in the `Credential Unvavailable` section of hte troublehsooting guidelines below for the repsective credential/authentication type you're looking to use via `DefaultAzureCredential`:
+
+| Credential Type |	Trobuleshoot Guide |
+| --- | --- |
+| Environment Credential |	[Environment Credential Troubleshooting Guide](#troubleshooting-environment-credential-authentication-issues) |
+| Managed Identity Credential |	[Managed Identity Troubleshooting Guide](#troubleshooting-managed-identity-authentication-issues) |
+| Visual Studio Code Credential |	[Visual Studio Code Troubleshooting Guide](#troubleshooting-visual-studio-code-authenticaiton-issues) |
+| Azure CLI Credential |	[Azure CLI Troubleshooting Guide](#troubleshooting-azure-cli-authenticaiton-issues) |
+| Azure Powershell Credential |	[Azure Powershell Troubleshooting Guide](#troubleshooting-azure-powershell-authentication-issues) |
+
+
+
+
+## Troubleshooting Environment Credential Authentication Issues.
+
+### Credential Unavailable Exception
+
+#### Environment variables not configured
+The `EnvironmentCredential` supports Service Principal authentication and Username + Password Authentication. To utilize the desired way of authentication via `EnvironmentCredential`, you need to ensure the environment varialbes below are configured properly and the application is able to read them.
+
+
+##### Service principal with secret
+| Variable Name |	Value |
+| --- | --- |
+AZURE_CLIENT_ID |	ID of an Azure Active Directory application. |
+AZURE_TENANT_ID	 |ID of the application's Azure Active Directory tenant. |
+AZURE_CLIENT_SECRET |	One of the application's client secrets. |
+
+##### Service principal with certificate
+| Variable name	| Value |
+| --- | --- |
+AZURE_CLIENT_ID	|ID of an Azure Active Directory application. |
+AZURE_TENANT_ID	| ID of the application's Azure Active Directory tenant. |
+AZURE_CLIENT_CERTIFICATE_PATH |	Path to a PEM-encoded certificate file including private key (without password protection). |
+
+##### Username and password
+| Variable name |	Value |
+| --- | --- |
+AZURE_CLIENT_ID |	ID of an Azure Active Directory application. |
+AZURE_USERNAME |	A username (usually an email address). |
+AZURE_PASSWORD | The associated password for the given username. |
+
+### Client Authentication Exception
+The `EnvironmentCredential` supports Service Principal authentication and Username + Password Authentication.
+Please follow the troublehsooting guidelines below for the repsective authentication which you tried and failed.
+
+| Authentication Type |	Trobuleshoot Guide |
+| --- | --- |
+| Service Principal |	[Service Principal Auth Troubleshooting Guide](#troubleshooting-username-password-authentication-issues) |
+| Username Password |	[Username Password Auth Troubleshooting Guide](#troubleshooting-username-password-authentication-issues) |
+
+
+
+
+## Troubleshooting Username Password Authentication Issues.
+
+### Two Factor Authentication Required Error.
+The `UsernamePassword` credential works only for users whose two factor authentication has been disabled in Azure Active Directrory. You can change the Multi Factor Authentication in Azure Portal by folliwng the steps [here](https://docs.microsoft.com/en-us/azure/active-directory/authentication/howto-mfa-userstates#change-the-status-for-a-user).
+
+
+
 
 ## Troubleshooting Service Principal Authentication Issues.
 
@@ -20,11 +98,21 @@ The tenant id is te Global Unique Identifier (GUID) that identifies your organiz
 `ClientSecretCredential` and `ClientCertificateCredential`. If you have already created your service principal
 then you can retrieve the client/app id by following the instructions [here](https://docs.microsoft.com/en-us/azure/active-directory/develop/howto-create-service-principal-portal#get-tenant-and-app-id-values-for-signing-in).
 
-#### Client Secret
+### Client Secret Credential Issues
+
+#### Client Secret Argument
 The client secret is the secret string that the application uses to prove its identity when requesting a token, this can also can be referred to as an application password.
 If you have already created a servie principal you can follow the instructions [here](https://docs.microsoft.com/en-us/azure/active-directory/develop/howto-create-service-principal-portal#option-2-create-a-new-application-secret) to get the client secret for your application.
 
+### Client Certificate Credential Issues
+
+#### Client Certificate Argument
+The `Client Certificate Credential` accepts `pfx` and `pem` certificates. The certificate needs to be associated with your registered application/service principal. To create and associate a certificate with your registered app. please follow the instrucitons [here](https://docs.microsoft.com/en-us/azure/active-directory/develop/howto-create-service-principal-portal#option-1-upload-a-certificate).
+
+### Create a new service principal
 If you're looking to create a new service principal and would like to use that, then follow tne instructions [here](https://docs.microsoft.com/en-us/azure/developer/java/sdk/identity-service-principal-auth#create-a-service-principal-with-the-azure-cli) to create a new service principal.
+
+
 
 
 ## Troubleshooting Mananged Identity Authenticaiton Issues
@@ -45,6 +133,8 @@ Azure Service | Managed Identity Configuration
 [Azure Cloud Shell](https://docs.microsoft.com/azure/cloud-shell/msi-authorization) |  |
 [Azure Arc](https://docs.microsoft.com/azure/azure-arc/servers/managed-identity-authentication) | [Configuration Instructions](https://docs.microsoft.com/en-us/azure/azure-arc/servers/security-overview#using-a-managed-identity-with-arc-enabled-servers)
 [Azure Service Fabric](https://docs.microsoft.com/azure/service-fabric/concepts-managed-identity) | [Configuration Instructions](https://docs.microsoft.com/en-us/azure/service-fabric/configure-existing-cluster-enable-managed-identity-token-service)
+
+
 
 
 ## Troubleshooting Visual Studio Code Authenticaiton Issues
@@ -79,6 +169,8 @@ AZURE CHINA | https://login.chinacloudapi.cn/
 AZURE GOVERNMENT | https://login.microsoftonline.us/
 
 
+
+
 ## Troubleshooting Azure CLI Authenticaiton Issues
 
 ### Credential Unavailable
@@ -97,6 +189,8 @@ Once logged in try running the credential again.
 #### Safe Working Directory Not Located.
 The `Azure CLI Credential` was not able to locoate a value for System Environment property `SystemRoot` to execute in.
 Please ensure the `SystemRoot` environment variable is configured to a safe working directory and then try running the credential again.
+
+
 
 
 ## Troubleshooting Azure Powershell Authenticaiton Issues
