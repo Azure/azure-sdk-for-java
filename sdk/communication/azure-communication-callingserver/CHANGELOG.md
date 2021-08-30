@@ -1,5 +1,9 @@
 # Release History
 
+## 1.0.0-beta.6
+### Features Added
+- Add support for TokenCredential authentication with CallingServerClientBuilder.
+
 ## 1.0.0-beta.5 (2021-08-30)
 ### Dependency updates
 - Upgraded `azure-communication-common` to 1.0.4
