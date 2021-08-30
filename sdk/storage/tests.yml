@@ -43,6 +43,11 @@ stages:
       TestMode: 'LIVE'
       TimeoutInMinutes: 60
       Location: canadacentral
+      CloudConfig:
+        Preview:
+          SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources-preview)
+        PrivatePreview:
+          SubscriptionConfiguration: $(sub-config-storage-test-resources)
       Clouds: Preview
       SupportedClouds: Preview, PrivatePreview
       TestStepMavenInputs:
