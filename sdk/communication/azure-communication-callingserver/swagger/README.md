@@ -31,9 +31,9 @@ To update generated files for calling service, run the following command
 
 ### Code generation settings
 ``` yaml
-tag: package-2021-06-15-preview
+tag: package-2021-08-30-preview
 require:
-    - https://raw.githubusercontent.com/Azure/azure-rest-api-specs/b4b5fa5ee23f8cce9e1ade4a82076b4c34b25651/specification/communication/data-plane/CallingServer/readme.md
+    - https://raw.githubusercontent.com/Azure/azure-rest-api-specs/3893616381e816729ef9cdd768e87fb2845e189d/specification/communication/data-plane/CallingServer/readme.md
 java: true
 output-folder: ..\
 license-header: MICROSOFT_MIT_SMALL

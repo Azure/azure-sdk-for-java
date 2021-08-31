@@ -16,6 +16,24 @@ public final class StartCallRecordingRequest {
     @JsonProperty(value = "recordingStateCallbackUri")
     private String recordingStateCallbackUri;
 
+    /*
+     * Optional, audioVideo by default
+     */
+    @JsonProperty(value = "recordingContentType")
+    private RecordingContentType recordingContentType;
+
+    /*
+     * Optional, mixed by default
+     */
+    @JsonProperty(value = "recordingChannelType")
+    private RecordingChannelType recordingChannelType;
+
+    /*
+     * Optional, mp4 by default
+     */
+    @JsonProperty(value = "recordingFormatType")
+    private RecordingFormatType recordingFormatType;
+
     /**
      * Get the recordingStateCallbackUri property: The uri to send notifications to.
      *
@@ -33,6 +51,66 @@ public final class StartCallRecordingRequest {
      */
     public StartCallRecordingRequest setRecordingStateCallbackUri(String recordingStateCallbackUri) {
         this.recordingStateCallbackUri = recordingStateCallbackUri;
+        return this;
+    }
+
+    /**
+     * Get the recordingContentType property: Optional, audioVideo by default.
+     *
+     * @return the recordingContentType value.
+     */
+    public RecordingContentType getRecordingContentType() {
+        return this.recordingContentType;
+    }
+
+    /**
+     * Set the recordingContentType property: Optional, audioVideo by default.
+     *
+     * @param recordingContentType the recordingContentType value to set.
+     * @return the StartCallRecordingRequest object itself.
+     */
+    public StartCallRecordingRequest setRecordingContentType(RecordingContentType recordingContentType) {
+        this.recordingContentType = recordingContentType;
+        return this;
+    }
+
+    /**
+     * Get the recordingChannelType property: Optional, mixed by default.
+     *
+     * @return the recordingChannelType value.
+     */
+    public RecordingChannelType getRecordingChannelType() {
+        return this.recordingChannelType;
+    }
+
+    /**
+     * Set the recordingChannelType property: Optional, mixed by default.
+     *
+     * @param recordingChannelType the recordingChannelType value to set.
+     * @return the StartCallRecordingRequest object itself.
+     */
+    public StartCallRecordingRequest setRecordingChannelType(RecordingChannelType recordingChannelType) {
+        this.recordingChannelType = recordingChannelType;
+        return this;
+    }
+
+    /**
+     * Get the recordingFormatType property: Optional, mp4 by default.
+     *
+     * @return the recordingFormatType value.
+     */
+    public RecordingFormatType getRecordingFormatType() {
+        return this.recordingFormatType;
+    }
+
+    /**
+     * Set the recordingFormatType property: Optional, mp4 by default.
+     *
+     * @param recordingFormatType the recordingFormatType value to set.
+     * @return the StartCallRecordingRequest object itself.
+     */
+    public StartCallRecordingRequest setRecordingFormatType(RecordingFormatType recordingFormatType) {
+        this.recordingFormatType = recordingFormatType;
         return this;
     }
 }
