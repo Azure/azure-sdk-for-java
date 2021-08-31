@@ -3,42 +3,40 @@
 
 package com.azure.ai.textanalytics.util;
 
-import com.azure.ai.textanalytics.implementation.CustomClassifyMultiCategoriesResultCollectionPropertiesHelper;
-import com.azure.ai.textanalytics.models.CustomClassifyMultiCategoriesResult;
-import com.azure.ai.textanalytics.models.CustomRecognizeEntitiesResult;
+import com.azure.ai.textanalytics.implementation.ClassifyCustomCategoriesResultCollectionPropertiesHelper;
+import com.azure.ai.textanalytics.models.ClassifyCustomCategoriesResult;
 import com.azure.ai.textanalytics.models.TextDocumentBatchStatistics;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.IterableStream;
 
 /**
- * A collection model that contains a list of {@link CustomClassifyMultiCategoriesResult} along with project name,
+ * A collection model that contains a list of {@link ClassifyCustomCategoriesResult} along with project name,
  * deployment name and batch's statistics.
  */
 @Immutable
-public final class CustomClassifyMultiCategoriesResultCollection
-    extends IterableStream<CustomClassifyMultiCategoriesResult> {
+public final class ClassifyCustomCategoriesResultCollection
+    extends IterableStream<ClassifyCustomCategoriesResult> {
     private String projectName;
     private String deploymentName;
     private TextDocumentBatchStatistics statistics;
 
     static {
-        CustomClassifyMultiCategoriesResultCollectionPropertiesHelper.setAccessor(
-            new CustomClassifyMultiCategoriesResultCollectionPropertiesHelper
-                    .ClassifyMultiCategoriesResultCollectionAccessor() {
+        ClassifyCustomCategoriesResultCollectionPropertiesHelper.setAccessor(
+            new ClassifyCustomCategoriesResultCollectionPropertiesHelper.ClassifyCustomCategoriesResultCollectionAccessor() {
                 @Override
-                public void setProjectName(CustomClassifyMultiCategoriesResultCollection resultCollection,
+                public void setProjectName(ClassifyCustomCategoriesResultCollection resultCollection,
                     String projectName) {
                     resultCollection.setProjectName(projectName);
                 }
 
                 @Override
-                public void setDeploymentName(CustomClassifyMultiCategoriesResultCollection resultCollection,
+                public void setDeploymentName(ClassifyCustomCategoriesResultCollection resultCollection,
                     String deploymentName) {
                     resultCollection.setDeploymentName(deploymentName);
                 }
 
                 @Override
-                public void setStatistics(CustomClassifyMultiCategoriesResultCollection resultCollection,
+                public void setStatistics(ClassifyCustomCategoriesResultCollection resultCollection,
                     TextDocumentBatchStatistics statistics) {
                     resultCollection.setStatistics(statistics);
                 }
@@ -46,13 +44,13 @@ public final class CustomClassifyMultiCategoriesResultCollection
     }
 
     /**
-     * Create a {@link CustomClassifyMultiCategoriesResultCollection} model that maintains a list of
-     * {@link CustomClassifyMultiCategoriesResult} along with model version and batch's statistics.
+     * Create a {@link ClassifyCustomCategoriesResultCollection} model that maintains a list of
+     * {@link ClassifyCustomCategoriesResult} along with model version and batch's statistics.
      *
-     * @param documentResults A list of {@link CustomRecognizeEntitiesResult}.
+     * @param documentResults A list of {@link ClassifyCustomCategoriesResult}.
      */
-    public CustomClassifyMultiCategoriesResultCollection(
-        Iterable<CustomClassifyMultiCategoriesResult> documentResults) {
+    public ClassifyCustomCategoriesResultCollection(
+        Iterable<ClassifyCustomCategoriesResult> documentResults) {
         super(documentResults);
     }
 

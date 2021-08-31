@@ -9,13 +9,13 @@ import com.azure.ai.textanalytics.models.AnalyzeActionsOperationDetail;
 import com.azure.ai.textanalytics.models.AnalyzeActionsOptions;
 import com.azure.ai.textanalytics.models.AnalyzeActionsResult;
 import com.azure.ai.textanalytics.models.CategorizedEntity;
-import com.azure.ai.textanalytics.models.CustomRecognizeEntitiesAction;
-import com.azure.ai.textanalytics.models.CustomRecognizeEntitiesActionResult;
-import com.azure.ai.textanalytics.models.CustomRecognizeEntitiesResult;
+import com.azure.ai.textanalytics.models.RecognizeCustomEntitiesAction;
+import com.azure.ai.textanalytics.models.RecognizeCustomEntitiesActionResult;
+import com.azure.ai.textanalytics.models.RecognizeEntitiesResult;
 import com.azure.ai.textanalytics.models.TextAnalyticsActions;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.ai.textanalytics.util.AnalyzeActionsResultPagedIterable;
-import com.azure.ai.textanalytics.util.CustomRecognizeEntitiesResultCollection;
+import com.azure.ai.textanalytics.util.RecognizeCustomEntitiesResultCollection;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.util.Context;
@@ -66,8 +66,8 @@ public class AnalyzeCustomEntitiesAction {
         SyncPoller<AnalyzeActionsOperationDetail, AnalyzeActionsResultPagedIterable> syncPoller =
             client.beginAnalyzeActions(documents,
                 new TextAnalyticsActions().setDisplayName("{tasks_display_name}")
-                    .setCustomRecognizeEntitiesActions(
-                        new CustomRecognizeEntitiesAction()
+                    .setRecognizeCustomEntitiesActions(
+                        new RecognizeCustomEntitiesAction()
                             .setProjectName("myFirstBlackBox")
                             .setDeploymentName("model1")),
                 new AnalyzeActionsOptions().setIncludeStatistics(false),
@@ -91,12 +91,12 @@ public class AnalyzeCustomEntitiesAction {
                 perPage.getContinuationToken());
             for (AnalyzeActionsResult actionsResult : perPage.getElements()) {
                 System.out.println("Custom entities recognition action results:");
-                for (CustomRecognizeEntitiesActionResult actionResult : actionsResult.getCustomRecognizeEntitiesResults()) {
+                for (RecognizeCustomEntitiesActionResult actionResult : actionsResult.getRecognizeCustomEntitiesResults()) {
                     if (!actionResult.isError()) {
-                        final CustomRecognizeEntitiesResultCollection documentsResults = actionResult.getDocumentsResults();
+                        final RecognizeCustomEntitiesResultCollection documentsResults = actionResult.getDocumentsResults();
                         System.out.printf("Project Name: %s, model name: %s.%n",
                             documentsResults.getProjectName(), documentsResults.getDeploymentName());
-                        for (CustomRecognizeEntitiesResult documentResult : documentsResults) {
+                        for (RecognizeEntitiesResult documentResult : documentsResults) {
                             if (!documentResult.isError()) {
                                 for (CategorizedEntity entity : documentResult.getEntities()) {
                                     System.out.printf(

@@ -10,7 +10,7 @@ import com.azure.core.annotation.Fluent;
  * in a set of documents.
  */
 @Fluent
-public final class CustomClassifyMultiCategoriesAction {
+public final class ClassifyCustomCategoriesAction {
     private String projectName;
     private String deploymentName;
     private boolean disableServiceLogs;
@@ -29,9 +29,9 @@ public final class CustomClassifyMultiCategoriesAction {
      *
      * @param projectName The name of the project which owns the model being consumed.
      *
-     * @return The {@link CustomClassifyMultiCategoriesAction} object itself.
+     * @return The {@link ClassifyCustomCategoriesAction} object itself.
      */
-    public CustomClassifyMultiCategoriesAction setProjectName(String projectName) {
+    public ClassifyCustomCategoriesAction setProjectName(String projectName) {
         this.projectName = projectName;
         return this;
     }
@@ -50,9 +50,9 @@ public final class CustomClassifyMultiCategoriesAction {
      *
      * @param deploymentName The name of the deployment (model version) being consumed.
      *
-     * @return The {@link CustomClassifyMultiCategoriesAction} object itself.
+     * @return The {@link ClassifyCustomCategoriesAction} object itself.
      */
-    public CustomClassifyMultiCategoriesAction setDeploymentName(String deploymentName) {
+    public ClassifyCustomCategoriesAction setDeploymentName(String deploymentName) {
         this.deploymentName = deploymentName;
         return this;
     }
@@ -75,9 +75,9 @@ public final class CustomClassifyMultiCategoriesAction {
      * your input text for 48 hours, solely to allow for troubleshooting issues. Setting this property to true,
      * disables input logging and may limit our ability to investigate issues that occur.
      *
-     * @return The {@link CustomClassifyMultiCategoriesAction} object itself.
+     * @return The {@link ClassifyCustomCategoriesAction} object itself.
      */
-    public CustomClassifyMultiCategoriesAction setServiceLogsDisabled(boolean disableServiceLogs) {
+    public ClassifyCustomCategoriesAction setServiceLogsDisabled(boolean disableServiceLogs) {
         this.disableServiceLogs = disableServiceLogs;
         return this;
     }

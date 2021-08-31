@@ -6,11 +6,11 @@ package com.azure.ai.textanalytics.models;
 import com.azure.core.annotation.Fluent;
 
 /**
- * Configurations that allow callers to specify details about how to execute a single-label classification action
- * in a set of documents.
+ * Configurations that allow callers to specify details about how to execute a custom entities recognition action in
+ * a set of documents.
  */
 @Fluent
-public final class CustomClassifySingleCategoryAction {
+public final class RecognizeCustomEntitiesAction {
     private String projectName;
     private String deploymentName;
     private boolean disableServiceLogs;
@@ -29,9 +29,9 @@ public final class CustomClassifySingleCategoryAction {
      *
      * @param projectName The name of the project which owns the model being consumed.
      *
-     * @return The {@link CustomClassifySingleCategoryAction} object itself.
+     * @return The {@link RecognizeCustomEntitiesAction} object itself.
      */
-    public CustomClassifySingleCategoryAction setProjectName(String projectName) {
+    public RecognizeCustomEntitiesAction setProjectName(String projectName) {
         this.projectName = projectName;
         return this;
     }
@@ -50,9 +50,9 @@ public final class CustomClassifySingleCategoryAction {
      *
      * @param deploymentName The name of the deployment (model version) being consumed.
      *
-     * @return The {@link CustomClassifySingleCategoryAction} object itself.
+     * @return The {@link RecognizeCustomEntitiesAction} object itself.
      */
-    public CustomClassifySingleCategoryAction setDeploymentName(String deploymentName) {
+    public RecognizeCustomEntitiesAction setDeploymentName(String deploymentName) {
         this.deploymentName = deploymentName;
         return this;
     }
@@ -75,9 +75,9 @@ public final class CustomClassifySingleCategoryAction {
      * your input text for 48 hours, solely to allow for troubleshooting issues. Setting this property to true,
      * disables input logging and may limit our ability to investigate issues that occur.
      *
-     * @return The {@link CustomClassifySingleCategoryAction} object itself.
+     * @return The {@link RecognizeCustomEntitiesAction} object itself.
      */
-    public CustomClassifySingleCategoryAction setServiceLogsDisabled(boolean disableServiceLogs) {
+    public RecognizeCustomEntitiesAction setServiceLogsDisabled(boolean disableServiceLogs) {
         this.disableServiceLogs = disableServiceLogs;
         return this;
     }

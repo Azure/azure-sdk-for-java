@@ -3,41 +3,40 @@
 
 package com.azure.ai.textanalytics.util;
 
-import com.azure.ai.textanalytics.implementation.CustomClassifySingleCategoryResultCollectionPropertiesHelper;
-import com.azure.ai.textanalytics.models.CustomClassifySingleCategoryResult;
+import com.azure.ai.textanalytics.implementation.ClassifyCustomCategoryResultCollectionPropertiesHelper;
+import com.azure.ai.textanalytics.models.ClassifyCustomCategoryResult;
 import com.azure.ai.textanalytics.models.TextDocumentBatchStatistics;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.IterableStream;
 
 /**
- * A collection model that contains a list of {@link CustomClassifySingleCategoryResult} along with project name,
+ * A collection model that contains a list of {@link ClassifyCustomCategoryResult} along with project name,
  * deployment name and batch's statistics.
  */
 @Immutable
-public final class CustomClassifySingleCategoryResultCollection
-    extends IterableStream<CustomClassifySingleCategoryResult> {
+public final class ClassifyCustomCategoryResultCollection
+    extends IterableStream<ClassifyCustomCategoryResult> {
     private String projectName;
     private String deploymentName;
     private TextDocumentBatchStatistics statistics;
 
     static {
-        CustomClassifySingleCategoryResultCollectionPropertiesHelper.setAccessor(
-            new CustomClassifySingleCategoryResultCollectionPropertiesHelper
-                    .ClassifySingleCategoryResultCollectionAccessor() {
+        ClassifyCustomCategoryResultCollectionPropertiesHelper.setAccessor(
+            new ClassifyCustomCategoryResultCollectionPropertiesHelper.ClassifyCustomCategoryResultCollectionAccessor() {
                 @Override
-                public void setProjectName(CustomClassifySingleCategoryResultCollection resultCollection,
+                public void setProjectName(ClassifyCustomCategoryResultCollection resultCollection,
                     String projectName) {
                     resultCollection.setProjectName(projectName);
                 }
 
                 @Override
-                public void setDeploymentName(CustomClassifySingleCategoryResultCollection resultCollection,
+                public void setDeploymentName(ClassifyCustomCategoryResultCollection resultCollection,
                     String deploymentName) {
                     resultCollection.setDeploymentName(deploymentName);
                 }
 
                 @Override
-                public void setStatistics(CustomClassifySingleCategoryResultCollection resultCollection,
+                public void setStatistics(ClassifyCustomCategoryResultCollection resultCollection,
                     TextDocumentBatchStatistics statistics) {
                     resultCollection.setStatistics(statistics);
                 }
@@ -45,12 +44,12 @@ public final class CustomClassifySingleCategoryResultCollection
     }
 
     /**
-     * Create a {@link CustomClassifySingleCategoryResultCollection} model that maintains a list of
-     * {@link CustomClassifySingleCategoryResult} along with model version and batch's statistics.
+     * Create a {@link ClassifyCustomCategoryResultCollection} model that maintains a list of
+     * {@link ClassifyCustomCategoryResult} along with model version and batch's statistics.
      *
-     * @param documentResults A list of {@link CustomClassifySingleCategoryResult}.
+     * @param documentResults A list of {@link ClassifyCustomCategoryResult}.
      */
-    public CustomClassifySingleCategoryResultCollection(Iterable<CustomClassifySingleCategoryResult> documentResults) {
+    public ClassifyCustomCategoryResultCollection(Iterable<ClassifyCustomCategoryResult> documentResults) {
         super(documentResults);
     }
 
