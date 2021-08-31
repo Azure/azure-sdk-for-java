@@ -16,36 +16,6 @@
 
 * `models.ServiceResourceProperties` was removed
 
-#### `models.StatefulServiceProperties` was modified
-
-* `models.ServiceResourceProperties withServicePackageActivationMode(models.ArmServicePackageActivationMode)` -> `fluent.models.ServiceResourceProperties withServicePackageActivationMode(models.ArmServicePackageActivationMode)`
-* `models.ServiceResourceProperties withServiceTypeName(java.lang.String)` -> `fluent.models.ServiceResourceProperties withServiceTypeName(java.lang.String)`
-* `models.ServiceResourceProperties withServicePlacementPolicies(java.util.List)` -> `fluent.models.ServiceResourceProperties withServicePlacementPolicies(java.util.List)`
-* `models.ServiceResourceProperties withPartitionDescription(models.PartitionSchemeDescription)` -> `fluent.models.ServiceResourceProperties withPartitionDescription(models.PartitionSchemeDescription)`
-* `models.ServiceResourceProperties withCorrelationScheme(java.util.List)` -> `fluent.models.ServiceResourceProperties withCorrelationScheme(java.util.List)`
-* `models.ServiceResourceProperties withDefaultMoveCost(models.MoveCost)` -> `fluent.models.ServiceResourceProperties withDefaultMoveCost(models.MoveCost)`
-* `models.ServiceResourceProperties withPlacementConstraints(java.lang.String)` -> `fluent.models.ServiceResourceProperties withPlacementConstraints(java.lang.String)`
-* `models.ServiceResourceProperties withServiceLoadMetrics(java.util.List)` -> `fluent.models.ServiceResourceProperties withServiceLoadMetrics(java.util.List)`
-
-#### `models.StatelessServiceProperties` was modified
-
-* `models.ServiceResourceProperties withDefaultMoveCost(models.MoveCost)` -> `fluent.models.ServiceResourceProperties withDefaultMoveCost(models.MoveCost)`
-* `models.ServiceResourceProperties withServicePlacementPolicies(java.util.List)` -> `fluent.models.ServiceResourceProperties withServicePlacementPolicies(java.util.List)`
-* `models.ServiceResourceProperties withCorrelationScheme(java.util.List)` -> `fluent.models.ServiceResourceProperties withCorrelationScheme(java.util.List)`
-* `models.ServiceResourceProperties withPartitionDescription(models.PartitionSchemeDescription)` -> `fluent.models.ServiceResourceProperties withPartitionDescription(models.PartitionSchemeDescription)`
-* `models.ServiceResourceProperties withServiceLoadMetrics(java.util.List)` -> `fluent.models.ServiceResourceProperties withServiceLoadMetrics(java.util.List)`
-* `models.ServiceResourceProperties withPlacementConstraints(java.lang.String)` -> `fluent.models.ServiceResourceProperties withPlacementConstraints(java.lang.String)`
-* `models.ServiceResourceProperties withServicePackageActivationMode(models.ArmServicePackageActivationMode)` -> `fluent.models.ServiceResourceProperties withServicePackageActivationMode(models.ArmServicePackageActivationMode)`
-* `models.ServiceResourceProperties withServiceTypeName(java.lang.String)` -> `fluent.models.ServiceResourceProperties withServiceTypeName(java.lang.String)`
-
-#### `models.StatefulServiceUpdateProperties` was modified
-
-* `models.ServiceResourceUpdateProperties withCorrelationScheme(java.util.List)` -> `fluent.models.ServiceResourceUpdateProperties withCorrelationScheme(java.util.List)`
-* `models.ServiceResourceUpdateProperties withServicePlacementPolicies(java.util.List)` -> `fluent.models.ServiceResourceUpdateProperties withServicePlacementPolicies(java.util.List)`
-* `models.ServiceResourceUpdateProperties withDefaultMoveCost(models.MoveCost)` -> `fluent.models.ServiceResourceUpdateProperties withDefaultMoveCost(models.MoveCost)`
-* `models.ServiceResourceUpdateProperties withPlacementConstraints(java.lang.String)` -> `fluent.models.ServiceResourceUpdateProperties withPlacementConstraints(java.lang.String)`
-* `models.ServiceResourceUpdateProperties withServiceLoadMetrics(java.util.List)` -> `fluent.models.ServiceResourceUpdateProperties withServiceLoadMetrics(java.util.List)`
-
 #### `models.ServiceResourceUpdate` was modified
 
 * `serviceLoadMetrics()` was removed
@@ -79,14 +49,6 @@
 #### `models.ApplicationTypeVersionResource$Update` was modified
 
 * `withTags(java.util.Map)` was removed
-
-#### `models.StatelessServiceUpdateProperties` was modified
-
-* `models.ServiceResourceUpdateProperties withPlacementConstraints(java.lang.String)` -> `fluent.models.ServiceResourceUpdateProperties withPlacementConstraints(java.lang.String)`
-* `models.ServiceResourceUpdateProperties withCorrelationScheme(java.util.List)` -> `fluent.models.ServiceResourceUpdateProperties withCorrelationScheme(java.util.List)`
-* `models.ServiceResourceUpdateProperties withDefaultMoveCost(models.MoveCost)` -> `fluent.models.ServiceResourceUpdateProperties withDefaultMoveCost(models.MoveCost)`
-* `models.ServiceResourceUpdateProperties withServiceLoadMetrics(java.util.List)` -> `fluent.models.ServiceResourceUpdateProperties withServiceLoadMetrics(java.util.List)`
-* `models.ServiceResourceUpdateProperties withServicePlacementPolicies(java.util.List)` -> `fluent.models.ServiceResourceUpdateProperties withServicePlacementPolicies(java.util.List)`
 
 ### Features Added
 
