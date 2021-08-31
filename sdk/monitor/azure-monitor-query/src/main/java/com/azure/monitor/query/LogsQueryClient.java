@@ -22,7 +22,7 @@ import java.util.List;
  * The synchronous client for querying Azure Monitor logs.
  *
  * <p><strong>Instantiating a synchronous Logs query Client</strong></p>
- * <p>
+ *
  * {@codesnippet com.azure.monitor.query.LogsQueryClient.instantiation}
  */
 @ServiceClient(builder = LogsQueryClientBuilder.class)
@@ -42,7 +42,7 @@ public final class LogsQueryClient {
      * Returns all the Azure Monitor logs matching the given query in the specified workspaceId.
      *
      * <p><strong>Query logs from the last 24 hours</strong></p>
-     * <p>
+     *
      * {@codesnippet com.azure.monitor.query.LogsQueryClient.query#String-String-TimeInterval}
      * @param workspaceId The workspaceId where the query should be executed.
      * @param query The Kusto query to fetch the logs.
@@ -98,7 +98,7 @@ public final class LogsQueryClient {
      * Returns all the Azure Monitor logs matching the given query in the specified workspaceId.
      *
      * <p><strong>Query logs from the last 7 days and set the service timeout to 2 minutes</strong></p>
-     * <p>
+     *
      * {@codesnippet com.azure.monitor.query.LogsQueryClient.queryWithResponse#String-String-TimeInterval-LogsQueryOptions-Context}
      * @param workspaceId The workspaceId where the query should be executed.
      * @param query The Kusto query to fetch the logs.
@@ -152,7 +152,7 @@ public final class LogsQueryClient {
      * Returns all the Azure Monitor logs matching the given batch of queries.
      *
      * <p><strong>Execute a batch of logs queries</strong></p>
-     * <p>
+     *
      * {@codesnippet com.azure.monitor.query.LogsQueryClient.queryBatch#LogsBatchQuery}
      * @param logsBatchQuery {@link LogsBatchQuery} containing a batch of queries.
      * @return A collection of query results corresponding to the input batch of queries.@return
