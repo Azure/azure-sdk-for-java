@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.security.keyvault.jca.test;
+package com.azure.security.keyvault.jca;
 
 import com.azure.security.keyvault.jca.implementation.certificates.JreCertificates;
 import org.apache.http.HttpResponse;
@@ -24,7 +24,9 @@ import java.security.KeyStore;
 import java.security.cert.Certificate;
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @EnabledIfEnvironmentVariable(named = "AZURE_KEYVAULT_CERTIFICATE_NAME", matches = "myalias")
 public class JreKeyStoreTest {
