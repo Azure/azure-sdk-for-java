@@ -8,15 +8,18 @@ import com.azure.core.util.Context;
 
 /** Samples for FirewallRules Delete. */
 public final class FirewallRulesDeleteSamples {
+    /*
+     * operationId: FirewallRules_Delete
+     * api-version: 2021-06-01
+     * x-ms-examples: FirewallRuleDelete
+     */
     /**
      * Sample code: FirewallRuleDelete.
      *
-     * @param postgreSqlManager Entry point to PostgreSqlManager. The Microsoft Azure management API provides create,
-     *     read, update, and delete functionality for Azure PostgreSQL resources including servers, databases, firewall
-     *     rules, VNET rules, security alert policies, log files and configurations with new business model.
+     * @param manager Entry point to PostgreSqlManager.
      */
     public static void firewallRuleDelete(
-        com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager postgreSqlManager) {
-        postgreSqlManager.firewallRules().delete("testrg", "testserver", "rule1", Context.NONE);
+        com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager manager) {
+        manager.firewallRules().delete("testrg", "testserver", "rule1", Context.NONE);
     }
 }

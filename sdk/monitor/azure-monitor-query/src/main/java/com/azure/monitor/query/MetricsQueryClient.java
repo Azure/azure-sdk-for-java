@@ -19,6 +19,10 @@ import java.util.List;
 
 /**
  * The synchronous client for querying Azure Monitor metrics.
+ *
+ * <p><strong>Instantiating a synchronous Metrics query Client</strong></p>
+ *
+ * {@codesnippet com.azure.monitor.query.MetricsQueryClient.instantiation}
  */
 @ServiceClient(builder = MetricsQueryClientBuilder.class)
 public final class MetricsQueryClient {
@@ -28,9 +32,13 @@ public final class MetricsQueryClient {
         this.asyncClient = asyncClient;
     }
 
-
     /**
      * Returns all the Azure Monitor metrics requested for the resource.
+     *
+     * <p><strong>Query metrics for an Azure resource</strong></p>
+     *
+     * {@codesnippet com.azure.monitor.query.MetricsQueryClient.query#String-List}
+     *
      * @param resourceUri The resource URI for which the metrics is requested.
      * @param metricsNames The names of the metrics to query.
      * @return A time-series metrics result for the requested metric names.
@@ -53,7 +61,6 @@ public final class MetricsQueryClient {
                                                           MetricsQueryOptions options, Context context) {
         return asyncClient.queryWithResponse(resourceUri, metricsNames, options, context).block();
     }
-
 
     /**
      * Lists all the metrics namespaces created for the resource URI.
@@ -84,7 +91,7 @@ public final class MetricsQueryClient {
      * @param resourceUri The resource URI for which the metrics definitions are listed.
      * @return List of metrics definitions.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MetricDefinition> listMetricDefinitions(String resourceUri) {
         return listMetricDefinitions(resourceUri, null, Context.NONE);
     }
@@ -96,7 +103,7 @@ public final class MetricsQueryClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return List of metrics definitions.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MetricDefinition> listMetricDefinitions(String resourceUri, String metricsNamespace,
                                                                  Context context) {
         return new PagedIterable<>(asyncClient.listMetricDefinitions(resourceUri, metricsNamespace, context));

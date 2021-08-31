@@ -78,43 +78,43 @@ public class EncryptionCodeSnippet {
         includedPath1.setClientEncryptionKeyId("key1");
         includedPath1.setPath("/sensitive");
         includedPath1.setEncryptionType(CosmosEncryptionType.DETERMINISTIC);
-        includedPath1.setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAES_256_CBC_HMAC_SHA_256);
+        includedPath1.setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256);
 
         ClientEncryptionIncludedPath includedPath2 = new ClientEncryptionIncludedPath();
         includedPath2.setClientEncryptionKeyId("key2");
         includedPath2.setPath("/nonValidPath");
         includedPath2.setEncryptionType(CosmosEncryptionType.DETERMINISTIC);
-        includedPath2.setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAES_256_CBC_HMAC_SHA_256);
+        includedPath2.setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256);
 
         ClientEncryptionIncludedPath includedPath3 = new ClientEncryptionIncludedPath();
         includedPath3.setClientEncryptionKeyId("key1");
         includedPath3.setPath("/sensitiveInt");
         includedPath3.setEncryptionType(CosmosEncryptionType.DETERMINISTIC);
-        includedPath3.setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAES_256_CBC_HMAC_SHA_256);
+        includedPath3.setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256);
 
         ClientEncryptionIncludedPath includedPath4 = new ClientEncryptionIncludedPath();
         includedPath4.setClientEncryptionKeyId("key2");
         includedPath4.setPath("/sensitiveFloat");
         includedPath4.setEncryptionType(CosmosEncryptionType.DETERMINISTIC);
-        includedPath4.setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAES_256_CBC_HMAC_SHA_256);
+        includedPath4.setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256);
 
         ClientEncryptionIncludedPath includedPath5 = new ClientEncryptionIncludedPath();
         includedPath5.setClientEncryptionKeyId("key1");
         includedPath5.setPath("/sensitiveLong");
         includedPath5.setEncryptionType(CosmosEncryptionType.DETERMINISTIC);
-        includedPath5.setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAES_256_CBC_HMAC_SHA_256);
+        includedPath5.setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256);
 
         ClientEncryptionIncludedPath includedPath6 = new ClientEncryptionIncludedPath();
         includedPath6.setClientEncryptionKeyId("key2");
         includedPath6.setPath("/sensitiveDouble");
         includedPath6.setEncryptionType(CosmosEncryptionType.DETERMINISTIC);
-        includedPath6.setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAES_256_CBC_HMAC_SHA_256);
+        includedPath6.setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256);
 
         ClientEncryptionIncludedPath includedPath7 = new ClientEncryptionIncludedPath();
         includedPath7.setClientEncryptionKeyId("key1");
         includedPath7.setPath("/sensitiveBoolean");
         includedPath7.setEncryptionType(CosmosEncryptionType.DETERMINISTIC);
-        includedPath7.setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAES_256_CBC_HMAC_SHA_256);
+        includedPath7.setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256);
 
         List<ClientEncryptionIncludedPath> paths = new ArrayList<>();
         paths.add(includedPath1);
@@ -137,9 +137,9 @@ public class EncryptionCodeSnippet {
         EncryptionKeyWrapMetadata metadata2 = new EncryptionKeyWrapMetadata("custom", "key2", "tempmetadata2");
         new EncryptionKeyWrapMetadata("custom", "key1", "tempmetadata1");
         cosmosEncryptionAsyncDatabase.createClientEncryptionKey("key1",
-            CosmosEncryptionAlgorithm.AEAES_256_CBC_HMAC_SHA_256, metadata1).block().getProperties();
+            CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256, metadata1).block().getProperties();
         cosmosEncryptionAsyncDatabase.createClientEncryptionKey("key2",
-            CosmosEncryptionAlgorithm.AEAES_256_CBC_HMAC_SHA_256, metadata2).block().getProperties();
+            CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256, metadata2).block().getProperties();
     }
 
     class SimpleEncryptionKeyStoreProvider extends EncryptionKeyStoreProvider {

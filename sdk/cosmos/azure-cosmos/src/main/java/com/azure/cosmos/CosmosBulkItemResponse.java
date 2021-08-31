@@ -3,6 +3,7 @@
 
 package com.azure.cosmos;
 
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.JsonSerializable;
 import com.azure.cosmos.implementation.batch.BatchExecUtils;
 import com.azure.cosmos.util.Beta;
@@ -15,11 +16,15 @@ import java.util.Map;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 /**
+ * @deprecated forRemoval = true, since = "4.19"
+ * This class is not necessary anymore and will be removed. Please use {@link com.azure.cosmos.models.CosmosBulkItemResponse}
+ *
  * Response of a {@link CosmosItemOperation} request when processed using Bulk by calling
  * {@link CosmosAsyncContainer#processBulkOperations(Flux, BulkProcessingOptions)}.
  *
  */
 @Beta(value = Beta.SinceVersion.V4_9_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+@Deprecated() //forRemoval = true, since = "4.19"
 public final class CosmosBulkItemResponse {
 
     private final String eTag;
@@ -61,6 +66,7 @@ public final class CosmosBulkItemResponse {
      * @return the activity ID that identifies the server request made to execute this operation.
      */
     @Beta(value = Beta.SinceVersion.V4_9_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Deprecated() //forRemoval = true, since = "4.19"
     public String getActivityId() {
         return BatchExecUtils.getActivityId(this.responseHeaders);
     }
@@ -73,6 +79,7 @@ public final class CosmosBulkItemResponse {
      * @return Entity tag associated with the current item.
      */
     @Beta(value = Beta.SinceVersion.V4_9_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Deprecated() //forRemoval = true, since = "4.19"
     public String getETag() {
         return this.eTag;
     }
@@ -86,6 +93,7 @@ public final class CosmosBulkItemResponse {
      * @return the request charge.
      */
     @Beta(value = Beta.SinceVersion.V4_9_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Deprecated() //forRemoval = true, since = "4.19"
     public double getRequestCharge() {
         return this.requestCharge;
     }
@@ -100,6 +108,7 @@ public final class CosmosBulkItemResponse {
      * @return item associated with the current result.
      */
     @Beta(value = Beta.SinceVersion.V4_9_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Deprecated() //forRemoval = true, since = "4.19"
     public <T> T getItem(final Class<T> type) {
         T item = null;
 
@@ -116,6 +125,7 @@ public final class CosmosBulkItemResponse {
      * @return the retry after
      */
     @Beta(value = Beta.SinceVersion.V4_9_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Deprecated() //forRemoval = true, since = "4.19"
     public Duration getRetryAfterDuration() {
         return this.retryAfter;
     }
@@ -126,6 +136,7 @@ public final class CosmosBulkItemResponse {
      * @return the sub status code
      */
     @Beta(value = Beta.SinceVersion.V4_9_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Deprecated() //forRemoval = true, since = "4.19"
     public int getSubStatusCode() {
         return this.subStatusCode;
     }
@@ -136,6 +147,7 @@ public final class CosmosBulkItemResponse {
      * @return {@code true} if the current operation completed successfully; {@code false} otherwise.
      */
     @Beta(value = Beta.SinceVersion.V4_9_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Deprecated() //forRemoval = true, since = "4.19"
     public boolean isSuccessStatusCode() {
         return this.statusCode >= 200 && this.statusCode <= 299;
     }
@@ -146,6 +158,7 @@ public final class CosmosBulkItemResponse {
      * @return the status code.
      */
     @Beta(value = Beta.SinceVersion.V4_9_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Deprecated() //forRemoval = true, since = "4.19"
     public int getStatusCode() {
         return this.statusCode;
     }
@@ -156,6 +169,7 @@ public final class CosmosBulkItemResponse {
      * @return the CosmosDiagnostics{@link CosmosDiagnostics}
      */
     @Beta(value = Beta.SinceVersion.V4_9_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Deprecated() //forRemoval = true, since = "4.19"
     public CosmosDiagnostics getCosmosDiagnostics() {
         return cosmosDiagnostics;
     }
@@ -166,6 +180,7 @@ public final class CosmosBulkItemResponse {
      * @return the session token.
      */
     @Beta(value = Beta.SinceVersion.V4_9_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Deprecated() //forRemoval = true, since = "4.19"
     public String getSessionToken() {
         return BatchExecUtils.getSessionToken(this.responseHeaders);
     }
@@ -176,6 +191,7 @@ public final class CosmosBulkItemResponse {
      * @return the response headers.
      */
     @Beta(value = Beta.SinceVersion.V4_9_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Deprecated() //forRemoval = true, since = "4.19"
     public Map<String, String> getResponseHeaders() {
         return this.responseHeaders;
     }
@@ -186,6 +202,7 @@ public final class CosmosBulkItemResponse {
      * @return end-to-end request latency for the current request to Azure Cosmos DB service.
      */
     @Beta(value = Beta.SinceVersion.V4_9_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Deprecated() //forRemoval = true, since = "4.19"
     public Duration getDuration() {
         if (cosmosDiagnostics == null) {
             return Duration.ZERO;
@@ -196,5 +213,16 @@ public final class CosmosBulkItemResponse {
 
     private ObjectNode getResourceObject() {
         return resourceObject;
+    }
+
+    static {
+        ImplementationBridgeHelpers.DeprecatedCosmosBulkItemResponseHelper.setCosmosBulkItemResponseAccessor(
+            new ImplementationBridgeHelpers.DeprecatedCosmosBulkItemResponseHelper.DeprecatedCosmosBulkItemResponseAccessor() {
+
+                @Override
+                public ObjectNode getResourceObject(CosmosBulkItemResponse cosmosBulkItemResponse) {
+                    return cosmosBulkItemResponse.getResourceObject();
+                }
+            });
     }
 }
