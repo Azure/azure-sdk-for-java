@@ -129,34 +129,35 @@ class AvroSchemaRegistryUtils {
     }
 
     /**
-     * @param b byte array containing encoded bytes
+     * @param bytes byte array containing encoded bytes
      * @param schemaBytes schema content for Avro reader to read - fetched from Azure Schema Registry
      *
      * @return deserialized object
      */
-    <T> T decode(byte[] b, byte[] schemaBytes, TypeReference<T> typeReference) {
-        Objects.requireNonNull(b, "'b' must not be null.");
+    <T> T decode(byte[] bytes, byte[] schemaBytes, TypeReference<T> typeReference) {
+        Objects.requireNonNull(bytes, "'b' must not be null.");
         Objects.requireNonNull(schemaBytes, "'schemaBytes' must not be null.");
 
         String schemaString = new String(schemaBytes, StandardCharsets.UTF_8);
         Schema schemaObject = parseSchemaString(schemaString);
 
-        if (isSingleObjectEncoded(schemaBytes)) {
-            BinaryMessageDecoder<T> messageDecoder = new BinaryMessageDecoder<>(SpecificData.get(), schemaObject);
+        if (isSingleObjectEncoded(bytes)) {
+            final BinaryMessageDecoder<T> messageDecoder = new BinaryMessageDecoder<>(SpecificData.get(), schemaObject);
+
             try {
-                return messageDecoder.decode(schemaBytes);
+                return messageDecoder.decode(bytes);
             } catch (IOException e) {
                 throw logger.logExceptionAsError(new UncheckedIOException(
                     "Unable to deserialize Avro schema object using binary message decoder.", e));
             }
-        }
+        } else {
+            final DatumReader<T> reader = getDatumReader(schemaObject, typeReference);
 
-        DatumReader<T> reader = getDatumReader(schemaObject, typeReference);
-
-        try {
-            return reader.read(null, decoderFactory.binaryDecoder(b, null));
-        } catch (IOException | RuntimeException e) {
-            throw logger.logExceptionAsError(new IllegalStateException("Error deserializing raw Avro message.", e));
+            try {
+                return reader.read(null, decoderFactory.binaryDecoder(bytes, null));
+            } catch (IOException | RuntimeException e) {
+                throw logger.logExceptionAsError(new IllegalStateException("Error deserializing raw Avro message.", e));
+            }
         }
     }
 

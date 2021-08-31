@@ -112,16 +112,16 @@ public class AvroSchemaRegistryUtilsTest {
         // Arrange
         final AvroSchemaRegistryUtils registryUtils = new AvroSchemaRegistryUtils(false, parser,
             encoderFactory, decoderFactory);
-        final Schema expected = Schema.create(Schema.Type.STRING);
-        final GenericData.Array<PlayingCard> genericArray = new GenericData.Array<>(10, expected);
+        final Schema arraySchema = Schema.createArray(Schema.create(Schema.Type.STRING));
+        final GenericData.Array<String> genericArray = new GenericData.Array<>(10, arraySchema);
 
         // Act
         final String schemaString = registryUtils.getSchemaString(genericArray);
         final String fullName = registryUtils.getSchemaName(genericArray);
 
         // Assert
-        assertEquals(expected.toString(), schemaString);
-        assertEquals(expected.getFullName(), fullName);
+        assertEquals(arraySchema.toString(), schemaString);
+        assertEquals(arraySchema.getFullName(), fullName);
     }
 
     /**
@@ -186,12 +186,12 @@ public class AvroSchemaRegistryUtilsTest {
     }
 
     /**
-     * Tests that we can decode an object.
+     * Tests that we can decode an object that uses single object encoding.
      *
-     * @throws IOException If card cannot be decoded
+     * @throws IOException If card cannot be decoded.
      */
     @Test
-    public void decodeObject() throws IOException {
+    public void decodeSingleObjectEncodedObject() throws IOException {
         // Arrange
         final AvroSchemaRegistryUtils registryUtils = new AvroSchemaRegistryUtils(false, parser,
             encoderFactory, decoderFactory);
