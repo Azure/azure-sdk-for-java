@@ -78,7 +78,7 @@
       <!-- Azure Spring Cloud-->
       <dependency>
         <groupId>com.azure.spring</groupId>
-        <artifactId>azure-spring-cloud-context</artifactId>
+        <artifactId>azure-spring-cloud-core</artifactId>
         <version>${azure.spring.cloud.version}</version>
       </dependency>
       <dependency>

@@ -419,8 +419,8 @@
 
     <dependency>
       <groupId>com.azure.spring</groupId>
-      <artifactId>azure-spring-cloud-context</artifactId>
-      <version>2.8.0</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-context;current} -->
+      <artifactId>azure-spring-cloud-core</artifactId>
+      <version>2.8.0</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-core;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure.spring</groupId>
@@ -434,8 +434,8 @@
     </dependency>
     <dependency>
       <groupId>com.azure.spring</groupId>
-      <artifactId>azure-spring-boot-starter</artifactId>
-      <version>3.8.0</version> <!-- {x-version-update;com.azure.spring:azure-spring-boot-starter;current} -->
+      <artifactId>azure-spring-cloud-starter</artifactId>
+      <version>3.8.0</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-starter;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure.spring</groupId>

@@ -66,7 +66,7 @@
       </dependency>
       <dependency>
         <groupId>com.azure.spring</groupId>
-        <artifactId>azure-spring-boot-starter</artifactId>
+        <artifactId>azure-spring-cloud-starter</artifactId>
         <version>${azure.spring.boot.version}</version>
       </dependency>
       <dependency>
