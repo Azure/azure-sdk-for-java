@@ -36,11 +36,23 @@ public class ServerCallAsyncLiveTests extends CallingServerTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void runAllClientFunctionsAsync(HttpClient httpClient) {
-        String groupId = getGroupId("runAllClientFunctionsAsync");
-        CallingServerClientBuilder builder = getConversationClientUsingConnectionString(httpClient);
-        CallingServerAsyncClient callingServerAsyncClient =
-            setupAsyncClient(builder, "runAllClientFunctionsAsync");
+    public void runAllClientFunctionsForConnectionStringClient(HttpClient httpClient) {
+        String groupId = getGroupId("runAllClientFunctionsForConnectionStringClient");
+        CallingServerClientBuilder builder = getCallingServerClientUsingConnectionString(httpClient);
+        CallingServerAsyncClient callingServerAsyncClient = setupAsyncClient(builder, "runAllClientFunctionsForConnectionStringClient"); 
+        runAllClientFunctionsAsync(groupId, callingServerAsyncClient);
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void runAllClientFunctionsForTokenCredentialClient(HttpClient httpClient) {
+        String groupId = getGroupId("runAllClientFunctionsForTokenCredentialClient");
+        CallingServerClientBuilder builder = getCallingServerClientUsingTokenCredential(httpClient);
+        CallingServerAsyncClient callingServerAsyncClient = setupAsyncClient(builder, "runAllClientFunctionsForTokenCredentialClient"); 
+        runAllClientFunctionsAsync(groupId, callingServerAsyncClient);
+    }
+
+    private void runAllClientFunctionsAsync(String groupId, CallingServerAsyncClient callingServerAsyncClient) {
         String recordingId = "";
         List<CallConnectionAsync> callConnections = new ArrayList<>();
         ServerCallAsync serverCall = null;
@@ -79,7 +91,7 @@ public class ServerCallAsyncLiveTests extends CallingServerTestBase {
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void runAllClientFunctionsWithResponseAsync(HttpClient httpClient) {
         String groupId = getGroupId("runAllClientFunctionsWithResponseAsync");
-        CallingServerClientBuilder builder = getConversationClientUsingConnectionString(httpClient);
+        CallingServerClientBuilder builder = getCallingServerClientUsingConnectionString(httpClient);
         CallingServerAsyncClient callingServerAsyncClient =
             setupAsyncClient(builder, "runAllClientFunctionsWithResponseAsync");
         String recordingId = "";
@@ -129,7 +141,7 @@ public class ServerCallAsyncLiveTests extends CallingServerTestBase {
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void runPlayAudioFunctionAsync(HttpClient httpClient) {
         String groupId = getGroupId("runPlayAudioFunctionAsync");
-        CallingServerClientBuilder builder = getConversationClientUsingConnectionString(httpClient);
+        CallingServerClientBuilder builder = getCallingServerClientUsingConnectionString(httpClient);
         CallingServerAsyncClient callingServerAsyncClient =
             setupAsyncClient(builder, "runPlayAudioFunctionAsync");
         ServerCallAsync serverCallAsync;
@@ -157,7 +169,7 @@ public class ServerCallAsyncLiveTests extends CallingServerTestBase {
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void runPlayAudioFunctionWithResponseAsync(HttpClient httpClient) {
         String groupId = getGroupId("runPlayAudioFunctionWithResponseAsync");
-        CallingServerClientBuilder builder = getConversationClientUsingConnectionString(httpClient);
+        CallingServerClientBuilder builder = getCallingServerClientUsingConnectionString(httpClient);
         CallingServerAsyncClient callingServerAsyncClient =
             setupAsyncClient(builder, "runPlayAudioFunctionWithResponseAsync");
         ServerCallAsync serverCallAsync;
@@ -191,7 +203,7 @@ public class ServerCallAsyncLiveTests extends CallingServerTestBase {
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void startRecordingFailsAsync(HttpClient httpClient) {
-        CallingServerClientBuilder builder = getConversationClientUsingConnectionString(httpClient);
+        CallingServerClientBuilder builder = getCallingServerClientUsingConnectionString(httpClient);
         CallingServerAsyncClient callingServerAsyncClient = setupAsyncClient(builder, "startRecordingFailsAsync");
         String invalidServerCallId = "aHR0cHM6Ly9jb252LXVzd2UtMDkuY29udi5za3lwZS5jb20vY29udi9EZVF2WEJGVVlFV1NNZkFXYno2azN3P2k9MTEmZT02Mzc1NzIyMjk0Mjc0NTI4Nzk=";
         ServerCallAsync serverCallAsync = callingServerAsyncClient.initializeServerCall(invalidServerCallId);
@@ -213,7 +225,7 @@ public class ServerCallAsyncLiveTests extends CallingServerTestBase {
         matches = "(?i)(true)",
         disabledReason = "Requires human intervention")
     public void runAddRemoveScenarioAsync(HttpClient httpClient) {
-        CallingServerClientBuilder builder = getConversationClientUsingConnectionString(httpClient);
+        CallingServerClientBuilder builder = getCallingServerClientUsingConnectionString(httpClient);
         CallingServerAsyncClient callingServerAsyncClient =
             setupAsyncClient(builder, "runAddRemoveScenarioAsync");
 
@@ -271,7 +283,7 @@ public class ServerCallAsyncLiveTests extends CallingServerTestBase {
         matches = "(?i)(true)",
         disabledReason = "Requires human intervention")
     public void runAddRemoveScenarioWithResponseAsync(HttpClient httpClient) {
-        CallingServerClientBuilder builder = getConversationClientUsingConnectionString(httpClient);
+        CallingServerClientBuilder builder = getCallingServerClientUsingConnectionString(httpClient);
         CallingServerAsyncClient callingServerAsyncClient = setupAsyncClient(builder, "runAddRemoveScenarioWithResponseAsync");
 
         try {

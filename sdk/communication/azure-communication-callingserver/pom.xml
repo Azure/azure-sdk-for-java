@@ -15,7 +15,7 @@
   <groupId>com.azure</groupId>
   <artifactId>azure-communication-callingserver</artifactId>
   <packaging>jar</packaging>
-  <version>1.0.0-beta.4</version> <!-- {x-version-update;com.azure:azure-communication-callingserver;current} -->
+  <version>1.0.0-beta.5</version> <!-- {x-version-update;com.azure:azure-communication-callingserver;current} -->
 
   <name>Microsoft Azure client library for CallingServer service</name>
   <description>
@@ -59,7 +59,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-communication-identity</artifactId>
-      <version>1.1.1</version> <!-- {x-version-update;com.azure:azure-communication-identity;dependency} -->
+      <version>1.1.2</version> <!-- {x-version-update;com.azure:azure-communication-identity;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>

@@ -4,7 +4,6 @@
 package com.azure.cosmos.models;
 
 import com.azure.cosmos.CosmosClientBuilder;
-import com.azure.cosmos.CosmosItemOperation;
 import com.azure.cosmos.implementation.RequestOptions;
 import com.azure.cosmos.util.Beta;
 
@@ -13,10 +12,16 @@ import com.azure.cosmos.util.Beta;
  * creating bulk patch request using {@link CosmosBulkOperations}.
  */
 @Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-public final class CosmosBulkPatchItemRequestOptions
-        extends CosmosBulkItemRequestOptionsBase {
+public final class CosmosBulkPatchItemRequestOptions {
+
+    private String ifMatchETag;
+    private String ifNoneMatchETag;
+    private Boolean contentResponseOnWriteEnabled;
     private String filterPredicate;
 
+
+    public CosmosBulkPatchItemRequestOptions() {
+    }
     /**
      * Gets the FilterPredicate associated with the request in the Azure Cosmos DB service.
      *
@@ -40,6 +45,24 @@ public final class CosmosBulkPatchItemRequestOptions
     }
 
     /**
+     * Gets the boolean to only return the headers and status code in Cosmos DB response
+     * in case of Create, Update and Delete operations in {@link CosmosItemOperation}.
+     *
+     * If set to false, service doesn't return payload in the response. It reduces networking
+     * and CPU load by not sending the payload back over the network and serializing it on the client.
+     *
+     * This feature does not impact RU usage for read or write operations.
+     *
+     * By-default, this is null.
+     *
+     * @return a boolean indicating whether payload will be included in the response or not for this operation.
+     */
+    @Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public Boolean isContentResponseOnWriteEnabled() {
+        return this.contentResponseOnWriteEnabled;
+    }
+
+    /**
      * Sets the boolean to only return the headers and status code in Cosmos DB response
      * in case of Create, Update and Delete operations in {@link CosmosItemOperation}.
      *
@@ -60,8 +83,18 @@ public final class CosmosBulkPatchItemRequestOptions
      */
     @Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public CosmosBulkPatchItemRequestOptions setContentResponseOnWriteEnabled(Boolean contentResponseOnWriteEnabled) {
-        super.setContentResponseOnWriteEnabledCore(contentResponseOnWriteEnabled);
+        this.contentResponseOnWriteEnabled = contentResponseOnWriteEnabled;
         return this;
+    }
+
+    /**
+     * Gets the If-None-Match (ETag) associated with the request in operation in {@link CosmosItemOperation}.
+     *
+     * @return the ifNoneMatchETag associated with the request.
+     */
+    @Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public String getIfNoneMatchETag() {
+        return this.ifNoneMatchETag;
     }
 
     /**
@@ -72,8 +105,18 @@ public final class CosmosBulkPatchItemRequestOptions
      */
     @Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public CosmosBulkPatchItemRequestOptions setIfNoneMatchETag(final String ifNoneMatchEtag) {
-        super.setIfNoneMatchETagCore(ifNoneMatchEtag);
+        this.ifNoneMatchETag = ifNoneMatchEtag;
         return this;
+    }
+
+    /**
+     * Gets the If-Match (ETag) associated with the operation in {@link CosmosItemOperation}.
+     *
+     * @return ifMatchETag the ifMatchETag associated with the request.
+     */
+    @Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public String getIfMatchETag() {
+        return this.ifMatchETag;
     }
 
     /**
@@ -84,13 +127,16 @@ public final class CosmosBulkPatchItemRequestOptions
      */
     @Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public CosmosBulkPatchItemRequestOptions setIfMatchETag(final String ifMatchETag) {
-        super.setIfMatchETagCore(ifMatchETag);
+        this.ifMatchETag = ifMatchETag;
         return this;
     }
 
     RequestOptions toRequestOptions() {
-        final RequestOptions requestOptions = super.toRequestOptions();
-        requestOptions.setFilterPredicate(getFilterPredicate());
+        final RequestOptions requestOptions = new RequestOptions();
+        requestOptions.setIfMatchETag(this.ifMatchETag);
+        requestOptions.setIfNoneMatchETag(this.ifNoneMatchETag);
+        requestOptions.setContentResponseOnWriteEnabled(this.contentResponseOnWriteEnabled);
+        requestOptions.setFilterPredicate(this.filterPredicate);
         return requestOptions;
     }
 }
