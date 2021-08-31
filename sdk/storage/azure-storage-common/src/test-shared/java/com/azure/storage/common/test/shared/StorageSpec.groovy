@@ -16,6 +16,8 @@ import com.azure.core.util.ServiceVersion
 import com.azure.core.util.logging.ClientLogger
 import com.azure.identity.EnvironmentCredentialBuilder
 import okhttp3.ConnectionPool
+import reactor.core.publisher.Hooks
+import reactor.core.scheduler.Schedulers
 import spock.lang.Specification
 
 import java.time.Duration
@@ -31,6 +33,12 @@ class StorageSpec extends Specification {
 
     private InterceptorManager interceptorManager
     private StorageResourceNamer namer
+
+    def setupSpec() {
+        Hooks.onErrorDropped({throwable -> LOGGER.logThrowableAsError(throwable) })
+        Schedulers.onHandleError({ thread, throwable -> LOGGER.logThrowableAsError(throwable) })
+        Thread.setDefaultUncaughtExceptionHandler({ thread, throwable -> LOGGER.logThrowableAsError(throwable) })
+    }
 
     def setup() {
         def testName = TestNameProvider.getTestName(specificationContext.getCurrentIteration());
