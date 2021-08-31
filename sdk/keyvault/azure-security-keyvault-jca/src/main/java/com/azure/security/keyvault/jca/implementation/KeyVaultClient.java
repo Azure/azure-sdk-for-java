@@ -6,7 +6,14 @@ import static java.util.logging.Level.INFO;
 import static java.util.logging.Level.WARNING;
 
 import com.azure.security.keyvault.jca.KeyVaultPrivateKey;
-import com.azure.security.keyvault.jca.implementation.model.*;
+import com.azure.security.keyvault.jca.implementation.model.CertificateBundle;
+import com.azure.security.keyvault.jca.implementation.model.CertificateItem;
+import com.azure.security.keyvault.jca.implementation.model.CertificateListResult;
+import com.azure.security.keyvault.jca.implementation.model.CertificatePolicy;
+import com.azure.security.keyvault.jca.implementation.model.KeyProperties;
+import com.azure.security.keyvault.jca.implementation.model.OAuthToken;
+import com.azure.security.keyvault.jca.implementation.model.SecretBundle;
+import com.azure.security.keyvault.jca.implementation.model.SignResult;
 import com.azure.security.keyvault.jca.implementation.utils.AccessTokenUtil;
 import com.azure.security.keyvault.jca.implementation.utils.HttpUtil;
 import com.azure.security.keyvault.jca.implementation.utils.JsonConverterUtil;
@@ -34,7 +41,6 @@ import java.util.Base64;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.logging.Logger;
 
 /**
