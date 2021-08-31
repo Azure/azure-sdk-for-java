@@ -156,7 +156,7 @@ public class CosmosItemTest extends TestSuiteBase {
     }
 
     @Test(groups = {"simple"}, timeOut = TIMEOUT)
-    public void deleteAllItemsByPartitionKeyAsync() throws Exception {
+    public void deleteAllItemsByPartitionKey() throws Exception {
         String pkValue1 = UUID.randomUUID().toString();
         String pkValue2 = UUID.randomUUID().toString();
 

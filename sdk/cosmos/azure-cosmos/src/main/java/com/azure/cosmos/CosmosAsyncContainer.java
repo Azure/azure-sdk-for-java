@@ -1475,6 +1475,16 @@ public class CosmosAsyncContainer {
         return withContext(context -> deleteItemInternal(itemId, null, requestOptions, context));
     }
 
+    /**
+     * Deletes all items in the Container with the specified partitionKey value.
+     *
+     * After subscription the operation will be performed.
+     * The {@link Mono} upon successful completion will contain a single Cosmos item response for all the deleted items.
+     *
+     * @param partitionKey
+     * @param options
+     * @return an {@link Mono} containing the Cosmos item resource response.
+     */
     @Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public Mono<CosmosItemResponse<Object>> deleteAllItemsByPartitionKey(PartitionKey partitionKey, CosmosItemRequestOptions options) {
         if (options == null) {
