@@ -73,15 +73,14 @@ public final class DefaultRedirectStrategy implements RedirectStrategy {
         }
         this.maxAttempts = maxAttempts;
         if (CoreUtils.isNullOrEmpty(locationHeader)) {
-            logger.error(String.format("'locationHeader' provided as null will be defaulted to %s",
-                DEFAULT_REDIRECT_LOCATION_HEADER_NAME));
+            logger.error(
+                "'locationHeader' provided as null will be defaulted to " + DEFAULT_REDIRECT_LOCATION_HEADER_NAME);
             this.locationHeader = DEFAULT_REDIRECT_LOCATION_HEADER_NAME;
         } else {
             this.locationHeader = locationHeader;
         }
         if (CoreUtils.isNullOrEmpty(allowedMethods)) {
-            logger.error(String.format("'allowedMethods' provided as null will be defaulted to %s",
-                DEFAULT_REDIRECT_ALLOWED_METHODS));
+            logger.error("'allowedMethods' provided as null will be defaulted to " + DEFAULT_REDIRECT_ALLOWED_METHODS);
             this.redirectMethods = DEFAULT_REDIRECT_ALLOWED_METHODS;
         } else {
             this.redirectMethods = allowedMethods;
@@ -142,7 +141,7 @@ public final class DefaultRedirectStrategy implements RedirectStrategy {
     private boolean alreadyAttemptedRedirectUrl(String redirectUrl,
                                                 Set<String> attemptedRedirectUrls) {
         if (attemptedRedirectUrls.contains(redirectUrl)) {
-            logger.error(String.format("Request was redirected more than once to: %s", redirectUrl));
+            logger.error("Request was redirected more than once to: " + redirectUrl);
             return true;
         }
         return false;
@@ -156,7 +155,7 @@ public final class DefaultRedirectStrategy implements RedirectStrategy {
      */
     private boolean isValidRedirectCount(int tryCount) {
         if (tryCount >= getMaxAttempts()) {
-            logger.error(String.format("Request has been redirected more than %d times.", getMaxAttempts()));
+            logger.error("Request has been redirected more than " + getMaxAttempts() + " times.");
             return false;
         }
         return true;
@@ -173,7 +172,7 @@ public final class DefaultRedirectStrategy implements RedirectStrategy {
             return true;
         } else {
             logger.error(
-                String.format("Request was redirected from an invalid redirect allowed method: %s", httpMethod));
+                "Request was redirected from an invalid redirect allowed method: " + httpMethod);
             return false;
         }
     }
@@ -201,8 +200,7 @@ public final class DefaultRedirectStrategy implements RedirectStrategy {
     private String tryGetRedirectHeader(HttpHeaders headers, String headerName) {
         String headerValue = headers.getValue(headerName);
         if (CoreUtils.isNullOrEmpty(headerValue)) {
-            logger.error(String.format("Redirect url was null for header name: %s, Request redirect was terminated",
-                headerName));
+            logger.error("Redirect url was null for header name: " + headerName + ", Request redirect was terminated");
             return null;
         } else {
             return headerValue;
