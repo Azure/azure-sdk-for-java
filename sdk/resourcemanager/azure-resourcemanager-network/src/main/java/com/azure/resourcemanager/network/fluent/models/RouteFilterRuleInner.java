@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.Access;
@@ -16,10 +15,15 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Route Filter Rule Resource. */
-@JsonFlatten
 @Fluent
-public class RouteFilterRuleInner extends SubResource {
+public final class RouteFilterRuleInner extends SubResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(RouteFilterRuleInner.class);
+
+    /*
+     * Properties of the route filter rule.
+     */
+    @JsonProperty(value = "properties")
+    private RouteFilterRulePropertiesFormat innerProperties;
 
     /*
      * The name of the resource that is unique within a resource group. This
@@ -40,30 +44,14 @@ public class RouteFilterRuleInner extends SubResource {
     @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
-    /*
-     * The access type of the rule.
+    /**
+     * Get the innerProperties property: Properties of the route filter rule.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.access")
-    private Access access;
-
-    /*
-     * The rule type of the rule.
-     */
-    @JsonProperty(value = "properties.routeFilterRuleType")
-    private RouteFilterRuleType routeFilterRuleType;
-
-    /*
-     * The collection for bgp community values to filter on. e.g.
-     * ['12076:5010','12076:5020'].
-     */
-    @JsonProperty(value = "properties.communities")
-    private List<String> communities;
-
-    /*
-     * The provisioning state of the route filter rule resource.
-     */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningState provisioningState;
+    private RouteFilterRulePropertiesFormat innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the name property: The name of the resource that is unique within a resource group. This name can be used to
@@ -116,13 +104,20 @@ public class RouteFilterRuleInner extends SubResource {
         return this.etag;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public RouteFilterRuleInner withId(String id) {
+        super.withId(id);
+        return this;
+    }
+
     /**
      * Get the access property: The access type of the rule.
      *
      * @return the access value.
      */
     public Access access() {
-        return this.access;
+        return this.innerProperties() == null ? null : this.innerProperties().access();
     }
 
     /**
@@ -132,7 +127,10 @@ public class RouteFilterRuleInner extends SubResource {
      * @return the RouteFilterRuleInner object itself.
      */
     public RouteFilterRuleInner withAccess(Access access) {
-        this.access = access;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RouteFilterRulePropertiesFormat();
+        }
+        this.innerProperties().withAccess(access);
         return this;
     }
 
@@ -142,7 +140,7 @@ public class RouteFilterRuleInner extends SubResource {
      * @return the routeFilterRuleType value.
      */
     public RouteFilterRuleType routeFilterRuleType() {
-        return this.routeFilterRuleType;
+        return this.innerProperties() == null ? null : this.innerProperties().routeFilterRuleType();
     }
 
     /**
@@ -152,7 +150,10 @@ public class RouteFilterRuleInner extends SubResource {
      * @return the RouteFilterRuleInner object itself.
      */
     public RouteFilterRuleInner withRouteFilterRuleType(RouteFilterRuleType routeFilterRuleType) {
-        this.routeFilterRuleType = routeFilterRuleType;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RouteFilterRulePropertiesFormat();
+        }
+        this.innerProperties().withRouteFilterRuleType(routeFilterRuleType);
         return this;
     }
 
@@ -163,7 +164,7 @@ public class RouteFilterRuleInner extends SubResource {
      * @return the communities value.
      */
     public List<String> communities() {
-        return this.communities;
+        return this.innerProperties() == null ? null : this.innerProperties().communities();
     }
 
     /**
@@ -174,7 +175,10 @@ public class RouteFilterRuleInner extends SubResource {
      * @return the RouteFilterRuleInner object itself.
      */
     public RouteFilterRuleInner withCommunities(List<String> communities) {
-        this.communities = communities;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RouteFilterRulePropertiesFormat();
+        }
+        this.innerProperties().withCommunities(communities);
         return this;
     }
 
@@ -184,14 +188,7 @@ public class RouteFilterRuleInner extends SubResource {
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
-        return this.provisioningState;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public RouteFilterRuleInner withId(String id) {
-        super.withId(id);
-        return this;
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
     /**
@@ -200,5 +197,8 @@ public class RouteFilterRuleInner extends SubResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

@@ -27,6 +27,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 public class RedisCacheOperationsTests extends RedisManagementTest {
+
     @Test
     @SuppressWarnings("unchecked")
     public void canCRUDRedisCache() throws Exception {
@@ -95,6 +96,9 @@ public class RedisCacheOperationsTests extends RedisManagementTest {
             .withFirewallRule("rule3", "192.168.0.10", "192.168.0.104")
             .withoutMinimumTlsVersion()
             .apply();
+
+        Thread.sleep(10000);
+        premiumCache.refresh();
 
         Assertions.assertEquals(2, premiumCache.firewallRules().size());
         Assertions.assertTrue(premiumCache.firewallRules().containsKey("rule2"));

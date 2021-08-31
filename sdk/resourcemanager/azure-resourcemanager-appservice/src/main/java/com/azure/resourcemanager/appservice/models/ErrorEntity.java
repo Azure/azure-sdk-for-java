@@ -40,6 +40,18 @@ public final class ErrorEntity {
     private List<ErrorEntity> innerErrors;
 
     /*
+     * Error Details.
+     */
+    @JsonProperty(value = "details")
+    private List<ErrorEntity> details;
+
+    /*
+     * The error target.
+     */
+    @JsonProperty(value = "target")
+    private String target;
+
+    /*
      * Basic error code.
      */
     @JsonProperty(value = "code")
@@ -132,6 +144,46 @@ public final class ErrorEntity {
     }
 
     /**
+     * Get the details property: Error Details.
+     *
+     * @return the details value.
+     */
+    public List<ErrorEntity> details() {
+        return this.details;
+    }
+
+    /**
+     * Set the details property: Error Details.
+     *
+     * @param details the details value to set.
+     * @return the ErrorEntity object itself.
+     */
+    public ErrorEntity withDetails(List<ErrorEntity> details) {
+        this.details = details;
+        return this;
+    }
+
+    /**
+     * Get the target property: The error target.
+     *
+     * @return the target value.
+     */
+    public String target() {
+        return this.target;
+    }
+
+    /**
+     * Set the target property: The error target.
+     *
+     * @param target the target value to set.
+     * @return the ErrorEntity object itself.
+     */
+    public ErrorEntity withTarget(String target) {
+        this.target = target;
+        return this;
+    }
+
+    /**
      * Get the code property: Basic error code.
      *
      * @return the code value.
@@ -179,6 +231,9 @@ public final class ErrorEntity {
     public void validate() {
         if (innerErrors() != null) {
             innerErrors().forEach(e -> e.validate());
+        }
+        if (details() != null) {
+            details().forEach(e -> e.validate());
         }
     }
 }

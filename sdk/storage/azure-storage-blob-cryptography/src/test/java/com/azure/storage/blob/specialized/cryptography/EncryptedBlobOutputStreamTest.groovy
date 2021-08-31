@@ -5,8 +5,6 @@ import com.azure.storage.blob.models.BlobErrorCode
 import com.azure.storage.blob.models.BlobStorageException
 import com.azure.storage.common.implementation.Constants
 import com.azure.storage.common.test.shared.extensions.LiveOnly
-import spock.lang.Requires
-import spock.lang.Shared
 
 class EncryptedBlobOutputStreamTest extends APISpec {
 
@@ -126,7 +124,7 @@ class EncryptedBlobOutputStreamTest extends APISpec {
         convertInputStreamToByteArray(bec.openInputStream()) == randomData
     }
 
-    def convertInputStreamToByteArray(InputStream inputStream) {
+    static def convertInputStreamToByteArray(InputStream inputStream) {
         int b
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream()
         try {

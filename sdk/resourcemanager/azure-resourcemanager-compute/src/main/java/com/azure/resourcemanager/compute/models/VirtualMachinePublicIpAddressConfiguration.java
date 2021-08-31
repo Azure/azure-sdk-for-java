@@ -5,17 +5,16 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.compute.fluent.models.VirtualMachinePublicIpAddressConfigurationProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Describes a virtual machines IP Configuration's PublicIPAddress configuration. */
-@JsonFlatten
 @Fluent
-public class VirtualMachinePublicIpAddressConfiguration {
+public final class VirtualMachinePublicIpAddressConfiguration {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualMachinePublicIpAddressConfiguration.class);
 
     /*
@@ -25,54 +24,17 @@ public class VirtualMachinePublicIpAddressConfiguration {
     private String name;
 
     /*
+     * Describes a virtual machines IP Configuration's PublicIPAddress
+     * configuration
+     */
+    @JsonProperty(value = "properties")
+    private VirtualMachinePublicIpAddressConfigurationProperties innerProperties;
+
+    /*
      * Describes the public IP Sku
      */
     @JsonProperty(value = "sku")
     private PublicIpAddressSku sku;
-
-    /*
-     * The idle timeout of the public IP address.
-     */
-    @JsonProperty(value = "properties.idleTimeoutInMinutes")
-    private Integer idleTimeoutInMinutes;
-
-    /*
-     * Specify what happens to the public IP address when the VM is deleted
-     */
-    @JsonProperty(value = "properties.deleteOption")
-    private DeleteOptions deleteOption;
-
-    /*
-     * The dns settings to be applied on the publicIP addresses .
-     */
-    @JsonProperty(value = "properties.dnsSettings")
-    private VirtualMachinePublicIpAddressDnsSettingsConfiguration dnsSettings;
-
-    /*
-     * The list of IP tags associated with the public IP address.
-     */
-    @JsonProperty(value = "properties.ipTags")
-    private List<VirtualMachineIpTag> ipTags;
-
-    /*
-     * The PublicIPPrefix from which to allocate publicIP addresses.
-     */
-    @JsonProperty(value = "properties.publicIPPrefix")
-    private SubResource publicIpPrefix;
-
-    /*
-     * Available from Api-Version 2019-07-01 onwards, it represents whether the
-     * specific ipconfiguration is IPv4 or IPv6. Default is taken as IPv4.
-     * Possible values are: 'IPv4' and 'IPv6'.
-     */
-    @JsonProperty(value = "properties.publicIPAddressVersion")
-    private IpVersions publicIpAddressVersion;
-
-    /*
-     * Specify the public IP allocation type
-     */
-    @JsonProperty(value = "properties.publicIPAllocationMethod")
-    private PublicIpAllocationMethod publicIpAllocationMethod;
 
     /**
      * Get the name property: The publicIP address configuration name.
@@ -92,6 +54,15 @@ public class VirtualMachinePublicIpAddressConfiguration {
     public VirtualMachinePublicIpAddressConfiguration withName(String name) {
         this.name = name;
         return this;
+    }
+
+    /**
+     * Get the innerProperties property: Describes a virtual machines IP Configuration's PublicIPAddress configuration.
+     *
+     * @return the innerProperties value.
+     */
+    private VirtualMachinePublicIpAddressConfigurationProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /**
@@ -120,7 +91,7 @@ public class VirtualMachinePublicIpAddressConfiguration {
      * @return the idleTimeoutInMinutes value.
      */
     public Integer idleTimeoutInMinutes() {
-        return this.idleTimeoutInMinutes;
+        return this.innerProperties() == null ? null : this.innerProperties().idleTimeoutInMinutes();
     }
 
     /**
@@ -130,7 +101,10 @@ public class VirtualMachinePublicIpAddressConfiguration {
      * @return the VirtualMachinePublicIpAddressConfiguration object itself.
      */
     public VirtualMachinePublicIpAddressConfiguration withIdleTimeoutInMinutes(Integer idleTimeoutInMinutes) {
-        this.idleTimeoutInMinutes = idleTimeoutInMinutes;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachinePublicIpAddressConfigurationProperties();
+        }
+        this.innerProperties().withIdleTimeoutInMinutes(idleTimeoutInMinutes);
         return this;
     }
 
@@ -140,7 +114,7 @@ public class VirtualMachinePublicIpAddressConfiguration {
      * @return the deleteOption value.
      */
     public DeleteOptions deleteOption() {
-        return this.deleteOption;
+        return this.innerProperties() == null ? null : this.innerProperties().deleteOption();
     }
 
     /**
@@ -150,7 +124,10 @@ public class VirtualMachinePublicIpAddressConfiguration {
      * @return the VirtualMachinePublicIpAddressConfiguration object itself.
      */
     public VirtualMachinePublicIpAddressConfiguration withDeleteOption(DeleteOptions deleteOption) {
-        this.deleteOption = deleteOption;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachinePublicIpAddressConfigurationProperties();
+        }
+        this.innerProperties().withDeleteOption(deleteOption);
         return this;
     }
 
@@ -160,7 +137,7 @@ public class VirtualMachinePublicIpAddressConfiguration {
      * @return the dnsSettings value.
      */
     public VirtualMachinePublicIpAddressDnsSettingsConfiguration dnsSettings() {
-        return this.dnsSettings;
+        return this.innerProperties() == null ? null : this.innerProperties().dnsSettings();
     }
 
     /**
@@ -171,7 +148,10 @@ public class VirtualMachinePublicIpAddressConfiguration {
      */
     public VirtualMachinePublicIpAddressConfiguration withDnsSettings(
         VirtualMachinePublicIpAddressDnsSettingsConfiguration dnsSettings) {
-        this.dnsSettings = dnsSettings;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachinePublicIpAddressConfigurationProperties();
+        }
+        this.innerProperties().withDnsSettings(dnsSettings);
         return this;
     }
 
@@ -181,7 +161,7 @@ public class VirtualMachinePublicIpAddressConfiguration {
      * @return the ipTags value.
      */
     public List<VirtualMachineIpTag> ipTags() {
-        return this.ipTags;
+        return this.innerProperties() == null ? null : this.innerProperties().ipTags();
     }
 
     /**
@@ -191,7 +171,10 @@ public class VirtualMachinePublicIpAddressConfiguration {
      * @return the VirtualMachinePublicIpAddressConfiguration object itself.
      */
     public VirtualMachinePublicIpAddressConfiguration withIpTags(List<VirtualMachineIpTag> ipTags) {
-        this.ipTags = ipTags;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachinePublicIpAddressConfigurationProperties();
+        }
+        this.innerProperties().withIpTags(ipTags);
         return this;
     }
 
@@ -201,7 +184,7 @@ public class VirtualMachinePublicIpAddressConfiguration {
      * @return the publicIpPrefix value.
      */
     public SubResource publicIpPrefix() {
-        return this.publicIpPrefix;
+        return this.innerProperties() == null ? null : this.innerProperties().publicIpPrefix();
     }
 
     /**
@@ -211,7 +194,10 @@ public class VirtualMachinePublicIpAddressConfiguration {
      * @return the VirtualMachinePublicIpAddressConfiguration object itself.
      */
     public VirtualMachinePublicIpAddressConfiguration withPublicIpPrefix(SubResource publicIpPrefix) {
-        this.publicIpPrefix = publicIpPrefix;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachinePublicIpAddressConfigurationProperties();
+        }
+        this.innerProperties().withPublicIpPrefix(publicIpPrefix);
         return this;
     }
 
@@ -222,7 +208,7 @@ public class VirtualMachinePublicIpAddressConfiguration {
      * @return the publicIpAddressVersion value.
      */
     public IpVersions publicIpAddressVersion() {
-        return this.publicIpAddressVersion;
+        return this.innerProperties() == null ? null : this.innerProperties().publicIpAddressVersion();
     }
 
     /**
@@ -233,7 +219,10 @@ public class VirtualMachinePublicIpAddressConfiguration {
      * @return the VirtualMachinePublicIpAddressConfiguration object itself.
      */
     public VirtualMachinePublicIpAddressConfiguration withPublicIpAddressVersion(IpVersions publicIpAddressVersion) {
-        this.publicIpAddressVersion = publicIpAddressVersion;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachinePublicIpAddressConfigurationProperties();
+        }
+        this.innerProperties().withPublicIpAddressVersion(publicIpAddressVersion);
         return this;
     }
 
@@ -243,7 +232,7 @@ public class VirtualMachinePublicIpAddressConfiguration {
      * @return the publicIpAllocationMethod value.
      */
     public PublicIpAllocationMethod publicIpAllocationMethod() {
-        return this.publicIpAllocationMethod;
+        return this.innerProperties() == null ? null : this.innerProperties().publicIpAllocationMethod();
     }
 
     /**
@@ -254,7 +243,10 @@ public class VirtualMachinePublicIpAddressConfiguration {
      */
     public VirtualMachinePublicIpAddressConfiguration withPublicIpAllocationMethod(
         PublicIpAllocationMethod publicIpAllocationMethod) {
-        this.publicIpAllocationMethod = publicIpAllocationMethod;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachinePublicIpAddressConfigurationProperties();
+        }
+        this.innerProperties().withPublicIpAllocationMethod(publicIpAllocationMethod);
         return this;
     }
 
@@ -270,14 +262,11 @@ public class VirtualMachinePublicIpAddressConfiguration {
                     new IllegalArgumentException(
                         "Missing required property name in model VirtualMachinePublicIpAddressConfiguration"));
         }
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
         if (sku() != null) {
             sku().validate();
-        }
-        if (dnsSettings() != null) {
-            dnsSettings().validate();
-        }
-        if (ipTags() != null) {
-            ipTags().forEach(e -> e.validate());
         }
     }
 }

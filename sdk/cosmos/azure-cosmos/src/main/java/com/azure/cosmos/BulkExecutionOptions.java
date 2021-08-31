@@ -6,11 +6,19 @@ package com.azure.cosmos;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.batch.BatchRequestResponseConstants;
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
+import com.azure.cosmos.models.CosmosBulkExecutionOptions;
 import com.azure.cosmos.util.Beta;
 
 import java.time.Duration;
 
+/**
+ * @deprecated forRemoval = true, since = "4.19"
+ * This class is not necessary anymore and will be removed.
+ * Please use {@link com.azure.cosmos.models.CosmosBulkExecutionOptions}
+ */
 @Beta(value = Beta.SinceVersion.V4_18_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+@Deprecated() //forRemoval = true, since = "4.19"
+@SuppressWarnings("DeprecatedIsStillUsed")
 public final class BulkExecutionOptions {
     private int maxMicroBatchSize = BatchRequestResponseConstants.MAX_OPERATIONS_IN_DIRECT_MODE_BATCH_REQUEST;
     private int maxMicroBatchConcurrency = BatchRequestResponseConstants.DEFAULT_MAX_MICRO_BATCH_CONCURRENCY;
@@ -40,6 +48,7 @@ public final class BulkExecutionOptions {
      * @param thresholds thresholds
      */
     @Beta(value = Beta.SinceVersion.V4_18_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Deprecated() //forRemoval = true, since = "4.19"
     public BulkExecutionOptions(BulkExecutionThresholds thresholds) {
         this(null, thresholds);
     }
@@ -48,6 +57,7 @@ public final class BulkExecutionOptions {
      * Constructor
      */
     @Beta(value = Beta.SinceVersion.V4_18_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Deprecated() //forRemoval = true, since = "4.19"
     public BulkExecutionOptions() {
         this(null);
     }
@@ -66,6 +76,7 @@ public final class BulkExecutionOptions {
      * @return micro batch size
      */
     @Beta(value = Beta.SinceVersion.V4_18_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Deprecated() //forRemoval = true, since = "4.19"
     public int getMaxMicroBatchSize() {
         return maxMicroBatchSize;
     }
@@ -87,6 +98,7 @@ public final class BulkExecutionOptions {
      * @return the bulk processing options.
      */
     @Beta(value = Beta.SinceVersion.V4_18_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Deprecated() //forRemoval = true, since = "4.19"
     public BulkExecutionOptions setMaxMicroBatchSize(int maxMicroBatchSize) {
         this.maxMicroBatchSize = maxMicroBatchSize;
         return this;
@@ -98,6 +110,7 @@ public final class BulkExecutionOptions {
      * @return max micro batch concurrency
      */
     @Beta(value = Beta.SinceVersion.V4_18_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Deprecated() //forRemoval = true, since = "4.19"
     public int getMaxMicroBatchConcurrency() {
         return maxMicroBatchConcurrency;
     }
@@ -110,6 +123,7 @@ public final class BulkExecutionOptions {
      * @return the bulk processing options.
      */
     @Beta(value = Beta.SinceVersion.V4_18_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Deprecated() //forRemoval = true, since = "4.19"
     public BulkExecutionOptions setMaxMicroBatchConcurrency(int maxMicroBatchConcurrency) {
         this.maxMicroBatchConcurrency = maxMicroBatchConcurrency;
         return this;
@@ -121,6 +135,7 @@ public final class BulkExecutionOptions {
      * @return max micro batch interval
      */
     @Beta(value = Beta.SinceVersion.V4_18_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Deprecated() //forRemoval = true, since = "4.19"
     public Duration getMaxMicroBatchInterval() {
         return maxMicroBatchInterval;
     }
@@ -133,6 +148,7 @@ public final class BulkExecutionOptions {
      * @return the bulk processing options.
      */
     @Beta(value = Beta.SinceVersion.V4_18_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Deprecated() //forRemoval = true, since = "4.19"
     public BulkExecutionOptions setMaxMicroBatchInterval(Duration maxMicroBatchInterval) {
         this.maxMicroBatchInterval = maxMicroBatchInterval;
         return this;
@@ -146,6 +162,7 @@ public final class BulkExecutionOptions {
      * @return max targeted micro batch retry rate
      */
     @Beta(value = Beta.SinceVersion.V4_18_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Deprecated() //forRemoval = true, since = "4.19"
     public double getMaxTargetedMicroBatchRetryRate() {
         return this.maxMicroBatchRetryRate;
     }
@@ -163,6 +180,7 @@ public final class BulkExecutionOptions {
      * @return the bulk processing options.
      */
     @Beta(value = Beta.SinceVersion.V4_18_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Deprecated() //forRemoval = true, since = "4.19"
     public BulkExecutionOptions setTargetedMicroBatchRetryRate(double minRetryRate, double maxRetryRate) {
         if (minRetryRate < 0) {
             throw new IllegalArgumentException("The maxRetryRate must not be a negative value");
@@ -185,6 +203,7 @@ public final class BulkExecutionOptions {
      * @return min targeted micro batch retry rate
      */
     @Beta(value = Beta.SinceVersion.V4_18_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Deprecated() //forRemoval = true, since = "4.19"
     public double getMinTargetedMicroBatchRetryRate() {
         return this.minMicroBatchRetryRate;
     }
@@ -202,6 +221,7 @@ public final class BulkExecutionOptions {
      * @return thresholds
      */
     @Beta(value = Beta.SinceVersion.V4_18_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Deprecated() //forRemoval = true, since = "4.19"
     public BulkExecutionThresholds getThresholds() {
         return this.thresholds;
     }
@@ -214,30 +234,16 @@ public final class BulkExecutionOptions {
         this.operationContextAndListenerTuple = operationContextAndListenerTuple;
     }
 
-    ///////////////////////////////////////////////////////////////////////////////////////////
-    // the following helper/accessor only helps to access this class outside of this package.//
-    ///////////////////////////////////////////////////////////////////////////////////////////
-
-    static {
-        ImplementationBridgeHelpers.CosmosBulkExecutionOptionsHelper.setCosmosBulkExecutionOptionsAccessor(
-            new ImplementationBridgeHelpers.CosmosBulkExecutionOptionsHelper.CosmosBulkExecutionOptionsAccessor() {
-
-                @Override
-                public void setOperationContext(BulkExecutionOptions options,
-                                                    OperationContextAndListenerTuple operationContextAndListenerTuple) {
-                    options.setOperationContextAndListenerTuple(operationContextAndListenerTuple);
-                }
-
-                @Override
-                public OperationContextAndListenerTuple getOperationContext(BulkExecutionOptions options) {
-                    return options.getOperationContextAndListenerTuple();
-                }
-
-                @Override
-                @SuppressWarnings({"unchecked"})
-                public <T> T getLegacyBatchScopedContext(BulkExecutionOptions options) {
-                    return (T)options.getLegacyBatchScopedContext();
-                }
-            });
+    CosmosBulkExecutionOptions toCosmosBulkExecutionOptions() {
+        CosmosBulkExecutionOptions cosmosBulkExecutionOptions = new CosmosBulkExecutionOptions(
+            this.thresholds.toCosmosBulkExecutionThresholdsState());
+        cosmosBulkExecutionOptions.setMaxMicroBatchInterval(this.maxMicroBatchInterval);
+        cosmosBulkExecutionOptions.setMaxMicroBatchConcurrency(this.maxMicroBatchConcurrency);
+        cosmosBulkExecutionOptions.setMaxMicroBatchSize(this.maxMicroBatchSize);
+        cosmosBulkExecutionOptions.setTargetedMicroBatchRetryRate(this.minMicroBatchRetryRate, this.maxMicroBatchRetryRate);
+        ImplementationBridgeHelpers.CosmosBulkExecutionOptionsHelper
+            .getCosmosBulkExecutionOptionsAccessor()
+            .setOperationContext(cosmosBulkExecutionOptions, this.operationContextAndListenerTuple);
+        return cosmosBulkExecutionOptions;
     }
 }

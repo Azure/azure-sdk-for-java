@@ -2,6 +2,9 @@
 
 ## 2.8.0-beta.1 (Unreleased)
 
+### Dependency Updates
+
+- Updated `api-version` to `2020-12-01`.
 
 ## 2.7.0 (2021-08-12)
 

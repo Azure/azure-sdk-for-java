@@ -7,9 +7,13 @@ import com.azure.cosmos.implementation.RequestOptions;
 import com.azure.cosmos.util.Beta;
 
 /**
+ *
+ * @deprecated forRemoval = true, since = "4.19"
+ *
  * Encapsulates options that can be specified for an operation within a {@link TransactionalBatch}.
  */
 @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+@Deprecated() //forRemoval = true, since = "4.19"
 class TransactionalBatchItemRequestOptionsBase {
     private String ifMatchETag;
     private String ifNoneMatchETag;
@@ -23,6 +27,7 @@ class TransactionalBatchItemRequestOptionsBase {
      * @return ifMatchETag the ifMatchETag associated with the request.
      */
     @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Deprecated() //forRemoval = true, since = "4.19"
     public String getIfMatchETag() {
         return this.ifMatchETag;
     }
@@ -33,6 +38,7 @@ class TransactionalBatchItemRequestOptionsBase {
      * @param ifMatchETag the ifMatchETag associated with the request.
      */
     @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Deprecated() //forRemoval = true, since = "4.19"
     public void setIfMatchETagCore(final String ifMatchETag){
         this.ifMatchETag = ifMatchETag;
         return;
@@ -44,6 +50,7 @@ class TransactionalBatchItemRequestOptionsBase {
      * @return the ifNoneMatchETag associated with the request.
      */
     @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Deprecated() //forRemoval = true, since = "4.19"
     public String getIfNoneMatchETag() {
         return this.ifNoneMatchETag;
     }
@@ -54,6 +61,7 @@ class TransactionalBatchItemRequestOptionsBase {
      * @param ifNoneMatchEtag the ifNoneMatchETag associated with the request.
      */
     @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Deprecated() //forRemoval = true, since = "4.19"
     public void setIfNoneMatchETagCore(final String ifNoneMatchEtag){
         this.ifNoneMatchETag = ifNoneMatchEtag;
         return;

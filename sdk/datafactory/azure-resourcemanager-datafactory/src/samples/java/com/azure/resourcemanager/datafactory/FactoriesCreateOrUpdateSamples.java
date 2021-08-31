@@ -6,6 +6,11 @@ package com.azure.resourcemanager.datafactory;
 
 /** Samples for Factories CreateOrUpdate. */
 public final class FactoriesCreateOrUpdateSamples {
+    /*
+     * operationId: Factories_CreateOrUpdate
+     * api-version: 2018-06-01
+     * x-ms-examples: Factories_CreateOrUpdate
+     */
     /**
      * Sample code: Factories_CreateOrUpdate.
      *

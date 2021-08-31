@@ -8,6 +8,11 @@ import com.azure.core.util.Context;
 
 /** Samples for PrivateEndPointConnections ListByFactory. */
 public final class PrivateEndPointConnectionsListByFactorySamples {
+    /*
+     * operationId: PrivateEndPointConnections_ListByFactory
+     * api-version: 2018-06-01
+     * x-ms-examples: privateEndPointConnections_ListByFactory
+     */
     /**
      * Sample code: privateEndPointConnections_ListByFactory.
      *

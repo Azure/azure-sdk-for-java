@@ -19,6 +19,54 @@ import java.util.Map;
 
 /** Samples for Datasets CreateOrUpdate. */
 public final class DatasetsCreateOrUpdateSamples {
+    /*
+     * operationId: Datasets_CreateOrUpdate
+     * api-version: 2018-06-01
+     * x-ms-examples: Datasets_Create
+     */
+    /**
+     * Sample code: Datasets_Create.
+     *
+     * @param manager Entry point to DataFactoryManager.
+     */
+    public static void datasetsCreate(com.azure.resourcemanager.datafactory.DataFactoryManager manager)
+        throws IOException {
+        manager
+            .datasets()
+            .define("exampleDataset")
+            .withExistingFactory("exampleResourceGroup", "exampleFactoryName")
+            .withProperties(
+                new AzureBlobDataset()
+                    .withLinkedServiceName(new LinkedServiceReference().withReferenceName("exampleLinkedService"))
+                    .withParameters(
+                        mapOf(
+                            "MyFileName",
+                            new ParameterSpecification().withType(ParameterType.STRING),
+                            "MyFolderPath",
+                            new ParameterSpecification().withType(ParameterType.STRING)))
+                    .withFolderPath(
+                        SerializerFactory
+                            .createDefaultManagementSerializerAdapter()
+                            .deserialize(
+                                "{\"type\":\"Expression\",\"value\":\"@dataset().MyFolderPath\"}",
+                                Object.class,
+                                SerializerEncoding.JSON))
+                    .withFileName(
+                        SerializerFactory
+                            .createDefaultManagementSerializerAdapter()
+                            .deserialize(
+                                "{\"type\":\"Expression\",\"value\":\"@dataset().MyFileName\"}",
+                                Object.class,
+                                SerializerEncoding.JSON))
+                    .withFormat(new TextFormat()))
+            .create();
+    }
+
+    /*
+     * operationId: Datasets_CreateOrUpdate
+     * api-version: 2018-06-01
+     * x-ms-examples: Datasets_Update
+     */
     /**
      * Sample code: Datasets_Update.
      *
