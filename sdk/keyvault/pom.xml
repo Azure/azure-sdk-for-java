@@ -77,6 +77,7 @@
         <module>microsoft-azure-keyvault-cryptography</module>
         <module>microsoft-azure-keyvault-extensions</module>
         <module>microsoft-azure-keyvault-test</module>
+        <module>azure-security-test-keyvault-jca</module>
         <module>azure-security-keyvault-administration</module>
         <module>azure-security-keyvault-certificates</module>
         <module>azure-security-keyvault-jca</module>
