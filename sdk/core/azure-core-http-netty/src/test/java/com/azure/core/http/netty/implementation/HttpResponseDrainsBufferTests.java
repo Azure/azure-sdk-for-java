@@ -12,7 +12,9 @@ import com.github.tomakehurst.wiremock.WireMockServer;
 import io.netty.util.ResourceLeakDetector;
 import io.netty.util.ResourceLeakDetectorFactory;
 import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
@@ -26,12 +28,12 @@ import java.security.SecureRandom;
 import java.util.Collection;
 import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Function;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.get;
 import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 /**
  * Tests that closing the {@link HttpResponse} drains the network buffers.
@@ -52,6 +54,10 @@ public class HttpResponseDrainsBufferTests {
         new SecureRandom().nextBytes(LONG_BODY);
     }
 
+    private ResourceLeakDetectorFactory originalLeakDetectorFactory;
+    private final TestResourceLeakDetectorFactory testResourceLeakDetectorFactory =
+        new TestResourceLeakDetectorFactory();
+
     @BeforeAll
     public static void setupMockServer() {
         originalLevel = ResourceLeakDetector.getLevel();
@@ -66,6 +72,17 @@ public class HttpResponseDrainsBufferTests {
         wireMockServer.start();
     }
 
+    @BeforeEach
+    public void setupLeakDetectorFactory() {
+        originalLeakDetectorFactory = ResourceLeakDetectorFactory.instance();
+        ResourceLeakDetectorFactory.setResourceLeakDetectorFactory(testResourceLeakDetectorFactory);
+    }
+
+    @AfterEach
+    public void resetLeakDetectorFactory() {
+        ResourceLeakDetectorFactory.setResourceLeakDetectorFactory(originalLeakDetectorFactory);
+    }
+
     @AfterAll
     public static void tearDownMockServer() {
         ResourceLeakDetector.setLevel(originalLevel);
@@ -75,28 +92,28 @@ public class HttpResponseDrainsBufferTests {
     }
 
     @Test
-    @SuppressWarnings("deprecation")
-    public void closeHttpResponseBeforeConsumingBody() throws InterruptedException {
-        Collection<TestResourceLeakDetector<?>> leakDetectors = new ConcurrentLinkedDeque<>();
-        ResourceLeakDetectorFactory.setResourceLeakDetectorFactory(new ResourceLeakDetectorFactory() {
-            @Override
-            public <T> ResourceLeakDetector<T> newResourceLeakDetector(Class<T> resource, int samplingInterval,
-                long maxActive) {
-                TestResourceLeakDetector<T> leakDetector = new TestResourceLeakDetector<>(resource, samplingInterval,
-                    maxActive);
-                leakDetectors.add(leakDetector);
-                return leakDetector;
-            }
-        });
+    public void closeHttpResponseWithoutConsumingBody() throws InterruptedException {
+        runScenario(response -> Mono.fromRunnable(response::close));
+    }
 
+    @Test
+    public void closeHttpResponseWithConsumingPartialBody() throws InterruptedException {
+        runScenario(response -> response.getBody().next().flatMap(ignored -> Mono.fromRunnable(response::close)));
+    }
+
+    @Test
+    public void closeHttpResponseWithConsumingFullBody() throws InterruptedException {
+        runScenario(response -> response.getBodyAsByteArray().flatMap(ignored -> Mono.fromRunnable(response::close)));
+    }
+
+    private void runScenario(Function<HttpResponse, Mono<Void>> responseConsumer) throws InterruptedException {
         HttpClient httpClient = new NettyAsyncHttpClientProvider().createInstance();
+        Mono<Void> requestMaker = httpClient.send(new HttpRequest(HttpMethod.GET, url(wireMockServer)))
+            .flatMap(responseConsumer)
+            .repeat(100)
+            .then();
 
-        StepVerifier.create(httpClient.send(new HttpRequest(HttpMethod.GET, url(wireMockServer)))
-            .flatMap(response -> {
-                assertNotNull(response.getHeaders());
-                return Mono.fromRunnable(response::close);
-            }))
-            .verifyComplete();
+        StepVerifier.create(requestMaker).verifyComplete();
 
         // GC twice to ensure full cleanup.
         Thread.sleep(2000);
@@ -105,7 +122,25 @@ public class HttpResponseDrainsBufferTests {
         Thread.sleep(2000);
         Runtime.getRuntime().gc();
 
-        assertEquals(0, leakDetectors.stream().mapToInt(TestResourceLeakDetector::getReportedLeakCount).sum());
+        assertEquals(0, testResourceLeakDetectorFactory.getTotalReportedLeakCount());
+    }
+
+    private static final class TestResourceLeakDetectorFactory extends ResourceLeakDetectorFactory {
+        private final Collection<TestResourceLeakDetector<?>> createdDetectors = new ConcurrentLinkedDeque<>();
+
+        @Override
+        @SuppressWarnings("deprecation") // API is deprecated but abstract
+        public <T> ResourceLeakDetector<T> newResourceLeakDetector(Class<T> resource, int samplingInterval,
+            long maxActive) {
+            TestResourceLeakDetector<T> leakDetector = new TestResourceLeakDetector<>(resource, samplingInterval,
+                maxActive);
+            createdDetectors.add(leakDetector);
+            return leakDetector;
+        }
+
+        public int getTotalReportedLeakCount() {
+            return createdDetectors.stream().mapToInt(TestResourceLeakDetector::getReportedLeakCount).sum();
+        }
     }
 
     @SuppressWarnings("deprecation")
@@ -119,11 +154,13 @@ public class HttpResponseDrainsBufferTests {
 
         @Override
         protected void reportTracedLeak(String resourceType, String records) {
+            reportTracedLeakCount.incrementAndGet();
             super.reportTracedLeak(resourceType, records);
         }
 
         @Override
         protected void reportUntracedLeak(String resourceType) {
+            reportUntracedLeakCount.incrementAndGet();
             super.reportUntracedLeak(resourceType);
         }
 

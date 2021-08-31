@@ -34,9 +34,7 @@ public final class Utility {
      * @param reactorNettyConnection The connection to close.
      */
     public static void closeConnection(Connection reactorNettyConnection) {
-        if (!reactorNettyConnection.isDisposed()) {
-            reactorNettyConnection.channel().eventLoop().execute(reactorNettyConnection::dispose);
-        }
+        reactorNettyConnection.channel().eventLoop().execute(reactorNettyConnection::dispose);
     }
 
     private Utility() {
