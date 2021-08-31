@@ -3,6 +3,9 @@
 
 package com.azure.communication.callingserver;
 
+import com.azure.communication.callingserver.implementation.models.RecordingChannelType;
+import com.azure.communication.callingserver.implementation.models.RecordingContentType;
+import com.azure.communication.callingserver.implementation.models.RecordingFormatType;
 import com.azure.communication.callingserver.models.AddParticipantResult;
 import com.azure.communication.callingserver.models.CallRecordingProperties;
 import com.azure.communication.callingserver.models.CallingServerErrorException;
@@ -117,7 +120,23 @@ public final class ServerCall {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public StartCallRecordingResult startRecording(String recordingStateCallbackUri) {
-        return serverCallAsync.startRecording(recordingStateCallbackUri).block();
+        return startRecording(recordingStateCallbackUri, null, null, null);
+    }
+
+    /**
+     * Start recording of the call.
+     *
+     * @param recordingStateCallbackUri Uri to send state change callbacks.
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Result for a successful start recording request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public StartCallRecordingResult startRecording(String recordingStateCallbackUri, 
+        RecordingChannelType recordingChannelType, 
+        RecordingContentType recordingContentType, 
+        RecordingFormatType recordingFormatType){
+        return serverCallAsync.startRecording(recordingStateCallbackUri, recordingChannelType, recordingContentType, recordingFormatType).block();
     }
 
     /**
@@ -133,7 +152,26 @@ public final class ServerCall {
     public Response<StartCallRecordingResult> startRecordingWithResponse(
         String recordingStateCallbackUri,
         final Context context) {
-        return serverCallAsync.startRecordingWithResponse(recordingStateCallbackUri, context).block();
+        return serverCallAsync.startRecordingWithResponse(recordingStateCallbackUri, context, null, null, null).block();
+    }
+
+    /**
+     * Start recording of the call.
+     *
+     * @param recordingStateCallbackUri Uri to send state change callbacks.
+     * @param context A {@link Context} representing the request context.
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Result for a successful start recording request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<StartCallRecordingResult> startRecordingWithResponse(
+        String recordingStateCallbackUri,
+        final Context context, 
+        RecordingChannelType recordingChannelType, 
+        RecordingContentType recordingContentType, 
+        RecordingFormatType recordingFormatType){
+        return serverCallAsync.startRecordingWithResponse(recordingStateCallbackUri, context, recordingChannelType, recordingContentType, recordingFormatType).block();
     }
 
     /**

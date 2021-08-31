@@ -10,6 +10,9 @@ import com.azure.communication.callingserver.implementation.converters.PlayAudio
 import com.azure.communication.callingserver.implementation.models.AddParticipantRequest;
 import com.azure.communication.callingserver.implementation.models.CommunicationErrorResponseException;
 import com.azure.communication.callingserver.implementation.models.PlayAudioRequest;
+import com.azure.communication.callingserver.implementation.models.RecordingChannelType;
+import com.azure.communication.callingserver.implementation.models.RecordingContentType;
+import com.azure.communication.callingserver.implementation.models.RecordingFormatType;
 import com.azure.communication.callingserver.implementation.models.StartCallRecordingRequest;
 import com.azure.communication.callingserver.models.AddParticipantResult;
 import com.azure.communication.callingserver.models.CallRecordingProperties;
@@ -195,7 +198,24 @@ public final class ServerCallAsync {
      * @return Response for a successful start recording request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<StartCallRecordingResult> startRecording(String recordingStateCallbackUri) {
+    public Mono<StartCallRecordingResult> startRecording(String recordingStateCallbackUri){
+        return startRecording(recordingStateCallbackUri, null, null, null);
+    }
+
+    /**
+     * Start recording of the call.
+     *
+     * @param recordingStateCallbackUri Uri to send state change callbacks.
+     * @throws InvalidParameterException is recordingStateCallbackUri is absolute uri.
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Response for a successful start recording request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<StartCallRecordingResult> startRecording(String recordingStateCallbackUri, 
+    RecordingChannelType recordingChannelType, 
+    RecordingContentType recordingContentType, 
+    RecordingFormatType recordingFormatType) {
         try {
             Objects.requireNonNull(recordingStateCallbackUri, "'recordingStateCallbackUri' cannot be null.");
             if (!Boolean.TRUE.equals(new URI(recordingStateCallbackUri).isAbsolute())) {
@@ -203,6 +223,9 @@ public final class ServerCallAsync {
             }
             StartCallRecordingRequest request = new StartCallRecordingRequest();
             request.setRecordingStateCallbackUri(recordingStateCallbackUri);
+            request.setRecordingChannelType(recordingChannelType);
+            request.setRecordingContentType(recordingContentType);
+            request.setRecordingFormatType(recordingFormatType);
             return serverCallInternal.startRecordingAsync(serverCallId, request)
                 .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException)
                 .flatMap(result -> Mono.just(new StartCallRecordingResult(result.getRecordingId())));
@@ -224,12 +247,15 @@ public final class ServerCallAsync {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<StartCallRecordingResult>> startRecordingWithResponse(String recordingStateCallbackUri) {
-        return startRecordingWithResponse(recordingStateCallbackUri, null);
+        return startRecordingWithResponse(recordingStateCallbackUri, null, null, null, null);
     }
 
     Mono<Response<StartCallRecordingResult>> startRecordingWithResponse(
         String recordingStateCallbackUri,
-        Context context) {
+        Context context, 
+        RecordingChannelType recordingChannelType, 
+        RecordingContentType recordingContentType, 
+        RecordingFormatType recordingFormatType) {
         try {
             Objects.requireNonNull(recordingStateCallbackUri, "'recordingStateCallbackUri' cannot be null.");
             if (!Boolean.TRUE.equals(new URI(recordingStateCallbackUri).isAbsolute())) {
@@ -237,6 +263,9 @@ public final class ServerCallAsync {
             }
             StartCallRecordingRequest request = new StartCallRecordingRequest();
             request.setRecordingStateCallbackUri(recordingStateCallbackUri);
+            request.setRecordingChannelType(recordingChannelType);
+            request.setRecordingContentType(recordingContentType);
+            request.setRecordingFormatType(recordingFormatType);
             return withContext(contextValue -> {
                 contextValue = context == null ? contextValue : context;
                 return serverCallInternal
