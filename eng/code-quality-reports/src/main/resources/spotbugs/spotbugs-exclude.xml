@@ -91,42 +91,8 @@
     <Bug pattern="PZLA_PREFER_ZERO_LENGTH_ARRAYS"/>
   </Match>
 
-  <!-- Cases where null arrays should return null instead of empty arrays -->
   <Match>
-    <Or>
-      <Class name="com.azure.core.util.Base64Url"/>
-      <Class name="com.azure.core.util.CoreUtils"/>
-      <Class name="com.azure.core.implementation.serializer.HttpResponseDecodeData"/>
-      <Class name="com.azure.core.util.serializer.JacksonAdapter"/>
-      <And>
-        <Class name="com.microsoft.azure.servicebus.Utils"/>
-        <Method name="getDataFromMessageBody"/>
-      </And>
-      <And>
-        <Class name="com.azure.security.keyvault.keys.implementation.Base64UrlJsonDeserializer"/>
-        <Method name="deserialize"/>
-      </And>
-      <And>
-        <Class name="com.azure.security.keyvault.keys.implementation.ByteExtensions"/>
-        <Method name="clone"/>
-      </And>
-      <And>
-        <Class name="com.azure.security.keyvault.keys.models.KeyProperties"/>
-        <Method name="decode"/>
-      </And>
-      <And>
-        <Class name="com.azure.security.keyvault.certificates.models.webkey.Base64UrlJsonDeserializer"/>
-        <Method name="deserialize"/>
-      </And>
-      <And>
-        <Class name="com.azure.security.keyvault.certificates.models.webkey.ByteExtensions"/>
-        <Method name="clone"/>
-      </And>
-      <And>
-        <Class name="com.azure.security.keyvault.certificates.models.CertificateProperties"/>
-        <Method name="getX509Thumbprint"/>
-      </And>
-    </Or>
+    <Class name="com.azure.core.util.Base64Url"/>
     <Bug pattern="PZLA_PREFER_ZERO_LENGTH_ARRAYS"/>
   </Match>
 
@@ -140,15 +106,6 @@
     </Or>
     <Bug pattern="RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE"/>
   </Match>
-
-  <!-- Suppress Redundant nullcheck error for JreCertificates$JREKeyStore.loadKeyStore(KeyStore). -->
-  <Match>
-    <Or>
-      <Class name="com.azure.security.keyvault.jca.JreCertificates$JREKeyStore"/> <!-- false positive -->
-    </Or>
-    <Bug pattern="RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE"/>
-  </Match>
-
 
   <Match>
     <Or>
@@ -281,6 +238,12 @@
     <Bug pattern="PZLA_PREFER_ZERO_LENGTH_ARRAYS"/>
   </Match>
 
+  <!-- TEMPORARY -->
+  <Match>
+    <Class name="com.azure.core.util.CoreUtils"/>
+    <Bug pattern="PZLA_PREFER_ZERO_LENGTH_ARRAYS"/>
+  </Match>
+
   <!-- EventHubClientImpl.USER_AGENT is public and can be set by consumers of the SDK to not be null.
   https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/eventhubs/microsoft-azure-eventhubs/src/main/java/com/microsoft/azure/eventhubs/impl/ConnectionHandler.java#L88 -->
   <Match>
@@ -356,6 +319,8 @@
     <Or>
       <Class name="com.azure.core.http.HttpPipelineNextPolicy"/>
       <Class name="com.azure.core.http.HttpRequest"/>
+      <Class
+        name="~com\.azure\.core\.auth\.credentials\.(MSIConfigurationForAppService|MSIConfigurationForVirtualMachine)"/>
     </Or>
     <Bug pattern="CN_IMPLEMENTS_CLONE_BUT_NOT_CLONEABLE"/>
   </Match>
@@ -364,6 +329,12 @@
   <Match>
     <Class name="com.azure.core.util.FluxUtil"/>
     <Bug pattern="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR"/>
+  </Match>
+
+  <!-- The BaseURl and REST API treat NULL and EMPTY as different things. Necessary to keep NULL value. -->
+  <Match>
+    <Class name="~com\.azure\.core\.implementation\.(Base64Url|util\.CoreUtils|serializer\.HttpResponseDecodeData)"/>
+    <Bug pattern="PZLA_PREFER_ZERO_LENGTH_ARRAYS"/>
   </Match>
 
   <!-- There is no need to make serializer or deserializer classes serializable. Suppress bugs related to these classes.
@@ -378,6 +349,37 @@
   <Match>
     <Class name="com.azure.core.implementation.TypeUtil"/>
     <Bug pattern="BC_UNCONFIRMED_CAST"/>
+  </Match>
+
+  <!-- These fields are designed to be not written. They are for deserializing. -->
+  <Match>
+    <Class name="com.azure.core.auth.credentials.AzureCliSubscription$UserInfo"/>
+    <Bug pattern="UWF_UNWRITTEN_FIELD"/>
+  </Match>
+
+  <!-- These fields are designed to be not read. They are for deserializing. -->
+  <Match>
+    <Class name="com.azure.core.auth.credentials.AzureCliToken"/>
+    <Bug pattern="URF_UNREAD_FIELD"/>
+  </Match>
+
+  <!-- These fields are designed to be not used. They are for deserializing. -->
+  <Match>
+    <Class name="~com\.azure\.core\.auth\.credentials\.(AzureCliToken|AzureCliSubscription)"/>
+    <Bug pattern="UUF_UNUSED_FIELD"/>
+  </Match>
+
+  <!-- These fields are designed to be anonymous and not static. They are for letting the jackson serializer know what
+  type to use. -->
+  <Match>
+    <Class name="com.azure.core.auth.credentials.AzureCliCredentials"/>
+    <Bug pattern="SIC_INNER_SHOULD_BE_STATIC_ANON"/>
+  </Match>
+
+  <!-- These fields has checked null and initialized in the constructor. -->
+  <Match>
+    <Class name="com.azure.core.auth.credentials.AzureCliCredentials"/>
+    <Bug pattern="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR"/>
   </Match>
 
   <!-- The fields are checked for null in the build method and throw exceptions if values for fields are not specified. -->
@@ -479,6 +481,13 @@
     <Bug pattern="BC_UNCONFIRMED_CAST_OF_RETURN_VALUE"/>
   </Match>
 
+  <!-- Bytes array are designed to return null if it is null -->
+  <Match>
+    <Class name="com.microsoft.azure.servicebus.Utils"/>
+    <Method name="getDataFromMessageBody"/>
+    <Bug pattern="PZLA_PREFER_ZERO_LENGTH_ARRAYS"/>
+  </Match>
+
   <!-- Unstable implementation. It is in Service team's to-do-list -->
   <Match>
     <Class name="com.microsoft.azure.servicebus.primitives.CoreMessageReceiver"/>
@@ -563,6 +572,44 @@
     <Bug pattern="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR"/>
   </Match>
 
+  <!-- Bytes array are designed to return null if it is null -->
+  <Match>
+    <Or>
+      <And>
+        <Class name="com.azure.security.keyvault.keys.models.Base64UrlJsonDeserializer"/>
+        <Method name="deserialize"/>
+      </And>
+      <And>
+        <Class name="com.azure.security.keyvault.keys.models.ByteExtensions"/>
+        <Method name="clone"/>
+      </And>
+      <And>
+        <Class name="com.azure.security.keyvault.keys.models.KeyProperties"/>
+        <Method name="decode"/>
+      </And>
+    </Or>
+    <Bug pattern="PZLA_PREFER_ZERO_LENGTH_ARRAYS"/>
+  </Match>
+
+
+  <!-- Bytes array are designed to return null if it is null -->
+  <Match>
+    <Or>
+      <And>
+        <Class name="com.azure.security.keyvault.certificates.models.webkey.Base64UrlJsonDeserializer"/>
+        <Method name="deserialize"/>
+      </And>
+      <And>
+        <Class name="com.azure.security.keyvault.certificates.models.webkey.ByteExtensions"/>
+        <Method name="clone"/>
+      </And>
+      <And>
+        <Class name="com.azure.security.keyvault.certificates.models.CertificateProperties"/>
+        <Method name="getX509Thumbprint"/>
+      </And>
+    </Or>
+    <Bug pattern="PZLA_PREFER_ZERO_LENGTH_ARRAYS"/>
+  </Match>
   <!-- It is fine to have un-used variables, unread fields, anonymous static inner classes in javadoc code samples. -->
   <Match>
     <Or>
@@ -669,6 +716,12 @@
   <!-- Initial implementation of Storage Blob Batch is using an inline class -->
   <Match>
     <Class name="com.azure.storage.blob.batch.BlobBatchAsyncClient"/>
+    <Bug pattern="SIC_INNER_SHOULD_BE_STATIC_ANON"/>
+  </Match>
+
+  <!-- Initial implementation of JacksonDeserializer is using an inline class-->
+  <Match>
+    <Class name="com.azure.core.implementation.serializer.jsonwrapper.jacksonwrapper.JacksonDeserializer"/>
     <Bug pattern="SIC_INNER_SHOULD_BE_STATIC_ANON"/>
   </Match>
 
@@ -1305,9 +1358,9 @@
 
   <!-- TextAnalyticsException fields re serializable -->
   <Match>
-    <Class name="com.azure.ai.textanalytics.models.TextAnalyticsException"/>
-    <Field name="errors"/>
-    <Bug pattern="SE_BAD_FIELD"/>
+    <Class name="com.azure.ai.textanalytics.models.TextAnalyticsException" />
+    <Field name="errors" />
+    <Bug pattern="SE_BAD_FIELD" />
   </Match>
 
   <!-- Exception is required to catch, ref: code comment in the OrderbyRowComparer::compare() method  -->
@@ -1857,20 +1910,6 @@
     <Bug pattern="EI_EXPOSE_REP2"/>
   </Match>
 
-  <!-- Returning a new copy of the object is not necessary -->
-  <Match>
-    <Class name="com.azure.cosmos.implementation.ClientEncryptionKey"/>
-    <Method name="getWrappedDataEncryptionKey"/>
-    <Bug pattern="EI_EXPOSE_REP"/>
-  </Match>
-
-  <!-- Returning a new copy of the object is not necessary -->
-  <Match>
-    <Class name="com.azure.cosmos.implementation.ClientEncryptionKey"/>
-    <Method name="setWrappedDataEncryptionKey"/>
-    <Bug pattern="EI_EXPOSE_REP2"/>
-  </Match>
-
   <!-- https://github.com/Azure/azure-sdk-for-java/issues/9102 -->
   <Match>
     <Class name="com.azure.cosmos.implementation.ItemOperations"/>
@@ -2068,17 +2107,6 @@
     <Bug pattern="SA_FIELD_SELF_COMPARISON"/>
   </Match>
 
-  <Match>
-    <Class name="com.azure.cosmos.encryption.implementation.EncryptionProcessor"/>
-    <Method name="decryptAndSerializeProperty"/>
-    <Bug pattern="BC_UNCONFIRMED_CAST"/>
-  </Match>
-
-  <Match>
-    <Class name="com.azure.cosmos.encryption.implementation.EncryptionProcessor"/>
-    <Method name="encryptAndSerializeProperty"/>
-    <Bug pattern="BC_UNCONFIRMED_CAST"/>
-  </Match>
   <!-- Serializing a null value should return null to allow client to handle null cases
     consistently instead of injecting null payload behavior from the payload. -->
   <Match>
@@ -2213,13 +2241,6 @@
     <Bug pattern="BC_UNCONFIRMED_CAST_OF_RETURN_VALUE"/>
   </Match>
 
-  <!-- This dead store is due to a deficiency in the Customization class. We need to reference the original return type but we have no use for it so we just comment it out -->
-  <Match>
-    <Class name="com.azure.storage.blob.models.Block"/>
-    <Method name="getSize"/>
-    <Bug pattern="DLS_DEAD_LOCAL_STORE"/>
-  </Match>
-
   <!-- Exclude REC_CATCH_EXCEPTION and false positive error for management samples. All samples in management catch Exception instead of throw it. -->
   <Match>
     <Package name="~com\.azure\.resourcemanager(\.[^.]+)*\.samples(\.[^.]+)*"/>
@@ -2278,7 +2299,9 @@
   <!-- Exclude from spring related classes -->
   <Match>
     <Or>
+      <Class name="com.azure.spring.utils.GetHashMac"/> <!-- false positive -->
       <Class name="com.azure.spring.utils.PropertyLoader"/> <!-- false positive -->
+      <Class name="com.azure.spring.cloud.telemetry.GetHashMac"/> <!-- false positive -->
     </Or>
     <Bug pattern="RCN_REDUNDANT_NULLCHECK_WOULD_HAVE_BEEN_A_NPE,
                   NP_LOAD_OF_KNOWN_NULL_VALUE,
@@ -2288,20 +2311,18 @@
 
   <Match>
     <Or>
+      <Class name="com.azure.spring.telemetry.TelemetryEventData$EventData$CustomData"/> <!-- false positive -->
+    </Or>
+    <Bug pattern="UPM_UNCALLED_PRIVATE_METHOD"/>
+  </Match>
+
+  <Match>
+    <Or>
       <Class name="com.azure.spring.integration.servicebus.queue.ServiceBusQueueTemplate$QueueMessageHandler"/> <!-- false positive -->
       <Class name="com.azure.spring.integration.servicebus.topic.ServiceBusTopicTemplate$TopicMessageHandler"/> <!-- false positive -->
     </Or>
     <Method name="OnCloseSessionAsync"/>
     <Bug pattern="NM_METHOD_NAMING_CONVENTION"/>
-  </Match>
-
-  <Match>
-    <Bug pattern="UWF_NULL_FIELD"/>
-    <Class name="com.azure.spring.integration.core.AbstractInboundChannelAdapter"/>
-    <Or>
-      <Field name="subscribeByGroupOperation"/>
-      <Field name="subscribeOperation"/>
-    </Or>
   </Match>
 
   <Match>
@@ -2334,7 +2355,7 @@
 
   <!-- The field is designed to be unread and for serialization purpose. -->
   <Match>
-    <Class name="~com\.azure\.search\.documents\.indexes\.models\.(EdgeNGramTokenFilter|KeywordTokenizer|LuceneStandardTokenizer|NGramTokenFilter|SynonymMap)"/>
+    <Class name="~com\.azure\.search\.documents\.indexes\.models\.(EdgeNGramTokenFilter|KeywordTokenizer|LuceneStandardTokenizer|NGramTokenFilter)"/>
     <Bug pattern="URF_UNREAD_FIELD"/>
   </Match>
 
@@ -2342,6 +2363,10 @@
   <Match>
     <Class name="com.azure.search.documents.SearchAsyncClient"/>
     <Bug pattern="SIC_INNER_SHOULD_BE_STATIC_ANON"/>
+  </Match>
+  <Match>
+    <Class name="~com\.azure\.search\.documents\.indexes\.implementation\.models\.(Suggester|SynonymMap)"/>
+    <Bug pattern="IP_PARAMETER_IS_DEAD_BUT_OVERWRITTEN"/>
   </Match>
 
   <Match>
@@ -2436,6 +2461,14 @@
     <Bug pattern="RCN_REDUNDANT_NULLCHECK_WOULD_HAVE_BEEN_A_NPE"/>
   </Match>
 
+  <!-- Conflicting APIs have already been GA'd with incorrect capitalization  -->
+  <Match>
+    <Or>
+      <Class name="com.azure.security.keyvault.keys.cryptography.DecryptOptions"/>
+      <Class name="com.azure.security.keyvault.keys.cryptography.EncryptOptions"/>
+    </Or>
+    <Bug pattern="NM_CONFUSING"/>
+  </Match>
   <!-- Returning a new copy of the object is not necessary for queuing system use cases.
   Client do not change content of message once message is created. Array copy would degrade the performance.
   https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/core/azure-core-amqp/src/main/java/com/azure/core/amqp/models/AmqpMessageBody.java#L115 -->
@@ -2461,30 +2494,5 @@
   <Match>
     <Class name="~com.azure.security.attestation.models\.[\w]+"/>
     <Bug pattern="PZLA_PREFER_ZERO_LENGTH_ARRAYS"/>
-  </Match>
-
-  <!-- Generated implementation of Anomaly Detector is using an inline class -->
-  <Match>
-    <Class name="com.azure.ai.anomalydetector.implementation.AnomalyDetectorClientImpl"/>
-    <Bug pattern="SIC_INNER_SHOULD_BE_STATIC_ANON"/>
-  </Match>
-
-  <!-- Some generated base clients in Purview Catalog do not send api-version -->
-  <Match>
-    <Class name="~com\.azure\.analytics\.purview\.catalog\.\w+BaseClient"/>
-    <Bug pattern="URF_UNREAD_FIELD"/>
-  </Match>
-
-  <!-- Two clients in Confidential Ledger share the same builder resulting unused field in each  -->
-  <Match>
-    <Class name="~com\.azure\.security\.confidentialledger\.\w+BaseClient"/>
-    <Bug pattern="URF_UNREAD_FIELD"/>
-  </Match>
-
-  <!-- This is a false positive. The type of TOptions is known because it is set
-       in the constructor of the concrete class. -->
-  <Match>
-    <Class name="~com\.azure\.messaging\.eventhubs\.perf\.[\w]+Test"/>
-    <Bug pattern="BC_UNCONFIRMED_CAST"/>
   </Match>
 </FindBugsFilter>
