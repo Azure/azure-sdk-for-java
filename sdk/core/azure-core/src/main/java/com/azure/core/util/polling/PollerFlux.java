@@ -4,8 +4,6 @@
 package com.azure.core.util.polling;
 
 import com.azure.core.http.rest.Response;
-import com.azure.core.implementation.TypeUtil;
-import com.azure.core.util.BinaryData;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.TypeReference;
@@ -180,36 +178,17 @@ public final class PollerFlux<T, U> extends Flux<AsyncPollResponse<T, U>> {
                TypeReference<U> resultType) {
         return create(
             pollInterval,
-            ctx -> initialOperation.get()
-                .flatMap(r -> strategy.canPoll(r).flatMap(canPoll -> {
+            context -> initialOperation.get()
+                .flatMap(response -> strategy.canPoll(response).flatMap(canPoll -> {
                     if (!canPoll) {
                         return Mono.error(new IllegalStateException(
                             "Cannot poll with strategy " + strategy.getClass().getSimpleName()));
                     }
-                    return strategy.onInitialResponse(r, ctx, pollResponseType).flatMap(status -> {
-                        if (r.getValue() == null) {
-                            return Mono.just(new PollResponse<>(status, null));
-                        } else if (TypeUtil.isTypeOrSubTypeOf(r.getValue().getClass(), pollResponseType.getJavaType())) {
-                            return Mono.just(new PollResponse<>(status, (T) r.getValue()));
-                        } else {
-                            Mono<BinaryData> binaryDataMono;
-                            if (r.getValue() instanceof BinaryData) {
-                                binaryDataMono = Mono.just((BinaryData) r.getValue());
-                            } else {
-                                binaryDataMono = BinaryData.fromObjectAsync(r.getValue());
-                            }
-                            if (TypeUtil.isTypeOrSubTypeOf(BinaryData.class, pollResponseType.getJavaType())) {
-                                return binaryDataMono.map(binaryData -> new PollResponse<>(status, (T) binaryData));
-                            } else {
-                                return binaryDataMono.flatMap(binaryData -> binaryData.toObjectAsync(pollResponseType))
-                                    .map(value -> new PollResponse<>(status, value));
-                            }
-                        }
-                    });
+                    return strategy.onInitialResponse(response, context, pollResponseType);
                 })),
-            ctx -> strategy.poll(ctx, pollResponseType),
+            context -> strategy.poll(context, pollResponseType),
             strategy::cancel,
-            ctx -> strategy.getResult(ctx, resultType));
+            context -> strategy.getResult(context, resultType));
     }
 
     private PollerFlux(Duration pollInterval,

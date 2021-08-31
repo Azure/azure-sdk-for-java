@@ -3,26 +3,22 @@
 
 package com.azure.core.util.polling;
 
+import com.azure.core.exception.AzureException;
 import com.azure.core.http.rest.Response;
 import com.azure.core.implementation.TypeUtil;
 import com.azure.core.util.BinaryData;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.TypeReference;
 import reactor.core.publisher.Mono;
 
 /**
- * Fallback polling strategy that doesn't poll but exits successfully if no other polling are detected
+ * Fallback polling strategy that doesn't poll but exits successfully if no other polling strategies are detected
  * and status code is 2xx.
  *
- * @param <T> the {@link TypeReference} of the response type from a polling call, or BinaryData if raw response body
- *            should be kept
- * @param <U> the {@link TypeReference} of the final result object to deserialize into, or BinaryData if raw response
- *            body should be kept
+ * @param <T> the type of the response type from a polling call, or BinaryData if raw response body should be kept
+ * @param <U> the type of the final result object to deserialize into, or BinaryData if raw response body should be
+ *           kept
  */
 public class StatusCheckPollingStrategy<T, U> implements PollingStrategy<T, U> {
-
-    private final ClientLogger logger = new ClientLogger(StatusCheckPollingStrategy.class);
-
     @Override
     public Mono<Boolean> canPoll(Response<?> initialResponse) {
         return Mono.just(true);
@@ -30,15 +26,41 @@ public class StatusCheckPollingStrategy<T, U> implements PollingStrategy<T, U> {
 
     @SuppressWarnings("unchecked")
     @Override
-    public Mono<LongRunningOperationStatus> onInitialResponse(Response<?> response, PollingContext<T> pollingContext,
+    public Mono<PollResponse<T>> onInitialResponse(Response<?> response, PollingContext<T> pollingContext,
                                                               TypeReference<T> pollResponseType) {
-        return Mono.just(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED);
+        if (response.getStatusCode() == 200
+            || response.getStatusCode() == 201
+            || response.getStatusCode() == 202
+            || response.getStatusCode() == 204) {
+            return Mono.just(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED).flatMap(status -> {
+                if (response.getValue() == null) {
+                    return Mono.just(new PollResponse<>(status, null));
+                } else if (TypeUtil.isTypeOrSubTypeOf(
+                        response.getValue().getClass(), pollResponseType.getJavaType())) {
+                    return Mono.just(new PollResponse<>(status, (T) response.getValue()));
+                } else {
+                    Mono<BinaryData> binaryDataMono;
+                    if (response.getValue() instanceof BinaryData) {
+                        binaryDataMono = Mono.just((BinaryData) response.getValue());
+                    } else {
+                        binaryDataMono = BinaryData.fromObjectAsync(response.getValue());
+                    }
+                    if (TypeUtil.isTypeOrSubTypeOf(BinaryData.class, pollResponseType.getJavaType())) {
+                        return binaryDataMono.map(binaryData -> new PollResponse<>(status, (T) binaryData));
+                    } else {
+                        return binaryDataMono.flatMap(binaryData -> binaryData.toObjectAsync(pollResponseType))
+                            .map(value -> new PollResponse<>(status, value));
+                    }
+                }
+            });
+        } else {
+            return Mono.error(new AzureException("Operation failed or cancelled: " + response.getStatusCode()));
+        }
     }
 
     @Override
     public Mono<PollResponse<T>> poll(PollingContext<T> context, TypeReference<T> pollResponseType) {
-        throw logger.logExceptionAsWarning(
-            new IllegalStateException("StatusCheckPollingStrategy doesn't support polling"));
+        return Mono.error(new IllegalStateException("StatusCheckPollingStrategy doesn't support polling"));
     }
 
     @SuppressWarnings("unchecked")

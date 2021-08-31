@@ -63,7 +63,7 @@ public interface PollingStrategy<T, U> {
      *                         response body should be kept. This should match the generic parameter {@link U}.
      * @return a publisher emitting the long running operation status
      */
-    Mono<LongRunningOperationStatus> onInitialResponse(Response<?> response, PollingContext<T> pollingContext,
+    Mono<PollResponse<T>> onInitialResponse(Response<?> response, PollingContext<T> pollingContext,
                                             TypeReference<T> pollResponseType);
 
     /**
