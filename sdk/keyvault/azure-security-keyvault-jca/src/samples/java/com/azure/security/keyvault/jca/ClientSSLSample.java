@@ -46,7 +46,7 @@ public class ClientSSLSample {
         String result = null;
 
         try (CloseableHttpClient client = HttpClients.custom().setConnectionManager(manager).build()) {
-            HttpGet httpGet = new HttpGet("https://localhost:8443");
+            HttpGet httpGet = new HttpGet("https://localhost:8766");
             ResponseHandler<String> responseHandler = (HttpResponse response) -> {
                 int status = response.getStatusLine().getStatusCode();
                 String result1 = "Not success";
