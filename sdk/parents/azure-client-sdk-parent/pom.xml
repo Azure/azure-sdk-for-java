@@ -229,6 +229,14 @@
         <groupId>org.jacoco</groupId>
         <artifactId>jacoco-maven-plugin</artifactId>
         <version>0.8.5</version> <!-- {x-version-update;org.jacoco:jacoco-maven-plugin;external_dependency} -->
+        <configuration>
+          <dataFileIncludes>
+            <dataFileInclude>${project.build.directory}/jacoco.exec</dataFileInclude>
+          </dataFileIncludes>
+          <excludes combine.children="append">
+            <exclude>META-INF/**</exclude>
+          </excludes>
+        </configuration>
         <executions>
           <execution>
             <id>prepare-agent</id>
