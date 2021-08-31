@@ -177,11 +177,11 @@ class NettyAsyncHttpClient implements HttpClient {
         final HttpRequest restRequest, final boolean disableBufferCopy, final boolean eagerlyReadResponse) {
         return (reactorNettyResponse, reactorNettyConnection) -> {
             /*
-             * If we are eagerly reading the response into memory we can ignore the disable buffer copy flag as we
-             * MUST deeply copy the buffer to ensure it can safely be used downstream.
+             * If the response is being eagerly read into memory the flag for buffer copying can be ignored as the
+             * response MUST be deeply copied to ensure it can safely be used downstream.
              */
             if (eagerlyReadResponse) {
-                // Setup the body flux and dispose the connection once it has been received.
+                // Set up the body flux and dispose the connection once it has been received.
                 Flux<ByteBuffer> body = reactorNettyConnection.inbound().receive().asByteBuffer()
                     .doFinally(ignored -> closeConnection(reactorNettyConnection));
 
@@ -197,15 +197,15 @@ class NettyAsyncHttpClient implements HttpClient {
     }
 
     /*
-     * Adds the write timeout handler once the request is ready to begin sending.
+     * Adds write timeout handler once the request is ready to begin sending.
      */
     private static void addWriteTimeoutHandler(Connection connection, long timeoutMillis) {
         connection.addHandlerLast(WriteTimeoutHandler.HANDLER_NAME, new WriteTimeoutHandler(timeoutMillis));
     }
 
     /*
-     * First removes the write timeout handler from the connection as the request has finished sending, then adds the
-     * response timeout handler.
+     * Remove write timeout handler from the connection as the request has finished sending, then add response timeout
+     * handler.
      */
     private static void addResponseTimeoutHandler(Connection connection, long timeoutMillis) {
         connection.removeHandler(WriteTimeoutHandler.HANDLER_NAME)
@@ -213,8 +213,8 @@ class NettyAsyncHttpClient implements HttpClient {
     }
 
     /*
-     * First removes the response timeout handler from the connection as the response has been received, then adds the
-     * read timeout handler.
+     * Remove response timeout handler from the connection as the response has been received, then add read timeout
+     * handler.
      */
     private static void addReadTimeoutHandler(Connection connection, long timeoutMillis) {
         connection.removeHandler(ResponseTimeoutHandler.HANDLER_NAME)
@@ -222,7 +222,7 @@ class NettyAsyncHttpClient implements HttpClient {
     }
 
     /*
-     * Removes the read timeout handler as the complete response has been received.
+     * Remove read timeout handler as the complete response has been received.
      */
     private static void removeReadTimeoutHandler(Connection connection) {
         connection.removeHandler(ReadTimeoutHandler.HANDLER_NAME);
