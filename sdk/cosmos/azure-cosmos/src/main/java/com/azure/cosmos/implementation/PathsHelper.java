@@ -70,10 +70,10 @@ public class PathsHelper {
         }
 
         String resourcePath = null;
-        if (!isFeed) {
-            resourcePath = resourceFullName;
-        } else if (resourceType == ResourceType.PartitionKey && operationType == OperationType.Delete) {
+        if (resourceType == ResourceType.PartitionKey && operationType == OperationType.Delete) {
             resourcePath = resourceFullName + "/" + Paths.OPERATIONS_PATH_SEGMENT + "/" + Paths.PARTITION_KEY_DELETE_PATH_SEGMENT;
+        } else if (!isFeed) {
+            resourcePath = resourceFullName;
         } else if (resourceType == ResourceType.Database) {
             return Paths.DATABASES_PATH_SEGMENT;
         } else if (resourceType == ResourceType.DocumentCollection) {
