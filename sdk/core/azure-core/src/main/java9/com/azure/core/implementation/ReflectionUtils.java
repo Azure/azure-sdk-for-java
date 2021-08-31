@@ -44,10 +44,14 @@ public final class ReflectionUtils {
         }
 
         /*
-         * Otherwise, we use the MethodHandles.Lookup which is associated to this (com.azure.core) module, and
-         * more specifically, is tied to this class (ResponseConstructorsCache). But, in order to use this
-         * lookup we need to ensure that the com.azure.core module reads the response class's module as the
-         * lookup won't have permissions necessary to create the MethodHandle instance without it.
+         * Otherwise, we use the MethodHandles.Lookup which is associated to this (com.azure.core) module, and more
+         * specifically, is tied to this class (ReflectionUtils). But, in order to use this lookup we need to ensure
+         * that the com.azure.core module reads the response class's module as the lookup won't have permissions
+         * necessary to create the MethodHandle instance without it.
+         *
+         * This logic is safe due to the fact that any SDK module calling into this code path will already need to open
+         * to com.azure.core as it needs to perform other reflective operations on classes in the module. Adding the
+         * com.azure.core reads is handling specifically required by MethodHandle.
          */
         if (!CORE_MODULE.canRead(responseModule)) {
             CORE_MODULE.addReads(responseModule);

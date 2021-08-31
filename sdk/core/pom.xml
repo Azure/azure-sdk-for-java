@@ -97,6 +97,12 @@
             <groupId>org.jacoco</groupId>
             <artifactId>jacoco-maven-plugin</artifactId>
             <version>0.8.5</version> <!-- {x-version-update;org.jacoco:jacoco-maven-plugin;external_dependency} -->
+            <configuration>
+              <outputDirectory>${project.reporting.outputDirectory}/test-coverage</outputDirectory>
+              <excludes>
+                <exclude>META-INF/**</exclude>
+              </excludes>
+            </configuration>
             <executions>
               <execution>
                 <id>report-aggregate</id>
@@ -104,12 +110,6 @@
                 <goals>
                   <goal>report-aggregate</goal>
                 </goals>
-                <configuration>
-                  <outputDirectory>${project.reporting.outputDirectory}/test-coverage</outputDirectory>
-                  <excludes>
-                    <exclude>**/META-INF/**</exclude>
-                  </excludes>
-                </configuration>
               </execution>
             </executions>
           </plugin>
