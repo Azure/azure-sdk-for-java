@@ -2,6 +2,7 @@ package com.azure.monitor.query.perf;
 
 import com.azure.core.util.Configuration;
 import com.azure.monitor.query.LogsQueryClient;
+import com.azure.monitor.query.models.LogsBatchQuery;
 import com.azure.monitor.query.perf.core.ServiceTest;
 import com.azure.perf.test.core.PerfStressOptions;
 import reactor.core.publisher.Mono;
@@ -32,11 +33,15 @@ public class LogsBatchQueryTest extends ServiceTest<PerfStressOptions> {
 
     @Override
     public void run() {
-        logsQueryClient.queryBatch(workspaceId, LOGS_BATCH_QUERIES, null);
+        LogsBatchQuery batchQuery = new LogsBatchQuery();
+        LOGS_BATCH_QUERIES.forEach(query -> batchQuery.addQuery(workspaceId, query, null));
+        logsQueryClient.queryBatch(batchQuery);
     }
 
     @Override
     public Mono<Void> runAsync() {
-        return logsQueryAsyncClient.queryBatch(workspaceId, LOGS_BATCH_QUERIES, null).then();
+        LogsBatchQuery batchQuery = new LogsBatchQuery();
+        LOGS_BATCH_QUERIES.forEach(query -> batchQuery.addQuery(workspaceId, query, null));
+        return logsQueryAsyncClient.queryBatch(batchQuery).then();
     }
 }
