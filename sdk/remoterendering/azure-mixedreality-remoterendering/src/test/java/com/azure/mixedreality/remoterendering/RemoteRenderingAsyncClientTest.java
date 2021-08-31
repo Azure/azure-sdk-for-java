@@ -49,8 +49,7 @@ public class RemoteRenderingAsyncClientTest extends RemoteRenderingTestBase {
 
         String conversionId = getRandomId("asyncConversionTest");
 
-        PollerFlux<AssetConversion, AssetConversion> poller = setPollerFluxPollInterval(client
-            .beginConversion(conversionId, conversionOptions));
+        PollerFlux<AssetConversion, AssetConversion> poller = client.beginConversion(conversionId, conversionOptions);
 
         Flux<AsyncPollResponse<AssetConversion, AssetConversion>> terminalPoller = poller.map(response -> {
             AssetConversion conversion = response.getValue();
@@ -98,8 +97,7 @@ public class RemoteRenderingAsyncClientTest extends RemoteRenderingTestBase {
 
         String conversionId = getRandomId("failedConversionNoAccessAsync");
 
-        PollerFlux<AssetConversion, AssetConversion> poller = setPollerFluxPollInterval(client
-            .beginConversion(conversionId, conversionOptions));
+        PollerFlux<AssetConversion, AssetConversion> poller = client.beginConversion(conversionId, conversionOptions);
 
         StepVerifier.create(poller).expectErrorMatches(error -> {
             // Error accessing connected storage account due to insufficient permissions. Check if the Mixed Reality resource has correct permissions assigned
@@ -126,8 +124,7 @@ public class RemoteRenderingAsyncClientTest extends RemoteRenderingTestBase {
 
         String conversionId = getRandomId("failedConversionMissingAssetAsync");
 
-        PollerFlux<AssetConversion, AssetConversion> poller = setPollerFluxPollInterval(client
-            .beginConversion(conversionId, conversionOptions));
+        PollerFlux<AssetConversion, AssetConversion> poller = client.beginConversion(conversionId, conversionOptions);
 
         Flux<AsyncPollResponse<AssetConversion, AssetConversion>> terminalPoller = poller.map(response -> {
             AssetConversion conversion = response.getValue();
@@ -166,8 +163,7 @@ public class RemoteRenderingAsyncClientTest extends RemoteRenderingTestBase {
 
         String sessionId = getRandomId("asyncSessionTest");
 
-        PollerFlux<RenderingSession, RenderingSession> sessionPoller = setPollerFluxPollInterval(client
-            .beginSession(sessionId, options));
+        PollerFlux<RenderingSession, RenderingSession> sessionPoller = client.beginSession(sessionId, options);
 
         Flux<AsyncPollResponse<RenderingSession, RenderingSession>> terminalPoller = sessionPoller.map(response -> {
             RenderingSession session = response.getValue();
@@ -220,8 +216,7 @@ public class RemoteRenderingAsyncClientTest extends RemoteRenderingTestBase {
 
         String sessionId = getRandomId("failedSessionTestAsync");
 
-        PollerFlux<RenderingSession, RenderingSession> poller = setPollerFluxPollInterval(client
-            .beginSession(sessionId, options));
+        PollerFlux<RenderingSession, RenderingSession> poller = client.beginSession(sessionId, options);
 
         StepVerifier.create(poller).expectErrorMatches(error -> {
             // The maxLeaseTimeMinutes value cannot be negative
