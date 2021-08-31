@@ -81,13 +81,35 @@ public interface BlobContainer
             /**
              * Specifies resourceGroupName, accountName.
              *
+             * @deprecated use {@link #withExistingStorageAccount(String, String)}
+             *
              * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
              *     insensitive
              * @param accountName The name of the storage account within the specified resource group. Storage account
              *     names must be between 3 and 24 characters in length and use numbers and lower-case letters only
              * @return the next definition stage
              */
+            @Deprecated
             WithPublicAccess withExistingBlobService(String resourceGroupName, String accountName);
+
+            /**
+             * Specifies resourceGroupName, accountName.
+             *
+             * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+             *     insensitive
+             * @param accountName The name of the storage account within the specified resource group. Storage account
+             *     names must be between 3 and 24 characters in length and use numbers and lower-case letters only
+             * @return the next definition stage
+             */
+            WithPublicAccess withExistingStorageAccount(String resourceGroupName, String accountName);
+
+            /**
+             * Specifies resourceGroupName, accountName.
+             *
+             * @param storageAccount the storage account.
+             * @return the next definition stage
+             */
+            WithPublicAccess withExistingStorageAccount(StorageAccount storageAccount);
         }
 
         /** The stage of the blobcontainer definition allowing to specify PublicAccess. */

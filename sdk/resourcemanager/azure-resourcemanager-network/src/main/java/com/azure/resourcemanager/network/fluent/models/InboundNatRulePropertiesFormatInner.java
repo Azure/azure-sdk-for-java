@@ -78,6 +78,30 @@ public final class InboundNatRulePropertiesFormatInner {
     private Boolean enableTcpReset;
 
     /*
+     * The port range start for the external endpoint. This property is used
+     * together with BackendAddressPool and FrontendPortRangeEnd. Individual
+     * inbound NAT rule port mappings will be created for each backend address
+     * from BackendAddressPool. Acceptable values range from 1 to 65534.
+     */
+    @JsonProperty(value = "frontendPortRangeStart")
+    private Integer frontendPortRangeStart;
+
+    /*
+     * The port range end for the external endpoint. This property is used
+     * together with BackendAddressPool and FrontendPortRangeStart. Individual
+     * inbound NAT rule port mappings will be created for each backend address
+     * from BackendAddressPool. Acceptable values range from 1 to 65534.
+     */
+    @JsonProperty(value = "frontendPortRangeEnd")
+    private Integer frontendPortRangeEnd;
+
+    /*
+     * A reference to backendAddressPool resource.
+     */
+    @JsonProperty(value = "backendAddressPool")
+    private SubResource backendAddressPool;
+
+    /*
      * The provisioning state of the inbound NAT rule resource.
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
@@ -240,6 +264,74 @@ public final class InboundNatRulePropertiesFormatInner {
      */
     public InboundNatRulePropertiesFormatInner withEnableTcpReset(Boolean enableTcpReset) {
         this.enableTcpReset = enableTcpReset;
+        return this;
+    }
+
+    /**
+     * Get the frontendPortRangeStart property: The port range start for the external endpoint. This property is used
+     * together with BackendAddressPool and FrontendPortRangeEnd. Individual inbound NAT rule port mappings will be
+     * created for each backend address from BackendAddressPool. Acceptable values range from 1 to 65534.
+     *
+     * @return the frontendPortRangeStart value.
+     */
+    public Integer frontendPortRangeStart() {
+        return this.frontendPortRangeStart;
+    }
+
+    /**
+     * Set the frontendPortRangeStart property: The port range start for the external endpoint. This property is used
+     * together with BackendAddressPool and FrontendPortRangeEnd. Individual inbound NAT rule port mappings will be
+     * created for each backend address from BackendAddressPool. Acceptable values range from 1 to 65534.
+     *
+     * @param frontendPortRangeStart the frontendPortRangeStart value to set.
+     * @return the InboundNatRulePropertiesFormatInner object itself.
+     */
+    public InboundNatRulePropertiesFormatInner withFrontendPortRangeStart(Integer frontendPortRangeStart) {
+        this.frontendPortRangeStart = frontendPortRangeStart;
+        return this;
+    }
+
+    /**
+     * Get the frontendPortRangeEnd property: The port range end for the external endpoint. This property is used
+     * together with BackendAddressPool and FrontendPortRangeStart. Individual inbound NAT rule port mappings will be
+     * created for each backend address from BackendAddressPool. Acceptable values range from 1 to 65534.
+     *
+     * @return the frontendPortRangeEnd value.
+     */
+    public Integer frontendPortRangeEnd() {
+        return this.frontendPortRangeEnd;
+    }
+
+    /**
+     * Set the frontendPortRangeEnd property: The port range end for the external endpoint. This property is used
+     * together with BackendAddressPool and FrontendPortRangeStart. Individual inbound NAT rule port mappings will be
+     * created for each backend address from BackendAddressPool. Acceptable values range from 1 to 65534.
+     *
+     * @param frontendPortRangeEnd the frontendPortRangeEnd value to set.
+     * @return the InboundNatRulePropertiesFormatInner object itself.
+     */
+    public InboundNatRulePropertiesFormatInner withFrontendPortRangeEnd(Integer frontendPortRangeEnd) {
+        this.frontendPortRangeEnd = frontendPortRangeEnd;
+        return this;
+    }
+
+    /**
+     * Get the backendAddressPool property: A reference to backendAddressPool resource.
+     *
+     * @return the backendAddressPool value.
+     */
+    public SubResource backendAddressPool() {
+        return this.backendAddressPool;
+    }
+
+    /**
+     * Set the backendAddressPool property: A reference to backendAddressPool resource.
+     *
+     * @param backendAddressPool the backendAddressPool value to set.
+     * @return the InboundNatRulePropertiesFormatInner object itself.
+     */
+    public InboundNatRulePropertiesFormatInner withBackendAddressPool(SubResource backendAddressPool) {
+        this.backendAddressPool = backendAddressPool;
         return this;
     }
 

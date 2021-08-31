@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.storage.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -13,24 +12,24 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** The StorageQueue model. */
-@JsonFlatten
 @Fluent
-public class StorageQueueInner extends ProxyResource {
+public final class StorageQueueInner extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(StorageQueueInner.class);
 
     /*
-     * A name-value pair that represents queue metadata.
+     * Queue resource properties.
      */
-    @JsonProperty(value = "properties.metadata")
-    private Map<String, String> metadata;
+    @JsonProperty(value = "properties")
+    private QueueProperties innerQueueProperties;
 
-    /*
-     * Integer indicating an approximate number of messages in the queue. This
-     * number is not lower than the actual number of messages in the queue, but
-     * could be higher.
+    /**
+     * Get the innerQueueProperties property: Queue resource properties.
+     *
+     * @return the innerQueueProperties value.
      */
-    @JsonProperty(value = "properties.approximateMessageCount", access = JsonProperty.Access.WRITE_ONLY)
-    private Integer approximateMessageCount;
+    private QueueProperties innerQueueProperties() {
+        return this.innerQueueProperties;
+    }
 
     /**
      * Get the metadata property: A name-value pair that represents queue metadata.
@@ -38,7 +37,7 @@ public class StorageQueueInner extends ProxyResource {
      * @return the metadata value.
      */
     public Map<String, String> metadata() {
-        return this.metadata;
+        return this.innerQueueProperties() == null ? null : this.innerQueueProperties().metadata();
     }
 
     /**
@@ -48,7 +47,10 @@ public class StorageQueueInner extends ProxyResource {
      * @return the StorageQueueInner object itself.
      */
     public StorageQueueInner withMetadata(Map<String, String> metadata) {
-        this.metadata = metadata;
+        if (this.innerQueueProperties() == null) {
+            this.innerQueueProperties = new QueueProperties();
+        }
+        this.innerQueueProperties().withMetadata(metadata);
         return this;
     }
 
@@ -59,7 +61,7 @@ public class StorageQueueInner extends ProxyResource {
      * @return the approximateMessageCount value.
      */
     public Integer approximateMessageCount() {
-        return this.approximateMessageCount;
+        return this.innerQueueProperties() == null ? null : this.innerQueueProperties().approximateMessageCount();
     }
 
     /**
@@ -68,5 +70,8 @@ public class StorageQueueInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerQueueProperties() != null) {
+            innerQueueProperties().validate();
+        }
     }
 }

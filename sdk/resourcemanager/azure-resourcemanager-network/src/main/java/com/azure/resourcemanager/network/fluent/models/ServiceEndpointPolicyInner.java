@@ -158,6 +158,53 @@ public final class ServiceEndpointPolicyInner extends Resource {
     }
 
     /**
+     * Get the serviceAlias property: The alias indicating if the policy belongs to a service.
+     *
+     * @return the serviceAlias value.
+     */
+    public String serviceAlias() {
+        return this.innerProperties() == null ? null : this.innerProperties().serviceAlias();
+    }
+
+    /**
+     * Set the serviceAlias property: The alias indicating if the policy belongs to a service.
+     *
+     * @param serviceAlias the serviceAlias value to set.
+     * @return the ServiceEndpointPolicyInner object itself.
+     */
+    public ServiceEndpointPolicyInner withServiceAlias(String serviceAlias) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ServiceEndpointPolicyPropertiesFormat();
+        }
+        this.innerProperties().withServiceAlias(serviceAlias);
+        return this;
+    }
+
+    /**
+     * Get the contextualServiceEndpointPolicies property: A collection of contextual service endpoint policy.
+     *
+     * @return the contextualServiceEndpointPolicies value.
+     */
+    public List<String> contextualServiceEndpointPolicies() {
+        return this.innerProperties() == null ? null : this.innerProperties().contextualServiceEndpointPolicies();
+    }
+
+    /**
+     * Set the contextualServiceEndpointPolicies property: A collection of contextual service endpoint policy.
+     *
+     * @param contextualServiceEndpointPolicies the contextualServiceEndpointPolicies value to set.
+     * @return the ServiceEndpointPolicyInner object itself.
+     */
+    public ServiceEndpointPolicyInner withContextualServiceEndpointPolicies(
+        List<String> contextualServiceEndpointPolicies) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ServiceEndpointPolicyPropertiesFormat();
+        }
+        this.innerProperties().withContextualServiceEndpointPolicies(contextualServiceEndpointPolicies);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.

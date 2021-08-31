@@ -25,6 +25,7 @@ public final class BulkPatchItemRequestOptions
      * @return the FilterPredicate associated with the request.
      */
     @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Deprecated() //forRemoval = true, since = "4.19"
     public String getFilterPredicate() {
         return this.filterPredicate;
     }
@@ -36,6 +37,7 @@ public final class BulkPatchItemRequestOptions
      * @return the current request options
      */
     @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Deprecated() //forRemoval = true, since = "4.19"
     public BulkPatchItemRequestOptions setFilterPredicate(String filterPredicate) {
         this.filterPredicate = filterPredicate;
         return this;
@@ -61,6 +63,7 @@ public final class BulkPatchItemRequestOptions
      * @return the current request options.
      */
     @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Deprecated() //forRemoval = true, since = "4.19"
     public BulkPatchItemRequestOptions setContentResponseOnWriteEnabled(Boolean contentResponseOnWriteEnabled) {
         super.setContentResponseOnWriteEnabledCore(contentResponseOnWriteEnabled);
         return this;
@@ -73,6 +76,7 @@ public final class BulkPatchItemRequestOptions
      * @return the current request options.
      */
     @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Deprecated() //forRemoval = true, since = "4.19"
     public BulkPatchItemRequestOptions setIfNoneMatchETag(final String ifNoneMatchEtag) {
         super.setIfNoneMatchETagCore(ifNoneMatchEtag);
         return this;
@@ -85,6 +89,7 @@ public final class BulkPatchItemRequestOptions
      * @return the current request options
      */
     @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Deprecated() //forRemoval = true, since = "4.19"
     public BulkPatchItemRequestOptions setIfMatchETag(final String ifMatchETag) {
         super.setIfMatchETagCore(ifMatchETag);
         return this;
