@@ -216,7 +216,7 @@ public class SchemaRegistryAvroSerializerTest {
             outputStream.write(new byte[]{0x00, 0x00, 0x00, 0x00});
             outputStream.write("aa".getBytes());
 
-            try (ByteArrayInputStream inputStream = new ByteArrayInputStream(outputStream.toByteArray())){
+            try (ByteArrayInputStream inputStream = new ByteArrayInputStream(outputStream.toByteArray())) {
                 StepVerifier.create(deserializer.deserializeAsync(inputStream,
                     TypeReference.createInstance(String.class)))
                     .verifyError(BufferUnderflowException.class);
