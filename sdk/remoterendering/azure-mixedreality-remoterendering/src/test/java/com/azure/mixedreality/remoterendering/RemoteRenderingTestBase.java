@@ -12,12 +12,9 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.Configuration;
-import com.azure.core.util.polling.PollerFlux;
-import com.azure.core.util.polling.SyncPoller;
 import com.azure.mixedreality.authentication.MixedRealityStsAsyncClient;
 import com.azure.mixedreality.authentication.MixedRealityStsClientBuilder;
 
-import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -123,13 +120,5 @@ public class RemoteRenderingTestBase extends TestBase {
         else {
             return playback;
         }
-    }
-
-    <T, U> SyncPoller<T, U> setSyncPollerPollInterval(SyncPoller<T, U> syncPoller) {
-        return interceptorManager.isPlaybackMode() ? syncPoller.setPollInterval(Duration.ofMillis(1)) : syncPoller;
-    }
-
-    <T, U> PollerFlux<T, U> setPollerFluxPollInterval(PollerFlux<T, U> pollerFlux) {
-        return interceptorManager.isPlaybackMode() ? pollerFlux.setPollInterval(Duration.ofMillis(1)) : pollerFlux;
     }
 }
