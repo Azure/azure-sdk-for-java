@@ -52,7 +52,7 @@ public class ServerTimeoutSample {
         LogsQueryResult logsQueryResult = response.getValue();
 
         // Sample to iterate by row
-        for (LogsTable table : logsQueryResult.getLogsTables()) {
+        for (LogsTable table : logsQueryResult.getAllTables()) {
             for (LogsTableRow row : table.getRows()) {
                 System.out.println("Row index " + row.getRowIndex());
                 row.getRow()

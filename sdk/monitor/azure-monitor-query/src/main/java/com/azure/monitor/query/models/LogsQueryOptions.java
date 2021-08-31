@@ -6,6 +6,7 @@ package com.azure.monitor.query.models;
 import com.azure.core.annotation.Fluent;
 
 import java.time.Duration;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -105,6 +106,25 @@ public final class LogsQueryOptions {
      */
     public LogsQueryOptions setAdditionalWorkspaces(List<String> additionalWorkspaces) {
         this.additionalWorkspaces = additionalWorkspaces;
+        return this;
+    }
+
+    /**
+     * Sets the list of additional workspaces on which this query is executed. The list can contain any of the
+     * following workspace identifiers:
+     * <ul>
+     *     <li>Workspace Name - human-readable string {@code <workspaceName>} of the OMS workspace </li>
+     *     <li>Qualified Name - string with format {@code <subscriptionName>/<resourceGroup>/<workspaceName>}</li>
+     *     <li>Workspace ID - GUID string</li>
+     *     <li>Azure Resource ID - string with format
+     *     {@code /subscriptions/<subscriptionId>/resourceGroups/<resourceGroup>/providers/microsoft
+     *     .operationalinsights/workspaces/<workspaceName>}</li>
+     * </ul>
+     * @param additionalWorkspaces additional workspaces on which this query is executed.
+     * @return The updated options instance.
+     */
+    public LogsQueryOptions setAdditionalWorkspaces(String... additionalWorkspaces) {
+        this.additionalWorkspaces = Arrays.asList(additionalWorkspaces);
         return this;
     }
 }
