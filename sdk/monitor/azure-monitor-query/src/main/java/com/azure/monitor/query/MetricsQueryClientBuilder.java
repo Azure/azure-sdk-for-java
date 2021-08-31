@@ -13,12 +13,20 @@ import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.monitor.query.metrics.implementation.MonitorManagementClientImplBuilder;
-import com.azure.monitor.query.metricsdefinitions.implementation.MetricsDefinitionsClientImplBuilder;
-import com.azure.monitor.query.metricsnamespaces.implementation.MetricsNamespacesClientImplBuilder;
+import com.azure.monitor.query.implementation.metrics.MonitorManagementClientImplBuilder;
+import com.azure.monitor.query.implementation.metricsdefinitions.MetricsDefinitionsClientImplBuilder;
+import com.azure.monitor.query.implementation.metricsnamespaces.MetricsNamespacesClientImplBuilder;
 
 /**
  * Fluent builder for creating instances of {@link MetricsQueryClient} and {@link MetricsQueryAsyncClient}.
+ *
+ * <p><strong>Instantiating an asynchronous Metrics query Client</strong></p>
+ *
+ * {@codesnippet com.azure.monitor.query.MetricsQueryAsyncClient.instantiation}
+ *
+ * <p><strong>Instantiating a synchronous Metrics query Client</strong></p>
+ *
+ * {@codesnippet com.azure.monitor.query.MetricsQueryClient.instantiation}
  */
 @ServiceClientBuilder(serviceClients = {MetricsQueryClient.class, MetricsQueryAsyncClient.class})
 public final class MetricsQueryClientBuilder {
