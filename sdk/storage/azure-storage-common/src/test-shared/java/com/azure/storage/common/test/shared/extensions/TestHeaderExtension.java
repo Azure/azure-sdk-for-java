@@ -19,14 +19,17 @@ public final class TestHeaderExtension extends AbstractGlobalExtension {
 
     private static class TestHeaderIterationInterceptor implements IMethodInterceptor {
         @Override
-        public void intercept(IMethodInvocation invocation) {
+        public void intercept(IMethodInvocation invocation) throws Throwable {
             // Print out the test name to create breadcrumbs in our test logging in case anything hangs.
             String testName = TestNameProvider.getTestName(invocation.getIteration());
-            System.out.printf("========================= %s =========================%n", testName);
+            System.out.printf("%s is starting", testName);
+            long startTimestamp = System.currentTimeMillis();
+
             try {
                 invocation.proceed();
-            } catch (Throwable throwable) {
-                throwable.printStackTrace();
+            } finally {
+                long duration = System.currentTimeMillis() - startTimestamp;
+                System.out.printf("%s finished and took %d ms", testName, duration);
             }
         }
     }
