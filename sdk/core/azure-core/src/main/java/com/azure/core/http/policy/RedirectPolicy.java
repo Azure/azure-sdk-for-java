@@ -19,7 +19,6 @@ import java.util.Set;
  */
 public final class RedirectPolicy implements HttpPipelinePolicy {
     private final RedirectStrategy redirectStrategy;
-    private final Set<String> attemptedRedirectUrls = new HashSet<>();
 
     /**
      * Creates {@link RedirectPolicy} with default {@link DefaultRedirectStrategy} as {@link RedirectStrategy} and
@@ -42,7 +41,8 @@ public final class RedirectPolicy implements HttpPipelinePolicy {
 
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-        return attemptRedirect(context, next, context.getHttpRequest(), 1);
+        // Reset the attemptedRedirectUrls for each individual request.
+        return attemptRedirect(context, next, context.getHttpRequest(), 1, new HashSet<>());
     }
 
     /**
@@ -52,23 +52,22 @@ public final class RedirectPolicy implements HttpPipelinePolicy {
     private Mono<HttpResponse> attemptRedirect(final HttpPipelineCallContext context,
                                                final HttpPipelineNextPolicy next,
                                                final HttpRequest originalHttpRequest,
-                                               final int redirectAttempt) {
+                                               final int redirectAttempt,
+                                               Set<String> attemptedRedirectUrls) {
         // make sure the context is not modified during retry, except for the URL
         context.setHttpRequest(originalHttpRequest.copy());
 
         return next.clone().process()
             .flatMap(httpResponse -> {
-                // Reset the attemptedRedirectUrls per individual requests.
                 if (redirectStrategy.shouldAttemptRedirect(context, httpResponse, redirectAttempt,
                     attemptedRedirectUrls)) {
                     HttpRequest redirectRequestCopy = redirectStrategy.createRedirectRequest(httpResponse);
                     return httpResponse.getBody()
                         .ignoreElements()
-                        .then(attemptRedirect(context, next, redirectRequestCopy, redirectAttempt + 1));
+                        .then(attemptRedirect(context, next, redirectRequestCopy, redirectAttempt + 1, attemptedRedirectUrls));
                 } else {
                     return Mono.just(httpResponse);
                 }
             });
     }
-
 }

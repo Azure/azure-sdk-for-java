@@ -271,6 +271,36 @@ public class RedirectPolicyTest {
         assertEquals(308, response.getStatusCode());
     }
 
+    @Test
+    public void redirectForMultipleRequests() throws MalformedURLException {
+        RecordingHttpClient httpClient = new RecordingHttpClient(request -> {
+            if (request.getUrl().toString().equals("http://localhost/")) {
+                Map<String, String> headers = new HashMap<>();
+                headers.put("Location", "http://redirecthost/");
+                HttpHeaders httpHeader = new HttpHeaders(headers);
+                return Mono.just(new MockHttpResponse(request, 308, httpHeader));
+            } else {
+                return Mono.just(new MockHttpResponse(request, 200));
+            }
+        });
+
+        HttpPipeline pipeline = new HttpPipelineBuilder()
+            .httpClient(httpClient)
+            .policies(new RedirectPolicy())
+            .build();
+
+        HttpResponse response1 = pipeline.send(new HttpRequest(HttpMethod.GET,
+            new URL("http://localhost/"))).block();
+
+        HttpResponse response2 = pipeline.send(new HttpRequest(HttpMethod.GET,
+            new URL("http://localhost/"))).block();
+
+        assertEquals(4, httpClient.getCount());
+        // Both requests successfully redirected for same request redirect lcoation
+        assertEquals(200, response1.getStatusCode());
+        assertEquals(200, response2.getStatusCode());
+    }
+
     static class RecordingHttpClient implements HttpClient {
 
         private final AtomicInteger count = new AtomicInteger();
