@@ -11,15 +11,19 @@ import com.azure.resourcemanager.datafactory.models.DataFlowDebugCommandType;
 
 /** Samples for DataFlowDebugSession ExecuteCommand. */
 public final class DataFlowDebugSessionExecuteCommandSamples {
+    /*
+     * operationId: DataFlowDebugSession_ExecuteCommand
+     * api-version: 2018-06-01
+     * x-ms-examples: DataFlowDebugSession_ExecuteCommand
+     */
     /**
      * Sample code: DataFlowDebugSession_ExecuteCommand.
      *
-     * @param dataFactoryManager Entry point to DataFactoryManager. The Azure Data Factory V2 management API provides a
-     *     RESTful set of web services that interact with Azure Data Factory V2 services.
+     * @param manager Entry point to DataFactoryManager.
      */
     public static void dataFlowDebugSessionExecuteCommand(
-        com.azure.resourcemanager.datafactory.DataFactoryManager dataFactoryManager) {
-        dataFactoryManager
+        com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
+        manager
             .dataFlowDebugSessions()
             .executeCommand(
                 "exampleResourceGroup",

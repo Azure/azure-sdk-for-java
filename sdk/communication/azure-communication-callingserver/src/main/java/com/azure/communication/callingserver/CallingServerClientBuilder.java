@@ -91,7 +91,7 @@ public final class CallingServerClientBuilder {
      * @return Updated {@link CallingServerClientBuilder} object.
      * @throws NullPointerException If {@code tokenCredential} is null.
      */
-    CallingServerClientBuilder credential(TokenCredential tokenCredential) {
+    public CallingServerClientBuilder credential(TokenCredential tokenCredential) {
         this.tokenCredential = Objects.requireNonNull(tokenCredential, "'tokenCredential' cannot be null.");
         return this;
     }

@@ -8,15 +8,18 @@ import com.azure.core.util.Context;
 
 /** Samples for Databases ListByServer. */
 public final class DatabasesListByServerSamples {
+    /*
+     * operationId: Databases_ListByServer
+     * api-version: 2021-06-01
+     * x-ms-examples: List databases in a server
+     */
     /**
      * Sample code: List databases in a server.
      *
-     * @param postgreSqlManager Entry point to PostgreSqlManager. The Microsoft Azure management API provides create,
-     *     read, update, and delete functionality for Azure PostgreSQL resources including servers, databases, firewall
-     *     rules, VNET rules, security alert policies, log files and configurations with new business model.
+     * @param manager Entry point to PostgreSqlManager.
      */
     public static void listDatabasesInAServer(
-        com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager postgreSqlManager) {
-        postgreSqlManager.databases().listByServer("TestGroup", "testserver", Context.NONE);
+        com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager manager) {
+        manager.databases().listByServer("TestGroup", "testserver", Context.NONE);
     }
 }

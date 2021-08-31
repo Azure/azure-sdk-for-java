@@ -8,16 +8,18 @@ import com.azure.core.util.Context;
 
 /** Samples for DataFlowDebugSession QueryByFactory. */
 public final class DataFlowDebugSessionQueryByFactorySamples {
+    /*
+     * operationId: DataFlowDebugSession_QueryByFactory
+     * api-version: 2018-06-01
+     * x-ms-examples: DataFlowDebugSession_QueryByFactory
+     */
     /**
      * Sample code: DataFlowDebugSession_QueryByFactory.
      *
-     * @param dataFactoryManager Entry point to DataFactoryManager. The Azure Data Factory V2 management API provides a
-     *     RESTful set of web services that interact with Azure Data Factory V2 services.
+     * @param manager Entry point to DataFactoryManager.
      */
     public static void dataFlowDebugSessionQueryByFactory(
-        com.azure.resourcemanager.datafactory.DataFactoryManager dataFactoryManager) {
-        dataFactoryManager
-            .dataFlowDebugSessions()
-            .queryByFactory("exampleResourceGroup", "exampleFactoryName", Context.NONE);
+        com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
+        manager.dataFlowDebugSessions().queryByFactory("exampleResourceGroup", "exampleFactoryName", Context.NONE);
     }
 }

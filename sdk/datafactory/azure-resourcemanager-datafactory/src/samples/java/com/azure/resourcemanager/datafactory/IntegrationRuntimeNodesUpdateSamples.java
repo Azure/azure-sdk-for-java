@@ -9,15 +9,18 @@ import com.azure.resourcemanager.datafactory.models.UpdateIntegrationRuntimeNode
 
 /** Samples for IntegrationRuntimeNodes Update. */
 public final class IntegrationRuntimeNodesUpdateSamples {
+    /*
+     * operationId: IntegrationRuntimeNodes_Update
+     * api-version: 2018-06-01
+     * x-ms-examples: IntegrationRuntimeNodes_Update
+     */
     /**
      * Sample code: IntegrationRuntimeNodes_Update.
      *
-     * @param dataFactoryManager Entry point to DataFactoryManager. The Azure Data Factory V2 management API provides a
-     *     RESTful set of web services that interact with Azure Data Factory V2 services.
+     * @param manager Entry point to DataFactoryManager.
      */
-    public static void integrationRuntimeNodesUpdate(
-        com.azure.resourcemanager.datafactory.DataFactoryManager dataFactoryManager) {
-        dataFactoryManager
+    public static void integrationRuntimeNodesUpdate(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
+        manager
             .integrationRuntimeNodes()
             .updateWithResponse(
                 "exampleResourceGroup",

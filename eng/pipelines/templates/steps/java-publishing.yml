@@ -16,7 +16,7 @@ steps:
         workingDirectory: $(Agent.BuildDirectory)
         filePath: ${{ parameters.JavaRepoRoot }}/eng/scripts/Publish-MavenPackages.ps1
         arguments: >
-          -ArtifactDirectory ${{ parameters.ArtifactDirector }}
+          -ArtifactDirectory ${{ parameters.ArtifactDirectory }}
           -GroupIDFilter ${{ parameters.GroupID }}
           -ArtifactIDFilter ${{ parameters.ArtifactID }}
           -RepositoryUrl https://pkgs.dev.azure.com/azure-sdk/public/_packaging/azure-sdk-$(Build.BuildID)/maven/v1

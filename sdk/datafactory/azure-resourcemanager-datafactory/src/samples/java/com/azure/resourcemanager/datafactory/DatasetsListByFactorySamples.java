@@ -8,14 +8,17 @@ import com.azure.core.util.Context;
 
 /** Samples for Datasets ListByFactory. */
 public final class DatasetsListByFactorySamples {
+    /*
+     * operationId: Datasets_ListByFactory
+     * api-version: 2018-06-01
+     * x-ms-examples: Datasets_ListByFactory
+     */
     /**
      * Sample code: Datasets_ListByFactory.
      *
-     * @param dataFactoryManager Entry point to DataFactoryManager. The Azure Data Factory V2 management API provides a
-     *     RESTful set of web services that interact with Azure Data Factory V2 services.
+     * @param manager Entry point to DataFactoryManager.
      */
-    public static void datasetsListByFactory(
-        com.azure.resourcemanager.datafactory.DataFactoryManager dataFactoryManager) {
-        dataFactoryManager.datasets().listByFactory("exampleResourceGroup", "exampleFactoryName", Context.NONE);
+    public static void datasetsListByFactory(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
+        manager.datasets().listByFactory("exampleResourceGroup", "exampleFactoryName", Context.NONE);
     }
 }

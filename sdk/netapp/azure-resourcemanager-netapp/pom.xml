@@ -9,11 +9,11 @@
 
   <groupId>com.azure.resourcemanager</groupId>
   <artifactId>azure-resourcemanager-netapp</artifactId>
-  <version>1.0.0-beta.5</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-netapp;current} -->
+  <version>1.0.0-beta.6</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-netapp;current} -->
   <packaging>jar</packaging>
 
   <name>Microsoft Azure SDK for NetAppFiles Management</name>
-  <description>This package contains Microsoft Azure SDK for NetAppFiles Management SDK. For documentation on how to use this package, please see https://aka.ms/azsdk/java/mgmt. Microsoft NetApp Files Azure Resource Provider specification. Package tag package-netapp-2021-04-01.</description>
+  <description>This package contains Microsoft Azure SDK for NetAppFiles Management SDK. For documentation on how to use this package, please see https://aka.ms/azsdk/java/mgmt. Microsoft NetApp Files Azure Resource Provider specification. Package tag package-netapp-2021-06-01.</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
   <licenses>
@@ -66,7 +66,7 @@
     <dependency>
       <groupId>com.azure.resourcemanager</groupId>
       <artifactId>azure-resourcemanager-resources</artifactId>
-      <version>2.6.0</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-resources;dependency} -->
+      <version>2.7.0</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-resources;dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>

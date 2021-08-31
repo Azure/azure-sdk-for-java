@@ -6,6 +6,7 @@ package com.azure.monitor.opentelemetry.exporter.implementation;
 
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.ExpectedResponses;
+import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
 import com.azure.core.annotation.Post;
@@ -24,12 +25,11 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
+import java.util.List;
+
 import com.azure.monitor.opentelemetry.exporter.implementation.models.ExportResult;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.ExportResultException;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.TelemetryItem;
-
-import java.util.List;
-
 import reactor.core.publisher.Mono;
 
 /** Initializes a new instance of the ApplicationInsightsClient type. */
@@ -117,53 +117,62 @@ public final class ApplicationInsightsClientImpl {
      * The interface defining all the services for ApplicationInsightsClient to be used by the proxy service to perform
      * REST calls.
      */
-    @Host("{Host}/v2")
+    @Host("{Host}/v2.1")
     @ServiceInterface(name = "ApplicationInsightsC")
     private interface ApplicationInsightsClientService {
         @Post("/track")
         @ExpectedResponses({200, 206})
+        @UnexpectedResponseExceptionType(
+                value = ExportResultException.class,
+                code = {400, 402, 429, 500, 503})
         @UnexpectedResponseExceptionType(ExportResultException.class)
         Mono<Response<ExportResult>> track(
                 @HostParam("Host") String host,
                 @BodyParam("application/json") List<TelemetryItem> body,
+                @HeaderParam("Accept") String accept,
                 Context context);
     }
 
     /**
      * This operation sends a sequence of telemetry events that will be monitored by Azure Monitor.
      *
-     * @param body Array of TelemetryItem.
+     * @param body The list of telemetry events to track.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ExportResultException thrown if the request is rejected by server.
+     * @throws ExportResultException thrown if the request is rejected by server on status code 400, 402, 429, 500, 503.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response containing the status of each telemetry item.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ExportResult>> trackWithResponseAsync(List<TelemetryItem> body) {
-        return FluxUtil.withContext(context -> service.track(this.getHost(), body, context));
+        final String accept = "application/json";
+        return FluxUtil.withContext(context -> service.track(this.getHost(), body, accept, context));
     }
 
     /**
      * This operation sends a sequence of telemetry events that will be monitored by Azure Monitor.
      *
-     * @param body Array of TelemetryItem.
+     * @param body The list of telemetry events to track.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ExportResultException thrown if the request is rejected by server.
+     * @throws ExportResultException thrown if the request is rejected by server on status code 400, 402, 429, 500, 503.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response containing the status of each telemetry item.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ExportResult>> trackWithResponseAsync(List<TelemetryItem> body, Context context) {
-        return service.track(this.getHost(), body, context);
+        final String accept = "application/json";
+        return service.track(this.getHost(), body, accept, context);
     }
 
     /**
      * This operation sends a sequence of telemetry events that will be monitored by Azure Monitor.
      *
-     * @param body Array of TelemetryItem.
+     * @param body The list of telemetry events to track.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ExportResultException thrown if the request is rejected by server.
+     * @throws ExportResultException thrown if the request is rejected by server on status code 400, 402, 429, 500, 503.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response containing the status of each telemetry item.
      */
@@ -183,10 +192,11 @@ public final class ApplicationInsightsClientImpl {
     /**
      * This operation sends a sequence of telemetry events that will be monitored by Azure Monitor.
      *
-     * @param body Array of TelemetryItem.
+     * @param body The list of telemetry events to track.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ExportResultException thrown if the request is rejected by server.
+     * @throws ExportResultException thrown if the request is rejected by server on status code 400, 402, 429, 500, 503.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response containing the status of each telemetry item.
      */

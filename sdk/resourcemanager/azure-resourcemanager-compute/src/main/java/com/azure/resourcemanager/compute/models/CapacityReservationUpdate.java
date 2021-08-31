@@ -5,8 +5,8 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.compute.fluent.models.CapacityReservationProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
@@ -14,10 +14,15 @@ import java.util.List;
 import java.util.Map;
 
 /** Specifies information about the capacity reservation. Only tags and sku.capacity can be updated. */
-@JsonFlatten
 @Fluent
-public class CapacityReservationUpdate extends UpdateResource {
+public final class CapacityReservationUpdate extends UpdateResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(CapacityReservationUpdate.class);
+
+    /*
+     * Properties of the Capacity reservation.
+     */
+    @JsonProperty(value = "properties")
+    private CapacityReservationProperties innerProperties;
 
     /*
      * SKU of the resource for which capacity needs be reserved. The SKU name
@@ -30,37 +35,14 @@ public class CapacityReservationUpdate extends UpdateResource {
     @JsonProperty(value = "sku")
     private Sku sku;
 
-    /*
-     * A unique id generated and assigned to the capacity reservation by the
-     * platform which does not change throughout the lifetime of the resource.
+    /**
+     * Get the innerProperties property: Properties of the Capacity reservation.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.reservationId", access = JsonProperty.Access.WRITE_ONLY)
-    private String reservationId;
-
-    /*
-     * A list of all virtual machine resource ids that are associated with the
-     * capacity reservation.
-     */
-    @JsonProperty(value = "properties.virtualMachinesAssociated", access = JsonProperty.Access.WRITE_ONLY)
-    private List<SubResourceReadOnly> virtualMachinesAssociated;
-
-    /*
-     * The date time when the capacity reservation was last updated.
-     */
-    @JsonProperty(value = "properties.provisioningTime", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime provisioningTime;
-
-    /*
-     * The provisioning state, which only appears in the response.
-     */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private String provisioningState;
-
-    /*
-     * The Capacity reservation instance view.
-     */
-    @JsonProperty(value = "properties.instanceView", access = JsonProperty.Access.WRITE_ONLY)
-    private CapacityReservationInstanceView instanceView;
+    private CapacityReservationProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the sku property: SKU of the resource for which capacity needs be reserved. The SKU name and capacity is
@@ -88,6 +70,13 @@ public class CapacityReservationUpdate extends UpdateResource {
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public CapacityReservationUpdate withTags(Map<String, String> tags) {
+        super.withTags(tags);
+        return this;
+    }
+
     /**
      * Get the reservationId property: A unique id generated and assigned to the capacity reservation by the platform
      * which does not change throughout the lifetime of the resource.
@@ -95,7 +84,7 @@ public class CapacityReservationUpdate extends UpdateResource {
      * @return the reservationId value.
      */
     public String reservationId() {
-        return this.reservationId;
+        return this.innerProperties() == null ? null : this.innerProperties().reservationId();
     }
 
     /**
@@ -105,7 +94,7 @@ public class CapacityReservationUpdate extends UpdateResource {
      * @return the virtualMachinesAssociated value.
      */
     public List<SubResourceReadOnly> virtualMachinesAssociated() {
-        return this.virtualMachinesAssociated;
+        return this.innerProperties() == null ? null : this.innerProperties().virtualMachinesAssociated();
     }
 
     /**
@@ -114,7 +103,7 @@ public class CapacityReservationUpdate extends UpdateResource {
      * @return the provisioningTime value.
      */
     public OffsetDateTime provisioningTime() {
-        return this.provisioningTime;
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningTime();
     }
 
     /**
@@ -123,7 +112,7 @@ public class CapacityReservationUpdate extends UpdateResource {
      * @return the provisioningState value.
      */
     public String provisioningState() {
-        return this.provisioningState;
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
     /**
@@ -132,14 +121,7 @@ public class CapacityReservationUpdate extends UpdateResource {
      * @return the instanceView value.
      */
     public CapacityReservationInstanceView instanceView() {
-        return this.instanceView;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public CapacityReservationUpdate withTags(Map<String, String> tags) {
-        super.withTags(tags);
-        return this;
+        return this.innerProperties() == null ? null : this.innerProperties().instanceView();
     }
 
     /**
@@ -150,14 +132,11 @@ public class CapacityReservationUpdate extends UpdateResource {
     @Override
     public void validate() {
         super.validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
         if (sku() != null) {
             sku().validate();
-        }
-        if (virtualMachinesAssociated() != null) {
-            virtualMachinesAssociated().forEach(e -> e.validate());
-        }
-        if (instanceView() != null) {
-            instanceView().validate();
         }
     }
 }

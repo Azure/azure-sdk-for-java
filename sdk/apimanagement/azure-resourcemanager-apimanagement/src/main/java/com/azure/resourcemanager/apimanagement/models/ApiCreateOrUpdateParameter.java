@@ -5,390 +5,123 @@
 package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.apimanagement.fluent.models.ApiCreateOrUpdateProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** API Create or Update Parameters. */
-@JsonFlatten
 @Fluent
-public class ApiCreateOrUpdateParameter {
+public final class ApiCreateOrUpdateParameter {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ApiCreateOrUpdateParameter.class);
 
     /*
-     * Description of the API. May include HTML formatting tags.
+     * Api entity create of update properties.
      */
-    @JsonProperty(value = "properties.description")
-    private String description;
-
-    /*
-     * Collection of authentication settings included into this API.
-     */
-    @JsonProperty(value = "properties.authenticationSettings")
-    private AuthenticationSettingsContract authenticationSettings;
-
-    /*
-     * Protocols over which API is made available.
-     */
-    @JsonProperty(value = "properties.subscriptionKeyParameterNames")
-    private SubscriptionKeyParameterNamesContract subscriptionKeyParameterNames;
-
-    /*
-     * Type of API.
-     */
-    @JsonProperty(value = "properties.type")
-    private ApiType apiType;
-
-    /*
-     * Describes the Revision of the Api. If no value is provided, default
-     * revision 1 is created
-     */
-    @JsonProperty(value = "properties.apiRevision")
-    private String apiRevision;
-
-    /*
-     * Indicates the Version identifier of the API if the API is versioned
-     */
-    @JsonProperty(value = "properties.apiVersion")
-    private String apiVersion;
-
-    /*
-     * Indicates if API revision is current api revision.
-     */
-    @JsonProperty(value = "properties.isCurrent")
-    private Boolean isCurrent;
-
-    /*
-     * Indicates if API revision is accessible via the gateway.
-     */
-    @JsonProperty(value = "properties.isOnline", access = JsonProperty.Access.WRITE_ONLY)
-    private Boolean isOnline;
-
-    /*
-     * Description of the Api Revision.
-     */
-    @JsonProperty(value = "properties.apiRevisionDescription")
-    private String apiRevisionDescription;
-
-    /*
-     * Description of the Api Version.
-     */
-    @JsonProperty(value = "properties.apiVersionDescription")
-    private String apiVersionDescription;
-
-    /*
-     * A resource identifier for the related ApiVersionSet.
-     */
-    @JsonProperty(value = "properties.apiVersionSetId")
-    private String apiVersionSetId;
-
-    /*
-     * Specifies whether an API or Product subscription is required for
-     * accessing the API.
-     */
-    @JsonProperty(value = "properties.subscriptionRequired")
-    private Boolean subscriptionRequired;
-
-    /*
-     * API identifier of the source API.
-     */
-    @JsonProperty(value = "properties.sourceApiId")
-    private String sourceApiId;
-
-    /*
-     * API name. Must be 1 to 300 characters long.
-     */
-    @JsonProperty(value = "properties.displayName")
-    private String displayName;
-
-    /*
-     * Absolute URL of the backend service implementing this API. Cannot be
-     * more than 2000 characters long.
-     */
-    @JsonProperty(value = "properties.serviceUrl")
-    private String serviceUrl;
-
-    /*
-     * Relative URL uniquely identifying this API and all of its resource paths
-     * within the API Management service instance. It is appended to the API
-     * endpoint base URL specified during the service instance creation to form
-     * a public URL for this API.
-     */
-    @JsonProperty(value = "properties.path")
-    private String path;
-
-    /*
-     * Describes on which protocols the operations in this API can be invoked.
-     */
-    @JsonProperty(value = "properties.protocols")
-    private List<Protocol> protocols;
-
-    /*
-     * Version set details
-     */
-    @JsonProperty(value = "properties.apiVersionSet")
-    private ApiVersionSetContractDetails apiVersionSet;
-
-    /*
-     * Content value when Importing an API.
-     */
-    @JsonProperty(value = "properties.value")
-    private String value;
-
-    /*
-     * Format of the Content in which the API is getting imported.
-     */
-    @JsonProperty(value = "properties.format")
-    private ContentFormat format;
-
-    /*
-     * Criteria to limit import of WSDL to a subset of the document.
-     */
-    @JsonProperty(value = "properties.wsdlSelector")
-    private ApiCreateOrUpdatePropertiesWsdlSelector wsdlSelector;
-
-    /*
-     * Type of Api to create.
-     * * `http` creates a SOAP to REST API
-     * * `soap` creates a SOAP pass-through API .
-     */
-    @JsonProperty(value = "properties.apiType")
-    private SoapApiType soapApiType;
+    @JsonProperty(value = "properties")
+    private ApiCreateOrUpdateProperties innerProperties;
 
     /**
-     * Get the description property: Description of the API. May include HTML formatting tags.
+     * Get the innerProperties property: Api entity create of update properties.
      *
-     * @return the description value.
+     * @return the innerProperties value.
      */
-    public String description() {
-        return this.description;
+    private ApiCreateOrUpdateProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /**
-     * Set the description property: Description of the API. May include HTML formatting tags.
+     * Get the value property: Content value when Importing an API.
      *
-     * @param description the description value to set.
+     * @return the value value.
+     */
+    public String value() {
+        return this.innerProperties() == null ? null : this.innerProperties().value();
+    }
+
+    /**
+     * Set the value property: Content value when Importing an API.
+     *
+     * @param value the value value to set.
      * @return the ApiCreateOrUpdateParameter object itself.
      */
-    public ApiCreateOrUpdateParameter withDescription(String description) {
-        this.description = description;
+    public ApiCreateOrUpdateParameter withValue(String value) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApiCreateOrUpdateProperties();
+        }
+        this.innerProperties().withValue(value);
         return this;
     }
 
     /**
-     * Get the authenticationSettings property: Collection of authentication settings included into this API.
+     * Get the format property: Format of the Content in which the API is getting imported.
      *
-     * @return the authenticationSettings value.
+     * @return the format value.
      */
-    public AuthenticationSettingsContract authenticationSettings() {
-        return this.authenticationSettings;
+    public ContentFormat format() {
+        return this.innerProperties() == null ? null : this.innerProperties().format();
     }
 
     /**
-     * Set the authenticationSettings property: Collection of authentication settings included into this API.
+     * Set the format property: Format of the Content in which the API is getting imported.
      *
-     * @param authenticationSettings the authenticationSettings value to set.
+     * @param format the format value to set.
      * @return the ApiCreateOrUpdateParameter object itself.
      */
-    public ApiCreateOrUpdateParameter withAuthenticationSettings(
-        AuthenticationSettingsContract authenticationSettings) {
-        this.authenticationSettings = authenticationSettings;
+    public ApiCreateOrUpdateParameter withFormat(ContentFormat format) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApiCreateOrUpdateProperties();
+        }
+        this.innerProperties().withFormat(format);
         return this;
     }
 
     /**
-     * Get the subscriptionKeyParameterNames property: Protocols over which API is made available.
+     * Get the wsdlSelector property: Criteria to limit import of WSDL to a subset of the document.
      *
-     * @return the subscriptionKeyParameterNames value.
+     * @return the wsdlSelector value.
      */
-    public SubscriptionKeyParameterNamesContract subscriptionKeyParameterNames() {
-        return this.subscriptionKeyParameterNames;
+    public ApiCreateOrUpdatePropertiesWsdlSelector wsdlSelector() {
+        return this.innerProperties() == null ? null : this.innerProperties().wsdlSelector();
     }
 
     /**
-     * Set the subscriptionKeyParameterNames property: Protocols over which API is made available.
+     * Set the wsdlSelector property: Criteria to limit import of WSDL to a subset of the document.
      *
-     * @param subscriptionKeyParameterNames the subscriptionKeyParameterNames value to set.
+     * @param wsdlSelector the wsdlSelector value to set.
      * @return the ApiCreateOrUpdateParameter object itself.
      */
-    public ApiCreateOrUpdateParameter withSubscriptionKeyParameterNames(
-        SubscriptionKeyParameterNamesContract subscriptionKeyParameterNames) {
-        this.subscriptionKeyParameterNames = subscriptionKeyParameterNames;
+    public ApiCreateOrUpdateParameter withWsdlSelector(ApiCreateOrUpdatePropertiesWsdlSelector wsdlSelector) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApiCreateOrUpdateProperties();
+        }
+        this.innerProperties().withWsdlSelector(wsdlSelector);
         return this;
     }
 
     /**
-     * Get the apiType property: Type of API.
+     * Get the soapApiType property: Type of Api to create. * `http` creates a SOAP to REST API * `soap` creates a SOAP
+     * pass-through API .
      *
-     * @return the apiType value.
+     * @return the soapApiType value.
      */
-    public ApiType apiType() {
-        return this.apiType;
+    public SoapApiType soapApiType() {
+        return this.innerProperties() == null ? null : this.innerProperties().soapApiType();
     }
 
     /**
-     * Set the apiType property: Type of API.
+     * Set the soapApiType property: Type of Api to create. * `http` creates a SOAP to REST API * `soap` creates a SOAP
+     * pass-through API .
      *
-     * @param apiType the apiType value to set.
+     * @param soapApiType the soapApiType value to set.
      * @return the ApiCreateOrUpdateParameter object itself.
      */
-    public ApiCreateOrUpdateParameter withApiType(ApiType apiType) {
-        this.apiType = apiType;
-        return this;
-    }
-
-    /**
-     * Get the apiRevision property: Describes the Revision of the Api. If no value is provided, default revision 1 is
-     * created.
-     *
-     * @return the apiRevision value.
-     */
-    public String apiRevision() {
-        return this.apiRevision;
-    }
-
-    /**
-     * Set the apiRevision property: Describes the Revision of the Api. If no value is provided, default revision 1 is
-     * created.
-     *
-     * @param apiRevision the apiRevision value to set.
-     * @return the ApiCreateOrUpdateParameter object itself.
-     */
-    public ApiCreateOrUpdateParameter withApiRevision(String apiRevision) {
-        this.apiRevision = apiRevision;
-        return this;
-    }
-
-    /**
-     * Get the apiVersion property: Indicates the Version identifier of the API if the API is versioned.
-     *
-     * @return the apiVersion value.
-     */
-    public String apiVersion() {
-        return this.apiVersion;
-    }
-
-    /**
-     * Set the apiVersion property: Indicates the Version identifier of the API if the API is versioned.
-     *
-     * @param apiVersion the apiVersion value to set.
-     * @return the ApiCreateOrUpdateParameter object itself.
-     */
-    public ApiCreateOrUpdateParameter withApiVersion(String apiVersion) {
-        this.apiVersion = apiVersion;
-        return this;
-    }
-
-    /**
-     * Get the isCurrent property: Indicates if API revision is current api revision.
-     *
-     * @return the isCurrent value.
-     */
-    public Boolean isCurrent() {
-        return this.isCurrent;
-    }
-
-    /**
-     * Set the isCurrent property: Indicates if API revision is current api revision.
-     *
-     * @param isCurrent the isCurrent value to set.
-     * @return the ApiCreateOrUpdateParameter object itself.
-     */
-    public ApiCreateOrUpdateParameter withIsCurrent(Boolean isCurrent) {
-        this.isCurrent = isCurrent;
-        return this;
-    }
-
-    /**
-     * Get the isOnline property: Indicates if API revision is accessible via the gateway.
-     *
-     * @return the isOnline value.
-     */
-    public Boolean isOnline() {
-        return this.isOnline;
-    }
-
-    /**
-     * Get the apiRevisionDescription property: Description of the Api Revision.
-     *
-     * @return the apiRevisionDescription value.
-     */
-    public String apiRevisionDescription() {
-        return this.apiRevisionDescription;
-    }
-
-    /**
-     * Set the apiRevisionDescription property: Description of the Api Revision.
-     *
-     * @param apiRevisionDescription the apiRevisionDescription value to set.
-     * @return the ApiCreateOrUpdateParameter object itself.
-     */
-    public ApiCreateOrUpdateParameter withApiRevisionDescription(String apiRevisionDescription) {
-        this.apiRevisionDescription = apiRevisionDescription;
-        return this;
-    }
-
-    /**
-     * Get the apiVersionDescription property: Description of the Api Version.
-     *
-     * @return the apiVersionDescription value.
-     */
-    public String apiVersionDescription() {
-        return this.apiVersionDescription;
-    }
-
-    /**
-     * Set the apiVersionDescription property: Description of the Api Version.
-     *
-     * @param apiVersionDescription the apiVersionDescription value to set.
-     * @return the ApiCreateOrUpdateParameter object itself.
-     */
-    public ApiCreateOrUpdateParameter withApiVersionDescription(String apiVersionDescription) {
-        this.apiVersionDescription = apiVersionDescription;
-        return this;
-    }
-
-    /**
-     * Get the apiVersionSetId property: A resource identifier for the related ApiVersionSet.
-     *
-     * @return the apiVersionSetId value.
-     */
-    public String apiVersionSetId() {
-        return this.apiVersionSetId;
-    }
-
-    /**
-     * Set the apiVersionSetId property: A resource identifier for the related ApiVersionSet.
-     *
-     * @param apiVersionSetId the apiVersionSetId value to set.
-     * @return the ApiCreateOrUpdateParameter object itself.
-     */
-    public ApiCreateOrUpdateParameter withApiVersionSetId(String apiVersionSetId) {
-        this.apiVersionSetId = apiVersionSetId;
-        return this;
-    }
-
-    /**
-     * Get the subscriptionRequired property: Specifies whether an API or Product subscription is required for accessing
-     * the API.
-     *
-     * @return the subscriptionRequired value.
-     */
-    public Boolean subscriptionRequired() {
-        return this.subscriptionRequired;
-    }
-
-    /**
-     * Set the subscriptionRequired property: Specifies whether an API or Product subscription is required for accessing
-     * the API.
-     *
-     * @param subscriptionRequired the subscriptionRequired value to set.
-     * @return the ApiCreateOrUpdateParameter object itself.
-     */
-    public ApiCreateOrUpdateParameter withSubscriptionRequired(Boolean subscriptionRequired) {
-        this.subscriptionRequired = subscriptionRequired;
+    public ApiCreateOrUpdateParameter withSoapApiType(SoapApiType soapApiType) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApiCreateOrUpdateProperties();
+        }
+        this.innerProperties().withSoapApiType(soapApiType);
         return this;
     }
 
@@ -398,7 +131,7 @@ public class ApiCreateOrUpdateParameter {
      * @return the sourceApiId value.
      */
     public String sourceApiId() {
-        return this.sourceApiId;
+        return this.innerProperties() == null ? null : this.innerProperties().sourceApiId();
     }
 
     /**
@@ -408,7 +141,10 @@ public class ApiCreateOrUpdateParameter {
      * @return the ApiCreateOrUpdateParameter object itself.
      */
     public ApiCreateOrUpdateParameter withSourceApiId(String sourceApiId) {
-        this.sourceApiId = sourceApiId;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApiCreateOrUpdateProperties();
+        }
+        this.innerProperties().withSourceApiId(sourceApiId);
         return this;
     }
 
@@ -418,7 +154,7 @@ public class ApiCreateOrUpdateParameter {
      * @return the displayName value.
      */
     public String displayName() {
-        return this.displayName;
+        return this.innerProperties() == null ? null : this.innerProperties().displayName();
     }
 
     /**
@@ -428,7 +164,10 @@ public class ApiCreateOrUpdateParameter {
      * @return the ApiCreateOrUpdateParameter object itself.
      */
     public ApiCreateOrUpdateParameter withDisplayName(String displayName) {
-        this.displayName = displayName;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApiCreateOrUpdateProperties();
+        }
+        this.innerProperties().withDisplayName(displayName);
         return this;
     }
 
@@ -439,7 +178,7 @@ public class ApiCreateOrUpdateParameter {
      * @return the serviceUrl value.
      */
     public String serviceUrl() {
-        return this.serviceUrl;
+        return this.innerProperties() == null ? null : this.innerProperties().serviceUrl();
     }
 
     /**
@@ -450,7 +189,10 @@ public class ApiCreateOrUpdateParameter {
      * @return the ApiCreateOrUpdateParameter object itself.
      */
     public ApiCreateOrUpdateParameter withServiceUrl(String serviceUrl) {
-        this.serviceUrl = serviceUrl;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApiCreateOrUpdateProperties();
+        }
+        this.innerProperties().withServiceUrl(serviceUrl);
         return this;
     }
 
@@ -462,7 +204,7 @@ public class ApiCreateOrUpdateParameter {
      * @return the path value.
      */
     public String path() {
-        return this.path;
+        return this.innerProperties() == null ? null : this.innerProperties().path();
     }
 
     /**
@@ -474,7 +216,10 @@ public class ApiCreateOrUpdateParameter {
      * @return the ApiCreateOrUpdateParameter object itself.
      */
     public ApiCreateOrUpdateParameter withPath(String path) {
-        this.path = path;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApiCreateOrUpdateProperties();
+        }
+        this.innerProperties().withPath(path);
         return this;
     }
 
@@ -484,7 +229,7 @@ public class ApiCreateOrUpdateParameter {
      * @return the protocols value.
      */
     public List<Protocol> protocols() {
-        return this.protocols;
+        return this.innerProperties() == null ? null : this.innerProperties().protocols();
     }
 
     /**
@@ -494,7 +239,10 @@ public class ApiCreateOrUpdateParameter {
      * @return the ApiCreateOrUpdateParameter object itself.
      */
     public ApiCreateOrUpdateParameter withProtocols(List<Protocol> protocols) {
-        this.protocols = protocols;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApiCreateOrUpdateProperties();
+        }
+        this.innerProperties().withProtocols(protocols);
         return this;
     }
 
@@ -504,7 +252,7 @@ public class ApiCreateOrUpdateParameter {
      * @return the apiVersionSet value.
      */
     public ApiVersionSetContractDetails apiVersionSet() {
-        return this.apiVersionSet;
+        return this.innerProperties() == null ? null : this.innerProperties().apiVersionSet();
     }
 
     /**
@@ -514,89 +262,278 @@ public class ApiCreateOrUpdateParameter {
      * @return the ApiCreateOrUpdateParameter object itself.
      */
     public ApiCreateOrUpdateParameter withApiVersionSet(ApiVersionSetContractDetails apiVersionSet) {
-        this.apiVersionSet = apiVersionSet;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApiCreateOrUpdateProperties();
+        }
+        this.innerProperties().withApiVersionSet(apiVersionSet);
         return this;
     }
 
     /**
-     * Get the value property: Content value when Importing an API.
+     * Get the description property: Description of the API. May include HTML formatting tags.
      *
-     * @return the value value.
+     * @return the description value.
      */
-    public String value() {
-        return this.value;
+    public String description() {
+        return this.innerProperties() == null ? null : this.innerProperties().description();
     }
 
     /**
-     * Set the value property: Content value when Importing an API.
+     * Set the description property: Description of the API. May include HTML formatting tags.
      *
-     * @param value the value value to set.
+     * @param description the description value to set.
      * @return the ApiCreateOrUpdateParameter object itself.
      */
-    public ApiCreateOrUpdateParameter withValue(String value) {
-        this.value = value;
+    public ApiCreateOrUpdateParameter withDescription(String description) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApiCreateOrUpdateProperties();
+        }
+        this.innerProperties().withDescription(description);
         return this;
     }
 
     /**
-     * Get the format property: Format of the Content in which the API is getting imported.
+     * Get the authenticationSettings property: Collection of authentication settings included into this API.
      *
-     * @return the format value.
+     * @return the authenticationSettings value.
      */
-    public ContentFormat format() {
-        return this.format;
+    public AuthenticationSettingsContract authenticationSettings() {
+        return this.innerProperties() == null ? null : this.innerProperties().authenticationSettings();
     }
 
     /**
-     * Set the format property: Format of the Content in which the API is getting imported.
+     * Set the authenticationSettings property: Collection of authentication settings included into this API.
      *
-     * @param format the format value to set.
+     * @param authenticationSettings the authenticationSettings value to set.
      * @return the ApiCreateOrUpdateParameter object itself.
      */
-    public ApiCreateOrUpdateParameter withFormat(ContentFormat format) {
-        this.format = format;
+    public ApiCreateOrUpdateParameter withAuthenticationSettings(
+        AuthenticationSettingsContract authenticationSettings) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApiCreateOrUpdateProperties();
+        }
+        this.innerProperties().withAuthenticationSettings(authenticationSettings);
         return this;
     }
 
     /**
-     * Get the wsdlSelector property: Criteria to limit import of WSDL to a subset of the document.
+     * Get the subscriptionKeyParameterNames property: Protocols over which API is made available.
      *
-     * @return the wsdlSelector value.
+     * @return the subscriptionKeyParameterNames value.
      */
-    public ApiCreateOrUpdatePropertiesWsdlSelector wsdlSelector() {
-        return this.wsdlSelector;
+    public SubscriptionKeyParameterNamesContract subscriptionKeyParameterNames() {
+        return this.innerProperties() == null ? null : this.innerProperties().subscriptionKeyParameterNames();
     }
 
     /**
-     * Set the wsdlSelector property: Criteria to limit import of WSDL to a subset of the document.
+     * Set the subscriptionKeyParameterNames property: Protocols over which API is made available.
      *
-     * @param wsdlSelector the wsdlSelector value to set.
+     * @param subscriptionKeyParameterNames the subscriptionKeyParameterNames value to set.
      * @return the ApiCreateOrUpdateParameter object itself.
      */
-    public ApiCreateOrUpdateParameter withWsdlSelector(ApiCreateOrUpdatePropertiesWsdlSelector wsdlSelector) {
-        this.wsdlSelector = wsdlSelector;
+    public ApiCreateOrUpdateParameter withSubscriptionKeyParameterNames(
+        SubscriptionKeyParameterNamesContract subscriptionKeyParameterNames) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApiCreateOrUpdateProperties();
+        }
+        this.innerProperties().withSubscriptionKeyParameterNames(subscriptionKeyParameterNames);
         return this;
     }
 
     /**
-     * Get the soapApiType property: Type of Api to create. * `http` creates a SOAP to REST API * `soap` creates a SOAP
-     * pass-through API .
+     * Get the apiType property: Type of API.
      *
-     * @return the soapApiType value.
+     * @return the apiType value.
      */
-    public SoapApiType soapApiType() {
-        return this.soapApiType;
+    public ApiType apiType() {
+        return this.innerProperties() == null ? null : this.innerProperties().apiType();
     }
 
     /**
-     * Set the soapApiType property: Type of Api to create. * `http` creates a SOAP to REST API * `soap` creates a SOAP
-     * pass-through API .
+     * Set the apiType property: Type of API.
      *
-     * @param soapApiType the soapApiType value to set.
+     * @param apiType the apiType value to set.
      * @return the ApiCreateOrUpdateParameter object itself.
      */
-    public ApiCreateOrUpdateParameter withSoapApiType(SoapApiType soapApiType) {
-        this.soapApiType = soapApiType;
+    public ApiCreateOrUpdateParameter withApiType(ApiType apiType) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApiCreateOrUpdateProperties();
+        }
+        this.innerProperties().withApiType(apiType);
+        return this;
+    }
+
+    /**
+     * Get the apiRevision property: Describes the Revision of the Api. If no value is provided, default revision 1 is
+     * created.
+     *
+     * @return the apiRevision value.
+     */
+    public String apiRevision() {
+        return this.innerProperties() == null ? null : this.innerProperties().apiRevision();
+    }
+
+    /**
+     * Set the apiRevision property: Describes the Revision of the Api. If no value is provided, default revision 1 is
+     * created.
+     *
+     * @param apiRevision the apiRevision value to set.
+     * @return the ApiCreateOrUpdateParameter object itself.
+     */
+    public ApiCreateOrUpdateParameter withApiRevision(String apiRevision) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApiCreateOrUpdateProperties();
+        }
+        this.innerProperties().withApiRevision(apiRevision);
+        return this;
+    }
+
+    /**
+     * Get the apiVersion property: Indicates the Version identifier of the API if the API is versioned.
+     *
+     * @return the apiVersion value.
+     */
+    public String apiVersion() {
+        return this.innerProperties() == null ? null : this.innerProperties().apiVersion();
+    }
+
+    /**
+     * Set the apiVersion property: Indicates the Version identifier of the API if the API is versioned.
+     *
+     * @param apiVersion the apiVersion value to set.
+     * @return the ApiCreateOrUpdateParameter object itself.
+     */
+    public ApiCreateOrUpdateParameter withApiVersion(String apiVersion) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApiCreateOrUpdateProperties();
+        }
+        this.innerProperties().withApiVersion(apiVersion);
+        return this;
+    }
+
+    /**
+     * Get the isCurrent property: Indicates if API revision is current api revision.
+     *
+     * @return the isCurrent value.
+     */
+    public Boolean isCurrent() {
+        return this.innerProperties() == null ? null : this.innerProperties().isCurrent();
+    }
+
+    /**
+     * Set the isCurrent property: Indicates if API revision is current api revision.
+     *
+     * @param isCurrent the isCurrent value to set.
+     * @return the ApiCreateOrUpdateParameter object itself.
+     */
+    public ApiCreateOrUpdateParameter withIsCurrent(Boolean isCurrent) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApiCreateOrUpdateProperties();
+        }
+        this.innerProperties().withIsCurrent(isCurrent);
+        return this;
+    }
+
+    /**
+     * Get the isOnline property: Indicates if API revision is accessible via the gateway.
+     *
+     * @return the isOnline value.
+     */
+    public Boolean isOnline() {
+        return this.innerProperties() == null ? null : this.innerProperties().isOnline();
+    }
+
+    /**
+     * Get the apiRevisionDescription property: Description of the Api Revision.
+     *
+     * @return the apiRevisionDescription value.
+     */
+    public String apiRevisionDescription() {
+        return this.innerProperties() == null ? null : this.innerProperties().apiRevisionDescription();
+    }
+
+    /**
+     * Set the apiRevisionDescription property: Description of the Api Revision.
+     *
+     * @param apiRevisionDescription the apiRevisionDescription value to set.
+     * @return the ApiCreateOrUpdateParameter object itself.
+     */
+    public ApiCreateOrUpdateParameter withApiRevisionDescription(String apiRevisionDescription) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApiCreateOrUpdateProperties();
+        }
+        this.innerProperties().withApiRevisionDescription(apiRevisionDescription);
+        return this;
+    }
+
+    /**
+     * Get the apiVersionDescription property: Description of the Api Version.
+     *
+     * @return the apiVersionDescription value.
+     */
+    public String apiVersionDescription() {
+        return this.innerProperties() == null ? null : this.innerProperties().apiVersionDescription();
+    }
+
+    /**
+     * Set the apiVersionDescription property: Description of the Api Version.
+     *
+     * @param apiVersionDescription the apiVersionDescription value to set.
+     * @return the ApiCreateOrUpdateParameter object itself.
+     */
+    public ApiCreateOrUpdateParameter withApiVersionDescription(String apiVersionDescription) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApiCreateOrUpdateProperties();
+        }
+        this.innerProperties().withApiVersionDescription(apiVersionDescription);
+        return this;
+    }
+
+    /**
+     * Get the apiVersionSetId property: A resource identifier for the related ApiVersionSet.
+     *
+     * @return the apiVersionSetId value.
+     */
+    public String apiVersionSetId() {
+        return this.innerProperties() == null ? null : this.innerProperties().apiVersionSetId();
+    }
+
+    /**
+     * Set the apiVersionSetId property: A resource identifier for the related ApiVersionSet.
+     *
+     * @param apiVersionSetId the apiVersionSetId value to set.
+     * @return the ApiCreateOrUpdateParameter object itself.
+     */
+    public ApiCreateOrUpdateParameter withApiVersionSetId(String apiVersionSetId) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApiCreateOrUpdateProperties();
+        }
+        this.innerProperties().withApiVersionSetId(apiVersionSetId);
+        return this;
+    }
+
+    /**
+     * Get the subscriptionRequired property: Specifies whether an API or Product subscription is required for accessing
+     * the API.
+     *
+     * @return the subscriptionRequired value.
+     */
+    public Boolean subscriptionRequired() {
+        return this.innerProperties() == null ? null : this.innerProperties().subscriptionRequired();
+    }
+
+    /**
+     * Set the subscriptionRequired property: Specifies whether an API or Product subscription is required for accessing
+     * the API.
+     *
+     * @param subscriptionRequired the subscriptionRequired value to set.
+     * @return the ApiCreateOrUpdateParameter object itself.
+     */
+    public ApiCreateOrUpdateParameter withSubscriptionRequired(Boolean subscriptionRequired) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApiCreateOrUpdateProperties();
+        }
+        this.innerProperties().withSubscriptionRequired(subscriptionRequired);
         return this;
     }
 
@@ -606,17 +543,8 @@ public class ApiCreateOrUpdateParameter {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (authenticationSettings() != null) {
-            authenticationSettings().validate();
-        }
-        if (subscriptionKeyParameterNames() != null) {
-            subscriptionKeyParameterNames().validate();
-        }
-        if (apiVersionSet() != null) {
-            apiVersionSet().validate();
-        }
-        if (wsdlSelector() != null) {
-            wsdlSelector().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

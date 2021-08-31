@@ -5,133 +5,43 @@
 package com.azure.resourcemanager.servicefabric.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.servicefabric.fluent.models.ClusterPropertiesUpdateParameters;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
 
 /** Cluster update request. */
-@JsonFlatten
 @Fluent
-public class ClusterUpdateParameters {
+public final class ClusterUpdateParameters {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ClusterUpdateParameters.class);
+
+    /*
+     * Describes the cluster resource properties that can be updated during
+     * PATCH operation.
+     */
+    @JsonProperty(value = "properties")
+    private ClusterPropertiesUpdateParameters innerProperties;
 
     /*
      * Cluster update parameters
      */
     @JsonProperty(value = "tags")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
-    /*
-     * The list of add-on features to enable in the cluster.
-     */
-    @JsonProperty(value = "properties.addOnFeatures")
-    private List<AddOnFeatures> addOnFeatures;
-
-    /*
-     * The certificate to use for securing the cluster. The certificate
-     * provided will be used for  node to node security within the cluster, SSL
-     * certificate for cluster management endpoint and default  admin client.
-     */
-    @JsonProperty(value = "properties.certificate")
-    private CertificateDescription certificate;
-
-    /*
-     * Describes a list of server certificates referenced by common name that
-     * are used to secure the cluster.
-     */
-    @JsonProperty(value = "properties.certificateCommonNames")
-    private ServerCertificateCommonNames certificateCommonNames;
-
-    /*
-     * The list of client certificates referenced by common name that are
-     * allowed to manage the cluster. This will overwrite the existing list.
-     */
-    @JsonProperty(value = "properties.clientCertificateCommonNames")
-    private List<ClientCertificateCommonName> clientCertificateCommonNames;
-
-    /*
-     * The list of client certificates referenced by thumbprint that are
-     * allowed to manage the cluster. This will overwrite the existing list.
-     */
-    @JsonProperty(value = "properties.clientCertificateThumbprints")
-    private List<ClientCertificateThumbprint> clientCertificateThumbprints;
-
-    /*
-     * The Service Fabric runtime version of the cluster. This property can
-     * only by set the user when **upgradeMode** is set to 'Manual'. To get
-     * list of available Service Fabric versions for new clusters use
-     * [ClusterVersion API](./ClusterVersion.md). To get the list of available
-     * version for existing clusters use **availableClusterVersions**.
-     */
-    @JsonProperty(value = "properties.clusterCodeVersion")
-    private String clusterCodeVersion;
-
-    /*
-     * Indicates if the event store service is enabled.
-     */
-    @JsonProperty(value = "properties.eventStoreServiceEnabled")
-    private Boolean eventStoreServiceEnabled;
-
-    /*
-     * The list of custom fabric settings to configure the cluster. This will
-     * overwrite the existing list.
-     */
-    @JsonProperty(value = "properties.fabricSettings")
-    private List<SettingsSectionDescription> fabricSettings;
-
-    /*
-     * The list of node types in the cluster. This will overwrite the existing
-     * list.
-     */
-    @JsonProperty(value = "properties.nodeTypes")
-    private List<NodeTypeDescription> nodeTypes;
-
-    /*
-     * The reliability level sets the replica set size of system services.
-     * Learn about
-     * [ReliabilityLevel](https://docs.microsoft.com/azure/service-fabric/service-fabric-cluster-capacity).
+    /**
+     * Get the innerProperties property: Describes the cluster resource properties that can be updated during PATCH
+     * operation.
      *
-     * - None - Run the System services with a target replica set count of 1.
-     * This should only be used for test clusters.
-     * - Bronze - Run the System services with a target replica set count of 3.
-     * This should only be used for test clusters.
-     * - Silver - Run the System services with a target replica set count of 5.
-     * - Gold - Run the System services with a target replica set count of 7.
-     * - Platinum - Run the System services with a target replica set count of
-     * 9.
-     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.reliabilityLevel")
-    private ReliabilityLevel reliabilityLevel;
-
-    /*
-     * The server certificate used by reverse proxy.
-     */
-    @JsonProperty(value = "properties.reverseProxyCertificate")
-    private CertificateDescription reverseProxyCertificate;
-
-    /*
-     * The policy to use when upgrading the cluster.
-     */
-    @JsonProperty(value = "properties.upgradeDescription")
-    private ClusterUpgradePolicy upgradeDescription;
-
-    /*
-     * The upgrade mode of the cluster when new Service Fabric runtime version
-     * is available.
-     *
-     * - Automatic - The cluster will be automatically upgraded to the latest
-     * Service Fabric runtime version as soon as it is available.
-     * - Manual - The cluster will not be automatically upgraded to the latest
-     * Service Fabric runtime version. The cluster is upgraded by setting the
-     * **clusterCodeVersion** property in the cluster resource.
-     *
-     */
-    @JsonProperty(value = "properties.upgradeMode")
-    private UpgradeMode upgradeMode;
+    private ClusterPropertiesUpdateParameters innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the tags property: Cluster update parameters.
@@ -159,7 +69,7 @@ public class ClusterUpdateParameters {
      * @return the addOnFeatures value.
      */
     public List<AddOnFeatures> addOnFeatures() {
-        return this.addOnFeatures;
+        return this.innerProperties() == null ? null : this.innerProperties().addOnFeatures();
     }
 
     /**
@@ -169,7 +79,10 @@ public class ClusterUpdateParameters {
      * @return the ClusterUpdateParameters object itself.
      */
     public ClusterUpdateParameters withAddOnFeatures(List<AddOnFeatures> addOnFeatures) {
-        this.addOnFeatures = addOnFeatures;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ClusterPropertiesUpdateParameters();
+        }
+        this.innerProperties().withAddOnFeatures(addOnFeatures);
         return this;
     }
 
@@ -181,7 +94,7 @@ public class ClusterUpdateParameters {
      * @return the certificate value.
      */
     public CertificateDescription certificate() {
-        return this.certificate;
+        return this.innerProperties() == null ? null : this.innerProperties().certificate();
     }
 
     /**
@@ -193,7 +106,10 @@ public class ClusterUpdateParameters {
      * @return the ClusterUpdateParameters object itself.
      */
     public ClusterUpdateParameters withCertificate(CertificateDescription certificate) {
-        this.certificate = certificate;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ClusterPropertiesUpdateParameters();
+        }
+        this.innerProperties().withCertificate(certificate);
         return this;
     }
 
@@ -204,7 +120,7 @@ public class ClusterUpdateParameters {
      * @return the certificateCommonNames value.
      */
     public ServerCertificateCommonNames certificateCommonNames() {
-        return this.certificateCommonNames;
+        return this.innerProperties() == null ? null : this.innerProperties().certificateCommonNames();
     }
 
     /**
@@ -215,7 +131,10 @@ public class ClusterUpdateParameters {
      * @return the ClusterUpdateParameters object itself.
      */
     public ClusterUpdateParameters withCertificateCommonNames(ServerCertificateCommonNames certificateCommonNames) {
-        this.certificateCommonNames = certificateCommonNames;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ClusterPropertiesUpdateParameters();
+        }
+        this.innerProperties().withCertificateCommonNames(certificateCommonNames);
         return this;
     }
 
@@ -226,7 +145,7 @@ public class ClusterUpdateParameters {
      * @return the clientCertificateCommonNames value.
      */
     public List<ClientCertificateCommonName> clientCertificateCommonNames() {
-        return this.clientCertificateCommonNames;
+        return this.innerProperties() == null ? null : this.innerProperties().clientCertificateCommonNames();
     }
 
     /**
@@ -238,7 +157,10 @@ public class ClusterUpdateParameters {
      */
     public ClusterUpdateParameters withClientCertificateCommonNames(
         List<ClientCertificateCommonName> clientCertificateCommonNames) {
-        this.clientCertificateCommonNames = clientCertificateCommonNames;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ClusterPropertiesUpdateParameters();
+        }
+        this.innerProperties().withClientCertificateCommonNames(clientCertificateCommonNames);
         return this;
     }
 
@@ -249,7 +171,7 @@ public class ClusterUpdateParameters {
      * @return the clientCertificateThumbprints value.
      */
     public List<ClientCertificateThumbprint> clientCertificateThumbprints() {
-        return this.clientCertificateThumbprints;
+        return this.innerProperties() == null ? null : this.innerProperties().clientCertificateThumbprints();
     }
 
     /**
@@ -261,7 +183,10 @@ public class ClusterUpdateParameters {
      */
     public ClusterUpdateParameters withClientCertificateThumbprints(
         List<ClientCertificateThumbprint> clientCertificateThumbprints) {
-        this.clientCertificateThumbprints = clientCertificateThumbprints;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ClusterPropertiesUpdateParameters();
+        }
+        this.innerProperties().withClientCertificateThumbprints(clientCertificateThumbprints);
         return this;
     }
 
@@ -274,7 +199,7 @@ public class ClusterUpdateParameters {
      * @return the clusterCodeVersion value.
      */
     public String clusterCodeVersion() {
-        return this.clusterCodeVersion;
+        return this.innerProperties() == null ? null : this.innerProperties().clusterCodeVersion();
     }
 
     /**
@@ -287,7 +212,10 @@ public class ClusterUpdateParameters {
      * @return the ClusterUpdateParameters object itself.
      */
     public ClusterUpdateParameters withClusterCodeVersion(String clusterCodeVersion) {
-        this.clusterCodeVersion = clusterCodeVersion;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ClusterPropertiesUpdateParameters();
+        }
+        this.innerProperties().withClusterCodeVersion(clusterCodeVersion);
         return this;
     }
 
@@ -297,7 +225,7 @@ public class ClusterUpdateParameters {
      * @return the eventStoreServiceEnabled value.
      */
     public Boolean eventStoreServiceEnabled() {
-        return this.eventStoreServiceEnabled;
+        return this.innerProperties() == null ? null : this.innerProperties().eventStoreServiceEnabled();
     }
 
     /**
@@ -307,7 +235,10 @@ public class ClusterUpdateParameters {
      * @return the ClusterUpdateParameters object itself.
      */
     public ClusterUpdateParameters withEventStoreServiceEnabled(Boolean eventStoreServiceEnabled) {
-        this.eventStoreServiceEnabled = eventStoreServiceEnabled;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ClusterPropertiesUpdateParameters();
+        }
+        this.innerProperties().withEventStoreServiceEnabled(eventStoreServiceEnabled);
         return this;
     }
 
@@ -318,7 +249,7 @@ public class ClusterUpdateParameters {
      * @return the fabricSettings value.
      */
     public List<SettingsSectionDescription> fabricSettings() {
-        return this.fabricSettings;
+        return this.innerProperties() == null ? null : this.innerProperties().fabricSettings();
     }
 
     /**
@@ -329,7 +260,10 @@ public class ClusterUpdateParameters {
      * @return the ClusterUpdateParameters object itself.
      */
     public ClusterUpdateParameters withFabricSettings(List<SettingsSectionDescription> fabricSettings) {
-        this.fabricSettings = fabricSettings;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ClusterPropertiesUpdateParameters();
+        }
+        this.innerProperties().withFabricSettings(fabricSettings);
         return this;
     }
 
@@ -339,7 +273,7 @@ public class ClusterUpdateParameters {
      * @return the nodeTypes value.
      */
     public List<NodeTypeDescription> nodeTypes() {
-        return this.nodeTypes;
+        return this.innerProperties() == null ? null : this.innerProperties().nodeTypes();
     }
 
     /**
@@ -349,7 +283,10 @@ public class ClusterUpdateParameters {
      * @return the ClusterUpdateParameters object itself.
      */
     public ClusterUpdateParameters withNodeTypes(List<NodeTypeDescription> nodeTypes) {
-        this.nodeTypes = nodeTypes;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ClusterPropertiesUpdateParameters();
+        }
+        this.innerProperties().withNodeTypes(nodeTypes);
         return this;
     }
 
@@ -366,7 +303,7 @@ public class ClusterUpdateParameters {
      * @return the reliabilityLevel value.
      */
     public ReliabilityLevel reliabilityLevel() {
-        return this.reliabilityLevel;
+        return this.innerProperties() == null ? null : this.innerProperties().reliabilityLevel();
     }
 
     /**
@@ -383,7 +320,10 @@ public class ClusterUpdateParameters {
      * @return the ClusterUpdateParameters object itself.
      */
     public ClusterUpdateParameters withReliabilityLevel(ReliabilityLevel reliabilityLevel) {
-        this.reliabilityLevel = reliabilityLevel;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ClusterPropertiesUpdateParameters();
+        }
+        this.innerProperties().withReliabilityLevel(reliabilityLevel);
         return this;
     }
 
@@ -393,7 +333,7 @@ public class ClusterUpdateParameters {
      * @return the reverseProxyCertificate value.
      */
     public CertificateDescription reverseProxyCertificate() {
-        return this.reverseProxyCertificate;
+        return this.innerProperties() == null ? null : this.innerProperties().reverseProxyCertificate();
     }
 
     /**
@@ -403,7 +343,10 @@ public class ClusterUpdateParameters {
      * @return the ClusterUpdateParameters object itself.
      */
     public ClusterUpdateParameters withReverseProxyCertificate(CertificateDescription reverseProxyCertificate) {
-        this.reverseProxyCertificate = reverseProxyCertificate;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ClusterPropertiesUpdateParameters();
+        }
+        this.innerProperties().withReverseProxyCertificate(reverseProxyCertificate);
         return this;
     }
 
@@ -413,7 +356,7 @@ public class ClusterUpdateParameters {
      * @return the upgradeDescription value.
      */
     public ClusterUpgradePolicy upgradeDescription() {
-        return this.upgradeDescription;
+        return this.innerProperties() == null ? null : this.innerProperties().upgradeDescription();
     }
 
     /**
@@ -423,7 +366,34 @@ public class ClusterUpdateParameters {
      * @return the ClusterUpdateParameters object itself.
      */
     public ClusterUpdateParameters withUpgradeDescription(ClusterUpgradePolicy upgradeDescription) {
-        this.upgradeDescription = upgradeDescription;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ClusterPropertiesUpdateParameters();
+        }
+        this.innerProperties().withUpgradeDescription(upgradeDescription);
+        return this;
+    }
+
+    /**
+     * Get the applicationTypeVersionsCleanupPolicy property: The policy used to clean up unused versions.
+     *
+     * @return the applicationTypeVersionsCleanupPolicy value.
+     */
+    public ApplicationTypeVersionsCleanupPolicy applicationTypeVersionsCleanupPolicy() {
+        return this.innerProperties() == null ? null : this.innerProperties().applicationTypeVersionsCleanupPolicy();
+    }
+
+    /**
+     * Set the applicationTypeVersionsCleanupPolicy property: The policy used to clean up unused versions.
+     *
+     * @param applicationTypeVersionsCleanupPolicy the applicationTypeVersionsCleanupPolicy value to set.
+     * @return the ClusterUpdateParameters object itself.
+     */
+    public ClusterUpdateParameters withApplicationTypeVersionsCleanupPolicy(
+        ApplicationTypeVersionsCleanupPolicy applicationTypeVersionsCleanupPolicy) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ClusterPropertiesUpdateParameters();
+        }
+        this.innerProperties().withApplicationTypeVersionsCleanupPolicy(applicationTypeVersionsCleanupPolicy);
         return this;
     }
 
@@ -431,29 +401,220 @@ public class ClusterUpdateParameters {
      * Get the upgradeMode property: The upgrade mode of the cluster when new Service Fabric runtime version is
      * available.
      *
-     * <p>- Automatic - The cluster will be automatically upgraded to the latest Service Fabric runtime version as soon
-     * as it is available. - Manual - The cluster will not be automatically upgraded to the latest Service Fabric
-     * runtime version. The cluster is upgraded by setting the **clusterCodeVersion** property in the cluster resource.
-     *
      * @return the upgradeMode value.
      */
     public UpgradeMode upgradeMode() {
-        return this.upgradeMode;
+        return this.innerProperties() == null ? null : this.innerProperties().upgradeMode();
     }
 
     /**
      * Set the upgradeMode property: The upgrade mode of the cluster when new Service Fabric runtime version is
      * available.
      *
-     * <p>- Automatic - The cluster will be automatically upgraded to the latest Service Fabric runtime version as soon
-     * as it is available. - Manual - The cluster will not be automatically upgraded to the latest Service Fabric
-     * runtime version. The cluster is upgraded by setting the **clusterCodeVersion** property in the cluster resource.
-     *
      * @param upgradeMode the upgradeMode value to set.
      * @return the ClusterUpdateParameters object itself.
      */
     public ClusterUpdateParameters withUpgradeMode(UpgradeMode upgradeMode) {
-        this.upgradeMode = upgradeMode;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ClusterPropertiesUpdateParameters();
+        }
+        this.innerProperties().withUpgradeMode(upgradeMode);
+        return this;
+    }
+
+    /**
+     * Get the sfZonalUpgradeMode property: This property controls the logical grouping of VMs in upgrade domains (UDs).
+     * This property can't be modified if a node type with multiple Availability Zones is already present in the
+     * cluster.
+     *
+     * @return the sfZonalUpgradeMode value.
+     */
+    public SfZonalUpgradeMode sfZonalUpgradeMode() {
+        return this.innerProperties() == null ? null : this.innerProperties().sfZonalUpgradeMode();
+    }
+
+    /**
+     * Set the sfZonalUpgradeMode property: This property controls the logical grouping of VMs in upgrade domains (UDs).
+     * This property can't be modified if a node type with multiple Availability Zones is already present in the
+     * cluster.
+     *
+     * @param sfZonalUpgradeMode the sfZonalUpgradeMode value to set.
+     * @return the ClusterUpdateParameters object itself.
+     */
+    public ClusterUpdateParameters withSfZonalUpgradeMode(SfZonalUpgradeMode sfZonalUpgradeMode) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ClusterPropertiesUpdateParameters();
+        }
+        this.innerProperties().withSfZonalUpgradeMode(sfZonalUpgradeMode);
+        return this;
+    }
+
+    /**
+     * Get the vmssZonalUpgradeMode property: This property defines the upgrade mode for the virtual machine scale set,
+     * it is mandatory if a node type with multiple Availability Zones is added.
+     *
+     * @return the vmssZonalUpgradeMode value.
+     */
+    public VmssZonalUpgradeMode vmssZonalUpgradeMode() {
+        return this.innerProperties() == null ? null : this.innerProperties().vmssZonalUpgradeMode();
+    }
+
+    /**
+     * Set the vmssZonalUpgradeMode property: This property defines the upgrade mode for the virtual machine scale set,
+     * it is mandatory if a node type with multiple Availability Zones is added.
+     *
+     * @param vmssZonalUpgradeMode the vmssZonalUpgradeMode value to set.
+     * @return the ClusterUpdateParameters object itself.
+     */
+    public ClusterUpdateParameters withVmssZonalUpgradeMode(VmssZonalUpgradeMode vmssZonalUpgradeMode) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ClusterPropertiesUpdateParameters();
+        }
+        this.innerProperties().withVmssZonalUpgradeMode(vmssZonalUpgradeMode);
+        return this;
+    }
+
+    /**
+     * Get the infrastructureServiceManager property: Indicates if infrastructure service manager is enabled.
+     *
+     * @return the infrastructureServiceManager value.
+     */
+    public Boolean infrastructureServiceManager() {
+        return this.innerProperties() == null ? null : this.innerProperties().infrastructureServiceManager();
+    }
+
+    /**
+     * Set the infrastructureServiceManager property: Indicates if infrastructure service manager is enabled.
+     *
+     * @param infrastructureServiceManager the infrastructureServiceManager value to set.
+     * @return the ClusterUpdateParameters object itself.
+     */
+    public ClusterUpdateParameters withInfrastructureServiceManager(Boolean infrastructureServiceManager) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ClusterPropertiesUpdateParameters();
+        }
+        this.innerProperties().withInfrastructureServiceManager(infrastructureServiceManager);
+        return this;
+    }
+
+    /**
+     * Get the upgradeWave property: Indicates when new cluster runtime version upgrades will be applied after they are
+     * released. By default is Wave0. Only applies when **upgradeMode** is set to 'Automatic'.
+     *
+     * @return the upgradeWave value.
+     */
+    public ClusterUpgradeCadence upgradeWave() {
+        return this.innerProperties() == null ? null : this.innerProperties().upgradeWave();
+    }
+
+    /**
+     * Set the upgradeWave property: Indicates when new cluster runtime version upgrades will be applied after they are
+     * released. By default is Wave0. Only applies when **upgradeMode** is set to 'Automatic'.
+     *
+     * @param upgradeWave the upgradeWave value to set.
+     * @return the ClusterUpdateParameters object itself.
+     */
+    public ClusterUpdateParameters withUpgradeWave(ClusterUpgradeCadence upgradeWave) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ClusterPropertiesUpdateParameters();
+        }
+        this.innerProperties().withUpgradeWave(upgradeWave);
+        return this;
+    }
+
+    /**
+     * Get the upgradePauseStartTimestampUtc property: The start timestamp to pause runtime version upgrades on the
+     * cluster (UTC).
+     *
+     * @return the upgradePauseStartTimestampUtc value.
+     */
+    public OffsetDateTime upgradePauseStartTimestampUtc() {
+        return this.innerProperties() == null ? null : this.innerProperties().upgradePauseStartTimestampUtc();
+    }
+
+    /**
+     * Set the upgradePauseStartTimestampUtc property: The start timestamp to pause runtime version upgrades on the
+     * cluster (UTC).
+     *
+     * @param upgradePauseStartTimestampUtc the upgradePauseStartTimestampUtc value to set.
+     * @return the ClusterUpdateParameters object itself.
+     */
+    public ClusterUpdateParameters withUpgradePauseStartTimestampUtc(OffsetDateTime upgradePauseStartTimestampUtc) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ClusterPropertiesUpdateParameters();
+        }
+        this.innerProperties().withUpgradePauseStartTimestampUtc(upgradePauseStartTimestampUtc);
+        return this;
+    }
+
+    /**
+     * Get the upgradePauseEndTimestampUtc property: The end timestamp of pause runtime version upgrades on the cluster
+     * (UTC).
+     *
+     * @return the upgradePauseEndTimestampUtc value.
+     */
+    public OffsetDateTime upgradePauseEndTimestampUtc() {
+        return this.innerProperties() == null ? null : this.innerProperties().upgradePauseEndTimestampUtc();
+    }
+
+    /**
+     * Set the upgradePauseEndTimestampUtc property: The end timestamp of pause runtime version upgrades on the cluster
+     * (UTC).
+     *
+     * @param upgradePauseEndTimestampUtc the upgradePauseEndTimestampUtc value to set.
+     * @return the ClusterUpdateParameters object itself.
+     */
+    public ClusterUpdateParameters withUpgradePauseEndTimestampUtc(OffsetDateTime upgradePauseEndTimestampUtc) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ClusterPropertiesUpdateParameters();
+        }
+        this.innerProperties().withUpgradePauseEndTimestampUtc(upgradePauseEndTimestampUtc);
+        return this;
+    }
+
+    /**
+     * Get the waveUpgradePaused property: Boolean to pause automatic runtime version upgrades to the cluster.
+     *
+     * @return the waveUpgradePaused value.
+     */
+    public Boolean waveUpgradePaused() {
+        return this.innerProperties() == null ? null : this.innerProperties().waveUpgradePaused();
+    }
+
+    /**
+     * Set the waveUpgradePaused property: Boolean to pause automatic runtime version upgrades to the cluster.
+     *
+     * @param waveUpgradePaused the waveUpgradePaused value to set.
+     * @return the ClusterUpdateParameters object itself.
+     */
+    public ClusterUpdateParameters withWaveUpgradePaused(Boolean waveUpgradePaused) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ClusterPropertiesUpdateParameters();
+        }
+        this.innerProperties().withWaveUpgradePaused(waveUpgradePaused);
+        return this;
+    }
+
+    /**
+     * Get the notifications property: Indicates a list of notification channels for cluster events.
+     *
+     * @return the notifications value.
+     */
+    public List<Notification> notifications() {
+        return this.innerProperties() == null ? null : this.innerProperties().notifications();
+    }
+
+    /**
+     * Set the notifications property: Indicates a list of notification channels for cluster events.
+     *
+     * @param notifications the notifications value to set.
+     * @return the ClusterUpdateParameters object itself.
+     */
+    public ClusterUpdateParameters withNotifications(List<Notification> notifications) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ClusterPropertiesUpdateParameters();
+        }
+        this.innerProperties().withNotifications(notifications);
         return this;
     }
 
@@ -463,29 +624,8 @@ public class ClusterUpdateParameters {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (certificate() != null) {
-            certificate().validate();
-        }
-        if (certificateCommonNames() != null) {
-            certificateCommonNames().validate();
-        }
-        if (clientCertificateCommonNames() != null) {
-            clientCertificateCommonNames().forEach(e -> e.validate());
-        }
-        if (clientCertificateThumbprints() != null) {
-            clientCertificateThumbprints().forEach(e -> e.validate());
-        }
-        if (fabricSettings() != null) {
-            fabricSettings().forEach(e -> e.validate());
-        }
-        if (nodeTypes() != null) {
-            nodeTypes().forEach(e -> e.validate());
-        }
-        if (reverseProxyCertificate() != null) {
-            reverseProxyCertificate().validate();
-        }
-        if (upgradeDescription() != null) {
-            upgradeDescription().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

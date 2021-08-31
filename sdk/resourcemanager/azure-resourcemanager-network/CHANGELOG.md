@@ -1,5 +1,19 @@
 # Release History
 
+## 2.8.0-beta.1 (Unreleased)
+
+### Dependency Updates
+
+- Updated `api-version` to `2021-03-01`.
+
+### Features Added
+
+- Supported `LoadBalancerOutboundRule` for `LoadBalancer`.
+
+### Breaking Changes
+
+- Removed unused class `NetworkOperationStatus`, `VirtualHubEffectiveRoute`.
+
 ## 2.7.0 (2021-08-12)
 
 ### Dependency Updates

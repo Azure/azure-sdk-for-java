@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
@@ -24,10 +23,15 @@ import java.util.List;
 import java.util.Map;
 
 /** Azure Firewall resource. */
-@JsonFlatten
 @Fluent
-public class AzureFirewallInner extends Resource {
+public final class AzureFirewallInner extends Resource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureFirewallInner.class);
+
+    /*
+     * Properties of the azure firewall.
+     */
+    @JsonProperty(value = "properties")
+    private AzureFirewallPropertiesFormat innerProperties;
 
     /*
      * A list of availability zones denoting where the resource needs to come
@@ -43,88 +47,19 @@ public class AzureFirewallInner extends Resource {
     private String etag;
 
     /*
-     * Collection of application rule collections used by Azure Firewall.
-     */
-    @JsonProperty(value = "properties.applicationRuleCollections")
-    private List<AzureFirewallApplicationRuleCollection> applicationRuleCollections;
-
-    /*
-     * Collection of NAT rule collections used by Azure Firewall.
-     */
-    @JsonProperty(value = "properties.natRuleCollections")
-    private List<AzureFirewallNatRuleCollection> natRuleCollections;
-
-    /*
-     * Collection of network rule collections used by Azure Firewall.
-     */
-    @JsonProperty(value = "properties.networkRuleCollections")
-    private List<AzureFirewallNetworkRuleCollection> networkRuleCollections;
-
-    /*
-     * IP configuration of the Azure Firewall resource.
-     */
-    @JsonProperty(value = "properties.ipConfigurations")
-    private List<AzureFirewallIpConfiguration> ipConfigurations;
-
-    /*
-     * IP configuration of the Azure Firewall used for management traffic.
-     */
-    @JsonProperty(value = "properties.managementIpConfiguration")
-    private AzureFirewallIpConfiguration managementIpConfiguration;
-
-    /*
-     * The provisioning state of the Azure firewall resource.
-     */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningState provisioningState;
-
-    /*
-     * The operation mode for Threat Intelligence.
-     */
-    @JsonProperty(value = "properties.threatIntelMode")
-    private AzureFirewallThreatIntelMode threatIntelMode;
-
-    /*
-     * The virtualHub to which the firewall belongs.
-     */
-    @JsonProperty(value = "properties.virtualHub")
-    private SubResource virtualHub;
-
-    /*
-     * The firewallPolicy associated with this azure firewall.
-     */
-    @JsonProperty(value = "properties.firewallPolicy")
-    private SubResource firewallPolicy;
-
-    /*
-     * IP addresses associated with AzureFirewall.
-     */
-    @JsonProperty(value = "properties.hubIPAddresses")
-    private HubIpAddresses hubIpAddresses;
-
-    /*
-     * IpGroups associated with AzureFirewall.
-     */
-    @JsonProperty(value = "properties.ipGroups", access = JsonProperty.Access.WRITE_ONLY)
-    private List<AzureFirewallIpGroups> ipGroups;
-
-    /*
-     * The Azure Firewall Resource SKU.
-     */
-    @JsonProperty(value = "properties.sku")
-    private AzureFirewallSku sku;
-
-    /*
-     * The additional properties used to further config this azure firewall.
-     */
-    @JsonProperty(value = "properties.additionalProperties")
-    private Map<String, String> additionalProperties;
-
-    /*
      * Resource ID.
      */
     @JsonProperty(value = "id")
     private String id;
+
+    /**
+     * Get the innerProperties property: Properties of the azure firewall.
+     *
+     * @return the innerProperties value.
+     */
+    private AzureFirewallPropertiesFormat innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the zones property: A list of availability zones denoting where the resource needs to come from.
@@ -153,246 +88,6 @@ public class AzureFirewallInner extends Resource {
      */
     public String etag() {
         return this.etag;
-    }
-
-    /**
-     * Get the applicationRuleCollections property: Collection of application rule collections used by Azure Firewall.
-     *
-     * @return the applicationRuleCollections value.
-     */
-    public List<AzureFirewallApplicationRuleCollection> applicationRuleCollections() {
-        return this.applicationRuleCollections;
-    }
-
-    /**
-     * Set the applicationRuleCollections property: Collection of application rule collections used by Azure Firewall.
-     *
-     * @param applicationRuleCollections the applicationRuleCollections value to set.
-     * @return the AzureFirewallInner object itself.
-     */
-    public AzureFirewallInner withApplicationRuleCollections(
-        List<AzureFirewallApplicationRuleCollection> applicationRuleCollections) {
-        this.applicationRuleCollections = applicationRuleCollections;
-        return this;
-    }
-
-    /**
-     * Get the natRuleCollections property: Collection of NAT rule collections used by Azure Firewall.
-     *
-     * @return the natRuleCollections value.
-     */
-    public List<AzureFirewallNatRuleCollection> natRuleCollections() {
-        return this.natRuleCollections;
-    }
-
-    /**
-     * Set the natRuleCollections property: Collection of NAT rule collections used by Azure Firewall.
-     *
-     * @param natRuleCollections the natRuleCollections value to set.
-     * @return the AzureFirewallInner object itself.
-     */
-    public AzureFirewallInner withNatRuleCollections(List<AzureFirewallNatRuleCollection> natRuleCollections) {
-        this.natRuleCollections = natRuleCollections;
-        return this;
-    }
-
-    /**
-     * Get the networkRuleCollections property: Collection of network rule collections used by Azure Firewall.
-     *
-     * @return the networkRuleCollections value.
-     */
-    public List<AzureFirewallNetworkRuleCollection> networkRuleCollections() {
-        return this.networkRuleCollections;
-    }
-
-    /**
-     * Set the networkRuleCollections property: Collection of network rule collections used by Azure Firewall.
-     *
-     * @param networkRuleCollections the networkRuleCollections value to set.
-     * @return the AzureFirewallInner object itself.
-     */
-    public AzureFirewallInner withNetworkRuleCollections(
-        List<AzureFirewallNetworkRuleCollection> networkRuleCollections) {
-        this.networkRuleCollections = networkRuleCollections;
-        return this;
-    }
-
-    /**
-     * Get the ipConfigurations property: IP configuration of the Azure Firewall resource.
-     *
-     * @return the ipConfigurations value.
-     */
-    public List<AzureFirewallIpConfiguration> ipConfigurations() {
-        return this.ipConfigurations;
-    }
-
-    /**
-     * Set the ipConfigurations property: IP configuration of the Azure Firewall resource.
-     *
-     * @param ipConfigurations the ipConfigurations value to set.
-     * @return the AzureFirewallInner object itself.
-     */
-    public AzureFirewallInner withIpConfigurations(List<AzureFirewallIpConfiguration> ipConfigurations) {
-        this.ipConfigurations = ipConfigurations;
-        return this;
-    }
-
-    /**
-     * Get the managementIpConfiguration property: IP configuration of the Azure Firewall used for management traffic.
-     *
-     * @return the managementIpConfiguration value.
-     */
-    public AzureFirewallIpConfiguration managementIpConfiguration() {
-        return this.managementIpConfiguration;
-    }
-
-    /**
-     * Set the managementIpConfiguration property: IP configuration of the Azure Firewall used for management traffic.
-     *
-     * @param managementIpConfiguration the managementIpConfiguration value to set.
-     * @return the AzureFirewallInner object itself.
-     */
-    public AzureFirewallInner withManagementIpConfiguration(AzureFirewallIpConfiguration managementIpConfiguration) {
-        this.managementIpConfiguration = managementIpConfiguration;
-        return this;
-    }
-
-    /**
-     * Get the provisioningState property: The provisioning state of the Azure firewall resource.
-     *
-     * @return the provisioningState value.
-     */
-    public ProvisioningState provisioningState() {
-        return this.provisioningState;
-    }
-
-    /**
-     * Get the threatIntelMode property: The operation mode for Threat Intelligence.
-     *
-     * @return the threatIntelMode value.
-     */
-    public AzureFirewallThreatIntelMode threatIntelMode() {
-        return this.threatIntelMode;
-    }
-
-    /**
-     * Set the threatIntelMode property: The operation mode for Threat Intelligence.
-     *
-     * @param threatIntelMode the threatIntelMode value to set.
-     * @return the AzureFirewallInner object itself.
-     */
-    public AzureFirewallInner withThreatIntelMode(AzureFirewallThreatIntelMode threatIntelMode) {
-        this.threatIntelMode = threatIntelMode;
-        return this;
-    }
-
-    /**
-     * Get the virtualHub property: The virtualHub to which the firewall belongs.
-     *
-     * @return the virtualHub value.
-     */
-    public SubResource virtualHub() {
-        return this.virtualHub;
-    }
-
-    /**
-     * Set the virtualHub property: The virtualHub to which the firewall belongs.
-     *
-     * @param virtualHub the virtualHub value to set.
-     * @return the AzureFirewallInner object itself.
-     */
-    public AzureFirewallInner withVirtualHub(SubResource virtualHub) {
-        this.virtualHub = virtualHub;
-        return this;
-    }
-
-    /**
-     * Get the firewallPolicy property: The firewallPolicy associated with this azure firewall.
-     *
-     * @return the firewallPolicy value.
-     */
-    public SubResource firewallPolicy() {
-        return this.firewallPolicy;
-    }
-
-    /**
-     * Set the firewallPolicy property: The firewallPolicy associated with this azure firewall.
-     *
-     * @param firewallPolicy the firewallPolicy value to set.
-     * @return the AzureFirewallInner object itself.
-     */
-    public AzureFirewallInner withFirewallPolicy(SubResource firewallPolicy) {
-        this.firewallPolicy = firewallPolicy;
-        return this;
-    }
-
-    /**
-     * Get the hubIpAddresses property: IP addresses associated with AzureFirewall.
-     *
-     * @return the hubIpAddresses value.
-     */
-    public HubIpAddresses hubIpAddresses() {
-        return this.hubIpAddresses;
-    }
-
-    /**
-     * Set the hubIpAddresses property: IP addresses associated with AzureFirewall.
-     *
-     * @param hubIpAddresses the hubIpAddresses value to set.
-     * @return the AzureFirewallInner object itself.
-     */
-    public AzureFirewallInner withHubIpAddresses(HubIpAddresses hubIpAddresses) {
-        this.hubIpAddresses = hubIpAddresses;
-        return this;
-    }
-
-    /**
-     * Get the ipGroups property: IpGroups associated with AzureFirewall.
-     *
-     * @return the ipGroups value.
-     */
-    public List<AzureFirewallIpGroups> ipGroups() {
-        return this.ipGroups;
-    }
-
-    /**
-     * Get the sku property: The Azure Firewall Resource SKU.
-     *
-     * @return the sku value.
-     */
-    public AzureFirewallSku sku() {
-        return this.sku;
-    }
-
-    /**
-     * Set the sku property: The Azure Firewall Resource SKU.
-     *
-     * @param sku the sku value to set.
-     * @return the AzureFirewallInner object itself.
-     */
-    public AzureFirewallInner withSku(AzureFirewallSku sku) {
-        this.sku = sku;
-        return this;
-    }
-
-    /**
-     * Get the additionalProperties property: The additional properties used to further config this azure firewall.
-     *
-     * @return the additionalProperties value.
-     */
-    public Map<String, String> additionalProperties() {
-        return this.additionalProperties;
-    }
-
-    /**
-     * Set the additionalProperties property: The additional properties used to further config this azure firewall.
-     *
-     * @param additionalProperties the additionalProperties value to set.
-     * @return the AzureFirewallInner object itself.
-     */
-    public AzureFirewallInner withAdditionalProperties(Map<String, String> additionalProperties) {
-        this.additionalProperties = additionalProperties;
-        return this;
     }
 
     /**
@@ -430,34 +125,286 @@ public class AzureFirewallInner extends Resource {
     }
 
     /**
+     * Get the applicationRuleCollections property: Collection of application rule collections used by Azure Firewall.
+     *
+     * @return the applicationRuleCollections value.
+     */
+    public List<AzureFirewallApplicationRuleCollection> applicationRuleCollections() {
+        return this.innerProperties() == null ? null : this.innerProperties().applicationRuleCollections();
+    }
+
+    /**
+     * Set the applicationRuleCollections property: Collection of application rule collections used by Azure Firewall.
+     *
+     * @param applicationRuleCollections the applicationRuleCollections value to set.
+     * @return the AzureFirewallInner object itself.
+     */
+    public AzureFirewallInner withApplicationRuleCollections(
+        List<AzureFirewallApplicationRuleCollection> applicationRuleCollections) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AzureFirewallPropertiesFormat();
+        }
+        this.innerProperties().withApplicationRuleCollections(applicationRuleCollections);
+        return this;
+    }
+
+    /**
+     * Get the natRuleCollections property: Collection of NAT rule collections used by Azure Firewall.
+     *
+     * @return the natRuleCollections value.
+     */
+    public List<AzureFirewallNatRuleCollection> natRuleCollections() {
+        return this.innerProperties() == null ? null : this.innerProperties().natRuleCollections();
+    }
+
+    /**
+     * Set the natRuleCollections property: Collection of NAT rule collections used by Azure Firewall.
+     *
+     * @param natRuleCollections the natRuleCollections value to set.
+     * @return the AzureFirewallInner object itself.
+     */
+    public AzureFirewallInner withNatRuleCollections(List<AzureFirewallNatRuleCollection> natRuleCollections) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AzureFirewallPropertiesFormat();
+        }
+        this.innerProperties().withNatRuleCollections(natRuleCollections);
+        return this;
+    }
+
+    /**
+     * Get the networkRuleCollections property: Collection of network rule collections used by Azure Firewall.
+     *
+     * @return the networkRuleCollections value.
+     */
+    public List<AzureFirewallNetworkRuleCollection> networkRuleCollections() {
+        return this.innerProperties() == null ? null : this.innerProperties().networkRuleCollections();
+    }
+
+    /**
+     * Set the networkRuleCollections property: Collection of network rule collections used by Azure Firewall.
+     *
+     * @param networkRuleCollections the networkRuleCollections value to set.
+     * @return the AzureFirewallInner object itself.
+     */
+    public AzureFirewallInner withNetworkRuleCollections(
+        List<AzureFirewallNetworkRuleCollection> networkRuleCollections) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AzureFirewallPropertiesFormat();
+        }
+        this.innerProperties().withNetworkRuleCollections(networkRuleCollections);
+        return this;
+    }
+
+    /**
+     * Get the ipConfigurations property: IP configuration of the Azure Firewall resource.
+     *
+     * @return the ipConfigurations value.
+     */
+    public List<AzureFirewallIpConfiguration> ipConfigurations() {
+        return this.innerProperties() == null ? null : this.innerProperties().ipConfigurations();
+    }
+
+    /**
+     * Set the ipConfigurations property: IP configuration of the Azure Firewall resource.
+     *
+     * @param ipConfigurations the ipConfigurations value to set.
+     * @return the AzureFirewallInner object itself.
+     */
+    public AzureFirewallInner withIpConfigurations(List<AzureFirewallIpConfiguration> ipConfigurations) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AzureFirewallPropertiesFormat();
+        }
+        this.innerProperties().withIpConfigurations(ipConfigurations);
+        return this;
+    }
+
+    /**
+     * Get the managementIpConfiguration property: IP configuration of the Azure Firewall used for management traffic.
+     *
+     * @return the managementIpConfiguration value.
+     */
+    public AzureFirewallIpConfiguration managementIpConfiguration() {
+        return this.innerProperties() == null ? null : this.innerProperties().managementIpConfiguration();
+    }
+
+    /**
+     * Set the managementIpConfiguration property: IP configuration of the Azure Firewall used for management traffic.
+     *
+     * @param managementIpConfiguration the managementIpConfiguration value to set.
+     * @return the AzureFirewallInner object itself.
+     */
+    public AzureFirewallInner withManagementIpConfiguration(AzureFirewallIpConfiguration managementIpConfiguration) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AzureFirewallPropertiesFormat();
+        }
+        this.innerProperties().withManagementIpConfiguration(managementIpConfiguration);
+        return this;
+    }
+
+    /**
+     * Get the provisioningState property: The provisioning state of the Azure firewall resource.
+     *
+     * @return the provisioningState value.
+     */
+    public ProvisioningState provisioningState() {
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    }
+
+    /**
+     * Get the threatIntelMode property: The operation mode for Threat Intelligence.
+     *
+     * @return the threatIntelMode value.
+     */
+    public AzureFirewallThreatIntelMode threatIntelMode() {
+        return this.innerProperties() == null ? null : this.innerProperties().threatIntelMode();
+    }
+
+    /**
+     * Set the threatIntelMode property: The operation mode for Threat Intelligence.
+     *
+     * @param threatIntelMode the threatIntelMode value to set.
+     * @return the AzureFirewallInner object itself.
+     */
+    public AzureFirewallInner withThreatIntelMode(AzureFirewallThreatIntelMode threatIntelMode) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AzureFirewallPropertiesFormat();
+        }
+        this.innerProperties().withThreatIntelMode(threatIntelMode);
+        return this;
+    }
+
+    /**
+     * Get the virtualHub property: The virtualHub to which the firewall belongs.
+     *
+     * @return the virtualHub value.
+     */
+    public SubResource virtualHub() {
+        return this.innerProperties() == null ? null : this.innerProperties().virtualHub();
+    }
+
+    /**
+     * Set the virtualHub property: The virtualHub to which the firewall belongs.
+     *
+     * @param virtualHub the virtualHub value to set.
+     * @return the AzureFirewallInner object itself.
+     */
+    public AzureFirewallInner withVirtualHub(SubResource virtualHub) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AzureFirewallPropertiesFormat();
+        }
+        this.innerProperties().withVirtualHub(virtualHub);
+        return this;
+    }
+
+    /**
+     * Get the firewallPolicy property: The firewallPolicy associated with this azure firewall.
+     *
+     * @return the firewallPolicy value.
+     */
+    public SubResource firewallPolicy() {
+        return this.innerProperties() == null ? null : this.innerProperties().firewallPolicy();
+    }
+
+    /**
+     * Set the firewallPolicy property: The firewallPolicy associated with this azure firewall.
+     *
+     * @param firewallPolicy the firewallPolicy value to set.
+     * @return the AzureFirewallInner object itself.
+     */
+    public AzureFirewallInner withFirewallPolicy(SubResource firewallPolicy) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AzureFirewallPropertiesFormat();
+        }
+        this.innerProperties().withFirewallPolicy(firewallPolicy);
+        return this;
+    }
+
+    /**
+     * Get the hubIpAddresses property: IP addresses associated with AzureFirewall.
+     *
+     * @return the hubIpAddresses value.
+     */
+    public HubIpAddresses hubIpAddresses() {
+        return this.innerProperties() == null ? null : this.innerProperties().hubIpAddresses();
+    }
+
+    /**
+     * Set the hubIpAddresses property: IP addresses associated with AzureFirewall.
+     *
+     * @param hubIpAddresses the hubIpAddresses value to set.
+     * @return the AzureFirewallInner object itself.
+     */
+    public AzureFirewallInner withHubIpAddresses(HubIpAddresses hubIpAddresses) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AzureFirewallPropertiesFormat();
+        }
+        this.innerProperties().withHubIpAddresses(hubIpAddresses);
+        return this;
+    }
+
+    /**
+     * Get the ipGroups property: IpGroups associated with AzureFirewall.
+     *
+     * @return the ipGroups value.
+     */
+    public List<AzureFirewallIpGroups> ipGroups() {
+        return this.innerProperties() == null ? null : this.innerProperties().ipGroups();
+    }
+
+    /**
+     * Get the sku property: The Azure Firewall Resource SKU.
+     *
+     * @return the sku value.
+     */
+    public AzureFirewallSku sku() {
+        return this.innerProperties() == null ? null : this.innerProperties().sku();
+    }
+
+    /**
+     * Set the sku property: The Azure Firewall Resource SKU.
+     *
+     * @param sku the sku value to set.
+     * @return the AzureFirewallInner object itself.
+     */
+    public AzureFirewallInner withSku(AzureFirewallSku sku) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AzureFirewallPropertiesFormat();
+        }
+        this.innerProperties().withSku(sku);
+        return this;
+    }
+
+    /**
+     * Get the additionalProperties property: The additional properties used to further config this azure firewall.
+     *
+     * @return the additionalProperties value.
+     */
+    public Map<String, String> additionalProperties() {
+        return this.innerProperties() == null ? null : this.innerProperties().additionalProperties();
+    }
+
+    /**
+     * Set the additionalProperties property: The additional properties used to further config this azure firewall.
+     *
+     * @param additionalProperties the additionalProperties value to set.
+     * @return the AzureFirewallInner object itself.
+     */
+    public AzureFirewallInner withAdditionalProperties(Map<String, String> additionalProperties) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AzureFirewallPropertiesFormat();
+        }
+        this.innerProperties().withAdditionalProperties(additionalProperties);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (applicationRuleCollections() != null) {
-            applicationRuleCollections().forEach(e -> e.validate());
-        }
-        if (natRuleCollections() != null) {
-            natRuleCollections().forEach(e -> e.validate());
-        }
-        if (networkRuleCollections() != null) {
-            networkRuleCollections().forEach(e -> e.validate());
-        }
-        if (ipConfigurations() != null) {
-            ipConfigurations().forEach(e -> e.validate());
-        }
-        if (managementIpConfiguration() != null) {
-            managementIpConfiguration().validate();
-        }
-        if (hubIpAddresses() != null) {
-            hubIpAddresses().validate();
-        }
-        if (ipGroups() != null) {
-            ipGroups().forEach(e -> e.validate());
-        }
-        if (sku() != null) {
-            sku().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

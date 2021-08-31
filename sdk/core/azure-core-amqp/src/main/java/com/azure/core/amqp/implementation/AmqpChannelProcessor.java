@@ -5,6 +5,7 @@ package com.azure.core.amqp.implementation;
 
 import com.azure.core.amqp.AmqpEndpointState;
 import com.azure.core.amqp.AmqpRetryPolicy;
+import com.azure.core.amqp.exception.AmqpErrorContext;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.util.AsyncCloseable;
 import com.azure.core.util.logging.ClientLogger;
@@ -19,6 +20,7 @@ import reactor.core.publisher.Operators;
 import java.time.Duration;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentLinkedDeque;
+import java.util.concurrent.RejectedExecutionException;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
@@ -41,6 +43,7 @@ public class AmqpChannelProcessor<T> extends Mono<T> implements Processor<T, T>,
     private final String fullyQualifiedNamespace;
     private final String entityPath;
     private final Function<T, Flux<AmqpEndpointState>> endpointStatesFunction;
+    private final AmqpErrorContext errorContext;
 
     private volatile Subscription upstream;
     private volatile ConcurrentLinkedDeque<ChannelSubscriber<T>> subscribers = new ConcurrentLinkedDeque<>();
@@ -58,6 +61,7 @@ public class AmqpChannelProcessor<T> extends Mono<T> implements Processor<T, T>,
             "'endpointStates' cannot be null.");
         this.retryPolicy = Objects.requireNonNull(retryPolicy, "'retryPolicy' cannot be null.");
         this.logger = Objects.requireNonNull(logger, "'logger' cannot be null.");
+        this.errorContext = new AmqpErrorContext(fullyQualifiedNamespace);
     }
 
     @Override
@@ -126,6 +130,11 @@ public class AmqpChannelProcessor<T> extends Mono<T> implements Processor<T, T>,
         isRequested.set(false);
     }
 
+    /**
+     * When downstream or upstream encounters an error, calculates whether to request another item upstream.
+     *
+     * @param throwable Exception to analyse.
+     */
     @Override
     public void onError(Throwable throwable) {
         Objects.requireNonNull(throwable, "'throwable' is required.");
@@ -135,24 +144,35 @@ public class AmqpChannelProcessor<T> extends Mono<T> implements Processor<T, T>,
             return;
         }
 
-        int attemptsMade = retryAttempts.incrementAndGet();
+        final int attemptsMade = retryAttempts.incrementAndGet();
+        final int attempts;
+        final Duration retryInterval;
 
-        if (throwable instanceof AmqpException) {
-            AmqpException amqpException = (AmqpException) throwable;
-            // Connection processor should never be disposed if the underlying error is transient.
-            // So, we never exhaust the retry attempts for transient errors. This will ensure a new connection
-            // will be created whenever the underlying transient error is resolved. For e.g. when a network
-            // connection is lost for an extended period of time and when the network is restored later, we should be
-            // able to recreate a new AMQP connection.
-            if (amqpException.isTransient()) {
-                logger.verbose("Attempted {} times to get a new AMQP connection", attemptsMade);
-                // for the purpose of computing delay, we'll use the min of retry attempts or max retries set in
-                // the retry policy to get the max delay duration.
-                attemptsMade = Math.min(attemptsMade, retryPolicy.getMaxRetries());
-            }
+        // Connection processor should never be disposed if the underlying error is transient.
+        // So, we never exhaust the retry attempts for transient errors. This will ensure a new connection
+        // will be created whenever the underlying transient error is resolved. For e.g. when a network
+        // connection is lost for an extended period of time and when the network is restored later, we should be
+        // able to recreate a new AMQP connection.
+        //
+        // There are exceptions that will not be AmqpExceptions like IllegalStateExceptions or
+        // RejectedExecutionExceptions when attempting an operation that is closed or if the IO signal is accidentally
+        // closed. In these cases, we want to re-attempt the operation.
+        if (((throwable instanceof AmqpException) && ((AmqpException) throwable).isTransient())
+            || (throwable instanceof IllegalStateException)
+            || (throwable instanceof RejectedExecutionException)) {
+            // for the purpose of computing delay, we'll use the min of retry attempts or max retries set in
+            // the retry policy to get the max delay duration.
+            attempts = Math.min(attemptsMade, retryPolicy.getMaxRetries());
+
+            final Throwable throwableToUse = throwable instanceof AmqpException
+                ? throwable
+                : new AmqpException(true, "Non-AmqpException occurred upstream.", throwable, errorContext);
+
+            retryInterval = retryPolicy.calculateRetryDelay(throwableToUse, attempts);
+        } else {
+            attempts = attemptsMade;
+            retryInterval = retryPolicy.calculateRetryDelay(throwable, attempts);
         }
-        final int attempt = attemptsMade;
-        final Duration retryInterval = retryPolicy.calculateRetryDelay(throwable, attempt);
 
         if (retryInterval != null) {
             // There was already a retry in progress, so we decrement the value because we don't want to make two retry
@@ -162,35 +182,35 @@ public class AmqpChannelProcessor<T> extends Mono<T> implements Processor<T, T>,
                 return;
             }
 
-            logger.warning("Retry #{}. Transient error occurred. Retrying after {} ms.",
-                attempt, retryInterval.toMillis(), throwable);
+            logger.info("Retry #{}. Transient error occurred. Retrying after {} ms.", attempts,
+                retryInterval.toMillis(), throwable);
 
             retrySubscription = Mono.delay(retryInterval).subscribe(i -> {
                 if (isDisposed()) {
-                    logger.info("Retry #{}. Not requesting from upstream. Processor is disposed.", attempt);
+                    logger.info("Retry #{}. Not requesting from upstream. Processor is disposed.", attempts);
                 } else {
-                    logger.info("Retry #{}. Requesting from upstream.", attempt);
+                    logger.info("Retry #{}. Requesting from upstream.", attempts);
 
                     requestUpstream();
                     isRetryPending.set(false);
                 }
             });
+        } else {
+            logger.warning("entityPath[{}] Retry #{}. Retry attempts exhausted or exception was not retriable.",
+                entityPath, attempts, throwable);
 
-            return;
-        }
+            lastError = throwable;
+            isDisposed.set(true);
+            dispose();
 
-        logger.warning("Non-retryable error occurred in connection.", throwable);
-        lastError = throwable;
-        isDisposed.set(true);
-        dispose();
-
-        synchronized (lock) {
-            final ConcurrentLinkedDeque<ChannelSubscriber<T>> currentSubscribers = subscribers;
-            subscribers = new ConcurrentLinkedDeque<>();
-            logger.info("namespace[{}] entityPath[{}]: Error in AMQP channel processor. Notifying {} "
+            synchronized (lock) {
+                final ConcurrentLinkedDeque<ChannelSubscriber<T>> currentSubscribers = subscribers;
+                subscribers = new ConcurrentLinkedDeque<>();
+                logger.info("namespace[{}] entityPath[{}]: Error in AMQP channel processor. Notifying {} "
                     + "subscribers.", fullyQualifiedNamespace, entityPath, currentSubscribers.size());
 
-            currentSubscribers.forEach(subscriber -> subscriber.onError(throwable));
+                currentSubscribers.forEach(subscriber -> subscriber.onError(throwable));
+            }
         }
     }
 
@@ -235,7 +255,7 @@ public class AmqpChannelProcessor<T> extends Mono<T> implements Processor<T, T>,
 
         subscribers.add(subscriber);
         logger.verbose("Added a subscriber {} to AMQP channel processor. Total "
-                + "subscribers = {}", subscriber, subscribers.size());
+            + "subscribers = {}", subscriber, subscribers.size());
 
         if (!isRetryPending.get()) {
             requestUpstream();
@@ -299,6 +319,18 @@ public class AmqpChannelProcessor<T> extends Mono<T> implements Processor<T, T>,
         close(oldChannel);
     }
 
+    /**
+     * Checks the current state of the channel for this channel and returns true if the channel is null or if this
+     * processor is disposed.
+     *
+     * @return true if the current channel in the processor is null or if the processor is disposed
+     */
+    public boolean isChannelClosed() {
+        synchronized (lock) {
+            return currentChannel == null || isDisposed();
+        }
+    }
+
     private void close(T channel) {
         if (channel instanceof AsyncCloseable) {
             ((AsyncCloseable) channel).closeAsync().subscribe();
@@ -314,18 +346,6 @@ public class AmqpChannelProcessor<T> extends Mono<T> implements Processor<T, T>,
             } catch (Exception error) {
                 logger.warning("Error occurred closing Disposable channel.", error);
             }
-        }
-    }
-
-    /**
-     * Checks the current state of the channel for this channel and returns true if the channel is null or if this
-     * processor is disposed.
-     *
-     * @return true if the current channel in the processor is null or if the processor is disposed
-     */
-    public boolean isChannelClosed() {
-        synchronized (lock) {
-            return currentChannel == null || isDisposed();
         }
     }
 
@@ -367,7 +387,7 @@ public class AmqpChannelProcessor<T> extends Mono<T> implements Processor<T, T>,
                 actual.onError(throwable);
                 processor.subscribers.remove(this);
             } else {
-                Operators.onOperatorError(throwable, currentContext());
+                Operators.onErrorDropped(throwable, currentContext());
             }
         }
     }

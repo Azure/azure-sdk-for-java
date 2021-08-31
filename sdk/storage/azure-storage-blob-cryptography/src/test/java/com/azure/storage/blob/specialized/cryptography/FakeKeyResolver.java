@@ -14,7 +14,7 @@ import reactor.core.publisher.Mono;
 /**
  * Extremely basic key resolver to test client side encryption
  */
-public class FakeKeyResolver implements AsyncKeyEncryptionKeyResolver, IKeyResolver {
+public final class FakeKeyResolver implements AsyncKeyEncryptionKeyResolver, IKeyResolver {
 
     FakeKey key;
 
@@ -24,14 +24,12 @@ public class FakeKeyResolver implements AsyncKeyEncryptionKeyResolver, IKeyResol
 
     @Override
     public Mono<? extends AsyncKeyEncryptionKey> buildAsyncKeyEncryptionKey(String keyId) {
-        if (keyId.equals(this.key.getKeyId().block())) {
-            return Mono.just(this.key);
-        } else {
-            return Mono.error(new IllegalArgumentException("Key does not exist"));
-        }
-
+        return key.getKeyId().flatMap(kid -> keyId.equals(kid)
+            ? Mono.just(key)
+            : Mono.error(new IllegalArgumentException("Key does not exist")));
     }
 
+    @SuppressWarnings("UnstableApiUsage")
     @Override
     public ListenableFuture<IKey> resolveKeyAsync(String s) {
         return Futures.immediateFuture(this.key);

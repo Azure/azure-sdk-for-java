@@ -1,6 +1,6 @@
 # Release History
 
-## 1.4.0-beta.1 (Unreleased)
+## 1.4.0-beta.1 (2021-08-16)
 ### Features Added
 
 - Added support to `ManagedIdentityCredential` for Bridge to Kubernetes local development authentication.
@@ -10,6 +10,7 @@
     - If instead of a region, `RegionalAuthority.AutoDiscoverRegion` is specified as the value for `regionalAuthority`, MSAL will be used to attempt to discover the region.
     - A region can also be specified through the `AZURE_REGIONAL_AUTHORITY_NAME` environment variable.
 - Added `loginHint()` setter to `InteractiveBrowserCredentialBuilder` which allows a username to be pre-selected for interactive logins.
+- Added support to consume `TenantId` challenges from `TokenRequestContext`.
 
 
 ## 1.3.1 (2021-06-08)

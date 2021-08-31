@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** DataProtection type volumes include an object containing details of the replication. */
+/** DataProtection DataProtection type volumes include an object containing details of the replication. */
 @Fluent
 public final class VolumePropertiesDataProtection {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(VolumePropertiesDataProtection.class);

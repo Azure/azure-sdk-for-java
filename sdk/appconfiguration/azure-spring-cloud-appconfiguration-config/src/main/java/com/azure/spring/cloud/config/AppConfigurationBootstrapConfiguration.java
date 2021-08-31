@@ -10,7 +10,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.util.Assert;
@@ -25,10 +24,11 @@ import com.azure.spring.cloud.config.resource.ConnectionPool;
 import com.azure.spring.cloud.config.stores.ClientStore;
 
 /**
- * Setup ConnectionPool, AppConfigurationPropertySourceLocator, and ClientStore when <i>spring.cloud.azure.appconfiguration.enabled</i> is enabled.
+ * Setup ConnectionPool, AppConfigurationPropertySourceLocator, and ClientStore when
+ * <i>spring.cloud.azure.appconfiguration.enabled</i> is enabled.
  */
 @Configuration
-@EnableConfigurationProperties({AppConfigurationProperties.class, AppConfigurationProviderProperties.class})
+@EnableConfigurationProperties({ AppConfigurationProperties.class, AppConfigurationProviderProperties.class })
 @ConditionalOnClass(AppConfigurationPropertySourceLocator.class)
 @ConditionalOnProperty(prefix = AppConfigurationProperties.CONFIG_PREFIX, name = "enabled", matchIfMissing = true)
 public class AppConfigurationBootstrapConfiguration {
@@ -41,7 +41,8 @@ public class AppConfigurationBootstrapConfiguration {
         List<ConfigStore> stores = properties.getStores();
 
         for (ConfigStore store : stores) {
-            if (store.isEnabled() && StringUtils.hasText(store.getEndpoint()) && StringUtils.hasText(store.getConnectionString())) {
+            if (store.isEnabled() && StringUtils.hasText(store.getEndpoint())
+                && StringUtils.hasText(store.getConnectionString())) {
                 pool.put(store.getEndpoint(), new Connection(store.getConnectionString()));
             } else if (StringUtils.hasText(store.getEndpoint())) {
                 AppConfigManagedIdentityProperties msiProps = properties.getManagedIdentity();
@@ -59,14 +60,27 @@ public class AppConfigurationBootstrapConfiguration {
         return pool;
     }
 
+    /**
+     * 
+     * @param properties Client properties
+     * @param appProperties Library properties
+     * @param clients Store Connections
+     * @param keyVaultCredentialProviderOptional Optional credentials for connecting to KeyVault
+     * @param keyVaultClientProviderOptional Optional client for connecting to Key Vault
+     * @param keyVaultSecretProviderOptional Secret Resolver
+     * @return App Configuration Property Source Locator
+     * @throws IllegalArgumentException if both KeyVaultClientProvider and KeyVaultSecretProvider exist.
+     */
     @Bean
     public AppConfigurationPropertySourceLocator sourceLocator(AppConfigurationProperties properties,
-        AppConfigurationProviderProperties appProperties, ClientStore clients, ApplicationContext context,
+        AppConfigurationProviderProperties appProperties, ClientStore clients, 
         Optional<KeyVaultCredentialProvider> keyVaultCredentialProviderOptional,
-        Optional<SecretClientBuilderSetup> keyVaultClientProviderOptional) {
+        Optional<SecretClientBuilderSetup> keyVaultClientProviderOptional,
+        Optional<KeyVaultSecretProvider> keyVaultSecretProviderOptional) throws IllegalArgumentException {
 
         KeyVaultCredentialProvider keyVaultCredentialProvider = null;
         SecretClientBuilderSetup keyVaultClientProvider = null;
+        KeyVaultSecretProvider keyVaultSecretProvider = null;
 
         if (!keyVaultCredentialProviderOptional.isPresent()) {
             LOGGER.debug("No KeyVaultCredentialProvider found.");
@@ -80,13 +94,24 @@ public class AppConfigurationBootstrapConfiguration {
             keyVaultClientProvider = keyVaultClientProviderOptional.get();
         }
 
+        if (!keyVaultSecretProviderOptional.isPresent()) {
+            LOGGER.debug("No KeyVaultSecretProvider found.");
+        } else {
+            keyVaultSecretProvider = keyVaultSecretProviderOptional.get();
+        }
+
+        if (keyVaultClientProvider != null && keyVaultSecretProvider != null) {
+            throw new IllegalArgumentException(
+                "KeyVaultClientProvider and KeyVaultSecretProvider both can't have Beans supplied.");
+        }
+
         return new AppConfigurationPropertySourceLocator(properties, appProperties, clients,
-            keyVaultCredentialProvider, keyVaultClientProvider);
+            keyVaultCredentialProvider, keyVaultClientProvider, keyVaultSecretProvider);
     }
 
     @Bean
     public ClientStore buildClientStores(AppConfigurationProperties properties,
-        AppConfigurationProviderProperties appProperties, ConnectionPool pool, ApplicationContext context,
+        AppConfigurationProviderProperties appProperties, ConnectionPool pool,
         Optional<AppConfigurationCredentialProvider> tokenCredentialProviderOptional,
         Optional<ConfigurationClientBuilderSetup> clientProviderOptional) {
 

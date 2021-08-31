@@ -9,6 +9,7 @@ import com.azure.resourcemanager.network.models.Route;
 import com.azure.resourcemanager.network.models.RouteNextHopType;
 import com.azure.resourcemanager.network.models.RouteTable;
 import com.azure.resourcemanager.network.models.Subnet;
+import com.azure.resourcemanager.network.models.TagsObject;
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import reactor.core.publisher.Mono;
 
@@ -34,7 +35,7 @@ class RouteTableImpl
             .manager()
             .serviceClient()
             .getRouteTables()
-            .updateTagsAsync(resourceGroupName(), name(), innerModel().tags());
+            .updateTagsAsync(resourceGroupName(), name(), new TagsObject().withTags(innerModel().tags()));
     }
 
     @Override

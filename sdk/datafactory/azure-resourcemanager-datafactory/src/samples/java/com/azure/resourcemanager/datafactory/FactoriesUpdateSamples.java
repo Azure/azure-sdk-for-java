@@ -11,15 +11,19 @@ import java.util.Map;
 
 /** Samples for Factories Update. */
 public final class FactoriesUpdateSamples {
+    /*
+     * operationId: Factories_Update
+     * api-version: 2018-06-01
+     * x-ms-examples: Factories_Update
+     */
     /**
      * Sample code: Factories_Update.
      *
-     * @param dataFactoryManager Entry point to DataFactoryManager. The Azure Data Factory V2 management API provides a
-     *     RESTful set of web services that interact with Azure Data Factory V2 services.
+     * @param manager Entry point to DataFactoryManager.
      */
-    public static void factoriesUpdate(com.azure.resourcemanager.datafactory.DataFactoryManager dataFactoryManager) {
+    public static void factoriesUpdate(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
         Factory resource =
-            dataFactoryManager
+            manager
                 .factories()
                 .getByResourceGroupWithResponse("exampleResourceGroup", "exampleFactoryName", null, Context.NONE)
                 .getValue();

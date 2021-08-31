@@ -4,8 +4,7 @@
 
 package com.azure.resourcemanager.appservice.fluent.models;
 
-import com.azure.core.annotation.Immutable;
-import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.models.ProxyOnlyResource;
 import com.azure.resourcemanager.appservice.models.TriggerTypes;
@@ -13,39 +12,23 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Static Site Function Overview ARM resource. */
-@JsonFlatten
-@Immutable
-public class StaticSiteFunctionOverviewArmResourceInner extends ProxyOnlyResource {
+@Fluent
+public final class StaticSiteFunctionOverviewArmResourceInner extends ProxyOnlyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(StaticSiteFunctionOverviewArmResourceInner.class);
 
     /*
-     * The name for the function
+     * StaticSiteFunctionOverviewARMResource resource specific properties
      */
-    @JsonProperty(value = "properties.functionName", access = JsonProperty.Access.WRITE_ONLY)
-    private String functionName;
-
-    /*
-     * The trigger type of the function
-     */
-    @JsonProperty(value = "properties.triggerType", access = JsonProperty.Access.WRITE_ONLY)
-    private TriggerTypes triggerType;
+    @JsonProperty(value = "properties")
+    private StaticSiteFunctionOverviewArmResourceProperties innerProperties;
 
     /**
-     * Get the functionName property: The name for the function.
+     * Get the innerProperties property: StaticSiteFunctionOverviewARMResource resource specific properties.
      *
-     * @return the functionName value.
+     * @return the innerProperties value.
      */
-    public String functionName() {
-        return this.functionName;
-    }
-
-    /**
-     * Get the triggerType property: The trigger type of the function.
-     *
-     * @return the triggerType value.
-     */
-    public TriggerTypes triggerType() {
-        return this.triggerType;
+    private StaticSiteFunctionOverviewArmResourceProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /** {@inheritDoc} */
@@ -56,6 +39,24 @@ public class StaticSiteFunctionOverviewArmResourceInner extends ProxyOnlyResourc
     }
 
     /**
+     * Get the functionName property: The name for the function.
+     *
+     * @return the functionName value.
+     */
+    public String functionName() {
+        return this.innerProperties() == null ? null : this.innerProperties().functionName();
+    }
+
+    /**
+     * Get the triggerType property: The trigger type of the function.
+     *
+     * @return the triggerType value.
+     */
+    public TriggerTypes triggerType() {
+        return this.innerProperties() == null ? null : this.innerProperties().triggerType();
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -63,5 +64,8 @@ public class StaticSiteFunctionOverviewArmResourceInner extends ProxyOnlyResourc
     @Override
     public void validate() {
         super.validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

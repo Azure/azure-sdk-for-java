@@ -3,7 +3,7 @@
 
 package com.azure.cosmos.implementation.batch;
 
-import com.azure.cosmos.CosmosItemOperation;
+import com.azure.cosmos.models.CosmosItemOperation;
 
 import java.util.List;
 

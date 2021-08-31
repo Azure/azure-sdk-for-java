@@ -5,232 +5,44 @@
 package com.azure.resourcemanager.servicefabric.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.servicefabric.models.AddOnFeatures;
+import com.azure.resourcemanager.servicefabric.models.ApplicationTypeVersionsCleanupPolicy;
 import com.azure.resourcemanager.servicefabric.models.AzureActiveDirectory;
 import com.azure.resourcemanager.servicefabric.models.CertificateDescription;
 import com.azure.resourcemanager.servicefabric.models.ClientCertificateCommonName;
 import com.azure.resourcemanager.servicefabric.models.ClientCertificateThumbprint;
 import com.azure.resourcemanager.servicefabric.models.ClusterState;
+import com.azure.resourcemanager.servicefabric.models.ClusterUpgradeCadence;
 import com.azure.resourcemanager.servicefabric.models.ClusterUpgradePolicy;
-import com.azure.resourcemanager.servicefabric.models.ClusterVersionDetails;
 import com.azure.resourcemanager.servicefabric.models.DiagnosticsStorageAccountConfig;
 import com.azure.resourcemanager.servicefabric.models.NodeTypeDescription;
+import com.azure.resourcemanager.servicefabric.models.Notification;
 import com.azure.resourcemanager.servicefabric.models.ProvisioningState;
 import com.azure.resourcemanager.servicefabric.models.ReliabilityLevel;
 import com.azure.resourcemanager.servicefabric.models.ServerCertificateCommonNames;
 import com.azure.resourcemanager.servicefabric.models.SettingsSectionDescription;
+import com.azure.resourcemanager.servicefabric.models.SfZonalUpgradeMode;
 import com.azure.resourcemanager.servicefabric.models.UpgradeMode;
+import com.azure.resourcemanager.servicefabric.models.VmssZonalUpgradeMode;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
 
-/** The cluster resource properties. */
-@JsonFlatten
+/** The cluster resource. */
 @Fluent
-public class ClusterInner extends Resource {
+public final class ClusterInner extends Resource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ClusterInner.class);
 
     /*
-     * The list of add-on features to enable in the cluster.
+     * The cluster resource properties
      */
-    @JsonProperty(value = "properties.addOnFeatures")
-    private List<AddOnFeatures> addOnFeatures;
-
-    /*
-     * The Service Fabric runtime versions available for this cluster.
-     */
-    @JsonProperty(value = "properties.availableClusterVersions", access = JsonProperty.Access.WRITE_ONLY)
-    private List<ClusterVersionDetails> availableClusterVersions;
-
-    /*
-     * The AAD authentication settings of the cluster.
-     */
-    @JsonProperty(value = "properties.azureActiveDirectory")
-    private AzureActiveDirectory azureActiveDirectory;
-
-    /*
-     * The certificate to use for securing the cluster. The certificate
-     * provided will be used for node to node security within the cluster, SSL
-     * certificate for cluster management endpoint and default admin client.
-     */
-    @JsonProperty(value = "properties.certificate")
-    private CertificateDescription certificate;
-
-    /*
-     * Describes a list of server certificates referenced by common name that
-     * are used to secure the cluster.
-     */
-    @JsonProperty(value = "properties.certificateCommonNames")
-    private ServerCertificateCommonNames certificateCommonNames;
-
-    /*
-     * The list of client certificates referenced by common name that are
-     * allowed to manage the cluster.
-     */
-    @JsonProperty(value = "properties.clientCertificateCommonNames")
-    private List<ClientCertificateCommonName> clientCertificateCommonNames;
-
-    /*
-     * The list of client certificates referenced by thumbprint that are
-     * allowed to manage the cluster.
-     */
-    @JsonProperty(value = "properties.clientCertificateThumbprints")
-    private List<ClientCertificateThumbprint> clientCertificateThumbprints;
-
-    /*
-     * The Service Fabric runtime version of the cluster. This property can
-     * only by set the user when **upgradeMode** is set to 'Manual'. To get
-     * list of available Service Fabric versions for new clusters use
-     * [ClusterVersion API](./ClusterVersion.md). To get the list of available
-     * version for existing clusters use **availableClusterVersions**.
-     */
-    @JsonProperty(value = "properties.clusterCodeVersion")
-    private String clusterCodeVersion;
-
-    /*
-     * The Azure Resource Provider endpoint. A system service in the cluster
-     * connects to this  endpoint.
-     */
-    @JsonProperty(value = "properties.clusterEndpoint", access = JsonProperty.Access.WRITE_ONLY)
-    private String clusterEndpoint;
-
-    /*
-     * A service generated unique identifier for the cluster resource.
-     */
-    @JsonProperty(value = "properties.clusterId", access = JsonProperty.Access.WRITE_ONLY)
-    private String clusterId;
-
-    /*
-     * The current state of the cluster.
-     *
-     * - WaitingForNodes - Indicates that the cluster resource is created and
-     * the resource provider is waiting for Service Fabric VM extension to boot
-     * up and report to it.
-     * - Deploying - Indicates that the Service Fabric runtime is being
-     * installed on the VMs. Cluster resource will be in this state until the
-     * cluster boots up and system services are up.
-     * - BaselineUpgrade - Indicates that the cluster is upgrading to
-     * establishes the cluster version. This upgrade is automatically initiated
-     * when the cluster boots up for the first time.
-     * - UpdatingUserConfiguration - Indicates that the cluster is being
-     * upgraded with the user provided configuration.
-     * - UpdatingUserCertificate - Indicates that the cluster is being upgraded
-     * with the user provided certificate.
-     * - UpdatingInfrastructure - Indicates that the cluster is being upgraded
-     * with the latest Service Fabric runtime version. This happens only when
-     * the **upgradeMode** is set to 'Automatic'.
-     * - EnforcingClusterVersion - Indicates that cluster is on a different
-     * version than expected and the cluster is being upgraded to the expected
-     * version.
-     * - UpgradeServiceUnreachable - Indicates that the system service in the
-     * cluster is no longer polling the Resource Provider. Clusters in this
-     * state cannot be managed by the Resource Provider.
-     * - AutoScale - Indicates that the ReliabilityLevel of the cluster is
-     * being adjusted.
-     * - Ready - Indicates that the cluster is in a stable state.
-     *
-     */
-    @JsonProperty(value = "properties.clusterState", access = JsonProperty.Access.WRITE_ONLY)
-    private ClusterState clusterState;
-
-    /*
-     * The storage account information for storing Service Fabric diagnostic
-     * logs.
-     */
-    @JsonProperty(value = "properties.diagnosticsStorageAccountConfig")
-    private DiagnosticsStorageAccountConfig diagnosticsStorageAccountConfig;
-
-    /*
-     * Indicates if the event store service is enabled.
-     */
-    @JsonProperty(value = "properties.eventStoreServiceEnabled")
-    private Boolean eventStoreServiceEnabled;
-
-    /*
-     * The list of custom fabric settings to configure the cluster.
-     */
-    @JsonProperty(value = "properties.fabricSettings")
-    private List<SettingsSectionDescription> fabricSettings;
-
-    /*
-     * The http management endpoint of the cluster.
-     */
-    @JsonProperty(value = "properties.managementEndpoint")
-    private String managementEndpoint;
-
-    /*
-     * The list of node types in the cluster.
-     */
-    @JsonProperty(value = "properties.nodeTypes")
-    private List<NodeTypeDescription> nodeTypes;
-
-    /*
-     * The provisioning state of the cluster resource.
-     */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningState provisioningState;
-
-    /*
-     * The reliability level sets the replica set size of system services.
-     * Learn about
-     * [ReliabilityLevel](https://docs.microsoft.com/azure/service-fabric/service-fabric-cluster-capacity).
-     *
-     * - None - Run the System services with a target replica set count of 1.
-     * This should only be used for test clusters.
-     * - Bronze - Run the System services with a target replica set count of 3.
-     * This should only be used for test clusters.
-     * - Silver - Run the System services with a target replica set count of 5.
-     * - Gold - Run the System services with a target replica set count of 7.
-     * - Platinum - Run the System services with a target replica set count of
-     * 9.
-     *
-     */
-    @JsonProperty(value = "properties.reliabilityLevel")
-    private ReliabilityLevel reliabilityLevel;
-
-    /*
-     * The server certificate used by reverse proxy.
-     */
-    @JsonProperty(value = "properties.reverseProxyCertificate")
-    private CertificateDescription reverseProxyCertificate;
-
-    /*
-     * Describes a list of server certificates referenced by common name that
-     * are used to secure the cluster.
-     */
-    @JsonProperty(value = "properties.reverseProxyCertificateCommonNames")
-    private ServerCertificateCommonNames reverseProxyCertificateCommonNames;
-
-    /*
-     * The policy to use when upgrading the cluster.
-     */
-    @JsonProperty(value = "properties.upgradeDescription")
-    private ClusterUpgradePolicy upgradeDescription;
-
-    /*
-     * The upgrade mode of the cluster when new Service Fabric runtime version
-     * is available.
-     *
-     * - Automatic - The cluster will be automatically upgraded to the latest
-     * Service Fabric runtime version as soon as it is available.
-     * - Manual - The cluster will not be automatically upgraded to the latest
-     * Service Fabric runtime version. The cluster is upgraded by setting the
-     * **clusterCodeVersion** property in the cluster resource.
-     *
-     */
-    @JsonProperty(value = "properties.upgradeMode")
-    private UpgradeMode upgradeMode;
-
-    /*
-     * The VM image VMSS has been configured with. Generic names such as
-     * Windows or Linux can be used.
-     */
-    @JsonProperty(value = "properties.vmImage")
-    private String vmImage;
+    @JsonProperty(value = "properties")
+    private ClusterProperties innerProperties;
 
     /*
      * Azure resource etag.
@@ -238,13 +50,60 @@ public class ClusterInner extends Resource {
     @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
+    /*
+     * Metadata pertaining to creation and last modification of the resource.
+     */
+    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
+    private SystemData systemData;
+
+    /**
+     * Get the innerProperties property: The cluster resource properties.
+     *
+     * @return the innerProperties value.
+     */
+    private ClusterProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
+     * Get the etag property: Azure resource etag.
+     *
+     * @return the etag value.
+     */
+    public String etag() {
+        return this.etag;
+    }
+
+    /**
+     * Get the systemData property: Metadata pertaining to creation and last modification of the resource.
+     *
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ClusterInner withLocation(String location) {
+        super.withLocation(location);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ClusterInner withTags(Map<String, String> tags) {
+        super.withTags(tags);
+        return this;
+    }
+
     /**
      * Get the addOnFeatures property: The list of add-on features to enable in the cluster.
      *
      * @return the addOnFeatures value.
      */
     public List<AddOnFeatures> addOnFeatures() {
-        return this.addOnFeatures;
+        return this.innerProperties() == null ? null : this.innerProperties().addOnFeatures();
     }
 
     /**
@@ -254,7 +113,10 @@ public class ClusterInner extends Resource {
      * @return the ClusterInner object itself.
      */
     public ClusterInner withAddOnFeatures(List<AddOnFeatures> addOnFeatures) {
-        this.addOnFeatures = addOnFeatures;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ClusterProperties();
+        }
+        this.innerProperties().withAddOnFeatures(addOnFeatures);
         return this;
     }
 
@@ -264,7 +126,7 @@ public class ClusterInner extends Resource {
      * @return the availableClusterVersions value.
      */
     public List<ClusterVersionDetails> availableClusterVersions() {
-        return this.availableClusterVersions;
+        return this.innerProperties() == null ? null : this.innerProperties().availableClusterVersions();
     }
 
     /**
@@ -273,7 +135,7 @@ public class ClusterInner extends Resource {
      * @return the azureActiveDirectory value.
      */
     public AzureActiveDirectory azureActiveDirectory() {
-        return this.azureActiveDirectory;
+        return this.innerProperties() == null ? null : this.innerProperties().azureActiveDirectory();
     }
 
     /**
@@ -283,7 +145,10 @@ public class ClusterInner extends Resource {
      * @return the ClusterInner object itself.
      */
     public ClusterInner withAzureActiveDirectory(AzureActiveDirectory azureActiveDirectory) {
-        this.azureActiveDirectory = azureActiveDirectory;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ClusterProperties();
+        }
+        this.innerProperties().withAzureActiveDirectory(azureActiveDirectory);
         return this;
     }
 
@@ -295,7 +160,7 @@ public class ClusterInner extends Resource {
      * @return the certificate value.
      */
     public CertificateDescription certificate() {
-        return this.certificate;
+        return this.innerProperties() == null ? null : this.innerProperties().certificate();
     }
 
     /**
@@ -307,7 +172,10 @@ public class ClusterInner extends Resource {
      * @return the ClusterInner object itself.
      */
     public ClusterInner withCertificate(CertificateDescription certificate) {
-        this.certificate = certificate;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ClusterProperties();
+        }
+        this.innerProperties().withCertificate(certificate);
         return this;
     }
 
@@ -318,7 +186,7 @@ public class ClusterInner extends Resource {
      * @return the certificateCommonNames value.
      */
     public ServerCertificateCommonNames certificateCommonNames() {
-        return this.certificateCommonNames;
+        return this.innerProperties() == null ? null : this.innerProperties().certificateCommonNames();
     }
 
     /**
@@ -329,7 +197,10 @@ public class ClusterInner extends Resource {
      * @return the ClusterInner object itself.
      */
     public ClusterInner withCertificateCommonNames(ServerCertificateCommonNames certificateCommonNames) {
-        this.certificateCommonNames = certificateCommonNames;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ClusterProperties();
+        }
+        this.innerProperties().withCertificateCommonNames(certificateCommonNames);
         return this;
     }
 
@@ -340,7 +211,7 @@ public class ClusterInner extends Resource {
      * @return the clientCertificateCommonNames value.
      */
     public List<ClientCertificateCommonName> clientCertificateCommonNames() {
-        return this.clientCertificateCommonNames;
+        return this.innerProperties() == null ? null : this.innerProperties().clientCertificateCommonNames();
     }
 
     /**
@@ -352,7 +223,10 @@ public class ClusterInner extends Resource {
      */
     public ClusterInner withClientCertificateCommonNames(
         List<ClientCertificateCommonName> clientCertificateCommonNames) {
-        this.clientCertificateCommonNames = clientCertificateCommonNames;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ClusterProperties();
+        }
+        this.innerProperties().withClientCertificateCommonNames(clientCertificateCommonNames);
         return this;
     }
 
@@ -363,7 +237,7 @@ public class ClusterInner extends Resource {
      * @return the clientCertificateThumbprints value.
      */
     public List<ClientCertificateThumbprint> clientCertificateThumbprints() {
-        return this.clientCertificateThumbprints;
+        return this.innerProperties() == null ? null : this.innerProperties().clientCertificateThumbprints();
     }
 
     /**
@@ -375,7 +249,10 @@ public class ClusterInner extends Resource {
      */
     public ClusterInner withClientCertificateThumbprints(
         List<ClientCertificateThumbprint> clientCertificateThumbprints) {
-        this.clientCertificateThumbprints = clientCertificateThumbprints;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ClusterProperties();
+        }
+        this.innerProperties().withClientCertificateThumbprints(clientCertificateThumbprints);
         return this;
     }
 
@@ -388,7 +265,7 @@ public class ClusterInner extends Resource {
      * @return the clusterCodeVersion value.
      */
     public String clusterCodeVersion() {
-        return this.clusterCodeVersion;
+        return this.innerProperties() == null ? null : this.innerProperties().clusterCodeVersion();
     }
 
     /**
@@ -401,7 +278,10 @@ public class ClusterInner extends Resource {
      * @return the ClusterInner object itself.
      */
     public ClusterInner withClusterCodeVersion(String clusterCodeVersion) {
-        this.clusterCodeVersion = clusterCodeVersion;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ClusterProperties();
+        }
+        this.innerProperties().withClusterCodeVersion(clusterCodeVersion);
         return this;
     }
 
@@ -412,7 +292,7 @@ public class ClusterInner extends Resource {
      * @return the clusterEndpoint value.
      */
     public String clusterEndpoint() {
-        return this.clusterEndpoint;
+        return this.innerProperties() == null ? null : this.innerProperties().clusterEndpoint();
     }
 
     /**
@@ -421,7 +301,7 @@ public class ClusterInner extends Resource {
      * @return the clusterId value.
      */
     public String clusterId() {
-        return this.clusterId;
+        return this.innerProperties() == null ? null : this.innerProperties().clusterId();
     }
 
     /**
@@ -444,7 +324,7 @@ public class ClusterInner extends Resource {
      * @return the clusterState value.
      */
     public ClusterState clusterState() {
-        return this.clusterState;
+        return this.innerProperties() == null ? null : this.innerProperties().clusterState();
     }
 
     /**
@@ -454,7 +334,7 @@ public class ClusterInner extends Resource {
      * @return the diagnosticsStorageAccountConfig value.
      */
     public DiagnosticsStorageAccountConfig diagnosticsStorageAccountConfig() {
-        return this.diagnosticsStorageAccountConfig;
+        return this.innerProperties() == null ? null : this.innerProperties().diagnosticsStorageAccountConfig();
     }
 
     /**
@@ -466,7 +346,10 @@ public class ClusterInner extends Resource {
      */
     public ClusterInner withDiagnosticsStorageAccountConfig(
         DiagnosticsStorageAccountConfig diagnosticsStorageAccountConfig) {
-        this.diagnosticsStorageAccountConfig = diagnosticsStorageAccountConfig;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ClusterProperties();
+        }
+        this.innerProperties().withDiagnosticsStorageAccountConfig(diagnosticsStorageAccountConfig);
         return this;
     }
 
@@ -476,7 +359,7 @@ public class ClusterInner extends Resource {
      * @return the eventStoreServiceEnabled value.
      */
     public Boolean eventStoreServiceEnabled() {
-        return this.eventStoreServiceEnabled;
+        return this.innerProperties() == null ? null : this.innerProperties().eventStoreServiceEnabled();
     }
 
     /**
@@ -486,7 +369,10 @@ public class ClusterInner extends Resource {
      * @return the ClusterInner object itself.
      */
     public ClusterInner withEventStoreServiceEnabled(Boolean eventStoreServiceEnabled) {
-        this.eventStoreServiceEnabled = eventStoreServiceEnabled;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ClusterProperties();
+        }
+        this.innerProperties().withEventStoreServiceEnabled(eventStoreServiceEnabled);
         return this;
     }
 
@@ -496,7 +382,7 @@ public class ClusterInner extends Resource {
      * @return the fabricSettings value.
      */
     public List<SettingsSectionDescription> fabricSettings() {
-        return this.fabricSettings;
+        return this.innerProperties() == null ? null : this.innerProperties().fabricSettings();
     }
 
     /**
@@ -506,7 +392,10 @@ public class ClusterInner extends Resource {
      * @return the ClusterInner object itself.
      */
     public ClusterInner withFabricSettings(List<SettingsSectionDescription> fabricSettings) {
-        this.fabricSettings = fabricSettings;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ClusterProperties();
+        }
+        this.innerProperties().withFabricSettings(fabricSettings);
         return this;
     }
 
@@ -516,7 +405,7 @@ public class ClusterInner extends Resource {
      * @return the managementEndpoint value.
      */
     public String managementEndpoint() {
-        return this.managementEndpoint;
+        return this.innerProperties() == null ? null : this.innerProperties().managementEndpoint();
     }
 
     /**
@@ -526,7 +415,10 @@ public class ClusterInner extends Resource {
      * @return the ClusterInner object itself.
      */
     public ClusterInner withManagementEndpoint(String managementEndpoint) {
-        this.managementEndpoint = managementEndpoint;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ClusterProperties();
+        }
+        this.innerProperties().withManagementEndpoint(managementEndpoint);
         return this;
     }
 
@@ -536,7 +428,7 @@ public class ClusterInner extends Resource {
      * @return the nodeTypes value.
      */
     public List<NodeTypeDescription> nodeTypes() {
-        return this.nodeTypes;
+        return this.innerProperties() == null ? null : this.innerProperties().nodeTypes();
     }
 
     /**
@@ -546,7 +438,10 @@ public class ClusterInner extends Resource {
      * @return the ClusterInner object itself.
      */
     public ClusterInner withNodeTypes(List<NodeTypeDescription> nodeTypes) {
-        this.nodeTypes = nodeTypes;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ClusterProperties();
+        }
+        this.innerProperties().withNodeTypes(nodeTypes);
         return this;
     }
 
@@ -556,7 +451,7 @@ public class ClusterInner extends Resource {
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
-        return this.provisioningState;
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
     /**
@@ -572,7 +467,7 @@ public class ClusterInner extends Resource {
      * @return the reliabilityLevel value.
      */
     public ReliabilityLevel reliabilityLevel() {
-        return this.reliabilityLevel;
+        return this.innerProperties() == null ? null : this.innerProperties().reliabilityLevel();
     }
 
     /**
@@ -589,7 +484,10 @@ public class ClusterInner extends Resource {
      * @return the ClusterInner object itself.
      */
     public ClusterInner withReliabilityLevel(ReliabilityLevel reliabilityLevel) {
-        this.reliabilityLevel = reliabilityLevel;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ClusterProperties();
+        }
+        this.innerProperties().withReliabilityLevel(reliabilityLevel);
         return this;
     }
 
@@ -599,7 +497,7 @@ public class ClusterInner extends Resource {
      * @return the reverseProxyCertificate value.
      */
     public CertificateDescription reverseProxyCertificate() {
-        return this.reverseProxyCertificate;
+        return this.innerProperties() == null ? null : this.innerProperties().reverseProxyCertificate();
     }
 
     /**
@@ -609,7 +507,10 @@ public class ClusterInner extends Resource {
      * @return the ClusterInner object itself.
      */
     public ClusterInner withReverseProxyCertificate(CertificateDescription reverseProxyCertificate) {
-        this.reverseProxyCertificate = reverseProxyCertificate;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ClusterProperties();
+        }
+        this.innerProperties().withReverseProxyCertificate(reverseProxyCertificate);
         return this;
     }
 
@@ -620,7 +521,7 @@ public class ClusterInner extends Resource {
      * @return the reverseProxyCertificateCommonNames value.
      */
     public ServerCertificateCommonNames reverseProxyCertificateCommonNames() {
-        return this.reverseProxyCertificateCommonNames;
+        return this.innerProperties() == null ? null : this.innerProperties().reverseProxyCertificateCommonNames();
     }
 
     /**
@@ -632,7 +533,10 @@ public class ClusterInner extends Resource {
      */
     public ClusterInner withReverseProxyCertificateCommonNames(
         ServerCertificateCommonNames reverseProxyCertificateCommonNames) {
-        this.reverseProxyCertificateCommonNames = reverseProxyCertificateCommonNames;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ClusterProperties();
+        }
+        this.innerProperties().withReverseProxyCertificateCommonNames(reverseProxyCertificateCommonNames);
         return this;
     }
 
@@ -642,7 +546,7 @@ public class ClusterInner extends Resource {
      * @return the upgradeDescription value.
      */
     public ClusterUpgradePolicy upgradeDescription() {
-        return this.upgradeDescription;
+        return this.innerProperties() == null ? null : this.innerProperties().upgradeDescription();
     }
 
     /**
@@ -652,7 +556,10 @@ public class ClusterInner extends Resource {
      * @return the ClusterInner object itself.
      */
     public ClusterInner withUpgradeDescription(ClusterUpgradePolicy upgradeDescription) {
-        this.upgradeDescription = upgradeDescription;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ClusterProperties();
+        }
+        this.innerProperties().withUpgradeDescription(upgradeDescription);
         return this;
     }
 
@@ -660,29 +567,48 @@ public class ClusterInner extends Resource {
      * Get the upgradeMode property: The upgrade mode of the cluster when new Service Fabric runtime version is
      * available.
      *
-     * <p>- Automatic - The cluster will be automatically upgraded to the latest Service Fabric runtime version as soon
-     * as it is available. - Manual - The cluster will not be automatically upgraded to the latest Service Fabric
-     * runtime version. The cluster is upgraded by setting the **clusterCodeVersion** property in the cluster resource.
-     *
      * @return the upgradeMode value.
      */
     public UpgradeMode upgradeMode() {
-        return this.upgradeMode;
+        return this.innerProperties() == null ? null : this.innerProperties().upgradeMode();
     }
 
     /**
      * Set the upgradeMode property: The upgrade mode of the cluster when new Service Fabric runtime version is
      * available.
      *
-     * <p>- Automatic - The cluster will be automatically upgraded to the latest Service Fabric runtime version as soon
-     * as it is available. - Manual - The cluster will not be automatically upgraded to the latest Service Fabric
-     * runtime version. The cluster is upgraded by setting the **clusterCodeVersion** property in the cluster resource.
-     *
      * @param upgradeMode the upgradeMode value to set.
      * @return the ClusterInner object itself.
      */
     public ClusterInner withUpgradeMode(UpgradeMode upgradeMode) {
-        this.upgradeMode = upgradeMode;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ClusterProperties();
+        }
+        this.innerProperties().withUpgradeMode(upgradeMode);
+        return this;
+    }
+
+    /**
+     * Get the applicationTypeVersionsCleanupPolicy property: The policy used to clean up unused versions.
+     *
+     * @return the applicationTypeVersionsCleanupPolicy value.
+     */
+    public ApplicationTypeVersionsCleanupPolicy applicationTypeVersionsCleanupPolicy() {
+        return this.innerProperties() == null ? null : this.innerProperties().applicationTypeVersionsCleanupPolicy();
+    }
+
+    /**
+     * Set the applicationTypeVersionsCleanupPolicy property: The policy used to clean up unused versions.
+     *
+     * @param applicationTypeVersionsCleanupPolicy the applicationTypeVersionsCleanupPolicy value to set.
+     * @return the ClusterInner object itself.
+     */
+    public ClusterInner withApplicationTypeVersionsCleanupPolicy(
+        ApplicationTypeVersionsCleanupPolicy applicationTypeVersionsCleanupPolicy) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ClusterProperties();
+        }
+        this.innerProperties().withApplicationTypeVersionsCleanupPolicy(applicationTypeVersionsCleanupPolicy);
         return this;
     }
 
@@ -693,7 +619,7 @@ public class ClusterInner extends Resource {
      * @return the vmImage value.
      */
     public String vmImage() {
-        return this.vmImage;
+        return this.innerProperties() == null ? null : this.innerProperties().vmImage();
     }
 
     /**
@@ -704,30 +630,206 @@ public class ClusterInner extends Resource {
      * @return the ClusterInner object itself.
      */
     public ClusterInner withVmImage(String vmImage) {
-        this.vmImage = vmImage;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ClusterProperties();
+        }
+        this.innerProperties().withVmImage(vmImage);
         return this;
     }
 
     /**
-     * Get the etag property: Azure resource etag.
+     * Get the sfZonalUpgradeMode property: This property controls the logical grouping of VMs in upgrade domains (UDs).
+     * This property can't be modified if a node type with multiple Availability Zones is already present in the
+     * cluster.
      *
-     * @return the etag value.
+     * @return the sfZonalUpgradeMode value.
      */
-    public String etag() {
-        return this.etag;
+    public SfZonalUpgradeMode sfZonalUpgradeMode() {
+        return this.innerProperties() == null ? null : this.innerProperties().sfZonalUpgradeMode();
     }
 
-    /** {@inheritDoc} */
-    @Override
-    public ClusterInner withLocation(String location) {
-        super.withLocation(location);
+    /**
+     * Set the sfZonalUpgradeMode property: This property controls the logical grouping of VMs in upgrade domains (UDs).
+     * This property can't be modified if a node type with multiple Availability Zones is already present in the
+     * cluster.
+     *
+     * @param sfZonalUpgradeMode the sfZonalUpgradeMode value to set.
+     * @return the ClusterInner object itself.
+     */
+    public ClusterInner withSfZonalUpgradeMode(SfZonalUpgradeMode sfZonalUpgradeMode) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ClusterProperties();
+        }
+        this.innerProperties().withSfZonalUpgradeMode(sfZonalUpgradeMode);
         return this;
     }
 
-    /** {@inheritDoc} */
-    @Override
-    public ClusterInner withTags(Map<String, String> tags) {
-        super.withTags(tags);
+    /**
+     * Get the vmssZonalUpgradeMode property: This property defines the upgrade mode for the virtual machine scale set,
+     * it is mandatory if a node type with multiple Availability Zones is added.
+     *
+     * @return the vmssZonalUpgradeMode value.
+     */
+    public VmssZonalUpgradeMode vmssZonalUpgradeMode() {
+        return this.innerProperties() == null ? null : this.innerProperties().vmssZonalUpgradeMode();
+    }
+
+    /**
+     * Set the vmssZonalUpgradeMode property: This property defines the upgrade mode for the virtual machine scale set,
+     * it is mandatory if a node type with multiple Availability Zones is added.
+     *
+     * @param vmssZonalUpgradeMode the vmssZonalUpgradeMode value to set.
+     * @return the ClusterInner object itself.
+     */
+    public ClusterInner withVmssZonalUpgradeMode(VmssZonalUpgradeMode vmssZonalUpgradeMode) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ClusterProperties();
+        }
+        this.innerProperties().withVmssZonalUpgradeMode(vmssZonalUpgradeMode);
+        return this;
+    }
+
+    /**
+     * Get the infrastructureServiceManager property: Indicates if infrastructure service manager is enabled.
+     *
+     * @return the infrastructureServiceManager value.
+     */
+    public Boolean infrastructureServiceManager() {
+        return this.innerProperties() == null ? null : this.innerProperties().infrastructureServiceManager();
+    }
+
+    /**
+     * Set the infrastructureServiceManager property: Indicates if infrastructure service manager is enabled.
+     *
+     * @param infrastructureServiceManager the infrastructureServiceManager value to set.
+     * @return the ClusterInner object itself.
+     */
+    public ClusterInner withInfrastructureServiceManager(Boolean infrastructureServiceManager) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ClusterProperties();
+        }
+        this.innerProperties().withInfrastructureServiceManager(infrastructureServiceManager);
+        return this;
+    }
+
+    /**
+     * Get the upgradeWave property: Indicates when new cluster runtime version upgrades will be applied after they are
+     * released. By default is Wave0. Only applies when **upgradeMode** is set to 'Automatic'.
+     *
+     * @return the upgradeWave value.
+     */
+    public ClusterUpgradeCadence upgradeWave() {
+        return this.innerProperties() == null ? null : this.innerProperties().upgradeWave();
+    }
+
+    /**
+     * Set the upgradeWave property: Indicates when new cluster runtime version upgrades will be applied after they are
+     * released. By default is Wave0. Only applies when **upgradeMode** is set to 'Automatic'.
+     *
+     * @param upgradeWave the upgradeWave value to set.
+     * @return the ClusterInner object itself.
+     */
+    public ClusterInner withUpgradeWave(ClusterUpgradeCadence upgradeWave) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ClusterProperties();
+        }
+        this.innerProperties().withUpgradeWave(upgradeWave);
+        return this;
+    }
+
+    /**
+     * Get the upgradePauseStartTimestampUtc property: Indicates the start date and time to pause automatic runtime
+     * version upgrades on the cluster for an specific period of time on the cluster (UTC).
+     *
+     * @return the upgradePauseStartTimestampUtc value.
+     */
+    public OffsetDateTime upgradePauseStartTimestampUtc() {
+        return this.innerProperties() == null ? null : this.innerProperties().upgradePauseStartTimestampUtc();
+    }
+
+    /**
+     * Set the upgradePauseStartTimestampUtc property: Indicates the start date and time to pause automatic runtime
+     * version upgrades on the cluster for an specific period of time on the cluster (UTC).
+     *
+     * @param upgradePauseStartTimestampUtc the upgradePauseStartTimestampUtc value to set.
+     * @return the ClusterInner object itself.
+     */
+    public ClusterInner withUpgradePauseStartTimestampUtc(OffsetDateTime upgradePauseStartTimestampUtc) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ClusterProperties();
+        }
+        this.innerProperties().withUpgradePauseStartTimestampUtc(upgradePauseStartTimestampUtc);
+        return this;
+    }
+
+    /**
+     * Get the upgradePauseEndTimestampUtc property: Indicates the end date and time to pause automatic runtime version
+     * upgrades on the cluster for an specific period of time on the cluster (UTC).
+     *
+     * @return the upgradePauseEndTimestampUtc value.
+     */
+    public OffsetDateTime upgradePauseEndTimestampUtc() {
+        return this.innerProperties() == null ? null : this.innerProperties().upgradePauseEndTimestampUtc();
+    }
+
+    /**
+     * Set the upgradePauseEndTimestampUtc property: Indicates the end date and time to pause automatic runtime version
+     * upgrades on the cluster for an specific period of time on the cluster (UTC).
+     *
+     * @param upgradePauseEndTimestampUtc the upgradePauseEndTimestampUtc value to set.
+     * @return the ClusterInner object itself.
+     */
+    public ClusterInner withUpgradePauseEndTimestampUtc(OffsetDateTime upgradePauseEndTimestampUtc) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ClusterProperties();
+        }
+        this.innerProperties().withUpgradePauseEndTimestampUtc(upgradePauseEndTimestampUtc);
+        return this;
+    }
+
+    /**
+     * Get the waveUpgradePaused property: Boolean to pause automatic runtime version upgrades to the cluster.
+     *
+     * @return the waveUpgradePaused value.
+     */
+    public Boolean waveUpgradePaused() {
+        return this.innerProperties() == null ? null : this.innerProperties().waveUpgradePaused();
+    }
+
+    /**
+     * Set the waveUpgradePaused property: Boolean to pause automatic runtime version upgrades to the cluster.
+     *
+     * @param waveUpgradePaused the waveUpgradePaused value to set.
+     * @return the ClusterInner object itself.
+     */
+    public ClusterInner withWaveUpgradePaused(Boolean waveUpgradePaused) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ClusterProperties();
+        }
+        this.innerProperties().withWaveUpgradePaused(waveUpgradePaused);
+        return this;
+    }
+
+    /**
+     * Get the notifications property: Indicates a list of notification channels for cluster events.
+     *
+     * @return the notifications value.
+     */
+    public List<Notification> notifications() {
+        return this.innerProperties() == null ? null : this.innerProperties().notifications();
+    }
+
+    /**
+     * Set the notifications property: Indicates a list of notification channels for cluster events.
+     *
+     * @param notifications the notifications value to set.
+     * @return the ClusterInner object itself.
+     */
+    public ClusterInner withNotifications(List<Notification> notifications) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ClusterProperties();
+        }
+        this.innerProperties().withNotifications(notifications);
         return this;
     }
 
@@ -737,41 +839,8 @@ public class ClusterInner extends Resource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (availableClusterVersions() != null) {
-            availableClusterVersions().forEach(e -> e.validate());
-        }
-        if (azureActiveDirectory() != null) {
-            azureActiveDirectory().validate();
-        }
-        if (certificate() != null) {
-            certificate().validate();
-        }
-        if (certificateCommonNames() != null) {
-            certificateCommonNames().validate();
-        }
-        if (clientCertificateCommonNames() != null) {
-            clientCertificateCommonNames().forEach(e -> e.validate());
-        }
-        if (clientCertificateThumbprints() != null) {
-            clientCertificateThumbprints().forEach(e -> e.validate());
-        }
-        if (diagnosticsStorageAccountConfig() != null) {
-            diagnosticsStorageAccountConfig().validate();
-        }
-        if (fabricSettings() != null) {
-            fabricSettings().forEach(e -> e.validate());
-        }
-        if (nodeTypes() != null) {
-            nodeTypes().forEach(e -> e.validate());
-        }
-        if (reverseProxyCertificate() != null) {
-            reverseProxyCertificate().validate();
-        }
-        if (reverseProxyCertificateCommonNames() != null) {
-            reverseProxyCertificateCommonNames().validate();
-        }
-        if (upgradeDescription() != null) {
-            upgradeDescription().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

@@ -8,14 +8,17 @@ import com.azure.core.util.Context;
 
 /** Samples for Pipelines ListByFactory. */
 public final class PipelinesListByFactorySamples {
+    /*
+     * operationId: Pipelines_ListByFactory
+     * api-version: 2018-06-01
+     * x-ms-examples: Pipelines_ListByFactory
+     */
     /**
      * Sample code: Pipelines_ListByFactory.
      *
-     * @param dataFactoryManager Entry point to DataFactoryManager. The Azure Data Factory V2 management API provides a
-     *     RESTful set of web services that interact with Azure Data Factory V2 services.
+     * @param manager Entry point to DataFactoryManager.
      */
-    public static void pipelinesListByFactory(
-        com.azure.resourcemanager.datafactory.DataFactoryManager dataFactoryManager) {
-        dataFactoryManager.pipelines().listByFactory("exampleResourceGroup", "exampleFactoryName", Context.NONE);
+    public static void pipelinesListByFactory(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
+        manager.pipelines().listByFactory("exampleResourceGroup", "exampleFactoryName", Context.NONE);
     }
 }

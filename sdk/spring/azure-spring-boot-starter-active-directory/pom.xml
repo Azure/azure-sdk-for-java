@@ -13,7 +13,7 @@
 
   <groupId>com.azure.spring</groupId>
   <artifactId>azure-spring-boot-starter-active-directory</artifactId>
-  <version>3.8.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-boot-starter-active-directory;current} -->
+  <version>3.9.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-boot-starter-active-directory;current} -->
 
   <name>Azure Spring Boot Starter for Azure AD Spring Security Integration</name>
   <description>Spring Boot Starter for Azure AD and Spring Security Integration</description>
@@ -38,7 +38,7 @@
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>azure-spring-boot</artifactId>
-      <version>3.8.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-boot;current} -->
+      <version>3.9.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-boot;current} -->
     </dependency>
     <dependency>
       <groupId>org.springframework</groupId>
@@ -63,7 +63,7 @@
     <dependency>
       <groupId>com.microsoft.azure</groupId>
       <artifactId>msal4j</artifactId>
-      <version>1.10.1</version> <!-- {x-version-update;com.microsoft.azure:msal4j;external_dependency} -->
+      <version>1.11.0</version> <!-- {x-version-update;com.microsoft.azure:msal4j;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>com.nimbusds</groupId>
@@ -93,7 +93,7 @@
             <bannedDependencies>
               <includes>
                 <include>com.fasterxml.jackson.core:jackson-databind:[2.12.4]</include> <!-- {x-include-update;com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
-                <include>com.microsoft.azure:msal4j:[1.10.1]</include> <!-- {x-include-update;com.microsoft.azure:msal4j;external_dependency} -->
+                <include>com.microsoft.azure:msal4j:[1.11.0]</include> <!-- {x-include-update;com.microsoft.azure:msal4j;external_dependency} -->
                 <include>com.nimbusds:nimbus-jose-jwt:[9.10]</include> <!-- {x-include-update;com.nimbusds:nimbus-jose-jwt;external_dependency} -->
                 <include>io.projectreactor.netty:reactor-netty:[1.0.9]</include> <!-- {x-include-update;io.projectreactor.netty:reactor-netty;external_dependency} -->
                 <include>org.springframework.boot:spring-boot-starter-validation:[2.5.3]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-starter-validation;external_dependency} -->
