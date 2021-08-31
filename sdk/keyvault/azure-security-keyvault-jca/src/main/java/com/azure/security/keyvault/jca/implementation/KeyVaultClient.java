@@ -192,7 +192,8 @@ public class KeyVaultClient {
         if (cacheToken != null && !cacheToken.isExpired()) {
             return cacheToken.getAccessToken();
         }
-        return (cacheToken = getAccToken()).getAccessToken();
+        cacheToken = getAccToken();
+        return cacheToken.getAccessToken();
     }
 
     /**

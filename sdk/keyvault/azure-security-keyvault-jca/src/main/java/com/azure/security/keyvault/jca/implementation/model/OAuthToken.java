@@ -68,7 +68,7 @@ public class OAuthToken {
      * @return boolean, whether the token is expired.
      *
      */
-    public boolean isExpired(){
+    public boolean isExpired() {
         return OffsetDateTime.now().isAfter(creationDate.plusSeconds(expiresIn));
     }
 }

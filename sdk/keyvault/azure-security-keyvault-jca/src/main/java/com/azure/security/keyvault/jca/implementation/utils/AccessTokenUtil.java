@@ -64,7 +64,8 @@ public final class AccessTokenUtil {
      */
     public static String getAccessToken(String resource, String identity) {
         OAuthToken result;
-        return (result = getAccToken(resource, identity)) == null ? null : result.getAccessToken();
+        result = getAccToken(resource, identity);
+        return result == null ? null : result.getAccessToken();
     }
 
     /**
@@ -99,7 +100,8 @@ public final class AccessTokenUtil {
     public static String getAccessToken(String resource, String aadAuthenticationUrl,
         String tenantId, String clientId, String clientSecret) {
         OAuthToken result;
-        return (result = getAccToken(resource, aadAuthenticationUrl, tenantId, clientId, clientSecret)) == null ? null : result.getAccessToken();
+        result = getAccToken(resource, aadAuthenticationUrl, tenantId, clientId, clientSecret);
+        return result == null ? null : result.getAccessToken();
     }
 
     /**
@@ -150,7 +152,8 @@ public final class AccessTokenUtil {
      */
     private static String getAccessTokenOnAppService(String resource, String clientId) {
         OAuthToken result;
-        return (result = getAccTokenOnAppService(resource, clientId)) == null ? null : result.getAccessToken();
+        result = getAccTokenOnAppService(resource, clientId);
+        return result == null ? null : result.getAccessToken();
     }
 
     /**
@@ -196,7 +199,8 @@ public final class AccessTokenUtil {
      */
     private static String getAccessTokenOnOthers(String resource, String identity) {
         OAuthToken result;
-        return (result = getAccTokenOnOthers(resource, identity)) == null ? null : result.getAccessToken();
+        result = getAccTokenOnOthers(resource, identity);
+        return  result == null ? null : result.getAccessToken();
     }
 
     /**
