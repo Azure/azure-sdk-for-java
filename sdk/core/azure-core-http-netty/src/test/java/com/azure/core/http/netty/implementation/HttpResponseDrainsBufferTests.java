@@ -25,6 +25,7 @@ import reactor.test.StepVerifier;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.security.SecureRandom;
+import java.time.Duration;
 import java.util.Collection;
 import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -104,6 +105,18 @@ public class HttpResponseDrainsBufferTests {
     @Test
     public void closeHttpResponseWithConsumingFullBody() throws InterruptedException {
         runScenario(response -> response.getBodyAsByteArray().flatMap(ignored -> Mono.fromRunnable(response::close)));
+    }
+
+    @Test
+    public void closingHttpResponseIsIdempotent() {
+        HttpClient httpClient = new NettyAsyncHttpClientProvider().createInstance();
+        StepVerifier.create(httpClient.send(new HttpRequest(HttpMethod.GET, url(wireMockServer)))
+            .flatMap(response -> Mono.fromRunnable(response::close).thenReturn(response))
+            .delayElement(Duration.ofSeconds(2))
+            .flatMap(response -> Mono.fromRunnable(response::close))
+            .delayElement(Duration.ofSeconds(2))
+            .then())
+            .verifyComplete();
     }
 
     private void runScenario(Function<HttpResponse, Mono<Void>> responseConsumer) throws InterruptedException {
