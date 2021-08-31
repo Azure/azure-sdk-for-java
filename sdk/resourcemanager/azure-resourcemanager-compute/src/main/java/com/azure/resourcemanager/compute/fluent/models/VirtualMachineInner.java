@@ -410,7 +410,7 @@ public final class VirtualMachineInner extends Resource {
      * allocated to different nodes to maximize availability. Currently, a VM can only be added to virtual machine scale
      * set at creation time. An existing VM cannot be added to a virtual machine scale set. &lt;br&gt;&lt;br&gt;This
      * property cannot exist along with a non-null properties.availabilitySet reference. &lt;br&gt;&lt;br&gt;Minimum
-     * api‐version: 2019‐03‐01.
+     * api-version: 2019-03-01.
      *
      * @return the virtualMachineScaleSet value.
      */
@@ -424,7 +424,7 @@ public final class VirtualMachineInner extends Resource {
      * allocated to different nodes to maximize availability. Currently, a VM can only be added to virtual machine scale
      * set at creation time. An existing VM cannot be added to a virtual machine scale set. &lt;br&gt;&lt;br&gt;This
      * property cannot exist along with a non-null properties.availabilitySet reference. &lt;br&gt;&lt;br&gt;Minimum
-     * api‐version: 2019‐03‐01.
+     * api-version: 2019-03-01.
      *
      * @param virtualMachineScaleSet the virtualMachineScaleSet value to set.
      * @return the VirtualMachineInner object itself.
@@ -694,7 +694,7 @@ public final class VirtualMachineInner extends Resource {
      * 'virtualMachineScaleSet' property of this Virtual Machine is set.&lt;li&gt;The Virtual Machine Scale Set that is
      * referenced, must have 'platformFaultDomainCount' &amp;gt; 1.&lt;li&gt;This property cannot be updated once the
      * Virtual Machine is created.&lt;li&gt;Fault domain assignment can be viewed in the Virtual Machine Instance
-     * View.&lt;br&gt;&lt;br&gt;Minimum api‐version: 2020‐12‐01.
+     * View.&lt;br&gt;&lt;br&gt;Minimum api-version: 2020-12-01.
      *
      * @return the platformFaultDomain value.
      */
@@ -709,7 +709,7 @@ public final class VirtualMachineInner extends Resource {
      * 'virtualMachineScaleSet' property of this Virtual Machine is set.&lt;li&gt;The Virtual Machine Scale Set that is
      * referenced, must have 'platformFaultDomainCount' &amp;gt; 1.&lt;li&gt;This property cannot be updated once the
      * Virtual Machine is created.&lt;li&gt;Fault domain assignment can be viewed in the Virtual Machine Instance
-     * View.&lt;br&gt;&lt;br&gt;Minimum api‐version: 2020‐12‐01.
+     * View.&lt;br&gt;&lt;br&gt;Minimum api-version: 2020-12-01.
      *
      * @param platformFaultDomain the platformFaultDomain value to set.
      * @return the VirtualMachineInner object itself.
