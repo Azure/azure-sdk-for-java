@@ -40,7 +40,7 @@ public final class KeyVaultJcaProvider extends Provider {
     /**
      * Stores the version.
      */
-    private static final Double VERSION = 1.0;
+    private static final String VERSION = "1.0";
 
     /**
      * Constructor.

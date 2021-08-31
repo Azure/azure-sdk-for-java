@@ -129,14 +129,14 @@
                                 <pattern>org.apache.http</pattern>
                                 <shadedPattern>com.azure.security.keyvault.jca.implementation.shaded.org.apache.http</shadedPattern>
                               </relocation>
-                                <relocation>
-                                    <pattern>mozilla</pattern>
-                                    <shadedPattern>com.azure.security.keyvault.jca.implementation.shaded.mozilla</shadedPattern>
-                                </relocation>
-                                <relocation>
-                                    <pattern>org.slf4j</pattern>
-                                    <shadedPattern>com.azure.security.keyvault.jca.implementation.shaded.org.slf4j</shadedPattern>
-                                </relocation>
+                              <relocation>
+                                  <pattern>mozilla</pattern>
+                                  <shadedPattern>com.azure.security.keyvault.jca.implementation.shaded.mozilla</shadedPattern>
+                              </relocation>
+                              <relocation>
+                                  <pattern>org.slf4j</pattern>
+                                  <shadedPattern>com.azure.security.keyvault.jca.implementation.shaded.org.slf4j</shadedPattern>
+                              </relocation>
                             </relocations>
                             <transformers>
                                 <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
