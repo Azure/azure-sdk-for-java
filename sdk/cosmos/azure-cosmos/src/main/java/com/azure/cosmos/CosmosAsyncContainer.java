@@ -1483,8 +1483,8 @@ public class CosmosAsyncContainer {
      * After subscription the operation will be performed.
      * The {@link Mono} upon successful completion will contain a single Cosmos item response for all the deleted items.
      *
-     * @param partitionKey
-     * @param options
+     * @param partitionKey partitionKey of the item.
+     * @param options the request options.
      * @return an {@link Mono} containing the Cosmos item resource response.
      */
     @Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)

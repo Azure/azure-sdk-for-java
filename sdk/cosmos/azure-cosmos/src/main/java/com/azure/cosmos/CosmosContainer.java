@@ -637,8 +637,8 @@ public class CosmosContainer {
      * Starts an asynchronous Cosmos DB background operation which deletes all items in the Container with the specified value.
      * The asynchronous Cosmos DB background operation runs using a percentage of user RUs.
      *
-     * @param partitionKey
-     * @param options
+     * @param partitionKey the partition key.
+     * @param options the options.
      * @return the Cosmos item response
      */
     @Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
