@@ -7,18 +7,20 @@
 ### Breaking Changes
 
 ### Bugs Fixed
-- Fix bug that application type validation. ([#23481](https://github.com/Azure/azure-sdk-for-java/issues/23481))
+- Fix bug about application type validation. ([#23481](https://github.com/Azure/azure-sdk-for-java/issues/23481))
 
-    The latest application type relationship is as follows:
-    
-    | Has dependency: spring-security-oauth2-client | Has dependency: spring-security-oauth2-resource-server |                  Valid values of application type                                                     | Default value               |
-    |-----------------------------------------------|--------------------------------------------------------|-------------------------------------------------------------------------------------------------------|-----------------------------|
-    |                      Yes                      |                          No                            |                       `web_application`                                                               |       `web_application`     |
-    |                      No                       |                          Yes                           |                       `resource_server`                                                               |       `resource_server`     |
-    |                      Yes                      |                          Yes                           | `web_application`,`resource_server`,`resource_server_with_obo`, `web_application_and_resource_server` | `resource_server_with_obo`  |
+  The latest application type relationship is as follows:
+
+  | Has dependency: spring-security-oauth2-client | Has dependency: spring-security-oauth2-resource-server |                  Valid values of application type                                                     | Default value               |
+      |-----------------------------------------------|--------------------------------------------------------|-------------------------------------------------------------------------------------------------------|-----------------------------|
+  |                      Yes                      |                          No                            |                       `web_application`                                                               |       `web_application`     |
+  |                      No                       |                          Yes                           |                       `resource_server`                                                               |       `resource_server`     |
+  |                      Yes                      |                          Yes                           | `web_application`,`resource_server`,`resource_server_with_obo`, `web_application_and_resource_server` | `resource_server_with_obo`  |
+
+### Deprecations
+- Deprecate `azure.activedirectory.authorization-clients.xxx.on-demand`, use `azure.activedirectory.authorization-clients.xxx.authorization-grant-type` instead. If you are using `on-demand=true`, please change to `authorization-grant-type=authorization_code`.
 
 ### Other Changes
-- Deprecate `com.azure.spring.aad.webapp.AuthorizationClientProperties.onDemand`, use `com.azure.spring.aad.webapp.AuthorizationClientProperties.authorizationGrantType` is enough.
 
 
 ## 3.8.0 (2021-08-25)

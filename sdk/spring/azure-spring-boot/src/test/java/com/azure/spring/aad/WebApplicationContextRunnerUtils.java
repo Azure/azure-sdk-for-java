@@ -4,7 +4,6 @@
 package com.azure.spring.aad;
 
 import com.azure.spring.autoconfigure.aad.AADAutoConfiguration;
-import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.autoconfigure.logging.ConditionEvaluationReportLoggingListener;
 import org.springframework.boot.logging.LogLevel;
 import org.springframework.boot.test.context.FilteredClassLoader;
@@ -19,11 +18,21 @@ import java.util.Optional;
 
 public class WebApplicationContextRunnerUtils {
 
-    public static WebApplicationContextRunner getWebApplicationRunner() {
+    public static WebApplicationContextRunner oauthClientAndResourceServerRunner() {
         return new WebApplicationContextRunner()
-            .withClassLoader(new FilteredClassLoader(BearerTokenAuthenticationToken.class))
             .withUserConfiguration(AADAutoConfiguration.class)
             .withInitializer(new ConditionEvaluationReportLoggingListener(LogLevel.INFO));
+    }
+
+    public static WebApplicationContextRunner oauthClientRunner() {
+        return oauthClientAndResourceServerRunner()
+            .withClassLoader(new FilteredClassLoader(BearerTokenAuthenticationToken.class));
+    }
+
+
+    public static WebApplicationContextRunner resourceServerRunner() {
+        return oauthClientAndResourceServerRunner()
+            .withClassLoader(new FilteredClassLoader(ClientRegistration.class));
     }
 
     @SuppressWarnings("unchecked")
@@ -33,7 +42,7 @@ public class WebApplicationContextRunnerUtils {
                                                        .orElse(null);
     }
 
-    public static String[] withWebApplicationOrOAuthClientPropertyValues() {
+    public static String[] withWebApplicationOrResourceServerWithOboPropertyValues() {
         return new String[] {
             "azure.activedirectory.client-id = fake-client-id",
             "azure.activedirectory.client-secret = fake-client-secret",
@@ -47,28 +56,23 @@ public class WebApplicationContextRunnerUtils {
     }
 
     public static WebApplicationContextRunner webApplicationContextRunner() {
-        return getWebApplicationRunner()
-            .withPropertyValues(withWebApplicationOrOAuthClientPropertyValues());
+        return oauthClientRunner()
+            .withPropertyValues(withWebApplicationOrResourceServerWithOboPropertyValues());
     }
 
     public static WebApplicationContextRunner resourceServerContextRunner() {
-        return new WebApplicationContextRunner()
-            .withUserConfiguration(AADAutoConfiguration.class)
-            .withClassLoader(new FilteredClassLoader(ClientRegistration.class))
+        return resourceServerRunner()
             .withPropertyValues(withResourceServerPropertyValues());
     }
 
-    public static WebApplicationContextRunner oauthClientContextRunner() {
-        return new WebApplicationContextRunner()
-            .withConfiguration(AutoConfigurations.of(AADAutoConfiguration.class))
-            .withPropertyValues(withWebApplicationOrOAuthClientPropertyValues());
+    public static WebApplicationContextRunner resourceServerWithOboContextRunner() {
+        return oauthClientAndResourceServerRunner()
+            .withPropertyValues(withWebApplicationOrResourceServerWithOboPropertyValues())
+            .withPropertyValues(withResourceServerPropertyValues());
     }
 
     public static WebApplicationContextRunner oauthClientAndResourceServerContextRunner() {
-        return new WebApplicationContextRunner()
-            .withConfiguration(AutoConfigurations.of(AADAutoConfiguration.class))
-            .withPropertyValues(withWebApplicationOrOAuthClientPropertyValues())
-            .withPropertyValues(withResourceServerPropertyValues())
+        return resourceServerWithOboContextRunner()
             .withPropertyValues("azure.activedirectory.application-type=web_application_and_resource_server");
     }
 }

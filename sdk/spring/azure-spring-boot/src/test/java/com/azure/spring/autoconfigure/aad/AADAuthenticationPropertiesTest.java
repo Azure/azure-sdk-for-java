@@ -13,7 +13,7 @@ import org.springframework.security.oauth2.server.resource.BearerTokenAuthentica
 import static com.azure.spring.aad.WebApplicationContextRunnerUtils.oauthClientAndResourceServerContextRunner;
 import static com.azure.spring.aad.WebApplicationContextRunnerUtils.webApplicationContextRunner;
 import static com.azure.spring.aad.WebApplicationContextRunnerUtils.withResourceServerPropertyValues;
-import static com.azure.spring.aad.WebApplicationContextRunnerUtils.withWebApplicationOrOAuthClientPropertyValues;
+import static com.azure.spring.aad.WebApplicationContextRunnerUtils.withWebApplicationOrResourceServerWithOboPropertyValues;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -198,7 +198,7 @@ public class AADAuthenticationPropertiesTest {
     private WebApplicationContextRunner contextRunnerWithConfiguredApplicationType(String applicationType) {
         WebApplicationContextRunner runner = contextRunner
             .withUserConfiguration(AADAutoConfiguration.class)
-            .withPropertyValues(withWebApplicationOrOAuthClientPropertyValues())
+            .withPropertyValues(withWebApplicationOrResourceServerWithOboPropertyValues())
             .withPropertyValues(withResourceServerPropertyValues());
         if (applicationType == null) {
             return runner;
@@ -303,7 +303,6 @@ public class AADAuthenticationPropertiesTest {
     @Test
     public void invalidAuthorizationCodeWhenOnDemandIsFalse() {
         webApplicationContextRunner()
-            .withClassLoader(new FilteredClassLoader(BearerTokenAuthenticationToken.class))
             .withPropertyValues(
                 "azure.activedirectory.authorization-clients.graph.scopes = Graph.Scope",
                 "azure.activedirectory.authorization-clients.graph.on-demand = true",

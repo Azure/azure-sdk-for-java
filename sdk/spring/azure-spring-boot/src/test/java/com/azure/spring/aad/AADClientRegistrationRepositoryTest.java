@@ -23,6 +23,8 @@ import static com.azure.spring.aad.AADAuthorizationGrantType.AUTHORIZATION_CODE;
 import static com.azure.spring.aad.AADAuthorizationGrantType.AZURE_DELEGATED;
 import static com.azure.spring.aad.AADClientRegistrationRepository.AZURE_CLIENT_REGISTRATION_ID;
 import static com.azure.spring.aad.AADClientRegistrationRepository.resourceServerCount;
+import static com.azure.spring.aad.WebApplicationContextRunnerUtils.oauthClientRunner;
+import static com.azure.spring.aad.WebApplicationContextRunnerUtils.webApplicationContextRunner;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -33,8 +35,7 @@ public class AADClientRegistrationRepositoryTest {
 
     @Test
     public void noClientsConfiguredTest() {
-        WebApplicationContextRunnerUtils
-            .webApplicationContextRunner()
+        webApplicationContextRunner()
             .run(context -> {
                 AADClientRegistrationRepository repository =
                     (AADClientRegistrationRepository) context.getBean(ClientRegistrationRepository.class);
@@ -53,8 +54,7 @@ public class AADClientRegistrationRepositoryTest {
 
     @Test
     public void azureClientConfiguredTest() {
-        WebApplicationContextRunnerUtils
-            .webApplicationContextRunner()
+        webApplicationContextRunner()
             .withPropertyValues(
                 "azure.activedirectory.authorization-clients.azure.scopes = Azure.Scope"
             )
@@ -76,8 +76,7 @@ public class AADClientRegistrationRepositoryTest {
 
     @Test
     public void graphClientConfiguredTest() {
-        WebApplicationContextRunnerUtils
-            .webApplicationContextRunner()
+        webApplicationContextRunner()
             .withPropertyValues(
                 "azure.activedirectory.authorization-clients.graph.scopes = Graph.Scope"
             )
@@ -103,8 +102,7 @@ public class AADClientRegistrationRepositoryTest {
 
     @Test
     public void onDemandGraphClientConfiguredTest() {
-        WebApplicationContextRunnerUtils
-            .webApplicationContextRunner()
+        webApplicationContextRunner()
             .withPropertyValues(
                 "azure.activedirectory.authorization-clients.graph.scopes = Graph.Scope",
                 "azure.activedirectory.authorization-clients.graph.on-demand = true"
@@ -132,8 +130,7 @@ public class AADClientRegistrationRepositoryTest {
 
     @Test
     public void clientWithClientCredentialsPermissions() {
-        WebApplicationContextRunnerUtils
-            .webApplicationContextRunner()
+        webApplicationContextRunner()
             .withPropertyValues(
                 "azure.activedirectory.authorization-clients.graph.scopes = fakeValue:/.default",
                 "azure.activedirectory.authorization-clients.graph.authorizationGrantType = client_credentials"
@@ -149,8 +146,7 @@ public class AADClientRegistrationRepositoryTest {
 
     @Test
     public void clientWhichIsNotAuthorizationCodeButOnDemandExceptionTest() {
-        WebApplicationContextRunnerUtils
-            .webApplicationContextRunner()
+        webApplicationContextRunner()
             .withPropertyValues(
                 "azure.activedirectory.authorization-clients.graph.authorizationGrantType = client_credentials",
                 "azure.activedirectory.authorization-clients.graph.on-demand = true"
@@ -162,8 +158,7 @@ public class AADClientRegistrationRepositoryTest {
 
     @Test
     public void azureClientEndpointTest() {
-        WebApplicationContextRunnerUtils
-            .webApplicationContextRunner()
+        webApplicationContextRunner()
             .run(context -> {
                 ClientRegistrationRepository repository = context.getBean(ClientRegistrationRepository.class);
                 ClientRegistration azure = repository.findByRegistrationId(AZURE_CLIENT_REGISTRATION_ID);
@@ -183,8 +178,7 @@ public class AADClientRegistrationRepositoryTest {
 
     @Test
     public void customizeUriTest() {
-        WebApplicationContextRunnerUtils
-            .webApplicationContextRunner()
+        webApplicationContextRunner()
             .withPropertyValues(
                 "azure.activedirectory.base-uri = http://localhost/"
             )
@@ -201,8 +195,7 @@ public class AADClientRegistrationRepositoryTest {
 
     @Test
     public void testNoGroupIdAndGroupNameConfigured() {
-        WebApplicationContextRunnerUtils
-            .webApplicationContextRunner()
+        webApplicationContextRunner()
             .run(context -> {
                 ClientRegistrationRepository repository = context.getBean(ClientRegistrationRepository.class);
                 ClientRegistration azure = repository.findByRegistrationId(AZURE_CLIENT_REGISTRATION_ID);
@@ -212,8 +205,7 @@ public class AADClientRegistrationRepositoryTest {
 
     @Test
     public void testGroupNameConfigured() {
-        WebApplicationContextRunnerUtils
-            .webApplicationContextRunner()
+        webApplicationContextRunner()
             .withPropertyValues("azure.activedirectory.user-group.allowed-group-names = group1, group2")
             .run(context -> {
                 ClientRegistrationRepository repository = context.getBean(ClientRegistrationRepository.class);
@@ -227,8 +219,7 @@ public class AADClientRegistrationRepositoryTest {
 
     @Test
     public void testGroupIdConfigured() {
-        WebApplicationContextRunnerUtils
-            .webApplicationContextRunner()
+        webApplicationContextRunner()
             .withPropertyValues(
                 "azure.activedirectory.user-group.allowed-group-ids = 7c3a5d22-9093-42d7-b2eb-e72d06bf3718")
             .run(context -> {
@@ -243,8 +234,7 @@ public class AADClientRegistrationRepositoryTest {
 
     @Test
     public void testGroupNameAndGroupIdConfigured() {
-        WebApplicationContextRunnerUtils
-            .webApplicationContextRunner()
+        webApplicationContextRunner()
             .withPropertyValues(
                 "azure.activedirectory.user-group.allowed-group-names = group1, group2",
                 "azure.activedirectory.user-group.allowed-group-ids = 7c3a5d22-9093-42d7-b2eb-e72d06bf3718")
@@ -260,8 +250,7 @@ public class AADClientRegistrationRepositoryTest {
 
     @Test
     public void haveResourceServerScopeInAccessTokenWhenThereAreMultiResourceServerScopesInAuthCode() {
-        WebApplicationContextRunnerUtils
-            .webApplicationContextRunner()
+        webApplicationContextRunner()
             .withPropertyValues(
                 "azure.activedirectory.authorization-clients.office.scopes = "
                     + "https://manage.office.com/ActivityFeed.Read",
@@ -286,8 +275,7 @@ public class AADClientRegistrationRepositoryTest {
     @Disabled
     @Test
     public void noConfigurationOnMissingRequiredProperties() {
-        WebApplicationContextRunnerUtils
-            .getWebApplicationRunner()
+        oauthClientRunner()
             .run(context -> {
                 assertThat(context).doesNotHaveBean(ClientRegistrationRepository.class);
                 assertThat(context).doesNotHaveBean(OAuth2AuthorizedClientRepository.class);
