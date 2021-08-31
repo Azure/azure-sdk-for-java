@@ -6,16 +6,10 @@ import static java.util.logging.Level.INFO;
 import static java.util.logging.Level.WARNING;
 
 import com.azure.security.keyvault.jca.KeyVaultPrivateKey;
-import com.azure.security.keyvault.jca.implementation.model.CertificateBundle;
-import com.azure.security.keyvault.jca.implementation.model.CertificateItem;
-import com.azure.security.keyvault.jca.implementation.model.CertificateListResult;
-import com.azure.security.keyvault.jca.implementation.model.CertificatePolicy;
-import com.azure.security.keyvault.jca.implementation.model.KeyProperties;
-import com.azure.security.keyvault.jca.implementation.model.SecretBundle;
+import com.azure.security.keyvault.jca.implementation.model.*;
 import com.azure.security.keyvault.jca.implementation.utils.AccessTokenUtil;
 import com.azure.security.keyvault.jca.implementation.utils.HttpUtil;
 import com.azure.security.keyvault.jca.implementation.utils.JsonConverterUtil;
-import com.azure.security.keyvault.jca.implementation.model.SignResult;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
@@ -40,6 +34,7 @@ import java.util.Base64;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.logging.Logger;
 
 /**
@@ -117,6 +112,11 @@ public class KeyVaultClient {
     private String managedIdentity;
 
     /**
+     * Stores the token.
+     */
+    private OAuthToken cacheToken;
+
+    /**
      * Constructor for authentication with user-assigned managed identity.
      *
      * @param keyVaultUri the Azure Key Vault URI.
@@ -183,8 +183,21 @@ public class KeyVaultClient {
      * @return the access token.
      */
     private String getAccessToken() {
+        if (cacheToken != null && !cacheToken.isExpired()) {
+            return cacheToken.getAccessToken();
+        }
+        cacheToken = getAccToken();
+        return cacheToken.getAccessToken();
+    }
+
+    /**
+     * Get the access token.
+     *
+     * @return the access token.
+     */
+    private OAuthToken getAccToken() {
         LOGGER.entering("KeyVaultClient", "getAccessToken");
-        String accessToken = null;
+        OAuthToken accessToken = null;
         try {
             String resource = URLEncoder.encode(keyVaultBaseUri, "UTF-8");
             if (managedIdentity != null) {
@@ -192,10 +205,10 @@ public class KeyVaultClient {
             }
 
             if (tenantId != null && clientId != null && clientSecret != null) {
-                accessToken = AccessTokenUtil.getAccessToken(resource, aadAuthenticationUrl, tenantId, clientId,
+                accessToken = AccessTokenUtil.getAccToken(resource, aadAuthenticationUrl, tenantId, clientId,
                     clientSecret);
             } else {
-                accessToken = AccessTokenUtil.getAccessToken(resource, managedIdentity);
+                accessToken = AccessTokenUtil.getAccToken(resource, managedIdentity);
             }
         } catch (Throwable throwable) {
             LOGGER.log(WARNING, "Unsupported encoding or missing Httpclient", throwable);
