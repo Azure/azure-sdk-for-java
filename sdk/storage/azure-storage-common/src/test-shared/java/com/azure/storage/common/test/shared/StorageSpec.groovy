@@ -35,9 +35,9 @@ class StorageSpec extends Specification {
     private StorageResourceNamer namer
 
     def setupSpec() {
-        Hooks.onErrorDropped({throwable -> LOGGER.logThrowableAsError(throwable) })
-        Schedulers.onHandleError({ thread, throwable -> LOGGER.logThrowableAsError(throwable) })
-        Thread.setDefaultUncaughtExceptionHandler({ thread, throwable -> LOGGER.logThrowableAsError(throwable) })
+        Hooks.onErrorDropped({throwable -> LOGGER.error("Hooks had a dropped error: ", throwable) })
+        Schedulers.onHandleError({ thread, throwable -> LOGGER.error("Schedulers had a dropped error: ", throwable) })
+        Thread.setDefaultUncaughtExceptionHandler({ thread, throwable -> LOGGER.error("Thread {} had an uncaught exception: ", thread.getName(), throwable) })
     }
 
     def setup() {
