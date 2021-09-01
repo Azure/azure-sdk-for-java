@@ -102,13 +102,13 @@ class AvroSchemaRegistryUtils {
      */
     <T> byte[] encode(T object) throws IOException {
         final Schema schema = AvroSchemaUtils.getSchema(object);
-        final ByteArrayOutputStream out = new ByteArrayOutputStream();
 
-        try {
+        try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
             if (object instanceof byte[]) {
-                out.write((byte[]) object); // todo: real avro byte arrays require writing array size to buffer
+                // todo: real avro byte arrays require writing array size to buffer
+                outputStream.write((byte[]) object);
             } else {
-                BinaryEncoder encoder = encoderFactory.directBinaryEncoder(out, null);
+                BinaryEncoder encoder = encoderFactory.directBinaryEncoder(outputStream, null);
                 DatumWriter<T> writer;
                 if (object instanceof SpecificRecord) {
                     writer = new SpecificDatumWriter<>(schema);
@@ -118,12 +118,10 @@ class AvroSchemaRegistryUtils {
                 writer.write(object, encoder);
                 encoder.flush();
             }
-            return out.toByteArray();
+            return outputStream.toByteArray();
         } catch (IOException | RuntimeException e) {
             // Avro serialization can throw AvroRuntimeException, NullPointerException, ClassCastException, etc
             throw logger.logExceptionAsError(new IllegalStateException("Error serializing Avro message", e));
-        } finally {
-            out.close();
         }
     }
 
