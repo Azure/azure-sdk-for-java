@@ -13,6 +13,8 @@ import com.azure.resourcemanager.datafactory.models.ParameterType;
 import com.azure.resourcemanager.datafactory.models.PipelineElapsedTimeMetricPolicy;
 import com.azure.resourcemanager.datafactory.models.PipelinePolicy;
 import com.azure.resourcemanager.datafactory.models.PipelineResource;
+import com.azure.resourcemanager.datafactory.models.VariableSpecification;
+import com.azure.resourcemanager.datafactory.models.VariableType;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -20,32 +22,100 @@ import java.util.Map;
 
 /** Samples for Pipelines CreateOrUpdate. */
 public final class PipelinesCreateOrUpdateSamples {
+    /*
+     * operationId: Pipelines_CreateOrUpdate
+     * api-version: 2018-06-01
+     * x-ms-examples: Pipelines_Create
+     */
+    /**
+     * Sample code: Pipelines_Create.
+     *
+     * @param manager Entry point to DataFactoryManager.
+     */
+    public static void pipelinesCreate(com.azure.resourcemanager.datafactory.DataFactoryManager manager)
+        throws IOException {
+        manager
+            .pipelines()
+            .define("examplePipeline")
+            .withExistingFactory("exampleResourceGroup", "exampleFactoryName")
+            .withActivities(
+                Arrays
+                    .asList(
+                        new Activity()
+                            .withName("ExampleForeachActivity")
+                            .withAdditionalProperties(
+                                mapOf(
+                                    "typeProperties",
+                                    SerializerFactory
+                                        .createDefaultManagementSerializerAdapter()
+                                        .deserialize(
+                                            "{\"activities\":[{\"name\":\"ExampleCopyActivity\",\"type\":\"Copy\",\"inputs\":[{\"type\":\"DatasetReference\",\"parameters\":{\"MyFileName\":\"examplecontainer.csv\",\"MyFolderPath\":\"examplecontainer\"},\"referenceName\":\"exampleDataset\"}],\"outputs\":[{\"type\":\"DatasetReference\",\"parameters\":{\"MyFileName\":{\"type\":\"Expression\",\"value\":\"@item()\"},\"MyFolderPath\":\"examplecontainer\"},\"referenceName\":\"exampleDataset\"}],\"typeProperties\":{\"dataIntegrationUnits\":32,\"sink\":{\"type\":\"BlobSink\"},\"source\":{\"type\":\"BlobSource\"}}}],\"isSequential\":true,\"items\":{\"type\":\"Expression\",\"value\":\"@pipeline().parameters.OutputBlobNameList\"}}",
+                                            Object.class,
+                                            SerializerEncoding.JSON),
+                                    "type",
+                                    "ForEach"))))
+            .withParameters(
+                mapOf(
+                    "JobId",
+                    new ParameterSpecification().withType(ParameterType.STRING),
+                    "OutputBlobNameList",
+                    new ParameterSpecification().withType(ParameterType.ARRAY)))
+            .withVariables(mapOf("TestVariableArray", new VariableSpecification().withType(VariableType.ARRAY)))
+            .withRunDimensions(
+                mapOf(
+                    "JobId",
+                    SerializerFactory
+                        .createDefaultManagementSerializerAdapter()
+                        .deserialize(
+                            "{\"type\":\"Expression\",\"value\":\"@pipeline().parameters.JobId\"}",
+                            Object.class,
+                            SerializerEncoding.JSON)))
+            .withPolicy(
+                new PipelinePolicy()
+                    .withElapsedTimeMetric(new PipelineElapsedTimeMetricPolicy().withDuration("0.00:10:00")))
+            .create();
+    }
+
+    /*
+     * operationId: Pipelines_CreateOrUpdate
+     * api-version: 2018-06-01
+     * x-ms-examples: Pipelines_Update
+     */
     /**
      * Sample code: Pipelines_Update.
      *
-     * @param dataFactoryManager Entry point to DataFactoryManager. The Azure Data Factory V2 management API provides a
-     *     RESTful set of web services that interact with Azure Data Factory V2 services.
+     * @param manager Entry point to DataFactoryManager.
      */
-    public static void pipelinesUpdate(com.azure.resourcemanager.datafactory.DataFactoryManager dataFactoryManager)
+    public static void pipelinesUpdate(com.azure.resourcemanager.datafactory.DataFactoryManager manager)
         throws IOException {
         PipelineResource resource =
-            dataFactoryManager
+            manager
                 .pipelines()
                 .getWithResponse("exampleResourceGroup", "exampleFactoryName", "examplePipeline", null, Context.NONE)
                 .getValue();
         resource
             .update()
             .withDescription("Example description")
-            .withActivities(Arrays.asList(new Activity().withName("ExampleForeachActivity")))
+            .withActivities(
+                Arrays
+                    .asList(
+                        new Activity()
+                            .withName("ExampleForeachActivity")
+                            .withAdditionalProperties(
+                                mapOf(
+                                    "typeProperties",
+                                    SerializerFactory
+                                        .createDefaultManagementSerializerAdapter()
+                                        .deserialize(
+                                            "{\"activities\":[{\"name\":\"ExampleCopyActivity\",\"type\":\"Copy\",\"inputs\":[{\"type\":\"DatasetReference\",\"parameters\":{\"MyFileName\":\"examplecontainer.csv\",\"MyFolderPath\":\"examplecontainer\"},\"referenceName\":\"exampleDataset\"}],\"outputs\":[{\"type\":\"DatasetReference\",\"parameters\":{\"MyFileName\":{\"type\":\"Expression\",\"value\":\"@item()\"},\"MyFolderPath\":\"examplecontainer\"},\"referenceName\":\"exampleDataset\"}],\"typeProperties\":{\"dataIntegrationUnits\":32,\"sink\":{\"type\":\"BlobSink\"},\"source\":{\"type\":\"BlobSource\"}}}],\"isSequential\":true,\"items\":{\"type\":\"Expression\",\"value\":\"@pipeline().parameters.OutputBlobNameList\"}}",
+                                            Object.class,
+                                            SerializerEncoding.JSON),
+                                    "type",
+                                    "ForEach"))))
             .withParameters(mapOf("OutputBlobNameList", new ParameterSpecification().withType(ParameterType.ARRAY)))
             .withPolicy(
                 new PipelinePolicy()
-                    .withElapsedTimeMetric(
-                        new PipelineElapsedTimeMetricPolicy()
-                            .withDuration(
-                                SerializerFactory
-                                    .createDefaultManagementSerializerAdapter()
-                                    .deserialize("\"0.00:10:00\"", Object.class, SerializerEncoding.JSON))))
+                    .withElapsedTimeMetric(new PipelineElapsedTimeMetricPolicy().withDuration("0.00:10:00")))
             .apply();
     }
 

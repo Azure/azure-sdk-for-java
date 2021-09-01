@@ -230,6 +230,10 @@ public class AzureResourceManagerTests extends ResourceManagerTestBase {
         Assertions.assertEquals(27, powerStates.size());
     }
 
+    private static final String TEMPLATE_URI = "https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/quickstarts/microsoft.network/vnet-two-subnets/azuredeploy.json";
+    private static final String PARAMETERS_URI = "https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/quickstarts/microsoft.network/vnet-two-subnets/azuredeploy.parameters.json";
+    private static final String CONTENT_VERSION = "1.0.0.0";
+
     /**
      * Tests ARM template deployments.
      *
@@ -246,12 +250,8 @@ public class AzureResourceManagerTests extends ResourceManagerTestBase {
                 .deployments()
                 .define("depl" + testId)
                 .withNewResourceGroup("rg" + testId, Region.US_WEST)
-                .withTemplateLink(
-                    "https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/101-vnet-two-subnets/azuredeploy.json",
-                    "1.0.0.0")
-                .withParametersLink(
-                    "https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/101-vnet-two-subnets/azuredeploy.parameters.json",
-                    "1.0.0.0")
+                .withTemplateLink(TEMPLATE_URI, CONTENT_VERSION)
+                .withParametersLink(PARAMETERS_URI, CONTENT_VERSION)
                 .withMode(DeploymentMode.COMPLETE)
                 .create();
         System.out.println("Created deployment: " + deployment.correlationId());

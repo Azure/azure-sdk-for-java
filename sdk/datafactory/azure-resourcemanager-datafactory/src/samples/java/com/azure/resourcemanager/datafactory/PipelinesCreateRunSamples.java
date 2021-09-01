@@ -13,15 +13,19 @@ import java.util.Map;
 
 /** Samples for Pipelines CreateRun. */
 public final class PipelinesCreateRunSamples {
+    /*
+     * operationId: Pipelines_CreateRun
+     * api-version: 2018-06-01
+     * x-ms-examples: Pipelines_CreateRun
+     */
     /**
      * Sample code: Pipelines_CreateRun.
      *
-     * @param dataFactoryManager Entry point to DataFactoryManager. The Azure Data Factory V2 management API provides a
-     *     RESTful set of web services that interact with Azure Data Factory V2 services.
+     * @param manager Entry point to DataFactoryManager.
      */
-    public static void pipelinesCreateRun(com.azure.resourcemanager.datafactory.DataFactoryManager dataFactoryManager)
+    public static void pipelinesCreateRun(com.azure.resourcemanager.datafactory.DataFactoryManager manager)
         throws IOException {
-        dataFactoryManager
+        manager
             .pipelines()
             .createRunWithResponse(
                 "exampleResourceGroup",

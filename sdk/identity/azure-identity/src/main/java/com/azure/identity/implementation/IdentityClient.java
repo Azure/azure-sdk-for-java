@@ -27,6 +27,7 @@ import com.azure.identity.RegionalAuthority;
 import com.azure.identity.TokenCachePersistenceOptions;
 import com.azure.identity.implementation.util.CertificateUtil;
 import com.azure.identity.implementation.util.IdentityConstants;
+import com.azure.identity.implementation.util.IdentityUtil;
 import com.azure.identity.implementation.util.IdentitySslUtil;
 import com.azure.identity.implementation.util.ScopeUtil;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -64,7 +65,6 @@ import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -479,7 +479,8 @@ public class IdentityClient {
         PowershellManager legacyPowerShellManager = Platform.isWindows()
             ? new PowershellManager(LEGACY_WINDOWS_PS_EXECUTABLE) : null;
 
-        List<PowershellManager> powershellManagers = Arrays.asList(defaultPowerShellManager);
+        List<PowershellManager> powershellManagers = new ArrayList<>(2);
+        powershellManagers.add(defaultPowerShellManager);
         if (legacyPowerShellManager != null) {
             powershellManagers.add(legacyPowerShellManager);
         }
@@ -572,9 +573,14 @@ public class IdentityClient {
      */
     public Mono<AccessToken> authenticateWithConfidentialClient(TokenRequestContext request) {
         return confidentialClientApplicationAccessor.getValue()
-                .flatMap(confidentialClient -> Mono.fromFuture(() -> confidentialClient.acquireToken(
-                    ClientCredentialParameters.builder(new HashSet<>(request.getScopes())).build()))
-                    .map(MsalToken::new));
+            .flatMap(confidentialClient -> Mono.fromFuture(() -> {
+                ClientCredentialParameters.ClientCredentialParametersBuilder builder =
+                    ClientCredentialParameters.builder(new HashSet<>(request.getScopes()))
+                        .tenant(IdentityUtil
+                            .resolveTenantId(tenantId, request, options));
+                return confidentialClient.acquireToken(builder.build());
+            }
+        )).map(MsalToken::new);
     }
 
     private HttpPipeline setupPipeline(HttpClient httpClient) {
@@ -609,6 +615,8 @@ public class IdentityClient {
                                                                .formatAsClaimsRequest(request.getClaims());
                        userNamePasswordParametersBuilder.claims(customClaimRequest);
                    }
+                   userNamePasswordParametersBuilder.tenant(
+                       IdentityUtil.resolveTenantId(tenantId, request, options));
                    return pc.acquireToken(userNamePasswordParametersBuilder.build());
                }
                )).onErrorMap(t -> new ClientAuthenticationException("Failed to acquire token with username and "
@@ -636,6 +644,8 @@ public class IdentityClient {
                 if (account != null) {
                     parametersBuilder = parametersBuilder.account(account);
                 }
+                parametersBuilder.tenant(
+                    IdentityUtil.resolveTenantId(tenantId, request, options));
                 try {
                     return pc.acquireTokenSilently(parametersBuilder.build());
                 } catch (MalformedURLException e) {
@@ -656,6 +666,8 @@ public class IdentityClient {
                     if (account != null) {
                         forceParametersBuilder = forceParametersBuilder.account(account);
                     }
+                    forceParametersBuilder.tenant(
+                        IdentityUtil.resolveTenantId(tenantId, request, options));
                     try {
                         return pc.acquireTokenSilently(forceParametersBuilder.build());
                     } catch (MalformedURLException e) {
@@ -674,7 +686,9 @@ public class IdentityClient {
         return confidentialClientApplicationAccessor.getValue()
             .flatMap(confidentialClient -> Mono.fromFuture(() -> {
                 SilentParameters.SilentParametersBuilder parametersBuilder = SilentParameters.builder(
-                        new HashSet<>(request.getScopes()));
+                        new HashSet<>(request.getScopes()))
+                    .tenant(IdentityUtil.resolveTenantId(tenantId, request,
+                        options));
                 try {
                     return confidentialClient.acquireTokenSilently(parametersBuilder.build());
                 } catch (MalformedURLException e) {
@@ -702,7 +716,9 @@ public class IdentityClient {
                     DeviceCodeFlowParameters.builder(
                         new HashSet<>(request.getScopes()), dc -> deviceCodeConsumer.accept(
                             new DeviceCodeInfo(dc.userCode(), dc.deviceCode(), dc.verificationUri(),
-                                OffsetDateTime.now().plusSeconds(dc.expiresIn()), dc.message())));
+                                OffsetDateTime.now().plusSeconds(dc.expiresIn()), dc.message())))
+                    .tenant(IdentityUtil
+                        .resolveTenantId(tenantId, request, options));
 
                 if (request.getClaims() != null) {
                     ClaimsRequest customClaimRequest = CustomClaimRequest.formatAsClaimsRequest(request.getClaims());
@@ -761,7 +777,9 @@ public class IdentityClient {
                                                              URI redirectUrl) {
         AuthorizationCodeParameters.AuthorizationCodeParametersBuilder parametersBuilder =
             AuthorizationCodeParameters.builder(authorizationCode, redirectUrl)
-            .scopes(new HashSet<>(request.getScopes()));
+            .scopes(new HashSet<>(request.getScopes()))
+            .tenant(IdentityUtil
+                .resolveTenantId(tenantId, request, options));
 
         if (request.getClaims() != null) {
             ClaimsRequest customClaimRequest = CustomClaimRequest.formatAsClaimsRequest(request.getClaims());
@@ -813,7 +831,9 @@ public class IdentityClient {
         InteractiveRequestParameters.InteractiveRequestParametersBuilder builder =
             InteractiveRequestParameters.builder(redirectUri)
                 .scopes(new HashSet<>(request.getScopes()))
-                .prompt(Prompt.SELECT_ACCOUNT);
+                .prompt(Prompt.SELECT_ACCOUNT)
+                .tenant(IdentityUtil
+                    .resolveTenantId(tenantId, request, options));
 
         if (request.getClaims() != null) {
             ClaimsRequest customClaimRequest = CustomClaimRequest.formatAsClaimsRequest(request.getClaims());

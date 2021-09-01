@@ -1,5 +1,17 @@
 # Release History
 
+## 1.0.0-beta.6 (Unreleased)
+### Features Added
+- Add support for TokenCredential authentication with CallingServerClientBuilder.
+
+## 1.0.0-beta.5 (2021-08-30)
+### Dependency updates
+- Upgraded `azure-communication-common` to 1.0.4
+
+## 1.0.0-beta.4 (2021-08-04)
+### Bug Fixes
+- Using released version of azure-communication-common.
+
 ## 1.0.0-beta.3 (2021-07-26)
 ### Features Added
 - Added RedirectPolicy as a new HttpPolicy to redirect requests based on the HttpResponse.

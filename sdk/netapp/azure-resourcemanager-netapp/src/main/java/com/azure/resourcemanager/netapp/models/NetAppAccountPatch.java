@@ -5,85 +5,32 @@
 package com.azure.resourcemanager.netapp.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.netapp.fluent.models.AccountProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
 /** NetApp account patch resource. */
-@JsonFlatten
 @Fluent
-public class NetAppAccountPatch extends Resource {
+public final class NetAppAccountPatch extends Resource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(NetAppAccountPatch.class);
 
     /*
-     * Azure lifecycle management
+     * NetApp Account properties
      */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private String provisioningState;
-
-    /*
-     * Active Directories
-     */
-    @JsonProperty(value = "properties.activeDirectories")
-    private List<ActiveDirectory> activeDirectories;
-
-    /*
-     * Encryption settings
-     */
-    @JsonProperty(value = "properties.encryption")
-    private AccountEncryption encryption;
+    @JsonProperty(value = "properties")
+    private AccountProperties innerProperties;
 
     /**
-     * Get the provisioningState property: Azure lifecycle management.
+     * Get the innerProperties property: NetApp Account properties.
      *
-     * @return the provisioningState value.
+     * @return the innerProperties value.
      */
-    public String provisioningState() {
-        return this.provisioningState;
-    }
-
-    /**
-     * Get the activeDirectories property: Active Directories.
-     *
-     * @return the activeDirectories value.
-     */
-    public List<ActiveDirectory> activeDirectories() {
-        return this.activeDirectories;
-    }
-
-    /**
-     * Set the activeDirectories property: Active Directories.
-     *
-     * @param activeDirectories the activeDirectories value to set.
-     * @return the NetAppAccountPatch object itself.
-     */
-    public NetAppAccountPatch withActiveDirectories(List<ActiveDirectory> activeDirectories) {
-        this.activeDirectories = activeDirectories;
-        return this;
-    }
-
-    /**
-     * Get the encryption property: Encryption settings.
-     *
-     * @return the encryption value.
-     */
-    public AccountEncryption encryption() {
-        return this.encryption;
-    }
-
-    /**
-     * Set the encryption property: Encryption settings.
-     *
-     * @param encryption the encryption value to set.
-     * @return the NetAppAccountPatch object itself.
-     */
-    public NetAppAccountPatch withEncryption(AccountEncryption encryption) {
-        this.encryption = encryption;
-        return this;
+    private AccountProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /** {@inheritDoc} */
@@ -101,16 +48,68 @@ public class NetAppAccountPatch extends Resource {
     }
 
     /**
+     * Get the provisioningState property: Azure lifecycle management.
+     *
+     * @return the provisioningState value.
+     */
+    public String provisioningState() {
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    }
+
+    /**
+     * Get the activeDirectories property: Active Directories.
+     *
+     * @return the activeDirectories value.
+     */
+    public List<ActiveDirectory> activeDirectories() {
+        return this.innerProperties() == null ? null : this.innerProperties().activeDirectories();
+    }
+
+    /**
+     * Set the activeDirectories property: Active Directories.
+     *
+     * @param activeDirectories the activeDirectories value to set.
+     * @return the NetAppAccountPatch object itself.
+     */
+    public NetAppAccountPatch withActiveDirectories(List<ActiveDirectory> activeDirectories) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AccountProperties();
+        }
+        this.innerProperties().withActiveDirectories(activeDirectories);
+        return this;
+    }
+
+    /**
+     * Get the encryption property: Encryption settings.
+     *
+     * @return the encryption value.
+     */
+    public AccountEncryption encryption() {
+        return this.innerProperties() == null ? null : this.innerProperties().encryption();
+    }
+
+    /**
+     * Set the encryption property: Encryption settings.
+     *
+     * @param encryption the encryption value to set.
+     * @return the NetAppAccountPatch object itself.
+     */
+    public NetAppAccountPatch withEncryption(AccountEncryption encryption) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AccountProperties();
+        }
+        this.innerProperties().withEncryption(encryption);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (activeDirectories() != null) {
-            activeDirectories().forEach(e -> e.validate());
-        }
-        if (encryption() != null) {
-            encryption().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

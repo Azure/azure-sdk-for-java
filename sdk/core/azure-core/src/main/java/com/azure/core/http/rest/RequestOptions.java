@@ -65,10 +65,9 @@ import java.util.function.Consumer;
  *
  * {@codesnippet com.azure.core.http.rest.requestoptions.postrequest}
  */
-public final class RequestOptions {
+final class RequestOptions {
     private Consumer<HttpRequest> requestCallback = request -> { };
     private boolean throwOnError = true;
-    private BinaryData requestBody;
 
     /**
      * Gets the request callback, applying all the configurations set on this RequestOptions.

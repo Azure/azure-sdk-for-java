@@ -117,6 +117,10 @@ stages:
                     ServiceName: ${{parameters.ServiceDirectory}}
                     ForRelease: true
 
+          - template: /eng/pipelines/templates/jobs/installation.check.yml
+            parameters:
+              Artifact: ${{ artifact }}
+              ArtifactName: ${{ parameters.ArtifactName }}
 
           - deployment: TagRepository
             displayName: "Create release tag"
@@ -302,6 +306,7 @@ stages:
                           PRBranchName: increment-package-version-${{ parameters.ServiceDirectory }}-$(Build.BuildId)
                           CommitMsg: "Increment package version after release of ${{ artifact.groupId }} ${{ artifact.name }}"
                           PRTitle: "Increment version for ${{ parameters.ServiceDirectory }} releases"
+                          PRLabels: "auto-merge"
                           CloseAfterOpenForTesting: '${{ parameters.TestPipeline }}'
 
   - ${{if ne(parameters.EnableIntegrationStage, false)}}:

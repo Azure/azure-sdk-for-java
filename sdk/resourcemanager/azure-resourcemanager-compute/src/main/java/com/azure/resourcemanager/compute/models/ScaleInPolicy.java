@@ -37,6 +37,14 @@ public final class ScaleInPolicy {
     @JsonProperty(value = "rules")
     private List<VirtualMachineScaleSetScaleInRules> rules;
 
+    /*
+     * This property allows you to specify if virtual machines chosen for
+     * removal have to be force deleted when a virtual machine scale set is
+     * being scaled-in.(Feature in Preview)
+     */
+    @JsonProperty(value = "forceDeletion")
+    private Boolean forceDeletion;
+
     /**
      * Get the rules property: The rules to be followed when scaling-in a virtual machine scale set.
      * &lt;br&gt;&lt;br&gt; Possible values are: &lt;br&gt;&lt;br&gt; **Default** When a virtual machine scale set is
@@ -76,6 +84,28 @@ public final class ScaleInPolicy {
      */
     public ScaleInPolicy withRules(List<VirtualMachineScaleSetScaleInRules> rules) {
         this.rules = rules;
+        return this;
+    }
+
+    /**
+     * Get the forceDeletion property: This property allows you to specify if virtual machines chosen for removal have
+     * to be force deleted when a virtual machine scale set is being scaled-in.(Feature in Preview).
+     *
+     * @return the forceDeletion value.
+     */
+    public Boolean forceDeletion() {
+        return this.forceDeletion;
+    }
+
+    /**
+     * Set the forceDeletion property: This property allows you to specify if virtual machines chosen for removal have
+     * to be force deleted when a virtual machine scale set is being scaled-in.(Feature in Preview).
+     *
+     * @param forceDeletion the forceDeletion value to set.
+     * @return the ScaleInPolicy object itself.
+     */
+    public ScaleInPolicy withForceDeletion(Boolean forceDeletion) {
+        this.forceDeletion = forceDeletion;
         return this;
     }
 

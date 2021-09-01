@@ -15,13 +15,13 @@ public final class PrivateEndpoint {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(PrivateEndpoint.class);
 
     /*
-     * The resource Id for private endpoint
+     * The resource ID of the private endpoint
      */
     @JsonProperty(value = "id")
     private String id;
 
     /**
-     * Get the id property: The resource Id for private endpoint.
+     * Get the id property: The resource ID of the private endpoint.
      *
      * @return the id value.
      */
@@ -30,7 +30,7 @@ public final class PrivateEndpoint {
     }
 
     /**
-     * Set the id property: The resource Id for private endpoint.
+     * Set the id property: The resource ID of the private endpoint.
      *
      * @param id the id value to set.
      * @return the PrivateEndpoint object itself.

@@ -97,7 +97,11 @@ public final class OSProfile {
 
     /*
      * Specifies set of certificates that should be installed onto the virtual
-     * machine.
+     * machine. To install certificates on a virtual machine it is recommended
+     * to use the [Azure Key Vault virtual machine extension for
+     * Linux](https://docs.microsoft.com/azure/virtual-machines/extensions/key-vault-linux)
+     * or the [Azure Key Vault virtual machine extension for
+     * Windows](https://docs.microsoft.com/azure/virtual-machines/extensions/key-vault-windows).
      */
     @JsonProperty(value = "secrets")
     private List<VaultSecretGroup> secrets;
@@ -298,7 +302,11 @@ public final class OSProfile {
     }
 
     /**
-     * Get the secrets property: Specifies set of certificates that should be installed onto the virtual machine.
+     * Get the secrets property: Specifies set of certificates that should be installed onto the virtual machine. To
+     * install certificates on a virtual machine it is recommended to use the [Azure Key Vault virtual machine extension
+     * for Linux](https://docs.microsoft.com/azure/virtual-machines/extensions/key-vault-linux) or the [Azure Key Vault
+     * virtual machine extension for
+     * Windows](https://docs.microsoft.com/azure/virtual-machines/extensions/key-vault-windows).
      *
      * @return the secrets value.
      */
@@ -307,7 +315,11 @@ public final class OSProfile {
     }
 
     /**
-     * Set the secrets property: Specifies set of certificates that should be installed onto the virtual machine.
+     * Set the secrets property: Specifies set of certificates that should be installed onto the virtual machine. To
+     * install certificates on a virtual machine it is recommended to use the [Azure Key Vault virtual machine extension
+     * for Linux](https://docs.microsoft.com/azure/virtual-machines/extensions/key-vault-linux) or the [Azure Key Vault
+     * virtual machine extension for
+     * Windows](https://docs.microsoft.com/azure/virtual-machines/extensions/key-vault-windows).
      *
      * @param secrets the secrets value to set.
      * @return the OSProfile object itself.

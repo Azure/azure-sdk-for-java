@@ -29,6 +29,7 @@ import com.azure.data.appconfiguration.models.SettingSelector;
 import com.azure.spring.cloud.config.feature.management.entity.FeatureSet;
 import com.azure.spring.cloud.config.properties.AppConfigurationProperties;
 import com.azure.spring.cloud.config.properties.AppConfigurationProviderProperties;
+import com.azure.spring.cloud.config.properties.AppConfigurationStoreSelects;
 import com.azure.spring.cloud.config.properties.AppConfigurationStoreTrigger;
 import com.azure.spring.cloud.config.properties.ConfigStore;
 import com.azure.spring.cloud.config.stores.ClientStore;
@@ -61,6 +62,8 @@ public class AppConfigurationPropertySourceLocator implements PropertySourceLoca
     private final KeyVaultCredentialProvider keyVaultCredentialProvider;
 
     private final SecretClientBuilderSetup keyVaultClientProvider;
+    
+    private final KeyVaultSecretProvider keyVaultSecretProvider;
 
     private static AtomicBoolean configloaded = new AtomicBoolean(false);
 
@@ -68,13 +71,14 @@ public class AppConfigurationPropertySourceLocator implements PropertySourceLoca
 
     public AppConfigurationPropertySourceLocator(AppConfigurationProperties properties,
         AppConfigurationProviderProperties appProperties, ClientStore clients,
-        KeyVaultCredentialProvider keyVaultCredentialProvider, SecretClientBuilderSetup keyVaultClientProvider) {
+        KeyVaultCredentialProvider keyVaultCredentialProvider, SecretClientBuilderSetup keyVaultClientProvider, KeyVaultSecretProvider keyVaultSecretProvider) {
         this.properties = properties;
         this.appProperties = appProperties;
         this.configStores = properties.getStores();
         this.clients = clients;
         this.keyVaultCredentialProvider = keyVaultCredentialProvider;
         this.keyVaultClientProvider = keyVaultClientProvider;
+        this.keyVaultSecretProvider = keyVaultSecretProvider;
     }
 
     @Override
@@ -202,12 +206,12 @@ public class AppConfigurationPropertySourceLocator implements PropertySourceLoca
         List<AppConfigurationPropertySource> sourceList = new ArrayList<>();
 
         try {
-            String[] labels = store.getLabels(profiles);
+            List<AppConfigurationStoreSelects> selects = store.getSelects();
 
-            for (String label : labels) {
+            for (AppConfigurationStoreSelects selectedKeys : selects) {
                 putStoreContext(store.getEndpoint(), context, storeContextsMap);
                 AppConfigurationPropertySource propertySource = new AppConfigurationPropertySource(context, store,
-                    label, properties, clients, appProperties, keyVaultCredentialProvider, keyVaultClientProvider);
+                    selectedKeys, profiles, properties, clients, appProperties, keyVaultCredentialProvider, keyVaultClientProvider, keyVaultSecretProvider);
 
                 propertySource.initProperties(featureSet);
                 if (initFeatures) {
@@ -226,7 +230,11 @@ public class AppConfigurationPropertySourceLocator implements PropertySourceLoca
 
                 ConfigurationSetting watchKey = clients.getWatchKey(settingSelector,
                     store.getEndpoint());
-                watchKeysSettings.add(watchKey);
+                if (watchKey != null) {
+                    watchKeysSettings.add(watchKey);
+                } else {
+                    watchKeysSettings.add(new ConfigurationSetting().setKey(trigger.getKey()).setLabel(trigger.getLabel()));
+                }
             }
             if (store.getFeatureFlags().getEnabled()) {
                 SettingSelector settingSelector = new SettingSelector()

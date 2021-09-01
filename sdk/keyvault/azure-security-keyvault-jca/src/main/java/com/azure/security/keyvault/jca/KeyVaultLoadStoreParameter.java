@@ -41,7 +41,7 @@ public final class KeyVaultLoadStoreParameter implements KeyStore.LoadStoreParam
      * @param uri the Azure Key Vault URI.
      */
     public KeyVaultLoadStoreParameter(String uri) {
-        this(uri, null);
+        this(uri, null, null, null, null);
     }
 
     /**
@@ -51,11 +51,7 @@ public final class KeyVaultLoadStoreParameter implements KeyStore.LoadStoreParam
      * @param managedIdentity the managed identity.
      */
     public KeyVaultLoadStoreParameter(String uri, String managedIdentity) {
-        this.uri = uri;
-        this.tenantId = null;
-        this.clientId = null;
-        this.clientSecret = null;
-        this.managedIdentity = managedIdentity;
+        this(uri, null, null, null, managedIdentity);
     }
 
     /**
@@ -67,13 +63,25 @@ public final class KeyVaultLoadStoreParameter implements KeyStore.LoadStoreParam
      * @param clientSecret the client secret.
      */
     public KeyVaultLoadStoreParameter(String uri, String tenantId, String clientId, String clientSecret) {
+        this(uri, tenantId, clientId, clientSecret, null);
+    }
+
+    /**
+     * Constructor.
+     *
+     * @param uri the Azure Key Vault URI.
+     * @param tenantId the tenant ID.
+     * @param clientId the client ID.
+     * @param clientSecret the client secret.
+     * @param managedIdentity the managedIdentity.
+     */
+    public KeyVaultLoadStoreParameter(String uri, String tenantId, String clientId, String clientSecret, String managedIdentity) {
         this.uri = uri;
         this.tenantId = tenantId;
         this.clientId = clientId;
         this.clientSecret = clientSecret;
-        this.managedIdentity = null;
+        this.managedIdentity = managedIdentity;
     }
-
 
     /**
      * Get the protection parameter.

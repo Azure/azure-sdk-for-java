@@ -8,15 +8,19 @@ import com.azure.core.util.Context;
 
 /** Samples for IntegrationRuntimeObjectMetadata Refresh. */
 public final class IntegrationRuntimeObjectMetadataRefreshSamples {
+    /*
+     * operationId: IntegrationRuntimeObjectMetadata_Refresh
+     * api-version: 2018-06-01
+     * x-ms-examples: IntegrationRuntimeObjectMetadata_Refresh
+     */
     /**
      * Sample code: IntegrationRuntimeObjectMetadata_Refresh.
      *
-     * @param dataFactoryManager Entry point to DataFactoryManager. The Azure Data Factory V2 management API provides a
-     *     RESTful set of web services that interact with Azure Data Factory V2 services.
+     * @param manager Entry point to DataFactoryManager.
      */
     public static void integrationRuntimeObjectMetadataRefresh(
-        com.azure.resourcemanager.datafactory.DataFactoryManager dataFactoryManager) {
-        dataFactoryManager
+        com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
+        manager
             .integrationRuntimeObjectMetadatas()
             .refresh("exampleResourceGroup", "exampleFactoryName", "testactivityv2", Context.NONE);
     }

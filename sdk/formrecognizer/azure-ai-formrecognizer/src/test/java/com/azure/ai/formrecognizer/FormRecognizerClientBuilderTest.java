@@ -27,12 +27,11 @@ import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
-import static com.azure.ai.formrecognizer.FormRecognizerClientTestBase.HTTPS_EXCEPTION_MESSAGE;
 import static com.azure.ai.formrecognizer.FormRecognizerClientTestBase.INVALID_ENDPOINT;
 import static com.azure.ai.formrecognizer.FormTrainingClientTestBase.AZURE_FORM_RECOGNIZER_API_KEY;
 import static com.azure.ai.formrecognizer.FormTrainingClientTestBase.AZURE_FORM_RECOGNIZER_ENDPOINT;
-import static com.azure.ai.formrecognizer.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
 import static com.azure.ai.formrecognizer.TestUtils.CONTENT_FORM_JPG;
+import static com.azure.ai.formrecognizer.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
 import static com.azure.ai.formrecognizer.TestUtils.INVALID_KEY;
 import static com.azure.ai.formrecognizer.TestUtils.URL_TEST_FILE_FORMAT;
 import static com.azure.ai.formrecognizer.TestUtils.VALID_HTTP_LOCALHOST;
@@ -121,12 +120,10 @@ public class FormRecognizerClientBuilderTest extends TestBase {
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
     public void clientBuilderWithHttpEndpoint(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
         clientBuilderWithDefaultPipelineRunner(httpClient, serviceVersion, clientBuilder -> (input) -> {
-            Exception exception = assertThrows(RuntimeException.class,
-                () -> clientBuilder.endpoint(VALID_HTTP_LOCALHOST)
-                    .retryPolicy(new RetryPolicy(new FixedDelay(3, Duration.ofMillis(1))))
-                    .buildClient()
-                    .beginRecognizeContentFromUrl(input).getFinalResult());
-            assertEquals(HTTPS_EXCEPTION_MESSAGE, exception.getMessage());
+            assertThrows(RuntimeException.class, () -> clientBuilder.endpoint(VALID_HTTP_LOCALHOST)
+                .retryPolicy(new RetryPolicy(new FixedDelay(3, Duration.ofMillis(1))))
+                .buildClient()
+                .beginRecognizeContentFromUrl(input).getFinalResult());
         });
     }
 
@@ -174,7 +171,7 @@ public class FormRecognizerClientBuilderTest extends TestBase {
                 .endpoint(getEndpoint())
                 .credential(new AzureKeyCredential(getApiKey()))
                 .clientOptions(new ClientOptions()
-                                   .setHeaders(Collections.singletonList(new Header("User-Agent", "custom"))))
+                    .setHeaders(Collections.singletonList(new Header("User-Agent", "custom"))))
                 .retryPolicy(new RetryPolicy(new FixedDelay(3, Duration.ofMillis(1))))
                 .httpClient(httpRequest -> {
                     assertEquals("custom", httpRequest.getHeaders().getValue("User-Agent"));
@@ -243,7 +240,6 @@ public class FormRecognizerClientBuilderTest extends TestBase {
      *
      * @param endpoint the given endpoint
      * @param credential the given {@link AzureKeyCredential} credential
-     *
      * @return {@link FormRecognizerClientBuilder}
      */
     FormRecognizerClientBuilder createClientBuilder(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion,

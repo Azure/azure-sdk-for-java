@@ -29,7 +29,7 @@ This client library provides access to query metrics and logs collected by Azure
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-monitor-query</artifactId>
-    <version>1.0.0-beta.2</version>
+    <version>1.0.0-beta.3</version>
 </dependency>
 ```
 
@@ -37,7 +37,7 @@ This client library provides access to query metrics and logs collected by Azure
 
 ### Create Logs query client
 
-<!-- embedme ./src/samples/java/com/azure/monitor/query/ReadmeSamples.java#L41-L43 -->
+<!-- embedme ./src/samples/java/com/azure/monitor/query/ReadmeSamples.java#L39-L41 -->
 ```java
 LogsQueryClient logsQueryClient = new LogsQueryClientBuilder()
     .credential(new DefaultAzureCredentialBuilder().build())
@@ -46,226 +46,15 @@ LogsQueryClient logsQueryClient = new LogsQueryClientBuilder()
 
 ### Create Logs query async client
 
-
-<!-- embedme ./src/samples/java/com/azure/monitor/query/ReadmeSamples.java#L45-L47 -->
+<!-- embedme ./src/samples/java/com/azure/monitor/query/ReadmeSamples.java#L43-L45 -->
 ```java
 LogsQueryAsyncClient logsQueryAsyncClient = new LogsQueryClientBuilder()
     .credential(new DefaultAzureCredentialBuilder().build())
     .buildAsyncClient();
 ```
-
-### Get logs for a query
-
-<!-- embedme ./src/samples/java/com/azure/monitor/query/ReadmeSamples.java#L201-L233 -->
-```java
-    LogsQueryResult queryResults = logsQueryClient.queryLogs("{workspace-id}", "{kusto-query}",
-        new QueryTimeSpan(Duration.ofDays(2)));
-    System.out.println("Number of tables = " + queryResults.getLogsTables().size());
-
-    // Sample to iterate over all cells in the table
-    for (LogsTable table : queryResults.getLogsTables()) {
-        for (LogsTableCell tableCell : table.getAllTableCells()) {
-            System.out.println("Column = " + tableCell.getColumnName() + "; value = " + tableCell.getValueAsString());
-        }
-    }
-
-
-    // Sample to iterate over each row
-    for (LogsTable table : queryResults.getLogsTables()) {
-        for (LogsTableRow tableRow : table.getTableRows()) {
-            for (LogsTableCell tableCell : tableRow.getTableRow()) {
-                System.out.println("Column = " + tableCell.getColumnName()
-                    + "; value = " + tableCell.getValueAsString());
-            }
-        }
-    }
-
-    // Sample to get a specific column by name
-    for (LogsTable table : queryResults.getLogsTables()) {
-        for (LogsTableRow tableRow : table.getTableRows()) {
-            Optional<LogsTableCell> tableCell = tableRow.getColumnValue("DurationMs");
-            tableCell
-                .ifPresent(logsTableCell ->
-                    System.out.println("Column = " + logsTableCell.getColumnName()
-                        + "; value = " + logsTableCell.getValueAsString()));
-        }
-    }
-}
-```
-### Get logs for a query and read the response as a model type
-
-```java
-
-    LogsQueryResult queryResults = logsQueryClient
-        .queryLogs("d2d0e126-fa1e-4b0a-b647-250cdd471e68", "AppRequests", null);
-    
-    // Sample to use a model type to read the results
-    for (LogsTable table : queryResults.getLogsTables()) {
-      for (LogsTableRow row : table.getTableRows()) {
-        CustomModel model = row.getRowAsObject(CustomModel.class);
-        System.out.println("Time generated " + model.getTimeGenerated() + "; success = " + model.getSuccess() +
-        "; operation name = " + model.getOperationName());
-      }
-    }
-        
-        
-    public class CustomModel {
-        private OffsetDateTime timeGenerated;
-        private String tenantId;
-        private String id;
-        private String source;
-        private Boolean success;
-        private Double durationMs;
-        private Object properties;
-        private Object measurements;
-        private String operationName;
-        private String operationId;
-        private Object operationLinks;
-
-
-        public OffsetDateTime getTimeGenerated() {
-            return timeGenerated;
-        }
-
-        public void setTimeGenerated(OffsetDateTime timeGenerated) {
-            this.timeGenerated = timeGenerated;
-        }
-
-        public String getTenantId() {
-            return tenantId;
-        }
-
-        public void setTenantId(String tenantId) {
-            this.tenantId = tenantId;
-        }
-
-        public String getId() {
-            return id;
-        }
-
-        public void setId(String id) {
-            this.id = id;
-        }
-
-        public String getSource() {
-            return source;
-        }
-
-        public void setSource(String source) {
-            this.source = source;
-        }
-
-        public Boolean getSuccess() {
-            return success;
-        }
-
-        public void setSuccess(Boolean success) {
-            this.success = success;
-        }
-
-        public Double getDurationMs() {
-            return durationMs;
-        }
-
-        public void setDurationMs(Double durationMs) {
-            this.durationMs = durationMs;
-        }
-
-        public Object getProperties() {
-            return properties;
-        }
-
-        public void setProperties(Object properties) {
-            this.properties = properties;
-        }
-
-        public Object getMeasurements() {
-            return measurements;
-        }
-
-        public void setMeasurements(Object measurements) {
-            this.measurements = measurements;
-        }
-
-        public String getOperationName() {
-            return operationName;
-        }
-
-        public void setOperationName(String operationName) {
-            this.operationName = operationName;
-        }
-
-        public String getOperationId() {
-            return operationId;
-        }
-
-        public void setOperationId(String operationId) {
-            this.operationId = operationId;
-        }
-
-        public Object getOperationLinks() {
-            return operationLinks;
-        }
-
-        public void setOperationLinks(Object operationLinks) {
-            this.operationLinks = operationLinks;
-        }
-    }
-```
-
-### Get logs for a batch of queries
-
-<!-- embedme ./src/samples/java/com/azure/monitor/query/ReadmeSamples.java#L97-L117 -->
-```java
-LogsBatchQuery logsBatchQuery = new LogsBatchQuery()
-    .addQuery("{workspace-id}", "{query-1}", new QueryTimeSpan(Duration.ofDays(2)))
-    .addQuery("{workspace-id}", "{query-2}", new QueryTimeSpan(Duration.ofDays(30)));
-
-LogsBatchQueryResultCollection batchResultCollection = logsQueryClient
-    .queryLogsBatchWithResponse(logsBatchQuery, Context.NONE).getValue();
-
-List<LogsBatchQueryResult> responses = batchResultCollection.getBatchResults();
-
-for (LogsBatchQueryResult response : responses) {
-    LogsQueryResult queryResult = response.getQueryResult();
-
-    // Sample to iterate by row
-    for (LogsTable table : queryResult.getLogsTables()) {
-        for (LogsTableRow row : table.getTableRows()) {
-            System.out.println("Row index " + row.getRowIndex());
-            row.getTableRow()
-                .forEach(cell -> System.out.println("Column = " + cell.getColumnName() + "; value = " + cell.getValueAsString()));
-        }
-    }
-}
-```
-
-### Get logs for a query with server timeout
-
-<!-- embedme ./src/samples/java/com/azure/monitor/query/ReadmeSamples.java#L132-L148 -->
-```java
-// set request options: server timeout, rendering, statistics
-LogsQueryOptions options = new LogsQueryOptions("{workspace-id}",
-    "{query}", new QueryTimeSpan(Duration.ofDays(2)))
-    .setServerTimeout(Duration.ofMinutes(10));
-
-// make service call with these request options set as filter header
-Response<LogsQueryResult> response = logsQueryClient.queryLogsWithResponse(options, Context.NONE);
-LogsQueryResult logsQueryResult = response.getValue();
-
-// Sample to iterate by row
-for (LogsTable table : logsQueryResult.getLogsTables()) {
-    for (LogsTableRow row : table.getTableRows()) {
-        System.out.println("Row index " + row.getRowIndex());
-        row.getTableRow()
-            .forEach(cell -> System.out.println("Column = " + cell.getColumnName() + "; value = " + cell.getValueAsString()));
-    }
-}
-```
-
 ### Create Metrics query client
 
-<!-- embedme ./src/samples/java/com/azure/monitor/query/ReadmeSamples.java#L56-L58 -->
+<!-- embedme ./src/samples/java/com/azure/monitor/query/ReadmeSamples.java#L52-L54 -->
 ```java
 MetricsQueryClient metricsQueryClient = new MetricsQueryClientBuilder()
     .credential(new DefaultAzureCredentialBuilder().build())
@@ -274,51 +63,11 @@ MetricsQueryClient metricsQueryClient = new MetricsQueryClientBuilder()
 
 ### Create Metrics query async client
 
-<!-- embedme ./src/samples/java/com/azure/monitor/query/ReadmeSamples.java#L60-L62 -->
+<!-- embedme ./src/samples/java/com/azure/monitor/query/ReadmeSamples.java#L56-L58 -->
 ```java
 MetricsQueryAsyncClient metricsQueryAsyncClient = new MetricsQueryClientBuilder()
     .credential(new DefaultAzureCredentialBuilder().build())
     .buildAsyncClient();
-```
-
-### Get metrics
-
-A resource ID, as denoted by the `{resource-id}` placeholder in the sample below, is required to query metrics. To find the resource ID:
-
-1. Navigate to your resource's page in the Azure portal.
-2. From the **Overview** blade, select the **JSON View** link.
-3. In the resulting JSON, copy the value of the `id` property.
-
-<!-- embedme ./src/samples/java/com/azure/monitor/query/ReadmeSamples.java#L161-L188 -->
-```java
-Response<MetricsQueryResult> metricsResponse = metricsQueryClient
-    .queryMetricsWithResponse(
-        "{resource-id}",
-        Arrays.asList("SuccessfulCalls"),
-        new MetricsQueryOptions()
-            .setMetricsNamespace("Microsoft.CognitiveServices/accounts")
-            .setTimeSpan(new QueryTimeSpan(Duration.ofDays(30)))
-            .setInterval(Duration.ofHours(1))
-            .setTop(100)
-            .setAggregation(Arrays.asList(AggregationType.AVERAGE, AggregationType.COUNT)),
-        Context.NONE);
-
-MetricsQueryResult metricsQueryResult = metricsResponse.getValue();
-List<Metric> metrics = metricsQueryResult.getMetrics();
-metrics.stream()
-    .forEach(metric -> {
-        System.out.println(metric.getMetricsName());
-        System.out.println(metric.getId());
-        System.out.println(metric.getType());
-        System.out.println(metric.getUnit());
-        System.out.println(metric.getTimeSeries().size());
-        System.out.println(metric.getTimeSeries().get(0).getData().size());
-        metric.getTimeSeries()
-            .stream()
-            .flatMap(ts -> ts.getData().stream())
-            .forEach(mv -> System.out.println(mv.getTimeStamp().toString() + "; Count = " + mv.getCount()
-                + "; Average = " + mv.getAverage()));
-    });
 ```
 
 ## Key concepts
@@ -342,7 +91,7 @@ You must create at least one workspace to use Azure Monitor Logs. A single works
 monitoring data, or may choose to create multiple workspaces depending on your requirements. For example, you might have
 one workspace for your production data and another for testing.
 
-#### Log queries
+#### Logs queries
 
 Data is retrieved from a Log Analytics workspace using a log query which is a read-only request to process data and
 return results. Log queries are written
@@ -376,9 +125,231 @@ time-stamped data. Each set of metric values is a time series with the following
 ## Examples
 
 * [Get logs for a query](#get-query "Get logs for a query")
+* [Get logs for a query and read the response as a model type](#get-query-model "Get logs for a query and read the response as a model type")
 * [Get logs for a batch for queries](#get-batch-query "Get logs for a batch of queries")
 * [Get logs for a query with server timeout](#get-query-server-timeout "Get logs for a query with server timeout")
+* [Get logs from multiple workspaces](#get-query-multiple-workspaces "Get logs from multiple workspaces")
 * [Get metrics](#get-metrics "Get metrics")
+* [Get average and count metrics ](#get-aggregation-metrics "Get average and count metrics")
+
+
+### Get logs for a query
+
+<!-- embedme ./src/samples/java/com/azure/monitor/query/ReadmeSamples.java#L65-L74 -->
+```java
+LogsQueryClient logsQueryClient = new LogsQueryClientBuilder()
+        .credential(new DefaultAzureCredentialBuilder().build())
+        .buildClient();
+
+LogsQueryResult queryResults = logsQueryClient.query("{workspace-id}", "{kusto-query}",
+        new TimeInterval(Duration.ofDays(2)));
+
+for (LogsTableRow row : queryResults.getTable().getRows()) {
+    System.out.println(row.getColumnValue("OperationName") + " " + row.getColumnValue("ResourceGroup"));
+}
+```
+
+### Get logs for a query and read the response as a model type
+
+<!-- embedme ./src/samples/java/com/azure/monitor/query/ReadmeSamples.java#L80-L91 -->
+```java
+public class CustomLogModel {
+    private String resourceGroup;
+    private String operationName;
+
+    public String getResourceGroup() {
+        return resourceGroup;
+    }
+
+    public String getOperationName() {
+        return operationName;
+    }
+}
+```
+<!-- embedme ./src/samples/java/com/azure/monitor/query/ReadmeSamples.java#L97-L106 -->
+```java
+LogsQueryClient logsQueryClient = new LogsQueryClientBuilder()
+        .credential(new DefaultAzureCredentialBuilder().build())
+        .buildClient();
+
+List<CustomLogModel> customLogModels = logsQueryClient.query("{workspace-id}", "{kusto-query}",
+        new TimeInterval(Duration.ofDays(2)), CustomLogModel.class);
+
+for (CustomLogModel customLogModel : customLogModels) {
+    System.out.println(customLogModel.getOperationName() + " " + customLogModel.getResourceGroup());
+}
+```
+### Get logs for a batch of queries
+
+<!-- embedme ./src/samples/java/com/azure/monitor/query/ReadmeSamples.java#L113-L138 -->
+```java
+LogsQueryClient logsQueryClient = new LogsQueryClientBuilder()
+        .credential(new DefaultAzureCredentialBuilder().build())
+        .buildClient();
+
+LogsBatchQuery logsBatchQuery = new LogsBatchQuery();
+String query1 = logsBatchQuery.addQuery("{workspace-id}", "{query-1}", new TimeInterval(Duration.ofDays(2)));
+String query2 = logsBatchQuery.addQuery("{workspace-id}", "{query-2}", new TimeInterval(Duration.ofDays(30)));
+String query3 = logsBatchQuery.addQuery("{workspace-id}", "{query-3}", new TimeInterval(Duration.ofDays(10)));
+
+LogsBatchQueryResults batchResults = logsQueryClient
+        .queryBatchWithResponse(logsBatchQuery, Context.NONE).getValue();
+
+LogsBatchQueryResult query1Result = batchResults.getResult(query1);
+for (LogsTableRow row : query1Result.getTable().getRows()) {
+    System.out.println(row.getColumnValue("OperationName") + " " + row.getColumnValue("ResourceGroup"));
+}
+
+List<CustomLogModel> customLogModels = batchResults.getResult(query2, CustomLogModel.class);
+for (CustomLogModel customLogModel : customLogModels) {
+    System.out.println(customLogModel.getOperationName() + " " + customLogModel.getResourceGroup());
+}
+
+LogsBatchQueryResult query3Result = batchResults.getResult(query3);
+if (query3Result.hasFailed()) {
+    System.out.println(query3Result.getError().getMessage());
+}
+```
+
+### Get logs for a query with server timeout
+
+<!-- embedme ./src/samples/java/com/azure/monitor/query/ReadmeSamples.java#L146-L155 -->
+```java
+LogsQueryClient logsQueryClient = new LogsQueryClientBuilder()
+    .credential(new DefaultAzureCredentialBuilder().build())
+    .buildClient();
+
+// set request options: server timeout
+LogsQueryOptions options = new LogsQueryOptions()
+    .setServerTimeout(Duration.ofMinutes(10));
+
+Response<LogsQueryResult> response = logsQueryClient.queryWithResponse("{workspace-id}",
+        "{kusto-query}", new TimeInterval(Duration.ofDays(2)), options, Context.NONE);
+```
+
+### Get logs from multiple workspaces
+
+<!-- embedme ./src/samples/java/com/azure/monitor/query/ReadmeSamples.java#L162-L170 -->
+```java
+LogsQueryClient logsQueryClient = new LogsQueryClientBuilder()
+        .credential(new DefaultAzureCredentialBuilder().build())
+        .buildClient();
+
+Response<LogsQueryResult> response = logsQueryClient.queryWithResponse("{workspace-id}", "{kusto-query}",
+        new TimeInterval(Duration.ofDays(2)), new LogsQueryOptions()
+                .setAdditionalWorkspaces(Arrays.asList("{additional-workspace-identifiers}")),
+        Context.NONE);
+LogsQueryResult result = response.getValue();
+```
+
+#### Response structure for Logs Query
+
+The `query` API returns the `LogsQueryResult` while the `queryBatch` API returns the `LogsBatchQueryResult`.
+
+Here is a hierarchy of the response:
+
+```
+LogsQueryResult / LogsBatchQueryResult
+|---id (this exists in `LogsBatchQueryResult` object only)
+|---status (this exists in `LogsBatchQueryResult` object only)
+|---statistics
+|---visualization
+|---error
+|---tables (list of `LogsTable` objects)
+    |---name
+    |---rows (list of `LogsTableRow` objects)
+        |--- rowIndex
+        |--- rowCells (list of `LogsTableCell` objects)
+    |---columns (list of `LogsTableColumn` objects)
+        |---name
+        |---type
+```
+
+### Get metrics
+
+A resource ID, as denoted by the `{resource-id}` placeholder in the sample below, is required to query metrics. To find the resource ID:
+
+1. Navigate to your resource's page in the Azure portal.
+2. From the **Overview** blade, select the **JSON View** link.
+3. In the resulting JSON, copy the value of the `id` property.
+
+<!-- embedme ./src/samples/java/com/azure/monitor/query/ReadmeSamples.java#L178-L193 -->
+```java
+MetricsQueryClient metricsQueryClient = new MetricsQueryClientBuilder()
+        .credential(new DefaultAzureCredentialBuilder().build())
+        .buildClient();
+
+MetricsQueryResult metricsQueryResult = metricsQueryClient.query("{resource-uri}",
+        Arrays.asList("SuccessfulCalls", "TotalCalls"));
+
+for (MetricResult metric : metricsQueryResult.getMetrics()) {
+    System.out.println("Metric name " + metric.getMetricName());
+    for (TimeSeriesElement timeSeriesElement : metric.getTimeSeries()) {
+        System.out.println("Dimensions " + timeSeriesElement.getMetadata());
+        for (MetricValue metricValue : timeSeriesElement.getValues()) {
+            System.out.println(metricValue.getTimeStamp() + " " + metricValue.getTotal());
+        }
+    }
+}
+```
+
+### Get average and count metrics
+
+<!-- embedme ./src/samples/java/com/azure/monitor/query/ReadmeSamples.java#L200-L221 -->
+```java
+MetricsQueryClient metricsQueryClient = new MetricsQueryClientBuilder()
+    .credential(new DefaultAzureCredentialBuilder().build())
+    .buildClient();
+
+Response<MetricsQueryResult> metricsResponse = metricsQueryClient
+    .queryWithResponse("{resource-id}", Arrays.asList("SuccessfulCalls", "TotalCalls"),
+        new MetricsQueryOptions()
+            .setGranularity(Duration.ofHours(1))
+            .setAggregations(Arrays.asList(AggregationType.AVERAGE, AggregationType.COUNT)),
+        Context.NONE);
+
+MetricsQueryResult metricsQueryResult = metricsResponse.getValue();
+
+for (MetricResult metric : metricsQueryResult.getMetrics()) {
+    System.out.println("Metric name " + metric.getMetricName());
+    for (TimeSeriesElement timeSeriesElement : metric.getTimeSeries()) {
+        System.out.println("Dimensions " + timeSeriesElement.getMetadata());
+        for (MetricValue metricValue : timeSeriesElement.getValues()) {
+            System.out.println(metricValue.getTimeStamp() + " " + metricValue.getTotal());
+        }
+    }
+}
+```
+### Response structure for Metrics query
+
+The metrics query API returns a `MetricsQueryResult` object. The `MetricsQueryResult` object contains properties such as a 
+list of `MetricResult`-typed objects, `granularity`, `namespace`, and `timeInterval`. The `MetricResult` objects list 
+can be accessed using the `metrics` param. Each `MetricResult` object in this list contains a list of `TimeSeriesElement` objects. 
+Each `TimeSeriesElement` contains `data` and `metadata_values` properties. In visual form, the object hierarchy of the 
+response resembles the following structure:
+
+```
+MetricsQueryResult
+|---granularity
+|---timeInterval
+|---cost
+|---namespace
+|---resourceRegion
+|---metrics (list of `MetricResult` objects)
+    |---id
+    |---type
+    |---name
+    |---unit
+    |---timeSeries (list of `TimeSeriesElement` objects)
+        |---metadata (dimensions)
+        |---metricValues (list of data points represented by `MetricValue` objects)
+             |--- timeStamp
+             |--- count
+             |--- average
+             |--- total
+             |--- maximum
+             |--- minimum
+```
 
 ## Troubleshooting
 

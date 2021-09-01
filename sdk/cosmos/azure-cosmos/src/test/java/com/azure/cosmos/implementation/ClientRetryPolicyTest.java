@@ -366,7 +366,7 @@ public class ClientRetryPolicyTest {
 
         RxDocumentServiceRequest dsr = RxDocumentServiceRequest.createFromName(mockDiagnosticsClientContext(),
             OperationType.Read, "/dbs/db/colls/col/docs/", ResourceType.Document);
-        dsr.setAddressRefresh(true);
+        dsr.setAddressRefresh(true, false);
         dsr.requestContext = Mockito.mock(DocumentServiceRequestContext.class);
 
         clientRetryPolicy.onBeforeSendRequest(dsr);

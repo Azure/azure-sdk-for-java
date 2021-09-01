@@ -353,11 +353,11 @@ To use **aad-starter** in this scenario, we need these steps:
 
 This property(`azure.activedirectory.application-type`) is optional, its value can be inferred by dependencies, only `web_application_and_resource_server` must be configured manually: `azure.activedirectory.application-type=web_application_and_resource_server`.
 
-| Has dependency: spring-security-oauth2-client | Has dependency: spring-security-oauth2-resource-server |                  Valid values of application type                 | Default value               |
-|-----------------------------------------------|--------------------------------------------------------|-------------------------------------------------------------------|-----------------------------|
-|                      Yes                      |                          No                            |                       `web_application`                           |       `web_application`     |
-|                      No                       |                          Yes                           |                       `resource_server`                           |       `resource_server`     |
-|                      Yes                      |                          Yes                           | `resource_server_with_obo`, `web_application_and_resource_server` | `resource_server_with_obo`  |
+| Has dependency: spring-security-oauth2-client | Has dependency: spring-security-oauth2-resource-server |                  Valid values of application type                                                     | Default value               |
+|-----------------------------------------------|--------------------------------------------------------|-------------------------------------------------------------------------------------------------------|-----------------------------|
+|                      Yes                      |                          No                            |                       `web_application`                                                               |       `web_application`     |
+|                      No                       |                          Yes                           |                       `resource_server`                                                               |       `resource_server`     |
+|                      Yes                      |                          Yes                           | `web_application`,`resource_server`,`resource_server_with_obo`, `web_application_and_resource_server` | `resource_server_with_obo`  |
 
 ### Configurable properties
 
@@ -376,6 +376,8 @@ This starter provides the following properties:
 | **azure.activedirectory**.client-secret                                                | client secret of the registered application.                                                   |
 | **azure.activedirectory**.graph-membership-uri                                         | It's used to load users' groups. The default value is `https://graph.microsoft.com/v1.0/me/memberOf`, this uri just get direct groups. To get all transitive membership, set it to `https://graph.microsoft.com/v1.0/me/transitiveMemberOf`. The 2 uris are both Azure Global, check `Property example 1` if you want to use Azure China.|
 | **azure.activedirectory**.post-logout-redirect-uri                                     | Redirect uri for posting log-out.                            |
+| **azure.activedirectory**.resource-server.principal-claim-name                         | Principal claim name. Default value is "sub".                                                  |
+| **azure.activedirectory**.resource-server.claim-to-authority-prefix-map                | Claim to authority prefix map. Default map is: "scp" -> "SCOPE_", "roles" -> "APPROLE_".       |
 | **azure.activedirectory**.tenant-id                                                    | Azure Tenant ID.                                             |
 | **azure.activedirectory**.user-group.allowed-group-names                               | Users' group name can be use in `@PreAuthorize("hasRole('ROLE_group_name_1')")`. Not all group name will take effect, only group names configured in this property will take effect. |
 | **azure.activedirectory**.user-group.allowed-group-ids                                 | Users' group id can be use in `@PreAuthorize("hasRole('ROLE_group_id_1')")`. Not all group id will take effect, only group id configured in this property will take effect. If this property's value is `all`, then all group id will take effect.|

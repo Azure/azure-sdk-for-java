@@ -27,7 +27,7 @@ requests, can also use Azure Web PubSub service.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-messaging-webpubsub</artifactId>
-    <version>1.0.0-beta.3</version>
+    <version>1.0.0-beta.2</version>
 </dependency>
 ```
 
@@ -35,9 +35,9 @@ requests, can also use Azure Web PubSub service.
 
 ### Create a Web PubSub client using connection string
 
-<!-- embedme ./src/samples/java/com/azure/messaging/webpubsub/ReadmeSamples.java#L21-L24 -->
+<!-- embedme ./src/samples/java/com/azure/messaging/webpubsub/ReadmeSamples.java#L22-L25 -->
 ```java
-WebPubSubServiceClient webPubSubServiceClient = new WebPubSubServiceClientBuilder()
+WebPubSubServiceClient webPubSubServiceClient = new WebPubSubClientBuilder()
     .connectionString("{connection-string}")
     .hub("chat")
     .buildClient();
@@ -45,13 +45,23 @@ WebPubSubServiceClient webPubSubServiceClient = new WebPubSubServiceClientBuilde
 
 ### Create a Web PubSub client using access key
 
-<!-- embedme ./src/samples/java/com/azure/messaging/webpubsub/ReadmeSamples.java#L31-L35 -->
+<!-- embedme ./src/samples/java/com/azure/messaging/webpubsub/ReadmeSamples.java#L32-L36 -->
 ```java
-WebPubSubServiceClient webPubSubServiceClient = new WebPubSubServiceClientBuilder()
+WebPubSubServiceClient webPubSubServiceClient = new WebPubSubClientBuilder()
     .credential(new AzureKeyCredential("{access-key}"))
     .endpoint("<Insert endpoint from Azure Portal>")
     .hub("chat")
     .buildClient();
+```
+
+### Create a Web PubSub Group client
+<!-- embedme ./src/samples/java/com/azure/messaging/webpubsub/ReadmeSamples.java#L43-L47 -->
+```java
+WebPubSubServiceClient webPubSubServiceClient = new WebPubSubClientBuilder()
+    .credential(new AzureKeyCredential("{access-key}"))
+    .hub("chat")
+    .buildClient();
+WebPubSubGroup javaGroup = webPubSubServiceClient.getGroup("java");
 ```
 
 ## Key concepts
@@ -90,29 +100,30 @@ A message is either an UTF-8 encoded string or raw binary data.
 
 ### Broadcast message to entire hub
 
-<!-- embedme ./src/samples/java/com/azure/messaging/webpubsub/ReadmeSamples.java#L47-L47 -->
+<!-- embedme ./src/samples/java/com/azure/messaging/webpubsub/ReadmeSamples.java#L59-L59 -->
 ```java
-webPubSubServiceClient.sendToAll("Hello world!", "text/plain");
+webPubSubServiceClient.sendToAll("Hello world!");
 ```
 
 ### Broadcast message to a group
 
-<!-- embedme ./src/samples/java/com/azure/messaging/webpubsub/ReadmeSamples.java#L59-L59 -->
+<!-- embedme ./src/samples/java/com/azure/messaging/webpubsub/ReadmeSamples.java#L71-L72 -->
 ```java
-webPubSubServiceClient.sendToGroup("java", "Hello Java!", "text/plain");
+WebPubSubGroup javaGroup = webPubSubServiceClient.getGroup("Java");
+javaGroup.sendToAll("Hello Java!", WebPubSubContentType.TEXT_PLAIN);
 ```
 
 ### Send message to a connection
 
-<!-- embedme ./src/samples/java/com/azure/messaging/webpubsub/ReadmeSamples.java#L71-L71 -->
+<!-- embedme ./src/samples/java/com/azure/messaging/webpubsub/ReadmeSamples.java#L84-L84 -->
 ```java
-webPubSubServiceClient.sendToConnection("myconnectionid", "Hello connection!", "text/plain");
+webPubSubServiceClient.sendToConnection("myconnectionid", "Hello connection!", WebPubSubContentType.TEXT_PLAIN);
 ```
 
 ### Send message to a user
-<!-- embedme ./src/samples/java/com/azure/messaging/webpubsub/ReadmeSamples.java#L83-L83 -->
+<!-- embedme ./src/samples/java/com/azure/messaging/webpubsub/ReadmeSamples.java#L96-L96 -->
 ```java
-webPubSubServiceClient.sendToUser("Andy", "Hello Andy!", "text/plain");
+webPubSubServiceClient.sendToUser("Andy", "Hello Andy!", WebPubSubContentType.TEXT_PLAIN);
 ```
 
 ## Troubleshooting

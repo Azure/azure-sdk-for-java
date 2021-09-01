@@ -42,13 +42,21 @@ The binder provides the following configuration options:
 
 ##### Spring Cloud Azure Properties
 
-Name | Description | Required | Default 
----|---|---|---
-spring.cloud.azure.credential-file-path | Location of azure credential file | Yes |
-spring.cloud.azure.resource-group | Name of Azure resource group | Yes |
-spring.cloud.azure.region | Region name of the Azure resource group, e.g. westus | Yes | 
-spring.cloud.azure.servicebus.namespace | Service Bus Namespace. Auto creating if missing | Yes |
+|Name | Description | Required | Default
+|:---|:---|:---|:---
+spring.cloud.azure.auto-create-resources | If enable auto-creation for Azure resources |  | false
+spring.cloud.azure.region | Region name of the Azure resource group, e.g. westus | Yes if spring.cloud.azure.auto-create-resources is enabled. |
+spring.cloud.azure.environment | Azure Cloud name for Azure resources, supported values are  `azure`, `azurechina`, `azure_germany` and `azureusgovernment` which are case insensitive | |azure | 
+spring.cloud.azure.client-id | Client (application) id of a service principal or Managed Service Identity (MSI) | Yes if service principal or MSI is used as credential configuration. |
+spring.cloud.azure.client-secret | Client secret of a service principal | Yes if service principal is used as credential configuration. |
+spring.cloud.azure.msi-enabled | If enable MSI as credential configuration | Yes if MSI is used as credential configuration. | false
+spring.cloud.azure.resource-group | Name of Azure resource group | Yes if service principal or MSI is used as credential configuration. |
+spring.cloud.azure.subscription-id | Subscription id of an MSI | Yes if MSI is used as credential configuration. |
+spring.cloud.azure.tenant-id | Tenant id of a service principal | Yes if service principal is used as credential configuration. |
+spring.cloud.azure.servicebus.connection-string | Service Bus Namespace connection string | Yes if connection string is used as credential configuration |
+spring.cloud.azure.servicebus.namespace | Service Bus Namespace. Auto creating if missing | Yes if service principal or MSI is used as credential configuration. |
 spring.cloud.azure.servicebus.transportType | Service Bus transportType, supported value of `AMQP` and `AMQP_WEB_SOCKETS` | No | `AMQP`
+spring.cloud.azure.servicebus.retry-Options | Service Bus retry options | No | Default value of AmqpRetryOptions
 
 ##### Serivce Bus Queue Producer Properties
 
@@ -87,9 +95,24 @@ Prefetch count of underlying service bus client.
 
 Default: `1`
 
-**_concurrency_**
+**_maxConcurrentCalls_**
 
 Controls the max concurrent calls of service bus message handler and the size of fixed thread pool that handles user's business logic
+
+Default: `1`
+
+**_maxConcurrentSessions_**
+
+Controls the maximum number of concurrent sessions to process at any given time.
+
+Default: `1`
+
+**_concurrency_**
+
+When `sessionsEnabled` is true, controls the maximum number of concurrent sessions to process at any given time.
+When `sessionsEnabled` is false, controls the max concurrent calls of service bus message handler and the size of fixed thread pool that handles user's business logic.
+
+Deprecated, replaced with `maxConcurrentSessions` when `sessionsEnabled` is true and `maxConcurrentCalls` when `sessionsEnabled` is false
 
 Default: `1`
 
@@ -104,6 +127,23 @@ Default: `false`
 Controls if is a message that trigger any exception in consumer will be force to DLQ. 
 Set it to `true` if a message that trigger any exception in consumer will be force to DLQ.
 Set it to `false` if a message that trigger any exception in consumer will be re-queued. 
+
+Default: `false`
+
+**_receiveMode_**
+
+The modes for receiving messages.
+
+`PEEK_LOCK`, received message is not deleted from the queue or subscription, instead it is temporarily locked to the receiver, making it invisible to other receivers.
+
+`RECEIVE_AND_DELETE`, received message is removed from the queue or subscription and immediately deleted.
+
+Default: `PEEK_LOCK`
+
+**_enableAutoComplete_**
+
+Enable auto-complete and auto-abandon of received messages.
+'enableAutoComplete' is not needed in for RECEIVE_AND_DELETE mode.
 
 Default: `false`
 ##### Support for Service Bus Message Headers and Properties
@@ -247,13 +287,13 @@ Please follow [instructions here][contributing_md] to build from source or contr
 [docs]: https://docs.microsoft.com/azure/developer/java/spring-framework/configure-spring-cloud-stream-binder-java-app-with-service-bus
 [package]: https://mvnrepository.com/artifact/com.azure.spring/azure-spring-cloud-stream-binder-servicebus-queue
 [refdocs]: https://azure.github.io/azure-sdk-for-java/springcloud.html#azure-spring-cloud-stream-binder-servicebus-queue
-[sample]: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/tag_azure-spring-boot_3.6.0/servicebus/azure-spring-cloud-sample-servicebus-queue-binder
+[sample]: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/main/servicebus/azure-spring-cloud-stream-binder-servicebus-queue
 [spring_boot_logging]: https://docs.spring.io/spring-boot/docs/current/reference/html/features.html#boot-features-logging
 [service_bus_queue_binder]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/azure-spring-cloud-stream-binder-servicebus-queue
 [service_bus_topic_binder]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/azure-spring-cloud-stream-binder-servicebus-topic
-[spring_cloud_stream_binder_service_bus_multiple_binders]: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/tag_azure-spring-boot_3.6.0/servicebus/azure-spring-cloud-sample-servicebus-queue-multibinders
-[spring_cloud_stream_binder_service_bus_queue]: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/tag_azure-spring-boot_3.6.0/servicebus/azure-spring-cloud-sample-servicebus-queue-binder
-[spring_cloud_stream_binder_service_bus_topic]: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/tag_azure-spring-boot_3.6.0/servicebus/azure-spring-cloud-sample-servicebus-topic-binder
+[spring_cloud_stream_binder_service_bus_multiple_binders]: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/main/servicebus/azure-spring-cloud-stream-binder-servicebus-queue/servicebus-queue-multibinders
+[spring_cloud_stream_binder_service_bus_queue]: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/main/servicebus/azure-spring-cloud-stream-binder-servicebus-queue
+[spring_cloud_stream_binder_service_bus_topic]: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/main/servicebus/azure-spring-cloud-stream-binder-servicebus-topic/servicebus-topic-binder
 [spring_integration]: https://spring.io/projects/spring-integration
 [src_code]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/azure-spring-cloud-stream-binder-servicebus-queue
 [environment_checklist]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/ENVIRONMENT_CHECKLIST.md#ready-to-run-checklist

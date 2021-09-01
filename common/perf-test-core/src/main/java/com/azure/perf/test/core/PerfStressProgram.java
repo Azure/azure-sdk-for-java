@@ -166,8 +166,7 @@ public class PerfStressProgram {
                         Flux.just(tests).flatMap(PerfStressTest::stopPlaybackAsync).blockLast();
                         playbackStatus.dispose();
                     }    
-                }
-                finally {
+                } finally {
                     if (!options.isNoCleanup()) {
                         cleanupStatus = printStatus("=== Cleanup ===", () -> ".", false, false);
     

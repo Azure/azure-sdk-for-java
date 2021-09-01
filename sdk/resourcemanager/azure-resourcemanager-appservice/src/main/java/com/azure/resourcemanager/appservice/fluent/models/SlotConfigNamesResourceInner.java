@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.models.ProxyOnlyResource;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -13,28 +12,31 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Slot Config names azure resource. */
-@JsonFlatten
 @Fluent
-public class SlotConfigNamesResourceInner extends ProxyOnlyResource {
+public final class SlotConfigNamesResourceInner extends ProxyOnlyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(SlotConfigNamesResourceInner.class);
 
     /*
-     * List of connection string names.
+     * Core resource properties
      */
-    @JsonProperty(value = "properties.connectionStringNames")
-    private List<String> connectionStringNames;
+    @JsonProperty(value = "properties")
+    private SlotConfigNames innerProperties;
 
-    /*
-     * List of application settings names.
+    /**
+     * Get the innerProperties property: Core resource properties.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.appSettingNames")
-    private List<String> appSettingNames;
+    private SlotConfigNames innerProperties() {
+        return this.innerProperties;
+    }
 
-    /*
-     * List of external Azure storage account identifiers.
-     */
-    @JsonProperty(value = "properties.azureStorageConfigNames")
-    private List<String> azureStorageConfigNames;
+    /** {@inheritDoc} */
+    @Override
+    public SlotConfigNamesResourceInner withKind(String kind) {
+        super.withKind(kind);
+        return this;
+    }
 
     /**
      * Get the connectionStringNames property: List of connection string names.
@@ -42,7 +44,7 @@ public class SlotConfigNamesResourceInner extends ProxyOnlyResource {
      * @return the connectionStringNames value.
      */
     public List<String> connectionStringNames() {
-        return this.connectionStringNames;
+        return this.innerProperties() == null ? null : this.innerProperties().connectionStringNames();
     }
 
     /**
@@ -52,7 +54,10 @@ public class SlotConfigNamesResourceInner extends ProxyOnlyResource {
      * @return the SlotConfigNamesResourceInner object itself.
      */
     public SlotConfigNamesResourceInner withConnectionStringNames(List<String> connectionStringNames) {
-        this.connectionStringNames = connectionStringNames;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SlotConfigNames();
+        }
+        this.innerProperties().withConnectionStringNames(connectionStringNames);
         return this;
     }
 
@@ -62,7 +67,7 @@ public class SlotConfigNamesResourceInner extends ProxyOnlyResource {
      * @return the appSettingNames value.
      */
     public List<String> appSettingNames() {
-        return this.appSettingNames;
+        return this.innerProperties() == null ? null : this.innerProperties().appSettingNames();
     }
 
     /**
@@ -72,7 +77,10 @@ public class SlotConfigNamesResourceInner extends ProxyOnlyResource {
      * @return the SlotConfigNamesResourceInner object itself.
      */
     public SlotConfigNamesResourceInner withAppSettingNames(List<String> appSettingNames) {
-        this.appSettingNames = appSettingNames;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SlotConfigNames();
+        }
+        this.innerProperties().withAppSettingNames(appSettingNames);
         return this;
     }
 
@@ -82,7 +90,7 @@ public class SlotConfigNamesResourceInner extends ProxyOnlyResource {
      * @return the azureStorageConfigNames value.
      */
     public List<String> azureStorageConfigNames() {
-        return this.azureStorageConfigNames;
+        return this.innerProperties() == null ? null : this.innerProperties().azureStorageConfigNames();
     }
 
     /**
@@ -92,14 +100,10 @@ public class SlotConfigNamesResourceInner extends ProxyOnlyResource {
      * @return the SlotConfigNamesResourceInner object itself.
      */
     public SlotConfigNamesResourceInner withAzureStorageConfigNames(List<String> azureStorageConfigNames) {
-        this.azureStorageConfigNames = azureStorageConfigNames;
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public SlotConfigNamesResourceInner withKind(String kind) {
-        super.withKind(kind);
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SlotConfigNames();
+        }
+        this.innerProperties().withAzureStorageConfigNames(azureStorageConfigNames);
         return this;
     }
 
@@ -111,5 +115,8 @@ public class SlotConfigNamesResourceInner extends ProxyOnlyResource {
     @Override
     public void validate() {
         super.validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

@@ -5,17 +5,22 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.network.fluent.models.VpnClientRevokedCertificatePropertiesFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** VPN client revoked certificate of virtual network gateway. */
-@JsonFlatten
 @Fluent
-public class VpnClientRevokedCertificate extends SubResource {
+public final class VpnClientRevokedCertificate extends SubResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(VpnClientRevokedCertificate.class);
+
+    /*
+     * Properties of the vpn client revoked certificate.
+     */
+    @JsonProperty(value = "properties")
+    private VpnClientRevokedCertificatePropertiesFormat innerProperties;
 
     /*
      * The name of the resource that is unique within a resource group. This
@@ -30,17 +35,14 @@ public class VpnClientRevokedCertificate extends SubResource {
     @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
-    /*
-     * The revoked VPN client certificate thumbprint.
+    /**
+     * Get the innerProperties property: Properties of the vpn client revoked certificate.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.thumbprint")
-    private String thumbprint;
-
-    /*
-     * The provisioning state of the VPN client revoked certificate resource.
-     */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningState provisioningState;
+    private VpnClientRevokedCertificatePropertiesFormat innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the name property: The name of the resource that is unique within a resource group. This name can be used to
@@ -73,13 +75,20 @@ public class VpnClientRevokedCertificate extends SubResource {
         return this.etag;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public VpnClientRevokedCertificate withId(String id) {
+        super.withId(id);
+        return this;
+    }
+
     /**
      * Get the thumbprint property: The revoked VPN client certificate thumbprint.
      *
      * @return the thumbprint value.
      */
     public String thumbprint() {
-        return this.thumbprint;
+        return this.innerProperties() == null ? null : this.innerProperties().thumbprint();
     }
 
     /**
@@ -89,7 +98,10 @@ public class VpnClientRevokedCertificate extends SubResource {
      * @return the VpnClientRevokedCertificate object itself.
      */
     public VpnClientRevokedCertificate withThumbprint(String thumbprint) {
-        this.thumbprint = thumbprint;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VpnClientRevokedCertificatePropertiesFormat();
+        }
+        this.innerProperties().withThumbprint(thumbprint);
         return this;
     }
 
@@ -99,14 +111,7 @@ public class VpnClientRevokedCertificate extends SubResource {
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
-        return this.provisioningState;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public VpnClientRevokedCertificate withId(String id) {
-        super.withId(id);
-        return this;
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
     /**
@@ -115,5 +120,8 @@ public class VpnClientRevokedCertificate extends SubResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

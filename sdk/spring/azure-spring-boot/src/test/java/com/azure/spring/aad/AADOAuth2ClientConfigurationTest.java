@@ -4,27 +4,22 @@
 package com.azure.spring.aad;
 
 import com.azure.spring.autoconfigure.aad.AADAuthenticationProperties;
-import com.azure.spring.autoconfigure.aad.AADAutoConfiguration;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.autoconfigure.AutoConfigurations;
-import org.springframework.boot.test.context.FilteredClassLoader;
 import org.springframework.boot.test.context.runner.WebApplicationContextRunner;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
-import org.springframework.security.oauth2.server.resource.BearerTokenAuthenticationToken;
+import org.springframework.security.oauth2.client.web.OAuth2AuthorizedClientRepository;
 
 import java.util.Set;
 
+import static com.azure.spring.aad.WebApplicationContextRunnerUtils.oauthClientAndResourceServerRunner;
+import static com.azure.spring.aad.WebApplicationContextRunnerUtils.resourceServerContextRunner;
+import static com.azure.spring.aad.WebApplicationContextRunnerUtils.resourceServerWithOboContextRunner;
+import static com.azure.spring.aad.WebApplicationContextRunnerUtils.webApplicationContextRunner;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class AADOAuth2ClientConfigurationTest {
-
-    private final WebApplicationContextRunner contextRunner = new WebApplicationContextRunner()
-        .withPropertyValues(
-            "azure.activedirectory.tenant-id=fake-tenant-id",
-            "azure.activedirectory.client-id=fake-client-id",
-            "azure.activedirectory.client-secret=fake-client-secret");
 
     @Test
     public void testWithoutAnyPropertiesSet() {
@@ -33,54 +28,47 @@ public class AADOAuth2ClientConfigurationTest {
             .run(context -> {
                 assertThat(context).doesNotHaveBean(AADAuthenticationProperties.class);
                 assertThat(context).doesNotHaveBean(ClientRegistrationRepository.class);
-                assertThat(context).doesNotHaveBean(AADOAuth2AuthorizedClientRepository.class);
+                assertThat(context).doesNotHaveBean(OAuth2AuthorizedClientRepository.class);
             });
     }
 
     @Test
     public void testWithRequiredPropertiesSet() {
-        new WebApplicationContextRunner()
-            .withConfiguration(AutoConfigurations.of(AADAutoConfiguration.class))
+        oauthClientAndResourceServerRunner()
             .withPropertyValues("azure.activedirectory.client-id=fake-client-id")
             .run(context -> {
                 assertThat(context).hasSingleBean(AADAuthenticationProperties.class);
                 assertThat(context).hasSingleBean(ClientRegistrationRepository.class);
-                assertThat(context).hasSingleBean(AADOAuth2AuthorizedClientRepository.class);
+                assertThat(context).hasSingleBean(OAuth2AuthorizedClientRepository.class);
             });
     }
 
     @Test
     public void testWebApplication() {
-        this.contextRunner
-            .withConfiguration(AutoConfigurations.of(AADAutoConfiguration.class,
-                AADOAuth2ClientConfiguration.class))
-            .withClassLoader(new FilteredClassLoader(BearerTokenAuthenticationToken.class))
+        webApplicationContextRunner()
             .run(context -> {
                 assertThat(context).hasSingleBean(AADAuthenticationProperties.class);
                 assertThat(context).hasSingleBean(ClientRegistrationRepository.class);
-                assertThat(context).hasSingleBean(AADOAuth2AuthorizedClientRepository.class);
+                assertThat(context).hasSingleBean(OAuth2AuthorizedClientRepository.class);
             });
     }
 
     @Test
     public void testResourceServer() {
-        this.contextRunner
-            .withClassLoader(new FilteredClassLoader(ClientRegistration.class))
-            .withConfiguration(AutoConfigurations.of(AADOAuth2ClientConfiguration.class))
-            .run(context -> assertThat(context).doesNotHaveBean(AADOAuth2AuthorizedClientRepository.class));
+        resourceServerContextRunner()
+            .run(context -> assertThat(context).doesNotHaveBean(OAuth2AuthorizedClientRepository.class));
     }
 
     @Test
-    public void testOnlyGraphClient() {
-        this.contextRunner
-            .withConfiguration(AutoConfigurations.of(AADAutoConfiguration.class))
+    public void testResourceServerWithOboOnlyGraphClient() {
+        resourceServerWithOboContextRunner()
             .withPropertyValues("azure.activedirectory.authorization-clients.graph.scopes="
                 + "https://graph.microsoft.com/User.Read")
             .run(context -> {
                 final AADClientRegistrationRepository oboRepo = context.getBean(
                     AADClientRegistrationRepository.class);
-                final AADOAuth2AuthorizedClientRepository aadOboRepo = context.getBean(
-                    AADOAuth2AuthorizedClientRepository.class);
+                final OAuth2AuthorizedClientRepository aadOboRepo = context.getBean(
+                    OAuth2AuthorizedClientRepository.class);
 
                 ClientRegistration graph = oboRepo.findByRegistrationId("graph");
                 Set<String> graphScopes = graph.getScopes();
@@ -93,32 +81,29 @@ public class AADOAuth2ClientConfigurationTest {
     }
 
     @Test
-    public void testGrantTypeIsAuthorizationCodeClient() {
-        this.contextRunner
-            .withUserConfiguration(AADOAuth2ClientConfiguration.class)
+    public void testResourceServerWithOboInvalidGrantType1() {
+        resourceServerWithOboContextRunner()
             .withPropertyValues("azure.activedirectory.authorization-clients.graph.authorization-grant-type="
                 + "authorization_code")
-            .run(context -> {
-                assertThrows(IllegalStateException.class, () -> context.getBean(AADAuthenticationProperties.class));
-            });
+            .run(context ->
+                assertThrows(IllegalStateException.class, () -> context.getBean(AADAuthenticationProperties.class))
+            );
     }
 
     @Test
-    public void clientWhichGrantTypeIsOboButOnDemandExceptionTest() {
-        this.contextRunner
-            .withUserConfiguration(AADAutoConfiguration.class)
+    public void testResourceServerWithOboInvalidGrantType2() {
+        resourceServerWithOboContextRunner()
             .withPropertyValues("azure.activedirectory.authorization-clients.graph.authorization-grant-type="
                 + "on_behalf_of")
             .withPropertyValues("azure.activedirectory.authorization-clients.graph.on-demand = true")
-            .run(context -> {
-                assertThrows(IllegalStateException.class, () -> context.getBean(AADAuthenticationProperties.class));
-            });
+            .run(context ->
+                assertThrows(IllegalStateException.class, () -> context.getBean(AADAuthenticationProperties.class))
+            );
     }
 
     @Test
-    public void testExistCustomAndGraphClient() {
-        this.contextRunner
-            .withConfiguration(AutoConfigurations.of(AADAutoConfiguration.class))
+    public void testResourceServerWithOboExistCustomAndGraphClient() {
+        resourceServerWithOboContextRunner()
             .withPropertyValues("azure.activedirectory.authorization-clients.graph.scopes="
                 + "https://graph.microsoft.com/User.Read")
             .withPropertyValues("azure.activedirectory.authorization-clients.custom.scopes="
@@ -126,8 +111,8 @@ public class AADOAuth2ClientConfigurationTest {
             .run(context -> {
                 final AADClientRegistrationRepository oboRepo = context.getBean(
                     AADClientRegistrationRepository.class);
-                final AADOAuth2AuthorizedClientRepository aadOboRepo = context.getBean(
-                    AADOAuth2AuthorizedClientRepository.class);
+                final OAuth2AuthorizedClientRepository aadOboRepo = context.getBean(
+                    OAuth2AuthorizedClientRepository.class);
 
                 ClientRegistration graph = oboRepo.findByRegistrationId("graph");
                 ClientRegistration custom = oboRepo.findByRegistrationId("custom");

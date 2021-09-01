@@ -1,7 +1,25 @@
 # Release History
 
-## 1.0.0-beta.4 (Unreleased)
+## 1.0.0-beta.5 (Unreleased)
 
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 1.0.0-beta.4 (2021-08-20)
+### Breaking Changes
+
+- Replaced `authenticationScope` property on `ContainerRegistryClientBuilder` with `audience`.
+  `audience` is of type `ContainerRegistryAudience`, which allows customers to select from available audiences or provide their own audience string.
+  It is a mandatory property on the builder and needs to be set to instantiate the Container Registry clients.
+
+### Other Changes
+
+- Updated documentation comments.
 
 ## 1.0.0-beta.3 (2021-06-08)
 ### New features

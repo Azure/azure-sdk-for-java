@@ -11,18 +11,23 @@ import com.azure.resourcemanager.datafactory.models.IntegrationRuntimeComputePro
 import com.azure.resourcemanager.datafactory.models.IntegrationRuntimeDataFlowProperties;
 import com.azure.resourcemanager.datafactory.models.IntegrationRuntimeDebugResource;
 import com.azure.resourcemanager.datafactory.models.ManagedIntegrationRuntime;
+import java.util.HashMap;
+import java.util.Map;
 
 /** Samples for DataFlowDebugSession Create. */
 public final class DataFlowDebugSessionCreateSamples {
+    /*
+     * operationId: DataFlowDebugSession_Create
+     * api-version: 2018-06-01
+     * x-ms-examples: DataFlowDebugSession_Create
+     */
     /**
      * Sample code: DataFlowDebugSession_Create.
      *
-     * @param dataFactoryManager Entry point to DataFactoryManager. The Azure Data Factory V2 management API provides a
-     *     RESTful set of web services that interact with Azure Data Factory V2 services.
+     * @param manager Entry point to DataFactoryManager.
      */
-    public static void dataFlowDebugSessionCreate(
-        com.azure.resourcemanager.datafactory.DataFactoryManager dataFactoryManager) {
-        dataFactoryManager
+    public static void dataFlowDebugSessionCreate(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
+        manager
             .dataFlowDebugSessions()
             .create(
                 "exampleResourceGroup",
@@ -41,7 +46,20 @@ public final class DataFlowDebugSessionCreateSamples {
                                                 new IntegrationRuntimeDataFlowProperties()
                                                     .withComputeType(DataFlowComputeType.GENERAL)
                                                     .withCoreCount(48)
-                                                    .withTimeToLive(10))))),
+                                                    .withTimeToLive(10)
+                                                    .withAdditionalProperties(mapOf()))
+                                            .withAdditionalProperties(mapOf())))),
                 Context.NONE);
+    }
+
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
     }
 }

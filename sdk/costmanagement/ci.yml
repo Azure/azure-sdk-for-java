@@ -8,7 +8,11 @@ trigger:
       - release/*
   paths:
     include:
-      - sdk/costmanagement/
+      - sdk/costmanagement/ci.yml
+      - sdk/costmanagement/azure-resourcemanager-costmanagement/
+    exclude:
+      - sdk/costmanagement/pom.xml
+      - sdk/costmanagement/azure-resourcemanager-costmanagement/pom.xml
 
 pr:
   branches:
@@ -19,7 +23,11 @@ pr:
       - release/*
   paths:
     include:
-      - sdk/costmanagement/
+      - sdk/costmanagement/ci.yml
+      - sdk/costmanagement/azure-resourcemanager-costmanagement/
+    exclude:
+      - sdk/costmanagement/pom.xml
+      - sdk/costmanagement/azure-resourcemanager-costmanagement/pom.xml
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml

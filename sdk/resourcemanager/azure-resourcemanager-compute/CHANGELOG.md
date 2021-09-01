@@ -1,6 +1,16 @@
 # Release History
 
-## 2.7.0-beta.1 (Unreleased)
+## 2.8.0-beta.1 (Unreleased)
+
+### Dependency Updates
+
+- Updated `api-version` to `2021-07-01`.
+
+### Breaking Changes
+
+- Removed unused class `ManagedArtifact`.
+
+## 2.7.0 (2021-08-12)
 
 ### Dependency Updates
 

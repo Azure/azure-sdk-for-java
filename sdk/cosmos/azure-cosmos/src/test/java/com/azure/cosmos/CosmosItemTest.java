@@ -155,6 +155,52 @@ public class CosmosItemTest extends TestSuiteBase {
         assertThat(deleteResponse.getStatusCode()).isEqualTo(204);
     }
 
+    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    public void deleteAllItemsByPartitionKey() throws Exception {
+        String pkValue1 = UUID.randomUUID().toString();
+        String pkValue2 = UUID.randomUUID().toString();
+
+        // item 1
+        ObjectNode properties1 = getDocumentDefinition(UUID.randomUUID().toString(), pkValue1);
+        CosmosItemResponse<ObjectNode> itemResponse1 = container.createItem(properties1);
+
+        // item 2
+        ObjectNode properties2 = getDocumentDefinition(UUID.randomUUID().toString(), pkValue1);
+        CosmosItemResponse<ObjectNode> itemResponse2 = container.createItem(properties2);
+
+
+        // item 3
+        ObjectNode properties3 = getDocumentDefinition(UUID.randomUUID().toString(), pkValue2);
+        CosmosItemResponse<ObjectNode> itemResponse3 = container.createItem(properties3);
+
+
+        // delete the items with partition key pk1
+        CosmosItemResponse<?> deleteResponse = container.deleteAllItemsByPartitionKey(
+            new PartitionKey(pkValue1), new CosmosItemRequestOptions());
+
+        assertThat(deleteResponse.getStatusCode()).isEqualTo(200);
+        CosmosItemRequestOptions cosmosItemRequestOptions = new CosmosItemRequestOptions();
+
+        // verify that the items with partition key pkValue1 are deleted
+        CosmosPagedIterable<ObjectNode> feedResponseIterator1 =
+            container.readAllItems(
+                new PartitionKey(pkValue1),
+                new CosmosQueryRequestOptions(),
+                ObjectNode.class);
+        // Very basic validation
+        assertThat(feedResponseIterator1.iterator().hasNext()).isFalse();
+
+        //verify that the item with the other partition Key pkValue2 is not deleted
+        CosmosPagedIterable<ObjectNode> feedResponseIterator2 =
+            container.readAllItems(
+                new PartitionKey(pkValue2),
+                new CosmosQueryRequestOptions(),
+                ObjectNode.class);
+        // Very basic validation
+        assertThat(feedResponseIterator2.iterator().hasNext()).isTrue();
+
+    }
+
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void deleteItemUsingEntity() throws Exception {
         InternalObjectNode properties = getDocumentDefinition(UUID.randomUUID().toString());

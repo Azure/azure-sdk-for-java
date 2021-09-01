@@ -8,14 +8,18 @@ import com.azure.core.util.Context;
 
 /** Samples for PipelineRuns Cancel. */
 public final class PipelineRunsCancelSamples {
+    /*
+     * operationId: PipelineRuns_Cancel
+     * api-version: 2018-06-01
+     * x-ms-examples: PipelineRuns_Cancel
+     */
     /**
      * Sample code: PipelineRuns_Cancel.
      *
-     * @param dataFactoryManager Entry point to DataFactoryManager. The Azure Data Factory V2 management API provides a
-     *     RESTful set of web services that interact with Azure Data Factory V2 services.
+     * @param manager Entry point to DataFactoryManager.
      */
-    public static void pipelineRunsCancel(com.azure.resourcemanager.datafactory.DataFactoryManager dataFactoryManager) {
-        dataFactoryManager
+    public static void pipelineRunsCancel(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
+        manager
             .pipelineRuns()
             .cancelWithResponse(
                 "exampleResourceGroup",

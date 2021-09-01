@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.spark
 
+import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
 import org.apache.spark.sql.Row
 import org.apache.spark.sql.catalyst.encoders.{ExpressionEncoder, RowEncoder}
 import org.apache.spark.sql.types.StructType
@@ -10,6 +11,7 @@ import java.time.Instant
 import java.util.concurrent.{ConcurrentLinkedQueue, Executors, TimeUnit}
 import java.util.concurrent.atomic.AtomicLong
 import scala.collection.concurrent.TrieMap
+import scala.util.control.NonFatal
 
 /**
  * Spark serializers are not thread-safe - and expensive to create (dynamic code generation)
@@ -20,7 +22,7 @@ import scala.collection.concurrent.TrieMap
  * A clean-up task is used to purge serializers for schemas which weren't used anymore
  * For each schema we have an object pool that will use a soft-limit to limit the memory footprint
  */
-private object RowSerializerPool {
+private object RowSerializerPool extends BasicLoggingTrait {
   val MaxPooledSerializerCount = 256
   private[this] val cleanUpIntervalInSeconds = 300
   private[this] val expirationIntervalInSeconds = 1800
@@ -52,15 +54,19 @@ private object RowSerializerPool {
   }
 
   private[this] def onCleanUp(): Unit = {
-    val expirationThreshold: Long = Instant.now.minusSeconds(expirationIntervalInSeconds).toEpochMilli
+    try {
+      val expirationThreshold: Long = Instant.now.minusSeconds(expirationIntervalInSeconds).toEpochMilli
 
-    schemaScopedSerializerMap
-      .readOnlySnapshot()
-      .foreach(keyValuePair => {
-        if (keyValuePair._2.getLastBorrowedAny < expirationThreshold) {
-          schemaScopedSerializerMap.remove(keyValuePair._1, keyValuePair._2)
-        }
-      })
+      schemaScopedSerializerMap
+        .readOnlySnapshot()
+        .foreach(keyValuePair => {
+          if (keyValuePair._2.getLastBorrowedAny < expirationThreshold) {
+            schemaScopedSerializerMap.remove(keyValuePair._1, keyValuePair._2)
+          }
+        })
+    } catch {
+      case NonFatal(e) => logError("Callback onCleanup invocation failed.", e)
+    }
   }
 
   /**

@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.models.ProxyOnlyResource;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -13,65 +12,31 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** User credentials used for publishing activity. */
-@JsonFlatten
 @Fluent
-public class DeploymentInner extends ProxyOnlyResource {
+public final class DeploymentInner extends ProxyOnlyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(DeploymentInner.class);
 
     /*
-     * Deployment status.
+     * Deployment resource specific properties
      */
-    @JsonProperty(value = "properties.status")
-    private Integer status;
+    @JsonProperty(value = "properties")
+    private DeploymentProperties innerProperties;
 
-    /*
-     * Details about deployment status.
+    /**
+     * Get the innerProperties property: Deployment resource specific properties.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.message")
-    private String message;
+    private DeploymentProperties innerProperties() {
+        return this.innerProperties;
+    }
 
-    /*
-     * Who authored the deployment.
-     */
-    @JsonProperty(value = "properties.author")
-    private String author;
-
-    /*
-     * Who performed the deployment.
-     */
-    @JsonProperty(value = "properties.deployer")
-    private String deployer;
-
-    /*
-     * Author email.
-     */
-    @JsonProperty(value = "properties.author_email")
-    private String authorEmail;
-
-    /*
-     * Start time.
-     */
-    @JsonProperty(value = "properties.start_time")
-    private OffsetDateTime startTime;
-
-    /*
-     * End time.
-     */
-    @JsonProperty(value = "properties.end_time")
-    private OffsetDateTime endTime;
-
-    /*
-     * True if deployment is currently active, false if completed and null if
-     * not started.
-     */
-    @JsonProperty(value = "properties.active")
-    private Boolean active;
-
-    /*
-     * Details on deployment.
-     */
-    @JsonProperty(value = "properties.details")
-    private String details;
+    /** {@inheritDoc} */
+    @Override
+    public DeploymentInner withKind(String kind) {
+        super.withKind(kind);
+        return this;
+    }
 
     /**
      * Get the status property: Deployment status.
@@ -79,7 +44,7 @@ public class DeploymentInner extends ProxyOnlyResource {
      * @return the status value.
      */
     public Integer status() {
-        return this.status;
+        return this.innerProperties() == null ? null : this.innerProperties().status();
     }
 
     /**
@@ -89,7 +54,10 @@ public class DeploymentInner extends ProxyOnlyResource {
      * @return the DeploymentInner object itself.
      */
     public DeploymentInner withStatus(Integer status) {
-        this.status = status;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DeploymentProperties();
+        }
+        this.innerProperties().withStatus(status);
         return this;
     }
 
@@ -99,7 +67,7 @@ public class DeploymentInner extends ProxyOnlyResource {
      * @return the message value.
      */
     public String message() {
-        return this.message;
+        return this.innerProperties() == null ? null : this.innerProperties().message();
     }
 
     /**
@@ -109,7 +77,10 @@ public class DeploymentInner extends ProxyOnlyResource {
      * @return the DeploymentInner object itself.
      */
     public DeploymentInner withMessage(String message) {
-        this.message = message;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DeploymentProperties();
+        }
+        this.innerProperties().withMessage(message);
         return this;
     }
 
@@ -119,7 +90,7 @@ public class DeploymentInner extends ProxyOnlyResource {
      * @return the author value.
      */
     public String author() {
-        return this.author;
+        return this.innerProperties() == null ? null : this.innerProperties().author();
     }
 
     /**
@@ -129,7 +100,10 @@ public class DeploymentInner extends ProxyOnlyResource {
      * @return the DeploymentInner object itself.
      */
     public DeploymentInner withAuthor(String author) {
-        this.author = author;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DeploymentProperties();
+        }
+        this.innerProperties().withAuthor(author);
         return this;
     }
 
@@ -139,7 +113,7 @@ public class DeploymentInner extends ProxyOnlyResource {
      * @return the deployer value.
      */
     public String deployer() {
-        return this.deployer;
+        return this.innerProperties() == null ? null : this.innerProperties().deployer();
     }
 
     /**
@@ -149,7 +123,10 @@ public class DeploymentInner extends ProxyOnlyResource {
      * @return the DeploymentInner object itself.
      */
     public DeploymentInner withDeployer(String deployer) {
-        this.deployer = deployer;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DeploymentProperties();
+        }
+        this.innerProperties().withDeployer(deployer);
         return this;
     }
 
@@ -159,7 +136,7 @@ public class DeploymentInner extends ProxyOnlyResource {
      * @return the authorEmail value.
      */
     public String authorEmail() {
-        return this.authorEmail;
+        return this.innerProperties() == null ? null : this.innerProperties().authorEmail();
     }
 
     /**
@@ -169,7 +146,10 @@ public class DeploymentInner extends ProxyOnlyResource {
      * @return the DeploymentInner object itself.
      */
     public DeploymentInner withAuthorEmail(String authorEmail) {
-        this.authorEmail = authorEmail;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DeploymentProperties();
+        }
+        this.innerProperties().withAuthorEmail(authorEmail);
         return this;
     }
 
@@ -179,7 +159,7 @@ public class DeploymentInner extends ProxyOnlyResource {
      * @return the startTime value.
      */
     public OffsetDateTime startTime() {
-        return this.startTime;
+        return this.innerProperties() == null ? null : this.innerProperties().startTime();
     }
 
     /**
@@ -189,7 +169,10 @@ public class DeploymentInner extends ProxyOnlyResource {
      * @return the DeploymentInner object itself.
      */
     public DeploymentInner withStartTime(OffsetDateTime startTime) {
-        this.startTime = startTime;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DeploymentProperties();
+        }
+        this.innerProperties().withStartTime(startTime);
         return this;
     }
 
@@ -199,7 +182,7 @@ public class DeploymentInner extends ProxyOnlyResource {
      * @return the endTime value.
      */
     public OffsetDateTime endTime() {
-        return this.endTime;
+        return this.innerProperties() == null ? null : this.innerProperties().endTime();
     }
 
     /**
@@ -209,7 +192,10 @@ public class DeploymentInner extends ProxyOnlyResource {
      * @return the DeploymentInner object itself.
      */
     public DeploymentInner withEndTime(OffsetDateTime endTime) {
-        this.endTime = endTime;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DeploymentProperties();
+        }
+        this.innerProperties().withEndTime(endTime);
         return this;
     }
 
@@ -219,7 +205,7 @@ public class DeploymentInner extends ProxyOnlyResource {
      * @return the active value.
      */
     public Boolean active() {
-        return this.active;
+        return this.innerProperties() == null ? null : this.innerProperties().active();
     }
 
     /**
@@ -229,7 +215,10 @@ public class DeploymentInner extends ProxyOnlyResource {
      * @return the DeploymentInner object itself.
      */
     public DeploymentInner withActive(Boolean active) {
-        this.active = active;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DeploymentProperties();
+        }
+        this.innerProperties().withActive(active);
         return this;
     }
 
@@ -239,7 +228,7 @@ public class DeploymentInner extends ProxyOnlyResource {
      * @return the details value.
      */
     public String details() {
-        return this.details;
+        return this.innerProperties() == null ? null : this.innerProperties().details();
     }
 
     /**
@@ -249,14 +238,10 @@ public class DeploymentInner extends ProxyOnlyResource {
      * @return the DeploymentInner object itself.
      */
     public DeploymentInner withDetails(String details) {
-        this.details = details;
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public DeploymentInner withKind(String kind) {
-        super.withKind(kind);
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DeploymentProperties();
+        }
+        this.innerProperties().withDetails(details);
         return this;
     }
 
@@ -268,5 +253,8 @@ public class DeploymentInner extends ProxyOnlyResource {
     @Override
     public void validate() {
         super.validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

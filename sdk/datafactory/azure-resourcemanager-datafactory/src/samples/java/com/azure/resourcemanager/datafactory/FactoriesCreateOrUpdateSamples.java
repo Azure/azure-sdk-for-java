@@ -6,15 +6,18 @@ package com.azure.resourcemanager.datafactory;
 
 /** Samples for Factories CreateOrUpdate. */
 public final class FactoriesCreateOrUpdateSamples {
+    /*
+     * operationId: Factories_CreateOrUpdate
+     * api-version: 2018-06-01
+     * x-ms-examples: Factories_CreateOrUpdate
+     */
     /**
      * Sample code: Factories_CreateOrUpdate.
      *
-     * @param dataFactoryManager Entry point to DataFactoryManager. The Azure Data Factory V2 management API provides a
-     *     RESTful set of web services that interact with Azure Data Factory V2 services.
+     * @param manager Entry point to DataFactoryManager.
      */
-    public static void factoriesCreateOrUpdate(
-        com.azure.resourcemanager.datafactory.DataFactoryManager dataFactoryManager) {
-        dataFactoryManager
+    public static void factoriesCreateOrUpdate(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
+        manager
             .factories()
             .define("exampleFactoryName")
             .withRegion("East US")

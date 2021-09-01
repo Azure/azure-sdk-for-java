@@ -1,9 +1,35 @@
 # Release History
 
-## 3.8.0-beta.1 (Unreleased)
+## 3.9.0-beta.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+- Fix bug about application type validation. ([#23481](https://github.com/Azure/azure-sdk-for-java/issues/23481))
+
+  The latest application type relationship is as follows:
+
+  | Has dependency: spring-security-oauth2-client | Has dependency: spring-security-oauth2-resource-server |                  Valid values of application type                                                     | Default value               |
+      |-----------------------------------------------|--------------------------------------------------------|-------------------------------------------------------------------------------------------------------|-----------------------------|
+  |                      Yes                      |                          No                            |                       `web_application`                                                               |       `web_application`     |
+  |                      No                       |                          Yes                           |                       `resource_server`                                                               |       `resource_server`     |
+  |                      Yes                      |                          Yes                           | `web_application`,`resource_server`,`resource_server_with_obo`, `web_application_and_resource_server` | `resource_server_with_obo`  |
+
+### Deprecations
+- Deprecate `azure.activedirectory.authorization-clients.xxx.on-demand`, use `azure.activedirectory.authorization-clients.xxx.authorization-grant-type` instead. If you are using `on-demand=true`, please change to `authorization-grant-type=authorization_code`.
+
+### Other Changes
+
+
+## 3.8.0 (2021-08-25)
 This release is compatible with Spring Boot 2.5.0 - 2.5.3.
 ### Dependency Upgrades
 - Upgrade to [spring-boot-dependencies:2.5.3](https://repo.maven.apache.org/maven2/org/springframework/boot/spring-boot-dependencies/2.5.3/spring-boot-dependencies-2.5.3.pom).
+### New Features
+- Add property `azure.activedirectory.resource-server.principal-claim-name` to configure principal claim name.
+- Add property `azure.activedirectory.resource-server.claim-to-authority-prefix-map` to configure claim to authority prefix map.
 
 
 ## 3.7.0 (2021-07-20)
@@ -110,7 +136,7 @@ This release is compatible with Spring Boot 2.5.0 - 2.5.3.
     azure.activedirectory.user-group.object-id-key
     ```
 - Removed support for older `AAD v1` style endpoints.
-  - Support for `AAD v1`, also named `Azure Active Directory`, endpoints in the form https://login.microsoft.online.com/common/oauth2/authorize has been removed.
+  - Support for `AAD v1`, also named `Azure Active Directory`, endpoints in the form https://login.microsoftonline.com/common/oauth2/authorize has been removed.
   - `AAD v2`, also named `Microsoft Identity Platform`, endpoints in the form https://login.microsoftonline.com/common/oauth2/v2.0/authorize continue to be supported.
   - Please see [this documentation](https://github.com/MicrosoftDocs/azure-docs/blob/master/articles/active-directory/azuread-dev/azure-ad-endpoint-comparison.md) for more information.
 - The required scopes in AAD auth code flow are: `openid`, `profile`, `offline_access`, `User.Read`, `Directory.AccessAsUser.All`.

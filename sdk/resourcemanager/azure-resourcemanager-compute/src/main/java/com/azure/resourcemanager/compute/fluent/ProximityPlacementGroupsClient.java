@@ -11,10 +11,10 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.compute.fluent.models.ProximityPlacementGroupInner;
+import com.azure.resourcemanager.compute.models.ProximityPlacementGroupUpdate;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
-import java.util.Map;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in ProximityPlacementGroupsClient. */
@@ -91,7 +91,7 @@ public interface ProximityPlacementGroupsClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param proximityPlacementGroupName The name of the proximity placement group.
-     * @param tags Resource tags.
+     * @param parameters Parameters supplied to the Update Proximity Placement Group operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -99,14 +99,14 @@ public interface ProximityPlacementGroupsClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<ProximityPlacementGroupInner>> updateWithResponseAsync(
-        String resourceGroupName, String proximityPlacementGroupName, Map<String, String> tags);
+        String resourceGroupName, String proximityPlacementGroupName, ProximityPlacementGroupUpdate parameters);
 
     /**
      * Update a proximity placement group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param proximityPlacementGroupName The name of the proximity placement group.
-     * @param tags Resource tags.
+     * @param parameters Parameters supplied to the Update Proximity Placement Group operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -114,40 +114,29 @@ public interface ProximityPlacementGroupsClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<ProximityPlacementGroupInner> updateAsync(
-        String resourceGroupName, String proximityPlacementGroupName, Map<String, String> tags);
+        String resourceGroupName, String proximityPlacementGroupName, ProximityPlacementGroupUpdate parameters);
 
     /**
      * Update a proximity placement group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param proximityPlacementGroupName The name of the proximity placement group.
+     * @param parameters Parameters supplied to the Update Proximity Placement Group operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return specifies information about the proximity placement group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ProximityPlacementGroupInner> updateAsync(String resourceGroupName, String proximityPlacementGroupName);
+    ProximityPlacementGroupInner update(
+        String resourceGroupName, String proximityPlacementGroupName, ProximityPlacementGroupUpdate parameters);
 
     /**
      * Update a proximity placement group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param proximityPlacementGroupName The name of the proximity placement group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the proximity placement group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    ProximityPlacementGroupInner update(String resourceGroupName, String proximityPlacementGroupName);
-
-    /**
-     * Update a proximity placement group.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param proximityPlacementGroupName The name of the proximity placement group.
-     * @param tags Resource tags.
+     * @param parameters Parameters supplied to the Update Proximity Placement Group operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -156,7 +145,10 @@ public interface ProximityPlacementGroupsClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<ProximityPlacementGroupInner> updateWithResponse(
-        String resourceGroupName, String proximityPlacementGroupName, Map<String, String> tags, Context context);
+        String resourceGroupName,
+        String proximityPlacementGroupName,
+        ProximityPlacementGroupUpdate parameters,
+        Context context);
 
     /**
      * Delete a proximity placement group.

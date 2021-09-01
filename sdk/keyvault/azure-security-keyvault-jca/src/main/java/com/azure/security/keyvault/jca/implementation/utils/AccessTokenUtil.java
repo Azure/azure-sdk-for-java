@@ -87,7 +87,7 @@ public final class AccessTokenUtil {
     public static String getAccessToken(String resource, String aadAuthenticationUrl,
         String tenantId, String clientId, String clientSecret) {
 
-        LOGGER.entering("AuthClient", "getAccessToken", new Object[]{
+        LOGGER.entering("AccessTokenUtil", "getAccessToken", new Object[]{
             resource, tenantId, clientId, clientSecret});
         LOGGER.info("Getting access token using client ID / client secret");
         String result = null;
@@ -121,7 +121,7 @@ public final class AccessTokenUtil {
      * @return the authorization token.
      */
     private static String getAccessTokenOnAppService(String resource, String clientId) {
-        LOGGER.entering("AuthClient", "getAccessTokenOnAppService", resource);
+        LOGGER.entering("AccessTokenUtil", "getAccessTokenOnAppService", resource);
         LOGGER.info("Getting access token using managed identity based on MSI_SECRET");
         String result = null;
 
@@ -143,7 +143,7 @@ public final class AccessTokenUtil {
             OAuthToken token = (OAuthToken) JsonConverterUtil.fromJson(body, OAuthToken.class);
             result = token.getAccessToken();
         }
-        LOGGER.exiting("AuthClient", "getAccessTokenOnAppService", result);
+        LOGGER.exiting("AccessTokenUtil", "getAccessTokenOnAppService", result);
         return result;
     }
 
@@ -155,7 +155,7 @@ public final class AccessTokenUtil {
      * @return the authorization token.
      */
     private static String getAccessTokenOnOthers(String resource, String identity) {
-        LOGGER.entering("AuthClient", "getAccessTokenOnOthers", resource);
+        LOGGER.entering("AccessTokenUtil", "getAccessTokenOnOthers", resource);
         LOGGER.info("Getting access token using managed identity");
         if (identity != null) {
             LOGGER.log(INFO, "Using managed identity with object ID: {0}", identity);
@@ -177,7 +177,7 @@ public final class AccessTokenUtil {
             OAuthToken token = (OAuthToken) JsonConverterUtil.fromJson(body, OAuthToken.class);
             result = token.getAccessToken();
         }
-        LOGGER.exiting("AuthClient", "getAccessTokenOnOthers", result);
+        LOGGER.exiting("AccessTokenUtil", "getAccessTokenOnOthers", result);
         return result;
     }
 }

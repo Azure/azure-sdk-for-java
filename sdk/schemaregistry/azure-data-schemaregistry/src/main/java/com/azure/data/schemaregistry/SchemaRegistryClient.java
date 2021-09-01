@@ -14,7 +14,17 @@ import com.azure.data.schemaregistry.models.SerializationType;
 /**
  * HTTP-based client that interacts with Azure Schema Registry service to store and retrieve schemas on demand.
  *
- * @see SchemaRegistryClientBuilder Follows builder pattern for object instantiation
+ * <p><strong>Register a schema</strong></p>
+ * Registering a schema returns a unique schema id that can be used to quickly associate payloads with that schema.
+ * {@codesnippet com.azure.data.schemaregistry.schemaregistryclient.registerschema}
+ *
+ * <p><strong>Get a schema</strong></p>
+ * {@codesnippet com.azure.data.schemaregistry.schemaregistryclient.getSchema}
+ *
+ * <p><strong>Get a schema id</strong></p>
+ * {@codesnippet com.azure.data.schemaregistry.schemaregistryclient.getSchemaId}
+ *
+ * @see SchemaRegistryClientBuilder Builder object instantiation and additional samples.
  */
 @ServiceClient(builder = SchemaRegistryClientBuilder.class)
 public final class SchemaRegistryClient {
@@ -37,8 +47,7 @@ public final class SchemaRegistryClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SchemaProperties registerSchema(String schemaGroup, String schemaName, String schemaString,
                                            SerializationType serializationType) {
-        return registerSchemaWithResponse(schemaGroup, schemaName, schemaString, serializationType, Context.NONE)
-            .getValue();
+        return this.asyncClient.registerSchema(schemaGroup, schemaName, schemaString, serializationType).block();
     }
 
     /**
@@ -67,7 +76,7 @@ public final class SchemaRegistryClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SchemaProperties getSchema(String schemaId) {
-        return getSchemaWithResponse(schemaId, Context.NONE).getValue();
+        return this.asyncClient.getSchema(schemaId).block();
     }
 
     /**
@@ -77,8 +86,7 @@ public final class SchemaRegistryClient {
      * @return The {@link SchemaProperties} associated with the given {@code schemaId} along with the HTTP
      * response.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SchemaProperties> getSchemaWithResponse(String schemaId, Context context) {
+    Response<SchemaProperties> getSchemaWithResponse(String schemaId, Context context) {
         return this.asyncClient.getSchemaWithResponse(schemaId, context).block();
     }
 
@@ -95,8 +103,7 @@ public final class SchemaRegistryClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public String getSchemaId(String schemaGroup, String schemaName, String schemaString,
                               SerializationType serializationType) {
-        return getSchemaIdWithResponse(schemaGroup, schemaName, schemaString, serializationType, Context.NONE)
-            .getValue();
+        return this.asyncClient.getSchemaId(schemaGroup, schemaName, schemaString, serializationType).block();
     }
 
     /**
@@ -109,8 +116,7 @@ public final class SchemaRegistryClient {
      * @param context The context to pass to the Http pipeline.
      * @return The unique identifier for this schema.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<String> getSchemaIdWithResponse(String schemaGroup, String schemaName, String schemaString,
+    Response<String> getSchemaIdWithResponse(String schemaGroup, String schemaName, String schemaString,
         SerializationType serializationType, Context context) {
         return this.asyncClient
             .getSchemaIdWithResponse(schemaGroup, schemaName, schemaString, serializationType, context).block();
@@ -119,5 +125,4 @@ public final class SchemaRegistryClient {
     void clearCache() {
         this.asyncClient.clearCache();
     }
-
 }
