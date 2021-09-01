@@ -52,7 +52,7 @@ public class ChainedPollingStrategy<T, U> implements PollingStrategy<T, U> {
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      *
      * @throws NullPointerException if {@link #canPoll(Response)} is not called prior to this, or if it returns false.
      */
@@ -62,7 +62,7 @@ public class ChainedPollingStrategy<T, U> implements PollingStrategy<T, U> {
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      *
      * @throws NullPointerException if {@link #canPoll(Response)} is not called prior to this, or if it returns false.
      */
@@ -73,7 +73,7 @@ public class ChainedPollingStrategy<T, U> implements PollingStrategy<T, U> {
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      *
      * @throws NullPointerException if {@link #canPoll(Response)} is not called prior to this, or if it returns false.
      */
@@ -83,7 +83,7 @@ public class ChainedPollingStrategy<T, U> implements PollingStrategy<T, U> {
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      *
      * @throws NullPointerException if {@link #canPoll(Response)} is not called prior to this, or if it returns false.
      */

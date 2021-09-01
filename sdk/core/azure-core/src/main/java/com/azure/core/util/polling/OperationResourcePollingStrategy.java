@@ -9,13 +9,12 @@ import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.rest.Response;
-import com.azure.core.implementation.TypeUtil;
+import com.azure.core.implementation.serializer.DefaultJsonSerializer;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.implementation.PollingConstants;
-import com.azure.core.util.serializer.JacksonAdapter;
-import com.azure.core.util.serializer.SerializerAdapter;
-import com.azure.core.util.serializer.SerializerEncoding;
+import com.azure.core.util.polling.implementation.PollingUtils;
+import com.azure.core.util.serializer.ObjectSerializer;
 import com.azure.core.util.serializer.TypeReference;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import reactor.core.publisher.Mono;
@@ -30,7 +29,7 @@ import java.time.Duration;
  *           kept
  */
 public class OperationResourcePollingStrategy<T, U> implements PollingStrategy<T, U> {
-    private static final SerializerAdapter SERIALIZER = JacksonAdapter.createDefaultSerializerAdapter();
+    private static final ObjectSerializer SERIALIZER = new DefaultJsonSerializer();
 
     private final HttpPipeline httpPipeline;
     private final Context context;
@@ -67,7 +66,6 @@ public class OperationResourcePollingStrategy<T, U> implements PollingStrategy<T
         return Mono.just(operationLocationHeader != null);
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public Mono<PollResponse<T>> onInitialResponse(Response<?> response, PollingContext<T> pollingContext,
                                                    TypeReference<T> pollResponseType) {
@@ -86,67 +84,39 @@ public class OperationResourcePollingStrategy<T, U> implements PollingStrategy<T
                 || response.getStatusCode() == 201
                 || response.getStatusCode() == 202
                 || response.getStatusCode() == 204) {
-            return Mono.just(LongRunningOperationStatus.IN_PROGRESS).flatMap(status -> {
-                if (response.getValue() == null) {
-                    return Mono.just(new PollResponse<>(status, null));
-                } else if (TypeUtil.isTypeOrSubTypeOf(
-                        response.getValue().getClass(), pollResponseType.getJavaType())) {
-                    return Mono.just(new PollResponse<>(status, (T) response.getValue()));
-                } else {
-                    Mono<BinaryData> binaryDataMono;
-                    if (response.getValue() instanceof BinaryData) {
-                        binaryDataMono = Mono.just((BinaryData) response.getValue());
-                    } else {
-                        binaryDataMono = BinaryData.fromObjectAsync(response.getValue());
-                    }
-                    if (TypeUtil.isTypeOrSubTypeOf(BinaryData.class, pollResponseType.getJavaType())) {
-                        return binaryDataMono.map(binaryData -> new PollResponse<>(status, (T) binaryData));
-                    } else {
-                        return binaryDataMono.flatMap(binaryData -> binaryData.toObjectAsync(pollResponseType))
-                            .map(value -> new PollResponse<>(status, value));
-                    }
-                }
-            });
+            String retryAfterValue = response.getHeaders().getValue(PollingConstants.RETRY_AFTER);
+            Duration retryAfter = retryAfterValue == null ? null : Duration.ofSeconds(Long.parseLong(retryAfterValue));
+            return PollingUtils.convertResponse(response.getValue(), SERIALIZER, pollResponseType)
+                .map(value -> new PollResponse<>(LongRunningOperationStatus.IN_PROGRESS, value, retryAfter))
+                .switchIfEmpty(Mono.defer(() -> Mono.just(new PollResponse<>(
+                    LongRunningOperationStatus.IN_PROGRESS, null, retryAfter))));
         } else {
             return Mono.error(new AzureException("Operation failed or cancelled: " + response.getStatusCode()));
         }
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public Mono<PollResponse<T>> poll(PollingContext<T> pollingContext, TypeReference<T> pollResponseType) {
         HttpRequest request = new HttpRequest(HttpMethod.GET, pollingContext.getData(operationLocationHeaderName));
-        return httpPipeline.send(request, context).flatMap(res -> res.getBodyAsString()
-            .flatMap(body -> Mono.fromCallable(() ->
-                    SERIALIZER.<PollResult>deserialize(body, PollResult.class, SerializerEncoding.JSON))
+        return httpPipeline.send(request, context).flatMap(response -> BinaryData.fromFlux(response.getBody())
+            .flatMap(binaryData -> PollingUtils.deserializeResponse(
+                    binaryData, SERIALIZER, new TypeReference<PollResult>() { })
                 .map(pollResult -> {
                     if (pollResult.getResourceLocation() != null) {
                         pollingContext.setData(PollingConstants.RESOURCE_LOCATION, pollResult.getResourceLocation());
                     }
-                    pollingContext.setData(PollingConstants.POLL_RESPONSE_BODY, body);
+                    pollingContext.setData(PollingConstants.POLL_RESPONSE_BODY, binaryData.toString());
                     return pollResult.getStatus();
                 })
                 .flatMap(status -> {
-                    String retryAfter = res.getHeaderValue(PollingConstants.RETRY_AFTER);
-                    return Mono.fromCallable(() -> {
-                        if (TypeUtil.isTypeOrSubTypeOf(BinaryData.class, pollResponseType.getJavaType())) {
-                            return (T) BinaryData.fromString(body);
-                        } else {
-                            return SERIALIZER.deserialize(body, pollResponseType.getJavaType(),
-                                SerializerEncoding.JSON);
-                        }
-                    }).map(pollResponse -> {
-                        if (retryAfter != null) {
-                            return new PollResponse<>(status, pollResponse,
-                                Duration.ofSeconds(Long.parseLong(retryAfter)));
-                        } else {
-                            return new PollResponse<>(status, pollResponse);
-                        }
-                    });
+                    String retryAfterValue = response.getHeaders().getValue(PollingConstants.RETRY_AFTER);
+                    Duration retryAfter = retryAfterValue == null ? null
+                        : Duration.ofSeconds(Long.parseLong(retryAfterValue));
+                    return PollingUtils.deserializeResponse(binaryData, SERIALIZER, pollResponseType)
+                        .map(value -> new PollResponse<>(status, value, retryAfter));
                 })));
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public Mono<U> getResult(PollingContext<T> pollingContext, TypeReference<U> resultType) {
         if (pollingContext.getLatestResponse().getStatus() == LongRunningOperationStatus.FAILED) {
@@ -170,22 +140,11 @@ public class OperationResourcePollingStrategy<T, U> implements PollingStrategy<T
 
         if (finalGetUrl == null) {
             String latestResponseBody = pollingContext.getData(PollingConstants.POLL_RESPONSE_BODY);
-            if (TypeUtil.isTypeOrSubTypeOf(BinaryData.class, resultType.getJavaType())) {
-                return (Mono<U>) Mono.just(BinaryData.fromString(latestResponseBody));
-            } else {
-                return Mono.fromCallable(() -> SERIALIZER.deserialize(latestResponseBody, resultType.getJavaType(),
-                    SerializerEncoding.JSON));
-            }
+            return PollingUtils.deserializeResponse(BinaryData.fromString(latestResponseBody), SERIALIZER, resultType);
         } else {
             HttpRequest request = new HttpRequest(HttpMethod.GET, finalGetUrl);
-            return httpPipeline.send(request, context).flatMap(res -> {
-                if (TypeUtil.isTypeOrSubTypeOf(BinaryData.class, resultType.getJavaType())) {
-                    return (Mono<U>) BinaryData.fromFlux(res.getBody());
-                } else {
-                    return res.getBodyAsByteArray().flatMap(body -> Mono.fromCallable(() ->
-                        SERIALIZER.deserialize(body, resultType.getJavaType(), SerializerEncoding.JSON)));
-                }
-            });
+            return httpPipeline.send(request, context).flatMap(response -> BinaryData.fromFlux(response.getBody()))
+                .flatMap(binaryData -> PollingUtils.deserializeResponse(binaryData, SERIALIZER, resultType));
         }
     }
 

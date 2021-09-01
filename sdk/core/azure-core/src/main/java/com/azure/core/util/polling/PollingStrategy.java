@@ -61,7 +61,7 @@ public interface PollingStrategy<T, U> {
      * @param pollingContext the {@link PollingContext} for the current polling operation
      * @param pollResponseType the {@link TypeReference} of the response type from a polling call, or BinaryData if raw
      *                         response body should be kept. This should match the generic parameter {@link U}.
-     * @return a publisher emitting the long running operation status
+     * @return a publisher emitting the poll response containing the status and the response content
      */
     Mono<PollResponse<T>> onInitialResponse(Response<?> response, PollingContext<T> pollingContext,
                                             TypeReference<T> pollResponseType);
@@ -74,7 +74,7 @@ public interface PollingStrategy<T, U> {
      * @param pollingContext the {@link PollingContext} for the current polling operation
      * @param pollResponseType the {@link TypeReference} of the response type from a polling call, or BinaryData if raw
      *                         response body should be kept. This should match the generic parameter {@link U}.
-     * @return a publisher emitting the a poll response containing the status and the response content
+     * @return a publisher emitting the poll response containing the status and the response content
      */
     Mono<PollResponse<T>> poll(PollingContext<T> pollingContext, TypeReference<T> pollResponseType);
 

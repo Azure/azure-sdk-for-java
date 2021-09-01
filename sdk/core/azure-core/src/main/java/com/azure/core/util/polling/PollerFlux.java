@@ -76,8 +76,8 @@ public final class PollerFlux<T, U> extends Flux<AsyncPollResponse<T, U>> {
      *     support. The operation will be called with current {@link PollingContext}.
      * @param fetchResultOperation a {@link Function} that represents the  operation to retrieve final result of
      *     the long running operation if service support it. This parameter is required and operation will be called
-     *     current {@link PollingContext}. If service does not have an api to fetch final result and if final result
-     *     is same as final poll response value then implementer can choose to simply return value from provided
+     *     with the current {@link PollingContext}. If service does not have an api to fetch final result and if final
+     *     result is same as final poll response value then implementer can choose to simply return value from provided
      *     final poll response.
      */
     public PollerFlux(Duration pollInterval,
