@@ -17,6 +17,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.webpubsub.implementation.WebPubSubsImpl;
 import com.azure.messaging.webpubsub.models.GetAuthenticationTokenOptions;
 import com.azure.messaging.webpubsub.models.WebPubSubAuthenticationToken;
+import com.azure.messaging.webpubsub.models.WebPubSubContentType;
 import reactor.core.publisher.Mono;
 
 /** Initializes a new instance of the asynchronous AzureWebPubSubServiceRestAPI type. */
@@ -113,8 +114,8 @@ public final class WebPubSubServiceAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> sendToAllWithResponse(
-            BinaryData message, String contentType, long contentLength, RequestOptions requestOptions) {
-        return this.serviceClient.sendToAllWithResponseAsync(hub, contentType, message, contentLength, requestOptions);
+            BinaryData message, WebPubSubContentType contentType, long contentLength, RequestOptions requestOptions) {
+        return this.serviceClient.sendToAllWithResponseAsync(hub, contentType.toString(), message, contentLength, requestOptions);
     }
 
     /**
@@ -141,10 +142,10 @@ public final class WebPubSubServiceAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> sendToAll(String message, String contentType) {
+    public Mono<Void> sendToAll(String message, WebPubSubContentType contentType) {
         return sendToAllWithResponse(BinaryData.fromString(message),
                 new RequestOptions().addRequestCallback(request -> request.getHeaders().set("Content-Type",
-                        contentType))).flatMap(FluxUtil::toMono);
+                        contentType.toString()))).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -193,11 +194,11 @@ public final class WebPubSubServiceAsyncClient {
     public Mono<Response<Void>> sendToConnectionWithResponse(
             String connectionId,
             BinaryData message,
-            String contentType,
+            WebPubSubContentType contentType,
             long contentLength,
             RequestOptions requestOptions) {
         return this.serviceClient.sendToConnectionWithResponseAsync(
-                hub, connectionId, contentType, message, contentLength, requestOptions);
+                hub, connectionId, contentType.toString(), message, contentLength, requestOptions);
     }
 
     /**
@@ -228,10 +229,10 @@ public final class WebPubSubServiceAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> sendToConnection(
-            String connectionId, String message, String contentType) {
+            String connectionId, String message, WebPubSubContentType contentType) {
         return this.sendToConnectionWithResponse(connectionId, BinaryData.fromString(message),
                 new RequestOptions().addRequestCallback(request -> request.getHeaders()
-                        .set("Content-Type", contentType))).flatMap(FluxUtil::toMono);
+                        .set("Content-Type", contentType.toString()))).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -264,11 +265,11 @@ public final class WebPubSubServiceAsyncClient {
     public Mono<Response<Void>> sendToGroupWithResponse(
             String group,
             BinaryData message,
-            String contentType,
+            WebPubSubContentType contentType,
             long contentLength,
             RequestOptions requestOptions) {
         return this.serviceClient.sendToGroupWithResponseAsync(
-                hub, group, contentType, message, contentLength, requestOptions);
+                hub, group, contentType.toString(), message, contentLength, requestOptions);
     }
 
     /**
@@ -298,9 +299,9 @@ public final class WebPubSubServiceAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> sendToGroup(String group, String message, String contentType) {
+    public Mono<Void> sendToGroup(String group, String message, WebPubSubContentType contentType) {
         return sendToGroupWithResponse(group, BinaryData.fromString(message), new RequestOptions()
-                .addRequestCallback(request -> request.getHeaders().set("Content-Type", contentType)))
+                .addRequestCallback(request -> request.getHeaders().set("Content-Type", contentType.toString())))
                 .flatMap(FluxUtil::toMono);
     }
 
@@ -366,11 +367,11 @@ public final class WebPubSubServiceAsyncClient {
     public Mono<Response<Void>> sendToUserWithResponse(
             String userId,
             BinaryData message,
-            String contentType,
+            WebPubSubContentType contentType,
             long contentLength,
             RequestOptions requestOptions) {
         return this.serviceClient.sendToUserWithResponseAsync(
-                hub, userId, contentType, message, contentLength, requestOptions);
+                hub, userId, contentType.toString(), message, contentLength, requestOptions);
     }
 
     /**
@@ -400,9 +401,9 @@ public final class WebPubSubServiceAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> sendToUser(String userId, String message, String contentType) {
+    public Mono<Void> sendToUser(String userId, String message, WebPubSubContentType contentType) {
         return sendToUserWithResponse(userId, BinaryData.fromString(message), new RequestOptions()
-                .addRequestCallback(request -> request.getHeaders().set("Content-Type", contentType)))
+                .addRequestCallback(request -> request.getHeaders().set("Content-Type", contentType.toString())))
                 .flatMap(FluxUtil::toMono);
     }
 

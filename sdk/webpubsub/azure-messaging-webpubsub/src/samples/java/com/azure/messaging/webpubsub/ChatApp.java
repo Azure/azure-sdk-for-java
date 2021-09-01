@@ -4,6 +4,7 @@
 package com.azure.messaging.webpubsub;
 
 import com.azure.core.util.Configuration;
+import com.azure.messaging.webpubsub.models.WebPubSubContentType;
 
 import javax.swing.ButtonGroup;
 import javax.swing.DefaultListModel;
@@ -100,7 +101,7 @@ public class ChatApp {
             wsClient.sendMessage(message);
         } else {
             System.out.println("Sending using Web Pub Sub");
-            webPubsubServiceHubClient.sendToAll(message, "text/plain");
+            webPubsubServiceHubClient.sendToAll(message, WebPubSubContentType.TEXT_PLAIN);
         }
     }
 }

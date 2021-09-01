@@ -7,6 +7,7 @@ import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.Context;
+import com.azure.messaging.webpubsub.models.WebPubSubContentType;
 
 public class BroadcastingSample {
     private static final String CONNECTION_STRING = Configuration.getGlobalConfiguration().get("WEB_PUB_SUB_CS");
@@ -19,10 +20,10 @@ public class BroadcastingSample {
             .buildClient();
 
         // send a text message to the entire hub
-        chatHub.sendToAll("{\"message\": \"Hello world!\"}", "application/json");
+        chatHub.sendToAll("{\"message\": \"Hello world!\"}", WebPubSubContentType.APPLICATION_JSON);
 
         // send a text message to a particular group
-        chatHub.sendToGroup("admin", "Hi admins!", "text/plain");
+        chatHub.sendToGroup("admin", "Hi admins!", WebPubSubContentType.TEXT_PLAIN);
 
         // send binary data to the entire hub
         byte[] data = new byte[10];

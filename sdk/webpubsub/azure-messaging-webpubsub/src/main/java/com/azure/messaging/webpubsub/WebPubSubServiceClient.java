@@ -17,6 +17,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.webpubsub.implementation.WebPubSubsImpl;
 import com.azure.messaging.webpubsub.models.GetAuthenticationTokenOptions;
 import com.azure.messaging.webpubsub.models.WebPubSubAuthenticationToken;
+import com.azure.messaging.webpubsub.models.WebPubSubContentType;
 
 /** Initializes a new instance of the synchronous AzureWebPubSubServiceRestAPI type. */
 @ServiceClient(builder = WebPubSubServiceClientBuilder.class)
@@ -115,12 +116,12 @@ public final class WebPubSubServiceClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> sendToAllWithResponse(
             BinaryData message,
-            String contentType,
+            WebPubSubContentType contentType,
             long contentLength,
             RequestOptions requestOptions,
             Context context) {
         return this.serviceClient.sendToAllWithResponse(
-                hub, contentType, message, contentLength, requestOptions, context);
+                hub, contentType.toString(), message, contentLength, requestOptions, context);
     }
 
     /**
@@ -132,10 +133,10 @@ public final class WebPubSubServiceClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void sendToAll(String message, String contentType) {
+    public void sendToAll(String message, WebPubSubContentType contentType) {
         sendToAllWithResponse(BinaryData.fromString(message),
                 new RequestOptions().addRequestCallback(request -> request.getHeaders().set("Content-Type",
-                        contentType)), Context.NONE);
+                        contentType.toString())), Context.NONE);
     }
 
     /**
@@ -203,12 +204,12 @@ public final class WebPubSubServiceClient {
     public Response<Void> sendToConnectionWithResponse(
             String connectionId,
             BinaryData message,
-            String contentType,
+            WebPubSubContentType contentType,
             long contentLength,
             RequestOptions requestOptions,
             Context context) {
         return this.serviceClient.sendToConnectionWithResponse(
-                hub, connectionId, contentType, message, contentLength, requestOptions, context);
+                hub, connectionId, contentType.toString(), message, contentLength, requestOptions, context);
     }
 
     /**
@@ -222,10 +223,10 @@ public final class WebPubSubServiceClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void sendToConnection(
-            String connectionId, String message, String contentType) {
+            String connectionId, String message, WebPubSubContentType contentType) {
         this.sendToConnectionWithResponse(connectionId, BinaryData.fromString(message),
                 new RequestOptions().addRequestCallback(request -> request.getHeaders()
-                        .set("Content-Type", contentType)), Context.NONE);
+                        .set("Content-Type", contentType.toString())), Context.NONE);
     }
 
     /**
@@ -278,12 +279,12 @@ public final class WebPubSubServiceClient {
     public Response<Void> sendToGroupWithResponse(
             String group,
             BinaryData message,
-            String contentType,
+            WebPubSubContentType contentType,
             long contentLength,
             RequestOptions requestOptions,
             Context context) {
         return this.serviceClient.sendToGroupWithResponse(
-                hub, group, contentType, message, contentLength, requestOptions, context);
+                hub, group, contentType.toString(), message, contentLength, requestOptions, context);
     }
 
     /**
@@ -296,9 +297,9 @@ public final class WebPubSubServiceClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void sendToGroup(String group, String message, String contentType) {
+    public void sendToGroup(String group, String message, WebPubSubContentType contentType) {
         sendToGroupWithResponse(group, BinaryData.fromString(message), new RequestOptions()
-                .addRequestCallback(request -> request.getHeaders().set("Content-Type", contentType)), Context.NONE);
+                .addRequestCallback(request -> request.getHeaders().set("Content-Type", contentType.toString())), Context.NONE);
     }
 
     /**
@@ -386,12 +387,12 @@ public final class WebPubSubServiceClient {
     public Response<Void> sendToUserWithResponse(
             String userId,
             BinaryData message,
-            String contentType,
+            WebPubSubContentType contentType,
             long contentLength,
             RequestOptions requestOptions,
             Context context) {
         return this.serviceClient.sendToUserWithResponse(
-                hub, userId, contentType, message, contentLength, requestOptions, context);
+                hub, userId, contentType.toString(), message, contentLength, requestOptions, context);
     }
 
     /**
@@ -404,9 +405,9 @@ public final class WebPubSubServiceClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void sendToUser(String userId, String message, String contentType) {
+    public void sendToUser(String userId, String message, WebPubSubContentType contentType) {
         sendToUserWithResponse(userId, BinaryData.fromString(message), new RequestOptions()
-                .addRequestCallback(request -> request.getHeaders().set("Content-Type", contentType)), Context.NONE);
+                .addRequestCallback(request -> request.getHeaders().set("Content-Type", contentType.toString())), Context.NONE);
     }
 
     /**

@@ -50,17 +50,17 @@ import java.util.Objects;
  *
  * <p><strong>Code Samples</strong></p>
  *
- * {@codesnippet com.azure.messaging.webpubsub.webpubsubclientbuilder.connectionstring.async}
+ * {@codesnippet com.azure.messaging.webpubsub.{@link WebPubSubServiceClientBuilder}.connectionstring.async}
  *
  * <p>This demonstrates using the connection string provided by the Azure Portal. Another approach is to use the
  * combination of credential and endpoint details, as shown below:</p>
  *
- * {@codesnippet com.azure.messaging.webpubsub.webpubsubclientbuilder.credential.endpoint.async}
+ * {@codesnippet com.azure.messaging.webpubsub.{@link WebPubSubServiceClientBuilder}.credential.endpoint.async}
  *
  * <p>Of course, synchronous clients may also be instantiated, by calling {@link #buildClient() buildClient} rather than
  * {@link #buildAsyncClient() buildAsyncClient}.</p>
  *
- * {@codesnippet com.azure.messaging.webpubsub.webpubsubclientbuilder.connectionstring.sync}
+ * {@codesnippet com.azure.messaging.webpubsub.{@link WebPubSubServiceClientBuilder}.connectionstring.sync}
  *
  * @see WebPubSubServiceAsyncClient
  * @see WebPubSubServiceClient
@@ -113,7 +113,7 @@ public final class WebPubSubServiceClientBuilder {
      * <p>More About <a href="https://azure.github.io/azure-sdk/general_azurecore.html#telemetry-policy">Azure Core: Telemetry policy</a>
      *
      * @param clientOptions the {@link ClientOptions} to be set on the client.
-     * @return The updated WebPubSubClientBuilder object.
+     * @return The updated {@link WebPubSubServiceClientBuilder} object.
      */
     public WebPubSubServiceClientBuilder clientOptions(ClientOptions clientOptions) {
         this.clientOptions = clientOptions;
@@ -124,7 +124,7 @@ public final class WebPubSubServiceClientBuilder {
      * Sets the credential to use when authenticating HTTP requests.
      *
      * @param connectionString Connection string in the format "endpoint={endpoint_value};accesskey={accesskey_value}"
-     * @return The updated WebPubSubClientBuilder object.
+     * @return The updated {@link WebPubSubServiceClientBuilder} object.
      * @throws NullPointerException If {@code connectionString} is {@code null}.
      */
     public WebPubSubServiceClientBuilder connectionString(final String connectionString) {
@@ -138,7 +138,7 @@ public final class WebPubSubServiceClientBuilder {
      *
      * @param endpoint The URL of the Azure Web Pub Sub instance to send service requests to, and receive responses
      *      from.
-     * @return The updated WebPubSubClientBuilder object.
+     * @return The updated {@link WebPubSubServiceClientBuilder} object.
      * @throws IllegalArgumentException if {@code endpoint} is {@code null}.
      */
     public WebPubSubServiceClientBuilder endpoint(final String endpoint) {
@@ -156,11 +156,9 @@ public final class WebPubSubServiceClientBuilder {
      * Sets the {@link AzureKeyCredential} used to authenticate HTTP requests.
      *
      * @param credential AzureKeyCredential used to authenticate HTTP requests.
-     * @return The updated WebPubSubClientBuilder object.
-     * @throws NullPointerException If {@code credential} is {@code null}.
+     * @return The updated {@link WebPubSubServiceClientBuilder} object.
      */
     public WebPubSubServiceClientBuilder credential(final AzureKeyCredential credential) {
-        Objects.requireNonNull(credential, "'credential' cannot be null.");
         this.credential = credential;
         return this;
     }
@@ -169,8 +167,7 @@ public final class WebPubSubServiceClientBuilder {
      * Sets the {@link TokenCredential} used to authenticate HTTP requests.
      *
      * @param credential TokenCredential used to authenticate HTTP requests.
-     * @return The updated WebPubSubClientBuilder object.
-     * @throws NullPointerException If {@code credential} is {@code null}.
+     * @return The updated {@link WebPubSubServiceClientBuilder} object.
      */
     public WebPubSubServiceClientBuilder credential(final TokenCredential credential) {
         this.tokenCredential = credential;
@@ -178,8 +175,10 @@ public final class WebPubSubServiceClientBuilder {
     }
 
     /**
-     * @param reverseProxyEndpoint
-     * @return
+     * Sets the reverse proxy endpoint.
+     *
+     * @param reverseProxyEndpoint The reverse proxy endpoint.
+     * @return The updated {@link WebPubSubServiceClientBuilder} object.
      */
     public WebPubSubServiceClientBuilder reverseProxyEndpoint(String reverseProxyEndpoint) {
         this.reverseProxyEndpoint = reverseProxyEndpoint;
@@ -192,7 +191,7 @@ public final class WebPubSubServiceClientBuilder {
      *
      * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
      * characters or underscore.
-     * @return The updated WebPubSubClientBuilder object.
+     * @return The updated {@link WebPubSubServiceClientBuilder} object.
      * @throws NullPointerException If {@code hub} is {@code null}.
      */
     public WebPubSubServiceClientBuilder hub(final String hub) {
@@ -208,7 +207,7 @@ public final class WebPubSubServiceClientBuilder {
      * set.</p>
      *
      * @param logOptions The logging configuration to use when sending and receiving HTTP requests/responses.
-     * @return The updated WebPubSubClientBuilder object.
+     * @return The updated {@link WebPubSubServiceClientBuilder} object.
      */
     public WebPubSubServiceClientBuilder httpLogOptions(final HttpLogOptions logOptions) {
         httpLogOptions = logOptions;
@@ -219,7 +218,7 @@ public final class WebPubSubServiceClientBuilder {
      * Adds a policy to the set of existing policies that are executed after required policies.
      *
      * @param policy The retry policy for service requests.
-     * @return The updated WebPubSubClientBuilder object.
+     * @return The updated {@link WebPubSubServiceClientBuilder} object.
      * @throws NullPointerException If {@code policy} is {@code null}.
      */
     public WebPubSubServiceClientBuilder addPolicy(final HttpPipelinePolicy policy) {
@@ -232,7 +231,7 @@ public final class WebPubSubServiceClientBuilder {
      * Sets the HTTP client to use for sending and receiving requests to and from the service.
      *
      * @param client The HTTP client to use for requests.
-     * @return The updated WebPubSubClientBuilder object.
+     * @return The updated {@link WebPubSubServiceClientBuilder} object.
      */
     public WebPubSubServiceClientBuilder httpClient(final HttpClient client) {
         if (this.httpClient != null && client == null) {
@@ -251,7 +250,7 @@ public final class WebPubSubServiceClientBuilder {
      * {@link WebPubSubServiceClient}.
      *
      * @param pipeline The HTTP pipeline to use for sending service requests and receiving responses.
-     * @return The updated WebPubSubClientBuilder object.
+     * @return The updated {@link WebPubSubServiceClientBuilder} object.
      */
     public WebPubSubServiceClientBuilder pipeline(final HttpPipeline pipeline) {
         if (this.pipeline != null && pipeline == null) {
@@ -269,7 +268,7 @@ public final class WebPubSubServiceClientBuilder {
      * configuration store}, use {@link Configuration#NONE} to bypass using configuration settings during construction.
      *
      * @param configuration The configuration store used to
-     * @return The updated WebPubSubClientBuilder object.
+     * @return The updated {@link WebPubSubServiceClientBuilder} object.
      */
     public WebPubSubServiceClientBuilder configuration(final Configuration configuration) {
         this.configuration = configuration;
@@ -281,7 +280,7 @@ public final class WebPubSubServiceClientBuilder {
      * used if not provided.
      *
      * @param retryPolicy user's retry policy applied to each request.
-     * @return The updated WebPubSubClientBuilder object.
+     * @return The updated {@link WebPubSubServiceClientBuilder} object.
      */
     public WebPubSubServiceClientBuilder retryPolicy(final RetryPolicy retryPolicy) {
         this.retryPolicy = retryPolicy;
@@ -296,7 +295,7 @@ public final class WebPubSubServiceClientBuilder {
      * newer version the client library will have the result of potentially moving to a newer service version.
      *
      * @param version {@link WebPubSubServiceVersion} of the service to be used when making requests.
-     * @return The updated WebPubSubClientBuilder object.
+     * @return The updated {@link WebPubSubServiceClientBuilder} object.
      */
     public WebPubSubServiceClientBuilder serviceVersion(final WebPubSubServiceVersion version) {
         this.version = version;
