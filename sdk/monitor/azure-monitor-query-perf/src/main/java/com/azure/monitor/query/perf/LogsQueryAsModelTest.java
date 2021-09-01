@@ -29,13 +29,11 @@ public class LogsQueryAsModelTest extends ServiceTest<PerfStressOptions> {
 
     @Override
     public void run() {
-        logsQueryClient.query(workspaceId, LOGS_QUERY, null).toObject(CustomModel.class);
+        logsQueryClient.query(workspaceId, LOGS_QUERY, null, CustomModel.class);
     }
 
     @Override
     public Mono<Void> runAsync() {
-        return logsQueryAsyncClient.query(workspaceId, LOGS_QUERY, null)
-                .map(response -> response.toObject(CustomModel.class))
-                .then();
+        return logsQueryAsyncClient.query(workspaceId, LOGS_QUERY, null, CustomModel.class).then();
     }
 }

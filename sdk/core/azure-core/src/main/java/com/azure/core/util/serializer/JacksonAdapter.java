@@ -507,6 +507,7 @@ public class JacksonAdapter implements SerializerAdapter {
         private boolean usePublicSetter(Object deserializedHeaders, ClientLogger logger) {
             final Class<?> clazz = deserializedHeaders.getClass();
             final String clazzSimpleName = clazz.getSimpleName();
+            final String fieldName = declaringField.getName();
 
             MethodHandle setterHandler = getFromCache(declaringField, FIELD_TO_SETTER_CACHE, field -> {
                 MethodHandles.Lookup lookupToUse;
@@ -517,7 +518,7 @@ public class JacksonAdapter implements SerializerAdapter {
                     return null;
                 }
 
-                String setterName = getPotentialSetterName(field.getName());
+                String setterName = getPotentialSetterName(fieldName);
 
                 try {
                     MethodHandle handle = lookupToUse.findVirtual(clazz, setterName,
@@ -554,11 +555,12 @@ public class JacksonAdapter implements SerializerAdapter {
 
             try {
                 setterHandler.invokeWithArguments(deserializedHeaders, values);
-                logger.verbose("Set header collection on class {} using MethodHandle.", clazzSimpleName);
+                logger.verbose("Set header collection {} on class {} using MethodHandle.", fieldName, clazzSimpleName);
 
                 return true;
             } catch (Throwable ex) {
-                logger.verbose("Failed to set header collection on class {} using MethodHandle.", clazzSimpleName, ex);
+                logger.verbose("Failed to set header {} collection on class {} using MethodHandle.", fieldName,
+                    clazzSimpleName, ex);
                 return false;
             }
         }

@@ -14,7 +14,17 @@ import com.azure.data.schemaregistry.models.SerializationType;
 /**
  * HTTP-based client that interacts with Azure Schema Registry service to store and retrieve schemas on demand.
  *
- * @see SchemaRegistryClientBuilder Follows builder pattern for object instantiation
+ * <p><strong>Register a schema</strong></p>
+ * Registering a schema returns a unique schema id that can be used to quickly associate payloads with that schema.
+ * {@codesnippet com.azure.data.schemaregistry.schemaregistryclient.registerschema}
+ *
+ * <p><strong>Get a schema</strong></p>
+ * {@codesnippet com.azure.data.schemaregistry.schemaregistryclient.getSchema}
+ *
+ * <p><strong>Get a schema id</strong></p>
+ * {@codesnippet com.azure.data.schemaregistry.schemaregistryclient.getSchemaId}
+ *
+ * @see SchemaRegistryClientBuilder Builder object instantiation and additional samples.
  */
 @ServiceClient(builder = SchemaRegistryClientBuilder.class)
 public final class SchemaRegistryClient {
