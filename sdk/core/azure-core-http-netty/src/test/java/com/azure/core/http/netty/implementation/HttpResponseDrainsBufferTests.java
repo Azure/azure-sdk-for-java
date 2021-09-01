@@ -19,11 +19,11 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.junit.jupiter.api.parallel.Isolated;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
 import reactor.test.StepVerifier;
 
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.security.SecureRandom;
 import java.time.Duration;
 import java.util.Collection;
@@ -45,11 +45,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @Isolated
 @Execution(ExecutionMode.SAME_THREAD)
 public class HttpResponseDrainsBufferTests {
+    private static final String LONG_BODY_PATH = "/long";
+    private static final byte[] LONG_BODY = new byte[4 * 1024 * 1024]; // 4 MB
+
     private static ResourceLeakDetector.Level originalLevel;
     private static WireMockServer wireMockServer;
-
-    private static final String LONG_BODY_PATH = "/long";
-    private static final byte[] LONG_BODY = new byte[16 * 1024 * 1024]; // 16 MB
+    private static String url;
 
     static {
         new SecureRandom().nextBytes(LONG_BODY);
@@ -67,10 +68,13 @@ public class HttpResponseDrainsBufferTests {
         wireMockServer = new WireMockServer(wireMockConfig()
             .dynamicPort()
             .disableRequestJournal()
+            .asynchronousResponseEnabled(true)
             .gzipDisabled(true));
 
         wireMockServer.stubFor(get(LONG_BODY_PATH).willReturn(aResponse().withBody(LONG_BODY)));
         wireMockServer.start();
+
+        url = wireMockServer.baseUrl() + LONG_BODY_PATH;
     }
 
     @BeforeEach
@@ -93,49 +97,61 @@ public class HttpResponseDrainsBufferTests {
     }
 
     @Test
-    public void closeHttpResponseWithoutConsumingBody() throws InterruptedException {
+    public void closeHttpResponseWithoutConsumingBody() {
         runScenario(response -> Mono.fromRunnable(response::close));
     }
 
     @Test
-    public void closeHttpResponseWithConsumingPartialBody() throws InterruptedException {
+    public void closeHttpResponseWithConsumingPartialBody() {
         runScenario(response -> response.getBody().next().flatMap(ignored -> Mono.fromRunnable(response::close)));
     }
 
     @Test
-    public void closeHttpResponseWithConsumingFullBody() throws InterruptedException {
+    public void closeHttpResponseWithConsumingFullBody() {
         runScenario(response -> response.getBodyAsByteArray().flatMap(ignored -> Mono.fromRunnable(response::close)));
+    }
+
+    private void runScenario(Function<HttpResponse, Mono<Void>> responseConsumer) {
+        HttpClient httpClient = new NettyAsyncHttpClientProvider().createInstance();
+        Mono<Void> requestMaker = Flux.generate(() -> 0, (callCount, sink) -> {
+            if (callCount == 100) {
+                sink.complete();
+                return callCount;
+            }
+
+            sink.next(callCount);
+            return callCount + 1;
+        }).concatMap(ignored -> httpClient.send(new HttpRequest(HttpMethod.GET, url)).flatMap(responseConsumer))
+            .parallel(10)
+            .runOn(Schedulers.boundedElastic())
+            .then();
+
+        StepVerifier.create(requestMaker).verifyComplete();
+
+        try {
+            // GC twice to ensure full cleanup.
+            Thread.sleep(1000);
+            Runtime.getRuntime().gc();
+
+            Thread.sleep(1000);
+            Runtime.getRuntime().gc();
+        } catch (InterruptedException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        assertEquals(0, testResourceLeakDetectorFactory.getTotalReportedLeakCount());
     }
 
     @Test
     public void closingHttpResponseIsIdempotent() {
         HttpClient httpClient = new NettyAsyncHttpClientProvider().createInstance();
-        StepVerifier.create(httpClient.send(new HttpRequest(HttpMethod.GET, url(wireMockServer)))
-            .flatMap(response -> Mono.fromRunnable(response::close).thenReturn(response))
-            .delayElement(Duration.ofSeconds(2))
-            .flatMap(response -> Mono.fromRunnable(response::close))
-            .delayElement(Duration.ofSeconds(2))
-            .then())
+        StepVerifier.create(httpClient.send(new HttpRequest(HttpMethod.GET, url))
+                .flatMap(response -> Mono.fromRunnable(response::close).thenReturn(response))
+                .delayElement(Duration.ofSeconds(1))
+                .flatMap(response -> Mono.fromRunnable(response::close))
+                .delayElement(Duration.ofSeconds(1))
+                .then())
             .verifyComplete();
-    }
-
-    private void runScenario(Function<HttpResponse, Mono<Void>> responseConsumer) throws InterruptedException {
-        HttpClient httpClient = new NettyAsyncHttpClientProvider().createInstance();
-        Mono<Void> requestMaker = httpClient.send(new HttpRequest(HttpMethod.GET, url(wireMockServer)))
-            .flatMap(responseConsumer)
-            .repeat(100)
-            .then();
-
-        StepVerifier.create(requestMaker).verifyComplete();
-
-        // GC twice to ensure full cleanup.
-        Thread.sleep(2000);
-        Runtime.getRuntime().gc();
-
-        Thread.sleep(2000);
-        Runtime.getRuntime().gc();
-
-        assertEquals(0, testResourceLeakDetectorFactory.getTotalReportedLeakCount());
     }
 
     private static final class TestResourceLeakDetectorFactory extends ResourceLeakDetectorFactory {
@@ -179,14 +195,6 @@ public class HttpResponseDrainsBufferTests {
 
         public int getReportedLeakCount() {
             return reportTracedLeakCount.get() + reportUntracedLeakCount.get();
-        }
-    }
-
-    private static URL url(WireMockServer server) {
-        try {
-            return new URL("http://localhost:" + server.port() + LONG_BODY_PATH);
-        } catch (MalformedURLException e) {
-            throw new RuntimeException(e);
         }
     }
 }
