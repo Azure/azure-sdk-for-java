@@ -15,9 +15,15 @@ if (isRunningOnAgent) {
     printf("%s=%s%n", "SETDEVVERSION", System.getenv("SETDEVVERSION"))
 }
 
+def parallelism = factor.multiply(numberOfProcessors).intValue()
+def minimumRunnable = parallelism * 2
+def maxPoolSize = 256 + parallelism
+def corePoolSize = parallelism * 2
+def keepAliveSeconds = 30
+
 runner {
     parallel {
         enabled isParallelEnabled
-        dynamic(factor)
+        custom(parallelism, minimumRunnable, maxPoolSize, corePoolSize, keepAliveSeconds)
     }
 }
