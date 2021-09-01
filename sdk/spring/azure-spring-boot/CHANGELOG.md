@@ -3,7 +3,7 @@
 ## 3.9.0-beta.1 (Unreleased)
 
 ### Features Added
-
+- Support configuration of `AbstractJmsListenerContainerFactory` for `JmsListener`. Enabled properties include `replyPubSubDomain`, `replyQosSettings`, `subscriptionDurable`, `subscriptionShared` and `phase` with prefix as `spring.jms.servicebus.listener`.
 ### Breaking Changes
 
 ### Bugs Fixed
@@ -16,7 +16,7 @@
     |                      Yes                      |                          No                            |                       `web_application`                                                               |       `web_application`     |
     |                      No                       |                          Yes                           |                       `resource_server`                                                               |       `resource_server`     |
     |                      Yes                      |                          Yes                           | `web_application`,`resource_server`,`resource_server_with_obo`, `web_application_and_resource_server` | `resource_server_with_obo`  |
-
+- Fix the bug of not supporting Spring Boot autoconfiguration of JMS listener.
 ### Deprecations
 - Deprecate `azure.activedirectory.authorization-clients.xxx.on-demand`, use `azure.activedirectory.authorization-clients.xxx.authorization-grant-type` instead. If you are using `on-demand=true`, please change to `authorization-grant-type=authorization_code`.
 
