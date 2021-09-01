@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.identity;
 
 import com.azure.core.credential.AccessToken;
@@ -9,9 +12,6 @@ import com.azure.identity.implementation.IdentityClientBuilder;
 import com.azure.identity.implementation.IdentityClientOptions;
 import com.azure.identity.implementation.util.LoggingUtil;
 import reactor.core.publisher.Mono;
-
-import java.util.HashMap;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * An AAD credential that acquires a token with a client secret and user assertion for an AAD application

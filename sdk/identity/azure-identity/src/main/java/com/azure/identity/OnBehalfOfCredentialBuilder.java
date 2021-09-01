@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.identity;
 
 public class OnBehalfOfCredentialBuilder extends AadCredentialBuilderBase<OnBehalfOfCredentialBuilder> {
@@ -34,7 +37,7 @@ public class OnBehalfOfCredentialBuilder extends AadCredentialBuilderBase<OnBeha
      * @return An updated instance of this builder with the user assertion scope configured.
      */
     public OnBehalfOfCredentialBuilder userAssertion(String userAssertion) {
-        this.identityClientOptions.userAssertion();
+        this.identityClientOptions.userAssertion(userAssertion);
         return this;
     }
 
