@@ -17,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public abstract class MetricsSeriesTestBase extends MetricsAdvisorClientTestBase {
 
-    static final String METRIC_ID = "27e3015f-04fd-44ba-a20b-bc529a0aebae";
+    static final String METRIC_ID = "6e8261fd-9816-4b46-86f5-da8ee34f262f";
     static final String DIMENSION_NAME = "category";
     static final Iterable<?> EXPECTED_DIMENSION_VALUES = Arrays.asList("Music",
         "Musical Instruments",

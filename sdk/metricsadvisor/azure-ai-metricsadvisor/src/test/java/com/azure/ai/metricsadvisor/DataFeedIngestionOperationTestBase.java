@@ -16,7 +16,7 @@ import static com.azure.ai.metricsadvisor.MetricsSeriesTestBase.TIME_SERIES_END_
 
 public abstract class DataFeedIngestionOperationTestBase extends MetricsAdvisorAdministrationClientTestBase {
     public abstract void listIngestionStatus(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion);
-    static final String DATA_FEED_ID = "9860df01-e740-40ec-94a2-6351813552ba";
+    static final String DATA_FEED_ID = "995a8993-7dcc-4673-b724-814d2822a603";
     static final OffsetDateTime TIME_SERIES_START_TIME = OffsetDateTime.parse("2020-09-09T00:00:00Z");
 
     // Pre-configured test resource.
