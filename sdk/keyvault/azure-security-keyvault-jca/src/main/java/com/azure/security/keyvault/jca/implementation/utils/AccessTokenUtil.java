@@ -63,9 +63,15 @@ public final class AccessTokenUtil {
      * @return the authorization token.
      */
     public static String getAccessToken(String resource, String identity) {
-        OAuthToken result;
-        result = getAccToken(resource, identity);
-        return result == null ? null : result.getAccessToken();
+        String result;
+
+        if (System.getenv("WEBSITE_SITE_NAME") != null
+            && !System.getenv("WEBSITE_SITE_NAME").isEmpty()) {
+            result = getAccessTokenOnAppService(resource, identity);
+        } else {
+            result = getAccessTokenOnOthers(resource, identity);
+        }
+        return result;
     }
 
     /**
