@@ -134,7 +134,7 @@ class AvroSchemaRegistryUtils {
      * @return deserialized object
      */
     <T> T decode(byte[] bytes, byte[] schemaBytes, TypeReference<T> typeReference) {
-        Objects.requireNonNull(bytes, "'b' must not be null.");
+        Objects.requireNonNull(bytes, "'bytes' must not be null.");
         Objects.requireNonNull(schemaBytes, "'schemaBytes' must not be null.");
 
         String schemaString = new String(schemaBytes, StandardCharsets.UTF_8);
