@@ -92,10 +92,14 @@ public interface PollingStrategy<T, U> {
      * Cancels the long running operation if service supports cancellation. If service does not support cancellation
      * then the implementer should return Mono.error with an error message indicating absence of cancellation.
      *
+     * Implementing this method is optional - by default, cancellation will not be supported unless overridden.
+     *
      * @param pollingContext the {@link PollingContext} for the current polling operation, or null if the polling has
      *                       started in a {@link SyncPoller}
      * @param initialResponse the response from the initial operation
      * @return a publisher emitting the cancellation response content
      */
-    Mono<T> cancel(PollingContext<T> pollingContext, PollResponse<T> initialResponse);
+    default Mono<T> cancel(PollingContext<T> pollingContext, PollResponse<T> initialResponse) {
+        return Mono.error(new IllegalStateException("Cancellation is not supported."));
+    }
 }

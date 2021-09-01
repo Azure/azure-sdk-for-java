@@ -53,15 +53,9 @@ public class StatusCheckPollingStrategy<T, U> implements PollingStrategy<T, U> {
         return Mono.error(new IllegalStateException("StatusCheckPollingStrategy doesn't support polling"));
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public Mono<U> getResult(PollingContext<T> pollingContext, TypeReference<U> resultType) {
         T activationResponse = pollingContext.getActivationResponse().getValue();
         return PollingUtils.convertResponse(activationResponse, SERIALIZER, resultType);
-    }
-
-    @Override
-    public Mono<T> cancel(PollingContext<T> pollingContext, PollResponse<T> initialResponse) {
-        return Mono.error(new IllegalStateException("Cancellation is not supported."));
     }
 }

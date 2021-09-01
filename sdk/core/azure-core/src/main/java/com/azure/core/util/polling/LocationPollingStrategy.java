@@ -135,9 +135,4 @@ public class LocationPollingStrategy<T, U> implements PollingStrategy<T, U> {
                 .flatMap(binaryData -> PollingUtils.deserializeResponse(binaryData, SERIALIZER, resultType));
         }
     }
-
-    @Override
-    public Mono<T> cancel(PollingContext<T> pollingContext, PollResponse<T> initialResponse) {
-        return Mono.error(new IllegalStateException("Cancellation is not supported."));
-    }
 }

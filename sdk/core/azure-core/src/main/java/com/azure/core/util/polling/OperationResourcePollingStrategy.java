@@ -148,11 +148,6 @@ public class OperationResourcePollingStrategy<T, U> implements PollingStrategy<T
         }
     }
 
-    @Override
-    public Mono<T> cancel(PollingContext<T> pollingContext, PollResponse<T> initialResponse) {
-        return Mono.error(new IllegalStateException("Cancellation is not supported."));
-    }
-
     /**
      * A simple structure representing the partial response received from an operation location URL, containing the
      * information of the status of the long running operation.
