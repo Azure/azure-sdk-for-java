@@ -81,7 +81,7 @@ public class AADOAuth2ClientConfigurationTest {
     }
 
     @Test
-    public void testGrantTypeIsAuthorizationCodeClient() {
+    public void testResourceServerWithOboInvalidGrantType1() {
         resourceServerWithOboContextRunner()
             .withPropertyValues("azure.activedirectory.authorization-clients.graph.authorization-grant-type="
                 + "authorization_code")
@@ -91,7 +91,7 @@ public class AADOAuth2ClientConfigurationTest {
     }
 
     @Test
-    public void clientWhichGrantTypeIsOboButOnDemandExceptionTest() {
+    public void testResourceServerWithOboInvalidGrantType2() {
         resourceServerWithOboContextRunner()
             .withPropertyValues("azure.activedirectory.authorization-clients.graph.authorization-grant-type="
                 + "on_behalf_of")
@@ -102,7 +102,7 @@ public class AADOAuth2ClientConfigurationTest {
     }
 
     @Test
-    public void testExistCustomAndGraphClient() {
+    public void testResourceServerWithOboExistCustomAndGraphClient() {
         resourceServerWithOboContextRunner()
             .withPropertyValues("azure.activedirectory.authorization-clients.graph.scopes="
                 + "https://graph.microsoft.com/User.Read")

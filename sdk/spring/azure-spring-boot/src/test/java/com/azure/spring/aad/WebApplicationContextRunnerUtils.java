@@ -34,6 +34,22 @@ public class WebApplicationContextRunnerUtils {
             .withClassLoader(new FilteredClassLoader(ClientRegistration.class));
     }
 
+    public static WebApplicationContextRunner webApplicationContextRunner() {
+        return oauthClientRunner()
+            .withPropertyValues(withWebApplicationOrResourceServerWithOboPropertyValues());
+    }
+
+    public static WebApplicationContextRunner resourceServerContextRunner() {
+        return resourceServerRunner()
+            .withPropertyValues(withResourceServerPropertyValues());
+    }
+
+    public static WebApplicationContextRunner resourceServerWithOboContextRunner() {
+        return oauthClientAndResourceServerRunner()
+            .withPropertyValues(withWebApplicationOrResourceServerWithOboPropertyValues())
+            .withPropertyValues(withResourceServerPropertyValues());
+    }
+
     @SuppressWarnings("unchecked")
     public static MultiValueMap<String, String> toMultiValueMap(RequestEntity<?> entity) {
         return (MultiValueMap<String, String>) Optional.ofNullable(entity)
@@ -52,21 +68,5 @@ public class WebApplicationContextRunnerUtils {
         return new String[] {
             "azure.activedirectory.tenant-id=fake-tenant-id",
             "azure.activedirectory.app-id-uri=fake-app-id-uri"};
-    }
-
-    public static WebApplicationContextRunner webApplicationContextRunner() {
-        return oauthClientRunner()
-            .withPropertyValues(withWebApplicationOrResourceServerWithOboPropertyValues());
-    }
-
-    public static WebApplicationContextRunner resourceServerContextRunner() {
-        return resourceServerRunner()
-            .withPropertyValues(withResourceServerPropertyValues());
-    }
-
-    public static WebApplicationContextRunner resourceServerWithOboContextRunner() {
-        return oauthClientAndResourceServerRunner()
-            .withPropertyValues(withWebApplicationOrResourceServerWithOboPropertyValues())
-            .withPropertyValues(withResourceServerPropertyValues());
     }
 }

@@ -212,6 +212,29 @@ public class AADAuthenticationPropertiesTest {
     }
 
     @Test
+    public void applicationTypeWithResourceServer() {
+        resourceServerContextRunner()
+            .run(context -> {
+                AADAuthenticationProperties properties = context.getBean(AADAuthenticationProperties.class);
+                assertEquals(properties.getApplicationType(), AADApplicationType.RESOURCE_SERVER);
+            });
+
+        resourceServerContextRunner()
+            .withPropertyValues("azure.activedirectory.application-type=resource_server")
+            .run(context -> {
+                AADAuthenticationProperties properties = context.getBean(AADAuthenticationProperties.class);
+                assertEquals(properties.getApplicationType(), AADApplicationType.RESOURCE_SERVER);
+            });
+
+        resourceServerWithOboContextRunner()
+            .withPropertyValues("azure.activedirectory.application-type=resource_server")
+            .run(context -> {
+                AADAuthenticationProperties properties = context.getBean(AADAuthenticationProperties.class);
+                assertEquals(properties.getApplicationType(), AADApplicationType.RESOURCE_SERVER);
+            });
+    }
+
+    @Test
     public void applicationTypeOfResourceServerWithOBO() {
         resourceServerWithOboContextRunner()
             .run(context -> {
@@ -237,41 +260,14 @@ public class AADAuthenticationPropertiesTest {
             });
     }
 
-
     @Test
-    public void applicationTypeWithResourceServer() {
-        resourceServerContextRunner()
-            .run(context -> {
-                AADAuthenticationProperties properties = context.getBean(AADAuthenticationProperties.class);
-                assertEquals(properties.getApplicationType(), AADApplicationType.RESOURCE_SERVER);
-            });
-
-        resourceServerContextRunner()
-            .withPropertyValues("azure.activedirectory.application-type=resource_server")
-            .run(context -> {
-                AADAuthenticationProperties properties = context.getBean(AADAuthenticationProperties.class);
-                assertEquals(properties.getApplicationType(), AADApplicationType.RESOURCE_SERVER);
-            });
-
-        resourceServerWithOboContextRunner()
-            .withPropertyValues("azure.activedirectory.application-type=resource_server")
-            .run(context -> {
-                AADAuthenticationProperties properties = context.getBean(AADAuthenticationProperties.class);
-                assertEquals(properties.getApplicationType(), AADApplicationType.RESOURCE_SERVER);
-            });
-    }
-
-    @Test
-    public void applicationTypeOfInvalidWebApplication() {
+    public void testInvalidApplicationType() {
         resourceServerContextRunner()
             .withPropertyValues("azure.activedirectory.application-type=web_application")
             .run(context -> {
                 assertThrows(IllegalStateException.class, () -> context.getBean(AADAuthenticationProperties.class));
             });
-    }
 
-    @Test
-    public void applicationTypeOfInvalidResourceServer() {
         webApplicationContextRunner()
             .withPropertyValues("azure.activedirectory.application-type=resource_server")
             .run(context -> {
