@@ -5,18 +5,14 @@ package com.azure.spring.autoconfigure.aad;
 
 import com.azure.spring.aad.AADApplicationType;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.runner.WebApplicationContextRunner;
 
 import static com.azure.spring.aad.WebApplicationContextRunnerUtils.resourceServerContextRunner;
 import static com.azure.spring.aad.WebApplicationContextRunnerUtils.resourceServerWithOboContextRunner;
-import static com.azure.spring.aad.WebApplicationContextRunnerUtils.webApplicationAndResourceServerContextRunner;
 import static com.azure.spring.aad.WebApplicationContextRunnerUtils.webApplicationContextRunner;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class AADAuthenticationPropertiesTest {
-
-    private final WebApplicationContextRunner contextRunner = new WebApplicationContextRunner();
 
     @Test
     public void webAppWithOboWithExceptionTest() {
@@ -190,15 +186,6 @@ public class AADAuthenticationPropertiesTest {
             .run(context ->
                 assertThrows(IllegalStateException.class, () -> context.getBean(AADAuthenticationProperties.class))
             );
-    }
-
-    private WebApplicationContextRunner contextRunnerWithConfiguredApplicationType(String applicationType) {
-        WebApplicationContextRunner runner = webApplicationAndResourceServerContextRunner();
-        if (applicationType == null) {
-            return runner;
-        }
-        return runner
-            .withPropertyValues("azure.activedirectory.application-type=" + applicationType);
     }
 
     @Test

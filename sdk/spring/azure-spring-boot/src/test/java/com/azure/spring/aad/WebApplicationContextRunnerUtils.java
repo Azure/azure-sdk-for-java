@@ -69,9 +69,4 @@ public class WebApplicationContextRunnerUtils {
             .withPropertyValues(withWebApplicationOrResourceServerWithOboPropertyValues())
             .withPropertyValues(withResourceServerPropertyValues());
     }
-
-    public static WebApplicationContextRunner webApplicationAndResourceServerContextRunner() {
-        return resourceServerWithOboContextRunner()
-            .withPropertyValues("azure.activedirectory.application-type=web_application_and_resource_server");
-    }
 }
