@@ -308,7 +308,7 @@ function PackageDependenciesResolve($artifactNamePrefix, $packageDirectory) {
   $artifactDownloadOutput = mvn `
     dependency:copy `
     -Dartifact="$pomArtifactName" `
-    -DoutputDirectory="$packageDirectory"
+    -DoutputDirectory="$packageDirectory" 2>&1
 
   if ($LASTEXITCODE) {
     LogWarning "Could not download pom artifact: $pomArtifactName"
