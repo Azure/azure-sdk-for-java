@@ -35,6 +35,12 @@ public class AppConfigurationBootstrapConfiguration {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AppConfigurationBootstrapConfiguration.class);
 
+    /**
+     * Creates Connections Pool. Contains basic connection info to each App Configuration Store.
+     * 
+     * @param properties Configured properties to setup connections.
+     * @return ConnectionPool
+     */
     @Bean
     public ConnectionPool initConnectionString(AppConfigurationProperties properties) {
         ConnectionPool pool = new ConnectionPool();
@@ -109,6 +115,16 @@ public class AppConfigurationBootstrapConfiguration {
             keyVaultCredentialProvider, keyVaultClientProvider, keyVaultSecretProvider);
     }
 
+    /**
+     * Builds ClientStores used for connecting to App Configuration.
+     * 
+     * @param properties Client configurations for setting up connections to each config store.
+     * @param appProperties Library configurations for setting up connections to each config store.
+     * @param pool Basic connection info for connecting to each config store.
+     * @param tokenCredentialProviderOptional Optional provider for overriding Token Credentials for connecting to App Configuration.
+     * @param clientProviderOptional Optional client for overriding Client Connections to App Configuration stores.
+     * @return ClientStore
+     */
     @Bean
     public ClientStore buildClientStores(AppConfigurationProperties properties,
         AppConfigurationProviderProperties appProperties, ConnectionPool pool,
