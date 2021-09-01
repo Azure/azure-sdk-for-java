@@ -4,6 +4,7 @@
 package com.azure.core.implementation;
 
 import com.azure.core.util.Context;
+import com.azure.core.util.logging.ClientLogger;
 
 import java.util.Map;
 import java.util.NoSuchElementException;
@@ -13,6 +14,8 @@ import java.util.stream.Stream;
  * This class wraps a Azure-Core context in the reactor Context API, to avoid unnecessary copying
  */
 public final class AzureToReactorContextWrapper implements reactor.util.context.Context {
+    private final ClientLogger logger = new ClientLogger(AzureToReactorContextWrapper.class);
+
     private Context azureContext;
 
     public AzureToReactorContextWrapper(final Context azureContext) {
@@ -38,7 +41,8 @@ public final class AzureToReactorContextWrapper implements reactor.util.context.
 
     @Override
     public reactor.util.context.Context delete(Object key) {
-        throw new UnsupportedOperationException("Deleting from this Reactor Context is not supported");
+        throw logger.logExceptionAsError(
+            new UnsupportedOperationException("Deleting from this Reactor Context is not supported"));
     }
 
     @Override

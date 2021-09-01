@@ -76,7 +76,7 @@ public class ReactorToAzureContextWrapper extends Context {
 
     @Override
     public Map<Object, Object> getValues() {
-        return new AbstractMap<>() {
+        return new AbstractMap<Object, Object>() {
 
             @Override
             public int size() {
@@ -132,10 +132,10 @@ public class ReactorToAzureContextWrapper extends Context {
 
             @Override
             public Set<Entry<Object, Object>> entrySet() {
-                return new AbstractSet<>() {
+                return new AbstractSet<Entry<Object, Object>>() {
                     @Override
                     public Iterator<Entry<Object, Object>> iterator() {
-                        return new Iterator<>() {
+                        return new Iterator<Entry<Object, Object>>() {
                             private final Iterator<Entry<Object, Object>> reactorIterator =
                                 reactorContext.stream().iterator();
 
