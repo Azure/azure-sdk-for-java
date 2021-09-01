@@ -142,6 +142,29 @@ public final class BgpConnectionInner extends SubResource {
     }
 
     /**
+     * Get the hubVirtualNetworkConnection property: The reference to the HubVirtualNetworkConnection resource.
+     *
+     * @return the hubVirtualNetworkConnection value.
+     */
+    public SubResource hubVirtualNetworkConnection() {
+        return this.innerProperties() == null ? null : this.innerProperties().hubVirtualNetworkConnection();
+    }
+
+    /**
+     * Set the hubVirtualNetworkConnection property: The reference to the HubVirtualNetworkConnection resource.
+     *
+     * @param hubVirtualNetworkConnection the hubVirtualNetworkConnection value to set.
+     * @return the BgpConnectionInner object itself.
+     */
+    public BgpConnectionInner withHubVirtualNetworkConnection(SubResource hubVirtualNetworkConnection) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new BgpConnectionProperties();
+        }
+        this.innerProperties().withHubVirtualNetworkConnection(hubVirtualNetworkConnection);
+        return this;
+    }
+
+    /**
      * Get the provisioningState property: The provisioning state of the resource.
      *
      * @return the provisioningState value.

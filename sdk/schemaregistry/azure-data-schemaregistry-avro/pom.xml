@@ -141,6 +141,7 @@
             <configuration>
               <argLine>
                 --add-opens com.azure.data.schemaregistry.avro/com.azure.data.schemaregistry.avro=ALL-UNNAMED
+                --add-opens com.azure.data.schemaregistry.avro/com.azure.data.schemaregistry.avro.generatedtestsources=org.apache.avro,ALL-UNNAMED
               </argLine>
             </configuration>
           </plugin>

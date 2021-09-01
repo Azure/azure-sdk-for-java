@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.HubBgpConnectionStatus;
 import com.azure.resourcemanager.network.models.ProvisioningState;
@@ -27,6 +28,12 @@ public final class BgpConnectionProperties {
      */
     @JsonProperty(value = "peerIp")
     private String peerIp;
+
+    /*
+     * The reference to the HubVirtualNetworkConnection resource.
+     */
+    @JsonProperty(value = "hubVirtualNetworkConnection")
+    private SubResource hubVirtualNetworkConnection;
 
     /*
      * The provisioning state of the resource.
@@ -77,6 +84,26 @@ public final class BgpConnectionProperties {
      */
     public BgpConnectionProperties withPeerIp(String peerIp) {
         this.peerIp = peerIp;
+        return this;
+    }
+
+    /**
+     * Get the hubVirtualNetworkConnection property: The reference to the HubVirtualNetworkConnection resource.
+     *
+     * @return the hubVirtualNetworkConnection value.
+     */
+    public SubResource hubVirtualNetworkConnection() {
+        return this.hubVirtualNetworkConnection;
+    }
+
+    /**
+     * Set the hubVirtualNetworkConnection property: The reference to the HubVirtualNetworkConnection resource.
+     *
+     * @param hubVirtualNetworkConnection the hubVirtualNetworkConnection value to set.
+     * @return the BgpConnectionProperties object itself.
+     */
+    public BgpConnectionProperties withHubVirtualNetworkConnection(SubResource hubVirtualNetworkConnection) {
+        this.hubVirtualNetworkConnection = hubVirtualNetworkConnection;
         return this;
     }
 

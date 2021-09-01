@@ -62,6 +62,12 @@ public final class NetworkVirtualAppliancePropertiesFormat {
     private Long virtualApplianceAsn;
 
     /*
+     * Public key for SSH login.
+     */
+    @JsonProperty(value = "sshPublicKey")
+    private String sshPublicKey;
+
+    /*
      * List of Virtual Appliance Network Interfaces.
      */
     @JsonProperty(value = "virtualApplianceNics", access = JsonProperty.Access.WRITE_ONLY)
@@ -213,6 +219,26 @@ public final class NetworkVirtualAppliancePropertiesFormat {
      */
     public NetworkVirtualAppliancePropertiesFormat withVirtualApplianceAsn(Long virtualApplianceAsn) {
         this.virtualApplianceAsn = virtualApplianceAsn;
+        return this;
+    }
+
+    /**
+     * Get the sshPublicKey property: Public key for SSH login.
+     *
+     * @return the sshPublicKey value.
+     */
+    public String sshPublicKey() {
+        return this.sshPublicKey;
+    }
+
+    /**
+     * Set the sshPublicKey property: Public key for SSH login.
+     *
+     * @param sshPublicKey the sshPublicKey value to set.
+     * @return the NetworkVirtualAppliancePropertiesFormat object itself.
+     */
+    public NetworkVirtualAppliancePropertiesFormat withSshPublicKey(String sshPublicKey) {
+        this.sshPublicKey = sshPublicKey;
         return this;
     }
 

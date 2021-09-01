@@ -8,11 +8,11 @@ import org.springframework.util.ClassUtils;
  * AAD application type.
  * <p>The value can be inferred by dependencies, only 'web_application_and_resource_server' must be configured manually.</p>
  * <pre>
- * | Has dependency: spring-security-oauth2-client | Has dependency: spring-security-oauth2-resource-server | Valid values of application type                                   | Default value               |
- * |-----------------------------------------------|--------------------------------------------------------|--------------------------------------------------------------------|-----------------------------|
- * |                      Yes                      |                          No                            |  'web_application'                                                 |       'web_application'     |
- * |                      No                       |                          Yes                           |  'resource_server'                                                 |       'resource_server'     |
- * |                      Yes                      |                          Yes                           |  'resource_server_with_obo', 'web_application_and_resource_server' | 'resource_server_with_obo'  |
+ * | Has dependency: spring-security-oauth2-client | Has dependency: spring-security-oauth2-resource-server | Valid values of application type                                                                       | Default value               |
+ * |-----------------------------------------------|--------------------------------------------------------|--------------------------------------------------------------------------------------------------------|-----------------------------|
+ * |                      Yes                      |                          No                            |  'web_application'                                                                                     |       'web_application'     |
+ * |                      No                       |                          Yes                           |  'resource_server'                                                                                     |       'resource_server'     |
+ * |                      Yes                      |                          Yes                           |  'web_application','resource_server','resource_server_with_obo', 'web_application_and_resource_server' | 'resource_server_with_obo'  |
  * </pre>
  */
 public enum AADApplicationType {

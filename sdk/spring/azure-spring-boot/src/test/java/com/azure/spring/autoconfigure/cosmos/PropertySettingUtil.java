@@ -21,6 +21,9 @@ public class PropertySettingUtil {
     public static final String PROPERTY_CONSISTENCY_LEVEL = "azure.cosmos.consistency-level";
     public static final String PROPERTY_POPULATE_QUERY_METRICS = "azure.cosmos.populateQueryMetrics";
     public static final String PROPERTY_CONNECTION_MODE = "azure.cosmos.connection-mode";
+    public static final String TEST_URI_HTTPS = "https://test.https.documents.azure.com:443/";
+    public static final String TEST_URI_HTTP = "http://test.http.documents.azure.com:443/";
+    public static final String TEST_URI_FAIL = "http://test.fail.documentsfail.azure.com:443/";
 
     public static void configureCosmosProperties(AnnotationConfigApplicationContext context) {
         addInlinedPropertiesToEnvironment(

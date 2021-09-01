@@ -24,6 +24,8 @@ import com.azure.spring.data.cosmos.core.convert.MappingCosmosConverter;
 import com.azure.spring.data.cosmos.core.generator.CountQueryGenerator;
 import com.azure.spring.data.cosmos.core.generator.FindQuerySpecGenerator;
 import com.azure.spring.data.cosmos.core.generator.NativeQueryGenerator;
+import com.azure.spring.data.cosmos.core.mapping.event.AfterLoadEvent;
+import com.azure.spring.data.cosmos.core.mapping.event.CosmosMappingEvent;
 import com.azure.spring.data.cosmos.core.query.CosmosPageImpl;
 import com.azure.spring.data.cosmos.core.query.CosmosPageRequest;
 import com.azure.spring.data.cosmos.core.query.CosmosQuery;
@@ -73,6 +75,8 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
     private final ResponseDiagnosticsProcessor responseDiagnosticsProcessor;
     private final boolean queryMetricsEnabled;
     private final CosmosAsyncClient cosmosAsyncClient;
+
+    private ApplicationContext applicationContext;
 
     /**
      * Initialization
@@ -144,6 +148,7 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
      * @throws BeansException the bean exception
      */
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+        this.applicationContext = applicationContext;
     }
 
     /**
@@ -249,7 +254,7 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
             .flatMap(cosmosItemResponse -> {
                 CosmosUtils.fillAndProcessResponseDiagnostics(this.responseDiagnosticsProcessor,
                     cosmosItemResponse.getDiagnostics(), null);
-                return Mono.justOrEmpty(toDomainObject(domainType, cosmosItemResponse.getItem()));
+                return Mono.justOrEmpty(emitOnLoadEventAndConvertToDomainObject(domainType, containerName, cosmosItemResponse.getItem()));
             })
             .onErrorResume(throwable ->
                 CosmosExceptionUtils.findAPIExceptionHandler("Failed to find item", throwable))
@@ -286,7 +291,7 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
                 return Mono.justOrEmpty(cosmosItemFeedResponse
                     .getResults()
                     .stream()
-                    .map(cosmosItem -> toDomainObject(domainType, cosmosItem))
+                    .map(cosmosItem -> emitOnLoadEventAndConvertToDomainObject(domainType, containerName, cosmosItem))
                     .findFirst());
             })
             .onErrorResume(throwable ->
@@ -408,7 +413,7 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
                     cosmosItemFeedResponse.getCosmosDiagnostics(), cosmosItemFeedResponse);
                 return Flux.fromIterable(cosmosItemFeedResponse.getResults());
             })
-            .map(jsonNode -> toDomainObject(domainType, jsonNode))
+            .map(jsonNode -> emitOnLoadEventAndConvertToDomainObject(domainType, containerName, jsonNode))
             .onErrorResume(throwable ->
                 CosmosExceptionUtils.exceptionHandler("Failed to find items", throwable))
             .toIterable();
@@ -808,7 +813,7 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
     public <T> Iterable<T> runQuery(SqlQuerySpec querySpec, Sort sort, Class<?> domainType, Class<T> returnType) {
         querySpec = NativeQueryGenerator.getInstance().generateSortedQuery(querySpec, sort);
         return getJsonNodeFluxFromQuerySpec(getContainerName(domainType), querySpec)
-                   .map(jsonNode -> toDomainObject(returnType, jsonNode))
+                   .map(jsonNode -> emitOnLoadEventAndConvertToDomainObject(returnType, getContainerName(domainType), jsonNode))
                    .collectList()
                    .block();
     }
@@ -901,7 +906,7 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
                                       @NonNull String containerName,
                                       @NonNull Class<T> domainType) {
         return findItemsAsFlux(query, containerName, domainType)
-            .map(jsonNode -> toDomainObject(domainType, jsonNode))
+            .map(jsonNode -> emitOnLoadEventAndConvertToDomainObject(domainType, containerName, jsonNode))
             .toIterable();
     }
 
@@ -925,6 +930,11 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
             .block();
     }
 
+    private <T> T emitOnLoadEventAndConvertToDomainObject(@NonNull Class<T> domainType, String containerName, JsonNode responseJsonNode) {
+        maybeEmitEvent(new AfterLoadEvent<>(responseJsonNode, domainType, containerName));
+        return toDomainObject(domainType, responseJsonNode);
+    }
+
     private <T> T toDomainObject(@NonNull Class<T> domainType, JsonNode responseJsonNode) {
         return mappingCosmosConverter.read(domainType, responseJsonNode);
     }
@@ -936,6 +946,20 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
         if (entityInformation.isVersioned()) {
             options.setIfMatchETag(jsonNode.get(Constants.ETAG_PROPERTY_DEFAULT_NAME).asText());
         }
+    }
+
+    private void maybeEmitEvent(CosmosMappingEvent<?> event) {
+        try {
+            if (canPublishEvent()) {
+                this.applicationContext.publishEvent(event);
+            }
+        } catch (Exception ex) {
+            LOGGER.warn("Encountered an exception while trying to emit spring application event", ex);
+        }
+    }
+
+    private boolean canPublishEvent() {
+        return this.applicationContext != null;
     }
 
 }
