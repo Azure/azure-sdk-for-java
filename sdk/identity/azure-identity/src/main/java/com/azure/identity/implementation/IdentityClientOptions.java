@@ -332,11 +332,11 @@ public final class IdentityClientOptions {
     /**
      * Configure the User Assertion Scope to be used for OnBehalfOf Authentication request.
      *
-     * @param userAssertion the user assertion to be used for On behalf Of authentication flow
+     * @param userAssertion the user assertion access token to be used for On behalf Of authentication flow
      * @return the updated identity client options
      */
-    public IdentityClientOptions userAssertion(UserAssertion userAssertion) {
-        this.userAssertion = userAssertion;
+    public IdentityClientOptions userAssertion(String userAssertion) {
+        this.userAssertion = new UserAssertion(userAssertion);
         return this;
     }
 

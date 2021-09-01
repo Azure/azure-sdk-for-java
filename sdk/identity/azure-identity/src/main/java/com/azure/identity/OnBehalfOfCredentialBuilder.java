@@ -30,11 +30,11 @@ public class OnBehalfOfCredentialBuilder extends AadCredentialBuilderBase<OnBeha
     /**
      * Configure the User Assertion Scope to be used for OnBehalfOf Authentication request.
      *
-     * @param userAssertionScope the user assertion to be used for On behalf Of authentication flow
+     * @param userAssertion the user assertion access token to be used for On behalf Of authentication flow
      * @return An updated instance of this builder with the user assertion scope configured.
      */
-    public OnBehalfOfCredentialBuilder userAssertionScope(UserAssertionScope userAssertionScope) {
-        this.identityClientOptions.userAssertion(userAssertionScope.getUserAssertion());
+    public OnBehalfOfCredentialBuilder userAssertion(String userAssertion) {
+        this.identityClientOptions.userAssertion();
         return this;
     }
 
