@@ -4,6 +4,8 @@
 package com.azure.monitor.query.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.models.HttpResponseError;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.logging.ClientLogger;
 
 import java.util.List;
@@ -13,22 +15,22 @@ import java.util.stream.Collectors;
  * The result of a logs query.
  */
 @Immutable
-public final class LogsQueryResult {
+public class LogsQueryResult {
     private final List<LogsTable> logsTables;
-    private final LogsQueryStatistics statistics;
-    private final LogsQueryError error;
-    private final LogsQueryVisualization visualization;
+    private final BinaryData statistics;
+    private final HttpResponseError error;
+    private final BinaryData visualization;
     private final ClientLogger logger = new ClientLogger(LogsQueryResult.class);
 
     /**
      * Creates an instance {@link LogsQueryResult} with a list of {@link LogsTable}.
      * @param logsTables The list of {@link LogsTable} returned as query result.
      * @param statistics The query execution statistics.
-     * @param error The error details if there was an error executing the query.
      * @param visualization The visualization information for the logs query.
+     * @param error The error details if there was an error executing the query.
      */
-    public LogsQueryResult(List<LogsTable> logsTables, LogsQueryStatistics statistics,
-                           LogsQueryVisualization visualization, LogsQueryError error) {
+    public LogsQueryResult(List<LogsTable> logsTables, BinaryData statistics,
+                           BinaryData visualization, HttpResponseError error) {
         this.logsTables = logsTables;
         this.statistics = statistics;
         this.error = error;
@@ -39,8 +41,25 @@ public final class LogsQueryResult {
      * The list of {@link LogsTable} returned as query result.
      * @return The list of {@link LogsTable} returned as query result.
      */
-    public List<LogsTable> getLogsTables() {
+    public List<LogsTable> getAllTables() {
         return logsTables;
+    }
+
+    /**
+     * The primary {@link LogsTable} returned as query result.
+     * @return The primary {@link LogsTable} returned as query result.
+     * @throws IllegalStateException If this method is called when the query result contains more than one table.
+     */
+    public LogsTable getTable() {
+        if (logsTables == null) {
+            return null;
+        }
+
+        if (logsTables.size() > 1) {
+            throw logger.logExceptionAsError(new IllegalStateException("The query result contains more than one table."
+                    + " Use getAllTables() method instead."));
+        }
+        return logsTables.get(0);
     }
 
     /**
@@ -52,7 +71,7 @@ public final class LogsQueryResult {
      * @return A list of objects corresponding to the list of rows in the response table.
      * @throws IllegalStateException if the query response contains more than one table.
      */
-    public <T> List<T> toObject(Class<T> type) {
+    <T> List<T> toObject(Class<T> type) {
         if (this.logsTables.size() != 1) {
             throw logger.logExceptionAsError(
                     new IllegalStateException("Cannot map result to object if the response contains multiple tables."));
@@ -69,7 +88,7 @@ public final class LogsQueryResult {
      * Returns the query statistics.
      * @return the query statistics.
      */
-    public LogsQueryStatistics getStatistics() {
+    public BinaryData getStatistics() {
         return statistics;
     }
 
@@ -77,7 +96,7 @@ public final class LogsQueryResult {
      * Returns the error details if there was an error executing the query.
      * @return the error details if there was an error executing the query.
      */
-    public LogsQueryError getError() {
+    public HttpResponseError getError() {
         return error;
     }
 
@@ -85,7 +104,7 @@ public final class LogsQueryResult {
      * Returns the visualization information for the logs query.
      * @return the visualization information for the logs query.
      */
-    public LogsQueryVisualization getVisualization() {
+    public BinaryData getVisualization() {
         return visualization;
     }
 }

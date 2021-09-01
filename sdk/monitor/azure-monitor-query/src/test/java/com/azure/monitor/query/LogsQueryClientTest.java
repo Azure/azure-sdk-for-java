@@ -5,6 +5,7 @@ package com.azure.monitor.query;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.experimental.models.TimeInterval;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
@@ -17,8 +18,7 @@ import com.azure.core.util.Context;
 import com.azure.identity.ClientSecretCredentialBuilder;
 import com.azure.monitor.query.models.LogsBatchQuery;
 import com.azure.monitor.query.models.LogsBatchQueryResult;
-import com.azure.monitor.query.models.LogsBatchQueryResultCollection;
-import com.azure.monitor.query.models.LogsQueryException;
+import com.azure.monitor.query.models.LogsBatchQueryResults;
 import com.azure.monitor.query.models.LogsQueryOptions;
 import com.azure.monitor.query.models.LogsQueryResult;
 import org.junit.jupiter.api.BeforeEach;
@@ -89,31 +89,31 @@ public class LogsQueryClientTest extends TestBase {
         LogsQueryResult queryResults = client.query(WORKSPACE_ID, "AppRequests",
                 new TimeInterval(OffsetDateTime.of(LocalDateTime.of(2021, 01, 01, 0, 0), ZoneOffset.UTC),
                         OffsetDateTime.of(LocalDateTime.of(2021, 06, 10, 0, 0), ZoneOffset.UTC)));
-        assertEquals(1, queryResults.getLogsTables().size());
-        assertEquals(902, queryResults.getLogsTables().get(0).getAllTableCells().size());
-        assertEquals(22, queryResults.getLogsTables().get(0).getRows().size());
+        assertEquals(1, queryResults.getAllTables().size());
+        assertEquals(902, queryResults.getAllTables().get(0).getAllTableCells().size());
+        assertEquals(22, queryResults.getAllTables().get(0).getRows().size());
     }
 
     @Test
     public void testLogsQueryBatch() {
-        LogsBatchQuery logsBatchQuery = new LogsBatchQuery()
-                .addQuery(WORKSPACE_ID, "AppRequests | take 2", null)
-                .addQuery(WORKSPACE_ID, "AppRequests | take 3", null);
+        LogsBatchQuery logsBatchQuery = new LogsBatchQuery();
+        logsBatchQuery.addQuery(WORKSPACE_ID, "AppRequests | take 2", null);
+        logsBatchQuery.addQuery(WORKSPACE_ID, "AppRequests | take 3", null);
 
-        LogsBatchQueryResultCollection batchResultCollection = client
+        LogsBatchQueryResults batchResultCollection = client
                 .queryBatchWithResponse(logsBatchQuery, Context.NONE).getValue();
 
         List<LogsBatchQueryResult> responses = batchResultCollection.getBatchResults();
 
         assertEquals(2, responses.size());
 
-        assertEquals(1, responses.get(0).getQueryResult().getLogsTables().size());
-        assertEquals(82, responses.get(0).getQueryResult().getLogsTables().get(0).getAllTableCells().size());
-        assertEquals(2, responses.get(0).getQueryResult().getLogsTables().get(0).getRows().size());
+        assertEquals(1, responses.get(0).getAllTables().size());
+        assertEquals(82, responses.get(0).getAllTables().get(0).getAllTableCells().size());
+        assertEquals(2, responses.get(0).getAllTables().get(0).getRows().size());
 
-        assertEquals(1, responses.get(1).getQueryResult().getLogsTables().size());
-        assertEquals(123, responses.get(1).getQueryResult().getLogsTables().get(0).getAllTableCells().size());
-        assertEquals(3, responses.get(1).getQueryResult().getLogsTables().get(0).getRows().size());
+        assertEquals(1, responses.get(1).getAllTables().size());
+        assertEquals(123, responses.get(1).getAllTables().get(0).getAllTableCells().size());
+        assertEquals(3, responses.get(1).getAllTables().get(0).getRows().size());
     }
 
     @Test
@@ -123,9 +123,9 @@ public class LogsQueryClientTest extends TestBase {
                 new LogsQueryOptions()
                         .setAdditionalWorkspaces(Arrays.asList("9dad0092-fd13-403a-b367-a189a090a541")), Context.NONE)
                 .getValue();
-        assertEquals(1, queryResults.getLogsTables().size());
+        assertEquals(1, queryResults.getAllTables().size());
         assertEquals(2, queryResults
-                .getLogsTables()
+                .getAllTables()
                 .get(0)
                 .getRows()
                 .stream()
@@ -139,22 +139,21 @@ public class LogsQueryClientTest extends TestBase {
 
     @Test
     public void testBatchQueryPartialSuccess() {
-        LogsBatchQuery logsBatchQuery = new LogsBatchQuery()
-                .addQuery(WORKSPACE_ID, "AppRequests | take 2", null)
-                .addQuery(WORKSPACE_ID, "AppRequests | take", null);
+        LogsBatchQuery logsBatchQuery = new LogsBatchQuery();
+        logsBatchQuery.addQuery(WORKSPACE_ID, "AppRequests | take 2", null);
+        logsBatchQuery.addQuery(WORKSPACE_ID, "AppRequests | take", null);
 
-        LogsBatchQueryResultCollection batchResultCollection = client
+        LogsBatchQueryResults batchResultCollection = client
                 .queryBatchWithResponse(logsBatchQuery, Context.NONE).getValue();
 
         List<LogsBatchQueryResult> responses = batchResultCollection.getBatchResults();
 
         assertEquals(2, responses.size());
         assertEquals(200, responses.get(0).getStatus());
-        assertNotNull(responses.get(0).getQueryResult());
-        assertNull(responses.get(0).getQueryResult().getError());
+        assertNull(responses.get(0).getError());
         assertEquals(400, responses.get(1).getStatus());
-        assertNotNull(responses.get(1).getQueryResult().getError());
-        assertEquals("BadArgumentError", responses.get(1).getQueryResult().getError().getCode());
+        assertNotNull(responses.get(1).getError());
+        assertEquals("BadArgumentError", responses.get(1).getError().getCode());
     }
 
     @Test
@@ -162,31 +161,29 @@ public class LogsQueryClientTest extends TestBase {
         LogsQueryResult queryResults = client.queryWithResponse(WORKSPACE_ID,
                 "AppRequests", null, new LogsQueryOptions().setIncludeStatistics(true), Context.NONE).getValue();
 
-        assertEquals(1, queryResults.getLogsTables().size());
+        assertEquals(1, queryResults.getAllTables().size());
         assertNotNull(queryResults.getStatistics());
     }
 
     @Test
     public void testBatchStatistics() {
-        LogsBatchQuery logsBatchQuery = new LogsBatchQuery()
-                .addQuery(WORKSPACE_ID, "AppRequests | take 2", null)
-                .addQuery(WORKSPACE_ID, "AppRequests | take 2", null,
+        LogsBatchQuery logsBatchQuery = new LogsBatchQuery();
+        logsBatchQuery.addQuery(WORKSPACE_ID, "AppRequests | take 2", null);
+        logsBatchQuery.addQuery(WORKSPACE_ID, "AppRequests | take 2", null,
                         new LogsQueryOptions().setIncludeStatistics(true));
 
-        LogsBatchQueryResultCollection batchResultCollection = client
+        LogsBatchQueryResults batchResultCollection = client
                 .queryBatchWithResponse(logsBatchQuery, Context.NONE).getValue();
 
         List<LogsBatchQueryResult> responses = batchResultCollection.getBatchResults();
 
         assertEquals(2, responses.size());
         assertEquals(200, responses.get(0).getStatus());
-        assertNotNull(responses.get(0).getQueryResult());
-        assertNull(responses.get(0).getQueryResult().getError());
-        assertNull(responses.get(0).getQueryResult().getStatistics());
+        assertNull(responses.get(0).getError());
+        assertNull(responses.get(0).getStatistics());
         assertEquals(200, responses.get(1).getStatus());
-        assertNotNull(responses.get(1).getQueryResult());
-        assertNull(responses.get(1).getQueryResult().getError());
-        assertNotNull(responses.get(1).getQueryResult().getStatistics());
+        assertNull(responses.get(1).getError());
+        assertNotNull(responses.get(1).getStatistics());
     }
 
     @Test
@@ -205,8 +202,8 @@ public class LogsQueryClientTest extends TestBase {
                                 .setServerTimeout(Duration.ofSeconds(5)),
                         Context.NONE);
             } catch (Exception exception) {
-                if (exception instanceof LogsQueryException) {
-                    LogsQueryException logsQueryException = (LogsQueryException) exception;
+                if (exception instanceof HttpResponseException) {
+                    HttpResponseException logsQueryException = (HttpResponseException) exception;
                     if (logsQueryException.getResponse().getStatusCode() == 504) {
                         break;
                     }

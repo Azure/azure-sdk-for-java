@@ -3,371 +3,163 @@
 
 package com.azure.monitor.query.models;
 
-import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.monitor.query.implementation.metrics.models.MetricsHelper;
+
 import java.util.List;
 
-/** Metric definition class specifies the metadata for a metric. */
-@Fluent
+/**
+ * Metric definition class specifies the metadata for a metric.
+ */
 public final class MetricDefinition {
-    /*
-     * Flag to indicate whether the dimension is required.
-     */
-    @JsonProperty(value = "isDimensionRequired")
+
     private Boolean isDimensionRequired;
-
-    /*
-     * the resource identifier of the resource that emitted the metric.
-     */
-    @JsonProperty(value = "resourceId")
     private String resourceId;
-
-    /*
-     * the namespace the metric belongs to.
-     */
-    @JsonProperty(value = "namespace")
     private String namespace;
-
-    /*
-     * the name and the display name of the metric, i.e. it is a localizable
-     * string.
-     */
-    @JsonProperty(value = "name")
-    private LocalizableString name;
-
-    /*
-     * Detailed description of this metric.
-     */
-    @JsonProperty(value = "displayDescription")
-    private String displayDescription;
-
-    /*
-     * Custom category name for this metric.
-     */
-    @JsonProperty(value = "category")
+    private String name;
+    private String description;
     private String category;
-
-    /*
-     * The class of the metric.
-     */
-    @JsonProperty(value = "metricClass")
     private MetricClass metricClass;
-
-    /*
-     * The unit of the metric.
-     */
-    @JsonProperty(value = "unit")
     private MetricUnit unit;
-
-    /*
-     * the primary aggregation type value defining how to use the values for
-     * display.
-     */
-    @JsonProperty(value = "primaryAggregationType")
     private AggregationType primaryAggregationType;
-
-    /*
-     * the collection of what aggregation types are supported.
-     */
-    @JsonProperty(value = "supportedAggregationTypes")
     private List<AggregationType> supportedAggregationTypes;
-
-    /*
-     * the collection of what aggregation intervals are available to be
-     * queried.
-     */
-    @JsonProperty(value = "metricAvailabilities")
     private List<MetricAvailability> metricAvailabilities;
-
-    /*
-     * the resource identifier of the metric definition.
-     */
-    @JsonProperty(value = "id")
     private String id;
+    private List<String> dimensions;
 
-    /*
-     * the name and the display name of the dimension, i.e. it is a localizable
-     * string.
-     */
-    @JsonProperty(value = "dimensions")
-    private List<LocalizableString> dimensions;
+    static {
+        MetricsHelper.setMetricDefinitionAccessor(MetricDefinition::setMetricDefinitionProperties);
+    }
+
+    private void setMetricDefinitionProperties(Boolean dimensionRequired,
+                                               String resourceId,
+                                               String namespace,
+                                               String name,
+                                               String displayDescription,
+                                               String category,
+                                               MetricClass metricClass,
+                                               MetricUnit unit,
+                                               AggregationType primaryAggregationType,
+                                               List<AggregationType> supportedAggregationTypes,
+                                               List<MetricAvailability> metricAvailabilities,
+                                               String id,
+                                               List<String> dimensions) {
+
+        this.isDimensionRequired = dimensionRequired;
+        this.resourceId = resourceId;
+        this.namespace = namespace;
+        this.name = name;
+        this.description = displayDescription;
+        this.category = category;
+        this.metricClass = metricClass;
+        this.unit = unit;
+        this.primaryAggregationType = primaryAggregationType;
+        this.supportedAggregationTypes = supportedAggregationTypes;
+        this.metricAvailabilities = metricAvailabilities;
+        this.id = id;
+        this.dimensions = dimensions;
+    }
 
     /**
-     * Get the isDimensionRequired property: Flag to indicate whether the dimension is required.
-     *
-     * @return the isDimensionRequired value.
+     * Returns a flag to indicate whether the dimension is required.
+     * @return Flag to indicate whether the dimension is required.
      */
     public Boolean isDimensionRequired() {
-        return this.isDimensionRequired;
+        return isDimensionRequired;
     }
 
     /**
-     * Set the isDimensionRequired property: Flag to indicate whether the dimension is required.
-     *
-     * @param isDimensionRequired the isDimensionRequired value to set.
-     * @return the MetricDefinition object itself.
-     */
-    public MetricDefinition setIsDimensionRequired(Boolean isDimensionRequired) {
-        this.isDimensionRequired = isDimensionRequired;
-        return this;
-    }
-
-    /**
-     * Get the resourceId property: the resource identifier of the resource that emitted the metric.
-     *
-     * @return the resourceId value.
+     * Returns the resource identifier of the resource that emitted the metric.
+     * @return the resource identifier of the resource that emitted the metric.
      */
     public String getResourceId() {
-        return this.resourceId;
+        return resourceId;
     }
 
     /**
-     * Set the resourceId property: the resource identifier of the resource that emitted the metric.
-     *
-     * @param resourceId the resourceId value to set.
-     * @return the MetricDefinition object itself.
-     */
-    public MetricDefinition setResourceId(String resourceId) {
-        this.resourceId = resourceId;
-        return this;
-    }
-
-    /**
-     * Get the namespace property: the namespace the metric belongs to.
-     *
-     * @return the namespace value.
+     * Returns the namespace the metric belongs to.
+     * @return the namespace the metric belongs to.
      */
     public String getNamespace() {
-        return this.namespace;
+        return namespace;
     }
 
     /**
-     * Set the namespace property: the namespace the metric belongs to.
-     *
-     * @param namespace the namespace value to set.
-     * @return the MetricDefinition object itself.
+     * Returns the name of the metric,
+     * @return the name of the metric,
      */
-    public MetricDefinition setNamespace(String namespace) {
-        this.namespace = namespace;
-        return this;
+    public String getName() {
+        return name;
     }
 
     /**
-     * Get the name property: the name and the display name of the metric, i.e. it is a localizable string.
-     *
-     * @return the name value.
+     * Returns the detailed description of this metric.
+     * @return detailed description of this metric.
      */
-    public LocalizableString getName() {
-        return this.name;
+    public String getDescription() {
+        return description;
     }
 
     /**
-     * Set the name property: the name and the display name of the metric, i.e. it is a localizable string.
-     *
-     * @param name the name value to set.
-     * @return the MetricDefinition object itself.
-     */
-    public MetricDefinition setName(LocalizableString name) {
-        this.name = name;
-        return this;
-    }
-
-    /**
-     * Get the displayDescription property: Detailed description of this metric.
-     *
-     * @return the displayDescription value.
-     */
-    public String getDisplayDescription() {
-        return this.displayDescription;
-    }
-
-    /**
-     * Set the displayDescription property: Detailed description of this metric.
-     *
-     * @param displayDescription the displayDescription value to set.
-     * @return the MetricDefinition object itself.
-     */
-    public MetricDefinition setDisplayDescription(String displayDescription) {
-        this.displayDescription = displayDescription;
-        return this;
-    }
-
-    /**
-     * Get the category property: Custom category name for this metric.
-     *
-     * @return the category value.
+     * Returns the custom category name for this metric.
+     * @return custom category name for this metric.
      */
     public String getCategory() {
-        return this.category;
+        return category;
     }
 
     /**
-     * Set the category property: Custom category name for this metric.
-     *
-     * @param category the category value to set.
-     * @return the MetricDefinition object itself.
-     */
-    public MetricDefinition setCategory(String category) {
-        this.category = category;
-        return this;
-    }
-
-    /**
-     * Get the metricClass property: The class of the metric.
-     *
-     * @return the metricClass value.
+     * Returns the class of the metric.
+     * @return the class of the metric.
      */
     public MetricClass getMetricClass() {
-        return this.metricClass;
+        return metricClass;
     }
 
     /**
-     * Set the metricClass property: The class of the metric.
-     *
-     * @param metricClass the metricClass value to set.
-     * @return the MetricDefinition object itself.
-     */
-    public MetricDefinition setMetricClass(MetricClass metricClass) {
-        this.metricClass = metricClass;
-        return this;
-    }
-
-    /**
-     * Get the unit property: The unit of the metric.
-     *
-     * @return the unit value.
+     * Returns the unit of the metric.
+     * @return the unit of the metric.
      */
     public MetricUnit getUnit() {
-        return this.unit;
+        return unit;
     }
 
     /**
-     * Set the unit property: The unit of the metric.
-     *
-     * @param unit the unit value to set.
-     * @return the MetricDefinition object itself.
-     */
-    public MetricDefinition setUnit(MetricUnit unit) {
-        this.unit = unit;
-        return this;
-    }
-
-    /**
-     * Get the primaryAggregationType property: the primary aggregation type value defining how to use the values for
-     * display.
-     *
-     * @return the primaryAggregationType value.
+     * Returns the primary aggregation type value defining how to use the values for display.
+     * @return the primary aggregation type value defining how to use the values for display.
      */
     public AggregationType getPrimaryAggregationType() {
-        return this.primaryAggregationType;
+        return primaryAggregationType;
     }
 
     /**
-     * Set the primaryAggregationType property: the primary aggregation type value defining how to use the values for
-     * display.
-     *
-     * @param primaryAggregationType the primaryAggregationType value to set.
-     * @return the MetricDefinition object itself.
-     */
-    public MetricDefinition setPrimaryAggregationType(AggregationType primaryAggregationType) {
-        this.primaryAggregationType = primaryAggregationType;
-        return this;
-    }
-
-    /**
-     * Get the supportedAggregationTypes property: the collection of what aggregation types are supported.
-     *
-     * @return the supportedAggregationTypes value.
+     * Returns the collection of what aggregation types are supported.
+     * @return the collection of what aggregation types are supported.
      */
     public List<AggregationType> getSupportedAggregationTypes() {
-        return this.supportedAggregationTypes;
+        return supportedAggregationTypes;
     }
 
     /**
-     * Set the supportedAggregationTypes property: the collection of what aggregation types are supported.
-     *
-     * @param supportedAggregationTypes the supportedAggregationTypes value to set.
-     * @return the MetricDefinition object itself.
-     */
-    public MetricDefinition setSupportedAggregationTypes(List<AggregationType> supportedAggregationTypes) {
-        this.supportedAggregationTypes = supportedAggregationTypes;
-        return this;
-    }
-
-    /**
-     * Get the metricAvailabilities property: the collection of what aggregation intervals are available to be queried.
-     *
-     * @return the metricAvailabilities value.
+     * Returns the collection of what aggregation intervals are available to be queried.
+     * @return the collection of what aggregation intervals are available to be queried.
      */
     public List<MetricAvailability> getMetricAvailabilities() {
-        return this.metricAvailabilities;
+        return metricAvailabilities;
     }
 
     /**
-     * Set the metricAvailabilities property: the collection of what aggregation intervals are available to be queried.
-     *
-     * @param metricAvailabilities the metricAvailabilities value to set.
-     * @return the MetricDefinition object itself.
-     */
-    public MetricDefinition setMetricAvailabilities(List<MetricAvailability> metricAvailabilities) {
-        this.metricAvailabilities = metricAvailabilities;
-        return this;
-    }
-
-    /**
-     * Get the id property: the resource identifier of the metric definition.
-     *
-     * @return the id value.
+     * The resource identifier of the metric definition.
+     * @return the resource identifier of the metric definition.
      */
     public String getId() {
-        return this.id;
+        return id;
     }
 
     /**
-     * Set the id property: the resource identifier of the metric definition.
-     *
-     * @param id the id value to set.
-     * @return the MetricDefinition object itself.
+     * Returns the names of all the dimensions available for this metric.
+     * @return the names of all the dimensions available for this metric.
      */
-    public MetricDefinition setId(String id) {
-        this.id = id;
-        return this;
-    }
-
-    /**
-     * Get the dimensions property: the name and the display name of the dimension, i.e. it is a localizable string.
-     *
-     * @return the dimensions value.
-     */
-    public List<LocalizableString> getDimensions() {
-        return this.dimensions;
-    }
-
-    /**
-     * Set the dimensions property: the name and the display name of the dimension, i.e. it is a localizable string.
-     *
-     * @param dimensions the dimensions value to set.
-     * @return the MetricDefinition object itself.
-     */
-    public MetricDefinition setDimensions(List<LocalizableString> dimensions) {
-        this.dimensions = dimensions;
-        return this;
-    }
-
-    /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (getName() != null) {
-            getName().validate();
-        }
-        if (getMetricAvailabilities() != null) {
-            getMetricAvailabilities().forEach(e -> e.validate());
-        }
-        if (getDimensions() != null) {
-            getDimensions().forEach(e -> e.validate());
-        }
+    public List<String> getDimensions() {
+        return dimensions;
     }
 }
