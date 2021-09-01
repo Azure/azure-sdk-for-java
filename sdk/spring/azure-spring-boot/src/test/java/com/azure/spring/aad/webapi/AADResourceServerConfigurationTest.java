@@ -2,14 +2,11 @@
 // Licensed under the MIT License.
 package com.azure.spring.aad.webapi;
 
-import com.azure.spring.autoconfigure.aad.AADAutoConfiguration;
 import com.nimbusds.jwt.proc.JWTClaimsSetAwareJWSKeySelector;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.boot.test.context.FilteredClassLoader;
-import org.springframework.boot.test.context.runner.WebApplicationContextRunner;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.core.OAuth2TokenValidator;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
@@ -44,16 +41,13 @@ public class AADResourceServerConfigurationTest {
 
     @Test
     public void testNotAudienceDefaultValidator() {
-        new WebApplicationContextRunner()
-            .withClassLoader(new FilteredClassLoader(ClientRegistration.class))
-            .withPropertyValues("azure.activedirectory.tenant-id=fake-tenant-id")
-            .withUserConfiguration(AADAutoConfiguration.class)
+        resourceServerContextRunner()
             .run(context -> {
                 AADResourceServerConfiguration bean = context
                     .getBean(AADResourceServerConfiguration.class);
                 List<OAuth2TokenValidator<Jwt>> defaultValidator = bean.createDefaultValidator();
                 assertThat(defaultValidator).isNotNull();
-                assertThat(defaultValidator).hasSize(2);
+                assertThat(defaultValidator).hasSize(3);
             });
     }
 

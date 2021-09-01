@@ -60,7 +60,7 @@ public class AADOAuth2ClientConfigurationTest {
     }
 
     @Test
-    public void testOnlyGraphClient() {
+    public void testResourceServerWithOboOnlyGraphClient() {
         resourceServerWithOboContextRunner()
             .withPropertyValues("azure.activedirectory.authorization-clients.graph.scopes="
                 + "https://graph.microsoft.com/User.Read")

@@ -29,7 +29,6 @@ public class WebApplicationContextRunnerUtils {
             .withClassLoader(new FilteredClassLoader(BearerTokenAuthenticationToken.class));
     }
 
-
     public static WebApplicationContextRunner resourceServerRunner() {
         return oauthClientAndResourceServerRunner()
             .withClassLoader(new FilteredClassLoader(ClientRegistration.class));
@@ -71,7 +70,7 @@ public class WebApplicationContextRunnerUtils {
             .withPropertyValues(withResourceServerPropertyValues());
     }
 
-    public static WebApplicationContextRunner oauthClientAndResourceServerContextRunner() {
+    public static WebApplicationContextRunner webApplicationAndResourceServerContextRunner() {
         return resourceServerWithOboContextRunner()
             .withPropertyValues("azure.activedirectory.application-type=web_application_and_resource_server");
     }
