@@ -517,11 +517,11 @@ public class IdentityClient {
      * @param request the details of the token request
      * @return a Publisher that emits an AccessToken
      */
-    public Mono<AccessToken> authenticateWithOBO(TokenRequestContext request, UserAssertion userAssertion) {
+    public Mono<AccessToken> authenticateWithOBO(TokenRequestContext request) {
 
         return confidentialClientApplicationAccessor.getValue()
             .flatMap(confidentialClient -> Mono.fromFuture(() -> confidentialClient.acquireToken(OnBehalfOfParameters
-                    .builder(new HashSet<>(request.getScopes()), userAssertion)
+                    .builder(new HashSet<>(request.getScopes()), options.getUserAssertion())
                     .build()))
                 .map(MsalToken::new));
     }

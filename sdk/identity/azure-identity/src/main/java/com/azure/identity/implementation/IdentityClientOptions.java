@@ -7,11 +7,9 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.ProxyOptions;
 import com.azure.core.util.Configuration;
-import com.azure.identity.AuthenticationRecord;
-import com.azure.identity.AzureAuthorityHosts;
-import com.azure.identity.RegionalAuthority;
-import com.azure.identity.TokenCachePersistenceOptions;
+import com.azure.identity.*;
 import com.azure.identity.implementation.util.ValidationUtil;
+import com.microsoft.aad.msal4j.UserAssertion;
 
 import java.time.Duration;
 import java.util.concurrent.ExecutorService;
@@ -39,6 +37,7 @@ public final class IdentityClientOptions {
     private TokenCachePersistenceOptions tokenCachePersistenceOptions;
     private boolean cp1Disabled;
     private RegionalAuthority regionalAuthority;
+    private UserAssertion userAssertion;
 
     /**
      * Creates an instance of IdentityClientOptions with default settings.
@@ -327,5 +326,26 @@ public final class IdentityClientOptions {
      */
     public RegionalAuthority getRegionalAuthority() {
         return regionalAuthority;
+    }
+
+
+    /**
+     * Configure the User Assertion Scope to be used for OnBehalfOf Authentication request.
+     *
+     * @param userAssertion the user assertion to be used for On behalf Of authentication flow
+     * @return the updated identity client options
+     */
+    public IdentityClientOptions userAssertion(UserAssertion userAssertion) {
+        this.userAssertion = userAssertion;
+        return this;
+    }
+
+    /**
+     * Get the configured {@link UserAssertion}
+     *
+     * @return the configured user assertion scope
+     */
+    public UserAssertion getUserAssertion() {
+        return this.userAssertion;
     }
 }

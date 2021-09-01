@@ -26,4 +26,19 @@ public class OnBehalfOfCredentialBuilder extends AadCredentialBuilderBase<OnBeha
         this.identityClientOptions.setTokenCacheOptions(tokenCachePersistenceOptions);
         return this;
     }
+
+    /**
+     * Configure the User Assertion Scope to be used for OnBehalfOf Authentication request.
+     *
+     * @param userAssertionScope the user assertion to be used for On behalf Of authentication flow
+     * @return An updated instance of this builder with the user assertion scope configured.
+     */
+    public OnBehalfOfCredentialBuilder userAssertionScope(UserAssertionScope userAssertionScope) {
+        this.identityClientOptions.userAssertion(userAssertionScope.getUserAssertion());
+        return this;
+    }
+
+    public OnBehalfOfCredential build() {
+        return new OnBehalfOfCredential(clientId, tenantId, clientSecret, identityClientOptions);
+    }
 }

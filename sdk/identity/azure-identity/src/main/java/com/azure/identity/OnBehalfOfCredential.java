@@ -13,39 +13,39 @@ import reactor.core.publisher.Mono;
 import java.util.HashMap;
 import java.util.concurrent.ConcurrentHashMap;
 
+/**
+ * An AAD credential that acquires a token with a client secret and user assertion for an AAD application
+ * on behalf of a user principal.
+ */
 public class OnBehalfOfCredential implements TokenCredential {
-    private String clientId;
-    private String tenantId;
-    private String clientSecret;
-    private IdentityClientOptions options;
-    private volatile HashMap<UserAssertionScope, IdentityClient> userAssertionClientMap;
+    private IdentityClient identityClient;
     private final ClientLogger logger = new ClientLogger(OnBehalfOfCredential.class);
 
 
+    /**
+     * Creates OnBehalfOfCredential with the specified AAD application details and client options.
+     *
+     * @param tenantId the tenant ID of the application
+     * @param clientId the client ID of the application
+     * @param clientSecret the secret value of the AAD application.
+     * @param identityClientOptions the options for configuring the identity client
+     */
     public OnBehalfOfCredential(String clientId, String tenantId, String clientSecret,
-                                IdentityClientOptions options) {
-        this.clientId = clientId;
-        this.tenantId = tenantId;
-        this.clientSecret = clientSecret;
-        this.options = options;
-        this.userAssertionClientMap = new HashMap<>();
+                                IdentityClientOptions identityClientOptions) {
+        this.identityClient = new IdentityClientBuilder()
+            .tenantId(tenantId)
+            .clientId(clientId)
+            .clientSecret(clientSecret)
+            .identityClientOptions(identityClientOptions)
+            .build();
     }
 
     @Override
     public Mono<AccessToken> getToken(TokenRequestContext request) {
         return Mono.deferContextual(ctx -> {
-            UserAssertionScope scope = ctx.get(UserAssertionScope.USER_ASSERTION_SCOPE_KEY);
-            IdentityClient client = userAssertionClientMap.containsKey(scope) ? userAssertionClientMap.get(scope)
-                : userAssertionClientMap.put(scope, new IdentityClientBuilder()
-                    .tenantId(tenantId)
-                    .clientId(clientId)
-                    .clientSecret(clientSecret)
-                    .identityClientOptions(options)
-                    .build());
-
-            return client.authenticateWithConfidentialClientCache(request)
+            return identityClient.authenticateWithConfidentialClientCache(request)
                 .onErrorResume(t -> Mono.empty())
-                .switchIfEmpty(Mono.defer(() -> client.authenticateWithOBO(request, scope.UserAssertion)))
+                .switchIfEmpty(Mono.defer(() -> identityClient.authenticateWithOBO(request)))
                 .doOnNext(token -> LoggingUtil.logTokenSuccess(logger, request))
                 .doOnError(error -> LoggingUtil.logTokenError(logger, request, error));
         });
