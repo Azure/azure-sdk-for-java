@@ -10,7 +10,7 @@ import reactor.core.publisher.Mono;
 import reactor.util.function.Tuple2;
 import reactor.util.function.Tuples;
 
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -26,14 +26,11 @@ public class ChainedPollingStrategy<T, U> implements PollingStrategy<T, U> {
     private volatile PollingStrategy<T, U> pollableStrategy = null;
 
     /**
-     * Creates an empty chained polling strategy.
+     * Creates a chained polling strategy with a list of polling strategies.
+     * @param strategies the list of polling strategies
      */
-    public ChainedPollingStrategy() {
-        this.pollingStrategies = new ArrayList<>();
-    }
-
     public ChainedPollingStrategy(List<PollingStrategy<T, U>> strategies) {
-        this.pollingStrategies = strategies;
+        this.pollingStrategies = Collections.unmodifiableList(strategies);
     }
 
     @Override

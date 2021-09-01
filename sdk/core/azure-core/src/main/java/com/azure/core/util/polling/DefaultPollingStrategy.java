@@ -6,6 +6,7 @@ package com.azure.core.util.polling;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
+import com.azure.core.util.serializer.JsonSerializer;
 import com.azure.core.util.serializer.TypeReference;
 import reactor.core.publisher.Mono;
 
@@ -26,7 +27,7 @@ public class DefaultPollingStrategy<T, U> implements PollingStrategy<T, U> {
 
     /**
      * Creates a chained polling strategy with 3 known polling strategies, {@link OperationResourcePollingStrategy},
-     * {@link LocationPollingStrategy}, and {@link StatusCheckPollingStrategy}, in this order.
+     * {@link LocationPollingStrategy}, and {@link StatusCheckPollingStrategy}, in this order, with a JSON serializer.
      *
      * @param httpPipeline an instance of {@link HttpPipeline} to send requests with
      * @param context additional metadata to pass along with the request
@@ -36,6 +37,22 @@ public class DefaultPollingStrategy<T, U> implements PollingStrategy<T, U> {
             new OperationResourcePollingStrategy<>(httpPipeline, context),
             new LocationPollingStrategy<>(httpPipeline, context),
             new StatusCheckPollingStrategy<>()));
+    }
+
+    /**
+     * Creates a chained polling strategy with 3 known polling strategies, {@link OperationResourcePollingStrategy},
+     * {@link LocationPollingStrategy}, and {@link StatusCheckPollingStrategy}, in this order, with a custom
+     * serializer.
+     *
+     * @param httpPipeline an instance of {@link HttpPipeline} to send requests with
+     * @param context additional metadata to pass along with the request
+     * @param serializer a custom serializer for serializing and deserializing polling responses
+     */
+    public DefaultPollingStrategy(HttpPipeline httpPipeline, Context context, JsonSerializer serializer) {
+        this.chainedPollingStrategy = new ChainedPollingStrategy<>(Arrays.asList(
+            new OperationResourcePollingStrategy<>(httpPipeline, context, serializer, null),
+            new LocationPollingStrategy<>(httpPipeline, context, serializer),
+            new StatusCheckPollingStrategy<>(serializer)));
     }
 
     @Override

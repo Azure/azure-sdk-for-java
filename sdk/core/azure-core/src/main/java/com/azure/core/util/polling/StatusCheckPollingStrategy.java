@@ -23,7 +23,22 @@ import java.time.Duration;
  *           kept
  */
 public class StatusCheckPollingStrategy<T, U> implements PollingStrategy<T, U> {
-    private static final ObjectSerializer SERIALIZER = new DefaultJsonSerializer();
+    private final ObjectSerializer serializer;
+
+    /**
+     * Creates a status check polling strategy with a JSON serializer.
+     */
+    public StatusCheckPollingStrategy() {
+        this(new DefaultJsonSerializer());
+    }
+
+    /**
+     * Creates a status check polling strategy with a custom object serializer.
+     * @param serializer a custom serializer for serializing and deserializing polling responses
+     */
+    public StatusCheckPollingStrategy(ObjectSerializer serializer) {
+        this.serializer = serializer;
+    }
 
     @Override
     public Mono<Boolean> canPoll(Response<?> initialResponse) {
@@ -39,7 +54,7 @@ public class StatusCheckPollingStrategy<T, U> implements PollingStrategy<T, U> {
                 || response.getStatusCode() == 204) {
             String retryAfterValue = response.getHeaders().getValue(PollingConstants.RETRY_AFTER);
             Duration retryAfter = retryAfterValue == null ? null : Duration.ofSeconds(Long.parseLong(retryAfterValue));
-            return PollingUtils.convertResponse(response.getValue(), SERIALIZER, pollResponseType)
+            return PollingUtils.convertResponse(response.getValue(), serializer, pollResponseType)
                 .map(value -> new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, value, retryAfter))
                 .switchIfEmpty(Mono.defer(() -> Mono.just(new PollResponse<>(
                     LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, null, retryAfter))));
@@ -56,6 +71,6 @@ public class StatusCheckPollingStrategy<T, U> implements PollingStrategy<T, U> {
     @Override
     public Mono<U> getResult(PollingContext<T> pollingContext, TypeReference<U> resultType) {
         T activationResponse = pollingContext.getActivationResponse().getValue();
-        return PollingUtils.convertResponse(activationResponse, SERIALIZER, resultType);
+        return PollingUtils.convertResponse(activationResponse, serializer, resultType);
     }
 }

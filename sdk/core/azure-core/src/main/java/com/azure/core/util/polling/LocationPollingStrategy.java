@@ -28,22 +28,32 @@ import java.time.Duration;
  *           kept
  */
 public class LocationPollingStrategy<T, U> implements PollingStrategy<T, U> {
-    private static final ObjectSerializer SERIALIZER = new DefaultJsonSerializer();
 
     private final HttpPipeline httpPipeline;
     private final Context context;
+    private final ObjectSerializer serializer;
+
+    /**
+     * Creates an instance of the location polling strategy using a JSON serializer.
+     *
+     * @param httpPipeline an instance of {@link HttpPipeline} to send requests with
+     * @param context additional metadata to pass along with the request
+     */
+    public LocationPollingStrategy(HttpPipeline httpPipeline, Context context) {
+        this(httpPipeline, context, new DefaultJsonSerializer());
+    }
 
     /**
      * Creates an instance of the location polling strategy.
      *
      * @param httpPipeline an instance of {@link HttpPipeline} to send requests with
      * @param context additional metadata to pass along with the request
+     * @param serializer a custom serializer for serializing and deserializing polling responses
      */
-    public LocationPollingStrategy(
-            HttpPipeline httpPipeline,
-            Context context) {
+    public LocationPollingStrategy(HttpPipeline httpPipeline, Context context, ObjectSerializer serializer) {
         this.httpPipeline = httpPipeline;
         this.context = context;
+        this.serializer = serializer;
     }
 
     @Override
@@ -68,7 +78,7 @@ public class LocationPollingStrategy<T, U> implements PollingStrategy<T, U> {
                 || response.getStatusCode() == 204) {
             String retryAfterValue = response.getHeaders().getValue(PollingConstants.RETRY_AFTER);
             Duration retryAfter = retryAfterValue == null ? null : Duration.ofSeconds(Long.parseLong(retryAfterValue));
-            return PollingUtils.convertResponse(response.getValue(), SERIALIZER, pollResponseType)
+            return PollingUtils.convertResponse(response.getValue(), serializer, pollResponseType)
                 .map(value -> new PollResponse<>(LongRunningOperationStatus.IN_PROGRESS, value, retryAfter))
                 .switchIfEmpty(Mono.defer(() -> Mono.just(new PollResponse<>(
                     LongRunningOperationStatus.IN_PROGRESS, null, retryAfter))));
@@ -100,7 +110,7 @@ public class LocationPollingStrategy<T, U> implements PollingStrategy<T, U> {
                 String retryAfterValue = response.getHeaders().getValue(PollingConstants.RETRY_AFTER);
                 Duration retryAfter = retryAfterValue == null ? null
                     : Duration.ofSeconds(Long.parseLong(retryAfterValue));
-                return PollingUtils.deserializeResponse(binaryData, SERIALIZER, pollResponseType)
+                return PollingUtils.deserializeResponse(binaryData, serializer, pollResponseType)
                     .map(value -> new PollResponse<>(status, value, retryAfter));
             });
         });
@@ -128,11 +138,11 @@ public class LocationPollingStrategy<T, U> implements PollingStrategy<T, U> {
 
         if (finalGetUrl == null) {
             String latestResponseBody = pollingContext.getData(PollingConstants.POLL_RESPONSE_BODY);
-            return PollingUtils.deserializeResponse(BinaryData.fromString(latestResponseBody), SERIALIZER, resultType);
+            return PollingUtils.deserializeResponse(BinaryData.fromString(latestResponseBody), serializer, resultType);
         } else {
             HttpRequest request = new HttpRequest(HttpMethod.GET, finalGetUrl);
             return httpPipeline.send(request, context).flatMap(response -> BinaryData.fromFlux(response.getBody()))
-                .flatMap(binaryData -> PollingUtils.deserializeResponse(binaryData, SERIALIZER, resultType));
+                .flatMap(binaryData -> PollingUtils.deserializeResponse(binaryData, serializer, resultType));
         }
     }
 }
