@@ -91,7 +91,7 @@ public class AccessTokenCacheImpl {
                         } else {
                             // wait for timeout, then refresh
                             tokenRefresh = Mono.defer(tokenSupplier)
-                                .delaySubscription(Duration.between(now, nextTokenRefresh));
+                                               .delaySubscription(Duration.between(now, nextTokenRefresh));
                         }
                         // cache doesn't exist or expired, no fallback
                         fallback = Mono.empty();
@@ -108,10 +108,10 @@ public class AccessTokenCacheImpl {
                         fallback = Mono.just(cache);
                     }
                     return tokenRefresh
-                        .materialize()
-                        .flatMap(processTokenRefreshResult(sinksOne, now, fallback))
-                        .doOnError(sinksOne::tryEmitError)
-                        .doFinally(ignored -> wip.set(null));
+                       .materialize()
+                       .flatMap(processTokenRefreshResult(sinksOne, now, fallback))
+                       .doOnError(sinksOne::tryEmitError)
+                       .doFinally(ignored -> wip.set(null));
                 } else {
                     return Mono.empty();
                 }
@@ -124,8 +124,8 @@ public class AccessTokenCacheImpl {
     private boolean checkIfWeShouldForceRefresh(TokenRequestContext tokenRequestContext) {
         return !(this.tokenRequestContext != null
             && (this.tokenRequestContext.getClaims() == null ? tokenRequestContext.getClaims() == null
-            : (tokenRequestContext.getClaims() == null ? false
-            : tokenRequestContext.getClaims().equals(this.tokenRequestContext.getClaims())))
+                : (tokenRequestContext.getClaims() == null ? false
+                        : tokenRequestContext.getClaims().equals(this.tokenRequestContext.getClaims())))
             && this.tokenRequestContext.getScopes().equals(tokenRequestContext.getScopes()));
     }
 
