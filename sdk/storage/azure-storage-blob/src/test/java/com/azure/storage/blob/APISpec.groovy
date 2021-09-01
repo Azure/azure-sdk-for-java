@@ -146,7 +146,10 @@ class APISpec extends StorageSpec {
     def setOauthCredentials(BlobServiceClientBuilder builder) {
         if (env.testMode != TestMode.PLAYBACK) {
             // AZURE_TENANT_ID, AZURE_CLIENT_ID, AZURE_CLIENT_SECRET
-            return builder.credential(new EnvironmentCredentialBuilder().build())
+            return builder.credential(
+                new EnvironmentCredentialBuilder()
+                    .executorService(executorService) // https://github.com/Azure/azure-sdk-for-java/issues/22687
+                    .build())
         } else {
             // Running in playback, we don't have access to the AAD environment variables, just use SharedKeyCredential.
             return builder.credential(env.primaryAccount.credential)

@@ -16,9 +16,13 @@ import com.azure.core.util.ServiceVersion
 import com.azure.core.util.logging.ClientLogger
 import com.azure.identity.EnvironmentCredentialBuilder
 import okhttp3.ConnectionPool
+import org.jetbrains.annotations.NotNull
 import spock.lang.Specification
 
 import java.time.Duration
+import java.util.concurrent.ExecutorService
+import java.util.concurrent.Executors
+import java.util.concurrent.ThreadFactory
 import java.util.concurrent.TimeUnit
 import java.util.function.Predicate
 import java.util.function.Supplier
@@ -28,6 +32,14 @@ class StorageSpec extends Specification {
     private static final HttpClient NETTY_HTTP_CLIENT = new NettyAsyncHttpClientBuilder().build()
     private static final HttpClient OK_HTTP_CLIENT = new OkHttpAsyncHttpClientBuilder().connectionPool(new ConnectionPool(50, 5, TimeUnit.MINUTES)).build()
     private static final ClientLogger LOGGER = new ClientLogger(StorageSpec.class)
+    private static final ExecutorService EXECUTOR_SERVICE = Executors.newCachedThreadPool(new ThreadFactory() {
+        @Override
+        Thread newThread(@NotNull Runnable r) {
+            Thread t = Executors.defaultThreadFactory().newThread(r);
+            t.setDaemon(true);
+            return t;
+        }
+    })
 
     private InterceptorManager interceptorManager
     private StorageResourceNamer namer
@@ -101,12 +113,18 @@ class StorageSpec extends Specification {
         }
     }
 
+    protected ExecutorService getExecutorService() {
+        return EXECUTOR_SERVICE
+    }
+
     private static String getAuthToken() {
         if (env.testMode == TestMode.PLAYBACK) {
             // we just need some string to satisfy SDK for playback mode. Recording framework handles this fine.
             return "recordingBearerToken"
         }
-        return new EnvironmentCredentialBuilder().build()
+        return new EnvironmentCredentialBuilder()
+            .executorService(EXECUTOR_SERVICE) // https://github.com/Azure/azure-sdk-for-java/issues/22687
+            .build()
             .getToken(new TokenRequestContext().setScopes(["https://storage.azure.com/.default"]))
             .map { it.getToken() }
             .block()

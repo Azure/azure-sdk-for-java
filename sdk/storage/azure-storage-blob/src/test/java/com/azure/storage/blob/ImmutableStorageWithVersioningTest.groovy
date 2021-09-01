@@ -168,7 +168,9 @@ class ImmutableStorageWithVersioningTest extends APISpec {
     }
 
     private HttpPipeline createSrpPipeline() {
-        TokenCredential credential = new EnvironmentCredentialBuilder().build()
+        TokenCredential credential = new EnvironmentCredentialBuilder()
+            .executorService(executorService) // https://github.com/Azure/azure-sdk-for-java/issues/22687
+            .build()
         BearerTokenAuthenticationPolicy credentialPolicy = new BearerTokenAuthenticationPolicy(credential, "https://management.azure.com/.default")
         HttpPipeline httpPipeline = new HttpPipelineBuilder()
             .policies(credentialPolicy)
