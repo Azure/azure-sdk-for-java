@@ -4,8 +4,7 @@
 
 package com.azure.resourcemanager.appservice.fluent.models;
 
-import com.azure.core.annotation.Immutable;
-import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.models.ProxyOnlyResource;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -13,40 +12,24 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** Static sites user roles invitation link resource. */
-@JsonFlatten
-@Immutable
-public class StaticSiteUserInvitationResponseResourceInner extends ProxyOnlyResource {
+@Fluent
+public final class StaticSiteUserInvitationResponseResourceInner extends ProxyOnlyResource {
     @JsonIgnore
     private final ClientLogger logger = new ClientLogger(StaticSiteUserInvitationResponseResourceInner.class);
 
     /*
-     * The expiration time of the invitation
+     * StaticSiteUserInvitationResponseResource resource specific properties
      */
-    @JsonProperty(value = "properties.expiresOn", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime expiresOn;
-
-    /*
-     * The url for the invitation link
-     */
-    @JsonProperty(value = "properties.invitationUrl", access = JsonProperty.Access.WRITE_ONLY)
-    private String invitationUrl;
+    @JsonProperty(value = "properties")
+    private StaticSiteUserInvitationResponseResourceProperties innerProperties;
 
     /**
-     * Get the expiresOn property: The expiration time of the invitation.
+     * Get the innerProperties property: StaticSiteUserInvitationResponseResource resource specific properties.
      *
-     * @return the expiresOn value.
+     * @return the innerProperties value.
      */
-    public OffsetDateTime expiresOn() {
-        return this.expiresOn;
-    }
-
-    /**
-     * Get the invitationUrl property: The url for the invitation link.
-     *
-     * @return the invitationUrl value.
-     */
-    public String invitationUrl() {
-        return this.invitationUrl;
+    private StaticSiteUserInvitationResponseResourceProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /** {@inheritDoc} */
@@ -57,6 +40,24 @@ public class StaticSiteUserInvitationResponseResourceInner extends ProxyOnlyReso
     }
 
     /**
+     * Get the expiresOn property: The expiration time of the invitation.
+     *
+     * @return the expiresOn value.
+     */
+    public OffsetDateTime expiresOn() {
+        return this.innerProperties() == null ? null : this.innerProperties().expiresOn();
+    }
+
+    /**
+     * Get the invitationUrl property: The url for the invitation link.
+     *
+     * @return the invitationUrl value.
+     */
+    public String invitationUrl() {
+        return this.innerProperties() == null ? null : this.innerProperties().invitationUrl();
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -64,5 +65,8 @@ public class StaticSiteUserInvitationResponseResourceInner extends ProxyOnlyReso
     @Override
     public void validate() {
         super.validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

@@ -5,47 +5,37 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.models.ProxyOnlyResource;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** User credentials used for publishing activity. */
-@JsonFlatten
 @Fluent
-public class UserInner extends ProxyOnlyResource {
+public final class UserInner extends ProxyOnlyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(UserInner.class);
 
     /*
-     * Username used for publishing.
+     * User resource specific properties
      */
-    @JsonProperty(value = "properties.publishingUserName")
-    private String publishingUsername;
+    @JsonProperty(value = "properties")
+    private UserProperties innerProperties;
 
-    /*
-     * Password used for publishing.
+    /**
+     * Get the innerProperties property: User resource specific properties.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.publishingPassword")
-    private String publishingPassword;
+    private UserProperties innerProperties() {
+        return this.innerProperties;
+    }
 
-    /*
-     * Password hash used for publishing.
-     */
-    @JsonProperty(value = "properties.publishingPasswordHash")
-    private String publishingPasswordHash;
-
-    /*
-     * Password hash salt used for publishing.
-     */
-    @JsonProperty(value = "properties.publishingPasswordHashSalt")
-    private String publishingPasswordHashSalt;
-
-    /*
-     * Url of SCM site.
-     */
-    @JsonProperty(value = "properties.scmUri")
-    private String scmUri;
+    /** {@inheritDoc} */
+    @Override
+    public UserInner withKind(String kind) {
+        super.withKind(kind);
+        return this;
+    }
 
     /**
      * Get the publishingUsername property: Username used for publishing.
@@ -53,7 +43,7 @@ public class UserInner extends ProxyOnlyResource {
      * @return the publishingUsername value.
      */
     public String publishingUsername() {
-        return this.publishingUsername;
+        return this.innerProperties() == null ? null : this.innerProperties().publishingUsername();
     }
 
     /**
@@ -63,7 +53,10 @@ public class UserInner extends ProxyOnlyResource {
      * @return the UserInner object itself.
      */
     public UserInner withPublishingUsername(String publishingUsername) {
-        this.publishingUsername = publishingUsername;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new UserProperties();
+        }
+        this.innerProperties().withPublishingUsername(publishingUsername);
         return this;
     }
 
@@ -73,7 +66,7 @@ public class UserInner extends ProxyOnlyResource {
      * @return the publishingPassword value.
      */
     public String publishingPassword() {
-        return this.publishingPassword;
+        return this.innerProperties() == null ? null : this.innerProperties().publishingPassword();
     }
 
     /**
@@ -83,7 +76,10 @@ public class UserInner extends ProxyOnlyResource {
      * @return the UserInner object itself.
      */
     public UserInner withPublishingPassword(String publishingPassword) {
-        this.publishingPassword = publishingPassword;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new UserProperties();
+        }
+        this.innerProperties().withPublishingPassword(publishingPassword);
         return this;
     }
 
@@ -93,7 +89,7 @@ public class UserInner extends ProxyOnlyResource {
      * @return the publishingPasswordHash value.
      */
     public String publishingPasswordHash() {
-        return this.publishingPasswordHash;
+        return this.innerProperties() == null ? null : this.innerProperties().publishingPasswordHash();
     }
 
     /**
@@ -103,7 +99,10 @@ public class UserInner extends ProxyOnlyResource {
      * @return the UserInner object itself.
      */
     public UserInner withPublishingPasswordHash(String publishingPasswordHash) {
-        this.publishingPasswordHash = publishingPasswordHash;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new UserProperties();
+        }
+        this.innerProperties().withPublishingPasswordHash(publishingPasswordHash);
         return this;
     }
 
@@ -113,7 +112,7 @@ public class UserInner extends ProxyOnlyResource {
      * @return the publishingPasswordHashSalt value.
      */
     public String publishingPasswordHashSalt() {
-        return this.publishingPasswordHashSalt;
+        return this.innerProperties() == null ? null : this.innerProperties().publishingPasswordHashSalt();
     }
 
     /**
@@ -123,7 +122,10 @@ public class UserInner extends ProxyOnlyResource {
      * @return the UserInner object itself.
      */
     public UserInner withPublishingPasswordHashSalt(String publishingPasswordHashSalt) {
-        this.publishingPasswordHashSalt = publishingPasswordHashSalt;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new UserProperties();
+        }
+        this.innerProperties().withPublishingPasswordHashSalt(publishingPasswordHashSalt);
         return this;
     }
 
@@ -133,7 +135,7 @@ public class UserInner extends ProxyOnlyResource {
      * @return the scmUri value.
      */
     public String scmUri() {
-        return this.scmUri;
+        return this.innerProperties() == null ? null : this.innerProperties().scmUri();
     }
 
     /**
@@ -143,14 +145,10 @@ public class UserInner extends ProxyOnlyResource {
      * @return the UserInner object itself.
      */
     public UserInner withScmUri(String scmUri) {
-        this.scmUri = scmUri;
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public UserInner withKind(String kind) {
-        super.withKind(kind);
+        if (this.innerProperties() == null) {
+            this.innerProperties = new UserProperties();
+        }
+        this.innerProperties().withScmUri(scmUri);
         return this;
     }
 
@@ -162,5 +160,8 @@ public class UserInner extends ProxyOnlyResource {
     @Override
     public void validate() {
         super.validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

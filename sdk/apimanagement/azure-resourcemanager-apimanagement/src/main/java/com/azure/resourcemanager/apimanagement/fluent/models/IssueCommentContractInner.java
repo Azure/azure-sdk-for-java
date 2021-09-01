@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.apimanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -13,28 +12,24 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** Issue Comment Contract details. */
-@JsonFlatten
 @Fluent
-public class IssueCommentContractInner extends ProxyResource {
+public final class IssueCommentContractInner extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(IssueCommentContractInner.class);
 
     /*
-     * Comment text.
+     * Properties of the Issue Comment.
      */
-    @JsonProperty(value = "properties.text")
-    private String text;
+    @JsonProperty(value = "properties")
+    private IssueCommentContractProperties innerProperties;
 
-    /*
-     * Date and time when the comment was created.
+    /**
+     * Get the innerProperties property: Properties of the Issue Comment.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.createdDate")
-    private OffsetDateTime createdDate;
-
-    /*
-     * A resource identifier for the user who left the comment.
-     */
-    @JsonProperty(value = "properties.userId")
-    private String userId;
+    private IssueCommentContractProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the text property: Comment text.
@@ -42,7 +37,7 @@ public class IssueCommentContractInner extends ProxyResource {
      * @return the text value.
      */
     public String text() {
-        return this.text;
+        return this.innerProperties() == null ? null : this.innerProperties().text();
     }
 
     /**
@@ -52,7 +47,10 @@ public class IssueCommentContractInner extends ProxyResource {
      * @return the IssueCommentContractInner object itself.
      */
     public IssueCommentContractInner withText(String text) {
-        this.text = text;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new IssueCommentContractProperties();
+        }
+        this.innerProperties().withText(text);
         return this;
     }
 
@@ -62,7 +60,7 @@ public class IssueCommentContractInner extends ProxyResource {
      * @return the createdDate value.
      */
     public OffsetDateTime createdDate() {
-        return this.createdDate;
+        return this.innerProperties() == null ? null : this.innerProperties().createdDate();
     }
 
     /**
@@ -72,7 +70,10 @@ public class IssueCommentContractInner extends ProxyResource {
      * @return the IssueCommentContractInner object itself.
      */
     public IssueCommentContractInner withCreatedDate(OffsetDateTime createdDate) {
-        this.createdDate = createdDate;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new IssueCommentContractProperties();
+        }
+        this.innerProperties().withCreatedDate(createdDate);
         return this;
     }
 
@@ -82,7 +83,7 @@ public class IssueCommentContractInner extends ProxyResource {
      * @return the userId value.
      */
     public String userId() {
-        return this.userId;
+        return this.innerProperties() == null ? null : this.innerProperties().userId();
     }
 
     /**
@@ -92,7 +93,10 @@ public class IssueCommentContractInner extends ProxyResource {
      * @return the IssueCommentContractInner object itself.
      */
     public IssueCommentContractInner withUserId(String userId) {
-        this.userId = userId;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new IssueCommentContractProperties();
+        }
+        this.innerProperties().withUserId(userId);
         return this;
     }
 
@@ -102,5 +106,8 @@ public class IssueCommentContractInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

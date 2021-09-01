@@ -44,6 +44,18 @@ public final class BackupPolicyImpl implements BackupPolicy, BackupPolicy.Defini
         }
     }
 
+    public String etag() {
+        return this.innerModel().etag();
+    }
+
+    public String namePropertiesName() {
+        return this.innerModel().namePropertiesName();
+    }
+
+    public String backupPolicyId() {
+        return this.innerModel().backupPolicyId();
+    }
+
     public String provisioningState() {
         return this.innerModel().provisioningState();
     }
@@ -58,10 +70,6 @@ public final class BackupPolicyImpl implements BackupPolicy, BackupPolicy.Defini
 
     public Integer monthlyBackupsToKeep() {
         return this.innerModel().monthlyBackupsToKeep();
-    }
-
-    public Integer yearlyBackupsToKeep() {
-        return this.innerModel().yearlyBackupsToKeep();
     }
 
     public Integer volumesAssigned() {
@@ -237,42 +245,12 @@ public final class BackupPolicyImpl implements BackupPolicy, BackupPolicy.Defini
         }
     }
 
-    public BackupPolicyImpl withYearlyBackupsToKeep(Integer yearlyBackupsToKeep) {
-        if (isInCreateMode()) {
-            this.innerModel().withYearlyBackupsToKeep(yearlyBackupsToKeep);
-            return this;
-        } else {
-            this.updateBody.withYearlyBackupsToKeep(yearlyBackupsToKeep);
-            return this;
-        }
-    }
-
-    public BackupPolicyImpl withVolumesAssigned(Integer volumesAssigned) {
-        if (isInCreateMode()) {
-            this.innerModel().withVolumesAssigned(volumesAssigned);
-            return this;
-        } else {
-            this.updateBody.withVolumesAssigned(volumesAssigned);
-            return this;
-        }
-    }
-
     public BackupPolicyImpl withEnabled(Boolean enabled) {
         if (isInCreateMode()) {
             this.innerModel().withEnabled(enabled);
             return this;
         } else {
             this.updateBody.withEnabled(enabled);
-            return this;
-        }
-    }
-
-    public BackupPolicyImpl withVolumeBackups(List<VolumeBackups> volumeBackups) {
-        if (isInCreateMode()) {
-            this.innerModel().withVolumeBackups(volumeBackups);
-            return this;
-        } else {
-            this.updateBody.withVolumeBackups(volumeBackups);
             return this;
         }
     }

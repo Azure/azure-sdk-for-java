@@ -9,7 +9,7 @@ import static com.azure.spring.cloud.config.web.TestConstants.TEST_STORE_NAME;
 import static com.azure.spring.cloud.config.web.TestUtils.propPair;
 import static org.assertj.core.api.Assertions.assertThat;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.boot.actuate.autoconfigure.endpoint.web.WebEndpointProperties;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.FilteredClassLoader;

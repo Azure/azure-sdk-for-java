@@ -5,15 +5,14 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.network.fluent.models.TroubleshootingProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Parameters that define the resource to troubleshoot. */
-@JsonFlatten
 @Fluent
-public class TroubleshootingParameters {
+public final class TroubleshootingParameters {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(TroubleshootingParameters.class);
 
     /*
@@ -23,16 +22,10 @@ public class TroubleshootingParameters {
     private String targetResourceId;
 
     /*
-     * The ID for the storage account to save the troubleshoot result.
+     * Properties of the troubleshooting resource.
      */
-    @JsonProperty(value = "properties.storageId", required = true)
-    private String storageId;
-
-    /*
-     * The path to the blob to save the troubleshoot result in.
-     */
-    @JsonProperty(value = "properties.storagePath", required = true)
-    private String storagePath;
+    @JsonProperty(value = "properties", required = true)
+    private TroubleshootingProperties innerProperties = new TroubleshootingProperties();
 
     /**
      * Get the targetResourceId property: The target resource to troubleshoot.
@@ -55,12 +48,21 @@ public class TroubleshootingParameters {
     }
 
     /**
+     * Get the innerProperties property: Properties of the troubleshooting resource.
+     *
+     * @return the innerProperties value.
+     */
+    private TroubleshootingProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
      * Get the storageId property: The ID for the storage account to save the troubleshoot result.
      *
      * @return the storageId value.
      */
     public String storageId() {
-        return this.storageId;
+        return this.innerProperties() == null ? null : this.innerProperties().storageId();
     }
 
     /**
@@ -70,7 +72,10 @@ public class TroubleshootingParameters {
      * @return the TroubleshootingParameters object itself.
      */
     public TroubleshootingParameters withStorageId(String storageId) {
-        this.storageId = storageId;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new TroubleshootingProperties();
+        }
+        this.innerProperties().withStorageId(storageId);
         return this;
     }
 
@@ -80,7 +85,7 @@ public class TroubleshootingParameters {
      * @return the storagePath value.
      */
     public String storagePath() {
-        return this.storagePath;
+        return this.innerProperties() == null ? null : this.innerProperties().storagePath();
     }
 
     /**
@@ -90,7 +95,10 @@ public class TroubleshootingParameters {
      * @return the TroubleshootingParameters object itself.
      */
     public TroubleshootingParameters withStoragePath(String storagePath) {
-        this.storagePath = storagePath;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new TroubleshootingProperties();
+        }
+        this.innerProperties().withStoragePath(storagePath);
         return this;
     }
 
@@ -106,17 +114,13 @@ public class TroubleshootingParameters {
                     new IllegalArgumentException(
                         "Missing required property targetResourceId in model TroubleshootingParameters"));
         }
-        if (storageId() == null) {
+        if (innerProperties() == null) {
             throw logger
                 .logExceptionAsError(
                     new IllegalArgumentException(
-                        "Missing required property storageId in model TroubleshootingParameters"));
-        }
-        if (storagePath() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property storagePath in model TroubleshootingParameters"));
+                        "Missing required property innerProperties in model TroubleshootingParameters"));
+        } else {
+            innerProperties().validate();
         }
     }
 }

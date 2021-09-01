@@ -64,10 +64,10 @@ class BlockBlobAPITest extends APISpec {
         blobName = generateBlobName()
         blobClient = cc.getBlobClient(blobName)
         blockBlobClient = blobClient.getBlockBlobClient()
-        blockBlobClient.upload(data.defaultInputStream, data.defaultDataSize)
+        blockBlobClient.upload(data.defaultInputStream, data.defaultDataSize, true)
         blobAsyncClient = ccAsync.getBlobAsyncClient(generateBlobName())
         blockBlobAsyncClient = blobAsyncClient.getBlockBlobAsyncClient()
-        blockBlobAsyncClient.upload(data.defaultFlux, data.defaultDataSize).block()
+        blockBlobAsyncClient.upload(data.defaultFlux, data.defaultDataSize, true).block()
     }
 
     def "Stage block"() {

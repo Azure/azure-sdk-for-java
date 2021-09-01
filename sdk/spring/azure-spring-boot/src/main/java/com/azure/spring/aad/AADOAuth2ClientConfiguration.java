@@ -31,7 +31,7 @@ public class AADOAuth2ClientConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public AADClientRegistrationRepository clientRegistrationRepository(AADAuthenticationProperties properties) {
+    public ClientRegistrationRepository clientRegistrationRepository(AADAuthenticationProperties properties) {
         return new AADClientRegistrationRepository(properties);
     }
 

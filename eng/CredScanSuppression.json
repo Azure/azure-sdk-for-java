@@ -16,12 +16,27 @@
                 "dummyPassword",
                 "P@ssw0rd",
                 "12NewPA$$w0rd!",
-                "Samp1eP@ssw0rd"
+                "Samp1eP@ssw0rd",
+                "facebookapplicationsecret",
+                "updatedfacebooksecret"
             ],
             "_justification": "Secret used by test code, it is fake."
         },
         {
+            "placeholder": "*sig=sD3fPKLnFKZUjnSV4qA%2FXoJOqsmDfNfxWcZ7kPtLc0I%3D*",
+            "_justification": "Base-64 encoded SHA-256 of a placeholder above."
+        },
+        {
+            "placeholder": "95o6TL9jkIjNr6HurD6Xa+zLQ+PX9/VWR8fI2ofHatbrUb8kRJ75B6enwRU3q1OP8fmjghaoxdqnwhN7m3pZow=",
+            "_justification": "Well-known Account Key"
+        },
+        {
+            "placeholder": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+            "_justification": "SHA-256 encrypted random data generated at test time."
+        },
+        {
             "file":[
+                "eng/common/testproxy/dotnet-devcert.pfx",
                 "sdk/cosmos/azure-cosmos/src/test/resources/server.jks",
                 "sdk/cosmos/azure-cosmos/src/test/resources/client.jks",
                 "sdk/identity/azure-identity/src/test/resources/cert-chain.pem",

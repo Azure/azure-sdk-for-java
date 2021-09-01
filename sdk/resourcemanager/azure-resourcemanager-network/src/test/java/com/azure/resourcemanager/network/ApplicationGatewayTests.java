@@ -288,9 +288,9 @@ public class ApplicationGatewayTests extends NetworkManagementTest {
                     .attach()
                 .withAccessFromAzureServices()
                 .withDeploymentEnabled()
-                // Important!! Only soft delete enabled key vault can be assigned to application gateway
-                // See also: https://github.com/MicrosoftDocs/azure-docs/issues/34382
-                .withSoftDeleteEnabled()
+//                // Important!! Only soft delete enabled key vault can be assigned to application gateway
+//                // See also: https://github.com/MicrosoftDocs/azure-docs/issues/34382
+//                .withSoftDeleteEnabled()
                 .create();
 
         // create certificate
@@ -327,9 +327,9 @@ public class ApplicationGatewayTests extends NetworkManagementTest {
                 .attach()
                 .withAccessFromAzureServices()
                 .withDeploymentEnabled()
-                // Important!! Only soft delete enabled key vault can be assigned to application gateway
-                // See also: https://github.com/MicrosoftDocs/azure-docs/issues/34382
-                .withSoftDeleteEnabled()
+//                // Important!! Only soft delete enabled key vault can be assigned to application gateway
+//                // See also: https://github.com/MicrosoftDocs/azure-docs/issues/34382
+//                .withSoftDeleteEnabled()
                 .create();
 
         return vault.secrets().define(secretName).withValue(secretValue).create();

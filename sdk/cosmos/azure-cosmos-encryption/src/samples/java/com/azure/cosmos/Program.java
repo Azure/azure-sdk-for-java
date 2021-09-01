@@ -139,7 +139,7 @@ public class Program {
         /// and saves the wrapped encryption key as an asynchronous operation in the Azure Cosmos service.
         CosmosClientEncryptionKeyProperties keyProperties = cosmosEncryptionAsyncDatabase.createClientEncryptionKey(
             dataEncryptionKeyId,
-            CosmosEncryptionAlgorithm.AEAES_256_CBC_HMAC_SHA_256, metadata).block().getProperties();
+            CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256, metadata).block().getProperties();
 
         System.out.println("The demo will create a 1000 RU/s container, with encryption policy on " +
             "account number, press enter key to continue.");
@@ -149,7 +149,7 @@ public class Program {
         includedPath.setClientEncryptionKeyId(dataEncryptionKeyId);
         includedPath.setPath("/accountNumber");
         includedPath.setEncryptionType(CosmosEncryptionType.DETERMINISTIC);
-        includedPath.setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAES_256_CBC_HMAC_SHA_256);
+        includedPath.setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256);
         List<ClientEncryptionIncludedPath> paths = new ArrayList<>();
         paths.add(includedPath);
 

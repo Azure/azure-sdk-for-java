@@ -109,6 +109,10 @@ class RxGatewayStoreModel implements RxStoreModel {
         return this.performRequest(request, HttpMethod.DELETE);
     }
 
+    private Mono<RxDocumentServiceResponse> deleteByPartitionKey(RxDocumentServiceRequest request) {
+        return this.performRequest(request, HttpMethod.POST);
+    }
+
     private Mono<RxDocumentServiceResponse> execute(RxDocumentServiceRequest request) {
         return this.performRequest(request, HttpMethod.POST);
     }
@@ -390,6 +394,9 @@ class RxGatewayStoreModel implements RxStoreModel {
             case Upsert:
                 return this.upsert(request);
             case Delete:
+                if (request.getResourceType() == ResourceType.PartitionKey) {
+                    return this.deleteByPartitionKey(request);
+                }
                 return this.delete(request);
             case ExecuteJavaScript:
                 return this.execute(request);

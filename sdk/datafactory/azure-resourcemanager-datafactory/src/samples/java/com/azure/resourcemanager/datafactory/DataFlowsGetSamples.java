@@ -8,6 +8,11 @@ import com.azure.core.util.Context;
 
 /** Samples for DataFlows Get. */
 public final class DataFlowsGetSamples {
+    /*
+     * operationId: DataFlows_Get
+     * api-version: 2018-06-01
+     * x-ms-examples: DataFlows_Get
+     */
     /**
      * Sample code: DataFlows_Get.
      *

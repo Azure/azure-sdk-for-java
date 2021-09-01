@@ -9,6 +9,11 @@ import com.azure.resourcemanager.datafactory.models.DeleteDataFlowDebugSessionRe
 
 /** Samples for DataFlowDebugSession Delete. */
 public final class DataFlowDebugSessionDeleteSamples {
+    /*
+     * operationId: DataFlowDebugSession_Delete
+     * api-version: 2018-06-01
+     * x-ms-examples: DataFlowDebugSession_Delete
+     */
     /**
      * Sample code: DataFlowDebugSession_Delete.
      *

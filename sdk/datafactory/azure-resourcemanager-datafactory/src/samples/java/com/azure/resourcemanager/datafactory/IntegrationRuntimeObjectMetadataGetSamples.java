@@ -9,6 +9,11 @@ import com.azure.resourcemanager.datafactory.models.GetSsisObjectMetadataRequest
 
 /** Samples for IntegrationRuntimeObjectMetadata Get. */
 public final class IntegrationRuntimeObjectMetadataGetSamples {
+    /*
+     * operationId: IntegrationRuntimeObjectMetadata_Get
+     * api-version: 2018-06-01
+     * x-ms-examples: IntegrationRuntimeObjectMetadata_Get
+     */
     /**
      * Sample code: IntegrationRuntimeObjectMetadata_Get.
      *

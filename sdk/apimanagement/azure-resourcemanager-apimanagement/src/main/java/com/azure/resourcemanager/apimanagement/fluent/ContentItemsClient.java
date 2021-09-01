@@ -17,7 +17,7 @@ import com.azure.resourcemanager.apimanagement.models.ContentItemsGetResponse;
 /** An instance of this class provides access to all the operations defined in ContentItemsClient. */
 public interface ContentItemsClient {
     /**
-     * Returns list of content items.
+     * Lists developer portal's content items specified by the provided content type.
      *
      * @param resourceGroupName The name of the resource group.
      * @param serviceName The name of the API Management service.
@@ -32,7 +32,7 @@ public interface ContentItemsClient {
         String resourceGroupName, String serviceName, String contentTypeId);
 
     /**
-     * Returns list of content items.
+     * Lists developer portal's content items specified by the provided content type.
      *
      * @param resourceGroupName The name of the resource group.
      * @param serviceName The name of the API Management service.
@@ -48,7 +48,7 @@ public interface ContentItemsClient {
         String resourceGroupName, String serviceName, String contentTypeId, Context context);
 
     /**
-     * Returns content item metadata.
+     * Returns the entity state (ETag) version of the developer portal's content item specified by its identifier.
      *
      * @param resourceGroupName The name of the resource group.
      * @param serviceName The name of the API Management service.
@@ -62,7 +62,7 @@ public interface ContentItemsClient {
     void getEntityTag(String resourceGroupName, String serviceName, String contentTypeId, String contentItemId);
 
     /**
-     * Returns content item metadata.
+     * Returns the entity state (ETag) version of the developer portal's content item specified by its identifier.
      *
      * @param resourceGroupName The name of the resource group.
      * @param serviceName The name of the API Management service.
@@ -79,7 +79,7 @@ public interface ContentItemsClient {
         String resourceGroupName, String serviceName, String contentTypeId, String contentItemId, Context context);
 
     /**
-     * Returns content item details.
+     * Returns the developer portal's content item specified by its identifier.
      *
      * @param resourceGroupName The name of the resource group.
      * @param serviceName The name of the API Management service.
@@ -95,7 +95,7 @@ public interface ContentItemsClient {
         String resourceGroupName, String serviceName, String contentTypeId, String contentItemId);
 
     /**
-     * Returns content item details.
+     * Returns the developer portal's content item specified by its identifier.
      *
      * @param resourceGroupName The name of the resource group.
      * @param serviceName The name of the API Management service.
@@ -112,7 +112,7 @@ public interface ContentItemsClient {
         String resourceGroupName, String serviceName, String contentTypeId, String contentItemId, Context context);
 
     /**
-     * Creates new content item.
+     * Creates a new developer portal's content item specified by the provided content type.
      *
      * @param resourceGroupName The name of the resource group.
      * @param serviceName The name of the API Management service.
@@ -128,7 +128,7 @@ public interface ContentItemsClient {
         String resourceGroupName, String serviceName, String contentTypeId, String contentItemId);
 
     /**
-     * Creates new content item.
+     * Creates a new developer portal's content item specified by the provided content type.
      *
      * @param resourceGroupName The name of the resource group.
      * @param serviceName The name of the API Management service.
@@ -151,7 +151,7 @@ public interface ContentItemsClient {
         Context context);
 
     /**
-     * Removes specified content item.
+     * Removes the specified developer portal's content item.
      *
      * @param resourceGroupName The name of the resource group.
      * @param serviceName The name of the API Management service.
@@ -168,7 +168,7 @@ public interface ContentItemsClient {
         String resourceGroupName, String serviceName, String contentTypeId, String contentItemId, String ifMatch);
 
     /**
-     * Removes specified content item.
+     * Removes the specified developer portal's content item.
      *
      * @param resourceGroupName The name of the resource group.
      * @param serviceName The name of the API Management service.

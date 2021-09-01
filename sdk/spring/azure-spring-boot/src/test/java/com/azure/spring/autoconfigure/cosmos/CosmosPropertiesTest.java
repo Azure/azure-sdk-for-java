@@ -3,8 +3,10 @@
 package com.azure.spring.autoconfigure.cosmos;
 
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
+import org.springframework.beans.factory.BeanCreationException;
 import org.springframework.boot.context.properties.ConfigurationPropertiesBindException;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.context.properties.bind.validation.BindValidationException;
@@ -17,11 +19,61 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.azure.spring.autoconfigure.cosmos.PropertySettingUtil.PROPERTY_URI;
+import static com.azure.spring.autoconfigure.cosmos.PropertySettingUtil.TEST_URI_FAIL;
+import static com.azure.spring.autoconfigure.cosmos.PropertySettingUtil.TEST_URI_HTTP;
+import static com.azure.spring.autoconfigure.cosmos.PropertySettingUtil.TEST_URI_HTTPS;
 import static com.azure.spring.autoconfigure.cosmos.PropertySettingUtil.configureCosmosProperties;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.test.context.support.TestPropertySourceUtils.addInlinedPropertiesToEnvironment;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class CosmosPropertiesTest {
+
+    @Test
+    public void uriPatternWithException() {
+        Assertions.assertThrows(BeanCreationException.class, () -> {
+            try (AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext()) {
+                configureCosmosProperties(context);
+                addInlinedPropertiesToEnvironment(
+                    context,
+                    PROPERTY_URI + "=" + TEST_URI_FAIL
+                );
+                context.register(Config.class);
+                context.refresh();
+            }
+        });
+    }
+
+    @Test
+    public void uriPatternHttp() {
+        try (AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext()) {
+            configureCosmosProperties(context);
+            addInlinedPropertiesToEnvironment(
+                context,
+                PROPERTY_URI + "=" + TEST_URI_HTTP
+            );
+            context.register(Config.class);
+            context.refresh();
+            final CosmosProperties properties = context.getBean(CosmosProperties.class);
+            assertThat(properties.getUri()).matches(CosmosProperties.URI_REGEX);
+        }
+    }
+
+    @Test
+    public void uriPatternHttps() {
+        try (AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext()) {
+            configureCosmosProperties(context);
+            addInlinedPropertiesToEnvironment(
+                context,
+                PROPERTY_URI + "=" + TEST_URI_HTTPS
+            );
+            context.register(Config.class);
+            context.refresh();
+            final CosmosProperties properties = context.getBean(CosmosProperties.class);
+            assertThat(properties.getUri()).matches(CosmosProperties.URI_REGEX);
+        }
+    }
 
     @Test
     public void canSetAllProperties() {
