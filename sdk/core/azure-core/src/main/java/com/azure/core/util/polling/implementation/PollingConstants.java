@@ -8,7 +8,7 @@ package com.azure.core.util.polling.implementation;
  *
  * The constants use for polling related operations.
  */
-public class PollingConstants {
+public final class PollingConstants {
     /**
      * The header used for location based polling or sending the final result URL.
      */

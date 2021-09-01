@@ -12,7 +12,7 @@ import reactor.core.publisher.Mono;
 /**
  * Utility class for handling polling responses.
  */
-public class PollingUtils {
+public final class PollingUtils {
     /**
      * Serialize a response to a {@link BinaryData}. If the response is already a {@link BinaryData}, return as is.
      *
