@@ -312,7 +312,7 @@ function PackageDependenciesResolve($artifactNamePrefix, $packageDirectory) {
 
   if ($LASTEXITCODE) {
     LogWarning "Could not download pom artifact: $pomArtifactName"
-    $artifactDownloadOutput | ForEach-Object { $_.ToString() } | Write-Host
+    $artifactDownloadOutput | Out-String | Write-Host
     return $false
   }
 
@@ -328,7 +328,7 @@ function PackageDependenciesResolve($artifactNamePrefix, $packageDirectory) {
 
   if ($LASTEXITCODE) {
     LogWarning "Could not resolve dependencies for: $pomArtifactName"
-    $copyDependencyOutput | ForEach-Object { $_.ToString() } | Write-Host
+    $copyDependencyOutput | Out-String | Write-Host
     return $false
   }
 
