@@ -461,11 +461,11 @@ function UpdateDocsMsPackages($DocConfigFile, $Mode, $DocsMetadata) {
   $remainingPackages = @()
   if ($Mode -eq 'preview') {
     $remainingPackages = $DocsMetadata.Where({
-      $_.VersionPreview.Trim() -and !$outputPackagesHash.ContainsKey("$($package.packageGroupId):$($package.packageArtifactId)")
+      $_.VersionPreview.Trim() -and !$outputPackagesHash.ContainsKey("$($_.GroupId):$($_.Package)")
     })
   } else {
     $remainingPackages = $DocsMetadata.Where({
-      $_.VersionGA.Trim() -and !$outputPackagesHash.ContainsKey("$($package.packageGroupId):$($package.packageArtifactId)")
+      $_.VersionGA.Trim() -and !$outputPackagesHash.ContainsKey("$($_.GroupId):$($_.Package)")
     })
   }
 
@@ -487,7 +487,7 @@ function UpdateDocsMsPackages($DocConfigFile, $Mode, $DocsMetadata) {
 
     Write-Host "Add new package from metadata: ${packageGroupId}:$packageName"
     $package = [ordered]@{
-      packageArtifactId = $packageArtifactId
+      packageArtifactId = $packageName
       packageGroupId = $packageGroupId
       packageVersion = $packageVersion
       packageDownloadUrl = "https://repo1.maven.org/maven2"
@@ -509,7 +509,7 @@ function UpdateDocsMsPackages($DocConfigFile, $Mode, $DocsMetadata) {
 
   $outputJson = ConvertTo-Json $packageConfig -Depth 100
   Set-Content -Path $DocConfigFile -Value $outputJson
-  Write-Host "Onboarding configuration written to: $DocConfigFile"
+  Write-Host "Onboarding configuration ($Mode) written to: $DocConfigFile"
 }
 
 # function is used to filter packages to submit to API view tool
