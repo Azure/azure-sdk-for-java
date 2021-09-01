@@ -115,11 +115,7 @@ class APISpec extends StorageSpec {
 
         if (env.testMode != TestMode.PLAYBACK) {
             // AZURE_TENANT_ID, AZURE_CLIENT_ID, AZURE_CLIENT_SECRET
-            return builder.credential(
-                new EnvironmentCredentialBuilder()
-                    .executorService(executorService) // https://github.com/Azure/azure-sdk-for-java/issues/22687
-                    .build())
-                .buildClient()
+            return builder.credential(new EnvironmentCredentialBuilder().build()).buildClient()
         } else {
             // Running in playback, we don't have access to the AAD environment variables, just use SharedKeyCredential.
             return builder.credential(env.dataLakeAccount.credential).buildClient()
