@@ -166,8 +166,6 @@ public final class AccessTokenUtil {
     private static OAuthToken getAccTokenOnAppService(String resource, String clientId) {
         LOGGER.entering("AccessTokenUtil", "getAccessTokenOnAppService", resource);
         LOGGER.info("Getting access token using managed identity based on MSI_SECRET");
-        String result = null;
-
         StringBuilder url = new StringBuilder();
         url.append(System.getenv("MSI_ENDPOINT"))
             .append("?api-version=2017-09-01")
@@ -184,7 +182,7 @@ public final class AccessTokenUtil {
 
         if (body != null) {
             OAuthToken token = (OAuthToken) JsonConverterUtil.fromJson(body, OAuthToken.class);
-            LOGGER.exiting("AccessTokenUtil", "getAccessTokenOnAppService", result);
+            LOGGER.exiting("AccessTokenUtil", "getAccessTokenOnAppService");
             return token;
         }
         return null;
@@ -216,7 +214,6 @@ public final class AccessTokenUtil {
         if (identity != null) {
             LOGGER.log(INFO, "Using managed identity with object ID: {0}", identity);
         }
-        String result = null;
 
         StringBuilder url = new StringBuilder();
         url.append(OAUTH2_MANAGED_IDENTITY_TOKEN_URL)
@@ -231,7 +228,7 @@ public final class AccessTokenUtil {
 
         if (body != null) {
             OAuthToken token = (OAuthToken) JsonConverterUtil.fromJson(body, OAuthToken.class);
-            LOGGER.exiting("AccessTokenUtil", "getAccessTokenOnOthers", result);
+            LOGGER.exiting("AccessTokenUtil", "getAccessTokenOnOthers");
             return token;
         }
         return null;
