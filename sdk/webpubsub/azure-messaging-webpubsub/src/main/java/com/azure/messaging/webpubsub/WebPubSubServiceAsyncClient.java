@@ -7,11 +7,13 @@ package com.azure.messaging.webpubsub;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.webpubsub.implementation.WebPubSubsImpl;
 import com.azure.messaging.webpubsub.models.GetAuthenticationTokenOptions;
 import com.azure.messaging.webpubsub.models.WebPubSubAuthenticationToken;
@@ -20,37 +22,40 @@ import reactor.core.publisher.Mono;
 /** Initializes a new instance of the asynchronous AzureWebPubSubServiceRestAPI type. */
 @ServiceClient(builder = WebPubSubServiceClientBuilder.class, isAsync = true)
 public final class WebPubSubServiceAsyncClient {
+    private final ClientLogger logger = new ClientLogger(WebPubSubServiceAsyncClient.class);
     private final WebPubSubsImpl serviceClient;
     private final String hub;
     private final String endpoint;
-    private final WebPubSubAuthenticationPolicy webPubSubAuthPolicy;
+    private final AzureKeyCredential keyCredential;
 
     /**
      * Initializes an instance of WebPubSubs client.
-     *
      * @param serviceClient the service client implementation.
      */
     WebPubSubServiceAsyncClient(WebPubSubsImpl serviceClient, String hub,
                                 final String endpoint,
-                                final WebPubSubAuthenticationPolicy webPubSubAuthPolicy) {
+                                final AzureKeyCredential keyCredential) {
         this.serviceClient = serviceClient;
         this.hub = hub;
         this.endpoint = endpoint;
-        this.webPubSubAuthPolicy = webPubSubAuthPolicy;
+        this.keyCredential = keyCredential;
     }
 
     /**
      * Creates an authentication token.
-     *
      * @param options Options to apply when creating the authentication token.
      * @return A new authentication token instance.
      */
     public WebPubSubAuthenticationToken getAuthenticationToken(GetAuthenticationTokenOptions options) {
+        if (this.keyCredential == null) {
+            throw logger.logExceptionAsError(new UnsupportedOperationException("Cannot get authentication token using"
+                    + " clients created from TokenCredential"));
+        }
         final String endpoint = this.endpoint.endsWith("/") ? this.endpoint : this.endpoint + "/";
         final String audience = endpoint + "client/hubs/" + hub;
 
         final String authToken = WebPubSubAuthenticationPolicy.getAuthenticationToken(
-                audience, options, webPubSubAuthPolicy.getCredential());
+                audience, options, keyCredential);
 
         // The endpoint should always be http or https and client endpoint should be ws or wss respectively.
         final String clientEndpoint = endpoint.replaceFirst("http", "ws");
@@ -61,6 +66,39 @@ public final class WebPubSubServiceAsyncClient {
         return new WebPubSubAuthenticationToken(authToken, url);
     }
 
+    /**
+     * Generate token for the client to connect Azure Web PubSub service.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>userId</td><td>String</td><td>No</td><td>User Id.</td></tr>
+     *     <tr><td>role</td><td>String</td><td>No</td><td>Roles that the connection with the generated token will have.</td></tr>
+     *     <tr><td>minutesToExpire</td><td>String</td><td>No</td><td>The expire time of the generated token.</td></tr>
+     *     <tr><td>apiVersion</td><td>String</td><td>No</td><td>Api Version</td></tr>
+     * </table>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     token: String
+     * }
+     * }</pre>
+     * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
+     * characters or underscore.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the response.
+     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
+     * false.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> generateClientTokenWithResponse(String hub, RequestOptions requestOptions) {
+        return this.serviceClient.generateClientTokenWithResponseAsync(hub, requestOptions);
+    }
+
 
     /**
      * Broadcast content inside request body to all the connected client connections.
@@ -68,14 +106,14 @@ public final class WebPubSubServiceAsyncClient {
      * @param contentType Upload file type.
      * @param contentLength The contentLength parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the completion.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> sendToAllWithResponse(
-             BinaryData message, String contentType, long contentLength, RequestOptions requestOptions) {
+            BinaryData message, String contentType, long contentLength, RequestOptions requestOptions) {
         return this.serviceClient.sendToAllWithResponseAsync(hub, contentType, message, contentLength, requestOptions);
     }
 
@@ -83,10 +121,10 @@ public final class WebPubSubServiceAsyncClient {
      * Broadcast content inside request body to all the connected client connections.
      * @param message The payload body.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the completion.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> sendToAllWithResponse(BinaryData message, RequestOptions requestOptions) {
@@ -97,10 +135,10 @@ public final class WebPubSubServiceAsyncClient {
      * Broadcast content inside request body to all the connected client connections.
      * @param message The payload body.
      * @param contentType Upload file type.
+     * @return the completion.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> sendToAll(String message, String contentType) {
@@ -113,10 +151,10 @@ public final class WebPubSubServiceAsyncClient {
      * Check if the connection with the given connectionId exists.
      * @param connectionId The connection Id.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return whether resource exists.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return whether resource exists.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Boolean>> connectionExistsWithResponse(
@@ -128,10 +166,10 @@ public final class WebPubSubServiceAsyncClient {
      * Close the client connection.
      * @param connectionId Target connection Id.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the completion.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> closeConnectionWithResponse(
@@ -146,10 +184,10 @@ public final class WebPubSubServiceAsyncClient {
      * @param contentType Upload file type.
      * @param contentLength The contentLength parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the completion.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> sendToConnectionWithResponse(
@@ -167,10 +205,10 @@ public final class WebPubSubServiceAsyncClient {
      * @param connectionId The connection Id.
      * @param message The payload body.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the completion.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> sendToConnectionWithResponse(
@@ -183,10 +221,10 @@ public final class WebPubSubServiceAsyncClient {
      * @param connectionId The connection Id.
      * @param message The payload body.
      * @param contentType Upload file type.
+     * @return the completion.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> sendToConnection(
@@ -200,10 +238,10 @@ public final class WebPubSubServiceAsyncClient {
      * Check if there are any client connections inside the given group.
      * @param group Target group name, which length should be greater than 0 and less than 1025.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return whether resource exists.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return whether resource exists.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Boolean>> groupExistsWithResponse(String group, RequestOptions requestOptions) {
@@ -217,10 +255,10 @@ public final class WebPubSubServiceAsyncClient {
      * @param contentType Upload file type.
      * @param contentLength The contentLength parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the completion.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> sendToGroupWithResponse(
@@ -238,10 +276,10 @@ public final class WebPubSubServiceAsyncClient {
      * @param group Target group name, which length should be greater than 0 and less than 1025.
      * @param message The payload body.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the completion.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> sendToGroupWithResponse(
@@ -254,10 +292,10 @@ public final class WebPubSubServiceAsyncClient {
      * @param group Target group name, which length should be greater than 0 and less than 1025.
      * @param message The payload body.
      * @param contentType Upload file type.
+     * @return the completion.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> sendToGroup(String group, String message, String contentType) {
@@ -271,10 +309,10 @@ public final class WebPubSubServiceAsyncClient {
      * @param group Target group name, which length should be greater than 0 and less than 1025.
      * @param connectionId Target connection Id.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the completion.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> addConnectionToGroupWithResponse(
@@ -287,10 +325,10 @@ public final class WebPubSubServiceAsyncClient {
      * @param group Target group name, which length should be greater than 0 and less than 1025.
      * @param connectionId Target connection Id.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the completion.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> removeConnectionFromGroupWithResponse(
@@ -302,10 +340,10 @@ public final class WebPubSubServiceAsyncClient {
      * Check if there are any client connections connected for the given user.
      * @param userId Target user Id.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return whether resource exists.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return whether resource exists.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Boolean>> userExistsWithResponse(String userId, RequestOptions requestOptions) {
@@ -319,10 +357,10 @@ public final class WebPubSubServiceAsyncClient {
      * @param contentType Upload file type.
      * @param contentLength The contentLength parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the completion.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> sendToUserWithResponse(
@@ -340,10 +378,10 @@ public final class WebPubSubServiceAsyncClient {
      * @param userId The user Id.
      * @param message The payload body.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the completion.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> sendToUserWithResponse(
@@ -356,10 +394,10 @@ public final class WebPubSubServiceAsyncClient {
      * @param userId The user Id.
      * @param message The payload body.
      * @param contentType Upload file type.
+     * @return the completion.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> sendToUser(String userId, String message, String contentType) {
@@ -373,10 +411,10 @@ public final class WebPubSubServiceAsyncClient {
      * @param group Target group name, which length should be greater than 0 and less than 1025.
      * @param userId Target user Id.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the completion.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> addUserToGroupWithResponse(
@@ -389,10 +427,10 @@ public final class WebPubSubServiceAsyncClient {
      * @param group Target group name, which length should be greater than 0 and less than 1025.
      * @param userId Target user Id.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the completion.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> removeUserFromGroupWithResponse(
@@ -404,10 +442,10 @@ public final class WebPubSubServiceAsyncClient {
      * Remove a user from all groups.
      * @param userId Target user Id.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the completion.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> removeUserFromAllGroupsWithResponse(
@@ -420,10 +458,10 @@ public final class WebPubSubServiceAsyncClient {
      * @param permission The permission: current supported actions are joinLeaveGroup and sendToGroup.
      * @param connectionId Target connection Id.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the completion.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> grantPermissionWithResponse(
@@ -436,10 +474,10 @@ public final class WebPubSubServiceAsyncClient {
      * @param permission The permission: current supported actions are joinLeaveGroup and sendToGroup.
      * @param connectionId Target connection Id.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the completion.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> revokePermissionWithResponse(
@@ -452,10 +490,10 @@ public final class WebPubSubServiceAsyncClient {
      * @param permission The permission: current supported actions are joinLeaveGroup and sendToGroup.
      * @param connectionId Target connection Id.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return whether resource exists.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return whether resource exists.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Boolean>> checkPermissionWithResponse(

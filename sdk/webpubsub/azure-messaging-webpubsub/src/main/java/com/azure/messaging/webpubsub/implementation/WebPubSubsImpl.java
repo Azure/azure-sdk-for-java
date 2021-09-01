@@ -13,9 +13,11 @@ import com.azure.core.annotation.HostParam;
 import com.azure.core.annotation.PathParam;
 import com.azure.core.annotation.Post;
 import com.azure.core.annotation.Put;
+import com.azure.core.annotation.QueryParam;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
@@ -51,6 +53,14 @@ public final class WebPubSubsImpl {
     @Host("{$host}")
     @ServiceInterface(name = "AzureWebPubSubServic")
     public interface WebPubSubsService {
+        @Post("/api/hubs/{hub}/:generateToken")
+        Mono<Response<BinaryData>> generateClientToken(
+                @HostParam("$host") String host,
+                @PathParam("hub") String hub,
+                @QueryParam("api-version") String apiVersion,
+                RequestOptions requestOptions,
+                Context context);
+
         @Post("/api/hubs/{hub}/:send")
         Mono<Response<Void>> sendToAll(
                 @HostParam("$host") String host,
@@ -231,6 +241,126 @@ public final class WebPubSubsImpl {
                 @PathParam("connectionId") String connectionId,
                 RequestOptions requestOptions,
                 Context context);
+    }
+
+    /**
+     * Generate token for the client to connect Azure Web PubSub service.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>userId</td><td>String</td><td>No</td><td>User Id.</td></tr>
+     *     <tr><td>role</td><td>String</td><td>No</td><td>Roles that the connection with the generated token will have.</td></tr>
+     *     <tr><td>minutesToExpire</td><td>String</td><td>No</td><td>The expire time of the generated token.</td></tr>
+     *     <tr><td>apiVersion</td><td>String</td><td>No</td><td>Api Version</td></tr>
+     * </table>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     token: String
+     * }
+     * }</pre>
+     *
+     * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
+     *     characters or underscore.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
+     *     false.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> generateClientTokenWithResponseAsync(String hub, RequestOptions requestOptions) {
+        if (hub == null) {
+            return Mono.error(new IllegalArgumentException("Parameter hub is required and cannot be null."));
+        }
+        return FluxUtil.withContext(
+                context ->
+                        service.generateClientToken(
+                                this.client.getHost(),
+                                hub,
+                                this.client.getApiVersion(),
+                                requestOptions,
+                                context));
+    }
+
+    /**
+     * Generate token for the client to connect Azure Web PubSub service.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>userId</td><td>String</td><td>No</td><td>User Id.</td></tr>
+     *     <tr><td>role</td><td>String</td><td>No</td><td>Roles that the connection with the generated token will have.</td></tr>
+     *     <tr><td>minutesToExpire</td><td>String</td><td>No</td><td>The expire time of the generated token.</td></tr>
+     *     <tr><td>apiVersion</td><td>String</td><td>No</td><td>Api Version</td></tr>
+     * </table>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     token: String
+     * }
+     * }</pre>
+     *
+     * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
+     *     characters or underscore.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
+     *     false.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> generateClientTokenWithResponseAsync(
+            String hub, RequestOptions requestOptions, Context context) {
+        if (hub == null) {
+            return Mono.error(new IllegalArgumentException("Parameter hub is required and cannot be null."));
+        }
+        return service.generateClientToken(
+                this.client.getHost(), hub, this.client.getApiVersion(), requestOptions, context);
+    }
+
+    /**
+     * Generate token for the client to connect Azure Web PubSub service.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>userId</td><td>String</td><td>No</td><td>User Id.</td></tr>
+     *     <tr><td>role</td><td>String</td><td>No</td><td>Roles that the connection with the generated token will have.</td></tr>
+     *     <tr><td>minutesToExpire</td><td>String</td><td>No</td><td>The expire time of the generated token.</td></tr>
+     *     <tr><td>apiVersion</td><td>String</td><td>No</td><td>Api Version</td></tr>
+     * </table>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     token: String
+     * }
+     * }</pre>
+     *
+     * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
+     *     characters or underscore.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
+     *     false.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> generateClientTokenWithResponse(
+            String hub, RequestOptions requestOptions, Context context) {
+        return generateClientTokenWithResponseAsync(hub, requestOptions, context).block();
     }
 
     /**

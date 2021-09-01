@@ -7,11 +7,13 @@ package com.azure.messaging.webpubsub;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.webpubsub.implementation.WebPubSubsImpl;
 import com.azure.messaging.webpubsub.models.GetAuthenticationTokenOptions;
 import com.azure.messaging.webpubsub.models.WebPubSubAuthenticationToken;
@@ -19,9 +21,10 @@ import com.azure.messaging.webpubsub.models.WebPubSubAuthenticationToken;
 /** Initializes a new instance of the synchronous AzureWebPubSubServiceRestAPI type. */
 @ServiceClient(builder = WebPubSubServiceClientBuilder.class)
 public final class WebPubSubServiceClient {
+    private final ClientLogger logger = new ClientLogger(WebPubSubServiceAsyncClient.class);
     private final WebPubSubsImpl serviceClient;
     private final String endpoint;
-    private final WebPubSubAuthenticationPolicy webPubSubAuthPolicy;
+    private final AzureKeyCredential keyCredential;
     private final String hub;
 
     /**
@@ -29,10 +32,10 @@ public final class WebPubSubServiceClient {
      * @param serviceClient the service client implementation.
      */
     WebPubSubServiceClient(WebPubSubsImpl serviceClient, String hub, String endpoint,
-                           WebPubSubAuthenticationPolicy webPubSubAuthPolicy) {
+                           AzureKeyCredential keyCredential) {
         this.serviceClient = serviceClient;
         this.endpoint = endpoint;
-        this.webPubSubAuthPolicy = webPubSubAuthPolicy;
+        this.keyCredential = keyCredential;
         this.hub = hub;
     }
 
@@ -42,11 +45,15 @@ public final class WebPubSubServiceClient {
      * @return A new authentication token instance.
      */
     public WebPubSubAuthenticationToken getAuthenticationToken(GetAuthenticationTokenOptions options) {
+        if (this.keyCredential == null) {
+            throw logger.logExceptionAsError(new UnsupportedOperationException("Cannot get authentication token using"
+                    + " clients created from TokenCredential"));
+        }
         final String endpoint = this.endpoint.endsWith("/") ? this.endpoint : this.endpoint + "/";
         final String audience = endpoint + "client/hubs/" + hub;
 
         final String authToken = WebPubSubAuthenticationPolicy.getAuthenticationToken(
-                audience, options, webPubSubAuthPolicy.getCredential());
+                audience, options, this.keyCredential);
 
         // The endpoint should always be http or https and client endpoint should be ws or wss respectively.
         final String clientEndpoint = endpoint.replaceFirst("http", "ws");
@@ -55,6 +62,42 @@ public final class WebPubSubServiceClient {
         final String url = clientUrl + "?access_token=" + authToken;
 
         return new WebPubSubAuthenticationToken(authToken, url);
+    }
+
+    /**
+     * Generate token for the client to connect Azure Web PubSub service.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>userId</td><td>String</td><td>No</td><td>User Id.</td></tr>
+     *     <tr><td>role</td><td>String</td><td>No</td><td>Roles that the connection with the generated token will have.</td></tr>
+     *     <tr><td>minutesToExpire</td><td>String</td><td>No</td><td>The expire time of the generated token.</td></tr>
+     *     <tr><td>apiVersion</td><td>String</td><td>No</td><td>Api Version</td></tr>
+     * </table>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     token: String
+     * }
+     * }</pre>
+     *
+     * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
+     *     characters or underscore.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
+     *     false.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> generateClientTokenWithResponse(
+            String hub, RequestOptions requestOptions, Context context) {
+        return this.serviceClient.generateClientTokenWithResponse(hub, requestOptions, context);
     }
 
     /**

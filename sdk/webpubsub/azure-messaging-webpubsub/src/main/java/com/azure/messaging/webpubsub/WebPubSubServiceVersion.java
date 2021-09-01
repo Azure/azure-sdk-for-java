@@ -9,7 +9,8 @@ import com.azure.core.util.ServiceVersion;
  * The versions of Azure Web Pub Sub Service supported by this client library.
  */
 public enum WebPubSubServiceVersion implements ServiceVersion {
-    V2021_05_01_PREVIEW("2021-05-01-preview");
+    V2021_05_01_PREVIEW("2021-05-01-preview"),
+    V2021_08_01_PREVIEW("2021-08-01-preview");
 
     private final String version;
 
@@ -28,6 +29,6 @@ public enum WebPubSubServiceVersion implements ServiceVersion {
      * @return the latest {@code WebPubSubServiceVersion}
      */
     public static WebPubSubServiceVersion getLatest() {
-        return V2021_05_01_PREVIEW;
+        return V2021_08_01_PREVIEW;
     }
 }
