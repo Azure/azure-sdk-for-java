@@ -8,6 +8,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.util.ResourceUtils;
 
 import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Properties;
 
 /**
@@ -38,9 +40,8 @@ public class ApplicationId {
     public static final String AZURE_SPRING_STORAGE_BLOB = "az-sp-sb/" + VERSION;
     public static final String AZURE_SPRING_STORAGE_FILES = "az-sp-sf/" + VERSION;
     /**
-     * AZURE_SPRING_AAD does not contain VERSION, because AAD server support 2 headers:
-     * 1. x-client-SKU;
-     * 2. x-client-VER;
+     * AZURE_SPRING_AAD does not contain VERSION, because AAD server support 2 headers: 1. x-client-SKU; 2.
+     * x-client-VER;
      */
     public static final String AZURE_SPRING_AAD = "az-sp-aad";
     public static final String AZURE_SPRING_B2C = "az-sp-b2c";
@@ -48,10 +49,11 @@ public class ApplicationId {
     private static String getVersion() {
         String version = "unknown";
         Properties properties = new Properties();
-        try {
-            properties.load(new FileInputStream(ResourceUtils.getFile("classpath:azure-spring-boot-version.txt")));
+        try (InputStream inputStream =
+                 new FileInputStream(ResourceUtils.getFile("classpath:azure-spring-boot-version.txt"))) {
+            properties.load(inputStream);
             version = properties.getProperty("version");
-        } catch (Exception e) {
+        } catch (IOException e) {
             LOGGER.warn("Can not get version.");
         }
         return version;
