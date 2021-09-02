@@ -55,7 +55,7 @@ import com.fasterxml.jackson.databind.PropertyNamingStrategies;
  * i.e. If connecting to 2 stores and have 2 labels set 4 AppConfigurationPropertySources need to be created.
  * </p>
  */
-public class AppConfigurationPropertySource extends EnumerablePropertySource<ConfigurationClient> {
+public final class AppConfigurationPropertySource extends EnumerablePropertySource<ConfigurationClient> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AppConfigurationPropertySource.class);
 
@@ -79,7 +79,7 @@ public class AppConfigurationPropertySource extends EnumerablePropertySource<Con
         .configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES, true);
 
     private final AppConfigurationStoreSelects selectedKeys;
-    
+
     private final List<String> profiles;
 
     private final Map<String, Object> properties = new LinkedHashMap<>();
@@ -100,7 +100,8 @@ public class AppConfigurationPropertySource extends EnumerablePropertySource<Con
 
     private final ConfigStore configStore;
 
-    AppConfigurationPropertySource(String context, ConfigStore configStore, AppConfigurationStoreSelects selectedKeys, List<String> profiles,
+    AppConfigurationPropertySource(String context, ConfigStore configStore, AppConfigurationStoreSelects selectedKeys,
+        List<String> profiles,
         AppConfigurationProperties appConfigurationProperties, ClientStore clients,
         AppConfigurationProviderProperties appProperties, KeyVaultCredentialProvider keyVaultCredentialProvider,
         SecretClientBuilderSetup keyVaultClientProvider, KeyVaultSecretProvider keyVaultSecretProvider) {
@@ -157,7 +158,7 @@ public class AppConfigurationPropertySource extends EnumerablePropertySource<Con
         String storeName = configStore.getEndpoint();
         Date date = new Date();
         SettingSelector settingSelector = new SettingSelector();
-        
+
         List<ConfigurationSetting> features = new ArrayList<>();
         // Reading In Features
         if (configStore.getFeatureFlags().getEnabled()) {
@@ -169,20 +170,21 @@ public class AppConfigurationPropertySource extends EnumerablePropertySource<Con
                 throw new IOException("Unable to load properties from App Configuration Store.");
             }
         }
-        
+
         List<String> labels = Arrays.asList(selectedKeys.getLabelFilter(profiles));
         Collections.reverse(labels);
 
-        for (String label: labels) {
-            settingSelector = new SettingSelector().setKeyFilter(selectedKeys.getKeyFilter() + "*").setLabelFilter(label);
+        for (String label : labels) {
+            settingSelector = new SettingSelector().setKeyFilter(selectedKeys.getKeyFilter() + "*")
+                .setLabelFilter(label);
 
             // * for wildcard match
             List<ConfigurationSetting> settings = clients.listSettings(settingSelector, storeName);
-            
+
             if (settings == null) {
                 throw new IOException("Unable to load properties from App Configuration Store.");
             }
-            
+
             for (ConfigurationSetting setting : settings) {
                 String key = setting.getKey().trim().substring(selectedKeys.getKeyFilter().length()).replace('/', '.');
                 if (setting instanceof SecretReferenceConfigurationSetting) {
