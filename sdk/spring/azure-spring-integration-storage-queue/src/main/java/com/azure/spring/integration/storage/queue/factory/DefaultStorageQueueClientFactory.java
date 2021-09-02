@@ -14,7 +14,7 @@ import org.springframework.lang.NonNull;
 
 import java.util.function.Function;
 
-import static com.azure.spring.core.ApplicationId.AZURE_SPRING_STORAGE_QUEUE;
+import static com.azure.spring.core.ApplicationId.AZURE_SPRING_INTEGRATION_STORAGE_QUEUE;
 import static com.azure.spring.core.ApplicationId.VERSION;
 
 /**
@@ -45,7 +45,7 @@ public class DefaultStorageQueueClientFactory implements StorageQueueClientFacto
             .connectionString(this.connectionString)
             .queueName(queueName)
             .httpLogOptions(new HttpLogOptions()
-                .setApplicationId(AZURE_SPRING_STORAGE_QUEUE + VERSION)
+                .setApplicationId(AZURE_SPRING_INTEGRATION_STORAGE_QUEUE + VERSION)
                 .setLogLevel(httpLogDetailLevel))
             .buildAsyncClient();
 

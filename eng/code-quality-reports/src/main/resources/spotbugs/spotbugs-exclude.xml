@@ -2319,15 +2319,13 @@
         <Class name="com.azure.spring.core.credential.resolver.AzureKeyCredentialResolver"/>
         <Class name="com.azure.spring.core.credential.resolver.AzureNamedKeyCredentialResolver"/>
         <Class name="com.azure.spring.core.credential.resolver.AzureSasCredentialResolver"/>
+        <Class name="com.azure.spring.cloud.autoconfigure.storage.common.credential.StorageSharedKeyCredentialResolver" />
       </Or>
       <Method name="resolve"/>
     </And>
     <Bug pattern="BC_UNCONFIRMED_CAST"/>
   </Match>
-  <Match>
-    <Bug pattern="BC_UNCONFIRMED_CAST_OF_RETURN_VALUE"/>
-  </Match>
-
+  
   <Match>
     <Bug pattern="RCN_REDUNDANT_NULLCHECK_WOULD_HAVE_BEEN_A_NPE,
                   NP_LOAD_OF_KNOWN_NULL_VALUE,

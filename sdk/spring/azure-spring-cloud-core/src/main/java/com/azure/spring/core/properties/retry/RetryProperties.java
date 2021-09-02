@@ -9,8 +9,8 @@ package com.azure.spring.core.properties.retry;
 public class RetryProperties {
 
     private BackoffProperties backoff;
-    private int maxAttempts;
-    private long timeout;
+    private Integer maxAttempts;
+    private Long timeout;
 
     public BackoffProperties getBackoff() {
         return backoff;
@@ -20,19 +20,19 @@ public class RetryProperties {
         this.backoff = backoff;
     }
 
-    public int getMaxAttempts() {
+    public Integer getMaxAttempts() {
         return maxAttempts;
     }
 
-    public void setMaxAttempts(int maxAttempts) {
+    public void setMaxAttempts(Integer maxAttempts) {
         this.maxAttempts = maxAttempts;
     }
 
-    public long getTimeout() {
+    public Long getTimeout() {
         return timeout;
     }
 
-    public void setTimeout(long timeout) {
+    public void setTimeout(Long timeout) {
         this.timeout = timeout;
     }
 }

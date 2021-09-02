@@ -4,7 +4,7 @@
 package com.azure.spring.eventhub.stream.binder;
 
 import com.azure.spring.cloud.autoconfigure.context.AzureResourceManagerAutoConfiguration;
-import com.azure.spring.cloud.autoconfigure.eventhub.AzureEventHubAutoConfiguration;
+import com.azure.spring.cloud.autoconfigure.eventhub.AzureEventHubOperationAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.eventhub.EventHubConnectionStringProvider;
 import com.azure.spring.cloud.context.core.impl.EventHubNamespaceManager;
 import com.azure.spring.cloud.context.core.impl.StorageAccountManager;
@@ -22,16 +22,16 @@ public class EventHubBinderConfigurationTest {
     private static final String EVENT_HUB_PROPERTY_PREFIX = "spring.cloud.azure.eventhub.";
     private static final String AZURE_PROPERTY_PREFIX = "spring.cloud.azure.";
 
-    private String connectionString = "connection-string=Endpoint=sb://eventhub-test-1\"\n"
-        + "                + \".servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;\"\n"
-        + "                + \"SharedAccessKey=ByyyxxxUw=";
+    private String connectionString = "connection-string=Endpoint=sb://eventhub-test-1"
+        + ".servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;"
+        + "SharedAccessKey=ByyyxxxUw=";
 
     private ApplicationContextRunner contextRunner = new ApplicationContextRunner()
         .withPropertyValues(AZURE_PROPERTY_PREFIX + "stream.function.definition=supply")
         .withPropertyValues(AZURE_PROPERTY_PREFIX + "stream.bindings.supply-out-0.destination=eventhub1")
-        .withConfiguration(AutoConfigurations.of(AzureResourceManagerAutoConfiguration.class))
-        .withConfiguration(AutoConfigurations.of(AzureEventHubAutoConfiguration.class))
-        .withConfiguration(AutoConfigurations.of(EventHubBinderConfiguration.class));
+        .withConfiguration(AutoConfigurations.of(AzureResourceManagerAutoConfiguration.class,
+                                                 AzureEventHubOperationAutoConfiguration.class,
+                                                 EventHubBinderConfiguration.class));
 
     @Test
     public void testStorageNotConfiguredToGetClientFactoryBeanOnConnectionString() {

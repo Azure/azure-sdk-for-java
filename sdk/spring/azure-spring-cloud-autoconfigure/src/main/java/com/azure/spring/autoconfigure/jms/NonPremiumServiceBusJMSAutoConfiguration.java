@@ -19,7 +19,7 @@ import org.springframework.jms.config.JmsListenerContainerFactory;
 
 import javax.jms.ConnectionFactory;
 
-import static com.azure.spring.autoconfigure.unity.AzureProperties.AZURE_PROPERTY_BEAN_NAME;
+import static com.azure.spring.autoconfigure.unity.AzurePropertyAutoConfiguration.AZURE_PROPERTY_BEAN_NAME;
 
 /**
  * Automatic configuration class of ServiceBusJMS for Standard and Basic Service Bus
@@ -37,7 +37,7 @@ public class NonPremiumServiceBusJMSAutoConfiguration {
     @Bean
     @ConditionalOnMissingBean
     public ConnectionFactory jmsConnectionFactory(AzureServiceBusJMSProperties serviceBusJMSProperties,
-                                                  @Qualifier(AZURE_PROPERTY_BEAN_NAME)AzureProperties azureProperties) {
+                                                      @Qualifier(AZURE_PROPERTY_BEAN_NAME)AzureProperties azureProperties) {
         final String connectionString = serviceBusJMSProperties.getConnectionString();
         final String clientId = serviceBusJMSProperties.getTopicClientId();
         final int idleTimeout = serviceBusJMSProperties.getIdleTimeout();

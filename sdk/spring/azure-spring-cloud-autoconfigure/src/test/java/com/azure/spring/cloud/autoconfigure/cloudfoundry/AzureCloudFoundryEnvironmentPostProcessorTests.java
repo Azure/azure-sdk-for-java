@@ -5,7 +5,7 @@ package com.azure.spring.cloud.autoconfigure.cloudfoundry;
 
 import com.azure.spring.cloud.autoconfigure.eventhub.AzureEventHubProperties;
 import com.azure.spring.cloud.autoconfigure.servicebus.AzureServiceBusProperties;
-import com.azure.spring.cloud.autoconfigure.storage.AzureStorageProperties;
+import com.azure.spring.cloud.autoconfigure.storage.LegacyAzureStorageProperties;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.data.redis.RedisProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -51,7 +51,7 @@ public class AzureCloudFoundryEnvironmentPostProcessorTests {
     }
 
     private void assertStorage(AssertableApplicationContext context) {
-        AzureStorageProperties storageProperties = context.getBean(AzureStorageProperties.class);
+        LegacyAzureStorageProperties storageProperties = context.getBean(LegacyAzureStorageProperties.class);
         assertThat(storageProperties.getAccount()).isEqualTo("fake");
         assertThat(storageProperties.getAccessKey()).isEqualTo("fakekey==");
     }
@@ -72,7 +72,7 @@ public class AzureCloudFoundryEnvironmentPostProcessorTests {
                 + "SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=fakekey=");
     }
 
-    @EnableConfigurationProperties({AzureServiceBusProperties.class, AzureStorageProperties.class,
+    @EnableConfigurationProperties({AzureServiceBusProperties.class, LegacyAzureStorageProperties.class,
         RedisProperties.class, AzureEventHubProperties.class})
     static class AzureCfEnvPPTestConfiguration {
 

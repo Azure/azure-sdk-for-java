@@ -8,10 +8,6 @@ package com.azure.spring.autoconfigure.unity;
  */
 public class AzureProperties {
 
-    public static final String AZURE_PROPERTY_BEAN_NAME = "azureProperties";
-
-    public static final String PREFIX = "spring.cloud.azure";
-
     private CredentialProperties credential;
 
     private EnvironmentProperties environment;

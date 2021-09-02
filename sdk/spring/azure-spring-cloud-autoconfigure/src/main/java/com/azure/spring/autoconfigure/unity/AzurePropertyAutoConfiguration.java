@@ -20,6 +20,8 @@ public class AzurePropertyAutoConfiguration {
 
     public static final String AZURE_PROPERTY_BEAN_NAME = "azureProperties";
 
+    public static final String PREFIX = "spring.cloud.azure";
+
     static class Registrar implements EnvironmentAware, ImportBeanDefinitionRegistrar {
         private Environment environment;
 
@@ -34,8 +36,8 @@ public class AzurePropertyAutoConfiguration {
             if (!registry.containsBeanDefinition(AZURE_PROPERTY_BEAN_NAME)) {
                 registry.registerBeanDefinition(AZURE_PROPERTY_BEAN_NAME,
                     BeanDefinitionBuilder.genericBeanDefinition(AzureProperties.class,
-                        () -> Binder.get(this.environment).bindOrCreate(AzureProperties.PREFIX,
-                            AzureProperties.class)).getBeanDefinition());
+                        () -> Binder.get(this.environment)
+                                    .bindOrCreate(PREFIX, AzureProperties.class)).getBeanDefinition());
             }
         }
 

@@ -3,6 +3,7 @@
 
 package com.azure.spring.autoconfigure.storage.resource;
 
+import com.azure.spring.autoconfigure.storage.StorageResourceAutoConfiguration;
 import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.BlobServiceClient;
@@ -120,7 +121,7 @@ public class AzureBlobStorageTests {
     }
 
     @Configuration
-    @Import(AzureStorageProtocolResolver.class)
+    @Import(StorageResourceAutoConfiguration.class)
     static class StorageApplication {
 
         @Bean

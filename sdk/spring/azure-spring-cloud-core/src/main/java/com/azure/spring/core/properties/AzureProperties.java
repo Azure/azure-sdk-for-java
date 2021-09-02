@@ -3,6 +3,7 @@
 
 package com.azure.spring.core.properties;
 
+import com.azure.core.management.AzureEnvironment;
 import com.azure.spring.core.properties.client.ClientProperties;
 import com.azure.spring.core.properties.credential.TokenCredentialProperties;
 import com.azure.spring.core.properties.retry.RetryProperties;
@@ -19,6 +20,8 @@ public class AzureProperties {
     protected RetryProperties retry;
 
     protected TokenCredentialProperties credential;
+
+    protected AzureEnvironment env;
 
     public ClientProperties getClient() {
         return client;
@@ -50,5 +53,13 @@ public class AzureProperties {
 
     public void setCredential(TokenCredentialProperties credential) {
         this.credential = credential;
+    }
+
+    public AzureEnvironment getEnv() {
+        return env;
+    }
+
+    public void setEnv(AzureEnvironment env) {
+        this.env = env;
     }
 }

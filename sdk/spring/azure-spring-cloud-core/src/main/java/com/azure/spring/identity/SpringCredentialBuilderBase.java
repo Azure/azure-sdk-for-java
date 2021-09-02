@@ -8,7 +8,6 @@ import com.azure.identity.ClientCertificateCredentialBuilder;
 import com.azure.identity.ClientSecretCredentialBuilder;
 import com.azure.identity.ManagedIdentityCredential;
 import com.azure.identity.ManagedIdentityCredentialBuilder;
-import com.azure.spring.core.env.AzureEnvironment;
 import org.springframework.core.env.Environment;
 
 import java.util.Optional;
@@ -88,8 +87,21 @@ public abstract class SpringCredentialBuilderBase<T extends SpringCredentialBuil
         return Optional.ofNullable(getPropertyValue(prefix + "authority-host"))
                        .orElse(Optional.ofNullable(getPropertyValue(prefix + "environment"))
                                        .filter(env -> !env.isEmpty())
-                                       .map(AzureEnvironment::toAuthorityHost)
+                                       .map(SpringCredentialBuilderBase::toAuthorityHost)
                                        .orElse(AzureAuthorityHosts.AZURE_PUBLIC_CLOUD));
+    }
+
+    public static String toAuthorityHost(String azureEnvironment) {
+        switch (azureEnvironment) {
+            case "AzureChina":
+                return AzureAuthorityHosts.AZURE_CHINA;
+            case "AzureGermany":
+                return AzureAuthorityHosts.AZURE_GERMANY;
+            case "AzureUSGovernment":
+                return AzureAuthorityHosts.AZURE_GOVERNMENT;
+            default:
+                return AzureAuthorityHosts.AZURE_PUBLIC_CLOUD;
+        }
     }
 
 }

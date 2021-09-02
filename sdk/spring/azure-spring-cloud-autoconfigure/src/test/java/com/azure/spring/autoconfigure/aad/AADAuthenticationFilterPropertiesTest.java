@@ -4,7 +4,6 @@
 package com.azure.spring.autoconfigure.aad;
 
 import com.azure.identity.AzureAuthorityHosts;
-import com.azure.spring.autoconfigure.unity.AzureProperties;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -20,6 +19,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.azure.spring.autoconfigure.unity.AzurePropertyAutoConfiguration.PREFIX;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.context.support.TestPropertySourceUtils.addInlinedPropertiesToEnvironment;
 
@@ -51,10 +51,10 @@ public class AADAuthenticationFilterPropertiesTest {
         AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
         addInlinedPropertiesToEnvironment(
             context,
-            AzureProperties.PREFIX + ".tenant-id=azure-tenant-id",
-            AzureProperties.PREFIX + ".client-id=azure-client-id",
-            AzureProperties.PREFIX + ".authority-host=azure-authority-host",
-            AzureProperties.PREFIX + ".environment=AzureGermany",
+            PREFIX + ".tenant-id=azure-tenant-id",
+            PREFIX + ".client-id=azure-client-id",
+            PREFIX + ".authority-host=azure-authority-host",
+            PREFIX + ".environment=AzureGermany",
             AAD_PROPERTY_PREFIX + "client-id=" + TestConstants.CLIENT_ID,
             AAD_PROPERTY_PREFIX + "client-secret=" + TestConstants.CLIENT_SECRET
         );
@@ -76,7 +76,7 @@ public class AADAuthenticationFilterPropertiesTest {
         AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
         addInlinedPropertiesToEnvironment(
             context,
-            AzureProperties.PREFIX + ".environment=AzureGermany",
+            PREFIX + ".environment=AzureGermany",
             AAD_PROPERTY_PREFIX + "tenant-id=azure-tenant-id",
             AAD_PROPERTY_PREFIX + "client-id=" + TestConstants.CLIENT_ID,
             AAD_PROPERTY_PREFIX + "client-secret=" + TestConstants.CLIENT_SECRET

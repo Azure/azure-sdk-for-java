@@ -10,7 +10,6 @@ import org.mockito.Mock;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;

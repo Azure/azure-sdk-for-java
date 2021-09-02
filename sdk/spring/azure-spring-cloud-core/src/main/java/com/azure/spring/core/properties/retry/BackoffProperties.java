@@ -8,36 +8,36 @@ package com.azure.spring.core.properties.retry;
  */
 public class BackoffProperties {
 
-    private long delay;
-    private long maxDelay;
+    private Long delay;
+    private Long maxDelay;
     /**
      * If positive, then used as a multiplier for generating the next delay for backoff.
-     * @return a multiplier to use to calculate the next backoff delay (default 0 =
-     * ignored)
+     *
+     * @return a multiplier to use to calculate the next backoff delay
      */
-    private double multiplier;
+    private Double multiplier;
 
-    public long getDelay() {
+    public Long getDelay() {
         return delay;
     }
 
-    public void setDelay(long delay) {
+    public void setDelay(Long delay) {
         this.delay = delay;
     }
 
-    public long getMaxDelay() {
+    public Long getMaxDelay() {
         return maxDelay;
     }
 
-    public void setMaxDelay(long maxDelay) {
+    public void setMaxDelay(Long maxDelay) {
         this.maxDelay = maxDelay;
     }
 
-    public double getMultiplier() {
+    public Double getMultiplier() {
         return multiplier;
     }
 
-    public void setMultiplier(double multiplier) {
+    public void setMultiplier(Double multiplier) {
         this.multiplier = multiplier;
     }
 }

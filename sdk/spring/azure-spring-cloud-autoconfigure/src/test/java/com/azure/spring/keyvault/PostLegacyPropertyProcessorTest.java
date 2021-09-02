@@ -28,8 +28,8 @@ import java.util.List;
 import java.util.Properties;
 
 import static com.azure.spring.autoconfigure.unity.PreLegacyPropertyEnvironmentPostProcessor.toLogString;
-import static com.azure.spring.keyvault.PostLegacyPropertyEnvironmentPostProcessor.toLogString;
 import static com.azure.spring.keyvault.KeyVaultEnvironmentPostProcessorHelper.AZURE_KEYVAULT_PROPERTYSOURCE_NAME;
+import static com.azure.spring.keyvault.PostLegacyPropertyEnvironmentPostProcessor.toLogString;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;

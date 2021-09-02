@@ -10,7 +10,6 @@ import com.azure.spring.data.cosmos.core.ResponseDiagnosticsProcessor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
-import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.DeprecatedConfigurationProperty;
 import org.springframework.validation.annotation.Validated;
 
@@ -18,10 +17,11 @@ import javax.validation.constraints.NotEmpty;
 import java.util.regex.Pattern;
 
 /**
+ * // TODO (xiada): this class should be deprecated
  * Configuration properties for Cosmos database, consistency, telemetry, connection, query metrics and diagnostics.
  */
 @Validated
-@ConfigurationProperties(CosmosProperties.PREFIX)
+//@ConfigurationProperties(CosmosProperties.PREFIX)
 public class CosmosProperties extends AzureProperties implements InitializingBean {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CosmosProperties.class);

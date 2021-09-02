@@ -20,7 +20,7 @@ import org.springframework.jms.config.JmsListenerContainerFactory;
 
 import javax.jms.ConnectionFactory;
 
-import static com.azure.spring.autoconfigure.unity.AzureProperties.AZURE_PROPERTY_BEAN_NAME;
+import static com.azure.spring.autoconfigure.unity.AzurePropertyAutoConfiguration.AZURE_PROPERTY_BEAN_NAME;
 import static com.azure.spring.core.ApplicationId.AZURE_SPRING_SERVICE_BUS;
 import static com.azure.spring.core.ApplicationId.VERSION;
 

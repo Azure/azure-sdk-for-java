@@ -3,13 +3,10 @@
 
 package com.azure.spring.autoconfigure.storage.resource;
 
-import com.azure.storage.blob.BlobServiceClientBuilder;
-import com.azure.storage.file.share.ShareServiceClientBuilder;
+import com.azure.storage.blob.BlobServiceClient;
+import com.azure.storage.file.share.ShareServiceClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.BeansException;
-import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
-import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.context.ResourceLoaderAware;
 import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.core.io.ProtocolResolver;
@@ -21,15 +18,17 @@ import org.springframework.core.io.ResourceLoader;
  *
  * @author Warren Zhu
  */
-public class AzureStorageProtocolResolver implements ProtocolResolver, BeanFactoryPostProcessor, ResourceLoaderAware {
-    private static final Logger LOGGER = LoggerFactory.getLogger(AzureStorageProtocolResolver.class);
-    private ConfigurableListableBeanFactory beanFactory;
-    private BlobServiceClientBuilder blobServiceClientBuilder;
-    private ShareServiceClientBuilder shareServiceClientBuilder;
+public class AzureStorageProtocolResolver implements ProtocolResolver, ResourceLoaderAware {
 
-    @Override
-    public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) throws BeansException {
-        this.beanFactory = beanFactory;
+    private static final Logger LOGGER = LoggerFactory.getLogger(AzureStorageProtocolResolver.class);
+
+    private final BlobServiceClient blobServiceClient;
+    private final ShareServiceClient shareServiceClient;
+
+    public AzureStorageProtocolResolver(BlobServiceClient blobServiceClient,
+                                        ShareServiceClient shareServiceClient) {
+        this.blobServiceClient = blobServiceClient;
+        this.shareServiceClient = shareServiceClient;
     }
 
     @Override
@@ -44,27 +43,21 @@ public class AzureStorageProtocolResolver implements ProtocolResolver, BeanFacto
     @Override
     public Resource resolve(String location, ResourceLoader resourceLoader) {
         if (AzureStorageUtils.isAzureStorageResource(location, StorageType.BLOB)) {
-            return new BlobStorageResource(getBlobServiceClientBuilder().buildClient(), location, true);
+            if (blobServiceClient != null) {
+                return new BlobStorageResource(blobServiceClient, location, true);
+            } else {
+                LOGGER.warn("No blob service client is configured, so the blob resources can't be resolved.");
+                return null;
+            }
         } else if (AzureStorageUtils.isAzureStorageResource(location, StorageType.FILE)) {
-            return new FileStorageResource(getShareServiceClientBuilder().buildClient(), location, true);
+            if (shareServiceClient != null) {
+                return new FileStorageResource(shareServiceClient, location, true);
+            } else {
+                LOGGER.warn("No file share service client is configured, so the file resources can't be resolved.");
+                return null;
+            }
         }
 
         return null;
-    }
-
-    private BlobServiceClientBuilder getBlobServiceClientBuilder() {
-        if (blobServiceClientBuilder == null) {
-            this.blobServiceClientBuilder = this.beanFactory.getBean(BlobServiceClientBuilder.class);
-        }
-
-        return blobServiceClientBuilder;
-    }
-
-    private ShareServiceClientBuilder getShareServiceClientBuilder() {
-        if (shareServiceClientBuilder == null) {
-            this.shareServiceClientBuilder = this.beanFactory.getBean(ShareServiceClientBuilder.class);
-        }
-
-        return shareServiceClientBuilder;
     }
 }

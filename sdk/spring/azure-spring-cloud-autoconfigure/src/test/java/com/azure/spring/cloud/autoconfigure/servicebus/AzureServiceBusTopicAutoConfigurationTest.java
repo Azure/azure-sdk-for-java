@@ -28,7 +28,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
-import static com.azure.spring.cloud.autoconfigure.servicebus.AzureServiceBusQueueAutoConfigurationTest.NAMESPACE_CONNECTION_STRING;
+import static com.azure.spring.cloud.autoconfigure.servicebus.AzureServiceBusQueueOperationAutoConfigurationTest.NAMESPACE_CONNECTION_STRING;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.mockito.Mockito.mock;
@@ -40,7 +40,7 @@ public class AzureServiceBusTopicAutoConfigurationTest {
     private static final String AZURE_PROPERTY_PREFIX = "spring.cloud.azure.";
 
     private ApplicationContextRunner contextRunner = new ApplicationContextRunner()
-        .withConfiguration(AutoConfigurations.of(AzureServiceBusTopicAutoConfiguration.class));
+        .withConfiguration(AutoConfigurations.of(AzureServiceBusTopicOperationAutoConfiguration.class));
     private AutoCloseable closeable;
 
     @BeforeAll
@@ -91,7 +91,7 @@ public class AzureServiceBusTopicAutoConfigurationTest {
     @Test
     public void testConnectionStringProvided() {
         this.contextRunner.withPropertyValues(SERVICE_BUS_PROPERTY_PREFIX + "connection-string=" + NAMESPACE_CONNECTION_STRING)
-                          .withUserConfiguration(AzureServiceBusAutoConfiguration.class)
+                          .withUserConfiguration(AzureServiceBusOperationAutoConfiguration.class)
                           .run(context -> {
                               assertThat(context.getBean(ServiceBusConnectionStringProvider.class).getConnectionString()).isEqualTo(NAMESPACE_CONNECTION_STRING);
                               assertThat(context.getBean(AzureServiceBusProperties.class).getTransportType()).isEqualTo(AmqpTransportType.AMQP);
@@ -107,7 +107,7 @@ public class AzureServiceBusTopicAutoConfigurationTest {
     @Test
     public void testTransportTypeWithAmqpWebSockets() {
         this.contextRunner.withPropertyValues(SERVICE_BUS_PROPERTY_PREFIX + "transport-type=AMQP_WEB_SOCKETS")
-                          .withUserConfiguration(AzureServiceBusAutoConfiguration.class)
+                          .withUserConfiguration(AzureServiceBusOperationAutoConfiguration.class)
                           .run(context -> {
                               assertThat(context.getBean(AzureServiceBusProperties.class).getTransportType()).isEqualTo(AmqpTransportType.AMQP_WEB_SOCKETS);
                           });
@@ -120,7 +120,7 @@ public class AzureServiceBusTopicAutoConfigurationTest {
                                               SERVICE_BUS_PROPERTY_PREFIX + "retry-options.maxDelay=200S",
                                               SERVICE_BUS_PROPERTY_PREFIX + "retry-options.tryTimeout=300S",
                                               SERVICE_BUS_PROPERTY_PREFIX + "retry-options.Mode=FIXED")
-                          .withUserConfiguration(AzureServiceBusAutoConfiguration.class)
+                          .withUserConfiguration(AzureServiceBusOperationAutoConfiguration.class)
                           .run(context -> {
                               assertThat(context.getBean(AzureServiceBusProperties.class).getRetryOptions().getMaxRetries()).isEqualTo(5);
                               assertThat(context.getBean(AzureServiceBusProperties.class).getRetryOptions().getDelay().getSeconds()).isEqualTo(100L);
@@ -133,7 +133,8 @@ public class AzureServiceBusTopicAutoConfigurationTest {
     @Test
     public void testResourceManagerProvided() {
         this.contextRunner.withUserConfiguration(TestConfigWithAzureResourceManager.class,
-                                                 TestConfigWithConnectionStringProvider.class, AzureServiceBusAutoConfiguration.class)
+                                                 TestConfigWithConnectionStringProvider.class,
+                                                 AzureServiceBusOperationAutoConfiguration.class)
                           .withPropertyValues(
                               AZURE_PROPERTY_PREFIX + "resource-group=rg1",
                               SERVICE_BUS_PROPERTY_PREFIX + "namespace=ns1"
@@ -151,7 +152,7 @@ public class AzureServiceBusTopicAutoConfigurationTest {
     public void testMessageConverterProvided() {
         this.contextRunner.withUserConfiguration(
             TestConfigWithMessageConverter.class,
-            AzureServiceBusAutoConfiguration.class)
+            AzureServiceBusOperationAutoConfiguration.class)
                           .withPropertyValues(
                               SERVICE_BUS_PROPERTY_PREFIX + "connection-string=" + NAMESPACE_CONNECTION_STRING
                           )
