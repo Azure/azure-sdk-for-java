@@ -5,6 +5,7 @@ package com.azure.spring.test.keyvault;
 
 import com.azure.spring.test.AppRunner;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import static com.azure.spring.test.EnvironmentVariable.AZURE_KEYVAULT2_URI;
@@ -20,6 +21,7 @@ import static com.azure.spring.test.EnvironmentVariable.SPRING_CLIENT_SECRET;
 import static com.azure.spring.test.EnvironmentVariable.SPRING_TENANT_ID;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class MultipleKeyVaultsIT {
 
     private static final String KEY_VAULT_NAME_1 = getKeyVaultName(AZURE_KEYVAULT_URI);
