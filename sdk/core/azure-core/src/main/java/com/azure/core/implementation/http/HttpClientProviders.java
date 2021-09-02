@@ -6,6 +6,7 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpClientProvider;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.HttpClientOptions;
+import com.azure.core.util.logging.ClientLogger;
 
 import java.util.Iterator;
 import java.util.ServiceLoader;
@@ -20,6 +21,8 @@ public final class HttpClientProviders {
         + "have the choice of Netty or OkHttp implementations. Additionally, refer to "
         + "https://aka.ms/azsdk/java/docs/custom-httpclient to learn about writing your own implementation.";
 
+    private static final ClientLogger LOGGER = new ClientLogger(HttpClientProviders.class);
+
     private static HttpClientProvider defaultProvider;
 
     static {
@@ -28,13 +31,19 @@ public final class HttpClientProviders {
         // But this choice here provides additional flexibility in managed environments that control
         // classloading differently (OSGi, Spring and others) and don't/ depend on the
         // System classloader to load HttpClientProvider classes.
-        ServiceLoader<HttpClientProvider> serviceLoader = ServiceLoader.load(
-            HttpClientProvider.class,
+        ServiceLoader<HttpClientProvider> serviceLoader = ServiceLoader.load(HttpClientProvider.class,
             HttpClientProviders.class.getClassLoader());
         // Use the first provider found in the service loader iterator.
         Iterator<HttpClientProvider> it = serviceLoader.iterator();
         if (it.hasNext()) {
             defaultProvider = it.next();
+            LOGGER.verbose("Using {} as the default HttpClientProvider.", defaultProvider.getClass().getName());
+        }
+
+        while (it.hasNext()) {
+            HttpClientProvider ignoredProvider = it.next();
+            LOGGER.warning("Multiple HttpClientProviders were found on the classpath, ignoring {}.",
+                ignoredProvider.getClass().getName());
         }
     }
 
@@ -48,7 +57,7 @@ public final class HttpClientProviders {
 
     public static HttpClient createInstance(ClientOptions clientOptions) {
         if (defaultProvider == null) {
-            throw new IllegalStateException(CANNOT_FIND_HTTP_CLIENT);
+            throw LOGGER.logExceptionAsError(new IllegalStateException(CANNOT_FIND_HTTP_CLIENT));
         }
 
         if (clientOptions instanceof HttpClientOptions) {
