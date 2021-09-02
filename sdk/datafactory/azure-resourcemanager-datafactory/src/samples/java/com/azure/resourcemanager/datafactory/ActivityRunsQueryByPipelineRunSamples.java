@@ -10,6 +10,11 @@ import java.time.OffsetDateTime;
 
 /** Samples for ActivityRuns QueryByPipelineRun. */
 public final class ActivityRunsQueryByPipelineRunSamples {
+    /*
+     * operationId: ActivityRuns_QueryByPipelineRun
+     * api-version: 2018-06-01
+     * x-ms-examples: ActivityRuns_QueryByPipelineRun
+     */
     /**
      * Sample code: ActivityRuns_QueryByPipelineRun.
      *

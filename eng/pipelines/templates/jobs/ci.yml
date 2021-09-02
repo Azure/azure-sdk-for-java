@@ -36,7 +36,7 @@ jobs:
       - template: ../variables/globals.yml
 
     pool:
-      name: azsdk-pool-mms-ubuntu-1804-general
+      name: azsdk-pool-mms-ubuntu-2004-general
 
     strategy:
       matrix:
@@ -44,14 +44,17 @@ jobs:
           ArtifactName: 'packages'
 
     steps:
-      - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
-        parameters:
-          Paths:
-            - 'sdk/${{ parameters.ServiceDirectory }}'
-            - '**/*.xml'
-            - '**/*.md'
-            - '!sdk/**/test-recordings'
-            - '!sdk/**/session-records'
+      # Skip sparse checkout for the `azure-sdk-for-<lang>-pr` private mirrored repositories
+      # as we require the github service connection to be loaded.
+      - ${{ if not(contains(variables['Build.DefinitionName'], 'java-pr')) }}:
+        - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
+          parameters:
+            Paths:
+              - 'sdk/${{ parameters.ServiceDirectory }}'
+              - '**/*.xml'
+              - '**/*.md'
+              - '!sdk/**/test-recordings'
+              - '!sdk/**/session-records'
 
       - template: ../steps/generate-project-list.yml
         parameters:
@@ -75,10 +78,13 @@ jobs:
           arguments: '--set-pipeline-variable CheckoutDirectories --project-list $(ProjectList)'
           workingDirectory: '$(System.DefaultWorkingDirectory)'
 
-      - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
-        parameters:
-          Paths: $(CheckoutDirectories)
-          SkipDefaultCheckout: true
+      # Skip sparse checkout for the `azure-sdk-for-<lang>-pr` private mirrored repositories
+      # as we require the github service connection to be loaded.
+      - ${{ if not(contains(variables['Build.DefinitionName'], 'java-pr')) }}:
+        - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
+          parameters:
+            Paths: $(CheckoutDirectories)
+            SkipDefaultCheckout: true
 
       - script: |
           echo "##vso[build.addbuildtag]Scheduled"

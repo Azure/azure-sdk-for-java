@@ -9,6 +9,11 @@ import com.azure.resourcemanager.datafactory.models.PrivateLinkConnectionState;
 
 /** Samples for PrivateEndpointConnectionOperation CreateOrUpdate. */
 public final class PrivateEndpointConnectionOperationCreateOrUpdateSamples {
+    /*
+     * operationId: PrivateEndpointConnection_CreateOrUpdate
+     * api-version: 2018-06-01
+     * x-ms-examples: Approves or rejects a private endpoint connection for a factory.
+     */
     /**
      * Sample code: Approves or rejects a private endpoint connection for a factory.
      *

@@ -11,9 +11,12 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.servicefabric.fluent.ClustersClient;
 import com.azure.resourcemanager.servicefabric.fluent.models.ClusterInner;
 import com.azure.resourcemanager.servicefabric.fluent.models.ClusterListResultInner;
+import com.azure.resourcemanager.servicefabric.fluent.models.UpgradableVersionPathResultInner;
 import com.azure.resourcemanager.servicefabric.models.Cluster;
 import com.azure.resourcemanager.servicefabric.models.ClusterListResult;
 import com.azure.resourcemanager.servicefabric.models.Clusters;
+import com.azure.resourcemanager.servicefabric.models.UpgradableVersionPathResult;
+import com.azure.resourcemanager.servicefabric.models.UpgradableVersionsDescription;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class ClustersImpl implements Clusters {
@@ -101,6 +104,36 @@ public final class ClustersImpl implements Clusters {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new ClusterListResultImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public UpgradableVersionPathResult listUpgradableVersions(String resourceGroupName, String clusterName) {
+        UpgradableVersionPathResultInner inner =
+            this.serviceClient().listUpgradableVersions(resourceGroupName, clusterName);
+        if (inner != null) {
+            return new UpgradableVersionPathResultImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public Response<UpgradableVersionPathResult> listUpgradableVersionsWithResponse(
+        String resourceGroupName,
+        String clusterName,
+        UpgradableVersionsDescription versionsDescription,
+        Context context) {
+        Response<UpgradableVersionPathResultInner> inner =
+            this
+                .serviceClient()
+                .listUpgradableVersionsWithResponse(resourceGroupName, clusterName, versionsDescription, context);
+        if (inner != null) {
+            return new SimpleResponse<>(
+                inner.getRequest(),
+                inner.getStatusCode(),
+                inner.getHeaders(),
+                new UpgradableVersionPathResultImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }

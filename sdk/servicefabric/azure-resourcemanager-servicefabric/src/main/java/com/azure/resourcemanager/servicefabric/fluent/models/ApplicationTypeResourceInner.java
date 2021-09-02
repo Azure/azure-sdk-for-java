@@ -5,25 +5,24 @@
 package com.azure.resourcemanager.servicefabric.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** The application type name resource. */
-@JsonFlatten
 @Fluent
-public class ApplicationTypeResourceInner extends ProxyResource {
+public final class ApplicationTypeResourceInner extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ApplicationTypeResourceInner.class);
 
     /*
-     * The current deployment or provisioning state, which only appears in the
-     * response.
+     * The application type name properties
      */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private String provisioningState;
+    @JsonProperty(value = "properties")
+    private ApplicationTypeResourceProperties innerProperties;
 
     /*
      * It will be deprecated in New API, resource location depends on the
@@ -36,6 +35,7 @@ public class ApplicationTypeResourceInner extends ProxyResource {
      * Azure resource tags.
      */
     @JsonProperty(value = "tags")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
     /*
@@ -44,14 +44,19 @@ public class ApplicationTypeResourceInner extends ProxyResource {
     @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
-    /**
-     * Get the provisioningState property: The current deployment or provisioning state, which only appears in the
-     * response.
-     *
-     * @return the provisioningState value.
+    /*
+     * Metadata pertaining to creation and last modification of the resource.
      */
-    public String provisioningState() {
-        return this.provisioningState;
+    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
+    private SystemData systemData;
+
+    /**
+     * Get the innerProperties property: The application type name properties.
+     *
+     * @return the innerProperties value.
+     */
+    private ApplicationTypeResourceProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /**
@@ -104,10 +109,32 @@ public class ApplicationTypeResourceInner extends ProxyResource {
     }
 
     /**
+     * Get the systemData property: Metadata pertaining to creation and last modification of the resource.
+     *
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
+    }
+
+    /**
+     * Get the provisioningState property: The current deployment or provisioning state, which only appears in the
+     * response.
+     *
+     * @return the provisioningState value.
+     */
+    public String provisioningState() {
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

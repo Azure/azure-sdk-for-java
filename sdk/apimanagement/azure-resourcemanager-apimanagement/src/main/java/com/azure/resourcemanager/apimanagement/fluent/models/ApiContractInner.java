@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.apimanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.apimanagement.models.ApiType;
@@ -18,357 +17,23 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Api details. */
-@JsonFlatten
 @Fluent
-public class ApiContractInner extends ProxyResource {
+public final class ApiContractInner extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ApiContractInner.class);
 
     /*
-     * Description of the API. May include HTML formatting tags.
+     * Api entity contract properties.
      */
-    @JsonProperty(value = "properties.description")
-    private String description;
-
-    /*
-     * Collection of authentication settings included into this API.
-     */
-    @JsonProperty(value = "properties.authenticationSettings")
-    private AuthenticationSettingsContract authenticationSettings;
-
-    /*
-     * Protocols over which API is made available.
-     */
-    @JsonProperty(value = "properties.subscriptionKeyParameterNames")
-    private SubscriptionKeyParameterNamesContract subscriptionKeyParameterNames;
-
-    /*
-     * Type of API.
-     */
-    @JsonProperty(value = "properties.type")
-    private ApiType apiType;
-
-    /*
-     * Describes the Revision of the Api. If no value is provided, default
-     * revision 1 is created
-     */
-    @JsonProperty(value = "properties.apiRevision")
-    private String apiRevision;
-
-    /*
-     * Indicates the Version identifier of the API if the API is versioned
-     */
-    @JsonProperty(value = "properties.apiVersion")
-    private String apiVersion;
-
-    /*
-     * Indicates if API revision is current api revision.
-     */
-    @JsonProperty(value = "properties.isCurrent")
-    private Boolean isCurrent;
-
-    /*
-     * Indicates if API revision is accessible via the gateway.
-     */
-    @JsonProperty(value = "properties.isOnline", access = JsonProperty.Access.WRITE_ONLY)
-    private Boolean isOnline;
-
-    /*
-     * Description of the Api Revision.
-     */
-    @JsonProperty(value = "properties.apiRevisionDescription")
-    private String apiRevisionDescription;
-
-    /*
-     * Description of the Api Version.
-     */
-    @JsonProperty(value = "properties.apiVersionDescription")
-    private String apiVersionDescription;
-
-    /*
-     * A resource identifier for the related ApiVersionSet.
-     */
-    @JsonProperty(value = "properties.apiVersionSetId")
-    private String apiVersionSetId;
-
-    /*
-     * Specifies whether an API or Product subscription is required for
-     * accessing the API.
-     */
-    @JsonProperty(value = "properties.subscriptionRequired")
-    private Boolean subscriptionRequired;
-
-    /*
-     * API identifier of the source API.
-     */
-    @JsonProperty(value = "properties.sourceApiId")
-    private String sourceApiId;
-
-    /*
-     * API name. Must be 1 to 300 characters long.
-     */
-    @JsonProperty(value = "properties.displayName")
-    private String displayName;
-
-    /*
-     * Absolute URL of the backend service implementing this API. Cannot be
-     * more than 2000 characters long.
-     */
-    @JsonProperty(value = "properties.serviceUrl")
-    private String serviceUrl;
-
-    /*
-     * Relative URL uniquely identifying this API and all of its resource paths
-     * within the API Management service instance. It is appended to the API
-     * endpoint base URL specified during the service instance creation to form
-     * a public URL for this API.
-     */
-    @JsonProperty(value = "properties.path")
-    private String path;
-
-    /*
-     * Describes on which protocols the operations in this API can be invoked.
-     */
-    @JsonProperty(value = "properties.protocols")
-    private List<Protocol> protocols;
-
-    /*
-     * Version set details
-     */
-    @JsonProperty(value = "properties.apiVersionSet")
-    private ApiVersionSetContractDetails apiVersionSet;
+    @JsonProperty(value = "properties")
+    private ApiContractProperties innerProperties;
 
     /**
-     * Get the description property: Description of the API. May include HTML formatting tags.
+     * Get the innerProperties property: Api entity contract properties.
      *
-     * @return the description value.
+     * @return the innerProperties value.
      */
-    public String description() {
-        return this.description;
-    }
-
-    /**
-     * Set the description property: Description of the API. May include HTML formatting tags.
-     *
-     * @param description the description value to set.
-     * @return the ApiContractInner object itself.
-     */
-    public ApiContractInner withDescription(String description) {
-        this.description = description;
-        return this;
-    }
-
-    /**
-     * Get the authenticationSettings property: Collection of authentication settings included into this API.
-     *
-     * @return the authenticationSettings value.
-     */
-    public AuthenticationSettingsContract authenticationSettings() {
-        return this.authenticationSettings;
-    }
-
-    /**
-     * Set the authenticationSettings property: Collection of authentication settings included into this API.
-     *
-     * @param authenticationSettings the authenticationSettings value to set.
-     * @return the ApiContractInner object itself.
-     */
-    public ApiContractInner withAuthenticationSettings(AuthenticationSettingsContract authenticationSettings) {
-        this.authenticationSettings = authenticationSettings;
-        return this;
-    }
-
-    /**
-     * Get the subscriptionKeyParameterNames property: Protocols over which API is made available.
-     *
-     * @return the subscriptionKeyParameterNames value.
-     */
-    public SubscriptionKeyParameterNamesContract subscriptionKeyParameterNames() {
-        return this.subscriptionKeyParameterNames;
-    }
-
-    /**
-     * Set the subscriptionKeyParameterNames property: Protocols over which API is made available.
-     *
-     * @param subscriptionKeyParameterNames the subscriptionKeyParameterNames value to set.
-     * @return the ApiContractInner object itself.
-     */
-    public ApiContractInner withSubscriptionKeyParameterNames(
-        SubscriptionKeyParameterNamesContract subscriptionKeyParameterNames) {
-        this.subscriptionKeyParameterNames = subscriptionKeyParameterNames;
-        return this;
-    }
-
-    /**
-     * Get the apiType property: Type of API.
-     *
-     * @return the apiType value.
-     */
-    public ApiType apiType() {
-        return this.apiType;
-    }
-
-    /**
-     * Set the apiType property: Type of API.
-     *
-     * @param apiType the apiType value to set.
-     * @return the ApiContractInner object itself.
-     */
-    public ApiContractInner withApiType(ApiType apiType) {
-        this.apiType = apiType;
-        return this;
-    }
-
-    /**
-     * Get the apiRevision property: Describes the Revision of the Api. If no value is provided, default revision 1 is
-     * created.
-     *
-     * @return the apiRevision value.
-     */
-    public String apiRevision() {
-        return this.apiRevision;
-    }
-
-    /**
-     * Set the apiRevision property: Describes the Revision of the Api. If no value is provided, default revision 1 is
-     * created.
-     *
-     * @param apiRevision the apiRevision value to set.
-     * @return the ApiContractInner object itself.
-     */
-    public ApiContractInner withApiRevision(String apiRevision) {
-        this.apiRevision = apiRevision;
-        return this;
-    }
-
-    /**
-     * Get the apiVersion property: Indicates the Version identifier of the API if the API is versioned.
-     *
-     * @return the apiVersion value.
-     */
-    public String apiVersion() {
-        return this.apiVersion;
-    }
-
-    /**
-     * Set the apiVersion property: Indicates the Version identifier of the API if the API is versioned.
-     *
-     * @param apiVersion the apiVersion value to set.
-     * @return the ApiContractInner object itself.
-     */
-    public ApiContractInner withApiVersion(String apiVersion) {
-        this.apiVersion = apiVersion;
-        return this;
-    }
-
-    /**
-     * Get the isCurrent property: Indicates if API revision is current api revision.
-     *
-     * @return the isCurrent value.
-     */
-    public Boolean isCurrent() {
-        return this.isCurrent;
-    }
-
-    /**
-     * Set the isCurrent property: Indicates if API revision is current api revision.
-     *
-     * @param isCurrent the isCurrent value to set.
-     * @return the ApiContractInner object itself.
-     */
-    public ApiContractInner withIsCurrent(Boolean isCurrent) {
-        this.isCurrent = isCurrent;
-        return this;
-    }
-
-    /**
-     * Get the isOnline property: Indicates if API revision is accessible via the gateway.
-     *
-     * @return the isOnline value.
-     */
-    public Boolean isOnline() {
-        return this.isOnline;
-    }
-
-    /**
-     * Get the apiRevisionDescription property: Description of the Api Revision.
-     *
-     * @return the apiRevisionDescription value.
-     */
-    public String apiRevisionDescription() {
-        return this.apiRevisionDescription;
-    }
-
-    /**
-     * Set the apiRevisionDescription property: Description of the Api Revision.
-     *
-     * @param apiRevisionDescription the apiRevisionDescription value to set.
-     * @return the ApiContractInner object itself.
-     */
-    public ApiContractInner withApiRevisionDescription(String apiRevisionDescription) {
-        this.apiRevisionDescription = apiRevisionDescription;
-        return this;
-    }
-
-    /**
-     * Get the apiVersionDescription property: Description of the Api Version.
-     *
-     * @return the apiVersionDescription value.
-     */
-    public String apiVersionDescription() {
-        return this.apiVersionDescription;
-    }
-
-    /**
-     * Set the apiVersionDescription property: Description of the Api Version.
-     *
-     * @param apiVersionDescription the apiVersionDescription value to set.
-     * @return the ApiContractInner object itself.
-     */
-    public ApiContractInner withApiVersionDescription(String apiVersionDescription) {
-        this.apiVersionDescription = apiVersionDescription;
-        return this;
-    }
-
-    /**
-     * Get the apiVersionSetId property: A resource identifier for the related ApiVersionSet.
-     *
-     * @return the apiVersionSetId value.
-     */
-    public String apiVersionSetId() {
-        return this.apiVersionSetId;
-    }
-
-    /**
-     * Set the apiVersionSetId property: A resource identifier for the related ApiVersionSet.
-     *
-     * @param apiVersionSetId the apiVersionSetId value to set.
-     * @return the ApiContractInner object itself.
-     */
-    public ApiContractInner withApiVersionSetId(String apiVersionSetId) {
-        this.apiVersionSetId = apiVersionSetId;
-        return this;
-    }
-
-    /**
-     * Get the subscriptionRequired property: Specifies whether an API or Product subscription is required for accessing
-     * the API.
-     *
-     * @return the subscriptionRequired value.
-     */
-    public Boolean subscriptionRequired() {
-        return this.subscriptionRequired;
-    }
-
-    /**
-     * Set the subscriptionRequired property: Specifies whether an API or Product subscription is required for accessing
-     * the API.
-     *
-     * @param subscriptionRequired the subscriptionRequired value to set.
-     * @return the ApiContractInner object itself.
-     */
-    public ApiContractInner withSubscriptionRequired(Boolean subscriptionRequired) {
-        this.subscriptionRequired = subscriptionRequired;
-        return this;
+    private ApiContractProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /**
@@ -377,7 +42,7 @@ public class ApiContractInner extends ProxyResource {
      * @return the sourceApiId value.
      */
     public String sourceApiId() {
-        return this.sourceApiId;
+        return this.innerProperties() == null ? null : this.innerProperties().sourceApiId();
     }
 
     /**
@@ -387,7 +52,10 @@ public class ApiContractInner extends ProxyResource {
      * @return the ApiContractInner object itself.
      */
     public ApiContractInner withSourceApiId(String sourceApiId) {
-        this.sourceApiId = sourceApiId;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApiContractProperties();
+        }
+        this.innerProperties().withSourceApiId(sourceApiId);
         return this;
     }
 
@@ -397,7 +65,7 @@ public class ApiContractInner extends ProxyResource {
      * @return the displayName value.
      */
     public String displayName() {
-        return this.displayName;
+        return this.innerProperties() == null ? null : this.innerProperties().displayName();
     }
 
     /**
@@ -407,7 +75,10 @@ public class ApiContractInner extends ProxyResource {
      * @return the ApiContractInner object itself.
      */
     public ApiContractInner withDisplayName(String displayName) {
-        this.displayName = displayName;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApiContractProperties();
+        }
+        this.innerProperties().withDisplayName(displayName);
         return this;
     }
 
@@ -418,7 +89,7 @@ public class ApiContractInner extends ProxyResource {
      * @return the serviceUrl value.
      */
     public String serviceUrl() {
-        return this.serviceUrl;
+        return this.innerProperties() == null ? null : this.innerProperties().serviceUrl();
     }
 
     /**
@@ -429,7 +100,10 @@ public class ApiContractInner extends ProxyResource {
      * @return the ApiContractInner object itself.
      */
     public ApiContractInner withServiceUrl(String serviceUrl) {
-        this.serviceUrl = serviceUrl;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApiContractProperties();
+        }
+        this.innerProperties().withServiceUrl(serviceUrl);
         return this;
     }
 
@@ -441,7 +115,7 @@ public class ApiContractInner extends ProxyResource {
      * @return the path value.
      */
     public String path() {
-        return this.path;
+        return this.innerProperties() == null ? null : this.innerProperties().path();
     }
 
     /**
@@ -453,7 +127,10 @@ public class ApiContractInner extends ProxyResource {
      * @return the ApiContractInner object itself.
      */
     public ApiContractInner withPath(String path) {
-        this.path = path;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApiContractProperties();
+        }
+        this.innerProperties().withPath(path);
         return this;
     }
 
@@ -463,7 +140,7 @@ public class ApiContractInner extends ProxyResource {
      * @return the protocols value.
      */
     public List<Protocol> protocols() {
-        return this.protocols;
+        return this.innerProperties() == null ? null : this.innerProperties().protocols();
     }
 
     /**
@@ -473,7 +150,10 @@ public class ApiContractInner extends ProxyResource {
      * @return the ApiContractInner object itself.
      */
     public ApiContractInner withProtocols(List<Protocol> protocols) {
-        this.protocols = protocols;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApiContractProperties();
+        }
+        this.innerProperties().withProtocols(protocols);
         return this;
     }
 
@@ -483,7 +163,7 @@ public class ApiContractInner extends ProxyResource {
      * @return the apiVersionSet value.
      */
     public ApiVersionSetContractDetails apiVersionSet() {
-        return this.apiVersionSet;
+        return this.innerProperties() == null ? null : this.innerProperties().apiVersionSet();
     }
 
     /**
@@ -493,7 +173,277 @@ public class ApiContractInner extends ProxyResource {
      * @return the ApiContractInner object itself.
      */
     public ApiContractInner withApiVersionSet(ApiVersionSetContractDetails apiVersionSet) {
-        this.apiVersionSet = apiVersionSet;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApiContractProperties();
+        }
+        this.innerProperties().withApiVersionSet(apiVersionSet);
+        return this;
+    }
+
+    /**
+     * Get the description property: Description of the API. May include HTML formatting tags.
+     *
+     * @return the description value.
+     */
+    public String description() {
+        return this.innerProperties() == null ? null : this.innerProperties().description();
+    }
+
+    /**
+     * Set the description property: Description of the API. May include HTML formatting tags.
+     *
+     * @param description the description value to set.
+     * @return the ApiContractInner object itself.
+     */
+    public ApiContractInner withDescription(String description) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApiContractProperties();
+        }
+        this.innerProperties().withDescription(description);
+        return this;
+    }
+
+    /**
+     * Get the authenticationSettings property: Collection of authentication settings included into this API.
+     *
+     * @return the authenticationSettings value.
+     */
+    public AuthenticationSettingsContract authenticationSettings() {
+        return this.innerProperties() == null ? null : this.innerProperties().authenticationSettings();
+    }
+
+    /**
+     * Set the authenticationSettings property: Collection of authentication settings included into this API.
+     *
+     * @param authenticationSettings the authenticationSettings value to set.
+     * @return the ApiContractInner object itself.
+     */
+    public ApiContractInner withAuthenticationSettings(AuthenticationSettingsContract authenticationSettings) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApiContractProperties();
+        }
+        this.innerProperties().withAuthenticationSettings(authenticationSettings);
+        return this;
+    }
+
+    /**
+     * Get the subscriptionKeyParameterNames property: Protocols over which API is made available.
+     *
+     * @return the subscriptionKeyParameterNames value.
+     */
+    public SubscriptionKeyParameterNamesContract subscriptionKeyParameterNames() {
+        return this.innerProperties() == null ? null : this.innerProperties().subscriptionKeyParameterNames();
+    }
+
+    /**
+     * Set the subscriptionKeyParameterNames property: Protocols over which API is made available.
+     *
+     * @param subscriptionKeyParameterNames the subscriptionKeyParameterNames value to set.
+     * @return the ApiContractInner object itself.
+     */
+    public ApiContractInner withSubscriptionKeyParameterNames(
+        SubscriptionKeyParameterNamesContract subscriptionKeyParameterNames) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApiContractProperties();
+        }
+        this.innerProperties().withSubscriptionKeyParameterNames(subscriptionKeyParameterNames);
+        return this;
+    }
+
+    /**
+     * Get the apiType property: Type of API.
+     *
+     * @return the apiType value.
+     */
+    public ApiType apiType() {
+        return this.innerProperties() == null ? null : this.innerProperties().apiType();
+    }
+
+    /**
+     * Set the apiType property: Type of API.
+     *
+     * @param apiType the apiType value to set.
+     * @return the ApiContractInner object itself.
+     */
+    public ApiContractInner withApiType(ApiType apiType) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApiContractProperties();
+        }
+        this.innerProperties().withApiType(apiType);
+        return this;
+    }
+
+    /**
+     * Get the apiRevision property: Describes the Revision of the Api. If no value is provided, default revision 1 is
+     * created.
+     *
+     * @return the apiRevision value.
+     */
+    public String apiRevision() {
+        return this.innerProperties() == null ? null : this.innerProperties().apiRevision();
+    }
+
+    /**
+     * Set the apiRevision property: Describes the Revision of the Api. If no value is provided, default revision 1 is
+     * created.
+     *
+     * @param apiRevision the apiRevision value to set.
+     * @return the ApiContractInner object itself.
+     */
+    public ApiContractInner withApiRevision(String apiRevision) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApiContractProperties();
+        }
+        this.innerProperties().withApiRevision(apiRevision);
+        return this;
+    }
+
+    /**
+     * Get the apiVersion property: Indicates the Version identifier of the API if the API is versioned.
+     *
+     * @return the apiVersion value.
+     */
+    public String apiVersion() {
+        return this.innerProperties() == null ? null : this.innerProperties().apiVersion();
+    }
+
+    /**
+     * Set the apiVersion property: Indicates the Version identifier of the API if the API is versioned.
+     *
+     * @param apiVersion the apiVersion value to set.
+     * @return the ApiContractInner object itself.
+     */
+    public ApiContractInner withApiVersion(String apiVersion) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApiContractProperties();
+        }
+        this.innerProperties().withApiVersion(apiVersion);
+        return this;
+    }
+
+    /**
+     * Get the isCurrent property: Indicates if API revision is current api revision.
+     *
+     * @return the isCurrent value.
+     */
+    public Boolean isCurrent() {
+        return this.innerProperties() == null ? null : this.innerProperties().isCurrent();
+    }
+
+    /**
+     * Set the isCurrent property: Indicates if API revision is current api revision.
+     *
+     * @param isCurrent the isCurrent value to set.
+     * @return the ApiContractInner object itself.
+     */
+    public ApiContractInner withIsCurrent(Boolean isCurrent) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApiContractProperties();
+        }
+        this.innerProperties().withIsCurrent(isCurrent);
+        return this;
+    }
+
+    /**
+     * Get the isOnline property: Indicates if API revision is accessible via the gateway.
+     *
+     * @return the isOnline value.
+     */
+    public Boolean isOnline() {
+        return this.innerProperties() == null ? null : this.innerProperties().isOnline();
+    }
+
+    /**
+     * Get the apiRevisionDescription property: Description of the Api Revision.
+     *
+     * @return the apiRevisionDescription value.
+     */
+    public String apiRevisionDescription() {
+        return this.innerProperties() == null ? null : this.innerProperties().apiRevisionDescription();
+    }
+
+    /**
+     * Set the apiRevisionDescription property: Description of the Api Revision.
+     *
+     * @param apiRevisionDescription the apiRevisionDescription value to set.
+     * @return the ApiContractInner object itself.
+     */
+    public ApiContractInner withApiRevisionDescription(String apiRevisionDescription) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApiContractProperties();
+        }
+        this.innerProperties().withApiRevisionDescription(apiRevisionDescription);
+        return this;
+    }
+
+    /**
+     * Get the apiVersionDescription property: Description of the Api Version.
+     *
+     * @return the apiVersionDescription value.
+     */
+    public String apiVersionDescription() {
+        return this.innerProperties() == null ? null : this.innerProperties().apiVersionDescription();
+    }
+
+    /**
+     * Set the apiVersionDescription property: Description of the Api Version.
+     *
+     * @param apiVersionDescription the apiVersionDescription value to set.
+     * @return the ApiContractInner object itself.
+     */
+    public ApiContractInner withApiVersionDescription(String apiVersionDescription) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApiContractProperties();
+        }
+        this.innerProperties().withApiVersionDescription(apiVersionDescription);
+        return this;
+    }
+
+    /**
+     * Get the apiVersionSetId property: A resource identifier for the related ApiVersionSet.
+     *
+     * @return the apiVersionSetId value.
+     */
+    public String apiVersionSetId() {
+        return this.innerProperties() == null ? null : this.innerProperties().apiVersionSetId();
+    }
+
+    /**
+     * Set the apiVersionSetId property: A resource identifier for the related ApiVersionSet.
+     *
+     * @param apiVersionSetId the apiVersionSetId value to set.
+     * @return the ApiContractInner object itself.
+     */
+    public ApiContractInner withApiVersionSetId(String apiVersionSetId) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApiContractProperties();
+        }
+        this.innerProperties().withApiVersionSetId(apiVersionSetId);
+        return this;
+    }
+
+    /**
+     * Get the subscriptionRequired property: Specifies whether an API or Product subscription is required for accessing
+     * the API.
+     *
+     * @return the subscriptionRequired value.
+     */
+    public Boolean subscriptionRequired() {
+        return this.innerProperties() == null ? null : this.innerProperties().subscriptionRequired();
+    }
+
+    /**
+     * Set the subscriptionRequired property: Specifies whether an API or Product subscription is required for accessing
+     * the API.
+     *
+     * @param subscriptionRequired the subscriptionRequired value to set.
+     * @return the ApiContractInner object itself.
+     */
+    public ApiContractInner withSubscriptionRequired(Boolean subscriptionRequired) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApiContractProperties();
+        }
+        this.innerProperties().withSubscriptionRequired(subscriptionRequired);
         return this;
     }
 
@@ -503,14 +453,8 @@ public class ApiContractInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (authenticationSettings() != null) {
-            authenticationSettings().validate();
-        }
-        if (subscriptionKeyParameterNames() != null) {
-            subscriptionKeyParameterNames().validate();
-        }
-        if (apiVersionSet() != null) {
-            apiVersionSet().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

@@ -6,12 +6,12 @@ package com.azure.resourcemanager.apimanagement.implementation;
 
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
+import com.azure.resourcemanager.apimanagement.fluent.models.GroupContractProperties;
 import com.azure.resourcemanager.apimanagement.fluent.models.UserContractInner;
 import com.azure.resourcemanager.apimanagement.fluent.models.UserIdentityContractInner;
 import com.azure.resourcemanager.apimanagement.models.AppType;
 import com.azure.resourcemanager.apimanagement.models.Confirmation;
 import com.azure.resourcemanager.apimanagement.models.GenerateSsoUrlResult;
-import com.azure.resourcemanager.apimanagement.models.GroupContractProperties;
 import com.azure.resourcemanager.apimanagement.models.UserContract;
 import com.azure.resourcemanager.apimanagement.models.UserCreateParameters;
 import com.azure.resourcemanager.apimanagement.models.UserIdentityContract;
@@ -41,28 +41,6 @@ public final class UserContractImpl implements UserContract, UserContract.Defini
         return this.innerModel().type();
     }
 
-    public UserState state() {
-        return this.innerModel().state();
-    }
-
-    public String note() {
-        return this.innerModel().note();
-    }
-
-    public List<UserIdentityContract> identities() {
-        List<UserIdentityContractInner> inner = this.innerModel().identities();
-        if (inner != null) {
-            return Collections
-                .unmodifiableList(
-                    inner
-                        .stream()
-                        .map(inner1 -> new UserIdentityContractImpl(inner1, this.manager()))
-                        .collect(Collectors.toList()));
-        } else {
-            return Collections.emptyList();
-        }
-    }
-
     public String firstName() {
         return this.innerModel().firstName();
     }
@@ -83,6 +61,28 @@ public final class UserContractImpl implements UserContract, UserContract.Defini
         List<GroupContractProperties> inner = this.innerModel().groups();
         if (inner != null) {
             return Collections.unmodifiableList(inner);
+        } else {
+            return Collections.emptyList();
+        }
+    }
+
+    public UserState state() {
+        return this.innerModel().state();
+    }
+
+    public String note() {
+        return this.innerModel().note();
+    }
+
+    public List<UserIdentityContract> identities() {
+        List<UserIdentityContractInner> inner = this.innerModel().identities();
+        if (inner != null) {
+            return Collections
+                .unmodifiableList(
+                    inner
+                        .stream()
+                        .map(inner1 -> new UserIdentityContractImpl(inner1, this.manager()))
+                        .collect(Collectors.toList()));
         } else {
             return Collections.emptyList();
         }
@@ -223,36 +223,6 @@ public final class UserContractImpl implements UserContract, UserContract.Defini
             .getSharedAccessTokenWithResponse(resourceGroupName, serviceName, userId, parameters, context);
     }
 
-    public UserContractImpl withState(UserState state) {
-        if (isInCreateMode()) {
-            this.createParameters.withState(state);
-            return this;
-        } else {
-            this.updateParameters.withState(state);
-            return this;
-        }
-    }
-
-    public UserContractImpl withNote(String note) {
-        if (isInCreateMode()) {
-            this.createParameters.withNote(note);
-            return this;
-        } else {
-            this.updateParameters.withNote(note);
-            return this;
-        }
-    }
-
-    public UserContractImpl withIdentities(List<UserIdentityContractInner> identities) {
-        if (isInCreateMode()) {
-            this.createParameters.withIdentities(identities);
-            return this;
-        } else {
-            this.updateParameters.withIdentities(identities);
-            return this;
-        }
-    }
-
     public UserContractImpl withEmail(String email) {
         if (isInCreateMode()) {
             this.createParameters.withEmail(email);
@@ -301,6 +271,36 @@ public final class UserContractImpl implements UserContract, UserContract.Defini
     public UserContractImpl withConfirmation(Confirmation confirmation) {
         this.createParameters.withConfirmation(confirmation);
         return this;
+    }
+
+    public UserContractImpl withState(UserState state) {
+        if (isInCreateMode()) {
+            this.createParameters.withState(state);
+            return this;
+        } else {
+            this.updateParameters.withState(state);
+            return this;
+        }
+    }
+
+    public UserContractImpl withNote(String note) {
+        if (isInCreateMode()) {
+            this.createParameters.withNote(note);
+            return this;
+        } else {
+            this.updateParameters.withNote(note);
+            return this;
+        }
+    }
+
+    public UserContractImpl withIdentities(List<UserIdentityContractInner> identities) {
+        if (isInCreateMode()) {
+            this.createParameters.withIdentities(identities);
+            return this;
+        } else {
+            this.updateParameters.withIdentities(identities);
+            return this;
+        }
     }
 
     public UserContractImpl withNotify(Boolean notify) {

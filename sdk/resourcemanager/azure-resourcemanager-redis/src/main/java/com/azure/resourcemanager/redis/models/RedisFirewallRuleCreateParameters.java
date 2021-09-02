@@ -5,66 +5,29 @@
 package com.azure.resourcemanager.redis.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.redis.fluent.models.RedisFirewallRuleInner;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Parameters required for creating a firewall rule on redis cache. */
-@JsonFlatten
+/**
+ * Parameters required for creating a firewall rule on redis cache. (Note, you can just use the FirewallRule type
+ * instead now.).
+ */
 @Fluent
-public class RedisFirewallRuleCreateParameters {
+public final class RedisFirewallRuleCreateParameters extends RedisFirewallRuleInner {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(RedisFirewallRuleCreateParameters.class);
 
-    /*
-     * lowest IP address included in the range
-     */
-    @JsonProperty(value = "properties.startIP", required = true)
-    private String startIp;
-
-    /*
-     * highest IP address included in the range
-     */
-    @JsonProperty(value = "properties.endIP", required = true)
-    private String endIp;
-
-    /**
-     * Get the startIp property: lowest IP address included in the range.
-     *
-     * @return the startIp value.
-     */
-    public String startIp() {
-        return this.startIp;
-    }
-
-    /**
-     * Set the startIp property: lowest IP address included in the range.
-     *
-     * @param startIp the startIp value to set.
-     * @return the RedisFirewallRuleCreateParameters object itself.
-     */
+    /** {@inheritDoc} */
+    @Override
     public RedisFirewallRuleCreateParameters withStartIp(String startIp) {
-        this.startIp = startIp;
+        super.withStartIp(startIp);
         return this;
     }
 
-    /**
-     * Get the endIp property: highest IP address included in the range.
-     *
-     * @return the endIp value.
-     */
-    public String endIp() {
-        return this.endIp;
-    }
-
-    /**
-     * Set the endIp property: highest IP address included in the range.
-     *
-     * @param endIp the endIp value to set.
-     * @return the RedisFirewallRuleCreateParameters object itself.
-     */
+    /** {@inheritDoc} */
+    @Override
     public RedisFirewallRuleCreateParameters withEndIp(String endIp) {
-        this.endIp = endIp;
+        super.withEndIp(endIp);
         return this;
     }
 
@@ -73,18 +36,8 @@ public class RedisFirewallRuleCreateParameters {
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
+    @Override
     public void validate() {
-        if (startIp() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property startIp in model RedisFirewallRuleCreateParameters"));
-        }
-        if (endIp() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property endIp in model RedisFirewallRuleCreateParameters"));
-        }
+        super.validate();
     }
 }

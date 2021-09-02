@@ -3,78 +3,40 @@
 
 package com.azure.monitor.query.models;
 
-import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.monitor.query.implementation.metrics.models.MetricsHelper;
+
 import java.time.Duration;
 
 /**
- * Metric availability specifies the time grain (aggregation interval or frequency) and the retention period for that
- * time grain.
+ * Metric availability specifies the granularity and the retention period for that
+ * granularity.
  */
-@Fluent
 public final class MetricAvailability {
-    /*
-     * the time grain specifies the aggregation interval for the metric.
-     * Expressed as a duration 'PT1M', 'P1D', etc.
-     */
-    @JsonProperty(value = "timeGrain")
-    private Duration timeGrain;
-
-    /*
-     * the retention period for the metric at the specified timegrain.
-     * Expressed as a duration 'PT1M', 'P1D', etc.
-     */
-    @JsonProperty(value = "retention")
     private Duration retention;
+    private Duration granularity;
 
-    /**
-     * Get the timeGrain property: the time grain specifies the aggregation interval for the metric. Expressed as a
-     * duration 'PT1M', 'P1D', etc.
-     *
-     * @return the timeGrain value.
-     */
-    public Duration getTimeGrain() {
-        return this.timeGrain;
+    static {
+        MetricsHelper.setMetricAvailabilityAccessor(MetricAvailability::setMetricAvailabilityProperties);
+    }
+
+    private void setMetricAvailabilityProperties(Duration retention, Duration granularity) {
+        this.retention = retention;
+        this.granularity = granularity;
     }
 
     /**
-     * Set the timeGrain property: the time grain specifies the aggregation interval for the metric. Expressed as a
-     * duration 'PT1M', 'P1D', etc.
-     *
-     * @param timeGrain the timeGrain value to set.
-     * @return the MetricAvailability object itself.
-     */
-    public MetricAvailability setTimeGrain(Duration timeGrain) {
-        this.timeGrain = timeGrain;
-        return this;
-    }
-
-    /**
-     * Get the retention property: the retention period for the metric at the specified timegrain. Expressed as a
-     * duration 'PT1M', 'P1D', etc.
-     *
-     * @return the retention value.
+     * Returns the retention period for the metric at the specified granularity.
+     * @return the retention period for the metric at the specified granularity.
      */
     public Duration getRetention() {
-        return this.retention;
+        return retention;
     }
 
     /**
-     * Set the retention property: the retention period for the metric at the specified timegrain. Expressed as a
-     * duration 'PT1M', 'P1D', etc.
-     *
-     * @param retention the retention value to set.
-     * @return the MetricAvailability object itself.
+     * Returns  the granularity specifies the aggregation interval for the metric.
+     * @return the granularity specifies the aggregation interval for the metric.
      */
-    public MetricAvailability setRetention(Duration retention) {
-        this.retention = retention;
-        return this;
+    public Duration getGranularity() {
+        return granularity;
     }
-
-    /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() { }
 }

@@ -5,6 +5,7 @@ package com.azure.resourcemanager.storage.implementation;
 
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.CreatableUpdatableImpl;
 import com.azure.resourcemanager.resources.fluentcore.utils.ETagState;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.storage.StorageManager;
 import com.azure.resourcemanager.storage.fluent.BlobContainersClient;
 import com.azure.resourcemanager.storage.models.ImmutabilityPolicy;
@@ -23,12 +24,9 @@ class ImmutabilityPolicyImpl
     private int uImmutabilityPeriodSinceCreationInDays;
     private final ETagState eTagState = new ETagState();
 
-    ImmutabilityPolicyImpl(String name, StorageManager manager) {
-        super(name, new ImmutabilityPolicyInner());
+    ImmutabilityPolicyImpl(StorageManager manager) {
+        super("default", new ImmutabilityPolicyInner());
         this.manager = manager;
-        // Set resource name
-        this.containerName = name;
-        //
     }
 
     ImmutabilityPolicyImpl(ImmutabilityPolicyInner inner, StorageManager manager) {
@@ -57,8 +55,8 @@ class ImmutabilityPolicyImpl
                 this.accountName,
                 this.containerName,
                 null,
-                this.cImmutabilityPeriodSinceCreationInDays,
-                null)
+                new ImmutabilityPolicyInner()
+                    .withImmutabilityPeriodSinceCreationInDays(this.cImmutabilityPeriodSinceCreationInDays))
             .map(innerToFluentMap(this));
     }
 
@@ -71,8 +69,8 @@ class ImmutabilityPolicyImpl
                 this.accountName,
                 this.containerName,
                 this.eTagState.ifMatchValueOnUpdate(this.innerModel().etag()),
-                this.uImmutabilityPeriodSinceCreationInDays,
-                null)
+                new ImmutabilityPolicyInner()
+                    .withImmutabilityPeriodSinceCreationInDays(this.uImmutabilityPeriodSinceCreationInDays))
             .map(innerToFluentMap(this))
             .map(
                 self -> {
@@ -104,7 +102,7 @@ class ImmutabilityPolicyImpl
 
     @Override
     public int immutabilityPeriodSinceCreationInDays() {
-        return this.innerModel().immutabilityPeriodSinceCreationInDays();
+        return ResourceManagerUtils.toPrimitiveInt(this.innerModel().immutabilityPeriodSinceCreationInDays());
     }
 
     @Override
@@ -120,6 +118,39 @@ class ImmutabilityPolicyImpl
     @Override
     public String type() {
         return this.innerModel().type();
+    }
+
+    @Override
+    public void lock() {
+        this.lockAsync().block();
+    }
+
+    @Override
+    public Mono<Void> lockAsync() {
+        return manager().blobContainers().lockImmutabilityPolicyAsync(this.resourceGroupName, this.accountName,
+            this.containerName, this.etag())
+            .map(p -> {
+                this.setInner(p.innerModel());
+                return p;
+            })
+            .then();
+    }
+
+    @Override
+    public void extend(int immutabilityPeriodSinceCreationInDays) {
+        this.extendAsync(immutabilityPeriodSinceCreationInDays).block();
+    }
+
+    @Override
+    public Mono<Void> extendAsync(int immutabilityPeriodSinceCreationInDays) {
+        return manager().blobContainers().extendImmutabilityPolicyAsync(this.resourceGroupName, this.accountName,
+            this.containerName, immutabilityPeriodSinceCreationInDays, this.innerModel().allowProtectedAppendWrites(),
+            this.etag())
+            .map(p -> {
+                this.setInner(p.innerModel());
+                return p;
+            })
+            .then();
     }
 
     @Override

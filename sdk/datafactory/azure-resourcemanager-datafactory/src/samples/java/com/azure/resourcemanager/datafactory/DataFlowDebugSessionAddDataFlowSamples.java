@@ -27,6 +27,11 @@ import java.util.Map;
 
 /** Samples for DataFlowDebugSession AddDataFlow. */
 public final class DataFlowDebugSessionAddDataFlowSamples {
+    /*
+     * operationId: DataFlowDebugSession_AddDataFlow
+     * api-version: 2018-06-01
+     * x-ms-examples: DataFlowDebugSession_AddDataFlow
+     */
     /**
      * Sample code: DataFlowDebugSession_AddDataFlow.
      *
@@ -81,32 +86,11 @@ public final class DataFlowDebugSessionAddDataFlowSamples {
                                             .withAnnotations(Arrays.asList())
                                             .withLocation(
                                                 new AzureBlobStorageLocation()
-                                                    .withFileName(
-                                                        SerializerFactory
-                                                            .createDefaultManagementSerializerAdapter()
-                                                            .deserialize(
-                                                                "\"Ansiencoding.csv\"",
-                                                                Object.class,
-                                                                SerializerEncoding.JSON))
-                                                    .withContainer(
-                                                        SerializerFactory
-                                                            .createDefaultManagementSerializerAdapter()
-                                                            .deserialize(
-                                                                "\"dataflow-sample-data\"",
-                                                                Object.class,
-                                                                SerializerEncoding.JSON)))
-                                            .withColumnDelimiter(
-                                                SerializerFactory
-                                                    .createDefaultManagementSerializerAdapter()
-                                                    .deserialize("\",\"", Object.class, SerializerEncoding.JSON))
-                                            .withQuoteChar(
-                                                SerializerFactory
-                                                    .createDefaultManagementSerializerAdapter()
-                                                    .deserialize("\"\\\"\"", Object.class, SerializerEncoding.JSON))
-                                            .withEscapeChar(
-                                                SerializerFactory
-                                                    .createDefaultManagementSerializerAdapter()
-                                                    .deserialize("\"\\\\\"", Object.class, SerializerEncoding.JSON))
+                                                    .withFileName("Ansiencoding.csv")
+                                                    .withContainer("dataflow-sample-data"))
+                                            .withColumnDelimiter(",")
+                                            .withQuoteChar("\"")
+                                            .withEscapeChar("\\")
                                             .withFirstRowAsHeader(true))))
                     .withLinkedServices(
                         Arrays
@@ -117,33 +101,30 @@ public final class DataFlowDebugSessionAddDataFlowSamples {
                                         new AzureBlobStorageLinkedService()
                                             .withAnnotations(Arrays.asList())
                                             .withConnectionString(
-                                                SerializerFactory
-                                                    .createDefaultManagementSerializerAdapter()
-                                                    .deserialize(
-                                                        "\"DefaultEndpointsProtocol=https;AccountName=<storageName>;EndpointSuffix=core.windows.net;\"",
-                                                        Object.class,
-                                                        SerializerEncoding.JSON))
+                                                "DefaultEndpointsProtocol=https;AccountName=<storageName>;EndpointSuffix=core.windows.net;")
                                             .withEncryptedCredential("<credential>"))))
                     .withDebugSettings(
                         new DataFlowDebugPackageDebugSettings()
                             .withSourceSettings(
                                 Arrays
                                     .asList(
-                                        new DataFlowSourceSetting().withSourceName("source1").withRowLimit(1000),
-                                        new DataFlowSourceSetting().withSourceName("source2").withRowLimit(222)))
-                            .withParameters(
-                                mapOf(
-                                    "sourcePath",
-                                    SerializerFactory
-                                        .createDefaultManagementSerializerAdapter()
-                                        .deserialize("\"Toy\"", Object.class, SerializerEncoding.JSON)))
+                                        new DataFlowSourceSetting()
+                                            .withSourceName("source1")
+                                            .withRowLimit(1000)
+                                            .withAdditionalProperties(mapOf()),
+                                        new DataFlowSourceSetting()
+                                            .withSourceName("source2")
+                                            .withRowLimit(222)
+                                            .withAdditionalProperties(mapOf())))
+                            .withParameters(mapOf("sourcePath", "Toy"))
                             .withDatasetParameters(
                                 SerializerFactory
                                     .createDefaultManagementSerializerAdapter()
                                     .deserialize(
                                         "{\"Movies\":{\"path\":\"abc\"},\"Output\":{\"time\":\"def\"}}",
                                         Object.class,
-                                        SerializerEncoding.JSON))),
+                                        SerializerEncoding.JSON)))
+                    .withAdditionalProperties(mapOf()),
                 Context.NONE);
     }
 
