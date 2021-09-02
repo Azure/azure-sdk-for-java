@@ -16,13 +16,13 @@ steps:
         workingDirectory: $(Agent.BuildDirectory)
         filePath: ${{ parameters.JavaRepoRoot }}/eng/scripts/Publish-MavenPackages.ps1
         arguments: >
-          -ArtifactDirectory ${{ parameters.ArtifactDirectory }}
-          -GroupIDFilter ${{ parameters.GroupID }}
-          -ArtifactIDFilter ${{ parameters.ArtifactID }}
-          -RepositoryUrl https://pkgs.dev.azure.com/azure-sdk/public/_packaging/azure-sdk-$(Build.BuildID)/maven/v1
-          -RepositoryUsername nobody
-          -RepositoryPassword $(System.AccessToken)
-          -GPGExecutablePath ${{ parameters.BuildToolsPath }}/tools/gpg/bin/gpg.exe
+          -ArtifactDirectory '${{ parameters.ArtifactDirectory }}'
+          -GroupIDFilter '${{ parameters.GroupID }}'
+          -ArtifactIDFilter '${{ parameters.ArtifactID }}'
+          -RepositoryUrl 'https://pkgs.dev.azure.com/azure-sdk/public/_packaging/azure-sdk-$(Build.BuildID)/maven/v1'
+          -RepositoryUsername 'nobody'
+          -RepositoryPassword '$(System.AccessToken)'
+          -GPGExecutablePath '${{ parameters.BuildToolsPath }}/tools/gpg/bin/gpg.exe'
           -InformationAction Continue
 
   - ${{if eq(parameters.Target, 'JavaDevFeed')}}:
@@ -33,13 +33,13 @@ steps:
         workingDirectory: $(Agent.BuildDirectory)
         filePath: ${{ parameters.JavaRepoRoot }}/eng/scripts/Publish-MavenPackages.ps1
         arguments: >
-          -ArtifactDirectory ${{ parameters.ArtifactDirectory }}
-          -GroupIDFilter ${{ parameters.GroupID }}
-          -ArtifactIDFilter ${{ parameters.ArtifactID }}
-          -RepositoryUrl ${{ parameters.RepositoryUrl }}
-          -RepositoryUsername nobody
-          -RepositoryPassword $(System.AccessToken)
-          -GPGExecutablePath ${{ parameters.BuildToolsPath }}/tools/gpg/bin/gpg.exe
+          -ArtifactDirectory '${{ parameters.ArtifactDirectory }}'
+          -GroupIDFilter '${{ parameters.GroupID }}'
+          -ArtifactIDFilter '${{ parameters.ArtifactID }}'
+          -RepositoryUrl '${{ parameters.RepositoryUrl }}'
+          -RepositoryUsername 'nobody'
+          -RepositoryPassword '$(System.AccessToken)'
+          -GPGExecutablePath '${{ parameters.BuildToolsPath }}/tools/gpg/bin/gpg.exe'
           -InformationAction Continue
 
   - ${{if eq(parameters.Target, 'AndroidDevFeed')}}:
@@ -50,13 +50,13 @@ steps:
         workingDirectory: $(Agent.BuildDirectory)
         filePath: ${{ parameters.JavaRepoRoot }}/eng/scripts/Publish-MavenPackages.ps1
         arguments: >
-          -ArtifactDirectory ${{ parameters.ArtifactDirectory }}
-          -GroupIDFilter ${{ parameters.GroupID }}
-          -ArtifactIDFilter ${{ parameters.ArtifactID }}
-          -RepositoryUrl https://pkgs.dev.azure.com/azure-sdk/public/_packaging/azure-sdk-for-android/maven/v1
-          -RepositoryUsername nobody
-          -RepositoryPassword $(System.AccessToken)
-          -GPGExecutablePath ${{ parameters.BuildToolsPath }}/tools/gpg/bin/gpg.exe
+          -ArtifactDirectory '${{ parameters.ArtifactDirectory }}'
+          -GroupIDFilter '${{ parameters.GroupID }}'
+          -ArtifactIDFilter '${{ parameters.ArtifactID }}'
+          -RepositoryUrl 'https://pkgs.dev.azure.com/azure-sdk/public/_packaging/azure-sdk-for-android/maven/v1'
+          -RepositoryUsername 'nobody'
+          -RepositoryPassword '$(System.AccessToken)'
+          -GPGExecutablePath '${{ parameters.BuildToolsPath }}/tools/gpg/bin/gpg.exe'
           -InformationAction Continue
 
   - ${{if eq(parameters.Target, 'MavenCentral')}}:
@@ -67,12 +67,12 @@ steps:
         workingDirectory: $(Agent.BuildDirectory)
         filePath: ${{ parameters.JavaRepoRoot }}/eng/scripts/Publish-MavenPackages.ps1
         arguments: >
-          -ArtifactDirectory ${{ parameters.ArtifactDirectory }}
-          -GroupIDFilter "${{ parameters.GroupID }}"
-          -ArtifactIDFilter "${{ parameters.ArtifactID }}"
-          -RepositoryUrl https://oss.sonatype.org/service/local/staging/deploy/maven2/
-          -RepositoryUsername azuresdk
-          -RepositoryPassword $(azuresdk-sonatype-password)
-          -GPGExecutablePath ${{ parameters.BuildToolsPath }}/tools/gpg/bin/gpg.exe
+          -ArtifactDirectory '${{ parameters.Artifact'Directory }}'
+          -GroupIDFilter '${{ parameters.GroupID }}'
+          -ArtifactIDFilter '${{ parameters.ArtifactID }}'
+          -RepositoryUrl 'https://oss.sonatype.org/service/local/staging/deploy/maven2/'
+          -RepositoryUsername 'azuresdk'
+          -RepositoryPassword '$(azuresdk-sonatype-password)'
+          -GPGExecutablePath '${{ parameters.BuildToolsPath }}/tools/gpg/bin/gpg.exe'
           -StageOnly:$${{parameters.StageOnly}}
           -InformationAction Continue

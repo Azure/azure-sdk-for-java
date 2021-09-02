@@ -145,6 +145,17 @@ foreach ($packageDetail in $packageDetails) {
   }
   elseif ($RepositoryUrl -like "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
     if (!$StageOnly) {
+      if ($packageDetail.IsSnapshot) {
+        # If $StageOnly, don't release to /snapshots
+        # If snapshot, no need to stage first
+        $RepositoryUrl = "https://oss.sonatype.org/content/repositories/snapshots/"
+        Write-Information "GPG Signing and deploying package in one step to Sonatype snapshots: $RepositoryUrl"
+        Write-Information "mvn gpg:sign-and-deploy-file `"--batch-mode`" `"$pomOption`" `"$fileOption`" `"$javadocOption`" `"$sourcesOption`" `"$filesOption`" $classifiersOption `"$typesOption`" `"-Durl=$RepositoryUrl`" `"$gpgexeOption`" `"-DrepositoryId=target-repo`" `"-Drepo.username=`"`"$RepositoryUsername`"`"`" `"-Drepo.password=[redacted]`" `"--settings=$PSScriptRoot\..\maven.publish.settings.xml`""
+        mvn gpg:sign-and-deploy-file "--batch-mode" "$pomOption" "$fileOption" "$javadocOption" "$sourcesOption" "$filesOption" $classifiersOption "$typesOption" "-Durl=$RepositoryUrl" "$gpgexeOption" "-DrepositoryId=target-repo" "-Drepo.username=""$RepositoryUsername""" "-Drepo.password=""$RepositoryPassword""" "--settings=$PSScriptRoot\..\maven.publish.settings.xml"
+        if ($LASTEXITCODE) { exit $LASTEXITCODE }
+        continue
+      }
+
       Write-Information "Checking to see if package $($packageDetail.FullyQualifiedName) is already deployed."
       
       if (Test-ReleasedPackage -RepositoryUrl $RepositoryUrl -PackageDetail $packageDetail) {
