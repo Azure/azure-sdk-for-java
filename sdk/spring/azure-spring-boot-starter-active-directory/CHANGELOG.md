@@ -1,10 +1,6 @@
 # Release History
 
-## 3.9.0-beta.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
+## 4.0.0-beta.1 (Unreleased)
 
 ### Bugs Fixed
 - Fix bug about application type validation. ([#23481](https://github.com/Azure/azure-sdk-for-java/issues/23481))
@@ -19,9 +15,6 @@
 
 ### Deprecations
 - Deprecate `azure.activedirectory.authorization-clients.xxx.on-demand`, use `azure.activedirectory.authorization-clients.xxx.authorization-grant-type` instead. If you are using `on-demand=true`, please change to `authorization-grant-type=authorization_code`.
-
-### Other Changes
-
 
 ## 3.8.0 (2021-08-25)
 This release is compatible with Spring Boot 2.5.0 - 2.5.3.

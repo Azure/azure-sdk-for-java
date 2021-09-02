@@ -12,7 +12,7 @@
 
   <groupId>com.azure.spring</groupId>
   <artifactId>azure-spring-cloud-stream-binder-test</artifactId>
-  <version>2.9.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-stream-binder-test;current} -->
+  <version>4.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-stream-binder-test;current} -->
 
   <name>Azure Spring Cloud Stream Binder Test</name>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
@@ -67,7 +67,7 @@
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>azure-spring-cloud-autoconfigure</artifactId>
-      <version>2.9.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-autoconfigure;current} -->
+      <version>4.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-autoconfigure;current} -->
     </dependency>
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>

@@ -12,7 +12,7 @@
 
   <groupId>com.azure.spring</groupId>
   <artifactId>azure-spring-cloud-autoconfigure</artifactId>
-  <version>2.9.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-autoconfigure;current} -->
+  <version>4.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-autoconfigure;current} -->
 
   <name>Azure Spring Cloud Autoconfigure</name>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
@@ -26,13 +26,13 @@
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>azure-spring-cloud-core</artifactId>
-      <version>2.9.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-core;current} -->
+      <version>4.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-core;current} -->
     </dependency>
 
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>azure-spring-cloud-resourcemanager</artifactId>
-      <version>2.9.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-resourcemanager;current} -->
+      <version>4.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-resourcemanager;current} -->
       <optional>true</optional>
     </dependency>
 
@@ -87,7 +87,7 @@
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>azure-spring-integration-eventhubs</artifactId>
-      <version>2.9.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-integration-eventhubs;current} -->
+      <version>4.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-integration-eventhubs;current} -->
       <optional>true</optional>
     </dependency>
 
@@ -95,7 +95,7 @@
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>azure-spring-integration-servicebus</artifactId>
-      <version>2.9.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-integration-servicebus;current} -->
+      <version>4.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-integration-servicebus;current} -->
       <optional>true</optional>
     </dependency>
 
@@ -228,7 +228,7 @@
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>azure-spring-integration-storage-queue</artifactId>
-      <version>2.9.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-integration-storage-queue;current} -->
+      <version>4.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-integration-storage-queue;current} -->
       <optional>true</optional>
     </dependency>
 

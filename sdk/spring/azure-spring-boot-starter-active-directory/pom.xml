@@ -13,7 +13,7 @@
 
   <groupId>com.azure.spring</groupId>
   <artifactId>azure-spring-boot-starter-active-directory</artifactId>
-  <version>3.9.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-boot-starter-active-directory;current} -->
+  <version>4.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-boot-starter-active-directory;current} -->
 
   <name>Azure Spring Boot Starter for Azure AD Spring Security Integration</name>
   <description>Spring Boot Starter for Azure AD and Spring Security Integration</description>
@@ -23,7 +23,7 @@
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>azure-spring-cloud-starter</artifactId>
-      <version>3.9.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-starter;current} -->
+      <version>4.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-starter;current} -->
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
