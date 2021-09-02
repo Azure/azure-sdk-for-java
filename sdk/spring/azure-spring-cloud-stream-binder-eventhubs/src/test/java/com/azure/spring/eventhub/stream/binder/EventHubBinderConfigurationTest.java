@@ -3,15 +3,14 @@
 
 package com.azure.spring.eventhub.stream.binder;
 
-import com.azure.spring.cloud.autoconfigure.context.AzureContextAutoConfiguration;
-import com.azure.spring.cloud.autoconfigure.context.AzureEnvironmentAutoConfiguration;
+import com.azure.spring.cloud.autoconfigure.context.AzureResourceManagerAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.eventhub.AzureEventHubAutoConfiguration;
+import com.azure.spring.cloud.autoconfigure.eventhub.EventHubConnectionStringProvider;
 import com.azure.spring.cloud.context.core.impl.EventHubNamespaceManager;
 import com.azure.spring.cloud.context.core.impl.StorageAccountManager;
 import com.azure.spring.eventhub.stream.binder.config.EventHubBinderConfiguration;
 import com.azure.spring.integration.eventhub.api.EventHubClientFactory;
 import com.azure.spring.integration.eventhub.api.EventHubOperation;
-import com.azure.spring.integration.eventhub.factory.EventHubConnectionStringProvider;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
@@ -30,8 +29,7 @@ public class EventHubBinderConfigurationTest {
     private ApplicationContextRunner contextRunner = new ApplicationContextRunner()
         .withPropertyValues(AZURE_PROPERTY_PREFIX + "stream.function.definition=supply")
         .withPropertyValues(AZURE_PROPERTY_PREFIX + "stream.bindings.supply-out-0.destination=eventhub1")
-        .withConfiguration(AutoConfigurations.of(AzureEnvironmentAutoConfiguration.class))
-        .withConfiguration(AutoConfigurations.of(AzureContextAutoConfiguration.class))
+        .withConfiguration(AutoConfigurations.of(AzureResourceManagerAutoConfiguration.class))
         .withConfiguration(AutoConfigurations.of(AzureEventHubAutoConfiguration.class))
         .withConfiguration(AutoConfigurations.of(EventHubBinderConfiguration.class));
 
