@@ -63,6 +63,10 @@ class ImmutableStorageWithVersioningTest extends APISpec {
     private String subscriptionId = env.subscriptionId
     @Shared
     private String apiVersion = "2021-04-01"
+    @Shared
+    private TokenCredential credential = new EnvironmentCredentialBuilder().build()
+    @Shared
+    private BearerTokenAuthenticationPolicy credentialPolicy = new BearerTokenAuthenticationPolicy(credential, "https://management.azure.com/.default")
 
     private BlobContainerClient vlwContainer;
     private BlobClient vlwBlob
@@ -74,7 +78,10 @@ class ImmutableStorageWithVersioningTest extends APISpec {
             String url = String.format("https://management.azure.com/subscriptions/%s/resourceGroups/%s/providers/"
                 + "Microsoft.Storage/storageAccounts/%s/blobServices/default/containers/%s?api-version=%s", subscriptionId,
                 resourceGroupName, accountName, vlwContainerName, apiVersion)
-            HttpPipeline httpPipeline = createSrpPipeline()
+            HttpPipeline httpPipeline = new HttpPipelineBuilder()
+                .policies(credentialPolicy)
+                .httpClient(getHttpClient())
+                .build()
 
             def immutableStorageWithVersioning = new ImmutableStorageWithVersioning()
             immutableStorageWithVersioning.enabled = true
@@ -89,16 +96,13 @@ class ImmutableStorageWithVersioningTest extends APISpec {
 
             String serializedBody = new ObjectMapper().writeValueAsString(body)
 
-            httpPipeline.send(new HttpRequest(HttpMethod.PUT, new URL(url), new HttpHeaders(),
+            def response = httpPipeline.send(new HttpRequest(HttpMethod.PUT, new URL(url), new HttpHeaders(),
                 Flux.just(ByteBuffer.wrap(serializedBody.getBytes(StandardCharsets.UTF_8)))))
                 .block()
-                .withCloseable {
-                    response ->
-                        if (response.statusCode != 201) {
-                            println response.getBodyAsString().block()
-                        }
-                        assert response.statusCode == 201
-                }
+            if (response.statusCode != 201) {
+                println response.getBodyAsString().block()
+            }
+            assert response.statusCode == 201
         }
     }
 
@@ -124,7 +128,10 @@ class ImmutableStorageWithVersioningTest extends APISpec {
 
     def cleanupSpec() {
         if (env.testMode != TestMode.PLAYBACK) {
-            HttpPipeline httpPipeline = createSrpPipeline()
+            HttpPipeline httpPipeline = new HttpPipelineBuilder()
+                .policies(credentialPolicy)
+                .httpClient(getHttpClient())
+                .build()
             def cleanupClient = new BlobServiceClientBuilder()
                 .httpClient(getHttpClient())
                 .credential(env.versionedAccount.credential)
@@ -155,26 +162,13 @@ class ImmutableStorageWithVersioningTest extends APISpec {
             String url = String.format("https://management.azure.com/subscriptions/%s/resourceGroups/%s/providers/"
                 + "Microsoft.Storage/storageAccounts/%s/blobServices/default/containers/%s?api-version=%s", subscriptionId,
                 resourceGroupName, accountName, vlwContainerName, apiVersion)
-            httpPipeline.send(new HttpRequest(HttpMethod.DELETE, new URL(url), new HttpHeaders(), Flux.empty()))
+            def response = httpPipeline.send(new HttpRequest(HttpMethod.DELETE, new URL(url), new HttpHeaders(), Flux.empty()))
                 .block()
-                .withCloseable {
-                    response ->
-                        if (response.statusCode != 200) {
-                            println response.getBodyAsString().block()
-                        }
-                        assert response.statusCode == 200
-                }
+            if (response.statusCode != 200) {
+                println response.getBodyAsString().block()
+            }
+            assert response.statusCode == 200
         }
-    }
-
-    private HttpPipeline createSrpPipeline() {
-        TokenCredential credential = new EnvironmentCredentialBuilder().build()
-        BearerTokenAuthenticationPolicy credentialPolicy = new BearerTokenAuthenticationPolicy(credential, "https://management.azure.com/.default")
-        HttpPipeline httpPipeline = new HttpPipelineBuilder()
-            .policies(credentialPolicy)
-            .httpClient(getHttpClient())
-            .build()
-        return httpPipeline
     }
 
     def "set immutability policy min"() {
