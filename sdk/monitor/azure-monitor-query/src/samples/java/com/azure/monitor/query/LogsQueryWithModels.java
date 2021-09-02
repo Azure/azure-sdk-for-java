@@ -3,12 +3,12 @@
 
 package com.azure.monitor.query;
 
+import com.azure.core.experimental.models.TimeInterval;
 import com.azure.core.util.Configuration;
 import com.azure.identity.ClientSecretCredential;
 import com.azure.identity.ClientSecretCredentialBuilder;
-import com.azure.monitor.query.models.LogsQueryResult;
-import com.azure.monitor.query.models.LogsTable;
-import com.azure.monitor.query.models.LogsTableRow;
+
+import java.util.List;
 
 /**
  * Sample to demonstrate using a custom model to read the results of a logs query.
@@ -30,17 +30,12 @@ public class LogsQueryWithModels {
                 .credential(tokenCredential)
                 .buildClient();
 
-        LogsQueryResult queryResults = logsQueryClient
-                .query("{workspace-id}", "AppRequests", null);
-
         // Sample to use a model type to read the results
-        for (LogsTable table : queryResults.getLogsTables()) {
-            for (LogsTableRow row : table.getRows()) {
-                CustomModel model = row.toObject(CustomModel.class);
-                System.out.println("Time generated " + model.getTimeGenerated() + "; success = " + model.getSuccess()
-                        + "; operation name = " + model.getOperationName());
-            }
-        }
+        List<CustomModel> customModels  = logsQueryClient
+                .query("{workspace-id}", "AppRequests", TimeInterval.ALL, CustomModel.class);
+
+        customModels.forEach(model -> System.out.println("Time generated " + model.getTimeGenerated()
+                + "; success = " + model.getSuccess() + "; operation name = " + model.getOperationName()));
     }
 
 }

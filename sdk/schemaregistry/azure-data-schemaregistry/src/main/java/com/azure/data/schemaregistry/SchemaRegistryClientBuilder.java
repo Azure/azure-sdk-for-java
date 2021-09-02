@@ -41,7 +41,18 @@ import java.util.concurrent.ConcurrentSkipListMap;
 import java.util.function.Function;
 
 /**
- * Builder implementation for {@link SchemaRegistryAsyncClient}.
+ * Fluent builder for interacting with the Schema Registry service via {@link SchemaRegistryAsyncClient} and
+ * {@link SchemaRegistryClient}.  To build the client, the builder requires the service endpoint of the Schema Registry
+ * and an Azure AD credential.
+ *
+ * <p><strong>Instantiating the client</strong></p>
+ * {@codesnippet com.azure.data.schemaregistry.schemaregistryclient.instantiation}
+ *
+ * <p><strong>Instantiating the async client</strong></p>
+ * {@codesnippet com.azure.data.schemaregistry.schemaregistryasyncclient.instantiation}
+ *
+ * <p><strong>Instantiating with custom retry policy and HTTP log options</strong></p>
+ * {@codesnippet com.azure.data.schemaregistry.schemaregistryasyncclient.retrypolicy.instantiation}
  */
 @ServiceClientBuilder(serviceClients = SchemaRegistryAsyncClient.class)
 public class SchemaRegistryClientBuilder {

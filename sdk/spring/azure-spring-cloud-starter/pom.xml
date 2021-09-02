@@ -13,7 +13,7 @@
 
   <groupId>com.azure.spring</groupId>
   <artifactId>azure-spring-cloud-starter</artifactId>
-  <version>3.9.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-starter;current} -->
+  <version>4.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-starter;current} -->
 
   <name>Azure Spring Cloud Starter</name>
   <description>Core starter, including auto-configuration support</description>
@@ -28,7 +28,7 @@
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>azure-spring-cloud-autoconfigure</artifactId>
-      <version>2.9.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-autoconfigure;current} -->
+      <version>4.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-autoconfigure;current} -->
     </dependency>
   </dependencies>
 

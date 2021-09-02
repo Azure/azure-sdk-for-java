@@ -104,6 +104,40 @@ public class AzureEventHubAutoConfigurationTest {
                           });
     }
 
+    @Test
+    public void testEventHubOperationProvidedNotStorageUnderSP() {
+        this.contextRunner.withUserConfiguration(
+                TestConfigWithAzureResourceManagerAndConnectionProvider.class,
+                AzureEventHubAutoConfiguration.class)
+                          .withPropertyValues(
+                              AZURE_PROPERTY_PREFIX + "resource-group=rg1",
+                              EVENT_HUB_PROPERTY_PREFIX + "namespace=ns1"
+                          )
+                          .run(context -> {
+                              assertThat(context).hasSingleBean(EventHubNamespaceManager.class);
+                              assertThat(context).hasSingleBean(EventHubOperation.class);
+                              assertThat(context).doesNotHaveBean(StorageAccountManager.class);
+                          });
+    }
+
+    @Test
+    public void testEventHubOperationProvidedNotStorageUnderMSI() {
+        this.contextRunner.withUserConfiguration(
+                TestConfigWithAzureResourceManagerAndConnectionProvider.class,
+                AzureEventHubAutoConfiguration.class)
+                          .withPropertyValues(
+                              AZURE_PROPERTY_PREFIX + "resource-group=rg1",
+                              AZURE_PROPERTY_PREFIX + "msi-enabled=true",
+                              EVENT_HUB_PROPERTY_PREFIX + "namespace=ns1",
+                              AZURE_PROPERTY_PREFIX + "subscription-id=sub"
+                          )
+                          .run(context -> {
+                              assertThat(context).hasSingleBean(EventHubNamespaceManager.class);
+                              assertThat(context).hasSingleBean(EventHubOperation.class);
+                              assertThat(context).doesNotHaveBean(StorageAccountManager.class);
+                          });
+    }
+
     @Configuration
     @Import(TestConfigWithAzureResourceManager.class)
     public static class TestConfigWithAzureResourceManagerAndConnectionProvider {

@@ -53,6 +53,7 @@ public class AzureEventHubAutoConfiguration {
     @Bean
     @ConditionalOnMissingBean
     @ConditionalOnBean({ AzureResourceManager.class, AzureResourceMetadata.class })
+    @ConditionalOnProperty(value = "spring.cloud.azure.eventhub.checkpoint-storage-account")
     public StorageAccountManager storageAccountManager(AzureResourceManager azureResourceManager,
                                                        AzureResourceMetadata azureResourceMetadata) {
         return new StorageAccountManager(azureResourceManager, azureResourceMetadata);
@@ -115,7 +116,6 @@ public class AzureEventHubAutoConfiguration {
         return new EventHubTemplate(clientFactory);
     }
 
-
     private String getStorageConnectionString(AzureEventHubProperties properties,
                                               StorageAccountManager storageAccountManager,
                                               AzureEnvironment azureEnvironment) {
@@ -123,6 +123,10 @@ public class AzureEventHubAutoConfiguration {
         final String accountName = properties.getCheckpointStorageAccount();
         final String accountKey = properties.getCheckpointAccessKey();
         final StorageConnectionStringProvider provider;
+
+        if (accountName == null) {
+            return null;
+        }
 
         if (storageAccountManager != null) {
             provider = new StorageConnectionStringProvider(storageAccountManager.getOrCreate(accountName));
