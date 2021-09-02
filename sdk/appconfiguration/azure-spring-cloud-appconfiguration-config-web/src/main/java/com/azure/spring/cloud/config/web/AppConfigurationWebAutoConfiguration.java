@@ -31,7 +31,12 @@ import com.azure.spring.cloud.config.web.pushrefresh.AppConfigurationRefreshEven
 @ConditionalOnBean(AppConfigurationRefresh.class)
 public class AppConfigurationWebAutoConfiguration {
 
-    // Refresh from appconfiguration-refresh
+    /**
+     * Listener for activity, to check for config store changes.
+     * 
+     * @param appConfigurationRefresh Config Store refresher.
+     * @return Component for Listening for activity.
+     */
     @Bean
     @ConditionalOnClass(RefreshEndpoint.class)
     public AppConfigurationEventListener configListener(AppConfigurationRefresh appConfigurationRefresh) {
@@ -41,7 +46,6 @@ public class AppConfigurationWebAutoConfiguration {
     /**
      * Refresh from Pull Requests
      */
-
     @Configuration
     @ConditionalOnClass(name = {
         "org.springframework.boot.actuate.autoconfigure.endpoint.web.WebEndpointProperties",

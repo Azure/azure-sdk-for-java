@@ -37,6 +37,11 @@ class StorageSpec extends Specification {
     private static final HttpClient OK_HTTP_CLIENT = new OkHttpAsyncHttpClientBuilder().connectionPool(new ConnectionPool(50, 5, TimeUnit.MINUTES)).build()
     private static final ClientLogger LOGGER = new ClientLogger(StorageSpec.class)
 
+    static {
+        // Dump threads if run goes over 30 minutes and there's a possible deadlock.
+        ThreadDumper.initialize()
+    }
+
     private InterceptorManager interceptorManager
     private StorageResourceNamer namer
 

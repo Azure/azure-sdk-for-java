@@ -10,7 +10,7 @@ import org.springframework.util.Assert;
 /**
  * Properties on what Triggers are checked before a refresh is triggered.
  */
-public class AppConfigurationStoreTrigger {
+public final class AppConfigurationStoreTrigger {
 
     @NotNull
     private String key;

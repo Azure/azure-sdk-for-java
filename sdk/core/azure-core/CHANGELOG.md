@@ -5,6 +5,7 @@
 ### Features Added
 
 - Added `HttpAuthorization` which supports configuring a generic `Authorization` header on a request.
+- Added `RedirectPolicy` to standardize the ability to redirect HTTP requests.
 
 ## 1.19.0 (2021-08-06)
 

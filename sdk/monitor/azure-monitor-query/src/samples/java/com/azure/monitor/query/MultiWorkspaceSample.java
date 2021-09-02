@@ -40,11 +40,11 @@ public class MultiWorkspaceSample {
                         .setAdditionalWorkspaces(Arrays.asList("srnagar-log-analytics-ws-2", "srnagar-log-analytics-ws")),
                 Context.NONE).getValue();
 
-        System.out.println("Number of tables = " + queryResults.getLogsTables().size());
+        System.out.println("Number of tables = " + queryResults.getAllTables().size());
 
         // Sample to iterate by row
         Set<String> results = new HashSet<>();
-        for (LogsTable table : queryResults.getLogsTables()) {
+        for (LogsTable table : queryResults.getAllTables()) {
             for (LogsTableRow row : table.getRows()) {
                 Set<String> collect =
                         row.getRow().stream().map(cell -> cell.getValueAsString())
