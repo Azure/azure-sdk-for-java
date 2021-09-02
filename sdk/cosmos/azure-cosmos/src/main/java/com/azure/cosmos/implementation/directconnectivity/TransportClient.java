@@ -17,12 +17,8 @@ import reactor.core.publisher.Mono;
 // signature for backwards compatibility purposes.
 @SuppressWarnings("try")
 public abstract class TransportClient implements AutoCloseable {
-    private final boolean switchOffIOThreadForResponse;
+    private final boolean switchOffIOThreadForResponse = Configs.shouldSwitchOffIOThreadForResponse();
     private ThroughputControlStore throughputControlStore;
-
-    public TransportClient() {
-        this.switchOffIOThreadForResponse = Configs.shouldSwitchOffIOThreadForResponse();
-    }
 
     public void enableThroughputControl(ThroughputControlStore throughputControlStore) {
         this.throughputControlStore = throughputControlStore;
