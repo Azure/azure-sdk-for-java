@@ -134,7 +134,7 @@ public ResponseEntity<String> sendMessage(@RequestParam String message) {
 
 ## Troubleshooting
 ### Logging setting
-Please refer to [Spring logging document][spring_logging_document] to get more information about logging.
+Please refer to [spring logging document] to get more information about logging.
 
 #### Logging setting examples
 - Example: Setting logging level of hibernate
@@ -160,7 +160,7 @@ Please follow [instructions here][contributing_md] to build from source or contr
 [package]: https://mvnrepository.com/artifact/com.azure.spring/azure-spring-integration-servicebus
 [refdocs]: https://azure.github.io/azure-sdk-for-java/springcloud.html#spring-integration-servicebus
 [sample]: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/tag_azure-spring-boot_3.6.0/servicebus/azure-spring-integration-sample-servicebus
-[spring_logging_document]: https://docs.spring.io/spring-boot/docs/current/reference/html/features.html#boot-features-logging
+[spring logging document]: https://docs.spring.io/spring-boot/docs/current/reference/html/features.html#boot-features-logging
 [spring_integration]: https://spring.io/projects/spring-integration
 [spring_integration_sample_with_service_bus]: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/tag_azure-spring-boot_3.6.0/servicebus/azure-spring-integration-sample-servicebus
 [src_code]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/azure-spring-integration-servicebus

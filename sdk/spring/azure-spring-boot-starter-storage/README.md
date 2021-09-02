@@ -94,7 +94,7 @@ Files larger than 4 MiB will be uploaded to Azure Storage in parallel.
 
 ## Troubleshooting
 ### Logging setting
-Please refer to [Spring logging document][spring_logging_document] to get more information about logging.
+Please refer to [spring logging document] to get more information about logging.
 
 #### Logging setting examples
 - Example: Setting logging level of hibernate
@@ -120,7 +120,7 @@ Please follow [instructions here][contributing_md] to build from source or contr
 [refdocs]: https://azure.github.io/azure-sdk-for-java/springboot.html#azure-spring-boot
 [src]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/azure-spring-boot-starter-storage
 [sample]: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/tag_azure-spring-boot_3.6.0/storage/azure-spring-boot-sample-storage-resource
-[spring_logging_document]: https://docs.spring.io/spring-boot/docs/current/reference/html/features.html#boot-features-logging
+[spring logging document]: https://docs.spring.io/spring-boot/docs/current/reference/html/features.html#boot-features-logging
 [contributing_md]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/CONTRIBUTING.md
 [maven]: https://maven.apache.org/
 [azure_blob_storage]: https://docs.microsoft.com/azure/storage/blobs/storage-blobs-introduction

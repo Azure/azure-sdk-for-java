@@ -27,7 +27,7 @@ Azure Cache for Redis offers Redis as a managed service. It provides secure and 
 Please refer to this [sample project][sample] illustrating how to use this starter.
 ## Troubleshooting
 ### Logging setting
-Please refer to [Spring logging document][spring_logging_document] to get more information about logging.
+Please refer to [spring logging document] to get more information about logging.
 
 #### Logging setting examples
 - Example: Setting logging level of hibernate
@@ -51,7 +51,7 @@ Please follow [instructions here][contributing_md] to build from source or contr
 [package]: https://mvnrepository.com/artifact/com.azure.spring/azure-spring-cloud-starter-cache
 [refdocs]: https://azure.github.io/azure-sdk-for-java/springcloud.html#azure-spring-cloud-autoconfigure
 [sample]: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/tag_azure-spring-boot_3.6.0/cache/azure-spring-cloud-sample-cache
-[spring_logging_document]: https://docs.spring.io/spring-boot/docs/current/reference/html/features.html#boot-features-logging
+[spring logging document]: https://docs.spring.io/spring-boot/docs/current/reference/html/features.html#boot-features-logging
 [contributing_md]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/CONTRIBUTING.md
 [environment_checklist]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/ENVIRONMENT_CHECKLIST.md#ready-to-run-checklist
 [Add azure-spring-cloud-dependencies]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/AZURE_SPRING_BOMS_USAGE.md#add-azure-spring-cloud-dependencies

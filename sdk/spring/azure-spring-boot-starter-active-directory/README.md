@@ -734,22 +734,42 @@ Please refer to [azure-spring-boot-sample-active-directory-resource-server-obo].
 
 ## Troubleshooting
 ### Logging setting
-Please refer to [Spring logging document][spring_logging_document] to get more information about logging.
+Please refer to [spring logging document] to get more information about logging.
 
 #### Logging setting examples
-- Example1: Setting logging level of hibernate
+- Example 1: Setting logging level of hibernate
 ```properties
 logging.level.root=WARN
 logging.level.org.springframework.web=DEBUG
 logging.level.org.hibernate=ERROR
 ```
 
-- Example2: Setting logging level of AADJwtGrantedAuthoritiesConverter
+- Example 2: Setting logging level of AADJwtGrantedAuthoritiesConverter
 ```properties
+# logging settings for web application scenario.
+logging.level.com.azure.spring.aad.webapp.AADOAuth2UserService=DEBUG
+
+# logging settings for resource server scenario.
 logging.level.com.azure.spring.aad.AADJwtGrantedAuthoritiesConverter=DEBUG
 ```
+
+Then you will see log like this in web application:
+
+```text
+...
+DEBUG c.a.s.aad.webapp.AADOAuth2UserService    : User TestUser's authorities extracted by id token and access token: [ROLE_group1, ROLE_group2].
+...
+DEBUG c.a.s.aad.webapp.AADOAuth2UserService    : User TestUser's authorities saved from session: [ROLE_group1, ROLE_group2].
+...
 ```
 
+Or log like this in resource server:
+
+```text
+...
+DEBUG .a.s.a.AADJwtGrantedAuthoritiesConverter : User TestUser's authorities created from jwt token: [SCOPE_Test.Read, APPROLE_WebApi.ExampleScope].
+...
+```
 
 ## Next steps
 
@@ -772,7 +792,7 @@ Please follow [instructions here] to build from source or contribute.
 [graph-api-list-member-of]: https://docs.microsoft.com/graph/api/user-list-memberof?view=graph-rest-1.0
 [graph-api-list-transitive-member-of]: https://docs.microsoft.com/graph/api/user-list-transitivememberof?view=graph-rest-1.0
 [instructions here]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/CONTRIBUTING.md
-[spring_logging_document]: https://docs.spring.io/spring-boot/docs/current/reference/html/features.html#boot-features-logging
+[spring logging document]: https://docs.spring.io/spring-boot/docs/current/reference/html/features.html#boot-features-logging
 [OAuth 2.0 implicit grant flow]: https://docs.microsoft.com/azure/active-directory/develop/v1-oauth2-implicit-grant-flow
 [package]: https://mvnrepository.com/artifact/com.azure.spring/azure-spring-boot-starter-active-directory
 [refdocs]: https://azure.github.io/azure-sdk-for-java/springboot.html#azure-spring-boot
