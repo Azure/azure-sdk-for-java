@@ -26,7 +26,7 @@
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-context</artifactId>
-      <version>5.3.9</version> <!-- {x-version-update;org.springframework:spring-core;external_dependency} -->
+      <version>5.3.9</version> <!-- {x-version-update;org.springframework:spring-context;external_dependency} -->
     </dependency>
 
     <dependency>
