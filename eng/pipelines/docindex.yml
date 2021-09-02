@@ -28,7 +28,7 @@ jobs:
           pwsh: true
           filePath: eng/common/scripts/Update-DocsMsPackages.ps1
           arguments: -DocRepoLocation $(DocRepoLocation)
-          ignoreLASTEXITCODE: true
+          ignoreLASTEXITCODE: false
         displayName: Update Docs Onboarding
 
       # Push changes to docs repo
