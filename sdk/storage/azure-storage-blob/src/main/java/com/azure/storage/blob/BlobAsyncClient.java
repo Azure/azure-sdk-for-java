@@ -421,7 +421,7 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
             }
 
             return overwriteCheck
-                .then(uploadWithResponse(Flux.just(data.toByteBuffer()), null, null, null, null,
+                .then(uploadWithResponse(data.toFluxByteBuffer(), null, null, null, null,
                     requestConditions)).flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
