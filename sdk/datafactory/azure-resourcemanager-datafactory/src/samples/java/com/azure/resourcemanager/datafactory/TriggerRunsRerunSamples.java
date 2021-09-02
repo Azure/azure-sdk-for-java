@@ -8,6 +8,11 @@ import com.azure.core.util.Context;
 
 /** Samples for TriggerRuns Rerun. */
 public final class TriggerRunsRerunSamples {
+    /*
+     * operationId: TriggerRuns_Rerun
+     * api-version: 2018-06-01
+     * x-ms-examples: Triggers_Rerun
+     */
     /**
      * Sample code: Triggers_Rerun.
      *

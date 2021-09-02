@@ -50,6 +50,12 @@ public class AppConfigurationRefresh implements ApplicationEventPublisherAware {
 
     private String eventDataInfo;
 
+    /**
+     * Component used for checking for and triggering configuration refreshes.
+     * 
+     * @param properties Client properties to check against.
+     * @param clientStore Clients stores used to connect to App Configuration.
+     */
     public AppConfigurationRefresh(AppConfigurationProperties properties, ClientStore clientStore) {
         this.configStores = properties.getStores();
         this.clientStore = clientStore;
@@ -81,6 +87,11 @@ public class AppConfigurationRefresh implements ApplicationEventPublisherAware {
         return new AsyncResult<>(refreshStores());
     }
 
+    /**
+     * Soft expires refresh interval. Sets amount of time to next refresh to be a random value between 0 and 15 seconds,
+     * unless value is less than the amount of time to the next refresh check.
+     * @param endpoint Config Store endpoint to expire refresh interval on.
+     */
     public void expireRefreshInterval(String endpoint) {
         for (ConfigStore configStore : configStores) {
             if (configStore.getEndpoint().equals(endpoint)) {
@@ -191,14 +202,20 @@ public class AppConfigurationRefresh implements ApplicationEventPublisherAware {
                     return true;
                 }
             }
-            
-            // Just need to reset refreshInterval, if a refresh was triggered it will updated after loading the new configurations.
-            StateHolder.setState(state,  refreshInterval);
+
+            // Just need to reset refreshInterval, if a refresh was triggered it will updated after loading the new
+            // configurations.
+            StateHolder.setState(state, refreshInterval);
         }
 
         return false;
     }
 
+    /**
+     * Gets latest Health connection info for refresh.
+     * 
+     * @return Map of String, endpoint, and Health information.
+     */
     public Map<String, AppConfigurationStoreHealth> getAppConfigurationStoresHealth() {
         return this.clientHealth;
     }

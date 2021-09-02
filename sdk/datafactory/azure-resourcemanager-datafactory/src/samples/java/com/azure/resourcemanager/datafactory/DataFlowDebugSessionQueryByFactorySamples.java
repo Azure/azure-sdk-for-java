@@ -8,6 +8,11 @@ import com.azure.core.util.Context;
 
 /** Samples for DataFlowDebugSession QueryByFactory. */
 public final class DataFlowDebugSessionQueryByFactorySamples {
+    /*
+     * operationId: DataFlowDebugSession_QueryByFactory
+     * api-version: 2018-06-01
+     * x-ms-examples: DataFlowDebugSession_QueryByFactory
+     */
     /**
      * Sample code: DataFlowDebugSession_QueryByFactory.
      *

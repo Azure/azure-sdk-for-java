@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.apimanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.apimanagement.models.LoggerType;
@@ -14,44 +13,24 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** Logger details. */
-@JsonFlatten
 @Fluent
-public class LoggerContractInner extends ProxyResource {
+public final class LoggerContractInner extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(LoggerContractInner.class);
 
     /*
-     * Logger type.
+     * Logger entity contract properties.
      */
-    @JsonProperty(value = "properties.loggerType")
-    private LoggerType loggerType;
+    @JsonProperty(value = "properties")
+    private LoggerContractProperties innerProperties;
 
-    /*
-     * Logger description.
+    /**
+     * Get the innerProperties property: Logger entity contract properties.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.description")
-    private String description;
-
-    /*
-     * The name and SendRule connection string of the event hub for
-     * azureEventHub logger.
-     * Instrumentation key for applicationInsights logger.
-     */
-    @JsonProperty(value = "properties.credentials")
-    private Map<String, String> credentials;
-
-    /*
-     * Whether records are buffered in the logger before publishing. Default is
-     * assumed to be true.
-     */
-    @JsonProperty(value = "properties.isBuffered")
-    private Boolean isBuffered;
-
-    /*
-     * Azure Resource Id of a log target (either Azure Event Hub resource or
-     * Azure Application Insights resource).
-     */
-    @JsonProperty(value = "properties.resourceId")
-    private String resourceId;
+    private LoggerContractProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the loggerType property: Logger type.
@@ -59,7 +38,7 @@ public class LoggerContractInner extends ProxyResource {
      * @return the loggerType value.
      */
     public LoggerType loggerType() {
-        return this.loggerType;
+        return this.innerProperties() == null ? null : this.innerProperties().loggerType();
     }
 
     /**
@@ -69,7 +48,10 @@ public class LoggerContractInner extends ProxyResource {
      * @return the LoggerContractInner object itself.
      */
     public LoggerContractInner withLoggerType(LoggerType loggerType) {
-        this.loggerType = loggerType;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new LoggerContractProperties();
+        }
+        this.innerProperties().withLoggerType(loggerType);
         return this;
     }
 
@@ -79,7 +61,7 @@ public class LoggerContractInner extends ProxyResource {
      * @return the description value.
      */
     public String description() {
-        return this.description;
+        return this.innerProperties() == null ? null : this.innerProperties().description();
     }
 
     /**
@@ -89,7 +71,10 @@ public class LoggerContractInner extends ProxyResource {
      * @return the LoggerContractInner object itself.
      */
     public LoggerContractInner withDescription(String description) {
-        this.description = description;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new LoggerContractProperties();
+        }
+        this.innerProperties().withDescription(description);
         return this;
     }
 
@@ -100,7 +85,7 @@ public class LoggerContractInner extends ProxyResource {
      * @return the credentials value.
      */
     public Map<String, String> credentials() {
-        return this.credentials;
+        return this.innerProperties() == null ? null : this.innerProperties().credentials();
     }
 
     /**
@@ -111,7 +96,10 @@ public class LoggerContractInner extends ProxyResource {
      * @return the LoggerContractInner object itself.
      */
     public LoggerContractInner withCredentials(Map<String, String> credentials) {
-        this.credentials = credentials;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new LoggerContractProperties();
+        }
+        this.innerProperties().withCredentials(credentials);
         return this;
     }
 
@@ -122,7 +110,7 @@ public class LoggerContractInner extends ProxyResource {
      * @return the isBuffered value.
      */
     public Boolean isBuffered() {
-        return this.isBuffered;
+        return this.innerProperties() == null ? null : this.innerProperties().isBuffered();
     }
 
     /**
@@ -133,7 +121,10 @@ public class LoggerContractInner extends ProxyResource {
      * @return the LoggerContractInner object itself.
      */
     public LoggerContractInner withIsBuffered(Boolean isBuffered) {
-        this.isBuffered = isBuffered;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new LoggerContractProperties();
+        }
+        this.innerProperties().withIsBuffered(isBuffered);
         return this;
     }
 
@@ -144,7 +135,7 @@ public class LoggerContractInner extends ProxyResource {
      * @return the resourceId value.
      */
     public String resourceId() {
-        return this.resourceId;
+        return this.innerProperties() == null ? null : this.innerProperties().resourceId();
     }
 
     /**
@@ -155,7 +146,10 @@ public class LoggerContractInner extends ProxyResource {
      * @return the LoggerContractInner object itself.
      */
     public LoggerContractInner withResourceId(String resourceId) {
-        this.resourceId = resourceId;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new LoggerContractProperties();
+        }
+        this.innerProperties().withResourceId(resourceId);
         return this;
     }
 
@@ -165,5 +159,8 @@ public class LoggerContractInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

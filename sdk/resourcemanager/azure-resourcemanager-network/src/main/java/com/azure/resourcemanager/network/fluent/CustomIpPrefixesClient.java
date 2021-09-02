@@ -14,11 +14,11 @@ import com.azure.core.util.Context;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.network.fluent.models.CustomIpPrefixInner;
+import com.azure.resourcemanager.network.models.TagsObject;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
 import java.nio.ByteBuffer;
-import java.util.Map;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -303,7 +303,7 @@ public interface CustomIpPrefixesClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param customIpPrefixName The name of the custom IP prefix.
-     * @param tags Resource tags.
+     * @param parameters Parameters supplied to update custom IP prefix tags.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -311,14 +311,14 @@ public interface CustomIpPrefixesClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<CustomIpPrefixInner>> updateTagsWithResponseAsync(
-        String resourceGroupName, String customIpPrefixName, Map<String, String> tags);
+        String resourceGroupName, String customIpPrefixName, TagsObject parameters);
 
     /**
      * Updates custom IP prefix tags.
      *
      * @param resourceGroupName The name of the resource group.
      * @param customIpPrefixName The name of the custom IP prefix.
-     * @param tags Resource tags.
+     * @param parameters Parameters supplied to update custom IP prefix tags.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -326,40 +326,28 @@ public interface CustomIpPrefixesClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<CustomIpPrefixInner> updateTagsAsync(
-        String resourceGroupName, String customIpPrefixName, Map<String, String> tags);
+        String resourceGroupName, String customIpPrefixName, TagsObject parameters);
 
     /**
      * Updates custom IP prefix tags.
      *
      * @param resourceGroupName The name of the resource group.
      * @param customIpPrefixName The name of the custom IP prefix.
+     * @param parameters Parameters supplied to update custom IP prefix tags.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return custom IP prefix resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<CustomIpPrefixInner> updateTagsAsync(String resourceGroupName, String customIpPrefixName);
+    CustomIpPrefixInner updateTags(String resourceGroupName, String customIpPrefixName, TagsObject parameters);
 
     /**
      * Updates custom IP prefix tags.
      *
      * @param resourceGroupName The name of the resource group.
      * @param customIpPrefixName The name of the custom IP prefix.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return custom IP prefix resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    CustomIpPrefixInner updateTags(String resourceGroupName, String customIpPrefixName);
-
-    /**
-     * Updates custom IP prefix tags.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param customIpPrefixName The name of the custom IP prefix.
-     * @param tags Resource tags.
+     * @param parameters Parameters supplied to update custom IP prefix tags.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -368,7 +356,7 @@ public interface CustomIpPrefixesClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<CustomIpPrefixInner> updateTagsWithResponse(
-        String resourceGroupName, String customIpPrefixName, Map<String, String> tags, Context context);
+        String resourceGroupName, String customIpPrefixName, TagsObject parameters, Context context);
 
     /**
      * Gets all the custom IP prefixes in a subscription.

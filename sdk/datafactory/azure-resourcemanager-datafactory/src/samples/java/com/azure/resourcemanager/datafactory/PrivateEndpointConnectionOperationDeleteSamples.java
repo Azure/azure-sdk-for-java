@@ -8,6 +8,11 @@ import com.azure.core.util.Context;
 
 /** Samples for PrivateEndpointConnectionOperation Delete. */
 public final class PrivateEndpointConnectionOperationDeleteSamples {
+    /*
+     * operationId: PrivateEndpointConnection_Delete
+     * api-version: 2018-06-01
+     * x-ms-examples: Delete a private endpoint connection for a datafactory.
+     */
     /**
      * Sample code: Delete a private endpoint connection for a datafactory.
      *

@@ -14,11 +14,11 @@ import com.azure.core.util.Context;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.network.fluent.models.VpnServerConfigurationInner;
+import com.azure.resourcemanager.network.models.TagsObject;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
 import java.nio.ByteBuffer;
-import java.util.Map;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -211,7 +211,7 @@ public interface VpnServerConfigurationsClient
      *
      * @param resourceGroupName The resource group name of the VpnServerConfiguration.
      * @param vpnServerConfigurationName The name of the VpnServerConfiguration being updated.
-     * @param tags Resource tags.
+     * @param vpnServerConfigurationParameters Parameters supplied to update VpnServerConfiguration tags.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -219,14 +219,14 @@ public interface VpnServerConfigurationsClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<VpnServerConfigurationInner>> updateTagsWithResponseAsync(
-        String resourceGroupName, String vpnServerConfigurationName, Map<String, String> tags);
+        String resourceGroupName, String vpnServerConfigurationName, TagsObject vpnServerConfigurationParameters);
 
     /**
      * Updates VpnServerConfiguration tags.
      *
      * @param resourceGroupName The resource group name of the VpnServerConfiguration.
      * @param vpnServerConfigurationName The name of the VpnServerConfiguration being updated.
-     * @param tags Resource tags.
+     * @param vpnServerConfigurationParameters Parameters supplied to update VpnServerConfiguration tags.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -234,40 +234,29 @@ public interface VpnServerConfigurationsClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<VpnServerConfigurationInner> updateTagsAsync(
-        String resourceGroupName, String vpnServerConfigurationName, Map<String, String> tags);
+        String resourceGroupName, String vpnServerConfigurationName, TagsObject vpnServerConfigurationParameters);
 
     /**
      * Updates VpnServerConfiguration tags.
      *
      * @param resourceGroupName The resource group name of the VpnServerConfiguration.
      * @param vpnServerConfigurationName The name of the VpnServerConfiguration being updated.
+     * @param vpnServerConfigurationParameters Parameters supplied to update VpnServerConfiguration tags.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return vpnServerConfiguration Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<VpnServerConfigurationInner> updateTagsAsync(String resourceGroupName, String vpnServerConfigurationName);
+    VpnServerConfigurationInner updateTags(
+        String resourceGroupName, String vpnServerConfigurationName, TagsObject vpnServerConfigurationParameters);
 
     /**
      * Updates VpnServerConfiguration tags.
      *
      * @param resourceGroupName The resource group name of the VpnServerConfiguration.
      * @param vpnServerConfigurationName The name of the VpnServerConfiguration being updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return vpnServerConfiguration Resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    VpnServerConfigurationInner updateTags(String resourceGroupName, String vpnServerConfigurationName);
-
-    /**
-     * Updates VpnServerConfiguration tags.
-     *
-     * @param resourceGroupName The resource group name of the VpnServerConfiguration.
-     * @param vpnServerConfigurationName The name of the VpnServerConfiguration being updated.
-     * @param tags Resource tags.
+     * @param vpnServerConfigurationParameters Parameters supplied to update VpnServerConfiguration tags.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -276,7 +265,10 @@ public interface VpnServerConfigurationsClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<VpnServerConfigurationInner> updateTagsWithResponse(
-        String resourceGroupName, String vpnServerConfigurationName, Map<String, String> tags, Context context);
+        String resourceGroupName,
+        String vpnServerConfigurationName,
+        TagsObject vpnServerConfigurationParameters,
+        Context context);
 
     /**
      * Deletes a VpnServerConfiguration.

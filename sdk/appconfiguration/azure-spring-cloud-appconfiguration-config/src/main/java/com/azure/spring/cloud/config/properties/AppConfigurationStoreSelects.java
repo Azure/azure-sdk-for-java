@@ -16,7 +16,7 @@ import org.springframework.util.StringUtils;
 /**
  * Properties on what Selects are checked before loading configurations.
  */
-public class AppConfigurationStoreSelects {
+public final class AppConfigurationStoreSelects {
 
     private static final String EMPTY_LABEL = "\0";
 

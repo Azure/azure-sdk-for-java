@@ -7,10 +7,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpStatus;
+import org.springframework.util.StringUtils;
 
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpHeader;
@@ -32,7 +31,7 @@ import com.azure.spring.cloud.config.resource.ConnectionPool;
 /**
  * Client for connecting to and getting keys from an Azure App Configuration Instance
  */
-public class ClientStore {
+public final class ClientStore {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ClientStore.class);
 
@@ -81,15 +80,15 @@ public class ClientStore {
         String clientId = Optional.ofNullable(connection)
             .map(Connection::getClientId)
             .orElse(null);
-        boolean clientIdIsPresent = StringUtils.isNotEmpty(clientId);
+        boolean clientIdIsPresent = StringUtils.hasText(clientId);
         boolean tokenCredentialIsPresent = tokenCredential != null;
         boolean connectionStringIsPresent = Optional.ofNullable(connection)
             .map(Connection::getConnectionString)
-            .filter(StringUtils::isNotEmpty)
+            .filter(StringUtils::hasText)
             .isPresent();
         boolean endPointIsPresent = Optional.ofNullable(connection)
             .map(Connection::getEndpoint)
-            .filter(StringUtils::isNotEmpty)
+            .filter(StringUtils::hasText)
             .isPresent();
         if ((tokenCredentialIsPresent || clientIdIsPresent)
             && connectionStringIsPresent) {
@@ -142,7 +141,7 @@ public class ClientStore {
      * @param storeName Name of the App Configuration store to query against.
      * @return The first returned configuration.
      */
-    public final ConfigurationSetting getWatchKey(SettingSelector settingSelector, String storeName) {
+    public ConfigurationSetting getWatchKey(SettingSelector settingSelector, String storeName) {
         PagedResponse<ConfigurationSetting> watchedKey = null;
         int retryCount = 0;
 
@@ -150,7 +149,7 @@ public class ClientStore {
         while (retryCount <= appProperties.getMaxRetries()) {
             watchedKey =  client.listConfigurationSettings(settingSelector).byPage(100).blockFirst();
             if (watchedKey != null
-                && watchedKey.getStatusCode() == HttpStatus.TOO_MANY_REQUESTS.value()) {
+                && watchedKey.getStatusCode() == 429) {
                 HttpHeader retryAfterHeader = watchedKey.getHeaders().get("retry-after-ms");
 
                 if (retryAfterHeader != null) {
@@ -182,7 +181,7 @@ public class ClientStore {
      * @param storeName Name of the App Configuration store to query against.
      * @return List of Configuration Settings.
      */
-    public final List<ConfigurationSetting> listSettings(SettingSelector settingSelector, String storeName) {
+    public List<ConfigurationSetting> listSettings(SettingSelector settingSelector, String storeName) {
         ConfigurationAsyncClient client = getClient(storeName);
 
         return client.listConfigurationSettings(settingSelector).collectList().block();

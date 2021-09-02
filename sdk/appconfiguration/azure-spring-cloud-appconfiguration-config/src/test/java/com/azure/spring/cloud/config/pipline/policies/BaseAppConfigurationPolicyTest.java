@@ -8,7 +8,6 @@ import static org.mockito.Mockito.when;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-import org.apache.http.HttpHeaders;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -26,10 +25,11 @@ import com.azure.core.http.HttpRequest;
 public class BaseAppConfigurationPolicyTest {
 
     private static final String PRE_USER_AGENT = "PreExistingUserAgent";
-
+    
+    public static final String USER_AGENT_TYPE = "User-Agent";
+    
     @Mock
     HttpPipelineCallContext contextMock;
-
     @Mock
     HttpPipelineNextPolicy nextMock;
 
@@ -50,21 +50,21 @@ public class BaseAppConfigurationPolicyTest {
     public void startupThenWatchUpdateTest() throws MalformedURLException {
         URL url = new URL("https://www.test.url/kv");
         HttpRequest request = new HttpRequest(HttpMethod.GET, url);
-        request.setHeader(HttpHeaders.USER_AGENT, "PreExistingUserAgent");
+        request.setHeader(USER_AGENT_TYPE, "PreExistingUserAgent");
         BaseAppConfigurationPolicy policy = new BaseAppConfigurationPolicy();
 
         when(contextMock.getHttpRequest()).thenReturn(request);
 
         policy.process(contextMock, nextMock);
 
-        String userAgent = contextMock.getHttpRequest().getHeaders().get(HttpHeaders.USER_AGENT).getValue();
+        String userAgent = contextMock.getHttpRequest().getHeaders().get(USER_AGENT_TYPE).getValue();
         assertEquals("null/null " + PRE_USER_AGENT, userAgent);
 
         assertEquals("RequestType=Startup",
             contextMock.getHttpRequest().getHeaders().get("Correlation-Context").getValue());
 
         request = new HttpRequest(HttpMethod.GET, url);
-        request.setHeader(HttpHeaders.USER_AGENT, "PreExistingUserAgent");
+        request.setHeader(USER_AGENT_TYPE, "PreExistingUserAgent");
 
         when(contextMock.getHttpRequest()).thenReturn(request);
         BaseAppConfigurationPolicy.setWatchRequests(true);
@@ -77,7 +77,7 @@ public class BaseAppConfigurationPolicyTest {
             contextMock.getHttpRequest().getHeaders().get("Correlation-Context").getValue());
         
         request = new HttpRequest(HttpMethod.GET, url);
-        request.setHeader(HttpHeaders.USER_AGENT, "PreExistingUserAgent");
+        request.setHeader(USER_AGENT_TYPE, "PreExistingUserAgent");
 
         when(contextMock.getHttpRequest()).thenReturn(request);
 

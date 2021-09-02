@@ -13,6 +13,11 @@ import java.util.Map;
 
 /** Samples for Pipelines CreateRun. */
 public final class PipelinesCreateRunSamples {
+    /*
+     * operationId: Pipelines_CreateRun
+     * api-version: 2018-06-01
+     * x-ms-examples: Pipelines_CreateRun
+     */
     /**
      * Sample code: Pipelines_CreateRun.
      *

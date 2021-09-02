@@ -8,6 +8,11 @@ import com.azure.core.util.Context;
 
 /** Samples for LinkedServices Get. */
 public final class LinkedServicesGetSamples {
+    /*
+     * operationId: LinkedServices_Get
+     * api-version: 2018-06-01
+     * x-ms-examples: LinkedServices_Get
+     */
     /**
      * Sample code: LinkedServices_Get.
      *
