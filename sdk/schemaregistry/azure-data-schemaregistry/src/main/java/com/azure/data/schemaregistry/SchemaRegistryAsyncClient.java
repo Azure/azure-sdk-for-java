@@ -132,19 +132,19 @@ public final class SchemaRegistryAsyncClient {
     }
 
     /**
-     * Gets the schema properties of the schema associated with the unique schemaId.
+     * Gets the schema properties of the schema associated with the unique schema id.
      *
-     * @param schemaId The unique identifier of the schema.
+     * @param id The unique identifier of the schema.
      *
-     * @return The {@link SchemaProperties} associated with the given {@code schemaId}.
+     * @return The {@link SchemaProperties} associated with the given {@code id}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SchemaProperties> getSchema(String schemaId) {
-        if (idCache.containsKey(schemaId)) {
-            logger.verbose("Cache hit for schema id '{}'", schemaId);
-            return Mono.fromCallable(() -> idCache.get(schemaId));
+    public Mono<SchemaProperties> getSchema(String id) {
+        if (idCache.containsKey(id)) {
+            logger.verbose("Cache hit for schema id '{}'", id);
+            return Mono.fromCallable(() -> idCache.get(id));
         }
-        return getSchemaWithResponse(schemaId).map(Response::getValue);
+        return getSchemaWithResponse(id).map(Response::getValue);
     }
 
     /**
