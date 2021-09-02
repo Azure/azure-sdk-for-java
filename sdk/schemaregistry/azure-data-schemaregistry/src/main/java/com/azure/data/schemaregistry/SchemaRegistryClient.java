@@ -6,6 +6,8 @@ package com.azure.data.schemaregistry;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.http.rest.Response;
+import com.azure.core.util.Context;
 import com.azure.data.schemaregistry.models.SchemaProperties;
 import com.azure.data.schemaregistry.models.SerializationType;
 
@@ -47,6 +49,25 @@ public final class SchemaRegistryClient {
     public SchemaProperties registerSchema(String groupName, String name, String content,
         SerializationType serializationType) {
         return this.asyncClient.registerSchema(groupName, name, content, serializationType).block();
+    }
+
+    /**
+     * Registers a new schema in the specified schema group with the given schema name. If the schema name already
+     * exists in this schema group, a new version with the updated schema string will be registered.
+     *
+     * @param groupName The schema group.
+     * @param name The schema name.
+     * @param content The string representation of the schema.
+     * @param serializationType The serialization type of this schema.
+     * @param context The context to pass to the Http pipeline.
+     *
+     * @return The schema properties on successful registration of the schema.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<SchemaProperties> registerSchemaWithResponse(String groupName, String name, String content,
+        SerializationType serializationType, Context context) {
+        return this.asyncClient.registerSchemaWithResponse(groupName, name, content, serializationType,
+            context).block();
     }
 
     /**

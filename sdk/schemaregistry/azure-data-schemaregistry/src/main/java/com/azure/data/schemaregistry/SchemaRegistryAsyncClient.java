@@ -98,7 +98,8 @@ public final class SchemaRegistryAsyncClient {
      *
      * @return The schema properties on successful registration of the schema.
      */
-    Mono<Response<SchemaProperties>> registerSchemaWithResponse(String groupName, String name, String content,
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<SchemaProperties>> registerSchemaWithResponse(String groupName, String name, String content,
         SerializationType serializationType) {
         return FluxUtil.withContext(context -> registerSchemaWithResponse(groupName, name, content,
             serializationType, context));
