@@ -9,7 +9,7 @@ import reactor.core.scheduler.Schedulers;
 public class CosmosSchedulers {
     private final static String COSMOS_PARALLEL_THREAD_NAME =  "cosmos-parallel";
     private final static String TRANSPORT_RESPONSE_BOUNDED_ELASTIC_THREAD_NAME = "transport-response-bounded-elastic";
-    private final int TTL_FOR_SCHEDULER_WORKER = 60; // same as BoundedElasticScheduler.DEFAULT_TTL_SECONDS
+    private final static int TTL_FOR_SCHEDULER_WORKER_IN_SECONDS = 60; // same as BoundedElasticScheduler.DEFAULT_TTL_SECONDS
 
     // Using a custom parallel scheduler to be able to schedule retries etc.
     // without being vulnerable to scenarios where applications abuse the
@@ -24,7 +24,7 @@ public class CosmosSchedulers {
         Schedulers.DEFAULT_BOUNDED_ELASTIC_SIZE,
         Schedulers.DEFAULT_BOUNDED_ELASTIC_QUEUESIZE,
         TRANSPORT_RESPONSE_BOUNDED_ELASTIC_THREAD_NAME,
-        60,
+        TTL_FOR_SCHEDULER_WORKER_IN_SECONDS,
         true
     );
 }
