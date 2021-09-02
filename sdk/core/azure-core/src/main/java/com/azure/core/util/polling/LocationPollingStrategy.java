@@ -18,6 +18,8 @@ import com.azure.core.util.serializer.ObjectSerializer;
 import com.azure.core.util.serializer.TypeReference;
 import reactor.core.publisher.Mono;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.time.Duration;
 
 /**
@@ -59,7 +61,15 @@ public class LocationPollingStrategy<T, U> implements PollingStrategy<T, U> {
     @Override
     public Mono<Boolean> canPoll(Response<?> initialResponse) {
         HttpHeader locationHeader = initialResponse.getHeaders().get(PollingConstants.LOCATION);
-        return Mono.just(locationHeader != null);
+        if (locationHeader != null) {
+            try {
+                URL url = new URL(locationHeader.getValue());
+                return Mono.just(true);
+            } catch (MalformedURLException e) {
+                return Mono.just(false);
+            }
+        }
+        return Mono.just(false);
     }
 
     @Override

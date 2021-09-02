@@ -39,7 +39,7 @@ public class ChainedPollingStrategy<T, U> implements PollingStrategy<T, U> {
             .concatMap(strategy -> strategy.canPoll(initialResponse)
                 .map(canPoll -> Tuples.of(strategy, canPoll)))
             .takeUntil(Tuple2::getT2)
-            .next()
+            .last()
             .map(tuple2 -> {
                 this.pollableStrategy = tuple2.getT1();
                 return true;

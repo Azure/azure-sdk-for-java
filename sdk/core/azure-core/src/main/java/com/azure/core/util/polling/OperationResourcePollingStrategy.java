@@ -19,6 +19,8 @@ import com.azure.core.util.serializer.TypeReference;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import reactor.core.publisher.Mono;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.time.Duration;
 
 /**
@@ -67,7 +69,15 @@ public class OperationResourcePollingStrategy<T, U> implements PollingStrategy<T
     @Override
     public Mono<Boolean> canPoll(Response<?> initialResponse) {
         HttpHeader operationLocationHeader = initialResponse.getHeaders().get(operationLocationHeaderName);
-        return Mono.just(operationLocationHeader != null);
+        if (operationLocationHeader != null) {
+            try {
+                URL url = new URL(operationLocationHeader.getValue());
+                return Mono.just(true);
+            } catch (MalformedURLException e) {
+                return Mono.just(false);
+            }
+        }
+        return Mono.just(false);
     }
 
     @Override
