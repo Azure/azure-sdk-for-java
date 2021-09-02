@@ -11,9 +11,9 @@ jobs:
       DocRepoOwner: Azure
       DocRepoName: azure-docs-sdk-java
     steps:
+      - checkout: none
       - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
         parameters:
-          SkipDefaultCheckout: true
           Paths:
             - eng/
       # Sync docs repo onboarding files/folders
