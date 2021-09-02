@@ -48,13 +48,19 @@ if ($packageDetails.Length -eq 0) {
   throw "Aborting, no packages to publish."
 }
 
+if($StageOnly)
+{
+  foreach ($packageDetail in $packageDetails) {
+    if ($packageDetail.IsSnapshot) {
+      throw "Package $($packageDetail.FullyQualifiedName) is a Snapshot and StageOnly is set to 'true'. Staging of snapshot packages is not supported."
+    }
+  }
+}
+
 Write-Host "Starting GPG signing and publishing"
 
 foreach ($packageDetail in $packageDetails) {
   Write-Host "GPG signing and publishing package: $($packageDetail.FullyQualifiedName)"
-  $localRepositoryDirectory = Get-RandomRepositoryDirectory
-  $localRepositoryDirectoryUri = $([Uri]$localRepositoryDirectory.FullName).AbsoluteUri
-  Write-Information "Local Repository Directory URI is: $localRepositoryDirectoryUri"
 
   $pomAssociatedArtifact = $packageDetail.AssociatedArtifacts | Where-Object { ($_.Classifier -eq $null) -and ($_.Type -eq "pom") }
   $pomOption = "-DpomFile=$($pomAssociatedArtifact.File.FullName)"
@@ -117,20 +123,8 @@ foreach ($packageDetail in $packageDetails) {
   Write-Information "Classifiers Option is: $classifiersOption"
   Write-Information "Types Option is: $typesOption"
 
-  $urlOption = "-Durl=$localRepositoryDirectoryUri"
-  Write-Information "URL Option is: $urlOption"
-
-  $repositoryDirectoryOption = "-DrepositoryDirectory=$localRepositoryDirectory"
-  Write-Information "Repository Directory Option is: $repositoryDirectoryOption"
-
   $gpgexeOption = "-Dgpgexe=$GPGExecutablePath"
   Write-Information "GPG Executable Option is: $gpgexeOption"
-
-  $stagingProfileIdOption = "-DstagingProfileId=$($packageDetail.SonaTypeProfileID)"
-  Write-Information "Staging Profile ID Option is: $stagingProfileIdOption"
-
-  $stagingDescriptionOption = "-DstagingDescription=$($packageDetail.FullyQualifiedName)"
-  Write-Information "Staging Description Option is: $stagingDescriptionOption"
 
   if ($RepositoryUrl -match "https://pkgs.dev.azure.com/azure-sdk/\b(internal|public)\b/*") {
     if (Test-ReleasedPackage -RepositoryUrl $RepositoryUrl -PackageDetail $packageDetail -BearerToken $RepositoryPassword) {
@@ -144,18 +138,18 @@ foreach ($packageDetail in $packageDetails) {
     if ($LASTEXITCODE) { exit $LASTEXITCODE }
   }
   elseif ($RepositoryUrl -like "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
-    if (!$StageOnly) {
-      if ($packageDetail.IsSnapshot) {
-        # If $StageOnly, don't release to /snapshots
-        # If snapshot, no need to stage first
-        $RepositoryUrl = "https://oss.sonatype.org/content/repositories/snapshots/"
-        Write-Information "GPG Signing and deploying package in one step to Sonatype snapshots: $RepositoryUrl"
-        Write-Information "mvn gpg:sign-and-deploy-file `"--batch-mode`" `"$pomOption`" `"$fileOption`" `"$javadocOption`" `"$sourcesOption`" `"$filesOption`" $classifiersOption `"$typesOption`" `"-Durl=$RepositoryUrl`" `"$gpgexeOption`" `"-DrepositoryId=target-repo`" `"-Drepo.username=`"`"$RepositoryUsername`"`"`" `"-Drepo.password=[redacted]`" `"--settings=$PSScriptRoot\..\maven.publish.settings.xml`""
-        mvn gpg:sign-and-deploy-file "--batch-mode" "$pomOption" "$fileOption" "$javadocOption" "$sourcesOption" "$filesOption" $classifiersOption "$typesOption" "-Durl=$RepositoryUrl" "$gpgexeOption" "-DrepositoryId=target-repo" "-Drepo.username=""$RepositoryUsername""" "-Drepo.password=""$RepositoryPassword""" "--settings=$PSScriptRoot\..\maven.publish.settings.xml"
-        if ($LASTEXITCODE) { exit $LASTEXITCODE }
-        continue
-      }
+    if ($packageDetail.IsSnapshot) {
+      # If $StageOnly, don't release to /snapshots
+      # If snapshot, no need to stage first
+      $RepositoryUrl = "https://oss.sonatype.org/content/repositories/snapshots/"
+      Write-Information "GPG Signing and deploying package in one step to Sonatype snapshots: $RepositoryUrl"
+      Write-Information "mvn gpg:sign-and-deploy-file `"--batch-mode`" `"$pomOption`" `"$fileOption`" `"$javadocOption`" `"$sourcesOption`" `"$filesOption`" $classifiersOption `"$typesOption`" `"-Durl=$RepositoryUrl`" `"$gpgexeOption`" `"-DrepositoryId=target-repo`" `"-Drepo.username=`"`"$RepositoryUsername`"`"`" `"-Drepo.password=[redacted]`" `"--settings=$PSScriptRoot\..\maven.publish.settings.xml`""
+      mvn gpg:sign-and-deploy-file "--batch-mode" "$pomOption" "$fileOption" "$javadocOption" "$sourcesOption" "$filesOption" $classifiersOption "$typesOption" "-Durl=$RepositoryUrl" "$gpgexeOption" "-DrepositoryId=target-repo" "-Drepo.username=""$RepositoryUsername""" "-Drepo.password=""$RepositoryPassword""" "--settings=$PSScriptRoot\..\maven.publish.settings.xml"
+      if ($LASTEXITCODE) { exit $LASTEXITCODE }
+      continue
+    }
 
+    if (!$StageOnly) {
       Write-Information "Checking to see if package $($packageDetail.FullyQualifiedName) is already deployed."
       
       if (Test-ReleasedPackage -RepositoryUrl $RepositoryUrl -PackageDetail $packageDetail) {
@@ -163,6 +157,22 @@ foreach ($packageDetail in $packageDetails) {
         continue  
       }
     }
+      
+    $localRepositoryDirectory = Get-RandomRepositoryDirectory
+    $localRepositoryDirectoryUri = $([Uri]$localRepositoryDirectory.FullName).AbsoluteUri
+    Write-Information "Local Repository Directory URI is: $localRepositoryDirectoryUri"
+  
+    $urlOption = "-Durl=$localRepositoryDirectoryUri"
+    Write-Information "URL Option is: $urlOption"
+
+    $repositoryDirectoryOption = "-DrepositoryDirectory=$localRepositoryDirectory"
+    Write-Information "Repository Directory Option is: $repositoryDirectoryOption"
+
+    $stagingProfileIdOption = "-DstagingProfileId=$($packageDetail.SonaTypeProfileID)"
+    Write-Information "Staging Profile ID Option is: $stagingProfileIdOption"
+
+    $stagingDescriptionOption = "-DstagingDescription=$($packageDetail.FullyQualifiedName)"
+    Write-Information "Staging Description Option is: $stagingDescriptionOption"
 
     Write-Information "Signing and deploying package to $localRepositoryDirectoryUri"
     Write-Information "mvn gpg:sign-and-deploy-file `"--batch-mode`" `"$pomOption`" `"$fileOption`" `"$javadocOption`" `"$sourcesOption`" `"$filesOption`" $classifiersOption `"$typesOption`" `"$urlOption`" `"$gpgexeOption`" `"-DrepositoryId=target-repo`" `"--settings=$PSScriptRoot\..\maven.publish.settings.xml`""
