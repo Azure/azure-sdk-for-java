@@ -117,6 +117,7 @@ function GetDocsMetadata() {
 
 # Pretend the script failed so we can validate whether ignoreLASTEXITCODE: true
 # is a good way to handle failures.
+Get-Content $PSCommandPath
 exit 1
 
 if ($UpdateDocsMsPackagesFn -and (Test-Path "Function:$UpdateDocsMsPackagesFn")) {
