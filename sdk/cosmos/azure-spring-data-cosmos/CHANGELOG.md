@@ -1,7 +1,11 @@
 ## Release History
 
-## 3.11.0-beta.1 (Unreleased)
+### 3.11.0-beta.1 (2021-09-02)
+#### New Features
+* Updated `azure-cosmos` to version 4.19.0-beta.1.
 
+#### Key Bug Fixes
+* Fixed spring data cosmos query plan caching.
 
 ### 3.10.0 (2021-08-16)
 > [!IMPORTANT]
