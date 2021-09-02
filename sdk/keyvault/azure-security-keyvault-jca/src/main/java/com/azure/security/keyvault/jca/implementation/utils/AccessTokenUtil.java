@@ -126,7 +126,7 @@ public final class AccessTokenUtil {
         LOGGER.entering("AccessTokenUtil", "getAccessToken", new Object[]{
             resource, tenantId, clientId, clientSecret});
         LOGGER.info("Getting access token using client ID / client secret");
-        String result = null;
+        OAuthToken result = null;
 
         StringBuilder oauth2Url = new StringBuilder();
         oauth2Url.append(aadAuthenticationUrl == null ? OAUTH2_TOKEN_BASE_URL : aadAuthenticationUrl)
@@ -135,18 +135,17 @@ public final class AccessTokenUtil {
 
         StringBuilder requestBody = new StringBuilder();
         requestBody.append(GRANT_TYPE_FRAGMENT)
-            .append(CLIENT_ID_FRAGMENT).append(clientId)
-            .append(CLIENT_SECRET_FRAGMENT).append(clientSecret)
-            .append(RESOURCE_FRAGMENT).append(resource);
+                   .append(CLIENT_ID_FRAGMENT).append(clientId)
+                   .append(CLIENT_SECRET_FRAGMENT).append(clientSecret)
+                   .append(RESOURCE_FRAGMENT).append(resource);
 
         String body = HttpUtil
             .post(oauth2Url.toString(), requestBody.toString(), "application/x-www-form-urlencoded");
         if (body != null) {
-            OAuthToken token = (OAuthToken) JsonConverterUtil.fromJson(body, OAuthToken.class);
-            LOGGER.log(FINER, "Access token: {0}", token.getAccessToken());
-            return token;
+            result = (OAuthToken) JsonConverterUtil.fromJson(body, OAuthToken.class);
         }
-        return null;
+        LOGGER.log(FINER, "Access token: {0}", result);
+        return result;
     }
 
     /**
@@ -172,10 +171,11 @@ public final class AccessTokenUtil {
     private static OAuthToken getAccTokenOnAppService(String resource, String clientId) {
         LOGGER.entering("AccessTokenUtil", "getAccessTokenOnAppService", resource);
         LOGGER.info("Getting access token using managed identity based on MSI_SECRET");
+        OAuthToken result = null;
         StringBuilder url = new StringBuilder();
         url.append(System.getenv("MSI_ENDPOINT"))
-            .append("?api-version=2017-09-01")
-            .append(RESOURCE_FRAGMENT).append(resource);
+           .append("?api-version=2017-09-01")
+           .append(RESOURCE_FRAGMENT).append(resource);
         if (clientId != null) {
             url.append("&clientid=").append(clientId);
             LOGGER.log(INFO, "Using managed identity with client ID: {0}", clientId);
@@ -187,11 +187,10 @@ public final class AccessTokenUtil {
         String body = HttpUtil.get(url.toString(), headers);
 
         if (body != null) {
-            OAuthToken token = (OAuthToken) JsonConverterUtil.fromJson(body, OAuthToken.class);
-            LOGGER.exiting("AccessTokenUtil", "getAccessTokenOnAppService");
-            return token;
+            result = (OAuthToken) JsonConverterUtil.fromJson(body, OAuthToken.class);
         }
-        return null;
+        LOGGER.exiting("AccessTokenUtil", "getAccessTokenOnAppService", result);
+        return result;
     }
 
     /**
@@ -220,10 +219,11 @@ public final class AccessTokenUtil {
         if (identity != null) {
             LOGGER.log(INFO, "Using managed identity with object ID: {0}", identity);
         }
+        OAuthToken result = null;
 
         StringBuilder url = new StringBuilder();
         url.append(OAUTH2_MANAGED_IDENTITY_TOKEN_URL)
-            .append(RESOURCE_FRAGMENT).append(resource);
+           .append(RESOURCE_FRAGMENT).append(resource);
         if (identity != null) {
             url.append("&object_id=").append(identity);
         }
@@ -233,10 +233,9 @@ public final class AccessTokenUtil {
         String body = HttpUtil.get(url.toString(), headers);
 
         if (body != null) {
-            OAuthToken token = (OAuthToken) JsonConverterUtil.fromJson(body, OAuthToken.class);
-            LOGGER.exiting("AccessTokenUtil", "getAccessTokenOnOthers");
-            return token;
+            result = (OAuthToken) JsonConverterUtil.fromJson(body, OAuthToken.class);
         }
-        return null;
+        LOGGER.exiting("AccessTokenUtil", "getAccessTokenOnOthers", result);
+        return result;
     }
 }
