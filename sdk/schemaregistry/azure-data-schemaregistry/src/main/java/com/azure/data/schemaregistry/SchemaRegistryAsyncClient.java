@@ -98,8 +98,7 @@ public final class SchemaRegistryAsyncClient {
      *
      * @return The schema properties on successful registration of the schema.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<SchemaProperties>> registerSchemaWithResponse(String groupName, String name, String content,
+    Mono<Response<SchemaProperties>> registerSchemaWithResponse(String groupName, String name, String content,
         SerializationType serializationType) {
         return FluxUtil.withContext(context -> registerSchemaWithResponse(groupName, name, content,
             serializationType, context));
@@ -274,15 +273,6 @@ public final class SchemaRegistryAsyncClient {
                     response.getHeaders(), schemaId.getId());
                 sink.next(schemaIdResponse);
             });
-    }
-
-    /**
-     * Explicit call to clear all caches.
-     */
-    void clearCache() {
-        idCache.clear();
-        schemaStringCache.clear();
-        typeParserMap.clear();
     }
 
     private static String getSchemaStringCacheKey(String groupName, String name, String content) {
