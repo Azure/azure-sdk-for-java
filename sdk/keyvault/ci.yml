@@ -24,7 +24,7 @@ trigger:
       - sdk/keyvault/azure-security-keyvault-keys/pom.xml
       - sdk/keyvault/azure-security-keyvault-perf/pom.xml
       - sdk/keyvault/azure-security-keyvault-secrets/pom.xml
-      - sdk/keyvault/azure-security-test-keyvault-jca/
+      - sdk/keyvault/azure-security-test-keyvault-jca/pom.xml
 pr:
   branches:
     include:
@@ -41,6 +41,7 @@ pr:
       - sdk/keyvault/azure-security-keyvault-keys/
       - sdk/keyvault/azure-security-keyvault-perf/
       - sdk/keyvault/azure-security-keyvault-secrets/
+      - sdk/keyvault/azure-security-test-keyvault-jca/
     exclude:
       - sdk/keyvault/pom.xml
       - sdk/keyvault/azure-security-keyvault-administration/pom.xml
@@ -49,6 +50,7 @@ pr:
       - sdk/keyvault/azure-security-keyvault-keys/pom.xml
       - sdk/keyvault/azure-security-keyvault-perf/pom.xml
       - sdk/keyvault/azure-security-keyvault-secrets/pom.xml
+      - sdk/keyvault/azure-security-test-keyvault-jca/pom.xml
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
