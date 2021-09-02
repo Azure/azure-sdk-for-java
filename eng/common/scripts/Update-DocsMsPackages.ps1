@@ -115,18 +115,22 @@ function GetDocsMetadata() {
   return $outputMetadata
 }
 
+# Pretend the script failed so we can validate whether ignoreLASTEXITCODE: true
+# is a good way to handle failures.
+exit 1
+
 if ($UpdateDocsMsPackagesFn -and (Test-Path "Function:$UpdateDocsMsPackagesFn")) {
 
   try {
     $docsMetadata = GetDocsMetadata
     &$UpdateDocsMsPackagesFn -DocsRepoLocation $DocRepoLocation -DocsMetadata $docsMetadata
-  } catch { 
+  } catch {
     LogError "Exception while updating docs.ms packages"
-    LogError $_ 
+    LogError $_
     LogError $_.ScriptStackTrace
     exit 1
   }
-  
+
 } else {
   LogError "The function for '$UpdateFn' was not found.`
   Make sure it is present in eng/scripts/Language-Settings.ps1 and referenced in eng/common/scripts/common.ps1.`
