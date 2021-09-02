@@ -33,7 +33,7 @@ import static com.azure.spring.test.EnvironmentVariable.AAD_USER_NAME_1;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-public class AADWeiResourceServerIT {
+public class AADResourceServerIT {
 
     private AADWebApiITHelper aadWebApiITHelper;
 
