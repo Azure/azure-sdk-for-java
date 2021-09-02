@@ -6,8 +6,6 @@ package com.azure.data.schemaregistry;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
-import com.azure.core.http.rest.Response;
-import com.azure.core.util.Context;
 import com.azure.data.schemaregistry.models.SchemaProperties;
 import com.azure.data.schemaregistry.models.SerializationType;
 
@@ -52,25 +50,6 @@ public final class SchemaRegistryClient {
     }
 
     /**
-     * Registers a new schema in the specified schema group with the given schema name. If the schema name already
-     * exists in this schema group, a new version with the updated schema string will be registered.
-     *
-     * @param groupName The schema group.
-     * @param name The schema name.
-     * @param content The string representation of the schema.
-     * @param serializationType The serialization type of this schema.
-     * @param context The context to pass to the Http pipeline.
-     *
-     * @return The schema properties on successful registration of the schema.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SchemaProperties> registerSchemaWithResponse(String groupName, String name, String content,
-        SerializationType serializationType, Context context) {
-        return this.asyncClient.registerSchemaWithResponse(groupName, name, content, serializationType,
-            context).block();
-    }
-
-    /**
      * Gets the schema properties of the schema associated with the unique schema id.
      *
      * @param id The unique identifier of the schema.
@@ -80,18 +59,6 @@ public final class SchemaRegistryClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SchemaProperties getSchema(String id) {
         return this.asyncClient.getSchema(id).block();
-    }
-
-    /**
-     * Gets the schema properties of the schema associated with the unique schemaId.
-     *
-     * @param schemaId The unique identifier of the schema.
-     * @param context The context to pass to the Http pipeline.
-     *
-     * @return The {@link SchemaProperties} associated with the given {@code schemaId} along with the HTTP response.
-     */
-    Response<SchemaProperties> getSchemaWithResponse(String schemaId, Context context) {
-        return this.asyncClient.getSchemaWithResponse(schemaId, context).block();
     }
 
     /**
@@ -107,26 +74,5 @@ public final class SchemaRegistryClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public String getSchemaId(String groupName, String name, String content, SerializationType serializationType) {
         return this.asyncClient.getSchemaId(groupName, name, content, serializationType).block();
-    }
-
-    /**
-     * Gets the schema identifier associated with the given schema.
-     *
-     * @param schemaGroup The schema group.
-     * @param schemaName The schema name.
-     * @param schemaString The string representation of the schema.
-     * @param serializationType The serialization type of this schema.
-     * @param context The context to pass to the Http pipeline.
-     *
-     * @return The unique identifier for this schema.
-     */
-    Response<String> getSchemaIdWithResponse(String schemaGroup, String schemaName, String schemaString,
-        SerializationType serializationType, Context context) {
-        return this.asyncClient
-            .getSchemaIdWithResponse(schemaGroup, schemaName, schemaString, serializationType, context).block();
-    }
-
-    void clearCache() {
-        this.asyncClient.clearCache();
     }
 }
