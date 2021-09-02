@@ -64,7 +64,7 @@ public class LocationPollingStrategy<T, U> implements PollingStrategy<T, U> {
         HttpHeader locationHeader = initialResponse.getHeaders().get(PollingConstants.LOCATION);
         if (locationHeader != null) {
             try {
-                URL url = new URL(locationHeader.getValue());
+                new URL(locationHeader.getValue());
                 return Mono.just(true);
             } catch (MalformedURLException e) {
                 return Mono.just(false);

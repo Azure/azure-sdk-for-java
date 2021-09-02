@@ -72,7 +72,7 @@ public class OperationResourcePollingStrategy<T, U> implements PollingStrategy<T
         HttpHeader operationLocationHeader = initialResponse.getHeaders().get(operationLocationHeaderName);
         if (operationLocationHeader != null) {
             try {
-                URL url = new URL(operationLocationHeader.getValue());
+                new URL(operationLocationHeader.getValue());
                 return Mono.just(true);
             } catch (MalformedURLException e) {
                 return Mono.just(false);
