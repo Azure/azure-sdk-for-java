@@ -282,19 +282,6 @@ public final class RestProxy implements InvocationHandler {
             }
 
             request.getHeaders().set("Content-Type", contentType);
-            if (bodyContentObject instanceof BinaryData) {
-                BinaryData binaryData = (BinaryData) bodyContentObject;
-                if (binaryData.getLength() != null) {
-                    request.setHeader("Content-Length", binaryData.getLength().toString());
-                }
-                // The request body is not read here. The call to `toFluxByteBuffer()` lazily converts the underlying
-                // content of BinaryData to a Flux<ByteBuffer> which is then read by HttpClient implementations when
-                // sending the request to the service. There is no memory copy that happens here. Sources like
-                // InputStream, File and Flux<ByteBuffer> will not be eagerly copied into memory until it's required
-                // by the HttpClient implementations.
-                request.setBody(binaryData.toFluxByteBuffer());
-                return request;
-            }
 
             // TODO(jogiles) this feels hacky
             boolean isJson = false;
@@ -496,10 +483,6 @@ public final class RestProxy implements InvocationHandler {
             asyncResult = Mono.just(response.getSourceResponse().getBody());
         } else if (TypeUtil.isTypeOrSubTypeOf(entityType, BinaryData.class)) {
             // Mono<BinaryData>
-            // The raw response is directly used to create an instance of BinaryData which then provides
-            // different methods to read the response. The reading of the response is delayed until BinaryData
-            // is read and depending on which format the content is converted into, the response is not necessarily
-            // fully copied into memory resulting in lesser overall memory usage.
             asyncResult = BinaryData.fromFlux(response.getSourceResponse().getBody());
         } else {
             // Mono<Object> or Mono<Page<T>>
