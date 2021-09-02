@@ -19,7 +19,6 @@ jobs:
       # Sync docs repo onboarding files/folders
       - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
         parameters:
-          SkipDefaultCheckout: true
           Paths:
             - package.json
             - metadata/
