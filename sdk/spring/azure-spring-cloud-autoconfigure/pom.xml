@@ -36,53 +36,6 @@
       <optional>true</optional>
     </dependency>
 
-		<!-- Cloud SQL -->
-    <dependency>
-      <groupId>org.springframework</groupId>
-      <artifactId>spring-jdbc</artifactId>
-      <version>5.3.9</version> <!-- {x-version-update;org.springframework:spring-jdbc;external_dependency} -->
-      <optional>true</optional>
-    </dependency>
-
-
-    <!--TODO do we need this dependency? -->
-    <dependency>
-      <groupId>com.zaxxer</groupId>
-      <artifactId>HikariCP</artifactId>
-      <version>4.0.3</version> <!-- {x-version-update;com.zaxxer:HikariCP;external_dependency} -->
-      <scope>test</scope>
-      <exclusions>
-        <exclusion>
-          <artifactId>slf4j-api</artifactId>
-          <groupId>org.slf4j</groupId>
-        </exclusion>
-      </exclusions>
-    </dependency>
-
-		<!-- PostgreSQL -->
-    <dependency>
-      <groupId>org.postgresql</groupId>
-      <artifactId>postgresql</artifactId>
-      <version>42.2.23</version> <!-- {x-version-update;org.postgresql:postgresql;external_dependency} -->
-      <optional>true</optional>
-    </dependency>
-
-		<!-- MySQL -->
-    <dependency>
-      <groupId>mysql</groupId>
-      <artifactId>mysql-connector-java</artifactId>
-      <version>8.0.26</version> <!-- {x-version-update;mysql:mysql-connector-java;external_dependency} -->
-      <optional>true</optional>
-    </dependency>
-
-		<!-- SQL Server -->
-    <dependency>
-      <groupId>com.microsoft.sqlserver</groupId>
-      <artifactId>mssql-jdbc</artifactId>
-      <version>9.2.1.jre8</version> <!-- {x-version-update;com.microsoft.sqlserver:mssql-jdbc;external_dependency} -->
-      <optional>true</optional>
-    </dependency>
-
 		<!-- Event Hub -->
     <dependency>
       <groupId>com.azure.spring</groupId>
@@ -343,13 +296,10 @@
               <includes>
                 <include>com.microsoft.azure:azure-servicebus-jms:[0.0.7]</include> <!-- {x-include-update;com.microsoft.azure:azure-servicebus-jms;external_dependency} -->
                 <include>com.microsoft.azure:msal4j:[1.11.0]</include> <!-- {x-include-update;com.microsoft.azure:msal4j;external_dependency} -->
-                <include>com.microsoft.sqlserver:mssql-jdbc:[9.2.1.jre8]</include> <!-- {x-include-update;com.microsoft.sqlserver:mssql-jdbc;external_dependency} -->
                 <include>com.nimbusds:nimbus-jose-jwt:[9.10]</include> <!-- {x-include-update;com.nimbusds:nimbus-jose-jwt;external_dependency} -->
                 <include>javax.servlet:javax.servlet-api:[4.0.1]</include> <!-- {x-include-update;javax.servlet:javax.servlet-api;external_dependency} -->
-                <include>mysql:mysql-connector-java:[8.0.26]</include> <!-- {x-include-update;mysql:mysql-connector-java;external_dependency} -->
                 <include>org.apache.qpid:qpid-jms-client:[0.53.0]</include> <!-- {x-include-update;org.apache.qpid:qpid-jms-client;external_dependency} -->
                 <include>org.hibernate.validator:hibernate-validator:[6.2.0.Final]</include> <!-- {x-include-update;org.hibernate.validator:hibernate-validator;external_dependency} -->
-                <include>org.postgresql:postgresql:[42.2.23]</include> <!-- {x-include-update;org.postgresql:postgresql;external_dependency} -->
                 <include>org.springframework.boot:spring-boot-actuator-autoconfigure:[2.5.3]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-actuator-autoconfigure;external_dependency} -->
                 <include>org.springframework.boot:spring-boot-autoconfigure-processor:[2.5.3]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-autoconfigure-processor;external_dependency} -->
                 <include>org.springframework.boot:spring-boot-autoconfigure:[2.5.3]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-autoconfigure;external_dependency} -->
@@ -365,7 +315,6 @@
                 <include>org.springframework.security:spring-security-oauth2-resource-server:[5.5.1]</include> <!-- {x-include-update;org.springframework.security:spring-security-oauth2-resource-server;external_dependency} -->
                 <include>org.springframework.security:spring-security-web:[5.5.1]</include> <!-- {x-include-update;org.springframework.security:spring-security-web;external_dependency} -->
                 <include>org.springframework:spring-context-support:[5.3.9]</include> <!-- {x-include-update;org.springframework:spring-context-support;external_dependency} -->
-                <include>org.springframework:spring-jdbc:[5.3.9]</include> <!-- {x-include-update;org.springframework:spring-jdbc;external_dependency} -->
                 <include>org.springframework:spring-jms:[5.3.9]</include> <!-- {x-include-update;org.springframework:spring-jms;external_dependency} -->
                 <include>org.springframework:spring-web:[5.3.9]</include> <!-- {x-include-update;org.springframework:spring-web;external_dependency} -->
                 <include>org.springframework:spring-webflux:[5.3.9]</include> <!-- {x-include-update;org.springframework:spring-webflux;external_dependency} -->
