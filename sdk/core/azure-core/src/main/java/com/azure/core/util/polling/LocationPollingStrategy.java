@@ -8,6 +8,7 @@ import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpRequest;
+import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.implementation.serializer.DefaultJsonSerializer;
 import com.azure.core.util.BinaryData;
@@ -115,7 +116,7 @@ public class LocationPollingStrategy<T, U> implements PollingStrategy<T, U> {
                 status = LongRunningOperationStatus.FAILED;
             }
 
-            return BinaryData.fromFlux(response.getBody()).flatMap(binaryData -> {
+            return response.getBodyAsByteArray().map(BinaryData::fromBytes).flatMap(binaryData -> {
                 pollingContext.setData(PollingConstants.POLL_RESPONSE_BODY, binaryData.toString());
                 String retryAfterValue = response.getHeaders().getValue(PollingConstants.RETRY_AFTER);
                 Duration retryAfter = retryAfterValue == null ? null
@@ -151,7 +152,9 @@ public class LocationPollingStrategy<T, U> implements PollingStrategy<T, U> {
             return PollingUtils.deserializeResponse(BinaryData.fromString(latestResponseBody), serializer, resultType);
         } else {
             HttpRequest request = new HttpRequest(HttpMethod.GET, finalGetUrl);
-            return httpPipeline.send(request, context).flatMap(response -> BinaryData.fromFlux(response.getBody()))
+            return httpPipeline.send(request, context)
+                .flatMap(HttpResponse::getBodyAsByteArray)
+                .map(BinaryData::fromBytes)
                 .flatMap(binaryData -> PollingUtils.deserializeResponse(binaryData, serializer, resultType));
         }
     }
