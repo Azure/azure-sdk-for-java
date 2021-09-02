@@ -26,7 +26,7 @@ Please refer to this [sample project][sample] illustrating how to use this packa
 
 ## Troubleshooting
 ### Enable client logging
-Azure SDKs for Java offers a consistent logging story to help aid in troubleshooting application errors and expedite their resolution. The logs produced will capture the flow of an application before reaching the terminal state to help locate the root issue. View the [logging][logging] doc for guidance about enabling logging.
+Azure SDKs for Java offers a consistent logging story to help aid in troubleshooting application errors and expedite their resolution. The logs produced will capture the flow of an application before reaching the terminal state to help locate the root issue. View the [logging][logging] wiki for guidance about enabling logging.
 
 ### Enable Spring logging
 Spring allow all the supported logging systems to set logger levels set in the Spring Environment (for example, in application.properties) by using `logging.level.<logger-name>=<level>` where level is one of TRACE, DEBUG, INFO, WARN, ERROR, FATAL, or OFF. The root logger can be configured by using logging.level.root.
@@ -55,6 +55,7 @@ Please follow [instructions here][contributing_md] to build from source or contr
 [src]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/azure-spring-cloud-storage
 [package]: https://mvnrepository.com/artifact/com.azure.spring/azure-spring-cloud-storage
 [refdocs]: https://azure.github.io/azure-sdk-for-java/springcloud.html#azure-spring-cloud-storage
+[sample]: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/main/storage/azure-spring-cloud-starter-storage-queue/storage-queue-operation
 [logging]: https://docs.microsoft.com/azure/developer/java/sdk/logging-overview
 [logging_doc]: https://docs.spring.io/spring-boot/docs/current/reference/html/features.html#boot-features-logging
 [contributing_md]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/CONTRIBUTING.md

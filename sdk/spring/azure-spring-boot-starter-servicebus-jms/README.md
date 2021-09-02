@@ -25,6 +25,10 @@ This starter uses Azure Service Bus messaging features (queues and publish/subsc
 The Advanced Message Queuing Protocol (AMQP) 1.0 is an efficient, reliable, wire-level messaging protocol that you can use to build robust, cross-platform messaging applications.
 
 Support for AMQP 1.0 in Azure Service Bus means that you can use the queuing and publish/subscribe brokered messaging features from a range of platforms using an efficient binary protocol. Furthermore, you can build applications comprised of components built using a mix of languages, frameworks, and operating systems.
+
+### Support for JmsListener
+azure-spring-boot-starter-servicebus-jms autoconfigures two Spring beans of `JmsListenerContainerFactory` for Azure Service Bus Queue and Topic, with the bean name as `jmsListenerContainerFactory` and `topicJmsListenerContainerFactory`. 
+
 ## Examples
 
 ### Configure the app for your service bus
@@ -32,33 +36,19 @@ In this section, you see how to configure your app to use either a Service Bus q
 
 #### configuration options
 
-Name | Description 
-|:---|:---
-spring.jms.servicebus.connection-string | Specify the connection string you obtained in your Service Bus namespace from the Azure portal.
-spring.jms.servicebus.topic-client-id | Specify the JMS client ID, which is your Service Bus Subscription name in the Azure portal.
-spring.jms.servicebus.idle-timeout | Specify the idle timeout in milliseconds. The recommended value for this tutorial is 1800000.
-spring.jms.servicebus.pricing-tier | Specify the pricing tier of your service bus. Supported values are *premium*, *standard*, and *basic*. Premium uses Java Message Service (JMS) 2.0, while standard and basic use JMS 1.0 to interact with Azure Service Bus.
+Name | Description | Type |Required
+|:---|:---|:---|:---
+spring.jms.servicebus.connection-string | Connection string of your Service Bus namespace from the Azure portal.|String | Yes
+spring.jms.servicebus.topic-client-id | JMS client ID, which is your Service Bus Subscription name in the Azure portal.|String | Yes if using Service Bus Topic.
+spring.jms.servicebus.idle-timeout | Idle timeout in milliseconds. The recommended value for this tutorial is 1800000.| int | Yes
+spring.jms.servicebus.pricing-tier | Pricing tier of your Service Bus namespace. Supported values are *premium*, *standard*, and *basic*. Premium uses Java Message Service (JMS) 2.0, while standard and basic use JMS 1.0 to interact with Azure Service Bus.|String | Yes
+spring.jms.servicebus.listener.reply-pub-sub-domain| Whether the reply destination type is topic. Only works for the bean of topicJmsListenerContainerFactory.| Boolean |
+spring.jms.servicebus.listener.reply-qos-settings.*|Configure the QosSettings to use when sending a reply. Can be set to null to indicate that the broker's defaults should be used. |
+spring.jms.servicebus.listener.subscription-durable|Whether to make the subscription durable. Only works for the bean of topicJmsListenerContainerFactory. The default value is true.|Boolean|
+spring.jms.servicebus.listener.subscription-durable|Whether to make the subscription shared. Only works for the bean of topicJmsListenerContainerFactory.|Boolean|
+spring.jms.servicebus.listener.phase|Specify the phase in which this container should be started and stopped.|Integer|
 
-#### Use a Service Bus queue
-
-Append the following code to the end of the *application.properties* file. Replace the sample values with the appropriate values for your service bus:
-
-```yaml
-spring.jms.servicebus.connection-string=<ServiceBusNamespaceConnectionString>
-spring.jms.servicebus.idle-timeout=<IdleTimeout>
-spring.jms.servicebus.pricing-tier=<ServiceBusPricingTier>
-```
-
-#### Use Service Bus topic
-
-Append the following code to the end of the *application.properties* file. Replace the sample values with the appropriate values for your service bus:
-
-```yaml
-spring.jms.servicebus.connection-string=<ServiceBusNamespaceConnectionString>
-spring.jms.servicebus.topic-client-id=<ServiceBusTopicClientId>
-spring.jms.servicebus.idle-timeout=<IdleTimeout>
-spring.jms.servicebus.pricing-tier=<ServiceBusPricingTier>
-```
+Note: `JmsListenerContainerFactory` beans also support all [Spring native application properties of JmsListener][Spring_jms_configuration].
 
 ### Implement basic Service Bus functionality
 
@@ -271,3 +261,4 @@ Please follow [instructions here](https://github.com/Azure/azure-sdk-for-java/bl
 [spring_jms_guide]: https://spring.io/guides/gs/messaging-jms/
 [environment_checklist]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/ENVIRONMENT_CHECKLIST.md#ready-to-run-checklist
 [Add azure-spring-boot-bom]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/AZURE_SPRING_BOMS_USAGE.md#add-azure-spring-boot-bom
+[Spring_jms_configuration]: https://docs.spring.io/spring-boot/docs/current/reference/html/application-properties.html#application-properties.integration.spring.jms.listener.acknowledge-mode
