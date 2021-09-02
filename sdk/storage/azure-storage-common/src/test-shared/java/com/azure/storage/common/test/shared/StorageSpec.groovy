@@ -60,7 +60,7 @@ class StorageSpec extends Specification {
 
 
     static void printThreadStacks() {
-        final StringBuilder dump = new StringBuilder();
+        final StringBuilder dump = new StringBuilder("============= THREAD DUMP START =========");
         final ThreadMXBean threadMXBean = ManagementFactory.getThreadMXBean();
         final ThreadInfo[] threadInfos = threadMXBean.getThreadInfo(threadMXBean.getAllThreadIds(), 100);
         for (ThreadInfo threadInfo : threadInfos) {
@@ -77,6 +77,7 @@ class StorageSpec extends Specification {
             }
             dump.append("\n\n");
         }
+        dump.append("============= THREAD DUMP START =========");
         println dump.toString();
     }
 
