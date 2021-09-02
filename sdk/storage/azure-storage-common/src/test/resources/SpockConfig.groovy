@@ -1,4 +1,4 @@
-def isParallelEnabled = System.getenv().getOrDefault("AZURE_STORAGE_TESTS_PARALLEL_ENABLED", "true").toBoolean()
+def isParallelEnabled = System.getenv().getOrDefault("AZURE_STORAGE_TESTS_PARALLEL_ENABLED", "false").toBoolean()
 def factor = System.getenv().getOrDefault("AZURE_STORAGE_TESTS_PARALLEL_FACTOR", "5").toBigDecimal()
 def numberOfProcessors = Runtime.getRuntime().availableProcessors()
 
