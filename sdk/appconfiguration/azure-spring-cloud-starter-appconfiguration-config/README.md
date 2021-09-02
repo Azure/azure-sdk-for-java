@@ -288,7 +288,7 @@ public class MyClient implements ConfigurationClientBuilderSetup, SecretClientBu
 
 ## Troubleshooting
 ### Logging setting
-Please refer to [Spring logging document][Spring logging document] to get more information about logging.
+Please refer to [spring logging document] to get more information about logging.
 
 #### Logging setting examples
 - Example: Setting logging level of hibernate
@@ -317,7 +317,7 @@ Please follow [instructions here][contributing_md] to build from source or contr
 [app_configuration_conversation_complete_sample]: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/tag_azure-spring-boot_3.6.0/appconfiguration/azure-appconfiguration-conversion-sample-complete
 [app_configuration_conversation_initail_sample]: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/tag_azure-spring-boot_3.6.0/appconfiguration/azure-appconfiguration-conversion-sample-initial
 [azure_subscription]: https://azure.microsoft.com/free
-[Spring logging document]: https://docs.spring.io/spring-boot/docs/current/reference/html/features.html#boot-features-logging
+[spring logging document]: https://docs.spring.io/spring-boot/docs/current/reference/html/features.html#boot-features-logging
 [contributing_md]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/CONTRIBUTING.md
 [maven]: https://maven.apache.org/
 [spring_conversion_duration]: https://docs.spring.io/spring-boot/docs/current/reference/html/features.html#features.external-config.typesafe-configuration-properties.conversion.durations
