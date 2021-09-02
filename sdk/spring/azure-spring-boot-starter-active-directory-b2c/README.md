@@ -474,37 +474,20 @@ Please refer to [azure-spring-boot-sample-active-directory-b2c-oidc].
 Please refer to [azure-spring-boot-sample-active-directory-b2c-resource-server].
 
 ## Troubleshooting
-### Enable Spring logging
-Spring allow all the supported logging systems to set logger levels set in the Spring Environment (for example, in application.properties) by using `logging.level.<logger-name>=<level>` where level is one of TRACE, DEBUG, INFO, WARN, ERROR, FATAL, or OFF. The root logger can be configured by using logging.level.root.
+### Logging setting
+Please refer to [Spring logging document][spring_logging_document] to get more information about logging.
 
-The following example shows potential logging settings in `application.properties`:
-
+#### Logging setting examples
+- Example1: Setting logging level of hibernate
 ```properties
 logging.level.root=WARN
 logging.level.org.springframework.web=DEBUG
 logging.level.org.hibernate=ERROR
 ```
 
-For more information about setting logging in spring, please refer to the [official doc](https://docs.spring.io/spring-boot/docs/current/reference/html/features.html#boot-features-logging).
-
-### Enable client logging
-Please refer to [this page about configure logging in the Azure SDK for Java][logging] to get more information.
-
-### Enable authority logging.
-
-Add the following logging settings:
-
+- Example 2: Setting logging level of AADJwtGrantedAuthoritiesConverter
 ```properties
-# logging settings for resource server scenario.
 logging.level.com.azure.spring.aad.AADJwtGrantedAuthoritiesConverter=DEBUG
-```
-
-Then you will see logs like this:
-
-```text
-...
-DEBUG .a.s.a.AADJwtGrantedAuthoritiesConverter : User TestUser's authorities created from jwt token: [SCOPE_Test.Read, APPROLE_WebApi.ExampleScope].
-...
 ```
 
 ## Next steps
@@ -519,7 +502,7 @@ Please follow [instructions here](https://github.com/Azure/azure-sdk-for-java/bl
 [refdocs]: https://azure.github.io/azure-sdk-for-java/springboot.html#azure-spring-boot
 [package]: https://mvnrepository.com/artifact/com.azure.spring/azure-spring-boot-starter-active-directory-b2c
 [sample]: https://github.com/Azure-Samples/azure-spring-boot-samples
-[logging]: https://docs.microsoft.com/azure/developer/java/sdk/logging-overview
+[spring_logging_document]: https://docs.spring.io/spring-boot/docs/current/reference/html/features.html#boot-features-logging
 [environment_checklist]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/ENVIRONMENT_CHECKLIST.md#ready-to-run-checklist
 [Add azure-spring-boot-bom]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/AZURE_SPRING_BOMS_USAGE.md#add-azure-spring-boot-bom
 [tutorial_create_tenant]: https://docs.microsoft.com/azure/active-directory-b2c/tutorial-create-tenant

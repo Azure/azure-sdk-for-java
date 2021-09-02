@@ -733,51 +733,23 @@ Please refer to [azure-spring-boot-sample-active-directory-resource-server].
 Please refer to [azure-spring-boot-sample-active-directory-resource-server-obo].
 
 ## Troubleshooting
-### Enable Spring logging
-Spring allow all the supported logging systems to set logger levels set in the Spring Environment (for example, in application.properties) by using `logging.level.<logger-name>=<level>` where level is one of TRACE, DEBUG, INFO, WARN, ERROR, FATAL, or OFF. The root logger can be configured by using logging.level.root.
+### Logging setting
+Please refer to [Spring logging document][spring_logging_document] to get more information about logging.
 
-The following example shows potential logging settings in `application.properties`:
-
+#### Logging setting examples
+- Example1: Setting logging level of hibernate
 ```properties
 logging.level.root=WARN
 logging.level.org.springframework.web=DEBUG
 logging.level.org.hibernate=ERROR
 ```
 
-For more information about setting logging in spring, please refer to the [official doc].
-
-### Enable client logging
-Please refer to [this page about configure logging in the Azure SDK for Java][logging] to get more information.
-
-### Enable authority logging.
-
-Add the following logging settings:
-
+- Example2: Setting logging level of AADJwtGrantedAuthoritiesConverter
 ```properties
-# logging settings for web application scenario.
-logging.level.com.azure.spring.aad.webapp.AADOAuth2UserService=DEBUG
-
-# logging settings for resource server scenario.
 logging.level.com.azure.spring.aad.AADJwtGrantedAuthoritiesConverter=DEBUG
 ```
-
-Then you will see log like this in web application:
-
-```text
-...
-DEBUG c.a.s.aad.webapp.AADOAuth2UserService    : User TestUser's authorities extracted by id token and access token: [ROLE_group1, ROLE_group2].
-...
-DEBUG c.a.s.aad.webapp.AADOAuth2UserService    : User TestUser's authorities saved from session: [ROLE_group1, ROLE_group2].
-...
 ```
 
-Or log like this in resource server:
-
-```text
-...
-DEBUG .a.s.a.AADJwtGrantedAuthoritiesConverter : User TestUser's authorities created from jwt token: [SCOPE_Test.Read, APPROLE_WebApi.ExampleScope].
-...
-```
 
 ## Next steps
 
@@ -800,8 +772,7 @@ Please follow [instructions here] to build from source or contribute.
 [graph-api-list-member-of]: https://docs.microsoft.com/graph/api/user-list-memberof?view=graph-rest-1.0
 [graph-api-list-transitive-member-of]: https://docs.microsoft.com/graph/api/user-list-transitivememberof?view=graph-rest-1.0
 [instructions here]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/CONTRIBUTING.md
-[logging]: https://docs.microsoft.com/azure/developer/java/sdk/logging-overview
-[official doc]: https://docs.spring.io/spring-boot/docs/current/reference/html/features.html#boot-features-logging
+[spring_logging_document]: https://docs.spring.io/spring-boot/docs/current/reference/html/features.html#boot-features-logging
 [OAuth 2.0 implicit grant flow]: https://docs.microsoft.com/azure/active-directory/develop/v1-oauth2-implicit-grant-flow
 [package]: https://mvnrepository.com/artifact/com.azure.spring/azure-spring-boot-starter-active-directory
 [refdocs]: https://azure.github.io/azure-sdk-for-java/springboot.html#azure-spring-boot
