@@ -38,7 +38,6 @@ com.microsoft.rest.v2:client-runtime;2.1.1
 com.microsoft.sqlserver:mssql-jdbc;9.2.1.jre8
 com.microsoft.azure:spring-data-cosmosdb;2.3.0
 com.squareup.okhttp3:okhttp;4.8.1
-com.zaxxer:HikariCP;4.0.3
 commons-codec:commons-codec;1.15
 commons-net:commons-net;3.6
 io.fabric8:kubernetes-client;4.13.3
@@ -66,7 +65,6 @@ javax.json:javax.json-api;1.1.4
 javax.servlet:javax.servlet-api;4.0.1
 javax.validation:validation-api;2.0.1.Final
 javax.websocket:javax.websocket-api;1.1
-mysql:mysql-connector-java;8.0.26
 net.minidev:json-smart;2.4.7
 org.apache.ant:ant;1.9.4
 org.apache.avro:avro;1.10.1
@@ -91,7 +89,6 @@ org.javatuples:javatuples;1.2
 org.linguafranca.pwdb:KeePassJava2;2.1.4
 org.powermock:powermock-api-mockito2;2.0.2
 org.powermock:powermock-module-junit4;2.0.2
-org.postgresql:postgresql;42.2.23
 org.slf4j:slf4j-api;1.7.32
 org.slf4j:slf4j-nop;1.7.32
 org.slf4j:slf4j-simple;1.7.32
@@ -130,7 +127,6 @@ org.springframework:spring-context-support;5.3.9
 org.springframework:spring-context;5.3.9
 org.springframework:spring-core;5.3.9
 org.springframework:spring-expression;5.3.9
-org.springframework:spring-jdbc;5.3.9
 org.springframework:spring-jms;5.3.9
 org.springframework:spring-messaging;5.3.9
 org.springframework:spring-tx;5.3.9

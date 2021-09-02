@@ -25,8 +25,8 @@
   <dependencies>
     <dependency>
       <groupId>org.springframework</groupId>
-      <artifactId>spring-core</artifactId>
-      <version>5.3.9</version> <!-- {x-version-update;org.springframework:spring-core;external_dependency} -->
+      <artifactId>spring-context</artifactId>
+      <version>5.3.9</version> <!-- {x-version-update;org.springframework:spring-context;external_dependency} -->
     </dependency>
 
     <dependency>
@@ -76,7 +76,7 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>org.springframework:spring-core:[5.3.9]</include> <!-- {x-include-update;org.springframework:spring-core;external_dependency} -->
+                <include>org.springframework:spring-context:[5.3.9]</include> <!-- {x-include-update;org.springframework:spring-context;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>
