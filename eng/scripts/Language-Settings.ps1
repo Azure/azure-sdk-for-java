@@ -308,11 +308,11 @@ function PackageDependenciesResolve($artifactNamePrefix, $packageDirectory) {
   $artifactDownloadOutput = mvn `
     dependency:copy `
     -Dartifact="$pomArtifactName" `
-    -DoutputDirectory="$packageDirectory" | Out-Null
+    -DoutputDirectory="$packageDirectory"
 
   if ($LASTEXITCODE) {
     LogWarning "Could not download pom artifact: $pomArtifactName"
-    $artifactDownloadOutput | Out-String | Write-Host
+    $artifactDownloadOutput | Write-Host
     return $false
   }
 
@@ -324,11 +324,11 @@ function PackageDependenciesResolve($artifactNamePrefix, $packageDirectory) {
     -f $downloadedPomPath `
     dependency:copy-dependencies `
     -P '!azure-mgmt-sdk-test-jar' `
-    -DoutputDirectory="$packageDirectory" | Out-Null
+    -DoutputDirectory="$packageDirectory"
 
   if ($LASTEXITCODE) {
     LogWarning "Could not resolve dependencies for: $pomArtifactName"
-    $copyDependencyOutput | Out-String | Write-Host
+    $copyDependencyOutput | Write-Host
     return $false
   }
 
