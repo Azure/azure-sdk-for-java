@@ -235,7 +235,6 @@
             <configuration>
               <argLine>
                 -Xmx6g
-                -Djava.util.concurrent.ForkJoinPool.common.parallelism=50
               </argLine>
               <systemPropertyVariables>
                 <junit.jupiter.execution.parallel.enabled>true</junit.jupiter.execution.parallel.enabled>
@@ -324,7 +323,6 @@
                 --add-reads com.azure.core.amqp=ALL-UNNAMED
                 --add-reads com.azure.storage.common=ALL-UNNAMED
                 --add-reads com.azure.storage.internal.avro=ALL-UNNAMED
-                -Djava.util.concurrent.ForkJoinPool.common.parallelism=50
               </argLine>
               <systemPropertyVariables>
                 <junit.jupiter.execution.parallel.enabled>true</junit.jupiter.execution.parallel.enabled>
