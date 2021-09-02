@@ -11,7 +11,6 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.MockHttpResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
-import com.azure.core.util.Context;
 import com.azure.core.util.serializer.TypeReference;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -108,7 +107,7 @@ public class PollingStrategyTests {
         PollerFlux<PollResult, PollResult> pollerFlux = PollerFlux.create(
             Duration.ofSeconds(1),
             () -> activationOperation.get(),
-            new OperationResourcePollingStrategy<>(new HttpPipelineBuilder().httpClient(httpClient).build(), Context.NONE),
+            new OperationResourcePollingStrategy<>(new HttpPipelineBuilder().httpClient(httpClient).build()),
             new TypeReference<PollResult>() { }, new TypeReference<PollResult>() { });
 
         StepVerifier.create(pollerFlux)
@@ -154,7 +153,7 @@ public class PollingStrategyTests {
         PollerFlux<PollResult, PollResult> pollerFlux = PollerFlux.create(
             Duration.ofSeconds(1),
             () -> activationOperation.get(),
-            new OperationResourcePollingStrategy<>(new HttpPipelineBuilder().httpClient(httpClient).build(), Context.NONE),
+            new OperationResourcePollingStrategy<>(new HttpPipelineBuilder().httpClient(httpClient).build()),
             new TypeReference<PollResult>() { }, new TypeReference<PollResult>() { });
 
         StepVerifier.create(pollerFlux)
@@ -200,7 +199,7 @@ public class PollingStrategyTests {
         PollerFlux<PollResult, PollResult> pollerFlux = PollerFlux.create(
             Duration.ofSeconds(1),
             () -> activationOperation.get(),
-            new OperationResourcePollingStrategy<>(new HttpPipelineBuilder().httpClient(httpClient).build(), Context.NONE),
+            new OperationResourcePollingStrategy<>(new HttpPipelineBuilder().httpClient(httpClient).build()),
             new TypeReference<PollResult>() { }, new TypeReference<PollResult>() { });
 
         StepVerifier.create(pollerFlux)
@@ -242,7 +241,7 @@ public class PollingStrategyTests {
         PollerFlux<PollResult, PollResult> pollerFlux = PollerFlux.create(
             Duration.ofSeconds(1),
             () -> activationOperation.get(),
-            new OperationResourcePollingStrategy<>(new HttpPipelineBuilder().httpClient(httpClient).build(), Context.NONE),
+            new OperationResourcePollingStrategy<>(new HttpPipelineBuilder().httpClient(httpClient).build()),
             new TypeReference<PollResult>() { }, new TypeReference<PollResult>() { });
 
         StepVerifier.create(pollerFlux)
@@ -289,7 +288,7 @@ public class PollingStrategyTests {
         PollerFlux<PollResult, PollResult> pollerFlux = PollerFlux.create(
             Duration.ofSeconds(1),
             () -> activationOperation.get(),
-            new LocationPollingStrategy<>(new HttpPipelineBuilder().httpClient(httpClient).build(), Context.NONE),
+            new LocationPollingStrategy<>(new HttpPipelineBuilder().httpClient(httpClient).build()),
             new TypeReference<PollResult>() { }, new TypeReference<PollResult>() { });
 
         StepVerifier.create(pollerFlux)

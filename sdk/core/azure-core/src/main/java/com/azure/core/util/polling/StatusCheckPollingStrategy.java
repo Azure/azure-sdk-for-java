@@ -13,6 +13,7 @@ import com.azure.core.util.serializer.TypeReference;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
+import java.util.Objects;
 
 /**
  * Fallback polling strategy that doesn't poll but exits successfully if no other polling strategies are detected
@@ -37,7 +38,7 @@ public class StatusCheckPollingStrategy<T, U> implements PollingStrategy<T, U> {
      * @param serializer a custom serializer for serializing and deserializing polling responses
      */
     public StatusCheckPollingStrategy(ObjectSerializer serializer) {
-        this.serializer = serializer;
+        this.serializer = Objects.requireNonNull(serializer, "'serializer' cannot be null");
     }
 
     @Override

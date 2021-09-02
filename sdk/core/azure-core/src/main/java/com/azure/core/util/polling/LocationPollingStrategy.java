@@ -12,7 +12,6 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.implementation.serializer.DefaultJsonSerializer;
 import com.azure.core.util.BinaryData;
-import com.azure.core.util.Context;
 import com.azure.core.util.polling.implementation.PollingConstants;
 import com.azure.core.util.polling.implementation.PollingUtils;
 import com.azure.core.util.serializer.ObjectSerializer;
@@ -22,6 +21,7 @@ import reactor.core.publisher.Mono;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.Duration;
+import java.util.Objects;
 
 /**
  * Implements a Location polling strategy.
@@ -33,30 +33,26 @@ import java.time.Duration;
 public class LocationPollingStrategy<T, U> implements PollingStrategy<T, U> {
 
     private final HttpPipeline httpPipeline;
-    private final Context context;
     private final ObjectSerializer serializer;
 
     /**
      * Creates an instance of the location polling strategy using a JSON serializer.
      *
      * @param httpPipeline an instance of {@link HttpPipeline} to send requests with
-     * @param context additional metadata to pass along with the request
      */
-    public LocationPollingStrategy(HttpPipeline httpPipeline, Context context) {
-        this(httpPipeline, context, new DefaultJsonSerializer());
+    public LocationPollingStrategy(HttpPipeline httpPipeline) {
+        this(httpPipeline, new DefaultJsonSerializer());
     }
 
     /**
      * Creates an instance of the location polling strategy.
      *
      * @param httpPipeline an instance of {@link HttpPipeline} to send requests with
-     * @param context additional metadata to pass along with the request
      * @param serializer a custom serializer for serializing and deserializing polling responses
      */
-    public LocationPollingStrategy(HttpPipeline httpPipeline, Context context, ObjectSerializer serializer) {
-        this.httpPipeline = httpPipeline;
-        this.context = context;
-        this.serializer = serializer;
+    public LocationPollingStrategy(HttpPipeline httpPipeline, ObjectSerializer serializer) {
+        this.httpPipeline = Objects.requireNonNull(httpPipeline, "'httpPipeline' cannot be null");
+        this.serializer = Objects.requireNonNull(serializer, "'serializer' cannot be null");
     }
 
     @Override
@@ -94,14 +90,16 @@ public class LocationPollingStrategy<T, U> implements PollingStrategy<T, U> {
                 .switchIfEmpty(Mono.defer(() -> Mono.just(new PollResponse<>(
                     LongRunningOperationStatus.IN_PROGRESS, null, retryAfter))));
         } else {
-            return Mono.error(new AzureException("Operation failed or cancelled: " + response.getStatusCode()));
+            return Mono.error(new AzureException(String.format("Operation failed or cancelled with status code %d,"
+                + ", 'Location' header: %s, and response body: %s", response.getStatusCode(), locationHeader,
+                PollingUtils.serializeResponse(response.getValue(), serializer))));
         }
     }
 
     @Override
     public Mono<PollResponse<T>> poll(PollingContext<T> pollingContext, TypeReference<T> pollResponseType) {
         HttpRequest request = new HttpRequest(HttpMethod.GET, pollingContext.getData(PollingConstants.LOCATION));
-        return httpPipeline.send(request, context).flatMap(response -> {
+        return httpPipeline.send(request).flatMap(response -> {
             HttpHeader locationHeader = response.getHeaders().get(PollingConstants.LOCATION);
             if (locationHeader != null) {
                 pollingContext.setData(PollingConstants.LOCATION, locationHeader.getValue());
@@ -152,7 +150,7 @@ public class LocationPollingStrategy<T, U> implements PollingStrategy<T, U> {
             return PollingUtils.deserializeResponse(BinaryData.fromString(latestResponseBody), serializer, resultType);
         } else {
             HttpRequest request = new HttpRequest(HttpMethod.GET, finalGetUrl);
-            return httpPipeline.send(request, context)
+            return httpPipeline.send(request)
                 .flatMap(HttpResponse::getBodyAsByteArray)
                 .map(BinaryData::fromBytes)
                 .flatMap(binaryData -> PollingUtils.deserializeResponse(binaryData, serializer, resultType));

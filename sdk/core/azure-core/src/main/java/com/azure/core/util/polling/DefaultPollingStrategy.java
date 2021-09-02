@@ -23,7 +23,7 @@ import java.util.Arrays;
  * @param <U> the type of the final result object to deserialize into, or BinaryData if raw response body should be
  *           kept
  */
-public class DefaultPollingStrategy<T, U> implements PollingStrategy<T, U> {
+public final class DefaultPollingStrategy<T, U> implements PollingStrategy<T, U> {
     private final ChainedPollingStrategy<T, U> chainedPollingStrategy;
 
     /**
@@ -31,10 +31,9 @@ public class DefaultPollingStrategy<T, U> implements PollingStrategy<T, U> {
      * {@link LocationPollingStrategy}, and {@link StatusCheckPollingStrategy}, in this order, with a JSON serializer.
      *
      * @param httpPipeline an instance of {@link HttpPipeline} to send requests with
-     * @param context additional metadata to pass along with the request
      */
-    public DefaultPollingStrategy(HttpPipeline httpPipeline, Context context) {
-        this(httpPipeline, context, new DefaultJsonSerializer());
+    public DefaultPollingStrategy(HttpPipeline httpPipeline) {
+        this(httpPipeline, new DefaultJsonSerializer());
     }
 
     /**
@@ -43,13 +42,12 @@ public class DefaultPollingStrategy<T, U> implements PollingStrategy<T, U> {
      * serializer.
      *
      * @param httpPipeline an instance of {@link HttpPipeline} to send requests with
-     * @param context additional metadata to pass along with the request
      * @param serializer a custom serializer for serializing and deserializing polling responses
      */
-    public DefaultPollingStrategy(HttpPipeline httpPipeline, Context context, JsonSerializer serializer) {
+    public DefaultPollingStrategy(HttpPipeline httpPipeline, JsonSerializer serializer) {
         this.chainedPollingStrategy = new ChainedPollingStrategy<>(Arrays.asList(
-            new OperationResourcePollingStrategy<>(httpPipeline, context, serializer, null),
-            new LocationPollingStrategy<>(httpPipeline, context, serializer),
+            new OperationResourcePollingStrategy<>(httpPipeline, serializer, null),
+            new LocationPollingStrategy<>(httpPipeline, serializer),
             new StatusCheckPollingStrategy<>(serializer)));
     }
 
@@ -72,10 +70,5 @@ public class DefaultPollingStrategy<T, U> implements PollingStrategy<T, U> {
     @Override
     public Mono<PollResponse<T>> poll(PollingContext<T> context, TypeReference<T> pollResponseType) {
         return chainedPollingStrategy.poll(context, pollResponseType);
-    }
-
-    @Override
-    public Mono<T> cancel(PollingContext<T> pollingContext, PollResponse<T> initialResponse) {
-        return chainedPollingStrategy.cancel(pollingContext, initialResponse);
     }
 }

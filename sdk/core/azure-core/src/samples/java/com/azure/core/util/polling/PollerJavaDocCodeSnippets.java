@@ -9,7 +9,6 @@ import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.BinaryData;
-import com.azure.core.util.Context;
 import com.azure.core.util.serializer.TypeReference;
 import reactor.core.publisher.Mono;
 
@@ -192,9 +191,7 @@ public final class PollerJavaDocCodeSnippets {
                 202,
                 new HttpHeaders().set("Operation-Location", "http://httpbin.org"),
                 null)),
-            new OperationResourcePollingStrategy<>(
-                new HttpPipelineBuilder().build(),
-                Context.NONE),
+            new OperationResourcePollingStrategy<>(new HttpPipelineBuilder().build()),
             TypeReference.createInstance(BinaryData.class),
             TypeReference.createInstance(String.class));
 
@@ -217,8 +214,7 @@ public final class PollerJavaDocCodeSnippets {
 
         // Create custom polling strategy based on OperationResourcePollingStrategy
         PollingStrategy<BinaryData, String> strategy = new OperationResourcePollingStrategy<BinaryData, String>(
-                new HttpPipelineBuilder().build(),
-                Context.NONE) {
+                new HttpPipelineBuilder().build()) {
             // override any interface method to customize the polling behavior
             @Override
             public Mono<PollResponse<BinaryData>> poll(PollingContext<BinaryData> context,

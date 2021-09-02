@@ -21,9 +21,9 @@ import java.util.List;
  * @param <U> the type of the final result object to deserialize into, or BinaryData if raw response body should be
  *           kept
  */
-public class ChainedPollingStrategy<T, U> implements PollingStrategy<T, U> {
+public final class ChainedPollingStrategy<T, U> implements PollingStrategy<T, U> {
     private final List<PollingStrategy<T, U>> pollingStrategies;
-    private volatile PollingStrategy<T, U> pollableStrategy = null;
+    private PollingStrategy<T, U> pollableStrategy = null;
 
     /**
      * Creates a chained polling strategy with a list of polling strategies.
@@ -35,6 +35,8 @@ public class ChainedPollingStrategy<T, U> implements PollingStrategy<T, U> {
 
     @Override
     public Mono<Boolean> canPoll(Response<?> initialResponse) {
+        // Find the first strategy that can poll in series so that
+        // pollableStrategy is only set once
         return Flux.fromIterable(pollingStrategies)
             .concatMap(strategy -> strategy.canPoll(initialResponse)
                 .map(canPoll -> Tuples.of(strategy, canPoll)))
