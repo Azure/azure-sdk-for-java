@@ -33,13 +33,13 @@ public class JreKeyStoreTest {
     @BeforeAll
     public static void init() {
         /*
-         * Add JCA provider.
-         */
-        PropertyConvertorUtils.addKeyVaultJcaProvider();
-        /*
          * Set system properties.
          */
         PropertyConvertorUtils.putEnvironmentPropertyToSystemPropertyForKeyVaultJca();
+        /*
+         * Add JCA provider.
+         */
+        PropertyConvertorUtils.addKeyVaultJcaProvider();
     }
 
     @Test

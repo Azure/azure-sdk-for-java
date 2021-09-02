@@ -49,12 +49,12 @@ public class ServerSocketTest {
 
     @BeforeAll
     public static void beforeEach() throws Exception {
+        PropertyConvertorUtils.putEnvironmentPropertyToSystemPropertyForKeyVaultJca();
         /*
          * Add JCA provider.
          */
         KeyVaultJcaProvider provider = new KeyVaultJcaProvider();
         Security.addProvider(provider);
-        PropertyConvertorUtils.putEnvironmentPropertyToSystemPropertyForKeyVaultJca();
 
         /**
          *  - Create an Azure Key Vault specific instance of a KeyStore.
