@@ -67,9 +67,7 @@ public class AnalyzeSingleClassificationAction {
             client.beginAnalyzeActions(documents,
                 new TextAnalyticsActions().setDisplayName("{tasks_display_name}")
                     .setClassifyCustomCategoryActions(
-                        new ClassifyCustomCategoryAction()
-                            .setProjectName("myFirstBlackBox")
-                            .setDeploymentName("model1")),
+                        new ClassifyCustomCategoryAction("myFirstBlackBox", "model1")),
                 new AnalyzeActionsOptions().setIncludeStatistics(false),
                 Context.NONE);
 

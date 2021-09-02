@@ -64,9 +64,7 @@ public class AnalyzeCustomEntitiesActionAsync {
             new TextAnalyticsActions()
                 .setDisplayName("{tasks_display_name}")
                 .setRecognizeCustomEntitiesActions(
-                    new RecognizeCustomEntitiesAction()
-                        .setProjectName("myFirstBlackBox")
-                        .setDeploymentName("model1")),
+                    new RecognizeCustomEntitiesAction("myFirstBlackBox", "model1")),
             new AnalyzeActionsOptions().setIncludeStatistics(false))
             .flatMap(result -> {
                 AnalyzeActionsOperationDetail operationDetail = result.getValue();

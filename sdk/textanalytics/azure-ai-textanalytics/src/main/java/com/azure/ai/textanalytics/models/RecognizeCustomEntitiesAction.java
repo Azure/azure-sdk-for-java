@@ -11,9 +11,23 @@ import com.azure.core.annotation.Fluent;
  */
 @Fluent
 public final class RecognizeCustomEntitiesAction {
-    private String projectName;
-    private String deploymentName;
+    private final String projectName;
+    private final String deploymentName;
     private boolean disableServiceLogs;
+
+    /**
+     * Configurations that allow callers to specify details about how to execute a custom entities recognition action in
+     * a set of documents.
+     *
+     * @param projectName The name of the project which owns the model being consumed.
+     * @param deploymentName The name of the deployment (model version) being consumed.
+     */
+    public RecognizeCustomEntitiesAction(String projectName, String deploymentName) {
+        this.projectName = projectName;
+        this.deploymentName = deploymentName;
+    }
+
+
 
     /**
      * Gets the name of the project which owns the model being consumed.
@@ -25,36 +39,12 @@ public final class RecognizeCustomEntitiesAction {
     }
 
     /**
-     * Sets the name of the project which owns the model being consumed.
-     *
-     * @param projectName The name of the project which owns the model being consumed.
-     *
-     * @return The {@link RecognizeCustomEntitiesAction} object itself.
-     */
-    public RecognizeCustomEntitiesAction setProjectName(String projectName) {
-        this.projectName = projectName;
-        return this;
-    }
-
-    /**
      * Gets the name of the deployment (model version) being consumed.
      *
      * @return The name of the deployment (model version) being consumed.
      */
     public String getDeploymentName() {
         return deploymentName;
-    }
-
-    /**
-     * Sets the name of the deployment (model version) being consumed.
-     *
-     * @param deploymentName The name of the deployment (model version) being consumed.
-     *
-     * @return The {@link RecognizeCustomEntitiesAction} object itself.
-     */
-    public RecognizeCustomEntitiesAction setDeploymentName(String deploymentName) {
-        this.deploymentName = deploymentName;
-        return this;
     }
 
     /**

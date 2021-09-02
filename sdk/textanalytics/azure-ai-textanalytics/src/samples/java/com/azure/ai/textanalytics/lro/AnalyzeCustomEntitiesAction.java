@@ -67,9 +67,7 @@ public class AnalyzeCustomEntitiesAction {
             client.beginAnalyzeActions(documents,
                 new TextAnalyticsActions().setDisplayName("{tasks_display_name}")
                     .setRecognizeCustomEntitiesActions(
-                        new RecognizeCustomEntitiesAction()
-                            .setProjectName("myFirstBlackBox")
-                            .setDeploymentName("model1")),
+                        new RecognizeCustomEntitiesAction("myFirstBlackBox", "model1")),
                 new AnalyzeActionsOptions().setIncludeStatistics(false),
                 Context.NONE);
 
