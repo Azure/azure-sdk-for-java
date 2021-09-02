@@ -148,7 +148,7 @@ jobs:
           mavenPomFile: ClientFromSourcePom.xml
           # For the From Source runs we don't want the -am switch as we don't care about running tests for our dependencies
           # but we do want the -amd switch because we want to run tests on things that depend on us.
-          options: ${{ parameters.TestOptions }} $(TestOptions) -amd -T 1C
+          options: ${{ parameters.TestOptions }} $(TestOptions) -amd -T 2C
           mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: $(JavaTestVersion)
