@@ -23,9 +23,8 @@ public class CosmosActuatorIT {
             app.property("spring.cloud.azure.cosmos.key", AZURE_COSMOS_ACCOUNT_KEY);
             app.property("spring.cloud.azure.cosmos.database", AZURE_COSMOS_DATABASE_NAME);
             app.property("spring.cloud.azure.cosmos.populateQueryMetrics", String.valueOf(true));
-            app.property("management.endpoint.health.shojacoco-test-coverage/pom.xmlw-details", "always");
-            app.property("management.health.azure-cosmos.enabled", "true");
             app.property("management.endpoint.health.show-details", "always");
+            app.property("management.health.azure-cosmos.enabled", "true");
 
             //start app
             app.start();
