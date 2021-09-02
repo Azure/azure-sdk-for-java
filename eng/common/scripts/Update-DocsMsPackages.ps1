@@ -115,11 +115,6 @@ function GetDocsMetadata() {
   return $outputMetadata
 }
 
-# Pretend the script failed so we can validate whether ignoreLASTEXITCODE: true
-# is a good way to handle failures.
-Get-Content $PSCommandPath
-exit 1
-
 if ($UpdateDocsMsPackagesFn -and (Test-Path "Function:$UpdateDocsMsPackagesFn")) {
 
   try {
@@ -138,3 +133,5 @@ if ($UpdateDocsMsPackagesFn -and (Test-Path "Function:$UpdateDocsMsPackagesFn"))
   See https://github.com/Azure/azure-sdk-tools/blob/main/doc/common/common_engsys.md#code-structure"
   exit 1
 }
+
+exit 0
