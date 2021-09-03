@@ -6,7 +6,6 @@ package com.azure.resourcemanager.sqlvirtualmachine.implementation;
 
 import com.azure.core.management.Region;
 import com.azure.core.util.Context;
-import com.azure.resourcemanager.sqlvirtualmachine.SqlVirtualMachineManager;
 import com.azure.resourcemanager.sqlvirtualmachine.fluent.models.SqlVirtualMachineInner;
 import com.azure.resourcemanager.sqlvirtualmachine.models.AutoBackupSettings;
 import com.azure.resourcemanager.sqlvirtualmachine.models.AutoPatchingSettings;
@@ -27,7 +26,7 @@ public final class SqlVirtualMachineImpl
     implements SqlVirtualMachine, SqlVirtualMachine.Definition, SqlVirtualMachine.Update {
     private SqlVirtualMachineInner innerObject;
 
-    private final SqlVirtualMachineManager serviceManager;
+    private final com.azure.resourcemanager.sqlvirtualmachine.SqlVirtualMachineManager serviceManager;
 
     public String id() {
         return this.innerModel().id();
@@ -122,7 +121,7 @@ public final class SqlVirtualMachineImpl
         return this.innerObject;
     }
 
-    private SqlVirtualMachineManager manager() {
+    private com.azure.resourcemanager.sqlvirtualmachine.SqlVirtualMachineManager manager() {
         return this.serviceManager;
     }
 
@@ -155,7 +154,8 @@ public final class SqlVirtualMachineImpl
         return this;
     }
 
-    SqlVirtualMachineImpl(String name, SqlVirtualMachineManager serviceManager) {
+    SqlVirtualMachineImpl(
+        String name, com.azure.resourcemanager.sqlvirtualmachine.SqlVirtualMachineManager serviceManager) {
         this.innerObject = new SqlVirtualMachineInner();
         this.serviceManager = serviceManager;
         this.sqlVirtualMachineName = name;
@@ -184,7 +184,9 @@ public final class SqlVirtualMachineImpl
         return this;
     }
 
-    SqlVirtualMachineImpl(SqlVirtualMachineInner innerObject, SqlVirtualMachineManager serviceManager) {
+    SqlVirtualMachineImpl(
+        SqlVirtualMachineInner innerObject,
+        com.azure.resourcemanager.sqlvirtualmachine.SqlVirtualMachineManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
         this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
@@ -260,11 +262,6 @@ public final class SqlVirtualMachineImpl
 
     public SqlVirtualMachineImpl withSqlImageSku(SqlImageSku sqlImageSku) {
         this.innerModel().withSqlImageSku(sqlImageSku);
-        return this;
-    }
-
-    public SqlVirtualMachineImpl withSqlVirtualMachineGroupResourceId(String sqlVirtualMachineGroupResourceId) {
-        this.innerModel().withSqlVirtualMachineGroupResourceId(sqlVirtualMachineGroupResourceId);
         return this;
     }
 

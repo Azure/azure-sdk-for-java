@@ -222,7 +222,6 @@ public interface SqlVirtualMachine {
                 DefinitionStages.WithSqlServerLicenseType,
                 DefinitionStages.WithSqlManagement,
                 DefinitionStages.WithSqlImageSku,
-                DefinitionStages.WithSqlVirtualMachineGroupResourceId,
                 DefinitionStages.WithWsfcDomainCredentials,
                 DefinitionStages.WithAutoPatchingSettings,
                 DefinitionStages.WithAutoBackupSettings,
@@ -315,18 +314,6 @@ public interface SqlVirtualMachine {
              * @return the next definition stage.
              */
             WithCreate withSqlImageSku(SqlImageSku sqlImageSku);
-        }
-        /** The stage of the SqlVirtualMachine definition allowing to specify sqlVirtualMachineGroupResourceId. */
-        interface WithSqlVirtualMachineGroupResourceId {
-            /**
-             * Specifies the sqlVirtualMachineGroupResourceId property: ARM resource id of the SQL virtual machine group
-             * this SQL virtual machine is or will be part of..
-             *
-             * @param sqlVirtualMachineGroupResourceId ARM resource id of the SQL virtual machine group this SQL virtual
-             *     machine is or will be part of.
-             * @return the next definition stage.
-             */
-            WithCreate withSqlVirtualMachineGroupResourceId(String sqlVirtualMachineGroupResourceId);
         }
         /** The stage of the SqlVirtualMachine definition allowing to specify wsfcDomainCredentials. */
         interface WithWsfcDomainCredentials {

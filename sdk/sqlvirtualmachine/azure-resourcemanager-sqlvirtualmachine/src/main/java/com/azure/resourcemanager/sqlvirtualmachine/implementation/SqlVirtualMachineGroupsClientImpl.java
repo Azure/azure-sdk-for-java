@@ -226,7 +226,7 @@ public final class SqlVirtualMachineGroupsClientImpl implements SqlVirtualMachin
                             this.client.getApiVersion(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -394,7 +394,7 @@ public final class SqlVirtualMachineGroupsClientImpl implements SqlVirtualMachin
                             parameters,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -688,7 +688,7 @@ public final class SqlVirtualMachineGroupsClientImpl implements SqlVirtualMachin
                             this.client.getSubscriptionId(),
                             this.client.getApiVersion(),
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -940,7 +940,7 @@ public final class SqlVirtualMachineGroupsClientImpl implements SqlVirtualMachin
                             parameters,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1236,7 +1236,7 @@ public final class SqlVirtualMachineGroupsClientImpl implements SqlVirtualMachin
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1397,7 +1397,7 @@ public final class SqlVirtualMachineGroupsClientImpl implements SqlVirtualMachin
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1529,7 +1529,7 @@ public final class SqlVirtualMachineGroupsClientImpl implements SqlVirtualMachin
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1601,7 +1601,7 @@ public final class SqlVirtualMachineGroupsClientImpl implements SqlVirtualMachin
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
