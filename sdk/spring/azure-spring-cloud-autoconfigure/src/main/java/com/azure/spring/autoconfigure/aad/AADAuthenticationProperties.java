@@ -119,12 +119,6 @@ public class AADAuthenticationProperties implements InitializingBean {
      */
     private boolean allowTelemetry = true;
 
-    /**
-     * If <code>true</code> activates the stateless auth filter {@link AADAppRoleStatelessAuthenticationFilter}. The
-     * default is <code>false</code> which activates {@link AADAuthenticationFilter}.
-     */
-    private Boolean sessionStateless = false;
-
     private String baseUri;
 
     private String graphBaseUri;
@@ -365,14 +359,6 @@ public class AADAuthenticationProperties implements InitializingBean {
 
     public void setAllowTelemetry(boolean allowTelemetry) {
         this.allowTelemetry = allowTelemetry;
-    }
-
-    public Boolean getSessionStateless() {
-        return sessionStateless;
-    }
-
-    public void setSessionStateless(Boolean sessionStateless) {
-        this.sessionStateless = sessionStateless;
     }
 
     public String getBaseUri() {

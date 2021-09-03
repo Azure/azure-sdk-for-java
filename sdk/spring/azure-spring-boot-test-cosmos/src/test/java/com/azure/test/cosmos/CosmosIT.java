@@ -3,7 +3,7 @@
 
 package com.azure.test.cosmos;
 
-import com.azure.spring.autoconfigure.aad.AADAuthenticationFilterAutoConfiguration;
+import com.azure.spring.autoconfigure.aad.AADAutoConfiguration;
 import com.azure.spring.test.AppRunner;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -38,7 +38,7 @@ public class CosmosIT {
             //start app
             app.start();
             assertThrows(NoSuchBeanDefinitionException.class,
-                () -> app.getBean(AADAuthenticationFilterAutoConfiguration.class));
+                () -> app.getBean(AADAutoConfiguration.class));
         }
     }
 
@@ -93,7 +93,7 @@ public class CosmosIT {
             Assertions.assertEquals(testUser.getLastName(), result.getLastName(),
                 "query result lastName doesn't match!");
 
-            LOGGER.info("findOne in User collection get result: {}", result.toString());
+            LOGGER.info("findOne in User collection get result: {}", result);
         }
     }
 }
