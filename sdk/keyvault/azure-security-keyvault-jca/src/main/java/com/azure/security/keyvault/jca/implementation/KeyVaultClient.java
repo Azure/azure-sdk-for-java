@@ -11,7 +11,7 @@ import com.azure.security.keyvault.jca.implementation.model.CertificateItem;
 import com.azure.security.keyvault.jca.implementation.model.CertificateListResult;
 import com.azure.security.keyvault.jca.implementation.model.CertificatePolicy;
 import com.azure.security.keyvault.jca.implementation.model.KeyProperties;
-import com.azure.security.keyvault.jca.implementation.model.OAuthToken;
+import com.azure.security.keyvault.jca.implementation.model.AccessToken;
 import com.azure.security.keyvault.jca.implementation.model.SecretBundle;
 import com.azure.security.keyvault.jca.implementation.model.SignResult;
 import com.azure.security.keyvault.jca.implementation.utils.AccessTokenUtil;
@@ -120,7 +120,7 @@ public class KeyVaultClient {
     /**
      * Stores the token.
      */
-    private OAuthToken cacheToken;
+    private AccessToken cacheToken;
 
     /**
      * Constructor for authentication with user-assigned managed identity.
@@ -192,7 +192,7 @@ public class KeyVaultClient {
         if (cacheToken != null && !cacheToken.isExpired()) {
             return cacheToken.getAccessToken();
         }
-        cacheToken = getAccToken();
+        cacheToken = getAccessTokenByHttpRequest();
         return cacheToken.getAccessToken();
     }
 
@@ -201,9 +201,9 @@ public class KeyVaultClient {
      *
      * @return the access token.
      */
-    private OAuthToken getAccToken() {
+    private AccessToken getAccessTokenByHttpRequest() {
         LOGGER.entering("KeyVaultClient", "getAccessToken");
-        OAuthToken accessToken = null;
+        AccessToken accessToken = null;
         try {
             String resource = URLEncoder.encode(keyVaultBaseUri, "UTF-8");
             if (managedIdentity != null) {

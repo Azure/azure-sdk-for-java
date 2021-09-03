@@ -9,7 +9,7 @@ import java.time.OffsetDateTime;
 /**
  * An OAuth2 token.
  */
-public class OAuthToken {
+public class AccessToken {
 
     /**
      * Stores the access token.
@@ -47,10 +47,11 @@ public class OAuthToken {
     }
 
     /**
+     * Reserve 60 seconds, in case that the time the token is used it is valid but when the token gets to the server side, it expires.
      * @return boolean, whether the token is expired.
      *
      */
     public boolean isExpired() {
-        return OffsetDateTime.now().isAfter(creationDate.plusSeconds(expiresIn));
+        return OffsetDateTime.now().isAfter(creationDate.plusSeconds(expiresIn - 60));
     }
 }
