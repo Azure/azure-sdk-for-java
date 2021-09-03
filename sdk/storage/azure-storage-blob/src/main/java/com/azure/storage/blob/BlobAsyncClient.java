@@ -404,28 +404,8 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
      * @return A reactive response containing the information of the uploaded block blob.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BlockBlobItem> upload(BinaryData data,
-                                      boolean overwrite) {
-        try {
-            Mono<Void> overwriteCheck;
-            BlobRequestConditions requestConditions;
-
-            if (overwrite) {
-                overwriteCheck = Mono.empty();
-                requestConditions = null;
-            } else {
-                overwriteCheck = exists().flatMap(exists -> exists
-                    ? monoError(logger, new IllegalArgumentException(Constants.BLOB_ALREADY_EXISTS))
-                    : Mono.empty());
-                requestConditions = new BlobRequestConditions().setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD);
-            }
-
-            return overwriteCheck
-                .then(uploadWithResponse(Flux.just(data.toByteBuffer()), null, null, null, null,
-                    requestConditions)).flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+    public Mono<BlockBlobItem> upload(BinaryData data, boolean overwrite) {
+        return upload(data.toFluxByteBuffer(), null, overwrite);
     }
 
     /**

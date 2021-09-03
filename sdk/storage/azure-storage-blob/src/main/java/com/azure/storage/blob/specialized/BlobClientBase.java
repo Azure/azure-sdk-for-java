@@ -759,14 +759,9 @@ public class BlobClientBase {
         DownloadRetryOptions options, BlobRequestConditions requestConditions, Duration timeout, Context context) {
         Mono<BlobDownloadContentResponse> download = client
             .downloadStreamWithResponse(null, options, requestConditions, false, context)
-            .flatMap(r ->
-                BinaryData.fromFlux(r.getValue())
-                    .map(data ->
-                        new BlobDownloadContentAsyncResponse(
-                            r.getRequest(), r.getStatusCode(),
-                            r.getHeaders(), data,
-                            r.getDeserializedHeaders())
-                    ))
+            .flatMap(r -> FluxUtil.collectBytesFromNetworkResponse(r.getValue(), r.getHeaders())
+                .map(bytes -> new BlobDownloadContentAsyncResponse(r.getRequest(), r.getStatusCode(), r.getHeaders(),
+                    BinaryData.fromBytes(bytes), r.getDeserializedHeaders())))
             .map(BlobDownloadContentResponse::new);
 
         return blockWithOptionalTimeout(download, timeout);

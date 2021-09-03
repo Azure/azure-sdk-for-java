@@ -1046,17 +1046,10 @@ public class BlobAsyncClientBase {
         DownloadRetryOptions options,
         BlobRequestConditions requestConditions) {
         try {
-            return withContext(context ->
-                downloadStreamWithResponse(null, options, requestConditions, false,
-                    context)
-                    .flatMap(r ->
-                        BinaryData.fromFlux(r.getValue())
-                        .map(data ->
-                            new BlobDownloadContentAsyncResponse(
-                                r.getRequest(), r.getStatusCode(),
-                                r.getHeaders(), data,
-                                r.getDeserializedHeaders())
-                        )));
+            return withContext(context -> downloadStreamWithResponse(null, options, requestConditions, false, context)
+                .flatMap(r -> FluxUtil.collectBytesFromNetworkResponse(r.getValue(), r.getHeaders())
+                    .map(bytes -> new BlobDownloadContentAsyncResponse(r.getRequest(), r.getStatusCode(),
+                        r.getHeaders(), BinaryData.fromBytes(bytes), r.getDeserializedHeaders()))));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
