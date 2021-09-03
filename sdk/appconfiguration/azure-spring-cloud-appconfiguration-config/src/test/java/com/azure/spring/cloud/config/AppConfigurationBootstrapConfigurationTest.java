@@ -9,59 +9,18 @@ import static com.azure.spring.cloud.config.TestConstants.TEST_CONN_STRING;
 import static com.azure.spring.cloud.config.TestConstants.TEST_STORE_NAME;
 import static com.azure.spring.cloud.config.TestUtils.propPair;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.fail;
-import static org.mockito.Mockito.when;
 
-import java.io.InputStream;
-
-import org.apache.http.HttpEntity;
-import org.apache.http.ProtocolVersion;
-import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.message.BasicStatusLine;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 
 import com.azure.spring.cloud.config.stores.ClientStore;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class AppConfigurationBootstrapConfigurationTest {
 
     private static final ApplicationContextRunner CONTEXT_RUNNER = new ApplicationContextRunner()
         .withPropertyValues(propPair(STORE_ENDPOINT_PROP, TEST_STORE_NAME))
         .withConfiguration(AutoConfigurations.of(AppConfigurationBootstrapConfiguration.class));
-    @Mock
-    HttpEntity mockHttpEntity;
-    @Mock
-    InputStream mockInputStream;
-    @Mock
-    ObjectMapper mockObjectMapper;
-    @Mock
-    ClientStore clientStoreMock;
-    @Mock
-    private CloseableHttpResponse mockClosableHttpResponse;
-
-    @BeforeEach
-    public void setup() {
-        MockitoAnnotations.openMocks(this);
-        try {
-            when(mockClosableHttpResponse.getStatusLine())
-                .thenReturn(new BasicStatusLine(new ProtocolVersion("", 0, 0), 200, ""));
-            when(mockClosableHttpResponse.getEntity()).thenReturn(mockHttpEntity);
-            when(mockHttpEntity.getContent()).thenReturn(mockInputStream);
-        } catch (Exception e) {
-            fail();
-        }
-    }
-    
-    @AfterEach
-    public void cleanup() throws Exception {
-        MockitoAnnotations.openMocks(this).close();
-    }
 
     @Test
     public void iniConnectionStringSystemAssigned() throws Exception {
