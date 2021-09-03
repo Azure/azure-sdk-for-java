@@ -149,8 +149,7 @@ public final class BinaryData {
     }
 
     /**
-     * Creates an instance of {@link BinaryData} from the given {@link Flux} of {@link ByteBuffer}. The source flux
-     * is subscribed to as many times as the content is read. The flux, therefore, must be replayable.
+     * Creates an instance of {@link BinaryData} from the given {@link Flux} of {@link ByteBuffer}.
      *
      * <p><strong>Create an instance from a Flux of ByteBuffer</strong></p>
      *
@@ -164,12 +163,12 @@ public final class BinaryData {
         if (data == null) {
             return monoError(LOGGER, new NullPointerException("'content' cannot be null."));
         }
-        return Mono.just(new BinaryData(new FluxByteBufferContent(data)));
+        return FluxUtil.collectBytesInByteBufferStream(data)
+                .flatMap(bytes -> Mono.just(BinaryData.fromBytes(bytes)));
     }
 
     /**
-     * Creates an instance of {@link BinaryData} from the given {@link Flux} of {@link ByteBuffer}. The source flux
-     * is subscribed to as many times as the content is read. The flux, therefore, must be replayable.
+     * Creates an instance of {@link BinaryData} from the given {@link Flux} of {@link ByteBuffer}.
      *
      * <p><strong>Create an instance from a Flux of ByteBuffer</strong></p>
      *
@@ -185,10 +184,15 @@ public final class BinaryData {
         if (data == null) {
             return monoError(LOGGER, new NullPointerException("'content' cannot be null."));
         }
-        if (length < 0) {
+        if (length != null && length < 0) {
             return monoError(LOGGER, new IllegalArgumentException("'length' cannot be less than 0."));
         }
-        return Mono.just(new BinaryData(new FluxByteBufferContent(data, length)));
+        if (length != null) {
+            return FluxUtil.collectBytesInByteBufferStream(data, length.intValue())
+                    .flatMap(bytes -> Mono.just(BinaryData.fromBytes(bytes)));
+        }
+        return FluxUtil.collectBytesInByteBufferStream(data)
+                .flatMap(bytes -> Mono.just(BinaryData.fromBytes(bytes)));
     }
 
     /**
