@@ -3,8 +3,10 @@
 
 package com.azure.core.util.polling;
 
+import com.azure.core.http.rest.Response;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.serializer.TypeReference;
 import reactor.core.CoreSubscriber;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -14,6 +16,7 @@ import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.BiFunction;
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 /**
  * A Flux that simplifies the task of executing long running operations against an Azure service.
@@ -36,6 +39,12 @@ import java.util.function.Function;
  *
  * <p><strong>Asynchronously cancel the long running operation</strong></p>
  * {@codesnippet com.azure.core.util.polling.poller.cancelOperation}
+ *
+ * <p><strong>Instantiating and subscribing to PollerFlux from a known polling strategy</strong></p>
+ * {@codesnippet com.azure.core.util.polling.poller.instantiationAndSubscribeWithPollingStrategy}
+ *
+ * <p><strong>Instantiating and subscribing to PollerFlux from a custom polling strategy</strong></p>
+ * {@codesnippet com.azure.core.util.polling.poller.initializeAndSubscribeWithCustomPollingStrategy}
  *
  * @param <T> The type of poll response value.
  * @param <U> The type of the final result of long running operation.
@@ -67,8 +76,8 @@ public final class PollerFlux<T, U> extends Flux<AsyncPollResponse<T, U>> {
      *     support. The operation will be called with current {@link PollingContext}.
      * @param fetchResultOperation a {@link Function} that represents the  operation to retrieve final result of
      *     the long running operation if service support it. This parameter is required and operation will be called
-     *     current {@link PollingContext}. If service does not have an api to fetch final result and if final result
-     *     is same as final poll response value then implementer can choose to simply return value from provided
+     *     with the current {@link PollingContext}. If service does not have an api to fetch final result and if final
+     *     result is same as final poll response value then implementer can choose to simply return value from provided
      *     final poll response.
      */
     public PollerFlux(Duration pollInterval,
@@ -137,6 +146,49 @@ public final class PollerFlux<T, U> extends Flux<AsyncPollResponse<T, U>> {
             cancelOperation,
             fetchResultOperation,
             true);
+    }
+
+    /**
+     * Creates PollerFlux.
+     *
+     * This create method uses a {@link PollingStrategy} to poll the status of a long running operation after the
+     * activation operation is invoked. See {@link PollingStrategy} for more details of known polling strategies
+     * and how to create a custom strategy.
+     *
+     * @param pollInterval the polling interval
+     * @param initialOperation the activation operation to activate (start) the long running operation.
+     *     This operation will be invoked at most once across all subscriptions. This parameter is required.
+     *     If there is no specific activation work to be done then invocation should return Mono.empty(),
+     *     this operation will be called with a new {@link PollingContext}.
+     * @param strategy a known strategy for polling a long running operation in Azure
+     * @param pollResponseType the {@link TypeReference} of the response type from a polling call, or BinaryData if raw
+     *                         response body should be kept. This should match the generic parameter {@link U}.
+     * @param resultType the {@link TypeReference} of the final result object to deserialize into, or BinaryData if raw
+     *                   response body should be kept. This should match the generic parameter {@link U}.
+     * @param <T> The type of poll response value.
+     * @param <U> The type of the final result of long running operation.
+     * @return PollerFlux
+     */
+    @SuppressWarnings("unchecked")
+    public static <T, U> PollerFlux<T, U>
+        create(Duration pollInterval,
+               Supplier<Mono<? extends Response<?>>> initialOperation,
+               PollingStrategy<T, U> strategy,
+               TypeReference<T> pollResponseType,
+               TypeReference<U> resultType) {
+        return create(
+            pollInterval,
+            context -> initialOperation.get()
+                .flatMap(response -> strategy.canPoll(response).flatMap(canPoll -> {
+                    if (!canPoll) {
+                        return Mono.error(new IllegalStateException(
+                            "Cannot poll with strategy " + strategy.getClass().getSimpleName()));
+                    }
+                    return strategy.onInitialResponse(response, context, pollResponseType);
+                })),
+            context -> strategy.poll(context, pollResponseType),
+            strategy::cancel,
+            context -> strategy.getResult(context, resultType));
     }
 
     private PollerFlux(Duration pollInterval,
