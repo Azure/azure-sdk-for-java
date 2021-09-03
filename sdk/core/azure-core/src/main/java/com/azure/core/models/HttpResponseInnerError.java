@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * The inner error of a {@link HttpResponseError}.
  */
-public final class HttpResponseInnerError {
+final class HttpResponseInnerError {
 
     @JsonProperty(value = "code")
     private String code;

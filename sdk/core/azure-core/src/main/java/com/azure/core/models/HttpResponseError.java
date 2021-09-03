@@ -64,7 +64,7 @@ public final class HttpResponseError {
      *
      * @return the target of this error.
      */
-    public String getTarget() {
+    String getTarget() {
         return target;
     }
 
@@ -74,7 +74,7 @@ public final class HttpResponseError {
      * @param target the target of this error.
      * @return the updated {@link HttpResponseError} instance.
      */
-    public HttpResponseError setTarget(String target) {
+    HttpResponseError setTarget(String target) {
         this.target = target;
         return this;
     }
@@ -84,7 +84,7 @@ public final class HttpResponseError {
      *
      * @return the inner error for this error.
      */
-    public HttpResponseInnerError getInnerError() {
+    HttpResponseInnerError getInnerError() {
         return innerError;
     }
 
@@ -93,7 +93,7 @@ public final class HttpResponseError {
      * @param innerError the inner error for this error.
      * @return the updated {@link HttpResponseError} instance.
      */
-    public HttpResponseError setInnerError(HttpResponseInnerError innerError) {
+    HttpResponseError setInnerError(HttpResponseInnerError innerError) {
         this.innerError = innerError;
         return this;
     }
@@ -103,7 +103,7 @@ public final class HttpResponseError {
      *
      * @return the error details.
      */
-    public List<HttpResponseError> getErrorDetails() {
+    List<HttpResponseError> getErrorDetails() {
         return errorDetails;
     }
 
@@ -113,7 +113,7 @@ public final class HttpResponseError {
      * @param errorDetails the error details.
      * @return the updated {@link HttpResponseError} instance.
      */
-    public HttpResponseError setErrorDetails(List<HttpResponseError> errorDetails) {
+    HttpResponseError setErrorDetails(List<HttpResponseError> errorDetails) {
         this.errorDetails = errorDetails;
         return this;
     }
