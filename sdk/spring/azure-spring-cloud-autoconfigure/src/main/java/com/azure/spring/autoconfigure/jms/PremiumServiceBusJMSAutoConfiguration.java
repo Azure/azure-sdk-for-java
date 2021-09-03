@@ -15,8 +15,6 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnResource;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.jms.config.DefaultJmsListenerContainerFactory;
-import org.springframework.jms.config.JmsListenerContainerFactory;
 
 import javax.jms.ConnectionFactory;
 
@@ -33,41 +31,28 @@ import static com.azure.spring.core.ApplicationId.VERSION;
 @ConditionalOnProperty(value = "spring.jms.servicebus.enabled", matchIfMissing = true)
 @ConditionalOnExpression(value = "'${spring.jms.servicebus.pricing-tier}'.equalsIgnoreCase('premium')")
 @EnableConfigurationProperties(AzureServiceBusJMSProperties.class)
-public class PremiumServiceBusJMSAutoConfiguration {
+public class PremiumServiceBusJMSAutoConfiguration extends AbstractServiceBusJMSAutoConfiguration {
+
+    public PremiumServiceBusJMSAutoConfiguration(AzureServiceBusJMSProperties azureServiceBusJMSProperties) {
+        super(azureServiceBusJMSProperties);
+    }
 
     @Bean
     @ConditionalOnMissingBean
-    public ConnectionFactory jmsConnectionFactory(AzureServiceBusJMSProperties serviceBusJMSProperties,
-                                                  @Qualifier(AZURE_PROPERTY_BEAN_NAME) AzureProperties azureProperties) {
-        final String connectionString = serviceBusJMSProperties.getConnectionString();
-        final String clientId = serviceBusJMSProperties.getTopicClientId();
-        final int idleTimeout = serviceBusJMSProperties.getIdleTimeout();
+    public ConnectionFactory jmsConnectionFactory(@Qualifier(AZURE_PROPERTY_BEAN_NAME) AzureProperties azureProperties) {
+        String connectionString = azureServiceBusJMSProperties.getConnectionString();
+        String clientId = azureServiceBusJMSProperties.getTopicClientId();
+        int idleTimeout = azureServiceBusJMSProperties.getIdleTimeout();
 
-        final ServiceBusJmsConnectionFactorySettings settings =
+        ServiceBusJmsConnectionFactorySettings settings =
             new ServiceBusJmsConnectionFactorySettings(idleTimeout, false);
         settings.setShouldReconnect(false);
-        final SpringServiceBusJmsConnectionFactory springServiceBusJmsConnectionFactory =
+        SpringServiceBusJmsConnectionFactory springServiceBusJmsConnectionFactory =
             new SpringServiceBusJmsConnectionFactory(connectionString, settings);
         springServiceBusJmsConnectionFactory.setClientId(clientId);
         springServiceBusJmsConnectionFactory.setCustomUserAgent(AZURE_SPRING_SERVICE_BUS + VERSION);
 
         return springServiceBusJmsConnectionFactory;
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
-    public JmsListenerContainerFactory<?> jmsListenerContainerFactory(ConnectionFactory connectionFactory) {
-        final DefaultJmsListenerContainerFactory jmsListenerContainerFactory = new DefaultJmsListenerContainerFactory();
-        jmsListenerContainerFactory.setConnectionFactory(connectionFactory);
-        return jmsListenerContainerFactory;
-    }
-
-    @Bean
-    public JmsListenerContainerFactory<?> topicJmsListenerContainerFactory(ConnectionFactory connectionFactory) {
-        final DefaultJmsListenerContainerFactory jmsListenerContainerFactory = new DefaultJmsListenerContainerFactory();
-        jmsListenerContainerFactory.setConnectionFactory(connectionFactory);
-        jmsListenerContainerFactory.setSubscriptionDurable(Boolean.TRUE);
-        return jmsListenerContainerFactory;
     }
 
 }

@@ -14,8 +14,6 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnResource;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.jms.config.DefaultJmsListenerContainerFactory;
-import org.springframework.jms.config.JmsListenerContainerFactory;
 
 import javax.jms.ConnectionFactory;
 
@@ -30,46 +28,33 @@ import static com.azure.spring.autoconfigure.unity.AzureProperties.AZURE_PROPERT
 @ConditionalOnProperty(value = "spring.jms.servicebus.enabled", matchIfMissing = true)
 @ConditionalOnExpression(value = "not '${spring.jms.servicebus.pricing-tier}'.equalsIgnoreCase('premium')")
 @EnableConfigurationProperties(AzureServiceBusJMSProperties.class)
-public class NonPremiumServiceBusJMSAutoConfiguration {
+public class NonPremiumServiceBusJMSAutoConfiguration extends AbstractServiceBusJMSAutoConfiguration {
 
     private static final String AMQP_URI_FORMAT = "amqps://%s?amqp.idleTimeout=%d";
 
+    public NonPremiumServiceBusJMSAutoConfiguration(AzureServiceBusJMSProperties azureServiceBusJMSProperties) {
+        super(azureServiceBusJMSProperties);
+    }
+
     @Bean
     @ConditionalOnMissingBean
-    public ConnectionFactory jmsConnectionFactory(AzureServiceBusJMSProperties serviceBusJMSProperties,
-                                                  @Qualifier(AZURE_PROPERTY_BEAN_NAME)AzureProperties azureProperties) {
-        final String connectionString = serviceBusJMSProperties.getConnectionString();
-        final String clientId = serviceBusJMSProperties.getTopicClientId();
-        final int idleTimeout = serviceBusJMSProperties.getIdleTimeout();
+    public ConnectionFactory jmsConnectionFactory(@Qualifier(AZURE_PROPERTY_BEAN_NAME)AzureProperties azureProperties) {
+        String connectionString = azureServiceBusJMSProperties.getConnectionString();
+        String clientId = azureServiceBusJMSProperties.getTopicClientId();
+        int idleTimeout = azureServiceBusJMSProperties.getIdleTimeout();
 
-        final ServiceBusKey serviceBusKey = ConnectionStringResolver.getServiceBusKey(connectionString);
-        final String host = serviceBusKey.getHost();
-        final String sasKeyName = serviceBusKey.getSharedAccessKeyName();
-        final String sasKey = serviceBusKey.getSharedAccessKey();
+        ServiceBusKey serviceBusKey = ConnectionStringResolver.getServiceBusKey(connectionString);
+        String host = serviceBusKey.getHost();
+        String sasKeyName = serviceBusKey.getSharedAccessKeyName();
+        String sasKey = serviceBusKey.getSharedAccessKey();
 
-        final String remoteUri = String.format(AMQP_URI_FORMAT, host, idleTimeout);
-        final JmsConnectionFactory jmsConnectionFactory = new JmsConnectionFactory();
+        String remoteUri = String.format(AMQP_URI_FORMAT, host, idleTimeout);
+        JmsConnectionFactory jmsConnectionFactory = new JmsConnectionFactory();
         jmsConnectionFactory.setRemoteURI(remoteUri);
         jmsConnectionFactory.setClientID(clientId);
         jmsConnectionFactory.setUsername(sasKeyName);
         jmsConnectionFactory.setPassword(sasKey);
         return jmsConnectionFactory;
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
-    public JmsListenerContainerFactory<?> jmsListenerContainerFactory(ConnectionFactory connectionFactory) {
-        final DefaultJmsListenerContainerFactory jmsListenerContainerFactory = new DefaultJmsListenerContainerFactory();
-        jmsListenerContainerFactory.setConnectionFactory(connectionFactory);
-        return jmsListenerContainerFactory;
-    }
-
-    @Bean
-    public JmsListenerContainerFactory<?> topicJmsListenerContainerFactory(ConnectionFactory connectionFactory) {
-        final DefaultJmsListenerContainerFactory jmsListenerContainerFactory = new DefaultJmsListenerContainerFactory();
-        jmsListenerContainerFactory.setConnectionFactory(connectionFactory);
-        jmsListenerContainerFactory.setSubscriptionDurable(Boolean.TRUE);
-        return jmsListenerContainerFactory;
     }
 
 }
