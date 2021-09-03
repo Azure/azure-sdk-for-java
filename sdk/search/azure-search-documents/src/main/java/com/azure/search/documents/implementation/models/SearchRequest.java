@@ -7,7 +7,6 @@
 package com.azure.search.documents.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.search.documents.models.Captions;
 import com.azure.search.documents.models.QueryLanguage;
 import com.azure.search.documents.models.QuerySpeller;
 import com.azure.search.documents.models.QueryType;
@@ -205,11 +204,15 @@ public final class SearchRequest {
     private Integer top;
 
     /*
-     * A value that specifies whether captions should be returned as part of
-     * the search response.
+     * This parameter is only valid if the query type is 'semantic'. If set,
+     * the query returns captions extracted from key passages in the highest
+     * ranked documents. When Captions is set to 'extractive', highlighting is
+     * enabled by default, and can be configured by appending the pipe
+     * character '|' followed by the 'highlight-<true/false>' option, such as
+     * 'extractive|highlight-true'. Defaults to 'None'.
      */
     @JsonProperty(value = "captions")
-    private Captions captions;
+    private String captions;
 
     /*
      * The comma-separated list of field names used for semantic search.
@@ -730,23 +733,27 @@ public final class SearchRequest {
     }
 
     /**
-     * Get the captions property: A value that specifies whether captions should be returned as part of the search
-     * response.
+     * Get the captions property: This parameter is only valid if the query type is 'semantic'. If set, the query
+     * returns captions extracted from key passages in the highest ranked documents. When Captions is set to
+     * 'extractive', highlighting is enabled by default, and can be configured by appending the pipe character '|'
+     * followed by the 'highlight-&lt;true/false&gt;' option, such as 'extractive|highlight-true'. Defaults to 'None'.
      *
      * @return the captions value.
      */
-    public Captions getCaptions() {
+    public String getCaptions() {
         return this.captions;
     }
 
     /**
-     * Set the captions property: A value that specifies whether captions should be returned as part of the search
-     * response.
+     * Set the captions property: This parameter is only valid if the query type is 'semantic'. If set, the query
+     * returns captions extracted from key passages in the highest ranked documents. When Captions is set to
+     * 'extractive', highlighting is enabled by default, and can be configured by appending the pipe character '|'
+     * followed by the 'highlight-&lt;true/false&gt;' option, such as 'extractive|highlight-true'. Defaults to 'None'.
      *
      * @param captions the captions value to set.
      * @return the SearchRequest object itself.
      */
-    public SearchRequest setCaptions(Captions captions) {
+    public SearchRequest setCaptions(String captions) {
         this.captions = captions;
         return this;
     }

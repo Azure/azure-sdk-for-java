@@ -208,7 +208,17 @@ public final class SearchOptions {
      * 'extractive|highlight-true'. Defaults to 'None'.
      */
     @JsonProperty(value = "captions")
-    private Captions captions;
+    private QueryCaption queryCaption;
+
+    /*
+     * This parameter is only valid if the query type is 'semantic'. If set,
+     * the query returns captions extracted from key passages in the highest
+     * ranked documents. When Captions is set to 'extractive', highlighting is
+     * enabled by default, and can be configured by appending the pipe
+     * character '|' followed by the 'highlight-<true/false>' option, such as
+     * 'extractive|highlight-true'. Defaults to 'None'.
+     */
+    private Boolean queryCaptionHighlight;
 
     /*
      * The list of field names used for semantic search.
@@ -729,28 +739,54 @@ public final class SearchOptions {
     }
 
     /**
-     * Get the captions property: This parameter is only valid if the query type is 'semantic'. If set, the query
+     * Get the query caption property: This parameter is only valid if the query type is 'semantic'. If set, the query
      * returns captions extracted from key passages in the highest ranked documents. When Captions is set to
      * 'extractive', highlighting is enabled by default, and can be configured by appending the pipe character '|'
      * followed by the 'highlight-&lt;true/false&gt;' option, such as 'extractive|highlight-true'. Defaults to 'None'.
      *
-     * @return the captions value.
+     * @return the query caption value.
      */
-    public Captions getCaptions() {
-        return this.captions;
+    public QueryCaption getQueryCaption() {
+        return this.queryCaption;
     }
 
     /**
-     * Set the captions property: This parameter is only valid if the query type is 'semantic'. If set, the query
+     * Set the query caption property: This parameter is only valid if the query type is 'semantic'. If set, the query
      * returns captions extracted from key passages in the highest ranked documents. When Captions is set to
      * 'extractive', highlighting is enabled by default, and can be configured by appending the pipe character '|'
      * followed by the 'highlight-&lt;true/false&gt;' option, such as 'extractive|highlight-true'. Defaults to 'None'.
      *
-     * @param captions the captions value to set.
+     * @param queryCaption the query caption value to set.
      * @return the SearchOptions object itself.
      */
-    public SearchOptions setCaptions(Captions captions) {
-        this.captions = captions;
+    public SearchOptions setCaptions(QueryCaption queryCaption) {
+        this.queryCaption = queryCaption;
+        return this;
+    }
+
+    /**
+     * Get the query caption highlight property: This parameter is only valid if the query type is 'semantic'. If set,
+     * the query returns captions extracted from key passages in the highest ranked documents. When Captions is set to
+     * 'extractive', highlighting is enabled by default, and can be configured by appending the pipe character '|'
+     * followed by the 'highlight-&lt;true/false&gt;' option, such as 'extractive|highlight-true'. Defaults to 'None'.
+     *
+     * @return the query caption highlight value.
+     */
+    public Boolean getQueryCaptionHighlight() {
+        return this.queryCaptionHighlight;
+    }
+
+    /**
+     * Set the query caption highlight property: This parameter is only valid if the query type is 'semantic'. If set,
+     * the query returns captions extracted from key passages in the highest ranked documents. When Captions is set to
+     * 'extractive', highlighting is enabled by default, and can be configured by appending the pipe character '|'
+     * followed by the 'highlight-&lt;true/false&gt;' option, such as 'extractive|highlight-true'. Defaults to 'None'.
+     *
+     * @param queryCaptionHighlight the query caption highlight value to set.
+     * @return the SearchOptions object itself.
+     */
+    public SearchOptions setQueryCaptionHighlight(Boolean queryCaptionHighlight) {
+        this.queryCaptionHighlight = queryCaptionHighlight;
         return this;
     }
 
