@@ -6,6 +6,10 @@
 
 - Moved `HttpAuthorization` into `azure-core`. 
 
+### Dependency Updates
+
+- Upgraded `azure-core` from `1.19.0` to `1.20.0`.
+
 ## 1.0.0-beta.17 (2021-08-16)
 
 ### Features Added

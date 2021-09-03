@@ -1,7 +1,14 @@
 # Release History
 
-## 1.8.0-beta.1 (Unreleased)
+## 1.7.3 (Unreleased)
 
+### Features Added
+
+- Added support for additional environment configurations. ([#23435](https://github.com/Azure/azure-sdk-for-java/pull/23435))
+
+### Dependency Updates
+
+- Upgraded `azure-core` from `1.19.0` to `1.20.0`.
 
 ## 1.7.2 (2021-08-06)
 

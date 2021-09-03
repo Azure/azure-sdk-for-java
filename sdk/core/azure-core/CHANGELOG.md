@@ -1,11 +1,23 @@
 # Release History
 
-## 1.20.0-beta.1 (Unreleased)
+## 1.20.0 (Unreleased)
 
 ### Features Added
 
-- Added `HttpAuthorization` which supports configuring a generic `Authorization` header on a request.
-- Added `RedirectPolicy` to standardize the ability to redirect HTTP requests.
+- Added new deferred logging APIs to `ClientLogger`. ([#20714](https://github.com/Azure/azure-sdk-for-java/pull/20714)) (Thank you, @tozsvath)
+- Added `HttpAuthorization` which supports configuring a generic `Authorization` header on a request. ([#23633](https://github.com/Azure/azure-sdk-for-java/pull/23633))
+- Added `RedirectPolicy` to standardize the ability to redirect HTTP requests. ([#23617](https://github.com/Azure/azure-sdk-for-java/pull/23617))
+- Added support for additional environment configurations. ([#23435](https://github.com/Azure/azure-sdk-for-java/pull/23435))
+- Added `RetryStrategy.shouldRetryException(Throwable throwable)` to allow `RetryStrategy`s to determine which exceptions
+  are acceptable to be retried. ([#23472](https://github.com/Azure/azure-sdk-for-java/pull/23472))
+- Updated `RetryPolicy` to attempt to lookup well-known retry after headers (`Retry-After`, `retry-after-ms`, and `x-ms-retry-after-ms`)
+  when a lookup header isn't supplied. ([#23472](https://github.com/Azure/azure-sdk-for-java/pull/23472))
+- Added a common error type.
+
+### Fixed
+
+- Fixed a bug where terminal status on initial poll wasn't respected. ([#23564](https://github.com/Azure/azure-sdk-for-java/pull/23564))
+- Fixed a bug where `UserAgentUtil` didn't validate that an `applicationId` was less than 24 characters. ([#23643](https://github.com/Azure/azure-sdk-for-java/pull/23643)) 
 
 ## 1.19.0 (2021-08-06)
 

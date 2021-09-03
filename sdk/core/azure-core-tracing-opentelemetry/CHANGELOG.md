@@ -2,6 +2,13 @@
 
 ## 1.0.0-beta.14 (Unreleased)
 
+### Fixed
+
+- Fixed a case where AMQP span context should set remote parent. ([#21667](https://github.com/Azure/azure-sdk-for-java/pull/21667))
+
+### Dependency Updates
+
+- Upgraded `azure-core` from `1.19.0` to `1.20.0`.
 
 ## 1.0.0-beta.13 (2021-08-06)
 
