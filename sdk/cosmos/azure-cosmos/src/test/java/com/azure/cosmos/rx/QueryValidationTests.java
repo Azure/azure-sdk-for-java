@@ -444,10 +444,7 @@ public class QueryValidationTests extends TestSuiteBase {
         and make sure all the records are obtained
          */
         CosmosContainerProperties containerProperties = getCollectionDefinition();
-        createdDatabase.createContainer(
-            containerProperties,
-            new CosmosContainerRequestOptions()
-        ).block();
+        createdDatabase.createContainer(containerProperties, new CosmosContainerRequestOptions()).block();
 
         CosmosAsyncContainer container = createdDatabase.getContainer(containerProperties.getId());
         CosmosContainerResponse containerResponse = container.read().block();
@@ -509,7 +506,6 @@ public class QueryValidationTests extends TestSuiteBase {
         }
     }
 
-
     private List<ObjectNode> createDocumentsWithUndefinedAndNullValues(CosmosAsyncContainer container) {
         List<ObjectNode> docsToInsert = new ArrayList<>();
         int documentCount = 23; // Just a few values should be enough as we iterate with different page sizes
@@ -531,7 +527,6 @@ public class QueryValidationTests extends TestSuiteBase {
         }
         return bulkInsertBlocking(container, docsToInsert);
     }
-
 
     @Test(groups = {"simple"}, timeOut = TIMEOUT)
     public void queryLargePartitionKeyOn100BPKCollection() throws Exception {
