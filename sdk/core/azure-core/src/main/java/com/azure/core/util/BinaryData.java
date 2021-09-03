@@ -6,7 +6,6 @@ package com.azure.core.util;
 import com.azure.core.util.implementation.BinaryDataContent;
 import com.azure.core.util.implementation.ByteArrayContent;
 import com.azure.core.util.implementation.FileContent;
-import com.azure.core.util.implementation.FluxByteBufferContent;
 import com.azure.core.util.implementation.InputStreamContent;
 import com.azure.core.util.implementation.SerializableContent;
 import com.azure.core.util.implementation.StringContent;
