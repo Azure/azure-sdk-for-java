@@ -1,7 +1,8 @@
 ## Release History
 
-## 4.19.0-beta.1 (Unreleased)
-
+### 4.19.0-beta.1 (2021-09-02)
+#### Key Bug Fixes
+* Added support to switch off IO thread for response processing.
 
 ### 4.18.0 (2021-08-16)
 > [!IMPORTANT]
