@@ -12,13 +12,16 @@ import reactor.core.publisher.Mono;
 
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicLong;
 
 /**
  * HTTP response which will buffer the response's body when/if it is read.
  */
 public final class BufferedHttpResponse extends HttpResponse {
     private final HttpResponse innerHttpResponse;
-    private final Flux<ByteBuffer> cachedBody;
+    private final Mono<List<ByteBuffer>> cachedBody;
+    private final AtomicLong cachedBodySize = new AtomicLong();
 
     /**
      * Creates a buffered HTTP response.
@@ -28,12 +31,13 @@ public final class BufferedHttpResponse extends HttpResponse {
     public BufferedHttpResponse(HttpResponse innerHttpResponse) {
         super(innerHttpResponse.getRequest());
         this.innerHttpResponse = innerHttpResponse;
-        this.cachedBody = FluxUtil.collectBytesFromNetworkResponse(innerHttpResponse.getBody(),
-            innerHttpResponse.getHeaders())
-            .map(ByteBuffer::wrap)
-            .flux()
-            .cache()
-            .map(ByteBuffer::duplicate);
+        this.cachedBody = innerHttpResponse.getBody()
+            .map(buffer -> {
+                cachedBodySize.addAndGet(buffer.remaining());
+                return ByteBuffer.wrap(FluxUtil.byteBufferToArray(buffer));
+            })
+            .collectList()
+            .cache();
     }
 
     @Override
@@ -53,12 +57,12 @@ public final class BufferedHttpResponse extends HttpResponse {
 
     @Override
     public Flux<ByteBuffer> getBody() {
-        return cachedBody;
+        return cachedBody.flatMapMany(Flux::fromIterable).map(ByteBuffer::duplicate);
     }
 
     @Override
     public Mono<byte[]> getBodyAsByteArray() {
-        return cachedBody.next().map(ByteBuffer::array);
+        return FluxUtil.collectBytesInByteBufferStream(getBody(), (int) cachedBodySize.get());
     }
 
     @Override
