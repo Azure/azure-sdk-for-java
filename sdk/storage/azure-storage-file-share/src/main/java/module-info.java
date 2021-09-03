@@ -3,6 +3,7 @@
 
 module com.azure.storage.file.share {
     requires transitive com.azure.storage.common;
+    requires transitive com.azure.core.experimental;
 
     requires com.fasterxml.jackson.dataformat.xml;
 

@@ -3,6 +3,7 @@
 
 module com.azure.storage.blob {
     requires transitive com.azure.storage.common;
+    requires transitive com.azure.core.experimental;
 
     requires com.fasterxml.jackson.dataformat.xml;
     requires com.azure.storage.internal.avro;
