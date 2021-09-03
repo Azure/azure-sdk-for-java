@@ -6,7 +6,6 @@ package com.azure.core.util.polling;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.Response;
 import com.azure.core.implementation.serializer.DefaultJsonSerializer;
-import com.azure.core.util.Context;
 import com.azure.core.util.serializer.JsonSerializer;
 import com.azure.core.util.serializer.TypeReference;
 import reactor.core.publisher.Mono;
