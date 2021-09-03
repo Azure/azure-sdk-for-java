@@ -24,24 +24,6 @@ public class OAuthToken {
     private long expiresIn;
 
     /**
-     * Stores the life duration of the access token.
-     */
-    @JsonProperty("ext_expires_in")
-    private long extExpiresIn;
-
-    /**
-     * Stores the starting time of the access token.
-     */
-    @JsonProperty("expires_on")
-    private long expiresOn;
-
-    /**
-     * Stores the expiration time of the access token.
-     */
-    @JsonProperty("not_before")
-    private long notBefore;
-
-    /**
      * Stores the time when the token is retrieved for the first time.
      */
     private final OffsetDateTime creationDate = OffsetDateTime.now();
