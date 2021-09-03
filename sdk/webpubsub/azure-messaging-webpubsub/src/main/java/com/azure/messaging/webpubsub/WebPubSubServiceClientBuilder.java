@@ -177,7 +177,7 @@ public final class WebPubSubServiceClientBuilder {
     /**
      * Sets the API management endpoint.
      *
-     * @param apimEndpoint The reverse proxy endpoint.
+     * @param apimEndpoint The API management endpoint.
      * @return The updated {@link WebPubSubServiceClientBuilder} object.
      */
     public WebPubSubServiceClientBuilder apimEndpoint(String apimEndpoint) {
