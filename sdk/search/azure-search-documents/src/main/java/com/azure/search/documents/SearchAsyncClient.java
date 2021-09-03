@@ -847,7 +847,7 @@ public final class SearchAsyncClient {
             .setSemanticFields(nullSafeStringJoin(options.getSemanticFields()));
     }
 
-    private static String createSearchRequestAnswers(SearchOptions searchOptions) {
+    static String createSearchRequestAnswers(SearchOptions searchOptions) {
         QueryAnswer answer = searchOptions.getAnswers();
         Integer answersCount = searchOptions.getAnswersCount();
 
@@ -865,7 +865,7 @@ public final class SearchAsyncClient {
         return answer + "|count-" + answersCount;
     }
 
-    private static String createSearchRequestCaptions(SearchOptions searchOptions) {
+    static String createSearchRequestCaptions(SearchOptions searchOptions) {
         QueryCaption queryCaption = searchOptions.getQueryCaption();
         Boolean queryCaptionHighlight = searchOptions.getQueryCaptionHighlight();
 

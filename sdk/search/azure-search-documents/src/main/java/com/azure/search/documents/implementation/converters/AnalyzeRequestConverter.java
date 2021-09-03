@@ -21,14 +21,16 @@ public final class AnalyzeRequestConverter {
         }
         AnalyzeTextOptions analyzeTextOptions;
 
-        if (obj.getTokenizer() != null) {
-            analyzeTextOptions = new AnalyzeTextOptions(obj.getText(), obj.getTokenizer());
-        } else {
+        if (obj.getAnalyzer() != null) {
             analyzeTextOptions = new AnalyzeTextOptions(obj.getText(), obj.getAnalyzer());
+        } else if (obj.getNormalizer() != null) {
+            analyzeTextOptions = new AnalyzeTextOptions(obj.getText(), obj.getNormalizer());
+        } else {
+            analyzeTextOptions = new AnalyzeTextOptions(obj.getText(), obj.getTokenizer());
         }
 
         if (obj.getCharFilters() != null) {
-            analyzeTextOptions.setCharFilters(obj.getCharFilters().toArray(new CharFilterName[]{}));
+            analyzeTextOptions.setCharFilters(obj.getCharFilters().toArray(new CharFilterName[0]));
         }
 
 
@@ -47,26 +49,13 @@ public final class AnalyzeRequestConverter {
         if (obj == null) {
             return null;
         }
-        com.azure.search.documents.indexes.implementation.models.AnalyzeRequest analyzeRequest =
-            new com.azure.search.documents.indexes.implementation.models.AnalyzeRequest(obj.getText());
 
-        if (obj.getCharFilters() != null) {
-            analyzeRequest.setCharFilters(obj.getCharFilters());
-        }
-
-        if (obj.getAnalyzerName() != null) {
-            analyzeRequest.setAnalyzer(obj.getAnalyzerName());
-        }
-
-        if (obj.getTokenFilters() != null) {
-            analyzeRequest.setTokenFilters(obj.getTokenFilters());
-        }
-
-        if (obj.getTokenizerName() != null) {
-            analyzeRequest.setTokenizer(obj.getTokenizerName());
-        }
-
-        return analyzeRequest;
+        return new com.azure.search.documents.indexes.implementation.models.AnalyzeRequest(obj.getText())
+            .setAnalyzer(obj.getAnalyzerName())
+            .setNormalizer(obj.getNormalizer())
+            .setTokenizer(obj.getTokenizerName())
+            .setCharFilters(obj.getCharFilters())
+            .setTokenFilters(obj.getTokenFilters());
     }
 
     private AnalyzeRequestConverter() {

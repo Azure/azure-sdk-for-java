@@ -759,7 +759,7 @@ public final class SearchOptions {
      * @param queryCaption the query caption value to set.
      * @return the SearchOptions object itself.
      */
-    public SearchOptions setCaptions(QueryCaption queryCaption) {
+    public SearchOptions setQueryCaption(QueryCaption queryCaption) {
         this.queryCaption = queryCaption;
         return this;
     }

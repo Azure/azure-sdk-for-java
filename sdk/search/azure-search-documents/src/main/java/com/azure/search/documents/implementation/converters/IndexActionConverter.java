@@ -29,16 +29,15 @@ public final class IndexActionConverter {
         if (obj == null) {
             return null;
         }
-        IndexAction<T> indexAction = new IndexAction<>();
 
-        if (obj.getActionType() != null) {
-            indexAction.setActionType(obj.getActionType());
-        }
+        IndexAction<T> indexAction = new IndexAction<>();
+        indexAction.setActionType(obj.getActionType());
 
         if (obj.getAdditionalProperties() != null) {
             Map<String, Object> properties = obj.getAdditionalProperties();
             IndexActionHelper.setProperties(indexAction, properties);
         }
+
         return indexAction;
     }
 
@@ -51,11 +50,7 @@ public final class IndexActionConverter {
             return null;
         }
         com.azure.search.documents.implementation.models.IndexAction indexAction =
-            new com.azure.search.documents.implementation.models.IndexAction();
-
-        if (obj.getActionType() != null) {
-            indexAction.setActionType(obj.getActionType());
-        }
+            new com.azure.search.documents.implementation.models.IndexAction().setActionType(obj.getActionType());
 
         Map<String, Object> mapProperties = IndexActionHelper.getProperties(obj);
         if (mapProperties == null) {
