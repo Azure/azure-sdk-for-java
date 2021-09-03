@@ -9,30 +9,30 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.kusto.fluent.AttachedDatabaseConfigurationsClient;
-import com.azure.resourcemanager.kusto.fluent.models.AttachedDatabaseConfigurationInner;
+import com.azure.resourcemanager.kusto.fluent.ManagedPrivateEndpointsClient;
 import com.azure.resourcemanager.kusto.fluent.models.CheckNameResultInner;
-import com.azure.resourcemanager.kusto.models.AttachedDatabaseConfiguration;
-import com.azure.resourcemanager.kusto.models.AttachedDatabaseConfigurations;
-import com.azure.resourcemanager.kusto.models.AttachedDatabaseConfigurationsCheckNameRequest;
+import com.azure.resourcemanager.kusto.fluent.models.ManagedPrivateEndpointInner;
 import com.azure.resourcemanager.kusto.models.CheckNameResult;
+import com.azure.resourcemanager.kusto.models.ManagedPrivateEndpoint;
+import com.azure.resourcemanager.kusto.models.ManagedPrivateEndpoints;
+import com.azure.resourcemanager.kusto.models.ManagedPrivateEndpointsCheckNameRequest;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-public final class AttachedDatabaseConfigurationsImpl implements AttachedDatabaseConfigurations {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AttachedDatabaseConfigurationsImpl.class);
+public final class ManagedPrivateEndpointsImpl implements ManagedPrivateEndpoints {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagedPrivateEndpointsImpl.class);
 
-    private final AttachedDatabaseConfigurationsClient innerClient;
+    private final ManagedPrivateEndpointsClient innerClient;
 
     private final com.azure.resourcemanager.kusto.KustoManager serviceManager;
 
-    public AttachedDatabaseConfigurationsImpl(
-        AttachedDatabaseConfigurationsClient innerClient, com.azure.resourcemanager.kusto.KustoManager serviceManager) {
+    public ManagedPrivateEndpointsImpl(
+        ManagedPrivateEndpointsClient innerClient, com.azure.resourcemanager.kusto.KustoManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public CheckNameResult checkNameAvailability(
-        String resourceGroupName, String clusterName, AttachedDatabaseConfigurationsCheckNameRequest resourceName) {
+        String resourceGroupName, String clusterName, ManagedPrivateEndpointsCheckNameRequest resourceName) {
         CheckNameResultInner inner =
             this.serviceClient().checkNameAvailability(resourceGroupName, clusterName, resourceName);
         if (inner != null) {
@@ -45,7 +45,7 @@ public final class AttachedDatabaseConfigurationsImpl implements AttachedDatabas
     public Response<CheckNameResult> checkNameAvailabilityWithResponse(
         String resourceGroupName,
         String clusterName,
-        AttachedDatabaseConfigurationsCheckNameRequest resourceName,
+        ManagedPrivateEndpointsCheckNameRequest resourceName,
         Context context) {
         Response<CheckNameResultInner> inner =
             this
@@ -62,57 +62,52 @@ public final class AttachedDatabaseConfigurationsImpl implements AttachedDatabas
         }
     }
 
-    public PagedIterable<AttachedDatabaseConfiguration> listByCluster(String resourceGroupName, String clusterName) {
-        PagedIterable<AttachedDatabaseConfigurationInner> inner =
-            this.serviceClient().listByCluster(resourceGroupName, clusterName);
-        return Utils.mapPage(inner, inner1 -> new AttachedDatabaseConfigurationImpl(inner1, this.manager()));
+    public PagedIterable<ManagedPrivateEndpoint> list(String resourceGroupName, String clusterName) {
+        PagedIterable<ManagedPrivateEndpointInner> inner = this.serviceClient().list(resourceGroupName, clusterName);
+        return Utils.mapPage(inner, inner1 -> new ManagedPrivateEndpointImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<AttachedDatabaseConfiguration> listByCluster(
-        String resourceGroupName, String clusterName, Context context) {
-        PagedIterable<AttachedDatabaseConfigurationInner> inner =
-            this.serviceClient().listByCluster(resourceGroupName, clusterName, context);
-        return Utils.mapPage(inner, inner1 -> new AttachedDatabaseConfigurationImpl(inner1, this.manager()));
+    public PagedIterable<ManagedPrivateEndpoint> list(String resourceGroupName, String clusterName, Context context) {
+        PagedIterable<ManagedPrivateEndpointInner> inner =
+            this.serviceClient().list(resourceGroupName, clusterName, context);
+        return Utils.mapPage(inner, inner1 -> new ManagedPrivateEndpointImpl(inner1, this.manager()));
     }
 
-    public AttachedDatabaseConfiguration get(
-        String resourceGroupName, String clusterName, String attachedDatabaseConfigurationName) {
-        AttachedDatabaseConfigurationInner inner =
-            this.serviceClient().get(resourceGroupName, clusterName, attachedDatabaseConfigurationName);
+    public ManagedPrivateEndpoint get(String resourceGroupName, String clusterName, String managedPrivateEndpointName) {
+        ManagedPrivateEndpointInner inner =
+            this.serviceClient().get(resourceGroupName, clusterName, managedPrivateEndpointName);
         if (inner != null) {
-            return new AttachedDatabaseConfigurationImpl(inner, this.manager());
+            return new ManagedPrivateEndpointImpl(inner, this.manager());
         } else {
             return null;
         }
     }
 
-    public Response<AttachedDatabaseConfiguration> getWithResponse(
-        String resourceGroupName, String clusterName, String attachedDatabaseConfigurationName, Context context) {
-        Response<AttachedDatabaseConfigurationInner> inner =
-            this
-                .serviceClient()
-                .getWithResponse(resourceGroupName, clusterName, attachedDatabaseConfigurationName, context);
+    public Response<ManagedPrivateEndpoint> getWithResponse(
+        String resourceGroupName, String clusterName, String managedPrivateEndpointName, Context context) {
+        Response<ManagedPrivateEndpointInner> inner =
+            this.serviceClient().getWithResponse(resourceGroupName, clusterName, managedPrivateEndpointName, context);
         if (inner != null) {
             return new SimpleResponse<>(
                 inner.getRequest(),
                 inner.getStatusCode(),
                 inner.getHeaders(),
-                new AttachedDatabaseConfigurationImpl(inner.getValue(), this.manager()));
+                new ManagedPrivateEndpointImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public void delete(String resourceGroupName, String clusterName, String attachedDatabaseConfigurationName) {
-        this.serviceClient().delete(resourceGroupName, clusterName, attachedDatabaseConfigurationName);
+    public void delete(String resourceGroupName, String clusterName, String managedPrivateEndpointName) {
+        this.serviceClient().delete(resourceGroupName, clusterName, managedPrivateEndpointName);
     }
 
     public void delete(
-        String resourceGroupName, String clusterName, String attachedDatabaseConfigurationName, Context context) {
-        this.serviceClient().delete(resourceGroupName, clusterName, attachedDatabaseConfigurationName, context);
+        String resourceGroupName, String clusterName, String managedPrivateEndpointName, Context context) {
+        this.serviceClient().delete(resourceGroupName, clusterName, managedPrivateEndpointName, context);
     }
 
-    public AttachedDatabaseConfiguration getById(String id) {
+    public ManagedPrivateEndpoint getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw logger
@@ -128,23 +123,22 @@ public final class AttachedDatabaseConfigurationsImpl implements AttachedDatabas
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'clusters'.", id)));
         }
-        String attachedDatabaseConfigurationName = Utils.getValueFromIdByName(id, "attachedDatabaseConfigurations");
-        if (attachedDatabaseConfigurationName == null) {
+        String managedPrivateEndpointName = Utils.getValueFromIdByName(id, "managedPrivateEndpoints");
+        if (managedPrivateEndpointName == null) {
             throw logger
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
                             .format(
-                                "The resource ID '%s' is not valid. Missing path segment"
-                                    + " 'attachedDatabaseConfigurations'.",
+                                "The resource ID '%s' is not valid. Missing path segment 'managedPrivateEndpoints'.",
                                 id)));
         }
         return this
-            .getWithResponse(resourceGroupName, clusterName, attachedDatabaseConfigurationName, Context.NONE)
+            .getWithResponse(resourceGroupName, clusterName, managedPrivateEndpointName, Context.NONE)
             .getValue();
     }
 
-    public Response<AttachedDatabaseConfiguration> getByIdWithResponse(String id, Context context) {
+    public Response<ManagedPrivateEndpoint> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw logger
@@ -160,18 +154,17 @@ public final class AttachedDatabaseConfigurationsImpl implements AttachedDatabas
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'clusters'.", id)));
         }
-        String attachedDatabaseConfigurationName = Utils.getValueFromIdByName(id, "attachedDatabaseConfigurations");
-        if (attachedDatabaseConfigurationName == null) {
+        String managedPrivateEndpointName = Utils.getValueFromIdByName(id, "managedPrivateEndpoints");
+        if (managedPrivateEndpointName == null) {
             throw logger
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
                             .format(
-                                "The resource ID '%s' is not valid. Missing path segment"
-                                    + " 'attachedDatabaseConfigurations'.",
+                                "The resource ID '%s' is not valid. Missing path segment 'managedPrivateEndpoints'.",
                                 id)));
         }
-        return this.getWithResponse(resourceGroupName, clusterName, attachedDatabaseConfigurationName, context);
+        return this.getWithResponse(resourceGroupName, clusterName, managedPrivateEndpointName, context);
     }
 
     public void deleteById(String id) {
@@ -190,18 +183,17 @@ public final class AttachedDatabaseConfigurationsImpl implements AttachedDatabas
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'clusters'.", id)));
         }
-        String attachedDatabaseConfigurationName = Utils.getValueFromIdByName(id, "attachedDatabaseConfigurations");
-        if (attachedDatabaseConfigurationName == null) {
+        String managedPrivateEndpointName = Utils.getValueFromIdByName(id, "managedPrivateEndpoints");
+        if (managedPrivateEndpointName == null) {
             throw logger
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
                             .format(
-                                "The resource ID '%s' is not valid. Missing path segment"
-                                    + " 'attachedDatabaseConfigurations'.",
+                                "The resource ID '%s' is not valid. Missing path segment 'managedPrivateEndpoints'.",
                                 id)));
         }
-        this.delete(resourceGroupName, clusterName, attachedDatabaseConfigurationName, Context.NONE);
+        this.delete(resourceGroupName, clusterName, managedPrivateEndpointName, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
@@ -220,21 +212,20 @@ public final class AttachedDatabaseConfigurationsImpl implements AttachedDatabas
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'clusters'.", id)));
         }
-        String attachedDatabaseConfigurationName = Utils.getValueFromIdByName(id, "attachedDatabaseConfigurations");
-        if (attachedDatabaseConfigurationName == null) {
+        String managedPrivateEndpointName = Utils.getValueFromIdByName(id, "managedPrivateEndpoints");
+        if (managedPrivateEndpointName == null) {
             throw logger
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
                             .format(
-                                "The resource ID '%s' is not valid. Missing path segment"
-                                    + " 'attachedDatabaseConfigurations'.",
+                                "The resource ID '%s' is not valid. Missing path segment 'managedPrivateEndpoints'.",
                                 id)));
         }
-        this.delete(resourceGroupName, clusterName, attachedDatabaseConfigurationName, context);
+        this.delete(resourceGroupName, clusterName, managedPrivateEndpointName, context);
     }
 
-    private AttachedDatabaseConfigurationsClient serviceClient() {
+    private ManagedPrivateEndpointsClient serviceClient() {
         return this.innerClient;
     }
 
@@ -242,7 +233,7 @@ public final class AttachedDatabaseConfigurationsImpl implements AttachedDatabas
         return this.serviceManager;
     }
 
-    public AttachedDatabaseConfigurationImpl define(String name) {
-        return new AttachedDatabaseConfigurationImpl(name, this.manager());
+    public ManagedPrivateEndpointImpl define(String name) {
+        return new ManagedPrivateEndpointImpl(name, this.manager());
     }
 }

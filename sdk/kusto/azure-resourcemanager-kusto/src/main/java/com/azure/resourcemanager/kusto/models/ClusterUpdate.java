@@ -9,6 +9,7 @@ import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
@@ -23,6 +24,7 @@ public class ClusterUpdate extends ProxyResource {
      * Resource tags.
      */
     @JsonProperty(value = "tags")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
     /*
@@ -128,10 +130,50 @@ public class ClusterUpdate extends ProxyResource {
     private Boolean enableDoubleEncryption;
 
     /*
+     * Public network access to the cluster is enabled by default. When
+     * disabled, only private endpoint connection to the cluster is allowed
+     */
+    @JsonProperty(value = "properties.publicNetworkAccess")
+    private PublicNetworkAccess publicNetworkAccess;
+
+    /*
+     * The list of ips in the format of CIDR allowed to connect to the cluster.
+     */
+    @JsonProperty(value = "properties.allowedIpRangeList")
+    private List<String> allowedIpRangeList;
+
+    /*
      * The engine type
      */
     @JsonProperty(value = "properties.engineType")
     private EngineType engineType;
+
+    /*
+     * The cluster's accepted audiences.
+     */
+    @JsonProperty(value = "properties.acceptedAudiences")
+    private List<AcceptedAudiences> acceptedAudiences;
+
+    /*
+     * A boolean value that indicates if the cluster could be automatically
+     * stopped (due to lack of data or no activity for many days).
+     */
+    @JsonProperty(value = "properties.enableAutoStop")
+    private Boolean enableAutoStop;
+
+    /*
+     * Whether or not to restrict outbound network access.  Value is optional
+     * but if passed in, must be 'Enabled' or 'Disabled'
+     */
+    @JsonProperty(value = "properties.restrictOutboundNetworkAccess")
+    private ClusterNetworkAccessFlag restrictOutboundNetworkAccess;
+
+    /*
+     * List of allowed FQDNs(Fully Qualified Domain Name) for egress from
+     * Cluster.
+     */
+    @JsonProperty(value = "properties.allowedFqdnList")
+    private List<String> allowedFqdnList;
 
     /**
      * Get the tags property: Resource tags.
@@ -428,6 +470,48 @@ public class ClusterUpdate extends ProxyResource {
     }
 
     /**
+     * Get the publicNetworkAccess property: Public network access to the cluster is enabled by default. When disabled,
+     * only private endpoint connection to the cluster is allowed.
+     *
+     * @return the publicNetworkAccess value.
+     */
+    public PublicNetworkAccess publicNetworkAccess() {
+        return this.publicNetworkAccess;
+    }
+
+    /**
+     * Set the publicNetworkAccess property: Public network access to the cluster is enabled by default. When disabled,
+     * only private endpoint connection to the cluster is allowed.
+     *
+     * @param publicNetworkAccess the publicNetworkAccess value to set.
+     * @return the ClusterUpdate object itself.
+     */
+    public ClusterUpdate withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess) {
+        this.publicNetworkAccess = publicNetworkAccess;
+        return this;
+    }
+
+    /**
+     * Get the allowedIpRangeList property: The list of ips in the format of CIDR allowed to connect to the cluster.
+     *
+     * @return the allowedIpRangeList value.
+     */
+    public List<String> allowedIpRangeList() {
+        return this.allowedIpRangeList;
+    }
+
+    /**
+     * Set the allowedIpRangeList property: The list of ips in the format of CIDR allowed to connect to the cluster.
+     *
+     * @param allowedIpRangeList the allowedIpRangeList value to set.
+     * @return the ClusterUpdate object itself.
+     */
+    public ClusterUpdate withAllowedIpRangeList(List<String> allowedIpRangeList) {
+        this.allowedIpRangeList = allowedIpRangeList;
+        return this;
+    }
+
+    /**
      * Get the engineType property: The engine type.
      *
      * @return the engineType value.
@@ -444,6 +528,90 @@ public class ClusterUpdate extends ProxyResource {
      */
     public ClusterUpdate withEngineType(EngineType engineType) {
         this.engineType = engineType;
+        return this;
+    }
+
+    /**
+     * Get the acceptedAudiences property: The cluster's accepted audiences.
+     *
+     * @return the acceptedAudiences value.
+     */
+    public List<AcceptedAudiences> acceptedAudiences() {
+        return this.acceptedAudiences;
+    }
+
+    /**
+     * Set the acceptedAudiences property: The cluster's accepted audiences.
+     *
+     * @param acceptedAudiences the acceptedAudiences value to set.
+     * @return the ClusterUpdate object itself.
+     */
+    public ClusterUpdate withAcceptedAudiences(List<AcceptedAudiences> acceptedAudiences) {
+        this.acceptedAudiences = acceptedAudiences;
+        return this;
+    }
+
+    /**
+     * Get the enableAutoStop property: A boolean value that indicates if the cluster could be automatically stopped
+     * (due to lack of data or no activity for many days).
+     *
+     * @return the enableAutoStop value.
+     */
+    public Boolean enableAutoStop() {
+        return this.enableAutoStop;
+    }
+
+    /**
+     * Set the enableAutoStop property: A boolean value that indicates if the cluster could be automatically stopped
+     * (due to lack of data or no activity for many days).
+     *
+     * @param enableAutoStop the enableAutoStop value to set.
+     * @return the ClusterUpdate object itself.
+     */
+    public ClusterUpdate withEnableAutoStop(Boolean enableAutoStop) {
+        this.enableAutoStop = enableAutoStop;
+        return this;
+    }
+
+    /**
+     * Get the restrictOutboundNetworkAccess property: Whether or not to restrict outbound network access. Value is
+     * optional but if passed in, must be 'Enabled' or 'Disabled'.
+     *
+     * @return the restrictOutboundNetworkAccess value.
+     */
+    public ClusterNetworkAccessFlag restrictOutboundNetworkAccess() {
+        return this.restrictOutboundNetworkAccess;
+    }
+
+    /**
+     * Set the restrictOutboundNetworkAccess property: Whether or not to restrict outbound network access. Value is
+     * optional but if passed in, must be 'Enabled' or 'Disabled'.
+     *
+     * @param restrictOutboundNetworkAccess the restrictOutboundNetworkAccess value to set.
+     * @return the ClusterUpdate object itself.
+     */
+    public ClusterUpdate withRestrictOutboundNetworkAccess(ClusterNetworkAccessFlag restrictOutboundNetworkAccess) {
+        this.restrictOutboundNetworkAccess = restrictOutboundNetworkAccess;
+        return this;
+    }
+
+    /**
+     * Get the allowedFqdnList property: List of allowed FQDNs(Fully Qualified Domain Name) for egress from Cluster.
+     *
+     * @return the allowedFqdnList value.
+     */
+    public List<String> allowedFqdnList() {
+        return this.allowedFqdnList;
+    }
+
+    /**
+     * Set the allowedFqdnList property: List of allowed FQDNs(Fully Qualified Domain Name) for egress from Cluster.
+     *
+     * @param allowedFqdnList the allowedFqdnList value to set.
+     * @return the ClusterUpdate object itself.
+     */
+    public ClusterUpdate withAllowedFqdnList(List<String> allowedFqdnList) {
+        this.allowedFqdnList = allowedFqdnList;
         return this;
     }
 
@@ -473,6 +641,9 @@ public class ClusterUpdate extends ProxyResource {
         }
         if (languageExtensions() != null) {
             languageExtensions().validate();
+        }
+        if (acceptedAudiences() != null) {
+            acceptedAudiences().forEach(e -> e.validate());
         }
     }
 }

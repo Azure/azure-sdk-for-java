@@ -8,10 +8,10 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of AttachedDatabaseConfigurations. */
-public interface AttachedDatabaseConfigurations {
+/** Resource collection API of ManagedPrivateEndpoints. */
+public interface ManagedPrivateEndpoints {
     /**
-     * Checks that the attached database configuration resource name is valid and is not already in use.
+     * Checks that the managed private endpoints resource name is valid and is not already in use.
      *
      * @param resourceGroupName The name of the resource group containing the Kusto cluster.
      * @param clusterName The name of the Kusto cluster.
@@ -22,10 +22,10 @@ public interface AttachedDatabaseConfigurations {
      * @return the result returned from a check name availability request.
      */
     CheckNameResult checkNameAvailability(
-        String resourceGroupName, String clusterName, AttachedDatabaseConfigurationsCheckNameRequest resourceName);
+        String resourceGroupName, String clusterName, ManagedPrivateEndpointsCheckNameRequest resourceName);
 
     /**
-     * Checks that the attached database configuration resource name is valid and is not already in use.
+     * Checks that the managed private endpoints resource name is valid and is not already in use.
      *
      * @param resourceGroupName The name of the resource group containing the Kusto cluster.
      * @param clusterName The name of the Kusto cluster.
@@ -39,23 +39,23 @@ public interface AttachedDatabaseConfigurations {
     Response<CheckNameResult> checkNameAvailabilityWithResponse(
         String resourceGroupName,
         String clusterName,
-        AttachedDatabaseConfigurationsCheckNameRequest resourceName,
+        ManagedPrivateEndpointsCheckNameRequest resourceName,
         Context context);
 
     /**
-     * Returns the list of attached database configurations of the given Kusto cluster.
+     * Returns the list of managed private endpoints.
      *
      * @param resourceGroupName The name of the resource group containing the Kusto cluster.
      * @param clusterName The name of the Kusto cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list attached database configurations operation response.
+     * @return the list managed private endpoints operation response.
      */
-    PagedIterable<AttachedDatabaseConfiguration> listByCluster(String resourceGroupName, String clusterName);
+    PagedIterable<ManagedPrivateEndpoint> list(String resourceGroupName, String clusterName);
 
     /**
-     * Returns the list of attached database configurations of the given Kusto cluster.
+     * Returns the list of managed private endpoints.
      *
      * @param resourceGroupName The name of the resource group containing the Kusto cluster.
      * @param clusterName The name of the Kusto cluster.
@@ -63,91 +63,88 @@ public interface AttachedDatabaseConfigurations {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list attached database configurations operation response.
+     * @return the list managed private endpoints operation response.
      */
-    PagedIterable<AttachedDatabaseConfiguration> listByCluster(
-        String resourceGroupName, String clusterName, Context context);
+    PagedIterable<ManagedPrivateEndpoint> list(String resourceGroupName, String clusterName, Context context);
 
     /**
-     * Returns an attached database configuration.
+     * Gets a managed private endpoint.
      *
      * @param resourceGroupName The name of the resource group containing the Kusto cluster.
      * @param clusterName The name of the Kusto cluster.
-     * @param attachedDatabaseConfigurationName The name of the attached database configuration.
+     * @param managedPrivateEndpointName The name of the managed private endpoint.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class representing an attached database configuration.
+     * @return a managed private endpoint.
      */
-    AttachedDatabaseConfiguration get(
-        String resourceGroupName, String clusterName, String attachedDatabaseConfigurationName);
+    ManagedPrivateEndpoint get(String resourceGroupName, String clusterName, String managedPrivateEndpointName);
 
     /**
-     * Returns an attached database configuration.
+     * Gets a managed private endpoint.
      *
      * @param resourceGroupName The name of the resource group containing the Kusto cluster.
      * @param clusterName The name of the Kusto cluster.
-     * @param attachedDatabaseConfigurationName The name of the attached database configuration.
+     * @param managedPrivateEndpointName The name of the managed private endpoint.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class representing an attached database configuration.
+     * @return a managed private endpoint.
      */
-    Response<AttachedDatabaseConfiguration> getWithResponse(
-        String resourceGroupName, String clusterName, String attachedDatabaseConfigurationName, Context context);
+    Response<ManagedPrivateEndpoint> getWithResponse(
+        String resourceGroupName, String clusterName, String managedPrivateEndpointName, Context context);
 
     /**
-     * Deletes the attached database configuration with the given name.
+     * Deletes a managed private endpoint.
      *
      * @param resourceGroupName The name of the resource group containing the Kusto cluster.
      * @param clusterName The name of the Kusto cluster.
-     * @param attachedDatabaseConfigurationName The name of the attached database configuration.
+     * @param managedPrivateEndpointName The name of the managed private endpoint.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void delete(String resourceGroupName, String clusterName, String attachedDatabaseConfigurationName);
+    void delete(String resourceGroupName, String clusterName, String managedPrivateEndpointName);
 
     /**
-     * Deletes the attached database configuration with the given name.
+     * Deletes a managed private endpoint.
      *
      * @param resourceGroupName The name of the resource group containing the Kusto cluster.
      * @param clusterName The name of the Kusto cluster.
-     * @param attachedDatabaseConfigurationName The name of the attached database configuration.
+     * @param managedPrivateEndpointName The name of the managed private endpoint.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void delete(
-        String resourceGroupName, String clusterName, String attachedDatabaseConfigurationName, Context context);
+    void delete(String resourceGroupName, String clusterName, String managedPrivateEndpointName, Context context);
 
     /**
-     * Returns an attached database configuration.
+     * Gets a managed private endpoint.
      *
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class representing an attached database configuration.
+     * @return a managed private endpoint.
      */
-    AttachedDatabaseConfiguration getById(String id);
+    ManagedPrivateEndpoint getById(String id);
 
     /**
-     * Returns an attached database configuration.
+     * Gets a managed private endpoint.
      *
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class representing an attached database configuration.
+     * @return a managed private endpoint.
      */
-    Response<AttachedDatabaseConfiguration> getByIdWithResponse(String id, Context context);
+    Response<ManagedPrivateEndpoint> getByIdWithResponse(String id, Context context);
 
     /**
-     * Deletes the attached database configuration with the given name.
+     * Deletes a managed private endpoint.
      *
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -157,7 +154,7 @@ public interface AttachedDatabaseConfigurations {
     void deleteById(String id);
 
     /**
-     * Deletes the attached database configuration with the given name.
+     * Deletes a managed private endpoint.
      *
      * @param id the resource ID.
      * @param context The context to associate with this operation.
@@ -168,10 +165,10 @@ public interface AttachedDatabaseConfigurations {
     void deleteByIdWithResponse(String id, Context context);
 
     /**
-     * Begins definition for a new AttachedDatabaseConfiguration resource.
+     * Begins definition for a new ManagedPrivateEndpoint resource.
      *
      * @param name resource name.
-     * @return the first stage of the new AttachedDatabaseConfiguration definition.
+     * @return the first stage of the new ManagedPrivateEndpoint definition.
      */
-    AttachedDatabaseConfiguration.DefinitionStages.Blank define(String name);
+    ManagedPrivateEndpoint.DefinitionStages.Blank define(String name);
 }

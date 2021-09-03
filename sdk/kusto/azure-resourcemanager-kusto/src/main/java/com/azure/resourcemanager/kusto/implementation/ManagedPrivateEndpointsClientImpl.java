@@ -12,6 +12,7 @@ import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
+import com.azure.core.annotation.Patch;
 import com.azure.core.annotation.PathParam;
 import com.azure.core.annotation.Post;
 import com.azure.core.annotation.Put;
@@ -33,51 +34,48 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.resourcemanager.kusto.fluent.AttachedDatabaseConfigurationsClient;
-import com.azure.resourcemanager.kusto.fluent.models.AttachedDatabaseConfigurationInner;
+import com.azure.resourcemanager.kusto.fluent.ManagedPrivateEndpointsClient;
 import com.azure.resourcemanager.kusto.fluent.models.CheckNameResultInner;
-import com.azure.resourcemanager.kusto.models.AttachedDatabaseConfigurationListResult;
-import com.azure.resourcemanager.kusto.models.AttachedDatabaseConfigurationsCheckNameRequest;
+import com.azure.resourcemanager.kusto.fluent.models.ManagedPrivateEndpointInner;
+import com.azure.resourcemanager.kusto.models.ManagedPrivateEndpointListResult;
+import com.azure.resourcemanager.kusto.models.ManagedPrivateEndpointsCheckNameRequest;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in AttachedDatabaseConfigurationsClient. */
-public final class AttachedDatabaseConfigurationsClientImpl implements AttachedDatabaseConfigurationsClient {
-    private final ClientLogger logger = new ClientLogger(AttachedDatabaseConfigurationsClientImpl.class);
+/** An instance of this class provides access to all the operations defined in ManagedPrivateEndpointsClient. */
+public final class ManagedPrivateEndpointsClientImpl implements ManagedPrivateEndpointsClient {
+    private final ClientLogger logger = new ClientLogger(ManagedPrivateEndpointsClientImpl.class);
 
     /** The proxy service used to perform REST calls. */
-    private final AttachedDatabaseConfigurationsService service;
+    private final ManagedPrivateEndpointsService service;
 
     /** The service client containing this operation class. */
     private final KustoManagementClientImpl client;
 
     /**
-     * Initializes an instance of AttachedDatabaseConfigurationsClientImpl.
+     * Initializes an instance of ManagedPrivateEndpointsClientImpl.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    AttachedDatabaseConfigurationsClientImpl(KustoManagementClientImpl client) {
+    ManagedPrivateEndpointsClientImpl(KustoManagementClientImpl client) {
         this.service =
             RestProxy
-                .create(
-                    AttachedDatabaseConfigurationsService.class,
-                    client.getHttpPipeline(),
-                    client.getSerializerAdapter());
+                .create(ManagedPrivateEndpointsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for KustoManagementClientAttachedDatabaseConfigurations to be used by the
-     * proxy service to perform REST calls.
+     * The interface defining all the services for KustoManagementClientManagedPrivateEndpoints to be used by the proxy
+     * service to perform REST calls.
      */
     @Host("{$host}")
     @ServiceInterface(name = "KustoManagementClien")
-    private interface AttachedDatabaseConfigurationsService {
+    private interface ManagedPrivateEndpointsService {
         @Headers({"Content-Type: application/json"})
         @Post(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters"
-                + "/{clusterName}/attachedDatabaseConfigurationCheckNameAvailability")
+                + "/{clusterName}/managedPrivateEndpointsCheckNameAvailability")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<CheckNameResultInner>> checkNameAvailability(
@@ -86,21 +84,21 @@ public final class AttachedDatabaseConfigurationsClientImpl implements AttachedD
             @PathParam("clusterName") String clusterName,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
-            @BodyParam("application/json") AttachedDatabaseConfigurationsCheckNameRequest resourceName,
+            @BodyParam("application/json") ManagedPrivateEndpointsCheckNameRequest resourceName,
             @HeaderParam("Accept") String accept,
             Context context);
 
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters"
-                + "/{clusterName}/attachedDatabaseConfigurations")
+                + "/{clusterName}/managedPrivateEndpoints")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<AttachedDatabaseConfigurationListResult>> listByCluster(
+        Mono<Response<ManagedPrivateEndpointListResult>> list(
             @HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("clusterName") String clusterName,
-            @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept,
             Context context);
@@ -108,15 +106,15 @@ public final class AttachedDatabaseConfigurationsClientImpl implements AttachedD
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters"
-                + "/{clusterName}/attachedDatabaseConfigurations/{attachedDatabaseConfigurationName}")
+                + "/{clusterName}/managedPrivateEndpoints/{managedPrivateEndpointName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<AttachedDatabaseConfigurationInner>> get(
+        Mono<Response<ManagedPrivateEndpointInner>> get(
             @HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("clusterName") String clusterName,
-            @PathParam("attachedDatabaseConfigurationName") String attachedDatabaseConfigurationName,
-            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("managedPrivateEndpointName") String managedPrivateEndpointName,
             @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept,
             Context context);
@@ -124,39 +122,56 @@ public final class AttachedDatabaseConfigurationsClientImpl implements AttachedD
         @Headers({"Content-Type: application/json"})
         @Put(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters"
-                + "/{clusterName}/attachedDatabaseConfigurations/{attachedDatabaseConfigurationName}")
+                + "/{clusterName}/managedPrivateEndpoints/{managedPrivateEndpointName}")
         @ExpectedResponses({200, 201, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
             @HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("clusterName") String clusterName,
-            @PathParam("attachedDatabaseConfigurationName") String attachedDatabaseConfigurationName,
-            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("managedPrivateEndpointName") String managedPrivateEndpointName,
             @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") AttachedDatabaseConfigurationInner parameters,
+            @BodyParam("application/json") ManagedPrivateEndpointInner parameters,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({"Content-Type: application/json"})
+        @Patch(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters"
+                + "/{clusterName}/managedPrivateEndpoints/{managedPrivateEndpointName}")
+        @ExpectedResponses({200, 202})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> update(
+            @HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("clusterName") String clusterName,
+            @PathParam("managedPrivateEndpointName") String managedPrivateEndpointName,
+            @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") ManagedPrivateEndpointInner parameters,
             @HeaderParam("Accept") String accept,
             Context context);
 
         @Headers({"Content-Type: application/json"})
         @Delete(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters"
-                + "/{clusterName}/attachedDatabaseConfigurations/{attachedDatabaseConfigurationName}")
+                + "/{clusterName}/managedPrivateEndpoints/{managedPrivateEndpointName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(
             @HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("clusterName") String clusterName,
-            @PathParam("attachedDatabaseConfigurationName") String attachedDatabaseConfigurationName,
-            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("managedPrivateEndpointName") String managedPrivateEndpointName,
             @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept,
             Context context);
     }
 
     /**
-     * Checks that the attached database configuration resource name is valid and is not already in use.
+     * Checks that the managed private endpoints resource name is valid and is not already in use.
      *
      * @param resourceGroupName The name of the resource group containing the Kusto cluster.
      * @param clusterName The name of the Kusto cluster.
@@ -168,7 +183,7 @@ public final class AttachedDatabaseConfigurationsClientImpl implements AttachedD
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<CheckNameResultInner>> checkNameAvailabilityWithResponseAsync(
-        String resourceGroupName, String clusterName, AttachedDatabaseConfigurationsCheckNameRequest resourceName) {
+        String resourceGroupName, String clusterName, ManagedPrivateEndpointsCheckNameRequest resourceName) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -211,7 +226,7 @@ public final class AttachedDatabaseConfigurationsClientImpl implements AttachedD
     }
 
     /**
-     * Checks that the attached database configuration resource name is valid and is not already in use.
+     * Checks that the managed private endpoints resource name is valid and is not already in use.
      *
      * @param resourceGroupName The name of the resource group containing the Kusto cluster.
      * @param clusterName The name of the Kusto cluster.
@@ -226,7 +241,7 @@ public final class AttachedDatabaseConfigurationsClientImpl implements AttachedD
     private Mono<Response<CheckNameResultInner>> checkNameAvailabilityWithResponseAsync(
         String resourceGroupName,
         String clusterName,
-        AttachedDatabaseConfigurationsCheckNameRequest resourceName,
+        ManagedPrivateEndpointsCheckNameRequest resourceName,
         Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -267,7 +282,7 @@ public final class AttachedDatabaseConfigurationsClientImpl implements AttachedD
     }
 
     /**
-     * Checks that the attached database configuration resource name is valid and is not already in use.
+     * Checks that the managed private endpoints resource name is valid and is not already in use.
      *
      * @param resourceGroupName The name of the resource group containing the Kusto cluster.
      * @param clusterName The name of the Kusto cluster.
@@ -279,7 +294,7 @@ public final class AttachedDatabaseConfigurationsClientImpl implements AttachedD
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<CheckNameResultInner> checkNameAvailabilityAsync(
-        String resourceGroupName, String clusterName, AttachedDatabaseConfigurationsCheckNameRequest resourceName) {
+        String resourceGroupName, String clusterName, ManagedPrivateEndpointsCheckNameRequest resourceName) {
         return checkNameAvailabilityWithResponseAsync(resourceGroupName, clusterName, resourceName)
             .flatMap(
                 (Response<CheckNameResultInner> res) -> {
@@ -292,7 +307,7 @@ public final class AttachedDatabaseConfigurationsClientImpl implements AttachedD
     }
 
     /**
-     * Checks that the attached database configuration resource name is valid and is not already in use.
+     * Checks that the managed private endpoints resource name is valid and is not already in use.
      *
      * @param resourceGroupName The name of the resource group containing the Kusto cluster.
      * @param clusterName The name of the Kusto cluster.
@@ -304,12 +319,12 @@ public final class AttachedDatabaseConfigurationsClientImpl implements AttachedD
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CheckNameResultInner checkNameAvailability(
-        String resourceGroupName, String clusterName, AttachedDatabaseConfigurationsCheckNameRequest resourceName) {
+        String resourceGroupName, String clusterName, ManagedPrivateEndpointsCheckNameRequest resourceName) {
         return checkNameAvailabilityAsync(resourceGroupName, clusterName, resourceName).block();
     }
 
     /**
-     * Checks that the attached database configuration resource name is valid and is not already in use.
+     * Checks that the managed private endpoints resource name is valid and is not already in use.
      *
      * @param resourceGroupName The name of the resource group containing the Kusto cluster.
      * @param clusterName The name of the Kusto cluster.
@@ -324,23 +339,23 @@ public final class AttachedDatabaseConfigurationsClientImpl implements AttachedD
     public Response<CheckNameResultInner> checkNameAvailabilityWithResponse(
         String resourceGroupName,
         String clusterName,
-        AttachedDatabaseConfigurationsCheckNameRequest resourceName,
+        ManagedPrivateEndpointsCheckNameRequest resourceName,
         Context context) {
         return checkNameAvailabilityWithResponseAsync(resourceGroupName, clusterName, resourceName, context).block();
     }
 
     /**
-     * Returns the list of attached database configurations of the given Kusto cluster.
+     * Returns the list of managed private endpoints.
      *
      * @param resourceGroupName The name of the resource group containing the Kusto cluster.
      * @param clusterName The name of the Kusto cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list attached database configurations operation response.
+     * @return the list managed private endpoints operation response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<AttachedDatabaseConfigurationInner>> listByClusterSinglePageAsync(
+    private Mono<PagedResponse<ManagedPrivateEndpointInner>> listSinglePageAsync(
         String resourceGroupName, String clusterName) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -348,6 +363,12 @@ public final class AttachedDatabaseConfigurationsClientImpl implements AttachedD
                     new IllegalArgumentException(
                         "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
@@ -355,26 +376,20 @@ public final class AttachedDatabaseConfigurationsClientImpl implements AttachedD
         if (clusterName == null) {
             return Mono.error(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
         }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
                     service
-                        .listByCluster(
+                        .list(
                             this.client.getEndpoint(),
+                            this.client.getSubscriptionId(),
                             resourceGroupName,
                             clusterName,
-                            this.client.getSubscriptionId(),
                             this.client.getApiVersion(),
                             accept,
                             context))
-            .<PagedResponse<AttachedDatabaseConfigurationInner>>map(
+            .<PagedResponse<ManagedPrivateEndpointInner>>map(
                 res ->
                     new PagedResponseBase<>(
                         res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
@@ -382,7 +397,7 @@ public final class AttachedDatabaseConfigurationsClientImpl implements AttachedD
     }
 
     /**
-     * Returns the list of attached database configurations of the given Kusto cluster.
+     * Returns the list of managed private endpoints.
      *
      * @param resourceGroupName The name of the resource group containing the Kusto cluster.
      * @param clusterName The name of the Kusto cluster.
@@ -390,16 +405,22 @@ public final class AttachedDatabaseConfigurationsClientImpl implements AttachedD
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list attached database configurations operation response.
+     * @return the list managed private endpoints operation response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<AttachedDatabaseConfigurationInner>> listByClusterSinglePageAsync(
+    private Mono<PagedResponse<ManagedPrivateEndpointInner>> listSinglePageAsync(
         String resourceGroupName, String clusterName, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
                     new IllegalArgumentException(
                         "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -408,20 +429,14 @@ public final class AttachedDatabaseConfigurationsClientImpl implements AttachedD
         if (clusterName == null) {
             return Mono.error(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
         }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByCluster(
+            .list(
                 this.client.getEndpoint(),
+                this.client.getSubscriptionId(),
                 resourceGroupName,
                 clusterName,
-                this.client.getSubscriptionId(),
                 this.client.getApiVersion(),
                 accept,
                 context)
@@ -432,23 +447,22 @@ public final class AttachedDatabaseConfigurationsClientImpl implements AttachedD
     }
 
     /**
-     * Returns the list of attached database configurations of the given Kusto cluster.
+     * Returns the list of managed private endpoints.
      *
      * @param resourceGroupName The name of the resource group containing the Kusto cluster.
      * @param clusterName The name of the Kusto cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list attached database configurations operation response.
+     * @return the list managed private endpoints operation response.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<AttachedDatabaseConfigurationInner> listByClusterAsync(
-        String resourceGroupName, String clusterName) {
-        return new PagedFlux<>(() -> listByClusterSinglePageAsync(resourceGroupName, clusterName));
+    private PagedFlux<ManagedPrivateEndpointInner> listAsync(String resourceGroupName, String clusterName) {
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, clusterName));
     }
 
     /**
-     * Returns the list of attached database configurations of the given Kusto cluster.
+     * Returns the list of managed private endpoints.
      *
      * @param resourceGroupName The name of the resource group containing the Kusto cluster.
      * @param clusterName The name of the Kusto cluster.
@@ -456,32 +470,31 @@ public final class AttachedDatabaseConfigurationsClientImpl implements AttachedD
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list attached database configurations operation response.
+     * @return the list managed private endpoints operation response.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<AttachedDatabaseConfigurationInner> listByClusterAsync(
+    private PagedFlux<ManagedPrivateEndpointInner> listAsync(
         String resourceGroupName, String clusterName, Context context) {
-        return new PagedFlux<>(() -> listByClusterSinglePageAsync(resourceGroupName, clusterName, context));
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, clusterName, context));
     }
 
     /**
-     * Returns the list of attached database configurations of the given Kusto cluster.
+     * Returns the list of managed private endpoints.
      *
      * @param resourceGroupName The name of the resource group containing the Kusto cluster.
      * @param clusterName The name of the Kusto cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list attached database configurations operation response.
+     * @return the list managed private endpoints operation response.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<AttachedDatabaseConfigurationInner> listByCluster(
-        String resourceGroupName, String clusterName) {
-        return new PagedIterable<>(listByClusterAsync(resourceGroupName, clusterName));
+    public PagedIterable<ManagedPrivateEndpointInner> list(String resourceGroupName, String clusterName) {
+        return new PagedIterable<>(listAsync(resourceGroupName, clusterName));
     }
 
     /**
-     * Returns the list of attached database configurations of the given Kusto cluster.
+     * Returns the list of managed private endpoints.
      *
      * @param resourceGroupName The name of the resource group containing the Kusto cluster.
      * @param clusterName The name of the Kusto cluster.
@@ -489,33 +502,39 @@ public final class AttachedDatabaseConfigurationsClientImpl implements AttachedD
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list attached database configurations operation response.
+     * @return the list managed private endpoints operation response.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<AttachedDatabaseConfigurationInner> listByCluster(
+    public PagedIterable<ManagedPrivateEndpointInner> list(
         String resourceGroupName, String clusterName, Context context) {
-        return new PagedIterable<>(listByClusterAsync(resourceGroupName, clusterName, context));
+        return new PagedIterable<>(listAsync(resourceGroupName, clusterName, context));
     }
 
     /**
-     * Returns an attached database configuration.
+     * Gets a managed private endpoint.
      *
      * @param resourceGroupName The name of the resource group containing the Kusto cluster.
      * @param clusterName The name of the Kusto cluster.
-     * @param attachedDatabaseConfigurationName The name of the attached database configuration.
+     * @param managedPrivateEndpointName The name of the managed private endpoint.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class representing an attached database configuration.
+     * @return a managed private endpoint.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<AttachedDatabaseConfigurationInner>> getWithResponseAsync(
-        String resourceGroupName, String clusterName, String attachedDatabaseConfigurationName) {
+    private Mono<Response<ManagedPrivateEndpointInner>> getWithResponseAsync(
+        String resourceGroupName, String clusterName, String managedPrivateEndpointName) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
                     new IllegalArgumentException(
                         "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -524,17 +543,11 @@ public final class AttachedDatabaseConfigurationsClientImpl implements AttachedD
         if (clusterName == null) {
             return Mono.error(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
         }
-        if (attachedDatabaseConfigurationName == null) {
+        if (managedPrivateEndpointName == null) {
             return Mono
                 .error(
                     new IllegalArgumentException(
-                        "Parameter attachedDatabaseConfigurationName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+                        "Parameter managedPrivateEndpointName is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
@@ -543,10 +556,10 @@ public final class AttachedDatabaseConfigurationsClientImpl implements AttachedD
                     service
                         .get(
                             this.client.getEndpoint(),
+                            this.client.getSubscriptionId(),
                             resourceGroupName,
                             clusterName,
-                            attachedDatabaseConfigurationName,
-                            this.client.getSubscriptionId(),
+                            managedPrivateEndpointName,
                             this.client.getApiVersion(),
                             accept,
                             context))
@@ -554,25 +567,31 @@ public final class AttachedDatabaseConfigurationsClientImpl implements AttachedD
     }
 
     /**
-     * Returns an attached database configuration.
+     * Gets a managed private endpoint.
      *
      * @param resourceGroupName The name of the resource group containing the Kusto cluster.
      * @param clusterName The name of the Kusto cluster.
-     * @param attachedDatabaseConfigurationName The name of the attached database configuration.
+     * @param managedPrivateEndpointName The name of the managed private endpoint.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class representing an attached database configuration.
+     * @return a managed private endpoint.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<AttachedDatabaseConfigurationInner>> getWithResponseAsync(
-        String resourceGroupName, String clusterName, String attachedDatabaseConfigurationName, Context context) {
+    private Mono<Response<ManagedPrivateEndpointInner>> getWithResponseAsync(
+        String resourceGroupName, String clusterName, String managedPrivateEndpointName, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
                     new IllegalArgumentException(
                         "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -581,49 +600,43 @@ public final class AttachedDatabaseConfigurationsClientImpl implements AttachedD
         if (clusterName == null) {
             return Mono.error(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
         }
-        if (attachedDatabaseConfigurationName == null) {
+        if (managedPrivateEndpointName == null) {
             return Mono
                 .error(
                     new IllegalArgumentException(
-                        "Parameter attachedDatabaseConfigurationName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+                        "Parameter managedPrivateEndpointName is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .get(
                 this.client.getEndpoint(),
+                this.client.getSubscriptionId(),
                 resourceGroupName,
                 clusterName,
-                attachedDatabaseConfigurationName,
-                this.client.getSubscriptionId(),
+                managedPrivateEndpointName,
                 this.client.getApiVersion(),
                 accept,
                 context);
     }
 
     /**
-     * Returns an attached database configuration.
+     * Gets a managed private endpoint.
      *
      * @param resourceGroupName The name of the resource group containing the Kusto cluster.
      * @param clusterName The name of the Kusto cluster.
-     * @param attachedDatabaseConfigurationName The name of the attached database configuration.
+     * @param managedPrivateEndpointName The name of the managed private endpoint.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class representing an attached database configuration.
+     * @return a managed private endpoint.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<AttachedDatabaseConfigurationInner> getAsync(
-        String resourceGroupName, String clusterName, String attachedDatabaseConfigurationName) {
-        return getWithResponseAsync(resourceGroupName, clusterName, attachedDatabaseConfigurationName)
+    private Mono<ManagedPrivateEndpointInner> getAsync(
+        String resourceGroupName, String clusterName, String managedPrivateEndpointName) {
+        return getWithResponseAsync(resourceGroupName, clusterName, managedPrivateEndpointName)
             .flatMap(
-                (Response<AttachedDatabaseConfigurationInner> res) -> {
+                (Response<ManagedPrivateEndpointInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -633,63 +646,69 @@ public final class AttachedDatabaseConfigurationsClientImpl implements AttachedD
     }
 
     /**
-     * Returns an attached database configuration.
+     * Gets a managed private endpoint.
      *
      * @param resourceGroupName The name of the resource group containing the Kusto cluster.
      * @param clusterName The name of the Kusto cluster.
-     * @param attachedDatabaseConfigurationName The name of the attached database configuration.
+     * @param managedPrivateEndpointName The name of the managed private endpoint.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class representing an attached database configuration.
+     * @return a managed private endpoint.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AttachedDatabaseConfigurationInner get(
-        String resourceGroupName, String clusterName, String attachedDatabaseConfigurationName) {
-        return getAsync(resourceGroupName, clusterName, attachedDatabaseConfigurationName).block();
+    public ManagedPrivateEndpointInner get(
+        String resourceGroupName, String clusterName, String managedPrivateEndpointName) {
+        return getAsync(resourceGroupName, clusterName, managedPrivateEndpointName).block();
     }
 
     /**
-     * Returns an attached database configuration.
+     * Gets a managed private endpoint.
      *
      * @param resourceGroupName The name of the resource group containing the Kusto cluster.
      * @param clusterName The name of the Kusto cluster.
-     * @param attachedDatabaseConfigurationName The name of the attached database configuration.
+     * @param managedPrivateEndpointName The name of the managed private endpoint.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class representing an attached database configuration.
+     * @return a managed private endpoint.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AttachedDatabaseConfigurationInner> getWithResponse(
-        String resourceGroupName, String clusterName, String attachedDatabaseConfigurationName, Context context) {
-        return getWithResponseAsync(resourceGroupName, clusterName, attachedDatabaseConfigurationName, context).block();
+    public Response<ManagedPrivateEndpointInner> getWithResponse(
+        String resourceGroupName, String clusterName, String managedPrivateEndpointName, Context context) {
+        return getWithResponseAsync(resourceGroupName, clusterName, managedPrivateEndpointName, context).block();
     }
 
     /**
-     * Creates or updates an attached database configuration.
+     * Creates a managed private endpoint.
      *
      * @param resourceGroupName The name of the resource group containing the Kusto cluster.
      * @param clusterName The name of the Kusto cluster.
-     * @param attachedDatabaseConfigurationName The name of the attached database configuration.
-     * @param parameters The database parameters supplied to the CreateOrUpdate operation.
+     * @param managedPrivateEndpointName The name of the managed private endpoint.
+     * @param parameters The managed private endpoint parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class representing an attached database configuration.
+     * @return class representing a managed private endpoint.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
         String resourceGroupName,
         String clusterName,
-        String attachedDatabaseConfigurationName,
-        AttachedDatabaseConfigurationInner parameters) {
+        String managedPrivateEndpointName,
+        ManagedPrivateEndpointInner parameters) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
                     new IllegalArgumentException(
                         "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -698,17 +717,11 @@ public final class AttachedDatabaseConfigurationsClientImpl implements AttachedD
         if (clusterName == null) {
             return Mono.error(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
         }
-        if (attachedDatabaseConfigurationName == null) {
+        if (managedPrivateEndpointName == null) {
             return Mono
                 .error(
                     new IllegalArgumentException(
-                        "Parameter attachedDatabaseConfigurationName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+                        "Parameter managedPrivateEndpointName is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -722,10 +735,10 @@ public final class AttachedDatabaseConfigurationsClientImpl implements AttachedD
                     service
                         .createOrUpdate(
                             this.client.getEndpoint(),
+                            this.client.getSubscriptionId(),
                             resourceGroupName,
                             clusterName,
-                            attachedDatabaseConfigurationName,
-                            this.client.getSubscriptionId(),
+                            managedPrivateEndpointName,
                             this.client.getApiVersion(),
                             parameters,
                             accept,
@@ -734,30 +747,36 @@ public final class AttachedDatabaseConfigurationsClientImpl implements AttachedD
     }
 
     /**
-     * Creates or updates an attached database configuration.
+     * Creates a managed private endpoint.
      *
      * @param resourceGroupName The name of the resource group containing the Kusto cluster.
      * @param clusterName The name of the Kusto cluster.
-     * @param attachedDatabaseConfigurationName The name of the attached database configuration.
-     * @param parameters The database parameters supplied to the CreateOrUpdate operation.
+     * @param managedPrivateEndpointName The name of the managed private endpoint.
+     * @param parameters The managed private endpoint parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class representing an attached database configuration.
+     * @return class representing a managed private endpoint.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
         String resourceGroupName,
         String clusterName,
-        String attachedDatabaseConfigurationName,
-        AttachedDatabaseConfigurationInner parameters,
+        String managedPrivateEndpointName,
+        ManagedPrivateEndpointInner parameters,
         Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
                     new IllegalArgumentException(
                         "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -766,17 +785,11 @@ public final class AttachedDatabaseConfigurationsClientImpl implements AttachedD
         if (clusterName == null) {
             return Mono.error(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
         }
-        if (attachedDatabaseConfigurationName == null) {
+        if (managedPrivateEndpointName == null) {
             return Mono
                 .error(
                     new IllegalArgumentException(
-                        "Parameter attachedDatabaseConfigurationName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+                        "Parameter managedPrivateEndpointName is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -788,10 +801,10 @@ public final class AttachedDatabaseConfigurationsClientImpl implements AttachedD
         return service
             .createOrUpdate(
                 this.client.getEndpoint(),
+                this.client.getSubscriptionId(),
                 resourceGroupName,
                 clusterName,
-                attachedDatabaseConfigurationName,
-                this.client.getSubscriptionId(),
+                managedPrivateEndpointName,
                 this.client.getApiVersion(),
                 parameters,
                 accept,
@@ -799,236 +812,237 @@ public final class AttachedDatabaseConfigurationsClientImpl implements AttachedD
     }
 
     /**
-     * Creates or updates an attached database configuration.
+     * Creates a managed private endpoint.
      *
      * @param resourceGroupName The name of the resource group containing the Kusto cluster.
      * @param clusterName The name of the Kusto cluster.
-     * @param attachedDatabaseConfigurationName The name of the attached database configuration.
-     * @param parameters The database parameters supplied to the CreateOrUpdate operation.
+     * @param managedPrivateEndpointName The name of the managed private endpoint.
+     * @param parameters The managed private endpoint parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class representing an attached database configuration.
+     * @return class representing a managed private endpoint.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PollerFlux<PollResult<AttachedDatabaseConfigurationInner>, AttachedDatabaseConfigurationInner>
-        beginCreateOrUpdateAsync(
-            String resourceGroupName,
-            String clusterName,
-            String attachedDatabaseConfigurationName,
-            AttachedDatabaseConfigurationInner parameters) {
+    private PollerFlux<PollResult<ManagedPrivateEndpointInner>, ManagedPrivateEndpointInner> beginCreateOrUpdateAsync(
+        String resourceGroupName,
+        String clusterName,
+        String managedPrivateEndpointName,
+        ManagedPrivateEndpointInner parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(
-                resourceGroupName, clusterName, attachedDatabaseConfigurationName, parameters);
+            createOrUpdateWithResponseAsync(resourceGroupName, clusterName, managedPrivateEndpointName, parameters);
         return this
             .client
-            .<AttachedDatabaseConfigurationInner, AttachedDatabaseConfigurationInner>getLroResult(
+            .<ManagedPrivateEndpointInner, ManagedPrivateEndpointInner>getLroResult(
                 mono,
                 this.client.getHttpPipeline(),
-                AttachedDatabaseConfigurationInner.class,
-                AttachedDatabaseConfigurationInner.class,
+                ManagedPrivateEndpointInner.class,
+                ManagedPrivateEndpointInner.class,
                 Context.NONE);
     }
 
     /**
-     * Creates or updates an attached database configuration.
+     * Creates a managed private endpoint.
      *
      * @param resourceGroupName The name of the resource group containing the Kusto cluster.
      * @param clusterName The name of the Kusto cluster.
-     * @param attachedDatabaseConfigurationName The name of the attached database configuration.
-     * @param parameters The database parameters supplied to the CreateOrUpdate operation.
+     * @param managedPrivateEndpointName The name of the managed private endpoint.
+     * @param parameters The managed private endpoint parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class representing an attached database configuration.
+     * @return class representing a managed private endpoint.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PollerFlux<PollResult<AttachedDatabaseConfigurationInner>, AttachedDatabaseConfigurationInner>
-        beginCreateOrUpdateAsync(
-            String resourceGroupName,
-            String clusterName,
-            String attachedDatabaseConfigurationName,
-            AttachedDatabaseConfigurationInner parameters,
-            Context context) {
+    private PollerFlux<PollResult<ManagedPrivateEndpointInner>, ManagedPrivateEndpointInner> beginCreateOrUpdateAsync(
+        String resourceGroupName,
+        String clusterName,
+        String managedPrivateEndpointName,
+        ManagedPrivateEndpointInner parameters,
+        Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             createOrUpdateWithResponseAsync(
-                resourceGroupName, clusterName, attachedDatabaseConfigurationName, parameters, context);
+                resourceGroupName, clusterName, managedPrivateEndpointName, parameters, context);
         return this
             .client
-            .<AttachedDatabaseConfigurationInner, AttachedDatabaseConfigurationInner>getLroResult(
+            .<ManagedPrivateEndpointInner, ManagedPrivateEndpointInner>getLroResult(
                 mono,
                 this.client.getHttpPipeline(),
-                AttachedDatabaseConfigurationInner.class,
-                AttachedDatabaseConfigurationInner.class,
+                ManagedPrivateEndpointInner.class,
+                ManagedPrivateEndpointInner.class,
                 context);
     }
 
     /**
-     * Creates or updates an attached database configuration.
+     * Creates a managed private endpoint.
      *
      * @param resourceGroupName The name of the resource group containing the Kusto cluster.
      * @param clusterName The name of the Kusto cluster.
-     * @param attachedDatabaseConfigurationName The name of the attached database configuration.
-     * @param parameters The database parameters supplied to the CreateOrUpdate operation.
+     * @param managedPrivateEndpointName The name of the managed private endpoint.
+     * @param parameters The managed private endpoint parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class representing an attached database configuration.
+     * @return class representing a managed private endpoint.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<AttachedDatabaseConfigurationInner>, AttachedDatabaseConfigurationInner>
-        beginCreateOrUpdate(
-            String resourceGroupName,
-            String clusterName,
-            String attachedDatabaseConfigurationName,
-            AttachedDatabaseConfigurationInner parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, clusterName, attachedDatabaseConfigurationName, parameters)
+    public SyncPoller<PollResult<ManagedPrivateEndpointInner>, ManagedPrivateEndpointInner> beginCreateOrUpdate(
+        String resourceGroupName,
+        String clusterName,
+        String managedPrivateEndpointName,
+        ManagedPrivateEndpointInner parameters) {
+        return beginCreateOrUpdateAsync(resourceGroupName, clusterName, managedPrivateEndpointName, parameters)
             .getSyncPoller();
     }
 
     /**
-     * Creates or updates an attached database configuration.
+     * Creates a managed private endpoint.
      *
      * @param resourceGroupName The name of the resource group containing the Kusto cluster.
      * @param clusterName The name of the Kusto cluster.
-     * @param attachedDatabaseConfigurationName The name of the attached database configuration.
-     * @param parameters The database parameters supplied to the CreateOrUpdate operation.
+     * @param managedPrivateEndpointName The name of the managed private endpoint.
+     * @param parameters The managed private endpoint parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class representing an attached database configuration.
+     * @return class representing a managed private endpoint.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<AttachedDatabaseConfigurationInner>, AttachedDatabaseConfigurationInner>
-        beginCreateOrUpdate(
-            String resourceGroupName,
-            String clusterName,
-            String attachedDatabaseConfigurationName,
-            AttachedDatabaseConfigurationInner parameters,
-            Context context) {
-        return beginCreateOrUpdateAsync(
-                resourceGroupName, clusterName, attachedDatabaseConfigurationName, parameters, context)
+    public SyncPoller<PollResult<ManagedPrivateEndpointInner>, ManagedPrivateEndpointInner> beginCreateOrUpdate(
+        String resourceGroupName,
+        String clusterName,
+        String managedPrivateEndpointName,
+        ManagedPrivateEndpointInner parameters,
+        Context context) {
+        return beginCreateOrUpdateAsync(resourceGroupName, clusterName, managedPrivateEndpointName, parameters, context)
             .getSyncPoller();
     }
 
     /**
-     * Creates or updates an attached database configuration.
+     * Creates a managed private endpoint.
      *
      * @param resourceGroupName The name of the resource group containing the Kusto cluster.
      * @param clusterName The name of the Kusto cluster.
-     * @param attachedDatabaseConfigurationName The name of the attached database configuration.
-     * @param parameters The database parameters supplied to the CreateOrUpdate operation.
+     * @param managedPrivateEndpointName The name of the managed private endpoint.
+     * @param parameters The managed private endpoint parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class representing an attached database configuration.
+     * @return class representing a managed private endpoint.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<AttachedDatabaseConfigurationInner> createOrUpdateAsync(
+    private Mono<ManagedPrivateEndpointInner> createOrUpdateAsync(
         String resourceGroupName,
         String clusterName,
-        String attachedDatabaseConfigurationName,
-        AttachedDatabaseConfigurationInner parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, clusterName, attachedDatabaseConfigurationName, parameters)
+        String managedPrivateEndpointName,
+        ManagedPrivateEndpointInner parameters) {
+        return beginCreateOrUpdateAsync(resourceGroupName, clusterName, managedPrivateEndpointName, parameters)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
-     * Creates or updates an attached database configuration.
+     * Creates a managed private endpoint.
      *
      * @param resourceGroupName The name of the resource group containing the Kusto cluster.
      * @param clusterName The name of the Kusto cluster.
-     * @param attachedDatabaseConfigurationName The name of the attached database configuration.
-     * @param parameters The database parameters supplied to the CreateOrUpdate operation.
+     * @param managedPrivateEndpointName The name of the managed private endpoint.
+     * @param parameters The managed private endpoint parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class representing an attached database configuration.
+     * @return class representing a managed private endpoint.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<AttachedDatabaseConfigurationInner> createOrUpdateAsync(
+    private Mono<ManagedPrivateEndpointInner> createOrUpdateAsync(
         String resourceGroupName,
         String clusterName,
-        String attachedDatabaseConfigurationName,
-        AttachedDatabaseConfigurationInner parameters,
+        String managedPrivateEndpointName,
+        ManagedPrivateEndpointInner parameters,
         Context context) {
-        return beginCreateOrUpdateAsync(
-                resourceGroupName, clusterName, attachedDatabaseConfigurationName, parameters, context)
+        return beginCreateOrUpdateAsync(resourceGroupName, clusterName, managedPrivateEndpointName, parameters, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
-     * Creates or updates an attached database configuration.
+     * Creates a managed private endpoint.
      *
      * @param resourceGroupName The name of the resource group containing the Kusto cluster.
      * @param clusterName The name of the Kusto cluster.
-     * @param attachedDatabaseConfigurationName The name of the attached database configuration.
-     * @param parameters The database parameters supplied to the CreateOrUpdate operation.
+     * @param managedPrivateEndpointName The name of the managed private endpoint.
+     * @param parameters The managed private endpoint parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class representing an attached database configuration.
+     * @return class representing a managed private endpoint.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AttachedDatabaseConfigurationInner createOrUpdate(
+    public ManagedPrivateEndpointInner createOrUpdate(
         String resourceGroupName,
         String clusterName,
-        String attachedDatabaseConfigurationName,
-        AttachedDatabaseConfigurationInner parameters) {
-        return createOrUpdateAsync(resourceGroupName, clusterName, attachedDatabaseConfigurationName, parameters)
-            .block();
+        String managedPrivateEndpointName,
+        ManagedPrivateEndpointInner parameters) {
+        return createOrUpdateAsync(resourceGroupName, clusterName, managedPrivateEndpointName, parameters).block();
     }
 
     /**
-     * Creates or updates an attached database configuration.
+     * Creates a managed private endpoint.
      *
      * @param resourceGroupName The name of the resource group containing the Kusto cluster.
      * @param clusterName The name of the Kusto cluster.
-     * @param attachedDatabaseConfigurationName The name of the attached database configuration.
-     * @param parameters The database parameters supplied to the CreateOrUpdate operation.
+     * @param managedPrivateEndpointName The name of the managed private endpoint.
+     * @param parameters The managed private endpoint parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class representing an attached database configuration.
+     * @return class representing a managed private endpoint.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AttachedDatabaseConfigurationInner createOrUpdate(
+    public ManagedPrivateEndpointInner createOrUpdate(
         String resourceGroupName,
         String clusterName,
-        String attachedDatabaseConfigurationName,
-        AttachedDatabaseConfigurationInner parameters,
+        String managedPrivateEndpointName,
+        ManagedPrivateEndpointInner parameters,
         Context context) {
-        return createOrUpdateAsync(
-                resourceGroupName, clusterName, attachedDatabaseConfigurationName, parameters, context)
+        return createOrUpdateAsync(resourceGroupName, clusterName, managedPrivateEndpointName, parameters, context)
             .block();
     }
 
     /**
-     * Deletes the attached database configuration with the given name.
+     * Updates a managed private endpoint.
      *
      * @param resourceGroupName The name of the resource group containing the Kusto cluster.
      * @param clusterName The name of the Kusto cluster.
-     * @param attachedDatabaseConfigurationName The name of the attached database configuration.
+     * @param managedPrivateEndpointName The name of the managed private endpoint.
+     * @param parameters The managed private endpoint parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return class representing a managed private endpoint.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String clusterName, String attachedDatabaseConfigurationName) {
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
+        String resourceGroupName,
+        String clusterName,
+        String managedPrivateEndpointName,
+        ManagedPrivateEndpointInner parameters) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
                     new IllegalArgumentException(
                         "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1037,17 +1051,338 @@ public final class AttachedDatabaseConfigurationsClientImpl implements AttachedD
         if (clusterName == null) {
             return Mono.error(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
         }
-        if (attachedDatabaseConfigurationName == null) {
+        if (managedPrivateEndpointName == null) {
             return Mono
                 .error(
                     new IllegalArgumentException(
-                        "Parameter attachedDatabaseConfigurationName is required and cannot be null."));
+                        "Parameter managedPrivateEndpointName is required and cannot be null."));
+        }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .update(
+                            this.client.getEndpoint(),
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            clusterName,
+                            managedPrivateEndpointName,
+                            this.client.getApiVersion(),
+                            parameters,
+                            accept,
+                            context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Updates a managed private endpoint.
+     *
+     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param clusterName The name of the Kusto cluster.
+     * @param managedPrivateEndpointName The name of the managed private endpoint.
+     * @param parameters The managed private endpoint parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return class representing a managed private endpoint.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
+        String resourceGroupName,
+        String clusterName,
+        String managedPrivateEndpointName,
+        ManagedPrivateEndpointInner parameters,
+        Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
                 .error(
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (clusterName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
+        }
+        if (managedPrivateEndpointName == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter managedPrivateEndpointName is required and cannot be null."));
+        }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .update(
+                this.client.getEndpoint(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                clusterName,
+                managedPrivateEndpointName,
+                this.client.getApiVersion(),
+                parameters,
+                accept,
+                context);
+    }
+
+    /**
+     * Updates a managed private endpoint.
+     *
+     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param clusterName The name of the Kusto cluster.
+     * @param managedPrivateEndpointName The name of the managed private endpoint.
+     * @param parameters The managed private endpoint parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return class representing a managed private endpoint.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PollerFlux<PollResult<ManagedPrivateEndpointInner>, ManagedPrivateEndpointInner> beginUpdateAsync(
+        String resourceGroupName,
+        String clusterName,
+        String managedPrivateEndpointName,
+        ManagedPrivateEndpointInner parameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            updateWithResponseAsync(resourceGroupName, clusterName, managedPrivateEndpointName, parameters);
+        return this
+            .client
+            .<ManagedPrivateEndpointInner, ManagedPrivateEndpointInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                ManagedPrivateEndpointInner.class,
+                ManagedPrivateEndpointInner.class,
+                Context.NONE);
+    }
+
+    /**
+     * Updates a managed private endpoint.
+     *
+     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param clusterName The name of the Kusto cluster.
+     * @param managedPrivateEndpointName The name of the managed private endpoint.
+     * @param parameters The managed private endpoint parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return class representing a managed private endpoint.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PollerFlux<PollResult<ManagedPrivateEndpointInner>, ManagedPrivateEndpointInner> beginUpdateAsync(
+        String resourceGroupName,
+        String clusterName,
+        String managedPrivateEndpointName,
+        ManagedPrivateEndpointInner parameters,
+        Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            updateWithResponseAsync(resourceGroupName, clusterName, managedPrivateEndpointName, parameters, context);
+        return this
+            .client
+            .<ManagedPrivateEndpointInner, ManagedPrivateEndpointInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                ManagedPrivateEndpointInner.class,
+                ManagedPrivateEndpointInner.class,
+                context);
+    }
+
+    /**
+     * Updates a managed private endpoint.
+     *
+     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param clusterName The name of the Kusto cluster.
+     * @param managedPrivateEndpointName The name of the managed private endpoint.
+     * @param parameters The managed private endpoint parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return class representing a managed private endpoint.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<ManagedPrivateEndpointInner>, ManagedPrivateEndpointInner> beginUpdate(
+        String resourceGroupName,
+        String clusterName,
+        String managedPrivateEndpointName,
+        ManagedPrivateEndpointInner parameters) {
+        return beginUpdateAsync(resourceGroupName, clusterName, managedPrivateEndpointName, parameters).getSyncPoller();
+    }
+
+    /**
+     * Updates a managed private endpoint.
+     *
+     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param clusterName The name of the Kusto cluster.
+     * @param managedPrivateEndpointName The name of the managed private endpoint.
+     * @param parameters The managed private endpoint parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return class representing a managed private endpoint.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<ManagedPrivateEndpointInner>, ManagedPrivateEndpointInner> beginUpdate(
+        String resourceGroupName,
+        String clusterName,
+        String managedPrivateEndpointName,
+        ManagedPrivateEndpointInner parameters,
+        Context context) {
+        return beginUpdateAsync(resourceGroupName, clusterName, managedPrivateEndpointName, parameters, context)
+            .getSyncPoller();
+    }
+
+    /**
+     * Updates a managed private endpoint.
+     *
+     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param clusterName The name of the Kusto cluster.
+     * @param managedPrivateEndpointName The name of the managed private endpoint.
+     * @param parameters The managed private endpoint parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return class representing a managed private endpoint.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<ManagedPrivateEndpointInner> updateAsync(
+        String resourceGroupName,
+        String clusterName,
+        String managedPrivateEndpointName,
+        ManagedPrivateEndpointInner parameters) {
+        return beginUpdateAsync(resourceGroupName, clusterName, managedPrivateEndpointName, parameters)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Updates a managed private endpoint.
+     *
+     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param clusterName The name of the Kusto cluster.
+     * @param managedPrivateEndpointName The name of the managed private endpoint.
+     * @param parameters The managed private endpoint parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return class representing a managed private endpoint.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<ManagedPrivateEndpointInner> updateAsync(
+        String resourceGroupName,
+        String clusterName,
+        String managedPrivateEndpointName,
+        ManagedPrivateEndpointInner parameters,
+        Context context) {
+        return beginUpdateAsync(resourceGroupName, clusterName, managedPrivateEndpointName, parameters, context)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Updates a managed private endpoint.
+     *
+     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param clusterName The name of the Kusto cluster.
+     * @param managedPrivateEndpointName The name of the managed private endpoint.
+     * @param parameters The managed private endpoint parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return class representing a managed private endpoint.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ManagedPrivateEndpointInner update(
+        String resourceGroupName,
+        String clusterName,
+        String managedPrivateEndpointName,
+        ManagedPrivateEndpointInner parameters) {
+        return updateAsync(resourceGroupName, clusterName, managedPrivateEndpointName, parameters).block();
+    }
+
+    /**
+     * Updates a managed private endpoint.
+     *
+     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param clusterName The name of the Kusto cluster.
+     * @param managedPrivateEndpointName The name of the managed private endpoint.
+     * @param parameters The managed private endpoint parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return class representing a managed private endpoint.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ManagedPrivateEndpointInner update(
+        String resourceGroupName,
+        String clusterName,
+        String managedPrivateEndpointName,
+        ManagedPrivateEndpointInner parameters,
+        Context context) {
+        return updateAsync(resourceGroupName, clusterName, managedPrivateEndpointName, parameters, context).block();
+    }
+
+    /**
+     * Deletes a managed private endpoint.
+     *
+     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param clusterName The name of the Kusto cluster.
+     * @param managedPrivateEndpointName The name of the managed private endpoint.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
+        String resourceGroupName, String clusterName, String managedPrivateEndpointName) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (clusterName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
+        }
+        if (managedPrivateEndpointName == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter managedPrivateEndpointName is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
@@ -1056,10 +1391,10 @@ public final class AttachedDatabaseConfigurationsClientImpl implements AttachedD
                     service
                         .delete(
                             this.client.getEndpoint(),
+                            this.client.getSubscriptionId(),
                             resourceGroupName,
                             clusterName,
-                            attachedDatabaseConfigurationName,
-                            this.client.getSubscriptionId(),
+                            managedPrivateEndpointName,
                             this.client.getApiVersion(),
                             accept,
                             context))
@@ -1067,11 +1402,11 @@ public final class AttachedDatabaseConfigurationsClientImpl implements AttachedD
     }
 
     /**
-     * Deletes the attached database configuration with the given name.
+     * Deletes a managed private endpoint.
      *
      * @param resourceGroupName The name of the resource group containing the Kusto cluster.
      * @param clusterName The name of the Kusto cluster.
-     * @param attachedDatabaseConfigurationName The name of the attached database configuration.
+     * @param managedPrivateEndpointName The name of the managed private endpoint.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1080,12 +1415,18 @@ public final class AttachedDatabaseConfigurationsClientImpl implements AttachedD
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String clusterName, String attachedDatabaseConfigurationName, Context context) {
+        String resourceGroupName, String clusterName, String managedPrivateEndpointName, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
                     new IllegalArgumentException(
                         "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1094,38 +1435,32 @@ public final class AttachedDatabaseConfigurationsClientImpl implements AttachedD
         if (clusterName == null) {
             return Mono.error(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
         }
-        if (attachedDatabaseConfigurationName == null) {
+        if (managedPrivateEndpointName == null) {
             return Mono
                 .error(
                     new IllegalArgumentException(
-                        "Parameter attachedDatabaseConfigurationName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+                        "Parameter managedPrivateEndpointName is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .delete(
                 this.client.getEndpoint(),
+                this.client.getSubscriptionId(),
                 resourceGroupName,
                 clusterName,
-                attachedDatabaseConfigurationName,
-                this.client.getSubscriptionId(),
+                managedPrivateEndpointName,
                 this.client.getApiVersion(),
                 accept,
                 context);
     }
 
     /**
-     * Deletes the attached database configuration with the given name.
+     * Deletes a managed private endpoint.
      *
      * @param resourceGroupName The name of the resource group containing the Kusto cluster.
      * @param clusterName The name of the Kusto cluster.
-     * @param attachedDatabaseConfigurationName The name of the attached database configuration.
+     * @param managedPrivateEndpointName The name of the managed private endpoint.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1133,20 +1468,20 @@ public final class AttachedDatabaseConfigurationsClientImpl implements AttachedD
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String clusterName, String attachedDatabaseConfigurationName) {
+        String resourceGroupName, String clusterName, String managedPrivateEndpointName) {
         Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, clusterName, attachedDatabaseConfigurationName);
+            deleteWithResponseAsync(resourceGroupName, clusterName, managedPrivateEndpointName);
         return this
             .client
             .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
     }
 
     /**
-     * Deletes the attached database configuration with the given name.
+     * Deletes a managed private endpoint.
      *
      * @param resourceGroupName The name of the resource group containing the Kusto cluster.
      * @param clusterName The name of the Kusto cluster.
-     * @param attachedDatabaseConfigurationName The name of the attached database configuration.
+     * @param managedPrivateEndpointName The name of the managed private endpoint.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1155,21 +1490,21 @@ public final class AttachedDatabaseConfigurationsClientImpl implements AttachedD
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String clusterName, String attachedDatabaseConfigurationName, Context context) {
+        String resourceGroupName, String clusterName, String managedPrivateEndpointName, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, clusterName, attachedDatabaseConfigurationName, context);
+            deleteWithResponseAsync(resourceGroupName, clusterName, managedPrivateEndpointName, context);
         return this
             .client
             .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
     }
 
     /**
-     * Deletes the attached database configuration with the given name.
+     * Deletes a managed private endpoint.
      *
      * @param resourceGroupName The name of the resource group containing the Kusto cluster.
      * @param clusterName The name of the Kusto cluster.
-     * @param attachedDatabaseConfigurationName The name of the attached database configuration.
+     * @param managedPrivateEndpointName The name of the managed private endpoint.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1177,16 +1512,16 @@ public final class AttachedDatabaseConfigurationsClientImpl implements AttachedD
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String clusterName, String attachedDatabaseConfigurationName) {
-        return beginDeleteAsync(resourceGroupName, clusterName, attachedDatabaseConfigurationName).getSyncPoller();
+        String resourceGroupName, String clusterName, String managedPrivateEndpointName) {
+        return beginDeleteAsync(resourceGroupName, clusterName, managedPrivateEndpointName).getSyncPoller();
     }
 
     /**
-     * Deletes the attached database configuration with the given name.
+     * Deletes a managed private endpoint.
      *
      * @param resourceGroupName The name of the resource group containing the Kusto cluster.
      * @param clusterName The name of the Kusto cluster.
-     * @param attachedDatabaseConfigurationName The name of the attached database configuration.
+     * @param managedPrivateEndpointName The name of the managed private endpoint.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1195,36 +1530,34 @@ public final class AttachedDatabaseConfigurationsClientImpl implements AttachedD
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String clusterName, String attachedDatabaseConfigurationName, Context context) {
-        return beginDeleteAsync(resourceGroupName, clusterName, attachedDatabaseConfigurationName, context)
-            .getSyncPoller();
+        String resourceGroupName, String clusterName, String managedPrivateEndpointName, Context context) {
+        return beginDeleteAsync(resourceGroupName, clusterName, managedPrivateEndpointName, context).getSyncPoller();
     }
 
     /**
-     * Deletes the attached database configuration with the given name.
+     * Deletes a managed private endpoint.
      *
      * @param resourceGroupName The name of the resource group containing the Kusto cluster.
      * @param clusterName The name of the Kusto cluster.
-     * @param attachedDatabaseConfigurationName The name of the attached database configuration.
+     * @param managedPrivateEndpointName The name of the managed private endpoint.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(
-        String resourceGroupName, String clusterName, String attachedDatabaseConfigurationName) {
-        return beginDeleteAsync(resourceGroupName, clusterName, attachedDatabaseConfigurationName)
+    private Mono<Void> deleteAsync(String resourceGroupName, String clusterName, String managedPrivateEndpointName) {
+        return beginDeleteAsync(resourceGroupName, clusterName, managedPrivateEndpointName)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
-     * Deletes the attached database configuration with the given name.
+     * Deletes a managed private endpoint.
      *
      * @param resourceGroupName The name of the resource group containing the Kusto cluster.
      * @param clusterName The name of the Kusto cluster.
-     * @param attachedDatabaseConfigurationName The name of the attached database configuration.
+     * @param managedPrivateEndpointName The name of the managed private endpoint.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1233,33 +1566,33 @@ public final class AttachedDatabaseConfigurationsClientImpl implements AttachedD
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(
-        String resourceGroupName, String clusterName, String attachedDatabaseConfigurationName, Context context) {
-        return beginDeleteAsync(resourceGroupName, clusterName, attachedDatabaseConfigurationName, context)
+        String resourceGroupName, String clusterName, String managedPrivateEndpointName, Context context) {
+        return beginDeleteAsync(resourceGroupName, clusterName, managedPrivateEndpointName, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
-     * Deletes the attached database configuration with the given name.
+     * Deletes a managed private endpoint.
      *
      * @param resourceGroupName The name of the resource group containing the Kusto cluster.
      * @param clusterName The name of the Kusto cluster.
-     * @param attachedDatabaseConfigurationName The name of the attached database configuration.
+     * @param managedPrivateEndpointName The name of the managed private endpoint.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String clusterName, String attachedDatabaseConfigurationName) {
-        deleteAsync(resourceGroupName, clusterName, attachedDatabaseConfigurationName).block();
+    public void delete(String resourceGroupName, String clusterName, String managedPrivateEndpointName) {
+        deleteAsync(resourceGroupName, clusterName, managedPrivateEndpointName).block();
     }
 
     /**
-     * Deletes the attached database configuration with the given name.
+     * Deletes a managed private endpoint.
      *
      * @param resourceGroupName The name of the resource group containing the Kusto cluster.
      * @param clusterName The name of the Kusto cluster.
-     * @param attachedDatabaseConfigurationName The name of the attached database configuration.
+     * @param managedPrivateEndpointName The name of the managed private endpoint.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1267,7 +1600,7 @@ public final class AttachedDatabaseConfigurationsClientImpl implements AttachedD
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(
-        String resourceGroupName, String clusterName, String attachedDatabaseConfigurationName, Context context) {
-        deleteAsync(resourceGroupName, clusterName, attachedDatabaseConfigurationName, context).block();
+        String resourceGroupName, String clusterName, String managedPrivateEndpointName, Context context) {
+        deleteAsync(resourceGroupName, clusterName, managedPrivateEndpointName, context).block();
     }
 }

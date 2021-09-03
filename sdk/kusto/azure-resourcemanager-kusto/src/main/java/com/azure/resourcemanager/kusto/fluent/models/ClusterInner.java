@@ -7,14 +7,18 @@ package com.azure.resourcemanager.kusto.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.kusto.models.AcceptedAudiences;
 import com.azure.resourcemanager.kusto.models.AzureSku;
+import com.azure.resourcemanager.kusto.models.ClusterNetworkAccessFlag;
 import com.azure.resourcemanager.kusto.models.EngineType;
 import com.azure.resourcemanager.kusto.models.Identity;
 import com.azure.resourcemanager.kusto.models.KeyVaultProperties;
 import com.azure.resourcemanager.kusto.models.LanguageExtensionsList;
 import com.azure.resourcemanager.kusto.models.OptimizedAutoscale;
 import com.azure.resourcemanager.kusto.models.ProvisioningState;
+import com.azure.resourcemanager.kusto.models.PublicNetworkAccess;
 import com.azure.resourcemanager.kusto.models.State;
 import com.azure.resourcemanager.kusto.models.TrustedExternalTenant;
 import com.azure.resourcemanager.kusto.models.VirtualNetworkConfiguration;
@@ -34,6 +38,12 @@ public class ClusterInner extends Resource {
      */
     @JsonProperty(value = "sku", required = true)
     private AzureSku sku;
+
+    /*
+     * Metadata pertaining to creation and last modification of the resource.
+     */
+    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
+    private SystemData systemData;
 
     /*
      * The availability zones of the cluster.
@@ -138,10 +148,50 @@ public class ClusterInner extends Resource {
     private Boolean enableDoubleEncryption;
 
     /*
+     * Public network access to the cluster is enabled by default. When
+     * disabled, only private endpoint connection to the cluster is allowed
+     */
+    @JsonProperty(value = "properties.publicNetworkAccess")
+    private PublicNetworkAccess publicNetworkAccess;
+
+    /*
+     * The list of ips in the format of CIDR allowed to connect to the cluster.
+     */
+    @JsonProperty(value = "properties.allowedIpRangeList")
+    private List<String> allowedIpRangeList;
+
+    /*
      * The engine type
      */
     @JsonProperty(value = "properties.engineType")
     private EngineType engineType;
+
+    /*
+     * The cluster's accepted audiences.
+     */
+    @JsonProperty(value = "properties.acceptedAudiences")
+    private List<AcceptedAudiences> acceptedAudiences;
+
+    /*
+     * A boolean value that indicates if the cluster could be automatically
+     * stopped (due to lack of data or no activity for many days).
+     */
+    @JsonProperty(value = "properties.enableAutoStop")
+    private Boolean enableAutoStop;
+
+    /*
+     * Whether or not to restrict outbound network access.  Value is optional
+     * but if passed in, must be 'Enabled' or 'Disabled'
+     */
+    @JsonProperty(value = "properties.restrictOutboundNetworkAccess")
+    private ClusterNetworkAccessFlag restrictOutboundNetworkAccess;
+
+    /*
+     * List of allowed FQDNs(Fully Qualified Domain Name) for egress from
+     * Cluster.
+     */
+    @JsonProperty(value = "properties.allowedFqdnList")
+    private List<String> allowedFqdnList;
 
     /**
      * Get the sku property: The SKU of the cluster.
@@ -161,6 +211,15 @@ public class ClusterInner extends Resource {
     public ClusterInner withSku(AzureSku sku) {
         this.sku = sku;
         return this;
+    }
+
+    /**
+     * Get the systemData property: Metadata pertaining to creation and last modification of the resource.
+     *
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
     }
 
     /**
@@ -427,6 +486,48 @@ public class ClusterInner extends Resource {
     }
 
     /**
+     * Get the publicNetworkAccess property: Public network access to the cluster is enabled by default. When disabled,
+     * only private endpoint connection to the cluster is allowed.
+     *
+     * @return the publicNetworkAccess value.
+     */
+    public PublicNetworkAccess publicNetworkAccess() {
+        return this.publicNetworkAccess;
+    }
+
+    /**
+     * Set the publicNetworkAccess property: Public network access to the cluster is enabled by default. When disabled,
+     * only private endpoint connection to the cluster is allowed.
+     *
+     * @param publicNetworkAccess the publicNetworkAccess value to set.
+     * @return the ClusterInner object itself.
+     */
+    public ClusterInner withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess) {
+        this.publicNetworkAccess = publicNetworkAccess;
+        return this;
+    }
+
+    /**
+     * Get the allowedIpRangeList property: The list of ips in the format of CIDR allowed to connect to the cluster.
+     *
+     * @return the allowedIpRangeList value.
+     */
+    public List<String> allowedIpRangeList() {
+        return this.allowedIpRangeList;
+    }
+
+    /**
+     * Set the allowedIpRangeList property: The list of ips in the format of CIDR allowed to connect to the cluster.
+     *
+     * @param allowedIpRangeList the allowedIpRangeList value to set.
+     * @return the ClusterInner object itself.
+     */
+    public ClusterInner withAllowedIpRangeList(List<String> allowedIpRangeList) {
+        this.allowedIpRangeList = allowedIpRangeList;
+        return this;
+    }
+
+    /**
      * Get the engineType property: The engine type.
      *
      * @return the engineType value.
@@ -443,6 +544,90 @@ public class ClusterInner extends Resource {
      */
     public ClusterInner withEngineType(EngineType engineType) {
         this.engineType = engineType;
+        return this;
+    }
+
+    /**
+     * Get the acceptedAudiences property: The cluster's accepted audiences.
+     *
+     * @return the acceptedAudiences value.
+     */
+    public List<AcceptedAudiences> acceptedAudiences() {
+        return this.acceptedAudiences;
+    }
+
+    /**
+     * Set the acceptedAudiences property: The cluster's accepted audiences.
+     *
+     * @param acceptedAudiences the acceptedAudiences value to set.
+     * @return the ClusterInner object itself.
+     */
+    public ClusterInner withAcceptedAudiences(List<AcceptedAudiences> acceptedAudiences) {
+        this.acceptedAudiences = acceptedAudiences;
+        return this;
+    }
+
+    /**
+     * Get the enableAutoStop property: A boolean value that indicates if the cluster could be automatically stopped
+     * (due to lack of data or no activity for many days).
+     *
+     * @return the enableAutoStop value.
+     */
+    public Boolean enableAutoStop() {
+        return this.enableAutoStop;
+    }
+
+    /**
+     * Set the enableAutoStop property: A boolean value that indicates if the cluster could be automatically stopped
+     * (due to lack of data or no activity for many days).
+     *
+     * @param enableAutoStop the enableAutoStop value to set.
+     * @return the ClusterInner object itself.
+     */
+    public ClusterInner withEnableAutoStop(Boolean enableAutoStop) {
+        this.enableAutoStop = enableAutoStop;
+        return this;
+    }
+
+    /**
+     * Get the restrictOutboundNetworkAccess property: Whether or not to restrict outbound network access. Value is
+     * optional but if passed in, must be 'Enabled' or 'Disabled'.
+     *
+     * @return the restrictOutboundNetworkAccess value.
+     */
+    public ClusterNetworkAccessFlag restrictOutboundNetworkAccess() {
+        return this.restrictOutboundNetworkAccess;
+    }
+
+    /**
+     * Set the restrictOutboundNetworkAccess property: Whether or not to restrict outbound network access. Value is
+     * optional but if passed in, must be 'Enabled' or 'Disabled'.
+     *
+     * @param restrictOutboundNetworkAccess the restrictOutboundNetworkAccess value to set.
+     * @return the ClusterInner object itself.
+     */
+    public ClusterInner withRestrictOutboundNetworkAccess(ClusterNetworkAccessFlag restrictOutboundNetworkAccess) {
+        this.restrictOutboundNetworkAccess = restrictOutboundNetworkAccess;
+        return this;
+    }
+
+    /**
+     * Get the allowedFqdnList property: List of allowed FQDNs(Fully Qualified Domain Name) for egress from Cluster.
+     *
+     * @return the allowedFqdnList value.
+     */
+    public List<String> allowedFqdnList() {
+        return this.allowedFqdnList;
+    }
+
+    /**
+     * Set the allowedFqdnList property: List of allowed FQDNs(Fully Qualified Domain Name) for egress from Cluster.
+     *
+     * @param allowedFqdnList the allowedFqdnList value to set.
+     * @return the ClusterInner object itself.
+     */
+    public ClusterInner withAllowedFqdnList(List<String> allowedFqdnList) {
+        this.allowedFqdnList = allowedFqdnList;
         return this;
     }
 
@@ -490,6 +675,9 @@ public class ClusterInner extends Resource {
         }
         if (languageExtensions() != null) {
             languageExtensions().validate();
+        }
+        if (acceptedAudiences() != null) {
+            acceptedAudiences().forEach(e -> e.validate());
         }
     }
 }

@@ -11,61 +11,25 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.resourcemanager.kusto.fluent.models.AttachedDatabaseConfigurationInner;
-import com.azure.resourcemanager.kusto.fluent.models.CheckNameResultInner;
-import com.azure.resourcemanager.kusto.models.AttachedDatabaseConfigurationsCheckNameRequest;
+import com.azure.resourcemanager.kusto.fluent.models.PrivateEndpointConnectionInner;
 
-/** An instance of this class provides access to all the operations defined in AttachedDatabaseConfigurationsClient. */
-public interface AttachedDatabaseConfigurationsClient {
+/** An instance of this class provides access to all the operations defined in PrivateEndpointConnectionsClient. */
+public interface PrivateEndpointConnectionsClient {
     /**
-     * Checks that the attached database configuration resource name is valid and is not already in use.
-     *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
-     * @param clusterName The name of the Kusto cluster.
-     * @param resourceName The name of the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result returned from a check name availability request.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    CheckNameResultInner checkNameAvailability(
-        String resourceGroupName, String clusterName, AttachedDatabaseConfigurationsCheckNameRequest resourceName);
-
-    /**
-     * Checks that the attached database configuration resource name is valid and is not already in use.
-     *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
-     * @param clusterName The name of the Kusto cluster.
-     * @param resourceName The name of the resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result returned from a check name availability request.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<CheckNameResultInner> checkNameAvailabilityWithResponse(
-        String resourceGroupName,
-        String clusterName,
-        AttachedDatabaseConfigurationsCheckNameRequest resourceName,
-        Context context);
-
-    /**
-     * Returns the list of attached database configurations of the given Kusto cluster.
+     * Returns the list of private endpoint connections.
      *
      * @param resourceGroupName The name of the resource group containing the Kusto cluster.
      * @param clusterName The name of the Kusto cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list attached database configurations operation response.
+     * @return a list of private endpoint connections.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<AttachedDatabaseConfigurationInner> listByCluster(String resourceGroupName, String clusterName);
+    PagedIterable<PrivateEndpointConnectionInner> list(String resourceGroupName, String clusterName);
 
     /**
-     * Returns the list of attached database configurations of the given Kusto cluster.
+     * Returns the list of private endpoint connections.
      *
      * @param resourceGroupName The name of the resource group containing the Kusto cluster.
      * @param clusterName The name of the Kusto cluster.
@@ -73,129 +37,128 @@ public interface AttachedDatabaseConfigurationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list attached database configurations operation response.
+     * @return a list of private endpoint connections.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<AttachedDatabaseConfigurationInner> listByCluster(
-        String resourceGroupName, String clusterName, Context context);
+    PagedIterable<PrivateEndpointConnectionInner> list(String resourceGroupName, String clusterName, Context context);
 
     /**
-     * Returns an attached database configuration.
+     * Gets a private endpoint connection.
      *
      * @param resourceGroupName The name of the resource group containing the Kusto cluster.
      * @param clusterName The name of the Kusto cluster.
-     * @param attachedDatabaseConfigurationName The name of the attached database configuration.
+     * @param privateEndpointConnectionName The name of the private endpoint connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class representing an attached database configuration.
+     * @return a private endpoint connection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    AttachedDatabaseConfigurationInner get(
-        String resourceGroupName, String clusterName, String attachedDatabaseConfigurationName);
+    PrivateEndpointConnectionInner get(
+        String resourceGroupName, String clusterName, String privateEndpointConnectionName);
 
     /**
-     * Returns an attached database configuration.
+     * Gets a private endpoint connection.
      *
      * @param resourceGroupName The name of the resource group containing the Kusto cluster.
      * @param clusterName The name of the Kusto cluster.
-     * @param attachedDatabaseConfigurationName The name of the attached database configuration.
+     * @param privateEndpointConnectionName The name of the private endpoint connection.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class representing an attached database configuration.
+     * @return a private endpoint connection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<AttachedDatabaseConfigurationInner> getWithResponse(
-        String resourceGroupName, String clusterName, String attachedDatabaseConfigurationName, Context context);
+    Response<PrivateEndpointConnectionInner> getWithResponse(
+        String resourceGroupName, String clusterName, String privateEndpointConnectionName, Context context);
 
     /**
-     * Creates or updates an attached database configuration.
+     * Approve or reject a private endpoint connection with a given name.
      *
      * @param resourceGroupName The name of the resource group containing the Kusto cluster.
      * @param clusterName The name of the Kusto cluster.
-     * @param attachedDatabaseConfigurationName The name of the attached database configuration.
-     * @param parameters The database parameters supplied to the CreateOrUpdate operation.
+     * @param privateEndpointConnectionName The name of the private endpoint connection.
+     * @param parameters A private endpoint connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class representing an attached database configuration.
+     * @return a private endpoint connection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<AttachedDatabaseConfigurationInner>, AttachedDatabaseConfigurationInner> beginCreateOrUpdate(
+    SyncPoller<PollResult<PrivateEndpointConnectionInner>, PrivateEndpointConnectionInner> beginCreateOrUpdate(
         String resourceGroupName,
         String clusterName,
-        String attachedDatabaseConfigurationName,
-        AttachedDatabaseConfigurationInner parameters);
+        String privateEndpointConnectionName,
+        PrivateEndpointConnectionInner parameters);
 
     /**
-     * Creates or updates an attached database configuration.
+     * Approve or reject a private endpoint connection with a given name.
      *
      * @param resourceGroupName The name of the resource group containing the Kusto cluster.
      * @param clusterName The name of the Kusto cluster.
-     * @param attachedDatabaseConfigurationName The name of the attached database configuration.
-     * @param parameters The database parameters supplied to the CreateOrUpdate operation.
+     * @param privateEndpointConnectionName The name of the private endpoint connection.
+     * @param parameters A private endpoint connection.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class representing an attached database configuration.
+     * @return a private endpoint connection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<AttachedDatabaseConfigurationInner>, AttachedDatabaseConfigurationInner> beginCreateOrUpdate(
+    SyncPoller<PollResult<PrivateEndpointConnectionInner>, PrivateEndpointConnectionInner> beginCreateOrUpdate(
         String resourceGroupName,
         String clusterName,
-        String attachedDatabaseConfigurationName,
-        AttachedDatabaseConfigurationInner parameters,
+        String privateEndpointConnectionName,
+        PrivateEndpointConnectionInner parameters,
         Context context);
 
     /**
-     * Creates or updates an attached database configuration.
+     * Approve or reject a private endpoint connection with a given name.
      *
      * @param resourceGroupName The name of the resource group containing the Kusto cluster.
      * @param clusterName The name of the Kusto cluster.
-     * @param attachedDatabaseConfigurationName The name of the attached database configuration.
-     * @param parameters The database parameters supplied to the CreateOrUpdate operation.
+     * @param privateEndpointConnectionName The name of the private endpoint connection.
+     * @param parameters A private endpoint connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class representing an attached database configuration.
+     * @return a private endpoint connection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    AttachedDatabaseConfigurationInner createOrUpdate(
+    PrivateEndpointConnectionInner createOrUpdate(
         String resourceGroupName,
         String clusterName,
-        String attachedDatabaseConfigurationName,
-        AttachedDatabaseConfigurationInner parameters);
+        String privateEndpointConnectionName,
+        PrivateEndpointConnectionInner parameters);
 
     /**
-     * Creates or updates an attached database configuration.
+     * Approve or reject a private endpoint connection with a given name.
      *
      * @param resourceGroupName The name of the resource group containing the Kusto cluster.
      * @param clusterName The name of the Kusto cluster.
-     * @param attachedDatabaseConfigurationName The name of the attached database configuration.
-     * @param parameters The database parameters supplied to the CreateOrUpdate operation.
+     * @param privateEndpointConnectionName The name of the private endpoint connection.
+     * @param parameters A private endpoint connection.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class representing an attached database configuration.
+     * @return a private endpoint connection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    AttachedDatabaseConfigurationInner createOrUpdate(
+    PrivateEndpointConnectionInner createOrUpdate(
         String resourceGroupName,
         String clusterName,
-        String attachedDatabaseConfigurationName,
-        AttachedDatabaseConfigurationInner parameters,
+        String privateEndpointConnectionName,
+        PrivateEndpointConnectionInner parameters,
         Context context);
 
     /**
-     * Deletes the attached database configuration with the given name.
+     * Deletes a private endpoint connection with a given name.
      *
      * @param resourceGroupName The name of the resource group containing the Kusto cluster.
      * @param clusterName The name of the Kusto cluster.
-     * @param attachedDatabaseConfigurationName The name of the attached database configuration.
+     * @param privateEndpointConnectionName The name of the private endpoint connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -203,14 +166,14 @@ public interface AttachedDatabaseConfigurationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String clusterName, String attachedDatabaseConfigurationName);
+        String resourceGroupName, String clusterName, String privateEndpointConnectionName);
 
     /**
-     * Deletes the attached database configuration with the given name.
+     * Deletes a private endpoint connection with a given name.
      *
      * @param resourceGroupName The name of the resource group containing the Kusto cluster.
      * @param clusterName The name of the Kusto cluster.
-     * @param attachedDatabaseConfigurationName The name of the attached database configuration.
+     * @param privateEndpointConnectionName The name of the private endpoint connection.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -219,33 +182,32 @@ public interface AttachedDatabaseConfigurationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String clusterName, String attachedDatabaseConfigurationName, Context context);
+        String resourceGroupName, String clusterName, String privateEndpointConnectionName, Context context);
 
     /**
-     * Deletes the attached database configuration with the given name.
+     * Deletes a private endpoint connection with a given name.
      *
      * @param resourceGroupName The name of the resource group containing the Kusto cluster.
      * @param clusterName The name of the Kusto cluster.
-     * @param attachedDatabaseConfigurationName The name of the attached database configuration.
+     * @param privateEndpointConnectionName The name of the private endpoint connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(String resourceGroupName, String clusterName, String attachedDatabaseConfigurationName);
+    void delete(String resourceGroupName, String clusterName, String privateEndpointConnectionName);
 
     /**
-     * Deletes the attached database configuration with the given name.
+     * Deletes a private endpoint connection with a given name.
      *
      * @param resourceGroupName The name of the resource group containing the Kusto cluster.
      * @param clusterName The name of the Kusto cluster.
-     * @param attachedDatabaseConfigurationName The name of the attached database configuration.
+     * @param privateEndpointConnectionName The name of the private endpoint connection.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(
-        String resourceGroupName, String clusterName, String attachedDatabaseConfigurationName, Context context);
+    void delete(String resourceGroupName, String clusterName, String privateEndpointConnectionName, Context context);
 }
