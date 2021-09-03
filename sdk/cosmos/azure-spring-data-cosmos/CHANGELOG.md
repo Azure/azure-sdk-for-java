@@ -1,5 +1,7 @@
 ## Release History
 
+## 3.11.0-beta.2 (Unreleased)
+
 ### 3.11.0-beta.1 (2021-09-02)
 #### New Features
 * Updated `azure-cosmos` to version 4.19.0-beta.1.
