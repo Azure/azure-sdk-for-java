@@ -211,10 +211,10 @@ public class KeyVaultClient {
             }
 
             if (tenantId != null && clientId != null && clientSecret != null) {
-                accessToken = AccessTokenUtil.getAccToken(resource, aadAuthenticationUrl, tenantId, clientId,
+                accessToken = AccessTokenUtil.getAccessToken(resource, aadAuthenticationUrl, tenantId, clientId,
                     clientSecret);
             } else {
-                accessToken = AccessTokenUtil.getAccToken(resource, managedIdentity);
+                accessToken = AccessTokenUtil.getAccessToken(resource, managedIdentity);
             }
         } catch (Throwable throwable) {
             LOGGER.log(WARNING, "Unsupported encoding or missing Httpclient", throwable);

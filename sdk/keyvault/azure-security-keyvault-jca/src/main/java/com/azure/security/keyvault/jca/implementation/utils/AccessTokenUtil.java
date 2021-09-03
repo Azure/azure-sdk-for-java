@@ -62,8 +62,8 @@ public final class AccessTokenUtil {
      * @param identity the user-assigned identity (null if system-assigned)
      * @return the authorization token.
      */
-    public static String getAccessToken(String resource, String identity) {
-        String result;
+    public static OAuthToken getAccessToken(String resource, String identity) {
+        OAuthToken result;
 
         if (System.getenv("WEBSITE_SITE_NAME") != null
             && !System.getenv("WEBSITE_SITE_NAME").isEmpty()) {
@@ -75,25 +75,6 @@ public final class AccessTokenUtil {
     }
 
     /**
-     * Get an access token for a managed identity.
-     *
-     * @param resource the resource.
-     * @param identity the user-assigned identity (null if system-assigned)
-     * @return the authorization token.
-     */
-    public static OAuthToken getAccToken(String resource, String identity) {
-        OAuthToken result;
-
-        if (System.getenv("WEBSITE_SITE_NAME") != null
-            && !System.getenv("WEBSITE_SITE_NAME").isEmpty()) {
-            result = getAccTokenOnAppService(resource, identity);
-        } else {
-            result = getAccTokenOnOthers(resource, identity);
-        }
-        return result;
-    }
-
-    /**
      * Get an access token.
      *
      * @param resource             the resource.
@@ -103,24 +84,7 @@ public final class AccessTokenUtil {
      * @param clientSecret         the client secret.
      * @return the authorization token.
      */
-    public static String getAccessToken(String resource, String aadAuthenticationUrl,
-        String tenantId, String clientId, String clientSecret) {
-        OAuthToken result;
-        result = getAccToken(resource, aadAuthenticationUrl, tenantId, clientId, clientSecret);
-        return result == null ? null : result.getAccessToken();
-    }
-
-    /**
-     * Get an access token.
-     *
-     * @param resource             the resource.
-     * @param tenantId             the tenant ID.
-     * @param aadAuthenticationUrl the AAD authentication url
-     * @param clientId             the client ID.
-     * @param clientSecret         the client secret.
-     * @return the authorization token.
-     */
-    public static OAuthToken getAccToken(String resource, String aadAuthenticationUrl,
+    public static OAuthToken getAccessToken(String resource, String aadAuthenticationUrl,
                                         String tenantId, String clientId, String clientSecret) {
 
         LOGGER.entering("AccessTokenUtil", "getAccessToken", new Object[]{
@@ -155,20 +119,7 @@ public final class AccessTokenUtil {
      * @param clientId the user-assigned managed identity (null if system-assigned).
      * @return the authorization token.
      */
-    private static String getAccessTokenOnAppService(String resource, String clientId) {
-        OAuthToken result;
-        result = getAccTokenOnAppService(resource, clientId);
-        return result == null ? null : result.getAccessToken();
-    }
-
-    /**
-     * Get the access token on Azure App Service.
-     *
-     * @param resource the resource.
-     * @param clientId the user-assigned managed identity (null if system-assigned).
-     * @return the authorization token.
-     */
-    private static OAuthToken getAccTokenOnAppService(String resource, String clientId) {
+    private static OAuthToken getAccessTokenOnAppService(String resource, String clientId) {
         LOGGER.entering("AccessTokenUtil", "getAccessTokenOnAppService", resource);
         LOGGER.info("Getting access token using managed identity based on MSI_SECRET");
         OAuthToken result = null;
@@ -200,20 +151,7 @@ public final class AccessTokenUtil {
      * @param identity the user-assigned identity (null if system-assigned).
      * @return the authorization token.
      */
-    private static String getAccessTokenOnOthers(String resource, String identity) {
-        OAuthToken result;
-        result = getAccTokenOnOthers(resource, identity);
-        return  result == null ? null : result.getAccessToken();
-    }
-
-    /**
-     * Get the authorization token on everything else but Azure App Service.
-     *
-     * @param resource the resource.
-     * @param identity the user-assigned identity (null if system-assigned).
-     * @return the authorization token.
-     */
-    private static OAuthToken getAccTokenOnOthers(String resource, String identity) {
+    private static OAuthToken getAccessTokenOnOthers(String resource, String identity) {
         LOGGER.entering("AccessTokenUtil", "getAccessTokenOnOthers", resource);
         LOGGER.info("Getting access token using managed identity");
         if (identity != null) {

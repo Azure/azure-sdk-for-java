@@ -3,6 +3,7 @@
 
 package com.azure.security.keyvault.jca.test;
 
+import com.azure.security.keyvault.jca.implementation.model.OAuthToken;
 import com.azure.security.keyvault.jca.implementation.utils.AccessTokenUtil;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.EnabledIfEnvironmentVariable;
@@ -27,7 +28,7 @@ public class AccessTokenUtilTest {
         String tenantId = System.getenv("AZURE_KEYVAULT_TENANT_ID");
         String clientId = System.getenv("AZURE_KEYVAULT_CLIENT_ID");
         String clientSecret = System.getenv("AZURE_KEYVAULT_CLIENT_SECRET");
-        String result = AccessTokenUtil.getAccessToken(
+        OAuthToken result = AccessTokenUtil.getAccessToken(
             "https://management.azure.com/",
             null,
             tenantId,
