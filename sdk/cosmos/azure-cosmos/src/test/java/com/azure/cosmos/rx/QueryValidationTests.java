@@ -24,6 +24,7 @@ import com.azure.cosmos.models.CosmosTriggerProperties;
 import com.azure.cosmos.models.CosmosUserDefinedFunctionProperties;
 import com.azure.cosmos.models.CosmosUserProperties;
 import com.azure.cosmos.models.FeedResponse;
+import com.azure.cosmos.models.IncludedPath;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.PermissionMode;
 import com.azure.cosmos.models.SqlParameter;
@@ -34,6 +35,8 @@ import com.azure.cosmos.models.TriggerOperation;
 import com.azure.cosmos.models.TriggerType;
 import com.azure.cosmos.util.CosmosPagedFlux;
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.JsonNodeFactory;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.reactivex.subscribers.TestSubscriber;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
@@ -433,6 +436,102 @@ public class QueryValidationTests extends TestSuiteBase {
 
         container.delete().block();
     }
+
+    @Test(groups = {"simple"}, timeOut = TIMEOUT * 10)
+    public void orderbyContinuationOnUndefinedAndNull() throws Exception {
+        /*
+        Objective of this test is to break on undefined/null orderbyItems and resume queryFormat using that continuation
+        and make sure all the records are obtained
+         */
+        CosmosContainerProperties containerProperties = getCollectionDefinition();
+        createdDatabase.createContainer(
+            containerProperties,
+            new CosmosContainerRequestOptions()
+        ).block();
+
+        CosmosAsyncContainer container = createdDatabase.getContainer(containerProperties.getId());
+        CosmosContainerResponse containerResponse = container.read().block();
+        assert (containerResponse != null);
+        CosmosContainerProperties properties = containerResponse.getProperties();
+        List<IncludedPath> includedPaths = properties.getIndexingPolicy().getIncludedPaths();
+        includedPaths.add(new IncludedPath("/mixedProp/?"));
+        properties.getIndexingPolicy().setIncludedPaths(includedPaths);
+        container.replace(properties).block();
+
+        List<ObjectNode> documentsWithUndefinedAndNullValues = createDocumentsWithUndefinedAndNullValues(container);
+        String queryFormat = "SELECT * FROM ROOT r ORDER BY r.mixedProp %s";
+
+        List<Integer> pageSizeList = Arrays.asList(1, 5, 10);
+        List<String> sourceDocIds = documentsWithUndefinedAndNullValues
+                                        .stream()
+                                        .map(d -> d.get("id").asText())
+                                        .collect(Collectors.toList());
+        testContinuationWithPageSizesAndSortOrder(container, sourceDocIds, queryFormat, pageSizeList);
+    }
+
+    private void testContinuationWithPageSizesAndSortOrder(
+        CosmosAsyncContainer container, List<String> sourceDocIds, String queryFormat,
+        List<Integer> pageSizeList) {
+        List<String> sortOrders = Arrays.asList("asc", "desc");
+        for (String sortOrder : sortOrders) {
+            String query = String.format(queryFormat, sortOrder);
+            List<FeedResponse<JsonNode>> feedResponses = container
+                                                             .queryItems(query, new CosmosQueryRequestOptions(),
+                                                                         JsonNode.class)
+                                                             .byPage(100).collectList().block();
+            List<String> expectedOrderedList = new ArrayList<>();
+            for (FeedResponse<JsonNode> feedResponse : feedResponses) {
+                expectedOrderedList.addAll(feedResponse
+                                               .getResults()
+                                               .stream()
+                                               .map(r -> r.get("id").asText())
+                                               .collect(Collectors.toList()));
+            }
+            assertThat(expectedOrderedList).containsExactlyInAnyOrderElementsOf(sourceDocIds);
+            for (int preferredPageSize : pageSizeList) {
+                List<JsonNode> orderByResultList = new ArrayList<>();
+                String orderByRequestContinuation = null;
+
+                do {
+                    FeedResponse<JsonNode> feedResponse = container
+                                                              .queryItems(query, new CosmosQueryRequestOptions(),
+                                                                          JsonNode.class)
+                                                              .byPage(orderByRequestContinuation, preferredPageSize)
+                                                              .blockFirst();
+                    orderByResultList.addAll(feedResponse.getResults());
+                    orderByRequestContinuation = feedResponse.getContinuationToken();
+                } while (orderByRequestContinuation != null);
+                List<String> actualIds = orderByResultList.stream()
+                                             .map(d -> d.get("id").asText())
+                                             .collect(Collectors.toList());
+                assertThat(actualIds).containsExactlyElementsOf(expectedOrderedList);
+            }
+        }
+    }
+
+
+    private List<ObjectNode> createDocumentsWithUndefinedAndNullValues(CosmosAsyncContainer container) {
+        List<ObjectNode> docsToInsert = new ArrayList<>();
+        int documentCount = 23; // Just a few values should be enough as we iterate with different page sizes
+
+        // Create documents where specialProp is undefined for many, null for a few and few with values
+        for (int i = 0; i < documentCount; i++) {
+            ObjectNode objectNode = JsonNodeFactory.instance.objectNode();
+            objectNode.put("id", UUID.randomUUID().toString());
+            objectNode.put("mypk", UUID.randomUUID().toString());
+            objectNode.put("prop", UUID.randomUUID().toString());
+            if (i % 5 == 0) {
+                if (i % 10 == 0) {
+                    objectNode.putNull("mixedProp");
+                } else {
+                    objectNode.put("mixedProp", UUID.randomUUID().toString());
+                }
+            }
+            docsToInsert.add(objectNode);
+        }
+        return bulkInsertBlocking(container, docsToInsert);
+    }
+
 
     @Test(groups = {"simple"}, timeOut = TIMEOUT)
     public void queryLargePartitionKeyOn100BPKCollection() throws Exception {
