@@ -212,7 +212,7 @@ public final class ManagedPrivateEndpointsClientBuilder {
      */
     private ManagedPrivateEndpointsClientImpl buildInnerClient() {
         if (apiVersion == null) {
-            this.apiVersion = "2021-06-01-preview";
+            this.apiVersion = "2020-12-01";
         }
         if (pipeline == null) {
             this.pipeline = createHttpPipeline();
