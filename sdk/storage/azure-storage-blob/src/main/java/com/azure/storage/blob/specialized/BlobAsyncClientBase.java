@@ -960,8 +960,9 @@ public class BlobAsyncClientBase {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BinaryData> downloadContent() {
         try {
-            return downloadWithResponse(null, null, null, false)
-                .flatMap(response -> BinaryData.fromFlux(response.getValue()));
+            return downloadWithResponse(null, null, null, false).flatMap(response ->
+                FluxUtil.collectBytesFromNetworkResponse(response.getValue(), response.getHeaders()))
+                .map(BinaryData::fromBytes);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }

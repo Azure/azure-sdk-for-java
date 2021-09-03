@@ -385,11 +385,7 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BlockBlobItem> upload(BinaryData data) {
-        try {
-            return upload(data, false);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return upload(data, false);
     }
 
     /**
