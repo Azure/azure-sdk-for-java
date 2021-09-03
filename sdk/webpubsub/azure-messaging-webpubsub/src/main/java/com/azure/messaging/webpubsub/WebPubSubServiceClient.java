@@ -13,31 +13,34 @@ import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.CoreUtils;
+import com.azure.messaging.webpubsub.implementation.WebPubSubUtil;
 import com.azure.messaging.webpubsub.implementation.WebPubSubsImpl;
 import com.azure.messaging.webpubsub.models.GetAuthenticationTokenOptions;
 import com.azure.messaging.webpubsub.models.WebPubSubAuthenticationToken;
 import com.azure.messaging.webpubsub.models.WebPubSubContentType;
+import java.util.stream.Collectors;
 
 /** Initializes a new instance of the synchronous AzureWebPubSubServiceRestAPI type. */
 @ServiceClient(builder = WebPubSubServiceClientBuilder.class)
 public final class WebPubSubServiceClient {
-    private final ClientLogger logger = new ClientLogger(WebPubSubServiceAsyncClient.class);
     private final WebPubSubsImpl serviceClient;
     private final String endpoint;
     private final AzureKeyCredential keyCredential;
     private final String hub;
+    private final WebPubSubServiceVersion version;
 
     /**
      * Initializes an instance of WebPubSubs client.
      * @param serviceClient the service client implementation.
      */
     WebPubSubServiceClient(WebPubSubsImpl serviceClient, String hub, String endpoint,
-                           AzureKeyCredential keyCredential) {
+                           AzureKeyCredential keyCredential, WebPubSubServiceVersion version) {
         this.serviceClient = serviceClient;
         this.endpoint = endpoint;
         this.keyCredential = keyCredential;
         this.hub = hub;
+        this.version = version;
     }
 
     /**
@@ -47,22 +50,28 @@ public final class WebPubSubServiceClient {
      */
     public WebPubSubAuthenticationToken getAuthenticationToken(GetAuthenticationTokenOptions options) {
         if (this.keyCredential == null) {
-            throw logger.logExceptionAsError(new UnsupportedOperationException("Cannot get authentication token using"
-                    + " clients created from TokenCredential"));
+            RequestOptions requestOptions = new RequestOptions();
+            if (options.getUserId() != null) {
+                requestOptions.addQueryParam("userId", options.getUserId());
+            }
+            if (options.getExpiresAfter() != null) {
+                requestOptions.addQueryParam("minutesToExpire", String.valueOf(options.getExpiresAfter().toMinutes()));
+            }
+            if (CoreUtils.isNullOrEmpty(options.getRoles())) {
+                requestOptions.addQueryParam("role", options.getRoles().stream().collect(Collectors.joining(",")));
+            }
+            requestOptions.addQueryParam("api-version", version.getVersion());
+            return this.serviceClient.generateClientTokenWithResponseAsync(hub, requestOptions)
+                    .map(Response::getValue)
+                    .map(binaryData -> {
+                        String token = WebPubSubUtil.getToken(binaryData);
+                        return WebPubSubUtil.createToken(token, endpoint, hub);
+                    }).block();
         }
-        final String endpoint = this.endpoint.endsWith("/") ? this.endpoint : this.endpoint + "/";
         final String audience = endpoint + "client/hubs/" + hub;
-
-        final String authToken = WebPubSubAuthenticationPolicy.getAuthenticationToken(
-                audience, options, this.keyCredential);
-
-        // The endpoint should always be http or https and client endpoint should be ws or wss respectively.
-        final String clientEndpoint = endpoint.replaceFirst("http", "ws");
-        final String clientUrl = clientEndpoint + "client/hubs/" + hub;
-
-        final String url = clientUrl + "?access_token=" + authToken;
-
-        return new WebPubSubAuthenticationToken(authToken, url);
+        final String token = WebPubSubAuthenticationPolicy.getAuthenticationToken(
+                audience, options, keyCredential);
+        return WebPubSubUtil.createToken(token, endpoint, hub);
     }
 
     /**
@@ -95,8 +104,7 @@ public final class WebPubSubServiceClient {
      *     false.
      * @return the response.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> generateClientTokenWithResponse(
+    Response<BinaryData> generateClientTokenWithResponse(
             String hub, RequestOptions requestOptions, Context context) {
         return this.serviceClient.generateClientTokenWithResponse(hub, requestOptions, context);
     }

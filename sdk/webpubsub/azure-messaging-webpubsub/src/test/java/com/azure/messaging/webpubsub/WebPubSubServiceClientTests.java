@@ -29,7 +29,7 @@ public class WebPubSubServiceClientTests extends TestBase {
     private static final String CONNECTION_STRING = Configuration.getGlobalConfiguration()
         .get("WEB_PUB_SUB_CS", DEFAULT_CONNECTION_STRING);
     private static final String ENDPOINT = Configuration.getGlobalConfiguration()
-            .get("WEB_PUB_SUB_ENDPOINT", "https://test.webpubsub.azure.com");
+            .get("WEB_PUB_SUB_ENDPOINT", "https://srnagar-wps-pubsub.webpubsub.azure.com");
 
     private WebPubSubServiceClient client;
     private WebPubSubServiceAsyncClient asyncClient;

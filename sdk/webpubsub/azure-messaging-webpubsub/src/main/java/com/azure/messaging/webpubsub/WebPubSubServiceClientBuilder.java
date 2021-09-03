@@ -50,17 +50,17 @@ import java.util.Objects;
  *
  * <p><strong>Code Samples</strong></p>
  *
- * {@codesnippet com.azure.messaging.webpubsub.{@link WebPubSubServiceClientBuilder}.connectionstring.async}
+ * {@codesnippet com.azure.messaging.webpubsub.webpubsubclientbuilder.connectionstring.async}
  *
  * <p>This demonstrates using the connection string provided by the Azure Portal. Another approach is to use the
  * combination of credential and endpoint details, as shown below:</p>
  *
- * {@codesnippet com.azure.messaging.webpubsub.{@link WebPubSubServiceClientBuilder}.credential.endpoint.async}
+ * {@codesnippet com.azure.messaging.webpubsub.webpubsubclientbuilder.credential.endpoint.async}
  *
  * <p>Of course, synchronous clients may also be instantiated, by calling {@link #buildClient() buildClient} rather than
  * {@link #buildAsyncClient() buildAsyncClient}.</p>
  *
- * {@codesnippet com.azure.messaging.webpubsub.{@link WebPubSubServiceClientBuilder}.connectionstring.sync}
+ * {@codesnippet com.azure.messaging.webpubsub.webpubsubclientbuilder.connectionstring.sync}
  *
  * @see WebPubSubServiceAsyncClient
  * @see WebPubSubServiceClient
@@ -91,10 +91,10 @@ public final class WebPubSubServiceClientBuilder {
     private HttpPipeline pipeline;
     private RetryPolicy retryPolicy;
     private Configuration configuration;
-    private WebPubSubServiceVersion version;
+    private WebPubSubServiceVersion version = WebPubSubServiceVersion.getLatest();
     private String hub;
     private ClientOptions clientOptions;
-    private String reverseProxyEndpoint;
+    private String apimEndpoint;
 
     /**
      * Creates a new builder instance with all values set to their default value.
@@ -175,13 +175,13 @@ public final class WebPubSubServiceClientBuilder {
     }
 
     /**
-     * Sets the reverse proxy endpoint.
+     * Sets the API management endpoint.
      *
-     * @param reverseProxyEndpoint The reverse proxy endpoint.
+     * @param apimEndpoint The reverse proxy endpoint.
      * @return The updated {@link WebPubSubServiceClientBuilder} object.
      */
-    public WebPubSubServiceClientBuilder reverseProxyEndpoint(String reverseProxyEndpoint) {
-        this.reverseProxyEndpoint = reverseProxyEndpoint;
+    public WebPubSubServiceClientBuilder apimEndpoint(String apimEndpoint) {
+        this.apimEndpoint = apimEndpoint;
         return this;
     }
 
@@ -377,6 +377,10 @@ public final class WebPubSubServiceClientBuilder {
                     new IllegalStateException("No credential available to create the client. "
                             + "Please provide connection string or AzureKeyCredential or TokenCredential."));
         }
+
+        if (!CoreUtils.isNullOrEmpty(apimEndpoint)) {
+            policies.add(new ApimPolicy(apimEndpoint));
+        }
         policies.addAll(this.policies);
 
         if (clientOptions != null) {
@@ -402,7 +406,7 @@ public final class WebPubSubServiceClientBuilder {
      * @return an instance of WebPubSubAsyncServiceClient.
      */
     public WebPubSubServiceAsyncClient buildAsyncClient() {
-        return new WebPubSubServiceAsyncClient(buildInnerClient().getWebPubSubs(), hub, endpoint, credential);
+        return new WebPubSubServiceAsyncClient(buildInnerClient().getWebPubSubs(), hub, endpoint, credential, version);
     }
 
     /**
@@ -411,7 +415,7 @@ public final class WebPubSubServiceClientBuilder {
      * @return an instance of WebPubSubServiceClient.
      */
     public WebPubSubServiceClient buildClient() {
-        return new WebPubSubServiceClient(buildInnerClient().getWebPubSubs(), hub, endpoint, credential);
+        return new WebPubSubServiceClient(buildInnerClient().getWebPubSubs(), hub, endpoint, credential, version);
     }
 
     private Map<String, String> parseConnectionString(final String cs) {
