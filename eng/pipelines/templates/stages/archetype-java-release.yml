@@ -116,11 +116,10 @@ stages:
                     PackageName: ${{artifact.name}}
                     ServiceName: ${{parameters.ServiceDirectory}}
                     ForRelease: true
-
-          - template: /eng/pipelines/templates/jobs/installation.check.yml
-            parameters:
-              Artifact: ${{ artifact }}
-              ArtifactName: ${{ parameters.ArtifactName }}
+              - template: /eng/pipelines/templates/jobs/installation.check.yml
+                parameters:
+                  Artifact: ${{ artifact }}
+                  ArtifactName: ${{ parameters.ArtifactName }}
 
           - deployment: TagRepository
             displayName: "Create release tag"
