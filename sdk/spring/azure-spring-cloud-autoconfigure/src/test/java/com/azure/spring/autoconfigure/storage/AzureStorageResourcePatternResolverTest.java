@@ -4,7 +4,7 @@
 package com.azure.spring.autoconfigure.storage;
 
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.spring.autoconfigure.storage.resource.AzureStorageProtocolResolver;
+import com.azure.spring.autoconfigure.storage.resource.AzureStorageBlobProtocolResolver;
 import com.azure.spring.autoconfigure.storage.resource.AzureStorageResourcePatternResolver;
 import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobContainerClient;
@@ -163,7 +163,7 @@ public class AzureStorageResourcePatternResolverTest {
     }
 
     @Configuration
-    @Import(AzureStorageProtocolResolver.class)
+    @Import(AzureStorageBlobProtocolResolver.class)
     static class StorageApplication {
 
         @SuppressWarnings("unchecked")

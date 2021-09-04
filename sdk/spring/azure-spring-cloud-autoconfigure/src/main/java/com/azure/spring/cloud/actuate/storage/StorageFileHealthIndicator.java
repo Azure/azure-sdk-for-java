@@ -17,10 +17,10 @@ import static com.azure.spring.cloud.actuate.storage.Constants.URL_FIELD;
  */
 public class StorageFileHealthIndicator implements HealthIndicator {
 
-    private final ShareServiceAsyncClient internalClient;
+    private final ShareServiceAsyncClient shareServiceAsyncClient;
 
     public StorageFileHealthIndicator(ShareServiceAsyncClient shareServiceAsyncClient) {
-        internalClient = shareServiceAsyncClient;
+        this.shareServiceAsyncClient = shareServiceAsyncClient;
     }
 
     @Override
@@ -28,10 +28,10 @@ public class StorageFileHealthIndicator implements HealthIndicator {
         Health.Builder healthBuilder = new Health.Builder();
 
         try {
-            healthBuilder.withDetail(URL_FIELD, internalClient.getFileServiceUrl());
+            healthBuilder.withDetail(URL_FIELD, shareServiceAsyncClient.getFileServiceUrl());
             Response<ShareServiceProperties> infoResponse;
             try {
-                infoResponse = internalClient.getPropertiesWithResponse().block(POLL_TIMEOUT);
+                infoResponse = shareServiceAsyncClient.getPropertiesWithResponse().block(POLL_TIMEOUT);
                 if (infoResponse != null) {
                     healthBuilder.up();
                 }

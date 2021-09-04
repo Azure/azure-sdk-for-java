@@ -10,17 +10,15 @@ import com.azure.spring.data.cosmos.config.CosmosConfig;
 import com.azure.spring.data.cosmos.core.CosmosTemplate;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnResource;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
 /**
  * Auto Configure Cosmos properties and connection policy.
  */
-@Configuration
+@Configuration(proxyBeanMethods = false)
 @AutoConfigureAfter(AzureCosmosClientAutoConfiguration.class)
 @ConditionalOnClass({ CosmosTemplate.class })
-@ConditionalOnResource(resources = "classpath:cosmos.enable.config")
 @EnableConfigurationProperties(AzureCosmosProperties.class)
 public class CosmosDataAutoConfiguration extends AbstractCosmosConfiguration {
 

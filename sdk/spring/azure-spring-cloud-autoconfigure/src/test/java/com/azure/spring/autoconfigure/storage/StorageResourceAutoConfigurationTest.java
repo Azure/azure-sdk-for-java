@@ -3,7 +3,7 @@
 
 package com.azure.spring.autoconfigure.storage;
 
-import com.azure.spring.autoconfigure.storage.resource.AzureStorageProtocolResolver;
+import com.azure.spring.autoconfigure.storage.resource.AzureStorageBlobProtocolResolver;
 import com.azure.spring.autoconfigure.unity.AzurePropertyAutoConfiguration;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
@@ -22,6 +22,6 @@ public class StorageResourceAutoConfigurationTest {
     public void testAzureStorageDisabled() {
         this.contextRunner
             .withClassLoader(new FilteredClassLoader(new ClassPathResource("storage.enable.config")))
-            .run(context -> assertThat(context).doesNotHaveBean(AzureStorageProtocolResolver.class));
+            .run(context -> assertThat(context).doesNotHaveBean(AzureStorageBlobProtocolResolver.class));
     }
 }

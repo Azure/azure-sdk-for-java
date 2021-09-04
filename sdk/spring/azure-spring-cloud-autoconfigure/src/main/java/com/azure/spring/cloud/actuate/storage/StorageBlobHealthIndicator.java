@@ -17,10 +17,10 @@ import static com.azure.spring.cloud.actuate.storage.Constants.URL_FIELD;
  */
 public class StorageBlobHealthIndicator implements HealthIndicator {
 
-    private final BlobServiceAsyncClient internalClient;
+    private final BlobServiceAsyncClient blobServiceAsyncClient;
 
     public StorageBlobHealthIndicator(BlobServiceAsyncClient blobServiceAsyncClient) {
-        internalClient = blobServiceAsyncClient;
+        this.blobServiceAsyncClient = blobServiceAsyncClient;
     }
 
     @Override
@@ -28,13 +28,13 @@ public class StorageBlobHealthIndicator implements HealthIndicator {
         Health.Builder healthBuilder = new Health.Builder();
 
         try {
-            if (internalClient == null) { // Not configured
+            if (blobServiceAsyncClient == null) { // Not configured
                 healthBuilder.status(NOT_CONFIGURED_STATUS);
             } else {
-                healthBuilder.withDetail(URL_FIELD, internalClient.getAccountUrl());
+                healthBuilder.withDetail(URL_FIELD, blobServiceAsyncClient.getAccountUrl());
                 StorageAccountInfo info;
                 try {
-                    info = internalClient.getAccountInfo().block(POLL_TIMEOUT);
+                    info = blobServiceAsyncClient.getAccountInfo().block(POLL_TIMEOUT);
                     if (info != null) {
                         healthBuilder.up();
                     }

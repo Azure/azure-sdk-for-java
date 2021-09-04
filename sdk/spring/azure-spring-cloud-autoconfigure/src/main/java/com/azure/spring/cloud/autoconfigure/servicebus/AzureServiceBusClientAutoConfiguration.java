@@ -4,7 +4,6 @@
 package com.azure.spring.cloud.autoconfigure.servicebus;
 
 import com.azure.messaging.servicebus.ServiceBusClientBuilder;
-import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -18,8 +17,9 @@ import org.springframework.context.annotation.Configuration;
 @ConditionalOnClass(ServiceBusClientBuilder.class)
 @ConditionalOnProperty(prefix = "spring.cloud.azure.servicebus", name = "enabled", matchIfMissing = true)
 @EnableConfigurationProperties(AzureServiceBusProperties.class)
-@AutoConfigureAfter
 public class AzureServiceBusClientAutoConfiguration {
+
+    // TODO (xiada) should we auto-configure the receiver, sender, processor, sessionReceiver, sessionProcessor clients?
 
     @Bean
     @ConditionalOnMissingBean

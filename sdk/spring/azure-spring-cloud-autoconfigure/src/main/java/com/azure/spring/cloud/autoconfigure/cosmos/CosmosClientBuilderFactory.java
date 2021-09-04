@@ -59,12 +59,12 @@ public class CosmosClientBuilderFactory extends AbstractAzureServiceClientBuilde
 
     @Override
     protected void configureProxy(CosmosClientBuilder builder) {
-
+        // TODO (xiada) configure the proxy
     }
 
     @Override
     protected void configureRetry(CosmosClientBuilder builder) {
-
+        // TODO (xiada) configure the retry
     }
 
     @Override

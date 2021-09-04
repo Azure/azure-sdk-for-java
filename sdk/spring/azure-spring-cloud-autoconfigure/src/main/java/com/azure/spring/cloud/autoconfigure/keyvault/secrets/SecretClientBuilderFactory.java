@@ -58,12 +58,12 @@ public class SecretClientBuilderFactory extends AbstractAzureHttpClientBuilderFa
     protected void configureService(SecretClientBuilder builder) {
         PropertyMapper map = PropertyMapper.get().alwaysApplyingWhenNonNull();
         map.from(secretProperties.getVaultUrl()).to(builder::vaultUrl);
+        map.from(secretProperties.getServiceVersion()).to(builder::serviceVersion);
     }
 
     @Override
     protected BiConsumer<SecretClientBuilder, Configuration> consumeConfiguration() {
         return SecretClientBuilder::configuration;
     }
-
 
 }

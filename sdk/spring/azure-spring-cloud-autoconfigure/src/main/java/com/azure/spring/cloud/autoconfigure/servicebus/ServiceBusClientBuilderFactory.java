@@ -82,6 +82,6 @@ public class ServiceBusClientBuilderFactory extends AbstractAzureAmqpClientBuild
 
     @Override
     protected BiConsumer<ServiceBusClientBuilder, Configuration> consumeConfiguration() {
-        return null;
+        return ServiceBusClientBuilder::configuration;
     }
 }

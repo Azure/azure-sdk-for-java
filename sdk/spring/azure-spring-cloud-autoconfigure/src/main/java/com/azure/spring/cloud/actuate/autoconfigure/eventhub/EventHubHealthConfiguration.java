@@ -12,12 +12,13 @@ import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.actuate.autoconfigure.health.ConditionalOnEnabledHealthIndicator;
 import org.springframework.boot.actuate.health.HealthIndicator;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * Auto-configuration class for Storage actuator.
+ * Auto-configuration class for Event actuator.
  */
 @Configuration
 @ConditionalOnClass({ EventHubClientBuilder.class, HealthIndicator.class })
@@ -25,6 +26,7 @@ import org.springframework.context.annotation.Configuration;
 public class EventHubHealthConfiguration {
 
     @Bean
+    @ConditionalOnBean(EventHubClientBuilder.class)
     @ConditionalOnEnabledHealthIndicator("azure-eventhub")
     public EventHubHealthIndicator eventHubHealthIndicator(
         ObjectProvider<EventHubProducerAsyncClient> producerAsyncClients,
