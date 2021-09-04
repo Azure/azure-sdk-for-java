@@ -3,21 +3,16 @@
 
 package com.azure.spring.core.factory;
 
-import com.azure.core.amqp.AmqpRetryMode;
 import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpTransportType;
-import com.azure.core.amqp.ProxyAuthenticationType;
 import com.azure.core.amqp.ProxyOptions;
 import com.azure.core.util.ClientOptions;
-import com.azure.spring.core.properties.ProxyProperties;
+import com.azure.spring.core.converter.AzureAmqpProxyOptionsConverter;
+import com.azure.spring.core.converter.AzureAmqpRetryOptionsConverter;
 import com.azure.spring.core.properties.client.AmqpClientProperties;
 import com.azure.spring.core.properties.client.ClientProperties;
 import com.azure.spring.core.properties.retry.RetryProperties;
-import org.springframework.lang.NonNull;
 
-import java.net.InetSocketAddress;
-import java.net.Proxy;
-import java.time.Duration;
 import java.util.function.BiConsumer;
 
 /**
@@ -28,6 +23,8 @@ import java.util.function.BiConsumer;
 public abstract class AbstractAzureAmqpClientBuilderFactory<T> extends AbstractAzureServiceClientBuilderFactory<T> {
 
     private ClientOptions clientOptions = new ClientOptions();
+    private final AzureAmqpProxyOptionsConverter proxyOptionsConverter = new AzureAmqpProxyOptionsConverter();
+    private final AzureAmqpRetryOptionsConverter retryOptionsConverter = new AzureAmqpRetryOptionsConverter();
     protected abstract BiConsumer<T, ProxyOptions> consumeProxyOptions();
     protected abstract BiConsumer<T, AmqpTransportType> consumeAmqpTransportType();
     protected abstract BiConsumer<T, AmqpRetryOptions> consumeAmqpRetryOptions();
@@ -76,7 +73,7 @@ public abstract class AbstractAzureAmqpClientBuilderFactory<T> extends AbstractA
         if (retry == null) {
             return;
         }
-        AmqpRetryOptions retryOptions = getAmqpRetryOptions(retry);
+        AmqpRetryOptions retryOptions = retryOptionsConverter.convert(retry);
         consumeAmqpRetryOptions().accept(builder, retryOptions);
     }
 
@@ -85,24 +82,8 @@ public abstract class AbstractAzureAmqpClientBuilderFactory<T> extends AbstractA
         if (getAzureProperties().getProxy() == null) {
             return;
         }
-        final ProxyOptions proxyOptions = getProxyOptions(getAzureProperties().getProxy());
+        final ProxyOptions proxyOptions = proxyOptionsConverter.convert(getAzureProperties().getProxy());
         consumeProxyOptions().accept(builder, proxyOptions);
-    }
-
-    private AmqpRetryOptions getAmqpRetryOptions(RetryProperties retry) {
-        AmqpRetryMode mode;
-        if (retry.getBackoff().getMultiplier() > 0) {
-            mode = AmqpRetryMode.EXPONENTIAL;
-        } else {
-            mode = AmqpRetryMode.FIXED;
-        }
-        AmqpRetryOptions retryOptions = new AmqpRetryOptions();
-        retryOptions.setDelay(Duration.ofMillis(retry.getBackoff().getDelay()));
-        retryOptions.setMaxDelay(Duration.ofMillis(retry.getBackoff().getMaxDelay()));
-        retryOptions.setMode(mode);
-        retryOptions.setMaxRetries(retry.getMaxAttempts());
-        retryOptions.setTryTimeout(Duration.ofMillis(retry.getTimeout()));
-        return retryOptions;
     }
 
     protected ClientOptions getClientOptions() {
@@ -113,31 +94,6 @@ public abstract class AbstractAzureAmqpClientBuilderFactory<T> extends AbstractA
         this.clientOptions = clientOptions;
     }
 
-    private ProxyOptions getProxyOptions(@NonNull ProxyProperties properties) {
-        ProxyAuthenticationType authenticationType;
-        switch (properties.getAuthenticationType()) {
-            case "basic":
-                authenticationType = ProxyAuthenticationType.BASIC;
-                break;
-            case "digest":
-                authenticationType = ProxyAuthenticationType.DIGEST;
-                break;
-            default:
-                authenticationType = ProxyAuthenticationType.NONE;
-        }
-        Proxy.Type type;
-        switch (properties.getType()) {
-            case "http":
-                type = Proxy.Type.HTTP;
-                break;
-            case "socks":
-                type = Proxy.Type.SOCKS;
-                break;
-            default:
-                type = Proxy.Type.DIRECT;
-        }
-        Proxy proxyAddress = new Proxy(type, new InetSocketAddress(properties.getHostname(), properties.getPort()));
-        return new ProxyOptions(authenticationType, proxyAddress, properties.getUsername(), properties.getPassword());
-    }
+
 
 }

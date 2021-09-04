@@ -3,6 +3,7 @@
 
 package com.azure.spring.cloud.autoconfigure.servicebus;
 
+import com.azure.core.amqp.AmqpTransportType;
 import com.azure.messaging.servicebus.ServiceBusProcessorClient;
 import com.azure.resourcemanager.servicebus.models.ServiceBusNamespace;
 import com.azure.resourcemanager.servicebus.models.Topic;
@@ -10,6 +11,9 @@ import com.azure.spring.cloud.context.core.api.AzureResourceMetadata;
 import com.azure.spring.cloud.context.core.impl.ServiceBusNamespaceManager;
 import com.azure.spring.cloud.context.core.impl.ServiceBusTopicManager;
 import com.azure.spring.cloud.context.core.impl.ServiceBusTopicSubscriptionManager;
+import com.azure.spring.core.converter.AzureAmqpRetryOptionsConverter;
+import com.azure.spring.core.properties.client.AmqpClientProperties;
+import com.azure.spring.core.properties.retry.RetryProperties;
 import com.azure.spring.core.util.Tuple;
 import com.azure.spring.integration.servicebus.converter.ServiceBusMessageConverter;
 import com.azure.spring.integration.servicebus.factory.DefaultServiceBusTopicClientFactory;
@@ -74,8 +78,15 @@ public class AzureServiceBusTopicOperationAutoConfiguration {
 
         Assert.notNull(connectionString, "Service Bus connection string must not be null");
 
-        DefaultServiceBusTopicClientFactory clientFactory = new DefaultServiceBusTopicClientFactory(connectionString, properties.getTransportType());
-        clientFactory.setRetryOptions(properties.getRetryOptions());
+        final AmqpClientProperties clientProperties = properties.getClient();
+        final RetryProperties retryProperties = properties.getRetry();
+        final AmqpTransportType transportType = clientProperties == null ? null : clientProperties.getTransportType();
+
+        DefaultServiceBusTopicClientFactory clientFactory = new DefaultServiceBusTopicClientFactory(connectionString,
+                                                                                                    transportType);
+        if (retryProperties != null) {
+            clientFactory.setRetryOptions(new AzureAmqpRetryOptionsConverter().convert(properties.getRetry()));
+        }
         clientFactory.setNamespace(properties.getNamespace());
         clientFactory.setServiceBusProvisioner(new ServiceBusTopicProvisioner(namespaceManager, topicManager, topicSubscriptionManager));
 

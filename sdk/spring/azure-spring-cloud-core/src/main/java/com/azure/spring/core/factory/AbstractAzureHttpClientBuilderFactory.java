@@ -5,17 +5,15 @@ package com.azure.spring.core.factory;
 
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpClientProvider;
-import com.azure.core.http.ProxyOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.util.Header;
 import com.azure.core.util.HttpClientOptions;
+import com.azure.spring.core.converter.AzureHttpProxyOptionsConverter;
 import com.azure.spring.core.http.DefaultHttpProvider;
 import com.azure.spring.core.properties.ProxyProperties;
 import com.azure.spring.core.properties.client.ClientProperties;
 import com.azure.spring.core.properties.client.HttpClientProperties;
-import org.springframework.util.StringUtils;
 
-import java.net.InetSocketAddress;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -32,6 +30,7 @@ public abstract class AbstractAzureHttpClientBuilderFactory<T> extends AbstractA
     private final HttpClientOptions httpClientOptions = new HttpClientOptions();
     private HttpClientProvider httpClientProvider = new DefaultHttpProvider();
     private final List<HttpPipelinePolicy> httpPipelinePolicies = new ArrayList<>();
+    private final AzureHttpProxyOptionsConverter proxyOptionsConverter = new AzureHttpProxyOptionsConverter();
 
     protected abstract BiConsumer<T, HttpClient> consumeHttpClient();
 
@@ -57,7 +56,10 @@ public abstract class AbstractAzureHttpClientBuilderFactory<T> extends AbstractA
 
     @Override
     protected void configureProxy(T builder) {
-        this.httpClientOptions.setProxyOptions(getProxyOptions(getAzureProperties().getProxy()));
+        final ProxyProperties proxy = getAzureProperties().getProxy();
+        if (proxy != null) {
+            this.httpClientOptions.setProxyOptions(proxyOptionsConverter.convert(proxy));
+        }
     }
 
     @Override
@@ -120,27 +122,6 @@ public abstract class AbstractAzureHttpClientBuilderFactory<T> extends AbstractA
 
     protected HttpClientProvider getHttpClientProvider() {
         return this.httpClientProvider;
-    }
-
-    private ProxyOptions getProxyOptions(ProxyProperties proxyProperties) {
-        if (proxyProperties == null) {
-            return null;
-        }
-        final String type = proxyProperties.getType();
-        ProxyOptions.Type sdkProxyType;
-        if ("http".equalsIgnoreCase(type)) {
-            sdkProxyType = ProxyOptions.Type.HTTP;
-        } else {
-            sdkProxyType = ProxyOptions.Type.SOCKS4;
-        }
-
-        ProxyOptions proxyOptions = new ProxyOptions(sdkProxyType, new InetSocketAddress(proxyProperties.getHostname(),
-                                                                                         proxyProperties.getPort()));
-        if (StringUtils.hasText(proxyProperties.getUsername()) && StringUtils.hasText(proxyProperties.getPassword())) {
-            proxyOptions.setCredentials(proxyProperties.getUsername(), proxyProperties.getPassword());
-        }
-        // TODO (xiada) non proxy hosts
-        return proxyOptions;
     }
 
 }

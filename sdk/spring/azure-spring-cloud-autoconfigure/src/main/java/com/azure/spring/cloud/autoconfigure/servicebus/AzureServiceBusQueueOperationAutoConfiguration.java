@@ -3,11 +3,15 @@
 
 package com.azure.spring.cloud.autoconfigure.servicebus;
 
+import com.azure.core.amqp.AmqpTransportType;
 import com.azure.messaging.servicebus.ServiceBusProcessorClient;
 import com.azure.resourcemanager.servicebus.models.ServiceBusNamespace;
 import com.azure.spring.cloud.context.core.api.AzureResourceMetadata;
 import com.azure.spring.cloud.context.core.impl.ServiceBusNamespaceManager;
 import com.azure.spring.cloud.context.core.impl.ServiceBusQueueManager;
+import com.azure.spring.core.converter.AzureAmqpRetryOptionsConverter;
+import com.azure.spring.core.properties.client.AmqpClientProperties;
+import com.azure.spring.core.properties.retry.RetryProperties;
 import com.azure.spring.core.util.Tuple;
 import com.azure.spring.integration.servicebus.converter.ServiceBusMessageConverter;
 import com.azure.spring.integration.servicebus.factory.DefaultServiceBusQueueClientFactory;
@@ -64,10 +68,15 @@ public class AzureServiceBusQueueOperationAutoConfiguration {
 
         Assert.notNull(connectionString, "Service Bus connection string must not be null");
 
-        DefaultServiceBusQueueClientFactory clientFactory = new DefaultServiceBusQueueClientFactory(connectionString, properties.getTransportType());
-        clientFactory.setRetryOptions(properties.getRetryOptions());
-        clientFactory.setServiceBusProvisioner(new ServiceBusQueueProvisioner(namespaceManager, queueManager) {
-        });
+        final AmqpClientProperties clientProperties = properties.getClient();
+        final RetryProperties retryProperties = properties.getRetry();
+        final AmqpTransportType transportType = clientProperties == null ? null : clientProperties.getTransportType();
+        DefaultServiceBusQueueClientFactory clientFactory = new DefaultServiceBusQueueClientFactory(connectionString,
+                                                                                                    transportType);
+        if (retryProperties != null) {
+            clientFactory.setRetryOptions(new AzureAmqpRetryOptionsConverter().convert(retryProperties));
+        }
+        clientFactory.setServiceBusProvisioner(new ServiceBusQueueProvisioner(namespaceManager, queueManager) { });
 
         return clientFactory;
     }
