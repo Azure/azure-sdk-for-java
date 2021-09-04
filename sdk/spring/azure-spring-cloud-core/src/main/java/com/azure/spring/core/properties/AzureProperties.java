@@ -17,6 +17,7 @@ public class AzureProperties {
 
     protected ProxyProperties proxy;
 
+    // TODO (xiada): use Duration or use milliseconds
     protected RetryProperties retry;
 
     protected TokenCredentialProperties credential;

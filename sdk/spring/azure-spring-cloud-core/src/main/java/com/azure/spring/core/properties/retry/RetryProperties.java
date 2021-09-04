@@ -8,7 +8,7 @@ package com.azure.spring.core.properties.retry;
  */
 public class RetryProperties {
 
-    private BackoffProperties backoff;
+    private BackoffProperties backoff = new BackoffProperties();
     private Integer maxAttempts;
     private Long timeout;
 

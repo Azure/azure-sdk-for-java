@@ -39,7 +39,7 @@ import org.springframework.util.Assert;
  * @author Warren Zhu
  */
 @Configuration
-@AutoConfigureAfter(AzureServiceBusClientAutoConfiguration.class)
+@AutoConfigureAfter(AzureServiceBusOperationAutoConfiguration.class)
 @ConditionalOnClass(value = {ServiceBusProcessorClient.class, ServiceBusTopicClientFactory.class})
 @ConditionalOnProperty(value = "spring.cloud.azure.servicebus.enabled", matchIfMissing = true)
 public class AzureServiceBusTopicOperationAutoConfiguration {

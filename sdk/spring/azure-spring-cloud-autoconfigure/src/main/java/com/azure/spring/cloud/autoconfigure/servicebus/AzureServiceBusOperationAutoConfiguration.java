@@ -26,7 +26,7 @@ import org.springframework.util.StringUtils;
  *
  * @author Warren Zhu
  */
-@Configuration
+@Configuration(proxyBeanMethods = false)
 @AutoConfigureAfter(AzureResourceManagerAutoConfiguration.class)
 @ConditionalOnClass(ServiceBusReceivedMessage.class)
 @ConditionalOnProperty(value = "spring.cloud.azure.servicebus.enabled", matchIfMissing = true)

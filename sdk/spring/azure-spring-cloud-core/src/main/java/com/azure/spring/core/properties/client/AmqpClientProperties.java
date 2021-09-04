@@ -10,6 +10,7 @@ import com.azure.core.amqp.AmqpTransportType;
  */
 public class AmqpClientProperties extends ClientProperties {
 
+    // TODO (xiada): should we use enum here?
     private AmqpTransportType transportType;
 
     public AmqpTransportType getTransportType() {

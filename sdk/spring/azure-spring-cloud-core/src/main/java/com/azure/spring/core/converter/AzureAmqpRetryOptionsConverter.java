@@ -5,6 +5,7 @@ package com.azure.spring.core.converter;
 
 import com.azure.core.amqp.AmqpRetryMode;
 import com.azure.core.amqp.AmqpRetryOptions;
+import com.azure.spring.core.properties.retry.BackoffProperties;
 import com.azure.spring.core.properties.retry.RetryProperties;
 import org.springframework.core.convert.converter.Converter;
 
@@ -17,18 +18,32 @@ public final class AzureAmqpRetryOptionsConverter implements Converter<RetryProp
 
     @Override
     public AmqpRetryOptions convert(RetryProperties retryProperties) {
-        AmqpRetryMode mode;
-        if (retryProperties.getBackoff().getMultiplier() > 0) {
-            mode = AmqpRetryMode.EXPONENTIAL;
-        } else {
-            mode = AmqpRetryMode.FIXED;
-        }
         AmqpRetryOptions retryOptions = new AmqpRetryOptions();
-        retryOptions.setDelay(Duration.ofMillis(retryProperties.getBackoff().getDelay()));
-        retryOptions.setMaxDelay(Duration.ofMillis(retryProperties.getBackoff().getMaxDelay()));
-        retryOptions.setMode(mode);
-        retryOptions.setMaxRetries(retryProperties.getMaxAttempts());
-        retryOptions.setTryTimeout(Duration.ofMillis(retryProperties.getTimeout()));
+
+        if (retryProperties.getMaxAttempts() != null) {
+            retryOptions.setMaxRetries(retryProperties.getMaxAttempts());
+        }
+
+        if (retryProperties.getTimeout() != null) {
+            retryOptions.setTryTimeout(Duration.ofMillis(retryProperties.getTimeout()));
+        }
+
+        AmqpRetryMode mode;
+        final BackoffProperties backoffProperties = retryProperties.getBackoff();
+        if (backoffProperties != null) {
+            if (backoffProperties.getMultiplier() != null && backoffProperties.getMultiplier() > 0) {
+                mode = AmqpRetryMode.EXPONENTIAL;
+            } else {
+                mode = AmqpRetryMode.FIXED;
+            }
+            retryOptions.setMode(mode);
+            if (backoffProperties.getDelay() != null) {
+                retryOptions.setDelay(Duration.ofMillis(backoffProperties.getDelay()));
+            }
+            if (backoffProperties.getMaxDelay() != null) {
+                retryOptions.setMaxDelay(Duration.ofMillis(backoffProperties.getMaxDelay()));
+            }
+        }
         return retryOptions;
     }
 }

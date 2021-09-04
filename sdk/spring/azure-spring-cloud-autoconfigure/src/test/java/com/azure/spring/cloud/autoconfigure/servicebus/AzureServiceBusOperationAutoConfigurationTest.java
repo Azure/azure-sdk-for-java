@@ -4,10 +4,12 @@
 package com.azure.spring.cloud.autoconfigure.servicebus;
 
 import com.azure.core.amqp.AmqpRetryMode;
+import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpTransportType;
 import com.azure.messaging.servicebus.ServiceBusReceivedMessage;
 import com.azure.spring.cloud.autoconfigure.commonconfig.TestConfigWithAzureResourceManager;
 import com.azure.spring.cloud.context.core.impl.ServiceBusNamespaceManager;
+import com.azure.spring.core.converter.AzureAmqpRetryOptionsConverter;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
@@ -19,7 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class AzureServiceBusOperationAutoConfigurationTest {
 
-    private static final String SERVICE_BUS_PROPERTY_PREFIX = "spring.cloud.azure.servicebus.";
+    private static final AzureAmqpRetryOptionsConverter RETRY_OPTIONS_CONVERTER = new AzureAmqpRetryOptionsConverter();
 
     private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
         .withConfiguration(AutoConfigurations.of(AzureServiceBusOperationAutoConfiguration.class));
@@ -31,7 +33,7 @@ public class AzureServiceBusOperationAutoConfigurationTest {
 
     @Test
     public void testAzureServiceBusDisabled() {
-        this.contextRunner.withPropertyValues(SERVICE_BUS_PROPERTY_PREFIX + "enabled=false")
+        this.contextRunner.withPropertyValues(AzureServiceBusProperties.PREFIX + ".enabled=false")
                           .run(context -> assertThat(context).doesNotHaveBean(AzureServiceBusProperties.class));
     }
 
@@ -39,13 +41,12 @@ public class AzureServiceBusOperationAutoConfigurationTest {
     public void testAzureServiceBusPropertiesConfigured() {
         this.contextRunner
             .withPropertyValues(
-                SERVICE_BUS_PROPERTY_PREFIX + "namespace=ns1",
-                SERVICE_BUS_PROPERTY_PREFIX + "connection-string=str1")
+                AzureServiceBusProperties.PREFIX + ".namespace=ns1",
+                AzureServiceBusProperties.PREFIX + ".connection-string=str1")
             .run(context -> {
                 assertThat(context).hasSingleBean(AzureServiceBusProperties.class);
                 assertThat(context.getBean(AzureServiceBusProperties.class).getNamespace()).isEqualTo("ns1");
                 assertThat(context.getBean(AzureServiceBusProperties.class).getConnectionString()).isEqualTo("str1");
-                assertThat(context.getBean(AzureServiceBusProperties.class).getTransportType()).isEqualTo(AmqpTransportType.AMQP);
             });
     }
 
@@ -76,7 +77,7 @@ public class AzureServiceBusOperationAutoConfigurationTest {
 
     @Test
     public void testConnectionStringProvided() {
-        this.contextRunner.withPropertyValues(SERVICE_BUS_PROPERTY_PREFIX + "connection-string=str1")
+        this.contextRunner.withPropertyValues(AzureServiceBusProperties.PREFIX + ".connection-string=str1")
                           .run(context -> {
                               assertThat(context.getBean(ServiceBusConnectionStringProvider.class).getConnectionString()).isEqualTo("str1");
                               assertThat(context).doesNotHaveBean(ServiceBusNamespaceManager.class);
@@ -85,25 +86,29 @@ public class AzureServiceBusOperationAutoConfigurationTest {
 
     @Test
     public void testTransportTypeWithAmqpWebSockets() {
-        this.contextRunner.withPropertyValues(SERVICE_BUS_PROPERTY_PREFIX + "transport-type=AMQP_WEB_SOCKETS")
-                          .run(context -> {
-                              assertThat(context.getBean(AzureServiceBusProperties.class).getTransportType()).isEqualTo(AmqpTransportType.AMQP_WEB_SOCKETS);
-                          });
+        this.contextRunner.withPropertyValues(AzureServiceBusProperties.PREFIX + ".client.transport-type=AmqpWebSockets")
+                          .run(context -> assertThat(context.getBean(AzureServiceBusProperties.class)
+                                                            .getClient()
+                                                            .getTransportType())
+                              .isEqualTo(AmqpTransportType.AMQP_WEB_SOCKETS));
     }
 
     @Test
-    public void testTransportTypeWithRetryOptions() {
-        this.contextRunner.withPropertyValues(SERVICE_BUS_PROPERTY_PREFIX + "retry-options.maxRetries=5",
-                                              SERVICE_BUS_PROPERTY_PREFIX + "retry-options.delay=100S",
-                                              SERVICE_BUS_PROPERTY_PREFIX + "retry-options.maxDelay=200S",
-                                              SERVICE_BUS_PROPERTY_PREFIX + "retry-options.tryTimeout=300S",
-                                              SERVICE_BUS_PROPERTY_PREFIX + "retry-options.Mode=FIXED")
+    public void testRetryOptions() {
+        this.contextRunner.withPropertyValues(AzureServiceBusProperties.PREFIX + ".retry.max-attempts=5",
+                                              AzureServiceBusProperties.PREFIX + ".retry.timeout=3000",
+                                              AzureServiceBusProperties.PREFIX + ".retry.backoff.delay=1000",
+                                              AzureServiceBusProperties.PREFIX + ".retry.backoff.maxDelay=2000")
                           .run(context -> {
-                              assertThat(context.getBean(AzureServiceBusProperties.class).getRetryOptions().getMaxRetries()).isEqualTo(5);
-                              assertThat(context.getBean(AzureServiceBusProperties.class).getRetryOptions().getDelay().getSeconds()).isEqualTo(100L);
-                              assertThat(context.getBean(AzureServiceBusProperties.class).getRetryOptions().getMaxDelay().getSeconds()).isEqualTo(200L);
-                              assertThat(context.getBean(AzureServiceBusProperties.class).getRetryOptions().getTryTimeout().getSeconds()).isEqualTo(300L);
-                              assertThat(context.getBean(AzureServiceBusProperties.class).getRetryOptions().getMode()).isEqualTo(AmqpRetryMode.FIXED);
+                              final AzureServiceBusProperties properties = context.getBean(
+                                  AzureServiceBusProperties.class);
+                              final AmqpRetryOptions retryOptions = RETRY_OPTIONS_CONVERTER.convert(properties.getRetry());
+
+                              assertThat(retryOptions.getMaxRetries()).isEqualTo(5);
+                              assertThat(retryOptions.getTryTimeout().getSeconds()).isEqualTo(3L);
+                              assertThat(retryOptions.getDelay().getSeconds()).isEqualTo(1);
+                              assertThat(retryOptions.getMaxDelay().getSeconds()).isEqualTo(2);
+                              assertThat(retryOptions.getMode()).isEqualTo(AmqpRetryMode.FIXED);
                           });
     }
 
