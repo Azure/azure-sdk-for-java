@@ -67,7 +67,7 @@ steps:
         workingDirectory: $(Agent.BuildDirectory)
         filePath: ${{ parameters.JavaRepoRoot }}/eng/scripts/Publish-MavenPackages.ps1
         arguments: >
-          -ArtifactDirectory '${{ parameters.Artifact'Directory }}'
+          -ArtifactDirectory '${{ parameters.ArtifactDirectory }}'
           -GroupIDFilter '${{ parameters.GroupID }}'
           -ArtifactIDFilter '${{ parameters.ArtifactID }}'
           -RepositoryUrl 'https://oss.sonatype.org/service/local/staging/deploy/maven2/'

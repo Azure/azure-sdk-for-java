@@ -1,0 +1,31 @@
+parameters:
+  - name: Artifact
+    type: object
+    default: {}
+  - name: ArtifactName
+    type: string
+    default: "not-specified"
+  - name: RetryLimit
+    type: number
+    default: 30
+
+steps:
+  - download: current
+    artifact: ${{parameters.ArtifactName}}-signed
+  - pwsh: |
+      $pomf = Get-ChildItem "$(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed/${{parameters.Artifact.groupId}}/${{parameters.Artifact.name}}/*.pom"
+      while ($retries++ -lt ${{parameters.RetryLimit}}) {
+        Write-Host "mvn --no-transfer-progress -f $pomf compile"
+        mvn --no-transfer-progress -f $pomf compile
+        if ($LASTEXITCODE) {
+          if ($retries -ge ${{parameters.RetryLimit}}) {
+            exit $LASTEXITCODE
+          }
+          Write-Host "Install failed, retrying in 1 minute..."
+          sleep 60
+        } else {
+          break
+        }
+      }
+    workingDirectory: $(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed/${{parameters.Artifact.groupId}}/${{parameters.Artifact.name}}
+    displayName: "Verify Package Compilation"
