@@ -19,19 +19,21 @@ import org.springframework.context.annotation.Configuration;
  *
  * @author Warren Zhu
  */
-@Configuration
+@Configuration(proxyBeanMethods = false)
 @AutoConfigureAfter({ AzureStorageBlobClientAutoConfiguration.class, AzureStorageFileShareClientAutoConfiguration.class })
 public class StorageResourceAutoConfiguration {
 
     @Bean
     @ConditionalOnBean(BlobServiceClient.class)
     public AzureStorageBlobProtocolResolver azureStorageBlobProtocolResolver(BlobServiceClient blobServiceClient) {
+        System.out.println("=====in");
         return new AzureStorageBlobProtocolResolver(blobServiceClient);
     }
 
     @Bean
     @ConditionalOnBean(ShareServiceClient.class)
     public AzureStorageFileProtocolResolver azureStorageFileProtocolResolver(ShareServiceClient shareServiceClient) {
+        System.out.println("=====out");
         return new AzureStorageFileProtocolResolver(shareServiceClient);
     }
 }

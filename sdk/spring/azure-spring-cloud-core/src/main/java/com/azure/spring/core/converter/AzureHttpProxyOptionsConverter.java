@@ -11,7 +11,7 @@ import org.springframework.util.StringUtils;
 import java.net.InetSocketAddress;
 
 /**
- * Converts a {@link ProxyProperties} to a {@link ProxyOptions}
+ * Converts a {@link ProxyProperties} to a {@link ProxyOptions}.
  */
 public final class AzureHttpProxyOptionsConverter implements Converter<ProxyProperties, ProxyOptions> {
 

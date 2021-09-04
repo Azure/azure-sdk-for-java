@@ -12,7 +12,7 @@ import org.springframework.core.convert.converter.Converter;
 import java.time.Duration;
 
 /**
- * Converts a {@link RetryProperties} to a {@link AmqpRetryOptions}
+ * Converts a {@link RetryProperties} to a {@link AmqpRetryOptions}.
  */
 public final class AzureAmqpRetryOptionsConverter implements Converter<RetryProperties, AmqpRetryOptions> {
 

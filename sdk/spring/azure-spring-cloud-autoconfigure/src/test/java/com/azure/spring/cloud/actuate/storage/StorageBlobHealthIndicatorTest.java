@@ -31,7 +31,7 @@ public class StorageBlobHealthIndicatorTest {
     public void testWithNoStorageConfiguration() {
         ApplicationContextRunner contextRunner = new ApplicationContextRunner()
             .withAllowBeanDefinitionOverriding(true)
-            .withBean(BlobServiceClientBuilder.class)
+            .withBean(BlobServiceAsyncClient.class)
             .withConfiguration(AutoConfigurations.of(StorageBlobHealthConfiguration.class));
 
         contextRunner.run(context ->

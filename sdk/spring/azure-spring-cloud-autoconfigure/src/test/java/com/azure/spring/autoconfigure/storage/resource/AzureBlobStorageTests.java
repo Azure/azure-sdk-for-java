@@ -121,16 +121,20 @@ public class AzureBlobStorageTests {
     }
 
     @Configuration
-    @Import(StorageResourceAutoConfiguration.class)
+    @Import({StorageBlobClientConfiguration.class, StorageResourceAutoConfiguration.class})
     static class StorageApplication {
 
+
+    }
+
+    static class StorageBlobClientConfiguration {
+
         @Bean
-        public static BlobServiceClient mockBlobServiceClient() {
+        public BlobServiceClient mockBlobServiceClient() {
             return mockBlobServiceClientBuilder().buildClient();
         }
 
-        @Bean
-        public static BlobServiceClientBuilder mockBlobServiceClientBuilder() {
+        public BlobServiceClientBuilder mockBlobServiceClientBuilder() {
             BlobServiceClientBuilder serviceClientBuilder = mock(BlobServiceClientBuilder.class);
 
             BlobServiceClient blobServiceClient = mock(BlobServiceClient.class);
@@ -169,7 +173,6 @@ public class AzureBlobStorageTests {
 
             return serviceClientBuilder;
         }
-
     }
 
 }

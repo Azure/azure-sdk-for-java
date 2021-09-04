@@ -13,6 +13,3 @@ public class TestHttpClientProvider implements HttpClientProvider {
         return new TestHttpClient();
     }
 }
-
-
-    

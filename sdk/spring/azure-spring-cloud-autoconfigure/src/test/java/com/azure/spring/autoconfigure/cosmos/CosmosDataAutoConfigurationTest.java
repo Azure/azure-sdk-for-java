@@ -15,7 +15,6 @@ import org.springframework.boot.test.context.FilteredClassLoader;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.io.ClassPathResource;
 
 import static com.azure.spring.autoconfigure.cosmos.PropertySettingUtil.CLIENT_ID;
 import static com.azure.spring.autoconfigure.cosmos.PropertySettingUtil.CLOUD;
@@ -28,17 +27,9 @@ import static com.azure.spring.autoconfigure.unity.AzurePropertyAutoConfiguratio
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 
-public class CosmosAutoConfigurationTest {
+public class CosmosDataAutoConfigurationTest {
 
     private final ApplicationContextRunner contextRunner = new ApplicationContextRunner();
-
-    @Test
-    public void testCosmosAutoConfigurationWithoutEnableConfigFile() {
-        this.contextRunner
-            .withConfiguration(AutoConfigurations.of(CosmosDataAutoConfiguration.class, AzurePropertyAutoConfiguration.class))
-            .withClassLoader(new FilteredClassLoader(new ClassPathResource("cosmos.enable.config")))
-            .run((context) -> assertThat(context).doesNotHaveBean(CosmosConfig.class));
-    }
 
     @Test
     public void testCosmosAutoConfigurationWithoutConditionalOnClass() {

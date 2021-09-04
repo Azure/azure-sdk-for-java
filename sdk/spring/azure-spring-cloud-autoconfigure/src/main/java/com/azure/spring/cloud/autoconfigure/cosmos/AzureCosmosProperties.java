@@ -63,11 +63,6 @@ public class AzureCosmosProperties extends AzureProperties implements Initializi
     private boolean populateQueryMetrics;
 
     /**
-     * Whether allow Microsoft to collect telemetry data.
-     */
-    private boolean allowTelemetry = true;
-
-    /**
      * Represents the connection mode to be used by the client in the Azure Cosmos DB database service.
      */
     private ConnectionMode connectionMode;

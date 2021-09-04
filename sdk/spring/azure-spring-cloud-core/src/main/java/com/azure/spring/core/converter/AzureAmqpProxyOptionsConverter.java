@@ -12,7 +12,7 @@ import java.net.InetSocketAddress;
 import java.net.Proxy;
 
 /**
- * Converts a {@link ProxyProperties} to a {@link ProxyOptions}
+ * Converts a {@link ProxyProperties} to a {@link ProxyOptions}.
  */
 public final class AzureAmqpProxyOptionsConverter implements Converter<ProxyProperties, ProxyOptions> {
 
