@@ -5,6 +5,9 @@ parameters:
   - name: ArtifactName
     type: string
     default: "not-specified"
+  - name: RetryLimit
+    type: number
+    default: 30
 
 steps:
   - download: current
@@ -14,15 +17,17 @@ steps:
       # Write-Host "Copy-Item $(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed/${{parameters.Artifact.groupId}}/${{parameters.Artifact.name}}/" "$(Pipeline.Workspace)/install-check-dir/${{parameters.Artifact.name}} -Recurse"
       # Copy-Item "${{parameters.ArtifactName}}-signed/${{parameters.Artifact.groupId}}/${{parameters.Artifact.name}}/" "install-check-dir/${{parameters.Artifact.name}}" -Recurse
       # Write-Host "$pomf = Get-ChildItem install-check-dir/${{parameters.Artifact.name}}/*.pom"
-      $pomf = Get-ChildItem $(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed/${{parameters.Artifact.groupId}}/${{parameters.Artifact.name}}/*.pom
+      $pomf = Get-ChildItem "$(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed/${{parameters.Artifact.groupId}}/${{parameters.Artifact.name}}/*.pom"
+      # $pomf = Get-ChildItem "$pomfDir/*.pom"
       # Write-Host "Rename-Item $($pomf) pom.xml"
       # Rename-Item $pomf pom.xml
-      # Copy-Item "$(System.DefaultWorkingDirectory)/eng" "install-check-dir/${{ parameters.Artifact.name }}/eng" -Recurse
-      while ($retries++ -lt $RetryLimit) {
-        Write-Host "mvn install -DpomFile $pomf $(DefaultOptions) -Dcheckstyle.skip=true"
-        mvn install -DpomFile $pomf $(DefaultOptions) -Dcheckstyle.skip=true
+      # Copy-Item "$(System.DefaultWorkingDirectory)/eng" "$pomfDir/eng" -Recurse
+
+      while ($retries++ -lt ${{parameters.RetryLimit}}) {
+        Write-Host "mvn -f $pomf install -Dcheckstyle.skip=true"
+        mvn -f $pomf install '-Dcheckstyle.skip=true'
         if ($LASTEXITCODE) {
-          if ($retries -ge $RetryLimit) {
+          if ($retries -ge ${{parameters.RetryLimit}}) {
             exit $LASTEXITCODE
           }
           Write-Host "Install failed, retrying in 1 minute..."
@@ -31,5 +36,5 @@ steps:
           break
         }
       }
-    workingDirectory: $(Pipeline.Workspace)
+    workingDirectory: $(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed/${{parameters.Artifact.groupId}}/${{parameters.Artifact.name}}
     displayName: "Verify Package Installation"
