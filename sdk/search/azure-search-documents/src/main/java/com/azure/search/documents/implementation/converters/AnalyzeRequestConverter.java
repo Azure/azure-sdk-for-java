@@ -13,36 +13,6 @@ import com.azure.search.documents.indexes.models.TokenFilterName;
  */
 public final class AnalyzeRequestConverter {
     /**
-     * Maps from {@link com.azure.search.documents.indexes.implementation.models.AnalyzeRequest} to {@link AnalyzeTextOptions}.
-     */
-    public static AnalyzeTextOptions map(com.azure.search.documents.indexes.implementation.models.AnalyzeRequest obj) {
-        if (obj == null) {
-            return null;
-        }
-        AnalyzeTextOptions analyzeTextOptions;
-
-        if (obj.getAnalyzer() != null) {
-            analyzeTextOptions = new AnalyzeTextOptions(obj.getText(), obj.getAnalyzer());
-        } else if (obj.getNormalizer() != null) {
-            analyzeTextOptions = new AnalyzeTextOptions(obj.getText(), obj.getNormalizer());
-        } else {
-            analyzeTextOptions = new AnalyzeTextOptions(obj.getText(), obj.getTokenizer());
-        }
-
-        if (obj.getCharFilters() != null) {
-            analyzeTextOptions.setCharFilters(obj.getCharFilters().toArray(new CharFilterName[0]));
-        }
-
-
-        if (obj.getTokenFilters() != null) {
-            analyzeTextOptions.setTokenFilters(obj.getTokenFilters().toArray(new TokenFilterName[0]));
-        }
-
-
-        return analyzeTextOptions;
-    }
-
-    /**
      * Maps from {@link AnalyzeTextOptions} to {@link com.azure.search.documents.indexes.implementation.models.AnalyzeRequest}.
      */
     public static com.azure.search.documents.indexes.implementation.models.AnalyzeRequest map(AnalyzeTextOptions obj) {

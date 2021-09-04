@@ -66,9 +66,7 @@ public final class IndexActionConverter {
                         new RuntimeException("Failed to serialize IndexAction.", ex));
                 }
             } else {
-                ByteArrayOutputStream sourceStream = new ByteArrayOutputStream();
-                serializer.serialize(sourceStream, properties);
-                mapProperties = serializer.deserialize(new ByteArrayInputStream(sourceStream.toByteArray()),
+                mapProperties = serializer.deserializeFromBytes(serializer.serializeToBytes(properties),
                     MAP_STRING_OBJECT_TYPE_REFERENCE);
             }
         }

@@ -7,6 +7,7 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
@@ -24,6 +25,8 @@ import java.util.List;
 @JsonTypeName("#Microsoft.Skills.Text.EntityRecognitionSkill")
 @Fluent
 public final class EntityRecognitionSkill extends SearchIndexerSkill {
+    private final ClientLogger logger = new ClientLogger(EntityRecognitionSkill.class);
+
     /*
      * A list of entity categories that should be extracted.
      */
@@ -159,8 +162,15 @@ public final class EntityRecognitionSkill extends SearchIndexerSkill {
      *
      * @param includeTypelessEntities the includeTypelessEntities value to set.
      * @return the EntityRecognitionSkill object itself.
+     * @throws IllegalArgumentException If {@code includeTypelessEntities} is supplied when {@link #getSkillVersion()}
+     * is {@link EntityRecognitionSkillVersion#V3}.
      */
     public EntityRecognitionSkill setTypelessEntitiesIncluded(Boolean includeTypelessEntities) {
+        if (includeTypelessEntities != null && version == EntityRecognitionSkillVersion.V3) {
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                "EntityRecognitionSkill using V3 doesn't support 'includeTypelessEntities'."));
+        }
+
         this.includeTypelessEntities = includeTypelessEntities;
         return this;
     }
@@ -218,8 +228,15 @@ public final class EntityRecognitionSkill extends SearchIndexerSkill {
      *
      * @param modelVersion the modelVersion value to set.
      * @return the EntityRecognitionSkill object itself.
+     * @throws IllegalArgumentException If {@code modelVersion} is supplied when {@link #getSkillVersion()} is {@link
+     * EntityRecognitionSkillVersion#V1}.
      */
     public EntityRecognitionSkill setModelVersion(String modelVersion) {
+        if (modelVersion != null && version == EntityRecognitionSkillVersion.V1) {
+            throw logger.logExceptionAsError(
+                new IllegalArgumentException("EntityRecognitionSkill using V1 doesn't support 'modelVersion'."));
+        }
+
         this.modelVersion = modelVersion;
         return this;
     }
