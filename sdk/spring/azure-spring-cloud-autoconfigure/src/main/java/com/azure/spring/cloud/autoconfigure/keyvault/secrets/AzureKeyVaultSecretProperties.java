@@ -13,6 +13,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @ConfigurationProperties(prefix = "spring.cloud.azure.keyvault.secret")
 public class AzureKeyVaultSecretProperties extends AzureKeyVaultProperties {
 
+    // TODO (xiada): should we use enum here?
     private SecretServiceVersion serviceVersion;
 
     public SecretServiceVersion getServiceVersion() {

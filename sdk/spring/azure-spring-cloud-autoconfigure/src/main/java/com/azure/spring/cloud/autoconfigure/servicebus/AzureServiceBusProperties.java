@@ -3,12 +3,9 @@
 
 package com.azure.spring.cloud.autoconfigure.servicebus;
 
-import com.azure.core.amqp.AmqpRetryOptions;
-import com.azure.core.amqp.AmqpTransportType;
-import com.azure.messaging.servicebus.implementation.ServiceBusConstants;
 import com.azure.spring.core.properties.AzureProperties;
+import com.azure.spring.core.properties.client.AmqpClientProperties;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.boot.context.properties.DeprecatedConfigurationProperty;
 
 /**
  * @author Warren Zhu
@@ -26,9 +23,8 @@ public class AzureServiceBusProperties extends AzureProperties {
 
     private boolean crossEntityTransactions;
 
-    private AmqpRetryOptions retryOptions = new AmqpRetryOptions().setTryTimeout(ServiceBusConstants.OPERATION_TIMEOUT);
+    private AmqpClientProperties client;
 
-    private AmqpTransportType transportType = AmqpTransportType.AMQP;
 
     public String getFQDN() {
         return this.namespace + "." + this.domainName;
@@ -66,20 +62,12 @@ public class AzureServiceBusProperties extends AzureProperties {
         this.crossEntityTransactions = crossEntityTransactions;
     }
 
-    public AmqpRetryOptions getRetryOptions() {
-        return retryOptions;
+    @Override
+    public AmqpClientProperties getClient() {
+        return client;
     }
 
-    public void setRetryOptions(AmqpRetryOptions retryOptions) {
-        this.retryOptions = retryOptions;
-    }
-
-    @DeprecatedConfigurationProperty(reason = "Use ", replacement = "")
-    public AmqpTransportType getTransportType() {
-        return transportType;
-    }
-
-    public void setTransportType(AmqpTransportType transportType) {
-        this.transportType = transportType;
+    public void setClient(AmqpClientProperties client) {
+        this.client = client;
     }
 }
