@@ -18,7 +18,7 @@ import static java.util.logging.Level.WARNING;
 /**
  * This class provides a JRE key store.
  */
-public class JREKeyStore {
+public final class JREKeyStore {
     private static final String JAVA_HOME =  privilegedGetProperty("java.home", "");
     private static final Path STORE_PATH = Paths.get(JAVA_HOME).resolve("lib").resolve("security");
     private static final Path DEFAULT_STORE = STORE_PATH.resolve("cacerts");
