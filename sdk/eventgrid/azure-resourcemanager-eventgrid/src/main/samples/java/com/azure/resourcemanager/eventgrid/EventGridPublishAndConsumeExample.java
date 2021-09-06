@@ -5,6 +5,7 @@ package com.azure.resourcemanager.eventgrid;
 
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;
+import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.management.AzureEnvironment;
@@ -30,6 +31,8 @@ import com.azure.resourcemanager.eventhubs.models.EventHub;
 import com.azure.resourcemanager.eventhubs.models.EventHubNamespace;
 import com.azure.resourcemanager.eventhubs.models.EventHubNamespaceSkuType;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
+import com.azure.resourcemanager.resources.models.Subscription;
+import reactor.core.Disposable;
 import reactor.core.publisher.Flux;
 
 import java.util.Random;
@@ -42,7 +45,6 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 public class EventGridPublishAndConsumeExample {
     private static AzureResourceManager resourceManager;
     private static EventGridManager eventGridManager;
-    private static EventHubsManager eventHubsManager;
 
     private static final Random RANDOM = new Random();
     private static final int NUMBER_OF_EVENTS = 10;
@@ -69,18 +71,22 @@ public class EventGridPublishAndConsumeExample {
 
             AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
 
-            // 2. Create ResourceManager, EventHubsManager, EventGridManager
+
+
+            // 2. Create ResourceManager, EventGridManager
+
+            // Create one HttpClient to make it shared by two resource managers.
+            HttpClient httpClient = HttpClient.createDefault();
+
             resourceManager = AzureResourceManager.configure()
+                .withHttpClient(httpClient)
                 .withLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
                 .authenticate(credential, profile)
                 .withDefaultSubscription();
 
-            eventHubsManager = EventHubsManager.configure()
-                .withLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
-                .authenticate(credential, profile);
-
             eventGridManager = EventGridManager.configure()
                 .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
+                .withHttpClient(httpClient)
                 .authenticate(credential, profile);
 
             // 3. Run sample
@@ -96,13 +102,13 @@ public class EventGridPublishAndConsumeExample {
 
             // 1. Create a resource group.
             ResourceGroup resourceGroup =
-                resourceManager.resourceGroups().define(resourceGroupName).withRegion(Region.US_EAST).create();
+                resourceManager.resourceGroups().define(resourceGroupName).withRegion(region).create();
 
             System.out.println("Resource group created with name " + resourceGroupName);
 
             // 2. Create an event hub.
             // 2.1 Create a event hub namespace.
-            EventHubNamespace namespace = eventHubsManager.namespaces()
+            EventHubNamespace namespace = resourceManager.eventHubNamespaces()
                 .define(eventHubNamespace)
                 .withRegion(region)
                 .withExistingResourceGroup(resourceGroupName)
@@ -117,7 +123,7 @@ public class EventGridPublishAndConsumeExample {
                 .define(eventHubName)
                 .withExistingNamespace(resourceGroupName, eventHubNamespace)
                 .withNewManageRule(eventHubRuleName)
-                .withPartitionCount(1)
+                .withPartitionCount(1) // Here we create eventhub with 1 partition, so that when we subscribe, we can make sure all the events come from the same partition, and then subscribe to the first partition. It is for sample purpose. In real use case, one can configure multiple partitions
                 .create();
 
             System.out.println("EventHub created with name " + eventHub.name());
@@ -181,7 +187,8 @@ public class EventGridPublishAndConsumeExample {
             // 8.2 Subscribe to the coming events from event grid
             // We use CountDownLatch to wait for the coming events
             CountDownLatch countDownLatch = new CountDownLatch(NUMBER_OF_EVENTS);
-            consumer.receiveFromPartition(firstPartition, EventPosition.latest())
+
+            Disposable subscription = consumer.receiveFromPartition(firstPartition, EventPosition.latest())
                 .subscribe(partitionEvent -> {
                         EventData eventData = partitionEvent.getData();
                         String contents = new String(eventData.getBody(), UTF_8);
@@ -212,6 +219,10 @@ public class EventGridPublishAndConsumeExample {
                 })
                 .doOnComplete(() -> System.out.println("Done publishing events using event grid."))
                 .blockLast();
+
+            // clean up subscription and consumer resources
+            subscription.dispose();
+            consumer.close();
 
             boolean isSuccessful = countDownLatch.await(OPERATION_TIMEOUT.getSeconds(), TimeUnit.SECONDS);
             if (!isSuccessful) {
