@@ -4,29 +4,16 @@
 package com.azure.security.keyvault.jca.implementation.certificates;
 
 import com.azure.security.keyvault.jca.implementation.JREKeyStore;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.security.AccessController;
 import java.security.Key;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
-import java.security.NoSuchAlgorithmException;
-import java.security.PrivilegedAction;
 import java.security.cert.Certificate;
-import java.security.cert.CertificateException;
-import java.util.stream.Stream;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.HashMap;
 import java.util.logging.Logger;
-import java.util.Objects;
-
 import static java.util.logging.Level.WARNING;
 
 /**
