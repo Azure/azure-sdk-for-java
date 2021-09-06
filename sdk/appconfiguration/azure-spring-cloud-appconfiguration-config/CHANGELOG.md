@@ -1,6 +1,6 @@
 # Release History
 
-## 2.1.0 (2021-08-25)
+## 2.1.0 (2021-09-05)
 
 * Add Health Indicator with the property `management.endpoint.health.azure-app-configuration.enabled` to enable the endpoint.
 * Added Secret Resolver with use of `KeyVaultSecretProvider` which enables overriding connecting to Key Vault with client provided values.
