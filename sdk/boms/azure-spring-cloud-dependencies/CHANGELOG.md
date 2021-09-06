@@ -5,7 +5,7 @@ This release is compatible with Spring Boot 2.5.0 - 2.5.4 and Spring Cloud 2020.
 ### Dependency Upgrades
 - Upgrade to [spring-boot-dependencies:2.5.4](https://repo.maven.apache.org/maven2/org/springframework/boot/spring-boot-dependencies/2.5.4/spring-boot-dependencies-2.5.4.pom).
 
-## 2.8.0 (2021-08-25)
+## 2.8.0 (2021-09-05)
 This release is compatible with Spring Boot 2.5.0 - 2.5.3 and Spring Cloud 2020.0.3.
 ### Dependency Upgrades
 - Upgrade to [spring-boot-dependencies:2.5.3](https://repo.maven.apache.org/maven2/org/springframework/boot/spring-boot-dependencies/2.5.3/spring-boot-dependencies-2.5.3.pom).

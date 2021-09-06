@@ -6,7 +6,7 @@ This release is compatible with Spring Boot 2.5.0 - 2.5.4.
 - Upgrade to [spring-boot-dependencies:2.5.4](https://repo.maven.apache.org/maven2/org/springframework/boot/spring-boot-dependencies/2.5.4/spring-boot-dependencies-2.5.4.pom).
 
 ### Features Added
-
+- Support configuration of `AbstractJmsListenerContainerFactory` for `JmsListener`. Enabled properties include `replyPubSubDomain`, `replyQosSettings`, `subscriptionDurable`, `subscriptionShared` and `phase` with prefix as `spring.jms.servicebus.listener`.
 ### Breaking Changes
 
 ### Bugs Fixed
@@ -19,7 +19,7 @@ This release is compatible with Spring Boot 2.5.0 - 2.5.4.
     |                      Yes                      |                          No                            |                       `web_application`                                                               |       `web_application`     |
     |                      No                       |                          Yes                           |                       `resource_server`                                                               |       `resource_server`     |
     |                      Yes                      |                          Yes                           | `web_application`,`resource_server`,`resource_server_with_obo`, `web_application_and_resource_server` | `resource_server_with_obo`  |
-
+- Fix the bug of not supporting Spring Boot autoconfiguration of JMS listener.
 ### Deprecations
 - Deprecate `azure.activedirectory.authorization-clients.xxx.on-demand`, use `azure.activedirectory.authorization-clients.xxx.authorization-grant-type` instead. If you are using `on-demand=true`, please change to `authorization-grant-type=authorization_code`.
 

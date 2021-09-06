@@ -7,7 +7,7 @@ import org.springframework.lang.Nullable;
 /**
  * Managed Identity information for connecting to Azure App Configuration Stores.
  */
-public class AppConfigManagedIdentityProperties {
+public final class AppConfigManagedIdentityProperties {
 
     @Nullable
     private String clientId; // Optional: client_id of the managed identity
