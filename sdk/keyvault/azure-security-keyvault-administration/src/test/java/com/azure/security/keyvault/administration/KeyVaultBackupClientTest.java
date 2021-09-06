@@ -94,7 +94,6 @@ public class KeyVaultBackupClientTest extends KeyVaultBackupClientTestBase {
         KeyClient keyClient = new KeyClientBuilder()
             .vaultUrl(getEndpoint())
             .pipeline(getPipeline(httpClient, false))
-            .serviceVersion(KeyServiceVersion.V7_1)
             .buildClient();
 
         String keyName = interceptorManager.isPlaybackMode()

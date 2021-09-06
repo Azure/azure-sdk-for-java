@@ -89,7 +89,6 @@ public class KeyVaultBackupAsyncClientTest extends KeyVaultBackupClientTestBase 
         KeyAsyncClient keyClient = new KeyClientBuilder()
             .vaultUrl(getEndpoint())
             .pipeline(getPipeline(httpClient, false))
-            .serviceVersion(KeyServiceVersion.V7_1)
             .buildAsyncClient();
 
         String keyName = interceptorManager.isPlaybackMode()
