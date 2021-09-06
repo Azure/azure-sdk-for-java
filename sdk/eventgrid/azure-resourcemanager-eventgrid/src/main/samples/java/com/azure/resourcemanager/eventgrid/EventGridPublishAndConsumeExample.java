@@ -205,7 +205,7 @@ public class EventGridPublishAndConsumeExample {
             // We create events to send to the service and block until the send has completed.
             Flux.range(0, NUMBER_OF_EVENTS)
                 .doOnNext(number -> {
-                    String body = String.format("Hello world! Number: %s", number);
+                    String body = String.format("Custom Event Number: %s", number);
                     EventGridEvent event = new EventGridEvent("com/example/MyApp", "User.Created.Text", BinaryData.fromObject(body), "0.1");
                     eventGridPublisherClient.sendEvent(event);
                     System.out.format("Done publishing event: %s.%n", body);
