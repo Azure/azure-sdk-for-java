@@ -70,9 +70,7 @@ public class EventGridPublishAndConsumeExample {
                 .build();
 
             AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
-
-
-
+            
             // 2. Create ResourceManager, EventGridManager
 
             // Create one HttpClient to make it shared by two resource managers.
