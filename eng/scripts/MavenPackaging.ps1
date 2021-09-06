@@ -9,6 +9,7 @@ class MavenPackageDetail {
   [string]$GroupID
   [string]$ArtifactID
   [string]$Version
+  [bool]$IsSnapshot
   [string]$SonaTypeProfileID
   [AssociatedArtifact[]]$AssociatedArtifacts
 }
@@ -116,7 +117,10 @@ function Get-MavenPackageDetails([string]$ArtifactDirectory) {
     Write-Information "Artifact ID is: $($packageDetail.ArtifactID)"
 
     $packageDetail.Version = $pomDocument.project.version
-    Write-Information "Version  is: $($packageDetail.Version)"
+    Write-Information "Version is: $($packageDetail.Version)"
+
+    $packageDetail.IsSnapshot = $packageDetail.Version.EndsWith("-SNAPSHOT")
+    Write-Information "IsSnapshot is: $($packageDetail.IsSnapshot)"
 
     $packageDetail.SonaTypeProfileID = Get-SonaTypeProfileID($packageDetail.GroupID)
     Write-Information "SonaType Profile ID is: $($packageDetail.SonaTypeProfileID)"
