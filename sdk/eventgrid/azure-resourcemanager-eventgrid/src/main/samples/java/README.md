@@ -62,9 +62,9 @@ This project welcomes contributions and suggestions. Find [more contributing][EV
 
 ## More information ##
 
-[http://azure.com/java](http://azure.com/java)
+[https://azure.com/java](https://azure.com/java)
 
-If you don't have a Microsoft Azure subscription you can get a FREE trial account [here](http://go.microsoft.com/fwlink/?LinkId=330212)
+If you don't have a Microsoft Azure subscription you can get a FREE trial account [here](https://go.microsoft.com/fwlink/?LinkId=330212)
 
 <!-- LINKS -->
 [EVENTGRID_SDK_README]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/eventgrid/azure-resourcemanager-eventgrid
