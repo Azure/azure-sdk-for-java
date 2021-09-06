@@ -325,8 +325,8 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestBase {
             .setFilter(filter);
 
         // Act & Assert
-        client.createRuleWithResponse(topicName, subscriptionName, ruleName, options)
-            .subscribe(response -> {
+        StepVerifier.create(client.createRuleWithResponse(topicName, subscriptionName, ruleName, options))
+            .assertNext(response -> {
                 assertEquals(201, response.getStatusCode());
 
                 final RuleProperties contents = response.getValue();
@@ -342,7 +342,8 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestBase {
 
                 assertNotNull(contents.getAction());
                 assertTrue(contents.getAction() instanceof EmptyRuleAction);
-            });
+            })
+            .verifyComplete();
     }
 
     @ParameterizedTest
