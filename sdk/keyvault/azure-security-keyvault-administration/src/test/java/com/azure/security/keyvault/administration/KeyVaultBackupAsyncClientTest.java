@@ -12,7 +12,6 @@ import com.azure.security.keyvault.administration.models.KeyVaultSelectiveKeyRes
 import com.azure.security.keyvault.administration.models.KeyVaultSelectiveKeyRestoreResult;
 import com.azure.security.keyvault.keys.KeyAsyncClient;
 import com.azure.security.keyvault.keys.KeyClientBuilder;
-import com.azure.security.keyvault.keys.KeyServiceVersion;
 import com.azure.security.keyvault.keys.models.CreateRsaKeyOptions;
 import com.azure.security.keyvault.keys.models.KeyVaultKey;
 import org.junit.jupiter.params.ParameterizedTest;
