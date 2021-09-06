@@ -1,5 +1,15 @@
 # Release History
 
+## 2.2.0-beta.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
 ## 2.1.0 (2021-09-05)
 
 * Add Health Indicator with the property `management.endpoint.health.azure-app-configuration.enabled` to enable the endpoint.
