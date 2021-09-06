@@ -91,4 +91,4 @@ This release is compatible with Spring Boot 2.5.0 - 2.5.3 and Spring Cloud 2020.
 
 
 [#23922]: https://github.com/Azure/azure-sdk-for-java/issues/23922
-[Role-based access control]: https://docs.microsoft.com/en-us/azure/active-directory/develop/custom-rbac-for-developers
+[Role-based access control]: https://docs.microsoft.com/azure/active-directory/develop/custom-rbac-for-developers
