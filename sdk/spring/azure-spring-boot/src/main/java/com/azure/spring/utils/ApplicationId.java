@@ -5,11 +5,10 @@ package com.azure.spring.utils;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.util.ResourceUtils;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.support.PropertiesLoaderUtils;
 
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.Properties;
 
 /**
@@ -48,10 +47,9 @@ public class ApplicationId {
 
     private static String getVersion() {
         String version = "unknown";
-        Properties properties = new Properties();
-        try (InputStream inputStream =
-                 new FileInputStream(ResourceUtils.getFile("classpath:azure-spring-boot-version.txt"))) {
-            properties.load(inputStream);
+        try {
+            Properties properties = PropertiesLoaderUtils.loadProperties(
+                new ClassPathResource("azure-spring-boot-version.txt"));
             version = properties.getProperty("version");
         } catch (IOException e) {
             LOGGER.warn("Can not get version.");
