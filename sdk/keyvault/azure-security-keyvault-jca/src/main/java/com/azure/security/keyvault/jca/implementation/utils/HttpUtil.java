@@ -3,7 +3,6 @@
 package com.azure.security.keyvault.jca.implementation.utils;
 
 import com.azure.security.keyvault.jca.implementation.JREKeyStore;
-import com.azure.security.keyvault.jca.implementation.certificates.JreCertificates;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ResponseHandler;
@@ -130,7 +129,7 @@ public final class HttpUtil {
         }
 
         SSLConnectionSocketFactory sslConnectionSocketFactory = new SSLConnectionSocketFactory(
-            sslContext, (HostnameVerifier) null );
+            sslContext, (HostnameVerifier) null);
 
         PoolingHttpClientConnectionManager manager = new PoolingHttpClientConnectionManager(
             RegistryBuilder.<ConnectionSocketFactory>create()
