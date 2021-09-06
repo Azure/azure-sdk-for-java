@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.core.models;
+package com.azure.core.experimental.models;
 
 
 import com.fasterxml.jackson.annotation.JsonProperty;
