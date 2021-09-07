@@ -5,12 +5,7 @@
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <parent>
-    <groupId>com.azure</groupId>
-    <artifactId>azure-client-sdk-parent</artifactId>
-    <version>1.7.0</version> <!-- {x-version-update;com.azure:azure-client-sdk-parent;current} -->
-    <relativePath>../../parents/azure-client-sdk-parent</relativePath>
-  </parent>
+
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>com.azure.spring</groupId>
@@ -18,6 +13,12 @@
   <version>4.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-starter-storage-queue;current} -->
 
   <name>Azure Spring Cloud Starter Storage Queue</name>
+
+  <properties>
+    <maven.compiler.source>1.8</maven.compiler.source>
+    <maven.compiler.target>1.8</maven.compiler.target>
+  </properties>
+
   <dependencies>
     <dependency>
       <groupId>com.azure.spring</groupId>
@@ -36,78 +37,5 @@
       <version>4.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-resourcemanager;current} -->
     </dependency>
   </dependencies>
-  <build>
-    <plugins>
-      <!-- BEGIN: Empty Java Doc & Sources -->
-      <!-- The following code will generate an empty javadoc with just a README.md. This is necessary
-           to pass the required checks on Maven. The way this works is by setting the classesDirectory
-           to a directory that only contains the README.md, which we need to copy. If the classesDirectory
-           is set to the root, where the README.md lives, it still won't have javadocs but the jar file
-           will contain a bunch of files that shouldn't be there. The faux sources directory is deleted
-           and recreated with the README.md being copied every time to guarantee that, when building locally,
-           it'll have the latest copy of the README.md file.
-      -->
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-javadoc-plugin</artifactId>
-        <version>3.1.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
-        <executions>
-          <execution>
-            <id>attach-javadocs</id>
-            <goals>
-              <goal>jar</goal>
-            </goals>
-            <configuration>
-              <skip>true</skip>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-jar-plugin</artifactId>
-        <version>3.1.2</version> <!-- {x-version-update;org.apache.maven.plugins:maven-jar-plugin;external_dependency} -->
-        <executions>
-          <!-- BEGIN: Empty Java Doc -->
-          <execution>
-            <id>empty-javadoc-jar-with-readme</id>
-            <phase>package</phase>
-            <goals>
-              <goal>jar</goal>
-            </goals>
-            <configuration>
-              <classifier>javadoc</classifier>
-              <classesDirectory>${project.basedir}/javadocTemp</classesDirectory>
-            </configuration>
-          </execution>
-          <!-- END: Empty Java Doc -->
-          <!-- BEGIN: Empty Sources -->
-          <execution>
-            <id>empty-sources-jar-with-readme</id>
-            <phase>package</phase>
-            <goals>
-              <goal>jar</goal>
-            </goals>
-            <configuration>
-              <classifier>sources</classifier>
-              <classesDirectory>${project.basedir}/sourceTemp</classesDirectory>
-            </configuration>
-          </execution>
-          <!-- END: Empty Sources -->
-        </executions>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-source-plugin</artifactId>
-        <version>3.0.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-source-plugin;external_dependency} -->
-        <executions>
-          <execution>
-            <id>attach-sources</id>
-            <phase>none</phase> <!-- The way to skip the sources attach is to set the phase to none, the skip config doesn't work for sources -->
-          </execution>
-        </executions>
-      </plugin>
-      <!-- END: Empty Java Doc & Sources -->
-    </plugins>
-  </build>
+
 </project>
