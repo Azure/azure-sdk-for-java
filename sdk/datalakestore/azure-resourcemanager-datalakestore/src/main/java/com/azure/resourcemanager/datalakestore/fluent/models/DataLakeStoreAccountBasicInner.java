@@ -4,7 +4,7 @@
 
 package com.azure.resourcemanager.datalakestore.fluent.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
 import com.azure.core.util.logging.ClientLogger;
@@ -18,7 +18,7 @@ import java.util.UUID;
 
 /** Basic Data Lake Store account information, returned on list calls. */
 @JsonFlatten
-@Immutable
+@Fluent
 public class DataLakeStoreAccountBasicInner extends Resource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(DataLakeStoreAccountBasicInner.class);
 
