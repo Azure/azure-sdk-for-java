@@ -53,16 +53,16 @@ jobs:
         goals: 'javadoc:aggregate'
 
     - task: Maven@3
-        displayName: 'Generate Aggregate JaCoCo coverage report'
-        inputs:
-          mavenPomFile: pom.xml
-          options: '$(DefaultOptions) -T 2C -Dinclude-non-shipping-modules -Dgpg.skip -Drevapi.skip -Pjacoco -Pcoverage'
-          mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
-          javaHomeOption: 'JDKVersion'
-          jdkVersionOption: $(JavaBuildVersion)
-          jdkArchitectureOption: 'x64'
-          publishJUnitResults: false
-          goals: 'verify jacoco:report-aggregate'
+      displayName: 'Generate Aggregate JaCoCo coverage report'
+      inputs:
+        mavenPomFile: pom.xml
+        options: '$(DefaultOptions) -T 2C -Dinclude-non-shipping-modules -Dgpg.skip -Drevapi.skip -Pjacoco -Pcoverage'
+        mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
+        javaHomeOption: 'JDKVersion'
+        jdkVersionOption: $(JavaBuildVersion)
+        jdkArchitectureOption: 'x64'
+        publishJUnitResults: false
+        goals: 'verify jacoco:report-aggregate'
 
     - task: Maven@3
       condition: succeededOrFailed()
