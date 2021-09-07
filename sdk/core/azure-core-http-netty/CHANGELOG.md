@@ -1,15 +1,19 @@
 # Release History
 
-## 1.11.0 (Unreleased)
+## 1.11.0 (2021-09-07)
 
 ### Features Added
 
 - Added the ability to configure HTTP connect timeout. ([#23435](https://github.com/Azure/azure-sdk-for-java/pull/23435))
 - Added support for additional environment configurations. ([#23435](https://github.com/Azure/azure-sdk-for-java/pull/23435))
 
-### Dependency Updates
+### Other Changes
+
+#### Dependency Updates
 
 - Upgraded `azure-core` from `1.19.0` to `1.20.0`.
+- Upgraded Netty from `4.1.66.Final` to `4.1.67.Final`.
+- Upgraded Reactor Netty from `1.0.9` to `1.0.10`.
 
 ## 1.10.2 (2021-08-06)
 

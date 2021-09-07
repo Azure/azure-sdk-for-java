@@ -1,12 +1,14 @@
 # Release History
 
-## 1.0.0-beta.18 (Unreleased)
+## 1.0.0-beta.18 (2021-09-07)
 
 ### Breaking Changes
 
 - Moved `HttpAuthorization` into `azure-core`. 
 
-### Dependency Updates
+### Other Changes
+
+#### Dependency Updates
 
 - Upgraded `azure-core` from `1.19.0` to `1.20.0`.
 

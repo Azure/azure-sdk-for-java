@@ -1,12 +1,14 @@
 # Release History
 
-## 1.8.0-beta.1 (Unreleased)
+## 1.7.1 (2021-09-07)
 
 ### Fixed
 
 - Fixed a `NullPointerException` when loading test `HttpClient`. ([#23559](https://github.com/Azure/azure-sdk-for-java/pull/23559))
 
-### Dependency Updates
+### Other Changes
+
+#### Dependency Updates
 
 - Upgraded `azure-core` from `1.19.0` to `1.20.0`.
 

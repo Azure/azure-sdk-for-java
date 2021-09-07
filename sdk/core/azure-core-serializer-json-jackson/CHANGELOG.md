@@ -1,8 +1,10 @@
 # Release History
 
-## 1.2.7 (Unreleased)
+## 1.2.7 (2021-09-07)
 
-### Dependency Updates
+### Other Changes
+
+#### Dependency Updates
 
 - Upgraded `azure-core` from `1.19.0` to `1.20.0`.
 

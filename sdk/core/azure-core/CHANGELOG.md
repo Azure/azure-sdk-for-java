@@ -1,6 +1,6 @@
 # Release History
 
-## 1.20.0 (Unreleased)
+## 1.20.0 (2021-09-07)
 
 ### Features Added
 
@@ -17,7 +17,13 @@
 ### Fixed
 
 - Fixed a bug where terminal status on initial poll wasn't respected. ([#23564](https://github.com/Azure/azure-sdk-for-java/pull/23564))
-- Fixed a bug where `UserAgentUtil` didn't validate that an `applicationId` was less than 24 characters. ([#23643](https://github.com/Azure/azure-sdk-for-java/pull/23643)) 
+- Fixed a bug where `UserAgentUtil` didn't validate that an `applicationId` was less than 24 characters. ([#23643](https://github.com/Azure/azure-sdk-for-java/pull/23643))
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded Reactor from `3.4.8` to `3.4.9`.
 
 ## 1.19.0 (2021-08-06)
 
