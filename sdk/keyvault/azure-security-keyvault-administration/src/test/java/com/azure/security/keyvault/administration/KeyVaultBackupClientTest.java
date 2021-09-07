@@ -13,6 +13,7 @@ import com.azure.security.keyvault.administration.models.KeyVaultSelectiveKeyRes
 import com.azure.security.keyvault.administration.models.KeyVaultSelectiveKeyRestoreResult;
 import com.azure.security.keyvault.keys.KeyClient;
 import com.azure.security.keyvault.keys.KeyClientBuilder;
+import com.azure.security.keyvault.keys.KeyServiceVersion;
 import com.azure.security.keyvault.keys.models.CreateRsaKeyOptions;
 import com.azure.security.keyvault.keys.models.KeyVaultKey;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -92,6 +93,7 @@ public class KeyVaultBackupClientTest extends KeyVaultBackupClientTestBase {
     public void beginSelectiveKeyRestore(HttpClient httpClient) {
         KeyClient keyClient = new KeyClientBuilder()
             .vaultUrl(getEndpoint())
+            .serviceVersion(KeyServiceVersion.V7_2)
             .pipeline(getPipeline(httpClient, false))
             .buildClient();
 
