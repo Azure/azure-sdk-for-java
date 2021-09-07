@@ -44,7 +44,7 @@ public final class Utility {
             // Given that this is an HttpResponse the only time this will be called is when the outbound has completed.
             //
             // From there the only thing that needs to be checked is whether the inbound has been disposed (completed),
-            // and if not disposed it (aka drain it).
+            // and if not dispose it (aka drain it).
             if (!channelOperations.isInboundDisposed()) {
                 channelOperations.channel().eventLoop().execute(channelOperations::discard);
             }
