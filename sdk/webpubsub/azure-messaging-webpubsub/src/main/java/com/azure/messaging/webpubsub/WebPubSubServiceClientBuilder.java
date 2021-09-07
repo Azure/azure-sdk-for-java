@@ -94,7 +94,7 @@ public final class WebPubSubServiceClientBuilder {
     private WebPubSubServiceVersion version = WebPubSubServiceVersion.getLatest();
     private String hub;
     private ClientOptions clientOptions;
-    private String apimEndpoint;
+    private String reverseProxyEndpoint;
 
     /**
      * Creates a new builder instance with all values set to their default value.
@@ -175,13 +175,13 @@ public final class WebPubSubServiceClientBuilder {
     }
 
     /**
-     * Sets the API management endpoint.
+     * Sets the reverse proxy endpoint.
      *
-     * @param apimEndpoint The API management endpoint.
+     * @param reverseProxyEndpoint The reverse proxy endpoint.
      * @return The updated {@link WebPubSubServiceClientBuilder} object.
      */
-    public WebPubSubServiceClientBuilder apimEndpoint(String apimEndpoint) {
-        this.apimEndpoint = apimEndpoint;
+    public WebPubSubServiceClientBuilder reverseProxyEndpoint(String reverseProxyEndpoint) {
+        this.reverseProxyEndpoint = reverseProxyEndpoint;
         return this;
     }
 
@@ -378,8 +378,8 @@ public final class WebPubSubServiceClientBuilder {
                             + "Please provide connection string or AzureKeyCredential or TokenCredential."));
         }
 
-        if (!CoreUtils.isNullOrEmpty(apimEndpoint)) {
-            policies.add(new ApimPolicy(apimEndpoint));
+        if (!CoreUtils.isNullOrEmpty(reverseProxyEndpoint)) {
+            policies.add(new ReverseProxyPolicy(reverseProxyEndpoint));
         }
         policies.addAll(this.policies);
 

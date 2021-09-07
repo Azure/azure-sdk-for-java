@@ -14,36 +14,36 @@ import reactor.core.publisher.Mono;
 import java.net.URL;
 
 /**
- * The API Management Policy.
+ * The reverse proxy policy.
  */
-public final class ApimPolicy implements HttpPipelinePolicy {
+public final class ReverseProxyPolicy implements HttpPipelinePolicy {
 
-    private final String apimEndpoint;
+    private final String reverseProxyEndpoint;
 
     /**
-     * Creates an instance of the APIM policy.
+     * Creates an instance of the reverse proxy policy.
      *
-     * @param apimEndpoint The APIM endpoint.
+     * @param reverseProxyEndpoint The reverse proxy endpoint.
      */
-    public ApimPolicy(String apimEndpoint) {
-        this.apimEndpoint = apimEndpoint;
+    public ReverseProxyPolicy(String reverseProxyEndpoint) {
+        this.reverseProxyEndpoint = reverseProxyEndpoint;
     }
 
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
         URL url = context.getHttpRequest().getUrl();
-        String apimUrl = apimEndpoint;
+        String reverseProxyUrl = reverseProxyEndpoint;
         String path = url.getPath();
         if (!CoreUtils.isNullOrEmpty(path)) {
-            apimUrl += path;
+            reverseProxyUrl += path;
         }
         String query = url.getQuery();
         if (!CoreUtils.isNullOrEmpty(query)) {
-            apimUrl += "?" + query;
+            reverseProxyUrl += "?" + query;
         }
 
         HttpRequest requestCopy = context.getHttpRequest().copy();
-        context.setHttpRequest(requestCopy.setUrl(apimUrl));
+        context.setHttpRequest(requestCopy.setUrl(reverseProxyUrl));
         return next.clone().process();
     }
 }
