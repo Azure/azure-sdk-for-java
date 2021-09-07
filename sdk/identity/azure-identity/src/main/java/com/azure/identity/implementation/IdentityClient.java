@@ -42,6 +42,7 @@ import com.microsoft.aad.msal4j.IAuthenticationResult;
 import com.microsoft.aad.msal4j.IClientCredential;
 import com.microsoft.aad.msal4j.InteractiveRequestParameters;
 import com.microsoft.aad.msal4j.MsalInteractionRequiredException;
+import com.microsoft.aad.msal4j.OnBehalfOfParameters;
 import com.microsoft.aad.msal4j.Prompt;
 import com.microsoft.aad.msal4j.PublicClientApplication;
 import com.microsoft.aad.msal4j.RefreshTokenParameters;
@@ -122,6 +123,7 @@ public class IdentityClient {
     private final String tenantId;
     private final String clientId;
     private final String clientSecret;
+    private final String clientAssertionFilePath;
     private final InputStream certificate;
     private final String certificatePath;
     private final String certificatePassword;
@@ -140,10 +142,12 @@ public class IdentityClient {
      * @param certificatePassword the password protecting the PFX certificate.
      * @param isSharedTokenCacheCredential Indicate whether the credential is
      * {@link com.azure.identity.SharedTokenCacheCredential} or not.
+     * @param confidentialClientCacheTimeout the cache time out to use for confidential client.
      * @param options the options configuring the client.
      */
     IdentityClient(String tenantId, String clientId, String clientSecret, String certificatePath,
-                   InputStream certificate, String certificatePassword, boolean isSharedTokenCacheCredential,
+                   String clientAssertionFilePath, InputStream certificate, String certificatePassword,
+                   boolean isSharedTokenCacheCredential, Duration confidentialClientCacheTimeout,
                    IdentityClientOptions options) {
         if (tenantId == null) {
             tenantId = "organizations";
@@ -154,16 +158,18 @@ public class IdentityClient {
         this.tenantId = tenantId;
         this.clientId = clientId;
         this.clientSecret = clientSecret;
+        this.clientAssertionFilePath = clientAssertionFilePath;
         this.certificatePath = certificatePath;
         this.certificate = certificate;
         this.certificatePassword = certificatePassword;
         this.options = options;
 
-        this.publicClientApplicationAccessor = new SynchronizedAccessor<PublicClientApplication>(() ->
+        this.publicClientApplicationAccessor = new SynchronizedAccessor<>(() ->
             getPublicClientApplication(isSharedTokenCacheCredential));
 
-        this.confidentialClientApplicationAccessor = new SynchronizedAccessor<ConfidentialClientApplication>(() ->
-            getConfidentialClientApplication());
+        this.confidentialClientApplicationAccessor = confidentialClientCacheTimeout == null
+            ? new SynchronizedAccessor<>(() -> getConfidentialClientApplication())
+            : new SynchronizedAccessor<>(() -> getConfidentialClientApplication(), confidentialClientCacheTimeout);
     }
 
     private Mono<ConfidentialClientApplication> getConfidentialClientApplication() {
@@ -204,6 +210,15 @@ public class IdentityClient {
                 } catch (IOException | GeneralSecurityException e) {
                     return Mono.error(logger.logExceptionAsError(new RuntimeException(
                         "Failed to parse the certificate for the credential: " + e.getMessage(), e)));
+                }
+            } else if (clientAssertionFilePath != null) {
+                try {
+                    credential = ClientCredentialFactory
+                        .createFromClientAssertion(parseClientAssertion(clientAssertionFilePath));
+                } catch (IOException e) {
+                    return Mono.error(logger.logExceptionAsError(new RuntimeException(
+                        "Failed to parse the client assertion from the provided file: " + clientAssertionFilePath
+                            + ". " + e.getMessage(), e)));
                 }
             } else {
                 return Mono.error(logger.logExceptionAsError(
@@ -254,6 +269,11 @@ public class IdentityClient {
             return tokenCache != null ? tokenCache.registerCache()
                 .map(ignored -> confidentialClientApplication) : Mono.just(confidentialClientApplication);
         });
+    }
+
+    private String parseClientAssertion(String clientAssertionFilePath) throws IOException {
+        byte[] encoded = Files.readAllBytes(Paths.get(clientAssertionFilePath));
+        return new String(encoded, StandardCharsets.UTF_8);
     }
 
     private Mono<PublicClientApplication> getPublicClientApplication(boolean sharedTokenCacheCredential) {
@@ -525,6 +545,23 @@ public class IdentityClient {
                 return Mono.error(last);
             }));
     }
+
+
+    /**
+     * Asynchronously acquire a token from Active Directory with Azure Power Shell.
+     *
+     * @param request the details of the token request
+     * @return a Publisher that emits an AccessToken
+     */
+    public Mono<AccessToken> authenticateWithOBO(TokenRequestContext request) {
+
+        return confidentialClientApplicationAccessor.getValue()
+            .flatMap(confidentialClient -> Mono.fromFuture(() -> confidentialClient.acquireToken(OnBehalfOfParameters
+                    .builder(new HashSet<>(request.getScopes()), options.getUserAssertion())
+                    .build()))
+                .map(MsalToken::new));
+    }
+
 
     private Mono<AccessToken> getAccessTokenFromPowerShell(TokenRequestContext request,
                                                            PowershellManager powershellManager) {
@@ -992,6 +1029,16 @@ public class IdentityClient {
                 }
             }
         });
+    }
+
+    /**
+     * Asynchronously acquire a token from the Azure Arc Managed Service Identity endpoint.
+     *
+     * @param request the details of the token request
+     * @return a Publisher that emits an AccessToken
+     */
+    public Mono<AccessToken> authenticatewithExchangeToken(TokenRequestContext request) {
+        return authenticateWithConfidentialClient(request);
     }
 
     /**
