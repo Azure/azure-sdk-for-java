@@ -85,7 +85,7 @@ public final class AccessTokenUtil {
      * @return the authorization token.
      */
     public static AccessToken getAccessToken(String resource, String aadAuthenticationUrl,
-                                             String tenantId, String clientId, String clientSecret) {
+               String tenantId, String clientId, String clientSecret) {
 
         LOGGER.entering("AccessTokenUtil", "getAccessToken", new Object[]{
             resource, tenantId, clientId, clientSecret});
@@ -94,8 +94,8 @@ public final class AccessTokenUtil {
 
         StringBuilder oauth2Url = new StringBuilder();
         oauth2Url.append(aadAuthenticationUrl == null ? OAUTH2_TOKEN_BASE_URL : aadAuthenticationUrl)
-            .append(tenantId)
-            .append(OAUTH2_TOKEN_POSTFIX);
+                 .append(tenantId)
+                 .append(OAUTH2_TOKEN_POSTFIX);
 
         StringBuilder requestBody = new StringBuilder();
         requestBody.append(GRANT_TYPE_FRAGMENT)
