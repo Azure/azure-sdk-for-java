@@ -25,19 +25,20 @@ From a developer's perspective, Key Vault APIs accept and return secret values a
 
 For highly sensitive data, clients should consider additional layers of protection for data. Encrypting data using a separate protection key prior to storage in Key Vault is one example.
 
-Key Vault also supports a contentType field for secrets. Clients may specify the content type of a secret to assist in interpreting the secret data when it's retrieved. The maximum length of this field is 255 characters. There are no pre-defined values. The suggested usage is as a hint for interpreting the secret data.
+Key Vault also supports a contentType field for secrets. Clients may specify the content type of secret to assist in interpreting the secret data when it's retrieved. The maximum length of this field is 255 characters. There are no pre-defined values. The suggested usage is as a hint for interpreting the secret data.
 
-Besides, this starter provides features of supporting multiple Key Vaults, case sensitive mode of Key Vault names and using placeholder presenting Key Vault names in property file
+Besides, this starter supports multiple Key Vaults(in theory, it can support an unlimited number), case-sensitive mode of Key Vault names, and using placeholder presenting Key Vault names in the property file.
+
 ### Multiple Key Vault support
 
-If you want to use multiple Key Vaults you need to define names for each of the
+If you want to use multiple Key Vaults, you need to define names for each of the
 Key Vaults you want to use and in which order the Key Vaults should be consulted.
-If a property exists in multiple Key Vaults the order determine which value you
+If a property exists in multiple Key Vaults, the order determines which value you
 will get back.
 
-### Case sensitive key mode
+### Case-sensitive key mode
 
-The new case sensitive mode allows you to use case sensitive Key Vault names. Note
+The new case-sensitive mode allows you to use case-sensitive Key Vault names. Note
 that the Key Vault secret key still needs to honor the naming limitation as 
 described in the “keyvault-name” element of [About keys, secrets, and certificates](https://docs.microsoft.com/azure/key-vault/general/about-keys-secrets-certificates).
 
@@ -48,17 +49,17 @@ in the Spring Boot documentation.
 
 ## Examples
 ### Custom settings
-To use the custom configuration, open `application.properties` file and add below properties to specify your Azure Key Vault url, Azure service principal client id and client key. 
-- `azure.keyvault.enabled` is used to turn on/off Azure Key Vault Secret property source, default is true. 
-- `azure.keyvault.token-acquiring-timeout-seconds` is used to specify the timeout in seconds when acquiring token from Azure AAD. Default value is 60 seconds. This property is optional. 
-- `azure.keyvault.refresh-interval` is the period for PropertySource to refresh secret keys, its value is 1800000(ms) by default. This property is optional. 
-- `azure.keyvault.secret-keys` is a property to indicate that if application using specific secret keys, if this property is set, application will only load the keys in the property and won't load all the keys from keyvault, that means if you want to update your secrets, you need to restart the application rather than only add secrets in the keyvault.
+To use the custom configuration, open the `application.properties` file and add below properties to specify your Azure Key Vault URI, Azure service principal client id, and client key. 
+- `azure.keyvault.enabled` is used to turn on/off Azure Key Vault Secret as a Spring Boot property source, the default value is true. 
+- `azure.keyvault.token-acquiring-timeout-seconds` is optional. Its value is used to specify the timeout in seconds when acquiring a token from Azure AAD, the default value is 60 seconds.
+- `azure.keyvault.refresh-interval` is optional. Its value is used to specify the period for PropertySource to refresh secret keys, the default value is 1800000(ms).
+- `azure.keyvault.secret-keys` is used to indicate that if an application using specific secret keys and this property is set, the application will only load the keys in the property and won't load all the keys from Key Vault, that means if you want to update your secrets, you need to restart the application rather than only add secrets in the Key Vault.
 - `azure.keyvault.authority-host` is the URL at which your identity provider can be reached.
    - If working with azure global, just left the property blank, and the value will be filled with the default value.
-   - If working with azure stack, set the property with authority URL.
+   - If working with azure stack, set the property with authority URI.
 - `azure.keyvault.secret-service-version`
-   - The valid secret-service-version value can be found [here][version_link]. 
-   - This property is optional, if property not set, the property will be filled with the latest value.
+   - The valid values for this property can be found [here][version_link]. 
+   - This property is optional. If not set, the property will be filled with the latest value.
 
 ```
 azure.keyvault.enabled=true
@@ -101,7 +102,7 @@ azure.keyvault.uri=put-your-azure-keyvault-uri-here
 azure.keyvault.client-id=put-your-azure-client-id-here
 ``` 
 
-If you are using system assigned identity you don't need to specify the client-id.
+If you are using system assigned identity, you don't need to specify the client-id.
 
 ### Save secrets in Azure Key Vault
 Save secrets in Azure Key Vault through [Azure Portal](https://blogs.technet.microsoft.com/kv/2016/09/12/manage-your-key-vaults-from-new-azure-portal/) or [Azure CLI](https://docs.microsoft.com/cli/azure/keyvault/secret).
@@ -139,7 +140,7 @@ public class KeyVaultSample implements CommandLineRunner {
 ```
 
 ### Multiple Key Vault support
-The example below shows a setup for 2 key vaults, named `keyvault1` and
+The example below shows a setup for 2 Key Vaults, named `keyvault1` and
 `keyvault2`. The order specifies that `keyvault1` will be consulted first.
 
 ```
@@ -153,13 +154,13 @@ azure.keyvault.keyvault2.client-id=put-a-azure-client-id-here
 azure.keyvault.keyvault2.client-key=put-a-azure-client-key-here
 azure.keyvault.keyvault2.tenant-id=put-a-azure-tenant-id-here
 ```
-Note if you decide to use multiple key vault support and you already have an
+Note if you decide to use multiple Key Vault support, and you already have an
 existing configuration, please make sure you migrate that configuration to the
-multiple key vault variant. Mixing multiple key vaults with an existing single
-key vault configuration is a non supported scenario.
+multiple Key Vault variant. Mixing multiple Key Vaults with an existing single
+Key Vault configuration is a non-supported scenario.
 
-### Case sensitive key mode
-To enable case sensitive mode, you can set the following property in the `appliation.properties`:
+### Case-sensitive key mode
+To enable case-sensitive mode, you can set the following property in the `appliation.properties`:
 ```
 azure.keyvault.case-sensitive-keys=true
 ```
@@ -169,7 +170,7 @@ my.not.compliant.property=${myCompliantKeyVaultSecret}
 ```
 
 The application will take care of getting the value that is backed by the 
-`myCompliantKeyVaultSecret` key name and assign its value to the non compliant
+`myCompliantKeyVaultSecret` key name and assign its value to the non-compliant
 `my.not.compliant.property`.
 
 ## Troubleshooting
