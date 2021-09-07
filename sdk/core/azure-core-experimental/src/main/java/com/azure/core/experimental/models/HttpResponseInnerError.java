@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.core.models;
+package com.azure.core.experimental.models;
 
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * The inner error of a {@link HttpResponseError}.
  */
-public final class HttpResponseInnerError {
+final class HttpResponseInnerError {
 
     @JsonProperty(value = "code")
     private String code;
