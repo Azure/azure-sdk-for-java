@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.config;
 
-import static com.azure.spring.cloud.config.Constants.FEATURE_FLAG_CONTENT_TYPE;
+import static com.azure.spring.cloud.config.AppConfigurationConstants.FEATURE_FLAG_CONTENT_TYPE;
 import static com.azure.spring.cloud.config.TestConstants.FEATURE_BOOLEAN_VALUE;
 import static com.azure.spring.cloud.config.TestConstants.FEATURE_LABEL;
 import static com.azure.spring.cloud.config.TestConstants.FEATURE_VALUE;

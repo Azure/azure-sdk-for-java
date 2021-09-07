@@ -100,10 +100,10 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
         }
 
         List<String> profiles = Arrays.asList(env.getActiveProfiles());
-        
+
         profiles.stream().forEach(profile -> {
-            if(profile.equalsIgnoreCase("dev") ) {
-              BaseAppConfigurationPolicy.setIsDev(true);   
+            if (profile.equalsIgnoreCase("dev")) {
+                BaseAppConfigurationPolicy.setIsDev(true);
             }
         });
 

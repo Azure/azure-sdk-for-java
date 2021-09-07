@@ -2,6 +2,10 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.config.pipline.policies;
 
+import static com.azure.spring.cloud.config.AppConfigurationConstants.CORRELATION_CONTEXT;
+import static com.azure.spring.cloud.config.AppConfigurationConstants.DEV_ENV_TRACING;
+import static com.azure.spring.cloud.config.AppConfigurationConstants.KEY_VAULT_CONFIGURED_TRACING;
+import static com.azure.spring.cloud.config.AppConfigurationConstants.USER_AGENT_TYPE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 
@@ -21,15 +25,15 @@ import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpRequest;
 
+
 @ExtendWith(MockitoExtension.class)
 public class BaseAppConfigurationPolicyTest {
 
     private static final String PRE_USER_AGENT = "PreExistingUserAgent";
-    
-    public static final String USER_AGENT_TYPE = "User-Agent";
-    
+
     @Mock
     HttpPipelineCallContext contextMock;
+
     @Mock
     HttpPipelineNextPolicy nextMock;
 
@@ -61,7 +65,7 @@ public class BaseAppConfigurationPolicyTest {
         assertEquals("null/null " + PRE_USER_AGENT, userAgent);
 
         assertEquals("RequestType=Startup",
-            contextMock.getHttpRequest().getHeaders().get("Correlation-Context").getValue());
+            contextMock.getHttpRequest().getHeaders().get(CORRELATION_CONTEXT).getValue());
 
         request = new HttpRequest(HttpMethod.GET, url);
         request.setHeader(USER_AGENT_TYPE, "PreExistingUserAgent");
@@ -74,8 +78,8 @@ public class BaseAppConfigurationPolicyTest {
         assertEquals("null/null " + PRE_USER_AGENT, userAgent);
 
         assertEquals("RequestType=Watch",
-            contextMock.getHttpRequest().getHeaders().get("Correlation-Context").getValue());
-        
+            contextMock.getHttpRequest().getHeaders().get(CORRELATION_CONTEXT).getValue());
+
         request = new HttpRequest(HttpMethod.GET, url);
         request.setHeader(USER_AGENT_TYPE, "PreExistingUserAgent");
 
@@ -85,7 +89,7 @@ public class BaseAppConfigurationPolicyTest {
         assertEquals("null/null " + PRE_USER_AGENT, userAgent);
 
         assertEquals("RequestType=Watch",
-            contextMock.getHttpRequest().getHeaders().get("Correlation-Context").getValue());
+            contextMock.getHttpRequest().getHeaders().get(CORRELATION_CONTEXT).getValue());
     }
 
     @Test
@@ -95,11 +99,12 @@ public class BaseAppConfigurationPolicyTest {
 
         URL url = new URL("https://www.test.url/kv");
         HttpRequest request = new HttpRequest(HttpMethod.GET, url);
-        request.setHeader(HttpHeaders.USER_AGENT, "PreExistingUserAgent");
+        request.setHeader(USER_AGENT_TYPE, "PreExistingUserAgent");
         when(contextMock.getHttpRequest()).thenReturn(request);
 
         policy.process(contextMock, nextMock);
-        assertEquals("Dev", contextMock.getHttpRequest().getHeaders().get("Env").getValue());
+        assertEquals("RequestType=Startup,Env=" + DEV_ENV_TRACING,
+            contextMock.getHttpRequest().getHeaders().get(CORRELATION_CONTEXT).getValue());
     }
 
     @Test
@@ -109,11 +114,12 @@ public class BaseAppConfigurationPolicyTest {
 
         URL url = new URL("https://www.test.url/kv");
         HttpRequest request = new HttpRequest(HttpMethod.GET, url);
-        request.setHeader(HttpHeaders.USER_AGENT, "PreExistingUserAgent");
+        request.setHeader(USER_AGENT_TYPE, "PreExistingUserAgent");
         when(contextMock.getHttpRequest()).thenReturn(request);
 
         policy.process(contextMock, nextMock);
-        assertEquals("ConfigureKeyVault", contextMock.getHttpRequest().getHeaders().get("Env").getValue());
+        assertEquals("RequestType=Startup,Env=" + KEY_VAULT_CONFIGURED_TRACING,
+            contextMock.getHttpRequest().getHeaders().get(CORRELATION_CONTEXT).getValue());
     }
 
     @Test
@@ -124,11 +130,12 @@ public class BaseAppConfigurationPolicyTest {
 
         URL url = new URL("https://www.test.url/kv");
         HttpRequest request = new HttpRequest(HttpMethod.GET, url);
-        request.setHeader(HttpHeaders.USER_AGENT, "PreExistingUserAgent");
+        request.setHeader(USER_AGENT_TYPE, "PreExistingUserAgent");
         when(contextMock.getHttpRequest()).thenReturn(request);
 
         policy.process(contextMock, nextMock);
-        assertEquals("Dev,ConfigureKeyVault", contextMock.getHttpRequest().getHeaders().get("Env").getValue());
+        assertEquals("RequestType=Startup,Env=" + DEV_ENV_TRACING + "," + KEY_VAULT_CONFIGURED_TRACING,
+            contextMock.getHttpRequest().getHeaders().get(CORRELATION_CONTEXT).getValue());
     }
 
 }

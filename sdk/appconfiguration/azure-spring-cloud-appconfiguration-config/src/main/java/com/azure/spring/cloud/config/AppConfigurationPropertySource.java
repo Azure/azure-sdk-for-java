@@ -2,8 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.config;
 
-import static com.azure.spring.cloud.config.Constants.FEATURE_FLAG_PREFIX;
-import static com.azure.spring.cloud.config.Constants.FEATURE_MANAGEMENT_KEY;
+import static com.azure.spring.cloud.config.AppConfigurationConstants.FEATURE_FLAG_PREFIX;
+import static com.azure.spring.cloud.config.AppConfigurationConstants.FEATURE_MANAGEMENT_KEY;
 import static java.util.Collections.emptyList;
 import static java.util.stream.Collectors.toMap;
 

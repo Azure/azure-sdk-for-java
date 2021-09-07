@@ -2,7 +2,9 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.config;
 
-import static com.azure.spring.cloud.config.Constants.FEATURE_FLAG_CONTENT_TYPE;
+import static com.azure.spring.cloud.config.AppConfigurationConstants.CORRELATION_CONTEXT;
+import static com.azure.spring.cloud.config.AppConfigurationConstants.FEATURE_FLAG_CONTENT_TYPE;
+import static com.azure.spring.cloud.config.AppConfigurationConstants.USER_AGENT_TYPE;
 import static com.azure.spring.cloud.config.TestConstants.FEATURE_LABEL;
 import static com.azure.spring.cloud.config.TestConstants.FEATURE_VALUE;
 import static com.azure.spring.cloud.config.TestConstants.TEST_CONN_STRING;
@@ -17,6 +19,7 @@ import static com.azure.spring.cloud.config.TestConstants.TEST_VALUE_1;
 import static com.azure.spring.cloud.config.TestUtils.createItem;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -36,7 +39,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import org.apache.http.HttpHeaders;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.MethodOrderer.Alphanumeric;
@@ -69,7 +71,6 @@ import com.azure.spring.cloud.config.properties.FeatureFlagStore;
 import com.azure.spring.cloud.config.stores.ClientStore;
 
 import reactor.core.publisher.Flux;
-
 @TestMethodOrder(Alphanumeric.class)
 public class AppConfigurationPropertySourceLocatorTest {
 
@@ -89,10 +90,10 @@ public class AppConfigurationPropertySourceLocatorTest {
 
     @Mock
     private ConfigurableEnvironment emptyEnvironment;
-    
+
     @Mock
     private ConfigurableEnvironment devEnvironment;
-    
+
     @Mock
     private ConfigurableEnvironment multiEnvironment;
 
@@ -154,7 +155,8 @@ public class AppConfigurationPropertySourceLocatorTest {
     public void setup() {
         MockitoAnnotations.openMocks(this);
         BaseAppConfigurationPolicy.setIsDev(false);
-        when(emptyEnvironment.getActiveProfiles()).thenReturn(new String[] { });
+        BaseAppConfigurationPolicy.setIsKeyVaultConfigured(false);
+        when(emptyEnvironment.getActiveProfiles()).thenReturn(new String[] {});
         when(devEnvironment.getActiveProfiles()).thenReturn(new String[] { PROFILE_NAME_1 });
         when(multiEnvironment.getActiveProfiles()).thenReturn(new String[] { PROFILE_NAME_1, PROFILE_NAME_2 });
         MutablePropertySources sources = new MutablePropertySources();
@@ -239,7 +241,7 @@ public class AppConfigurationPropertySourceLocatorTest {
         assertArrayEquals((Object[]) expectedSourceNames, sources.stream().map(s -> s.getName()).toArray());
         checkIsDev(false);
     }
-    
+
     @Test
     public void devSourceIsCreated() {
         AppConfigurationStoreSelects selectedKeys = new AppConfigurationStoreSelects().setKeyFilter("/application/");
@@ -264,7 +266,7 @@ public class AppConfigurationPropertySourceLocatorTest {
         assertArrayEquals((Object[]) expectedSourceNames, sources.stream().map(s -> s.getName()).toArray());
         checkIsDev(true);
     }
-    
+
     @Test
     public void multiSourceIsCreated() {
         AppConfigurationStoreSelects selectedKeys = new AppConfigurationStoreSelects().setKeyFilter("/application/");
@@ -542,14 +544,15 @@ public class AppConfigurationPropertySourceLocatorTest {
             fail();
         }
         HttpRequest request = new HttpRequest(HttpMethod.GET, url);
-        request.setHeader(HttpHeaders.USER_AGENT, "PreExistingUserAgent");
+        request.setHeader(USER_AGENT_TYPE, "PreExistingUserAgent");
         when(contextMock.getHttpRequest()).thenReturn(request);
 
         policy.process(contextMock, nextMock);
+        String correlationContext = contextMock.getHttpRequest().getHeaders().get(CORRELATION_CONTEXT).getValue();
         if (isDev) {
-            assertEquals("Dev", contextMock.getHttpRequest().getHeaders().get("Env").getValue());
+            assertTrue(correlationContext.contains(",Env=Dev"));
         } else {
-            assertNull(contextMock.getHttpRequest().getHeaders().get("Env"));
+            assertFalse(correlationContext.contains(",Env=Dev"));
         }
 
     }

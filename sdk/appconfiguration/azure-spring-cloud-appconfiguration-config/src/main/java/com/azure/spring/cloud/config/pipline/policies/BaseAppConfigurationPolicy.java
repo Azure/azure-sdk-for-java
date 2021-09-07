@@ -2,6 +2,10 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.config.pipline.policies;
 
+import static com.azure.spring.cloud.config.AppConfigurationConstants.DEV_ENV_TRACING;
+import static com.azure.spring.cloud.config.AppConfigurationConstants.KEY_VAULT_CONFIGURED_TRACING;
+import static com.azure.spring.cloud.config.AppConfigurationConstants.USER_AGENT_TYPE;
+
 import org.springframework.util.StringUtils;
 
 import com.azure.core.http.HttpPipelineCallContext;
@@ -14,7 +18,6 @@ import com.azure.spring.cloud.config.RequestTracingConstants;
 import com.azure.spring.cloud.config.RequestType;
 
 import reactor.core.publisher.Mono;
-
 /**
  * HttpPipelinePolicy for connecting to Azure App Configuration.
  */
@@ -24,8 +27,6 @@ public final class BaseAppConfigurationPolicy implements HttpPipelinePolicy {
 
     public static final String USER_AGENT = String.format("%s/%s", StringUtils.replace(PACKAGE_NAME, " ", ""),
         BaseAppConfigurationPolicy.class.getPackage().getImplementationVersion());
-    
-    public static final String USER_AGENT_TYPE = "User-Agent";
 
     static Boolean watchRequests = false;
 
@@ -45,17 +46,18 @@ public final class BaseAppConfigurationPolicy implements HttpPipelinePolicy {
         if (track != null && track.equalsIgnoreCase("false")) {
             return "";
         }
-        String requestTypeValue = RequestType.WATCH.toString();
-        requestTypeValue = watchRequests ? RequestType.WATCH.toString() : RequestType.STARTUP.toString();
-        
-        if (requestTypeValue.equals(RequestType.WATCH.toString())) {
-            watchRequests = true;
-        }
+
+        String requestTypeValue = watchRequests ? RequestType.WATCH.toString() : RequestType.STARTUP.toString();
+
         String tracingInfo = RequestTracingConstants.REQUEST_TYPE_KEY.toString() + "=" + requestTypeValue;
         String hostType = getHostType();
 
         if (!hostType.isEmpty()) {
             tracingInfo += "," + RequestTracingConstants.HOST_TYPE_KEY + "=" + getHostType();
+        }
+
+        if (isDev || isKeyVaultConfigured) {
+            tracingInfo += ",Env=" + getEnvInfo();
         }
 
         return tracingInfo;
@@ -64,9 +66,9 @@ public final class BaseAppConfigurationPolicy implements HttpPipelinePolicy {
 
     private static String getEnvInfo() {
         String envInfo = "";
-        
-        envInfo = buildEnvTracingInfo(envInfo, isDev, "Dev");
-        envInfo = buildEnvTracingInfo(envInfo, isKeyVaultConfigured, "ConfigureKeyVault");
+
+        envInfo = buildEnvTracingInfo(envInfo, isDev, DEV_ENV_TRACING);
+        envInfo = buildEnvTracingInfo(envInfo, isKeyVaultConfigured, KEY_VAULT_CONFIGURED_TRACING);
 
         return envInfo;
     }
@@ -108,9 +110,6 @@ public final class BaseAppConfigurationPolicy implements HttpPipelinePolicy {
         context.getHttpRequest().getHeaders().set(RequestTracingConstants.CORRELATION_CONTEXT_HEADER.toString(),
             getTracingInfo(context.getHttpRequest()));
 
-        if (isDev || isKeyVaultConfigured) {
-            context.getHttpRequest().getHeaders().set("Env", getEnvInfo());
-        }
         return next.process();
     }
 
