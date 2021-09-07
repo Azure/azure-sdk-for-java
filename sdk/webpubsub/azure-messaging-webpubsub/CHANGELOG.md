@@ -1,7 +1,11 @@
 # Release History
 
-## 1.0.0-beta.4 (Unreleased)
+## 1.0.0-beta.4 (2021-09-08)
 
+### Features Added
+- Added support for [Azure Active Directory](https://docs.microsoft.com/azure/active-directory/authentication/) based authentication.
+- Added support for API management by configuring `reverseProxyEndpoint` on the client builder. 
+  https://github.com/Azure/azure-webpubsub/issues/194 describes how to integrate with the API Management service.
 
 ## 1.0.0-beta.3 (2021-07-29)
 
