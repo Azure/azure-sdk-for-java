@@ -72,7 +72,7 @@
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-core-serializer-avro-apache</artifactId>
-          <version>1.0.0-beta.14</version> <!-- {x-version-update;com.azure:azure-core-serializer-avro-apache;current} -->
+          <version>1.0.0-beta.15</version> <!-- {x-version-update;com.azure:azure-core-serializer-avro-apache;current} -->
         </dependency>
         <dependency>
           <groupId>com.azure</groupId>
