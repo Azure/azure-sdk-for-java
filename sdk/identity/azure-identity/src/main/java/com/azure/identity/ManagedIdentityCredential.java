@@ -14,6 +14,8 @@ import com.azure.identity.implementation.IdentityClientOptions;
 import com.azure.identity.implementation.util.LoggingUtil;
 import reactor.core.publisher.Mono;
 
+import java.time.Duration;
+
 /**
  * The base class for Managed Service Identity token based credentials.
  */
@@ -58,6 +60,7 @@ public final class ManagedIdentityCredential implements TokenCredential {
             && configuration.get(TOKEN_FILE_PATH) != null) {
             clientBuilder.tenantId(configuration.get(Configuration.PROPERTY_AZURE_TENANT_ID));
             clientBuilder.clientAssertionPath(configuration.get(TOKEN_FILE_PATH));
+            clientBuilder.confidentialClientCacheTimeout(Duration.ofMinutes(5));
             managedIdentityServiceCredential = new ClientAssertionCredential(clientId, clientBuilder.build());
 
         } else {

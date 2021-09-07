@@ -43,7 +43,6 @@ public class OnBehalfOfCredential implements TokenCredential {
             .certificatePath(certificatePath)
             .certificatePassword(certificatePassword)
             .identityClientOptions(identityClientOptions)
-            .confidentialClientCacheTimeout(Duration.ofMinutes(5))
             .build();
     }
 
