@@ -7,9 +7,9 @@ import com.azure.spring.cloud.config.web.AppConfigurationEndpoint;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import static com.azure.spring.cloud.config.web.Constants.APPCONFIGURATION_REFRESH;
-import static com.azure.spring.cloud.config.web.Constants.VALIDATION_CODE_FORMAT_START;
-import static com.azure.spring.cloud.config.web.Constants.VALIDATION_CODE_KEY;
+import static com.azure.spring.cloud.config.web.AppConfigurationWebConstants.APPCONFIGURATION_REFRESH;
+import static com.azure.spring.cloud.config.web.AppConfigurationWebConstants.VALIDATION_CODE_FORMAT_START;
+import static com.azure.spring.cloud.config.web.AppConfigurationWebConstants.VALIDATION_CODE_KEY;
 
 import java.io.IOException;
 import java.util.Map;
@@ -31,7 +31,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
  * Endpoint for requesting new configurations to be loaded.
  */
 @ControllerEndpoint(id = APPCONFIGURATION_REFRESH)
-public class AppConfigurationRefreshEndpoint implements ApplicationEventPublisherAware {
+public final class AppConfigurationRefreshEndpoint implements ApplicationEventPublisherAware {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AppConfigurationRefreshEndpoint.class);
 
@@ -43,6 +43,12 @@ public class AppConfigurationRefreshEndpoint implements ApplicationEventPublishe
 
     private ApplicationEventPublisher publisher;
 
+    /**
+     * Endpoint for triggering a refresh check for a single config store.
+     * 
+     * @param contextRefresher Used to verify refresh is available.
+     * @param appConfiguration properties set for client library. 
+     */
     public AppConfigurationRefreshEndpoint(ContextRefresher contextRefresher,
         AppConfigurationProperties appConfiguration) {
         this.contextRefresher = contextRefresher;
@@ -82,8 +88,6 @@ public class AppConfigurationRefreshEndpoint implements ApplicationEventPublishe
         } else {
             if (contextRefresher != null) {
                 if (validation.triggerRefresh()) {
-                    // Will just refresh the local configurations
-                    // contextRefresher.refresh();
                     publisher.publishEvent(
                         new AppConfigurationRefreshEvent(validation.getEndpoint()));
                     return HttpStatus.OK.getReasonPhrase();
