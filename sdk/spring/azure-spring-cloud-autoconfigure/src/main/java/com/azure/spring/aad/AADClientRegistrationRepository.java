@@ -100,16 +100,6 @@ public class AADClientRegistrationRepository implements ClientRegistrationReposi
         if (!result.contains("offline_access")) {
             result.add("offline_access"); // "offline_access" allows to request a refresh token.
         }
-        // About "Directory.Read.All" and "User.Read", please refer to:
-        // 1. https://docs.microsoft.com/en-us/graph/permissions-reference
-        // 2. https://github.com/Azure/azure-sdk-for-java/issues/21284#issuecomment-888725241
-        if (properties.allowedGroupNamesConfigured()) {
-            // "Directory.Read.All" allows to get group id and group name.
-            result.add(properties.getGraphBaseUri() + "Directory.Read.All");
-        } else if (properties.allowedGroupIdsConfigured()) {
-            // "User.Read" allows to get group id, but not allow to get group name.
-            result.add(properties.getGraphBaseUri() + "User.Read");
-        }
         return result;
     }
 

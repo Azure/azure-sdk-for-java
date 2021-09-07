@@ -5,6 +5,8 @@
 ### Features Added
 
 ### Breaking Changes
+- Delete unsupported features: group-name based access control, group-id based access-control, please use [Role-based access control] instead. ([#23922])
+- Delete AADAuthenticationFilter andAADAppRoleStatelessAuthenticationFilter, please use spring-security-oauth2-resource-server instead. ([#23922]) 
 
 ### Bugs Fixed
 
@@ -99,3 +101,7 @@ This release is compatible with Spring Boot 2.5.0 - 2.5.3 and Spring Cloud 2020.
 
 ### Key Bug Fixes
  - Fixed the repeated consumption of Event Hubs messages when the checkpoint mode is BATCH
+
+
+[#23922]: https://github.com/Azure/azure-sdk-for-java/issues/23922
+[Role-based access control]: https://docs.microsoft.com/azure/active-directory/develop/custom-rbac-for-developers
