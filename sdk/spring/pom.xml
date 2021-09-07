@@ -129,7 +129,6 @@
         <module>azure-spring-boot-test-aad</module>
         <module>azure-spring-boot-test-aad-webapp-and-resource-server-with-obo</module>
         <module>azure-spring-boot-test-aad-resource-server</module>
-        <module>azure-spring-boot-test-aad-resource-server-by-filter</module>
         <module>azure-spring-boot-test-application</module>
         <module>azure-spring-boot-test-core</module>
         <module>azure-spring-boot-test-cosmos</module>

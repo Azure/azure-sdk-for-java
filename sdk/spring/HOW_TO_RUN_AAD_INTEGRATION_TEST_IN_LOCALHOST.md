@@ -117,10 +117,6 @@ azure-spring-boot-test-aad-resource-server:
 ```
 mvn -f .\sdk\spring\azure-spring-boot-test-aad-resource-server\pom.xml --fail-at-end "-Dmaven.javadoc.skip=true" "-Drevapi.skip=true" "-DskipSpringITs=false" verify
 ```
-azure-spring-boot-test-aad-resource-server-by-filter:
-```
-mvn -f .\sdk\spring\azure-spring-boot-test-aad-resource-server-by-filter\pom.xml --fail-at-end "-Dmaven.javadoc.skip=true" "-Drevapi.skip=true" "-DskipSpringITs=false" verify
-```
 
 
 [Create a new tenant in Azure Active Directory]: https://docs.microsoft.com/azure/active-directory/fundamentals/active-directory-access-create-new-tenant
