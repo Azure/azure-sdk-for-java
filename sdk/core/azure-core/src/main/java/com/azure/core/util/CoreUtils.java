@@ -17,6 +17,7 @@ import java.nio.charset.Charset;
 import java.nio.charset.IllegalCharsetNameException;
 import java.nio.charset.StandardCharsets;
 import java.nio.charset.UnsupportedCharsetException;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -311,41 +312,41 @@ public final class CoreUtils {
     }
 
     /**
-     * Attempts to load an environment configured default timeout, in milliseconds.
+     * Attempts to load an environment configured default timeout.
      * <p>
-     * If the environment default timeout isn't configured, {@code defaultTimeoutMillis} will be returned. If the
-     * environment default timeout is a string that isn't parseable by {@link Long#parseLong(String)}, {@code
-     * defaultTimeoutMillis} will be returned. If the environment default timeout is less than 0, 0 will be returned
-     * indicated that there is no timeout period.
+     * If the environment default timeout isn't configured, {@code defaultTimeout} will be returned. If the environment
+     * default timeout is a string that isn't parseable by {@link Long#parseLong(String)}, {@code defaultTimeout} will
+     * be returned. If the environment default timeout is less than 0, {@link Duration#ZERO} will be returned indicated
+     * that there is no timeout period.
      *
      * @param configuration The environment configurations.
      * @param timeoutPropertyName The default timeout property name.
-     * @param defaultTimeoutMillis The fallback timeout to be used.
+     * @param defaultTimeout The fallback timeout to be used.
      * @param logger A {@link ClientLogger} to log exceptions.
      * @return Either the environment configured default timeout, {@code defaultTimeoutMillis}, or 0.
      */
-    public static long getDefaultTimeoutFromEnvironment(Configuration configuration, String timeoutPropertyName,
-        long defaultTimeoutMillis, ClientLogger logger) {
+    public static Duration getDefaultTimeoutFromEnvironment(Configuration configuration, String timeoutPropertyName,
+        Duration defaultTimeout, ClientLogger logger) {
         String environmentTimeout = configuration.get(timeoutPropertyName);
 
         // Environment wasn't configured with the timeout property.
         if (CoreUtils.isNullOrEmpty(environmentTimeout)) {
-            return defaultTimeoutMillis;
+            return defaultTimeout;
         }
 
         try {
             long timeoutMillis = Long.parseLong(environmentTimeout);
             if (timeoutMillis < 0) {
-                logger.verbose("{} was set to {} ms. Using timeout of 0 ms to indicate no timeout.",
+                logger.verbose("{} was set to {} ms. Using timeout of 'Duration.ZERO' to indicate no timeout.",
                     timeoutPropertyName, timeoutMillis);
-                return 0;
+                return Duration.ZERO;
             }
 
-            return timeoutMillis;
+            return Duration.ofMillis(timeoutMillis);
         } catch (NumberFormatException ex) {
-            logger.warning("{} wasn't configured with a valid number. Using default of {} ms.", timeoutPropertyName,
-                defaultTimeoutMillis, ex);
-            return defaultTimeoutMillis;
+            logger.warning("{} wasn't configured with a valid number. Using default of {}.", timeoutPropertyName,
+                defaultTimeout, ex);
+            return defaultTimeout;
         }
     }
 }
