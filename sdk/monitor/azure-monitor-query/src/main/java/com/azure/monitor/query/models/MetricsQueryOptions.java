@@ -16,7 +16,7 @@ import java.util.List;
 @Fluent
 public final class MetricsQueryOptions {
     private TimeInterval timeInterval;
-    private Duration interval;
+    private Duration granularity;
     private List<AggregationType> aggregations;
     private Integer top;
     private String orderBy;
@@ -27,7 +27,7 @@ public final class MetricsQueryOptions {
      * Returns the time span for which the metrics data is queried.
      * @return the time span for which the metrics data is queried.
      */
-    public TimeInterval getTimeSpan() {
+    public TimeInterval getTimeInterval() {
         return timeInterval;
     }
 
@@ -37,7 +37,7 @@ public final class MetricsQueryOptions {
      *
      * @return The updated options instance
      */
-    public MetricsQueryOptions setTimeSpan(TimeInterval timeInterval) {
+    public MetricsQueryOptions setTimeInterval(TimeInterval timeInterval) {
         this.timeInterval = timeInterval;
         return this;
     }
@@ -46,18 +46,18 @@ public final class MetricsQueryOptions {
      * Returns the interval (window size) for which the metric data was returned in.
      * @return The interval (window size) for which the metric data was returned in.
      */
-    public Duration getInterval() {
-        return interval;
+    public Duration getGranularity() {
+        return granularity;
     }
 
     /**
      * Sets the interval (window size) for which the metric data was returned in.
-     * @param interval The interval (window size) for which the metric data was returned in.
+     * @param granularity The interval (window size) for which the metric data was returned in.
      *
      * @return The updated options instance
      */
-    public MetricsQueryOptions setInterval(Duration interval) {
-        this.interval = interval;
+    public MetricsQueryOptions setGranularity(Duration granularity) {
+        this.granularity = granularity;
         return this;
     }
 
