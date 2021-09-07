@@ -49,7 +49,7 @@ public class ApplicationId {
         String version = "unknown";
         try {
             Properties properties = PropertiesLoaderUtils.loadProperties(
-                new ClassPathResource("azure-spring-boot-version.txt"));
+                new ClassPathResource("azure-spring-boot.properties"));
             version = properties.getProperty("version");
         } catch (IOException e) {
             LOGGER.warn("Can not get version.");
