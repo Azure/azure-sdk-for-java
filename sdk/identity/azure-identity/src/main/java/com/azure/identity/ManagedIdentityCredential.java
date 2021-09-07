@@ -25,6 +25,7 @@ public final class ManagedIdentityCredential implements TokenCredential {
 
     static final String PROPERTY_IMDS_ENDPOINT = "IMDS_ENDPOINT";
     static final String PROPERTY_IDENTITY_SERVER_THUMBPRINT = "IDENTITY_SERVER_THUMBPRINT";
+    static final String TOKEN_FILE_PATH = "TOKEN_FILE_PATH";
 
 
     /**
@@ -33,28 +34,38 @@ public final class ManagedIdentityCredential implements TokenCredential {
      * @param identityClientOptions the options for configuring the identity client.
      */
     ManagedIdentityCredential(String clientId, IdentityClientOptions identityClientOptions) {
-        IdentityClient identityClient = new IdentityClientBuilder()
+        IdentityClientBuilder clientBuilder = new IdentityClientBuilder()
             .clientId(clientId)
-            .identityClientOptions(identityClientOptions)
-            .build();
+            .identityClientOptions(identityClientOptions);
+
         Configuration configuration = Configuration.getGlobalConfiguration().clone();
 
         if (configuration.contains(Configuration.PROPERTY_MSI_ENDPOINT)) {
-            managedIdentityServiceCredential = new AppServiceMsiCredential(clientId, identityClient);
+            managedIdentityServiceCredential = new AppServiceMsiCredential(clientId, clientBuilder.build());
         } else if (configuration.contains(Configuration.PROPERTY_IDENTITY_ENDPOINT)) {
             if (configuration.contains(Configuration.PROPERTY_IDENTITY_HEADER)) {
                 if (configuration.get(PROPERTY_IDENTITY_SERVER_THUMBPRINT) != null) {
-                    managedIdentityServiceCredential = new ServiceFabricMsiCredential(clientId, identityClient);
+                    managedIdentityServiceCredential = new ServiceFabricMsiCredential(clientId, clientBuilder.build());
                 } else {
-                    managedIdentityServiceCredential = new VirtualMachineMsiCredential(clientId, identityClient);
+                    managedIdentityServiceCredential = new VirtualMachineMsiCredential(clientId, clientBuilder.build());
                 }
             } else if (configuration.get(PROPERTY_IMDS_ENDPOINT) != null) {
-                managedIdentityServiceCredential = new ArcIdentityCredential(clientId, identityClient);
+                managedIdentityServiceCredential = new ArcIdentityCredential(clientId, clientBuilder.build());
             } else {
-                managedIdentityServiceCredential = new VirtualMachineMsiCredential(clientId, identityClient);
+                managedIdentityServiceCredential = new VirtualMachineMsiCredential(clientId, clientBuilder.build());
             }
+        } else if (configuration.contains(Configuration.PROPERTY_AZURE_CLIENT_ID)
+            && configuration.contains(Configuration.PROPERTY_AZURE_TENANT_ID)
+            && configuration.get(TOKEN_FILE_PATH) != null) {
+            clientBuilder.tenantId(configuration.get(Configuration.PROPERTY_AZURE_TENANT_ID));
+            clientBuilder.clientAssertionPath(configuration.get(TOKEN_FILE_PATH));
+            System.out.printf("Located TOKEN FIle Path %s, Tenant %s, Client %s", configuration.get(TOKEN_FILE_PATH),
+                configuration.get(Configuration.PROPERTY_AZURE_TENANT_ID),
+                configuration.get(Configuration.PROPERTY_AZURE_CLIENT_ID));
+            managedIdentityServiceCredential = new ClientAssertionCredential(clientId,clientBuilder.build());
+
         } else {
-            managedIdentityServiceCredential = new VirtualMachineMsiCredential(clientId, identityClient);
+            managedIdentityServiceCredential = new VirtualMachineMsiCredential(clientId, clientBuilder.build());
         }
         LoggingUtil.logAvailableEnvironmentVariables(logger, configuration);
     }

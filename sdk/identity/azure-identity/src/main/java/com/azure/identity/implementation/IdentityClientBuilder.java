@@ -17,6 +17,7 @@ public final class IdentityClientBuilder {
     private String tenantId;
     private String clientId;
     private String clientSecret;
+    private String clientAssertionPath;
     private String certificatePath;
     private InputStream certificate;
     private String certificatePassword;
@@ -60,6 +61,17 @@ public final class IdentityClientBuilder {
      */
     public IdentityClientBuilder certificatePath(String certificatePath) {
         this.certificatePath = certificatePath;
+        return this;
+    }
+
+    /**
+     * Sets the client certificate for the client.
+     *
+     * @param clientAssertionPath the path to the file containing client assertion.
+     * @return the IdentityClientBuilder itself
+     */
+    public IdentityClientBuilder clientAssertionPath(String clientAssertionPath) {
+        this.clientAssertionPath = clientAssertionPath;
         return this;
     }
 
@@ -110,7 +122,7 @@ public final class IdentityClientBuilder {
      * @return a {@link IdentityClient} with the current configurations.
      */
     public IdentityClient build() {
-        return new IdentityClient(tenantId, clientId, clientSecret, certificatePath, certificate,
+        return new IdentityClient(tenantId, clientId, clientSecret, certificatePath, clientAssertionPath, certificate,
             certificatePassword, sharedTokenCacheCred, identityClientOptions);
     }
 }
