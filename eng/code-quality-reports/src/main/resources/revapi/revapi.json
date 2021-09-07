@@ -345,6 +345,16 @@
         "code": "java.method.added",
         "new": "method void com.azure.core.credential.AzureSasCredential::<init>(java.lang.String, java.util.function.Function<java.lang.String, java.lang.String>)",
         "justification": "New constructor added in azure-core."
+      },
+      {
+        "code": "java.method.added",
+        "new": "method com.azure.core.util.HttpClientOptions com.azure.core.util.HttpClientOptions::setConnectTimeout(java.time.Duration)",
+        "justification": "New setter added in azure-core."
+      },
+      {
+        "code": "java.method.added",
+        "new": "method Duration com.azure.core.util.HttpClientOptions::getConnectTimeout()",
+        "justification": "New getter added in azure-core."
       }
     ]
   }

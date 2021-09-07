@@ -12,7 +12,6 @@
   are acceptable to be retried. ([#23472](https://github.com/Azure/azure-sdk-for-java/pull/23472))
 - Updated `RetryPolicy` to attempt to lookup well-known retry after headers (`Retry-After`, `retry-after-ms`, and `x-ms-retry-after-ms`)
   when a lookup header isn't supplied. ([#23472](https://github.com/Azure/azure-sdk-for-java/pull/23472))
-- Added a common error type.
 
 ### Fixed
 

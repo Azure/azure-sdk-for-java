@@ -2,6 +2,10 @@
 
 ## 1.0.0-beta.18 (2021-09-07)
 
+### Features Added
+
+- Added a common error type `HttpResponseError`.
+
 ### Breaking Changes
 
 - Moved `HttpAuthorization` into `azure-core`. 
