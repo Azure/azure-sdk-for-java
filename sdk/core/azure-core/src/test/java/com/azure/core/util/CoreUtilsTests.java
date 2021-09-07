@@ -14,6 +14,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -241,10 +242,10 @@ public class CoreUtilsTests {
 
     @ParameterizedTest
     @MethodSource("getDefaultTimeoutFromEnvironmentSupplier")
-    public void getDefaultTimeoutFromEnvironmentTests(Configuration configuration, long defaultTimeoutMillis,
-        ClientLogger logger, long expectedTimeout) {
+    public void getDefaultTimeoutFromEnvironmentTests(Configuration configuration, Duration defaultTimeout,
+        ClientLogger logger, Duration expectedTimeout) {
         assertEquals(expectedTimeout, CoreUtils.getDefaultTimeoutFromEnvironment(configuration, TIMEOUT_PROPERTY_NAME,
-            defaultTimeoutMillis, logger));
+            defaultTimeout, logger));
     }
 
     private static Stream<Arguments> getDefaultTimeoutFromEnvironmentSupplier() {
@@ -252,22 +253,27 @@ public class CoreUtilsTests {
 
         return Stream.of(
             // Configuration doesn't have the timeout property configured.
-            Arguments.of(Configuration.NONE, 10000, logger, 10000),
+            Arguments.of(Configuration.NONE, Duration.ofMillis(10000), logger, Duration.ofMillis(10000)),
 
             // Configuration has an empty string timeout property configured.
-            Arguments.of(new Configuration().put(TIMEOUT_PROPERTY_NAME, ""), 10000, logger, 10000),
+            Arguments.of(new Configuration().put(TIMEOUT_PROPERTY_NAME, ""), Duration.ofMillis(10000), logger,
+                Duration.ofMillis(10000)),
 
             // Configuration has a value that isn't a valid number.
-            Arguments.of(new Configuration().put(TIMEOUT_PROPERTY_NAME, "ten"), 10000, logger, 10000),
+            Arguments.of(new Configuration().put(TIMEOUT_PROPERTY_NAME, "ten"), Duration.ofMillis(10000), logger,
+                Duration.ofMillis(10000)),
 
             // Configuration has a negative value.
-            Arguments.of(new Configuration().put(TIMEOUT_PROPERTY_NAME, "-10"), 10000, logger, 0),
+            Arguments.of(new Configuration().put(TIMEOUT_PROPERTY_NAME, "-10"), Duration.ofMillis(10000), logger,
+                Duration.ZERO),
 
             // Configuration has a zero value.
-            Arguments.of(new Configuration().put(TIMEOUT_PROPERTY_NAME, "0"), 10000, logger, 0),
+            Arguments.of(new Configuration().put(TIMEOUT_PROPERTY_NAME, "0"), Duration.ofMillis(10000), logger,
+                Duration.ZERO),
 
             // Configuration has a positive value.
-            Arguments.of(new Configuration().put(TIMEOUT_PROPERTY_NAME, "42"), 10000, logger, 42)
+            Arguments.of(new Configuration().put(TIMEOUT_PROPERTY_NAME, "42"), Duration.ofMillis(10000), logger,
+                Duration.ofMillis(42))
         );
     }
 }

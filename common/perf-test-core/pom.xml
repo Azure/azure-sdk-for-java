@@ -60,7 +60,7 @@
                 <!-- special allowance for perf-test-core as it is not a shipping library: -->
                 <include>com.beust:jcommander:[1.78]</include> <!-- {x-include-update;com.beust:jcommander;external_dependency} -->
 
-                <include>io.projectreactor:reactor-core:[3.4.8]</include> <!-- {x-include-update;io.projectreactor:reactor-core;external_dependency} -->
+                <include>io.projectreactor:reactor-core:[3.4.9]</include> <!-- {x-include-update;io.projectreactor:reactor-core;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>
