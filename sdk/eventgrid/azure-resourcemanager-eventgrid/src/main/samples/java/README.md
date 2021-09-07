@@ -17,7 +17,7 @@ It also contains a set of management samples that demonstrates how to manage top
 
 These samples demonstrate the following features:
 
-- How to create an event grid topic using Java
+- How to create an event grid topic using Java.
 - How to create an event subscription to a topic using Java.
 - How to create an event hub using Java.
 - How to publish events to Azure Event Grid using Java.
@@ -30,12 +30,12 @@ Please refer it to add dependency and configure authentication environment varia
 
 For details on including this dependency in other build tools (Gradle, SBT, etc), refer [here](https://search.maven.org/artifact/com.azure/azure-core).
 
-## Sample Details
+## Sample details
 
 Azure event grid publish and consume sample is in 'sdk/eventgrid/azure-resourcemanager-eventgrid/src/main/samples/java/com/azure/resourcemanager/eventgrid/EventGridPublishAndConsumeExample.java',
 it has the `main()` function and can be run directly.
 
-The sample demonstrate following operations:
+The sample demonstrates following operations:
 
 1. Create a resource group.
 2. Create an event hub.
