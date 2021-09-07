@@ -5,7 +5,7 @@ package com.azure.spring.cloud.config.web;
 /**
  * Constants used for validating refresh requests.
  */
-public class Constants {
+public final class AppConfigurationWebConstants {
 
     public static final String VALIDATION_CODE_KEY = "validationCode";
     public static final String VALIDATION_TOPIC = "topic";
