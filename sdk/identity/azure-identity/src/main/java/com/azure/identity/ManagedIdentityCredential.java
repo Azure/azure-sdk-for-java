@@ -26,7 +26,7 @@ public final class ManagedIdentityCredential implements TokenCredential {
 
     static final String PROPERTY_IMDS_ENDPOINT = "IMDS_ENDPOINT";
     static final String PROPERTY_IDENTITY_SERVER_THUMBPRINT = "IDENTITY_SERVER_THUMBPRINT";
-    static final String TOKEN_FILE_PATH = "TOKEN_FILE_PATH";
+    static final String AZURE_FEDERATED_TOKEN_FILE = "AZURE_FEDERATED_TOKEN_FILE";
 
 
     /**
