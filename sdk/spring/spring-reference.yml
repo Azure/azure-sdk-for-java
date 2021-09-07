@@ -124,36 +124,6 @@
                 groupId: com.azure.spring
                 artifactId: azure-spring-boot-starter-active-directory
                 version: 3.2.0
-- name: Active Directory B2C
-  content:
-    - name: Active Directory B2C
-      description: Azure Active Directory B2C provides business-to-customer identity as a service. Your customers use their preferred social, enterprise, or local account identities to get single sign-on access to your applications and APIs.
-      msdocs: https://docs.microsoft.com/azure/active-directory-b2c/
-      artifacts:
-        - artifactId: azure-spring-boot-starter-active-directory-b2c
-          groupId: com.azure.spring
-          versionGA: 3.7.0
-          versionPreview: 3.0.0-beta.1
-          description: Microsoft's Spring Boot Starter provides auto-configuration of Azure Active Directory B2C, which allows you to manage customer, consumer, and citizen access to your business-to-consumer (B2C) applications.
-          type: spring
-          links:
-            repopath: https://search.maven.org/artifact/com.azure.spring/azure-spring-boot-starter-active-directory-b2c
-            msdocs: https://docs.microsoft.com/java/api/overview/azure/spring-boot-starter-active-directory-b2c-readme?view=azure-java-stable
-            github: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/azure-spring-boot-starter-active-directory-b2c
-            sample: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/main/aad/azure-spring-boot-starter-active-directory-b2c
-          springProperties:
-            starter: true
-            bom: azure-spring-boot-bom
-            compatibilityRange: "[2.2.11.RELEASE,2.4.0-M1)"
-            mappings:
-              - compatibilityRange: "[2.0.0.RELEASE,2.3.0.M1)"
-                groupId: com.microsoft.azure
-                artifactId: azure-active-directory-b2c-spring-boot-starter
-                version: 2.2.4
-              - compatibilityRange: "[2.2.11.RELEASE,2.4.0-M1)"
-                groupId: com.azure.spring
-                artifactId: azure-spring-boot-starter-active-directory-b2c
-                version: 3.2.0
 - name: Cosmos DB
   content:
     - name: Spring Data Cosmos

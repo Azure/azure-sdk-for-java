@@ -27,7 +27,7 @@ This release is compatible with Spring Boot 2.5.
 - Upgrade to [azure-spring-boot:3.6.1](https://github.com/Azure/azure-sdk-for-java/blob/b6a7aba854d35d2a861dbf2786b5e41b9d3538ad/sdk/spring/azure-spring-boot/CHANGELOG.md#361-2021-07-02).
 - Upgrade to [azure-spring-boot-starter:3.6.1](https://github.com/Azure/azure-sdk-for-java/blob/b6a7aba854d35d2a861dbf2786b5e41b9d3538ad/sdk/spring/azure-spring-boot-starter/CHANGELOG.md#361-2021-07-02).
 - Upgrade to [azure-spring-boot-starter-active-directory:3.6.1](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/azure-spring-boot-starter-active-directory/CHANGELOG.md#361-2021-07-02).
-- Upgrade to [azure-spring-boot-starter-active-directory-b2c:3.6.1](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/azure-spring-boot-starter-active-directory-b2c/CHANGELOG.md#361-2021-07-02).
+- Upgrade to [azure-spring-boot-starter-active-directory-b2c:3.6.1](https://github.com/Azure/azure-sdk-for-java/blob/azure-spring-boot_3.8.0/sdk/spring/azure-spring-boot-starter-active-directory-b2c/CHANGELOG.md#361-2021-07-02).
 
 ## 3.6.0 (2021-06-23)
 This release is compatible with Spring Boot 2.5. 

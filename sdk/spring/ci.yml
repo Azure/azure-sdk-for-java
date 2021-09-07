@@ -16,7 +16,6 @@ trigger:
       - sdk/spring/azure-spring-boot/pom.xml
       - sdk/spring/azure-spring-boot-starter/pom.xml
       - sdk/spring/azure-spring-boot-starter-active-directory/pom.xml
-      - sdk/spring/azure-spring-boot-starter-active-directory-b2c/pom.xml
       - sdk/spring/azure-spring-boot-starter-cosmos/pom.xml
       - sdk/spring/azure-spring-boot-starter-keyvault-certificates/pom.xml
       - sdk/spring/azure-spring-boot-starter-keyvault-secrets/pom.xml
@@ -74,7 +73,6 @@ pr:
       - sdk/spring/azure-spring-boot/pom.xml
       - sdk/spring/azure-spring-boot-starter/pom.xml
       - sdk/spring/azure-spring-boot-starter-active-directory/pom.xml
-      - sdk/spring/azure-spring-boot-starter-active-directory-b2c/pom.xml
       - sdk/spring/azure-spring-boot-starter-cosmos/pom.xml
       - sdk/spring/azure-spring-boot-starter-keyvault-certificates/pom.xml
       - sdk/spring/azure-spring-boot-starter-keyvault-secrets/pom.xml
@@ -141,11 +139,6 @@ extends:
       - name: azure-spring-boot-starter-active-directory
         groupId: com.azure.spring
         safeName: azurespringbootstarteractivedirectory
-        skipPublishDocMs: true
-        skipUpdatePackageJson: true
-      - name: azure-spring-boot-starter-active-directory-b2c
-        groupId: com.azure.spring
-        safeName: azurespringbootstarteractivedirectoryb2c
         skipPublishDocMs: true
         skipUpdatePackageJson: true
       - name: azure-spring-boot-starter-cosmos
