@@ -15,7 +15,7 @@
   <groupId>com.azure</groupId>
   <artifactId>azure-core-serializer-json-gson</artifactId>
   <packaging>jar</packaging>
-  <version>1.2.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core-serializer-json-gson;current} -->
+  <version>1.1.6</version> <!-- {x-version-update;com.azure:azure-core-serializer-json-gson;current} -->
 
   <name>Microsoft Azure Gson JSON Serializer Library</name>
   <description>This package contains the Gson JSON serializer client plugin for azure-core.</description>
@@ -58,7 +58,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.20.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core;current} -->
+      <version>1.20.0</version> <!-- {x-version-update;com.azure:azure-core;current} -->
     </dependency>
 
     <dependency>
