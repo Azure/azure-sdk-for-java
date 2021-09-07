@@ -320,17 +320,17 @@ public final class CoreUtils {
      *
      * @param configuration The environment configurations.
      * @param timeoutPropertyName The default timeout property name.
-     * @param defaultTimoutMillis The fallback timeout to be used.
+     * @param defaultTimeoutMillis The fallback timeout to be used.
      * @param logger A {@link ClientLogger} to log exceptions.
      * @return Either the environment configured default timeout, {@code defaultTimeoutMillis}, or 0.
      */
     public static long getDefaultTimeoutFromEnvironment(Configuration configuration, String timeoutPropertyName,
-        long defaultTimoutMillis, ClientLogger logger) {
+        long defaultTimeoutMillis, ClientLogger logger) {
         String environmentTimeout = configuration.get(timeoutPropertyName);
 
         // Environment wasn't configured with the timeout property.
         if (CoreUtils.isNullOrEmpty(environmentTimeout)) {
-            return defaultTimoutMillis;
+            return defaultTimeoutMillis;
         }
 
         try {
@@ -344,8 +344,8 @@ public final class CoreUtils {
             return timeoutMillis;
         } catch (NumberFormatException ex) {
             logger.warning("{} wasn't configured with a valid number. Using default of {} ms.", timeoutPropertyName,
-                defaultTimoutMillis, ex);
-            return defaultTimoutMillis;
+                defaultTimeoutMillis, ex);
+            return defaultTimeoutMillis;
         }
     }
 }
