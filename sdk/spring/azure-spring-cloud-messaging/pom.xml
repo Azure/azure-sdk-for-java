@@ -35,7 +35,7 @@
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-autoconfigure</artifactId>
-      <version>2.5.3</version> <!-- {x-version-update;org.springframework.boot:spring-boot-autoconfigure;external_dependency} -->
+      <version>2.5.4</version> <!-- {x-version-update;org.springframework.boot:spring-boot-autoconfigure;external_dependency} -->
     </dependency>
 
     <!-- Added this dependency to include necessary annotations used by reactor core.
@@ -67,7 +67,7 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>org.springframework.boot:spring-boot-autoconfigure:[2.5.3]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-autoconfigure;external_dependency} -->
+                <include>org.springframework.boot:spring-boot-autoconfigure:[2.5.4]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-autoconfigure;external_dependency} -->
                 <include>org.springframework:spring-messaging:[5.3.9]</include> <!-- {x-include-update;org.springframework:spring-messaging;external_dependency} -->
               </includes>
             </bannedDependencies>
