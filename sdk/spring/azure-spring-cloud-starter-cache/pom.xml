@@ -115,51 +115,6 @@
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-antrun-plugin</artifactId>
-        <version>1.8</version> <!-- {x-version-update;org.apache.maven.plugins:maven-antrun-plugin;external_dependency} -->
-        <executions>
-          <execution>
-            <id>copy-readme-to-javadocTemp</id>
-            <phase>prepare-package</phase>
-            <configuration>
-              <target>
-                <echo>Deleting existing ${project.basedir}/javadocTemp</echo>
-                <delete includeEmptyDirs="true" quiet="true">
-                  <fileset dir="${project.basedir}/javadocTemp"/>
-                </delete>
-                <echo>Copying ${project.basedir}/README.md to
-                  ${project.basedir}/javadocTemp/README.md
-                </echo>
-                <copy file="${project.basedir}/README.md" tofile="${project.basedir}/javadocTemp/README.md"/>
-              </target>
-            </configuration>
-            <goals>
-              <goal>run</goal>
-            </goals>
-          </execution>
-          <execution>
-            <id>copy-readme-to-sourceTemp</id>
-            <phase>prepare-package</phase>
-            <configuration>
-              <target>
-                <echo>Deleting existing ${project.basedir}/sourceTemp</echo>
-                <delete includeEmptyDirs="true" quiet="true">
-                  <fileset dir="${project.basedir}/sourceTemp"/>
-                </delete>
-                <echo>Copying ${project.basedir}/README.md to
-                  ${project.basedir}/sourceTemp/README.md
-                </echo>
-                <copy file="${project.basedir}/README.md" tofile="${project.basedir}/sourceTemp/README.md"/>
-              </target>
-            </configuration>
-            <goals>
-              <goal>run</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-source-plugin</artifactId>
         <version>3.0.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-source-plugin;external_dependency} -->
         <executions>
