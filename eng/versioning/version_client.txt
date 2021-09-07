@@ -67,7 +67,7 @@ com.azure:azure-core-experimental;1.0.0-beta.18;1.0.0-beta.19
 com.azure:azure-core-http-jdk-httpclient;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-core-http-netty;1.11.0;1.12.0-beta.1
 com.azure:azure-core-http-okhttp;1.7.3;1.8.0-beta.1
-com.azure:azure-core-management;1.4.0;1.4.1
+com.azure:azure-core-management;1.4.1;1.5.0-beta.1
 com.azure:azure-core-serializer-avro-apache;1.0.0-beta.14;1.0.0-beta.15
 com.azure:azure-core-serializer-avro-jackson;1.0.0-beta.1;1.0.0-beta.2
 com.azure:azure-core-serializer-json-gson;1.1.6;1.2.0-beta.1

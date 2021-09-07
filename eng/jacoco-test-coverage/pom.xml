@@ -149,7 +149,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-management</artifactId>
-      <version>1.4.1</version> <!-- {x-version-update;com.azure:azure-core-management;current} -->
+      <version>1.5.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core-management;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
