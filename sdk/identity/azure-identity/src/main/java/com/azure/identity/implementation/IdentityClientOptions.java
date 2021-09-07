@@ -7,11 +7,12 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.ProxyOptions;
 import com.azure.core.util.Configuration;
-import com.azure.identity.AuthenticationRecord;
 import com.azure.identity.AzureAuthorityHosts;
+import com.azure.identity.AuthenticationRecord;
 import com.azure.identity.RegionalAuthority;
 import com.azure.identity.TokenCachePersistenceOptions;
 import com.azure.identity.implementation.util.ValidationUtil;
+import com.microsoft.aad.msal4j.UserAssertion;
 
 import java.time.Duration;
 import java.util.concurrent.ExecutorService;
@@ -41,6 +42,7 @@ public final class IdentityClientOptions {
     private TokenCachePersistenceOptions tokenCachePersistenceOptions;
     private boolean cp1Disabled;
     private RegionalAuthority regionalAuthority;
+    private UserAssertion userAssertion;
     private boolean identityLegacyTenantSelection;
     private Configuration configuration;
 
@@ -356,13 +358,32 @@ public final class IdentityClientOptions {
 
 
     /**
+     * Configure the User Assertion Scope to be used for OnBehalfOf Authentication request.
+     *
+     * @param userAssertion the user assertion access token to be used for On behalf Of authentication flow
+     * @return the updated identity client options
+     */
+    public IdentityClientOptions userAssertion(String userAssertion) {
+        this.userAssertion = new UserAssertion(userAssertion);
+        return this;
+    }
+
+    /**
+     * Get the configured {@link UserAssertion}
+     *
+     * @return the configured user assertion scope
+     */
+    public UserAssertion getUserAssertion() {
+        return this.userAssertion;
+    }
+
+    /**
      * Gets the regional authority, or null if regional authority should not be used.
      * @return the regional authority value if specified
      */
     public boolean isLegacyTenantSelectionEnabled() {
         return identityLegacyTenantSelection;
     }
-
 
     /**
      * Sets the specified configuration store.
