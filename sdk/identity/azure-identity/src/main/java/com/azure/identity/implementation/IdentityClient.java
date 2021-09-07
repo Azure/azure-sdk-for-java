@@ -122,6 +122,7 @@ public class IdentityClient {
     private final String tenantId;
     private final String clientId;
     private final String clientSecret;
+    private final String clientAssertionFilePath;
     private final InputStream certificate;
     private final String certificatePath;
     private final String certificatePassword;
@@ -143,8 +144,8 @@ public class IdentityClient {
      * @param options the options configuring the client.
      */
     IdentityClient(String tenantId, String clientId, String clientSecret, String certificatePath,
-                   InputStream certificate, String certificatePassword, boolean isSharedTokenCacheCredential,
-                   IdentityClientOptions options) {
+                   String clientAssertionFilePath, InputStream certificate, String certificatePassword,
+                   boolean isSharedTokenCacheCredential, IdentityClientOptions options) {
         if (tenantId == null) {
             tenantId = "organizations";
         }
@@ -154,6 +155,7 @@ public class IdentityClient {
         this.tenantId = tenantId;
         this.clientId = clientId;
         this.clientSecret = clientSecret;
+        this.clientAssertionFilePath = clientAssertionFilePath;
         this.certificatePath = certificatePath;
         this.certificate = certificate;
         this.certificatePassword = certificatePassword;
@@ -205,6 +207,16 @@ public class IdentityClient {
                     return Mono.error(logger.logExceptionAsError(new RuntimeException(
                         "Failed to parse the certificate for the credential: " + e.getMessage(), e)));
                 }
+            } else if (clientAssertionFilePath != null) {
+                System.out.printf("Received %s assertion token file path.", clientAssertionFilePath);
+                try {
+                    credential = ClientCredentialFactory
+                        .createFromClientAssertion(parseClientAssertion(clientAssertionFilePath));
+                } catch (IOException e) {
+                    return Mono.error(logger.logExceptionAsError(new RuntimeException(
+                        "Failed to parse the client assertion from the provided file: " + clientAssertionFilePath
+                            + ". " + e.getMessage(), e)));
+                }
             } else {
                 return Mono.error(logger.logExceptionAsError(
                     new IllegalArgumentException("Must provide client secret or client certificate path")));
@@ -254,6 +266,13 @@ public class IdentityClient {
             return tokenCache != null ? tokenCache.registerCache()
                 .map(ignored -> confidentialClientApplication) : Mono.just(confidentialClientApplication);
         });
+    }
+
+    private String parseClientAssertion(String clientAssertionFilePath) throws IOException {
+        System.out.printf("Parsing token");
+        byte[] encoded = Files.readAllBytes(Paths.get(clientAssertionFilePath));
+        System.out.printf("Parsed token: %s", new String(encoded, StandardCharsets.UTF_8));
+        return new String(encoded, StandardCharsets.UTF_8);
     }
 
     private Mono<PublicClientApplication> getPublicClientApplication(boolean sharedTokenCacheCredential) {
@@ -992,6 +1011,16 @@ public class IdentityClient {
                 }
             }
         });
+    }
+
+    /**
+     * Asynchronously acquire a token from the Azure Arc Managed Service Identity endpoint.
+     *
+     * @param request the details of the token request
+     * @return a Publisher that emits an AccessToken
+     */
+    public Mono<AccessToken> authenticatewithExchangeToken(TokenRequestContext request) {
+        return authenticateWithConfidentialClient(request);
     }
 
     /**
