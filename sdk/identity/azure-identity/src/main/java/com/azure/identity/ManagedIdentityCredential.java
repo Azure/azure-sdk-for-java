@@ -9,7 +9,6 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.identity.implementation.IdentityClient;
 import com.azure.identity.implementation.IdentityClientBuilder;
 import com.azure.identity.implementation.IdentityClientOptions;
 import com.azure.identity.implementation.util.LoggingUtil;
@@ -59,10 +58,7 @@ public final class ManagedIdentityCredential implements TokenCredential {
             && configuration.get(TOKEN_FILE_PATH) != null) {
             clientBuilder.tenantId(configuration.get(Configuration.PROPERTY_AZURE_TENANT_ID));
             clientBuilder.clientAssertionPath(configuration.get(TOKEN_FILE_PATH));
-            System.out.printf("Located TOKEN FIle Path %s, Tenant %s, Client %s", configuration.get(TOKEN_FILE_PATH),
-                configuration.get(Configuration.PROPERTY_AZURE_TENANT_ID),
-                configuration.get(Configuration.PROPERTY_AZURE_CLIENT_ID));
-            managedIdentityServiceCredential = new ClientAssertionCredential(clientId,clientBuilder.build());
+            managedIdentityServiceCredential = new ClientAssertionCredential(clientId, clientBuilder.build());
 
         } else {
             managedIdentityServiceCredential = new VirtualMachineMsiCredential(clientId, clientBuilder.build());

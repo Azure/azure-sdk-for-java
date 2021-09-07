@@ -7,7 +7,10 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.ProxyOptions;
 import com.azure.core.util.Configuration;
-import com.azure.identity.*;
+import com.azure.identity.AzureAuthorityHosts;
+import com.azure.identity.AuthenticationRecord;
+import com.azure.identity.RegionalAuthority;
+import com.azure.identity.TokenCachePersistenceOptions;
 import com.azure.identity.implementation.util.ValidationUtil;
 import com.microsoft.aad.msal4j.UserAssertion;
 

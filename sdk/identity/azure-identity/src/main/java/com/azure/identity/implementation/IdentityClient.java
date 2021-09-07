@@ -31,7 +31,23 @@ import com.azure.identity.implementation.util.IdentityUtil;
 import com.azure.identity.implementation.util.IdentitySslUtil;
 import com.azure.identity.implementation.util.ScopeUtil;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.microsoft.aad.msal4j.*;
+import com.microsoft.aad.msal4j.AuthorizationCodeParameters;
+import com.microsoft.aad.msal4j.ClaimsRequest;
+import com.microsoft.aad.msal4j.ClientCredentialFactory;
+import com.microsoft.aad.msal4j.ClientCredentialParameters;
+import com.microsoft.aad.msal4j.ConfidentialClientApplication;
+import com.microsoft.aad.msal4j.DeviceCodeFlowParameters;
+import com.microsoft.aad.msal4j.IAccount;
+import com.microsoft.aad.msal4j.IAuthenticationResult;
+import com.microsoft.aad.msal4j.IClientCredential;
+import com.microsoft.aad.msal4j.InteractiveRequestParameters;
+import com.microsoft.aad.msal4j.MsalInteractionRequiredException;
+import com.microsoft.aad.msal4j.OnBehalfOfParameters;
+import com.microsoft.aad.msal4j.Prompt;
+import com.microsoft.aad.msal4j.PublicClientApplication;
+import com.microsoft.aad.msal4j.RefreshTokenParameters;
+import com.microsoft.aad.msal4j.SilentParameters;
+import com.microsoft.aad.msal4j.UserNamePasswordParameters;
 import com.sun.jna.Platform;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -126,11 +142,13 @@ public class IdentityClient {
      * @param certificatePassword the password protecting the PFX certificate.
      * @param isSharedTokenCacheCredential Indicate whether the credential is
      * {@link com.azure.identity.SharedTokenCacheCredential} or not.
+     * @param confidentialClientCacheTimeout the cache time out to use for confidential client.
      * @param options the options configuring the client.
      */
     IdentityClient(String tenantId, String clientId, String clientSecret, String certificatePath,
                    String clientAssertionFilePath, InputStream certificate, String certificatePassword,
-                   boolean isSharedTokenCacheCredential, IdentityClientOptions options) {
+                   boolean isSharedTokenCacheCredential, Duration confidentialClientCacheTimeout,
+                   IdentityClientOptions options) {
         if (tenantId == null) {
             tenantId = "organizations";
         }
@@ -146,11 +164,12 @@ public class IdentityClient {
         this.certificatePassword = certificatePassword;
         this.options = options;
 
-        this.publicClientApplicationAccessor = new SynchronizedAccessor<PublicClientApplication>(() ->
+        this.publicClientApplicationAccessor = new SynchronizedAccessor<>(() ->
             getPublicClientApplication(isSharedTokenCacheCredential));
 
-        this.confidentialClientApplicationAccessor = new SynchronizedAccessor<ConfidentialClientApplication>(() ->
-            getConfidentialClientApplication());
+        this.confidentialClientApplicationAccessor = confidentialClientCacheTimeout == null
+            ? new SynchronizedAccessor<>(() -> getConfidentialClientApplication())
+            : new SynchronizedAccessor<>(() -> getConfidentialClientApplication(), confidentialClientCacheTimeout);
     }
 
     private Mono<ConfidentialClientApplication> getConfidentialClientApplication() {
@@ -193,7 +212,6 @@ public class IdentityClient {
                         "Failed to parse the certificate for the credential: " + e.getMessage(), e)));
                 }
             } else if (clientAssertionFilePath != null) {
-                System.out.printf("Received %s assertion token file path.", clientAssertionFilePath);
                 try {
                     credential = ClientCredentialFactory
                         .createFromClientAssertion(parseClientAssertion(clientAssertionFilePath));
@@ -254,9 +272,7 @@ public class IdentityClient {
     }
 
     private String parseClientAssertion(String clientAssertionFilePath) throws IOException {
-        System.out.printf("Parsing token");
         byte[] encoded = Files.readAllBytes(Paths.get(clientAssertionFilePath));
-        System.out.printf("Parsed token: %s", new String(encoded, StandardCharsets.UTF_8));
         return new String(encoded, StandardCharsets.UTF_8);
     }
 
