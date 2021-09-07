@@ -37,7 +37,6 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 
-import org.apache.commons.lang3.ArrayUtils;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -95,20 +94,25 @@ public class AppConfigurationPropertySourceTest {
         TEST_LABEL_3,
         null);
 
-    private static final FeatureFlagConfigurationSetting FEATURE_ITEM = createItemFeatureFlag(".appconfig.featureflag/", "Alpha",
+    private static final FeatureFlagConfigurationSetting FEATURE_ITEM = createItemFeatureFlag(".appconfig.featureflag/",
+        "Alpha",
         FEATURE_VALUE, FEATURE_LABEL, FEATURE_FLAG_CONTENT_TYPE);
 
-    private static final FeatureFlagConfigurationSetting FEATURE_ITEM_2 = createItemFeatureFlag(".appconfig.featureflag/", "Beta",
+    private static final FeatureFlagConfigurationSetting FEATURE_ITEM_2 = createItemFeatureFlag(
+        ".appconfig.featureflag/", "Beta",
         FEATURE_BOOLEAN_VALUE, FEATURE_LABEL, FEATURE_FLAG_CONTENT_TYPE);
 
-    private static final FeatureFlagConfigurationSetting FEATURE_ITEM_3 = createItemFeatureFlag(".appconfig.featureflag/", "Gamma",
+    private static final FeatureFlagConfigurationSetting FEATURE_ITEM_3 = createItemFeatureFlag(
+        ".appconfig.featureflag/", "Gamma",
         FEATURE_VALUE_PARAMETERS, FEATURE_LABEL, FEATURE_FLAG_CONTENT_TYPE);
 
-    private static final FeatureFlagConfigurationSetting FEATURE_ITEM_NULL = createItemFeatureFlag(".appconfig.featureflag/", "Alpha",
+    private static final FeatureFlagConfigurationSetting FEATURE_ITEM_NULL = createItemFeatureFlag(
+        ".appconfig.featureflag/", "Alpha",
         FEATURE_VALUE,
         FEATURE_LABEL, null);
 
-    private static final FeatureFlagConfigurationSetting FEATURE_ITEM_TARGETING = createItemFeatureFlag(".appconfig.featureflag/", "target",
+    private static final FeatureFlagConfigurationSetting FEATURE_ITEM_TARGETING = createItemFeatureFlag(
+        ".appconfig.featureflag/", "target",
         FEATURE_VALUE_TARGETING, FEATURE_LABEL, FEATURE_FLAG_CONTENT_TYPE);
 
     private static final String FEATURE_MANAGEMENT_KEY = "feature-management.featureManagement";
@@ -144,39 +148,41 @@ public class AppConfigurationPropertySourceTest {
 
     @Mock
     private PagedResponse<ConfigurationSetting> pagedResponseMock;
-    
+
     @Mock
     private ConfigStore configStoreMock;
-    
+
     private FeatureFlagStore featureFlagStore;
 
     private AppConfigurationProviderProperties appProperties;
 
     private KeyVaultCredentialProvider tokenCredentialProvider = null;
-    
+
     @BeforeAll
     public static void setup() {
         TestUtils.addStore(TEST_PROPS, TEST_STORE_NAME, TEST_CONN_STRING);
-        
+
         FEATURE_ITEM.setContentType(FEATURE_FLAG_CONTENT_TYPE);
         FEATURE_ITEMS.add(FEATURE_ITEM);
         FEATURE_ITEMS.add(FEATURE_ITEM_2);
         FEATURE_ITEMS.add(FEATURE_ITEM_3);
-        
+
         FEATURE_ITEMS_TARGETING.add(FEATURE_ITEM_TARGETING);
     }
 
     @BeforeEach
     public void init() {
         mapper.setPropertyNamingStrategy(PropertyNamingStrategies.KEBAB_CASE);
-        
+
         MockitoAnnotations.openMocks(this);
         appConfigurationProperties = new AppConfigurationProperties();
         appProperties = new AppConfigurationProviderProperties();
         ArrayList<String> contexts = new ArrayList<String>();
         contexts.add("/application/*");
-        AppConfigurationStoreSelects selectedKeys = new AppConfigurationStoreSelects().setKeyFilter("/foo/").setLabelFilter("\0");
-        propertySource = new AppConfigurationPropertySource(TEST_CONTEXT, configStoreMock, selectedKeys, new ArrayList<>(),
+        AppConfigurationStoreSelects selectedKeys = new AppConfigurationStoreSelects().setKeyFilter("/foo/")
+            .setLabelFilter("\0");
+        propertySource = new AppConfigurationPropertySource(TEST_CONTEXT, configStoreMock, selectedKeys,
+            new ArrayList<>(),
             appConfigurationProperties, clientStoreMock, appProperties, tokenCredentialProvider, null, null);
 
         testItems = new ArrayList<ConfigurationSetting>();
@@ -194,7 +200,7 @@ public class AppConfigurationPropertySourceTest {
         when(itemsMock.iterator()).thenReturn(itemsIteratorMock);
         when(itemsIteratorMock.next()).thenReturn(pagedResponseMock);
     }
-    
+
     @AfterEach
     public void cleanup() throws Exception {
         MockitoAnnotations.openMocks(this).close();
@@ -216,7 +222,12 @@ public class AppConfigurationPropertySourceTest {
         String[] keyNames = propertySource.getPropertyNames();
         String[] expectedKeyNames = testItems.stream()
             .map(t -> t.getKey().substring(TEST_CONTEXT.length())).toArray(String[]::new);
-        String[] allExpectedKeyNames = ArrayUtils.addAll(expectedKeyNames, FEATURE_MANAGEMENT_KEY);
+        String[] allExpectedKeyNames = new String[expectedKeyNames.length + 1];
+        
+        String[] featureManagementKey = {FEATURE_MANAGEMENT_KEY};
+        
+        System.arraycopy(expectedKeyNames, 0, allExpectedKeyNames, 0, expectedKeyNames.length);
+        System.arraycopy(featureManagementKey, 0, allExpectedKeyNames, expectedKeyNames.length, 1);
 
         assertThat(keyNames).containsExactlyInAnyOrder(allExpectedKeyNames);
 
@@ -287,7 +298,7 @@ public class AppConfigurationPropertySourceTest {
 
         assertEquals(convertedValue, propertySource.getProperty(FEATURE_MANAGEMENT_KEY));
     }
-    
+
     @Test
     public void testFeatureFlagDisabled() throws IOException {
         when(clientStoreMock.listSettings(Mockito.any(), Mockito.anyString()))
@@ -408,7 +419,7 @@ public class AppConfigurationPropertySourceTest {
         when(clientStoreMock.listSettings(Mockito.any(), Mockito.anyString()))
             .thenReturn(FEATURE_ITEMS_TARGETING).thenReturn(new ArrayList<ConfigurationSetting>());
         featureFlagStore.setEnabled(true);
-        
+
         FeatureSet featureSet = new FeatureSet();
         try {
             propertySource.initProperties(featureSet);
@@ -455,6 +466,7 @@ public class AppConfigurationPropertySourceTest {
             LinkedHashMap.class);
         System.out.println(convertedValue.toString());
         System.out.println(propertySource.getProperty(FEATURE_MANAGEMENT_KEY).toString());
-        assertEquals(convertedValue.toString().length(), propertySource.getProperty(FEATURE_MANAGEMENT_KEY).toString().length());
+        assertEquals(convertedValue.toString().length(),
+            propertySource.getProperty(FEATURE_MANAGEMENT_KEY).toString().length());
     }
 }

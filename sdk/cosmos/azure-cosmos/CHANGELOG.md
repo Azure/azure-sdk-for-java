@@ -1,7 +1,10 @@
 ## Release History
 
-## 4.19.0-beta.1 (Unreleased)
+### 4.19.0-beta.2 (Unreleased)
 
+### 4.19.0-beta.1 (2021-09-02)
+#### Key Bug Fixes
+* Added support to switch off IO thread for response processing.
 
 ### 4.18.0 (2021-08-16)
 > [!IMPORTANT]
@@ -80,7 +83,7 @@
 * Fixed warning caused because of afterburner module usage in `CosmosDiagnostics`.
 * Query performance improvements.
 
-### 4.13.0 (2021-03-11) 
+### 4.13.0 (2021-03-11)
 > [!IMPORTANT] 
 > This release updates `reactor-core` and `reactor-netty` major versions to `2020.0.4 (Europium)` release train.
 #### New Features
