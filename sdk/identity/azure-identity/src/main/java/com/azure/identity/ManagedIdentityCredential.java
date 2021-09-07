@@ -57,9 +57,9 @@ public final class ManagedIdentityCredential implements TokenCredential {
             }
         } else if (configuration.contains(Configuration.PROPERTY_AZURE_CLIENT_ID)
             && configuration.contains(Configuration.PROPERTY_AZURE_TENANT_ID)
-            && configuration.get(TOKEN_FILE_PATH) != null) {
+            && configuration.get(AZURE_FEDERATED_TOKEN_FILE) != null) {
             clientBuilder.tenantId(configuration.get(Configuration.PROPERTY_AZURE_TENANT_ID));
-            clientBuilder.clientAssertionPath(configuration.get(TOKEN_FILE_PATH));
+            clientBuilder.clientAssertionPath(configuration.get(AZURE_FEDERATED_TOKEN_FILE));
             clientBuilder.confidentialClientCacheTimeout(Duration.ofMinutes(5));
             managedIdentityServiceCredential = new ClientAssertionCredential(clientId, clientBuilder.build());
 
