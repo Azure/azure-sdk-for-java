@@ -13,14 +13,152 @@
       <modules>
         <!-- JaCoCo aggregate code coverage report generator module -->
         <module>eng/jacoco-test-coverage</module>
-        <module>sdk/resourcemanager</module>
-        <module>sdk/spring</module>
-        <module>sdk/cosmos/azure-spring-data-cosmos</module>
-        <module>sdk/appconfiguration/azure-spring-cloud-starter-appconfiguration-config</module>
+
+        <!-- Anomaly Detector -->
+        <module>sdk/anomalydetector/azure-ai-anomalydetector</module>
+
+        <!-- App Configuration -->
         <module>sdk/appconfiguration/spring-cloud-starter-azure-appconfiguration-config</module>
         <module>sdk/appconfiguration/spring-cloud-azure-appconfiguration-config</module>
+        <module>sdk/appconfiguration/azure-data-appconfiguration</module>
+        <module>sdk/appconfiguration/azure-spring-cloud-starter-appconfiguration-config</module>
         <module>sdk/appconfiguration/azure-spring-cloud-appconfiguration-config</module>
         <module>sdk/appconfiguration/azure-spring-cloud-appconfiguration-config-web</module>
+
+        <!-- Attestation -->
+        <module>sdk/attestation/azure-security-attestation</module>
+
+        <!-- Azure Communication Service -->
+        <module>sdk/communication/azure-communication-callingserver</module>
+        <module>sdk/communication/azure-communication-chat</module>
+        <module>sdk/communication/azure-communication-common</module>
+        <module>sdk/communication/azure-communication-identity</module>
+        <module>sdk/communication/azure-communication-networktraversal</module>
+        <module>sdk/communication/azure-communication-phonenumbers</module>
+        <module>sdk/communication/azure-communication-sms</module>
+
+        <!-- Azure Confidential Ledger -->
+        <module>sdk/confidentialledger/azure-security-confidentialledger</module>
+
+        <!-- Azure Container Registry -->
+        <module>sdk/containerregistry/azure-containers-containerregistry</module>
+
+        <!-- Azure Core -->
+        <module>sdk/core/azure-core</module>
+        <module>sdk/core/azure-core-amqp</module>
+        <module>sdk/core/azure-core-amqp-experimental</module>
+        <module>sdk/core/azure-core-experimental</module>
+        <module>sdk/core/azure-core-http-jdk-httpclient</module>
+        <module>sdk/core/azure-core-http-netty</module>
+        <module>sdk/core/azure-core-http-okhttp</module>
+        <module>sdk/core/azure-core-management</module>
+        <module>sdk/core/azure-core-serializer-avro-apache</module>
+        <module>sdk/core/azure-core-serializer-json-gson</module>
+        <module>sdk/core/azure-core-serializer-json-jackson</module>
+        <module>sdk/core/azure-core-test</module>
+        <module>sdk/core/azure-core-tracing-opentelemetry</module>
+
+        <!-- Cosmos -->
+        <module>sdk/cosmos/azure-cosmos</module>
+        <module>sdk/cosmos/azure-cosmos-encryption</module>
+        <module>sdk/cosmos/azure-spring-data-cosmos</module>
+
+        <!-- Device Update -->
+        <module>sdk/deviceupdate/azure-iot-deviceupdate</module>
+
+        <!-- Digital Twins -->
+        <module>sdk/digitaltwins/azure-digitaltwins-core</module>
+
+        <!-- Event Grid -->
+        <module>sdk/eventgrid/azure-messaging-eventgrid</module>
+
+        <!-- Event Hubs -->
+        <module>sdk/eventhubs/azure-messaging-eventhubs</module>
+        <module>sdk/eventhubs/azure-messaging-eventhubs-checkpointstore-blob</module>
+
+        <!-- Form Recognizer -->
+        <module>sdk/formrecognizer/azure-ai-formrecognizer</module>
+
+        <!-- Identity -->
+        <module>sdk/identity/azure-identity</module>
+
+        <!-- Key Vault -->
+        <module>sdk/keyvault/azure-security-keyvault-administration</module>
+        <module>sdk/keyvault/azure-security-keyvault-certificates</module>
+        <module>sdk/keyvault/azure-security-keyvault-jca</module>
+        <module>sdk/keyvault/azure-security-keyvault-keys</module>
+        <module>sdk/keyvault/azure-security-keyvault-secrets</module>
+
+        <!-- Metrics Advisor -->
+        <module>sdk/metricsadvisor/azure-ai-metricsadvisor</module>
+
+        <!-- Mixed Reality -->
+        <module>sdk/mixedreality/azure-mixedreality-authentication</module>
+
+        <!-- Models Repository -->
+        <module>sdk/modelsrepository/azure-iot-modelsrepository</module>
+
+        <!-- Azure Monitor -->
+        <module>sdk/monitor/azure-monitor-opentelemetry-exporter</module>
+        <module>sdk/monitor/azure-monitor-query</module>
+
+        <!-- Purview -->
+        <module>sdk/purview/azure-analytics-purview-catalog</module>
+        <module>sdk/purview/azure-analytics-purview-scanning</module>
+
+        <!-- Quantum Jobs -->
+        <module>sdk/quantum/azure-quantum-jobs</module>
+
+        <!-- Remote Rendering -->
+        <module>sdk/remoterendering/azure-mixedreality-remoterendering</module>
+
+        <!-- Resource manager libraries -->
+        <module>sdk/resourcemanager</module>
+
+        <!-- Schema Registry -->
+        <module>sdk/schemaregistry/azure-data-schemaregistry</module>
+        <module>sdk/schemaregistry/azure-data-schemaregistry-avro</module>
+
+        <!-- Cognitive Search -->
+        <module>sdk/search/azure-search-documents</module>
+
+        <!-- Service Bus -->
+        <module>sdk/servicebus/azure-messaging-servicebus</module>
+
+        <!-- Spring libraries -->
+        <module>sdk/spring</module>
+
+        <!-- Azure Storage -->
+        <module>sdk/storage/azure-storage-blob</module>
+        <module>sdk/storage/azure-storage-blob-batch</module>
+        <module>sdk/storage/azure-storage-blob-changefeed</module>
+        <module>sdk/storage/azure-storage-blob-cryptography</module>
+        <module>sdk/storage/azure-storage-blob-nio</module>
+        <module>sdk/storage/azure-storage-common</module>
+        <module>sdk/storage/azure-storage-file-datalake</module>
+        <module>sdk/storage/azure-storage-file-share</module>
+        <module>sdk/storage/azure-storage-internal-avro</module>
+        <module>sdk/storage/azure-storage-queue</module>
+
+        <!-- Synapse -->
+        <module>sdk/synapse/azure-analytics-synapse-accesscontrol</module>
+        <module>sdk/synapse/azure-analytics-synapse-artifacts</module>
+        <module>sdk/synapse/azure-analytics-synapse-managedprivateendpoints</module>
+        <module>sdk/synapse/azure-analytics-synapse-monitoring</module>
+        <module>sdk/synapse/azure-analytics-synapse-spark</module>
+
+        <!-- Azure Tables -->
+        <module>sdk/tables/azure-data-tables</module>
+
+        <!-- Text Analytics -->
+        <module>sdk/textanalytics/azure-ai-textanalytics</module>
+
+        <!-- Translation -->
+        <module>sdk/translation/azure-ai-documenttranslator</module>
+
+        <!-- Web Pub Sub -->
+        <module>sdk/webpubsub/azure-messaging-webpubsub</module>
+
       </modules>
       <build>
         <plugins>
@@ -509,11 +647,13 @@
                     -snippetpath ${project.basedir}/sdk/agrifood/azure-verticals-agrifood-farming/src/samples/java
                     -snippetpath ${project.basedir}/sdk/appconfiguration/azure-data-appconfiguration/src/samples/java
                     -snippetpath ${project.basedir}/sdk/attestation/azure-security-attestation/src/samples/java
+                    -snippetpath ${project.basedir}/sdk/communication/azure-communication-callingserver/src/samples/java
                     -snippetpath ${project.basedir}/sdk/confidentialledger/azure-security-confidentialledger/src/samples/java
                     -snippetpath ${project.basedir}/sdk/containerregistry/azure-containers-containerregistry/src/samples/java
                     -snippetpath ${project.basedir}/sdk/core/azure-core/src/samples/java
                     -snippetpath ${project.basedir}/sdk/core/azure-core-amqp/src/samples/java
                     -snippetpath ${project.basedir}/sdk/core/azure-core-experimental/src/samples/java
+                    -snippetpath ${project.basedir}/sdk/core/azure-core-http-jdk-httpclient/src/samples/java
                     -snippetpath ${project.basedir}/sdk/core/azure-core-http-netty/src/samples/java
                     -snippetpath ${project.basedir}/sdk/core/azure-core-http-okhttp/src/samples/java
                     <!-- -snippetpath ${project.basedir}/sdk/core/azure-core-serializer-avro-apache/src/samples/java-->
@@ -531,8 +671,10 @@
                     -snippetpath ${project.basedir}/sdk/keyvault/azure-security-keyvault-keys/src/samples/java
                     -snippetpath ${project.basedir}/sdk/keyvault/azure-security-keyvault-secrets/src/samples/java
                     -snippetpath ${project.basedir}/sdk/metricsadvisor/azure-ai-metricsadvisor/src/samples/java
+                    -snippetpath ${project.basedir}/sdk/monitor/azure-monitor-query/src/samples/java
                     -snippetpath ${project.basedir}/sdk/purview/azure-analytics-purview-catalog/src/samples/java
                     -snippetpath ${project.basedir}/sdk/purview/azure-analytics-purview-scanning/src/samples/java
+                    -snippetpath ${project.basedir}/sdk/schemaregistry/azure-data-schemaregistry/src/samples/java
                     -snippetpath ${project.basedir}/sdk/search/azure-search-documents/src/samples/java
                     -snippetpath ${project.basedir}/sdk/servicebus/azure-messaging-servicebus/src/samples/java
                     -snippetpath ${project.basedir}/sdk/storage/azure-storage-blob/src/samples/java

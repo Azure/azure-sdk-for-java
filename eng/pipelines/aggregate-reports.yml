@@ -41,16 +41,28 @@ jobs:
         goals: 'clean install'
 
     - task: Maven@3
-      displayName: 'Generate Reports'
+      displayName: 'Generate Aggregate JavaDocs'
       inputs:
         mavenPomFile: pom.xml
-        options: '$(DefaultOptions) -T 2C -Dinclude-non-shipping-modules -Dgpg.skip -Drevapi.skip -Pjavadoc -Pjacoco -Pcoverage'
+        options: '$(DefaultOptions) -T 2C -Dinclude-non-shipping-modules -DskipTests -Dgpg.skip -Dcheckstyle.skip=true -Dspotbugs.skip=true -Djacoco.skip=true -Drevapi.skip=true -Pjavadoc'
         mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
         javaHomeOption: 'JDKVersion'
         jdkVersionOption: $(JavaBuildVersion)
         jdkArchitectureOption: 'x64'
         publishJUnitResults: false
-        goals: 'verify javadoc:aggregate jacoco:report-aggregate'
+        goals: 'javadoc:aggregate'
+
+    - task: Maven@3
+        displayName: 'Generate Aggregate JaCoCo coverage report'
+        inputs:
+          mavenPomFile: pom.xml
+          options: '$(DefaultOptions) -T 2C -Dinclude-non-shipping-modules -Dgpg.skip -Drevapi.skip -Pjacoco -Pcoverage'
+          mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
+          javaHomeOption: 'JDKVersion'
+          jdkVersionOption: $(JavaBuildVersion)
+          jdkArchitectureOption: 'x64'
+          publishJUnitResults: false
+          goals: 'verify jacoco:report-aggregate'
 
     - task: Maven@3
       condition: succeededOrFailed()
