@@ -16,8 +16,6 @@ com.azure.spring.autoconfigure.unity.PreLegacyPropertyEnvironmentPostProcessor
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
 com.azure.spring.autoconfigure.aad.AADAutoConfiguration,\
 com.azure.spring.autoconfigure.aad.AADAuthenticationFilterAutoConfiguration,\
-com.azure.spring.autoconfigure.b2c.AADB2CAutoConfiguration,\
-com.azure.spring.autoconfigure.b2c.AADB2CResourceServerAutoConfiguration,\
 com.azure.spring.autoconfigure.cosmos.CosmosAutoConfiguration,\
 com.azure.spring.autoconfigure.cosmos.CosmosHealthConfiguration,\
 com.azure.spring.autoconfigure.cosmos.CosmosReactiveRepositoriesAutoConfiguration,\
