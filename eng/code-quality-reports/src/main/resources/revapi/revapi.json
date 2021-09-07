@@ -353,7 +353,7 @@
       },
       {
         "code": "java.method.added",
-        "new": "method Duration com.azure.core.util.HttpClientOptions::getConnectTimeout()",
+        "new": "method java.time.Duration com.azure.core.util.HttpClientOptions::getConnectTimeout()",
         "justification": "New getter added in azure-core."
       }
     ]
