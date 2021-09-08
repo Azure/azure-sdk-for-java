@@ -22,55 +22,32 @@ public final class AnalyzeTextOptions {
     private final String text;
 
     /*
-     * The name of the analyzer to use to break the given text. If this
-     * parameter is not specified, you must specify a tokenizer instead. The
-     * tokenizer and analyzer parameters are mutually exclusive. Possible
-     * values include: 'ArMicrosoft', 'ArLucene', 'HyLucene', 'BnMicrosoft',
-     * 'EuLucene', 'BgMicrosoft', 'BgLucene', 'CaMicrosoft', 'CaLucene',
-     * 'ZhHansMicrosoft', 'ZhHansLucene', 'ZhHantMicrosoft', 'ZhHantLucene',
-     * 'HrMicrosoft', 'CsMicrosoft', 'CsLucene', 'DaMicrosoft', 'DaLucene',
-     * 'NlMicrosoft', 'NlLucene', 'EnMicrosoft', 'EnLucene', 'EtMicrosoft',
-     * 'FiMicrosoft', 'FiLucene', 'FrMicrosoft', 'FrLucene', 'GlLucene',
-     * 'DeMicrosoft', 'DeLucene', 'ElMicrosoft', 'ElLucene', 'GuMicrosoft',
-     * 'HeMicrosoft', 'HiMicrosoft', 'HiLucene', 'HuMicrosoft', 'HuLucene',
-     * 'IsMicrosoft', 'IdMicrosoft', 'IdLucene', 'GaLucene', 'ItMicrosoft',
-     * 'ItLucene', 'JaMicrosoft', 'JaLucene', 'KnMicrosoft', 'KoMicrosoft',
-     * 'KoLucene', 'LvMicrosoft', 'LvLucene', 'LtMicrosoft', 'MlMicrosoft',
-     * 'MsMicrosoft', 'MrMicrosoft', 'NbMicrosoft', 'NoLucene', 'FaLucene',
-     * 'PlMicrosoft', 'PlLucene', 'PtBrMicrosoft', 'PtBrLucene',
-     * 'PtPtMicrosoft', 'PtPtLucene', 'PaMicrosoft', 'RoMicrosoft', 'RoLucene',
-     * 'RuMicrosoft', 'RuLucene', 'SrCyrillicMicrosoft', 'SrLatinMicrosoft',
-     * 'SkMicrosoft', 'SlMicrosoft', 'EsMicrosoft', 'EsLucene', 'SvMicrosoft',
-     * 'SvLucene', 'TaMicrosoft', 'TeMicrosoft', 'ThMicrosoft', 'ThLucene',
-     * 'TrMicrosoft', 'TrLucene', 'UkMicrosoft', 'UrMicrosoft', 'ViMicrosoft',
-     * 'StandardLucene', 'StandardAsciiFoldingLucene', 'Keyword', 'Pattern',
-     * 'Simple', 'Stop', 'Whitespace'
+     * The name of the analyzer to use to break the given text.
      */
     @JsonProperty(value = "analyzer")
     private LexicalAnalyzerName analyzerName;
 
     /*
-     * The name of the tokenizer to use to break the given text. If this
-     * parameter is not specified, you must specify an analyzer instead. The
-     * tokenizer and analyzer parameters are mutually exclusive. Possible
-     * values include: 'Classic', 'EdgeNGram', 'Keyword', 'Letter',
-     * 'Lowercase', 'MicrosoftLanguageTokenizer',
-     * 'MicrosoftLanguageStemmingTokenizer', 'NGram', 'PathHierarchy',
-     * 'Pattern', 'Standard', 'UaxUrlEmail', 'Whitespace'
+     * The name of the tokenizer to use to break the given text.
      */
     @JsonProperty(value = "tokenizer")
     private LexicalTokenizerName tokenizerName;
 
     /*
+     * The name of the normalizer to use to normalize the given text.
+     */
+    @JsonProperty(value = "normalizer")
+    private LexicalNormalizerName normalizerName;
+
+    /*
      * An optional list of token filters to use when breaking the given text.
-     * This parameter can only be set when using the tokenizer parameter.
      */
     @JsonProperty(value = "tokenFilters")
     private List<TokenFilterName> tokenFilters;
 
     /*
      * An optional list of character filters to use when breaking the given
-     * text. This parameter can only be set when using the tokenizer parameter.
+     * text.
      */
     @JsonProperty(value = "charFilters")
     private List<CharFilterName> charFilters;
@@ -79,53 +56,39 @@ public final class AnalyzeTextOptions {
      * Constructor to {@link AnalyzeTextOptions} which takes analyzerName.
      *
      * @param text The text break into tokens.
-     * @param analyzerName The name of the analyzer to use to break the
-     * given text. If this parameter is not specified, you must specify a
-     * tokenizer instead. The tokenizer and analyzer parameters are mutually
-     * exclusive. Possible values include: 'ArMicrosoft', 'ArLucene',
-     * 'HyLucene', 'BnMicrosoft', 'EuLucene', 'BgMicrosoft', 'BgLucene',
-     * 'CaMicrosoft', 'CaLucene', 'ZhHansMicrosoft', 'ZhHansLucene',
-     * 'ZhHantMicrosoft', 'ZhHantLucene', 'HrMicrosoft', 'CsMicrosoft',
-     * 'CsLucene', 'DaMicrosoft', 'DaLucene', 'NlMicrosoft', 'NlLucene',
-     * 'EnMicrosoft', 'EnLucene', 'EtMicrosoft', 'FiMicrosoft', 'FiLucene',
-     * 'FrMicrosoft', 'FrLucene', 'GlLucene', 'DeMicrosoft', 'DeLucene',
-     * 'ElMicrosoft', 'ElLucene', 'GuMicrosoft', 'HeMicrosoft', 'HiMicrosoft',
-     * 'HiLucene', 'HuMicrosoft', 'HuLucene', 'IsMicrosoft', 'IdMicrosoft',
-     * 'IdLucene', 'GaLucene', 'ItMicrosoft', 'ItLucene', 'JaMicrosoft',
-     * 'JaLucene', 'KnMicrosoft', 'KoMicrosoft', 'KoLucene', 'LvMicrosoft',
-     * 'LvLucene', 'LtMicrosoft', 'MlMicrosoft', 'MsMicrosoft', 'MrMicrosoft',
-     * 'NbMicrosoft', 'NoLucene', 'FaLucene', 'PlMicrosoft', 'PlLucene',
-     * 'PtBrMicrosoft', 'PtBrLucene', 'PtPtMicrosoft', 'PtPtLucene',
-     * 'PaMicrosoft', 'RoMicrosoft', 'RoLucene', 'RuMicrosoft', 'RuLucene',
-     * 'SrCyrillicMicrosoft', 'SrLatinMicrosoft', 'SkMicrosoft', 'SlMicrosoft',
-     * 'EsMicrosoft', 'EsLucene', 'SvMicrosoft', 'SvLucene', 'TaMicrosoft',
-     * 'TeMicrosoft', 'ThMicrosoft', 'ThLucene', 'TrMicrosoft', 'TrLucene',
-     * 'UkMicrosoft', 'UrMicrosoft', 'ViMicrosoft', 'StandardLucene',
-     * 'StandardAsciiFoldingLucene', 'Keyword', 'Pattern', 'Simple', 'Stop',
-     * 'Whitespace'.
+     * @param analyzerName The name of the analyzer to use to break the given text.
      */
     public AnalyzeTextOptions(String text, LexicalAnalyzerName analyzerName) {
         this.text = text;
         this.analyzerName = analyzerName;
         this.tokenizerName = null;
+        this.normalizerName = null;
     }
 
     /**
      * Constructor to {@link AnalyzeTextOptions} which takes tokenizerName.
      *
      * @param text The text break into tokens.
-     * @param tokenizerName The name of the tokenizer to use to break
-     * the given text. If this parameter is not specified, you must specify an
-     * analyzer instead. The tokenizer and analyzer parameters are mutually
-     * exclusive. Possible values include: 'Classic', 'EdgeNGram', 'Keyword',
-     * 'Letter', 'Lowercase', 'MicrosoftLanguageTokenizer',
-     * 'MicrosoftLanguageStemmingTokenizer', 'NGram', 'PathHierarchy',
-     * 'Pattern', 'Standard', 'UaxUrlEmail', 'Whitespace'.
+     * @param tokenizerName The name of the tokenizer to use to break the given text.
      */
     public AnalyzeTextOptions(String text, LexicalTokenizerName tokenizerName) {
         this.text = text;
         this.tokenizerName = tokenizerName;
         this.analyzerName = null;
+        this.normalizerName = null;
+    }
+
+    /**
+     * Constructor to {@link AnalyzeTextOptions} which takes normalizerName.
+     *
+     * @param text The text break into tokens.
+     * @param normalizerName The name of the normalizer to use to break the given text.
+     */
+    public AnalyzeTextOptions(String text, LexicalNormalizerName normalizerName) {
+        this.text = text;
+        this.normalizerName = normalizerName;
+        this.analyzerName = null;
+        this.tokenizerName = null;
     }
 
     /**
@@ -138,30 +101,7 @@ public final class AnalyzeTextOptions {
     }
 
     /**
-     * Get the analyzer property: The name of the analyzer to use to break the
-     * given text. If this parameter is not specified, you must specify a
-     * tokenizer instead. The tokenizer and analyzer parameters are mutually
-     * exclusive. Possible values include: 'ArMicrosoft', 'ArLucene',
-     * 'HyLucene', 'BnMicrosoft', 'EuLucene', 'BgMicrosoft', 'BgLucene',
-     * 'CaMicrosoft', 'CaLucene', 'ZhHansMicrosoft', 'ZhHansLucene',
-     * 'ZhHantMicrosoft', 'ZhHantLucene', 'HrMicrosoft', 'CsMicrosoft',
-     * 'CsLucene', 'DaMicrosoft', 'DaLucene', 'NlMicrosoft', 'NlLucene',
-     * 'EnMicrosoft', 'EnLucene', 'EtMicrosoft', 'FiMicrosoft', 'FiLucene',
-     * 'FrMicrosoft', 'FrLucene', 'GlLucene', 'DeMicrosoft', 'DeLucene',
-     * 'ElMicrosoft', 'ElLucene', 'GuMicrosoft', 'HeMicrosoft', 'HiMicrosoft',
-     * 'HiLucene', 'HuMicrosoft', 'HuLucene', 'IsMicrosoft', 'IdMicrosoft',
-     * 'IdLucene', 'GaLucene', 'ItMicrosoft', 'ItLucene', 'JaMicrosoft',
-     * 'JaLucene', 'KnMicrosoft', 'KoMicrosoft', 'KoLucene', 'LvMicrosoft',
-     * 'LvLucene', 'LtMicrosoft', 'MlMicrosoft', 'MsMicrosoft', 'MrMicrosoft',
-     * 'NbMicrosoft', 'NoLucene', 'FaLucene', 'PlMicrosoft', 'PlLucene',
-     * 'PtBrMicrosoft', 'PtBrLucene', 'PtPtMicrosoft', 'PtPtLucene',
-     * 'PaMicrosoft', 'RoMicrosoft', 'RoLucene', 'RuMicrosoft', 'RuLucene',
-     * 'SrCyrillicMicrosoft', 'SrLatinMicrosoft', 'SkMicrosoft', 'SlMicrosoft',
-     * 'EsMicrosoft', 'EsLucene', 'SvMicrosoft', 'SvLucene', 'TaMicrosoft',
-     * 'TeMicrosoft', 'ThMicrosoft', 'ThLucene', 'TrMicrosoft', 'TrLucene',
-     * 'UkMicrosoft', 'UrMicrosoft', 'ViMicrosoft', 'StandardLucene',
-     * 'StandardAsciiFoldingLucene', 'Keyword', 'Pattern', 'Simple', 'Stop',
-     * 'Whitespace'.
+     * Get the analyzer name property: The name of the analyzer to use to break the given text.
      *
      * @return the analyzer value.
      */
@@ -170,13 +110,7 @@ public final class AnalyzeTextOptions {
     }
 
     /**
-     * Get the tokenizer property: The name of the tokenizer to use to break
-     * the given text. If this parameter is not specified, you must specify an
-     * analyzer instead. The tokenizer and analyzer parameters are mutually
-     * exclusive. Possible values include: 'Classic', 'EdgeNGram', 'Keyword',
-     * 'Letter', 'Lowercase', 'MicrosoftLanguageTokenizer',
-     * 'MicrosoftLanguageStemmingTokenizer', 'NGram', 'PathHierarchy',
-     * 'Pattern', 'Standard', 'UaxUrlEmail', 'Whitespace'.
+     * Get the tokenizer name property: The name of the tokenizer to use to break the given text.
      *
      * @return the tokenizer value.
      */
@@ -185,9 +119,16 @@ public final class AnalyzeTextOptions {
     }
 
     /**
-     * Get the tokenFilters property: An optional list of token filters to use
-     * when breaking the given text. This parameter can only be set when using
-     * the tokenizer parameter.
+     * Get the normalizer name property: The name of the normalizer to use to normalize the given text.
+     *
+     * @return the normalizer value.
+     */
+    public LexicalNormalizerName getNormalizer() {
+        return this.normalizerName;
+    }
+
+    /**
+     * Get the tokenFilters property: An optional list of token filters to use when breaking the given text.
      *
      * @return the tokenFilters value.
      */
@@ -196,9 +137,7 @@ public final class AnalyzeTextOptions {
     }
 
     /**
-     * Set the tokenFilters property: An optional list of token filters to use
-     * when breaking the given text. This parameter can only be set when using
-     * the tokenizer parameter.
+     * Set the tokenFilters property: An optional list of token filters to use when breaking the given text.
      *
      * @param tokenFilters the tokenFilters value to set.
      * @return the AnalyzeRequest object itself.
@@ -209,9 +148,7 @@ public final class AnalyzeTextOptions {
     }
 
     /**
-     * Get the charFilters property: An optional list of character filters to
-     * use when breaking the given text. This parameter can only be set when
-     * using the tokenizer parameter.
+     * Get the charFilters property: An optional list of character filters to use when breaking the given text.
      *
      * @return the charFilters value.
      */
@@ -220,9 +157,7 @@ public final class AnalyzeTextOptions {
     }
 
     /**
-     * Set the charFilters property: An optional list of character filters to
-     * use when breaking the given text. This parameter can only be set when
-     * using the tokenizer parameter.
+     * Set the charFilters property: An optional list of character filters to use when breaking the given text.
      *
      * @param charFilters the charFilters value to set.
      * @return the AnalyzeRequest object itself.
