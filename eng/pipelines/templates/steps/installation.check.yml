@@ -16,15 +16,15 @@ steps:
       # Write-Host "Copy-Item $(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed/${{parameters.Artifact.groupId}}/${{parameters.Artifact.name}}/" "$(Pipeline.Workspace)/install-check-dir/${{parameters.Artifact.name}} -Recurse"
       # Copy-Item "${{parameters.ArtifactName}}-signed/${{parameters.Artifact.groupId}}/${{parameters.Artifact.name}}/" "install-check-dir/${{parameters.Artifact.name}}" -Recurse
       # Write-Host "$pomf = Get-ChildItem install-check-dir/${{parameters.Artifact.name}}/*.pom"
-      $pomDir = Get-ChildItem "$(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed/${{parameters.Artifact.groupId}}/${{parameters.Artifact.name}}"
-      $pomf = Get-ChildItem "$pomfDir/*.pom"
+      $pomf = Get-ChildItem "$(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed/${{parameters.Artifact.groupId}}/${{parameters.Artifact.name}}/*.pom"
+      # $pomf = Get-ChildItem "$pomfDir/*.pom"
       # Write-Host "Rename-Item $($pomf) pom.xml"
       # Rename-Item $pomf pom.xml
       # Copy-Item "$(System.DefaultWorkingDirectory)/eng" "$pomfDir/eng" -Recurse
 
       while ($retries++ -lt ${{parameters.RetryLimit}}) {
         Write-Host "mvn -f $pomf install -Dcheckstyle.skip=true"
-        mvn -f $pomf install -Dcheckstyle.skip=true
+        mvn -f $pomf install '-Dcheckstyle.skip=true'
         if ($LASTEXITCODE) {
           if ($retries -ge ${{parameters.RetryLimit}}) {
             exit $LASTEXITCODE
