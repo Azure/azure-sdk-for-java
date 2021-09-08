@@ -13,7 +13,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-analytics-synapse-managedprivateendpoints</artifactId>
-  <version>1.0.0-beta.5</version> <!-- {x-version-update;com.azure:azure-analytics-synapse-managedprivateendpoints;current} -->
+  <version>1.0.0-beta.6</version> <!-- {x-version-update;com.azure:azure-analytics-synapse-managedprivateendpoints;current} -->
 
   <name>Microsoft Azure client library for Synapse Managed Private Endpoints</name>
   <description>This package contains the Microsoft Azure Synapse Analytics Managed Private Endpoints SDK.</description>
