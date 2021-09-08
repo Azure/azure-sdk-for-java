@@ -6,12 +6,6 @@
 
 - Added a new way to create a `PollerFlux` from a `PollingStrategy`, including known strategies to poll Azure resources. ([#22795](https://github.com/Azure/azure-sdk-for-java/pull/22795))
 
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
-
 ## 1.20.0 (2021-09-07)
 
 ### Features Added
