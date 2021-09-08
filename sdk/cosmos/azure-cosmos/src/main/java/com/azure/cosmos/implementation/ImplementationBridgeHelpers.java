@@ -244,6 +244,8 @@ public class ImplementationBridgeHelpers {
 
             int getMaxMicroBatchSize(CosmosBulkExecutionOptions options);
 
+            CosmosBulkExecutionOptions setMaxMicroBatchSize(CosmosBulkExecutionOptions options, int maxMicroBatchSize);
+
             int getMaxMicroBatchConcurrency(CosmosBulkExecutionOptions options);
 
             Duration getMaxMicroBatchInterval(CosmosBulkExecutionOptions options);

@@ -240,6 +240,9 @@ public final class BulkExecutionOptions {
 
         ImplementationBridgeHelpers.CosmosBulkExecutionOptionsHelper
             .getCosmosBulkExecutionOptionsAccessor()
+            .setMaxMicroBatchSize(new CosmosBulkExecutionOptions(), this.maxMicroBatchSize);
+        ImplementationBridgeHelpers.CosmosBulkExecutionOptionsHelper
+            .getCosmosBulkExecutionOptionsAccessor()
             .setTargetedMicroBatchRetryRate(
                 cosmosBulkExecutionOptions,
                 this.minMicroBatchRetryRate,

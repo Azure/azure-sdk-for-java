@@ -74,6 +74,27 @@ public final class CosmosBulkExecutionOptions {
     }
 
     /**
+     * The maximum batching size for bulk operations. This value determines number of operations executed in one
+     * request. There is an upper limit on both number of operations and sum of size of operations. Any overflow is
+     * internally retried.
+     *
+     * Another instance is: Currently we support a max limit of 200KB, and user select batch size to be 100 and individual
+     * documents are of size 20KB, approximately 90 operations will always be retried. So it's better to choose a batch
+     * size of 10 here if user is aware of there workload. If sizes are totally unknown and user cannot put a number on it
+     * then retries are handled, so no issues as such.
+     *
+     * If the retry rate exceeds `getMaxMicroBatchInterval` the micro batch size gets dynamically reduced at runtime
+     *
+     * @param maxMicroBatchSize batching size.
+     *
+     * @return the bulk processing options.
+     */
+    CosmosBulkExecutionOptions setMaxMicroBatchSize(int maxMicroBatchSize) {
+        this.maxMicroBatchSize = maxMicroBatchSize;
+        return this;
+    }
+
+    /**
      * The maximum concurrency for executing requests for a partition key range.
      *
      * @return max micro batch concurrency
@@ -202,6 +223,14 @@ public final class CosmosBulkExecutionOptions {
                 @Override
                 public int getMaxMicroBatchSize(CosmosBulkExecutionOptions options) {
                     return options.getMaxMicroBatchSize();
+                }
+
+                @Override
+                public CosmosBulkExecutionOptions setMaxMicroBatchSize(
+                    CosmosBulkExecutionOptions options,
+                    int maxMicroBatchSize) {
+
+                    return options.setMaxMicroBatchSize(maxMicroBatchSize);
                 }
 
                 @Override
