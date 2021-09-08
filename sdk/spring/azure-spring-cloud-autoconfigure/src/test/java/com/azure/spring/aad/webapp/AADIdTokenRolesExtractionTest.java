@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.spring.aad.webapp;
 
-import com.azure.spring.autoconfigure.aad.AADAuthenticationProperties;
 import net.minidev.json.JSONArray;
 import org.junit.jupiter.api.Test;
 import org.springframework.security.oauth2.core.oidc.OidcIdToken;
@@ -19,8 +18,7 @@ import static org.mockito.Mockito.when;
 public class AADIdTokenRolesExtractionTest {
 
     private AADOAuth2UserService getUserService() {
-        AADAuthenticationProperties properties = mock(AADAuthenticationProperties.class);
-        return new AADOAuth2UserService(properties);
+        return new AADOAuth2UserService();
     }
 
     @Test

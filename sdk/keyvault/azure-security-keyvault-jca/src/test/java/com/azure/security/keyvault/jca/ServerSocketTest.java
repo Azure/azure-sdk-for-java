@@ -1,10 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.security.keyvault.jca.test;
+package com.azure.security.keyvault.jca;
 
-import com.azure.security.keyvault.jca.KeyVaultJcaProvider;
-import com.azure.security.keyvault.jca.KeyVaultTrustManagerFactoryProvider;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.methods.HttpGet;
@@ -51,12 +49,12 @@ public class ServerSocketTest {
 
     @BeforeAll
     public static void beforeEach() throws Exception {
+        PropertyConvertorUtils.putEnvironmentPropertyToSystemPropertyForKeyVaultJca();
         /*
          * Add JCA provider.
          */
         KeyVaultJcaProvider provider = new KeyVaultJcaProvider();
         Security.addProvider(provider);
-        PropertyConvertorUtils.putEnvironmentPropertyToSystemPropertyForKeyVaultJca();
 
         /**
          *  - Create an Azure Key Vault specific instance of a KeyStore.

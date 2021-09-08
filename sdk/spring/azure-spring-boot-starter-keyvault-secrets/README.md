@@ -25,9 +25,9 @@ From a developer's perspective, Key Vault APIs accept and return secret values a
 
 For highly sensitive data, clients should consider additional layers of protection for data. Encrypting data using a separate protection key prior to storage in Key Vault is one example.
 
-Key Vault also supports a contentType field for secrets. Clients may specify the content type of a secret to assist in interpreting the secret data when it's retrieved. The maximum length of this field is 255 characters. There are no pre-defined values. The suggested usage is as a hint for interpreting the secret data.
+Key Vault also supports a contentType field for secrets. Clients may specify the content type of secret to assist in interpreting the secret data when it's retrieved. The maximum length of this field is 255 characters. There are no pre-defined values. The suggested usage is as a hint for interpreting the secret data.
 
-Besides, this starter provides features of supporting multiple Key Vaults, case sensitive mode of Key Vault names and using placeholder presenting Key Vault names in property file
+Besides, this starter supports multiple Key Vaults(in theory, it can support an unlimited number), case-sensitive mode of Key Vault names, and using placeholder presenting Key Vault names in the property file.
 
 ### Configuration Options
 Azure Key Vault Secrets Spring Boot Starter deprecates all legacy properties of which the prefix is `azure.keyvault` and uses `spring.cloud.azure.keyvault` instead.
@@ -47,8 +47,9 @@ spring.cloud.azure.keyvault.credential.client-certificate-path|Path of a PEM cer
 spring.cloud.azure.keyvault.credential.client-id|Client id to use when performing service principal authentication with Azure.|||
 spring.cloud.azure.keyvault.credential.client-secret|Client secret to use when performing service principal authentication with Azure.|||
 spring.cloud.azure.keyvault.credential.tenant-id|Tenant id for the Azure resources.||
-spring.cloud.azure.keyvault.enabled|To turn on/off Azure Key Vault Secret property source.|true|
-spring.cloud.azure.keyvault.environment.authority-host|Authority Host URI|https://login.microsoftonline.com/|
+spring.cloud.azure.keyvault.enabled|To turn on/off Azure Key Vault Secret as a Spring Boot property source.|true|
+spring.cloud.azure.keyvault.token-acquiring-timeout-seconds|to specify the timeout in seconds when acquiring a token from Azure AAD|60s|
+spring.cloud.azure.keyvault.environment.authority-host|the URL at which your identity provider can be reached.|https://login.microsoftonline.com/|
 spring.cloud.azure.keyvault.order|Define the order of the key vaults you are delivering (comma delimited, e.g 'my-vault, my-vault-2').||
 spring.cloud.azure.keyvault.refresh-interval|Interval for PropertySource to refresh secret keys|1800000(ms)|
 spring.cloud.azure.keyvault.secret-keys|If application using specific secret keys. If this property is set, application will only load the keys in the property and won't load all the keys from keyvault, that means if you want to update your secrets, you need to restart the application rather than only add secrets in the keyvault.||
@@ -65,7 +66,7 @@ azure.keyvault.certificate-password|Password of the certificate file to use when
 azure.keyvault.certificate-path|Path of a PEM certificate file to use when performing service principal authentication with Azure.| |**spring.cloud.azure.keyvault.credential.client-certificate-path** |
 azure.keyvault.client-id|Client id to use when performing service principal authentication with Azure.| |**spring.cloud.azure.keyvault.credential.client-id** |
 azure.keyvault.client-key|Client secret to use when performing service principal authentication with Azure.| |**spring.cloud.azure.keyvault.credential.client-secret** |
-azure.keyvault.enabled|To turn on/off Azure Key Vault Secret property source.|true|**spring.cloud.azure.keyvault.enabled** |
+azure.keyvault.enabled|To turn on/off Azure Key Vault Secret as a Spring Boot property source.|true|**spring.cloud.azure.keyvault.enabled** |
 azure.keyvault.order|Define the order of the key vaults you are delivering (comma delimited, e.g 'my-vault, my-vault-2').| |**spring.cloud.azure.keyvault.order** |
 azure.keyvault.refresh-interval|Interval for PropertySource to refresh secret keys|1800000(ms) |**spring.cloud.azure.keyvault.refresh-interval** |
 azure.keyvault.secret-keys|If application using specific secret keys. If this property is set, application will only load the keys in the property and won't load all the keys from keyvault, that means if you want to update your secrets, you need to restart the application rather than only add secrets in the keyvault.| |**spring.cloud.azure.keyvault.secret-keys** |
@@ -92,14 +93,14 @@ spring.cloud.azure.environment.authority-host| Authority Host URI |https://login
    
 ### Multiple Key Vault support
 
-If you want to use multiple Key Vaults you need to define names for each of the
+If you want to use multiple Key Vaults, you need to define names for each of the
 Key Vaults you want to use and in which order the Key Vaults should be consulted.
-If a property exists in multiple Key Vaults the order determine which value you
+If a property exists in multiple Key Vaults, the order determines which value you
 will get back.
 
-### Case sensitive key mode
+### Case-sensitive key mode
 
-The new case sensitive mode allows you to use case sensitive Key Vault names. Note
+The new case-sensitive mode allows you to use case-sensitive Key Vault names. Note
 that the Key Vault secret key still needs to honor the naming limitation as 
 described in the “keyvault-name” element of [About keys, secrets, and certificates](https://docs.microsoft.com/azure/key-vault/general/about-keys-secrets-certificates).
 
@@ -138,7 +139,7 @@ spring.cloud.azure.keyvault.uri=put-your-azure-keyvault-uri-here
 spring.cloud.azure.keyvault.credential.client-id=put-your-azure-client-id-here
 ``` 
 
-If you are using system assigned identity you don't need to specify the client-id.
+If you are using system assigned identity, you don't need to specify the client-id.
 
 ### Save secrets in Azure Key Vault
 Save secrets in Azure Key Vault through [Azure Portal](https://blogs.technet.microsoft.com/kv/2016/09/12/manage-your-key-vaults-from-new-azure-portal/) or [Azure CLI](https://docs.microsoft.com/cli/azure/keyvault/secret).
@@ -176,7 +177,7 @@ public class KeyVaultSample implements CommandLineRunner {
 ```
 
 ### Multiple Key Vault support
-The example below shows a setup for 2 key vaults, named `keyvault1` and
+The example below shows a setup for 2 Key Vaults, named `keyvault1` and
 `keyvault2`. The order specifies that `keyvault1` will be consulted first.
 
 ```
@@ -190,13 +191,13 @@ spring.cloud.azure.keyvault.keyvault2.credential.client-id=put-a-azure-client-id
 spring.cloud.azure.keyvault.keyvault2.credential.client-secret=put-a-azure-client-key-here
 spring.cloud.azure.keyvault.keyvault2.credential.tenant-id=put-a-azure-tenant-id-here
 ```
-Note if you decide to use multiple key vault support and you already have an
+Note if you decide to use multiple Key Vault support, and you already have an
 existing configuration, please make sure you migrate that configuration to the
-multiple key vault variant. Mixing multiple key vaults with an existing single
-key vault configuration is a non supported scenario.
+multiple Key Vault variant. Mixing multiple Key Vaults with an existing single
+Key Vault configuration is a non-supported scenario.
 
-### Case sensitive key mode
-To enable case sensitive mode, you can set the following property in the `appliation.properties`:
+### Case-sensitive key mode
+To enable case-sensitive mode, you can set the following property in the `appliation.properties`:
 ```
 spring.cloud.azure.keyvault.case-sensitive-keys=true
 ```
@@ -206,7 +207,7 @@ my.not.compliant.property=${myCompliantKeyVaultSecret}
 ```
 
 The application will take care of getting the value that is backed by the 
-`myCompliantKeyVaultSecret` key name and assign its value to the non compliant
+`myCompliantKeyVaultSecret` key name and assign its value to the non-compliant
 `my.not.compliant.property`.
 
 ## Troubleshooting
