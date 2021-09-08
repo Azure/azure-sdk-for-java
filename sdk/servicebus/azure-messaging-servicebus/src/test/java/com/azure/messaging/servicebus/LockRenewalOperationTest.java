@@ -194,7 +194,7 @@ class LockRenewalOperationTest {
                 operation.close();
             })
             .expectComplete()
-            .verify(renewalPeriod);
+            .verify();
 
         // Assert
         assertEquals(LockRenewalStatus.CANCELLED, operation.getStatus());

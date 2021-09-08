@@ -262,7 +262,7 @@ class ServiceBusClientBuilderTest extends IntegrationTestBase {
     @Test
     public void testBatchSendEventByAzureNameKeyCredential() {
         ConnectionStringProperties properties = getConnectionStringProperties();
-        String fullyQualifiedNamespace = getFullyQualifiedDomainName();
+        String fullyQualifiedNamespace = properties.getEndpoint().getHost();
         String sharedAccessKeyName = properties.getSharedAccessKeyName();
         String sharedAccessKey = properties.getSharedAccessKey();
         String queueName = getQueueName(0);
@@ -291,7 +291,7 @@ class ServiceBusClientBuilderTest extends IntegrationTestBase {
     public void testBatchSendEventByAzureSasCredential() {
         ConnectionStringProperties properties = getConnectionStringProperties(true);
         logger.info("SharedAccessSignature is {}", properties.getSharedAccessSignature());
-        String fullyQualifiedNamespace = getFullyQualifiedDomainName();
+        String fullyQualifiedNamespace = properties.getEndpoint().getHost();
         String sharedAccessSignature = properties.getSharedAccessSignature();
         String queueName = getQueueName(0);
 
