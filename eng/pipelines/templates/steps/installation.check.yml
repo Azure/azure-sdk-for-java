@@ -21,11 +21,11 @@ steps:
       $pomf = Get-ChildItem "$pomfDir/*.pom"
       # Write-Host "Rename-Item $($pomf) pom.xml"
       # Rename-Item $pomf pom.xml
-      Copy-Item "$(System.DefaultWorkingDirectory)/eng" "$pomfDir/eng" -Recurse
+      # Copy-Item "$(System.DefaultWorkingDirectory)/eng" "$pomfDir/eng" -Recurse
 
       while ($retries++ -lt ${{parameters.RetryLimit}}) {
         Write-Host "mvn -f $pomf install -Dcheckstyle.skip=true"
-        mvn -f $pomf install '-Dcheckstyle.skip=true'
+        mvn -f $pomf install -D"checkstyle.skip"=true
         if ($LASTEXITCODE) {
           if ($retries -ge ${{parameters.RetryLimit}}) {
             exit $LASTEXITCODE
