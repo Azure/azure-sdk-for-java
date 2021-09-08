@@ -33,9 +33,9 @@
       "content-length" : "93",
       "retry-after" : "0",
       "X-Azure-Ref" : "0dwYwYQAAAABta1F4wTyuT4kkdHfuSsEFV1NURURHRTA4MTIAOWZjN2I1MTktYThjYy00Zjg5LTkzNWUtYzkxNDhhZTA5ZTgx",
-      "StatusCode" : "400",
+      "StatusCode" : "202",
       "X-Microsoft-Skype-Chain-ID" : "767c26ac-7b00-4d86-bf39-3f02a5af42ef",
-      "Body" : "{\"error\":{\"code\":\"8501\",\"message\":\"Action is invalid when call is not in Established state\"}}",
+      "Body" : "{\"callConnectionId\":\"411f0b00-9921-4f53-93c7-06232cec1989\"}",
       "x-ms-client-request-id" : "9527ed23-4273-4b25-b649-f69cf6c03871",
       "Date" : "Wed, 01 Sep 2021 23:02:15 GMT",
       "Content-Type" : "application/json; charset=utf-8"
@@ -61,7 +61,7 @@
     "Exception" : null
   }, {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.communication.azure.com/calling/callConnections/a61f1300-d786-4929-a850-4e41c0ae8db1/:hangup?api-version=2021-08-30-preview",
+    "Uri" : "https://REDACTED.communication.azure.com/calling/callConnections/411f0b00-9921-4f53-93c7-06232cec1989/:hangup?api-version=2021-08-30-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-communication-callingserver/1.0.0-beta.1 (16.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "47c03438-59bd-44a2-bccc-6401b0c92f90"

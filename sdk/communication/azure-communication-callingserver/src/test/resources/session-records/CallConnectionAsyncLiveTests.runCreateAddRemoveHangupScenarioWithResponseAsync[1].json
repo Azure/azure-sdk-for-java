@@ -43,7 +43,7 @@
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://REDACTED.communication.azure.com/calling/callConnections/44201300-ca3b-409d-8938-9ea2c6e19fe1/participants/8127832a-aa61-4a42-a3d7-1d01b98d52fa?api-version=2021-08-30-preview",
+    "Uri" : "https://REDACTED.communication.azure.com/calling/callConnections/411f0b00-aed8-4b6a-9fb5-9af82e644b3d/participants/8127832a-aa61-4a42-a3d7-1d01b98d52fa?api-version=2021-08-30-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-communication-callingserver/1.0.0-beta.1 (16.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "2a84e953-4989-41ce-8651-e068afa6aae8"
@@ -61,7 +61,7 @@
     "Exception" : null
   }, {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.communication.azure.com/calling/callConnections/44201300-ca3b-409d-8938-9ea2c6e19fe1/:hangup?api-version=2021-08-30-preview",
+    "Uri" : "https://REDACTED.communication.azure.com/calling/callConnections/411f0b00-aed8-4b6a-9fb5-9af82e644b3d/:hangup?api-version=2021-08-30-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-communication-callingserver/1.0.0-beta.1 (16.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "416261ad-46fc-48b7-aa75-d0ca225762ba"

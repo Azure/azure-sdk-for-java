@@ -34,9 +34,9 @@
       "content-length" : "93",
       "retry-after" : "0",
       "X-Azure-Ref" : "0NwYwYQAAAAA6qqN38cCXRKPWh37q0j25V1NURURHRTA4MTIAOWZjN2I1MTktYThjYy00Zjg5LTkzNWUtYzkxNDhhZTA5ZTgx",
-      "StatusCode" : "400",
+      "StatusCode" : "202",
       "X-Microsoft-Skype-Chain-ID" : "df877a68-2ca3-4cb4-aa46-7ff8090449b1",
-      "Body" : "{\"error\":{\"code\":\"8501\",\"message\":\"Action is invalid when call is not in Established state\"}}",
+      "Body" : "{\"callConnectionId\":\"411f0b00-b3c7-4287-8f06-615fd35614df\"}",
       "x-ms-client-request-id" : "1d0f9b1f-6457-4c47-a750-66f6f3fbf56c",
       "Date" : "Wed, 01 Sep 2021 23:01:11 GMT",
       "Content-Type" : "application/json; charset=utf-8"
@@ -44,7 +44,7 @@
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://REDACTED.communication.azure.com/calling/callConnections/d91f1300-071e-49e0-af6d-44ebd92eeb9b/participants/4318b68b-3b37-46e1-a4fa-69cd9623435a?api-version=2021-08-30-preview",
+    "Uri" : "https://REDACTED.communication.azure.com/calling/callConnections/411f0b00-b3c7-4287-8f06-615fd35614df/participants/4318b68b-3b37-46e1-a4fa-69cd9623435a?api-version=2021-08-30-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-communication-callingserver/1.0.0-beta.1 (16.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "a8f4cdea-d4a8-4fe0-9e3e-e31f70f3fad2"
@@ -62,7 +62,7 @@
     "Exception" : null
   }, {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.communication.azure.com/calling/callConnections/d91f1300-071e-49e0-af6d-44ebd92eeb9b/:hangup?api-version=2021-08-30-preview",
+    "Uri" : "https://REDACTED.communication.azure.com/calling/callConnections/411f0b00-b3c7-4287-8f06-615fd35614df/:hangup?api-version=2021-08-30-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-communication-callingserver/1.0.0-beta.1 (16.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "e2867240-12c1-40d1-a08d-2e277a0785a4"
