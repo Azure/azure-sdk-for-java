@@ -31,6 +31,10 @@ public final class ReflectionUtils {
         return MethodHandles.publicLookup();
     }
 
+    static int getJavaImplementationMajorVersion() {
+        return 8;
+    }
+
     private ReflectionUtils() {
     }
 }

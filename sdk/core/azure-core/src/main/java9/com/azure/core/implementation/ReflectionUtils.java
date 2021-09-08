@@ -60,6 +60,10 @@ public final class ReflectionUtils {
         return LOOKUP;
     }
 
+    static int getJavaImplementationMajorVersion() {
+        return 9;
+    }
+
     private ReflectionUtils() {
     }
 }

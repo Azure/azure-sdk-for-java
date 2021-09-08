@@ -237,7 +237,7 @@ org.apache.maven.plugins:maven-clean-plugin;3.0.0
 org.apache.maven.plugins:maven-compiler-plugin;3.8.1
 org.apache.maven.plugins:maven-eclipse-plugin;2.8
 org.apache.maven.plugins:maven-enforcer-plugin;3.0.0-M3
-org.apache.maven.plugins:maven-failsafe-plugin;2.22.0
+org.apache.maven.plugins:maven-failsafe-plugin;3.0.0-M3
 org.apache.maven.plugins:maven-help-plugin;2.1.1
 org.apache.maven.plugins:maven-jar-plugin;3.1.2
 org.apache.maven.plugins:maven-javadoc-plugin;3.1.1
