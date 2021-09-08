@@ -509,7 +509,7 @@ function UpdateDocsMsPackages($DocConfigFile, $Mode, $DocsMetadata) {
 
   $outputJson = ConvertTo-Json $packageConfig -Depth 100
   Set-Content -Path $DocConfigFile -Value $outputJson
-  Write-Host "Onboarding configuration ($Mode) written to: $DocConfigFile"
+  Write-Host "Onboarding configuration $Mode written to: $DocConfigFile"
 }
 
 # function is used to filter packages to submit to API view tool
