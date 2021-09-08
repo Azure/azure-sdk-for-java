@@ -62,4 +62,3 @@ steps:
 - publish: $(Artifacts)
   artifact: packages-mavencentral
   displayName: 'Store gpg signed packages in packages-mavencentral artifact'
-  timeoutInMinutes: 5 
