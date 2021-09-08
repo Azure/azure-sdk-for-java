@@ -1678,7 +1678,7 @@ public class SearchJavaDocCodeSnippets {
         CreateOrUpdateIndexerOptions options = new CreateOrUpdateIndexerOptions(searchIndexerFromService)
             .setOnlyIfUnchanged(true)
             .setCacheReprocessingChangeDetectionDisabled(false)
-            .setResetRequirementsIgnored(true);
+            .setCacheResetRequirementsIgnored(true);
         Response<SearchIndexer> indexerFromService = searchIndexerClient.createOrUpdateIndexerWithResponse(
             options, new Context(key1, value1));
         System.out.printf("The status code of the response is %s.%nThe indexer name is %s. "
@@ -1924,7 +1924,7 @@ public class SearchJavaDocCodeSnippets {
         dataSource.setContainer(new SearchIndexerDataContainer("updatecontainer"));
         CreateOrUpdateDataSourceConnectionOptions options = new CreateOrUpdateDataSourceConnectionOptions(dataSource)
             .setOnlyIfUnchanged(true)
-            .setResetRequirementsIgnored(true);
+            .setCacheResetRequirementsIgnored(true);
 
         Response<SearchIndexerDataSourceConnection> updateDataSource = searchIndexerClient
             .createOrUpdateDataSourceConnectionWithResponse(options, new Context(key1, value1));
@@ -2135,7 +2135,7 @@ public class SearchJavaDocCodeSnippets {
         CreateOrUpdateSkillsetOptions options = new CreateOrUpdateSkillsetOptions(indexerSkillset)
             .setOnlyIfUnchanged(true)
             .setCacheReprocessingChangeDetectionDisabled(false)
-            .setResetRequirementsIgnored(true);
+            .setCacheResetRequirementsIgnored(true);
         Response<SearchIndexerSkillset> updateSkillsetResponse = searchIndexerClient.createOrUpdateSkillsetWithResponse(
             options, new Context(key1, value1));
         System.out.printf("The status code of the response is %s.%nThe indexer skillset name is %s. "
@@ -2305,7 +2305,7 @@ public class SearchJavaDocCodeSnippets {
                     new CreateOrUpdateIndexerOptions(searchIndexerFromService)
                         .setOnlyIfUnchanged(true)
                         .setCacheReprocessingChangeDetectionDisabled(false)
-                        .setResetRequirementsIgnored(true));
+                        .setCacheResetRequirementsIgnored(true));
             })
             .subscribe(indexerFromService ->
                 System.out.printf("The status code of the response is %s.%nThe indexer name is %s. "
@@ -2523,7 +2523,7 @@ public class SearchJavaDocCodeSnippets {
                 return searchIndexerAsyncClient.createOrUpdateDataSourceConnectionWithResponse(
                     new CreateOrUpdateDataSourceConnectionOptions(dataSource)
                         .setOnlyIfUnchanged(true)
-                        .setResetRequirementsIgnored(true));
+                        .setCacheResetRequirementsIgnored(true));
             })
             .subscribe(updateDataSource ->
                 System.out.printf("The status code of the response is %s.%nThe dataSource name is %s. "
@@ -2705,7 +2705,7 @@ public class SearchJavaDocCodeSnippets {
                     new CreateOrUpdateSkillsetOptions(indexerSkillset)
                         .setOnlyIfUnchanged(true)
                         .setCacheReprocessingChangeDetectionDisabled(false)
-                        .setResetRequirementsIgnored(true));
+                        .setCacheResetRequirementsIgnored(true));
             })
             .subscribe(updateSkillsetResponse ->
                 System.out.printf("The status code of the response is %s.%nThe indexer skillset name is %s. "

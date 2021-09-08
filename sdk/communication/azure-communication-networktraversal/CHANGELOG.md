@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.1 (2021-08-30)
+## 1.0.0-beta.1 (2021-09-07)
 
 The first preview of the Azure Communication Relay Client has the following features:
 

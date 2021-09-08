@@ -82,8 +82,8 @@ public class ClientSecretCredentialTest {
         when(badIdentityClient.authenticateWithConfidentialClientCache(any())).thenReturn(Mono.empty());
         when(identityClient.authenticateWithConfidentialClient(request)).thenReturn(TestUtils.getMockAccessToken(token1, expiresOn));
         when(badIdentityClient.authenticateWithConfidentialClient(request)).thenReturn(Mono.error(new MsalServiceException("bad secret", "BadSecret")));
-        PowerMockito.whenNew(IdentityClient.class).withArguments(eq(TENANT_ID), eq(CLIENT_ID), eq(secret), isNull(), isNull(), isNull(), eq(false), any()).thenReturn(identityClient);
-        PowerMockito.whenNew(IdentityClient.class).withArguments(eq(TENANT_ID), eq(CLIENT_ID), eq(badSecret), isNull(), isNull(), isNull(), eq(false), any()).thenReturn(badIdentityClient);
+        PowerMockito.whenNew(IdentityClient.class).withArguments(eq(TENANT_ID), eq(CLIENT_ID), eq(secret), isNull(), isNull(), isNull(), isNull(), eq(false), isNull(), any()).thenReturn(identityClient);
+        PowerMockito.whenNew(IdentityClient.class).withArguments(eq(TENANT_ID), eq(CLIENT_ID), eq(badSecret), isNull(), isNull(), isNull(), isNull(), eq(false), isNull(), any()).thenReturn(badIdentityClient);
 
         // test
         ClientSecretCredential credential =

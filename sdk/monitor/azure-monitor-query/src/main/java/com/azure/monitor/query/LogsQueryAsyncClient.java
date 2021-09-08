@@ -7,10 +7,10 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.exception.HttpResponseException;
+import com.azure.core.experimental.models.HttpResponseError;
 import com.azure.core.experimental.models.TimeInterval;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
-import com.azure.core.models.HttpResponseError;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
@@ -39,10 +39,8 @@ import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static com.azure.core.util.FluxUtil.withContext;
 
@@ -249,15 +247,6 @@ public final class LogsQueryAsyncClient {
 
     private HttpResponseError mapLogsQueryError(ErrorInfo errors) {
         if (errors != null) {
-            List<HttpResponseError> errorDetails = Collections.emptyList();
-            if (errors.getDetails() != null) {
-                errorDetails = errors.getDetails()
-                        .stream()
-                        .map(errorDetail -> new HttpResponseError(errorDetail.getCode(), errorDetail.getMessage())
-                                .setTarget(errorDetail.getTarget()))
-                        .collect(Collectors.toList());
-            }
-
             ErrorInfo innerError = errors.getInnererror();
             ErrorInfo currentError = errors.getInnererror();
             while (currentError != null) {
@@ -268,7 +257,7 @@ public final class LogsQueryAsyncClient {
             if (errors.getCode() != null && innerError != null && errors.getCode().equals(innerError.getCode())) {
                 code = innerError.getCode();
             }
-            return new HttpResponseError(code, errors.getMessage()).setErrorDetails(errorDetails);
+            return new HttpResponseError(code, errors.getMessage());
         }
 
         return null;
