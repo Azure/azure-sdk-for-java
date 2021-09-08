@@ -3,42 +3,47 @@
 
 package com.azure.security.keyvault.jca;
 
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.condition.EnabledIfEnvironmentVariable;
 
 import java.io.IOException;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
+import java.security.Security;
 import java.security.cert.CertificateException;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-@EnabledIfEnvironmentVariable(named = "AZURE_KEYVAULT_CERTIFICATE_NAME", matches = "myalias")
+@Disabled
 public class KeyVaultKeyManagerTest {
 
-    private static KeyVaultKeyManager manager;
-    private static String certificateName;
+    private KeyVaultKeyManager manager;
 
-    @BeforeAll
-    public static void setEnvironmentProperty() throws KeyStoreException, NoSuchAlgorithmException, IOException,
+    @BeforeEach
+    public void setEnvironmentProperty() throws KeyStoreException, NoSuchAlgorithmException, IOException,
         CertificateException {
-        PropertyConvertorUtils.putEnvironmentPropertyToSystemPropertyForKeyVaultJca();
-        PropertyConvertorUtils.addKeyVaultJcaProvider();
-        KeyStore keyStore = PropertyConvertorUtils.getKeyVaultKeyStore();
+        KeyVaultJcaProvider provider = new KeyVaultJcaProvider();
+        Security.addProvider(provider);
+        KeyStore keyStore = KeyStore.getInstance("AzureKeyVault");
+        KeyVaultLoadStoreParameter parameter = new KeyVaultLoadStoreParameter(
+            System.getProperty("azure.keyvault.uri"),
+            System.getProperty("azure.keyvault.tenant-id"),
+            System.getProperty("azure.keyvault.client-id"),
+            System.getProperty("azure.keyvault.client-secret"));
+        keyStore.load(parameter);
         manager = new KeyVaultKeyManager(keyStore, null);
-        certificateName = System.getenv("AZURE_KEYVAULT_CERTIFICATE_NAME");
     }
 
     @Test
     public void testPrivateKey() {
-        assertNotNull(manager.getPrivateKey(certificateName));
+        assertNotNull(manager.getPrivateKey("myalias"));
     }
 
 
     @Test
     public void testGetCertificateChain() {
-        assertNotNull(manager.getCertificateChain(certificateName));
+        assertNotNull(manager.getCertificateChain("myalias"));
     }
 }
