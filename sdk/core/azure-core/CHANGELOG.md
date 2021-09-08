@@ -1,5 +1,15 @@
 # Release History
 
+## 1.21.0-beta.2 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
 ## 1.21.0-beta.1 (2021-09-08)
 
 ### Features Added
@@ -60,13 +70,6 @@
 - Upgraded Jackson from `2.12.3` to `2.12.4`.
 - Upgraded Reactor from `3.4.6` to `3.4.8`.
 - Upgraded SLF4J from `1.7.30` to `1.7.32`.
-
-## 1.19.0-beta.1 (2021-07-07)
-
-### Features Added
-
- - Added `RequestOptions` for protocol methods
- - Added support for `BinaryData` type as the request body or response body in `RestProxy`
 
 ## 1.19.0-beta.1 (2021-07-07)
 
