@@ -3,6 +3,8 @@
 
 package com.azure.core.implementation;
 
+import com.azure.core.util.CoreUtils;
+
 import java.io.IOException;
 import java.util.Objects;
 import java.util.jar.JarFile;
@@ -18,19 +20,21 @@ public final class SemanticVersion implements Comparable<SemanticVersion> {
      */
     public static final String UNKNOWN_VERSION = "unknown";
 
+    private final int major;
+    private final int minor;
+    private final int patch;
+    private final String prerelease;
+    private final String versionString;
+
     /**
      * Returns implementation version of the package for given class.
      *
      * @param className - class name to get package version of.
      * @return parsed {@link SemanticVersion} or invalid one.
      */
-    public static SemanticVersion getPackageVersionForClass(String className) {
+    public static SemanticVersion getPackageVersionForClass(String className) throws ClassNotFoundException {
         Objects.requireNonNull(className, "'className' cannot be null.");
-        try {
-            return SemanticVersion.getPackageVersion(Class.forName(className));
-        } catch (ClassNotFoundException e) {
-            return createInvalid();
-        }
+        return SemanticVersion.getPackageVersion(Class.forName(className));
     }
 
     /**
@@ -52,26 +56,30 @@ public final class SemanticVersion implements Comparable<SemanticVersion> {
             return createInvalid(version);
         }
 
-        int patchEndIdx = version.indexOf('-', minorDotIdx + 1);
-        int extEndIdx = version.indexOf('+', minorDotIdx + 1);
+        int patchEndIdx = minorDotIdx + 1;
+        while(patchEndIdx < version.length()) {
+            Character ch = version.charAt(patchEndIdx);
 
-        if (patchEndIdx < 0) {
-            patchEndIdx = version.length();
+            // accommodate common broken semantic versions (e.g. 1.2.3.4)
+            if (ch == '.' || ch == '-' || ch == '+') {
+                break;
+            }
+
+            patchEndIdx ++;
         }
 
+        int extEndIdx = version.indexOf('+', patchEndIdx);
         if (extEndIdx < 0) {
             extEndIdx = version.length();
         }
-
-        patchEndIdx = Math.min(patchEndIdx, extEndIdx);
-
 
         try {
             Integer major = Integer.valueOf(version.substring(0, majorDotIdx));
             Integer minor = Integer.valueOf(version.substring(majorDotIdx + 1, minorDotIdx));
             Integer patch = Integer.valueOf(version.substring(minorDotIdx + 1, patchEndIdx));
 
-            return new SemanticVersion(major, minor, patch, version.substring(patchEndIdx, extEndIdx), version);
+            String prerelease = (patchEndIdx == extEndIdx) ? "" : version.substring(patchEndIdx + 1, extEndIdx);
+            return new SemanticVersion(major, minor, patch, prerelease, version);
         } catch (Throwable ex) {
             return createInvalid(version);
         }
@@ -117,12 +125,6 @@ public final class SemanticVersion implements Comparable<SemanticVersion> {
             }
         }
     }
-
-    private final int major;
-    private final int minor;
-    private final int patch;
-    private final String prerelease;
-    private final String versionString;
 
     /**
      * Creates invalid semantic version.
@@ -200,11 +202,11 @@ public final class SemanticVersion implements Comparable<SemanticVersion> {
             return patch > other.patch ? 1 : -1;
         }
 
-        if (isStringNullOrEmpty(prerelease)) {
-            return isStringNullOrEmpty(other.prerelease) ? 0 : 1;
+        if (CoreUtils.isNullOrEmpty(prerelease)) {
+            return CoreUtils.isNullOrEmpty(other.prerelease) ? 0 : 1;
         }
 
-        if (isStringNullOrEmpty(other.prerelease)) {
+        if (CoreUtils.isNullOrEmpty(other.prerelease)) {
             return -1;
         }
 
@@ -249,9 +251,5 @@ public final class SemanticVersion implements Comparable<SemanticVersion> {
      */
     public boolean isValid() {
         return this.major >= 0;
-    }
-
-    private static boolean isStringNullOrEmpty(String str) {
-        return str == null || str.isEmpty();
     }
 }

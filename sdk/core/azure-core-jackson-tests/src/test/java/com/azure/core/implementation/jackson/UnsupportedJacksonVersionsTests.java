@@ -13,7 +13,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class UnsupportedJacksonVersionsTests {
     @Test
-    public void testme() {
+    public void testUnsupportedVersion() {
         String jacksonVersionString = ObjectMapper.class.getPackage().getImplementationVersion();
         String azureCoreVersion = CoreUtils
             .getProperties("azure-core.properties")

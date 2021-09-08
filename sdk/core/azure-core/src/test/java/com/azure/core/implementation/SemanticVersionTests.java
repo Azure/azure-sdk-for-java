@@ -9,6 +9,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class SemanticVersionTests {
@@ -41,7 +42,7 @@ public class SemanticVersionTests {
     @Test
     public void betaVersion() {
         SemanticVersion version = SemanticVersion.parse("10.2.3-beta.1");
-        SemanticVersion expectedVersion = new SemanticVersion(10, 2, 3, "-beta.1", "10.2.3-beta.1");
+        SemanticVersion expectedVersion = new SemanticVersion(10, 2, 3, "beta.1", "10.2.3-beta.1");
         assertEquals(expectedVersion, version);
 
         assertEquals(10, version.getMajorVersion());
@@ -74,7 +75,38 @@ public class SemanticVersionTests {
     }
 
     @Test
-    public void classVersion() {
+    public void reasonablyBrokenSuppoertedVersion() {
+        SemanticVersion brokenButSupported1 = SemanticVersion.parse("1.2.3.45");
+        SemanticVersion brokenButSupported2 = SemanticVersion.parse("1.2.3.45+build");
+        SemanticVersion brokenButSupported3 = SemanticVersion.parse("1.2.3.rc1");
+        SemanticVersion brokenButSupported4 = SemanticVersion.parse("1.2.3.rc1+build");
+
+        SemanticVersion expectedVersion1 = new SemanticVersion(1, 2, 3, "45", "1.2.3.45");
+        SemanticVersion expectedVersion2 = new SemanticVersion(1, 2, 3, "45", "1.2.3.45+build");
+        SemanticVersion expectedVersion3 = new SemanticVersion(1, 2, 3, "rc1", "1.2.3.rc1");
+        SemanticVersion expectedVersion4 = new SemanticVersion(1, 2, 3, "rc1", "1.2.3.rc1+build");
+
+        assertTrue(brokenButSupported1.isValid());
+        assertTrue(brokenButSupported2.isValid());
+        assertTrue(brokenButSupported3.isValid());
+        assertTrue(brokenButSupported4.isValid());
+
+        assertEquals(expectedVersion1, brokenButSupported1);
+        assertEquals(expectedVersion2, brokenButSupported2);
+        assertEquals(expectedVersion3, brokenButSupported3);
+        assertEquals(expectedVersion4, brokenButSupported4);
+
+        assertEquals(0, expectedVersion1.compareTo(brokenButSupported1));
+        assertEquals(0, expectedVersion1.compareTo(brokenButSupported2));
+        assertEquals(0, expectedVersion2.compareTo(brokenButSupported2));
+        assertEquals(0, expectedVersion3.compareTo(brokenButSupported3));
+        assertEquals(0, expectedVersion3.compareTo(brokenButSupported4));
+        assertEquals(0, expectedVersion4.compareTo(brokenButSupported4));
+
+    }
+
+    @Test
+    public void classVersion() throws ClassNotFoundException {
         SemanticVersion version = SemanticVersion
                 .getPackageVersionForClass("com.fasterxml.jackson.databind.ObjectMapper");
         assertTrue(version.isValid());
@@ -86,7 +118,6 @@ public class SemanticVersionTests {
     @ParameterizedTest
     @ValueSource(strings = {"nonsense", ""})
     public void malformedClassVersion(String className) {
-        SemanticVersion malformed =  SemanticVersion.getPackageVersionForClass(className);
-        assertFalse(malformed.isValid());
+        assertThrows(ClassNotFoundException.class, () -> SemanticVersion.getPackageVersionForClass(className));
     }
 }

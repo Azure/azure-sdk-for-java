@@ -37,7 +37,7 @@ public final class ObjectMapperShim {
     private static final ClientLogger LOGGER = new ClientLogger(ObjectMapperShim.class);
 
     // don't add static fields that might cause Jackson classes to initialize
-    private static final int CACHE_SIZE_LIMIT = 10000;
+    static final int CACHE_SIZE_LIMIT = 10000;
 
     private static final Map<Type, JavaType> TYPE_TO_JAVA_TYPE_CACHE = new ConcurrentHashMap<>();
 
@@ -277,10 +277,10 @@ public final class ObjectMapperShim {
                 javaTypeArguments[i] = createJavaType(actualTypeArguments[i]);
             }
 
-            return getFromCache(type, TYPE_TO_JAVA_TYPE_CACHE, t -> mapper.getTypeFactory()
+            return getFromCache(type, t -> mapper.getTypeFactory()
                 .constructParametricType((Class<?>) parameterizedType.getRawType(), javaTypeArguments));
         } else {
-            return getFromCache(type, TYPE_TO_JAVA_TYPE_CACHE, t -> mapper.getTypeFactory().constructType(t));
+            return getFromCache(type, t -> mapper.getTypeFactory().constructType(t));
         }
     }
 
@@ -369,11 +369,11 @@ public final class ObjectMapperShim {
     /*
      * Helper method that gets the value for the given key from the cache.
      */
-    static <K, V> V getFromCache(K key, Map<K, V> cache, Function<K, V> compute) {
-        if (cache.size() >= CACHE_SIZE_LIMIT) {
-            cache.clear();
+    private static JavaType getFromCache(Type key, Function<Type, JavaType> compute) {
+        if (TYPE_TO_JAVA_TYPE_CACHE.size() >= CACHE_SIZE_LIMIT) {
+            TYPE_TO_JAVA_TYPE_CACHE.clear();
         }
 
-        return cache.computeIfAbsent(key, compute);
+        return TYPE_TO_JAVA_TYPE_CACHE.computeIfAbsent(key, compute);
     }
 }

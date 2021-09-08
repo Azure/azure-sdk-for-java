@@ -5,23 +5,28 @@ package com.azure.core.implementation.jackson;
 
 import com.azure.core.implementation.ReflectionUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.databind.JavaType;
 
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodType;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.lang.reflect.Type;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Function;
 
 /*
  * Internal helper class that helps manage converting headers into their header collection.
  */
 final class HeaderCollectionHandler {
+    private static final int CACHE_SIZE_LIMIT = 10000;
+    private static final Map<Field, MethodHandle> FIELD_TO_SETTER_CACHE = new ConcurrentHashMap<>();
     private final String prefix;
     private final int prefixLength;
     private final Map<String, String> values;
@@ -81,7 +86,7 @@ final class HeaderCollectionHandler {
         final String clazzSimpleName = clazz.getSimpleName();
         final String fieldName = declaringField.getName();
 
-        MethodHandle setterHandler = getFromCache(declaringField, FIELD_TO_SETTER_CACHE, field -> {
+        MethodHandle setterHandler = getFromCache(declaringField, field -> {
             MethodHandles.Lookup lookupToUse;
             try {
                 lookupToUse = ReflectionUtils.getLookupToUse(clazz);
@@ -139,5 +144,13 @@ final class HeaderCollectionHandler {
 
     private static String getPotentialSetterName(String fieldName) {
         return "set" + fieldName.substring(0, 1).toUpperCase(Locale.ROOT) + fieldName.substring(1);
+    }
+
+    private static MethodHandle getFromCache(Field key, Function<Field, MethodHandle> compute) {
+        if (FIELD_TO_SETTER_CACHE.size() >= CACHE_SIZE_LIMIT) {
+            FIELD_TO_SETTER_CACHE.clear();
+        }
+
+        return FIELD_TO_SETTER_CACHE.computeIfAbsent(key, compute);
     }
 }

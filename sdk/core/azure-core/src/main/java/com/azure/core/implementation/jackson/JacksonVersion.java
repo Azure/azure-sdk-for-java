@@ -33,6 +33,8 @@ final class JacksonVersion {
         .getProperties(AZURE_CORE_PROPERTIES_NAME)
         .getOrDefault(AZURE_CORE_PROPERTIES_VERSION_KEY, SemanticVersion.UNKNOWN_VERSION);
 
+    private static JacksonVersion instance = null;
+
     private final String helpString;
     private final ClientLogger logger = new ClientLogger(JacksonVersion.class);
 
@@ -72,8 +74,6 @@ final class JacksonVersion {
         }
     }
 
-    private static JacksonVersion instance = null;
-
     /**
      * Gets {@code JacksonVersion} instance singleton.
      */
@@ -94,7 +94,7 @@ final class JacksonVersion {
         }
 
         if (version.compareTo(MIN_SUPPORTED_VERSION) < 0) {
-            logger.error("Version '{}' of package '{}' is not supported (too old), please upgrade.", version.getVersionString(), packageName);
+            logger.error("Version '{}' of package '{}' is not supported (older than earliest supported version - `{}`), please upgrade.", version.getVersionString(), packageName, MIN_SUPPORTED_VERSION);
         }
 
         if (version.getMajorVersion() > MAX_SUPPORTED_VERSION.getMajorVersion()) {
