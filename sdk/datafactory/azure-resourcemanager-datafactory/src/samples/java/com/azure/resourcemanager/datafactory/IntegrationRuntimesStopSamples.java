@@ -8,6 +8,11 @@ import com.azure.core.util.Context;
 
 /** Samples for IntegrationRuntimes Stop. */
 public final class IntegrationRuntimesStopSamples {
+    /*
+     * operationId: IntegrationRuntimes_Stop
+     * api-version: 2018-06-01
+     * x-ms-examples: IntegrationRuntimes_Stop
+     */
     /**
      * Sample code: IntegrationRuntimes_Stop.
      *

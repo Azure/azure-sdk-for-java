@@ -8,6 +8,11 @@ import com.azure.core.util.Context;
 
 /** Samples for LinkedServices Delete. */
 public final class LinkedServicesDeleteSamples {
+    /*
+     * operationId: LinkedServices_Delete
+     * api-version: 2018-06-01
+     * x-ms-examples: LinkedServices_Delete
+     */
     /**
      * Sample code: LinkedServices_Delete.
      *

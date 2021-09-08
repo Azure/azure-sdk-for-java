@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.storage.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.storage.models.CorsRules;
@@ -13,19 +12,24 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The properties of a storage account’s Table service. */
-@JsonFlatten
 @Fluent
-public class TableServicePropertiesInner extends ProxyResource {
+public final class TableServicePropertiesInner extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(TableServicePropertiesInner.class);
 
     /*
-     * Specifies CORS rules for the Table service. You can include up to five
-     * CorsRule elements in the request. If no CorsRule elements are included
-     * in the request body, all CORS rules will be deleted, and CORS will be
-     * disabled for the Table service.
+     * The properties of a storage account’s Table service.
      */
-    @JsonProperty(value = "properties.cors")
-    private CorsRules cors;
+    @JsonProperty(value = "properties")
+    private TableServicePropertiesProperties innerTableServiceProperties;
+
+    /**
+     * Get the innerTableServiceProperties property: The properties of a storage account’s Table service.
+     *
+     * @return the innerTableServiceProperties value.
+     */
+    private TableServicePropertiesProperties innerTableServiceProperties() {
+        return this.innerTableServiceProperties;
+    }
 
     /**
      * Get the cors property: Specifies CORS rules for the Table service. You can include up to five CorsRule elements
@@ -35,7 +39,7 @@ public class TableServicePropertiesInner extends ProxyResource {
      * @return the cors value.
      */
     public CorsRules cors() {
-        return this.cors;
+        return this.innerTableServiceProperties() == null ? null : this.innerTableServiceProperties().cors();
     }
 
     /**
@@ -47,7 +51,10 @@ public class TableServicePropertiesInner extends ProxyResource {
      * @return the TableServicePropertiesInner object itself.
      */
     public TableServicePropertiesInner withCors(CorsRules cors) {
-        this.cors = cors;
+        if (this.innerTableServiceProperties() == null) {
+            this.innerTableServiceProperties = new TableServicePropertiesProperties();
+        }
+        this.innerTableServiceProperties().withCors(cors);
         return this;
     }
 
@@ -57,8 +64,8 @@ public class TableServicePropertiesInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (cors() != null) {
-            cors().validate();
+        if (innerTableServiceProperties() != null) {
+            innerTableServiceProperties().validate();
         }
     }
 }

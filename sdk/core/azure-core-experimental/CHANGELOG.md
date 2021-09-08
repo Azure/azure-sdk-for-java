@@ -1,7 +1,30 @@
 # Release History
 
-## 1.0.0-beta.18 (Unreleased)
+## 1.0.0-beta.19 (Unreleased)
 
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 1.0.0-beta.18 (2021-09-07)
+
+### Features Added
+
+- Added a common error type `HttpResponseError`.
+
+### Breaking Changes
+
+- Moved `HttpAuthorization` into `azure-core`. 
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.19.0` to `1.20.0`.
 
 ## 1.0.0-beta.17 (2021-08-16)
 

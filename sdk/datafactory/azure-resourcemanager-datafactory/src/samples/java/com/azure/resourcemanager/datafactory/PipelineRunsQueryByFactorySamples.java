@@ -14,6 +14,11 @@ import java.util.Arrays;
 
 /** Samples for PipelineRuns QueryByFactory. */
 public final class PipelineRunsQueryByFactorySamples {
+    /*
+     * operationId: PipelineRuns_QueryByFactory
+     * api-version: 2018-06-01
+     * x-ms-examples: PipelineRuns_QueryByFactory
+     */
     /**
      * Sample code: PipelineRuns_QueryByFactory.
      *

@@ -9,6 +9,11 @@ import com.azure.resourcemanager.datafactory.models.GitHubAccessTokenRequest;
 
 /** Samples for Factories GetGitHubAccessToken. */
 public final class FactoriesGetGitHubAccessTokenSamples {
+    /*
+     * operationId: Factories_GetGitHubAccessToken
+     * api-version: 2018-06-01
+     * x-ms-examples: Factories_GetGitHubAccessToken
+     */
     /**
      * Sample code: Factories_GetGitHubAccessToken.
      *

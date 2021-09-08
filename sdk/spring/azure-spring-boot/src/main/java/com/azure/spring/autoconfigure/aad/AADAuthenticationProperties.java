@@ -491,25 +491,21 @@ public class AADAuthenticationProperties implements InitializingBean {
      * @throws IllegalStateException Invalid property 'azure.activedirectory.application-type'
      */
     private void validateApplicationType() {
-        AADApplicationType inferredType = inferApplicationTypeByDependencies();
+        AADApplicationType inferred = inferApplicationTypeByDependencies();
         if (applicationType != null) {
-            if (!isValidApplicationTypeConfiguration(applicationType, inferredType)) {
+            if (!isValidApplicationType(applicationType, inferred)) {
                 throw new IllegalStateException(
                     "Invalid property 'azure.activedirectory.application-type', the configured value is '"
                         + applicationType.getValue() + "', " + "but the inferred value is '"
-                        + inferredType.getValue() + "'.");
+                        + inferred.getValue() + "'.");
             }
         } else {
-            applicationType = inferredType;
+            applicationType = inferred;
         }
     }
 
-    private boolean isValidApplicationTypeConfiguration(AADApplicationType configured, AADApplicationType inferred) {
-        if (configured == inferred) {
-            return true;
-        }
-        return inferred == AADApplicationType.RESOURCE_SERVER_WITH_OBO
-            && configured == AADApplicationType.WEB_APPLICATION_AND_RESOURCE_SERVER;
+    private boolean isValidApplicationType(AADApplicationType configured, AADApplicationType inferred) {
+        return inferred == configured || inferred == AADApplicationType.RESOURCE_SERVER_WITH_OBO;
     }
 
     private void validateAuthorizationClientProperties(String registrationId,

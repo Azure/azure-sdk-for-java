@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.models.ProxyOnlyResource;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -15,226 +14,31 @@ import java.util.List;
 import java.util.Map;
 
 /** Process Information. */
-@JsonFlatten
 @Fluent
-public class ProcessInfoInner extends ProxyOnlyResource {
+public final class ProcessInfoInner extends ProxyOnlyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ProcessInfoInner.class);
 
     /*
-     * ARM Identifier for deployment.
+     * ProcessInfo resource specific properties
      */
-    @JsonProperty(value = "properties.identifier", access = JsonProperty.Access.WRITE_ONLY)
-    private Integer identifier;
+    @JsonProperty(value = "properties")
+    private ProcessInfoProperties innerProperties;
 
-    /*
-     * Deployment name.
+    /**
+     * Get the innerProperties property: ProcessInfo resource specific properties.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.deployment_name")
-    private String deploymentName;
+    private ProcessInfoProperties innerProperties() {
+        return this.innerProperties;
+    }
 
-    /*
-     * HRef URI.
-     */
-    @JsonProperty(value = "properties.href")
-    private String href;
-
-    /*
-     * Minidump URI.
-     */
-    @JsonProperty(value = "properties.minidump")
-    private String minidump;
-
-    /*
-     * Is profile running?
-     */
-    @JsonProperty(value = "properties.is_profile_running")
-    private Boolean isProfileRunning;
-
-    /*
-     * Is the IIS Profile running?
-     */
-    @JsonProperty(value = "properties.is_iis_profile_running")
-    private Boolean isIisProfileRunning;
-
-    /*
-     * IIS Profile timeout (seconds).
-     */
-    @JsonProperty(value = "properties.iis_profile_timeout_in_seconds")
-    private Double iisProfileTimeoutInSeconds;
-
-    /*
-     * Parent process.
-     */
-    @JsonProperty(value = "properties.parent")
-    private String parent;
-
-    /*
-     * Child process list.
-     */
-    @JsonProperty(value = "properties.children")
-    private List<String> children;
-
-    /*
-     * Thread list.
-     */
-    @JsonProperty(value = "properties.threads")
-    private List<ProcessThreadInfoInner> threads;
-
-    /*
-     * List of open files.
-     */
-    @JsonProperty(value = "properties.open_file_handles")
-    private List<String> openFileHandles;
-
-    /*
-     * List of modules.
-     */
-    @JsonProperty(value = "properties.modules")
-    private List<ProcessModuleInfoInner> modules;
-
-    /*
-     * File name of this process.
-     */
-    @JsonProperty(value = "properties.file_name")
-    private String fileName;
-
-    /*
-     * Command line.
-     */
-    @JsonProperty(value = "properties.command_line")
-    private String commandLine;
-
-    /*
-     * User name.
-     */
-    @JsonProperty(value = "properties.user_name")
-    private String username;
-
-    /*
-     * Handle count.
-     */
-    @JsonProperty(value = "properties.handle_count")
-    private Integer handleCount;
-
-    /*
-     * Module count.
-     */
-    @JsonProperty(value = "properties.module_count")
-    private Integer moduleCount;
-
-    /*
-     * Thread count.
-     */
-    @JsonProperty(value = "properties.thread_count")
-    private Integer threadCount;
-
-    /*
-     * Start time.
-     */
-    @JsonProperty(value = "properties.start_time")
-    private OffsetDateTime startTime;
-
-    /*
-     * Total CPU time.
-     */
-    @JsonProperty(value = "properties.total_cpu_time")
-    private String totalCpuTime;
-
-    /*
-     * User CPU time.
-     */
-    @JsonProperty(value = "properties.user_cpu_time")
-    private String userCpuTime;
-
-    /*
-     * Privileged CPU time.
-     */
-    @JsonProperty(value = "properties.privileged_cpu_time")
-    private String privilegedCpuTime;
-
-    /*
-     * Working set.
-     */
-    @JsonProperty(value = "properties.working_set")
-    private Long workingSet;
-
-    /*
-     * Peak working set.
-     */
-    @JsonProperty(value = "properties.peak_working_set")
-    private Long peakWorkingSet;
-
-    /*
-     * Private memory size.
-     */
-    @JsonProperty(value = "properties.private_memory")
-    private Long privateMemory;
-
-    /*
-     * Virtual memory size.
-     */
-    @JsonProperty(value = "properties.virtual_memory")
-    private Long virtualMemory;
-
-    /*
-     * Peak virtual memory usage.
-     */
-    @JsonProperty(value = "properties.peak_virtual_memory")
-    private Long peakVirtualMemory;
-
-    /*
-     * Paged system memory.
-     */
-    @JsonProperty(value = "properties.paged_system_memory")
-    private Long pagedSystemMemory;
-
-    /*
-     * Non-paged system memory.
-     */
-    @JsonProperty(value = "properties.non_paged_system_memory")
-    private Long nonPagedSystemMemory;
-
-    /*
-     * Paged memory.
-     */
-    @JsonProperty(value = "properties.paged_memory")
-    private Long pagedMemory;
-
-    /*
-     * Peak paged memory.
-     */
-    @JsonProperty(value = "properties.peak_paged_memory")
-    private Long peakPagedMemory;
-
-    /*
-     * Time stamp.
-     */
-    @JsonProperty(value = "properties.time_stamp")
-    private OffsetDateTime timestamp;
-
-    /*
-     * List of environment variables.
-     */
-    @JsonProperty(value = "properties.environment_variables")
-    private Map<String, String> environmentVariables;
-
-    /*
-     * Is this the SCM site?
-     */
-    @JsonProperty(value = "properties.is_scm_site")
-    private Boolean isScmSite;
-
-    /*
-     * Is this a Web Job?
-     */
-    @JsonProperty(value = "properties.is_webjob")
-    private Boolean isWebjob;
-
-    /*
-     * Description of process.
-     */
-    @JsonProperty(value = "properties.description")
-    private String description;
+    /** {@inheritDoc} */
+    @Override
+    public ProcessInfoInner withKind(String kind) {
+        super.withKind(kind);
+        return this;
+    }
 
     /**
      * Get the identifier property: ARM Identifier for deployment.
@@ -242,7 +46,7 @@ public class ProcessInfoInner extends ProxyOnlyResource {
      * @return the identifier value.
      */
     public Integer identifier() {
-        return this.identifier;
+        return this.innerProperties() == null ? null : this.innerProperties().identifier();
     }
 
     /**
@@ -251,7 +55,7 @@ public class ProcessInfoInner extends ProxyOnlyResource {
      * @return the deploymentName value.
      */
     public String deploymentName() {
-        return this.deploymentName;
+        return this.innerProperties() == null ? null : this.innerProperties().deploymentName();
     }
 
     /**
@@ -261,7 +65,10 @@ public class ProcessInfoInner extends ProxyOnlyResource {
      * @return the ProcessInfoInner object itself.
      */
     public ProcessInfoInner withDeploymentName(String deploymentName) {
-        this.deploymentName = deploymentName;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ProcessInfoProperties();
+        }
+        this.innerProperties().withDeploymentName(deploymentName);
         return this;
     }
 
@@ -271,7 +78,7 @@ public class ProcessInfoInner extends ProxyOnlyResource {
      * @return the href value.
      */
     public String href() {
-        return this.href;
+        return this.innerProperties() == null ? null : this.innerProperties().href();
     }
 
     /**
@@ -281,7 +88,10 @@ public class ProcessInfoInner extends ProxyOnlyResource {
      * @return the ProcessInfoInner object itself.
      */
     public ProcessInfoInner withHref(String href) {
-        this.href = href;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ProcessInfoProperties();
+        }
+        this.innerProperties().withHref(href);
         return this;
     }
 
@@ -291,7 +101,7 @@ public class ProcessInfoInner extends ProxyOnlyResource {
      * @return the minidump value.
      */
     public String minidump() {
-        return this.minidump;
+        return this.innerProperties() == null ? null : this.innerProperties().minidump();
     }
 
     /**
@@ -301,7 +111,10 @@ public class ProcessInfoInner extends ProxyOnlyResource {
      * @return the ProcessInfoInner object itself.
      */
     public ProcessInfoInner withMinidump(String minidump) {
-        this.minidump = minidump;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ProcessInfoProperties();
+        }
+        this.innerProperties().withMinidump(minidump);
         return this;
     }
 
@@ -311,7 +124,7 @@ public class ProcessInfoInner extends ProxyOnlyResource {
      * @return the isProfileRunning value.
      */
     public Boolean isProfileRunning() {
-        return this.isProfileRunning;
+        return this.innerProperties() == null ? null : this.innerProperties().isProfileRunning();
     }
 
     /**
@@ -321,7 +134,10 @@ public class ProcessInfoInner extends ProxyOnlyResource {
      * @return the ProcessInfoInner object itself.
      */
     public ProcessInfoInner withIsProfileRunning(Boolean isProfileRunning) {
-        this.isProfileRunning = isProfileRunning;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ProcessInfoProperties();
+        }
+        this.innerProperties().withIsProfileRunning(isProfileRunning);
         return this;
     }
 
@@ -331,7 +147,7 @@ public class ProcessInfoInner extends ProxyOnlyResource {
      * @return the isIisProfileRunning value.
      */
     public Boolean isIisProfileRunning() {
-        return this.isIisProfileRunning;
+        return this.innerProperties() == null ? null : this.innerProperties().isIisProfileRunning();
     }
 
     /**
@@ -341,7 +157,10 @@ public class ProcessInfoInner extends ProxyOnlyResource {
      * @return the ProcessInfoInner object itself.
      */
     public ProcessInfoInner withIsIisProfileRunning(Boolean isIisProfileRunning) {
-        this.isIisProfileRunning = isIisProfileRunning;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ProcessInfoProperties();
+        }
+        this.innerProperties().withIsIisProfileRunning(isIisProfileRunning);
         return this;
     }
 
@@ -351,7 +170,7 @@ public class ProcessInfoInner extends ProxyOnlyResource {
      * @return the iisProfileTimeoutInSeconds value.
      */
     public Double iisProfileTimeoutInSeconds() {
-        return this.iisProfileTimeoutInSeconds;
+        return this.innerProperties() == null ? null : this.innerProperties().iisProfileTimeoutInSeconds();
     }
 
     /**
@@ -361,7 +180,10 @@ public class ProcessInfoInner extends ProxyOnlyResource {
      * @return the ProcessInfoInner object itself.
      */
     public ProcessInfoInner withIisProfileTimeoutInSeconds(Double iisProfileTimeoutInSeconds) {
-        this.iisProfileTimeoutInSeconds = iisProfileTimeoutInSeconds;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ProcessInfoProperties();
+        }
+        this.innerProperties().withIisProfileTimeoutInSeconds(iisProfileTimeoutInSeconds);
         return this;
     }
 
@@ -371,7 +193,7 @@ public class ProcessInfoInner extends ProxyOnlyResource {
      * @return the parent value.
      */
     public String parent() {
-        return this.parent;
+        return this.innerProperties() == null ? null : this.innerProperties().parent();
     }
 
     /**
@@ -381,7 +203,10 @@ public class ProcessInfoInner extends ProxyOnlyResource {
      * @return the ProcessInfoInner object itself.
      */
     public ProcessInfoInner withParent(String parent) {
-        this.parent = parent;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ProcessInfoProperties();
+        }
+        this.innerProperties().withParent(parent);
         return this;
     }
 
@@ -391,7 +216,7 @@ public class ProcessInfoInner extends ProxyOnlyResource {
      * @return the children value.
      */
     public List<String> children() {
-        return this.children;
+        return this.innerProperties() == null ? null : this.innerProperties().children();
     }
 
     /**
@@ -401,7 +226,10 @@ public class ProcessInfoInner extends ProxyOnlyResource {
      * @return the ProcessInfoInner object itself.
      */
     public ProcessInfoInner withChildren(List<String> children) {
-        this.children = children;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ProcessInfoProperties();
+        }
+        this.innerProperties().withChildren(children);
         return this;
     }
 
@@ -411,7 +239,7 @@ public class ProcessInfoInner extends ProxyOnlyResource {
      * @return the threads value.
      */
     public List<ProcessThreadInfoInner> threads() {
-        return this.threads;
+        return this.innerProperties() == null ? null : this.innerProperties().threads();
     }
 
     /**
@@ -421,7 +249,10 @@ public class ProcessInfoInner extends ProxyOnlyResource {
      * @return the ProcessInfoInner object itself.
      */
     public ProcessInfoInner withThreads(List<ProcessThreadInfoInner> threads) {
-        this.threads = threads;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ProcessInfoProperties();
+        }
+        this.innerProperties().withThreads(threads);
         return this;
     }
 
@@ -431,7 +262,7 @@ public class ProcessInfoInner extends ProxyOnlyResource {
      * @return the openFileHandles value.
      */
     public List<String> openFileHandles() {
-        return this.openFileHandles;
+        return this.innerProperties() == null ? null : this.innerProperties().openFileHandles();
     }
 
     /**
@@ -441,7 +272,10 @@ public class ProcessInfoInner extends ProxyOnlyResource {
      * @return the ProcessInfoInner object itself.
      */
     public ProcessInfoInner withOpenFileHandles(List<String> openFileHandles) {
-        this.openFileHandles = openFileHandles;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ProcessInfoProperties();
+        }
+        this.innerProperties().withOpenFileHandles(openFileHandles);
         return this;
     }
 
@@ -451,7 +285,7 @@ public class ProcessInfoInner extends ProxyOnlyResource {
      * @return the modules value.
      */
     public List<ProcessModuleInfoInner> modules() {
-        return this.modules;
+        return this.innerProperties() == null ? null : this.innerProperties().modules();
     }
 
     /**
@@ -461,7 +295,10 @@ public class ProcessInfoInner extends ProxyOnlyResource {
      * @return the ProcessInfoInner object itself.
      */
     public ProcessInfoInner withModules(List<ProcessModuleInfoInner> modules) {
-        this.modules = modules;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ProcessInfoProperties();
+        }
+        this.innerProperties().withModules(modules);
         return this;
     }
 
@@ -471,7 +308,7 @@ public class ProcessInfoInner extends ProxyOnlyResource {
      * @return the fileName value.
      */
     public String fileName() {
-        return this.fileName;
+        return this.innerProperties() == null ? null : this.innerProperties().fileName();
     }
 
     /**
@@ -481,7 +318,10 @@ public class ProcessInfoInner extends ProxyOnlyResource {
      * @return the ProcessInfoInner object itself.
      */
     public ProcessInfoInner withFileName(String fileName) {
-        this.fileName = fileName;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ProcessInfoProperties();
+        }
+        this.innerProperties().withFileName(fileName);
         return this;
     }
 
@@ -491,7 +331,7 @@ public class ProcessInfoInner extends ProxyOnlyResource {
      * @return the commandLine value.
      */
     public String commandLine() {
-        return this.commandLine;
+        return this.innerProperties() == null ? null : this.innerProperties().commandLine();
     }
 
     /**
@@ -501,7 +341,10 @@ public class ProcessInfoInner extends ProxyOnlyResource {
      * @return the ProcessInfoInner object itself.
      */
     public ProcessInfoInner withCommandLine(String commandLine) {
-        this.commandLine = commandLine;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ProcessInfoProperties();
+        }
+        this.innerProperties().withCommandLine(commandLine);
         return this;
     }
 
@@ -511,7 +354,7 @@ public class ProcessInfoInner extends ProxyOnlyResource {
      * @return the username value.
      */
     public String username() {
-        return this.username;
+        return this.innerProperties() == null ? null : this.innerProperties().username();
     }
 
     /**
@@ -521,7 +364,10 @@ public class ProcessInfoInner extends ProxyOnlyResource {
      * @return the ProcessInfoInner object itself.
      */
     public ProcessInfoInner withUsername(String username) {
-        this.username = username;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ProcessInfoProperties();
+        }
+        this.innerProperties().withUsername(username);
         return this;
     }
 
@@ -531,7 +377,7 @@ public class ProcessInfoInner extends ProxyOnlyResource {
      * @return the handleCount value.
      */
     public Integer handleCount() {
-        return this.handleCount;
+        return this.innerProperties() == null ? null : this.innerProperties().handleCount();
     }
 
     /**
@@ -541,7 +387,10 @@ public class ProcessInfoInner extends ProxyOnlyResource {
      * @return the ProcessInfoInner object itself.
      */
     public ProcessInfoInner withHandleCount(Integer handleCount) {
-        this.handleCount = handleCount;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ProcessInfoProperties();
+        }
+        this.innerProperties().withHandleCount(handleCount);
         return this;
     }
 
@@ -551,7 +400,7 @@ public class ProcessInfoInner extends ProxyOnlyResource {
      * @return the moduleCount value.
      */
     public Integer moduleCount() {
-        return this.moduleCount;
+        return this.innerProperties() == null ? null : this.innerProperties().moduleCount();
     }
 
     /**
@@ -561,7 +410,10 @@ public class ProcessInfoInner extends ProxyOnlyResource {
      * @return the ProcessInfoInner object itself.
      */
     public ProcessInfoInner withModuleCount(Integer moduleCount) {
-        this.moduleCount = moduleCount;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ProcessInfoProperties();
+        }
+        this.innerProperties().withModuleCount(moduleCount);
         return this;
     }
 
@@ -571,7 +423,7 @@ public class ProcessInfoInner extends ProxyOnlyResource {
      * @return the threadCount value.
      */
     public Integer threadCount() {
-        return this.threadCount;
+        return this.innerProperties() == null ? null : this.innerProperties().threadCount();
     }
 
     /**
@@ -581,7 +433,10 @@ public class ProcessInfoInner extends ProxyOnlyResource {
      * @return the ProcessInfoInner object itself.
      */
     public ProcessInfoInner withThreadCount(Integer threadCount) {
-        this.threadCount = threadCount;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ProcessInfoProperties();
+        }
+        this.innerProperties().withThreadCount(threadCount);
         return this;
     }
 
@@ -591,7 +446,7 @@ public class ProcessInfoInner extends ProxyOnlyResource {
      * @return the startTime value.
      */
     public OffsetDateTime startTime() {
-        return this.startTime;
+        return this.innerProperties() == null ? null : this.innerProperties().startTime();
     }
 
     /**
@@ -601,7 +456,10 @@ public class ProcessInfoInner extends ProxyOnlyResource {
      * @return the ProcessInfoInner object itself.
      */
     public ProcessInfoInner withStartTime(OffsetDateTime startTime) {
-        this.startTime = startTime;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ProcessInfoProperties();
+        }
+        this.innerProperties().withStartTime(startTime);
         return this;
     }
 
@@ -611,7 +469,7 @@ public class ProcessInfoInner extends ProxyOnlyResource {
      * @return the totalCpuTime value.
      */
     public String totalCpuTime() {
-        return this.totalCpuTime;
+        return this.innerProperties() == null ? null : this.innerProperties().totalCpuTime();
     }
 
     /**
@@ -621,7 +479,10 @@ public class ProcessInfoInner extends ProxyOnlyResource {
      * @return the ProcessInfoInner object itself.
      */
     public ProcessInfoInner withTotalCpuTime(String totalCpuTime) {
-        this.totalCpuTime = totalCpuTime;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ProcessInfoProperties();
+        }
+        this.innerProperties().withTotalCpuTime(totalCpuTime);
         return this;
     }
 
@@ -631,7 +492,7 @@ public class ProcessInfoInner extends ProxyOnlyResource {
      * @return the userCpuTime value.
      */
     public String userCpuTime() {
-        return this.userCpuTime;
+        return this.innerProperties() == null ? null : this.innerProperties().userCpuTime();
     }
 
     /**
@@ -641,7 +502,10 @@ public class ProcessInfoInner extends ProxyOnlyResource {
      * @return the ProcessInfoInner object itself.
      */
     public ProcessInfoInner withUserCpuTime(String userCpuTime) {
-        this.userCpuTime = userCpuTime;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ProcessInfoProperties();
+        }
+        this.innerProperties().withUserCpuTime(userCpuTime);
         return this;
     }
 
@@ -651,7 +515,7 @@ public class ProcessInfoInner extends ProxyOnlyResource {
      * @return the privilegedCpuTime value.
      */
     public String privilegedCpuTime() {
-        return this.privilegedCpuTime;
+        return this.innerProperties() == null ? null : this.innerProperties().privilegedCpuTime();
     }
 
     /**
@@ -661,7 +525,10 @@ public class ProcessInfoInner extends ProxyOnlyResource {
      * @return the ProcessInfoInner object itself.
      */
     public ProcessInfoInner withPrivilegedCpuTime(String privilegedCpuTime) {
-        this.privilegedCpuTime = privilegedCpuTime;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ProcessInfoProperties();
+        }
+        this.innerProperties().withPrivilegedCpuTime(privilegedCpuTime);
         return this;
     }
 
@@ -671,7 +538,7 @@ public class ProcessInfoInner extends ProxyOnlyResource {
      * @return the workingSet value.
      */
     public Long workingSet() {
-        return this.workingSet;
+        return this.innerProperties() == null ? null : this.innerProperties().workingSet();
     }
 
     /**
@@ -681,7 +548,10 @@ public class ProcessInfoInner extends ProxyOnlyResource {
      * @return the ProcessInfoInner object itself.
      */
     public ProcessInfoInner withWorkingSet(Long workingSet) {
-        this.workingSet = workingSet;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ProcessInfoProperties();
+        }
+        this.innerProperties().withWorkingSet(workingSet);
         return this;
     }
 
@@ -691,7 +561,7 @@ public class ProcessInfoInner extends ProxyOnlyResource {
      * @return the peakWorkingSet value.
      */
     public Long peakWorkingSet() {
-        return this.peakWorkingSet;
+        return this.innerProperties() == null ? null : this.innerProperties().peakWorkingSet();
     }
 
     /**
@@ -701,7 +571,10 @@ public class ProcessInfoInner extends ProxyOnlyResource {
      * @return the ProcessInfoInner object itself.
      */
     public ProcessInfoInner withPeakWorkingSet(Long peakWorkingSet) {
-        this.peakWorkingSet = peakWorkingSet;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ProcessInfoProperties();
+        }
+        this.innerProperties().withPeakWorkingSet(peakWorkingSet);
         return this;
     }
 
@@ -711,7 +584,7 @@ public class ProcessInfoInner extends ProxyOnlyResource {
      * @return the privateMemory value.
      */
     public Long privateMemory() {
-        return this.privateMemory;
+        return this.innerProperties() == null ? null : this.innerProperties().privateMemory();
     }
 
     /**
@@ -721,7 +594,10 @@ public class ProcessInfoInner extends ProxyOnlyResource {
      * @return the ProcessInfoInner object itself.
      */
     public ProcessInfoInner withPrivateMemory(Long privateMemory) {
-        this.privateMemory = privateMemory;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ProcessInfoProperties();
+        }
+        this.innerProperties().withPrivateMemory(privateMemory);
         return this;
     }
 
@@ -731,7 +607,7 @@ public class ProcessInfoInner extends ProxyOnlyResource {
      * @return the virtualMemory value.
      */
     public Long virtualMemory() {
-        return this.virtualMemory;
+        return this.innerProperties() == null ? null : this.innerProperties().virtualMemory();
     }
 
     /**
@@ -741,7 +617,10 @@ public class ProcessInfoInner extends ProxyOnlyResource {
      * @return the ProcessInfoInner object itself.
      */
     public ProcessInfoInner withVirtualMemory(Long virtualMemory) {
-        this.virtualMemory = virtualMemory;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ProcessInfoProperties();
+        }
+        this.innerProperties().withVirtualMemory(virtualMemory);
         return this;
     }
 
@@ -751,7 +630,7 @@ public class ProcessInfoInner extends ProxyOnlyResource {
      * @return the peakVirtualMemory value.
      */
     public Long peakVirtualMemory() {
-        return this.peakVirtualMemory;
+        return this.innerProperties() == null ? null : this.innerProperties().peakVirtualMemory();
     }
 
     /**
@@ -761,7 +640,10 @@ public class ProcessInfoInner extends ProxyOnlyResource {
      * @return the ProcessInfoInner object itself.
      */
     public ProcessInfoInner withPeakVirtualMemory(Long peakVirtualMemory) {
-        this.peakVirtualMemory = peakVirtualMemory;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ProcessInfoProperties();
+        }
+        this.innerProperties().withPeakVirtualMemory(peakVirtualMemory);
         return this;
     }
 
@@ -771,7 +653,7 @@ public class ProcessInfoInner extends ProxyOnlyResource {
      * @return the pagedSystemMemory value.
      */
     public Long pagedSystemMemory() {
-        return this.pagedSystemMemory;
+        return this.innerProperties() == null ? null : this.innerProperties().pagedSystemMemory();
     }
 
     /**
@@ -781,7 +663,10 @@ public class ProcessInfoInner extends ProxyOnlyResource {
      * @return the ProcessInfoInner object itself.
      */
     public ProcessInfoInner withPagedSystemMemory(Long pagedSystemMemory) {
-        this.pagedSystemMemory = pagedSystemMemory;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ProcessInfoProperties();
+        }
+        this.innerProperties().withPagedSystemMemory(pagedSystemMemory);
         return this;
     }
 
@@ -791,7 +676,7 @@ public class ProcessInfoInner extends ProxyOnlyResource {
      * @return the nonPagedSystemMemory value.
      */
     public Long nonPagedSystemMemory() {
-        return this.nonPagedSystemMemory;
+        return this.innerProperties() == null ? null : this.innerProperties().nonPagedSystemMemory();
     }
 
     /**
@@ -801,7 +686,10 @@ public class ProcessInfoInner extends ProxyOnlyResource {
      * @return the ProcessInfoInner object itself.
      */
     public ProcessInfoInner withNonPagedSystemMemory(Long nonPagedSystemMemory) {
-        this.nonPagedSystemMemory = nonPagedSystemMemory;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ProcessInfoProperties();
+        }
+        this.innerProperties().withNonPagedSystemMemory(nonPagedSystemMemory);
         return this;
     }
 
@@ -811,7 +699,7 @@ public class ProcessInfoInner extends ProxyOnlyResource {
      * @return the pagedMemory value.
      */
     public Long pagedMemory() {
-        return this.pagedMemory;
+        return this.innerProperties() == null ? null : this.innerProperties().pagedMemory();
     }
 
     /**
@@ -821,7 +709,10 @@ public class ProcessInfoInner extends ProxyOnlyResource {
      * @return the ProcessInfoInner object itself.
      */
     public ProcessInfoInner withPagedMemory(Long pagedMemory) {
-        this.pagedMemory = pagedMemory;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ProcessInfoProperties();
+        }
+        this.innerProperties().withPagedMemory(pagedMemory);
         return this;
     }
 
@@ -831,7 +722,7 @@ public class ProcessInfoInner extends ProxyOnlyResource {
      * @return the peakPagedMemory value.
      */
     public Long peakPagedMemory() {
-        return this.peakPagedMemory;
+        return this.innerProperties() == null ? null : this.innerProperties().peakPagedMemory();
     }
 
     /**
@@ -841,7 +732,10 @@ public class ProcessInfoInner extends ProxyOnlyResource {
      * @return the ProcessInfoInner object itself.
      */
     public ProcessInfoInner withPeakPagedMemory(Long peakPagedMemory) {
-        this.peakPagedMemory = peakPagedMemory;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ProcessInfoProperties();
+        }
+        this.innerProperties().withPeakPagedMemory(peakPagedMemory);
         return this;
     }
 
@@ -851,7 +745,7 @@ public class ProcessInfoInner extends ProxyOnlyResource {
      * @return the timestamp value.
      */
     public OffsetDateTime timestamp() {
-        return this.timestamp;
+        return this.innerProperties() == null ? null : this.innerProperties().timestamp();
     }
 
     /**
@@ -861,7 +755,10 @@ public class ProcessInfoInner extends ProxyOnlyResource {
      * @return the ProcessInfoInner object itself.
      */
     public ProcessInfoInner withTimestamp(OffsetDateTime timestamp) {
-        this.timestamp = timestamp;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ProcessInfoProperties();
+        }
+        this.innerProperties().withTimestamp(timestamp);
         return this;
     }
 
@@ -871,7 +768,7 @@ public class ProcessInfoInner extends ProxyOnlyResource {
      * @return the environmentVariables value.
      */
     public Map<String, String> environmentVariables() {
-        return this.environmentVariables;
+        return this.innerProperties() == null ? null : this.innerProperties().environmentVariables();
     }
 
     /**
@@ -881,7 +778,10 @@ public class ProcessInfoInner extends ProxyOnlyResource {
      * @return the ProcessInfoInner object itself.
      */
     public ProcessInfoInner withEnvironmentVariables(Map<String, String> environmentVariables) {
-        this.environmentVariables = environmentVariables;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ProcessInfoProperties();
+        }
+        this.innerProperties().withEnvironmentVariables(environmentVariables);
         return this;
     }
 
@@ -891,7 +791,7 @@ public class ProcessInfoInner extends ProxyOnlyResource {
      * @return the isScmSite value.
      */
     public Boolean isScmSite() {
-        return this.isScmSite;
+        return this.innerProperties() == null ? null : this.innerProperties().isScmSite();
     }
 
     /**
@@ -901,7 +801,10 @@ public class ProcessInfoInner extends ProxyOnlyResource {
      * @return the ProcessInfoInner object itself.
      */
     public ProcessInfoInner withIsScmSite(Boolean isScmSite) {
-        this.isScmSite = isScmSite;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ProcessInfoProperties();
+        }
+        this.innerProperties().withIsScmSite(isScmSite);
         return this;
     }
 
@@ -911,7 +814,7 @@ public class ProcessInfoInner extends ProxyOnlyResource {
      * @return the isWebjob value.
      */
     public Boolean isWebjob() {
-        return this.isWebjob;
+        return this.innerProperties() == null ? null : this.innerProperties().isWebjob();
     }
 
     /**
@@ -921,7 +824,10 @@ public class ProcessInfoInner extends ProxyOnlyResource {
      * @return the ProcessInfoInner object itself.
      */
     public ProcessInfoInner withIsWebjob(Boolean isWebjob) {
-        this.isWebjob = isWebjob;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ProcessInfoProperties();
+        }
+        this.innerProperties().withIsWebjob(isWebjob);
         return this;
     }
 
@@ -931,7 +837,7 @@ public class ProcessInfoInner extends ProxyOnlyResource {
      * @return the description value.
      */
     public String description() {
-        return this.description;
+        return this.innerProperties() == null ? null : this.innerProperties().description();
     }
 
     /**
@@ -941,14 +847,10 @@ public class ProcessInfoInner extends ProxyOnlyResource {
      * @return the ProcessInfoInner object itself.
      */
     public ProcessInfoInner withDescription(String description) {
-        this.description = description;
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public ProcessInfoInner withKind(String kind) {
-        super.withKind(kind);
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ProcessInfoProperties();
+        }
+        this.innerProperties().withDescription(description);
         return this;
     }
 
@@ -960,11 +862,8 @@ public class ProcessInfoInner extends ProxyOnlyResource {
     @Override
     public void validate() {
         super.validate();
-        if (threads() != null) {
-            threads().forEach(e -> e.validate());
-        }
-        if (modules() != null) {
-            modules().forEach(e -> e.validate());
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

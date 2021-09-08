@@ -5,17 +5,16 @@
 package com.azure.resourcemanager.postgresqlflexibleserver.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.postgresqlflexibleserver.fluent.models.ServerPropertiesForUpdate;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** Represents a server to be updated. */
-@JsonFlatten
 @Fluent
-public class ServerForUpdate {
+public final class ServerForUpdate {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ServerForUpdate.class);
 
     /*
@@ -31,47 +30,17 @@ public class ServerForUpdate {
     private Sku sku;
 
     /*
+     * Properties of the server.
+     */
+    @JsonProperty(value = "properties")
+    private ServerPropertiesForUpdate innerProperties;
+
+    /*
      * Application-specific metadata in the form of key-value pairs.
      */
     @JsonProperty(value = "tags")
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
-
-    /*
-     * The password of the administrator login.
-     */
-    @JsonProperty(value = "properties.administratorLoginPassword")
-    private String administratorLoginPassword;
-
-    /*
-     * Storage properties of a server.
-     */
-    @JsonProperty(value = "properties.storage")
-    private Storage storage;
-
-    /*
-     * Backup properties of a server.
-     */
-    @JsonProperty(value = "properties.backup")
-    private Backup backup;
-
-    /*
-     * High availability properties of a server.
-     */
-    @JsonProperty(value = "properties.highAvailability")
-    private HighAvailability highAvailability;
-
-    /*
-     * Maintenance window properties of a server.
-     */
-    @JsonProperty(value = "properties.maintenanceWindow")
-    private MaintenanceWindow maintenanceWindow;
-
-    /*
-     * The mode to update a new PostgreSQL server.
-     */
-    @JsonProperty(value = "properties.createMode")
-    private CreateModeForUpdate createMode;
 
     /**
      * Get the location property: The location the resource resides in.
@@ -114,6 +83,15 @@ public class ServerForUpdate {
     }
 
     /**
+     * Get the innerProperties property: Properties of the server.
+     *
+     * @return the innerProperties value.
+     */
+    private ServerPropertiesForUpdate innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
      * Get the tags property: Application-specific metadata in the form of key-value pairs.
      *
      * @return the tags value.
@@ -139,7 +117,7 @@ public class ServerForUpdate {
      * @return the administratorLoginPassword value.
      */
     public String administratorLoginPassword() {
-        return this.administratorLoginPassword;
+        return this.innerProperties() == null ? null : this.innerProperties().administratorLoginPassword();
     }
 
     /**
@@ -149,7 +127,10 @@ public class ServerForUpdate {
      * @return the ServerForUpdate object itself.
      */
     public ServerForUpdate withAdministratorLoginPassword(String administratorLoginPassword) {
-        this.administratorLoginPassword = administratorLoginPassword;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ServerPropertiesForUpdate();
+        }
+        this.innerProperties().withAdministratorLoginPassword(administratorLoginPassword);
         return this;
     }
 
@@ -159,7 +140,7 @@ public class ServerForUpdate {
      * @return the storage value.
      */
     public Storage storage() {
-        return this.storage;
+        return this.innerProperties() == null ? null : this.innerProperties().storage();
     }
 
     /**
@@ -169,7 +150,10 @@ public class ServerForUpdate {
      * @return the ServerForUpdate object itself.
      */
     public ServerForUpdate withStorage(Storage storage) {
-        this.storage = storage;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ServerPropertiesForUpdate();
+        }
+        this.innerProperties().withStorage(storage);
         return this;
     }
 
@@ -179,7 +163,7 @@ public class ServerForUpdate {
      * @return the backup value.
      */
     public Backup backup() {
-        return this.backup;
+        return this.innerProperties() == null ? null : this.innerProperties().backup();
     }
 
     /**
@@ -189,7 +173,10 @@ public class ServerForUpdate {
      * @return the ServerForUpdate object itself.
      */
     public ServerForUpdate withBackup(Backup backup) {
-        this.backup = backup;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ServerPropertiesForUpdate();
+        }
+        this.innerProperties().withBackup(backup);
         return this;
     }
 
@@ -199,7 +186,7 @@ public class ServerForUpdate {
      * @return the highAvailability value.
      */
     public HighAvailability highAvailability() {
-        return this.highAvailability;
+        return this.innerProperties() == null ? null : this.innerProperties().highAvailability();
     }
 
     /**
@@ -209,7 +196,10 @@ public class ServerForUpdate {
      * @return the ServerForUpdate object itself.
      */
     public ServerForUpdate withHighAvailability(HighAvailability highAvailability) {
-        this.highAvailability = highAvailability;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ServerPropertiesForUpdate();
+        }
+        this.innerProperties().withHighAvailability(highAvailability);
         return this;
     }
 
@@ -219,7 +209,7 @@ public class ServerForUpdate {
      * @return the maintenanceWindow value.
      */
     public MaintenanceWindow maintenanceWindow() {
-        return this.maintenanceWindow;
+        return this.innerProperties() == null ? null : this.innerProperties().maintenanceWindow();
     }
 
     /**
@@ -229,7 +219,10 @@ public class ServerForUpdate {
      * @return the ServerForUpdate object itself.
      */
     public ServerForUpdate withMaintenanceWindow(MaintenanceWindow maintenanceWindow) {
-        this.maintenanceWindow = maintenanceWindow;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ServerPropertiesForUpdate();
+        }
+        this.innerProperties().withMaintenanceWindow(maintenanceWindow);
         return this;
     }
 
@@ -239,7 +232,7 @@ public class ServerForUpdate {
      * @return the createMode value.
      */
     public CreateModeForUpdate createMode() {
-        return this.createMode;
+        return this.innerProperties() == null ? null : this.innerProperties().createMode();
     }
 
     /**
@@ -249,7 +242,10 @@ public class ServerForUpdate {
      * @return the ServerForUpdate object itself.
      */
     public ServerForUpdate withCreateMode(CreateModeForUpdate createMode) {
-        this.createMode = createMode;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ServerPropertiesForUpdate();
+        }
+        this.innerProperties().withCreateMode(createMode);
         return this;
     }
 
@@ -262,17 +258,8 @@ public class ServerForUpdate {
         if (sku() != null) {
             sku().validate();
         }
-        if (storage() != null) {
-            storage().validate();
-        }
-        if (backup() != null) {
-            backup().validate();
-        }
-        if (highAvailability() != null) {
-            highAvailability().validate();
-        }
-        if (maintenanceWindow() != null) {
-            maintenanceWindow().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

@@ -8,6 +8,11 @@ import com.azure.core.util.Context;
 
 /** Samples for PrivateLinkResources Get. */
 public final class PrivateLinkResourcesGetSamples {
+    /*
+     * operationId: PrivateLinkResources_Get
+     * api-version: 2018-06-01
+     * x-ms-examples: Get private link resources of a site
+     */
     /**
      * Sample code: Get private link resources of a site.
      *

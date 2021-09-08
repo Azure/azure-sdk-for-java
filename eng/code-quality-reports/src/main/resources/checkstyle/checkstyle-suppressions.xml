@@ -367,7 +367,7 @@ the main ServiceBusClientBuilder. -->
 
   <!-- Suppress the check on code-gen classes -->
   <suppress checks="[a-zA-Z0-9]*" files="com.azure.monitor.opentelemetry.exporter.implementation.*"/>
-  <suppress checks="[a-zA-Z0-9]*" files="com.azure.monitor.query..*.implementation.*"/>
+  <suppress checks="[a-zA-Z0-9]*" files="com.azure.monitor.query.implementation..*"/>
   <suppress checks="Indentation" files="com.azure.security.keyvault.administration.implementation.RoleAssignmentsImpl"/>
   <suppress checks="Indentation" files="com.azure.security.keyvault.administration.implementation.RoleDefinitionsImpl"/>
   <suppress checks="Indentation" files="com.azure.ai.metricsadvisor.implementation.AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl"/>

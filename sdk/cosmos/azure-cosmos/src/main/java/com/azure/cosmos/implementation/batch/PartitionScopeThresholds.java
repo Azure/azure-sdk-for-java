@@ -3,8 +3,8 @@
 
 package com.azure.cosmos.implementation.batch;
 
-import com.azure.cosmos.BulkExecutionOptions;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
+import com.azure.cosmos.models.CosmosBulkExecutionOptions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,7 +19,7 @@ public class PartitionScopeThresholds {
     private final static Logger logger = LoggerFactory.getLogger(PartitionScopeThresholds.class);
 
     private final String pkRangeId;
-    private final BulkExecutionOptions options;
+    private final CosmosBulkExecutionOptions options;
     private final AtomicInteger targetMicroBatchSize;
     private final AtomicLong totalOperationCount;
     private final AtomicReference<CurrentIntervalThresholds> currentThresholds;
@@ -28,7 +28,7 @@ public class PartitionScopeThresholds {
     private final double maxRetryRate;
     private final double avgRetryRate;
 
-    public PartitionScopeThresholds(String pkRangeId, BulkExecutionOptions options) {
+    public PartitionScopeThresholds(String pkRangeId, CosmosBulkExecutionOptions options) {
         checkNotNull(pkRangeId, "expected non-null pkRangeId");
         checkNotNull(options, "expected non-null options");
 

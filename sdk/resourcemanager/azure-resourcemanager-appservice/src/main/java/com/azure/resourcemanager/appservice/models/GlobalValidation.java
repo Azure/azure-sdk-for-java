@@ -5,44 +5,53 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The GlobalValidation model. */
-@JsonFlatten
+/**
+ * The configuration settings that determines the validation flow of users using App Service
+ * Authentication/Authorization.
+ */
 @Fluent
-public class GlobalValidation extends ProxyOnlyResource {
+public final class GlobalValidation {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(GlobalValidation.class);
 
     /*
-     * The requireAuthentication property.
+     * <code>true</code> if the authentication flow is required any request is
+     * made; otherwise, <code>false</code>.
      */
-    @JsonProperty(value = "properties.requireAuthentication")
+    @JsonProperty(value = "requireAuthentication")
     private Boolean requireAuthentication;
 
     /*
-     * The unauthenticatedClientAction property.
+     * The action to take when an unauthenticated client attempts to access the
+     * app.
      */
-    @JsonProperty(value = "properties.unauthenticatedClientAction")
+    @JsonProperty(value = "unauthenticatedClientAction")
     private UnauthenticatedClientActionV2 unauthenticatedClientAction;
 
     /*
-     * The redirectToProvider property.
+     * The default authentication provider to use when multiple providers are
+     * configured.
+     * This setting is only needed if multiple providers are configured and the
+     * unauthenticated client
+     * action is set to "RedirectToLoginPage".
      */
-    @JsonProperty(value = "properties.redirectToProvider")
+    @JsonProperty(value = "redirectToProvider")
     private String redirectToProvider;
 
     /*
-     * The excludedPaths property.
+     * The paths for which unauthenticated flow would not be redirected to the
+     * login page.
      */
-    @JsonProperty(value = "properties.excludedPaths")
+    @JsonProperty(value = "excludedPaths")
     private List<String> excludedPaths;
 
     /**
-     * Get the requireAuthentication property: The requireAuthentication property.
+     * Get the requireAuthentication property: &lt;code&gt;true&lt;/code&gt; if the authentication flow is required any
+     * request is made; otherwise, &lt;code&gt;false&lt;/code&gt;.
      *
      * @return the requireAuthentication value.
      */
@@ -51,7 +60,8 @@ public class GlobalValidation extends ProxyOnlyResource {
     }
 
     /**
-     * Set the requireAuthentication property: The requireAuthentication property.
+     * Set the requireAuthentication property: &lt;code&gt;true&lt;/code&gt; if the authentication flow is required any
+     * request is made; otherwise, &lt;code&gt;false&lt;/code&gt;.
      *
      * @param requireAuthentication the requireAuthentication value to set.
      * @return the GlobalValidation object itself.
@@ -62,7 +72,8 @@ public class GlobalValidation extends ProxyOnlyResource {
     }
 
     /**
-     * Get the unauthenticatedClientAction property: The unauthenticatedClientAction property.
+     * Get the unauthenticatedClientAction property: The action to take when an unauthenticated client attempts to
+     * access the app.
      *
      * @return the unauthenticatedClientAction value.
      */
@@ -71,7 +82,8 @@ public class GlobalValidation extends ProxyOnlyResource {
     }
 
     /**
-     * Set the unauthenticatedClientAction property: The unauthenticatedClientAction property.
+     * Set the unauthenticatedClientAction property: The action to take when an unauthenticated client attempts to
+     * access the app.
      *
      * @param unauthenticatedClientAction the unauthenticatedClientAction value to set.
      * @return the GlobalValidation object itself.
@@ -82,7 +94,9 @@ public class GlobalValidation extends ProxyOnlyResource {
     }
 
     /**
-     * Get the redirectToProvider property: The redirectToProvider property.
+     * Get the redirectToProvider property: The default authentication provider to use when multiple providers are
+     * configured. This setting is only needed if multiple providers are configured and the unauthenticated client
+     * action is set to "RedirectToLoginPage".
      *
      * @return the redirectToProvider value.
      */
@@ -91,7 +105,9 @@ public class GlobalValidation extends ProxyOnlyResource {
     }
 
     /**
-     * Set the redirectToProvider property: The redirectToProvider property.
+     * Set the redirectToProvider property: The default authentication provider to use when multiple providers are
+     * configured. This setting is only needed if multiple providers are configured and the unauthenticated client
+     * action is set to "RedirectToLoginPage".
      *
      * @param redirectToProvider the redirectToProvider value to set.
      * @return the GlobalValidation object itself.
@@ -102,7 +118,8 @@ public class GlobalValidation extends ProxyOnlyResource {
     }
 
     /**
-     * Get the excludedPaths property: The excludedPaths property.
+     * Get the excludedPaths property: The paths for which unauthenticated flow would not be redirected to the login
+     * page.
      *
      * @return the excludedPaths value.
      */
@@ -111,7 +128,8 @@ public class GlobalValidation extends ProxyOnlyResource {
     }
 
     /**
-     * Set the excludedPaths property: The excludedPaths property.
+     * Set the excludedPaths property: The paths for which unauthenticated flow would not be redirected to the login
+     * page.
      *
      * @param excludedPaths the excludedPaths value to set.
      * @return the GlobalValidation object itself.
@@ -121,20 +139,11 @@ public class GlobalValidation extends ProxyOnlyResource {
         return this;
     }
 
-    /** {@inheritDoc} */
-    @Override
-    public GlobalValidation withKind(String kind) {
-        super.withKind(kind);
-        return this;
-    }
-
     /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
-    @Override
     public void validate() {
-        super.validate();
     }
 }

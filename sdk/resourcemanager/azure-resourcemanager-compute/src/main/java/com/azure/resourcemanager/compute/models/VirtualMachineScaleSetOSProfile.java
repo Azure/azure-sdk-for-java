@@ -84,7 +84,12 @@ public final class VirtualMachineScaleSetOSProfile {
 
     /*
      * Specifies set of certificates that should be installed onto the virtual
-     * machines in the scale set.
+     * machines in the scale set. To install certificates on a virtual machine
+     * it is recommended to use the [Azure Key Vault virtual machine extension
+     * for
+     * Linux](https://docs.microsoft.com/azure/virtual-machines/extensions/key-vault-linux)
+     * or the [Azure Key Vault virtual machine extension for
+     * Windows](https://docs.microsoft.com/azure/virtual-machines/extensions/key-vault-windows).
      */
     @JsonProperty(value = "secrets")
     private List<VaultSecretGroup> secrets;
@@ -255,7 +260,10 @@ public final class VirtualMachineScaleSetOSProfile {
 
     /**
      * Get the secrets property: Specifies set of certificates that should be installed onto the virtual machines in the
-     * scale set.
+     * scale set. To install certificates on a virtual machine it is recommended to use the [Azure Key Vault virtual
+     * machine extension for Linux](https://docs.microsoft.com/azure/virtual-machines/extensions/key-vault-linux) or the
+     * [Azure Key Vault virtual machine extension for
+     * Windows](https://docs.microsoft.com/azure/virtual-machines/extensions/key-vault-windows).
      *
      * @return the secrets value.
      */
@@ -265,7 +273,10 @@ public final class VirtualMachineScaleSetOSProfile {
 
     /**
      * Set the secrets property: Specifies set of certificates that should be installed onto the virtual machines in the
-     * scale set.
+     * scale set. To install certificates on a virtual machine it is recommended to use the [Azure Key Vault virtual
+     * machine extension for Linux](https://docs.microsoft.com/azure/virtual-machines/extensions/key-vault-linux) or the
+     * [Azure Key Vault virtual machine extension for
+     * Windows](https://docs.microsoft.com/azure/virtual-machines/extensions/key-vault-windows).
      *
      * @param secrets the secrets value to set.
      * @return the VirtualMachineScaleSetOSProfile object itself.

@@ -5,74 +5,110 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.appservice.fluent.models.AzureActiveDirectoryValidationProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The AzureActiveDirectoryValidation model. */
-@JsonFlatten
+/** The configuration settings of the Azure Active Directory token validation flow. */
 @Fluent
-public class AzureActiveDirectoryValidation extends ProxyOnlyResource {
+public final class AzureActiveDirectoryValidation extends ProxyOnlyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureActiveDirectoryValidation.class);
 
     /*
-     * The jwtClaimChecks property.
+     * AzureActiveDirectoryValidation resource specific properties
      */
-    @JsonProperty(value = "properties.jwtClaimChecks")
-    private JwtClaimChecks jwtClaimChecks;
-
-    /*
-     * The allowedAudiences property.
-     */
-    @JsonProperty(value = "properties.allowedAudiences")
-    private List<String> allowedAudiences;
+    @JsonProperty(value = "properties")
+    private AzureActiveDirectoryValidationProperties innerProperties;
 
     /**
-     * Get the jwtClaimChecks property: The jwtClaimChecks property.
+     * Get the innerProperties property: AzureActiveDirectoryValidation resource specific properties.
      *
-     * @return the jwtClaimChecks value.
+     * @return the innerProperties value.
      */
-    public JwtClaimChecks jwtClaimChecks() {
-        return this.jwtClaimChecks;
-    }
-
-    /**
-     * Set the jwtClaimChecks property: The jwtClaimChecks property.
-     *
-     * @param jwtClaimChecks the jwtClaimChecks value to set.
-     * @return the AzureActiveDirectoryValidation object itself.
-     */
-    public AzureActiveDirectoryValidation withJwtClaimChecks(JwtClaimChecks jwtClaimChecks) {
-        this.jwtClaimChecks = jwtClaimChecks;
-        return this;
-    }
-
-    /**
-     * Get the allowedAudiences property: The allowedAudiences property.
-     *
-     * @return the allowedAudiences value.
-     */
-    public List<String> allowedAudiences() {
-        return this.allowedAudiences;
-    }
-
-    /**
-     * Set the allowedAudiences property: The allowedAudiences property.
-     *
-     * @param allowedAudiences the allowedAudiences value to set.
-     * @return the AzureActiveDirectoryValidation object itself.
-     */
-    public AzureActiveDirectoryValidation withAllowedAudiences(List<String> allowedAudiences) {
-        this.allowedAudiences = allowedAudiences;
-        return this;
+    private AzureActiveDirectoryValidationProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /** {@inheritDoc} */
     @Override
     public AzureActiveDirectoryValidation withKind(String kind) {
         super.withKind(kind);
+        return this;
+    }
+
+    /**
+     * Get the jwtClaimChecks property: The configuration settings of the checks that should be made while validating
+     * the JWT Claims.
+     *
+     * @return the jwtClaimChecks value.
+     */
+    public JwtClaimChecks jwtClaimChecks() {
+        return this.innerProperties() == null ? null : this.innerProperties().jwtClaimChecks();
+    }
+
+    /**
+     * Set the jwtClaimChecks property: The configuration settings of the checks that should be made while validating
+     * the JWT Claims.
+     *
+     * @param jwtClaimChecks the jwtClaimChecks value to set.
+     * @return the AzureActiveDirectoryValidation object itself.
+     */
+    public AzureActiveDirectoryValidation withJwtClaimChecks(JwtClaimChecks jwtClaimChecks) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AzureActiveDirectoryValidationProperties();
+        }
+        this.innerProperties().withJwtClaimChecks(jwtClaimChecks);
+        return this;
+    }
+
+    /**
+     * Get the allowedAudiences property: The list of audiences that can make successful authentication/authorization
+     * requests.
+     *
+     * @return the allowedAudiences value.
+     */
+    public List<String> allowedAudiences() {
+        return this.innerProperties() == null ? null : this.innerProperties().allowedAudiences();
+    }
+
+    /**
+     * Set the allowedAudiences property: The list of audiences that can make successful authentication/authorization
+     * requests.
+     *
+     * @param allowedAudiences the allowedAudiences value to set.
+     * @return the AzureActiveDirectoryValidation object itself.
+     */
+    public AzureActiveDirectoryValidation withAllowedAudiences(List<String> allowedAudiences) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AzureActiveDirectoryValidationProperties();
+        }
+        this.innerProperties().withAllowedAudiences(allowedAudiences);
+        return this;
+    }
+
+    /**
+     * Get the defaultAuthorizationPolicy property: The configuration settings of the default authorization policy.
+     *
+     * @return the defaultAuthorizationPolicy value.
+     */
+    public DefaultAuthorizationPolicy defaultAuthorizationPolicy() {
+        return this.innerProperties() == null ? null : this.innerProperties().defaultAuthorizationPolicy();
+    }
+
+    /**
+     * Set the defaultAuthorizationPolicy property: The configuration settings of the default authorization policy.
+     *
+     * @param defaultAuthorizationPolicy the defaultAuthorizationPolicy value to set.
+     * @return the AzureActiveDirectoryValidation object itself.
+     */
+    public AzureActiveDirectoryValidation withDefaultAuthorizationPolicy(
+        DefaultAuthorizationPolicy defaultAuthorizationPolicy) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AzureActiveDirectoryValidationProperties();
+        }
+        this.innerProperties().withDefaultAuthorizationPolicy(defaultAuthorizationPolicy);
         return this;
     }
 
@@ -84,8 +120,8 @@ public class AzureActiveDirectoryValidation extends ProxyOnlyResource {
     @Override
     public void validate() {
         super.validate();
-        if (jwtClaimChecks() != null) {
-            jwtClaimChecks().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

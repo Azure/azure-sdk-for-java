@@ -58,10 +58,10 @@ These settings apply only when `--tag=package-2021-04-30-Preview-searchindex` is
 ``` yaml $(tag) == 'package-2021-04-30-Preview-searchindex'
 namespace: com.azure.search.documents
 input-file:
-- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/d2183715d380084ff04313a73c8803d042fe91b9/specification/search/data-plane/Azure.Search/preview/2021-04-30-Preview/searchindex.json
+- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/c99fbb96d7993daec8135a40681d9d807e3f5751/specification/search/data-plane/Azure.Search/preview/2021-04-30-Preview/searchindex.json
 models-subpackage: implementation.models
 custom-types-subpackage: models
-custom-types: AnswerResult,AutocompleteItem,AutocompleteMode,AutocompleteOptions,AutocompleteResult,CaptionResult,Captions,FacetResult,IndexActionType,QueryAnswer,QueryLanguage,QuerySpeller,QueryType,ScoringStatistics,SearchMode,SuggestOptions
+custom-types: AnswerResult,AutocompleteItem,AutocompleteMode,AutocompleteOptions,AutocompleteResult,CaptionResult,FacetResult,IndexActionType,QueryAnswer,QueryCaption,QueryLanguage,QuerySpeller,QueryType,ScoringStatistics,SearchMode,SuggestOptions
 customization-class: src/main/java/SearchIndexCustomizations.java
 ```
 
@@ -72,7 +72,7 @@ These settings apply only when `--tag=package-2021-04-30-Preview-searchservice` 
 ``` yaml $(tag) == 'package-2021-04-30-Preview-searchservice'
 namespace: com.azure.search.documents.indexes
 input-file:
-- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/d2183715d380084ff04313a73c8803d042fe91b9/specification/search/data-plane/Azure.Search/preview/2021-04-30-Preview/searchservice.json
+- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/c99fbb96d7993daec8135a40681d9d807e3f5751/specification/search/data-plane/Azure.Search/preview/2021-04-30-Preview/searchservice.json
 models-subpackage: implementation.models
 custom-types-subpackage: models
 custom-types: AnalyzedTokenInfo,BlobIndexerDataToExtract,BlobIndexerImageAction,BlobIndexerPdfTextRotationAlgorithm,BlobIndexerParsingMode,BM25SimilarityAlgorithm,CharFilter,CharFilterName,CjkBigramTokenFilterScripts,ClassicSimilarityAlgorithm,CognitiveServicesAccount,CognitiveServicesAccountKey,ConditionalSkill,CorsOptions,CustomAnalyzer,CustomEntity,CustomEntityAlias,CustomEntityLookupSkill,CustomEntityLookupSkillLanguage,CustomNormalizer,DataChangeDetectionPolicy,DataDeletionDetectionPolicy,DefaultCognitiveServicesAccount,DistanceScoringFunction,DistanceScoringParameters,DocumentExtractionSkill,EdgeNGramTokenFilterSide,EntityCategory,EntityLinkingSkill,EntityRecognitionSkill,EntityRecognitionSkillLanguage,FieldMapping,FieldMappingFunction,FreshnessScoringFunction,FreshnessScoringParameters,HighWaterMarkChangeDetectionPolicy,ImageAnalysisSkill,ImageAnalysisSkillLanguage,ImageDetail,IndexerExecutionEnvironment,IndexerExecutionResult,IndexerExecutionStatus,IndexerStatus,IndexingParametersConfiguration,IndexingSchedule,InputFieldMappingEntry,KeyPhraseExtractionSkill,KeyPhraseExtractionSkillLanguage,LanguageDetectionSkill,LexicalAnalyzer,LexicalAnalyzerName,LexicalNormalizer,LexicalNormalizerName,LexicalTokenizerName,LineEnding,LuceneStandardAnalyzer,MagnitudeScoringFunction,MagnitudeScoringParameters,MappingCharFilter,MergeSkill,MicrosoftStemmingTokenizerLanguage,MicrosoftTokenizerLanguage,OcrSkill,OcrSkillLanguage,OutputFieldMappingEntry,PatternAnalyzer,PatternReplaceCharFilter,PiiDetectionSkill,PiiDetectionSkillMaskingMode,PhoneticEncoder,RegexFlags,ResourceCounter,ScoringFunction,ScoringFunctionAggregation,ScoringFunctionInterpolation,ScoringProfile,SearchField,SearchFieldDataType,SearchIndexerCache,SearchIndexerDataContainer,SearchIndexerDataIdentity,SearchIndexerDataNoneIdentity,SearchIndexerDataSourceType,SearchIndexerDataUserAssignedIdentity,SearchIndexerError,SearchIndexerKnowledgeStore,SearchIndexerKnowledgeStoreBlobProjectionSelector,SearchIndexerKnowledgeStoreFileProjectionSelector,SearchIndexerKnowledgeStoreObjectProjectionSelector,SearchIndexerKnowledgeStoreProjection,SearchIndexerKnowledgeStoreProjectionSelector,SearchIndexerKnowledgeStoreTableProjectionSelector,SearchIndexerLimits,SearchIndexerSkill,SearchIndexerSkillset,SearchIndexerStatus,SearchIndexerWarning,SearchIndexStatistics,SearchResourceEncryptionKey,SearchServiceCounters,SearchServiceLimits,SearchServiceStatistics,SearchSuggester,SentimentSkill,SentimentSkillLanguage,ShaperSkill,SimilarityAlgorithm,SnowballTokenFilterLanguage,SoftDeleteColumnDeletionDetectionPolicy,SplitSkill,SplitSkillLanguage,SqlIntegratedChangeTrackingPolicy,StemmerTokenFilterLanguage,StopAnalyzer,StopwordsList,SynonymMap,TagScoringFunction,TagScoringParameters,TextSplitMode,TextTranslationSkill,TextTranslationSkillLanguage,TextWeights,TokenCharacterKind,TokenFilterName,VisualFeature,WebApiSkill
@@ -233,23 +233,29 @@ directive:
       $.find(p => p.name === "speller")["x-ms-enum"].name = "QuerySpeller";
 ```
 
-### Rename Answers to QueryAnswer and Speller to QuerySpeller
+### Rename Answers to QueryAnswer, Captions to QueryCaption, and Speller to QuerySpeller
 ``` yaml $(java)
 directive:
   - from: swagger-document
     where: $.definitions
     transform: >
       $.Answers["x-ms-enum"].name = "QueryAnswer";
+      $.Captions["x-ms-enum"].name = "QueryCaption";
       $.Speller["x-ms-enum"].name = "QuerySpeller";
 ```
 
-### Change Answers to a string in SearchOptions and SearchRequest
+### Change Answers and Captions to a string in SearchOptions and SearchRequest
 ``` yaml $(java)
 directive:
   - from: swagger-document
     where: $.paths["/docs"].get.parameters
     transform: >
       let param = $.find(p => p.name === "answers");
+      param.type = "string";
+      delete param.enum;
+      delete param["x-ms-enum"];
+     
+      param = $.find(p => p.name == "captions");
       param.type = "string";
       delete param.enum;
       delete param["x-ms-enum"];
@@ -263,6 +269,11 @@ directive:
       let param = $.SearchRequest.properties.answers;
       param.type = "string";
       param.description = $.Answers.description;
+      delete param["$ref"];
+      
+      param = $.SearchRequest.properties.captions;
+      param.type = "string";
+      param.description = $.Captions.description;
       delete param["$ref"];
 ```
 

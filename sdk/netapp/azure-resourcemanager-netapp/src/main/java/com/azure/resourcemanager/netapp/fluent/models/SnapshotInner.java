@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.netapp.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -13,9 +12,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** Snapshot of a Volume. */
-@JsonFlatten
 @Fluent
-public class SnapshotInner extends ProxyResource {
+public final class SnapshotInner extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(SnapshotInner.class);
 
     /*
@@ -25,22 +23,10 @@ public class SnapshotInner extends ProxyResource {
     private String location;
 
     /*
-     * UUID v4 used to identify the Snapshot
+     * Snapshot Properties
      */
-    @JsonProperty(value = "properties.snapshotId", access = JsonProperty.Access.WRITE_ONLY)
-    private String snapshotId;
-
-    /*
-     * The creation date of the snapshot
-     */
-    @JsonProperty(value = "properties.created", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime created;
-
-    /*
-     * Azure lifecycle management
-     */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private String provisioningState;
+    @JsonProperty(value = "properties")
+    private SnapshotProperties innerProperties;
 
     /**
      * Get the location property: Resource location.
@@ -63,21 +49,30 @@ public class SnapshotInner extends ProxyResource {
     }
 
     /**
-     * Get the snapshotId property: UUID v4 used to identify the Snapshot.
+     * Get the innerProperties property: Snapshot Properties.
+     *
+     * @return the innerProperties value.
+     */
+    private SnapshotProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
+     * Get the snapshotId property: snapshotId UUID v4 used to identify the Snapshot.
      *
      * @return the snapshotId value.
      */
     public String snapshotId() {
-        return this.snapshotId;
+        return this.innerProperties() == null ? null : this.innerProperties().snapshotId();
     }
 
     /**
-     * Get the created property: The creation date of the snapshot.
+     * Get the created property: name The creation date of the snapshot.
      *
      * @return the created value.
      */
     public OffsetDateTime created() {
-        return this.created;
+        return this.innerProperties() == null ? null : this.innerProperties().created();
     }
 
     /**
@@ -86,7 +81,7 @@ public class SnapshotInner extends ProxyResource {
      * @return the provisioningState value.
      */
     public String provisioningState() {
-        return this.provisioningState;
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
     /**
@@ -99,6 +94,9 @@ public class SnapshotInner extends ProxyResource {
             throw logger
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property location in model SnapshotInner"));
+        }
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

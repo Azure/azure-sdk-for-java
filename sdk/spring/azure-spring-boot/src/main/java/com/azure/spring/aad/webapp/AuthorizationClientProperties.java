@@ -4,6 +4,7 @@
 package com.azure.spring.aad.webapp;
 
 import com.azure.spring.aad.AADAuthorizationGrantType;
+import org.springframework.boot.context.properties.DeprecatedConfigurationProperty;
 
 import java.util.List;
 
@@ -34,10 +35,15 @@ public class AuthorizationClientProperties {
         return scopes;
     }
 
+    @Deprecated
+    @DeprecatedConfigurationProperty(
+        reason = "The AuthorizationGrantType of on-demand clients should be authorization_code.",
+        replacement = "Set oauth client AuthorizationGrantType to authorization_code, which means it's on-demand.")
     public boolean isOnDemand() {
         return onDemand;
     }
 
+    @Deprecated
     public void setOnDemand(boolean onDemand) {
         this.onDemand = onDemand;
     }

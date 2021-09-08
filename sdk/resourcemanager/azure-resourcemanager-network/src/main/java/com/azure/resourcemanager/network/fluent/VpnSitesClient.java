@@ -14,11 +14,11 @@ import com.azure.core.util.Context;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.network.fluent.models.VpnSiteInner;
+import com.azure.resourcemanager.network.models.TagsObject;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
 import java.nio.ByteBuffer;
-import java.util.Map;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -190,7 +190,7 @@ public interface VpnSitesClient
      *
      * @param resourceGroupName The resource group name of the VpnSite.
      * @param vpnSiteName The name of the VpnSite being updated.
-     * @param tags Resource tags.
+     * @param vpnSiteParameters Parameters supplied to update VpnSite tags.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -198,54 +198,42 @@ public interface VpnSitesClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<VpnSiteInner>> updateTagsWithResponseAsync(
-        String resourceGroupName, String vpnSiteName, Map<String, String> tags);
+        String resourceGroupName, String vpnSiteName, TagsObject vpnSiteParameters);
 
     /**
      * Updates VpnSite tags.
      *
      * @param resourceGroupName The resource group name of the VpnSite.
      * @param vpnSiteName The name of the VpnSite being updated.
-     * @param tags Resource tags.
+     * @param vpnSiteParameters Parameters supplied to update VpnSite tags.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return vpnSite Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<VpnSiteInner> updateTagsAsync(String resourceGroupName, String vpnSiteName, Map<String, String> tags);
+    Mono<VpnSiteInner> updateTagsAsync(String resourceGroupName, String vpnSiteName, TagsObject vpnSiteParameters);
 
     /**
      * Updates VpnSite tags.
      *
      * @param resourceGroupName The resource group name of the VpnSite.
      * @param vpnSiteName The name of the VpnSite being updated.
+     * @param vpnSiteParameters Parameters supplied to update VpnSite tags.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return vpnSite Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<VpnSiteInner> updateTagsAsync(String resourceGroupName, String vpnSiteName);
+    VpnSiteInner updateTags(String resourceGroupName, String vpnSiteName, TagsObject vpnSiteParameters);
 
     /**
      * Updates VpnSite tags.
      *
      * @param resourceGroupName The resource group name of the VpnSite.
      * @param vpnSiteName The name of the VpnSite being updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return vpnSite Resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    VpnSiteInner updateTags(String resourceGroupName, String vpnSiteName);
-
-    /**
-     * Updates VpnSite tags.
-     *
-     * @param resourceGroupName The resource group name of the VpnSite.
-     * @param vpnSiteName The name of the VpnSite being updated.
-     * @param tags Resource tags.
+     * @param vpnSiteParameters Parameters supplied to update VpnSite tags.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -254,7 +242,7 @@ public interface VpnSitesClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<VpnSiteInner> updateTagsWithResponse(
-        String resourceGroupName, String vpnSiteName, Map<String, String> tags, Context context);
+        String resourceGroupName, String vpnSiteName, TagsObject vpnSiteParameters, Context context);
 
     /**
      * Deletes a VpnSite.

@@ -13,6 +13,7 @@ import com.azure.resourcemanager.resources.fluentcore.model.Refreshable;
 import com.azure.resourcemanager.resources.fluentcore.model.Updatable;
 import com.azure.resourcemanager.storage.StorageManager;
 import com.azure.resourcemanager.storage.fluent.models.ImmutabilityPolicyInner;
+import reactor.core.publisher.Mono;
 
 /** Type representing ImmutabilityPolicy. */
 @Fluent
@@ -39,6 +40,35 @@ public interface ImmutabilityPolicy
 
     /** @return the type value. */
     String type();
+
+    /**
+     * Locks the immutability policy.
+     */
+    void lock();
+
+    /**
+     * Locks the immutability policy.
+     *
+     * @return the completion
+     */
+    Mono<Void> lockAsync();
+
+    /**
+     * Extends the immutability policy.
+
+     * @param immutabilityPeriodSinceCreationInDays The immutability period for the blobs in the container since the
+     *     policy creation, in days.
+     */
+    void extend(int immutabilityPeriodSinceCreationInDays);
+
+    /**
+     * Extends the immutability policy.
+
+     * @param immutabilityPeriodSinceCreationInDays The immutability period for the blobs in the container since the
+     *     policy creation, in days.
+     * @return the completion
+     */
+    Mono<Void> extendAsync(int immutabilityPeriodSinceCreationInDays);
 
     /** The entirety of the ImmutabilityPolicy definition. */
     interface Definition

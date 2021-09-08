@@ -13,10 +13,18 @@ import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.monitor.query.log.implementation.AzureLogAnalyticsImplBuilder;
+import com.azure.monitor.query.implementation.logs.AzureLogAnalyticsImplBuilder;
 
 /**
  * Fluent builder for creating instances of {@link LogsQueryClient} and {@link LogsQueryAsyncClient}.
+ *
+ * <p><strong>Instantiating an asynchronous Logs query Client</strong></p>
+ *
+ * {@codesnippet com.azure.monitor.query.LogsQueryAsyncClient.instantiation}
+ *
+ * <p><strong>Instantiating a synchronous Logs query Client</strong></p>
+ *
+ * {@codesnippet com.azure.monitor.query.LogsQueryClient.instantiation}
  */
 @ServiceClientBuilder(serviceClients = {LogsQueryClient.class, LogsQueryAsyncClient.class})
 public final class LogsQueryClientBuilder {

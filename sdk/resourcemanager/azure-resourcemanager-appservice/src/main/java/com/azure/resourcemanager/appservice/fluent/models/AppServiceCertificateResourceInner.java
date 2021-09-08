@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.models.KeyVaultSecretStatus;
@@ -14,28 +13,15 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** Key Vault container ARM resource for a certificate that is purchased through Azure. */
-@JsonFlatten
 @Fluent
-public class AppServiceCertificateResourceInner extends Resource {
+public final class AppServiceCertificateResourceInner extends Resource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(AppServiceCertificateResourceInner.class);
 
     /*
-     * Key Vault resource Id.
+     * Core resource properties
      */
-    @JsonProperty(value = "properties.keyVaultId")
-    private String keyVaultId;
-
-    /*
-     * Key Vault secret name.
-     */
-    @JsonProperty(value = "properties.keyVaultSecretName")
-    private String keyVaultSecretName;
-
-    /*
-     * Status of the Key Vault secret.
-     */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private KeyVaultSecretStatus provisioningState;
+    @JsonProperty(value = "properties")
+    private AppServiceCertificateInner innerProperties;
 
     /*
      * Kind of resource.
@@ -44,52 +30,12 @@ public class AppServiceCertificateResourceInner extends Resource {
     private String kind;
 
     /**
-     * Get the keyVaultId property: Key Vault resource Id.
+     * Get the innerProperties property: Core resource properties.
      *
-     * @return the keyVaultId value.
+     * @return the innerProperties value.
      */
-    public String keyVaultId() {
-        return this.keyVaultId;
-    }
-
-    /**
-     * Set the keyVaultId property: Key Vault resource Id.
-     *
-     * @param keyVaultId the keyVaultId value to set.
-     * @return the AppServiceCertificateResourceInner object itself.
-     */
-    public AppServiceCertificateResourceInner withKeyVaultId(String keyVaultId) {
-        this.keyVaultId = keyVaultId;
-        return this;
-    }
-
-    /**
-     * Get the keyVaultSecretName property: Key Vault secret name.
-     *
-     * @return the keyVaultSecretName value.
-     */
-    public String keyVaultSecretName() {
-        return this.keyVaultSecretName;
-    }
-
-    /**
-     * Set the keyVaultSecretName property: Key Vault secret name.
-     *
-     * @param keyVaultSecretName the keyVaultSecretName value to set.
-     * @return the AppServiceCertificateResourceInner object itself.
-     */
-    public AppServiceCertificateResourceInner withKeyVaultSecretName(String keyVaultSecretName) {
-        this.keyVaultSecretName = keyVaultSecretName;
-        return this;
-    }
-
-    /**
-     * Get the provisioningState property: Status of the Key Vault secret.
-     *
-     * @return the provisioningState value.
-     */
-    public KeyVaultSecretStatus provisioningState() {
-        return this.provisioningState;
+    private AppServiceCertificateInner innerProperties() {
+        return this.innerProperties;
     }
 
     /**
@@ -127,10 +73,68 @@ public class AppServiceCertificateResourceInner extends Resource {
     }
 
     /**
+     * Get the keyVaultId property: Key Vault resource Id.
+     *
+     * @return the keyVaultId value.
+     */
+    public String keyVaultId() {
+        return this.innerProperties() == null ? null : this.innerProperties().keyVaultId();
+    }
+
+    /**
+     * Set the keyVaultId property: Key Vault resource Id.
+     *
+     * @param keyVaultId the keyVaultId value to set.
+     * @return the AppServiceCertificateResourceInner object itself.
+     */
+    public AppServiceCertificateResourceInner withKeyVaultId(String keyVaultId) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AppServiceCertificateInner();
+        }
+        this.innerProperties().withKeyVaultId(keyVaultId);
+        return this;
+    }
+
+    /**
+     * Get the keyVaultSecretName property: Key Vault secret name.
+     *
+     * @return the keyVaultSecretName value.
+     */
+    public String keyVaultSecretName() {
+        return this.innerProperties() == null ? null : this.innerProperties().keyVaultSecretName();
+    }
+
+    /**
+     * Set the keyVaultSecretName property: Key Vault secret name.
+     *
+     * @param keyVaultSecretName the keyVaultSecretName value to set.
+     * @return the AppServiceCertificateResourceInner object itself.
+     */
+    public AppServiceCertificateResourceInner withKeyVaultSecretName(String keyVaultSecretName) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AppServiceCertificateInner();
+        }
+        this.innerProperties().withKeyVaultSecretName(keyVaultSecretName);
+        return this;
+    }
+
+    /**
+     * Get the provisioningState property: Status of the Key Vault secret.
+     *
+     * @return the provisioningState value.
+     */
+    public KeyVaultSecretStatus provisioningState() {
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

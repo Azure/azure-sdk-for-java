@@ -8,15 +8,17 @@ import com.azure.core.util.Context;
 
 /** Samples for Servers Stop. */
 public final class ServersStopSamples {
+    /*
+     * operationId: Servers_Stop
+     * api-version: 2021-06-01
+     * x-ms-examples: ServerStop
+     */
     /**
      * Sample code: ServerStop.
      *
-     * @param postgreSqlManager Entry point to PostgreSqlManager. The Microsoft Azure management API provides create,
-     *     read, update, and delete functionality for Azure PostgreSQL resources including servers, databases, firewall
-     *     rules, VNET rules, security alert policies, log files and configurations with new business model.
+     * @param manager Entry point to PostgreSqlManager.
      */
-    public static void serverStop(
-        com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager postgreSqlManager) {
-        postgreSqlManager.servers().stop("testrg", "testserver", Context.NONE);
+    public static void serverStop(com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager manager) {
+        manager.servers().stop("testrg", "testserver", Context.NONE);
     }
 }

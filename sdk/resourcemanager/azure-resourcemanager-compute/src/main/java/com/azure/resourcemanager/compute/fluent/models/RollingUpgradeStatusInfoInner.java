@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.models.ApiError;
@@ -17,70 +16,23 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** The status of the latest virtual machine scale set rolling upgrade. */
-@JsonFlatten
 @Fluent
-public class RollingUpgradeStatusInfoInner extends Resource {
+public final class RollingUpgradeStatusInfoInner extends Resource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(RollingUpgradeStatusInfoInner.class);
 
     /*
-     * The rolling upgrade policies applied for this upgrade.
+     * The status of the latest virtual machine scale set rolling upgrade.
      */
-    @JsonProperty(value = "properties.policy", access = JsonProperty.Access.WRITE_ONLY)
-    private RollingUpgradePolicy policy;
-
-    /*
-     * Information about the current running state of the overall upgrade.
-     */
-    @JsonProperty(value = "properties.runningStatus", access = JsonProperty.Access.WRITE_ONLY)
-    private RollingUpgradeRunningStatus runningStatus;
-
-    /*
-     * Information about the number of virtual machine instances in each
-     * upgrade state.
-     */
-    @JsonProperty(value = "properties.progress", access = JsonProperty.Access.WRITE_ONLY)
-    private RollingUpgradeProgressInfo progress;
-
-    /*
-     * Error details for this upgrade, if there are any.
-     */
-    @JsonProperty(value = "properties.error", access = JsonProperty.Access.WRITE_ONLY)
-    private ApiError error;
+    @JsonProperty(value = "properties")
+    private RollingUpgradeStatusInfoProperties innerProperties;
 
     /**
-     * Get the policy property: The rolling upgrade policies applied for this upgrade.
+     * Get the innerProperties property: The status of the latest virtual machine scale set rolling upgrade.
      *
-     * @return the policy value.
+     * @return the innerProperties value.
      */
-    public RollingUpgradePolicy policy() {
-        return this.policy;
-    }
-
-    /**
-     * Get the runningStatus property: Information about the current running state of the overall upgrade.
-     *
-     * @return the runningStatus value.
-     */
-    public RollingUpgradeRunningStatus runningStatus() {
-        return this.runningStatus;
-    }
-
-    /**
-     * Get the progress property: Information about the number of virtual machine instances in each upgrade state.
-     *
-     * @return the progress value.
-     */
-    public RollingUpgradeProgressInfo progress() {
-        return this.progress;
-    }
-
-    /**
-     * Get the error property: Error details for this upgrade, if there are any.
-     *
-     * @return the error value.
-     */
-    public ApiError error() {
-        return this.error;
+    private RollingUpgradeStatusInfoProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /** {@inheritDoc} */
@@ -98,22 +50,49 @@ public class RollingUpgradeStatusInfoInner extends Resource {
     }
 
     /**
+     * Get the policy property: The rolling upgrade policies applied for this upgrade.
+     *
+     * @return the policy value.
+     */
+    public RollingUpgradePolicy policy() {
+        return this.innerProperties() == null ? null : this.innerProperties().policy();
+    }
+
+    /**
+     * Get the runningStatus property: Information about the current running state of the overall upgrade.
+     *
+     * @return the runningStatus value.
+     */
+    public RollingUpgradeRunningStatus runningStatus() {
+        return this.innerProperties() == null ? null : this.innerProperties().runningStatus();
+    }
+
+    /**
+     * Get the progress property: Information about the number of virtual machine instances in each upgrade state.
+     *
+     * @return the progress value.
+     */
+    public RollingUpgradeProgressInfo progress() {
+        return this.innerProperties() == null ? null : this.innerProperties().progress();
+    }
+
+    /**
+     * Get the error property: Error details for this upgrade, if there are any.
+     *
+     * @return the error value.
+     */
+    public ApiError error() {
+        return this.innerProperties() == null ? null : this.innerProperties().error();
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (policy() != null) {
-            policy().validate();
-        }
-        if (runningStatus() != null) {
-            runningStatus().validate();
-        }
-        if (progress() != null) {
-            progress().validate();
-        }
-        if (error() != null) {
-            error().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }
