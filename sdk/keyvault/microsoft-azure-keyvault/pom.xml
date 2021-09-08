@@ -205,7 +205,7 @@ the MIT License. See License.txt in the project root for license information. --
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-failsafe-plugin</artifactId>
-        <version>2.22.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
+        <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
         <configuration>
           <additionalClasspathElements>
             <additionalClasspathElement>${basedir}/azure-keyvault/target/azure-keyvault-${project.version}.jar
