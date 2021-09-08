@@ -1,6 +1,6 @@
 # Release History
 
-## 1.4.0-beta.1 (Unreleased)
+## 1.4.0-beta.1 (2021-08-16)
 ### Features Added
 
 - Added support to `ManagedIdentityCredential` for Bridge to Kubernetes local development authentication.
