@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.cosmos.spark
 
 import com.azure.cosmos.spark.diagnostics.SimpleDiagnosticsSlf4jLogger
@@ -76,7 +78,7 @@ private[spark] final class SimpleFileDiagnosticsSlf4jLogger(classType: Class[_])
     result
   }
 
-  def reset() = {
+  def reset(): Unit = {
     thisLock.synchronized {
       val fileLock = fos.getChannel.lock()
       try {

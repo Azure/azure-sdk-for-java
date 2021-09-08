@@ -22,6 +22,8 @@ class SparkE2EQueryITest
 
   //scalastyle:off multiple.string.literals
   //scalastyle:off magic.number
+  //scalastyle:off file.size.limit
+  //scalastyle:off null
 
   // NOTE: due to some bug in the emulator, sub-range feed range doesn't work
   // "spark.cosmos.read.partitioning.strategy" -> "Restrictive" is added to the query tests
@@ -852,4 +854,6 @@ class SparkE2EQueryITest
 
   //scalastyle:on magic.number
   //scalastyle:on multiple.string.literals
+  //scalastyle:on file.size.limit
+  //scalastyle:on null
 }

@@ -36,7 +36,7 @@ private[spark] object SimpleFileDiagnosticsProvider {
     folderName + "/" + classType.getSimpleName().replace("$", "") + ".txt"
   }
 
-  def reset() = {
+  def reset(): Unit = {
     folder.delete()
   }
 }
