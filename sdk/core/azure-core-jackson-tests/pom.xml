@@ -55,6 +55,7 @@
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
       <version>1.21.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core;current} -->
+      <scope>test</scope>
     </dependency>
 
     <dependency>
@@ -155,12 +156,6 @@
       <groupId>javax.json</groupId>
       <artifactId>javax.json-api</artifactId>
       <version>1.1.4</version>  <!-- {x-version-update;javax.json:javax.json-api;external_dependency} -->
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>com.azure</groupId>
-      <artifactId>azure-core</artifactId>
-      <version>1.20.0-beta.1</version>
       <scope>test</scope>
     </dependency>
   </dependencies>

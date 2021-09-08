@@ -4,7 +4,6 @@
 package com.azure.core.implementation;
 
 import com.azure.core.util.CoreUtils;
-
 import java.io.IOException;
 import java.util.Objects;
 import java.util.jar.JarFile;
@@ -57,7 +56,7 @@ public final class SemanticVersion implements Comparable<SemanticVersion> {
         }
 
         int patchEndIdx = minorDotIdx + 1;
-        while(patchEndIdx < version.length()) {
+        while (patchEndIdx < version.length()) {
             Character ch = version.charAt(patchEndIdx);
 
             // accommodate common broken semantic versions (e.g. 1.2.3.4)
@@ -65,7 +64,7 @@ public final class SemanticVersion implements Comparable<SemanticVersion> {
                 break;
             }
 
-            patchEndIdx ++;
+            patchEndIdx++;
         }
 
         int extEndIdx = version.indexOf('+', patchEndIdx);

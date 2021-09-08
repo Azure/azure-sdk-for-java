@@ -37,7 +37,7 @@ public final class ObjectMapperShim {
     private static final ClientLogger LOGGER = new ClientLogger(ObjectMapperShim.class);
 
     // don't add static fields that might cause Jackson classes to initialize
-    static final int CACHE_SIZE_LIMIT = 10000;
+    private static final int CACHE_SIZE_LIMIT = 10000;
 
     private static final Map<Type, JavaType> TYPE_TO_JAVA_TYPE_CACHE = new ConcurrentHashMap<>();
 

@@ -5,14 +5,12 @@ package com.azure.core.implementation.jackson;
 
 import com.azure.core.implementation.ReflectionUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.databind.JavaType;
 
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodType;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.lang.reflect.Type;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
 import java.util.HashMap;
