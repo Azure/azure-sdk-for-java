@@ -25,7 +25,7 @@ steps:
 
       while ($retries++ -lt ${{parameters.RetryLimit}}) {
         Write-Host "mvn -f $pomf install -Dcheckstyle.skip=true"
-        mvn -f $pomf install -D"checkstyle.skip"=true
+        mvn -f "$pomf" install -D"checkstyle.skip"=true
         if ($LASTEXITCODE) {
           if ($retries -ge ${{parameters.RetryLimit}}) {
             exit $LASTEXITCODE
