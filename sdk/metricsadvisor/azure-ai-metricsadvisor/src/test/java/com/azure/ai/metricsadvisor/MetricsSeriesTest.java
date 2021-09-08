@@ -115,12 +115,12 @@ public class MetricsSeriesTest extends MetricsSeriesTestBase {
             = client.listMetricSeriesDefinitions(METRIC_ID, TIME_SERIES_START_TIME,
                 new ListMetricSeriesDefinitionOptions()
                 .setDimensionCombinationToFilter(new HashMap<String, List<String>>() {{
-                        put("city", Collections.singletonList("Miami"));
+                        put("region", Collections.singletonList("Miami"));
                     }}), Context.NONE)
             .stream().collect(Collectors.toList());
 
         actualMetricSeriesDefinitions.forEach(metricSeriesDefinition -> {
-            final String dimensionFilterValue = metricSeriesDefinition.getSeriesKey().asMap().get("city");
+            final String dimensionFilterValue = metricSeriesDefinition.getSeriesKey().asMap().get("region");
             assertNotNull(dimensionFilterValue);
             assertEquals("Miami", dimensionFilterValue);
         });

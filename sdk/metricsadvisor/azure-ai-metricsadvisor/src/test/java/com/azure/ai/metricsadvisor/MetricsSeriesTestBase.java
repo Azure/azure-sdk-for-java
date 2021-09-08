@@ -17,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public abstract class MetricsSeriesTestBase extends MetricsAdvisorClientTestBase {
 
-    static final String METRIC_ID = "6e8261fd-9816-4b46-86f5-da8ee34f262f";
+    static final String METRIC_ID = "390d1139-98fb-45af-b831-8d5ad61b150a";
     static final String DIMENSION_NAME = "category";
     static final Iterable<?> EXPECTED_DIMENSION_VALUES = Arrays.asList("Music",
         "Musical Instruments",
@@ -32,11 +32,11 @@ public abstract class MetricsSeriesTestBase extends MetricsAdvisorClientTestBase
         "Tools & Home Improvement").stream().sorted().collect(Collectors.toList());
     static final int LISTING_SERIES_DEFINITIONS_LIMIT = 50;
 
-    static final int EXPECTED_DIMENSION_VALUES_COUNT = 31;
+    static final int EXPECTED_DIMENSION_VALUES_COUNT = 8;
     static final OffsetDateTime TIME_SERIES_START_TIME = OffsetDateTime.parse("2020-01-01T00:00:00Z");
     static final OffsetDateTime TIME_SERIES_END_TIME = OffsetDateTime.parse("2020-10-22T00:00:00Z");
     static final HashMap<String, String> SERIES_KEY_FILTER = new HashMap<String, String>() {{
-            put("city", "Miami");
+            put("region", "Miami");
             put("category", "Health & Personal Care");
         }};
 

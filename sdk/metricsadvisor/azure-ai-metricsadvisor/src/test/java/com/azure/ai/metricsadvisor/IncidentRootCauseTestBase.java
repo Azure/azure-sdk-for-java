@@ -31,10 +31,10 @@ public abstract class IncidentRootCauseTestBase extends MetricsAdvisorClientTest
             .setRootCause(new DimensionGroupIdentity().setDimension(new HashMap<String, String>() {
                 {
                     put("category", "Electronics (Consumer)");
-                    put("city", "Karachi");
+                    put("region", "Karachi");
                 }
             }))
-            .setPath(Collections.singletonList("city"))
+            .setPath(Collections.singletonList("region"))
             .setDescription("Increase on category = Electronics (Consumer) | city = Karachi contributes the most to current incident.");
         return IncidentRootCauseTransforms.fromInner(innerRootCause);
     }
