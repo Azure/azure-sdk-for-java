@@ -4,6 +4,7 @@
 package com.azure.cosmos.models;
 
 import com.azure.cosmos.CosmosDiagnostics;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.batch.BatchExecUtils;
 import com.azure.cosmos.util.Beta;
 
@@ -206,5 +207,19 @@ public class CosmosBatchResponse {
 
     void addAll(List<? extends CosmosBatchOperationResult> collection) {
         this.results.addAll(collection);
+    }
+
+    ///////////////////////////////////////////////////////////////////////////////////////////
+    // the following helper/accessor only helps to access this class outside of this package.//
+    ///////////////////////////////////////////////////////////////////////////////////////////
+
+    static {
+        ImplementationBridgeHelpers.CosmosBatchResponseHelper.setCosmosBatchResponseAccessor(
+            new ImplementationBridgeHelpers.CosmosBatchResponseHelper.CosmosBatchResponseAccessor() {
+                @Override
+                public List<CosmosBatchOperationResult> getResults(CosmosBatchResponse cosmosBatchResponse) {
+                    return cosmosBatchResponse.results;
+                }
+            });
     }
 }

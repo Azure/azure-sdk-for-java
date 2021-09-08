@@ -16,12 +16,14 @@ import com.azure.cosmos.implementation.patch.PatchOperation;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
 import com.azure.cosmos.models.CosmosBatch;
+import com.azure.cosmos.models.CosmosBatchItemRequestOptions;
 import com.azure.cosmos.models.CosmosBatchOperationResult;
 import com.azure.cosmos.models.CosmosBatchRequestOptions;
-import com.azure.cosmos.models.CosmosBulkItemResponse;
-import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
+import com.azure.cosmos.models.CosmosBatchResponse;
 import com.azure.cosmos.models.CosmosBulkExecutionOptions;
 import com.azure.cosmos.models.CosmosBulkExecutionThresholdsState;
+import com.azure.cosmos.models.CosmosBulkItemResponse;
+import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
@@ -539,11 +541,19 @@ public class ImplementationBridgeHelpers {
         }
 
         public static CosmosBatchRequestOptionsAccessor getCosmosBatchRequestOptionsAccessor() {
+            if (accessor == null) {
+                throw new IllegalStateException("CosmosBatchRequestOptionsAccessor is not initialized yet!");
+            }
+
             return accessor;
         }
 
-        public static void setCosmosBatchRequestOptionsAccessor(CosmosBatchRequestOptionsAccessor accessor) {
-            CosmosBatchRequestOptionsHelper.accessor = accessor;
+        public static void setCosmosBatchRequestOptionsAccessor(final CosmosBatchRequestOptionsAccessor newAccessor) {
+            if (accessor != null) {
+                throw new IllegalStateException("CosmosBatchRequestOptionsAccessor already initialized!");
+            }
+
+            accessor = newAccessor;
         }
 
         public interface CosmosBatchRequestOptionsAccessor {
@@ -560,19 +570,28 @@ public class ImplementationBridgeHelpers {
         }
 
         static {
-            ensureClassLoaded(CosmosBatchRequestOptions.class);
+            ensureClassLoaded(CosmosBatchOperationResult.class);
         }
 
         public static CosmosBatchOperationResultAccessor getCosmosBatchOperationResultAccessor() {
+            if (accessor == null) {
+                throw new IllegalStateException("CosmosBatchOperationResultAccessor is not initialized yet!");
+            }
+
             return accessor;
         }
 
-        public static void setCosmosBatchOperationResultAccessor(CosmosBatchOperationResultAccessor accessor) {
-            CosmosBatchOperationResultHelper.accessor = accessor;
+        public static void setCosmosBatchOperationResultAccessor(final CosmosBatchOperationResultAccessor newAccessor) {
+            if (accessor != null) {
+                throw new IllegalStateException("CosmosBatchOperationResultAccessor already initialized!");
+            }
+
+            accessor = newAccessor;
         }
 
         public interface CosmosBatchOperationResultAccessor {
             ObjectNode getResourceObject(CosmosBatchOperationResult cosmosBatchOperationResult);
+            void setResourceObject(CosmosBatchOperationResult cosmosBatchOperationResult, ObjectNode objectNode);
         }
     }
 
@@ -665,6 +684,37 @@ public class ImplementationBridgeHelpers {
 
         public interface DeprecatedCosmosBulkItemResponseAccessor {
             ObjectNode getResourceObject(com.azure.cosmos.CosmosBulkItemResponse cosmosBulkItemResponse);
+        }
+    }
+
+    public static final class CosmosBatchResponseHelper {
+        private static CosmosBatchResponseAccessor accessor;
+
+        private CosmosBatchResponseHelper() {
+        }
+
+        static {
+            ensureClassLoaded(CosmosBatchResponse.class);
+        }
+
+        public static CosmosBatchResponseAccessor getCosmosBatchResponseAccessor() {
+            if (accessor == null) {
+                throw new IllegalStateException("CosmosBatchResponseAccessor is not initialized yet!");
+            }
+
+            return accessor;
+        }
+
+        public static void setCosmosBatchResponseAccessor(final CosmosBatchResponseAccessor newAccessor) {
+            if (accessor != null) {
+                throw new IllegalStateException("CosmosBatchResponseAccessor already initialized!");
+            }
+
+            accessor = newAccessor;
+        }
+
+        public interface CosmosBatchResponseAccessor {
+            List<CosmosBatchOperationResult> getResults(CosmosBatchResponse cosmosBatchResponse);
         }
     }
 
