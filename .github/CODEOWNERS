@@ -137,9 +137,9 @@
 /common/smoke-tests/                                @joshfree @jonathangiles @alzimmermsft @g2vinay @conniey @srnagar
 
 # Management Plane
-/sdk/resourcemanager/                               @ChenTanyi @weidongxu-microsoft @yungezz @qwordy @haolingdong-msft
-/sdk/**/azure-resourcemanager-*                     @ChenTanyi @weidongxu-microsoft @yungezz @qwordy @haolingdong-msft
-/sdk/**/mgmt*/                                      @weidongxu-microsoft @yungezz
+/sdk/resourcemanager/                               @ChenTanyi @weidongxu-microsoft @arthurma1978 @qwordy @haolingdong-msft
+/sdk/**/azure-resourcemanager-*                     @ChenTanyi @weidongxu-microsoft @arthurma1978 @qwordy @haolingdong-msft
+/sdk/**/mgmt*/                                      @weidongxu-microsoft @arthurma1978
 
 # Quantum
 # PRLabel: %Azure Quantum
@@ -152,7 +152,7 @@
 /eng/code-quality-reports/                          @mssfang @JonathanGiles
 /eng/jacoco-test-coverage/                          @srnagar @JonathanGiles
 /eng/spotbugs-aggregate-report/                     @srnagar @JonathanGiles
-/eng/mgmt/                                          @benbp @weshaggard @danieljurek @ChenTanyi @weidongxu-microsoft @yungezz
+/eng/mgmt/                                          @benbp @weshaggard @danieljurek @ChenTanyi @weidongxu-microsoft @arthurma1978
 /eng/versioning/                                    @benbp @danieljurek @alzimmermsft @samvaity @g2vinay
 /eng/versioning/external_dependencies.txt           @benbp @danieljurek @alzimmermsft @samvaity @g2vinay @saragluna @yiliuTo @chenrujun @backwind1233 @stliu @ZhuXiaoBing-cn @zhichengliu12581 @moarychan @michaelqi793
 /eng/bomgenerator                                   @pallavit @alzimmermsft @srnagar
