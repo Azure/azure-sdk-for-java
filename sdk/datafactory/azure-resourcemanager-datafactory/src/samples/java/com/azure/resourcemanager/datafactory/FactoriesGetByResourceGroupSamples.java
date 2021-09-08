@@ -8,6 +8,11 @@ import com.azure.core.util.Context;
 
 /** Samples for Factories GetByResourceGroup. */
 public final class FactoriesGetByResourceGroupSamples {
+    /*
+     * operationId: Factories_Get
+     * api-version: 2018-06-01
+     * x-ms-examples: Factories_Get
+     */
     /**
      * Sample code: Factories_Get.
      *

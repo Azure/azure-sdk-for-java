@@ -4,47 +4,30 @@
 
 package com.azure.resourcemanager.appservice.fluent.models;
 
-import com.azure.core.annotation.Immutable;
-import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.models.ProxyOnlyResource;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Hybrid Connection key contract. This has the send key name and value for a Hybrid Connection. */
-@JsonFlatten
-@Immutable
-public class HybridConnectionKeyInner extends ProxyOnlyResource {
+@Fluent
+public final class HybridConnectionKeyInner extends ProxyOnlyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(HybridConnectionKeyInner.class);
 
     /*
-     * The name of the send key.
+     * HybridConnectionKey resource specific properties
      */
-    @JsonProperty(value = "properties.sendKeyName", access = JsonProperty.Access.WRITE_ONLY)
-    private String sendKeyName;
-
-    /*
-     * The value of the send key.
-     */
-    @JsonProperty(value = "properties.sendKeyValue", access = JsonProperty.Access.WRITE_ONLY)
-    private String sendKeyValue;
+    @JsonProperty(value = "properties")
+    private HybridConnectionKeyProperties innerProperties;
 
     /**
-     * Get the sendKeyName property: The name of the send key.
+     * Get the innerProperties property: HybridConnectionKey resource specific properties.
      *
-     * @return the sendKeyName value.
+     * @return the innerProperties value.
      */
-    public String sendKeyName() {
-        return this.sendKeyName;
-    }
-
-    /**
-     * Get the sendKeyValue property: The value of the send key.
-     *
-     * @return the sendKeyValue value.
-     */
-    public String sendKeyValue() {
-        return this.sendKeyValue;
+    private HybridConnectionKeyProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /** {@inheritDoc} */
@@ -55,6 +38,24 @@ public class HybridConnectionKeyInner extends ProxyOnlyResource {
     }
 
     /**
+     * Get the sendKeyName property: The name of the send key.
+     *
+     * @return the sendKeyName value.
+     */
+    public String sendKeyName() {
+        return this.innerProperties() == null ? null : this.innerProperties().sendKeyName();
+    }
+
+    /**
+     * Get the sendKeyValue property: The value of the send key.
+     *
+     * @return the sendKeyValue value.
+     */
+    public String sendKeyValue() {
+        return this.innerProperties() == null ? null : this.innerProperties().sendKeyValue();
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -62,5 +63,8 @@ public class HybridConnectionKeyInner extends ProxyOnlyResource {
     @Override
     public void validate() {
         super.validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

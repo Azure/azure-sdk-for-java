@@ -10,7 +10,7 @@ import com.azure.core.util.Context;
 import com.azure.identity.ClientSecretCredential;
 import com.azure.identity.ClientSecretCredentialBuilder;
 import com.azure.monitor.query.models.AggregationType;
-import com.azure.monitor.query.models.Metric;
+import com.azure.monitor.query.models.MetricResult;
 import com.azure.monitor.query.models.MetricsQueryOptions;
 import com.azure.monitor.query.models.MetricsQueryResult;
 
@@ -45,25 +45,25 @@ public class MetricsQuerySample {
                         Arrays.asList("SuccessfulCalls"),
                         new MetricsQueryOptions()
                                 .setMetricNamespace("Microsoft.CognitiveServices/accounts")
-                                .setTimeSpan(new TimeInterval(Duration.ofDays(30)))
-                                .setInterval(Duration.ofHours(1))
+                                .setTimeInterval(new TimeInterval(Duration.ofDays(30)))
+                                .setGranularity(Duration.ofHours(1))
                                 .setTop(100)
                                 .setAggregations(Arrays.asList(AggregationType.AVERAGE, AggregationType.COUNT)),
                         Context.NONE);
 
         MetricsQueryResult metricsQueryResult = metricsResponse.getValue();
-        List<Metric> metrics = metricsQueryResult.getMetrics();
+        List<MetricResult> metrics = metricsQueryResult.getMetrics();
         metrics.stream()
                 .forEach(metric -> {
-                    System.out.println(metric.getMetricsName());
+                    System.out.println(metric.getMetricName());
                     System.out.println(metric.getId());
-                    System.out.println(metric.getType());
+                    System.out.println(metric.getResourceType());
                     System.out.println(metric.getUnit());
                     System.out.println(metric.getTimeSeries().size());
-                    System.out.println(metric.getTimeSeries().get(0).getData().size());
+                    System.out.println(metric.getTimeSeries().get(0).getValues().size());
                     metric.getTimeSeries()
                             .stream()
-                            .flatMap(ts -> ts.getData().stream())
+                            .flatMap(ts -> ts.getValues().stream())
                             .forEach(mv -> System.out.println(mv.getTimeStamp().toString()
                                     + "; Count = " + mv.getCount()
                                     + "; Average = " + mv.getAverage()));

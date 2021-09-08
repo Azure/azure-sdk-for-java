@@ -5,125 +5,133 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.appservice.fluent.models.LegacyMicrosoftAccountProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The LegacyMicrosoftAccount model. */
-@JsonFlatten
+/** The configuration settings of the legacy Microsoft Account provider. */
 @Fluent
-public class LegacyMicrosoftAccount extends ProxyOnlyResource {
+public final class LegacyMicrosoftAccount extends ProxyOnlyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(LegacyMicrosoftAccount.class);
 
     /*
-     * The enabled property.
+     * LegacyMicrosoftAccount resource specific properties
      */
-    @JsonProperty(value = "properties.enabled")
-    private Boolean enabled;
-
-    /*
-     * The registration property.
-     */
-    @JsonProperty(value = "properties.registration")
-    private ClientRegistration registration;
-
-    /*
-     * The login property.
-     */
-    @JsonProperty(value = "properties.login")
-    private LoginScopes login;
-
-    /*
-     * The validation property.
-     */
-    @JsonProperty(value = "properties.validation")
-    private AllowedAudiencesValidation validation;
+    @JsonProperty(value = "properties")
+    private LegacyMicrosoftAccountProperties innerProperties;
 
     /**
-     * Get the enabled property: The enabled property.
+     * Get the innerProperties property: LegacyMicrosoftAccount resource specific properties.
      *
-     * @return the enabled value.
+     * @return the innerProperties value.
      */
-    public Boolean enabled() {
-        return this.enabled;
-    }
-
-    /**
-     * Set the enabled property: The enabled property.
-     *
-     * @param enabled the enabled value to set.
-     * @return the LegacyMicrosoftAccount object itself.
-     */
-    public LegacyMicrosoftAccount withEnabled(Boolean enabled) {
-        this.enabled = enabled;
-        return this;
-    }
-
-    /**
-     * Get the registration property: The registration property.
-     *
-     * @return the registration value.
-     */
-    public ClientRegistration registration() {
-        return this.registration;
-    }
-
-    /**
-     * Set the registration property: The registration property.
-     *
-     * @param registration the registration value to set.
-     * @return the LegacyMicrosoftAccount object itself.
-     */
-    public LegacyMicrosoftAccount withRegistration(ClientRegistration registration) {
-        this.registration = registration;
-        return this;
-    }
-
-    /**
-     * Get the login property: The login property.
-     *
-     * @return the login value.
-     */
-    public LoginScopes login() {
-        return this.login;
-    }
-
-    /**
-     * Set the login property: The login property.
-     *
-     * @param login the login value to set.
-     * @return the LegacyMicrosoftAccount object itself.
-     */
-    public LegacyMicrosoftAccount withLogin(LoginScopes login) {
-        this.login = login;
-        return this;
-    }
-
-    /**
-     * Get the validation property: The validation property.
-     *
-     * @return the validation value.
-     */
-    public AllowedAudiencesValidation validation() {
-        return this.validation;
-    }
-
-    /**
-     * Set the validation property: The validation property.
-     *
-     * @param validation the validation value to set.
-     * @return the LegacyMicrosoftAccount object itself.
-     */
-    public LegacyMicrosoftAccount withValidation(AllowedAudiencesValidation validation) {
-        this.validation = validation;
-        return this;
+    private LegacyMicrosoftAccountProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /** {@inheritDoc} */
     @Override
     public LegacyMicrosoftAccount withKind(String kind) {
         super.withKind(kind);
+        return this;
+    }
+
+    /**
+     * Get the enabled property: &lt;code&gt;false&lt;/code&gt; if the legacy Microsoft Account provider should not be
+     * enabled despite the set registration; otherwise, &lt;code&gt;true&lt;/code&gt;.
+     *
+     * @return the enabled value.
+     */
+    public Boolean enabled() {
+        return this.innerProperties() == null ? null : this.innerProperties().enabled();
+    }
+
+    /**
+     * Set the enabled property: &lt;code&gt;false&lt;/code&gt; if the legacy Microsoft Account provider should not be
+     * enabled despite the set registration; otherwise, &lt;code&gt;true&lt;/code&gt;.
+     *
+     * @param enabled the enabled value to set.
+     * @return the LegacyMicrosoftAccount object itself.
+     */
+    public LegacyMicrosoftAccount withEnabled(Boolean enabled) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new LegacyMicrosoftAccountProperties();
+        }
+        this.innerProperties().withEnabled(enabled);
+        return this;
+    }
+
+    /**
+     * Get the registration property: The configuration settings of the app registration for the legacy Microsoft
+     * Account provider.
+     *
+     * @return the registration value.
+     */
+    public ClientRegistration registration() {
+        return this.innerProperties() == null ? null : this.innerProperties().registration();
+    }
+
+    /**
+     * Set the registration property: The configuration settings of the app registration for the legacy Microsoft
+     * Account provider.
+     *
+     * @param registration the registration value to set.
+     * @return the LegacyMicrosoftAccount object itself.
+     */
+    public LegacyMicrosoftAccount withRegistration(ClientRegistration registration) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new LegacyMicrosoftAccountProperties();
+        }
+        this.innerProperties().withRegistration(registration);
+        return this;
+    }
+
+    /**
+     * Get the login property: The configuration settings of the login flow.
+     *
+     * @return the login value.
+     */
+    public LoginScopes login() {
+        return this.innerProperties() == null ? null : this.innerProperties().login();
+    }
+
+    /**
+     * Set the login property: The configuration settings of the login flow.
+     *
+     * @param login the login value to set.
+     * @return the LegacyMicrosoftAccount object itself.
+     */
+    public LegacyMicrosoftAccount withLogin(LoginScopes login) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new LegacyMicrosoftAccountProperties();
+        }
+        this.innerProperties().withLogin(login);
+        return this;
+    }
+
+    /**
+     * Get the validation property: The configuration settings of the legacy Microsoft Account provider token validation
+     * flow.
+     *
+     * @return the validation value.
+     */
+    public AllowedAudiencesValidation validation() {
+        return this.innerProperties() == null ? null : this.innerProperties().validation();
+    }
+
+    /**
+     * Set the validation property: The configuration settings of the legacy Microsoft Account provider token validation
+     * flow.
+     *
+     * @param validation the validation value to set.
+     * @return the LegacyMicrosoftAccount object itself.
+     */
+    public LegacyMicrosoftAccount withValidation(AllowedAudiencesValidation validation) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new LegacyMicrosoftAccountProperties();
+        }
+        this.innerProperties().withValidation(validation);
         return this;
     }
 
@@ -135,14 +143,8 @@ public class LegacyMicrosoftAccount extends ProxyOnlyResource {
     @Override
     public void validate() {
         super.validate();
-        if (registration() != null) {
-            registration().validate();
-        }
-        if (login() != null) {
-            login().validate();
-        }
-        if (validation() != null) {
-            validation().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

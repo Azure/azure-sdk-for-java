@@ -8,6 +8,11 @@ import com.azure.core.util.Context;
 
 /** Samples for Triggers Start. */
 public final class TriggersStartSamples {
+    /*
+     * operationId: Triggers_Start
+     * api-version: 2018-06-01
+     * x-ms-examples: Triggers_Start
+     */
     /**
      * Sample code: Triggers_Start.
      *

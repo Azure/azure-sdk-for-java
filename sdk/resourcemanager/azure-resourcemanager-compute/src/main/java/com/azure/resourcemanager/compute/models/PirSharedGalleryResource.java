@@ -5,22 +5,30 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.compute.fluent.models.SharedGalleryIdentifier;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Base information about the shared gallery resource in pir. */
-@JsonFlatten
 @Fluent
 public class PirSharedGalleryResource extends PirResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(PirSharedGalleryResource.class);
 
     /*
-     * The unique id of this shared gallery.
+     * The identifier information of shared gallery.
      */
-    @JsonProperty(value = "identifier.uniqueId")
-    private String uniqueId;
+    @JsonProperty(value = "identifier")
+    private SharedGalleryIdentifier innerIdentifier;
+
+    /**
+     * Get the innerIdentifier property: The identifier information of shared gallery.
+     *
+     * @return the innerIdentifier value.
+     */
+    private SharedGalleryIdentifier innerIdentifier() {
+        return this.innerIdentifier;
+    }
 
     /**
      * Get the uniqueId property: The unique id of this shared gallery.
@@ -28,7 +36,7 @@ public class PirSharedGalleryResource extends PirResource {
      * @return the uniqueId value.
      */
     public String uniqueId() {
-        return this.uniqueId;
+        return this.innerIdentifier() == null ? null : this.innerIdentifier().uniqueId();
     }
 
     /**
@@ -38,7 +46,10 @@ public class PirSharedGalleryResource extends PirResource {
      * @return the PirSharedGalleryResource object itself.
      */
     public PirSharedGalleryResource withUniqueId(String uniqueId) {
-        this.uniqueId = uniqueId;
+        if (this.innerIdentifier() == null) {
+            this.innerIdentifier = new SharedGalleryIdentifier();
+        }
+        this.innerIdentifier().withUniqueId(uniqueId);
         return this;
     }
 
@@ -50,5 +61,8 @@ public class PirSharedGalleryResource extends PirResource {
     @Override
     public void validate() {
         super.validate();
+        if (innerIdentifier() != null) {
+            innerIdentifier().validate();
+        }
     }
 }

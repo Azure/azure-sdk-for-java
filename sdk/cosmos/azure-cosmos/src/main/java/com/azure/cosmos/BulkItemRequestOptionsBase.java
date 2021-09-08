@@ -7,10 +7,13 @@ import com.azure.cosmos.implementation.RequestOptions;
 import com.azure.cosmos.util.Beta;
 
 /**
+ * @deprecated forRemoval = true, since = "4.19"
+ *
  * Encapsulates options that can be specified for an operation used in Bulk execution. It can be passed while
  * creating bulk request using {@link BulkOperations}.
  */
 @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+@Deprecated() //forRemoval = true, since = "4.19"
 class BulkItemRequestOptionsBase {
 
     private String ifMatchETag;
@@ -26,6 +29,7 @@ class BulkItemRequestOptionsBase {
      * @return ifMatchETag the ifMatchETag associated with the request.
      */
     @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Deprecated() //forRemoval = true, since = "4.19"
     public String getIfMatchETag() {
         return this.ifMatchETag;
     }
@@ -36,6 +40,7 @@ class BulkItemRequestOptionsBase {
      * @param ifMatchETag the ifMatchETag associated with the request.
      */
     @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Deprecated() //forRemoval = true, since = "4.19"
     public void setIfMatchETagCore(final String ifMatchETag){
         this.ifMatchETag = ifMatchETag;
         return;
@@ -47,6 +52,7 @@ class BulkItemRequestOptionsBase {
      * @return the ifNoneMatchETag associated with the request.
      */
     @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Deprecated() //forRemoval = true, since = "4.19"
     public String getIfNoneMatchETag() {
         return this.ifNoneMatchETag;
     }
@@ -57,6 +63,7 @@ class BulkItemRequestOptionsBase {
      * @param ifNoneMatchEtag the ifNoneMatchETag associated with the request.
      */
     @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Deprecated() //forRemoval = true, since = "4.19"
     public void setIfNoneMatchETagCore(final String ifNoneMatchEtag){
         this.ifNoneMatchETag = ifNoneMatchEtag;
         return;
@@ -76,6 +83,7 @@ class BulkItemRequestOptionsBase {
      * @return a boolean indicating whether payload will be included in the response or not for this operation.
      */
     @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Deprecated() //forRemoval = true, since = "4.19"
     public Boolean isContentResponseOnWriteEnabled() {
         return contentResponseOnWriteEnabled;
     }
@@ -98,6 +106,7 @@ class BulkItemRequestOptionsBase {
      * in the response or not for this operation.
      */
     @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Deprecated() //forRemoval = true, since = "4.19"
     public void setContentResponseOnWriteEnabledCore(Boolean contentResponseOnWriteEnabled){
         this.contentResponseOnWriteEnabled = contentResponseOnWriteEnabled;
         return;

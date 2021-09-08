@@ -767,7 +767,7 @@ class SparkE2EQueryITest
     }
     queryPlan = output.toString.replaceAll("#\\d+", "#x")
     logInfo(s"Query Plan: $queryPlan")
-    val expected = s"Cosmos Query: SELECT * FROM r WHERE NOT(IS_NULL(r['nestedObject'])) " +
+    val expected = s"Cosmos Query: SELECT * FROM r WHERE (NOT(IS_NULL(r['nestedObject'])) AND IS_DEFINED(r['nestedObject'])) " +
       s"AND r['nestedObject']['prop2']=" +
       s"@param0${System.getProperty("line.separator")} > param: @param0 = 6"
     queryPlan.contains(expected) shouldEqual true

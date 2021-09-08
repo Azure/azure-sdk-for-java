@@ -21,9 +21,9 @@ public class PathsHelper {
 
     public static String generatePath(ResourceType resourceType, RxDocumentServiceRequest request, boolean isFeed) {
         if (request.getIsNameBased()) {
-            return generatePathForNameBased(resourceType, request.getResourceAddress(), isFeed);
+            return generatePathForNameBased(resourceType, request.getResourceAddress(), isFeed, request.getOperationType());
         } else {
-            return generatePath(resourceType, request.getResourceId(), isFeed);
+            return generatePath(resourceType, request.getResourceId(), isFeed, request.getOperationType());
         }
     }
 
@@ -63,14 +63,16 @@ public class PathsHelper {
         throw new IllegalArgumentException(errorMessage);
     }
 
-    private static String generatePathForNameBased(ResourceType resourceType, String resourceFullName, boolean isFeed) {
+    private static String generatePathForNameBased(ResourceType resourceType, String resourceFullName, boolean isFeed, OperationType operationType) {
         if (isFeed && Strings.isNullOrEmpty(resourceFullName) && resourceType != ResourceType.Database) {
             String errorMessage = String.format(RMResources.UnexpectedResourceType, resourceType);
             throw new IllegalArgumentException(errorMessage);
         }
 
         String resourcePath = null;
-        if (!isFeed) {
+        if (resourceType == ResourceType.PartitionKey && operationType == OperationType.Delete) {
+            resourcePath = resourceFullName + "/" + Paths.OPERATIONS_PATH_SEGMENT + "/" + Paths.PARTITION_KEY_DELETE_PATH_SEGMENT;
+        } else if (!isFeed) {
             resourcePath = resourceFullName;
         } else if (resourceType == ResourceType.Database) {
             return Paths.DATABASES_PATH_SEGMENT;
@@ -110,6 +112,14 @@ public class PathsHelper {
     }
 
     public static String generatePath(ResourceType resourceType, String ownerOrResourceId, boolean isFeed) {
+        if (resourceType == ResourceType.PartitionKey) {
+            return generatePath(resourceType, ownerOrResourceId, isFeed, OperationType.Delete);
+        } else {
+            return generatePath(resourceType, ownerOrResourceId, isFeed, null);
+        }
+    }
+
+    private static String generatePath(ResourceType resourceType, String ownerOrResourceId, boolean isFeed, OperationType operationType) {
         if (isFeed && (ownerOrResourceId == null || ownerOrResourceId.isEmpty()) &&
             resourceType != ResourceType.Database &&
             resourceType != ResourceType.Offer &&
@@ -277,6 +287,12 @@ public class PathsHelper {
             ResourceId clientEncryptionKeyId = ResourceId.parse(ownerOrResourceId);
             return Paths.DATABASES_PATH_SEGMENT + "/" + clientEncryptionKeyId.getDatabaseId().toString() + "/" +
                 Paths.CLIENT_ENCRYPTION_KEY_PATH_SEGMENT + "/" + clientEncryptionKeyId.getClientEncryptionKeyId().toString();
+        } else if (resourceType == ResourceType.PartitionKey && operationType == OperationType.Delete) {
+            ResourceId documentCollectionId = ResourceId.parse(ownerOrResourceId);
+
+            return Paths.DATABASES_PATH_SEGMENT + "/" + documentCollectionId.getDatabaseId().toString() + "/" +
+                Paths.COLLECTIONS_PATH_SEGMENT + "/" + documentCollectionId.getDocumentCollectionId().toString() + "/" +
+                Paths.OPERATIONS_PATH_SEGMENT + "/" + Paths.PARTITION_KEY_DELETE_PATH_SEGMENT;
         }
 
         String errorMessage = "invalid resource type";
@@ -783,6 +799,9 @@ public class PathsHelper {
                 }
             } else if(resourceType == ResourceType.PartitionKeyRange) {
                 segments.add(Paths.PARTITION_KEY_RANGES_PATH_SEGMENT);
+            } else if (resourceType == ResourceType.PartitionKey) {
+                segments.add(Paths.COLLECTIONS_PATH_SEGMENT);
+                segments.add(Paths.OPERATIONS_PATH_SEGMENT);
             }
         } else if (resourceType != ResourceType.Database) {
             return null;

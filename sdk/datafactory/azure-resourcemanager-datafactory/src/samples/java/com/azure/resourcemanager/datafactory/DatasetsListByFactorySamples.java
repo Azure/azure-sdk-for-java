@@ -8,6 +8,11 @@ import com.azure.core.util.Context;
 
 /** Samples for Datasets ListByFactory. */
 public final class DatasetsListByFactorySamples {
+    /*
+     * operationId: Datasets_ListByFactory
+     * api-version: 2018-06-01
+     * x-ms-examples: Datasets_ListByFactory
+     */
     /**
      * Sample code: Datasets_ListByFactory.
      *

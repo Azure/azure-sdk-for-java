@@ -8,6 +8,11 @@ import com.azure.core.util.Context;
 
 /** Samples for IntegrationRuntimes ListOutboundNetworkDependenciesEndpoints. */
 public final class IntegrationRuntimesListOutboundNetworkDependenciesEndpointsSamples {
+    /*
+     * operationId: IntegrationRuntimes_ListOutboundNetworkDependenciesEndpoints
+     * api-version: 2018-06-01
+     * x-ms-examples: IntegrationRuntimes_OutboundNetworkDependenciesEndpoints
+     */
     /**
      * Sample code: IntegrationRuntimes_OutboundNetworkDependenciesEndpoints.
      *

@@ -3,14 +3,14 @@
 
 package com.azure.cosmos.implementation.batch;
 
-import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.CosmosItemOperation;
-import com.azure.cosmos.CosmosItemOperationType;
-import com.azure.cosmos.CosmosPatchOperations;
 import com.azure.cosmos.implementation.JsonSerializable;
 import com.azure.cosmos.implementation.RequestOptions;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.patch.PatchUtil;
+import com.azure.cosmos.models.CosmosItemOperation;
+import com.azure.cosmos.models.CosmosItemOperationType;
+import com.azure.cosmos.models.CosmosPatchOperations;
+import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
@@ -58,7 +58,7 @@ public final class ItemBatchOperation<TInternal> implements CosmosItemOperation 
 
         jsonSerializable.set(
             BatchRequestResponseConstants.FIELD_OPERATION_TYPE,
-            BridgeInternal.getOperationValueForCosmosItemOperationType(this.getOperationType()));
+            ModelBridgeInternal.getOperationValueForCosmosItemOperationType(this.getOperationType()));
 
         if (StringUtils.isNotEmpty(this.getId())) {
             jsonSerializable.set(BatchRequestResponseConstants.FIELD_ID, this.getId());
@@ -67,7 +67,7 @@ public final class ItemBatchOperation<TInternal> implements CosmosItemOperation 
         if (this.getItemInternal() != null) {
             if (this.getOperationType() == CosmosItemOperationType.PATCH) {
                 jsonSerializable.set(BatchRequestResponseConstants.FIELD_RESOURCE_BODY,
-                    PatchUtil.serializableBatchPatchOperation((CosmosPatchOperations)this.getItemInternal(), this.getRequestOptions()));
+                    PatchUtil.serializableBatchPatchOperation((CosmosPatchOperations) this.getItemInternal(), this.getRequestOptions()));
             } else {
                 jsonSerializable.set(BatchRequestResponseConstants.FIELD_RESOURCE_BODY, this.getItemInternal());
             }

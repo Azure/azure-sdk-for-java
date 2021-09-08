@@ -28,6 +28,13 @@ public final class BlobInventoryPolicyRule {
     private String name;
 
     /*
+     * Container name where blob inventory files are stored. Must be
+     * pre-created.
+     */
+    @JsonProperty(value = "destination", required = true)
+    private String destination;
+
+    /*
      * An object that defines the blob inventory policy rule.
      */
     @JsonProperty(value = "definition", required = true)
@@ -76,6 +83,26 @@ public final class BlobInventoryPolicyRule {
     }
 
     /**
+     * Get the destination property: Container name where blob inventory files are stored. Must be pre-created.
+     *
+     * @return the destination value.
+     */
+    public String destination() {
+        return this.destination;
+    }
+
+    /**
+     * Set the destination property: Container name where blob inventory files are stored. Must be pre-created.
+     *
+     * @param destination the destination value to set.
+     * @return the BlobInventoryPolicyRule object itself.
+     */
+    public BlobInventoryPolicyRule withDestination(String destination) {
+        this.destination = destination;
+        return this;
+    }
+
+    /**
      * Get the definition property: An object that defines the blob inventory policy rule.
      *
      * @return the definition value.
@@ -105,6 +132,12 @@ public final class BlobInventoryPolicyRule {
             throw logger
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property name in model BlobInventoryPolicyRule"));
+        }
+        if (destination() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property destination in model BlobInventoryPolicyRule"));
         }
         if (definition() == null) {
             throw logger

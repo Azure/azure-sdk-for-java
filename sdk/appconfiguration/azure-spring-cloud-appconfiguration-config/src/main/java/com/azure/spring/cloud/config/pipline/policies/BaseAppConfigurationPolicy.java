@@ -2,8 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.config.pipline.policies;
 
-import org.apache.commons.lang3.StringUtils;
-import org.apache.http.HttpHeaders;
+import org.springframework.util.StringUtils;
 
 import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
@@ -19,12 +18,14 @@ import reactor.core.publisher.Mono;
 /**
  * HttpPipelinePolicy for connecting to Azure App Configuration.
  */
-public class BaseAppConfigurationPolicy implements HttpPipelinePolicy {
+public final class BaseAppConfigurationPolicy implements HttpPipelinePolicy {
 
     private static final String PACKAGE_NAME = BaseAppConfigurationPolicy.class.getPackage().getImplementationTitle();
 
-    public static final String USER_AGENT = String.format("%s/%s", StringUtils.remove(PACKAGE_NAME, " "),
+    public static final String USER_AGENT = String.format("%s/%s", StringUtils.replace(PACKAGE_NAME, " ", ""),
         BaseAppConfigurationPolicy.class.getPackage().getImplementationVersion());
+    
+    public static final String USER_AGENT_TYPE = "User-Agent";
 
     static Boolean watchRequests = false;
 
@@ -80,9 +81,9 @@ public class BaseAppConfigurationPolicy implements HttpPipelinePolicy {
 
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-        String sdkUserAgent = context.getHttpRequest().getHeaders().get(HttpHeaders.USER_AGENT).getValue();
-        context.getHttpRequest().getHeaders().put(HttpHeaders.USER_AGENT, USER_AGENT + " " + sdkUserAgent);
-        context.getHttpRequest().getHeaders().put(RequestTracingConstants.CORRELATION_CONTEXT_HEADER.toString(),
+        String sdkUserAgent = context.getHttpRequest().getHeaders().get(USER_AGENT_TYPE).getValue();
+        context.getHttpRequest().getHeaders().set(USER_AGENT_TYPE, USER_AGENT + " " + sdkUserAgent);
+        context.getHttpRequest().getHeaders().set(RequestTracingConstants.CORRELATION_CONTEXT_HEADER.toString(),
             getTracingInfo(context.getHttpRequest()));
         return next.process();
     }

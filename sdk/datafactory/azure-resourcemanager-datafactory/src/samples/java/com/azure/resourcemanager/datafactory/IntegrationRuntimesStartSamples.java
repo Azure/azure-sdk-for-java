@@ -8,6 +8,11 @@ import com.azure.core.util.Context;
 
 /** Samples for IntegrationRuntimes Start. */
 public final class IntegrationRuntimesStartSamples {
+    /*
+     * operationId: IntegrationRuntimes_Start
+     * api-version: 2018-06-01
+     * x-ms-examples: IntegrationRuntimes_Start
+     */
     /**
      * Sample code: IntegrationRuntimes_Start.
      *

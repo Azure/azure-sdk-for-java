@@ -13,7 +13,8 @@ public final class TestConstants {
     public static final String CONN_STRING_PROP_NEW =
         "spring.cloud.azure.appconfiguration.stores[1].connection-string";
     public static final String STORE_ENDPOINT_PROP = "spring.cloud.azure.appconfiguration.stores[0].endpoint";
-    public static final String LABEL_PROP = "spring.cloud.azure.appconfiguration.stores[0].label";
+    public static final String KEY_PROP = "spring.cloud.azure.appconfiguration.stores[0].selects[0].key-filter";
+    public static final String LABEL_PROP = "spring.cloud.azure.appconfiguration.stores[0].selects[0].label-filter";
     public static final String WATCHED_KEY_PROP = "spring.cloud.azure.appconfiguration.stores[0].watched-key";
     public static final String CLIENT_ID = "spring.cloud.azure.appconfiguration.managed-identity.client-id";
     public static final String DEFAULT_CONTEXT_PROP = "spring.cloud.azure.appconfiguration.default-context";

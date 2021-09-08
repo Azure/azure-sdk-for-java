@@ -12,6 +12,7 @@ import com.azure.cosmos.implementation.DatabaseAccount;
 import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.FeedResponseDiagnostics;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.InternalObjectNode;
 import com.azure.cosmos.implementation.JsonSerializable;
 import com.azure.cosmos.implementation.MetadataDiagnosticsContext;
@@ -38,6 +39,7 @@ import com.azure.cosmos.implementation.patch.PatchOperation;
 import com.azure.cosmos.implementation.query.QueryInfo;
 import com.azure.cosmos.implementation.query.metrics.ClientSideMetrics;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
+import com.azure.cosmos.models.CosmosBulkExecutionOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosStoredProcedureProperties;
 import com.azure.cosmos.models.FeedResponse;
@@ -833,5 +835,89 @@ public final class BridgeInternal {
         } else {
             return null;
         }
+    }
+
+    //  This is only temporary, and will be removed once we delete BulkExecutionOptions
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static CosmosBulkExecutionOptions createCosmosBulkExecutionOptions(BulkExecutionOptions bulkExecutionOptions) {
+        return bulkExecutionOptions.toCosmosBulkExecutionOptions();
+    }
+
+    //  This is only temporary, and will be removed once we delete CosmosItemOperationType
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static CosmosItemOperationType toDeprecatedCosmosItemOperationType(com.azure.cosmos.models.CosmosItemOperationType cosmosItemOperationType) {
+        switch (cosmosItemOperationType) {
+            case CREATE:
+                return CosmosItemOperationType.CREATE;
+            case DELETE:
+                return CosmosItemOperationType.DELETE;
+            case PATCH:
+                return CosmosItemOperationType.PATCH;
+            case READ:
+                return CosmosItemOperationType.READ;
+            case UPSERT:
+                return CosmosItemOperationType.UPSERT;
+            case REPLACE:
+                return CosmosItemOperationType.REPLACE;
+            default:
+                throw new UnsupportedOperationException("CosmosOperationType : " + cosmosItemOperationType + " is not supported");
+        }
+    }
+
+    //  This is only temporary, and will be removed once we delete CosmosItemOperation
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static CosmosItemOperation toDeprecatedCosmosItemOperation(com.azure.cosmos.models.CosmosItemOperation cosmosItemOperation) {
+        return new CosmosItemOperation() {
+            @Override
+            public String getId() {
+                return cosmosItemOperation.getId();
+            }
+
+            @Override
+            public PartitionKey getPartitionKeyValue() {
+                return cosmosItemOperation.getPartitionKeyValue();
+            }
+
+            @Override
+            public com.azure.cosmos.CosmosItemOperationType getOperationType() {
+                return toDeprecatedCosmosItemOperationType(cosmosItemOperation.getOperationType());
+            }
+
+            @Override
+            public <T> T getItem() {
+                return cosmosItemOperation.getItem();
+            }
+
+            @Override
+            public <T> T getContext() {
+                return cosmosItemOperation.getContext();
+            }
+        };
+    }
+
+
+    //  This is only temporary, and will be removed once we delete CosmosBulkItemResponse
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static CosmosBulkItemResponse toDeprecatedCosmosBulkItemResponse(com.azure.cosmos.models.CosmosBulkItemResponse cosmosBulkItemResponse) {
+        return new CosmosBulkItemResponse(cosmosBulkItemResponse.getETag(),
+            cosmosBulkItemResponse.getRequestCharge(),
+            ImplementationBridgeHelpers
+                .CosmosBulkItemResponseHelper
+                .getCosmosBulkItemResponseAccessor()
+                .getResourceObject(cosmosBulkItemResponse),
+            cosmosBulkItemResponse.getStatusCode(),
+            cosmosBulkItemResponse.getRetryAfterDuration(),
+            cosmosBulkItemResponse.getSubStatusCode(),
+            cosmosBulkItemResponse.getResponseHeaders(),
+            cosmosBulkItemResponse.getCosmosDiagnostics());
+    }
+
+    //  This is only temporary, and will be removed once we delete CosmosBulkOperationResponse
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static <TContext> CosmosBulkOperationResponse<TContext> toDeprecatedCosmosBulkOperationResponse(com.azure.cosmos.models.CosmosBulkOperationResponse<TContext> cosmosBulkOperationResponse) {
+        return new CosmosBulkOperationResponse<TContext>(toDeprecatedCosmosItemOperation(cosmosBulkOperationResponse.getOperation()),
+            toDeprecatedCosmosBulkItemResponse(cosmosBulkOperationResponse.getResponse()),
+            cosmosBulkOperationResponse.getException(),
+            cosmosBulkOperationResponse.getBatchContext());
     }
 }

@@ -6,9 +6,16 @@ package com.azure.resourcemanager.datafactory;
 
 import com.azure.resourcemanager.datafactory.models.ManagedPrivateEndpoint;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 /** Samples for ManagedPrivateEndpoints CreateOrUpdate. */
 public final class ManagedPrivateEndpointsCreateOrUpdateSamples {
+    /*
+     * operationId: ManagedPrivateEndpoints_CreateOrUpdate
+     * api-version: 2018-06-01
+     * x-ms-examples: ManagedVirtualNetworks_Create
+     */
     /**
      * Sample code: ManagedVirtualNetworks_Create.
      *
@@ -25,7 +32,19 @@ public final class ManagedPrivateEndpointsCreateOrUpdateSamples {
                     .withFqdns(Arrays.asList())
                     .withGroupId("blob")
                     .withPrivateLinkResourceId(
-                        "/subscriptions/12345678-1234-1234-1234-12345678abc/resourceGroups/exampleResourceGroup/providers/Microsoft.Storage/storageAccounts/exampleBlobStorage"))
+                        "/subscriptions/12345678-1234-1234-1234-12345678abc/resourceGroups/exampleResourceGroup/providers/Microsoft.Storage/storageAccounts/exampleBlobStorage")
+                    .withAdditionalProperties(mapOf()))
             .create();
+    }
+
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
     }
 }

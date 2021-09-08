@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ProvisioningState;
@@ -14,10 +13,15 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** HubVirtualNetworkConnection Resource. */
-@JsonFlatten
 @Fluent
-public class HubVirtualNetworkConnectionInner extends SubResource {
+public final class HubVirtualNetworkConnectionInner extends SubResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(HubVirtualNetworkConnectionInner.class);
+
+    /*
+     * Properties of the hub virtual network connection.
+     */
+    @JsonProperty(value = "properties")
+    private HubVirtualNetworkConnectionProperties innerProperties;
 
     /*
      * The name of the resource that is unique within a resource group. This
@@ -32,42 +36,14 @@ public class HubVirtualNetworkConnectionInner extends SubResource {
     @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
-    /*
-     * Reference to the remote virtual network.
+    /**
+     * Get the innerProperties property: Properties of the hub virtual network connection.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.remoteVirtualNetwork")
-    private SubResource remoteVirtualNetwork;
-
-    /*
-     * Deprecated: VirtualHub to RemoteVnet transit to enabled or not.
-     */
-    @JsonProperty(value = "properties.allowHubToRemoteVnetTransit")
-    private Boolean allowHubToRemoteVnetTransit;
-
-    /*
-     * Deprecated: Allow RemoteVnet to use Virtual Hub's gateways.
-     */
-    @JsonProperty(value = "properties.allowRemoteVnetToUseHubVnetGateways")
-    private Boolean allowRemoteVnetToUseHubVnetGateways;
-
-    /*
-     * Enable internet security.
-     */
-    @JsonProperty(value = "properties.enableInternetSecurity")
-    private Boolean enableInternetSecurity;
-
-    /*
-     * The Routing Configuration indicating the associated and propagated route
-     * tables on this connection.
-     */
-    @JsonProperty(value = "properties.routingConfiguration")
-    private RoutingConfiguration routingConfiguration;
-
-    /*
-     * The provisioning state of the hub virtual network connection resource.
-     */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningState provisioningState;
+    private HubVirtualNetworkConnectionProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the name property: The name of the resource that is unique within a resource group. This name can be used to
@@ -100,13 +76,20 @@ public class HubVirtualNetworkConnectionInner extends SubResource {
         return this.etag;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public HubVirtualNetworkConnectionInner withId(String id) {
+        super.withId(id);
+        return this;
+    }
+
     /**
      * Get the remoteVirtualNetwork property: Reference to the remote virtual network.
      *
      * @return the remoteVirtualNetwork value.
      */
     public SubResource remoteVirtualNetwork() {
-        return this.remoteVirtualNetwork;
+        return this.innerProperties() == null ? null : this.innerProperties().remoteVirtualNetwork();
     }
 
     /**
@@ -116,7 +99,10 @@ public class HubVirtualNetworkConnectionInner extends SubResource {
      * @return the HubVirtualNetworkConnectionInner object itself.
      */
     public HubVirtualNetworkConnectionInner withRemoteVirtualNetwork(SubResource remoteVirtualNetwork) {
-        this.remoteVirtualNetwork = remoteVirtualNetwork;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new HubVirtualNetworkConnectionProperties();
+        }
+        this.innerProperties().withRemoteVirtualNetwork(remoteVirtualNetwork);
         return this;
     }
 
@@ -126,7 +112,7 @@ public class HubVirtualNetworkConnectionInner extends SubResource {
      * @return the allowHubToRemoteVnetTransit value.
      */
     public Boolean allowHubToRemoteVnetTransit() {
-        return this.allowHubToRemoteVnetTransit;
+        return this.innerProperties() == null ? null : this.innerProperties().allowHubToRemoteVnetTransit();
     }
 
     /**
@@ -136,7 +122,10 @@ public class HubVirtualNetworkConnectionInner extends SubResource {
      * @return the HubVirtualNetworkConnectionInner object itself.
      */
     public HubVirtualNetworkConnectionInner withAllowHubToRemoteVnetTransit(Boolean allowHubToRemoteVnetTransit) {
-        this.allowHubToRemoteVnetTransit = allowHubToRemoteVnetTransit;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new HubVirtualNetworkConnectionProperties();
+        }
+        this.innerProperties().withAllowHubToRemoteVnetTransit(allowHubToRemoteVnetTransit);
         return this;
     }
 
@@ -146,7 +135,7 @@ public class HubVirtualNetworkConnectionInner extends SubResource {
      * @return the allowRemoteVnetToUseHubVnetGateways value.
      */
     public Boolean allowRemoteVnetToUseHubVnetGateways() {
-        return this.allowRemoteVnetToUseHubVnetGateways;
+        return this.innerProperties() == null ? null : this.innerProperties().allowRemoteVnetToUseHubVnetGateways();
     }
 
     /**
@@ -157,7 +146,10 @@ public class HubVirtualNetworkConnectionInner extends SubResource {
      */
     public HubVirtualNetworkConnectionInner withAllowRemoteVnetToUseHubVnetGateways(
         Boolean allowRemoteVnetToUseHubVnetGateways) {
-        this.allowRemoteVnetToUseHubVnetGateways = allowRemoteVnetToUseHubVnetGateways;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new HubVirtualNetworkConnectionProperties();
+        }
+        this.innerProperties().withAllowRemoteVnetToUseHubVnetGateways(allowRemoteVnetToUseHubVnetGateways);
         return this;
     }
 
@@ -167,7 +159,7 @@ public class HubVirtualNetworkConnectionInner extends SubResource {
      * @return the enableInternetSecurity value.
      */
     public Boolean enableInternetSecurity() {
-        return this.enableInternetSecurity;
+        return this.innerProperties() == null ? null : this.innerProperties().enableInternetSecurity();
     }
 
     /**
@@ -177,7 +169,10 @@ public class HubVirtualNetworkConnectionInner extends SubResource {
      * @return the HubVirtualNetworkConnectionInner object itself.
      */
     public HubVirtualNetworkConnectionInner withEnableInternetSecurity(Boolean enableInternetSecurity) {
-        this.enableInternetSecurity = enableInternetSecurity;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new HubVirtualNetworkConnectionProperties();
+        }
+        this.innerProperties().withEnableInternetSecurity(enableInternetSecurity);
         return this;
     }
 
@@ -188,7 +183,7 @@ public class HubVirtualNetworkConnectionInner extends SubResource {
      * @return the routingConfiguration value.
      */
     public RoutingConfiguration routingConfiguration() {
-        return this.routingConfiguration;
+        return this.innerProperties() == null ? null : this.innerProperties().routingConfiguration();
     }
 
     /**
@@ -199,7 +194,10 @@ public class HubVirtualNetworkConnectionInner extends SubResource {
      * @return the HubVirtualNetworkConnectionInner object itself.
      */
     public HubVirtualNetworkConnectionInner withRoutingConfiguration(RoutingConfiguration routingConfiguration) {
-        this.routingConfiguration = routingConfiguration;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new HubVirtualNetworkConnectionProperties();
+        }
+        this.innerProperties().withRoutingConfiguration(routingConfiguration);
         return this;
     }
 
@@ -209,14 +207,7 @@ public class HubVirtualNetworkConnectionInner extends SubResource {
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
-        return this.provisioningState;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public HubVirtualNetworkConnectionInner withId(String id) {
-        super.withId(id);
-        return this;
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
     /**
@@ -225,8 +216,8 @@ public class HubVirtualNetworkConnectionInner extends SubResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (routingConfiguration() != null) {
-            routingConfiguration().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

@@ -7,6 +7,7 @@ package com.azure.resourcemanager.servicefabric.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
@@ -49,6 +50,7 @@ public final class ArmApplicationHealthPolicy {
      * is empty by default.
      */
     @JsonProperty(value = "serviceTypeHealthPolicyMap")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, ArmServiceTypeHealthPolicy> serviceTypeHealthPolicyMap;
 
     /**

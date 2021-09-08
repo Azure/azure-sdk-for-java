@@ -11,6 +11,11 @@ import java.util.Map;
 
 /** Samples for Factories Update. */
 public final class FactoriesUpdateSamples {
+    /*
+     * operationId: Factories_Update
+     * api-version: 2018-06-01
+     * x-ms-examples: Factories_Update
+     */
     /**
      * Sample code: Factories_Update.
      *

@@ -5,99 +5,106 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.appservice.fluent.models.AppleProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The Apple model. */
-@JsonFlatten
+/** The configuration settings of the Apple provider. */
 @Fluent
-public class Apple extends ProxyOnlyResource {
+public final class Apple extends ProxyOnlyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(Apple.class);
 
     /*
-     * The enabled property.
+     * Apple resource specific properties
      */
-    @JsonProperty(value = "properties.enabled")
-    private Boolean enabled;
-
-    /*
-     * The registration property.
-     */
-    @JsonProperty(value = "properties.registration")
-    private AppleRegistration registration;
-
-    /*
-     * The login property.
-     */
-    @JsonProperty(value = "properties.login")
-    private LoginScopes login;
+    @JsonProperty(value = "properties")
+    private AppleProperties innerProperties;
 
     /**
-     * Get the enabled property: The enabled property.
+     * Get the innerProperties property: Apple resource specific properties.
      *
-     * @return the enabled value.
+     * @return the innerProperties value.
      */
-    public Boolean enabled() {
-        return this.enabled;
-    }
-
-    /**
-     * Set the enabled property: The enabled property.
-     *
-     * @param enabled the enabled value to set.
-     * @return the Apple object itself.
-     */
-    public Apple withEnabled(Boolean enabled) {
-        this.enabled = enabled;
-        return this;
-    }
-
-    /**
-     * Get the registration property: The registration property.
-     *
-     * @return the registration value.
-     */
-    public AppleRegistration registration() {
-        return this.registration;
-    }
-
-    /**
-     * Set the registration property: The registration property.
-     *
-     * @param registration the registration value to set.
-     * @return the Apple object itself.
-     */
-    public Apple withRegistration(AppleRegistration registration) {
-        this.registration = registration;
-        return this;
-    }
-
-    /**
-     * Get the login property: The login property.
-     *
-     * @return the login value.
-     */
-    public LoginScopes login() {
-        return this.login;
-    }
-
-    /**
-     * Set the login property: The login property.
-     *
-     * @param login the login value to set.
-     * @return the Apple object itself.
-     */
-    public Apple withLogin(LoginScopes login) {
-        this.login = login;
-        return this;
+    private AppleProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /** {@inheritDoc} */
     @Override
     public Apple withKind(String kind) {
         super.withKind(kind);
+        return this;
+    }
+
+    /**
+     * Get the enabled property: &lt;code&gt;false&lt;/code&gt; if the Apple provider should not be enabled despite the
+     * set registration; otherwise, &lt;code&gt;true&lt;/code&gt;.
+     *
+     * @return the enabled value.
+     */
+    public Boolean enabled() {
+        return this.innerProperties() == null ? null : this.innerProperties().enabled();
+    }
+
+    /**
+     * Set the enabled property: &lt;code&gt;false&lt;/code&gt; if the Apple provider should not be enabled despite the
+     * set registration; otherwise, &lt;code&gt;true&lt;/code&gt;.
+     *
+     * @param enabled the enabled value to set.
+     * @return the Apple object itself.
+     */
+    public Apple withEnabled(Boolean enabled) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AppleProperties();
+        }
+        this.innerProperties().withEnabled(enabled);
+        return this;
+    }
+
+    /**
+     * Get the registration property: The configuration settings of the Apple registration.
+     *
+     * @return the registration value.
+     */
+    public AppleRegistration registration() {
+        return this.innerProperties() == null ? null : this.innerProperties().registration();
+    }
+
+    /**
+     * Set the registration property: The configuration settings of the Apple registration.
+     *
+     * @param registration the registration value to set.
+     * @return the Apple object itself.
+     */
+    public Apple withRegistration(AppleRegistration registration) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AppleProperties();
+        }
+        this.innerProperties().withRegistration(registration);
+        return this;
+    }
+
+    /**
+     * Get the login property: The configuration settings of the login flow.
+     *
+     * @return the login value.
+     */
+    public LoginScopes login() {
+        return this.innerProperties() == null ? null : this.innerProperties().login();
+    }
+
+    /**
+     * Set the login property: The configuration settings of the login flow.
+     *
+     * @param login the login value to set.
+     * @return the Apple object itself.
+     */
+    public Apple withLogin(LoginScopes login) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AppleProperties();
+        }
+        this.innerProperties().withLogin(login);
         return this;
     }
 
@@ -109,11 +116,8 @@ public class Apple extends ProxyOnlyResource {
     @Override
     public void validate() {
         super.validate();
-        if (registration() != null) {
-            registration().validate();
-        }
-        if (login() != null) {
-            login().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }
