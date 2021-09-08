@@ -193,60 +193,6 @@ public class AADClientRegistrationRepositoryTest {
             });
     }
 
-    @Test
-    public void testNoGroupIdAndGroupNameConfigured() {
-        webApplicationContextRunner()
-            .run(context -> {
-                ClientRegistrationRepository repository = context.getBean(ClientRegistrationRepository.class);
-                ClientRegistration azure = repository.findByRegistrationId(AZURE_CLIENT_REGISTRATION_ID);
-                assertEquals(new HashSet<>(Arrays.asList("openid", "profile", "offline_access")), azure.getScopes());
-            });
-    }
-
-    @Test
-    public void testGroupNameConfigured() {
-        webApplicationContextRunner()
-            .withPropertyValues("azure.activedirectory.user-group.allowed-group-names = group1, group2")
-            .run(context -> {
-                ClientRegistrationRepository repository = context.getBean(ClientRegistrationRepository.class);
-                ClientRegistration azure = repository.findByRegistrationId(AZURE_CLIENT_REGISTRATION_ID);
-                assertEquals(
-                    new HashSet<>(Arrays.asList(
-                        "openid", "profile", "offline_access", "https://graph.microsoft.com/Directory.Read.All")),
-                    azure.getScopes());
-            });
-    }
-
-    @Test
-    public void testGroupIdConfigured() {
-        webApplicationContextRunner()
-            .withPropertyValues(
-                "azure.activedirectory.user-group.allowed-group-ids = 7c3a5d22-9093-42d7-b2eb-e72d06bf3718")
-            .run(context -> {
-                ClientRegistrationRepository repository = context.getBean(ClientRegistrationRepository.class);
-                ClientRegistration azure = repository.findByRegistrationId(AZURE_CLIENT_REGISTRATION_ID);
-                assertEquals(
-                    new HashSet<>(Arrays.asList(
-                        "openid", "profile", "offline_access", "https://graph.microsoft.com/User.Read")),
-                    azure.getScopes());
-            });
-    }
-
-    @Test
-    public void testGroupNameAndGroupIdConfigured() {
-        webApplicationContextRunner()
-            .withPropertyValues(
-                "azure.activedirectory.user-group.allowed-group-names = group1, group2",
-                "azure.activedirectory.user-group.allowed-group-ids = 7c3a5d22-9093-42d7-b2eb-e72d06bf3718")
-            .run(context -> {
-                ClientRegistrationRepository repository = context.getBean(ClientRegistrationRepository.class);
-                ClientRegistration azure = repository.findByRegistrationId(AZURE_CLIENT_REGISTRATION_ID);
-                assertEquals(
-                    new HashSet<>(Arrays.asList(
-                        "openid", "profile", "offline_access", "https://graph.microsoft.com/Directory.Read.All")),
-                    azure.getScopes());
-            });
-    }
 
     @Test
     public void haveResourceServerScopeInAccessTokenWhenThereAreMultiResourceServerScopesInAuthCode() {
