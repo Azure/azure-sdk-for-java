@@ -94,8 +94,6 @@ public class DataLoader {
 
         // We want to wait longer depending on the number of documents in each iteration
         final CosmosBulkExecutionOptions cosmosBulkExecutionOptions = new CosmosBulkExecutionOptions();
-        cosmosBulkExecutionOptions.setMaxMicroBatchSize(MAX_BATCH_SIZE);
-        cosmosBulkExecutionOptions.setMaxMicroBatchConcurrency(BULK_OPERATION_CONCURRENCY);
         container.executeBulkOperations(Flux.fromIterable(cosmosItemOperations), cosmosBulkExecutionOptions)
             .blockLast(BATCH_DATA_LOAD_WAIT_DURATION);
 
