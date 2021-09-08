@@ -726,7 +726,7 @@ public class CosmosEncryptionAsyncContainer {
                                                                boolean isRetry) {
         setRequestHeaders(requestOptions);
         return this.container.executeCosmosBatch(encryptedCosmosBatch, requestOptions).flatMap(cosmosBatchResponse -> {
-            // FIXME this should check for BadRequest StatusCode too, requires a service fix to return 400 instead of
+            // TODO this should check for BadRequest StatusCode too, requires a service fix to return 400 instead of
             //  -1 which is currently returned inside the body.
             //  Once fixed from service below if condition can be removed, as this is already covered in onErrorResume.
             if (!isRetry && cosmosBatchResponse.getSubStatusCode() == Integer.valueOf(Constants.INCORRECT_CONTAINER_RID_SUB_STATUS)) {
@@ -753,8 +753,6 @@ public class CosmosEncryptionAsyncContainer {
         }).onErrorResume(exception -> {
             if (!isRetry && exception instanceof CosmosException) {
                 final CosmosException cosmosException = (CosmosException) exception;
-                // FIXME this should check for BadRequest StatusCode too, requires a service fix to return 400
-                //  instead of -1 which is currently returned.
                 if (isIncorrectContainerRid(cosmosException)) {
                     this.encryptionProcessor.getIsEncryptionSettingsInitDone().set(false);
                     return this.encryptionProcessor.initializeEncryptionSettingsAsync(true).then
