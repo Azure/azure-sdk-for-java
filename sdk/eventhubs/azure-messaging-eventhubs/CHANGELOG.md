@@ -1,10 +1,27 @@
 # Release History
 
-## 5.10.0-beta.1 (Unreleased)
+## 5.11.0-beta.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 5.10.0 (2021-08-19)
 
 ### Features Added
 
 - Add `EventProcessorClientBuilder.prefetchCount(int)` overload.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Update `azure-core` dependency to `1.19.0`.
+- Update `azure-core-amqp` dependency to `2.3.1`.
 
 ## 5.9.0 (2021-07-09)
 

@@ -16,7 +16,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-data-schemaregistry-avro</artifactId>
-  <version>1.0.0-beta.5</version> <!-- {x-version-update;com.azure:azure-data-schemaregistry-avro;current} -->
+  <version>1.0.0-beta.6</version> <!-- {x-version-update;com.azure:azure-data-schemaregistry-avro;current} -->
 
   <name>Microsoft Azure Schema Registry - Avro-specific package for client library</name>
   <description>Avro-specific package for Azure Schema Registry client library</description>
@@ -39,19 +39,19 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-data-schemaregistry</artifactId>
-      <version>1.0.0-beta.5</version> <!-- {x-version-update;com.azure:azure-data-schemaregistry;current} -->
+      <version>1.0.0-beta.6</version> <!-- {x-version-update;com.azure:azure-data-schemaregistry;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-serializer-avro-apache</artifactId>
-      <version>1.0.0-beta.13</version> <!-- {x-version-update;com.azure:azure-core-serializer-avro-apache;dependency} -->
+      <version>1.0.0-beta.14</version> <!-- {x-version-update;com.azure:azure-core-serializer-avro-apache;dependency} -->
     </dependency>
 
     <!-- Test dependencies -->
     <dependency>
       <groupId>io.projectreactor</groupId>
       <artifactId>reactor-test</artifactId>
-      <version>3.4.8</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
+      <version>3.4.9</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -141,6 +141,7 @@
             <configuration>
               <argLine>
                 --add-opens com.azure.data.schemaregistry.avro/com.azure.data.schemaregistry.avro=ALL-UNNAMED
+                --add-opens com.azure.data.schemaregistry.avro/com.azure.data.schemaregistry.avro.generatedtestsources=org.apache.avro,ALL-UNNAMED
               </argLine>
             </configuration>
           </plugin>

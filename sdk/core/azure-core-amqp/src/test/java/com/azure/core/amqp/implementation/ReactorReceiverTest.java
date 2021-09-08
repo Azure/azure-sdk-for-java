@@ -43,6 +43,8 @@ import reactor.test.publisher.TestPublisher;
 import java.io.IOException;
 import java.time.Duration;
 import java.util.Map;
+import java.util.concurrent.RejectedExecutionException;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Supplier;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -481,6 +483,29 @@ class ReactorReceiverTest {
             .verifyComplete();
 
         assertTrue(reactorReceiver.isDisposed());
+    }
+
+    /**
+     * An error in scheduling the close work will close the receiver.
+     */
+    @Test
+    void disposesOnErrorSchedulingCloseWork() throws IOException {
+        // Arrange
+        final AtomicBoolean wasClosed = new AtomicBoolean();
+        doAnswer(invocationOnMock -> {
+            if (wasClosed.get()) {
+                throw new RejectedExecutionException("Test-resource-exception");
+            } else {
+                final Runnable runnable = invocationOnMock.getArgument(0);
+                runnable.run();
+                return null;
+            }
+        }).when(reactorDispatcher).invoke(any(Runnable.class));
+
+        // Act and Assert
+        StepVerifier.create(reactorReceiver.closeAsync().doOnSubscribe(subscribed -> wasClosed.set(true)))
+            .expectComplete()
+            .verify();
     }
 
     /**

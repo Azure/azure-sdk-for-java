@@ -6,6 +6,7 @@ package com.azure.core.util.serializer;
 import com.azure.core.annotation.HeaderCollection;
 import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpHeaders;
+import com.azure.core.implementation.ReflectionUtils;
 import com.azure.core.implementation.TypeUtil;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
@@ -31,9 +32,7 @@ import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodType;
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.security.AccessController;
@@ -46,6 +45,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Function;
 import java.util.regex.Pattern;
 
 /**
@@ -121,7 +121,10 @@ public class JacksonAdapter implements SerializerAdapter {
      */
     private static SerializerAdapter serializerAdapter;
 
-    private final Map<Type, JavaType> typeToJavaTypeCache = new ConcurrentHashMap<>();
+    private static final int CACHE_SIZE_LIMIT = 10000;
+
+    private static final Map<Type, JavaType> TYPE_TO_JAVA_TYPE_CACHE = new ConcurrentHashMap<>();
+    private static final Map<Field, MethodHandle> FIELD_TO_SETTER_CACHE = new ConcurrentHashMap<>();
 
     /**
      * Creates a new JacksonAdapter instance with default mapper settings.
@@ -425,11 +428,22 @@ public class JacksonAdapter implements SerializerAdapter {
                 javaTypeArguments[i] = createJavaType(actualTypeArguments[i]);
             }
 
-            return typeToJavaTypeCache.computeIfAbsent(type, t -> mapper.getTypeFactory()
+            return getFromCache(type, TYPE_TO_JAVA_TYPE_CACHE, t -> mapper.getTypeFactory()
                 .constructParametricType((Class<?>) parameterizedType.getRawType(), javaTypeArguments));
         } else {
-            return typeToJavaTypeCache.computeIfAbsent(type, t -> mapper.getTypeFactory().constructType(t));
+            return getFromCache(type, TYPE_TO_JAVA_TYPE_CACHE, t -> mapper.getTypeFactory().constructType(t));
         }
+    }
+
+    /*
+     * Helper method that gets the value for the given key from the cache.
+     */
+    private static <K, V> V getFromCache(K key, Map<K, V> cache, Function<K, V> compute) {
+        if (cache.size() >= CACHE_SIZE_LIMIT) {
+            cache.clear();
+        }
+
+        return cache.computeIfAbsent(key, compute);
     }
 
     /*
@@ -465,8 +479,6 @@ public class JacksonAdapter implements SerializerAdapter {
                 return;
             }
 
-            logger.verbose("Failed to find or use public setter to set header collection.");
-
             /*
              * Otherwise, fallback to setting the field directly.
              */
@@ -493,27 +505,67 @@ public class JacksonAdapter implements SerializerAdapter {
         }
 
         private boolean usePublicSetter(Object deserializedHeaders, ClientLogger logger) {
-            try {
-                String potentialSetterName = getPotentialSetterName();
+            final Class<?> clazz = deserializedHeaders.getClass();
+            final String clazzSimpleName = clazz.getSimpleName();
+            final String fieldName = declaringField.getName();
 
-                // This could be cached.
-                Method setterMethod = deserializedHeaders.getClass().getDeclaredMethod(potentialSetterName, Map.class);
-                if (Modifier.isPublic(setterMethod.getModifiers())) {
-                    setterMethod.invoke(deserializedHeaders, values);
-                    logger.verbose("Using public setter {} on class {} to set header collection.", potentialSetterName,
-                        deserializedHeaders.getClass().getSimpleName());
-                    return true;
+            MethodHandle setterHandler = getFromCache(declaringField, FIELD_TO_SETTER_CACHE, field -> {
+                MethodHandles.Lookup lookupToUse;
+                try {
+                    lookupToUse = ReflectionUtils.getLookupToUse(clazz);
+                } catch (Throwable t) {
+                    logger.verbose("Failed to retrieve MethodHandles.Lookup for field {}.", field, t);
+                    return null;
                 }
 
+                String setterName = getPotentialSetterName(fieldName);
+
+                try {
+                    MethodHandle handle = lookupToUse.findVirtual(clazz, setterName,
+                        MethodType.methodType(clazz, Map.class));
+
+                    logger.verbose("Using MethodHandle for setter {} on class {}.", setterName, clazzSimpleName);
+
+                    return handle;
+                } catch (ReflectiveOperationException ex) {
+                    logger.verbose("Failed to retrieve MethodHandle for setter {} on class {}.", setterName,
+                        clazzSimpleName, ex);
+                }
+
+                try {
+                    Method setterMethod = deserializedHeaders.getClass()
+                        .getDeclaredMethod(setterName, Map.class);
+                    MethodHandle handle = lookupToUse.unreflect(setterMethod);
+
+                    logger.verbose("Using unreflected MethodHandle for setter {} on class {}.", setterName,
+                        clazzSimpleName);
+
+                    return handle;
+                } catch (ReflectiveOperationException ex) {
+                    logger.verbose("Failed to unreflect MethodHandle for setter {} on class {}.", setterName,
+                        clazzSimpleName, ex);
+                }
+
+                return null;
+            });
+
+            if (setterHandler == null) {
                 return false;
-            } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException ignored) {
+            }
+
+            try {
+                setterHandler.invokeWithArguments(deserializedHeaders, values);
+                logger.verbose("Set header collection {} on class {} using MethodHandle.", fieldName, clazzSimpleName);
+
+                return true;
+            } catch (Throwable ex) {
+                logger.verbose("Failed to set header {} collection on class {} using MethodHandle.", fieldName,
+                    clazzSimpleName, ex);
                 return false;
             }
         }
 
-        private String getPotentialSetterName() {
-            String fieldName = declaringField.getName();
-
+        private static String getPotentialSetterName(String fieldName) {
             return "set" + fieldName.substring(0, 1).toUpperCase(Locale.ROOT) + fieldName.substring(1);
         }
     }

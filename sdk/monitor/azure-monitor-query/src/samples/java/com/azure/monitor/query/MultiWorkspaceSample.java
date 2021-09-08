@@ -35,16 +35,16 @@ public class MultiWorkspaceSample {
                 .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
                 .buildClient();
 
-        LogsQueryResult queryResults = logsQueryClient.queryLogsWithResponse("d2d0e126-fa1e-4b0a-b647-250cdd471e68",
+        LogsQueryResult queryResults = logsQueryClient.queryWithResponse("d2d0e126-fa1e-4b0a-b647-250cdd471e68",
                 "union * | where TimeGenerated > ago(10d) | project TenantId", null, new LogsQueryOptions()
                         .setAdditionalWorkspaces(Arrays.asList("srnagar-log-analytics-ws-2", "srnagar-log-analytics-ws")),
                 Context.NONE).getValue();
 
-        System.out.println("Number of tables = " + queryResults.getLogsTables().size());
+        System.out.println("Number of tables = " + queryResults.getAllTables().size());
 
         // Sample to iterate by row
         Set<String> results = new HashSet<>();
-        for (LogsTable table : queryResults.getLogsTables()) {
+        for (LogsTable table : queryResults.getAllTables()) {
             for (LogsTableRow row : table.getRows()) {
                 Set<String> collect =
                         row.getRow().stream().map(cell -> cell.getValueAsString())

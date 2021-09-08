@@ -60,9 +60,7 @@ public class MappingCosmosConverter
 
     @Override
     public <R> R read(Class<R> type, JsonNode jsonNode) {
-
         final CosmosPersistentEntity<?> entity = mappingContext.getPersistentEntity(type);
-
         return readInternal(entity, type, jsonNode);
     }
 
@@ -231,4 +229,5 @@ public class MappingCosmosConverter
 
         return fromPropertyValue;
     }
+
 }

@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.models.ContinuousWebJobStatus;
 import com.azure.resourcemanager.appservice.models.ProxyOnlyResource;
@@ -15,70 +14,31 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** Continuous Web Job Information. */
-@JsonFlatten
 @Fluent
-public class ContinuousWebJobInner extends ProxyOnlyResource {
+public final class ContinuousWebJobInner extends ProxyOnlyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ContinuousWebJobInner.class);
 
     /*
-     * Job status.
+     * ContinuousWebJob resource specific properties
      */
-    @JsonProperty(value = "properties.status")
-    private ContinuousWebJobStatus status;
+    @JsonProperty(value = "properties")
+    private ContinuousWebJobProperties innerProperties;
 
-    /*
-     * Detailed status.
+    /**
+     * Get the innerProperties property: ContinuousWebJob resource specific properties.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.detailed_status")
-    private String detailedStatus;
+    private ContinuousWebJobProperties innerProperties() {
+        return this.innerProperties;
+    }
 
-    /*
-     * Log URL.
-     */
-    @JsonProperty(value = "properties.log_url")
-    private String logUrl;
-
-    /*
-     * Run command.
-     */
-    @JsonProperty(value = "properties.run_command")
-    private String runCommand;
-
-    /*
-     * Job URL.
-     */
-    @JsonProperty(value = "properties.url")
-    private String url;
-
-    /*
-     * Extra Info URL.
-     */
-    @JsonProperty(value = "properties.extra_info_url")
-    private String extraInfoUrl;
-
-    /*
-     * Job type.
-     */
-    @JsonProperty(value = "properties.web_job_type")
-    private WebJobType webJobType;
-
-    /*
-     * Error information.
-     */
-    @JsonProperty(value = "properties.error")
-    private String error;
-
-    /*
-     * Using SDK?
-     */
-    @JsonProperty(value = "properties.using_sdk")
-    private Boolean usingSdk;
-
-    /*
-     * Job settings.
-     */
-    @JsonProperty(value = "properties.settings")
-    private Map<String, Object> settings;
+    /** {@inheritDoc} */
+    @Override
+    public ContinuousWebJobInner withKind(String kind) {
+        super.withKind(kind);
+        return this;
+    }
 
     /**
      * Get the status property: Job status.
@@ -86,7 +46,7 @@ public class ContinuousWebJobInner extends ProxyOnlyResource {
      * @return the status value.
      */
     public ContinuousWebJobStatus status() {
-        return this.status;
+        return this.innerProperties() == null ? null : this.innerProperties().status();
     }
 
     /**
@@ -96,7 +56,10 @@ public class ContinuousWebJobInner extends ProxyOnlyResource {
      * @return the ContinuousWebJobInner object itself.
      */
     public ContinuousWebJobInner withStatus(ContinuousWebJobStatus status) {
-        this.status = status;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ContinuousWebJobProperties();
+        }
+        this.innerProperties().withStatus(status);
         return this;
     }
 
@@ -106,7 +69,7 @@ public class ContinuousWebJobInner extends ProxyOnlyResource {
      * @return the detailedStatus value.
      */
     public String detailedStatus() {
-        return this.detailedStatus;
+        return this.innerProperties() == null ? null : this.innerProperties().detailedStatus();
     }
 
     /**
@@ -116,7 +79,10 @@ public class ContinuousWebJobInner extends ProxyOnlyResource {
      * @return the ContinuousWebJobInner object itself.
      */
     public ContinuousWebJobInner withDetailedStatus(String detailedStatus) {
-        this.detailedStatus = detailedStatus;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ContinuousWebJobProperties();
+        }
+        this.innerProperties().withDetailedStatus(detailedStatus);
         return this;
     }
 
@@ -126,7 +92,7 @@ public class ContinuousWebJobInner extends ProxyOnlyResource {
      * @return the logUrl value.
      */
     public String logUrl() {
-        return this.logUrl;
+        return this.innerProperties() == null ? null : this.innerProperties().logUrl();
     }
 
     /**
@@ -136,7 +102,10 @@ public class ContinuousWebJobInner extends ProxyOnlyResource {
      * @return the ContinuousWebJobInner object itself.
      */
     public ContinuousWebJobInner withLogUrl(String logUrl) {
-        this.logUrl = logUrl;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ContinuousWebJobProperties();
+        }
+        this.innerProperties().withLogUrl(logUrl);
         return this;
     }
 
@@ -146,7 +115,7 @@ public class ContinuousWebJobInner extends ProxyOnlyResource {
      * @return the runCommand value.
      */
     public String runCommand() {
-        return this.runCommand;
+        return this.innerProperties() == null ? null : this.innerProperties().runCommand();
     }
 
     /**
@@ -156,7 +125,10 @@ public class ContinuousWebJobInner extends ProxyOnlyResource {
      * @return the ContinuousWebJobInner object itself.
      */
     public ContinuousWebJobInner withRunCommand(String runCommand) {
-        this.runCommand = runCommand;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ContinuousWebJobProperties();
+        }
+        this.innerProperties().withRunCommand(runCommand);
         return this;
     }
 
@@ -166,7 +138,7 @@ public class ContinuousWebJobInner extends ProxyOnlyResource {
      * @return the url value.
      */
     public String url() {
-        return this.url;
+        return this.innerProperties() == null ? null : this.innerProperties().url();
     }
 
     /**
@@ -176,7 +148,10 @@ public class ContinuousWebJobInner extends ProxyOnlyResource {
      * @return the ContinuousWebJobInner object itself.
      */
     public ContinuousWebJobInner withUrl(String url) {
-        this.url = url;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ContinuousWebJobProperties();
+        }
+        this.innerProperties().withUrl(url);
         return this;
     }
 
@@ -186,7 +161,7 @@ public class ContinuousWebJobInner extends ProxyOnlyResource {
      * @return the extraInfoUrl value.
      */
     public String extraInfoUrl() {
-        return this.extraInfoUrl;
+        return this.innerProperties() == null ? null : this.innerProperties().extraInfoUrl();
     }
 
     /**
@@ -196,7 +171,10 @@ public class ContinuousWebJobInner extends ProxyOnlyResource {
      * @return the ContinuousWebJobInner object itself.
      */
     public ContinuousWebJobInner withExtraInfoUrl(String extraInfoUrl) {
-        this.extraInfoUrl = extraInfoUrl;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ContinuousWebJobProperties();
+        }
+        this.innerProperties().withExtraInfoUrl(extraInfoUrl);
         return this;
     }
 
@@ -206,7 +184,7 @@ public class ContinuousWebJobInner extends ProxyOnlyResource {
      * @return the webJobType value.
      */
     public WebJobType webJobType() {
-        return this.webJobType;
+        return this.innerProperties() == null ? null : this.innerProperties().webJobType();
     }
 
     /**
@@ -216,7 +194,10 @@ public class ContinuousWebJobInner extends ProxyOnlyResource {
      * @return the ContinuousWebJobInner object itself.
      */
     public ContinuousWebJobInner withWebJobType(WebJobType webJobType) {
-        this.webJobType = webJobType;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ContinuousWebJobProperties();
+        }
+        this.innerProperties().withWebJobType(webJobType);
         return this;
     }
 
@@ -226,7 +207,7 @@ public class ContinuousWebJobInner extends ProxyOnlyResource {
      * @return the error value.
      */
     public String error() {
-        return this.error;
+        return this.innerProperties() == null ? null : this.innerProperties().error();
     }
 
     /**
@@ -236,7 +217,10 @@ public class ContinuousWebJobInner extends ProxyOnlyResource {
      * @return the ContinuousWebJobInner object itself.
      */
     public ContinuousWebJobInner withError(String error) {
-        this.error = error;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ContinuousWebJobProperties();
+        }
+        this.innerProperties().withError(error);
         return this;
     }
 
@@ -246,7 +230,7 @@ public class ContinuousWebJobInner extends ProxyOnlyResource {
      * @return the usingSdk value.
      */
     public Boolean usingSdk() {
-        return this.usingSdk;
+        return this.innerProperties() == null ? null : this.innerProperties().usingSdk();
     }
 
     /**
@@ -256,7 +240,10 @@ public class ContinuousWebJobInner extends ProxyOnlyResource {
      * @return the ContinuousWebJobInner object itself.
      */
     public ContinuousWebJobInner withUsingSdk(Boolean usingSdk) {
-        this.usingSdk = usingSdk;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ContinuousWebJobProperties();
+        }
+        this.innerProperties().withUsingSdk(usingSdk);
         return this;
     }
 
@@ -266,7 +253,7 @@ public class ContinuousWebJobInner extends ProxyOnlyResource {
      * @return the settings value.
      */
     public Map<String, Object> settings() {
-        return this.settings;
+        return this.innerProperties() == null ? null : this.innerProperties().settings();
     }
 
     /**
@@ -276,14 +263,10 @@ public class ContinuousWebJobInner extends ProxyOnlyResource {
      * @return the ContinuousWebJobInner object itself.
      */
     public ContinuousWebJobInner withSettings(Map<String, Object> settings) {
-        this.settings = settings;
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public ContinuousWebJobInner withKind(String kind) {
-        super.withKind(kind);
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ContinuousWebJobProperties();
+        }
+        this.innerProperties().withSettings(settings);
         return this;
     }
 
@@ -295,5 +278,8 @@ public class ContinuousWebJobInner extends ProxyOnlyResource {
     @Override
     public void validate() {
         super.validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

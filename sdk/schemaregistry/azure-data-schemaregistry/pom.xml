@@ -17,7 +17,7 @@
   <groupId>com.azure</groupId>
   <artifactId>azure-data-schemaregistry</artifactId>
   <packaging>jar</packaging>
-  <version>1.0.0-beta.5</version> <!-- {x-version-update;com.azure:azure-data-schemaregistry;current} -->
+  <version>1.0.0-beta.6</version> <!-- {x-version-update;com.azure:azure-data-schemaregistry;current} -->
 
   <name>Microsoft Azure Schema Registry - Common Client/SerDe Package for client library</name>
   <description>
@@ -42,19 +42,19 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.19.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+      <version>1.20.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-netty</artifactId>
-      <version>1.10.2</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
+      <version>1.11.0</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
     </dependency>
 
     <!-- Test dependencies -->
     <dependency>
       <groupId>io.projectreactor</groupId>
       <artifactId>reactor-test</artifactId>
-      <version>3.4.8</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
+      <version>3.4.9</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -85,6 +85,12 @@
       <groupId>org.apache.avro</groupId>
       <artifactId>avro</artifactId>
       <version>1.10.1</version> <!-- {x-version-update;org.apache.avro:avro;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-core-test</artifactId>
+      <version>1.7.1</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>

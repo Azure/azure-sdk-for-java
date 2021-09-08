@@ -33,19 +33,19 @@ public class LogsQuerySample {
                 .credential(tokenCredential)
                 .buildClient();
 
-        LogsQueryResult queryResults = logsQueryClient.queryLogs("d2d0e126-fa1e-4b0a-b647-250cdd471e68", "AppRequests",
+        LogsQueryResult queryResults = logsQueryClient.query("d2d0e126-fa1e-4b0a-b647-250cdd471e68", "AppRequests",
                 null);
-        System.out.println("Number of tables = " + queryResults.getLogsTables().size());
+        System.out.println("Number of tables = " + queryResults.getAllTables().size());
 
         // Sample to iterate over all cells in the table
-        for (LogsTable table : queryResults.getLogsTables()) {
+        for (LogsTable table : queryResults.getAllTables()) {
             for (LogsTableCell tableCell : table.getAllTableCells()) {
                 System.out.println("Column = " + tableCell.getColumnName() + "; value = " + tableCell.getValueAsString());
             }
         }
 
         // Sample to iterate by row
-        for (LogsTable table : queryResults.getLogsTables()) {
+        for (LogsTable table : queryResults.getAllTables()) {
             for (LogsTableRow row : table.getRows()) {
                 row.getRow()
                         .forEach(cell -> System.out.println("Column = " + cell.getColumnName() + "; value = " + cell.getValueAsString()));
@@ -53,7 +53,7 @@ public class LogsQuerySample {
         }
 
         // Sample to get value of a column
-        for (LogsTable table : queryResults.getLogsTables()) {
+        for (LogsTable table : queryResults.getAllTables()) {
             for (LogsTableRow row : table.getRows()) {
                 Optional<LogsTableCell> resourceGroup = row.getColumnValue("DurationMs");
                 if (resourceGroup.isPresent()) {

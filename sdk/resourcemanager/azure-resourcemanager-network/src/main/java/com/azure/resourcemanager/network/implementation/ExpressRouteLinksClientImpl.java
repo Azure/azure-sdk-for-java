@@ -110,7 +110,7 @@ public final class ExpressRouteLinksClientImpl implements ExpressRouteLinksClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return expressRouteLink child resource definition.
+     * @return expressRouteLink.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ExpressRouteLinkInner>> getWithResponseAsync(
@@ -138,7 +138,7 @@ public final class ExpressRouteLinksClientImpl implements ExpressRouteLinksClien
         if (linkName == null) {
             return Mono.error(new IllegalArgumentException("Parameter linkName is required and cannot be null."));
         }
-        final String apiVersion = "2021-02-01";
+        final String apiVersion = "2021-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -166,7 +166,7 @@ public final class ExpressRouteLinksClientImpl implements ExpressRouteLinksClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return expressRouteLink child resource definition.
+     * @return expressRouteLink.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ExpressRouteLinkInner>> getWithResponseAsync(
@@ -194,7 +194,7 @@ public final class ExpressRouteLinksClientImpl implements ExpressRouteLinksClien
         if (linkName == null) {
             return Mono.error(new IllegalArgumentException("Parameter linkName is required and cannot be null."));
         }
-        final String apiVersion = "2021-02-01";
+        final String apiVersion = "2021-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -218,7 +218,7 @@ public final class ExpressRouteLinksClientImpl implements ExpressRouteLinksClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return expressRouteLink child resource definition.
+     * @return expressRouteLink.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ExpressRouteLinkInner> getAsync(
@@ -243,7 +243,7 @@ public final class ExpressRouteLinksClientImpl implements ExpressRouteLinksClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return expressRouteLink child resource definition.
+     * @return expressRouteLink.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ExpressRouteLinkInner get(String resourceGroupName, String expressRoutePortName, String linkName) {
@@ -260,7 +260,7 @@ public final class ExpressRouteLinksClientImpl implements ExpressRouteLinksClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return expressRouteLink child resource definition.
+     * @return expressRouteLink.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ExpressRouteLinkInner> getWithResponse(
@@ -276,7 +276,7 @@ public final class ExpressRouteLinksClientImpl implements ExpressRouteLinksClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for ListExpressRouteLinks API service call.
+     * @return expressRouteLink List Result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ExpressRouteLinkInner>> listSinglePageAsync(
@@ -301,7 +301,7 @@ public final class ExpressRouteLinksClientImpl implements ExpressRouteLinksClien
             return Mono
                 .error(new IllegalArgumentException("Parameter expressRoutePortName is required and cannot be null."));
         }
-        final String apiVersion = "2021-02-01";
+        final String apiVersion = "2021-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -336,7 +336,7 @@ public final class ExpressRouteLinksClientImpl implements ExpressRouteLinksClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for ListExpressRouteLinks API service call.
+     * @return expressRouteLink List Result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ExpressRouteLinkInner>> listSinglePageAsync(
@@ -361,7 +361,7 @@ public final class ExpressRouteLinksClientImpl implements ExpressRouteLinksClien
             return Mono
                 .error(new IllegalArgumentException("Parameter expressRoutePortName is required and cannot be null."));
         }
-        final String apiVersion = "2021-02-01";
+        final String apiVersion = "2021-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -392,7 +392,7 @@ public final class ExpressRouteLinksClientImpl implements ExpressRouteLinksClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for ListExpressRouteLinks API service call.
+     * @return expressRouteLink List Result.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ExpressRouteLinkInner> listAsync(String resourceGroupName, String expressRoutePortName) {
@@ -410,7 +410,7 @@ public final class ExpressRouteLinksClientImpl implements ExpressRouteLinksClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for ListExpressRouteLinks API service call.
+     * @return expressRouteLink List Result.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ExpressRouteLinkInner> listAsync(
@@ -428,7 +428,7 @@ public final class ExpressRouteLinksClientImpl implements ExpressRouteLinksClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for ListExpressRouteLinks API service call.
+     * @return expressRouteLink List Result.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ExpressRouteLinkInner> list(String resourceGroupName, String expressRoutePortName) {
@@ -444,7 +444,7 @@ public final class ExpressRouteLinksClientImpl implements ExpressRouteLinksClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for ListExpressRouteLinks API service call.
+     * @return expressRouteLink List Result.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ExpressRouteLinkInner> list(
@@ -459,7 +459,7 @@ public final class ExpressRouteLinksClientImpl implements ExpressRouteLinksClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for ListExpressRouteLinks API service call.
+     * @return expressRouteLink List Result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ExpressRouteLinkInner>> listNextSinglePageAsync(String nextLink) {
@@ -495,7 +495,7 @@ public final class ExpressRouteLinksClientImpl implements ExpressRouteLinksClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for ListExpressRouteLinks API service call.
+     * @return expressRouteLink List Result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ExpressRouteLinkInner>> listNextSinglePageAsync(String nextLink, Context context) {

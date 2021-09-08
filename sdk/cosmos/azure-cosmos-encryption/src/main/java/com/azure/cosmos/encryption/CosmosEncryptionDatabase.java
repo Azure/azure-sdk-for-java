@@ -105,7 +105,7 @@ public class CosmosEncryptionDatabase {
      * @param containerId original container id
      * @return container with encryption capabilities
      */
-    public CosmosEncryptionContainer getCosmosEncryptionAsyncContainer(String containerId) {
+    public CosmosEncryptionContainer getCosmosEncryptionContainer(String containerId) {
         CosmosEncryptionAsyncContainer cosmosEncryptionAsyncContainer =
             this.cosmosEncryptionAsyncDatabase.getCosmosEncryptionAsyncContainer(containerId);
         CosmosContainer cosmosContainer = this.cosmosDatabase.getContainer(containerId);

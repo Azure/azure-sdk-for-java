@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.HubBgpConnectionStatus;
@@ -14,10 +13,15 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Virtual Appliance Site resource. */
-@JsonFlatten
 @Fluent
-public class BgpConnectionInner extends SubResource {
+public final class BgpConnectionInner extends SubResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(BgpConnectionInner.class);
+
+    /*
+     * The properties of the Bgp connections.
+     */
+    @JsonProperty(value = "properties")
+    private BgpConnectionProperties innerProperties;
 
     /*
      * Name of the connection.
@@ -37,29 +41,14 @@ public class BgpConnectionInner extends SubResource {
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
-    /*
-     * Peer ASN.
+    /**
+     * Get the innerProperties property: The properties of the Bgp connections.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.peerAsn")
-    private Long peerAsn;
-
-    /*
-     * Peer IP.
-     */
-    @JsonProperty(value = "properties.peerIp")
-    private String peerIp;
-
-    /*
-     * The provisioning state of the resource.
-     */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningState provisioningState;
-
-    /*
-     * The current state of the VirtualHub to Peer.
-     */
-    @JsonProperty(value = "properties.connectionState", access = JsonProperty.Access.WRITE_ONLY)
-    private HubBgpConnectionStatus connectionState;
+    private BgpConnectionProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the name property: Name of the connection.
@@ -99,13 +88,20 @@ public class BgpConnectionInner extends SubResource {
         return this.type;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public BgpConnectionInner withId(String id) {
+        super.withId(id);
+        return this;
+    }
+
     /**
      * Get the peerAsn property: Peer ASN.
      *
      * @return the peerAsn value.
      */
     public Long peerAsn() {
-        return this.peerAsn;
+        return this.innerProperties() == null ? null : this.innerProperties().peerAsn();
     }
 
     /**
@@ -115,7 +111,10 @@ public class BgpConnectionInner extends SubResource {
      * @return the BgpConnectionInner object itself.
      */
     public BgpConnectionInner withPeerAsn(Long peerAsn) {
-        this.peerAsn = peerAsn;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new BgpConnectionProperties();
+        }
+        this.innerProperties().withPeerAsn(peerAsn);
         return this;
     }
 
@@ -125,7 +124,7 @@ public class BgpConnectionInner extends SubResource {
      * @return the peerIp value.
      */
     public String peerIp() {
-        return this.peerIp;
+        return this.innerProperties() == null ? null : this.innerProperties().peerIp();
     }
 
     /**
@@ -135,7 +134,33 @@ public class BgpConnectionInner extends SubResource {
      * @return the BgpConnectionInner object itself.
      */
     public BgpConnectionInner withPeerIp(String peerIp) {
-        this.peerIp = peerIp;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new BgpConnectionProperties();
+        }
+        this.innerProperties().withPeerIp(peerIp);
+        return this;
+    }
+
+    /**
+     * Get the hubVirtualNetworkConnection property: The reference to the HubVirtualNetworkConnection resource.
+     *
+     * @return the hubVirtualNetworkConnection value.
+     */
+    public SubResource hubVirtualNetworkConnection() {
+        return this.innerProperties() == null ? null : this.innerProperties().hubVirtualNetworkConnection();
+    }
+
+    /**
+     * Set the hubVirtualNetworkConnection property: The reference to the HubVirtualNetworkConnection resource.
+     *
+     * @param hubVirtualNetworkConnection the hubVirtualNetworkConnection value to set.
+     * @return the BgpConnectionInner object itself.
+     */
+    public BgpConnectionInner withHubVirtualNetworkConnection(SubResource hubVirtualNetworkConnection) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new BgpConnectionProperties();
+        }
+        this.innerProperties().withHubVirtualNetworkConnection(hubVirtualNetworkConnection);
         return this;
     }
 
@@ -145,7 +170,7 @@ public class BgpConnectionInner extends SubResource {
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
-        return this.provisioningState;
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
     /**
@@ -154,14 +179,7 @@ public class BgpConnectionInner extends SubResource {
      * @return the connectionState value.
      */
     public HubBgpConnectionStatus connectionState() {
-        return this.connectionState;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public BgpConnectionInner withId(String id) {
-        super.withId(id);
-        return this;
+        return this.innerProperties() == null ? null : this.innerProperties().connectionState();
     }
 
     /**
@@ -170,5 +188,8 @@ public class BgpConnectionInner extends SubResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

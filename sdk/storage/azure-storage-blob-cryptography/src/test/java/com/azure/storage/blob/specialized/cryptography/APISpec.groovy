@@ -10,6 +10,7 @@ import com.azure.core.http.policy.HttpLogDetailLevel
 import com.azure.core.http.policy.HttpLogOptions
 import com.azure.core.http.policy.HttpPipelinePolicy
 import com.azure.core.http.rest.Response
+import com.azure.core.test.TestMode
 import com.azure.core.util.FluxUtil
 import com.azure.security.keyvault.keys.cryptography.models.KeyWrapAlgorithm
 import com.azure.storage.blob.BlobAsyncClient
@@ -23,11 +24,14 @@ import com.azure.storage.common.StorageSharedKeyCredential
 import com.azure.storage.common.implementation.Constants
 import com.azure.storage.common.test.shared.StorageSpec
 import com.azure.storage.common.test.shared.TestAccount
+import org.mockito.Mockito
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 
+import javax.crypto.SecretKey
 import java.nio.ByteBuffer
 import java.nio.charset.Charset
+import java.nio.charset.StandardCharsets
 import java.time.OffsetDateTime
 
 class APISpec extends StorageSpec {
@@ -56,6 +60,8 @@ class APISpec extends StorageSpec {
     static final String receivedLeaseID = "received"
 
     static final String garbageLeaseID = UUID.randomUUID().toString()
+
+    static def mockRandomData = String.join("", Collections.nCopies(32, "password")).getBytes(StandardCharsets.UTF_8)
 
     /*
     Size must be an int because ByteBuffer sizes can only be an int. Long is not supported.
@@ -390,13 +396,49 @@ class APISpec extends StorageSpec {
         }
     }
 
+    private static def mockKey = String.join("", Collections.nCopies(4, "password")).getBytes(StandardCharsets.UTF_8)
+
     /**
      * Insecurely and quickly generates a random AES256 key for the purpose of unit tests. No one should ever make a
      * real key this way.
      */
-    def getRandomKey(long seed = new Random().nextLong()) {
-        def key = new byte[32] // 256 bit key
-        new Random(seed).nextBytes(key)
-        return key
+    static def getRandomKey(long seed = new Random().nextLong()) {
+        if (getEnv().getTestMode() == TestMode.LIVE) {
+            def key = new byte[32] // 256 bit key
+            new Random(seed).nextBytes(key)
+            return key
+        } else {
+            return mockKey
+        }
+    }
+
+    /**
+     * Stubs the generateAesKey method in EncryptedBlobAsyncClient to return a consistent SecretKey used in PLAYBACK
+     * and RECORD testing modes only.
+     */
+    static def mockAesKey(EncryptedBlobAsyncClient encryptedClient) {
+        if (getEnv().getTestMode() != TestMode.LIVE) {
+            def mockAesKey = new SecretKey() {
+                @Override
+                String getAlgorithm() {
+                    return CryptographyConstants.AES
+                }
+
+                @Override
+                String getFormat() {
+                    return "RAW"
+                }
+
+                @Override
+                byte[] getEncoded() {
+                    return mockKey
+                }
+            }
+
+            encryptedClient = Mockito.spy(encryptedClient)
+            Mockito.when(encryptedClient.generateSecretKey()).thenReturn(mockAesKey)
+        }
+
+        return encryptedClient
     }
 }

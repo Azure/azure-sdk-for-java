@@ -472,7 +472,7 @@ public class NettyAsyncHttpClientBuilderTests {
     @ParameterizedTest
     @MethodSource("getTimeoutMillisSupplier")
     public void getTimeoutMillis(Duration timeout, long expected) {
-        assertEquals(expected, NettyAsyncHttpClientBuilder.getTimeoutMillis(timeout));
+        assertEquals(expected, NettyAsyncHttpClientBuilder.getTimeoutMillis(timeout, 60000));
     }
 
     private static Stream<Arguments> getTimeoutMillisSupplier() {

@@ -10,6 +10,7 @@ import com.azure.resourcemanager.network.fluent.models.SubnetInner;
 import com.azure.resourcemanager.network.models.ContainerNetworkInterfaceConfiguration;
 import com.azure.resourcemanager.network.models.NetworkProfile;
 import com.azure.resourcemanager.network.models.Subnet;
+import com.azure.resourcemanager.network.models.TagsObject;
 import reactor.core.publisher.Mono;
 
 import java.util.Collections;
@@ -40,7 +41,7 @@ final class NetworkProfileImpl extends
             .manager()
             .serviceClient()
             .getNetworkProfiles()
-            .updateTagsAsync(resourceGroupName(), name(), innerModel().tags());
+            .updateTagsAsync(resourceGroupName(), name(), new TagsObject().withTags(innerModel().tags()));
     }
 
     @Override

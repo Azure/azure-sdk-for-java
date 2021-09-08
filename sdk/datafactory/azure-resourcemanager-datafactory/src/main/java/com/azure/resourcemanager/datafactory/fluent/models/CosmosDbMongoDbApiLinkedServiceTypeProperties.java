@@ -16,6 +16,14 @@ public final class CosmosDbMongoDbApiLinkedServiceTypeProperties {
     private final ClientLogger logger = new ClientLogger(CosmosDbMongoDbApiLinkedServiceTypeProperties.class);
 
     /*
+     * Whether the CosmosDB (MongoDB API) server version is higher than 3.2.
+     * The default value is false. Type: boolean (or Expression with resultType
+     * boolean).
+     */
+    @JsonProperty(value = "isServerVersionAbove32")
+    private Object isServerVersionAbove32;
+
+    /*
      * The CosmosDB (MongoDB API) connection string. Type: string, SecureString
      * or AzureKeyVaultSecretReference. Type: string, SecureString or
      * AzureKeyVaultSecretReference.
@@ -29,6 +37,28 @@ public final class CosmosDbMongoDbApiLinkedServiceTypeProperties {
      */
     @JsonProperty(value = "database", required = true)
     private Object database;
+
+    /**
+     * Get the isServerVersionAbove32 property: Whether the CosmosDB (MongoDB API) server version is higher than 3.2.
+     * The default value is false. Type: boolean (or Expression with resultType boolean).
+     *
+     * @return the isServerVersionAbove32 value.
+     */
+    public Object isServerVersionAbove32() {
+        return this.isServerVersionAbove32;
+    }
+
+    /**
+     * Set the isServerVersionAbove32 property: Whether the CosmosDB (MongoDB API) server version is higher than 3.2.
+     * The default value is false. Type: boolean (or Expression with resultType boolean).
+     *
+     * @param isServerVersionAbove32 the isServerVersionAbove32 value to set.
+     * @return the CosmosDbMongoDbApiLinkedServiceTypeProperties object itself.
+     */
+    public CosmosDbMongoDbApiLinkedServiceTypeProperties withIsServerVersionAbove32(Object isServerVersionAbove32) {
+        this.isServerVersionAbove32 = isServerVersionAbove32;
+        return this;
+    }
 
     /**
      * Get the connectionString property: The CosmosDB (MongoDB API) connection string. Type: string, SecureString or

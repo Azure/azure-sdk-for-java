@@ -16,7 +16,7 @@
   <groupId>com.azure</groupId>
   <artifactId>azure-communication-identity</artifactId>
   <packaging>jar</packaging>
-  <version>1.2.0-beta.1</version> <!-- {x-version-update;com.azure:azure-communication-identity;current} -->
+  <version>1.1.1</version> <!-- {x-version-update;com.azure:azure-communication-identity;current} -->
 
   <name>Microsoft Azure identity client library for communication</name>
   <description>
@@ -58,12 +58,12 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.19.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+      <version>1.20.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-communication-common</artifactId>
-      <version>1.1.0-beta.1</version> <!-- {x-version-update;com.azure:azure-communication-common;current} -->
+      <version>1.0.4</version> <!-- {x-version-update;com.azure:azure-communication-common;current} -->
     </dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
@@ -86,19 +86,19 @@
     <dependency>
       <groupId>io.projectreactor</groupId>
       <artifactId>reactor-test</artifactId>
-      <version>3.4.8</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
+      <version>3.4.9</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.nimbusds</groupId>
       <artifactId>nimbus-jose-jwt</artifactId>
-      <version>9.10</version> <!-- {x-version-update;com.nimbusds:nimbus-jose-jwt;external_dependency} -->
+      <version>9.10.1</version> <!-- {x-version-update;com.nimbusds:nimbus-jose-jwt;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-test</artifactId>
-      <version>1.7.0</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
+      <version>1.7.1</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -110,7 +110,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-okhttp</artifactId>
-      <version>1.7.2</version> <!-- {x-version-update;com.azure:azure-core-http-okhttp;dependency} -->
+      <version>1.7.3</version> <!-- {x-version-update;com.azure:azure-core-http-okhttp;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>

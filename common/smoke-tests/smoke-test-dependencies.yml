@@ -32,22 +32,22 @@ jobs:
           PomFile: common/smoke-tests/pom.xml
           ServiceDirectory: '$(Build.SourcesDirectory)/common/smoke-tests/'
         Java 8 Linux (AzureCloud):
-          Pool: "azsdk-pool-mms-ubuntu-1804-general"
-          OSVmImage: "MMSUbuntu18.04"
+          Pool: "azsdk-pool-mms-ubuntu-2004-general"
+          OSVmImage: "MMSUbuntu20.04"
           SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources)
           ArmTemplateParameters: $(azureCloudArmParameters)
           PomFile: common/smoke-tests/pom.xml
           ServiceDirectory: '$(Build.SourcesDirectory)/common/smoke-tests/'
         Java LTS Linux (AzureCloud):
-          Pool: "azsdk-pool-mms-ubuntu-1804-general"
-          OSVmImage: "MMSUbuntu18.04"
+          Pool: "azsdk-pool-mms-ubuntu-2004-general"
+          OSVmImage: "MMSUbuntu20.04"
           SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources)
           ArmTemplateParameters: $(azureCloudArmParameters)
           PomFile: common/smoke-tests/pom.xml
           ServiceDirectory: '$(Build.SourcesDirectory)/common/smoke-tests/'
         Java LTS Linux (AzureCloud Canary):
-          Pool: "azsdk-pool-mms-ubuntu-1804-general"
-          OSVmImage: "MMSUbuntu18.04"
+          Pool: "azsdk-pool-mms-ubuntu-2004-general"
+          OSVmImage: "MMSUbuntu20.04"
           SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources-preview)
           ArmTemplateParameters: $(azureCloudArmParameters)
           Location: 'eastus2euap'

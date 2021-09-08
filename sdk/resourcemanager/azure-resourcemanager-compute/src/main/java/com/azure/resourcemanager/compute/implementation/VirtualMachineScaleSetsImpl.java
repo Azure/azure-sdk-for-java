@@ -13,6 +13,7 @@ import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetNetworkPro
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetOSDisk;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetOSProfile;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetStorageProfile;
+import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetVMInstanceRequiredIDs;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetVMProfile;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSets;
 import com.azure.resourcemanager.compute.fluent.models.VirtualMachineScaleSetInner;
@@ -181,7 +182,8 @@ public class VirtualMachineScaleSetsImpl
             return Mono.empty();
         }
         return this.manager().serviceClient().getVirtualMachineScaleSets().deleteInstancesAsync(groupName, scaleSetName,
-            new ArrayList<>(instanceIds), forceDeletion);
+            new VirtualMachineScaleSetVMInstanceRequiredIDs().withInstanceIds(new ArrayList<>(instanceIds)),
+            forceDeletion);
     }
 
     @Override

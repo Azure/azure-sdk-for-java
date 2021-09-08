@@ -8,6 +8,7 @@ module com.azure.core.experimental {
     exports com.azure.core.experimental.implementation;
     exports com.azure.core.experimental.http;
     exports com.azure.core.experimental.http.policy;
+    exports com.azure.core.experimental.credential;
     exports com.azure.core.experimental.models;
 
     uses com.azure.core.experimental.serializer.AvroSerializerProvider;

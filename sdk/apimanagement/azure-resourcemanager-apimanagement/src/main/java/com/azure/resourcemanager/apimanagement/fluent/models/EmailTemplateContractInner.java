@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.apimanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.apimanagement.models.EmailTemplateParametersContractProperties;
@@ -14,47 +13,24 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Email Template details. */
-@JsonFlatten
 @Fluent
-public class EmailTemplateContractInner extends ProxyResource {
+public final class EmailTemplateContractInner extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(EmailTemplateContractInner.class);
 
     /*
-     * Subject of the Template.
+     * Email Template entity contract properties.
      */
-    @JsonProperty(value = "properties.subject")
-    private String subject;
+    @JsonProperty(value = "properties")
+    private EmailTemplateContractProperties innerProperties;
 
-    /*
-     * Email Template Body. This should be a valid XDocument
+    /**
+     * Get the innerProperties property: Email Template entity contract properties.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.body")
-    private String body;
-
-    /*
-     * Title of the Template.
-     */
-    @JsonProperty(value = "properties.title")
-    private String title;
-
-    /*
-     * Description of the Email Template.
-     */
-    @JsonProperty(value = "properties.description")
-    private String description;
-
-    /*
-     * Whether the template is the default template provided by Api Management
-     * or has been edited.
-     */
-    @JsonProperty(value = "properties.isDefault", access = JsonProperty.Access.WRITE_ONLY)
-    private Boolean isDefault;
-
-    /*
-     * Email Template Parameter values.
-     */
-    @JsonProperty(value = "properties.parameters")
-    private List<EmailTemplateParametersContractProperties> parameters;
+    private EmailTemplateContractProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the subject property: Subject of the Template.
@@ -62,7 +38,7 @@ public class EmailTemplateContractInner extends ProxyResource {
      * @return the subject value.
      */
     public String subject() {
-        return this.subject;
+        return this.innerProperties() == null ? null : this.innerProperties().subject();
     }
 
     /**
@@ -72,7 +48,10 @@ public class EmailTemplateContractInner extends ProxyResource {
      * @return the EmailTemplateContractInner object itself.
      */
     public EmailTemplateContractInner withSubject(String subject) {
-        this.subject = subject;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new EmailTemplateContractProperties();
+        }
+        this.innerProperties().withSubject(subject);
         return this;
     }
 
@@ -82,7 +61,7 @@ public class EmailTemplateContractInner extends ProxyResource {
      * @return the body value.
      */
     public String body() {
-        return this.body;
+        return this.innerProperties() == null ? null : this.innerProperties().body();
     }
 
     /**
@@ -92,7 +71,10 @@ public class EmailTemplateContractInner extends ProxyResource {
      * @return the EmailTemplateContractInner object itself.
      */
     public EmailTemplateContractInner withBody(String body) {
-        this.body = body;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new EmailTemplateContractProperties();
+        }
+        this.innerProperties().withBody(body);
         return this;
     }
 
@@ -102,7 +84,7 @@ public class EmailTemplateContractInner extends ProxyResource {
      * @return the title value.
      */
     public String title() {
-        return this.title;
+        return this.innerProperties() == null ? null : this.innerProperties().title();
     }
 
     /**
@@ -112,7 +94,10 @@ public class EmailTemplateContractInner extends ProxyResource {
      * @return the EmailTemplateContractInner object itself.
      */
     public EmailTemplateContractInner withTitle(String title) {
-        this.title = title;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new EmailTemplateContractProperties();
+        }
+        this.innerProperties().withTitle(title);
         return this;
     }
 
@@ -122,7 +107,7 @@ public class EmailTemplateContractInner extends ProxyResource {
      * @return the description value.
      */
     public String description() {
-        return this.description;
+        return this.innerProperties() == null ? null : this.innerProperties().description();
     }
 
     /**
@@ -132,7 +117,10 @@ public class EmailTemplateContractInner extends ProxyResource {
      * @return the EmailTemplateContractInner object itself.
      */
     public EmailTemplateContractInner withDescription(String description) {
-        this.description = description;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new EmailTemplateContractProperties();
+        }
+        this.innerProperties().withDescription(description);
         return this;
     }
 
@@ -143,7 +131,7 @@ public class EmailTemplateContractInner extends ProxyResource {
      * @return the isDefault value.
      */
     public Boolean isDefault() {
-        return this.isDefault;
+        return this.innerProperties() == null ? null : this.innerProperties().isDefault();
     }
 
     /**
@@ -152,7 +140,7 @@ public class EmailTemplateContractInner extends ProxyResource {
      * @return the parameters value.
      */
     public List<EmailTemplateParametersContractProperties> parameters() {
-        return this.parameters;
+        return this.innerProperties() == null ? null : this.innerProperties().parameters();
     }
 
     /**
@@ -162,7 +150,10 @@ public class EmailTemplateContractInner extends ProxyResource {
      * @return the EmailTemplateContractInner object itself.
      */
     public EmailTemplateContractInner withParameters(List<EmailTemplateParametersContractProperties> parameters) {
-        this.parameters = parameters;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new EmailTemplateContractProperties();
+        }
+        this.innerProperties().withParameters(parameters);
         return this;
     }
 
@@ -172,8 +163,8 @@ public class EmailTemplateContractInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (parameters() != null) {
-            parameters().forEach(e -> e.validate());
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

@@ -4,32 +4,30 @@
 
 package com.azure.resourcemanager.appservice.fluent.models;
 
-import com.azure.core.annotation.Immutable;
-import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.models.ProxyOnlyResource;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Definition of Analysis. */
-@JsonFlatten
-@Immutable
-public class AnalysisDefinitionInner extends ProxyOnlyResource {
+@Fluent
+public final class AnalysisDefinitionInner extends ProxyOnlyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(AnalysisDefinitionInner.class);
 
     /*
-     * Description of the Analysis
+     * AnalysisDefinition resource specific properties
      */
-    @JsonProperty(value = "properties.description", access = JsonProperty.Access.WRITE_ONLY)
-    private String description;
+    @JsonProperty(value = "properties")
+    private AnalysisDefinitionProperties innerProperties;
 
     /**
-     * Get the description property: Description of the Analysis.
+     * Get the innerProperties property: AnalysisDefinition resource specific properties.
      *
-     * @return the description value.
+     * @return the innerProperties value.
      */
-    public String description() {
-        return this.description;
+    private AnalysisDefinitionProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /** {@inheritDoc} */
@@ -40,6 +38,15 @@ public class AnalysisDefinitionInner extends ProxyOnlyResource {
     }
 
     /**
+     * Get the description property: Description of the Analysis.
+     *
+     * @return the description value.
+     */
+    public String description() {
+        return this.innerProperties() == null ? null : this.innerProperties().description();
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -47,5 +54,8 @@ public class AnalysisDefinitionInner extends ProxyOnlyResource {
     @Override
     public void validate() {
         super.validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

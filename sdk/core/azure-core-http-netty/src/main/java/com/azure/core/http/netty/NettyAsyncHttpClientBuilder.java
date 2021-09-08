@@ -10,6 +10,7 @@ import com.azure.core.util.AuthorizationChallengeHandler;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import io.netty.channel.ChannelOption;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.resolver.AddressResolverGroup;
@@ -30,6 +31,12 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.regex.Pattern;
 
+import static com.azure.core.util.Configuration.PROPERTY_AZURE_REQUEST_CONNECT_TIMEOUT;
+import static com.azure.core.util.Configuration.PROPERTY_AZURE_REQUEST_READ_TIMEOUT;
+import static com.azure.core.util.Configuration.PROPERTY_AZURE_REQUEST_RESPONSE_TIMEOUT;
+import static com.azure.core.util.Configuration.PROPERTY_AZURE_REQUEST_WRITE_TIMEOUT;
+import static com.azure.core.util.CoreUtils.getDefaultTimeoutFromEnvironment;
+
 /**
  * Builder class responsible for creating instances of {@link com.azure.core.http.HttpClient} backed by Reactor Netty.
  *
@@ -40,10 +47,27 @@ import java.util.regex.Pattern;
  * @see HttpClient
  */
 public class NettyAsyncHttpClientBuilder {
-    private final ClientLogger logger = new ClientLogger(NettyAsyncHttpClientBuilder.class);
-
     private static final long MINIMUM_TIMEOUT = TimeUnit.MILLISECONDS.toMillis(1);
-    private static final long DEFAULT_TIMEOUT = TimeUnit.SECONDS.toMillis(60);
+    private static final long DEFAULT_CONNECT_TIMEOUT;
+    private static final long DEFAULT_WRITE_TIMEOUT;
+    private static final long DEFAULT_RESPONSE_TIMEOUT;
+    private static final long DEFAULT_READ_TIMEOUT;
+
+    static {
+        ClientLogger logger = new ClientLogger(NettyAsyncHttpClientBuilder.class);
+        Configuration configuration = Configuration.getGlobalConfiguration();
+
+        DEFAULT_CONNECT_TIMEOUT = getDefaultTimeoutFromEnvironment(configuration,
+            PROPERTY_AZURE_REQUEST_CONNECT_TIMEOUT, Duration.ofSeconds(10), logger).toMillis();
+        DEFAULT_WRITE_TIMEOUT = getDefaultTimeoutFromEnvironment(configuration, PROPERTY_AZURE_REQUEST_WRITE_TIMEOUT,
+            Duration.ofSeconds(60), logger).toMillis();
+        DEFAULT_RESPONSE_TIMEOUT = getDefaultTimeoutFromEnvironment(configuration,
+            PROPERTY_AZURE_REQUEST_RESPONSE_TIMEOUT, Duration.ofSeconds(60), logger).toMillis();
+        DEFAULT_READ_TIMEOUT = getDefaultTimeoutFromEnvironment(configuration, PROPERTY_AZURE_REQUEST_READ_TIMEOUT,
+            Duration.ofSeconds(60), logger).toMillis();
+    }
+
+    private final ClientLogger logger = new ClientLogger(NettyAsyncHttpClientBuilder.class);
 
     private final HttpClient baseHttpClient;
     private ProxyOptions proxyOptions;
@@ -53,6 +77,7 @@ public class NettyAsyncHttpClientBuilder {
     private EventLoopGroup eventLoopGroup;
     private Configuration configuration;
     private boolean disableBufferCopy;
+    private Duration connectTimeout;
     private Duration writeTimeout;
     private Duration responseTimeout;
     private Duration readTimeout;
@@ -96,7 +121,9 @@ public class NettyAsyncHttpClientBuilder {
 
         nettyHttpClient = nettyHttpClient
             .port(port)
-            .wiretap(enableWiretap);
+            .wiretap(enableWiretap)
+            .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, (int) getTimeoutMillis(connectTimeout,
+                DEFAULT_CONNECT_TIMEOUT));
 
         Configuration buildConfiguration = (configuration == null)
             ? Configuration.getGlobalConfiguration()
@@ -120,7 +147,7 @@ public class NettyAsyncHttpClientBuilder {
             nettyHttpClient = nettyHttpClient.runOn(eventLoopGroup);
         }
 
-        // Proxy configurations are present, setup a proxy in Netty.
+        // Proxy configurations are present, set up a proxy in Netty.
         if (buildProxyOptions != null) {
             // Determine if custom handling will be used, otherwise use Netty's built-in handlers.
             if (handler != null) {
@@ -158,8 +185,9 @@ public class NettyAsyncHttpClientBuilder {
             }
         }
 
-        return new NettyAsyncHttpClient(nettyHttpClient, disableBufferCopy, getTimeoutMillis(readTimeout),
-                getTimeoutMillis(writeTimeout), getTimeoutMillis(responseTimeout));
+        return new NettyAsyncHttpClient(nettyHttpClient, disableBufferCopy,
+            getTimeoutMillis(readTimeout, DEFAULT_READ_TIMEOUT), getTimeoutMillis(writeTimeout, DEFAULT_WRITE_TIMEOUT),
+            getTimeoutMillis(responseTimeout, DEFAULT_RESPONSE_TIMEOUT));
     }
 
     /**
@@ -278,16 +306,38 @@ public class NettyAsyncHttpClientBuilder {
     }
 
     /**
-     * Sets the write timeout for a request to be sent.
+     * Sets the connection timeout for a request to be sent.
      * <p>
-     * The write timeout does not apply to the entire request but to the request being sent over the wire. For example a
-     * request body which emits {@code 10} {@code 8KB} buffers will trigger {@code 10} write operations, the last write
-     * tracker will update when each operation completes and the outbound buffer will be periodically checked to
+     * The connection timeout begins once the request attempts to connect to the remote host and finishes once the
+     * connection is resolved.
+     * <p>
+     * If {@code connectTimeout} is null either {@link Configuration#PROPERTY_AZURE_REQUEST_CONNECT_TIMEOUT} or a
+     * 10-second timeout will be used, if it is a {@link Duration} less than or equal to zero then no timeout will be
+     * applied. When applying the timeout the greatest of one millisecond and the value of {@code connectTimeout} will
+     * be used.
+     * <p>
+     * By default the connection timeout is 10 seconds.
+     *
+     * @param connectTimeout Connect timeout duration.
+     * @return The updated {@link NettyAsyncHttpClientBuilder} object.
+     */
+    public NettyAsyncHttpClientBuilder connectTimeout(Duration connectTimeout) {
+        this.connectTimeout = connectTimeout;
+        return this;
+    }
+
+    /**
+     * Sets the writing timeout for a request to be sent.
+     * <p>
+     * The writing timeout does not apply to the entire request but to the request being sent over the wire. For example
+     * a request body which emits {@code 10} {@code 8KB} buffers will trigger {@code 10} write operations, the last
+     * write tracker will update when each operation completes and the outbound buffer will be periodically checked to
      * determine if it is still draining.
      * <p>
-     * If {@code writeTimeout} is {@code null} is {@code null} a 60 second timeout will be used, if it is a {@link
-     * Duration} less than or equal to zero then no write timeout will be applied. When applying the timeout the greater
-     * of one millisecond and the value of {@code writeTimeout} will be used.
+     * If {@code writeTimeout} is null either {@link Configuration#PROPERTY_AZURE_REQUEST_WRITE_TIMEOUT} or a 60-second
+     * timeout will be used, if it is a {@link Duration} less than or equal to zero then no write timeout will be
+     * applied. When applying the timeout the greatest of one millisecond and the value of {@code writeTimeout} will be
+     * used.
      *
      * @param writeTimeout Write operation timeout duration.
      * @return The updated {@link NettyAsyncHttpClientBuilder} object.
@@ -303,9 +353,10 @@ public class NettyAsyncHttpClientBuilder {
      * The response timeout begins once the request write completes and finishes once the first response read is
      * triggered when the server response is received.
      * <p>
-     * If {@code responseTimeout} is {@code null} a 60 second timeout will be used, if it is a {@link Duration} less
-     * than or equal to zero then no timeout will be applied to the response. When applying the timeout the greater of
-     * one millisecond and the value of {@code responseTimeout} will be used.
+     * If {@code responseTimeout} is null either {@link Configuration#PROPERTY_AZURE_REQUEST_RESPONSE_TIMEOUT} or a
+     * 60-second timeout will be used, if it is a {@link Duration} less than or equal to zero then no timeout will be
+     * applied to the response. When applying the timeout the greatest of one millisecond and the value of {@code
+     * responseTimeout} will be used.
      *
      * @param responseTimeout Response timeout duration.
      * @return The updated {@link NettyAsyncHttpClientBuilder} object.
@@ -322,9 +373,10 @@ public class NettyAsyncHttpClientBuilder {
      * timeout triggers periodically but won't fire its operation if another read operation has completed between when
      * the timeout is triggered and completes.
      * <p>
-     * If {@code readTimeout} is {@code null} a 60 second timeout will be used, if it is a {@link Duration} less than or
-     * equal to zero then no timeout period will be applied to response read. When applying the timeout the greater of
-     * one millisecond and the value of {@code readTimeout} will be used.
+     * If {@code readTimeout} is null or {@link Configuration#PROPERTY_AZURE_REQUEST_READ_TIMEOUT} or a 60-second
+     * timeout will be used, if it is a {@link Duration} less than or equal to zero then no timeout period will be
+     * applied to response read. When applying the timeout the greatest of one millisecond and the value of {@code
+     * readTimeout} will be used.
      *
      * @param readTimeout Read timeout duration.
      * @return The updated {@link NettyAsyncHttpClientBuilder} object.
@@ -367,26 +419,23 @@ public class NettyAsyncHttpClientBuilder {
     }
 
     /*
-     * Returns the timeout in milliseconds to use based on the passed {@link Duration}.
-     * <p>
-     * If the timeout is {@code null} a default of 60 seconds will be used. If the timeout is less than or equal to zero
-     * no timeout will be used. If the timeout is less than one millisecond a timeout of one millisecond will be used.
+     * Returns the timeout in milliseconds to use based on the passed Duration and default timeout.
      *
-     * @param timeout The {@link Duration} to convert to timeout in milliseconds.
-     * @return The timeout period in milliseconds, zero if no timeout.
+     * If the timeout is {@code null} the default timeout will be used. If the timeout is less than or equal to zero
+     * no timeout will be used. If the timeout is less than one millisecond a timeout of one millisecond will be used.
      */
-    static long getTimeoutMillis(Duration timeout) {
-        // Timeout is null, use the 60 second default.
-        if (timeout == null) {
-            return DEFAULT_TIMEOUT;
+    static long getTimeoutMillis(Duration configuredTimeout, long defaultTimeout) {
+        // Timeout is null, use the default timeout.
+        if (configuredTimeout == null) {
+            return defaultTimeout;
         }
 
         // Timeout is less than or equal to zero, return no timeout.
-        if (timeout.isZero() || timeout.isNegative()) {
+        if (configuredTimeout.isZero() || configuredTimeout.isNegative()) {
             return 0;
         }
 
         // Return the maximum of the timeout period and the minimum allowed timeout period.
-        return Math.max(timeout.toMillis(), MINIMUM_TIMEOUT);
+        return Math.max(configuredTimeout.toMillis(), MINIMUM_TIMEOUT);
     }
 }

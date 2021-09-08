@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.models.ProxyOnlyResource;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -13,34 +12,31 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** The source control OAuth token. */
-@JsonFlatten
 @Fluent
-public class SourceControlInner extends ProxyOnlyResource {
+public final class SourceControlInner extends ProxyOnlyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(SourceControlInner.class);
 
     /*
-     * OAuth access token.
+     * SourceControl resource specific properties
      */
-    @JsonProperty(value = "properties.token")
-    private String token;
+    @JsonProperty(value = "properties")
+    private SourceControlProperties innerProperties;
 
-    /*
-     * OAuth access token secret.
+    /**
+     * Get the innerProperties property: SourceControl resource specific properties.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.tokenSecret")
-    private String tokenSecret;
+    private SourceControlProperties innerProperties() {
+        return this.innerProperties;
+    }
 
-    /*
-     * OAuth refresh token.
-     */
-    @JsonProperty(value = "properties.refreshToken")
-    private String refreshToken;
-
-    /*
-     * OAuth token expiration.
-     */
-    @JsonProperty(value = "properties.expirationTime")
-    private OffsetDateTime expirationTime;
+    /** {@inheritDoc} */
+    @Override
+    public SourceControlInner withKind(String kind) {
+        super.withKind(kind);
+        return this;
+    }
 
     /**
      * Get the token property: OAuth access token.
@@ -48,7 +44,7 @@ public class SourceControlInner extends ProxyOnlyResource {
      * @return the token value.
      */
     public String token() {
-        return this.token;
+        return this.innerProperties() == null ? null : this.innerProperties().token();
     }
 
     /**
@@ -58,7 +54,10 @@ public class SourceControlInner extends ProxyOnlyResource {
      * @return the SourceControlInner object itself.
      */
     public SourceControlInner withToken(String token) {
-        this.token = token;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SourceControlProperties();
+        }
+        this.innerProperties().withToken(token);
         return this;
     }
 
@@ -68,7 +67,7 @@ public class SourceControlInner extends ProxyOnlyResource {
      * @return the tokenSecret value.
      */
     public String tokenSecret() {
-        return this.tokenSecret;
+        return this.innerProperties() == null ? null : this.innerProperties().tokenSecret();
     }
 
     /**
@@ -78,7 +77,10 @@ public class SourceControlInner extends ProxyOnlyResource {
      * @return the SourceControlInner object itself.
      */
     public SourceControlInner withTokenSecret(String tokenSecret) {
-        this.tokenSecret = tokenSecret;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SourceControlProperties();
+        }
+        this.innerProperties().withTokenSecret(tokenSecret);
         return this;
     }
 
@@ -88,7 +90,7 @@ public class SourceControlInner extends ProxyOnlyResource {
      * @return the refreshToken value.
      */
     public String refreshToken() {
-        return this.refreshToken;
+        return this.innerProperties() == null ? null : this.innerProperties().refreshToken();
     }
 
     /**
@@ -98,7 +100,10 @@ public class SourceControlInner extends ProxyOnlyResource {
      * @return the SourceControlInner object itself.
      */
     public SourceControlInner withRefreshToken(String refreshToken) {
-        this.refreshToken = refreshToken;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SourceControlProperties();
+        }
+        this.innerProperties().withRefreshToken(refreshToken);
         return this;
     }
 
@@ -108,7 +113,7 @@ public class SourceControlInner extends ProxyOnlyResource {
      * @return the expirationTime value.
      */
     public OffsetDateTime expirationTime() {
-        return this.expirationTime;
+        return this.innerProperties() == null ? null : this.innerProperties().expirationTime();
     }
 
     /**
@@ -118,14 +123,10 @@ public class SourceControlInner extends ProxyOnlyResource {
      * @return the SourceControlInner object itself.
      */
     public SourceControlInner withExpirationTime(OffsetDateTime expirationTime) {
-        this.expirationTime = expirationTime;
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public SourceControlInner withKind(String kind) {
-        super.withKind(kind);
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SourceControlProperties();
+        }
+        this.innerProperties().withExpirationTime(expirationTime);
         return this;
     }
 
@@ -137,5 +138,8 @@ public class SourceControlInner extends ProxyOnlyResource {
     @Override
     public void validate() {
         super.validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

@@ -14,15 +14,74 @@ import java.util.Arrays;
 
 /** Samples for DataFlows CreateOrUpdate. */
 public final class DataFlowsCreateOrUpdateSamples {
+    /*
+     * operationId: DataFlows_CreateOrUpdate
+     * api-version: 2018-06-01
+     * x-ms-examples: DataFlows_Create
+     */
+    /**
+     * Sample code: DataFlows_Create.
+     *
+     * @param manager Entry point to DataFactoryManager.
+     */
+    public static void dataFlowsCreate(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
+        manager
+            .dataFlows()
+            .define("exampleDataFlow")
+            .withExistingFactory("exampleResourceGroup", "exampleFactoryName")
+            .withProperties(
+                new MappingDataFlow()
+                    .withDescription(
+                        "Sample demo data flow to convert currencies showing usage of union, derive and conditional"
+                            + " split transformation.")
+                    .withSources(
+                        Arrays
+                            .asList(
+                                new DataFlowSource()
+                                    .withName("USDCurrency")
+                                    .withDataset(new DatasetReference().withReferenceName("CurrencyDatasetUSD")),
+                                new DataFlowSource()
+                                    .withName("CADSource")
+                                    .withDataset(new DatasetReference().withReferenceName("CurrencyDatasetCAD"))))
+                    .withSinks(
+                        Arrays
+                            .asList(
+                                new DataFlowSink()
+                                    .withName("USDSink")
+                                    .withDataset(new DatasetReference().withReferenceName("USDOutput")),
+                                new DataFlowSink()
+                                    .withName("CADSink")
+                                    .withDataset(new DatasetReference().withReferenceName("CADOutput"))))
+                    .withScript(
+                        "source(output(PreviousConversionRate as double,Country as string,DateTime1 as"
+                            + " string,CurrentConversionRate as double),allowSchemaDrift: false,validateSchema: false)"
+                            + " ~> USDCurrency\n"
+                            + "source(output(PreviousConversionRate as double,Country as string,DateTime1 as"
+                            + " string,CurrentConversionRate as double),allowSchemaDrift: true,validateSchema: false)"
+                            + " ~> CADSource\n"
+                            + "USDCurrency, CADSource union(byName: true)~> Union\n"
+                            + "Union derive(NewCurrencyRate = round(CurrentConversionRate*1.25)) ~>"
+                            + " NewCurrencyColumn\n"
+                            + "NewCurrencyColumn split(Country == 'USD',Country == 'CAD',disjoint: false) ~>"
+                            + " ConditionalSplit1@(USD, CAD)\n"
+                            + "ConditionalSplit1@USD sink(saveMode:'overwrite' ) ~> USDSink\n"
+                            + "ConditionalSplit1@CAD sink(saveMode:'overwrite' ) ~> CADSink"))
+            .create();
+    }
+
+    /*
+     * operationId: DataFlows_CreateOrUpdate
+     * api-version: 2018-06-01
+     * x-ms-examples: DataFlows_Update
+     */
     /**
      * Sample code: DataFlows_Update.
      *
-     * @param dataFactoryManager Entry point to DataFactoryManager. The Azure Data Factory V2 management API provides a
-     *     RESTful set of web services that interact with Azure Data Factory V2 services.
+     * @param manager Entry point to DataFactoryManager.
      */
-    public static void dataFlowsUpdate(com.azure.resourcemanager.datafactory.DataFactoryManager dataFactoryManager) {
+    public static void dataFlowsUpdate(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
         DataFlowResource resource =
-            dataFactoryManager
+            manager
                 .dataFlows()
                 .getWithResponse("exampleResourceGroup", "exampleFactoryName", "exampleDataFlow", null, Context.NONE)
                 .getValue();
