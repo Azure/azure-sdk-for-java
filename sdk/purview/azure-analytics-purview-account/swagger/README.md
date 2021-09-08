@@ -11,7 +11,7 @@ low-level-client: true
 credential-types: tokencredential
 credential-scopes: https://purview.azure.net/.default
 title: PurviewAccountClient
-service-name: Purview Account
+service-name: PurviewAccount
 service-versions:
   - 2019-11-01-preview
 generate-client-as-impl: true
