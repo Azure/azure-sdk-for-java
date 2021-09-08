@@ -71,6 +71,7 @@ public class CosmosEncryptionAsyncContainer {
     ImplementationBridgeHelpers.CosmosBatchHelper.CosmosBatchAccessor cosmosBatchAccessor;
     ImplementationBridgeHelpers.CosmosBatchResponseHelper.CosmosBatchResponseAccessor cosmosBatchResponseAccessor;
     ImplementationBridgeHelpers.CosmosBatchOperationResultHelper.CosmosBatchOperationResultAccessor cosmosBatchOperationResultAccessor;
+    ImplementationBridgeHelpers.CosmosBatchRequestOptionsHelper.CosmosBatchRequestOptionsAccessor cosmosBatchRequestOptionsAccessor;
 
     CosmosEncryptionAsyncContainer(CosmosAsyncContainer container,
                                    CosmosEncryptionAsyncClient cosmosEncryptionAsyncClient) {
@@ -91,6 +92,7 @@ public class CosmosEncryptionAsyncContainer {
         this.cosmosBatchAccessor = ImplementationBridgeHelpers.CosmosBatchHelper.getCosmosBatchAccessor();
         this.cosmosBatchResponseAccessor = ImplementationBridgeHelpers.CosmosBatchResponseHelper.getCosmosBatchResponseAccessor();
         this.cosmosBatchOperationResultAccessor = ImplementationBridgeHelpers.CosmosBatchOperationResultHelper.getCosmosBatchOperationResultAccessor();
+        this.cosmosBatchRequestOptionsAccessor = ImplementationBridgeHelpers.CosmosBatchRequestOptionsHelper.getCosmosBatchRequestOptionsAccessor();
     }
 
     EncryptionProcessor getEncryptionProcessor() {
@@ -512,21 +514,6 @@ public class CosmosEncryptionAsyncContainer {
                 }));
     }
 
-    private void setRequestHeaders(CosmosItemRequestOptions requestOptions) {
-        this.cosmosItemRequestOptionsAccessor.setHeader(requestOptions, Constants.IS_CLIENT_ENCRYPTED_HEADER, "true");
-        this.cosmosItemRequestOptionsAccessor.setHeader(requestOptions, Constants.INTENDED_COLLECTION_RID_HEADER, this.encryptionProcessor.getContainerRid());
-    }
-
-    private void setRequestHeaders(CosmosQueryRequestOptions requestOptions) {
-        this.cosmosQueryRequestOptionsAccessor.setHeader(requestOptions, Constants.IS_CLIENT_ENCRYPTED_HEADER, "true");
-        this.cosmosQueryRequestOptionsAccessor.setHeader(requestOptions, Constants.INTENDED_COLLECTION_RID_HEADER, this.encryptionProcessor.getContainerRid());
-    }
-
-    private void setRequestHeaders(CosmosChangeFeedRequestOptions requestOptions) {
-        this.cosmosChangeFeedRequestOptionsAccessor.setHeader(requestOptions, Constants.IS_CLIENT_ENCRYPTED_HEADER, "true");
-        this.cosmosChangeFeedRequestOptionsAccessor.setHeader(requestOptions, Constants.INTENDED_COLLECTION_RID_HEADER, this.encryptionProcessor.getContainerRid());
-    }
-
     private <T> CosmosPagedFlux<T> queryItemsHelper(SqlQuerySpec sqlQuerySpec,
                                                     CosmosQueryRequestOptions options,
                                                     Class<T> classType,
@@ -730,23 +717,72 @@ public class CosmosEncryptionAsyncContainer {
 
         return encryptedOperationListMono.flatMap(itemBatchOperations -> {
             this.cosmosBatchAccessor.getOperationsInternal(encryptedCosmosBatch).addAll(itemBatchOperations);
-            return this.container.executeCosmosBatch(encryptedCosmosBatch, finalRequestOptions);
-        }).flatMap(cosmosBatchResponse -> {
+            return executeCosmosBatchHelper(encryptedCosmosBatch, finalRequestOptions, false);
+        });
+    }
+
+    private Mono<CosmosBatchResponse> executeCosmosBatchHelper(CosmosBatch encryptedCosmosBatch,
+                                                               CosmosBatchRequestOptions requestOptions,
+                                                               boolean isRetry) {
+        setRequestHeaders(requestOptions);
+        return this.container.executeCosmosBatch(encryptedCosmosBatch, requestOptions).flatMap(cosmosBatchResponse -> {
+            // FIXME this should check for BadRequest StatusCode too, requires a service fix to return 400 instead of
+            //  -1 which is currently returned inside the body.
+            //  Once fixed from service below if condition can be removed, as this is already covered in onErrorResume.
+            if (!isRetry && cosmosBatchResponse.getSubStatusCode() == Integer.valueOf(Constants.INCORRECT_CONTAINER_RID_SUB_STATUS)) {
+                this.encryptionProcessor.getIsEncryptionSettingsInitDone().set(false);
+                return this.encryptionProcessor.initializeEncryptionSettingsAsync(true).then
+                    (Mono.defer(() -> executeCosmosBatchHelper(encryptedCosmosBatch, requestOptions, true)));
+            }
+
             List<Mono<Void>> decryptMonoList = new ArrayList<>();
             for (CosmosBatchOperationResult cosmosBatchOperationResult :
                 this.cosmosBatchResponseAccessor.getResults(cosmosBatchResponse)) {
                 ObjectNode objectNode =
                     this.cosmosBatchOperationResultAccessor.getResourceObject(cosmosBatchOperationResult);
-                if(objectNode != null) {
+                if (objectNode != null) {
                     decryptMonoList.add(encryptionProcessor.decryptObjectNode(objectNode).flatMap(jsonNode -> {
                         this.cosmosBatchOperationResultAccessor.setResourceObject(cosmosBatchOperationResult, jsonNode);
                         return Mono.empty();
                     }));
                 }
             }
+
             Mono<List<Void>> listMono = Flux.mergeSequential(decryptMonoList).collectList();
             return listMono.flatMap(aVoid -> Mono.just(cosmosBatchResponse));
+        }).onErrorResume(exception -> {
+            if (!isRetry && exception instanceof CosmosException) {
+                final CosmosException cosmosException = (CosmosException) exception;
+                // FIXME this should check for BadRequest StatusCode too, requires a service fix to return 400
+                //  instead of -1 which is currently returned.
+                if (isIncorrectContainerRid(cosmosException)) {
+                    this.encryptionProcessor.getIsEncryptionSettingsInitDone().set(false);
+                    return this.encryptionProcessor.initializeEncryptionSettingsAsync(true).then
+                        (Mono.defer(() -> executeCosmosBatchHelper(encryptedCosmosBatch, requestOptions, true)));
+                }
+            }
+            return Mono.error(exception);
         });
+    }
+
+    private void setRequestHeaders(CosmosItemRequestOptions requestOptions) {
+        this.cosmosItemRequestOptionsAccessor.setHeader(requestOptions, Constants.IS_CLIENT_ENCRYPTED_HEADER, "true");
+        this.cosmosItemRequestOptionsAccessor.setHeader(requestOptions, Constants.INTENDED_COLLECTION_RID_HEADER, this.encryptionProcessor.getContainerRid());
+    }
+
+    private void setRequestHeaders(CosmosQueryRequestOptions requestOptions) {
+        this.cosmosQueryRequestOptionsAccessor.setHeader(requestOptions, Constants.IS_CLIENT_ENCRYPTED_HEADER, "true");
+        this.cosmosQueryRequestOptionsAccessor.setHeader(requestOptions, Constants.INTENDED_COLLECTION_RID_HEADER, this.encryptionProcessor.getContainerRid());
+    }
+
+    private void setRequestHeaders(CosmosChangeFeedRequestOptions requestOptions) {
+        this.cosmosChangeFeedRequestOptionsAccessor.setHeader(requestOptions, Constants.IS_CLIENT_ENCRYPTED_HEADER, "true");
+        this.cosmosChangeFeedRequestOptionsAccessor.setHeader(requestOptions, Constants.INTENDED_COLLECTION_RID_HEADER, this.encryptionProcessor.getContainerRid());
+    }
+
+    private void setRequestHeaders(CosmosBatchRequestOptions requestOptions) {
+        this.cosmosBatchRequestOptionsAccessor.setHeader(requestOptions, Constants.IS_CLIENT_ENCRYPTED_HEADER, "true");
+        this.cosmosBatchRequestOptionsAccessor.setHeader(requestOptions, Constants.INTENDED_COLLECTION_RID_HEADER, this.encryptionProcessor.getContainerRid());
     }
 
     boolean isIncorrectContainerRid(CosmosException cosmosException) {

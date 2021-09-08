@@ -560,6 +560,8 @@ public class ImplementationBridgeHelpers {
             ConsistencyLevel getConsistencyLevel(CosmosBatchRequestOptions cosmosBatchRequestOptions);
             CosmosBatchRequestOptions setConsistencyLevel(CosmosBatchRequestOptions cosmosBatchRequestOptions,
                                                           ConsistencyLevel consistencyLevel);
+            CosmosBatchRequestOptions setHeader(CosmosBatchRequestOptions cosmosItemRequestOptions, String name, String value);
+            Map<String, String> getHeader(CosmosBatchRequestOptions cosmosItemRequestOptions);
         }
     }
 

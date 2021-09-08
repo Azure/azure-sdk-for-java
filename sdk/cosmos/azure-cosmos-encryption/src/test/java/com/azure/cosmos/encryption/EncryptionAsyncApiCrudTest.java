@@ -429,6 +429,21 @@ public class EncryptionAsyncApiCrudTest extends TestSuiteBase {
                     validateResponse(encryptionPojoForQueryItemsOnEncryptedProperties, pojo);
                 }
             }
+
+            //Deleting and creating container
+            encryptionAsyncContainerOriginal.getCosmosAsyncContainer().delete().block();
+            createEncryptionContainer(cosmosEncryptionAsyncDatabase, clientEncryptionPolicy, containerId);
+
+            String itemId= UUID.randomUUID().toString();
+            EncryptionPojo createPojo = getItem(itemId);
+            CosmosBatch cosmosEncryptionBatch = CosmosBatch.createCosmosBatch(new PartitionKey(itemId));
+            cosmosEncryptionBatch.createItemOperation(createPojo);
+            cosmosEncryptionBatch.readItemOperation(itemId);
+
+            CosmosBatchResponse batchResponse = encryptionAsyncContainerOriginal.executeCosmosBatch(cosmosEncryptionBatch).block();
+            assertThat(batchResponse.getResults().size()).isEqualTo(2);
+            validateResponse(createPojo, batchResponse.getResults().get(0).getItem(EncryptionPojo.class));
+            validateResponse(createPojo, batchResponse.getResults().get(1).getItem(EncryptionPojo.class));
         } finally {
             try {
                 //deleting the database created for this test
