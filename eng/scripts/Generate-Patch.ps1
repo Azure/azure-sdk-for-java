@@ -41,7 +41,7 @@ Write-Information "ArtifactName is: $ArtifactName"
 Write-Information "ReleaseVersion is: $ReleaseVersion"
 Write-Information "ServiceDirectoryName is: $ServiceDirectoryName"
 
-$MainRemoteUrl = 'https://github.com/azure/azure-sdk-for-java.git'
+$MainRemoteUrl = 'https://github.com/Azure/azure-sdk-for-java.git'
 $RepoRoot = Resolve-Path "${PSScriptRoot}..\..\.."
 $EngDir = Join-Path $RepoRoot "eng"
 $EngCommonScriptsDir = Join-Path $EngDir "common" "scripts"
@@ -54,7 +54,6 @@ $GroupId = "com.azure"
 TestPathThrow -Path $RepoRoot
 
 . (Join-Path $EngCommonScriptsDir common.ps1)
-. (Join-Path $EngCommonScriptsDir SemVer.ps1)
 
 function GetPatchVersion($ReleaseVersion) {
   $parsedSemver = [AzureEngSemanticVersion]::ParseVersionString($ReleaseVersion)
@@ -73,7 +72,7 @@ function GetPatchVersion($ReleaseVersion) {
 function GetRemoteName($MainRemoteUrl) {
   foreach($Remote in git remote show) {
     $RemoteUrl = git remote get-url $Remote
-    if($RemoteUrl.ToLower() -eq $MainRemoteUrl) {
+    if($RemoteUrl -eq $MainRemoteUrl) {
       return $Remote
     }
   }
@@ -111,7 +110,7 @@ function UpdateChangeLog($ArtifactName, $ServiceDirectoryName, $Version) {
 }
 
 function ResetSourcesToReleaseTag($ArtifactName, $ServiceDirectoryName, $ReleaseVersion, $RepoRoot, $RemoteName) {
-  $ReleaseTag = -join($ArtifactName, "_", $ReleaseVersion)
+  $ReleaseTag = "${ArtifactName}_${ReleaseVersion}"
   Write-Information "Resetting the $ArtifactName sources to the release $ReleaseTag."
 
   $SdkDirPath = Join-Path $RepoRoot "sdk"
