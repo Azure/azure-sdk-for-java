@@ -28,24 +28,24 @@ public final class CosmosBulkExecutionOptions {
 
     /**
      * Constructor
-     * @param thresholds thresholds
+     * @param thresholdsState thresholds
      */
-    CosmosBulkExecutionOptions(Object legacyBatchScopedContext, CosmosBulkExecutionThresholdsState thresholds) {
+    CosmosBulkExecutionOptions(Object legacyBatchScopedContext, CosmosBulkExecutionThresholdsState thresholdsState) {
         this.legacyBatchScopedContext = legacyBatchScopedContext;
-        if (thresholds == null) {
+        if (thresholdsState == null) {
             this.thresholds = new CosmosBulkExecutionThresholdsState();
         } else {
-            this.thresholds = thresholds;
+            this.thresholds = thresholdsState;
         }
     }
 
     /**
      * Constructor
-     * @param thresholds thresholds
+     * @param thresholdsState thresholds
      */
     @Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    public CosmosBulkExecutionOptions(CosmosBulkExecutionThresholdsState thresholds) {
-        this(null, thresholds);
+    public CosmosBulkExecutionOptions(CosmosBulkExecutionThresholdsState thresholdsState) {
+        this(null, thresholdsState);
     }
 
     /**
@@ -69,31 +69,8 @@ public final class CosmosBulkExecutionOptions {
      * If the retry rate exceeds `getMaxMicroBatchInterval` the micro batch size gets dynamically reduced at runtime
      * @return micro batch size
      */
-    @Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    public int getMaxMicroBatchSize() {
+    int getMaxMicroBatchSize() {
         return maxMicroBatchSize;
-    }
-
-    /**
-     * The maximum batching size for bulk operations. This value determines number of operations executed in one
-     * request. There is an upper limit on both number of operations and sum of size of operations. Any overflow is
-     * internally retried.
-     *
-     * Another instance is: Currently we support a max limit of 200KB, and user select batch size to be 100 and individual
-     * documents are of size 20KB, approximately 90 operations will always be retried. So it's better to choose a batch
-     * size of 10 here if user is aware of there workload. If sizes are totally unknown and user cannot put a number on it
-     * then retries are handled, so no issues as such.
-     *
-     * If the retry rate exceeds `getMaxMicroBatchInterval` the micro batch size gets dynamically reduced at runtime
-     *
-     * @param maxMicroBatchSize batching size.
-     *
-     * @return the bulk processing options.
-     */
-    @Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    public CosmosBulkExecutionOptions setMaxMicroBatchSize(int maxMicroBatchSize) {
-        this.maxMicroBatchSize = maxMicroBatchSize;
-        return this;
     }
 
     /**
@@ -101,22 +78,8 @@ public final class CosmosBulkExecutionOptions {
      *
      * @return max micro batch concurrency
      */
-    @Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    public int getMaxMicroBatchConcurrency() {
+    int getMaxMicroBatchConcurrency() {
         return maxMicroBatchConcurrency;
-    }
-
-    /**
-     * The maximum concurrency for executing requests for a partition key range.
-     *
-     * @param maxMicroBatchConcurrency maximum concurrency.
-     *
-     * @return the bulk processing options.
-     */
-    @Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    public CosmosBulkExecutionOptions setMaxMicroBatchConcurrency(int maxMicroBatchConcurrency) {
-        this.maxMicroBatchConcurrency = maxMicroBatchConcurrency;
-        return this;
     }
 
     /**
@@ -124,22 +87,8 @@ public final class CosmosBulkExecutionOptions {
      *
      * @return max micro batch interval
      */
-    @Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    public Duration getMaxMicroBatchInterval() {
+    Duration getMaxMicroBatchInterval() {
         return maxMicroBatchInterval;
-    }
-
-    /**
-     * The flush interval for bulk operations.
-     *
-     * @param maxMicroBatchInterval duration after which operations will be flushed to form a new batch to be executed.
-     *
-     * @return the bulk processing options.
-     */
-    @Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    public CosmosBulkExecutionOptions setMaxMicroBatchInterval(Duration maxMicroBatchInterval) {
-        this.maxMicroBatchInterval = maxMicroBatchInterval;
-        return this;
     }
 
     /**
@@ -149,8 +98,7 @@ public final class CosmosBulkExecutionOptions {
      *
      * @return max targeted micro batch retry rate
      */
-    @Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    public double getMaxTargetedMicroBatchRetryRate() {
+    double getMaxTargetedMicroBatchRetryRate() {
         return this.maxMicroBatchRetryRate;
     }
 
@@ -166,8 +114,7 @@ public final class CosmosBulkExecutionOptions {
      *
      * @return the bulk processing options.
      */
-    @Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    public CosmosBulkExecutionOptions setTargetedMicroBatchRetryRate(double minRetryRate, double maxRetryRate) {
+    CosmosBulkExecutionOptions setTargetedMicroBatchRetryRate(double minRetryRate, double maxRetryRate) {
         if (minRetryRate < 0) {
             throw new IllegalArgumentException("The maxRetryRate must not be a negative value");
         }
@@ -188,8 +135,7 @@ public final class CosmosBulkExecutionOptions {
      *
      * @return min targeted micro batch retry rate
      */
-    @Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    public double getMinTargetedMicroBatchRetryRate() {
+    double getMinTargetedMicroBatchRetryRate() {
         return this.minMicroBatchRetryRate;
     }
 
@@ -202,11 +148,11 @@ public final class CosmosBulkExecutionOptions {
     }
 
     /**
-     * Returns thresholds
+     * Returns threshold state that can be passed to other CosmosBulkExecutionOptions in the future
      * @return thresholds
      */
     @Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    public CosmosBulkExecutionThresholdsState getThresholds() {
+    public CosmosBulkExecutionThresholdsState getThresholdsState() {
         return this.thresholds;
     }
 
@@ -242,6 +188,42 @@ public final class CosmosBulkExecutionOptions {
                 public <T> T getLegacyBatchScopedContext(CosmosBulkExecutionOptions options) {
                     return (T)options.getLegacyBatchScopedContext();
                 }
+
+                @Override
+                public double getMinTargetedMicroBatchRetryRate(CosmosBulkExecutionOptions options) {
+                    return options.getMinTargetedMicroBatchRetryRate();
+                }
+
+                @Override
+                public double getMaxTargetedMicroBatchRetryRate(CosmosBulkExecutionOptions options) {
+                    return options.getMaxTargetedMicroBatchRetryRate();
+                }
+
+                @Override
+                public int getMaxMicroBatchSize(CosmosBulkExecutionOptions options) {
+                    return options.getMaxMicroBatchSize();
+                }
+
+                @Override
+                public int getMaxMicroBatchConcurrency(CosmosBulkExecutionOptions options) {
+                    return options.getMaxMicroBatchConcurrency();
+                }
+
+                @Override
+                public Duration getMaxMicroBatchInterval(CosmosBulkExecutionOptions options) {
+                    return options.getMaxMicroBatchInterval();
+                }
+
+                @Override
+                public CosmosBulkExecutionOptions setTargetedMicroBatchRetryRate(
+                    CosmosBulkExecutionOptions options,
+                    double minRetryRate,
+                    double maxRetryRate) {
+
+                    return options.setTargetedMicroBatchRetryRate(minRetryRate, maxRetryRate);
+                }
+
+
             });
     }
 }
