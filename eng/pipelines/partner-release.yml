@@ -25,7 +25,6 @@ resources:
 variables:
   BuildToolScripts: $(Pipeline.Workspace)/azure-sdk-build-tools/scripts
   Artifacts: $(Pipeline.Workspace)/artifacts
-  GpgArtifacts: $(Pipeline.Workspace)/artifacts-gpg
 
 pool:
   vmImage: 'windows-2019'

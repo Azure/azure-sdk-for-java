@@ -64,8 +64,6 @@ Write-Host "Starting GPG signing and publishing"
 foreach ($packageDetail in $packageDetails) {
   Write-Host "GPG signing and publishing package: $($packageDetail.FullyQualifiedName)"
 
-  $deploymentType = ""
-
   $pomAssociatedArtifact = $packageDetail.AssociatedArtifacts | Where-Object { ($_.Classifier -eq $null) -and ($_.Type -eq "pom") }
   $pomOption = "-DpomFile=$($pomAssociatedArtifact.File.FullName)"
   Write-Information "POM Option is: $pomOption"
