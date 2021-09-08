@@ -51,7 +51,6 @@ import com.azure.ai.textanalytics.models.AnalyzeSentimentResult;
 import com.azure.ai.textanalytics.models.AssessmentSentiment;
 import com.azure.ai.textanalytics.models.CategorizedEntity;
 import com.azure.ai.textanalytics.models.CategorizedEntityCollection;
-import com.azure.ai.textanalytics.models.ClassificationCategory;
 import com.azure.ai.textanalytics.models.ClassifyCustomCategoriesResult;
 import com.azure.ai.textanalytics.models.ClassifyCustomCategoryResult;
 import com.azure.ai.textanalytics.models.DetectLanguageInput;
@@ -1019,8 +1018,7 @@ public final class Utility {
 
     private static DocumentClassification toDocumentClassification(ClassificationResult classificationResult) {
         final DocumentClassification documentClassification = new DocumentClassification();
-        DocumentClassificationPropertiesHelper.setCategory(documentClassification,
-            ClassificationCategory.fromString(classificationResult.getCategory()));
+        DocumentClassificationPropertiesHelper.setCategory(documentClassification, classificationResult.getCategory());
         DocumentClassificationPropertiesHelper.setConfidenceScore(documentClassification,
             classificationResult.getConfidenceScore());
         return documentClassification;
