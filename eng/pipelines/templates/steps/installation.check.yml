@@ -17,8 +17,8 @@ steps:
       # Write-Host "Copy-Item $(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed/${{parameters.Artifact.groupId}}/${{parameters.Artifact.name}}/" "$(Pipeline.Workspace)/install-check-dir/${{parameters.Artifact.name}} -Recurse"
       # Copy-Item "${{parameters.ArtifactName}}-signed/${{parameters.Artifact.groupId}}/${{parameters.Artifact.name}}/" "install-check-dir/${{parameters.Artifact.name}}" -Recurse
       # Write-Host "$pomf = Get-ChildItem install-check-dir/${{parameters.Artifact.name}}/*.pom"
-      $pomf = Get-ChildItem "$(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed/${{parameters.Artifact.groupId}}/${{parameters.Artifact.name}}/*.pom"
-      # $pomf = Get-ChildItem "$pomfDir/*.pom"
+      $pomDir = Get-ChildItem "$(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed/${{parameters.Artifact.groupId}}/${{parameters.Artifact.name}}"
+      $pomf = Get-ChildItem "$pomfDir/*.pom"
       # Write-Host "Rename-Item $($pomf) pom.xml"
       # Rename-Item $pomf pom.xml
       Copy-Item "$(System.DefaultWorkingDirectory)/eng" "$pomfDir/eng" -Recurse
