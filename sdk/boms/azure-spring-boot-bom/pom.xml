@@ -76,11 +76,6 @@
       </dependency>
       <dependency>
         <groupId>com.azure.spring</groupId>
-        <artifactId>azure-spring-boot-starter-active-directory-b2c</artifactId>
-        <version>${azure.spring.boot.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>com.azure.spring</groupId>
         <artifactId>azure-spring-boot-starter-cosmos</artifactId>
         <version>${azure.spring.boot.version}</version>
       </dependency>

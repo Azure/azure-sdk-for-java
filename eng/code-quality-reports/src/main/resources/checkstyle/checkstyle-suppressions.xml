@@ -474,9 +474,6 @@ the main ServiceBusClientBuilder. -->
   <!-- ExternalDependencyExposedCheck: Spring will directly use classes from spring dependencies in methods-->
   <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck" files=".*[/\\]com[/\\]azure[/\\]spring[/\\].*"/>
 
-  <!-- Package Name: B2C is the product name -->
-  <suppress checks="PackageName" files="com.azure.spring.b2c.*|com.azure.spring.autoconfigure.b2c.*"/>
-
   <!-- MissingJavadocMethod: Temporarily skip -->
   <suppress checks="MissingJavadocMethod" files=".*[/\\]com[/\\]azure[/\\]spring[/\\].*"/>
   <!-- MissingJavadocMethod: gremlin is not shipping now -->
@@ -487,9 +484,6 @@ the main ServiceBusClientBuilder. -->
   <!--BlacklistedWordsCheck: URL is the name -->
   <suppress checks="com.azure.tools.checkstyle.checks.BlacklistedWordsCheck" files="com.azure.spring.autoconfigure.storage.resource.BlobStorageResource.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.BlacklistedWordsCheck" files="com.azure.spring.autoconfigure.storage.resource.FileStorageResource.java"/>
-
-  <!--BlacklistedWordsCheck: B2C is the product name -->
-  <suppress checks="com.azure.tools.checkstyle.checks.BlacklistedWordsCheck" files="com.azure.spring.autoconfigure.b2c.AADB2CURL"/>
 
   <!-- EnforceFinalFieldsCheck: The property will be filled by Spring framework -->
   <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.spring.autoconfigure.aad.ServiceEndpointsProperties"/>
