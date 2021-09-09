@@ -9,6 +9,7 @@ package com.azure.search.documents.indexes.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -24,6 +25,7 @@ import java.util.List;
 @JsonTypeName("#Microsoft.Skills.Text.SentimentSkill")
 @Fluent
 public final class SentimentSkill extends SearchIndexerSkill {
+    @JsonIgnore
     private final ClientLogger logger = new ClientLogger(SentimentSkill.class);
 
     /*
