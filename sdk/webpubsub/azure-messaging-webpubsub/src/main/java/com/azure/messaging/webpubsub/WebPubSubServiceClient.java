@@ -7,33 +7,40 @@ package com.azure.messaging.webpubsub;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
+import com.azure.core.util.CoreUtils;
+import com.azure.messaging.webpubsub.implementation.WebPubSubUtil;
 import com.azure.messaging.webpubsub.implementation.WebPubSubsImpl;
 import com.azure.messaging.webpubsub.models.GetAuthenticationTokenOptions;
 import com.azure.messaging.webpubsub.models.WebPubSubAuthenticationToken;
+import com.azure.messaging.webpubsub.models.WebPubSubContentType;
+import java.util.stream.Collectors;
 
 /** Initializes a new instance of the synchronous AzureWebPubSubServiceRestAPI type. */
 @ServiceClient(builder = WebPubSubServiceClientBuilder.class)
 public final class WebPubSubServiceClient {
     private final WebPubSubsImpl serviceClient;
     private final String endpoint;
-    private final WebPubSubAuthenticationPolicy webPubSubAuthPolicy;
+    private final AzureKeyCredential keyCredential;
     private final String hub;
+    private final WebPubSubServiceVersion version;
 
     /**
      * Initializes an instance of WebPubSubs client.
      * @param serviceClient the service client implementation.
      */
     WebPubSubServiceClient(WebPubSubsImpl serviceClient, String hub, String endpoint,
-                           WebPubSubAuthenticationPolicy webPubSubAuthPolicy) {
+                           AzureKeyCredential keyCredential, WebPubSubServiceVersion version) {
         this.serviceClient = serviceClient;
         this.endpoint = endpoint;
-        this.webPubSubAuthPolicy = webPubSubAuthPolicy;
+        this.keyCredential = keyCredential;
         this.hub = hub;
+        this.version = version;
     }
 
     /**
@@ -42,19 +49,64 @@ public final class WebPubSubServiceClient {
      * @return A new authentication token instance.
      */
     public WebPubSubAuthenticationToken getAuthenticationToken(GetAuthenticationTokenOptions options) {
-        final String endpoint = this.endpoint.endsWith("/") ? this.endpoint : this.endpoint + "/";
+        if (this.keyCredential == null) {
+            RequestOptions requestOptions = new RequestOptions();
+            if (options.getUserId() != null) {
+                requestOptions.addQueryParam("userId", options.getUserId());
+            }
+            if (options.getExpiresAfter() != null) {
+                requestOptions.addQueryParam("minutesToExpire", String.valueOf(options.getExpiresAfter().toMinutes()));
+            }
+            if (CoreUtils.isNullOrEmpty(options.getRoles())) {
+                requestOptions.addQueryParam("role", options.getRoles().stream().collect(Collectors.joining(",")));
+            }
+            requestOptions.addQueryParam("api-version", version.getVersion());
+            return this.serviceClient.generateClientTokenWithResponseAsync(hub, requestOptions)
+                    .map(Response::getValue)
+                    .map(binaryData -> {
+                        String token = WebPubSubUtil.getToken(binaryData);
+                        return WebPubSubUtil.createToken(token, endpoint, hub);
+                    }).block();
+        }
         final String audience = endpoint + "client/hubs/" + hub;
+        final String token = WebPubSubAuthenticationPolicy.getAuthenticationToken(
+                audience, options, keyCredential);
+        return WebPubSubUtil.createToken(token, endpoint, hub);
+    }
 
-        final String authToken = WebPubSubAuthenticationPolicy.getAuthenticationToken(
-                audience, options, webPubSubAuthPolicy.getCredential());
-
-        // The endpoint should always be http or https and client endpoint should be ws or wss respectively.
-        final String clientEndpoint = endpoint.replaceFirst("http", "ws");
-        final String clientUrl = clientEndpoint + "client/hubs/" + hub;
-
-        final String url = clientUrl + "?access_token=" + authToken;
-
-        return new WebPubSubAuthenticationToken(authToken, url);
+    /**
+     * Generate token for the client to connect Azure Web PubSub service.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>userId</td><td>String</td><td>No</td><td>User Id.</td></tr>
+     *     <tr><td>role</td><td>String</td><td>No</td><td>Roles that the connection with the generated token will have.</td></tr>
+     *     <tr><td>minutesToExpire</td><td>String</td><td>No</td><td>The expire time of the generated token.</td></tr>
+     *     <tr><td>apiVersion</td><td>String</td><td>No</td><td>Api Version</td></tr>
+     * </table>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     token: String
+     * }
+     * }</pre>
+     *
+     * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
+     *     characters or underscore.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
+     *     false.
+     * @return the response.
+     */
+    Response<BinaryData> generateClientTokenWithResponse(
+            String hub, RequestOptions requestOptions, Context context) {
+        return this.serviceClient.generateClientTokenWithResponse(hub, requestOptions, context);
     }
 
     /**
@@ -72,12 +124,12 @@ public final class WebPubSubServiceClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> sendToAllWithResponse(
             BinaryData message,
-            String contentType,
+            WebPubSubContentType contentType,
             long contentLength,
             RequestOptions requestOptions,
             Context context) {
         return this.serviceClient.sendToAllWithResponse(
-                hub, contentType, message, contentLength, requestOptions, context);
+                hub, contentType.toString(), message, contentLength, requestOptions, context);
     }
 
     /**
@@ -89,10 +141,10 @@ public final class WebPubSubServiceClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void sendToAll(String message, String contentType) {
+    public void sendToAll(String message, WebPubSubContentType contentType) {
         sendToAllWithResponse(BinaryData.fromString(message),
                 new RequestOptions().addRequestCallback(request -> request.getHeaders().set("Content-Type",
-                        contentType)), Context.NONE);
+                        contentType.toString())), Context.NONE);
     }
 
     /**
@@ -160,12 +212,12 @@ public final class WebPubSubServiceClient {
     public Response<Void> sendToConnectionWithResponse(
             String connectionId,
             BinaryData message,
-            String contentType,
+            WebPubSubContentType contentType,
             long contentLength,
             RequestOptions requestOptions,
             Context context) {
         return this.serviceClient.sendToConnectionWithResponse(
-                hub, connectionId, contentType, message, contentLength, requestOptions, context);
+                hub, connectionId, contentType.toString(), message, contentLength, requestOptions, context);
     }
 
     /**
@@ -179,10 +231,10 @@ public final class WebPubSubServiceClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void sendToConnection(
-            String connectionId, String message, String contentType) {
+            String connectionId, String message, WebPubSubContentType contentType) {
         this.sendToConnectionWithResponse(connectionId, BinaryData.fromString(message),
                 new RequestOptions().addRequestCallback(request -> request.getHeaders()
-                        .set("Content-Type", contentType)), Context.NONE);
+                        .set("Content-Type", contentType.toString())), Context.NONE);
     }
 
     /**
@@ -235,12 +287,12 @@ public final class WebPubSubServiceClient {
     public Response<Void> sendToGroupWithResponse(
             String group,
             BinaryData message,
-            String contentType,
+            WebPubSubContentType contentType,
             long contentLength,
             RequestOptions requestOptions,
             Context context) {
         return this.serviceClient.sendToGroupWithResponse(
-                hub, group, contentType, message, contentLength, requestOptions, context);
+                hub, group, contentType.toString(), message, contentLength, requestOptions, context);
     }
 
     /**
@@ -253,9 +305,9 @@ public final class WebPubSubServiceClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void sendToGroup(String group, String message, String contentType) {
+    public void sendToGroup(String group, String message, WebPubSubContentType contentType) {
         sendToGroupWithResponse(group, BinaryData.fromString(message), new RequestOptions()
-                .addRequestCallback(request -> request.getHeaders().set("Content-Type", contentType)), Context.NONE);
+                .addRequestCallback(request -> request.getHeaders().set("Content-Type", contentType.toString())), Context.NONE);
     }
 
     /**
@@ -343,12 +395,12 @@ public final class WebPubSubServiceClient {
     public Response<Void> sendToUserWithResponse(
             String userId,
             BinaryData message,
-            String contentType,
+            WebPubSubContentType contentType,
             long contentLength,
             RequestOptions requestOptions,
             Context context) {
         return this.serviceClient.sendToUserWithResponse(
-                hub, userId, contentType, message, contentLength, requestOptions, context);
+                hub, userId, contentType.toString(), message, contentLength, requestOptions, context);
     }
 
     /**
@@ -361,9 +413,9 @@ public final class WebPubSubServiceClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void sendToUser(String userId, String message, String contentType) {
+    public void sendToUser(String userId, String message, WebPubSubContentType contentType) {
         sendToUserWithResponse(userId, BinaryData.fromString(message), new RequestOptions()
-                .addRequestCallback(request -> request.getHeaders().set("Content-Type", contentType)), Context.NONE);
+                .addRequestCallback(request -> request.getHeaders().set("Content-Type", contentType.toString())), Context.NONE);
     }
 
     /**

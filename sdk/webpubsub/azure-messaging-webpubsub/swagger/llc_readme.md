@@ -2,7 +2,7 @@
 
 ``` yaml
 use: '@autorest/java@4.0.24'
-input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/specification/webpubsub/data-plane/WebPubSub/preview/2021-05-01-preview/webpubsub.json
+input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/main/specification/webpubsub/data-plane/WebPubSub/preview/2021-08-01-preview/webpubsub.json
 java: true
 output-folder: ..
 namespace: com.azure.messaging.webpubsub.llc

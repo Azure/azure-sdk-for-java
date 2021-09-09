@@ -4,7 +4,7 @@
 package com.azure.messaging.webpubsub;
 
 import com.azure.core.credential.AzureKeyCredential;
-
+import com.azure.messaging.webpubsub.models.WebPubSubContentType;
 /**
  * WARNING: MODIFYING THIS FILE WILL REQUIRE CORRESPONDING UPDATES TO README.md FILE. LINE NUMBERS ARE USED TO EXTRACT
  * APPROPRIATE CODE SEGMENTS FROM THIS FILE. ADD NEW CODE AT THE BOTTOM TO AVOID CHANGING LINE NUMBERS OF EXISTING CODE
@@ -44,7 +44,7 @@ public class ReadmeSamples {
             .hub("chat")
             .buildClient();
 
-        webPubSubServiceClient.sendToAll("Hello world!", "text/plain");
+        webPubSubServiceClient.sendToAll("Hello world!", WebPubSubContentType.TEXT_PLAIN);
     }
 
     /**
@@ -56,7 +56,7 @@ public class ReadmeSamples {
             .hub("chat")
             .buildClient();
 
-        webPubSubServiceClient.sendToGroup("java", "Hello Java!", "text/plain");
+        webPubSubServiceClient.sendToGroup("java", "Hello Java!", WebPubSubContentType.TEXT_PLAIN);
     }
 
     /**
@@ -68,7 +68,7 @@ public class ReadmeSamples {
             .hub("chat")
             .buildClient();
 
-        webPubSubServiceClient.sendToConnection("myconnectionid", "Hello connection!", "text/plain");
+        webPubSubServiceClient.sendToConnection("myconnectionid", "Hello connection!", WebPubSubContentType.TEXT_PLAIN);
     }
 
     /**
@@ -80,6 +80,6 @@ public class ReadmeSamples {
             .hub("chat")
             .buildClient();
 
-        webPubSubServiceClient.sendToUser("Andy", "Hello Andy!", "text/plain");
+        webPubSubServiceClient.sendToUser("Andy", "Hello Andy!", WebPubSubContentType.TEXT_PLAIN);
     }
 }

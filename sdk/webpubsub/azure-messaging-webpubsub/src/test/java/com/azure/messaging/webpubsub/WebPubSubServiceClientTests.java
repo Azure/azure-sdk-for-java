@@ -4,6 +4,8 @@
 package com.azure.messaging.webpubsub;
 
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.policy.HttpLogDetailLevel;
+import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestBase;
@@ -11,6 +13,7 @@ import com.azure.core.test.TestMode;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.Context;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -25,6 +28,8 @@ public class WebPubSubServiceClientTests extends TestBase {
         "Endpoint=https://example.com;AccessKey=dummykey;Version=1.0;";
     private static final String CONNECTION_STRING = Configuration.getGlobalConfiguration()
         .get("WEB_PUB_SUB_CS", DEFAULT_CONNECTION_STRING);
+    private static final String ENDPOINT = Configuration.getGlobalConfiguration()
+            .get("WEB_PUB_SUB_ENDPOINT", "https://srnagar-wps-pubsub.webpubsub.azure.com");
 
     private WebPubSubServiceClient client;
     private WebPubSubServiceAsyncClient asyncClient;
@@ -174,4 +179,32 @@ public class WebPubSubServiceClientTests extends TestBase {
                 new RequestOptions().addRequestCallback(request -> request.getHeaders()
                         .set("Content-Type", "text/plain")), Context.NONE), 202);
     }
+
+    @Test
+    public void testAadCredential() {
+        WebPubSubServiceClientBuilder webPubSubServiceClientBuilder = new WebPubSubServiceClientBuilder()
+                .endpoint(ENDPOINT)
+                .httpClient(HttpClient.createDefault())
+                .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
+                .hub("test");
+
+        if (getTestMode() == TestMode.PLAYBACK) {
+            webPubSubServiceClientBuilder.httpClient(interceptorManager.getPlaybackClient())
+                    .connectionString(CONNECTION_STRING);
+        } else if (getTestMode() == TestMode.RECORD) {
+            webPubSubServiceClientBuilder.addPolicy(interceptorManager.getRecordPolicy())
+                    .credential(new DefaultAzureCredentialBuilder().build());
+        } else if (getTestMode() == TestMode.LIVE) {
+            webPubSubServiceClientBuilder.credential(new DefaultAzureCredentialBuilder().build());
+        }
+
+        this.client = webPubSubServiceClientBuilder.buildClient();
+
+        assertResponse(client.sendToUserWithResponse("test_user",
+                BinaryData.fromString("Hello World!"),
+                new RequestOptions().addRequestCallback(request -> request.getHeaders()
+                        .set("Content-Type", "text/plain")),
+                Context.NONE), 202);
+    }
+
 }
