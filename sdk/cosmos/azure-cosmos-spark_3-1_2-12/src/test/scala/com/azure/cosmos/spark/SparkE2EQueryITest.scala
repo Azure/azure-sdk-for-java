@@ -571,6 +571,8 @@ class SparkE2EQueryITest
       container.createItem(objectNode).block()
     }
 
+    Thread.sleep(2000)
+
     for( _ <- 1 to samplingSize) {
       val objectNode2 = Utils.getSimpleObjectMapper.createObjectNode()
       val arr = objectNode2.putArray("object_array")
@@ -619,6 +621,8 @@ class SparkE2EQueryITest
       objectNode.put("id", UUID.randomUUID().toString)
       container.createItem(objectNode).block()
     }
+
+    Thread.sleep(2000)
 
     for( _ <- 1 to samplingSize) {
       val objectNode2 = Utils.getSimpleObjectMapper.createObjectNode()
