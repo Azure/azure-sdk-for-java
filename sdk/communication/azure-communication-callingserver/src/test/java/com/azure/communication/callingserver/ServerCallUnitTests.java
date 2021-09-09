@@ -13,7 +13,7 @@ import java.util.AbstractMap.SimpleEntry;
 import com.azure.communication.callingserver.models.RecordingChannelType;
 import com.azure.communication.callingserver.models.RecordingContentType;
 import com.azure.communication.callingserver.models.RecordingFormatType;
-import com.azure.communication.callingserver.models.ResultInfoInternal;
+import com.azure.communication.callingserver.implementation.models.ResultInfoInternal;
 import com.azure.communication.callingserver.models.AddParticipantResult;
 import com.azure.communication.callingserver.models.OperationStatus;
 import com.azure.communication.callingserver.models.PlayAudioOptions;
