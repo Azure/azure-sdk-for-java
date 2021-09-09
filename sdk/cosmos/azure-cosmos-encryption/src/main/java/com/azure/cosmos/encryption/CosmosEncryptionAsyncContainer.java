@@ -687,7 +687,7 @@ public class CosmosEncryptionAsyncContainer {
                     EncryptionUtils.getSimpleObjectMapper().valueToTree(itemBatchOperation.getItem());
                 itemBatchOperationMono =
                     encryptionProcessor.encryptObjectNode(objectNode).map(encryptedItem -> {
-                        return new ItemBatchOperation(
+                        return new ItemBatchOperation<>(
                             itemBatchOperation.getOperationType(),
                             itemBatchOperation.getId(),
                             itemBatchOperation.getPartitionKeyValue(),
@@ -698,7 +698,7 @@ public class CosmosEncryptionAsyncContainer {
             } else {
                 itemBatchOperationMono =
                     Mono.just(
-                        new ItemBatchOperation(
+                        new ItemBatchOperation<>(
                             itemBatchOperation.getOperationType(),
                             itemBatchOperation.getId(),
                             itemBatchOperation.getPartitionKeyValue(),
@@ -729,7 +729,7 @@ public class CosmosEncryptionAsyncContainer {
             // TODO this should check for BadRequest StatusCode too, requires a service fix to return 400 instead of
             //  -1 which is currently returned inside the body.
             //  Once fixed from service below if condition can be removed, as this is already covered in onErrorResume.
-            if (!isRetry && cosmosBatchResponse.getSubStatusCode() == Integer.valueOf(Constants.INCORRECT_CONTAINER_RID_SUB_STATUS)) {
+            if (!isRetry && cosmosBatchResponse.getSubStatusCode() == 1024) {
                 this.encryptionProcessor.getIsEncryptionSettingsInitDone().set(false);
                 return this.encryptionProcessor.initializeEncryptionSettingsAsync(true).then
                     (Mono.defer(() -> executeCosmosBatchHelper(encryptedCosmosBatch, requestOptions, true)));
@@ -749,7 +749,7 @@ public class CosmosEncryptionAsyncContainer {
             }
 
             Mono<List<Void>> listMono = Flux.mergeSequential(decryptMonoList).collectList();
-            return listMono.flatMap(aVoid -> Mono.just(cosmosBatchResponse));
+            return listMono.map(aVoid -> cosmosBatchResponse);
         }).onErrorResume(exception -> {
             if (!isRetry && exception instanceof CosmosException) {
                 final CosmosException cosmosException = (CosmosException) exception;
