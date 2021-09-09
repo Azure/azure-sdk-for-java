@@ -362,5 +362,4 @@ stages:
                 ArtifactDirectory: $(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed
                 RepositoryUrl: $(RepositoryUrl)
                 Target: JavaDevFeed
-                BuildToolsPath: $(Pipeline.Workspace)/azure-sdk-build-tools
                 JavaRepoRoot: $(Pipeline.Workspace)/azure-sdk-for-java
