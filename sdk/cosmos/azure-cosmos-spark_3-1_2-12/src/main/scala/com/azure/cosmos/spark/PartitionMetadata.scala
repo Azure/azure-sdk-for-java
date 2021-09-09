@@ -116,6 +116,15 @@ private[cosmos] case class PartitionMetadata
       this.latestLsn / this.documentCount.toDouble
     }
 
-    (progressFactor * averageItemsPerLsn).toLong
+    val weightedGap = progressFactor * averageItemsPerLsn
+    // Any double less than 1 gets rounded to 0 when toLong is invoked
+    val weightedGapAsLong = if (weightedGap < 1) {
+      1
+    }
+    else {
+      weightedGap
+    }
+
+    weightedGapAsLong.toLong
   }
 }
