@@ -30,7 +30,7 @@ public class CryptographyClientBuilderTest {
     @BeforeEach
     public void setUp() {
         keyIdentifier = "https://key-vault-url.vault.azure.net/keys/TestKey/someVersion";
-        serviceVersion = CryptographyServiceVersion.V7_1;
+        serviceVersion = CryptographyServiceVersion.V7_2;
     }
 
     @Test
