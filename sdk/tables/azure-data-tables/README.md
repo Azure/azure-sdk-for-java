@@ -13,7 +13,7 @@ Azure Tables is a service that stores structured NoSQL data in the cloud, provid
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-data-tables</artifactId>
-  <version>12.1.1</version>
+  <version>12.2.0-beta.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
