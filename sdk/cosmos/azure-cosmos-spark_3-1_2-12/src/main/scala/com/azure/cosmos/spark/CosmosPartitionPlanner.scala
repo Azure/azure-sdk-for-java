@@ -286,8 +286,7 @@ private object CosmosPartitionPlanner extends BasicLoggingTrait {
     partitionPlanningInfo.map(info =>
       CosmosInputPartition(
         info.feedRange,
-        info.endLsn,
-        None))
+        info.endLsn))
   }
 
   private[this] def applyStorageAlignedStrategy(
@@ -322,7 +321,7 @@ private object CosmosPartitionPlanner extends BasicLoggingTrait {
       SparkBridgeInternal
         .trySplitFeedRange(container, info.feedRange, numberOfSparkPartitions)
         .foreach(feedRange =>
-          inputPartitions.add(CosmosInputPartition(feedRange, info.endLsn, None)))
+          inputPartitions.add(CosmosInputPartition(feedRange, info.endLsn)))
     })
 
     inputPartitions.asScala.toArray
