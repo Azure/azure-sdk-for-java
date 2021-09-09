@@ -14,18 +14,9 @@ import static com.azure.spring.cloud.config.TestConstants.TEST_CONN_STRING;
 import static com.azure.spring.cloud.config.TestUtils.propPair;
 import static com.azure.spring.cloud.config.resource.Connection.ENDPOINT_ERR_MSG;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.fail;
-import static org.mockito.Mockito.when;
 
 import java.io.InputStream;
 
-import org.apache.http.HttpEntity;
-import org.apache.http.ProtocolVersion;
-import org.apache.http.RequestLine;
-import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.HttpClientBuilder;
-import org.apache.http.message.BasicStatusLine;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -44,31 +35,21 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class AppConfigurationPropertiesTest {
 
     private static final String NO_ENDPOINT_CONN_STRING = "Id=fake-conn-id;Secret=ZmFrZS1jb25uLXNlY3JldA==";
+
     private static final String NO_ID_CONN_STRING = "Endpoint=https://fake.test.config.io;Secret=ZmFrZS1jb25uLXNlY3JldA==";
+
     private static final String NO_SECRET_CONN_STRING = "Endpoint=https://fake.test.config.io;Id=fake-conn-id;";
+
     private static final String VALID_KEY = "/application/";
+
     private static final String ILLEGAL_LABELS = "*,my-label";
-    
+
     @InjectMocks
     private ApplicationContextRunner contextRunner = new ApplicationContextRunner()
         .withConfiguration(AutoConfigurations.of(AppConfigurationBootstrapConfiguration.class));
-    @Mock
-    private HttpGet mockHttpGet;
-
-    @Mock
-    private HttpClientBuilder mockHttpClientBuilder;
-
-    @Mock
-    private RequestLine mockRequestLine;
 
     @Mock
     private ApplicationContext context;
-
-    @Mock
-    private CloseableHttpResponse mockClosableHttpResponse;
-
-    @Mock
-    private HttpEntity mockHttpEntity;
 
     @Mock
     private InputStream mockInputStream;
@@ -79,16 +60,8 @@ public class AppConfigurationPropertiesTest {
     @BeforeEach
     public void setup() {
         MockitoAnnotations.openMocks(this);
-        try {
-            when(mockClosableHttpResponse.getStatusLine())
-                .thenReturn(new BasicStatusLine(new ProtocolVersion("", 0, 0), 200, ""));
-            when(mockClosableHttpResponse.getEntity()).thenReturn(mockHttpEntity);
-            when(mockHttpEntity.getContent()).thenReturn(mockInputStream);
-        } catch (Exception e) {
-            fail();
-        }
     }
-    
+
     @AfterEach
     public void cleanup() throws Exception {
         MockitoAnnotations.openMocks(this).close();
@@ -128,8 +101,7 @@ public class AppConfigurationPropertiesTest {
         this.contextRunner
             .withPropertyValues(
                 propPair(CONN_STRING_PROP, TEST_CONN_STRING),
-                propPair(DEFAULT_CONTEXT_PROP, "")
-            )
+                propPair(DEFAULT_CONTEXT_PROP, ""))
             .run(context -> assertInvalidField(context, "defaultContext"));
     }
 
@@ -139,12 +111,10 @@ public class AppConfigurationPropertiesTest {
             .withPropertyValues(
                 propPair(CONN_STRING_PROP, TEST_CONN_STRING),
                 propPair(KEY_PROP, VALID_KEY),
-                propPair(LABEL_PROP, ILLEGAL_LABELS)
-            )
+                propPair(LABEL_PROP, ILLEGAL_LABELS))
             .run(context -> assertThat(context)
                 .getFailure()
-                .hasStackTraceContaining("LabelFilter must not contain asterisk(*)")
-            );
+                .hasStackTraceContaining("LabelFilter must not contain asterisk(*)"));
     }
 
     @Test
@@ -152,8 +122,7 @@ public class AppConfigurationPropertiesTest {
         this.contextRunner
             .withPropertyValues(
                 propPair(CONN_STRING_PROP, TEST_CONN_STRING),
-                propPair(STORE_ENDPOINT_PROP, "")
-            )
+                propPair(STORE_ENDPOINT_PROP, ""))
             .withPropertyValues(propPair(FAIL_FAST_PROP, "false"))
             .run(context -> {
                 AppConfigurationProperties properties = context.getBean(AppConfigurationProperties.class);
@@ -168,8 +137,7 @@ public class AppConfigurationPropertiesTest {
         this.contextRunner
             .withPropertyValues(
                 propPair(CONN_STRING_PROP, TEST_CONN_STRING),
-                propPair(CONN_STRING_PROP_NEW, TEST_CONN_STRING)
-            )
+                propPair(CONN_STRING_PROP_NEW, TEST_CONN_STRING))
             .run(context -> assertThat(context)
                 .getFailure()
                 .hasStackTraceContaining("Duplicate store name exists"));

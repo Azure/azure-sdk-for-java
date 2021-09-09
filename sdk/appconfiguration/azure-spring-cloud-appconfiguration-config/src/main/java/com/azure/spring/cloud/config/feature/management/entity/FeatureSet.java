@@ -11,18 +11,26 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * Set of Feature Flag Key pairs.
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class FeatureSet {
+public final class FeatureSet {
 
     @JsonProperty("FeatureManagement")
     private HashMap<String, Object> featureManagement;
 
     /**
-     * @return the featureManagement
+     * Returns Map of Feature Flags.
+     * 
+     * @return the featureFlags
      */
     public HashMap<String, Object> getFeatureManagement() {
         return featureManagement;
     }
 
+    /**
+     * Adds a new Feature Flag.
+     * 
+     * @param key Name of the Feature Flag.
+     * @param feature true/false, for on/off feature Flag. {@code Feature} if Feature Filter.
+     */
     public void addFeature(String key, Object feature) {
         if (featureManagement == null) {
             featureManagement = new HashMap<String, Object>();

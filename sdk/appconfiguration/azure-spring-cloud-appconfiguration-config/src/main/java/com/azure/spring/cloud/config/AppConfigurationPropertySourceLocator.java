@@ -4,6 +4,7 @@ package com.azure.spring.cloud.config;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.Iterator;
@@ -12,7 +13,6 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import org.apache.commons.lang3.time.DateUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cloud.bootstrap.config.PropertySourceLocator;
@@ -37,7 +37,7 @@ import com.azure.spring.cloud.config.stores.ClientStore;
 /**
  * Locates Azure App Configuration Property Sources.
  */
-public class AppConfigurationPropertySourceLocator implements PropertySourceLocator {
+public final class AppConfigurationPropertySourceLocator implements PropertySourceLocator {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AppConfigurationPropertySourceLocator.class);
 
@@ -287,8 +287,10 @@ public class AppConfigurationPropertySourceLocator implements PropertySourceLoca
 
     private void delayException() {
         Date currentDate = new Date();
-        Date maxRetryDate = DateUtils.addSeconds(appProperties.getStartDate(),
-            appProperties.getPrekillTime());
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(appProperties.getStartDate());
+        calendar.add(Calendar.SECOND, appProperties.getPrekillTime());
+        Date maxRetryDate = calendar.getTime();
         if (currentDate.before(maxRetryDate)) {
             long diffInMillies = Math.abs(maxRetryDate.getTime() - currentDate.getTime());
             try {
