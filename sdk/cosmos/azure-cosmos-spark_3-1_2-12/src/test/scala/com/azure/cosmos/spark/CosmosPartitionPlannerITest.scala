@@ -2,18 +2,20 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.spark
 
-import com.azure.cosmos.implementation.{SparkBridgeImplementationInternal, TestConfigurations, Utils}
+import com.azure.cosmos.implementation.{CosmosClientMetadataCachesSnapshot, SparkBridgeImplementationInternal, TestConfigurations, Utils}
 import com.azure.cosmos.models.{CosmosChangeFeedRequestOptions, FeedRange}
 import com.azure.cosmos.spark.CosmosPartitionPlanner.{createInputPartitions, getPartitionMetadata}
 import com.azure.cosmos.util.CosmosPagedFlux
 import com.fasterxml.jackson.databind.node.ObjectNode
+import org.apache.spark.broadcast.Broadcast
 import org.apache.spark.sql.connector.read.streaming.ReadLimit
+import org.mockito.Mockito.mock
 import org.mockito.invocation.InvocationOnMock
 import org.mockito.stubbing.Answer
 import org.mockito.{ArgumentMatchers, Mockito}
 import org.scalatest.Assertion
 
-import java.time.Instant
+import java.time.{Duration, Instant}
 import java.util
 import java.util.UUID
 import java.util.concurrent.atomic.{AtomicInteger, AtomicLong}
@@ -245,6 +247,91 @@ class CosmosPartitionPlannerITest
     pagesRetrievedCounterMap should have size initialFeedRangesCount
     for (feedRange <- container.getFeedRanges.block().asScala) {
       pagesRetrievedCounterMap.get(feedRange).get() shouldEqual 1
+    }
+  }
+
+  "getLatestOffset" should "leverage endLsn from readLimit" in {
+
+    val container = this.cosmosClient
+      .getDatabase(containerConfig.database)
+      .getContainer(containerConfig.container)
+
+    for (i <- 0 until 10) {
+      val objectNode = Utils.getSimpleObjectMapper.createObjectNode()
+      objectNode.put("name", "Shrodigner's cat")
+      objectNode.put("type", "cat")
+      objectNode.put("age", 20)
+      objectNode.put("index", i.toString)
+      objectNode.put("id", UUID.randomUUID().toString)
+      container.createItem(objectNode).block()
+    }
+
+    val changeFeedConfig = CosmosChangeFeedConfig.parseCosmosChangeFeedConfig(userConfigTemplate)
+    val testId = UUID.randomUUID().toString
+
+    val pagesRetrievedCounterMap = new util.HashMap[FeedRange, AtomicInteger]
+    for (feedRange <- container.getFeedRanges.block().asScala) {
+      pagesRetrievedCounterMap.put(feedRange, new AtomicInteger())
+    }
+
+    // mocking container to count number of pages retrieved
+    val mockContainer = Mockito.spy(container)
+    Mockito.doAnswer(new Answer[CosmosPagedFlux[ObjectNode]]() {
+      override def answer(invocationOnMock: InvocationOnMock): CosmosPagedFlux[ObjectNode] = {
+        val requestOptions: CosmosChangeFeedRequestOptions =
+          invocationOnMock.getArgument(0, classOf[CosmosChangeFeedRequestOptions])
+        val pageFlux = container.queryChangeFeed(requestOptions, classOf[ObjectNode])
+        pageFlux.handle(feedResponse => {
+          pagesRetrievedCounterMap.get(requestOptions.getFeedRange).getAndIncrement()
+        })
+      }
+    }).when(mockContainer).queryChangeFeed(
+      ArgumentMatchers.any(classOf[CosmosChangeFeedRequestOptions]),
+      ArgumentMatchers.any()
+    )
+
+    val initialOffsetJson = CosmosPartitionPlanner.createInitialOffset(mockContainer, changeFeedConfig, streamId = Some(testId))
+
+    val clientHandle = mock(classOf[Broadcast[CosmosClientMetadataCachesSnapshot]])
+
+    val latestOffsetWithoutLimit = CosmosPartitionPlanner.getLatestOffset(
+      this.userConfigTemplate,
+      ChangeFeedOffset(initialOffsetJson, None),
+      ReadLimit.allAvailable(),
+      Duration.ofMillis(PartitionMetadataCache.refreshIntervalInMsDefault),
+      this.clientConfig,
+      clientHandle,
+      this.containerConfig,
+      CosmosPartitioningConfig.parseCosmosPartitioningConfig(this.userConfigTemplate),
+      1,
+      container
+      )
+
+    val noLimitState = latestOffsetWithoutLimit.changeFeedState
+    val continuationsAndLsnNoLimit = SparkBridgeImplementationInternal.extractContinuationTokensFromChangeFeedStateJson(noLimitState)
+
+    val latestOffset = CosmosPartitionPlanner.getLatestOffset(
+      this.userConfigTemplate,
+      ChangeFeedOffset(initialOffsetJson, None),
+      ReadLimit.maxRows(5),
+      Duration.ofMillis(PartitionMetadataCache.refreshIntervalInMsDefault),
+      this.clientConfig,
+      clientHandle,
+      this.containerConfig,
+      CosmosPartitioningConfig.parseCosmosPartitioningConfig(this.userConfigTemplate),
+      1,
+      container
+    )
+
+    val limitState = latestOffset.changeFeedState
+    val continuationsAndLsnWithLimit = SparkBridgeImplementationInternal.extractContinuationTokensFromChangeFeedStateJson(limitState)
+
+    noLimitState should not be limitState
+    continuationsAndLsnNoLimit should have length continuationsAndLsnWithLimit.length
+    for (c <- continuationsAndLsnNoLimit){
+      val withLimit =  continuationsAndLsnWithLimit.find(i => i._1 == c._1)
+      withLimit.isDefined should be (true)
+      c._2 should not be withLimit.get._2
     }
   }
 
