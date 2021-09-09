@@ -36,8 +36,6 @@ import com.azure.search.documents.models.IndexActionType;
 import com.azure.search.documents.models.IndexBatchException;
 import com.azure.search.documents.models.IndexDocumentsOptions;
 import com.azure.search.documents.models.IndexDocumentsResult;
-import com.azure.search.documents.models.QueryAnswer;
-import com.azure.search.documents.models.QueryCaption;
 import com.azure.search.documents.models.ScoringParameter;
 import com.azure.search.documents.models.SearchOptions;
 import com.azure.search.documents.models.SearchResult;
@@ -655,7 +653,7 @@ public final class SearchAsyncClient {
                 SearchPagedResponse page = new SearchPagedResponse(
                     new SimpleResponse<>(response, getSearchResults(result)),
                     createContinuationToken(result, serviceVersion), getFacets(result), result.getCount(),
-                    result.getCoverage(), result.getAnswers());
+                    result.getCoverage());
                 if (continuationToken == null) {
                     firstPageResponseWrapper.setFirstPageResponse(page);
                 }
@@ -834,53 +832,12 @@ public final class SearchAsyncClient {
             .setScoringParameters(scoringParameters)
             .setScoringProfile(options.getScoringProfile())
             .setSearchFields(nullSafeStringJoin(options.getSearchFields()))
-            .setQueryLanguage(options.getQueryLanguage())
-            .setSpeller(options.getSpeller())
-            .setAnswers(createSearchRequestAnswers(options))
             .setSearchMode(options.getSearchMode())
             .setScoringStatistics(options.getScoringStatistics())
             .setSessionId(options.getSessionId())
             .setSelect(nullSafeStringJoin(options.getSelect()))
             .setSkip(options.getSkip())
-            .setTop(options.getTop())
-            .setCaptions(createSearchRequestCaptions(options))
-            .setSemanticFields(nullSafeStringJoin(options.getSemanticFields()));
-    }
-
-    static String createSearchRequestAnswers(SearchOptions searchOptions) {
-        QueryAnswer answer = searchOptions.getAnswers();
-        Integer answersCount = searchOptions.getAnswersCount();
-
-        // No answer has been defined.
-        if (answer == null) {
-            return null;
-        }
-
-        // No count, just send the QueryAnswer.
-        if (answersCount == null) {
-            return answer.toString();
-        }
-
-        // Answer and count, format it as the service expects.
-        return answer + "|count-" + answersCount;
-    }
-
-    static String createSearchRequestCaptions(SearchOptions searchOptions) {
-        QueryCaption queryCaption = searchOptions.getQueryCaption();
-        Boolean queryCaptionHighlight = searchOptions.getQueryCaptionHighlight();
-
-        // No caption has been defined.
-        if (queryCaption == null) {
-            return null;
-        }
-
-        // No highlight, just send the Caption.
-        if (queryCaptionHighlight == null) {
-            return queryCaption.toString();
-        }
-
-        // Caption and highlight, format it as the service expects.
-        return queryCaption + "|highlight-" + queryCaptionHighlight;
+            .setTop(options.getTop());
     }
 
     /**

@@ -9,7 +9,6 @@ package com.azure.search.documents.indexes.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.search.documents.indexes.models.CharFilterName;
 import com.azure.search.documents.indexes.models.LexicalAnalyzerName;
-import com.azure.search.documents.indexes.models.LexicalNormalizerName;
 import com.azure.search.documents.indexes.models.LexicalTokenizerName;
 import com.azure.search.documents.indexes.models.TokenFilterName;
 import com.fasterxml.jackson.annotation.JsonCreator;
@@ -26,32 +25,31 @@ public final class AnalyzeRequest {
     private String text;
 
     /*
-     * The name of the analyzer to use to break the given text.
+     * The name of the analyzer to use to break the given text. If this
+     * parameter is not specified, you must specify a tokenizer instead. The
+     * tokenizer and analyzer parameters are mutually exclusive.
      */
     @JsonProperty(value = "analyzer")
     private LexicalAnalyzerName analyzer;
 
     /*
-     * The name of the tokenizer to use to break the given text.
+     * The name of the tokenizer to use to break the given text. If this
+     * parameter is not specified, you must specify an analyzer instead. The
+     * tokenizer and analyzer parameters are mutually exclusive.
      */
     @JsonProperty(value = "tokenizer")
     private LexicalTokenizerName tokenizer;
 
     /*
-     * The name of the normalizer to use to normalize the given text.
-     */
-    @JsonProperty(value = "normalizer")
-    private LexicalNormalizerName normalizer;
-
-    /*
      * An optional list of token filters to use when breaking the given text.
+     * This parameter can only be set when using the tokenizer parameter.
      */
     @JsonProperty(value = "tokenFilters")
     private List<TokenFilterName> tokenFilters;
 
     /*
      * An optional list of character filters to use when breaking the given
-     * text.
+     * text. This parameter can only be set when using the tokenizer parameter.
      */
     @JsonProperty(value = "charFilters")
     private List<CharFilterName> charFilters;
@@ -76,7 +74,8 @@ public final class AnalyzeRequest {
     }
 
     /**
-     * Get the analyzer property: The name of the analyzer to use to break the given text.
+     * Get the analyzer property: The name of the analyzer to use to break the given text. If this parameter is not
+     * specified, you must specify a tokenizer instead. The tokenizer and analyzer parameters are mutually exclusive.
      *
      * @return the analyzer value.
      */
@@ -85,7 +84,8 @@ public final class AnalyzeRequest {
     }
 
     /**
-     * Set the analyzer property: The name of the analyzer to use to break the given text.
+     * Set the analyzer property: The name of the analyzer to use to break the given text. If this parameter is not
+     * specified, you must specify a tokenizer instead. The tokenizer and analyzer parameters are mutually exclusive.
      *
      * @param analyzer the analyzer value to set.
      * @return the AnalyzeRequest object itself.
@@ -96,7 +96,8 @@ public final class AnalyzeRequest {
     }
 
     /**
-     * Get the tokenizer property: The name of the tokenizer to use to break the given text.
+     * Get the tokenizer property: The name of the tokenizer to use to break the given text. If this parameter is not
+     * specified, you must specify an analyzer instead. The tokenizer and analyzer parameters are mutually exclusive.
      *
      * @return the tokenizer value.
      */
@@ -105,7 +106,8 @@ public final class AnalyzeRequest {
     }
 
     /**
-     * Set the tokenizer property: The name of the tokenizer to use to break the given text.
+     * Set the tokenizer property: The name of the tokenizer to use to break the given text. If this parameter is not
+     * specified, you must specify an analyzer instead. The tokenizer and analyzer parameters are mutually exclusive.
      *
      * @param tokenizer the tokenizer value to set.
      * @return the AnalyzeRequest object itself.
@@ -116,27 +118,8 @@ public final class AnalyzeRequest {
     }
 
     /**
-     * Get the normalizer property: The name of the normalizer to use to normalize the given text.
-     *
-     * @return the normalizer value.
-     */
-    public LexicalNormalizerName getNormalizer() {
-        return this.normalizer;
-    }
-
-    /**
-     * Set the normalizer property: The name of the normalizer to use to normalize the given text.
-     *
-     * @param normalizer the normalizer value to set.
-     * @return the AnalyzeRequest object itself.
-     */
-    public AnalyzeRequest setNormalizer(LexicalNormalizerName normalizer) {
-        this.normalizer = normalizer;
-        return this;
-    }
-
-    /**
-     * Get the tokenFilters property: An optional list of token filters to use when breaking the given text.
+     * Get the tokenFilters property: An optional list of token filters to use when breaking the given text. This
+     * parameter can only be set when using the tokenizer parameter.
      *
      * @return the tokenFilters value.
      */
@@ -145,7 +128,8 @@ public final class AnalyzeRequest {
     }
 
     /**
-     * Set the tokenFilters property: An optional list of token filters to use when breaking the given text.
+     * Set the tokenFilters property: An optional list of token filters to use when breaking the given text. This
+     * parameter can only be set when using the tokenizer parameter.
      *
      * @param tokenFilters the tokenFilters value to set.
      * @return the AnalyzeRequest object itself.
@@ -156,7 +140,8 @@ public final class AnalyzeRequest {
     }
 
     /**
-     * Get the charFilters property: An optional list of character filters to use when breaking the given text.
+     * Get the charFilters property: An optional list of character filters to use when breaking the given text. This
+     * parameter can only be set when using the tokenizer parameter.
      *
      * @return the charFilters value.
      */
@@ -165,7 +150,8 @@ public final class AnalyzeRequest {
     }
 
     /**
-     * Set the charFilters property: An optional list of character filters to use when breaking the given text.
+     * Set the charFilters property: An optional list of character filters to use when breaking the given text. This
+     * parameter can only be set when using the tokenizer parameter.
      *
      * @param charFilters the charFilters value to set.
      * @return the AnalyzeRequest object itself.

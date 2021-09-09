@@ -18,10 +18,15 @@ public final class CjkBigramTokenFilterConverter {
         if (obj == null) {
             return null;
         }
+        CjkBigramTokenFilter cjkBigramTokenFilter = new CjkBigramTokenFilter(obj.getName());
 
-        return new CjkBigramTokenFilter(obj.getName())
-            .setOutputUnigrams(obj.isOutputUnigrams())
-            .setIgnoreScripts(obj.getIgnoreScripts());
+        Boolean outputUnigrams = obj.isOutputUnigrams();
+        cjkBigramTokenFilter.setOutputUnigrams(outputUnigrams);
+
+        if (obj.getIgnoreScripts() != null) {
+            cjkBigramTokenFilter.setIgnoreScripts(obj.getIgnoreScripts());
+        }
+        return cjkBigramTokenFilter;
     }
 
     /**
@@ -32,10 +37,17 @@ public final class CjkBigramTokenFilterConverter {
         if (obj == null) {
             return null;
         }
+        com.azure.search.documents.indexes.implementation.models.CjkBigramTokenFilter cjkBigramTokenFilter =
+            new com.azure.search.documents.indexes.implementation.models.CjkBigramTokenFilter(obj.getName());
 
-        return new com.azure.search.documents.indexes.implementation.models.CjkBigramTokenFilter(obj.getName())
-            .setOutputUnigrams(obj.areOutputUnigrams())
-            .setIgnoreScripts(obj.getIgnoreScripts());
+        Boolean outputUnigrams = obj.areOutputUnigrams();
+        cjkBigramTokenFilter.setOutputUnigrams(outputUnigrams);
+
+        if (obj.getIgnoreScripts() != null) {
+            cjkBigramTokenFilter.setIgnoreScripts(obj.getIgnoreScripts());
+        }
+
+        return cjkBigramTokenFilter;
     }
 
     private CjkBigramTokenFilterConverter() {

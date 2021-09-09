@@ -46,16 +46,6 @@ public final class SearchResourceEncryptionKey {
     @JsonProperty(value = "accessCredentials")
     private AzureActiveDirectoryApplicationCredentials accessCredentials;
 
-    /*
-     * An explicit managed identity to use for this encryption key. If not
-     * specified and the access credentials property is null, the
-     * system-assigned managed identity is used. On update to the resource, if
-     * the explicit identity is unspecified, it remains unchanged. If "none" is
-     * specified, the value of this property is cleared.
-     */
-    @JsonProperty(value = "identity")
-    private SearchIndexerDataIdentity identity;
-
     /**
      * Creates an instance of SearchResourceEncryptionKey class.
      *
@@ -99,32 +89,6 @@ public final class SearchResourceEncryptionKey {
      */
     public String getVaultUrl() {
         return this.vaultUrl;
-    }
-
-    /**
-     * Get the identity property: An explicit managed identity to use for this encryption key. If not specified and the
-     * access credentials property is null, the system-assigned managed identity is used. On update to the resource, if
-     * the explicit identity is unspecified, it remains unchanged. If "none" is specified, the value of this property is
-     * cleared.
-     *
-     * @return the identity value.
-     */
-    public SearchIndexerDataIdentity getIdentity() {
-        return this.identity;
-    }
-
-    /**
-     * Set the identity property: An explicit managed identity to use for this encryption key. If not specified and the
-     * access credentials property is null, the system-assigned managed identity is used. On update to the resource, if
-     * the explicit identity is unspecified, it remains unchanged. If "none" is specified, the value of this property is
-     * cleared.
-     *
-     * @param identity the identity value to set.
-     * @return the SearchResourceEncryptionKey object itself.
-     */
-    public SearchResourceEncryptionKey setIdentity(SearchIndexerDataIdentity identity) {
-        this.identity = identity;
-        return this;
     }
 
     /**

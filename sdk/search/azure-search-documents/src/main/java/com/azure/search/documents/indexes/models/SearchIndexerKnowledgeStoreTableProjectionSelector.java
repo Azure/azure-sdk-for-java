@@ -9,6 +9,7 @@ package com.azure.search.documents.indexes.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.List;
 
 /** Description for what data to store in Azure Tables. */
@@ -32,15 +33,6 @@ public final class SearchIndexerKnowledgeStoreTableProjectionSelector
         this.tableName = tableName;
     }
 
-    /**
-     * Get the tableName property: Name of the Azure table to store projected data in.
-     *
-     * @return the tableName value.
-     */
-    public String getTableName() {
-        return this.tableName;
-    }
-
     @Override
     public SearchIndexerKnowledgeStoreTableProjectionSelector setReferenceKeyName(String referenceKeyName) {
         super.setReferenceKeyName(referenceKeyName);
@@ -56,7 +48,6 @@ public final class SearchIndexerKnowledgeStoreTableProjectionSelector
     @Override
     public SearchIndexerKnowledgeStoreTableProjectionSelector setSource(String source) {
         super.setSource(source);
-
         return this;
     }
 
@@ -70,5 +61,14 @@ public final class SearchIndexerKnowledgeStoreTableProjectionSelector
     public SearchIndexerKnowledgeStoreTableProjectionSelector setInputs(List<InputFieldMappingEntry> inputs) {
         super.setInputs(inputs);
         return this;
+    }
+
+    /**
+     * Get the tableName property: Name of the Azure table to store projected data in.
+     *
+     * @return the tableName value.
+     */
+    public String getTableName() {
+        return this.tableName;
     }
 }

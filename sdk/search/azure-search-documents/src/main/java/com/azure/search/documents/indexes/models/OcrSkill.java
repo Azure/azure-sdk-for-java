@@ -31,13 +31,6 @@ public final class OcrSkill extends SearchIndexerSkill {
     @JsonProperty(value = "detectOrientation")
     private Boolean shouldDetectOrientation;
 
-    /*
-     * Defines the sequence of characters to use between the lines of text
-     * recognized by the OCR skill. The default value is "space".
-     */
-    @JsonProperty(value = "lineEnding")
-    private LineEnding lineEnding;
-
     /**
      * Creates an instance of OcrSkill class.
      *
@@ -90,28 +83,6 @@ public final class OcrSkill extends SearchIndexerSkill {
      */
     public OcrSkill setShouldDetectOrientation(Boolean shouldDetectOrientation) {
         this.shouldDetectOrientation = shouldDetectOrientation;
-        return this;
-    }
-
-    /**
-     * Get the lineEnding property: Defines the sequence of characters to use between the lines of text recognized by
-     * the OCR skill. The default value is "space".
-     *
-     * @return the lineEnding value.
-     */
-    public LineEnding getLineEnding() {
-        return this.lineEnding;
-    }
-
-    /**
-     * Set the lineEnding property: Defines the sequence of characters to use between the lines of text recognized by
-     * the OCR skill. The default value is "space".
-     *
-     * @param lineEnding the lineEnding value to set.
-     * @return the OcrSkill object itself.
-     */
-    public OcrSkill setLineEnding(LineEnding lineEnding) {
-        this.lineEnding = lineEnding;
         return this;
     }
 

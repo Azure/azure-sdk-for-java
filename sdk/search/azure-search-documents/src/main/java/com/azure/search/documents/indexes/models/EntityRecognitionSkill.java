@@ -7,28 +7,18 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
-import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-
 import java.util.List;
 
-/**
- * Text analytics entity recognition.
- */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.EXISTING_PROPERTY, property = "@odata.type",
-    visible = true)
+/** Text analytics entity recognition. */
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata.type")
 @JsonTypeName("#Microsoft.Skills.Text.EntityRecognitionSkill")
 @Fluent
 public final class EntityRecognitionSkill extends SearchIndexerSkill {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(EntityRecognitionSkill.class);
-
     /*
      * A list of entity categories that should be extracted.
      */
@@ -58,18 +48,6 @@ public final class EntityRecognitionSkill extends SearchIndexerSkill {
     @JsonProperty(value = "minimumPrecision")
     private Double minimumPrecision;
 
-    /*
-     * The version of the model to use when calling the Text Analytics service.
-     * It will default to the latest available when not specified. We recommend
-     * you do not specify this value unless absolutely necessary.
-     */
-    @JsonProperty(value = "modelVersion")
-    private String modelVersion;
-
-    @JsonTypeId
-    @JsonProperty(value = "@odata.type", access = JsonProperty.Access.WRITE_ONLY)
-    private EntityRecognitionSkillVersion version;
-
     /**
      * Creates an instance of EntityRecognitionSkill class.
      *
@@ -78,31 +56,9 @@ public final class EntityRecognitionSkill extends SearchIndexerSkill {
      */
     @JsonCreator
     public EntityRecognitionSkill(
-        @JsonProperty(value = "inputs", required = true) List<InputFieldMappingEntry> inputs,
-        @JsonProperty(value = "outputs", required = true) List<OutputFieldMappingEntry> outputs) {
-        this(inputs, outputs, EntityRecognitionSkillVersion.V1);
-    }
-
-    /**
-     * Creates an instance of EntityRecognitionSkill class.
-     *
-     * @param inputs the inputs value to set.
-     * @param outputs the outputs value to set.
-     * @param version the EntityRecognitionSkillVersion value to set.
-     */
-    public EntityRecognitionSkill(List<InputFieldMappingEntry> inputs, List<OutputFieldMappingEntry> outputs,
-        EntityRecognitionSkillVersion version) {
+            @JsonProperty(value = "inputs", required = true) List<InputFieldMappingEntry> inputs,
+            @JsonProperty(value = "outputs", required = true) List<OutputFieldMappingEntry> outputs) {
         super(inputs, outputs);
-        this.version = version;
-    }
-
-    /**
-     * Gets the version of the {@link EntityRecognitionSkill}.
-     *
-     * @return The version of the {@link EntityRecognitionSkill}.
-     */
-    public EntityRecognitionSkillVersion getSkillVersion() {
-        return this.version;
     }
 
     /**
@@ -164,15 +120,8 @@ public final class EntityRecognitionSkill extends SearchIndexerSkill {
      *
      * @param includeTypelessEntities the includeTypelessEntities value to set.
      * @return the EntityRecognitionSkill object itself.
-     * @throws IllegalArgumentException If {@code includeTypelessEntities} is supplied when {@link #getSkillVersion()}
-     * is {@link EntityRecognitionSkillVersion#V3}.
      */
     public EntityRecognitionSkill setTypelessEntitiesIncluded(Boolean includeTypelessEntities) {
-        if (includeTypelessEntities != null && version == EntityRecognitionSkillVersion.V3) {
-            throw logger.logExceptionAsError(new IllegalArgumentException(
-                "EntityRecognitionSkill using V3 doesn't support 'includeTypelessEntities'."));
-        }
-
         this.includeTypelessEntities = includeTypelessEntities;
         return this;
     }
@@ -209,37 +158,6 @@ public final class EntityRecognitionSkill extends SearchIndexerSkill {
      */
     public EntityRecognitionSkill setCategories(EntityCategory... categories) {
         this.categories = (categories == null) ? null : java.util.Arrays.asList(categories);
-        return this;
-    }
-
-    /**
-     * Get the modelVersion property: The version of the model to use when calling the Text Analytics service. It will
-     * default to the latest available when not specified. We recommend you do not specify this value unless absolutely
-     * necessary.
-     *
-     * @return the modelVersion value.
-     */
-    public String getModelVersion() {
-        return this.modelVersion;
-    }
-
-    /**
-     * Set the modelVersion property: The version of the model to use when calling the Text Analytics service. It will
-     * default to the latest available when not specified. We recommend you do not specify this value unless absolutely
-     * necessary.
-     *
-     * @param modelVersion the modelVersion value to set.
-     * @return the EntityRecognitionSkill object itself.
-     * @throws IllegalArgumentException If {@code modelVersion} is supplied when {@link #getSkillVersion()} is {@link
-     * EntityRecognitionSkillVersion#V1}.
-     */
-    public EntityRecognitionSkill setModelVersion(String modelVersion) {
-        if (modelVersion != null && version == EntityRecognitionSkillVersion.V1) {
-            throw logger.logExceptionAsError(
-                new IllegalArgumentException("EntityRecognitionSkill using V1 doesn't support 'modelVersion'."));
-        }
-
-        this.modelVersion = modelVersion;
         return this;
     }
 }

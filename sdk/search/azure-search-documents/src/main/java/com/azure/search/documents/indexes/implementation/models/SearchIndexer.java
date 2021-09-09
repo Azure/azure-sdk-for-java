@@ -9,7 +9,6 @@ package com.azure.search.documents.indexes.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.search.documents.indexes.models.FieldMapping;
 import com.azure.search.documents.indexes.models.IndexingSchedule;
-import com.azure.search.documents.indexes.models.SearchIndexerCache;
 import com.azure.search.documents.indexes.models.SearchResourceEncryptionKey;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -101,13 +100,6 @@ public final class SearchIndexer {
      */
     @JsonProperty(value = "encryptionKey")
     private SearchResourceEncryptionKey encryptionKey;
-
-    /*
-     * Adds caching to an enrichment pipeline to allow for incremental
-     * modification steps without having to rebuild the index every time.
-     */
-    @JsonProperty(value = "cache")
-    private SearchIndexerCache cache;
 
     /**
      * Get the name property: The name of the indexer.
@@ -364,28 +356,6 @@ public final class SearchIndexer {
      */
     public SearchIndexer setEncryptionKey(SearchResourceEncryptionKey encryptionKey) {
         this.encryptionKey = encryptionKey;
-        return this;
-    }
-
-    /**
-     * Get the cache property: Adds caching to an enrichment pipeline to allow for incremental modification steps
-     * without having to rebuild the index every time.
-     *
-     * @return the cache value.
-     */
-    public SearchIndexerCache getCache() {
-        return this.cache;
-    }
-
-    /**
-     * Set the cache property: Adds caching to an enrichment pipeline to allow for incremental modification steps
-     * without having to rebuild the index every time.
-     *
-     * @param cache the cache value to set.
-     * @return the SearchIndexer object itself.
-     */
-    public SearchIndexer setCache(SearchIndexerCache cache) {
-        this.cache = cache;
         return this;
     }
 }

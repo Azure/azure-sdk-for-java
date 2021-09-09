@@ -5,7 +5,6 @@ package com.azure.search.documents;
 
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.credential.AzureKeyCredential;
-import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelinePosition;
@@ -83,9 +82,7 @@ public final class SearchClientBuilder {
     private final List<HttpPipelinePolicy> perCallPolicies = new ArrayList<>();
     private final List<HttpPipelinePolicy> perRetryPolicies = new ArrayList<>();
 
-    private AzureKeyCredential azureKeyCredential;
-    private TokenCredential tokenCredential;
-
+    private AzureKeyCredential credential;
     private SearchServiceVersion serviceVersion;
     private String endpoint;
     private HttpClient httpClient;
@@ -138,7 +135,7 @@ public final class SearchClientBuilder {
 
         HttpPipeline pipeline = getHttpPipeline();
         return new SearchAsyncClient(endpoint, indexName, buildVersion, pipeline, jsonSerializer,
-            Utility.buildRestClient(buildVersion, endpoint, indexName, pipeline, getDefaultSerializerAdapter()));
+            Utility.buildRestClient(endpoint, indexName, pipeline, getDefaultSerializerAdapter()));
     }
 
     /**
@@ -164,8 +161,9 @@ public final class SearchClientBuilder {
             return httpPipeline;
         }
 
+        Objects.requireNonNull(credential, "'credential' cannot be null.");
         return Utility.buildHttpPipeline(clientOptions, httpLogOptions, configuration, retryPolicy,
-            azureKeyCredential, tokenCredential, perCallPolicies, perRetryPolicies, httpClient, logger);
+            credential, perCallPolicies, perRetryPolicies, httpClient);
     }
 
     /**
@@ -190,20 +188,12 @@ public final class SearchClientBuilder {
      *
      * @param credential The {@link AzureKeyCredential} used to authenticate HTTP requests.
      * @return The updated SearchClientBuilder object.
+     * @throws NullPointerException If {@code credential} is null.
+     * @throws IllegalArgumentException If {@link AzureKeyCredential#getKey()} is null or empty.
      */
     public SearchClientBuilder credential(AzureKeyCredential credential) {
-        this.azureKeyCredential = credential;
-        return this;
-    }
-
-    /**
-     * Sets the {@link TokenCredential} used to authenticate HTTP requests.
-     *
-     * @param credential The {@link TokenCredential} used to authenticate HTTP requests.
-     * @return The updated SearchClientBuilder object.
-     */
-    public SearchClientBuilder credential(TokenCredential credential) {
-        this.tokenCredential = credential;
+        Objects.requireNonNull(credential, "'credential' cannot be null.");
+        this.credential = credential;
         return this;
     }
 
@@ -420,14 +410,9 @@ public final class SearchClientBuilder {
         public SearchIndexingBufferedAsyncSender<T> buildAsyncSender() {
             validateIndexNameAndEndpoint();
             Objects.requireNonNull(documentKeyRetriever, "'documentKeyRetriever' cannot be null");
-
-            SearchServiceVersion buildVersion = (serviceVersion == null)
-                ? SearchServiceVersion.getLatest()
-                : serviceVersion;
-
-            return new SearchIndexingBufferedAsyncSender<>(buildRestClient(buildVersion, endpoint, indexName,
-                getHttpPipeline(), getDefaultSerializerAdapter()), jsonSerializer, documentKeyRetriever, autoFlush,
-                autoFlushInterval, initialBatchActionCount, maxRetriesPerAction, throttlingDelay, maxThrottlingDelay,
+            return new SearchIndexingBufferedAsyncSender<>(buildRestClient(endpoint, indexName, getHttpPipeline(),
+                getDefaultSerializerAdapter()), jsonSerializer, documentKeyRetriever, autoFlush, autoFlushInterval,
+                initialBatchActionCount, maxRetriesPerAction, throttlingDelay, maxThrottlingDelay,
                 onActionAddedConsumer, onActionSucceededConsumer, onActionErrorConsumer, onActionSentConsumer);
         }
 

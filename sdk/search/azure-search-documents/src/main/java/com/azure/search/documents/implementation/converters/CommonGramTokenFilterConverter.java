@@ -19,9 +19,15 @@ public final class CommonGramTokenFilterConverter {
             return null;
         }
 
-        return new CommonGramTokenFilter(obj.getName(), obj.getCommonWords())
-            .setCaseIgnored(obj.isIgnoreCase())
-            .setQueryModeUsed(obj.isUseQueryMode());
+        CommonGramTokenFilter commonGramTokenFilter = new CommonGramTokenFilter(obj.getName(), obj.getCommonWords());
+
+        Boolean ignoreCase = obj.isIgnoreCase();
+        commonGramTokenFilter.setCaseIgnored(ignoreCase);
+
+        Boolean useQueryMode = obj.isUseQueryMode();
+        commonGramTokenFilter.setQueryModeUsed(useQueryMode);
+
+        return commonGramTokenFilter;
     }
 
     /**
@@ -32,11 +38,17 @@ public final class CommonGramTokenFilterConverter {
         if (obj == null) {
             return null;
         }
+        com.azure.search.documents.indexes.implementation.models.CommonGramTokenFilter commonGramTokenFilter =
+            new com.azure.search.documents.indexes.implementation.models.CommonGramTokenFilter(obj.getName(),
+                obj.getCommonWords());
 
-        return new com.azure.search.documents.indexes.implementation.models.CommonGramTokenFilter(obj.getName(),
-                obj.getCommonWords())
-            .setIgnoreCase(obj.isCaseIgnored())
-            .setUseQueryMode(obj.isQueryModeUsed());
+        Boolean ignoreCase = obj.isCaseIgnored();
+        commonGramTokenFilter.setIgnoreCase(ignoreCase);
+
+        Boolean useQueryMode = obj.isQueryModeUsed();
+        commonGramTokenFilter.setUseQueryMode(useQueryMode);
+
+        return commonGramTokenFilter;
     }
 
     private CommonGramTokenFilterConverter() {

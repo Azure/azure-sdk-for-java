@@ -1,30 +1,30 @@
 {
   "networkCallRecords" : [ {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.search.windows.net/indexes('index')/docs/$count?api-version=2021-04-30-Preview",
+    "Uri" : "https://REDACTED.search.windows.net/indexes('index')/docs/$count?api-version=2020-06-30",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-search-documents/11.5.0-beta.1 (11.0.6; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "fc8a998d-437c-486c-9c4b-31eb3ad2f61f"
+      "User-Agent" : "azsdk-java-azure-search-documents/11.4.0-beta.3 (11.0.9.1; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "5157a42c-e12f-4502-aaf8-d6c6e7f98888"
     },
     "Response" : {
       "content-length" : "74",
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "fc8a998d-437c-486c-9c4b-31eb3ad2f61f",
+      "request-id" : "5157a42c-e12f-4502-aaf8-d6c6e7f98888",
       "StatusCode" : "404",
-      "Date" : "Tue, 13 Jul 2021 19:14:37 GMT",
+      "Date" : "Thu, 27 May 2021 21:06:59 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "client-request-id" : "fc8a998d-437c-486c-9c4b-31eb3ad2f61f",
-      "elapsed-time" : "5",
+      "client-request-id" : "5157a42c-e12f-4502-aaf8-d6c6e7f98888",
+      "elapsed-time" : "4",
       "Expires" : "-1",
       "Body" : "{\"Message\":\"The index 'index' for service 'alzimmer-test' was not found.\"}",
       "Content-Language" : "en",
-      "x-ms-client-request-id" : "fc8a998d-437c-486c-9c4b-31eb3ad2f61f",
+      "x-ms-client-request-id" : "5157a42c-e12f-4502-aaf8-d6c6e7f98888",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   } ],
-  "variables" : [ "fc8a998d-437c-486c-9c4b-31eb3ad2f61f" ]
+  "variables" : [ "5157a42c-e12f-4502-aaf8-d6c6e7f98888" ]
 }

@@ -7,7 +7,6 @@
 package com.azure.search.documents.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.search.documents.models.CaptionResult;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonCreator;
@@ -28,29 +27,12 @@ public final class SearchResult {
     private double score;
 
     /*
-     * The relevance score computed by the semantic ranker for the top search
-     * results. Search results are sorted by the RerankerScore first and then
-     * by the Score. RerankerScore is only returned for queries of type
-     * 'semantic'.
-     */
-    @JsonProperty(value = "@search.rerankerScore", access = JsonProperty.Access.WRITE_ONLY)
-    private Double rerankerScore;
-
-    /*
      * Text fragments from the document that indicate the matching search
      * terms, organized by each applicable field; null if hit highlighting was
      * not enabled for the query.
      */
     @JsonProperty(value = "@search.highlights", access = JsonProperty.Access.WRITE_ONLY)
     private Map<String, List<String>> highlights;
-
-    /*
-     * Captions are the most representative passages from the document
-     * relatively to the search query. They are often used as document summary.
-     * Captions are only returned for queries of type 'semantic'.
-     */
-    @JsonProperty(value = "@search.captions", access = JsonProperty.Access.WRITE_ONLY)
-    private List<CaptionResult> captions;
 
     /*
      * Contains a document found by a search query, plus associated metadata.
@@ -79,17 +61,6 @@ public final class SearchResult {
     }
 
     /**
-     * Get the rerankerScore property: The relevance score computed by the semantic ranker for the top search results.
-     * Search results are sorted by the RerankerScore first and then by the Score. RerankerScore is only returned for
-     * queries of type 'semantic'.
-     *
-     * @return the rerankerScore value.
-     */
-    public Double getRerankerScore() {
-        return this.rerankerScore;
-    }
-
-    /**
      * Get the highlights property: Text fragments from the document that indicate the matching search terms, organized
      * by each applicable field; null if hit highlighting was not enabled for the query.
      *
@@ -97,16 +68,6 @@ public final class SearchResult {
      */
     public Map<String, List<String>> getHighlights() {
         return this.highlights;
-    }
-
-    /**
-     * Get the captions property: Captions are the most representative passages from the document relatively to the
-     * search query. They are often used as document summary. Captions are only returned for queries of type 'semantic'.
-     *
-     * @return the captions value.
-     */
-    public List<CaptionResult> getCaptions() {
-        return this.captions;
     }
 
     /**

@@ -9,6 +9,7 @@ package com.azure.search.documents.indexes.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.List;
 
 /** Abstract class to share properties between concrete selectors. */
@@ -32,15 +33,6 @@ public abstract class SearchIndexerKnowledgeStoreBlobProjectionSelector
         this.storageContainer = storageContainer;
     }
 
-    /**
-     * Get the storageContainer property: Blob container to store projections in.
-     *
-     * @return the storageContainer value.
-     */
-    public String getStorageContainer() {
-        return this.storageContainer;
-    }
-
     @Override
     public SearchIndexerKnowledgeStoreBlobProjectionSelector setReferenceKeyName(String referenceKeyName) {
         super.setReferenceKeyName(referenceKeyName);
@@ -56,7 +48,6 @@ public abstract class SearchIndexerKnowledgeStoreBlobProjectionSelector
     @Override
     public SearchIndexerKnowledgeStoreBlobProjectionSelector setSource(String source) {
         super.setSource(source);
-
         return this;
     }
 
@@ -70,5 +61,14 @@ public abstract class SearchIndexerKnowledgeStoreBlobProjectionSelector
     public SearchIndexerKnowledgeStoreBlobProjectionSelector setInputs(List<InputFieldMappingEntry> inputs) {
         super.setInputs(inputs);
         return this;
+    }
+
+    /**
+     * Get the storageContainer property: Blob container to store projections in.
+     *
+     * @return the storageContainer value.
+     */
+    public String getStorageContainer() {
+        return this.storageContainer;
     }
 }

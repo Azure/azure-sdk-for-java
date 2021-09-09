@@ -78,16 +78,6 @@ public final class SearchIndexerDataSourceConnection {
     @JsonProperty(value = "encryptionKey")
     private SearchResourceEncryptionKey encryptionKey;
 
-    /*
-     * An explicit managed identity to use for this datasource. If not
-     * specified and the connection string is a managed identity, the
-     * system-assigned managed identity is used. If not specified, the value
-     * remains unchanged. If "none" is specified, the value of this property is
-     * cleared.
-     */
-    @JsonProperty(value = "identity")
-    private SearchIndexerDataIdentity identity;
-
     /**
      * Constructor of {@link SearchIndexerDataSourceConnection}.
      *
@@ -308,30 +298,6 @@ public final class SearchIndexerDataSourceConnection {
      */
     public SearchIndexerDataSourceConnection setEncryptionKey(SearchResourceEncryptionKey encryptionKey) {
         this.encryptionKey = encryptionKey;
-        return this;
-    }
-
-    /**
-     * Get the identity property: An explicit managed identity to use for this datasource. If not specified and the
-     * connection string is a managed identity, the system-assigned managed identity is used. If not specified, the
-     * value remains unchanged. If "none" is specified, the value of this property is cleared.
-     *
-     * @return the identity value.
-     */
-    public SearchIndexerDataIdentity getIdentity() {
-        return this.identity;
-    }
-
-    /**
-     * Set the identity property: An explicit managed identity to use for this datasource. If not specified and the
-     * connection string is a managed identity, the system-assigned managed identity is used. If not specified, the
-     * value remains unchanged. If "none" is specified, the value of this property is cleared.
-     *
-     * @param identity the identity value to set.
-     * @return the SearchIndexerDataSourceConnection object itself.
-     */
-    public SearchIndexerDataSourceConnection setIdentity(SearchIndexerDataIdentity identity) {
-        this.identity = identity;
         return this;
     }
 }

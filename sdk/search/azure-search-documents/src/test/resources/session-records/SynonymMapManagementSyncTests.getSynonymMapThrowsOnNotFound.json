@@ -1,27 +1,27 @@
 {
   "networkCallRecords" : [ {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.search.windows.net/synonymmaps('thisSynonymMapDoesNotExist')?api-version=2021-04-30-Preview",
+    "Uri" : "https://REDACTED.search.windows.net/synonymmaps('thisSynonymMapDoesNotExist')?api-version=2020-06-30",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-search-documents/11.5.0-beta.1 (11.0.6; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "8fc6bbc5-78d9-4f14-86fd-0b2055aa961f"
+      "User-Agent" : "azsdk-java-azure-search-documents/11.4.0-beta.3 (11.0.9.1; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "efd723eb-633f-465d-8b9d-5b14810f0c0d"
     },
     "Response" : {
       "content-length" : "129",
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "8fc6bbc5-78d9-4f14-86fd-0b2055aa961f",
+      "request-id" : "efd723eb-633f-465d-8b9d-5b14810f0c0d",
       "StatusCode" : "404",
-      "Date" : "Tue, 13 Jul 2021 19:27:33 GMT",
+      "Date" : "Thu, 27 May 2021 21:18:33 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "client-request-id" : "8fc6bbc5-78d9-4f14-86fd-0b2055aa961f",
-      "elapsed-time" : "5",
+      "client-request-id" : "efd723eb-633f-465d-8b9d-5b14810f0c0d",
+      "elapsed-time" : "11",
       "OData-Version" : "4.0",
       "Expires" : "-1",
       "Body" : "{\"error\":{\"code\":\"\",\"message\":\"No synonym map with the name 'thisSynonymMapDoesNotExist' was found in service 'alzimmer-test'.\"}}",
       "Content-Language" : "en",
-      "x-ms-client-request-id" : "8fc6bbc5-78d9-4f14-86fd-0b2055aa961f",
+      "x-ms-client-request-id" : "efd723eb-633f-465d-8b9d-5b14810f0c0d",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Type" : "application/json; odata.metadata=minimal"
     },
