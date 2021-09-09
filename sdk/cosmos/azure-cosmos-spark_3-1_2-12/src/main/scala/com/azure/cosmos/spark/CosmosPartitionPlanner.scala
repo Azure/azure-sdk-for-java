@@ -193,16 +193,10 @@ private object CosmosPartitionPlanner extends BasicLoggingTrait {
       readLimit
     )
 
-    // If the end lsn has been populated by customization on createInputPartitions or present in the metadata cache
-    val orderedFeedRangeWithEndLsn =
-      orderedMetadataWithStartLsn.map(m =>
-        (m.feedRange,
-          inputPartitions.find(ip => ip.feedRange == m.feedRange).get.endLsn.getOrElse(m.endLsn.getOrElse(m.latestLsn))))
-
     if (isDebugLogEnabled) {
       val endOffsetDebug = new StringBuilder("EndOffSet using EndLsn: ")
-      for (range <- orderedFeedRangeWithEndLsn) {
-        endOffsetDebug ++= s"${range._1.min}-${range._1.max}: ${range._2},"
+      for (range <- inputPartitions) {
+        endOffsetDebug ++= s"${range.feedRange.min}-${range.feedRange.max}: ${range.endLsn},"
       }
 
       logDebug(endOffsetDebug.toString)
@@ -211,7 +205,7 @@ private object CosmosPartitionPlanner extends BasicLoggingTrait {
     val changeFeedStateJson = SparkBridgeImplementationInternal
       .createChangeFeedStateJson(
         startOffset.changeFeedState,
-        orderedFeedRangeWithEndLsn.map(m => (m._1, m._2)))
+        inputPartitions.map(m => (m.feedRange, m.endLsn.get)))
 
     ChangeFeedOffset(changeFeedStateJson, Some(inputPartitions))
   }
