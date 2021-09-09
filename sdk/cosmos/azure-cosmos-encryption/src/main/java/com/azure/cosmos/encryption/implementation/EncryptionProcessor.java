@@ -243,7 +243,7 @@ public class EncryptionProcessor {
     }
 
     public Mono<byte[]> encrypt(ObjectNode itemJObj) {
-        return encryptObjectNode(itemJObj).flatMap(encryptedObjectNode -> Mono.just(EncryptionUtils.serializeJsonToByteArray(EncryptionUtils.getSimpleObjectMapper(), encryptedObjectNode)));
+        return encryptObjectNode(itemJObj).map(encryptedObjectNode -> EncryptionUtils.serializeJsonToByteArray(EncryptionUtils.getSimpleObjectMapper(), encryptedObjectNode));
     }
 
     public Mono<ObjectNode> encryptObjectNode(ObjectNode itemJObj) {
@@ -274,7 +274,7 @@ public class EncryptionProcessor {
                 }
             }
             Mono<List<Void>> listMono = Flux.mergeSequential(encryptionMonoList).collectList();
-            return listMono.flatMap(ignoreVoid -> Mono.just(itemJObj));
+            return listMono.map(ignoreVoid -> itemJObj);
         }));
     }
 
@@ -361,7 +361,7 @@ public class EncryptionProcessor {
     }
 
     public Mono<byte[]> decrypt(ObjectNode itemJObj) {
-        return decryptObjectNode(itemJObj).flatMap(decryptedObjectNode -> Mono.just(EncryptionUtils.serializeJsonToByteArray(EncryptionUtils.getSimpleObjectMapper(), decryptedObjectNode)));
+        return decryptObjectNode(itemJObj).map(decryptedObjectNode -> EncryptionUtils.serializeJsonToByteArray(EncryptionUtils.getSimpleObjectMapper(), decryptedObjectNode));
     }
 
     public Mono<ObjectNode> decryptObjectNode(ObjectNode itemJObj) {
@@ -395,7 +395,7 @@ public class EncryptionProcessor {
                 }
             }
             Mono<List<Void>> listMono = Flux.mergeSequential(encryptionMonoList).collectList();
-            return listMono.flatMap(aVoid -> Mono.just(itemJObj));
+            return listMono.map(aVoid -> itemJObj);
         }));
     }
 
