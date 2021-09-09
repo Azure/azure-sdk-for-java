@@ -265,7 +265,7 @@ class SparkE2EQueryITest
     // validate from diagnostics that all responses had at most 2 records (instead of the default of up to 100)
     val logger = SimpleFileDiagnosticsProvider.getOrCreateSingletonLoggerInstance(ItemsPartitionReader.getClass)
     val messages = logger.getMessages()
-    logger.reset()
+    SimpleFileDiagnosticsProvider.reset()
     messages should not be null
     messages.size should not be 0
     for ((msg, throwable) <- messages) {

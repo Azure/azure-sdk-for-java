@@ -2,9 +2,11 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.spark
 
-import com.azure.cosmos.spark.diagnostics.{DiagnosticsProvider, ILogger, SimpleDiagnosticsSlf4jLogger}
+import com.azure.cosmos.spark.diagnostics.{DiagnosticsProvider, ILogger}
+import org.apache.commons.io.FileUtils
 
-import java.io.File
+import java.io.{File, IOException}
+import java.nio.file.Files
 import scala.collection.concurrent.TrieMap
 
 // only when diagnostics enabled,
@@ -21,6 +23,7 @@ private[spark] object SimpleFileDiagnosticsProvider {
 
   private val folderName = System.getProperty("java.io.tmpdir") + "/SimpleFileDiagnostics"
   private val folder = new File(folderName)
+  FileUtils.forceDeleteOnExit(folder)
 
   def getOrCreateSingletonLoggerInstance(classType: Class[_]): SimpleFileDiagnosticsSlf4jLogger = {
     if (!folder.exists()) {
@@ -29,15 +32,26 @@ private[spark] object SimpleFileDiagnosticsProvider {
 
     singletonInstances.applyOrElse(
       classType,
-      (ct) => new SimpleFileDiagnosticsSlf4jLogger(ct))
+      ct => new SimpleFileDiagnosticsSlf4jLogger(ct))
   }
 
-  def getLogFileName(classType: Class[_]): String = {
-    folderName + "/" + classType.getSimpleName().replace("$", "") + ".txt"
+  def getLogFile(classType: Class[_]): File = {
+    folder.createNewFile()
+    val logFile = new File(
+      folder.getAbsolutePath()
+      + File.separator
+      + classType.getSimpleName().replace("$", "") + ".txt")
+
+    FileUtils.forceDeleteOnExit(logFile)
+    logFile
   }
 
   def reset(): Unit = {
-    folder.delete()
+    try {
+      FileUtils.deleteDirectory(folder)
+    } catch {
+      case _: IOException =>
+    }
   }
 }
 

@@ -15,8 +15,7 @@ private[spark] final class SimpleFileDiagnosticsSlf4jLogger(classType: Class[_])
   extends SimpleDiagnosticsSlf4jLogger(classType: Class[_]) {
 
   private val thisLock = new Object()
-  private val fileName = SimpleFileDiagnosticsProvider.getLogFileName(classType)
-  private val file = new File(fileName)
+  private val file =SimpleFileDiagnosticsProvider.getLogFile(classType)
 
   if (!file.exists()) {
     file.createNewFile()
@@ -76,19 +75,6 @@ private[spark] final class SimpleFileDiagnosticsSlf4jLogger(classType: Class[_])
 
     }
     result
-  }
-
-  def reset(): Unit = {
-    thisLock.synchronized {
-      val fileLock = fos.getChannel.lock()
-      try {
-        fos.getChannel.truncate(0)
-        fos.flush()
-        fileLock.release()
-      } catch {
-        case t: Throwable => fileLock.release()
-      }
-    }
   }
 }
 // // scalastyle:on multiple.string.literals
