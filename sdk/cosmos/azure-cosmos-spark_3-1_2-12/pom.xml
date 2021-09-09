@@ -234,7 +234,7 @@
                 <include>org.scala-lang.modules:scala-java8-compat_2.12:[0.8.0]</include> <!-- {x-include-update;cosmos_org.scala-lang.modules:scala-java8-compat_2.12;external_dependency} -->
                 <include>io.projectreactor:reactor-scala-extensions_2.12:[0.8.0]</include> <!-- {x-include-update;cosmos_io.projectreactor:reactor-scala-extensions_2.12;external_dependency} -->
                 <include>org.scalatest:scalatest_2.12:[3.2.2]</include> <!-- {x-include-update;cosmos_org.scalatest:scalatest_2.12;external_dependency} -->
-                <include>net.alchim31.maven:scala-maven-plugin:[4.4.0]</include> <!-- {x-include-update;cosmos_net.alchim31.maven:scala-maven-plugin;external_dependency} -->
+                <include>net.alchim31.maven:scala-maven-plugin:[4.5.4]</include> <!-- {x-include-update;cosmos_net.alchim31.maven:scala-maven-plugin;external_dependency} -->
                 <include>org.scalastyle:scalastyle-maven-plugin:[1.0.0]</include> <!-- {x-include-update;cosmos_org.scalastyle:scalastyle-maven-plugin;external_dependency} -->
               </includes>
             </bannedDependencies>
