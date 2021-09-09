@@ -44,7 +44,7 @@ public final class BatchExecutor {
         checkArgument(operations.size() > 0, "Number of operations should be more than 0.");
 
         final SinglePartitionKeyServerBatchRequest request = SinglePartitionKeyServerBatchRequest.createBatchRequest(
-            this.cosmosBatch.getPartitionKeyValue(),
+            this.cosmosBatch.getPartitionKey(),
             operations);
         request.setAtomicBatch(true);
         request.setShouldContinueOnError(false);
