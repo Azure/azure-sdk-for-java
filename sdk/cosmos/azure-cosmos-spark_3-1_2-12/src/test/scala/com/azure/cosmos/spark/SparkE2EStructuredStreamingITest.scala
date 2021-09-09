@@ -163,7 +163,7 @@ class SparkE2EStructuredStreamingITest
       "spark.cosmos.database" -> cosmosDatabase,
       "spark.cosmos.container" -> cosmosContainer,
       "spark.cosmos.read.inferSchema.enabled" -> "false",
-      "spark.cosmos.changeFeed.itemCountPerTriggerHint" -> "10"
+      "spark.cosmos.changeFeed.itemCountPerTriggerHint" -> "50"
     )
 
     val writeCfg = Map(
@@ -172,7 +172,7 @@ class SparkE2EStructuredStreamingITest
       "spark.cosmos.database" -> cosmosDatabase,
       "spark.cosmos.container" -> targetContainer.getId,
       "spark.cosmos.write.strategy" -> "ItemOverwrite",
-      "spark.cosmos.write.bulk.enabled" -> "true",
+      "spark.cosmos.write.bulk.enabled" -> "false",
       "checkpointLocation" -> ("/tmp/" + testId + "/")
     )
 
@@ -190,7 +190,7 @@ class SparkE2EStructuredStreamingITest
       .outputMode("append")
       .start()
 
-    Thread.sleep(40000)
+    Thread.sleep(70000)
     microBatchQuery.stop()
 
     var sourceCount: Long = getRecordCountOfContainer(sourceContainer)
@@ -211,7 +211,7 @@ class SparkE2EStructuredStreamingITest
     spark = createSparkSession(processedRecordCount)
 
     // Ingest ten more records
-    for (i <- 100 until 110) {
+    for (i <- 100 until 105) {
       this.ingestTestDocument(sourceContainer, i)
     }
 
@@ -240,7 +240,7 @@ class SparkE2EStructuredStreamingITest
     targetCount = getRecordCountOfContainer(targetContainer)
     logInfo(s"RecordCount in target container after second execution: $targetCount")
 
-    sourceCount shouldEqual 110L
+    sourceCount shouldEqual 105L
     sourceCount shouldEqual targetCount
 
     targetContainer.delete()
