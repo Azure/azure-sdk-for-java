@@ -206,6 +206,9 @@ public final class ServerCallAsync {
      * Start recording of the call.
      *
      * @param recordingStateCallbackUri Uri to send state change callbacks.
+     * @param recordingChannelType recordingChannelType to send custom options
+     * @param recordingContentType recordingContentType to send custom options
+     * @param recordingFormatType recordingFormatType to send custom options
      * @throws InvalidParameterException is recordingStateCallbackUri is absolute uri.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.

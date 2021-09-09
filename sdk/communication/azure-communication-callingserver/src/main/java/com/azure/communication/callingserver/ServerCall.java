@@ -127,6 +127,9 @@ public final class ServerCall {
      * Start recording of the call.
      *
      * @param recordingStateCallbackUri Uri to send state change callbacks.
+     * @param recordingChannelType recordingChannelType to send custom options
+     * @param recordingContentType recordingContentType to send custom options
+     * @param recordingFormatType recordingFormatType to send custom options
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Result for a successful start recording request.
@@ -159,6 +162,9 @@ public final class ServerCall {
      * Start recording of the call.
      *
      * @param recordingStateCallbackUri Uri to send state change callbacks.
+     * @param recordingChannelType recordingChannelType to send custom options
+     * @param recordingContentType recordingContentType to send custom options
+     * @param recordingFormatType recordingFormatType to send custom options
      * @param context A {@link Context} representing the request context.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
