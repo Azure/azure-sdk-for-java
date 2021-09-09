@@ -6,7 +6,7 @@ package com.azure.core.util.serializer;
 import com.azure.core.annotation.HeaderCollection;
 import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpHeaders;
-import com.azure.core.implementation.ReflectionUtils;
+import com.azure.core.implementation.ReflectionUtilsApi;
 import com.azure.core.implementation.TypeUtil;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
@@ -512,7 +512,7 @@ public class JacksonAdapter implements SerializerAdapter {
             MethodHandle setterHandler = getFromCache(declaringField, FIELD_TO_SETTER_CACHE, field -> {
                 MethodHandles.Lookup lookupToUse;
                 try {
-                    lookupToUse = ReflectionUtils.getLookupToUse(clazz);
+                    lookupToUse = ReflectionUtilsApi.INSTANCE.getLookupToUse(clazz);
                 } catch (Throwable t) {
                     logger.verbose("Failed to retrieve MethodHandles.Lookup for field {}.", field, t);
                     return null;

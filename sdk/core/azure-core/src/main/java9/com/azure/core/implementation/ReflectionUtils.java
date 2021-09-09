@@ -8,7 +8,7 @@ import java.lang.invoke.MethodHandles;
 /**
  * Utility methods that aid in performing reflective operations.
  */
-public final class ReflectionUtils {
+final class ReflectionUtils implements ReflectionUtilsApi {
     // This lookup is specific to the com.azure.core module, specifically this class.
     private static final MethodHandles.Lookup LOOKUP = MethodHandles.lookup();
 
@@ -31,7 +31,7 @@ public final class ReflectionUtils {
      * reflectively.
      * @throws Throwable If the underlying reflective calls throw an exception.
      */
-    public static MethodHandles.Lookup getLookupToUse(Class<?> targetClass) throws Throwable {
+    public MethodHandles.Lookup getLookupToUse(Class<?> targetClass) throws Throwable {
         Module responseModule = targetClass.getModule();
 
         /*
@@ -60,10 +60,10 @@ public final class ReflectionUtils {
         return LOOKUP;
     }
 
-    static int getJavaImplementationMajorVersion() {
+    public int getJavaImplementationMajorVersion() {
         return 9;
     }
 
-    private ReflectionUtils() {
+    ReflectionUtils() {
     }
 }

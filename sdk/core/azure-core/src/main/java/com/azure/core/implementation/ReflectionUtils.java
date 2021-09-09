@@ -8,7 +8,8 @@ import java.lang.invoke.MethodHandles;
 /**
  * Utility methods that aid in performing reflective operations.
  */
-public final class ReflectionUtils {
+final class ReflectionUtils implements ReflectionUtilsApi {
+
     /**
      * Gets the {@link MethodHandles.Lookup} to use when performing reflective operations.
      * <p>
@@ -25,16 +26,14 @@ public final class ReflectionUtils {
      * reflectively.
      * @throws Throwable If the underlying reflective calls throw an exception.
      */
-    public static MethodHandles.Lookup getLookupToUse(Class<?> targetClass) throws Throwable {
-        // Since there is support for multi-release JARs, this baseline implementation can always return publicLookup
-        // as Java 8 doesn't have Module scoping.
+    public MethodHandles.Lookup getLookupToUse(Class<?> targetClass) throws Throwable {
         return MethodHandles.publicLookup();
     }
 
-    static int getJavaImplementationMajorVersion() {
+    public int getJavaImplementationMajorVersion() {
         return 8;
     }
 
-    private ReflectionUtils() {
+    ReflectionUtils() {
     }
 }
