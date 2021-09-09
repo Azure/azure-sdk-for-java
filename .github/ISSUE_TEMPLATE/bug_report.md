@@ -34,7 +34,7 @@ If applicable, add screenshots to help explain your problem.
  - Frameworks: [e.g. Spring Boot, Micronaut, Quarkus, etc] 
 
 If you suspect a dependency version mismatch (e.g. you see `NoClassDefFoundError`, `NoSuchMethodError` or similar), please provide
-- dependency tree (`mvn dependency:tree -Dverbose`)
+- dependency tree (`mvn dependency:tree`)
   
 **Additional context**
 Add any other context about the problem here.
