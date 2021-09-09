@@ -4,7 +4,7 @@
 package com.azure.monitor.query.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.models.HttpResponseError;
+import com.azure.core.experimental.models.HttpResponseError;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.CoreUtils;
 
