@@ -1,5 +1,15 @@
 # Release History
 
+## 11.5.0-beta.4 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
 ## 11.5.0-beta.3 (2021-09-08)
 
 ### Features Added
@@ -23,7 +33,11 @@
 - Updated `azure-core-http-netty` from `1.10.2` to `1.11.0`.
 - Updated `azure-core-serializer-json-jackson` from `1.2.6` to `1.2.7`.
 
-## 11.4.2 (2021-08-11)
+## 11.5.0-beta.2 (2021-08-11)
+
+### Features Added
+
+- Added support for indexer caching.
 
 ### Dependency Updates
 
@@ -31,11 +45,7 @@
 - Updated `azure-core-http-netty` from `1.10.1` to `1.10.2`.
 - Updated `azure-core-serializer-json-jackson` from `1.2.5` to `1.2.6`.
 
-## 11.5.0-beta.2 (2021-08-11)
-
-### Features Added
-
-- Added support for indexer caching.
+## 11.4.2 (2021-08-11)
 
 ### Dependency Updates
 
