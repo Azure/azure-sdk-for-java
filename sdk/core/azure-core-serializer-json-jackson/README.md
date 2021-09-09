@@ -47,7 +47,7 @@ add the direct dependency to your project as follows.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-core-serializer-json-jackson</artifactId>
-    <version>1.2.6</version>
+    <version>1.2.7</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
