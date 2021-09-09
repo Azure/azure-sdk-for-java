@@ -3,9 +3,9 @@
 
 package com.azure.communication.callingserver;
 
-import com.azure.communication.callingserver.implementation.models.RecordingChannelType;
-import com.azure.communication.callingserver.implementation.models.RecordingContentType;
-import com.azure.communication.callingserver.implementation.models.RecordingFormatType;
+import com.azure.communication.callingserver.models.RecordingChannelType;
+import com.azure.communication.callingserver.models.RecordingContentType;
+import com.azure.communication.callingserver.models.RecordingFormatType;
 import com.azure.communication.callingserver.models.AddParticipantResult;
 import com.azure.communication.callingserver.models.CallRecordingProperties;
 import com.azure.communication.callingserver.models.CallingServerErrorException;
