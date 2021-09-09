@@ -408,7 +408,12 @@ private object CosmosPartitionPlanner extends BasicLoggingTrait {
           case _: ReadMaxRows =>
             val gap = math.max(0, metadata.latestLsn - metadata.startLsn)
             val weightFactor = metadata.getWeightedLsnGap.toDouble / totalWeightedLsnGap.get
-            val allowedRate = (weightFactor * gap).toLong
+            val allowedRate = if ((weightFactor * gap) < 1) {
+              1
+            }
+            else {
+              (weightFactor * gap).toLong
+            }
             if (isDebugLogEnabled) {
               val calculateDebugLine = s"calculateEndLsn - gap $gap weightFactor $weightFactor " +
                 s"documentCount ${metadata.documentCount} latestLsn ${metadata.latestLsn} " +
