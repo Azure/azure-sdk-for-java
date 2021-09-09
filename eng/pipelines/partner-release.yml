@@ -50,12 +50,15 @@ steps:
 - publish: $(Artifacts)
   artifact: packages-signed
 
-- ${{ if eq(parameters.ShouldPublish, 'true') }}:
-  - template: tools/gpg/gpg.yml@azure-sdk-build-tools
-  - template: /eng/pipelines/templates/steps/java-publishing.yml
-    parameters:
-      ArtifactDirectory: $(Artifacts)
-      Target: MavenCentral
-      BuildToolsPath: $(Pipeline.Workspace)/azure-sdk-build-tools
-      JavaRepoRoot: $(Pipeline.Workspace)/azure-sdk-for-java
-      StageOnly: ${{ parameters.StageOnly }}
+- template: tools/gpg/gpg.yml@azure-sdk-build-tools
+- template: /eng/pipelines/templates/steps/java-publishing.yml
+  parameters:
+    ArtifactDirectory: $(Artifacts)
+    Target: MavenCentral
+    BuildToolsPath: $(Pipeline.Workspace)/azure-sdk-build-tools
+    JavaRepoRoot: $(Pipeline.Workspace)/azure-sdk-for-java
+    ShouldPublish: ${{ parameters.ShouldPublish }}
+    StageOnly: ${{ parameters.StageOnly }}
+- publish: $(Artifacts)
+  artifact: packages-mavencentral
+  displayName: 'Store gpg signed packages in packages-mavencentral artifact'
