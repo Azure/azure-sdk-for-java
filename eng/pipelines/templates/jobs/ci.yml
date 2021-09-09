@@ -162,15 +162,13 @@ jobs:
             $ApiViewRequestUrl = "https://apiviewstaging.azurewebsites.net/PullRequest/DetectApiChanges"
             foreach ($artifact in $artifacts)
             {
-              $buildId = $(Build.BuildId)
-              $CommitSha = $(Build.SourceVersion)
-              $PullRequestNumber= $(System.PullRequest.PullRequestNumber)            
-              $pkgName = $artifact.name
-              $groupId= $artifact.groupId
+              $pkgName = "$artifact.name"
+              $groupId= "$artifact.groupId"
               $ArtifactPath = "/$groupId/$pkgName"
               $fileName = (Get-ChildItem -Path $(ArtifactName)/$ArtifactPath $pkgName*sources.jar).Name            
               $FilePath = "$ArtifactPath/$packageName"
-              Invoke-WebRequest "$ApiViewRequestUrl&buildId=$buildId&commitSha=$CommitSha&pullRequestNumber=$PullRequestNumber&filePath=$FilePath%language=java"
+              $URL = "$ApiViewRequestUrl&buildId=$(Build.BuildId)&commitSha=$(Build.SourceVersion)&pullRequestNumber=$(System.PullRequest.PullRequestNumber)&filePath=$FilePath&language=java"
+              Invoke-WebRequest $URL
             }
           continueOnError: true
           displayName: 'Detect API changes'
