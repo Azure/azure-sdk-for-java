@@ -1,5 +1,11 @@
 # Release History
 
+## 11.4.3 (2021-09-09)
+
+### Dependency Updates
+
+Upgraded `azure-core` and other dependencies for the library.
+
 ## 11.4.2 (2021-08-11)
 
 ### Dependency Updates
