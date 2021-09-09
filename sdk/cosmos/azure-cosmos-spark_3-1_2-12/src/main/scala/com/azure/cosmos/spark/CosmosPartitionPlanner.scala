@@ -202,7 +202,7 @@ private object CosmosPartitionPlanner extends BasicLoggingTrait {
     if (isDebugLogEnabled) {
       val endOffsetDebug = new StringBuilder("EndOffSet using EndLsn: ")
       for (range <- orderedFeedRangeWithEndLsn) {
-        endOffsetDebug += s"${range._1.min}-${range._1.max}: ${range._2},"
+        endOffsetDebug ++= s"${range._1.min}-${range._1.max}: ${range._2},"
       }
 
       logDebug(endOffsetDebug.toString)
