@@ -1,7 +1,7 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.communication.azure.com/calling/callConnections?api-version=2021--08-30-preview",
+    "Uri" : "https://REDACTED.communication.azure.com/calling/callConnections?api-version=2021-08-30-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-communication-callingserver/1.0.0-beta.1 (16.0.1; Windows 10; 10.0)",
       "Content-Type" : "application/json"
@@ -21,7 +21,7 @@
     "Exception" : null
   }, {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.communication.azure.com/calling/callConnections/9e201300-9491-4c19-b223-bada41dd75d7/:playAudio?api-version=2021--08-30-preview",
+    "Uri" : "https://REDACTED.communication.azure.com/calling/callConnections/9e201300-9491-4c19-b223-bada41dd75d7/:playAudio?api-version=2021-08-30-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-communication-callingserver/1.0.0-beta.1 (16.0.1; Windows 10; 10.0)",
       "Content-Type" : "application/json"
@@ -41,7 +41,7 @@
     "Exception" : null
   }, {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.communication.azure.com/calling/callConnections/9e201300-9491-4c19-b223-bada41dd75d7/:cancelAllMediaOperations?api-version=2021--08-30-preview",
+    "Uri" : "https://REDACTED.communication.azure.com/calling/callConnections/9e201300-9491-4c19-b223-bada41dd75d7/:cancelAllMediaOperations?api-version=2021-08-30-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-communication-callingserver/1.0.0-beta.1 (16.0.1; Windows 10; 10.0)",
       "Content-Type" : "application/json"
@@ -61,7 +61,7 @@
     "Exception" : null
   }, {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.communication.azure.com/calling/callConnections/9e201300-9491-4c19-b223-bada41dd75d7/:hangup?api-version=2021--08-30-preview",
+    "Uri" : "https://REDACTED.communication.azure.com/calling/callConnections/9e201300-9491-4c19-b223-bada41dd75d7/:hangup?api-version=2021-08-30-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-communication-callingserver/1.0.0-beta.1 (16.0.1; Windows 10; 10.0)"
     },
