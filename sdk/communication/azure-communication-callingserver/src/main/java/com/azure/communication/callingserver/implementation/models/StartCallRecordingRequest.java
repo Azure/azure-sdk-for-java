@@ -4,6 +4,9 @@
 
 package com.azure.communication.callingserver.implementation.models;
 
+import com.azure.communication.callingserver.models.RecordingChannelType;
+import com.azure.communication.callingserver.models.RecordingContentType;
+import com.azure.communication.callingserver.models.RecordingFormatType;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 

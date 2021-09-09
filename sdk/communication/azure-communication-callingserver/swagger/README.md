@@ -38,7 +38,7 @@ java: true
 output-folder: ..\
 license-header: MICROSOFT_MIT_SMALL
 namespace: com.azure.communication.callingserver
-custom-types: ToneValue,OperationStatus,CallRecordingState,CallConnectionState,EventSubscriptionType,MediaType
+custom-types: ToneValue,OperationStatus,CallRecordingState,CallConnectionState,EventSubscriptionType,MediaType,RecordingChannelType,RecordingContentType,RecordingFormatType
 custom-types-subpackage: models
 generate-client-as-impl: true
 models-subpackage: implementation.models
