@@ -68,8 +68,6 @@ public class CosmosBulkTest  extends BatchTestBase {
         }
 
         CosmosBulkExecutionOptions cosmosBulkExecutionOptions = new CosmosBulkExecutionOptions();
-        cosmosBulkExecutionOptions.setMaxMicroBatchSize(100);
-        cosmosBulkExecutionOptions.setMaxMicroBatchConcurrency(5);
 
         List<com.azure.cosmos.models.CosmosBulkOperationResponse<CosmosBulkAsyncTest>> bulkResponse = bulkContainer
             .executeBulkOperations(cosmosItemOperations, cosmosBulkExecutionOptions);
@@ -103,8 +101,6 @@ public class CosmosBulkTest  extends BatchTestBase {
         }
 
         CosmosBulkExecutionOptions cosmosBulkExecutionOptions = new CosmosBulkExecutionOptions();
-        cosmosBulkExecutionOptions.setMaxMicroBatchSize(100);
-        cosmosBulkExecutionOptions.setMaxMicroBatchConcurrency(1);
 
         List<com.azure.cosmos.models.CosmosBulkOperationResponse<Object>> bulkResponse = bulkContainer
             .executeBulkOperations(cosmosItemOperations);
@@ -153,8 +149,6 @@ public class CosmosBulkTest  extends BatchTestBase {
         }
 
         CosmosBulkExecutionOptions cosmosBulkExecutionOptions = new CosmosBulkExecutionOptions();
-        cosmosBulkExecutionOptions.setMaxMicroBatchSize(30);
-        cosmosBulkExecutionOptions.setMaxMicroBatchConcurrency(1);
 
         List<com.azure.cosmos.models.CosmosBulkOperationResponse<TestDoc>> bulkResponse  = bulkContainer
             .executeBulkOperations(deleteCosmosItemOperation, cosmosBulkExecutionOptions);
@@ -198,8 +192,6 @@ public class CosmosBulkTest  extends BatchTestBase {
         }
 
         CosmosBulkExecutionOptions cosmosBulkExecutionOptions = new CosmosBulkExecutionOptions();
-        cosmosBulkExecutionOptions.setMaxMicroBatchSize(30);
-        cosmosBulkExecutionOptions.setMaxMicroBatchConcurrency(5);
 
         List<com.azure.cosmos.models.CosmosBulkOperationResponse<Object>> bulkResponse  = bulkContainer
             .executeBulkOperations(readCosmosItemOperations, cosmosBulkExecutionOptions);
@@ -272,8 +264,6 @@ public class CosmosBulkTest  extends BatchTestBase {
 
     private void createItemsAndVerify(List<com.azure.cosmos.models.CosmosItemOperation> cosmosItemOperations) {
         CosmosBulkExecutionOptions cosmosBulkExecutionOptions = new CosmosBulkExecutionOptions();
-        cosmosBulkExecutionOptions.setMaxMicroBatchSize(100);
-        cosmosBulkExecutionOptions.setMaxMicroBatchConcurrency(5);
 
         List<com.azure.cosmos.models.CosmosBulkOperationResponse<Object>> bulkResponse = bulkContainer
             .executeBulkOperations(cosmosItemOperations, cosmosBulkExecutionOptions);
