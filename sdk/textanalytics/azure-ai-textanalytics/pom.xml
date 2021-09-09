@@ -13,7 +13,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-ai-textanalytics</artifactId>
-  <version>5.1.2</version> <!-- {x-version-update;com.azure:azure-ai-textanalytics;current} -->
+  <version>5.2.0-beta.1</version> <!-- {x-version-update;com.azure:azure-ai-textanalytics;current} -->
 
   <name>Microsoft Azure client library for Text Analytics</name>
   <description>This package contains the Microsoft Azure Cognitive Services Text Analytics SDK.</description>
