@@ -157,23 +157,23 @@ jobs:
       - template: ../steps/upload-repository-on-failure.yml
 
       - ${{ if eq(variables['Build.Reason'], 'PullRequest') }}:
-      - pwsh: |
-          $artifacts = '${{ convertToJson(parameters.Artifacts) }}' | ConvertFrom-Json
-          $ApiViewRequestUrl = "https://apiviewstaging.azurewebsites.net/PullRequest/DetectApiChanges"
-          foreach ($artifact in $artifacts)
-          {
-            $buildId = $(Build.BuildId)
-            $CommitSha = $(Build.SourceVersion)
-            $PullRequestNumber= $(System.PullRequest.PullRequestNumber)            
-            $pkgName = $artifact.name
-            $groupId= $artifact.groupId
-            $ArtifactPath = "/$groupId/$pkgName"
-            $fileName = (Get-ChildItem -Path $(ArtifactName)/$ArtifactPath $pkgName*sources.jar).Name            
-            $FilePath = "$ArtifactPath/$packageName"
-            Invoke-WebRequest "$ApiViewRequestUrl&buildId=$buildId&commitSha=$CommitSha&pullRequestNumber=$PullRequestNumber&filePath=$FilePath%language=java"
-          }
-        continueOnError: true
-        displayName: 'Detect API changes'
+        - pwsh: |
+            $artifacts = '${{ convertToJson(parameters.Artifacts) }}' | ConvertFrom-Json
+            $ApiViewRequestUrl = "https://apiviewstaging.azurewebsites.net/PullRequest/DetectApiChanges"
+            foreach ($artifact in $artifacts)
+            {
+              $buildId = $(Build.BuildId)
+              $CommitSha = $(Build.SourceVersion)
+              $PullRequestNumber= $(System.PullRequest.PullRequestNumber)            
+              $pkgName = $artifact.name
+              $groupId= $artifact.groupId
+              $ArtifactPath = "/$groupId/$pkgName"
+              $fileName = (Get-ChildItem -Path $(ArtifactName)/$ArtifactPath $pkgName*sources.jar).Name            
+              $FilePath = "$ArtifactPath/$packageName"
+              Invoke-WebRequest "$ApiViewRequestUrl&buildId=$buildId&commitSha=$CommitSha&pullRequestNumber=$PullRequestNumber&filePath=$FilePath%language=java"
+            }
+          continueOnError: true
+          displayName: 'Detect API changes'
 
   - job: 'Analyze'
     condition: and(succeeded(), ne(variables['Skip.Analyze'], 'true'))
