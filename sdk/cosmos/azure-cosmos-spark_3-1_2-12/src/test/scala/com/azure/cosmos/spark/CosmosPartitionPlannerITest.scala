@@ -294,6 +294,10 @@ class CosmosPartitionPlannerITest
 
     val clientHandle = mock(classOf[Broadcast[CosmosClientMetadataCachesSnapshot]])
 
+    val partitioningConfig = CosmosPartitioningConfig.parseCosmosPartitioningConfig(Map[String, String](
+      "spark.cosmos.read.partitioning.strategy" -> "Restrictive"
+    ))
+
     val latestOffsetWithoutLimit = CosmosPartitionPlanner.getLatestOffset(
       this.userConfigTemplate,
       ChangeFeedOffset(initialOffsetJson, None),
@@ -302,7 +306,7 @@ class CosmosPartitionPlannerITest
       this.clientConfig,
       clientHandle,
       this.containerConfig,
-      CosmosPartitioningConfig.parseCosmosPartitioningConfig(this.userConfigTemplate),
+      partitioningConfig,
       1,
       container
       )
@@ -318,7 +322,7 @@ class CosmosPartitionPlannerITest
       this.clientConfig,
       clientHandle,
       this.containerConfig,
-      CosmosPartitioningConfig.parseCosmosPartitioningConfig(this.userConfigTemplate),
+      partitioningConfig,
       1,
       container
     )
@@ -328,11 +332,14 @@ class CosmosPartitionPlannerITest
 
     noLimitState should not be limitState
     continuationsAndLsnNoLimit should have length continuationsAndLsnWithLimit.length
+    var allLsnEqual = true
     for (c <- continuationsAndLsnNoLimit){
       val withLimit =  continuationsAndLsnWithLimit.find(i => i._1 == c._1)
       withLimit.isDefined should be (true)
-      c._2 should not be withLimit.get._2
+      allLsnEqual = allLsnEqual && (c._2 == withLimit.get._2)
     }
+
+    allLsnEqual should not be true
   }
 
   //scalastyle:on magic.number
