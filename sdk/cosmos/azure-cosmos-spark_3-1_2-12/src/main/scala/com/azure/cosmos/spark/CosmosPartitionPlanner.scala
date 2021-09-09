@@ -415,7 +415,7 @@ private object CosmosPartitionPlanner extends BasicLoggingTrait {
                 s"startLsn ${metadata.startLsn} allowedRate $allowedRate weightedGap ${metadata.getWeightedLsnGap}"
               logDebug(calculateDebugLine)
             }
-            // if isDebugLogEnabled
+
             math.min(metadata.latestLsn, metadata.startLsn + allowedRate)
           case _: ReadMaxFiles => throw new IllegalStateException("ReadLimitMaxFiles not supported by this source.")
         }
