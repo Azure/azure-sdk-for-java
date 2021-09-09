@@ -153,6 +153,7 @@ private object CosmosPartitionPlanner extends BasicLoggingTrait {
 
   // scalastyle:off method.length
   // scalastyle:off parameter.number
+  // Based on a start offset, calculate which is the next end offset
   def getLatestOffset
   (
     userConfig: Map[String, String],
@@ -192,13 +193,25 @@ private object CosmosPartitionPlanner extends BasicLoggingTrait {
       readLimit
     )
 
-    val orderedMetadataWithUpdatedEndLsn =
-      orderedMetadataWithStartLsn.map(m => (m, inputPartitions.find(ip => ip.feedRange == m.feedRange)))
+    // If the end lsn has been populated by customization on createInputPartitions or present in the metadata cache
+    val orderedFeedRangeWithEndLsn =
+      orderedMetadataWithStartLsn.map(m =>
+        (m.feedRange,
+          inputPartitions.find(ip => ip.feedRange == m.feedRange).get.endLsn.getOrElse(m.endLsn.getOrElse(m.latestLsn))))
+
+    if (isDebugLogEnabled) {
+      val endOffsetDebug = new StringBuilder("EndOffSet using EndLsn: ")
+      for (range <- orderedFeedRangeWithEndLsn) {
+        endOffsetDebug += s"${range._1.min}-${range._1.max}: ${range._2},"
+      }
+
+      logDebug(endOffsetDebug.toString)
+    }
 
     val changeFeedStateJson = SparkBridgeImplementationInternal
       .createChangeFeedStateJson(
         startOffset.changeFeedState,
-        orderedMetadataWithUpdatedEndLsn.map(m => (m._1.feedRange, m._2.get.endLsn.getOrElse(m._1.endLsn.getOrElse(m._1.latestLsn)))))
+        orderedFeedRangeWithEndLsn.map(m => (m._1, m._2)))
 
     ChangeFeedOffset(changeFeedStateJson, Some(inputPartitions))
   }
