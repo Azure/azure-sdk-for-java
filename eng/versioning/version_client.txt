@@ -49,13 +49,13 @@ com.azure:azure-analytics-purview-scanning;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-analytics-synapse-accesscontrol;1.0.0-beta.4;1.0.0-beta.5
 com.azure:azure-analytics-synapse-artifacts;1.0.0-beta.5;1.0.0-beta.6
 com.azure:azure-analytics-synapse-spark;1.0.0-beta.4;1.0.0-beta.5
-com.azure:azure-analytics-synapse-managedprivateendpoints;1.0.0-beta.4;1.0.0-beta.5
+com.azure:azure-analytics-synapse-managedprivateendpoints;1.0.0-beta.5;1.0.0-beta.6
 com.azure:azure-analytics-synapse-monitoring;1.0.0-beta.3;1.0.0-beta.4
 com.azure:azure-communication-chat;1.0.1;1.1.0-beta.3
 com.azure:azure-communication-callingserver;1.0.0-beta.4;1.0.0-beta.5
 com.azure:azure-communication-common;1.0.4;1.0.4
 com.azure:azure-communication-sms;1.0.3;1.0.4
-com.azure:azure-communication-identity;1.1.2;1.1.2
+com.azure:azure-communication-identity;1.1.1;1.1.1
 com.azure:azure-communication-phonenumbers;1.0.3;1.0.4
 com.azure:azure-communication-networktraversal;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-containers-containerregistry;1.0.0-beta.4;1.0.0-beta.5
@@ -87,7 +87,7 @@ com.azure:azure-data-tables;12.1.1;12.2.0-beta.1
 com.azure:azure-data-tables-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-digitaltwins-core;1.1.1;1.2.0-beta.1
 com.azure:azure-e2e;1.0.0-beta.1;1.0.0-beta.1
-com.azure:azure-identity;1.3.5;1.4.0-beta.1
+com.azure:azure-identity;1.3.6;1.4.0-beta.1
 com.azure:azure-identity-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-iot-deviceupdate;1.0.0-beta.1;1.0.0-beta.2
 com.azure:azure-iot-modelsrepository;1.0.0-beta.1;1.0.0-beta.2
@@ -106,7 +106,7 @@ com.azure:azure-monitor-opentelemetry-exporter;1.0.0-beta.4;1.0.0-beta.5
 com.azure:azure-monitor-query;1.0.0-beta.3;1.0.0-beta.4
 com.azure:azure-monitor-query-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-quantum-jobs;1.0.0-beta.1;1.0.0-beta.2
-com.azure:azure-search-documents;11.4.2;11.5.0-beta.3
+com.azure:azure-search-documents;11.4.2;11.5.0-beta.4
 com.azure:azure-search-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-security-attestation;1.0.0-beta.1;1.0.0-beta.2
 com.azure:azure-security-confidentialledger;1.0.0-beta.2;1.0.0-beta.3
