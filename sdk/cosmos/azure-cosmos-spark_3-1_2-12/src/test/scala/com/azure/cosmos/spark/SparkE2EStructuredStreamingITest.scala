@@ -16,7 +16,7 @@ import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
 class SparkE2EStructuredStreamingITest
   extends IntegrationSpec
     with CosmosClient
-    with CosmosContainer//WithRetention
+    with CosmosContainerWithRetention
     with BasicLoggingTrait {
 
   override def afterEach(): Unit = {
