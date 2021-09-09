@@ -18,7 +18,11 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.LogLevel;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
+import org.junit.jupiter.api.parallel.Isolated;
 import org.junit.jupiter.api.parallel.ResourceLock;
+import org.junit.jupiter.api.parallel.Resources;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.EnumSource;
@@ -28,8 +32,8 @@ import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.io.PrintStream;
+import java.io.UncheckedIOException;
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -50,6 +54,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 /**
  * This class contains tests for {@link HttpLoggingPolicy}.
  */
+@Execution(ExecutionMode.SAME_THREAD)
+@Isolated
+@ResourceLock(Resources.SYSTEM_OUT)
 public class HttpLoggingPolicyTests {
     private static final String REDACTED = "REDACTED";
     private static final Context CONTEXT = new Context("caller-method", HttpLoggingPolicyTests.class.getName());
@@ -61,9 +68,7 @@ public class HttpLoggingPolicyTests {
     @BeforeEach
     public void prepareForTest() {
         // Set the log level to information for the test.
-        originalLogLevel = Configuration.getGlobalConfiguration().get(PROPERTY_AZURE_LOG_LEVEL);
-        Configuration.getGlobalConfiguration().put(PROPERTY_AZURE_LOG_LEVEL,
-            String.valueOf(LogLevel.INFORMATIONAL.getLogLevel()));
+        setupLogLevel(LogLevel.INFORMATIONAL.getLogLevel());
 
         /*
          * DefaultLogger uses System.out to log. Inject a custom PrintStream to log into for the duration of the test to
@@ -75,17 +80,12 @@ public class HttpLoggingPolicyTests {
     }
 
     @AfterEach
-    public void cleanupAfterTest() throws IOException {
+    public void cleanupAfterTest() {
         // Reset or clear the log level after the test completes.
-        if (CoreUtils.isNullOrEmpty(originalLogLevel)) {
-            Configuration.getGlobalConfiguration().remove(PROPERTY_AZURE_LOG_LEVEL);
-        } else {
-            Configuration.getGlobalConfiguration().put(PROPERTY_AZURE_LOG_LEVEL, originalLogLevel);
-        }
+        setPropertyToOriginalOrClear(originalLogLevel);
 
         // Reset System.err to the original PrintStream.
         System.setOut(originalSystemOut);
-        logCaptureStream.close();
     }
 
     /**
@@ -93,7 +93,6 @@ public class HttpLoggingPolicyTests {
      */
     @ParameterizedTest
     @MethodSource("redactQueryParametersSupplier")
-    @ResourceLock("SYSTEM_OUT")
     public void redactQueryParameters(String requestUrl, String expectedQueryString,
         Set<String> allowedQueryParameters) {
         HttpPipeline pipeline = new HttpPipelineBuilder()
@@ -138,7 +137,6 @@ public class HttpLoggingPolicyTests {
      */
     @ParameterizedTest(name = "[{index}] {displayName}")
     @MethodSource("validateLoggingDoesNotConsumeSupplier")
-    @ResourceLock("SYSTEM_OUT")
     public void validateLoggingDoesNotConsumeRequest(Flux<ByteBuffer> stream, byte[] data, int contentLength)
         throws MalformedURLException {
         URL requestUrl = new URL("https://test.com");
@@ -154,7 +152,7 @@ public class HttpLoggingPolicyTests {
             .build();
 
         StepVerifier.create(pipeline.send(new HttpRequest(HttpMethod.POST, requestUrl, requestHeaders, stream),
-            CONTEXT))
+                CONTEXT))
             .verifyComplete();
 
         String logString = convertOutputStreamToString(logCaptureStream);
@@ -166,7 +164,6 @@ public class HttpLoggingPolicyTests {
      */
     @ParameterizedTest(name = "[{index}] {displayName}")
     @MethodSource("validateLoggingDoesNotConsumeSupplier")
-    @ResourceLock("SYSTEM_OUT")
     public void validateLoggingDoesNotConsumeResponse(Flux<ByteBuffer> stream, byte[] data, int contentLength) {
         HttpRequest request = new HttpRequest(HttpMethod.GET, "https://test.com");
         HttpHeaders responseHeaders = new HttpHeaders()
@@ -276,8 +273,7 @@ public class HttpLoggingPolicyTests {
 
     @ParameterizedTest(name = "[{index}] {displayName}")
     @EnumSource(value = HttpLogDetailLevel.class, mode = EnumSource.Mode.INCLUDE,
-        names = { "BASIC", "HEADERS", "BODY", "BODY_AND_HEADERS" })
-    @ResourceLock("SYSTEM_OUT")
+        names = {"BASIC", "HEADERS", "BODY", "BODY_AND_HEADERS"})
     public void loggingIncludesRetryCount(HttpLogDetailLevel logLevel) {
         AtomicInteger requestCount = new AtomicInteger();
         HttpRequest request = new HttpRequest(HttpMethod.GET, "https://test.com");
@@ -298,11 +294,24 @@ public class HttpLoggingPolicyTests {
         assertTrue(logString.contains("Try count: 2"));
     }
 
+    private void setupLogLevel(int logLevelToSet) {
+        originalLogLevel = Configuration.getGlobalConfiguration().get(PROPERTY_AZURE_LOG_LEVEL);
+        Configuration.getGlobalConfiguration().put(PROPERTY_AZURE_LOG_LEVEL, String.valueOf(logLevelToSet));
+    }
+
+    private void setPropertyToOriginalOrClear(String originalValue) {
+        if (CoreUtils.isNullOrEmpty(originalValue)) {
+            Configuration.getGlobalConfiguration().remove(PROPERTY_AZURE_LOG_LEVEL);
+        } else {
+            Configuration.getGlobalConfiguration().put(PROPERTY_AZURE_LOG_LEVEL, originalValue);
+        }
+    }
+
     private static String convertOutputStreamToString(ByteArrayOutputStream stream) {
         try {
-            return stream.toString("UTF-8");
+            return stream.toString(StandardCharsets.UTF_8.name());
         } catch (UnsupportedEncodingException e) {
-            throw new RuntimeException(e);
+            throw new UncheckedIOException(e);
         }
     }
 }

@@ -581,7 +581,8 @@ public final class RntbdConstants {
         IsBatchAtomic((short) 0x0073, RntbdTokenType.Byte, false),
         ShouldBatchContinueOnError((short) 0x0074, RntbdTokenType.Byte, false),
         IsBatchOrdered((short) 0x0075, RntbdTokenType.Byte, false),
-        ReturnPreference((short) 0x0082, RntbdTokenType.Byte, false);
+        ReturnPreference((short) 0x0082, RntbdTokenType.Byte, false),
+        PopulateIndexMetrics((short) 0x00A9, RntbdTokenType.Byte, false);
 
         public static final ImmutableMap<Short, RntbdRequestHeader> map;
         public static final ImmutableSet<RntbdRequestHeader> set = Sets.immutableEnumSet(EnumSet.allOf(RntbdRequestHeader.class));
@@ -838,6 +839,7 @@ public final class RntbdConstants {
         XPRole((short) 0x0026, RntbdTokenType.ULong, false),
         IsRUPerMinuteUsed((short) 0x0027, RntbdTokenType.Byte, false),
         QueryMetrics((short) 0x0028, RntbdTokenType.String, false),
+        IndexUtilization((short) 0x0044, RntbdTokenType.String, false),
         GlobalCommittedLSN((short) 0x0029, RntbdTokenType.LongLong, false),
         NumberOfReadRegions((short) 0x0030, RntbdTokenType.ULong, false),
         OfferReplacePending((short) 0x0031, RntbdTokenType.Byte, false),

@@ -4,8 +4,10 @@
 package com.azure.monitor.query.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.experimental.models.TimeInterval;
 
 import java.time.Duration;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -13,30 +15,30 @@ import java.util.List;
  */
 @Fluent
 public final class MetricsQueryOptions {
-    private QueryTimeSpan timeSpan;
-    private Duration interval;
-    private List<AggregationType> aggregation;
+    private TimeInterval timeInterval;
+    private Duration granularity;
+    private List<AggregationType> aggregations;
     private Integer top;
-    private String orderby;
+    private String orderBy;
     private String filter;
-    private String metricsNamespace;
+    private String metricNamespace;
 
     /**
-     * Returns the timeSpan for which the metrics data is queried.
-     * @return the timeSpan for which the metrics data is queried.
+     * Returns the time span for which the metrics data is queried.
+     * @return the time span for which the metrics data is queried.
      */
-    public QueryTimeSpan getTimeSpan() {
-        return timeSpan;
+    public TimeInterval getTimeInterval() {
+        return timeInterval;
     }
 
     /**
-     * Sets the timeSpan for which the metrics data is queried.
-     * @param timeSpan the timeSpan for which the metrics data is queried.
+     * Sets the time span for which the metrics data is queried.
+     * @param timeInterval the time span for which the metrics data is queried.
      *
      * @return The updated options instance
      */
-    public MetricsQueryOptions setTimeSpan(QueryTimeSpan timeSpan) {
-        this.timeSpan = timeSpan;
+    public MetricsQueryOptions setTimeInterval(TimeInterval timeInterval) {
+        this.timeInterval = timeInterval;
         return this;
     }
 
@@ -44,18 +46,18 @@ public final class MetricsQueryOptions {
      * Returns the interval (window size) for which the metric data was returned in.
      * @return The interval (window size) for which the metric data was returned in.
      */
-    public Duration getInterval() {
-        return interval;
+    public Duration getGranularity() {
+        return granularity;
     }
 
     /**
      * Sets the interval (window size) for which the metric data was returned in.
-     * @param interval The interval (window size) for which the metric data was returned in.
+     * @param granularity The interval (window size) for which the metric data was returned in.
      *
      * @return The updated options instance
      */
-    public MetricsQueryOptions setInterval(Duration interval) {
-        this.interval = interval;
+    public MetricsQueryOptions setGranularity(Duration granularity) {
+        this.granularity = granularity;
         return this;
     }
 
@@ -63,17 +65,27 @@ public final class MetricsQueryOptions {
      * Returns the list of aggregations that should be applied to the metrics data.
      * @return the list of aggregations that should be applied to the metrics data.
      */
-    public List<AggregationType> getAggregation() {
-        return aggregation;
+    public List<AggregationType> getAggregations() {
+        return aggregations;
     }
 
     /**
      * Sets the list of aggregations that should be applied to the metrics data.
-     * @param aggregation the list of aggregations that should be applied to the metrics data.
+     * @param aggregations the list of aggregations that should be applied to the metrics data.
      * @return The updated options instance
      */
-    public MetricsQueryOptions setAggregation(List<AggregationType> aggregation) {
-        this.aggregation = aggregation;
+    public MetricsQueryOptions setAggregations(List<AggregationType> aggregations) {
+        this.aggregations = aggregations;
+        return this;
+    }
+
+    /**
+     * Sets the list of aggregations that should be applied to the metrics data.
+     * @param aggregations the list of aggregations that should be applied to the metrics data.
+     * @return The updated options instance
+     */
+    public MetricsQueryOptions setAggregations(AggregationType... aggregations) {
+        this.aggregations = Arrays.asList(aggregations);
         return this;
     }
 
@@ -100,18 +112,18 @@ public final class MetricsQueryOptions {
      * Returns the order in which the query results should be ordered.
      * @return the order in which the query results should be ordered.
      */
-    public String getOrderby() {
-        return orderby;
+    public String getOrderBy() {
+        return orderBy;
     }
 
     /**
      * Sets the order in which the query results should be ordered.
-     * @param orderby the order in which the query results should be ordered.
+     * @param orderBy the order in which the query results should be ordered.
      *
      * @return The updated options instance
      */
-    public MetricsQueryOptions setOrderby(String orderby) {
-        this.orderby = orderby;
+    public MetricsQueryOptions setOrderBy(String orderBy) {
+        this.orderBy = orderBy;
         return this;
     }
 
@@ -138,18 +150,18 @@ public final class MetricsQueryOptions {
      * Returns the namespace of the metrics been queried
      * @return the namespace of the metrics been queried
      */
-    public String getMetricsNamespace() {
-        return metricsNamespace;
+    public String getMetricNamespace() {
+        return metricNamespace;
     }
 
     /**
      * Sets the namespace of the metrics been queried
-     * @param metricsNamespace the namespace of the metrics been queried
+     * @param metricNamespace the namespace of the metrics been queried
      *
      * @return The updated options instance
      */
-    public MetricsQueryOptions setMetricsNamespace(String metricsNamespace) {
-        this.metricsNamespace = metricsNamespace;
+    public MetricsQueryOptions setMetricNamespace(String metricNamespace) {
+        this.metricNamespace = metricNamespace;
         return this;
     }
 }

@@ -4,6 +4,7 @@
 package com.azure.resourcemanager.network.implementation;
 
 import com.azure.core.management.provider.IdentifierProvider;
+import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.NetworkManager;
 import com.azure.resourcemanager.network.fluent.models.ApplicationSecurityGroupInner;
@@ -18,6 +19,7 @@ import com.azure.resourcemanager.network.models.PublicIpAddress;
 import com.azure.resourcemanager.network.fluent.models.NetworkInterfaceIpConfigurationInner;
 import com.azure.resourcemanager.network.fluent.models.NetworkInterfaceInner;
 import com.azure.resourcemanager.network.fluent.models.NetworkSecurityGroupInner;
+import com.azure.resourcemanager.network.models.TagsObject;
 import com.azure.resourcemanager.resources.fluentcore.model.Accepted;
 import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.AcceptedImpl;
@@ -94,7 +96,7 @@ class NetworkInterfaceImpl
             .manager()
             .serviceClient()
             .getNetworkInterfaces()
-            .updateTagsAsync(resourceGroupName(), name(), innerModel().tags());
+            .updateTagsAsync(resourceGroupName(), name(), new TagsObject().withTags(innerModel().tags()));
     }
 
     // Setters (fluent)
@@ -525,7 +527,8 @@ class NetworkInterfaceImpl
                     innerToFluentMap(this);
                     initializeChildrenFromInner();
                     afterCreating();
-                });
+                },
+                Context.NONE);
     }
 
     @Override

@@ -7,6 +7,7 @@ package com.azure.resourcemanager.servicefabric.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
@@ -26,6 +27,7 @@ public final class NodeTypeDescription {
      * to indicate where certain services (workload) should run.
      */
     @JsonProperty(value = "placementProperties")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> placementProperties;
 
     /*
@@ -34,6 +36,7 @@ public final class NodeTypeDescription {
      * has.
      */
     @JsonProperty(value = "capacities")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> capacities;
 
     /*
@@ -86,8 +89,13 @@ public final class NodeTypeDescription {
     private boolean isPrimary;
 
     /*
-     * The number of nodes in the node type. This count should match the
-     * capacity property in the corresponding VirtualMachineScaleSet resource.
+     * VMInstanceCount should be 1 to n, where n indicates the number of VM
+     * instances corresponding to this nodeType. VMInstanceCount = 0 can be
+     * done only in these scenarios: NodeType is a secondary nodeType.
+     * Durability = Bronze or Durability >= Bronze and
+     * InfrastructureServiceManager = true. If VMInstanceCount = 0, implies the
+     * VMs for this nodeType will not be used for the initial cluster size
+     * computation.
      */
     @JsonProperty(value = "vmInstanceCount", required = true)
     private int vmInstanceCount;
@@ -97,6 +105,18 @@ public final class NodeTypeDescription {
      */
     @JsonProperty(value = "reverseProxyEndpointPort")
     private Integer reverseProxyEndpointPort;
+
+    /*
+     * Indicates if the node type can only host Stateless workloads.
+     */
+    @JsonProperty(value = "isStateless")
+    private Boolean isStateless;
+
+    /*
+     * Indicates if the node type is enabled to support multiple zones.
+     */
+    @JsonProperty(value = "multipleAvailabilityZones")
+    private Boolean multipleAvailabilityZones;
 
     /**
      * Get the name property: The name of the node type.
@@ -299,8 +319,10 @@ public final class NodeTypeDescription {
     }
 
     /**
-     * Get the vmInstanceCount property: The number of nodes in the node type. This count should match the capacity
-     * property in the corresponding VirtualMachineScaleSet resource.
+     * Get the vmInstanceCount property: VMInstanceCount should be 1 to n, where n indicates the number of VM instances
+     * corresponding to this nodeType. VMInstanceCount = 0 can be done only in these scenarios: NodeType is a secondary
+     * nodeType. Durability = Bronze or Durability &gt;= Bronze and InfrastructureServiceManager = true. If
+     * VMInstanceCount = 0, implies the VMs for this nodeType will not be used for the initial cluster size computation.
      *
      * @return the vmInstanceCount value.
      */
@@ -309,8 +331,10 @@ public final class NodeTypeDescription {
     }
 
     /**
-     * Set the vmInstanceCount property: The number of nodes in the node type. This count should match the capacity
-     * property in the corresponding VirtualMachineScaleSet resource.
+     * Set the vmInstanceCount property: VMInstanceCount should be 1 to n, where n indicates the number of VM instances
+     * corresponding to this nodeType. VMInstanceCount = 0 can be done only in these scenarios: NodeType is a secondary
+     * nodeType. Durability = Bronze or Durability &gt;= Bronze and InfrastructureServiceManager = true. If
+     * VMInstanceCount = 0, implies the VMs for this nodeType will not be used for the initial cluster size computation.
      *
      * @param vmInstanceCount the vmInstanceCount value to set.
      * @return the NodeTypeDescription object itself.
@@ -337,6 +361,46 @@ public final class NodeTypeDescription {
      */
     public NodeTypeDescription withReverseProxyEndpointPort(Integer reverseProxyEndpointPort) {
         this.reverseProxyEndpointPort = reverseProxyEndpointPort;
+        return this;
+    }
+
+    /**
+     * Get the isStateless property: Indicates if the node type can only host Stateless workloads.
+     *
+     * @return the isStateless value.
+     */
+    public Boolean isStateless() {
+        return this.isStateless;
+    }
+
+    /**
+     * Set the isStateless property: Indicates if the node type can only host Stateless workloads.
+     *
+     * @param isStateless the isStateless value to set.
+     * @return the NodeTypeDescription object itself.
+     */
+    public NodeTypeDescription withIsStateless(Boolean isStateless) {
+        this.isStateless = isStateless;
+        return this;
+    }
+
+    /**
+     * Get the multipleAvailabilityZones property: Indicates if the node type is enabled to support multiple zones.
+     *
+     * @return the multipleAvailabilityZones value.
+     */
+    public Boolean multipleAvailabilityZones() {
+        return this.multipleAvailabilityZones;
+    }
+
+    /**
+     * Set the multipleAvailabilityZones property: Indicates if the node type is enabled to support multiple zones.
+     *
+     * @param multipleAvailabilityZones the multipleAvailabilityZones value to set.
+     * @return the NodeTypeDescription object itself.
+     */
+    public NodeTypeDescription withMultipleAvailabilityZones(Boolean multipleAvailabilityZones) {
+        this.multipleAvailabilityZones = multipleAvailabilityZones;
         return this;
     }
 

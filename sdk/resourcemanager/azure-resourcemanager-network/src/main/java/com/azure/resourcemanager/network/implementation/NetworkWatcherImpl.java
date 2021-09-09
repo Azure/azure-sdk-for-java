@@ -4,12 +4,15 @@ package com.azure.resourcemanager.network.implementation;
 
 import com.azure.resourcemanager.network.NetworkManager;
 import com.azure.resourcemanager.network.models.FlowLogSettings;
+import com.azure.resourcemanager.network.models.FlowLogStatusParameters;
 import com.azure.resourcemanager.network.models.NetworkWatcher;
 import com.azure.resourcemanager.network.models.SecurityGroupView;
 import com.azure.resourcemanager.network.models.AppliableWithTags;
 import com.azure.resourcemanager.network.fluent.models.FlowLogInformationInner;
 import com.azure.resourcemanager.network.fluent.models.NetworkWatcherInner;
 import com.azure.resourcemanager.network.fluent.models.SecurityGroupViewResultInner;
+import com.azure.resourcemanager.network.models.SecurityGroupViewParameters;
+import com.azure.resourcemanager.network.models.TagsObject;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import reactor.core.publisher.Mono;
 
@@ -51,7 +54,8 @@ class NetworkWatcherImpl
                 .manager()
                 .serviceClient()
                 .getNetworkWatchers()
-                .getVMSecurityRules(this.resourceGroupName(), this.name(), vmId);
+                .getVMSecurityRules(this.resourceGroupName(), this.name(),
+                    new SecurityGroupViewParameters().withTargetResourceId(vmId));
         return new SecurityGroupViewImpl(this, securityGroupViewResultInner, vmId);
     }
 
@@ -61,7 +65,8 @@ class NetworkWatcherImpl
             .manager()
             .serviceClient()
             .getNetworkWatchers()
-            .getVMSecurityRulesAsync(this.resourceGroupName(), this.name(), vmId)
+            .getVMSecurityRulesAsync(this.resourceGroupName(), this.name(),
+                new SecurityGroupViewParameters().withTargetResourceId(vmId))
             .map(inner -> new SecurityGroupViewImpl(NetworkWatcherImpl.this, inner, vmId));
     }
 
@@ -71,7 +76,8 @@ class NetworkWatcherImpl
                 .manager()
                 .serviceClient()
                 .getNetworkWatchers()
-                .getFlowLogStatus(this.resourceGroupName(), this.name(), nsgId);
+                .getFlowLogStatus(this.resourceGroupName(), this.name(),
+                    new FlowLogStatusParameters().withTargetResourceId(nsgId));
         return new FlowLogSettingsImpl(this, flowLogInformationInner, nsgId);
     }
 
@@ -81,7 +87,8 @@ class NetworkWatcherImpl
             .manager()
             .serviceClient()
             .getNetworkWatchers()
-            .getFlowLogStatusAsync(this.resourceGroupName(), this.name(), nsgId)
+            .getFlowLogStatusAsync(this.resourceGroupName(), this.name(),
+                new FlowLogStatusParameters().withTargetResourceId(nsgId))
             .map(inner -> new FlowLogSettingsImpl(NetworkWatcherImpl.this, inner, nsgId));
     }
 
@@ -149,7 +156,7 @@ class NetworkWatcherImpl
             .manager()
             .serviceClient()
             .getNetworkWatchers()
-            .updateTagsAsync(resourceGroupName(), name(), innerModel().tags())
+            .updateTagsAsync(resourceGroupName(), name(), new TagsObject().withTags(innerModel().tags()))
             .flatMap(
                 inner -> {
                     setInner(inner);

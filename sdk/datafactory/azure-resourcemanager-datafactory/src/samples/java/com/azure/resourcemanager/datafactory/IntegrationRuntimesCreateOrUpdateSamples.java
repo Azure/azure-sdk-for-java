@@ -8,15 +8,18 @@ import com.azure.resourcemanager.datafactory.models.SelfHostedIntegrationRuntime
 
 /** Samples for IntegrationRuntimes CreateOrUpdate. */
 public final class IntegrationRuntimesCreateOrUpdateSamples {
+    /*
+     * operationId: IntegrationRuntimes_CreateOrUpdate
+     * api-version: 2018-06-01
+     * x-ms-examples: IntegrationRuntimes_Create
+     */
     /**
      * Sample code: IntegrationRuntimes_Create.
      *
-     * @param dataFactoryManager Entry point to DataFactoryManager. The Azure Data Factory V2 management API provides a
-     *     RESTful set of web services that interact with Azure Data Factory V2 services.
+     * @param manager Entry point to DataFactoryManager.
      */
-    public static void integrationRuntimesCreate(
-        com.azure.resourcemanager.datafactory.DataFactoryManager dataFactoryManager) {
-        dataFactoryManager
+    public static void integrationRuntimesCreate(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
+        manager
             .integrationRuntimes()
             .define("exampleIntegrationRuntime")
             .withExistingFactory("exampleResourceGroup", "exampleFactoryName")

@@ -3,8 +3,8 @@
 
 package com.azure.data.schemaregistry.avro;
 
-import com.azure.core.util.logging.ClientLogger;
 import org.apache.avro.Schema;
+import org.apache.avro.Schema.Type;
 import org.apache.avro.generic.GenericContainer;
 
 import java.nio.ByteBuffer;
@@ -16,73 +16,62 @@ import java.util.Map;
  * Utility class for Avro schema functionality.
  */
 class AvroSchemaUtils {
-    private static final Map<String, Schema> PRIMITIVE_SCHEMAS;
+    private static final Map<Type, Schema> PRIMITIVE_SCHEMAS;
 
     static {
-        Schema.Parser parser = new Schema.Parser();
-        PRIMITIVE_SCHEMAS = new HashMap<>();
-        PRIMITIVE_SCHEMAS.put("Null", createPrimitiveSchema(parser, "null"));
-        PRIMITIVE_SCHEMAS.put("Boolean", createPrimitiveSchema(parser, "boolean"));
-        PRIMITIVE_SCHEMAS.put("Integer", createPrimitiveSchema(parser, "int"));
-        PRIMITIVE_SCHEMAS.put("Long", createPrimitiveSchema(parser, "long"));
-        PRIMITIVE_SCHEMAS.put("Float", createPrimitiveSchema(parser, "float"));
-        PRIMITIVE_SCHEMAS.put("Double", createPrimitiveSchema(parser, "double"));
-        PRIMITIVE_SCHEMAS.put("String", createPrimitiveSchema(parser, "string"));
-        PRIMITIVE_SCHEMAS.put("Bytes", createPrimitiveSchema(parser, "bytes"));
-    }
+        final HashMap<Type, Schema> schemas = new HashMap<>();
+        schemas.put(Type.NULL, Schema.create(Type.NULL));
+        schemas.put(Type.BOOLEAN, Schema.create(Type.BOOLEAN));
+        schemas.put(Type.INT, Schema.create(Type.INT));
+        schemas.put(Type.LONG, Schema.create(Type.LONG));
+        schemas.put(Type.FLOAT, Schema.create(Type.FLOAT));
+        schemas.put(Type.DOUBLE, Schema.create(Type.DOUBLE));
+        schemas.put(Type.BYTES, Schema.create(Type.BYTES));
+        schemas.put(Type.STRING, Schema.create(Type.STRING));
 
-    /**
-     * Generates Avro Schema object for the specified primitive type.
-     * @param parser Avro schema parser
-     * @param type primitive schema type
-     * @return Avro Schema object for corresponding primitive type
-     */
-    private static Schema createPrimitiveSchema(Schema.Parser parser, String type) {
-        String schemaString = String.format("{\"type\" : \"%s\"}", type);
-        return parser.parse(schemaString);
+        PRIMITIVE_SCHEMAS = Collections.unmodifiableMap(schemas);
     }
 
     /**
      * Maintains map of primitive schemas.
+     *
      * @return Map containing string representation of primitive type to corresponding Avro primitive schema
      */
-    public static Map<String, Schema> getPrimitiveSchemas() {
-        return Collections.unmodifiableMap(PRIMITIVE_SCHEMAS);
+    public static Map<Type, Schema> getPrimitiveSchemas() {
+        return PRIMITIVE_SCHEMAS;
     }
 
     /**
      * Returns Avro schema for specified object, including null values
      *
      * @param object object for which Avro schema is being returned
+     *
      * @return Avro schema for object's data structure
      *
      * @throws IllegalArgumentException if object type is unsupported
      */
     public static Schema getSchema(Object object) throws IllegalArgumentException {
         if (object == null) {
-            return PRIMITIVE_SCHEMAS.get("Null");
+            return PRIMITIVE_SCHEMAS.get(Type.NULL);
         } else if (object instanceof Boolean) {
-            return PRIMITIVE_SCHEMAS.get("Boolean");
+            return PRIMITIVE_SCHEMAS.get(Type.BOOLEAN);
         } else if (object instanceof Integer) {
-            return PRIMITIVE_SCHEMAS.get("Integer");
+            return PRIMITIVE_SCHEMAS.get(Type.INT);
         } else if (object instanceof Long) {
-            return PRIMITIVE_SCHEMAS.get("Long");
+            return PRIMITIVE_SCHEMAS.get(Type.LONG);
         } else if (object instanceof Float) {
-            return PRIMITIVE_SCHEMAS.get("Float");
+            return PRIMITIVE_SCHEMAS.get(Type.FLOAT);
         } else if (object instanceof Double) {
-            return PRIMITIVE_SCHEMAS.get("Double");
+            return PRIMITIVE_SCHEMAS.get(Type.DOUBLE);
         } else if (object instanceof CharSequence) {
-            return PRIMITIVE_SCHEMAS.get("String");
+            return PRIMITIVE_SCHEMAS.get(Type.STRING);
         } else if (object instanceof byte[] || object instanceof ByteBuffer) {
-            return PRIMITIVE_SCHEMAS.get("Bytes");
+            return PRIMITIVE_SCHEMAS.get(Type.BYTES);
         } else if (object instanceof GenericContainer) {
             return ((GenericContainer) object).getSchema();
         } else {
-            ClientLogger logger = new ClientLogger(AvroSchemaUtils.class);
-            throw logger.logExceptionAsError(
-                new IllegalArgumentException(
-                "Unsupported Avro type. Supported types are null, Boolean, Integer, Long, "
-                    + "Float, Double, String, byte[] and IndexedRecord"));
+            throw new IllegalArgumentException("Unsupported Avro type. Supported types are null, Boolean, Integer,"
+                    + " Long, Float, Double, String, byte[], and GenericContainer");
         }
     }
 }

@@ -27,6 +27,7 @@ import com.azure.identity.RegionalAuthority;
 import com.azure.identity.TokenCachePersistenceOptions;
 import com.azure.identity.implementation.util.CertificateUtil;
 import com.azure.identity.implementation.util.IdentityConstants;
+import com.azure.identity.implementation.util.IdentityUtil;
 import com.azure.identity.implementation.util.IdentitySslUtil;
 import com.azure.identity.implementation.util.ScopeUtil;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -41,6 +42,7 @@ import com.microsoft.aad.msal4j.IAuthenticationResult;
 import com.microsoft.aad.msal4j.IClientCredential;
 import com.microsoft.aad.msal4j.InteractiveRequestParameters;
 import com.microsoft.aad.msal4j.MsalInteractionRequiredException;
+import com.microsoft.aad.msal4j.OnBehalfOfParameters;
 import com.microsoft.aad.msal4j.Prompt;
 import com.microsoft.aad.msal4j.PublicClientApplication;
 import com.microsoft.aad.msal4j.RefreshTokenParameters;
@@ -121,6 +123,7 @@ public class IdentityClient {
     private final String tenantId;
     private final String clientId;
     private final String clientSecret;
+    private final String clientAssertionFilePath;
     private final InputStream certificate;
     private final String certificatePath;
     private final String certificatePassword;
@@ -139,10 +142,12 @@ public class IdentityClient {
      * @param certificatePassword the password protecting the PFX certificate.
      * @param isSharedTokenCacheCredential Indicate whether the credential is
      * {@link com.azure.identity.SharedTokenCacheCredential} or not.
+     * @param confidentialClientCacheTimeout the cache time out to use for confidential client.
      * @param options the options configuring the client.
      */
     IdentityClient(String tenantId, String clientId, String clientSecret, String certificatePath,
-                   InputStream certificate, String certificatePassword, boolean isSharedTokenCacheCredential,
+                   String clientAssertionFilePath, InputStream certificate, String certificatePassword,
+                   boolean isSharedTokenCacheCredential, Duration confidentialClientCacheTimeout,
                    IdentityClientOptions options) {
         if (tenantId == null) {
             tenantId = "organizations";
@@ -153,16 +158,18 @@ public class IdentityClient {
         this.tenantId = tenantId;
         this.clientId = clientId;
         this.clientSecret = clientSecret;
+        this.clientAssertionFilePath = clientAssertionFilePath;
         this.certificatePath = certificatePath;
         this.certificate = certificate;
         this.certificatePassword = certificatePassword;
         this.options = options;
 
-        this.publicClientApplicationAccessor = new SynchronizedAccessor<PublicClientApplication>(() ->
+        this.publicClientApplicationAccessor = new SynchronizedAccessor<>(() ->
             getPublicClientApplication(isSharedTokenCacheCredential));
 
-        this.confidentialClientApplicationAccessor = new SynchronizedAccessor<ConfidentialClientApplication>(() ->
-            getConfidentialClientApplication());
+        this.confidentialClientApplicationAccessor = confidentialClientCacheTimeout == null
+            ? new SynchronizedAccessor<>(() -> getConfidentialClientApplication())
+            : new SynchronizedAccessor<>(() -> getConfidentialClientApplication(), confidentialClientCacheTimeout);
     }
 
     private Mono<ConfidentialClientApplication> getConfidentialClientApplication() {
@@ -203,6 +210,15 @@ public class IdentityClient {
                 } catch (IOException | GeneralSecurityException e) {
                     return Mono.error(logger.logExceptionAsError(new RuntimeException(
                         "Failed to parse the certificate for the credential: " + e.getMessage(), e)));
+                }
+            } else if (clientAssertionFilePath != null) {
+                try {
+                    credential = ClientCredentialFactory
+                        .createFromClientAssertion(parseClientAssertion(clientAssertionFilePath));
+                } catch (IOException e) {
+                    return Mono.error(logger.logExceptionAsError(new RuntimeException(
+                        "Failed to parse the client assertion from the provided file: " + clientAssertionFilePath
+                            + ". " + e.getMessage(), e)));
                 }
             } else {
                 return Mono.error(logger.logExceptionAsError(
@@ -253,6 +269,11 @@ public class IdentityClient {
             return tokenCache != null ? tokenCache.registerCache()
                 .map(ignored -> confidentialClientApplication) : Mono.just(confidentialClientApplication);
         });
+    }
+
+    private String parseClientAssertion(String clientAssertionFilePath) throws IOException {
+        byte[] encoded = Files.readAllBytes(Paths.get(clientAssertionFilePath));
+        return new String(encoded, StandardCharsets.UTF_8);
     }
 
     private Mono<PublicClientApplication> getPublicClientApplication(boolean sharedTokenCacheCredential) {
@@ -525,6 +546,23 @@ public class IdentityClient {
             }));
     }
 
+
+    /**
+     * Asynchronously acquire a token from Active Directory with Azure Power Shell.
+     *
+     * @param request the details of the token request
+     * @return a Publisher that emits an AccessToken
+     */
+    public Mono<AccessToken> authenticateWithOBO(TokenRequestContext request) {
+
+        return confidentialClientApplicationAccessor.getValue()
+            .flatMap(confidentialClient -> Mono.fromFuture(() -> confidentialClient.acquireToken(OnBehalfOfParameters
+                    .builder(new HashSet<>(request.getScopes()), options.getUserAssertion())
+                    .build()))
+                .map(MsalToken::new));
+    }
+
+
     private Mono<AccessToken> getAccessTokenFromPowerShell(TokenRequestContext request,
                                                            PowershellManager powershellManager) {
         return powershellManager.initSession()
@@ -570,9 +608,14 @@ public class IdentityClient {
      */
     public Mono<AccessToken> authenticateWithConfidentialClient(TokenRequestContext request) {
         return confidentialClientApplicationAccessor.getValue()
-                .flatMap(confidentialClient -> Mono.fromFuture(() -> confidentialClient.acquireToken(
-                    ClientCredentialParameters.builder(new HashSet<>(request.getScopes())).build()))
-                    .map(MsalToken::new));
+            .flatMap(confidentialClient -> Mono.fromFuture(() -> {
+                ClientCredentialParameters.ClientCredentialParametersBuilder builder =
+                    ClientCredentialParameters.builder(new HashSet<>(request.getScopes()))
+                        .tenant(IdentityUtil
+                            .resolveTenantId(tenantId, request, options));
+                return confidentialClient.acquireToken(builder.build());
+            }
+        )).map(MsalToken::new);
     }
 
     private HttpPipeline setupPipeline(HttpClient httpClient) {
@@ -607,6 +650,8 @@ public class IdentityClient {
                                                                .formatAsClaimsRequest(request.getClaims());
                        userNamePasswordParametersBuilder.claims(customClaimRequest);
                    }
+                   userNamePasswordParametersBuilder.tenant(
+                       IdentityUtil.resolveTenantId(tenantId, request, options));
                    return pc.acquireToken(userNamePasswordParametersBuilder.build());
                }
                )).onErrorMap(t -> new ClientAuthenticationException("Failed to acquire token with username and "
@@ -634,6 +679,8 @@ public class IdentityClient {
                 if (account != null) {
                     parametersBuilder = parametersBuilder.account(account);
                 }
+                parametersBuilder.tenant(
+                    IdentityUtil.resolveTenantId(tenantId, request, options));
                 try {
                     return pc.acquireTokenSilently(parametersBuilder.build());
                 } catch (MalformedURLException e) {
@@ -654,6 +701,8 @@ public class IdentityClient {
                     if (account != null) {
                         forceParametersBuilder = forceParametersBuilder.account(account);
                     }
+                    forceParametersBuilder.tenant(
+                        IdentityUtil.resolveTenantId(tenantId, request, options));
                     try {
                         return pc.acquireTokenSilently(forceParametersBuilder.build());
                     } catch (MalformedURLException e) {
@@ -672,7 +721,9 @@ public class IdentityClient {
         return confidentialClientApplicationAccessor.getValue()
             .flatMap(confidentialClient -> Mono.fromFuture(() -> {
                 SilentParameters.SilentParametersBuilder parametersBuilder = SilentParameters.builder(
-                        new HashSet<>(request.getScopes()));
+                        new HashSet<>(request.getScopes()))
+                    .tenant(IdentityUtil.resolveTenantId(tenantId, request,
+                        options));
                 try {
                     return confidentialClient.acquireTokenSilently(parametersBuilder.build());
                 } catch (MalformedURLException e) {
@@ -700,7 +751,9 @@ public class IdentityClient {
                     DeviceCodeFlowParameters.builder(
                         new HashSet<>(request.getScopes()), dc -> deviceCodeConsumer.accept(
                             new DeviceCodeInfo(dc.userCode(), dc.deviceCode(), dc.verificationUri(),
-                                OffsetDateTime.now().plusSeconds(dc.expiresIn()), dc.message())));
+                                OffsetDateTime.now().plusSeconds(dc.expiresIn()), dc.message())))
+                    .tenant(IdentityUtil
+                        .resolveTenantId(tenantId, request, options));
 
                 if (request.getClaims() != null) {
                     ClaimsRequest customClaimRequest = CustomClaimRequest.formatAsClaimsRequest(request.getClaims());
@@ -759,7 +812,9 @@ public class IdentityClient {
                                                              URI redirectUrl) {
         AuthorizationCodeParameters.AuthorizationCodeParametersBuilder parametersBuilder =
             AuthorizationCodeParameters.builder(authorizationCode, redirectUrl)
-            .scopes(new HashSet<>(request.getScopes()));
+            .scopes(new HashSet<>(request.getScopes()))
+            .tenant(IdentityUtil
+                .resolveTenantId(tenantId, request, options));
 
         if (request.getClaims() != null) {
             ClaimsRequest customClaimRequest = CustomClaimRequest.formatAsClaimsRequest(request.getClaims());
@@ -811,7 +866,9 @@ public class IdentityClient {
         InteractiveRequestParameters.InteractiveRequestParametersBuilder builder =
             InteractiveRequestParameters.builder(redirectUri)
                 .scopes(new HashSet<>(request.getScopes()))
-                .prompt(Prompt.SELECT_ACCOUNT);
+                .prompt(Prompt.SELECT_ACCOUNT)
+                .tenant(IdentityUtil
+                    .resolveTenantId(tenantId, request, options));
 
         if (request.getClaims() != null) {
             ClaimsRequest customClaimRequest = CustomClaimRequest.formatAsClaimsRequest(request.getClaims());
@@ -972,6 +1029,16 @@ public class IdentityClient {
                 }
             }
         });
+    }
+
+    /**
+     * Asynchronously acquire a token from the Azure Arc Managed Service Identity endpoint.
+     *
+     * @param request the details of the token request
+     * @return a Publisher that emits an AccessToken
+     */
+    public Mono<AccessToken> authenticatewithExchangeToken(TokenRequestContext request) {
+        return authenticateWithConfidentialClient(request);
     }
 
     /**

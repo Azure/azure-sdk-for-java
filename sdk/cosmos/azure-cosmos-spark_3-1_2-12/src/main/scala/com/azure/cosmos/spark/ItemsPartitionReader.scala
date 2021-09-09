@@ -7,6 +7,7 @@ import com.azure.cosmos.implementation.spark.{OperationContextAndListenerTuple, 
 import com.azure.cosmos.implementation.{CosmosClientMetadataCachesSnapshot, ImplementationBridgeHelpers, SparkBridgeImplementationInternal}
 import com.azure.cosmos.models.{CosmosParameterizedQuery, CosmosQueryRequestOptions}
 import com.azure.cosmos.spark.diagnostics.{DiagnosticsContext, DiagnosticsLoader, LoggerHelper, SparkTaskContext}
+import com.azure.cosmos.util.CosmosPagedIterable
 import com.fasterxml.jackson.databind.node.ObjectNode
 import org.apache.spark.TaskContext
 import org.apache.spark.broadcast.Broadcast
@@ -71,14 +72,12 @@ private case class ItemsPartitionReader
 
   queryOptions.setFeedRange(SparkBridgeImplementationInternal.toFeedRange(feedRange))
 
-  private lazy val iterator = cosmosAsyncContainer.queryItems(
-    cosmosQuery.toSqlQuerySpec,
-    queryOptions,
-    classOf[ObjectNode]
-  ).toIterable.iterator()
+  private lazy val iterator = new CosmosPagedIterable[ObjectNode](
+    cosmosAsyncContainer.queryItems(cosmosQuery.toSqlQuerySpec, queryOptions, classOf[ObjectNode]),
+    readConfig.maxItemCount
+  ).iterator()
 
   private val rowSerializer: ExpressionEncoder.Serializer[Row] = RowSerializerPool.getOrCreateSerializer(readSchema)
-
 
   override def next(): Boolean = iterator.hasNext
 

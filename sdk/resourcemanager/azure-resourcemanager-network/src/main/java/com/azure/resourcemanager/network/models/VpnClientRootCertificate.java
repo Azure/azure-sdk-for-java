@@ -5,17 +5,22 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.network.fluent.models.VpnClientRootCertificatePropertiesFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** VPN client root certificate of virtual network gateway. */
-@JsonFlatten
 @Fluent
-public class VpnClientRootCertificate extends SubResource {
+public final class VpnClientRootCertificate extends SubResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(VpnClientRootCertificate.class);
+
+    /*
+     * Properties of the vpn client root certificate.
+     */
+    @JsonProperty(value = "properties", required = true)
+    private VpnClientRootCertificatePropertiesFormat innerProperties = new VpnClientRootCertificatePropertiesFormat();
 
     /*
      * The name of the resource that is unique within a resource group. This
@@ -30,17 +35,14 @@ public class VpnClientRootCertificate extends SubResource {
     @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
-    /*
-     * The certificate public data.
+    /**
+     * Get the innerProperties property: Properties of the vpn client root certificate.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.publicCertData", required = true)
-    private String publicCertData;
-
-    /*
-     * The provisioning state of the VPN client root certificate resource.
-     */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningState provisioningState;
+    private VpnClientRootCertificatePropertiesFormat innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the name property: The name of the resource that is unique within a resource group. This name can be used to
@@ -73,13 +75,20 @@ public class VpnClientRootCertificate extends SubResource {
         return this.etag;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public VpnClientRootCertificate withId(String id) {
+        super.withId(id);
+        return this;
+    }
+
     /**
      * Get the publicCertData property: The certificate public data.
      *
      * @return the publicCertData value.
      */
     public String publicCertData() {
-        return this.publicCertData;
+        return this.innerProperties() == null ? null : this.innerProperties().publicCertData();
     }
 
     /**
@@ -89,7 +98,10 @@ public class VpnClientRootCertificate extends SubResource {
      * @return the VpnClientRootCertificate object itself.
      */
     public VpnClientRootCertificate withPublicCertData(String publicCertData) {
-        this.publicCertData = publicCertData;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VpnClientRootCertificatePropertiesFormat();
+        }
+        this.innerProperties().withPublicCertData(publicCertData);
         return this;
     }
 
@@ -99,14 +111,7 @@ public class VpnClientRootCertificate extends SubResource {
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
-        return this.provisioningState;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public VpnClientRootCertificate withId(String id) {
-        super.withId(id);
-        return this;
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
     /**
@@ -115,11 +120,13 @@ public class VpnClientRootCertificate extends SubResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (publicCertData() == null) {
+        if (innerProperties() == null) {
             throw logger
                 .logExceptionAsError(
                     new IllegalArgumentException(
-                        "Missing required property publicCertData in model VpnClientRootCertificate"));
+                        "Missing required property innerProperties in model VpnClientRootCertificate"));
+        } else {
+            innerProperties().validate();
         }
     }
 }

@@ -4,26 +4,34 @@
 package com.azure.monitor.query.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.experimental.models.HttpResponseError;
+import com.azure.core.util.BinaryData;
+import com.azure.core.util.CoreUtils;
+
+import java.util.List;
 
 /**
  * Class containing the result of a single logs query in a batch.
  */
 @Immutable
-public final class LogsBatchQueryResult {
+public final class LogsBatchQueryResult extends LogsQueryResult {
     private final String id;
     private final int status;
-    private final LogsQueryResult queryResult;
 
     /**
      * Creates an instance of {@link LogsBatchQueryResult} containing the result of a single logs query in a batch.
      * @param id The query id.
      * @param status The response status of the query.
-     * @param queryResult The result of the query.
+     * @param logsTables The list of {@link LogsTable} returned as query result.
+     * @param statistics The query execution statistics.
+     * @param visualization The visualization information for the logs query.
+     * @param error The error details if there was an error executing the query.
      */
-    public LogsBatchQueryResult(String id, int status, LogsQueryResult queryResult) {
+    public LogsBatchQueryResult(String id, int status, List<LogsTable> logsTables, BinaryData statistics,
+                                BinaryData visualization, HttpResponseError error) {
+        super(logsTables, statistics, visualization, error);
         this.id = id;
         this.status = status;
-        this.queryResult = queryResult;
     }
 
     /**
@@ -43,11 +51,16 @@ public final class LogsBatchQueryResult {
     }
 
     /**
-     * Returns the logs query result.
-     * @return The logs query result.
+     * Returns true if the query failed. If the query partially succeeded i.e. there are tables returned in the
+     * response, then this method will return {@code false}.
+     *
+     * @return Returns true if the query failed.
      */
-    public LogsQueryResult getQueryResult() {
-        return queryResult;
+    public boolean hasFailed() {
+        if (getError() != null && CoreUtils.isNullOrEmpty(getAllTables())) {
+            return true;
+        }
+        return false;
     }
 }
 

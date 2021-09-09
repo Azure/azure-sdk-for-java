@@ -21,7 +21,7 @@ The package can be downloaded from [Maven](https://search.maven.org/artifact/com
 <dependency>
   <groupId>com.microsoft.azure</groupId>
   <artifactId>azure-servicebus</artifactId>
-  <version>3.6.4</version>
+  <version>3.6.5</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})

@@ -9,15 +9,19 @@ import com.azure.resourcemanager.datafactory.models.GetSsisObjectMetadataRequest
 
 /** Samples for IntegrationRuntimeObjectMetadata Get. */
 public final class IntegrationRuntimeObjectMetadataGetSamples {
+    /*
+     * operationId: IntegrationRuntimeObjectMetadata_Get
+     * api-version: 2018-06-01
+     * x-ms-examples: IntegrationRuntimeObjectMetadata_Get
+     */
     /**
      * Sample code: IntegrationRuntimeObjectMetadata_Get.
      *
-     * @param dataFactoryManager Entry point to DataFactoryManager. The Azure Data Factory V2 management API provides a
-     *     RESTful set of web services that interact with Azure Data Factory V2 services.
+     * @param manager Entry point to DataFactoryManager.
      */
     public static void integrationRuntimeObjectMetadataGet(
-        com.azure.resourcemanager.datafactory.DataFactoryManager dataFactoryManager) {
-        dataFactoryManager
+        com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
+        manager
             .integrationRuntimeObjectMetadatas()
             .getWithResponse(
                 "exampleResourceGroup",

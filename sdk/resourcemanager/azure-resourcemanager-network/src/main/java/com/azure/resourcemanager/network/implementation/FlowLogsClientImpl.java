@@ -38,7 +38,6 @@ import com.azure.resourcemanager.network.fluent.models.FlowLogInner;
 import com.azure.resourcemanager.network.models.FlowLogListResult;
 import com.azure.resourcemanager.network.models.TagsObject;
 import java.nio.ByteBuffer;
-import java.util.Map;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -204,7 +203,7 @@ public final class FlowLogsClientImpl implements FlowLogsClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-02-01";
+        final String apiVersion = "2021-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -271,7 +270,7 @@ public final class FlowLogsClientImpl implements FlowLogsClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-02-01";
+        final String apiVersion = "2021-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -473,7 +472,7 @@ public final class FlowLogsClientImpl implements FlowLogsClient {
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param flowLogName The name of the flow log.
-     * @param tags Resource tags.
+     * @param parameters Parameters supplied to update flow log tags.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -481,7 +480,7 @@ public final class FlowLogsClientImpl implements FlowLogsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<FlowLogInner>> updateTagsWithResponseAsync(
-        String resourceGroupName, String networkWatcherName, String flowLogName, Map<String, String> tags) {
+        String resourceGroupName, String networkWatcherName, String flowLogName, TagsObject parameters) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -505,10 +504,13 @@ public final class FlowLogsClientImpl implements FlowLogsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-02-01";
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
+        final String apiVersion = "2021-03-01";
         final String accept = "application/json";
-        TagsObject parameters = new TagsObject();
-        parameters.withTags(tags);
         return FluxUtil
             .withContext(
                 context ->
@@ -532,7 +534,7 @@ public final class FlowLogsClientImpl implements FlowLogsClient {
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param flowLogName The name of the flow log.
-     * @param tags Resource tags.
+     * @param parameters Parameters supplied to update flow log tags.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -544,7 +546,7 @@ public final class FlowLogsClientImpl implements FlowLogsClient {
         String resourceGroupName,
         String networkWatcherName,
         String flowLogName,
-        Map<String, String> tags,
+        TagsObject parameters,
         Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -569,10 +571,13 @@ public final class FlowLogsClientImpl implements FlowLogsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-02-01";
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
+        final String apiVersion = "2021-03-01";
         final String accept = "application/json";
-        TagsObject parameters = new TagsObject();
-        parameters.withTags(tags);
         context = this.client.mergeContext(context);
         return service
             .updateTags(
@@ -593,7 +598,7 @@ public final class FlowLogsClientImpl implements FlowLogsClient {
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param flowLogName The name of the flow log.
-     * @param tags Resource tags.
+     * @param parameters Parameters supplied to update flow log tags.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -601,8 +606,8 @@ public final class FlowLogsClientImpl implements FlowLogsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<FlowLogInner> updateTagsAsync(
-        String resourceGroupName, String networkWatcherName, String flowLogName, Map<String, String> tags) {
-        return updateTagsWithResponseAsync(resourceGroupName, networkWatcherName, flowLogName, tags)
+        String resourceGroupName, String networkWatcherName, String flowLogName, TagsObject parameters) {
+        return updateTagsWithResponseAsync(resourceGroupName, networkWatcherName, flowLogName, parameters)
             .flatMap(
                 (Response<FlowLogInner> res) -> {
                     if (res.getValue() != null) {
@@ -619,23 +624,16 @@ public final class FlowLogsClientImpl implements FlowLogsClient {
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param flowLogName The name of the flow log.
+     * @param parameters Parameters supplied to update flow log tags.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a flow log resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<FlowLogInner> updateTagsAsync(String resourceGroupName, String networkWatcherName, String flowLogName) {
-        final Map<String, String> tags = null;
-        return updateTagsWithResponseAsync(resourceGroupName, networkWatcherName, flowLogName, tags)
-            .flatMap(
-                (Response<FlowLogInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+    public FlowLogInner updateTags(
+        String resourceGroupName, String networkWatcherName, String flowLogName, TagsObject parameters) {
+        return updateTagsAsync(resourceGroupName, networkWatcherName, flowLogName, parameters).block();
     }
 
     /**
@@ -644,24 +642,7 @@ public final class FlowLogsClientImpl implements FlowLogsClient {
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param flowLogName The name of the flow log.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a flow log resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public FlowLogInner updateTags(String resourceGroupName, String networkWatcherName, String flowLogName) {
-        final Map<String, String> tags = null;
-        return updateTagsAsync(resourceGroupName, networkWatcherName, flowLogName, tags).block();
-    }
-
-    /**
-     * Update tags of the specified flow log.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param networkWatcherName The name of the network watcher.
-     * @param flowLogName The name of the flow log.
-     * @param tags Resource tags.
+     * @param parameters Parameters supplied to update flow log tags.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -673,9 +654,10 @@ public final class FlowLogsClientImpl implements FlowLogsClient {
         String resourceGroupName,
         String networkWatcherName,
         String flowLogName,
-        Map<String, String> tags,
+        TagsObject parameters,
         Context context) {
-        return updateTagsWithResponseAsync(resourceGroupName, networkWatcherName, flowLogName, tags, context).block();
+        return updateTagsWithResponseAsync(resourceGroupName, networkWatcherName, flowLogName, parameters, context)
+            .block();
     }
 
     /**
@@ -715,7 +697,7 @@ public final class FlowLogsClientImpl implements FlowLogsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-02-01";
+        final String apiVersion = "2021-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -771,7 +753,7 @@ public final class FlowLogsClientImpl implements FlowLogsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-02-01";
+        final String apiVersion = "2021-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -881,7 +863,7 @@ public final class FlowLogsClientImpl implements FlowLogsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-02-01";
+        final String apiVersion = "2021-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -937,7 +919,7 @@ public final class FlowLogsClientImpl implements FlowLogsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-02-01";
+        final String apiVersion = "2021-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1132,7 +1114,7 @@ public final class FlowLogsClientImpl implements FlowLogsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-02-01";
+        final String apiVersion = "2021-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1192,7 +1174,7 @@ public final class FlowLogsClientImpl implements FlowLogsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-02-01";
+        final String apiVersion = "2021-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service

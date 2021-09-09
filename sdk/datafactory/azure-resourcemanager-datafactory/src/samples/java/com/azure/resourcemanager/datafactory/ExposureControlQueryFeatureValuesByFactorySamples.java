@@ -11,15 +11,19 @@ import java.util.Arrays;
 
 /** Samples for ExposureControl QueryFeatureValuesByFactory. */
 public final class ExposureControlQueryFeatureValuesByFactorySamples {
+    /*
+     * operationId: ExposureControl_QueryFeatureValuesByFactory
+     * api-version: 2018-06-01
+     * x-ms-examples: ExposureControl_QueryFeatureValuesByFactory
+     */
     /**
      * Sample code: ExposureControl_QueryFeatureValuesByFactory.
      *
-     * @param dataFactoryManager Entry point to DataFactoryManager. The Azure Data Factory V2 management API provides a
-     *     RESTful set of web services that interact with Azure Data Factory V2 services.
+     * @param manager Entry point to DataFactoryManager.
      */
     public static void exposureControlQueryFeatureValuesByFactory(
-        com.azure.resourcemanager.datafactory.DataFactoryManager dataFactoryManager) {
-        dataFactoryManager
+        com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
+        manager
             .exposureControls()
             .queryFeatureValuesByFactoryWithResponse(
                 "exampleResourceGroup",

@@ -32,6 +32,7 @@ Use the Azure Cognitive Search client library to:
 ## Getting started
 
 ### Include the package
+
 #### Include the BOM file
 
 Please include the azure-sdk-bom to your project to take dependency on the General Availability (GA) version of the library. In the following snippet, replace the {bom_version_to_target} placeholder with the version number.
@@ -62,6 +63,7 @@ and then include the direct dependency in the dependencies section without the v
 ```
 
 #### Include direct dependency
+
 If you want to take dependency on a particular version of the library that is not present in the BOM,
 add the direct dependency to your project as follows.
 
@@ -71,7 +73,7 @@ add the direct dependency to your project as follows.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-search-documents</artifactId>
-    <version>11.5.0-beta.1</version>
+    <version>11.5.0-beta.3</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})

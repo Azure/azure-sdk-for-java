@@ -14,11 +14,11 @@ import com.azure.core.util.Context;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.network.fluent.models.IpAllocationInner;
+import com.azure.resourcemanager.network.models.TagsObject;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
 import java.nio.ByteBuffer;
-import java.util.Map;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -298,7 +298,7 @@ public interface IpAllocationsClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param ipAllocationName The name of the IpAllocation.
-     * @param tags Resource tags.
+     * @param parameters Parameters supplied to update IpAllocation tags.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -306,55 +306,42 @@ public interface IpAllocationsClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<IpAllocationInner>> updateTagsWithResponseAsync(
-        String resourceGroupName, String ipAllocationName, Map<String, String> tags);
+        String resourceGroupName, String ipAllocationName, TagsObject parameters);
 
     /**
      * Updates a IpAllocation tags.
      *
      * @param resourceGroupName The name of the resource group.
      * @param ipAllocationName The name of the IpAllocation.
-     * @param tags Resource tags.
+     * @param parameters Parameters supplied to update IpAllocation tags.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return ipAllocation resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<IpAllocationInner> updateTagsAsync(
-        String resourceGroupName, String ipAllocationName, Map<String, String> tags);
+    Mono<IpAllocationInner> updateTagsAsync(String resourceGroupName, String ipAllocationName, TagsObject parameters);
 
     /**
      * Updates a IpAllocation tags.
      *
      * @param resourceGroupName The name of the resource group.
      * @param ipAllocationName The name of the IpAllocation.
+     * @param parameters Parameters supplied to update IpAllocation tags.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return ipAllocation resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<IpAllocationInner> updateTagsAsync(String resourceGroupName, String ipAllocationName);
+    IpAllocationInner updateTags(String resourceGroupName, String ipAllocationName, TagsObject parameters);
 
     /**
      * Updates a IpAllocation tags.
      *
      * @param resourceGroupName The name of the resource group.
      * @param ipAllocationName The name of the IpAllocation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return ipAllocation resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    IpAllocationInner updateTags(String resourceGroupName, String ipAllocationName);
-
-    /**
-     * Updates a IpAllocation tags.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param ipAllocationName The name of the IpAllocation.
-     * @param tags Resource tags.
+     * @param parameters Parameters supplied to update IpAllocation tags.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -363,7 +350,7 @@ public interface IpAllocationsClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<IpAllocationInner> updateTagsWithResponse(
-        String resourceGroupName, String ipAllocationName, Map<String, String> tags, Context context);
+        String resourceGroupName, String ipAllocationName, TagsObject parameters, Context context);
 
     /**
      * Gets all IpAllocations in a subscription.

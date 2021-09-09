@@ -2,11 +2,36 @@
 
 ## 2.4.0-beta.1 (Unreleased)
 
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 2.3.2 (2021-09-07)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.19.0` to `1.20.0`.
+- Upgraded Reactor from `3.4.8` to `3.4.9`.
+
+## 2.3.1 (2021-08-19)
+
 ### Bug Fixes
 
 - Fixed a bug where SendTimeout-timer thread was not being disposed of resulting in lingering
   threads when a send link was remotely closed.
-- Fixed a bug where ReactorConnection waited indefinitely for CBS node to complete closing. The underlying problem is that the RequestResponseChannel's sender and receiver links were not active, so they would wait forever for a remote close signal.
+- Fixed a bug where ReactorConnection waited indefinitely for CBS node to complete closing. The underlying problem is
+  that the RequestResponseChannel's sender and receiver links were not active, so they would wait forever for a remote
+  close signal.
+- Fixed a bug where ReactorReceiver and ReactorSender would not complete their close operation if their close work could
+  not be scheduled on the proton-j Reactor. This happens in the case that the connection is shutdown before the link.
+- Fixed a bug where RejectedExecutionExceptions and IllegalStateExceptions would not be retried. This happens in the
+  case that an IO pipe is interrupted while signalling the Reactor work queue.
 
 ## 2.3.0 (2021-07-01)
 
@@ -56,10 +81,6 @@
 
 ### Dependency Updates
 - Upgraded `azure-core` dependency to `1.15.0`.
-
-## 2.1.0-beta.1 (2021-03-26)
-### New Features
-- Exposes 'AmqpTransactionCoordinator' via AmqpSession. 
 
 ## 2.0.4 (2021-04-12)
 

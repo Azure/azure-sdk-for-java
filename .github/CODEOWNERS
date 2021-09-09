@@ -12,7 +12,7 @@
 # PRLabel: %bom
 /sdk/boms/azure-sdk-bom/                            @pallavit @alzimmermsft @jonathangiles @srnagar @anuchandy
 # PRLabel: %azure-spring
-/sdk/boms/azure-spring-boot-bom/                    @saragluna @yiliuTo @chenrujun @backwind1233 @stliu
+/sdk/boms/azure-spring-boot-bom/                    @saragluna @yiliuTo @chenrujun @backwind1233 @stliu @ZhuXiaoBing-cn @zhichengliu12581 @moarychan @michaelqi793
 
 ####
 # Service teams
@@ -20,8 +20,8 @@
 # PRLabel: %App Configuration
 /sdk/appconfiguration/                              @mssfang @alzimmermsft
 # PRLabel: %azure-spring
-/sdk/appconfiguration/azure-spring-cloud-*/         @mrm9084 @zhenlan @saragluna @yiliuTo @chenrujun @backwind1233 @stliu
-/sdk/appconfiguration/spring-cloud-azure-*/         @mrm9084 @zhenlan @saragluna @yiliuTo @chenrujun @backwind1233 @stliu
+/sdk/appconfiguration/azure-spring-cloud-*/         @mrm9084 @zhenlan @saragluna @yiliuTo @chenrujun @backwind1233 @stliu @ZhuXiaoBing-cn @zhichengliu12581 @moarychan @michaelqi793
+/sdk/appconfiguration/spring-cloud-azure-*/         @mrm9084 @zhenlan @saragluna @yiliuTo @chenrujun @backwind1233 @stliu @ZhuXiaoBing-cn @zhichengliu12581 @moarychan @michaelqi793
 
 
 # PRLabel: %Attestation
@@ -40,7 +40,7 @@
 /sdk/containerregistry/                             @pallavit @alzimmermsft @jianghaolu
 
 # PRLabel: %Azure.Core
-/sdk/core/                                          @alzimmermsft @jianghaolu @srnagar @anuchandy @lmolkova
+/sdk/core/                                          @alzimmermsft @jianghaolu @srnagar @anuchandy @lmolkova @pallavit @vcolin7 @mssfang
 
 # PRLabel: %Azure.Core.AMQP
 /sdk/core/azure-core-amqp/                          @conniey @anuchandy @ki1729 @srnagar
@@ -51,21 +51,30 @@
 # PRLabel: %Cosmos
 /sdk/cosmos/                                        @moderakh @kushagraThapar @FabianMeiswinkel @kirankumarkolli @mbhaskar @simplynaveen20 @xinlian12 @milismsft @aayush3011
 # PRLabel: %azure-spring
-/sdk/cosmos/azure-spring-data-cosmos/               @kushagraThapar @saragluna @yiliuTo @chenrujun @backwind1233 @mbhaskar @stliu
+/sdk/cosmos/azure-spring-data-cosmos/               @kushagraThapar @mbhaskar @saragluna @yiliuTo @chenrujun @backwind1233 @stliu @ZhuXiaoBing-cn @zhichengliu12581 @moarychan @michaelqi793
 # PRLabel: %azure-spring
-/sdk/cosmos/azure-spring-data-cosmos-test/          @kushagraThapar @saragluna @yiliuTo @chenrujun @backwind1233 @mbhaskar @stliu
+/sdk/cosmos/azure-spring-data-cosmos-test/          @kushagraThapar @mbhaskar @saragluna @yiliuTo @chenrujun @backwind1233 @stliu @ZhuXiaoBing-cn @zhichengliu12581 @moarychan @michaelqi793
 
 # PRLabel: %Digital Twins
-/sdk/digitaltwins/                                  @drwill-ms @timtay-microsoft @abhipsaMisra @vinagesh @azabbasi @barustum
+/sdk/digitaltwins/                                  @drwill-ms @timtay-microsoft @abhipsaMisra @azabbasi
 
 # PRLabel: %Models Repository
-/sdk/modelsrepository                               @drwill-ms @timtay-microsoft @abhipsaMisra @vinagesh @azabbasi @barustum @digimaun
+/sdk/modelsrepository                               @drwill-ms @timtay-microsoft @abhipsaMisra @azabbasi @digimaun
 
 # PRLabel: %Event Grid
 /sdk/eventgrid/                                     @srnagar @lmolkova
 
 # PRLabel: %Event Hubs
 /sdk/eventhubs/                                     @conniey @anuchandy @ki1729 @srnagar
+
+# PRLabel: %Event Hubs
+/sdk/eventhubs/microsoft-azure-eventhubs-eph/       @JamesBirdsall @sjkwak
+
+# PRLabel: %Event Hubs
+/sdk/eventhubs/microsoft-azure-eventhubs-extensions/  @JamesBirdsall @sjkwak
+
+# PRLabel: %Event Hubs
+/sdk/eventhubs/microsoft-azure-eventhubs/           @JamesBirdsall @sjkwak
 
 # PRLabel: %Cognitive - Form Recognizer
 /sdk/formrecognizer/                                @samvaity @mssfang
@@ -79,7 +88,7 @@
 # PRLabel: %KeyVault
 /sdk/keyvault/                                      @vcolin7 @g2vinay @samvaity
 # PRLabel: %azure-spring
-/sdk/keyvault/azure-security-keyvault-jca           @saragluna @yiliuTo @chenrujun @backwind1233 @stliu
+/sdk/keyvault/azure-security-keyvault-jca           @saragluna @yiliuTo @chenrujun @backwind1233 @stliu @ZhuXiaoBing-cn @zhichengliu12581 @moarychan @michaelqi793
 
 /sdk/loganalytics/microsoft-azure-loganalytics/     @divyajay @alongafni
 
@@ -96,13 +105,16 @@
 /sdk/remoterendering/                               @MalcolmTyrrell
 
 # PRLabel: %Schema Registry
-/sdk/schemaregistry/                                @arerlend @sjkwak
+/sdk/schemaregistry/                                @conniey @sjkwak @srnagar
 
 # PRLabel: %Search
-/sdk/search/                                        @alzimmermsft @mssfang @samvaity @conniey
+/sdk/search/                                        @alzimmermsft @pallavit @mssfang @samvaity
 
 # PRLabel: %Service Bus
-/sdk/servicebus/                                    @yvgopal @nemakam @anuchandy @ki1729 @conniey 
+/sdk/servicebus/                                    @anuchandy @ki1729 @conniey
+
+# PRLabel: %Service Bus
+/sdk/servicebus/microsoft-azure-servicebus/         @shankarsama @yvgopal
 
 # PRLabel: %Storage
 /sdk/storage/                                       @amishra-dev @rickle-msft @jaschrep-msft @alzimmermsft @kasobol-msft
@@ -117,7 +129,7 @@
 /sdk/textanalytics/                                 @samvaity @mssfang
 
 # PRLabel: %azure-spring
-/sdk/spring/                                        @saragluna @yiliuTo @chenrujun @backwind1233 @stliu
+/sdk/spring/                                        @saragluna @yiliuTo @chenrujun @backwind1233 @stliu @ZhuXiaoBing-cn @zhichengliu12581 @moarychan @michaelqi793
 
 # end to end tests
 # PRLabel: %Azure.Identity
@@ -142,7 +154,7 @@
 /eng/spotbugs-aggregate-report/                     @srnagar @JonathanGiles
 /eng/mgmt/                                          @benbp @weshaggard @danieljurek @ChenTanyi @weidongxu-microsoft @yungezz
 /eng/versioning/                                    @benbp @danieljurek @alzimmermsft @samvaity @g2vinay
-/eng/versioning/external_dependencies.txt           @benbp @danieljurek @alzimmermsft @samvaity @g2vinay @saragluna @yiliuTo @chenrujun @backwind1233 @stliu
+/eng/versioning/external_dependencies.txt           @benbp @danieljurek @alzimmermsft @samvaity @g2vinay @saragluna @yiliuTo @chenrujun @backwind1233 @stliu @ZhuXiaoBing-cn @zhichengliu12581 @moarychan @michaelqi793
 /eng/bomgenerator                                   @pallavit @alzimmermsft @srnagar
 /parent/                                            @alzimmermsft
 

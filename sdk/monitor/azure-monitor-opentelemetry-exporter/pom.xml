@@ -30,16 +30,21 @@
     <url>https://github.com/Azure/azure-sdk-for-java</url>
   </scm>
 
+  <properties>
+    <jacoco.min.linecoverage>0.30</jacoco.min.linecoverage>
+    <jacoco.min.branchcoverage>0.20</jacoco.min.branchcoverage>
+  </properties>
+
   <dependencies>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.19.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+      <version>1.20.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-netty</artifactId>
-      <version>1.10.2</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
+      <version>1.11.0</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
     </dependency>
     <dependency>
       <groupId>io.opentelemetry</groupId>
@@ -81,33 +86,39 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-data-appconfiguration</artifactId>
-      <version>1.2.0</version> <!-- {x-version-update;com.azure:azure-data-appconfiguration;dependency} -->
+      <version>1.2.1</version> <!-- {x-version-update;com.azure:azure-data-appconfiguration;dependency} -->
       <scope>test</scope>
     </dependency>
 
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-messaging-eventhubs</artifactId>
-      <version>5.9.0</version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs;dependency} -->
+      <version>5.10.0</version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs;dependency} -->
       <scope>test</scope>
     </dependency>
 
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-tracing-opentelemetry</artifactId>
-      <version>1.0.0-beta.13</version> <!-- {x-version-update;com.azure:azure-core-tracing-opentelemetry;dependency} -->
+      <version>1.0.0-beta.14</version> <!-- {x-version-update;com.azure:azure-core-tracing-opentelemetry;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
         <groupId>com.azure</groupId>
         <artifactId>azure-core-test</artifactId>
-        <version>1.7.0</version>  <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
+        <version>1.7.1</version>  <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
         <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-messaging-eventhubs-checkpointstore-blob</artifactId>
-      <version>1.8.1</version>  <!-- {x-version-update;com.azure:azure-messaging-eventhubs-checkpointstore-blob;dependency} -->
+      <version>1.9.0</version>  <!-- {x-version-update;com.azure:azure-messaging-eventhubs-checkpointstore-blob;dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-identity</artifactId>
+      <version>1.3.6</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <scope>test</scope>
     </dependency>
 
@@ -115,14 +126,6 @@
 
   <build>
     <plugins>
-      <plugin>
-        <groupId>org.jacoco</groupId>
-        <artifactId>jacoco-maven-plugin</artifactId>
-        <version>0.8.5</version> <!-- {x-version-update;org.jacoco:jacoco-maven-plugin;external_dependency} -->
-        <configuration>
-          <skip>true</skip>
-        </configuration>
-      </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-enforcer-plugin</artifactId>
@@ -136,6 +139,18 @@
               </includes>
             </bannedDependencies>
           </rules>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
+        <configuration>
+          <systemPropertyVariables>
+            <!-- Parallel runs disabled due to concurrency issues with GlobalOpenTelemetry. -->
+            <junit.jupiter.execution.parallel.enabled>false</junit.jupiter.execution.parallel.enabled>
+          </systemPropertyVariables>
         </configuration>
       </plugin>
     </plugins>

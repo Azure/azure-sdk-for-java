@@ -96,4 +96,32 @@ public class DeviceCodeCredentialTest {
                && authenticationRecord.getHomeAccountId() != null)
             .verifyComplete();
     }
+
+    @Test
+    public void testMultiTenantAuthenticationEnabled() throws Exception {
+        // setup
+        Consumer<DeviceCodeInfo> consumer = deviceCodeInfo -> { /* do nothing */ };
+        String token1 = "token1";
+        TokenRequestContext request1 = new TokenRequestContext().addScopes("https://management.azure.com");
+        OffsetDateTime expiresAt = OffsetDateTime.now(ZoneOffset.UTC).plusHours(1);
+
+        // mock
+        IdentityClient identityClient = PowerMockito.mock(IdentityClient.class);
+        when(identityClient.authenticateWithDeviceCode(eq(request1), eq(consumer)))
+            .thenReturn(TestUtils.getMockMsalToken(token1, expiresAt));
+        PowerMockito.whenNew(IdentityClient.class).withAnyArguments().thenReturn(identityClient);
+
+        // test
+        DeviceCodeCredential credential =
+            new DeviceCodeCredentialBuilder().challengeConsumer(consumer)
+                .allowMultiTenantAuthentication()
+                .clientId(clientId)
+                .disableAutomaticAuthentication().build();
+        StepVerifier.create(credential.authenticate(request1))
+            .expectNextMatches(authenticationRecord -> authenticationRecord.getAuthority()
+                .equals("http://login.microsoftonline.com")
+                && authenticationRecord.getUsername().equals("testuser")
+                && authenticationRecord.getHomeAccountId() != null)
+            .verifyComplete();
+    }
 }

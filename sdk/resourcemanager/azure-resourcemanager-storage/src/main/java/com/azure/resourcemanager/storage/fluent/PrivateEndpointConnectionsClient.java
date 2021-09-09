@@ -11,8 +11,6 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.storage.fluent.models.PrivateEndpointConnectionInner;
-import com.azure.resourcemanager.storage.models.PrivateEndpoint;
-import com.azure.resourcemanager.storage.models.PrivateLinkServiceConnectionState;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in PrivateEndpointConnectionsClient. */
@@ -145,9 +143,7 @@ public interface PrivateEndpointConnectionsClient {
      *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
      *     resource.
-     * @param privateEndpoint The resource of private end point.
-     * @param privateLinkServiceConnectionState A collection of information about the state of the connection between
-     *     service consumer and provider.
+     * @param properties The private endpoint connection properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -158,8 +154,7 @@ public interface PrivateEndpointConnectionsClient {
         String resourceGroupName,
         String accountName,
         String privateEndpointConnectionName,
-        PrivateEndpoint privateEndpoint,
-        PrivateLinkServiceConnectionState privateLinkServiceConnectionState);
+        PrivateEndpointConnectionInner properties);
 
     /**
      * Update the state of specified private endpoint connection associated with the storage account.
@@ -170,9 +165,7 @@ public interface PrivateEndpointConnectionsClient {
      *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
      *     resource.
-     * @param privateEndpoint The resource of private end point.
-     * @param privateLinkServiceConnectionState A collection of information about the state of the connection between
-     *     service consumer and provider.
+     * @param properties The private endpoint connection properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -183,8 +176,7 @@ public interface PrivateEndpointConnectionsClient {
         String resourceGroupName,
         String accountName,
         String privateEndpointConnectionName,
-        PrivateEndpoint privateEndpoint,
-        PrivateLinkServiceConnectionState privateLinkServiceConnectionState);
+        PrivateEndpointConnectionInner properties);
 
     /**
      * Update the state of specified private endpoint connection associated with the storage account.
@@ -195,24 +187,7 @@ public interface PrivateEndpointConnectionsClient {
      *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
      *     resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Private Endpoint Connection resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<PrivateEndpointConnectionInner> putAsync(
-        String resourceGroupName, String accountName, String privateEndpointConnectionName);
-
-    /**
-     * Update the state of specified private endpoint connection associated with the storage account.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
-     * @param accountName The name of the storage account within the specified resource group. Storage account names
-     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
-     *     resource.
+     * @param properties The private endpoint connection properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -220,7 +195,10 @@ public interface PrivateEndpointConnectionsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     PrivateEndpointConnectionInner put(
-        String resourceGroupName, String accountName, String privateEndpointConnectionName);
+        String resourceGroupName,
+        String accountName,
+        String privateEndpointConnectionName,
+        PrivateEndpointConnectionInner properties);
 
     /**
      * Update the state of specified private endpoint connection associated with the storage account.
@@ -231,9 +209,7 @@ public interface PrivateEndpointConnectionsClient {
      *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
      *     resource.
-     * @param privateEndpoint The resource of private end point.
-     * @param privateLinkServiceConnectionState A collection of information about the state of the connection between
-     *     service consumer and provider.
+     * @param properties The private endpoint connection properties.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -245,8 +221,7 @@ public interface PrivateEndpointConnectionsClient {
         String resourceGroupName,
         String accountName,
         String privateEndpointConnectionName,
-        PrivateEndpoint privateEndpoint,
-        PrivateLinkServiceConnectionState privateLinkServiceConnectionState,
+        PrivateEndpointConnectionInner properties,
         Context context);
 
     /**

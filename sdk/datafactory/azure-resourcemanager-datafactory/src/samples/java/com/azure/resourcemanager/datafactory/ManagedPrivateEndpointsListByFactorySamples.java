@@ -8,15 +8,19 @@ import com.azure.core.util.Context;
 
 /** Samples for ManagedPrivateEndpoints ListByFactory. */
 public final class ManagedPrivateEndpointsListByFactorySamples {
+    /*
+     * operationId: ManagedPrivateEndpoints_ListByFactory
+     * api-version: 2018-06-01
+     * x-ms-examples: ManagedPrivateEndpoints_ListByFactory
+     */
     /**
      * Sample code: ManagedPrivateEndpoints_ListByFactory.
      *
-     * @param dataFactoryManager Entry point to DataFactoryManager. The Azure Data Factory V2 management API provides a
-     *     RESTful set of web services that interact with Azure Data Factory V2 services.
+     * @param manager Entry point to DataFactoryManager.
      */
     public static void managedPrivateEndpointsListByFactory(
-        com.azure.resourcemanager.datafactory.DataFactoryManager dataFactoryManager) {
-        dataFactoryManager
+        com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
+        manager
             .managedPrivateEndpoints()
             .listByFactory(
                 "exampleResourceGroup", "exampleFactoryName", "exampleManagedVirtualNetworkName", Context.NONE);

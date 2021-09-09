@@ -10,15 +10,19 @@ import java.time.OffsetDateTime;
 
 /** Samples for ActivityRuns QueryByPipelineRun. */
 public final class ActivityRunsQueryByPipelineRunSamples {
+    /*
+     * operationId: ActivityRuns_QueryByPipelineRun
+     * api-version: 2018-06-01
+     * x-ms-examples: ActivityRuns_QueryByPipelineRun
+     */
     /**
      * Sample code: ActivityRuns_QueryByPipelineRun.
      *
-     * @param dataFactoryManager Entry point to DataFactoryManager. The Azure Data Factory V2 management API provides a
-     *     RESTful set of web services that interact with Azure Data Factory V2 services.
+     * @param manager Entry point to DataFactoryManager.
      */
     public static void activityRunsQueryByPipelineRun(
-        com.azure.resourcemanager.datafactory.DataFactoryManager dataFactoryManager) {
-        dataFactoryManager
+        com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
+        manager
             .activityRuns()
             .queryByPipelineRunWithResponse(
                 "exampleResourceGroup",

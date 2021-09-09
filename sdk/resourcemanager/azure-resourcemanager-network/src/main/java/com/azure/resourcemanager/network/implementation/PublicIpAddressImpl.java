@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.resourcemanager.network.implementation;
 
+import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.NetworkManager;
 import com.azure.resourcemanager.network.models.IpAllocationMethod;
@@ -17,6 +18,7 @@ import com.azure.resourcemanager.network.models.PublicIPSkuType;
 import com.azure.resourcemanager.network.models.AppliableWithTags;
 import com.azure.resourcemanager.network.fluent.models.IpConfigurationInner;
 import com.azure.resourcemanager.network.fluent.models.PublicIpAddressInner;
+import com.azure.resourcemanager.network.models.TagsObject;
 import com.azure.resourcemanager.resources.fluentcore.arm.AvailabilityZoneId;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
@@ -208,7 +210,8 @@ class PublicIpAddressImpl
 
                     this.cleanupDnsSettings();
                 },
-                this::setInner);
+                this::setInner,
+                Context.NONE);
     }
 
     // CreateUpdateTaskGroup.ResourceCreator implementation
@@ -321,7 +324,7 @@ class PublicIpAddressImpl
             .manager()
             .serviceClient()
             .getPublicIpAddresses()
-            .updateTagsAsync(resourceGroupName(), name(), innerModel().tags())
+            .updateTagsAsync(resourceGroupName(), name(), new TagsObject().withTags(innerModel().tags()))
             .flatMap(
                 inner -> {
                     setInner(inner);

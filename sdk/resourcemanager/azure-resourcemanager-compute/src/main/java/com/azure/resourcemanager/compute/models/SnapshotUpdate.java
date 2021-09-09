@@ -5,18 +5,23 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.compute.fluent.models.SnapshotUpdateProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** Snapshot update resource. */
-@JsonFlatten
 @Fluent
-public class SnapshotUpdate {
+public final class SnapshotUpdate {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(SnapshotUpdate.class);
+
+    /*
+     * Snapshot resource update properties.
+     */
+    @JsonProperty(value = "properties")
+    private SnapshotUpdateProperties innerProperties;
 
     /*
      * Resource tags
@@ -34,53 +39,14 @@ public class SnapshotUpdate {
     @JsonProperty(value = "sku")
     private SnapshotSku sku;
 
-    /*
-     * the Operating System type.
+    /**
+     * Get the innerProperties property: Snapshot resource update properties.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.osType")
-    private OperatingSystemTypes osType;
-
-    /*
-     * If creationData.createOption is Empty, this field is mandatory and it
-     * indicates the size of the disk to create. If this field is present for
-     * updates or creation with other options, it indicates a resize. Resizes
-     * are only allowed if the disk is not attached to a running VM, and can
-     * only increase the disk's size.
-     */
-    @JsonProperty(value = "properties.diskSizeGB")
-    private Integer diskSizeGB;
-
-    /*
-     * Encryption settings collection used be Azure Disk Encryption, can
-     * contain multiple encryption settings per disk or snapshot.
-     */
-    @JsonProperty(value = "properties.encryptionSettingsCollection")
-    private EncryptionSettingsCollection encryptionSettingsCollection;
-
-    /*
-     * Encryption property can be used to encrypt data at rest with customer
-     * managed keys or platform managed keys.
-     */
-    @JsonProperty(value = "properties.encryption")
-    private Encryption encryption;
-
-    /*
-     * Policy for accessing the disk via network.
-     */
-    @JsonProperty(value = "properties.networkAccessPolicy")
-    private NetworkAccessPolicy networkAccessPolicy;
-
-    /*
-     * ARM id of the DiskAccess resource for using private endpoints on disks.
-     */
-    @JsonProperty(value = "properties.diskAccessId")
-    private String diskAccessId;
-
-    /*
-     * Indicates the OS on a snapshot supports hibernation.
-     */
-    @JsonProperty(value = "properties.supportsHibernation")
-    private Boolean supportsHibernation;
+    private SnapshotUpdateProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the tags property: Resource tags.
@@ -132,7 +98,7 @@ public class SnapshotUpdate {
      * @return the osType value.
      */
     public OperatingSystemTypes osType() {
-        return this.osType;
+        return this.innerProperties() == null ? null : this.innerProperties().osType();
     }
 
     /**
@@ -142,7 +108,10 @@ public class SnapshotUpdate {
      * @return the SnapshotUpdate object itself.
      */
     public SnapshotUpdate withOsType(OperatingSystemTypes osType) {
-        this.osType = osType;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SnapshotUpdateProperties();
+        }
+        this.innerProperties().withOsType(osType);
         return this;
     }
 
@@ -155,7 +124,7 @@ public class SnapshotUpdate {
      * @return the diskSizeGB value.
      */
     public Integer diskSizeGB() {
-        return this.diskSizeGB;
+        return this.innerProperties() == null ? null : this.innerProperties().diskSizeGB();
     }
 
     /**
@@ -168,7 +137,10 @@ public class SnapshotUpdate {
      * @return the SnapshotUpdate object itself.
      */
     public SnapshotUpdate withDiskSizeGB(Integer diskSizeGB) {
-        this.diskSizeGB = diskSizeGB;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SnapshotUpdateProperties();
+        }
+        this.innerProperties().withDiskSizeGB(diskSizeGB);
         return this;
     }
 
@@ -179,7 +151,7 @@ public class SnapshotUpdate {
      * @return the encryptionSettingsCollection value.
      */
     public EncryptionSettingsCollection encryptionSettingsCollection() {
-        return this.encryptionSettingsCollection;
+        return this.innerProperties() == null ? null : this.innerProperties().encryptionSettingsCollection();
     }
 
     /**
@@ -190,7 +162,10 @@ public class SnapshotUpdate {
      * @return the SnapshotUpdate object itself.
      */
     public SnapshotUpdate withEncryptionSettingsCollection(EncryptionSettingsCollection encryptionSettingsCollection) {
-        this.encryptionSettingsCollection = encryptionSettingsCollection;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SnapshotUpdateProperties();
+        }
+        this.innerProperties().withEncryptionSettingsCollection(encryptionSettingsCollection);
         return this;
     }
 
@@ -201,7 +176,7 @@ public class SnapshotUpdate {
      * @return the encryption value.
      */
     public Encryption encryption() {
-        return this.encryption;
+        return this.innerProperties() == null ? null : this.innerProperties().encryption();
     }
 
     /**
@@ -212,7 +187,10 @@ public class SnapshotUpdate {
      * @return the SnapshotUpdate object itself.
      */
     public SnapshotUpdate withEncryption(Encryption encryption) {
-        this.encryption = encryption;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SnapshotUpdateProperties();
+        }
+        this.innerProperties().withEncryption(encryption);
         return this;
     }
 
@@ -222,7 +200,7 @@ public class SnapshotUpdate {
      * @return the networkAccessPolicy value.
      */
     public NetworkAccessPolicy networkAccessPolicy() {
-        return this.networkAccessPolicy;
+        return this.innerProperties() == null ? null : this.innerProperties().networkAccessPolicy();
     }
 
     /**
@@ -232,7 +210,10 @@ public class SnapshotUpdate {
      * @return the SnapshotUpdate object itself.
      */
     public SnapshotUpdate withNetworkAccessPolicy(NetworkAccessPolicy networkAccessPolicy) {
-        this.networkAccessPolicy = networkAccessPolicy;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SnapshotUpdateProperties();
+        }
+        this.innerProperties().withNetworkAccessPolicy(networkAccessPolicy);
         return this;
     }
 
@@ -242,7 +223,7 @@ public class SnapshotUpdate {
      * @return the diskAccessId value.
      */
     public String diskAccessId() {
-        return this.diskAccessId;
+        return this.innerProperties() == null ? null : this.innerProperties().diskAccessId();
     }
 
     /**
@@ -252,7 +233,10 @@ public class SnapshotUpdate {
      * @return the SnapshotUpdate object itself.
      */
     public SnapshotUpdate withDiskAccessId(String diskAccessId) {
-        this.diskAccessId = diskAccessId;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SnapshotUpdateProperties();
+        }
+        this.innerProperties().withDiskAccessId(diskAccessId);
         return this;
     }
 
@@ -262,7 +246,7 @@ public class SnapshotUpdate {
      * @return the supportsHibernation value.
      */
     public Boolean supportsHibernation() {
-        return this.supportsHibernation;
+        return this.innerProperties() == null ? null : this.innerProperties().supportsHibernation();
     }
 
     /**
@@ -272,7 +256,10 @@ public class SnapshotUpdate {
      * @return the SnapshotUpdate object itself.
      */
     public SnapshotUpdate withSupportsHibernation(Boolean supportsHibernation) {
-        this.supportsHibernation = supportsHibernation;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SnapshotUpdateProperties();
+        }
+        this.innerProperties().withSupportsHibernation(supportsHibernation);
         return this;
     }
 
@@ -282,14 +269,11 @@ public class SnapshotUpdate {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
         if (sku() != null) {
             sku().validate();
-        }
-        if (encryptionSettingsCollection() != null) {
-            encryptionSettingsCollection().validate();
-        }
-        if (encryption() != null) {
-            encryption().validate();
         }
     }
 }

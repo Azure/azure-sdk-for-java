@@ -8,15 +8,18 @@ import com.azure.core.util.Context;
 
 /** Samples for IntegrationRuntimes Get. */
 public final class IntegrationRuntimesGetSamples {
+    /*
+     * operationId: IntegrationRuntimes_Get
+     * api-version: 2018-06-01
+     * x-ms-examples: IntegrationRuntimes_Get
+     */
     /**
      * Sample code: IntegrationRuntimes_Get.
      *
-     * @param dataFactoryManager Entry point to DataFactoryManager. The Azure Data Factory V2 management API provides a
-     *     RESTful set of web services that interact with Azure Data Factory V2 services.
+     * @param manager Entry point to DataFactoryManager.
      */
-    public static void integrationRuntimesGet(
-        com.azure.resourcemanager.datafactory.DataFactoryManager dataFactoryManager) {
-        dataFactoryManager
+    public static void integrationRuntimesGet(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
+        manager
             .integrationRuntimes()
             .getWithResponse(
                 "exampleResourceGroup", "exampleFactoryName", "exampleIntegrationRuntime", null, Context.NONE);

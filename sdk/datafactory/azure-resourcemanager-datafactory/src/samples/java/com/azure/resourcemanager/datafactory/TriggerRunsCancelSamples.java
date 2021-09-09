@@ -8,14 +8,18 @@ import com.azure.core.util.Context;
 
 /** Samples for TriggerRuns Cancel. */
 public final class TriggerRunsCancelSamples {
+    /*
+     * operationId: TriggerRuns_Cancel
+     * api-version: 2018-06-01
+     * x-ms-examples: Triggers_Cancel
+     */
     /**
      * Sample code: Triggers_Cancel.
      *
-     * @param dataFactoryManager Entry point to DataFactoryManager. The Azure Data Factory V2 management API provides a
-     *     RESTful set of web services that interact with Azure Data Factory V2 services.
+     * @param manager Entry point to DataFactoryManager.
      */
-    public static void triggersCancel(com.azure.resourcemanager.datafactory.DataFactoryManager dataFactoryManager) {
-        dataFactoryManager
+    public static void triggersCancel(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
+        manager
             .triggerRuns()
             .cancelWithResponse(
                 "exampleResourceGroup",

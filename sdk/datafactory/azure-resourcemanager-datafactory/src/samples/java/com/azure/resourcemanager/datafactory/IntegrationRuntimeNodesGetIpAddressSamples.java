@@ -8,15 +8,19 @@ import com.azure.core.util.Context;
 
 /** Samples for IntegrationRuntimeNodes GetIpAddress. */
 public final class IntegrationRuntimeNodesGetIpAddressSamples {
+    /*
+     * operationId: IntegrationRuntimeNodes_GetIpAddress
+     * api-version: 2018-06-01
+     * x-ms-examples: IntegrationRuntimeNodes_GetIpAddress
+     */
     /**
      * Sample code: IntegrationRuntimeNodes_GetIpAddress.
      *
-     * @param dataFactoryManager Entry point to DataFactoryManager. The Azure Data Factory V2 management API provides a
-     *     RESTful set of web services that interact with Azure Data Factory V2 services.
+     * @param manager Entry point to DataFactoryManager.
      */
     public static void integrationRuntimeNodesGetIpAddress(
-        com.azure.resourcemanager.datafactory.DataFactoryManager dataFactoryManager) {
-        dataFactoryManager
+        com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
+        manager
             .integrationRuntimeNodes()
             .getIpAddressWithResponse(
                 "exampleResourceGroup", "exampleFactoryName", "exampleIntegrationRuntime", "Node_1", Context.NONE);

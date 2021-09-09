@@ -9,15 +9,18 @@ import com.azure.resourcemanager.datafactory.models.LinkedIntegrationRuntimeRequ
 
 /** Samples for IntegrationRuntimes RemoveLinks. */
 public final class IntegrationRuntimesRemoveLinksSamples {
+    /*
+     * operationId: IntegrationRuntimes_RemoveLinks
+     * api-version: 2018-06-01
+     * x-ms-examples: IntegrationRuntimes_Upgrade
+     */
     /**
      * Sample code: IntegrationRuntimes_Upgrade.
      *
-     * @param dataFactoryManager Entry point to DataFactoryManager. The Azure Data Factory V2 management API provides a
-     *     RESTful set of web services that interact with Azure Data Factory V2 services.
+     * @param manager Entry point to DataFactoryManager.
      */
-    public static void integrationRuntimesUpgrade(
-        com.azure.resourcemanager.datafactory.DataFactoryManager dataFactoryManager) {
-        dataFactoryManager
+    public static void integrationRuntimesUpgrade(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
+        manager
             .integrationRuntimes()
             .removeLinksWithResponse(
                 "exampleResourceGroup",

@@ -8,13 +8,17 @@ import com.azure.core.util.Context;
 
 /** Samples for Factories List. */
 public final class FactoriesListSamples {
+    /*
+     * operationId: Factories_List
+     * api-version: 2018-06-01
+     * x-ms-examples: Factories_List
+     */
     /**
      * Sample code: Factories_List.
      *
-     * @param dataFactoryManager Entry point to DataFactoryManager. The Azure Data Factory V2 management API provides a
-     *     RESTful set of web services that interact with Azure Data Factory V2 services.
+     * @param manager Entry point to DataFactoryManager.
      */
-    public static void factoriesList(com.azure.resourcemanager.datafactory.DataFactoryManager dataFactoryManager) {
-        dataFactoryManager.factories().list(Context.NONE);
+    public static void factoriesList(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
+        manager.factories().list(Context.NONE);
     }
 }
