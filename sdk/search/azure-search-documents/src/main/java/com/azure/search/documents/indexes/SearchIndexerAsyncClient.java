@@ -160,7 +160,7 @@ public class SearchIndexerAsyncClient {
         }
 
         return withContext(context -> createOrUpdateDataSourceConnectionWithResponse(options.getDataSourceConnection(),
-            options.isOnlyIfUnchanged(), options.isResetRequirementsIgnored(), context));
+            options.isOnlyIfUnchanged(), options.isCacheResetRequirementsIgnored(), context));
     }
 
     Mono<Response<SearchIndexerDataSourceConnection>> createOrUpdateDataSourceConnectionWithResponse(
@@ -504,7 +504,7 @@ public class SearchIndexerAsyncClient {
 
         return withContext(context -> createOrUpdateIndexerWithResponse(options.getIndexer(),
             options.isOnlyIfUnchanged(), options.isCacheReprocessingChangeDetectionDisabled(),
-            options.isResetRequirementsIgnored(), context));
+            options.isCacheResetRequirementsIgnored(), context));
     }
 
     Mono<Response<SearchIndexer>> createOrUpdateIndexerWithResponse(SearchIndexer indexer, boolean onlyIfUnchanged,
@@ -1049,7 +1049,7 @@ public class SearchIndexerAsyncClient {
 
         return withContext(context -> createOrUpdateSkillsetWithResponse(options.getSkillset(),
             options.isOnlyIfUnchanged(), options.isCacheReprocessingChangeDetectionDisabled(),
-            options.isResetRequirementsIgnored(), context));
+            options.isCacheResetRequirementsIgnored(), context));
     }
 
     Mono<Response<SearchIndexerSkillset>> createOrUpdateSkillsetWithResponse(SearchIndexerSkillset skillset,

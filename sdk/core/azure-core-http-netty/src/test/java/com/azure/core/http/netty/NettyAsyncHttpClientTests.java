@@ -40,8 +40,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -255,41 +253,20 @@ public class NettyAsyncHttpClientTests {
         HttpClient httpClient = new NettyAsyncHttpClientProvider().createInstance();
 
         int numberOfRequests = 100; // 100 = 100MB of data
-        byte[] expectedDigest = digest();
-
-        Mono<Long> numberOfBytesMono;
-        numberOfBytesMono = Flux.range(1, numberOfRequests)
+        Mono<Long> numberOfBytesMono = Flux.range(1, numberOfRequests)
             .parallel(25)
             .runOn(Schedulers.boundedElastic())
             .flatMap(ignored -> httpClient.send(new HttpRequest(HttpMethod.GET, url(server, LONG_BODY_PATH)))
-                .flatMapMany(response -> {
-                    MessageDigest md = md5Digest();
-                    return response.getBody()
-                        .doOnNext(buffer -> md.update(buffer.duplicate()))
-                        .doOnComplete(() -> assertArrayEquals(expectedDigest, md.digest()));
-                }))
+                .flatMap(HttpResponse::getBodyAsByteArray)
+                .doOnNext(bytes -> assertArrayEquals(LONG_BODY, bytes)))
             .sequential()
-            .map(ByteBuffer::remaining)
+            .map(bytes -> (long) bytes.length)
             .reduce(0L, Long::sum);
 
         StepVerifier.create(numberOfBytesMono)
             .expectNext((long) numberOfRequests * LONG_BODY.length)
             .expectComplete()
             .verify(Duration.ofSeconds(60));
-    }
-
-    private static MessageDigest md5Digest() {
-        try {
-            return MessageDigest.getInstance("MD5");
-        } catch (NoSuchAlgorithmException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    private static byte[] digest() {
-        MessageDigest md = md5Digest();
-        md.update(NettyAsyncHttpClientTests.LONG_BODY);
-        return md.digest();
     }
 
     /**

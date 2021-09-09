@@ -1,8 +1,43 @@
 # Release History
 
-## 11.5.0-beta.3 (Unreleased)
+## 11.5.0-beta.4 (Unreleased)
 
-## 11.4.2 (2021-08-11)
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 11.5.0-beta.3 (2021-09-08)
+
+### Features Added
+
+- Added `CreateOrUpdateDataSourceConnectionOptions`, `CreateOrUpdateIndexerOptions`, and `CreateOrUpdateSkillsetOptions`
+  to support passing new parameters to REST API calls.
+- Added support for `LexicalNormalizerName` in `AnalyzeTextOptions`.
+- Added `queryCaptionHighlight` to `SearchOptions`.
+
+### Breaking Changes
+
+- Renamed `Captions` to `QueryCaption`.
+- Exceptions are now thrown in `EntityRecognitionSkill` and `SentimentSkill` when properties are being set in unsupported
+  skill versions.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated `azure-core` from `1.19.0` to `1.20.0`.
+- Updated `azure-core-http-netty` from `1.10.2` to `1.11.0`.
+- Updated `azure-core-serializer-json-jackson` from `1.2.6` to `1.2.7`.
+
+## 11.5.0-beta.2 (2021-08-11)
+
+### Features Added
+
+- Added support for indexer caching.
 
 ### Dependency Updates
 
@@ -10,11 +45,7 @@
 - Updated `azure-core-http-netty` from `1.10.1` to `1.10.2`.
 - Updated `azure-core-serializer-json-jackson` from `1.2.5` to `1.2.6`.
 
-## 11.5.0-beta.2 (2021-08-11)
-
-### Features Added
-
-- Added support for indexer caching.
+## 11.4.2 (2021-08-11)
 
 ### Dependency Updates
 
