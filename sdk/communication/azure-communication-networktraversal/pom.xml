@@ -16,7 +16,7 @@
   <groupId>com.azure</groupId>
   <artifactId>azure-communication-networktraversal</artifactId>
   <packaging>jar</packaging>
-  <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-communication-networktraversal;current} -->
+  <version>1.0.0-beta.2</version> <!-- {x-version-update;com.azure:azure-communication-networktraversal;current} -->
 
   <name>Microsoft Azure Network Traversal client library for communication</name>
   <description>
