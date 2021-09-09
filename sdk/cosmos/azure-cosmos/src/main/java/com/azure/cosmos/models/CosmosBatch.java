@@ -144,7 +144,7 @@ public final class CosmosBatch {
         ItemBatchOperation<T> operation = new ItemBatchOperation<T>(
             CosmosItemOperationType.CREATE,
             null,
-            this.getPartitionKey(),
+            this.getPartitionKeyValue(),
             requestOptions.toRequestOptions(),
             item
         );
@@ -186,7 +186,7 @@ public final class CosmosBatch {
         ItemBatchOperation<?> operation = new ItemBatchOperation<>(
             CosmosItemOperationType.DELETE,
             id,
-            this.getPartitionKey(),
+            this.getPartitionKeyValue(),
             requestOptions.toRequestOptions(),
             null
         );
@@ -228,7 +228,7 @@ public final class CosmosBatch {
         ItemBatchOperation<?> operation = new ItemBatchOperation<>(
             CosmosItemOperationType.READ,
             id,
-            this.getPartitionKey(),
+            this.getPartitionKeyValue(),
             requestOptions.toRequestOptions(),
             null
         );
@@ -278,7 +278,7 @@ public final class CosmosBatch {
         ItemBatchOperation<T> operation = new ItemBatchOperation<T>(
             CosmosItemOperationType.REPLACE,
             id,
-            this.getPartitionKey(),
+            this.getPartitionKeyValue(),
             requestOptions.toRequestOptions(),
             item
         );
@@ -323,7 +323,7 @@ public final class CosmosBatch {
         ItemBatchOperation<T> operation = new ItemBatchOperation<T>(
             CosmosItemOperationType.UPSERT,
             null,
-            this.getPartitionKey(),
+            this.getPartitionKeyValue(),
             requestOptions.toRequestOptions(),
             item
         );
@@ -374,7 +374,7 @@ public final class CosmosBatch {
         ItemBatchOperation<?> operation = new ItemBatchOperation<>(
             CosmosItemOperationType.PATCH,
             id,
-            this.getPartitionKey(),
+            this.getPartitionKeyValue(),
             requestOptions.toRequestOptions(),
             cosmosPatchOperations
         );
@@ -400,7 +400,7 @@ public final class CosmosBatch {
      * @return The partition key for this batch.
      */
     @Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    public PartitionKey getPartitionKey() {
+    public PartitionKey getPartitionKeyValue() {
         return partitionKey;
     }
 

@@ -868,7 +868,7 @@ public class CosmosContainer {
      * get the exception.
      */
     @Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    public <TContext> List<com.azure.cosmos.models.CosmosBulkOperationResponse<TContext>> executeBulkOperations(
+    public <TContext> Iterable<com.azure.cosmos.models.CosmosBulkOperationResponse<TContext>> executeBulkOperations(
         Iterable<com.azure.cosmos.models.CosmosItemOperation> operations) {
 
         return this.blockBulkResponse(asyncContainer.executeBulkOperations(Flux.fromIterable(operations)));
