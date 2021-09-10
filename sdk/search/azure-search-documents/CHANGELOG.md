@@ -10,6 +10,14 @@
 
 ### Other Changes
 
+## 11.4.3 (2021-09-09)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` and other dependencies for the library.
+
 ## 11.5.0-beta.3 (2021-09-08)
 
 ### Features Added

@@ -15,6 +15,7 @@ public final class CosmosBatchItemRequestOptions {
     private String ifMatchETag;
     private String ifNoneMatchETag;
 
+    @Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public CosmosBatchItemRequestOptions(){
     }
 
