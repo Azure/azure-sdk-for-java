@@ -12,10 +12,10 @@ import com.azure.storage.file.share.models.ShareRequestConditions;
  * Extended options that may be passed when downloading a File.
  */
 @Fluent
-public class ShareFileDownloadOptions {
+public final class ShareFileDownloadOptions {
 
     private ShareFileRange range;
-    private Boolean getRangeContentMd5;
+    private Boolean rangeContentMd5Requested;
     private ShareRequestConditions requestConditions;
     private DownloadRetryOptions retryOptions;
 
@@ -38,16 +38,16 @@ public class ShareFileDownloadOptions {
     /**
      * @return Whether or not the service returns the MD5 hash for the range.
      */
-    public Boolean getRangeContentMd5() {
-        return getRangeContentMd5;
+    public Boolean isRangeContentMd5Requested() {
+        return rangeContentMd5Requested;
     }
 
     /**
      * @param getRangeContentMd5 Whether or not the service returns the MD5 hash for the range.
      * @return The updated options.
      */
-    public ShareFileDownloadOptions setRangeContentMd5(Boolean getRangeContentMd5) {
-        this.getRangeContentMd5 = getRangeContentMd5;
+    public ShareFileDownloadOptions setRangeContentMd5Requested(Boolean rangeContentMd5Requested) {
+        this.rangeContentMd5Requested = rangeContentMd5Requested;
         return this;
     }
 
