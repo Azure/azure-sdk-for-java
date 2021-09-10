@@ -216,9 +216,9 @@ public final class ServerCallAsync {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<StartCallRecordingResult> startRecording(String recordingStateCallbackUri, 
-    RecordingChannelType recordingChannelType, 
-    RecordingContentType recordingContentType, 
-    RecordingFormatType recordingFormatType) {
+        RecordingChannelType recordingChannelType, 
+        RecordingContentType recordingContentType, 
+        RecordingFormatType recordingFormatType) {
         try {
             Objects.requireNonNull(recordingStateCallbackUri, "'recordingStateCallbackUri' cannot be null.");
             if (!Boolean.TRUE.equals(new URI(recordingStateCallbackUri).isAbsolute())) {

@@ -138,7 +138,7 @@ public final class ServerCall {
     public StartCallRecordingResult startRecording(String recordingStateCallbackUri, 
         RecordingChannelType recordingChannelType, 
         RecordingContentType recordingContentType, 
-        RecordingFormatType recordingFormatType){
+        RecordingFormatType recordingFormatType) {
         return serverCallAsync.startRecording(recordingStateCallbackUri, recordingChannelType, recordingContentType, recordingFormatType).block();
     }
 
@@ -176,7 +176,7 @@ public final class ServerCall {
         final Context context, 
         RecordingChannelType recordingChannelType, 
         RecordingContentType recordingContentType, 
-        RecordingFormatType recordingFormatType){
+        RecordingFormatType recordingFormatType) {
         return serverCallAsync.startRecordingWithResponse(recordingStateCallbackUri, context, recordingChannelType, recordingContentType, recordingFormatType).block();
     }
 
