@@ -5,9 +5,11 @@ package com.azure.monitor.query.models;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.core.experimental.models.TimeInterval;
+import com.azure.core.util.CoreUtils;
 
 import java.time.Duration;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * The response to a metrics query.
@@ -87,5 +89,23 @@ public final class MetricsQueryResult {
      */
     public List<MetricResult> getMetrics() {
         return metrics;
+    }
+
+    /**
+     * Returns the metric result for the {@code metricName}.
+     *
+     * @param metricName The name of the metric to look up the result for.
+     * @return The {@link MetricResult} for {@code metricName} if found, {@code null} otherwise.
+     */
+    public MetricResult getMetrics(String metricName) {
+        Objects.requireNonNull(metricName, "'metricName' cannot be null");
+        if (CoreUtils.isNullOrEmpty(metrics)) {
+            return null;
+        }
+
+        return metrics.stream()
+                .filter(metricResult -> metricResult.getMetricName().equals(metricName))
+                .findFirst()
+                .orElse(null);
     }
 }
