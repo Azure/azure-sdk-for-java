@@ -157,9 +157,7 @@ import java.time.OffsetDateTime;
 /** Samples for ActivityRuns QueryByPipelineRun. */
 public final class ActivityRunsQueryByPipelineRunSamples {
     /*
-     * operationId: ActivityRuns_QueryByPipelineRun
-     * api-version: 2018-06-01
-     * x-ms-examples: ActivityRuns_QueryByPipelineRun
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/ActivityRuns_QueryByPipelineRun.json
      */
     /**
      * Sample code: ActivityRuns_QueryByPipelineRun.
@@ -209,9 +207,7 @@ import java.util.Map;
 /** Samples for DataFlowDebugSession AddDataFlow. */
 public final class DataFlowDebugSessionAddDataFlowSamples {
     /*
-     * operationId: DataFlowDebugSession_AddDataFlow
-     * api-version: 2018-06-01
-     * x-ms-examples: DataFlowDebugSession_AddDataFlow
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/DataFlowDebugSession_AddDataFlow.json
      */
     /**
      * Sample code: DataFlowDebugSession_AddDataFlow.
@@ -338,9 +334,7 @@ import java.util.Map;
 /** Samples for DataFlowDebugSession Create. */
 public final class DataFlowDebugSessionCreateSamples {
     /*
-     * operationId: DataFlowDebugSession_Create
-     * api-version: 2018-06-01
-     * x-ms-examples: DataFlowDebugSession_Create
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/DataFlowDebugSession_Create.json
      */
     /**
      * Sample code: DataFlowDebugSession_Create.
@@ -395,9 +389,7 @@ import com.azure.resourcemanager.datafactory.models.DeleteDataFlowDebugSessionRe
 /** Samples for DataFlowDebugSession Delete. */
 public final class DataFlowDebugSessionDeleteSamples {
     /*
-     * operationId: DataFlowDebugSession_Delete
-     * api-version: 2018-06-01
-     * x-ms-examples: DataFlowDebugSession_Delete
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/DataFlowDebugSession_Delete.json
      */
     /**
      * Sample code: DataFlowDebugSession_Delete.
@@ -427,9 +419,7 @@ import com.azure.resourcemanager.datafactory.models.DataFlowDebugCommandType;
 /** Samples for DataFlowDebugSession ExecuteCommand. */
 public final class DataFlowDebugSessionExecuteCommandSamples {
     /*
-     * operationId: DataFlowDebugSession_ExecuteCommand
-     * api-version: 2018-06-01
-     * x-ms-examples: DataFlowDebugSession_ExecuteCommand
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/DataFlowDebugSession_ExecuteCommand.json
      */
     /**
      * Sample code: DataFlowDebugSession_ExecuteCommand.
@@ -460,9 +450,7 @@ import com.azure.core.util.Context;
 /** Samples for DataFlowDebugSession QueryByFactory. */
 public final class DataFlowDebugSessionQueryByFactorySamples {
     /*
-     * operationId: DataFlowDebugSession_QueryByFactory
-     * api-version: 2018-06-01
-     * x-ms-examples: DataFlowDebugSession_QueryByFactory
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/DataFlowDebugSession_QueryByFactory.json
      */
     /**
      * Sample code: DataFlowDebugSession_QueryByFactory.
@@ -490,9 +478,7 @@ import java.util.Arrays;
 /** Samples for DataFlows CreateOrUpdate. */
 public final class DataFlowsCreateOrUpdateSamples {
     /*
-     * operationId: DataFlows_CreateOrUpdate
-     * api-version: 2018-06-01
-     * x-ms-examples: DataFlows_Create
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/DataFlows_Create.json
      */
     /**
      * Sample code: DataFlows_Create.
@@ -545,9 +531,7 @@ public final class DataFlowsCreateOrUpdateSamples {
     }
 
     /*
-     * operationId: DataFlows_CreateOrUpdate
-     * api-version: 2018-06-01
-     * x-ms-examples: DataFlows_Update
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/DataFlows_Update.json
      */
     /**
      * Sample code: DataFlows_Update.
@@ -612,9 +596,7 @@ import com.azure.core.util.Context;
 /** Samples for DataFlows Delete. */
 public final class DataFlowsDeleteSamples {
     /*
-     * operationId: DataFlows_Delete
-     * api-version: 2018-06-01
-     * x-ms-examples: DataFlows_Delete
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/DataFlows_Delete.json
      */
     /**
      * Sample code: DataFlows_Delete.
@@ -637,9 +619,7 @@ import com.azure.core.util.Context;
 /** Samples for DataFlows Get. */
 public final class DataFlowsGetSamples {
     /*
-     * operationId: DataFlows_Get
-     * api-version: 2018-06-01
-     * x-ms-examples: DataFlows_Get
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/DataFlows_Get.json
      */
     /**
      * Sample code: DataFlows_Get.
@@ -662,9 +642,7 @@ import com.azure.core.util.Context;
 /** Samples for DataFlows ListByFactory. */
 public final class DataFlowsListByFactorySamples {
     /*
-     * operationId: DataFlows_ListByFactory
-     * api-version: 2018-06-01
-     * x-ms-examples: DataFlows_ListByFactory
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/DataFlows_ListByFactory.json
      */
     /**
      * Sample code: DataFlows_ListByFactory.
@@ -696,9 +674,7 @@ import java.util.Map;
 /** Samples for Datasets CreateOrUpdate. */
 public final class DatasetsCreateOrUpdateSamples {
     /*
-     * operationId: Datasets_CreateOrUpdate
-     * api-version: 2018-06-01
-     * x-ms-examples: Datasets_Create
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/Datasets_Create.json
      */
     /**
      * Sample code: Datasets_Create.
@@ -739,9 +715,7 @@ public final class DatasetsCreateOrUpdateSamples {
     }
 
     /*
-     * operationId: Datasets_CreateOrUpdate
-     * api-version: 2018-06-01
-     * x-ms-examples: Datasets_Update
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/Datasets_Update.json
      */
     /**
      * Sample code: Datasets_Update.
@@ -806,9 +780,7 @@ import com.azure.core.util.Context;
 /** Samples for Datasets Delete. */
 public final class DatasetsDeleteSamples {
     /*
-     * operationId: Datasets_Delete
-     * api-version: 2018-06-01
-     * x-ms-examples: Datasets_Delete
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/Datasets_Delete.json
      */
     /**
      * Sample code: Datasets_Delete.
@@ -831,9 +803,7 @@ import com.azure.core.util.Context;
 /** Samples for Datasets Get. */
 public final class DatasetsGetSamples {
     /*
-     * operationId: Datasets_Get
-     * api-version: 2018-06-01
-     * x-ms-examples: Datasets_Get
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/Datasets_Get.json
      */
     /**
      * Sample code: Datasets_Get.
@@ -856,9 +826,7 @@ import com.azure.core.util.Context;
 /** Samples for Datasets ListByFactory. */
 public final class DatasetsListByFactorySamples {
     /*
-     * operationId: Datasets_ListByFactory
-     * api-version: 2018-06-01
-     * x-ms-examples: Datasets_ListByFactory
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/Datasets_ListByFactory.json
      */
     /**
      * Sample code: Datasets_ListByFactory.
@@ -880,9 +848,7 @@ import com.azure.resourcemanager.datafactory.models.ExposureControlRequest;
 /** Samples for ExposureControl GetFeatureValue. */
 public final class ExposureControlGetFeatureValueSamples {
     /*
-     * operationId: ExposureControl_GetFeatureValue
-     * api-version: 2018-06-01
-     * x-ms-examples: ExposureControl_GetFeatureValue
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/ExposureControl_GetFeatureValue.json
      */
     /**
      * Sample code: ExposureControl_GetFeatureValue.
@@ -912,9 +878,7 @@ import com.azure.resourcemanager.datafactory.models.ExposureControlRequest;
 /** Samples for ExposureControl GetFeatureValueByFactory. */
 public final class ExposureControlGetFeatureValueByFactorySamples {
     /*
-     * operationId: ExposureControl_GetFeatureValueByFactory
-     * api-version: 2018-06-01
-     * x-ms-examples: ExposureControl_GetFeatureValueByFactory
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/ExposureControl_GetFeatureValueByFactory.json
      */
     /**
      * Sample code: ExposureControl_GetFeatureValueByFactory.
@@ -947,9 +911,7 @@ import java.util.Arrays;
 /** Samples for ExposureControl QueryFeatureValuesByFactory. */
 public final class ExposureControlQueryFeatureValuesByFactorySamples {
     /*
-     * operationId: ExposureControl_QueryFeatureValuesByFactory
-     * api-version: 2018-06-01
-     * x-ms-examples: ExposureControl_QueryFeatureValuesByFactory
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/ExposureControl_QueryFeatureValuesByFactory.json
      */
     /**
      * Sample code: ExposureControl_QueryFeatureValuesByFactory.
@@ -988,9 +950,7 @@ import com.azure.resourcemanager.datafactory.models.FactoryVstsConfiguration;
 /** Samples for Factories ConfigureFactoryRepo. */
 public final class FactoriesConfigureFactoryRepoSamples {
     /*
-     * operationId: Factories_ConfigureFactoryRepo
-     * api-version: 2018-06-01
-     * x-ms-examples: Factories_ConfigureFactoryRepo
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/Factories_ConfigureFactoryRepo.json
      */
     /**
      * Sample code: Factories_ConfigureFactoryRepo.
@@ -1025,9 +985,7 @@ public final class FactoriesConfigureFactoryRepoSamples {
 /** Samples for Factories CreateOrUpdate. */
 public final class FactoriesCreateOrUpdateSamples {
     /*
-     * operationId: Factories_CreateOrUpdate
-     * api-version: 2018-06-01
-     * x-ms-examples: Factories_CreateOrUpdate
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/Factories_CreateOrUpdate.json
      */
     /**
      * Sample code: Factories_CreateOrUpdate.
@@ -1053,9 +1011,7 @@ import com.azure.core.util.Context;
 /** Samples for Factories Delete. */
 public final class FactoriesDeleteSamples {
     /*
-     * operationId: Factories_Delete
-     * api-version: 2018-06-01
-     * x-ms-examples: Factories_Delete
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/Factories_Delete.json
      */
     /**
      * Sample code: Factories_Delete.
@@ -1076,9 +1032,7 @@ import com.azure.core.util.Context;
 /** Samples for Factories GetByResourceGroup. */
 public final class FactoriesGetByResourceGroupSamples {
     /*
-     * operationId: Factories_Get
-     * api-version: 2018-06-01
-     * x-ms-examples: Factories_Get
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/Factories_Get.json
      */
     /**
      * Sample code: Factories_Get.
@@ -1102,9 +1056,7 @@ import com.azure.resourcemanager.datafactory.models.UserAccessPolicy;
 /** Samples for Factories GetDataPlaneAccess. */
 public final class FactoriesGetDataPlaneAccessSamples {
     /*
-     * operationId: Factories_GetDataPlaneAccess
-     * api-version: 2018-06-01
-     * x-ms-examples: Factories_GetDataPlaneAccess
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/Factories_GetDataPlaneAccess.json
      */
     /**
      * Sample code: Factories_GetDataPlaneAccess.
@@ -1137,9 +1089,7 @@ import com.azure.resourcemanager.datafactory.models.GitHubAccessTokenRequest;
 /** Samples for Factories GetGitHubAccessToken. */
 public final class FactoriesGetGitHubAccessTokenSamples {
     /*
-     * operationId: Factories_GetGitHubAccessToken
-     * api-version: 2018-06-01
-     * x-ms-examples: Factories_GetGitHubAccessToken
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/Factories_GetGitHubAccessToken.json
      */
     /**
      * Sample code: Factories_GetGitHubAccessToken.
@@ -1169,9 +1119,7 @@ import com.azure.core.util.Context;
 /** Samples for Factories List. */
 public final class FactoriesListSamples {
     /*
-     * operationId: Factories_List
-     * api-version: 2018-06-01
-     * x-ms-examples: Factories_List
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/Factories_List.json
      */
     /**
      * Sample code: Factories_List.
@@ -1192,9 +1140,7 @@ import com.azure.core.util.Context;
 /** Samples for Factories ListByResourceGroup. */
 public final class FactoriesListByResourceGroupSamples {
     /*
-     * operationId: Factories_ListByResourceGroup
-     * api-version: 2018-06-01
-     * x-ms-examples: Factories_ListByResourceGroup
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/Factories_ListByResourceGroup.json
      */
     /**
      * Sample code: Factories_ListByResourceGroup.
@@ -1218,9 +1164,7 @@ import java.util.Map;
 /** Samples for Factories Update. */
 public final class FactoriesUpdateSamples {
     /*
-     * operationId: Factories_Update
-     * api-version: 2018-06-01
-     * x-ms-examples: Factories_Update
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/Factories_Update.json
      */
     /**
      * Sample code: Factories_Update.
@@ -1257,9 +1201,7 @@ import com.azure.core.util.Context;
 /** Samples for IntegrationRuntimeNodes Delete. */
 public final class IntegrationRuntimeNodesDeleteSamples {
     /*
-     * operationId: IntegrationRuntimeNodes_Delete
-     * api-version: 2018-06-01
-     * x-ms-examples: IntegrationRuntimesNodes_Delete
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/IntegrationRuntimeNodes_Delete.json
      */
     /**
      * Sample code: IntegrationRuntimesNodes_Delete.
@@ -1284,9 +1226,7 @@ import com.azure.core.util.Context;
 /** Samples for IntegrationRuntimeNodes Get. */
 public final class IntegrationRuntimeNodesGetSamples {
     /*
-     * operationId: IntegrationRuntimeNodes_Get
-     * api-version: 2018-06-01
-     * x-ms-examples: IntegrationRuntimeNodes_Get
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/IntegrationRuntimeNodes_Get.json
      */
     /**
      * Sample code: IntegrationRuntimeNodes_Get.
@@ -1310,9 +1250,7 @@ import com.azure.core.util.Context;
 /** Samples for IntegrationRuntimeNodes GetIpAddress. */
 public final class IntegrationRuntimeNodesGetIpAddressSamples {
     /*
-     * operationId: IntegrationRuntimeNodes_GetIpAddress
-     * api-version: 2018-06-01
-     * x-ms-examples: IntegrationRuntimeNodes_GetIpAddress
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/IntegrationRuntimeNodes_GetIpAddress.json
      */
     /**
      * Sample code: IntegrationRuntimeNodes_GetIpAddress.
@@ -1338,9 +1276,7 @@ import com.azure.resourcemanager.datafactory.models.UpdateIntegrationRuntimeNode
 /** Samples for IntegrationRuntimeNodes Update. */
 public final class IntegrationRuntimeNodesUpdateSamples {
     /*
-     * operationId: IntegrationRuntimeNodes_Update
-     * api-version: 2018-06-01
-     * x-ms-examples: IntegrationRuntimeNodes_Update
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/IntegrationRuntimeNodes_Update.json
      */
     /**
      * Sample code: IntegrationRuntimeNodes_Update.
@@ -1370,9 +1306,7 @@ import com.azure.resourcemanager.datafactory.models.GetSsisObjectMetadataRequest
 /** Samples for IntegrationRuntimeObjectMetadata Get. */
 public final class IntegrationRuntimeObjectMetadataGetSamples {
     /*
-     * operationId: IntegrationRuntimeObjectMetadata_Get
-     * api-version: 2018-06-01
-     * x-ms-examples: IntegrationRuntimeObjectMetadata_Get
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/IntegrationRuntimeObjectMetadata_Get.json
      */
     /**
      * Sample code: IntegrationRuntimeObjectMetadata_Get.
@@ -1401,9 +1335,7 @@ import com.azure.core.util.Context;
 /** Samples for IntegrationRuntimeObjectMetadata Refresh. */
 public final class IntegrationRuntimeObjectMetadataRefreshSamples {
     /*
-     * operationId: IntegrationRuntimeObjectMetadata_Refresh
-     * api-version: 2018-06-01
-     * x-ms-examples: IntegrationRuntimeObjectMetadata_Refresh
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/IntegrationRuntimeObjectMetadata_Refresh.json
      */
     /**
      * Sample code: IntegrationRuntimeObjectMetadata_Refresh.
@@ -1428,9 +1360,7 @@ import com.azure.resourcemanager.datafactory.models.CreateLinkedIntegrationRunti
 /** Samples for IntegrationRuntimes CreateLinkedIntegrationRuntime. */
 public final class IntegrationRuntimesCreateLinkedIntegrationRuntimeSamples {
     /*
-     * operationId: IntegrationRuntimes_CreateLinkedIntegrationRuntime
-     * api-version: 2018-06-01
-     * x-ms-examples: IntegrationRuntimes_CreateLinkedIntegrationRuntime
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/IntegrationRuntimes_CreateLinkedIntegrationRuntime.json
      */
     /**
      * Sample code: IntegrationRuntimes_CreateLinkedIntegrationRuntime.
@@ -1463,9 +1393,7 @@ import com.azure.resourcemanager.datafactory.models.SelfHostedIntegrationRuntime
 /** Samples for IntegrationRuntimes CreateOrUpdate. */
 public final class IntegrationRuntimesCreateOrUpdateSamples {
     /*
-     * operationId: IntegrationRuntimes_CreateOrUpdate
-     * api-version: 2018-06-01
-     * x-ms-examples: IntegrationRuntimes_Create
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/IntegrationRuntimes_Create.json
      */
     /**
      * Sample code: IntegrationRuntimes_Create.
@@ -1491,9 +1419,7 @@ import com.azure.core.util.Context;
 /** Samples for IntegrationRuntimes Delete. */
 public final class IntegrationRuntimesDeleteSamples {
     /*
-     * operationId: IntegrationRuntimes_Delete
-     * api-version: 2018-06-01
-     * x-ms-examples: IntegrationRuntimes_Delete
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/IntegrationRuntimes_Delete.json
      */
     /**
      * Sample code: IntegrationRuntimes_Delete.
@@ -1517,9 +1443,7 @@ import com.azure.core.util.Context;
 /** Samples for IntegrationRuntimes Get. */
 public final class IntegrationRuntimesGetSamples {
     /*
-     * operationId: IntegrationRuntimes_Get
-     * api-version: 2018-06-01
-     * x-ms-examples: IntegrationRuntimes_Get
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/IntegrationRuntimes_Get.json
      */
     /**
      * Sample code: IntegrationRuntimes_Get.
@@ -1543,9 +1467,7 @@ import com.azure.core.util.Context;
 /** Samples for IntegrationRuntimes GetConnectionInfo. */
 public final class IntegrationRuntimesGetConnectionInfoSamples {
     /*
-     * operationId: IntegrationRuntimes_GetConnectionInfo
-     * api-version: 2018-06-01
-     * x-ms-examples: IntegrationRuntimes_GetConnectionInfo
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/IntegrationRuntimes_GetConnectionInfo.json
      */
     /**
      * Sample code: IntegrationRuntimes_GetConnectionInfo.
@@ -1570,9 +1492,7 @@ import com.azure.core.util.Context;
 /** Samples for IntegrationRuntimes GetMonitoringData. */
 public final class IntegrationRuntimesGetMonitoringDataSamples {
     /*
-     * operationId: IntegrationRuntimes_GetMonitoringData
-     * api-version: 2018-06-01
-     * x-ms-examples: IntegrationRuntimes_GetMonitoringData
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/IntegrationRuntimes_GetMonitoringData.json
      */
     /**
      * Sample code: IntegrationRuntimes_GetMonitoringData.
@@ -1597,9 +1517,7 @@ import com.azure.core.util.Context;
 /** Samples for IntegrationRuntimes GetStatus. */
 public final class IntegrationRuntimesGetStatusSamples {
     /*
-     * operationId: IntegrationRuntimes_GetStatus
-     * api-version: 2018-06-01
-     * x-ms-examples: IntegrationRuntimes_GetStatus
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/IntegrationRuntimes_GetStatus.json
      */
     /**
      * Sample code: IntegrationRuntimes_GetStatus.
@@ -1623,9 +1541,7 @@ import com.azure.core.util.Context;
 /** Samples for IntegrationRuntimes ListAuthKeys. */
 public final class IntegrationRuntimesListAuthKeysSamples {
     /*
-     * operationId: IntegrationRuntimes_ListAuthKeys
-     * api-version: 2018-06-01
-     * x-ms-examples: IntegrationRuntimes_ListAuthKeys
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/IntegrationRuntimes_ListAuthKeys.json
      */
     /**
      * Sample code: IntegrationRuntimes_ListAuthKeys.
@@ -1650,9 +1566,7 @@ import com.azure.core.util.Context;
 /** Samples for IntegrationRuntimes ListByFactory. */
 public final class IntegrationRuntimesListByFactorySamples {
     /*
-     * operationId: IntegrationRuntimes_ListByFactory
-     * api-version: 2018-06-01
-     * x-ms-examples: IntegrationRuntimes_ListByFactory
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/IntegrationRuntimes_ListByFactory.json
      */
     /**
      * Sample code: IntegrationRuntimes_ListByFactory.
@@ -1674,9 +1588,7 @@ import com.azure.core.util.Context;
 /** Samples for IntegrationRuntimes ListOutboundNetworkDependenciesEndpoints. */
 public final class IntegrationRuntimesListOutboundNetworkDependenciesEndpointsSamples {
     /*
-     * operationId: IntegrationRuntimes_ListOutboundNetworkDependenciesEndpoints
-     * api-version: 2018-06-01
-     * x-ms-examples: IntegrationRuntimes_OutboundNetworkDependenciesEndpoints
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/IntegrationRuntimes_ListOutboundNetworkDependenciesEndpoints.json
      */
     /**
      * Sample code: IntegrationRuntimes_OutboundNetworkDependenciesEndpoints.
@@ -1703,9 +1615,7 @@ import com.azure.resourcemanager.datafactory.models.IntegrationRuntimeRegenerate
 /** Samples for IntegrationRuntimes RegenerateAuthKey. */
 public final class IntegrationRuntimesRegenerateAuthKeySamples {
     /*
-     * operationId: IntegrationRuntimes_RegenerateAuthKey
-     * api-version: 2018-06-01
-     * x-ms-examples: IntegrationRuntimes_RegenerateAuthKey
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/IntegrationRuntimes_RegenerateAuthKey.json
      */
     /**
      * Sample code: IntegrationRuntimes_RegenerateAuthKey.
@@ -1735,9 +1645,7 @@ import com.azure.resourcemanager.datafactory.models.LinkedIntegrationRuntimeRequ
 /** Samples for IntegrationRuntimes RemoveLinks. */
 public final class IntegrationRuntimesRemoveLinksSamples {
     /*
-     * operationId: IntegrationRuntimes_RemoveLinks
-     * api-version: 2018-06-01
-     * x-ms-examples: IntegrationRuntimes_Upgrade
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/IntegrationRuntimes_RemoveLinks.json
      */
     /**
      * Sample code: IntegrationRuntimes_Upgrade.
@@ -1765,9 +1673,7 @@ import com.azure.core.util.Context;
 /** Samples for IntegrationRuntimes Start. */
 public final class IntegrationRuntimesStartSamples {
     /*
-     * operationId: IntegrationRuntimes_Start
-     * api-version: 2018-06-01
-     * x-ms-examples: IntegrationRuntimes_Start
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/IntegrationRuntimes_Start.json
      */
     /**
      * Sample code: IntegrationRuntimes_Start.
@@ -1790,9 +1696,7 @@ import com.azure.core.util.Context;
 /** Samples for IntegrationRuntimes Stop. */
 public final class IntegrationRuntimesStopSamples {
     /*
-     * operationId: IntegrationRuntimes_Stop
-     * api-version: 2018-06-01
-     * x-ms-examples: IntegrationRuntimes_Stop
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/IntegrationRuntimes_Stop.json
      */
     /**
      * Sample code: IntegrationRuntimes_Stop.
@@ -1815,9 +1719,7 @@ import com.azure.core.util.Context;
 /** Samples for IntegrationRuntimes SyncCredentials. */
 public final class IntegrationRuntimesSyncCredentialsSamples {
     /*
-     * operationId: IntegrationRuntimes_SyncCredentials
-     * api-version: 2018-06-01
-     * x-ms-examples: IntegrationRuntimes_SyncCredentials
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/IntegrationRuntimes_SyncCredentials.json
      */
     /**
      * Sample code: IntegrationRuntimes_SyncCredentials.
@@ -1844,9 +1746,7 @@ import com.azure.resourcemanager.datafactory.models.IntegrationRuntimeResource;
 /** Samples for IntegrationRuntimes Update. */
 public final class IntegrationRuntimesUpdateSamples {
     /*
-     * operationId: IntegrationRuntimes_Update
-     * api-version: 2018-06-01
-     * x-ms-examples: IntegrationRuntimes_Update
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/IntegrationRuntimes_Update.json
      */
     /**
      * Sample code: IntegrationRuntimes_Update.
@@ -1873,9 +1773,7 @@ import com.azure.core.util.Context;
 /** Samples for IntegrationRuntimes Upgrade. */
 public final class IntegrationRuntimesUpgradeSamples {
     /*
-     * operationId: IntegrationRuntimes_Upgrade
-     * api-version: 2018-06-01
-     * x-ms-examples: IntegrationRuntimes_Upgrade
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/IntegrationRuntimes_Upgrade.json
      */
     /**
      * Sample code: IntegrationRuntimes_Upgrade.
@@ -1904,9 +1802,7 @@ import java.io.IOException;
 /** Samples for LinkedServices CreateOrUpdate. */
 public final class LinkedServicesCreateOrUpdateSamples {
     /*
-     * operationId: LinkedServices_CreateOrUpdate
-     * api-version: 2018-06-01
-     * x-ms-examples: LinkedServices_Create
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/LinkedServices_Create.json
      */
     /**
      * Sample code: LinkedServices_Create.
@@ -1933,9 +1829,7 @@ public final class LinkedServicesCreateOrUpdateSamples {
     }
 
     /*
-     * operationId: LinkedServices_CreateOrUpdate
-     * api-version: 2018-06-01
-     * x-ms-examples: LinkedServices_Update
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/LinkedServices_Update.json
      */
     /**
      * Sample code: LinkedServices_Update.
@@ -1976,9 +1870,7 @@ import com.azure.core.util.Context;
 /** Samples for LinkedServices Delete. */
 public final class LinkedServicesDeleteSamples {
     /*
-     * operationId: LinkedServices_Delete
-     * api-version: 2018-06-01
-     * x-ms-examples: LinkedServices_Delete
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/LinkedServices_Delete.json
      */
     /**
      * Sample code: LinkedServices_Delete.
@@ -2001,9 +1893,7 @@ import com.azure.core.util.Context;
 /** Samples for LinkedServices Get. */
 public final class LinkedServicesGetSamples {
     /*
-     * operationId: LinkedServices_Get
-     * api-version: 2018-06-01
-     * x-ms-examples: LinkedServices_Get
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/LinkedServices_Get.json
      */
     /**
      * Sample code: LinkedServices_Get.
@@ -2026,9 +1916,7 @@ import com.azure.core.util.Context;
 /** Samples for LinkedServices ListByFactory. */
 public final class LinkedServicesListByFactorySamples {
     /*
-     * operationId: LinkedServices_ListByFactory
-     * api-version: 2018-06-01
-     * x-ms-examples: LinkedServices_ListByFactory
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/LinkedServices_ListByFactory.json
      */
     /**
      * Sample code: LinkedServices_ListByFactory.
@@ -2052,9 +1940,7 @@ import java.util.Map;
 /** Samples for ManagedPrivateEndpoints CreateOrUpdate. */
 public final class ManagedPrivateEndpointsCreateOrUpdateSamples {
     /*
-     * operationId: ManagedPrivateEndpoints_CreateOrUpdate
-     * api-version: 2018-06-01
-     * x-ms-examples: ManagedVirtualNetworks_Create
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/ManagedPrivateEndpoints_Create.json
      */
     /**
      * Sample code: ManagedVirtualNetworks_Create.
@@ -2098,9 +1984,7 @@ import com.azure.core.util.Context;
 /** Samples for ManagedPrivateEndpoints Delete. */
 public final class ManagedPrivateEndpointsDeleteSamples {
     /*
-     * operationId: ManagedPrivateEndpoints_Delete
-     * api-version: 2018-06-01
-     * x-ms-examples: ManagedVirtualNetworks_Delete
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/ManagedPrivateEndpoints_Delete.json
      */
     /**
      * Sample code: ManagedVirtualNetworks_Delete.
@@ -2128,9 +2012,7 @@ import com.azure.core.util.Context;
 /** Samples for ManagedPrivateEndpoints Get. */
 public final class ManagedPrivateEndpointsGetSamples {
     /*
-     * operationId: ManagedPrivateEndpoints_Get
-     * api-version: 2018-06-01
-     * x-ms-examples: ManagedPrivateEndpoints_Get
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/ManagedPrivateEndpoints_Get.json
      */
     /**
      * Sample code: ManagedPrivateEndpoints_Get.
@@ -2159,9 +2041,7 @@ import com.azure.core.util.Context;
 /** Samples for ManagedPrivateEndpoints ListByFactory. */
 public final class ManagedPrivateEndpointsListByFactorySamples {
     /*
-     * operationId: ManagedPrivateEndpoints_ListByFactory
-     * api-version: 2018-06-01
-     * x-ms-examples: ManagedPrivateEndpoints_ListByFactory
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/ManagedPrivateEndpoints_ListByFactory.json
      */
     /**
      * Sample code: ManagedPrivateEndpoints_ListByFactory.
@@ -2188,9 +2068,7 @@ import java.util.Map;
 /** Samples for ManagedVirtualNetworks CreateOrUpdate. */
 public final class ManagedVirtualNetworksCreateOrUpdateSamples {
     /*
-     * operationId: ManagedVirtualNetworks_CreateOrUpdate
-     * api-version: 2018-06-01
-     * x-ms-examples: ManagedVirtualNetworks_Create
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/ManagedVirtualNetworks_Create.json
      */
     /**
      * Sample code: ManagedVirtualNetworks_Create.
@@ -2227,9 +2105,7 @@ import com.azure.core.util.Context;
 /** Samples for ManagedVirtualNetworks Get. */
 public final class ManagedVirtualNetworksGetSamples {
     /*
-     * operationId: ManagedVirtualNetworks_Get
-     * api-version: 2018-06-01
-     * x-ms-examples: ManagedVirtualNetworks_Get
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/ManagedVirtualNetworks_Get.json
      */
     /**
      * Sample code: ManagedVirtualNetworks_Get.
@@ -2253,9 +2129,7 @@ import com.azure.core.util.Context;
 /** Samples for ManagedVirtualNetworks ListByFactory. */
 public final class ManagedVirtualNetworksListByFactorySamples {
     /*
-     * operationId: ManagedVirtualNetworks_ListByFactory
-     * api-version: 2018-06-01
-     * x-ms-examples: ManagedVirtualNetworks_ListByFactory
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/ManagedVirtualNetworks_ListByFactory.json
      */
     /**
      * Sample code: ManagedVirtualNetworks_ListByFactory.
@@ -2277,9 +2151,7 @@ import com.azure.core.util.Context;
 /** Samples for Operations List. */
 public final class OperationsListSamples {
     /*
-     * operationId: Operations_List
-     * api-version: 2018-06-01
-     * x-ms-examples: Operations_List
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/Operations_List.json
      */
     /**
      * Sample code: Operations_List.
@@ -2300,9 +2172,7 @@ import com.azure.core.util.Context;
 /** Samples for PipelineRuns Cancel. */
 public final class PipelineRunsCancelSamples {
     /*
-     * operationId: PipelineRuns_Cancel
-     * api-version: 2018-06-01
-     * x-ms-examples: PipelineRuns_Cancel
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/PipelineRuns_Cancel.json
      */
     /**
      * Sample code: PipelineRuns_Cancel.
@@ -2330,9 +2200,7 @@ import com.azure.core.util.Context;
 /** Samples for PipelineRuns Get. */
 public final class PipelineRunsGetSamples {
     /*
-     * operationId: PipelineRuns_Get
-     * api-version: 2018-06-01
-     * x-ms-examples: PipelineRuns_Get
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/PipelineRuns_Get.json
      */
     /**
      * Sample code: PipelineRuns_Get.
@@ -2362,9 +2230,7 @@ import java.util.Arrays;
 /** Samples for PipelineRuns QueryByFactory. */
 public final class PipelineRunsQueryByFactorySamples {
     /*
-     * operationId: PipelineRuns_QueryByFactory
-     * api-version: 2018-06-01
-     * x-ms-examples: PipelineRuns_QueryByFactory
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/PipelineRuns_QueryByFactory.json
      */
     /**
      * Sample code: PipelineRuns_QueryByFactory.
@@ -2414,9 +2280,7 @@ import java.util.Map;
 /** Samples for Pipelines CreateOrUpdate. */
 public final class PipelinesCreateOrUpdateSamples {
     /*
-     * operationId: Pipelines_CreateOrUpdate
-     * api-version: 2018-06-01
-     * x-ms-examples: Pipelines_Create
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/Pipelines_Create.json
      */
     /**
      * Sample code: Pipelines_Create.
@@ -2468,9 +2332,7 @@ public final class PipelinesCreateOrUpdateSamples {
     }
 
     /*
-     * operationId: Pipelines_CreateOrUpdate
-     * api-version: 2018-06-01
-     * x-ms-examples: Pipelines_Update
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/Pipelines_Update.json
      */
     /**
      * Sample code: Pipelines_Update.
@@ -2536,9 +2398,7 @@ import java.util.Map;
 /** Samples for Pipelines CreateRun. */
 public final class PipelinesCreateRunSamples {
     /*
-     * operationId: Pipelines_CreateRun
-     * api-version: 2018-06-01
-     * x-ms-examples: Pipelines_CreateRun
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/Pipelines_CreateRun.json
      */
     /**
      * Sample code: Pipelines_CreateRun.
@@ -2586,9 +2446,7 @@ import com.azure.core.util.Context;
 /** Samples for Pipelines Delete. */
 public final class PipelinesDeleteSamples {
     /*
-     * operationId: Pipelines_Delete
-     * api-version: 2018-06-01
-     * x-ms-examples: Pipelines_Delete
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/Pipelines_Delete.json
      */
     /**
      * Sample code: Pipelines_Delete.
@@ -2611,9 +2469,7 @@ import com.azure.core.util.Context;
 /** Samples for Pipelines Get. */
 public final class PipelinesGetSamples {
     /*
-     * operationId: Pipelines_Get
-     * api-version: 2018-06-01
-     * x-ms-examples: Pipelines_Get
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/Pipelines_Get.json
      */
     /**
      * Sample code: Pipelines_Get.
@@ -2636,9 +2492,7 @@ import com.azure.core.util.Context;
 /** Samples for Pipelines ListByFactory. */
 public final class PipelinesListByFactorySamples {
     /*
-     * operationId: Pipelines_ListByFactory
-     * api-version: 2018-06-01
-     * x-ms-examples: Pipelines_ListByFactory
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/Pipelines_ListByFactory.json
      */
     /**
      * Sample code: Pipelines_ListByFactory.
@@ -2659,9 +2513,7 @@ import com.azure.core.util.Context;
 /** Samples for PrivateEndPointConnections ListByFactory. */
 public final class PrivateEndPointConnectionsListByFactorySamples {
     /*
-     * operationId: PrivateEndPointConnections_ListByFactory
-     * api-version: 2018-06-01
-     * x-ms-examples: privateEndPointConnections_ListByFactory
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/PrivateEndPointConnections_ListByFactory.json
      */
     /**
      * Sample code: privateEndPointConnections_ListByFactory.
@@ -2684,9 +2536,7 @@ import com.azure.resourcemanager.datafactory.models.PrivateLinkConnectionState;
 /** Samples for PrivateEndpointConnectionOperation CreateOrUpdate. */
 public final class PrivateEndpointConnectionOperationCreateOrUpdateSamples {
     /*
-     * operationId: PrivateEndpointConnection_CreateOrUpdate
-     * api-version: 2018-06-01
-     * x-ms-examples: Approves or rejects a private endpoint connection for a factory.
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/ApproveRejectPrivateEndpointConnection.json
      */
     /**
      * Sample code: Approves or rejects a private endpoint connection for a factory.
@@ -2719,9 +2569,7 @@ import com.azure.core.util.Context;
 /** Samples for PrivateEndpointConnectionOperation Delete. */
 public final class PrivateEndpointConnectionOperationDeleteSamples {
     /*
-     * operationId: PrivateEndpointConnection_Delete
-     * api-version: 2018-06-01
-     * x-ms-examples: Delete a private endpoint connection for a datafactory.
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/DeletePrivateEndpointConnection.json
      */
     /**
      * Sample code: Delete a private endpoint connection for a datafactory.
@@ -2745,9 +2593,7 @@ import com.azure.core.util.Context;
 /** Samples for PrivateEndpointConnectionOperation Get. */
 public final class PrivateEndpointConnectionOperationGetSamples {
     /*
-     * operationId: PrivateEndpointConnection_Get
-     * api-version: 2018-06-01
-     * x-ms-examples: Get a private endpoint connection for a datafactory.
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/GetPrivateEndpointConnection.json
      */
     /**
      * Sample code: Get a private endpoint connection for a datafactory.
@@ -2771,9 +2617,7 @@ import com.azure.core.util.Context;
 /** Samples for PrivateLinkResources Get. */
 public final class PrivateLinkResourcesGetSamples {
     /*
-     * operationId: PrivateLinkResources_Get
-     * api-version: 2018-06-01
-     * x-ms-examples: Get private link resources of a site
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/GetPrivateLinkResources.json
      */
     /**
      * Sample code: Get private link resources of a site.
@@ -2795,9 +2639,7 @@ import com.azure.core.util.Context;
 /** Samples for TriggerRuns Cancel. */
 public final class TriggerRunsCancelSamples {
     /*
-     * operationId: TriggerRuns_Cancel
-     * api-version: 2018-06-01
-     * x-ms-examples: Triggers_Cancel
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/TriggerRuns_Cancel.json
      */
     /**
      * Sample code: Triggers_Cancel.
@@ -2831,9 +2673,7 @@ import java.util.Arrays;
 /** Samples for TriggerRuns QueryByFactory. */
 public final class TriggerRunsQueryByFactorySamples {
     /*
-     * operationId: TriggerRuns_QueryByFactory
-     * api-version: 2018-06-01
-     * x-ms-examples: TriggerRuns_QueryByFactory
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/TriggerRuns_QueryByFactory.json
      */
     /**
      * Sample code: TriggerRuns_QueryByFactory.
@@ -2869,9 +2709,7 @@ import com.azure.core.util.Context;
 /** Samples for TriggerRuns Rerun. */
 public final class TriggerRunsRerunSamples {
     /*
-     * operationId: TriggerRuns_Rerun
-     * api-version: 2018-06-01
-     * x-ms-examples: Triggers_Rerun
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/TriggerRuns_Rerun.json
      */
     /**
      * Sample code: Triggers_Rerun.
@@ -2906,9 +2744,7 @@ import java.util.Map;
 /** Samples for Triggers CreateOrUpdate. */
 public final class TriggersCreateOrUpdateSamples {
     /*
-     * operationId: Triggers_CreateOrUpdate
-     * api-version: 2018-06-01
-     * x-ms-examples: Triggers_Create
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/Triggers_Create.json
      */
     /**
      * Sample code: Triggers_Create.
@@ -2945,9 +2781,7 @@ public final class TriggersCreateOrUpdateSamples {
     }
 
     /*
-     * operationId: Triggers_CreateOrUpdate
-     * api-version: 2018-06-01
-     * x-ms-examples: Triggers_Update
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/Triggers_Update.json
      */
     /**
      * Sample code: Triggers_Update.
@@ -3008,9 +2842,7 @@ import com.azure.core.util.Context;
 /** Samples for Triggers Delete. */
 public final class TriggersDeleteSamples {
     /*
-     * operationId: Triggers_Delete
-     * api-version: 2018-06-01
-     * x-ms-examples: Triggers_Delete
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/Triggers_Delete.json
      */
     /**
      * Sample code: Triggers_Delete.
@@ -3033,9 +2865,7 @@ import com.azure.core.util.Context;
 /** Samples for Triggers Get. */
 public final class TriggersGetSamples {
     /*
-     * operationId: Triggers_Get
-     * api-version: 2018-06-01
-     * x-ms-examples: Triggers_Get
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/Triggers_Get.json
      */
     /**
      * Sample code: Triggers_Get.
@@ -3058,9 +2888,7 @@ import com.azure.core.util.Context;
 /** Samples for Triggers GetEventSubscriptionStatus. */
 public final class TriggersGetEventSubscriptionStatusSamples {
     /*
-     * operationId: Triggers_GetEventSubscriptionStatus
-     * api-version: 2018-06-01
-     * x-ms-examples: Triggers_GetEventSubscriptionStatus
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/Triggers_GetEventSubscriptionStatus.json
      */
     /**
      * Sample code: Triggers_GetEventSubscriptionStatus.
@@ -3085,9 +2913,7 @@ import com.azure.core.util.Context;
 /** Samples for Triggers ListByFactory. */
 public final class TriggersListByFactorySamples {
     /*
-     * operationId: Triggers_ListByFactory
-     * api-version: 2018-06-01
-     * x-ms-examples: Triggers_ListByFactory
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/Triggers_ListByFactory.json
      */
     /**
      * Sample code: Triggers_ListByFactory.
@@ -3109,9 +2935,7 @@ import com.azure.resourcemanager.datafactory.models.TriggerFilterParameters;
 /** Samples for Triggers QueryByFactory. */
 public final class TriggersQueryByFactorySamples {
     /*
-     * operationId: Triggers_QueryByFactory
-     * api-version: 2018-06-01
-     * x-ms-examples: Triggers_QueryByFactory
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/Triggers_QueryByFactory.json
      */
     /**
      * Sample code: Triggers_QueryByFactory.
@@ -3138,9 +2962,7 @@ import com.azure.core.util.Context;
 /** Samples for Triggers Start. */
 public final class TriggersStartSamples {
     /*
-     * operationId: Triggers_Start
-     * api-version: 2018-06-01
-     * x-ms-examples: Triggers_Start
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/Triggers_Start.json
      */
     /**
      * Sample code: Triggers_Start.
@@ -3161,9 +2983,7 @@ import com.azure.core.util.Context;
 /** Samples for Triggers Stop. */
 public final class TriggersStopSamples {
     /*
-     * operationId: Triggers_Stop
-     * api-version: 2018-06-01
-     * x-ms-examples: Triggers_Stop
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/Triggers_Stop.json
      */
     /**
      * Sample code: Triggers_Stop.
@@ -3184,9 +3004,7 @@ import com.azure.core.util.Context;
 /** Samples for Triggers SubscribeToEvents. */
 public final class TriggersSubscribeToEventsSamples {
     /*
-     * operationId: Triggers_SubscribeToEvents
-     * api-version: 2018-06-01
-     * x-ms-examples: Triggers_SubscribeToEvents
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/Triggers_SubscribeToEvents.json
      */
     /**
      * Sample code: Triggers_SubscribeToEvents.
@@ -3209,9 +3027,7 @@ import com.azure.core.util.Context;
 /** Samples for Triggers UnsubscribeFromEvents. */
 public final class TriggersUnsubscribeFromEventsSamples {
     /*
-     * operationId: Triggers_UnsubscribeFromEvents
-     * api-version: 2018-06-01
-     * x-ms-examples: Triggers_UnsubscribeFromEvents
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/Triggers_UnsubscribeFromEvents.json
      */
     /**
      * Sample code: Triggers_UnsubscribeFromEvents.
