@@ -120,6 +120,7 @@ stages:
                 parameters:
                   Artifact: ${{ artifact }}
                   ArtifactName: ${{ parameters.ArtifactName }}
+                  ArtifactDirectory: "$(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed/${{artifact.groupId}}/${{artifact.name}}"
 
           - deployment: TagRepository
             displayName: "Create release tag"

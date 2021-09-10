@@ -5,6 +5,9 @@ parameters:
   - name: ArtifactName
     type: string
     default: "not-specified"
+  - name: ArtifactDirectory
+    type: string
+    default: "not-specified"
   - name: RetryLimit
     type: number
     default: 30
@@ -13,19 +16,19 @@ steps:
   - download: current
     artifact: ${{parameters.ArtifactName}}-signed
   - pwsh: |
-      $pomf = Get-ChildItem "$(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed/${{parameters.Artifact.groupId}}/${{parameters.Artifact.name}}/*.pom"
-      while ($retries++ -lt ${{parameters.RetryLimit}}) {
+      $pomf = Get-ChildItem "${{parameters.ArtifactDirectory}}/*.pom"
+      if(($pomf.Count -ne 1) -Or ($pomf.name -notmatch "${{parameters.Artifact.name}}")) {
+        Write-Host "Can't find package ${{parameters.Artifact.name}}"
+        exit 1
+      }
+      foreach ($retry in 0..${{ parameters.RetryLimit }}) {
         Write-Host "mvn --no-transfer-progress -f $pomf compile"
         mvn --no-transfer-progress -f $pomf compile
-        if ($LASTEXITCODE) {
-          if ($retries -ge ${{parameters.RetryLimit}}) {
-            exit $LASTEXITCODE
-          }
-          Write-Host "Install failed, retrying in 1 minute..."
-          sleep 60
-        } else {
-          break
-        }
+        if (!$LASTEXITCODE) { break }
+        Write-Host "Install failed, retrying in 1 minute..."
+        sleep 60
       }
-    workingDirectory: $(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed/${{parameters.Artifact.groupId}}/${{parameters.Artifact.name}}
+      exit $LASTEXITCODE
+
+    workingDirectory: ${{parameters.ArtifactDirectory}}
     displayName: "Verify Package Compilation"
