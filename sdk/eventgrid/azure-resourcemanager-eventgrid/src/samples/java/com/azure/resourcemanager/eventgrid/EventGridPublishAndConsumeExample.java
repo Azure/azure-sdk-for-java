@@ -26,12 +26,10 @@ import com.azure.resourcemanager.eventgrid.models.EventHubEventSubscriptionDesti
 import com.azure.resourcemanager.eventgrid.models.EventSubscription;
 import com.azure.resourcemanager.eventgrid.models.EventSubscriptionFilter;
 import com.azure.resourcemanager.eventgrid.models.Topic;
-import com.azure.resourcemanager.eventhubs.EventHubsManager;
 import com.azure.resourcemanager.eventhubs.models.EventHub;
 import com.azure.resourcemanager.eventhubs.models.EventHubNamespace;
 import com.azure.resourcemanager.eventhubs.models.EventHubNamespaceSkuType;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
-import com.azure.resourcemanager.resources.models.Subscription;
 import reactor.core.Disposable;
 import reactor.core.publisher.Flux;
 
@@ -48,13 +46,13 @@ public class EventGridPublishAndConsumeExample {
 
     private static final Random RANDOM = new Random();
     private static final int NUMBER_OF_EVENTS = 10;
-    private static final Region region = Region.US_WEST2;
-    private static final String resourceGroupName = "rg" + randomPadding();
-    private static final String eventHubName = "eh" + randomPadding();
-    private static final String eventHubNamespace = "eh-namespace" + randomPadding();
-    private static final String topicName = "my-topic-name" + randomPadding();
-    private static final String eventSubscriptionName = "event-subscription" + randomPadding();
-    private static final String eventHubRuleName = "my-management-rule" + randomPadding();
+    private static final Region REGION = Region.US_WEST2;
+    private static final String RESOURCE_GROUP_NAME = "rg" + randomPadding();
+    private static final String EVENT_HUB_NAME = "eh" + randomPadding();
+    private static final String EVENT_HUB_NAMESPACE = "ehNamespace" + randomPadding();
+    private static final String TOPIC_NAME = "myTopicName" + randomPadding();
+    private static final String EVENT_SUBSCRIPTION_NAME = "eventSubscription" + randomPadding();
+    private static final String EVENT_HUB_RULE_NAME = "myManagementRule" + randomPadding();
 
     /**
      * Main entry point.
@@ -70,7 +68,7 @@ public class EventGridPublishAndConsumeExample {
                 .build();
 
             AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
-            
+
             // 2. Create ResourceManager, EventGridManager
 
             // Create one HttpClient to make it shared by two resource managers.
@@ -100,16 +98,16 @@ public class EventGridPublishAndConsumeExample {
 
             // 1. Create a resource group.
             ResourceGroup resourceGroup =
-                resourceManager.resourceGroups().define(resourceGroupName).withRegion(region).create();
+                resourceManager.resourceGroups().define(RESOURCE_GROUP_NAME).withRegion(REGION).create();
 
-            System.out.println("Resource group created with name " + resourceGroupName);
+            System.out.println("Resource group created with name " + RESOURCE_GROUP_NAME);
 
             // 2. Create an event hub.
             // 2.1 Create a event hub namespace.
             EventHubNamespace namespace = resourceManager.eventHubNamespaces()
-                .define(eventHubNamespace)
-                .withRegion(region)
-                .withExistingResourceGroup(resourceGroupName)
+                .define(EVENT_HUB_NAMESPACE)
+                .withRegion(REGION)
+                .withExistingResourceGroup(RESOURCE_GROUP_NAME)
                 .withAutoScaling()
                 .withSku(EventHubNamespaceSkuType.STANDARD)
                 .create();
@@ -118,9 +116,9 @@ public class EventGridPublishAndConsumeExample {
 
             // 2.2 Create event hub.
             EventHub eventHub = resourceManager.eventHubs()
-                .define(eventHubName)
-                .withExistingNamespace(resourceGroupName, eventHubNamespace)
-                .withNewManageRule(eventHubRuleName)
+                .define(EVENT_HUB_NAME)
+                .withExistingNamespace(RESOURCE_GROUP_NAME, EVENT_HUB_NAMESPACE)
+                .withNewManageRule(EVENT_HUB_RULE_NAME)
                 .withPartitionCount(1) // Here we create eventhub with 1 partition, so that when we subscribe, we can make sure all the events come from the same partition, and then subscribe to the first partition. It is for sample purpose. In real use case, one can configure multiple partitions
                 .create();
 
@@ -128,16 +126,16 @@ public class EventGridPublishAndConsumeExample {
 
             // 3. Create an event grid topic.
             Topic eventGridTopic = eventGridManager.topics()
-                .define(topicName)
-                .withRegion(region)
-                .withExistingResourceGroup(resourceGroupName)
+                .define(TOPIC_NAME)
+                .withRegion(REGION)
+                .withExistingResourceGroup(RESOURCE_GROUP_NAME)
                 .create();
 
             System.out.println("EventGrid topic created with name " + eventGridTopic.name());
 
             // 4. Create an event grid subscription.
             EventSubscription eventSubscription = eventGridManager.eventSubscriptions()
-                .define(eventSubscriptionName)
+                .define(EVENT_SUBSCRIPTION_NAME)
                 .withExistingScope(eventGridTopic.id())
                 .withDestination(new EventHubEventSubscriptionDestination()
                     .withResourceId(eventHub.id()))
@@ -150,7 +148,7 @@ public class EventGridPublishAndConsumeExample {
             System.out.println("EventGrid event subscription created with name " + eventSubscription.name());
 
             // 5. Retrieve the event grid client connection key.
-            String eventGridClientConnectionKey = eventGridManager.topics().listSharedAccessKeys(resourceGroupName, topicName).key1();
+            String eventGridClientConnectionKey = eventGridManager.topics().listSharedAccessKeys(RESOURCE_GROUP_NAME, TOPIC_NAME).key1();
 
             System.out.format("Found EventGrid client connection key \"%s\" for endpoint \"%s\"\n", eventGridClientConnectionKey, eventGridTopic.endpoint());
 
@@ -188,23 +186,21 @@ public class EventGridPublishAndConsumeExample {
 
             Disposable subscription = consumer.receiveFromPartition(firstPartition, EventPosition.latest())
                 .subscribe(partitionEvent -> {
-                        EventData eventData = partitionEvent.getData();
-                        String contents = new String(eventData.getBody(), UTF_8);
+                    EventData eventData = partitionEvent.getData();
+                    String contents = new String(eventData.getBody(), UTF_8);
+                    countDownLatch.countDown();
+
+                    System.out.printf("Event received. Event sequence number number: %s. Contents: %s%n", eventData.getSequenceNumber(), contents);
+                }, error -> {
+                    System.err.println("Error occurred while consuming events: " + error);
+
+                    // Count down until 0, so the main thread does not keep waiting for events.
+                    while (countDownLatch.getCount() > 0) {
                         countDownLatch.countDown();
-
-                        System.out.printf("Event received. Event sequence number number: %s. Contents: %s%n",
-                            eventData.getSequenceNumber(), contents);
-                    },
-                    error -> {
-                        System.err.println("Error occurred while consuming events: " + error);
-
-                        // Count down until 0, so the main thread does not keep waiting for events.
-                        while (countDownLatch.getCount() > 0) {
-                            countDownLatch.countDown();
-                        }
-                    }, () -> {
-                        System.out.println("Finished reading events.");
-                    });
+                    }
+                }, () -> {
+                    System.out.println("Finished reading events.");
+                });
 
             // 9. Publish custom events to the EventGrid.
             // We create events to send to the service and block until the send has completed.
@@ -231,7 +227,7 @@ public class EventGridPublishAndConsumeExample {
             e.printStackTrace();
         } finally {
             // 10. clean up the resources created above
-            resourceManager.resourceGroups().beginDeleteByName(resourceGroupName);
+            resourceManager.resourceGroups().beginDeleteByName(RESOURCE_GROUP_NAME);
         }
     }
 
