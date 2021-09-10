@@ -3,29 +3,37 @@ package com.azure.monitor.opentelemetry.exporter;
 import com.azure.monitor.opentelemetry.exporter.utils.FormattedDuration;
 import org.junit.jupiter.api.Test;
 
-import java.time.Duration;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class FormattedDurationTest {
     @Test
     void testGetFormattedDurationMilliSeconds() {
-        Duration duration= Duration.ofNanos(42657024);
-        String formattedDuration = FormattedDuration.getFormattedDuration(duration);
+        String formattedDuration = FormattedDuration.getFormattedDuration(42657024);
         assertEquals("00:00:00.042657", formattedDuration);
     }
 
     @Test
     void testGetFormattedDurationSeconds() {
-        Duration duration= Duration.ofNanos(42657024000L);
-        String formattedDuration = FormattedDuration.getFormattedDuration(duration);
-        assertEquals("00:00:42.42657024", formattedDuration);
+        String formattedDuration = FormattedDuration.getFormattedDuration(42657024000L);
+        assertEquals("00:00:42.657024", formattedDuration);
     }
 
     @Test
     void testGetFormattedDurationMinutes() {
-        Duration duration= Duration.ofNanos(426570240000L);
-        String formattedDuration = FormattedDuration.getFormattedDuration(duration);
-        assertEquals("00:07:426.426570240", formattedDuration);
+        String formattedDuration = FormattedDuration.getFormattedDuration(426570240000L);
+        assertEquals("00:07:06.570240", formattedDuration);
     }
+
+    @Test
+    void testGetFormattedDurationHours() {
+        String formattedDuration = FormattedDuration.getFormattedDuration(4265702400000L);
+        assertEquals("01:11:05.702400", formattedDuration);
+    }
+
+    @Test
+    void testGetFormattedDurationDays() {
+        String formattedDuration = FormattedDuration.getFormattedDuration(426570240000000L);
+        assertEquals("4.22:29:30.240000", formattedDuration);
+    }
+
 }

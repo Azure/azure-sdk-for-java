@@ -214,7 +214,7 @@ public final class AzureMonitorTraceExporter implements SpanExporter {
         // set dependency-specific properties
         data.setId(span.getSpanId());
         data.setName(span.getName());
-        data.setDuration(FormattedDuration.getFormattedDuration(Duration.ofNanos(span.getEndEpochNanos() - span.getStartEpochNanos())));
+        data.setDuration(FormattedDuration.getFormattedDuration(span.getEndEpochNanos() - span.getStartEpochNanos()));
         data.setSuccess(span.getStatus().getStatusCode() != StatusCode.ERROR);
 
         if (inProc) {
@@ -539,7 +539,7 @@ public final class AzureMonitorTraceExporter implements SpanExporter {
 
         // set request-specific properties
         data.setName(operationName);
-        data.setDuration(FormattedDuration.getFormattedDuration(Duration.ofNanos(span.getEndEpochNanos() - startEpochNanos)));
+        data.setDuration(FormattedDuration.getFormattedDuration(span.getEndEpochNanos() - startEpochNanos));
         data.setSuccess(span.getStatus().getStatusCode() != StatusCode.ERROR);
 
         String httpUrl = attributes.get(SemanticAttributes.HTTP_URL);
