@@ -19,7 +19,7 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
  * Response of a {@link CosmosBatch} request.
  */
 @Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-public class CosmosBatchResponse {
+public final class CosmosBatchResponse {
 
     private final Map<String, String> responseHeaders;
     private final int statusCode;
