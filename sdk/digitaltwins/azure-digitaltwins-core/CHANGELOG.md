@@ -1,6 +1,17 @@
 # Release History
 
-## 1.2.0-beta.1 (Unreleased)
+## 1.1.2 (2021-09-10)
+
+### Fixes and improvements
+
+- Fixed the lack of separation between "per-call" and "per-retry" HttpPipeline policies (#22932).
+- Upgraded `azure-core` dependency from `1.16.0` to `1.20.0`.
+  - [azure-core changelog](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core/CHANGELOG.md#1200-2021-09-07)
+- Upgraded `azure-core-http-netty` dependency from `1.9.2` to `1.11.0`.
+  - [azure-core-http-netty changelog](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core-http-netty/CHANGELOG.md#1110-2021-09-07)
+- Upgraded `azure-core-serializer-json-jackson` dependency from `1.2.3` to `1.2.7`.
+  - [azure-core-serializer-json-jackson changelog](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core-serializer-json-jackson/CHANGELOG.md#127-2021-09-07)
+- Upgraded `jackson-annotations` dependency from `2.12.2` to `2.12.4`.
 
 
 ## 1.1.1 (2021-05-19)
