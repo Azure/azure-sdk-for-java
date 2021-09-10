@@ -2,6 +2,8 @@
 
 ## 4.4.0-beta.1 (Unreleased)
 
+### Features Added
+- Added support for service version `7.3-preview`.
 
 ## 4.3.1 (2021-07-08)
 

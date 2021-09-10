@@ -88,8 +88,8 @@ public class KeyVaultBackupAsyncClientTest extends KeyVaultBackupClientTestBase 
     public void beginSelectiveKeyRestore(HttpClient httpClient) {
         KeyAsyncClient keyClient = new KeyClientBuilder()
             .vaultUrl(getEndpoint())
+            .serviceVersion(KeyServiceVersion.V7_2)
             .pipeline(getPipeline(httpClient, false))
-            .serviceVersion(KeyServiceVersion.V7_1)
             .buildAsyncClient();
 
         String keyName = interceptorManager.isPlaybackMode()
