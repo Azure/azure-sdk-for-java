@@ -17,8 +17,12 @@ steps:
     artifact: ${{parameters.ArtifactName}}-signed
   - pwsh: |
       $pomf = Get-ChildItem "${{parameters.ArtifactDirectory}}/*.pom"
-      if(($pomf.Count -ne 1) -Or ($pomf.name -notmatch "${{parameters.Artifact.name}}")) {
-        Write-Host "Can't find package ${{parameters.Artifact.name}}"
+      if($pomf.name -notmatch "${{parameters.Artifact.name}}") {
+        Write-Error "Can't find package ${{parameters.Artifact.name}}"
+        exit 1
+      }
+      if($pomf.Count -ne 1) {
+        Write-Error "Got $pomf.Count packages, expecting 1."
         exit 1
       }
       foreach ($retry in 0..${{ parameters.RetryLimit }}) {
