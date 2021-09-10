@@ -32,7 +32,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-ai-metricsadvisor</artifactId>
-      <version>1.1.0-beta.1</version> <!-- {x-version-update;com.azure:azure-ai-metricsadvisor;current} -->
+      <version>1.0.2</version> <!-- {x-version-update;com.azure:azure-ai-metricsadvisor;current} -->
     </dependency>
   </dependencies>
 
