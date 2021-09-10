@@ -24,17 +24,17 @@ import static java.util.logging.Level.WARNING;
 /**
  * This class provides a JRE key store.
  */
-public final class JREKeyStoreProvider {
+public final class JREKeyStoreFactory {
     private static final String JAVA_HOME =  privilegedGetProperty("java.home", "");
     private static final Path STORE_PATH = Paths.get(JAVA_HOME).resolve("lib").resolve("security");
     private static final Path DEFAULT_STORE = STORE_PATH.resolve("cacerts");
     private static final Path JSSE_DEFAULT_STORE = STORE_PATH.resolve("jssecacerts");
     private static final String KEY_STORE_PASSWORD = privilegedGetProperty("javax.net.ssl.keyStorePassword", "changeit");
-    private static final Logger LOGGER = Logger.getLogger(JREKeyStoreProvider.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(JREKeyStoreFactory.class.getName());
     private static final KeyStore JRE_KEY_STORE = getJreKeyStore();
 
 
-    private JREKeyStoreProvider() {
+    private JREKeyStoreFactory() {
 
     }
 

@@ -3,7 +3,7 @@
 
 package com.azure.security.keyvault.jca.implementation.certificates;
 
-import com.azure.security.keyvault.jca.implementation.JREKeyStoreProvider;
+import com.azure.security.keyvault.jca.implementation.JREKeyStoreFactory;
 import java.security.Key;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
@@ -49,7 +49,7 @@ public final class JreCertificates implements AzureCertificates {
      * Private constructor
      */
     private JreCertificates() {
-        KeyStore jreKeyStore = JREKeyStoreProvider.getDefault();
+        KeyStore jreKeyStore = JREKeyStoreFactory.getDefault();
         aliases = Optional.ofNullable(jreKeyStore)
             .map(a -> {
                 try {
