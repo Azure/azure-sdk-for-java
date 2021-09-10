@@ -7,7 +7,6 @@ import com.azure.resourcemanager.network.models.LoadBalancer;
 import com.azure.resourcemanager.network.models.LoadBalancerFrontend;
 import com.azure.resourcemanager.network.models.LoadBalancerHttpProbe;
 import com.azure.resourcemanager.network.models.LoadBalancerOutboundRule;
-import com.azure.resourcemanager.network.models.LoadBalancerOutboundRuleProtocol;
 import com.azure.resourcemanager.network.models.LoadBalancerPublicFrontend;
 import com.azure.resourcemanager.network.models.LoadBalancerSkuType;
 import com.azure.resourcemanager.network.models.Network;
@@ -225,7 +224,6 @@ public class LoadBalancerTests extends NetworkManagementTest {
         loadBalancer
             .update()
             .defineOutboundRule(outboundRuleName2)
-            .withProtocol(LoadBalancerOutboundRuleProtocol.TCP)
             .fromBackend(backendPoolName)
             .toFrontend(frontendName2)
             .withIdleTimeoutInMinutes(10)
@@ -361,7 +359,6 @@ public class LoadBalancerTests extends NetworkManagementTest {
                 .attach()
                 // add outbound rule
                 .defineOutboundRule(outboundRuleName)
-                .withProtocol(LoadBalancerOutboundRuleProtocol.TCP)
                 .fromBackend(backendPoolName)
                 .toFrontend(frontendName2)
                 .withEnableTcpReset(false)

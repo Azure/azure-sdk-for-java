@@ -5,12 +5,12 @@ package com.azure.resourcemanager.network.implementation;
 import com.azure.resourcemanager.network.NetworkManager;
 import com.azure.resourcemanager.network.fluent.ExpressRouteCrossConnectionPeeringsClient;
 import com.azure.resourcemanager.network.fluent.models.ExpressRouteCrossConnectionPeeringInner;
+import com.azure.resourcemanager.network.fluent.models.Ipv6ExpressRouteCircuitPeeringConfigInner;
 import com.azure.resourcemanager.network.models.ExpressRouteCircuitPeeringConfig;
 import com.azure.resourcemanager.network.models.ExpressRouteCrossConnection;
 import com.azure.resourcemanager.network.models.ExpressRouteCrossConnectionPeering;
 import com.azure.resourcemanager.network.models.ExpressRoutePeeringState;
 import com.azure.resourcemanager.network.models.ExpressRoutePeeringType;
-import com.azure.resourcemanager.network.models.Ipv6ExpressRouteCircuitPeeringConfig;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.CreatableUpdatableImpl;
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import reactor.core.publisher.Mono;
@@ -83,7 +83,7 @@ class ExpressRouteCrossConnectionPeeringImpl
 
     @Override
     public Ipv6PeeringConfigImpl defineIpv6Config() {
-        return new Ipv6PeeringConfigImpl(new Ipv6ExpressRouteCircuitPeeringConfig(), this);
+        return new Ipv6PeeringConfigImpl(new Ipv6ExpressRouteCircuitPeeringConfigInner(), this);
     }
 
     @Override
@@ -226,7 +226,7 @@ class ExpressRouteCrossConnectionPeeringImpl
     }
 
     @Override
-    public Ipv6ExpressRouteCircuitPeeringConfig ipv6PeeringConfig() {
+    public Ipv6ExpressRouteCircuitPeeringConfigInner ipv6PeeringConfig() {
         return innerModel().ipv6PeeringConfig();
     }
 }

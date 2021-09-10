@@ -105,7 +105,7 @@ class PublicIpPrefixImpl
 
     @Override
     public ProvisioningState provisioningState() {
-        return this.innerModel().provisioningState();
+        return ProvisioningState.fromString(innerModel().provisioningState());
     }
 
     @Override
