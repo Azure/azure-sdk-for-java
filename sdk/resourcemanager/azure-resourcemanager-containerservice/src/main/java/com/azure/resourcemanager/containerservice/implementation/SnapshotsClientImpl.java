@@ -12,6 +12,7 @@ import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
+import com.azure.core.annotation.Patch;
 import com.azure.core.annotation.PathParam;
 import com.azure.core.annotation.Put;
 import com.azure.core.annotation.QueryParam;
@@ -29,93 +30,123 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.containerservice.fluent.MaintenanceConfigurationsClient;
-import com.azure.resourcemanager.containerservice.fluent.models.MaintenanceConfigurationInner;
-import com.azure.resourcemanager.containerservice.models.MaintenanceConfigurationListResult;
+import com.azure.resourcemanager.containerservice.fluent.SnapshotsClient;
+import com.azure.resourcemanager.containerservice.fluent.models.SnapshotInner;
+import com.azure.resourcemanager.containerservice.models.SnapshotListResult;
+import com.azure.resourcemanager.containerservice.models.TagsObject;
+import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
+import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
+import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in MaintenanceConfigurationsClient. */
-public final class MaintenanceConfigurationsClientImpl implements MaintenanceConfigurationsClient {
-    private final ClientLogger logger = new ClientLogger(MaintenanceConfigurationsClientImpl.class);
+/** An instance of this class provides access to all the operations defined in SnapshotsClient. */
+public final class SnapshotsClientImpl
+    implements InnerSupportsGet<SnapshotInner>,
+        InnerSupportsListing<SnapshotInner>,
+        InnerSupportsDelete<Void>,
+        SnapshotsClient {
+    private final ClientLogger logger = new ClientLogger(SnapshotsClientImpl.class);
 
     /** The proxy service used to perform REST calls. */
-    private final MaintenanceConfigurationsService service;
+    private final SnapshotsService service;
 
     /** The service client containing this operation class. */
     private final ContainerServiceManagementClientImpl client;
 
     /**
-     * Initializes an instance of MaintenanceConfigurationsClientImpl.
+     * Initializes an instance of SnapshotsClientImpl.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    MaintenanceConfigurationsClientImpl(ContainerServiceManagementClientImpl client) {
+    SnapshotsClientImpl(ContainerServiceManagementClientImpl client) {
         this.service =
-            RestProxy
-                .create(
-                    MaintenanceConfigurationsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+            RestProxy.create(SnapshotsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for ContainerServiceManagementClientMaintenanceConfigurations to be used
-     * by the proxy service to perform REST calls.
+     * The interface defining all the services for ContainerServiceManagementClientSnapshots to be used by the proxy
+     * service to perform REST calls.
      */
     @Host("{$host}")
     @ServiceInterface(name = "ContainerServiceMana")
-    private interface MaintenanceConfigurationsService {
+    private interface SnapshotsService {
         @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService"
-                + "/managedClusters/{resourceName}/maintenanceConfigurations")
+        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.ContainerService/snapshots")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<MaintenanceConfigurationListResult>> listByManagedCluster(
+        Mono<Response<SnapshotListResult>> list(
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("resourceName") String resourceName,
             @HeaderParam("Accept") String accept,
             Context context);
 
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService"
-                + "/managedClusters/{resourceName}/maintenanceConfigurations/{configName}")
+                + "/snapshots")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<MaintenanceConfigurationInner>> get(
+        Mono<Response<SnapshotListResult>> listByResourceGroup(
+            @HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({"Content-Type: application/json"})
+        @Get(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService"
+                + "/snapshots/{resourceName}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<SnapshotInner>> getByResourceGroup(
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("resourceName") String resourceName,
-            @PathParam("configName") String configName,
             @HeaderParam("Accept") String accept,
             Context context);
 
         @Headers({"Content-Type: application/json"})
         @Put(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService"
-                + "/managedClusters/{resourceName}/maintenanceConfigurations/{configName}")
-        @ExpectedResponses({200})
+                + "/snapshots/{resourceName}")
+        @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<MaintenanceConfigurationInner>> createOrUpdate(
+        Mono<Response<SnapshotInner>> createOrUpdate(
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("resourceName") String resourceName,
-            @PathParam("configName") String configName,
-            @BodyParam("application/json") MaintenanceConfigurationInner parameters,
+            @BodyParam("application/json") SnapshotInner parameters,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({"Content-Type: application/json"})
+        @Patch(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService"
+                + "/snapshots/{resourceName}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<SnapshotInner>> updateTags(
+            @HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("resourceName") String resourceName,
+            @BodyParam("application/json") TagsObject parameters,
             @HeaderParam("Accept") String accept,
             Context context);
 
         @Headers({"Content-Type: application/json"})
         @Delete(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService"
-                + "/managedClusters/{resourceName}/maintenanceConfigurations/{configName}")
+                + "/snapshots/{resourceName}")
         @ExpectedResponses({200, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> delete(
@@ -124,7 +155,6 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("resourceName") String resourceName,
-            @PathParam("configName") String configName,
             @HeaderParam("Accept") String accept,
             Context context);
 
@@ -132,7 +162,17 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<MaintenanceConfigurationListResult>> listByManagedClusterNext(
+        Mono<Response<SnapshotListResult>> listNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({"Content-Type: application/json"})
+        @Get("{nextLink}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<SnapshotListResult>> listByResourceGroupNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink,
             @HostParam("$host") String endpoint,
             @HeaderParam("Accept") String accept,
@@ -140,18 +180,14 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
     }
 
     /**
-     * Gets a list of maintenance configurations in the specified managed cluster.
+     * Gets a list of snapshots in the specified subscription.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param resourceName The name of the managed cluster resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of maintenance configurations in the specified managed cluster.
+     * @return a list of snapshots in the specified subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<MaintenanceConfigurationInner>> listByManagedClusterSinglePageAsync(
-        String resourceGroupName, String resourceName) {
+    private Mono<PagedResponse<SnapshotInner>> listSinglePageAsync() {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -164,28 +200,14 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (resourceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
         final String apiVersion = "2021-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
                     service
-                        .listByManagedCluster(
-                            this.client.getEndpoint(),
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            resourceName,
-                            accept,
-                            context))
-            .<PagedResponse<MaintenanceConfigurationInner>>map(
+                        .list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), accept, context))
+            .<PagedResponse<SnapshotInner>>map(
                 res ->
                     new PagedResponseBase<>(
                         res.getRequest(),
@@ -198,19 +220,108 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
     }
 
     /**
-     * Gets a list of maintenance configurations in the specified managed cluster.
+     * Gets a list of snapshots in the specified subscription.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param resourceName The name of the managed cluster resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of maintenance configurations in the specified managed cluster.
+     * @return a list of snapshots in the specified subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<MaintenanceConfigurationInner>> listByManagedClusterSinglePageAsync(
-        String resourceGroupName, String resourceName, Context context) {
+    private Mono<PagedResponse<SnapshotInner>> listSinglePageAsync(Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String apiVersion = "2021-08-01";
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), accept, context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
+    }
+
+    /**
+     * Gets a list of snapshots in the specified subscription.
+     *
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of snapshots in the specified subscription.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<SnapshotInner> listAsync() {
+        return new PagedFlux<>(() -> listSinglePageAsync(), nextLink -> listNextSinglePageAsync(nextLink));
+    }
+
+    /**
+     * Gets a list of snapshots in the specified subscription.
+     *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of snapshots in the specified subscription.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    private PagedFlux<SnapshotInner> listAsync(Context context) {
+        return new PagedFlux<>(
+            () -> listSinglePageAsync(context), nextLink -> listNextSinglePageAsync(nextLink, context));
+    }
+
+    /**
+     * Gets a list of snapshots in the specified subscription.
+     *
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of snapshots in the specified subscription.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<SnapshotInner> list() {
+        return new PagedIterable<>(listAsync());
+    }
+
+    /**
+     * Gets a list of snapshots in the specified subscription.
+     *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of snapshots in the specified subscription.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<SnapshotInner> list(Context context) {
+        return new PagedIterable<>(listAsync(context));
+    }
+
+    /**
+     * Lists snapshots in the specified subscription and resource group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response from the List Snapshots operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<SnapshotInner>> listByResourceGroupSinglePageAsync(String resourceGroupName) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -227,19 +338,69 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        if (resourceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
+        final String apiVersion = "2021-08-01";
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .listByResourceGroup(
+                            this.client.getEndpoint(),
+                            apiVersion,
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            accept,
+                            context))
+            .<PagedResponse<SnapshotInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Lists snapshots in the specified subscription and resource group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response from the List Snapshots operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<SnapshotInner>> listByResourceGroupSinglePageAsync(
+        String resourceGroupName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         final String apiVersion = "2021-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByManagedCluster(
+            .listByResourceGroup(
                 this.client.getEndpoint(),
                 apiVersion,
                 this.client.getSubscriptionId(),
                 resourceGroupName,
-                resourceName,
                 accept,
                 context)
             .map(
@@ -254,89 +415,80 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
     }
 
     /**
-     * Gets a list of maintenance configurations in the specified managed cluster.
+     * Lists snapshots in the specified subscription and resource group.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of maintenance configurations in the specified managed cluster.
+     * @return the response from the List Snapshots operation.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<MaintenanceConfigurationInner> listByManagedClusterAsync(
-        String resourceGroupName, String resourceName) {
+    public PagedFlux<SnapshotInner> listByResourceGroupAsync(String resourceGroupName) {
         return new PagedFlux<>(
-            () -> listByManagedClusterSinglePageAsync(resourceGroupName, resourceName),
-            nextLink -> listByManagedClusterNextSinglePageAsync(nextLink));
+            () -> listByResourceGroupSinglePageAsync(resourceGroupName),
+            nextLink -> listByResourceGroupNextSinglePageAsync(nextLink));
     }
 
     /**
-     * Gets a list of maintenance configurations in the specified managed cluster.
+     * Lists snapshots in the specified subscription and resource group.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param resourceName The name of the managed cluster resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of maintenance configurations in the specified managed cluster.
+     * @return the response from the List Snapshots operation.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<MaintenanceConfigurationInner> listByManagedClusterAsync(
-        String resourceGroupName, String resourceName, Context context) {
+    private PagedFlux<SnapshotInner> listByResourceGroupAsync(String resourceGroupName, Context context) {
         return new PagedFlux<>(
-            () -> listByManagedClusterSinglePageAsync(resourceGroupName, resourceName, context),
-            nextLink -> listByManagedClusterNextSinglePageAsync(nextLink, context));
+            () -> listByResourceGroupSinglePageAsync(resourceGroupName, context),
+            nextLink -> listByResourceGroupNextSinglePageAsync(nextLink, context));
     }
 
     /**
-     * Gets a list of maintenance configurations in the specified managed cluster.
+     * Lists snapshots in the specified subscription and resource group.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of maintenance configurations in the specified managed cluster.
+     * @return the response from the List Snapshots operation.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<MaintenanceConfigurationInner> listByManagedCluster(
-        String resourceGroupName, String resourceName) {
-        return new PagedIterable<>(listByManagedClusterAsync(resourceGroupName, resourceName));
+    public PagedIterable<SnapshotInner> listByResourceGroup(String resourceGroupName) {
+        return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName));
     }
 
     /**
-     * Gets a list of maintenance configurations in the specified managed cluster.
+     * Lists snapshots in the specified subscription and resource group.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param resourceName The name of the managed cluster resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of maintenance configurations in the specified managed cluster.
+     * @return the response from the List Snapshots operation.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<MaintenanceConfigurationInner> listByManagedCluster(
-        String resourceGroupName, String resourceName, Context context) {
-        return new PagedIterable<>(listByManagedClusterAsync(resourceGroupName, resourceName, context));
+    public PagedIterable<SnapshotInner> listByResourceGroup(String resourceGroupName, Context context) {
+        return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName, context));
     }
 
     /**
-     * Gets the specified maintenance configuration of a managed cluster.
+     * Gets a snapshot.
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
-     * @param configName The name of the maintenance configuration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified maintenance configuration of a managed cluster.
+     * @return a snapshot.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<MaintenanceConfigurationInner>> getWithResponseAsync(
-        String resourceGroupName, String resourceName, String configName) {
+    public Mono<Response<SnapshotInner>> getByResourceGroupWithResponseAsync(
+        String resourceGroupName, String resourceName) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -355,9 +507,6 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
         }
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
-        if (configName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter configName is required and cannot be null."));
         }
         final String apiVersion = "2021-08-01";
         final String accept = "application/json";
@@ -365,33 +514,31 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
             .withContext(
                 context ->
                     service
-                        .get(
+                        .getByResourceGroup(
                             this.client.getEndpoint(),
                             apiVersion,
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             resourceName,
-                            configName,
                             accept,
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * Gets the specified maintenance configuration of a managed cluster.
+     * Gets a snapshot.
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
-     * @param configName The name of the maintenance configuration.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified maintenance configuration of a managed cluster.
+     * @return a snapshot.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<MaintenanceConfigurationInner>> getWithResponseAsync(
-        String resourceGroupName, String resourceName, String configName, Context context) {
+    private Mono<Response<SnapshotInner>> getByResourceGroupWithResponseAsync(
+        String resourceGroupName, String resourceName, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -411,41 +558,35 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        if (configName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter configName is required and cannot be null."));
-        }
         final String apiVersion = "2021-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .get(
+            .getByResourceGroup(
                 this.client.getEndpoint(),
                 apiVersion,
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 resourceName,
-                configName,
                 accept,
                 context);
     }
 
     /**
-     * Gets the specified maintenance configuration of a managed cluster.
+     * Gets a snapshot.
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
-     * @param configName The name of the maintenance configuration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified maintenance configuration of a managed cluster.
+     * @return a snapshot.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<MaintenanceConfigurationInner> getAsync(
-        String resourceGroupName, String resourceName, String configName) {
-        return getWithResponseAsync(resourceGroupName, resourceName, configName)
+    public Mono<SnapshotInner> getByResourceGroupAsync(String resourceGroupName, String resourceName) {
+        return getByResourceGroupWithResponseAsync(resourceGroupName, resourceName)
             .flatMap(
-                (Response<MaintenanceConfigurationInner> res) -> {
+                (Response<SnapshotInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -455,54 +596,51 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
     }
 
     /**
-     * Gets the specified maintenance configuration of a managed cluster.
+     * Gets a snapshot.
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
-     * @param configName The name of the maintenance configuration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified maintenance configuration of a managed cluster.
+     * @return a snapshot.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public MaintenanceConfigurationInner get(String resourceGroupName, String resourceName, String configName) {
-        return getAsync(resourceGroupName, resourceName, configName).block();
+    public SnapshotInner getByResourceGroup(String resourceGroupName, String resourceName) {
+        return getByResourceGroupAsync(resourceGroupName, resourceName).block();
     }
 
     /**
-     * Gets the specified maintenance configuration of a managed cluster.
+     * Gets a snapshot.
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
-     * @param configName The name of the maintenance configuration.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified maintenance configuration of a managed cluster.
+     * @return a snapshot.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<MaintenanceConfigurationInner> getWithResponse(
-        String resourceGroupName, String resourceName, String configName, Context context) {
-        return getWithResponseAsync(resourceGroupName, resourceName, configName, context).block();
+    public Response<SnapshotInner> getByResourceGroupWithResponse(
+        String resourceGroupName, String resourceName, Context context) {
+        return getByResourceGroupWithResponseAsync(resourceGroupName, resourceName, context).block();
     }
 
     /**
-     * Creates or updates a maintenance configuration in the specified managed cluster.
+     * Creates or updates a snapshot.
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
-     * @param configName The name of the maintenance configuration.
-     * @param parameters The maintenance configuration to create or update.
+     * @param parameters The snapshot to create or update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return planned maintenance configuration, used to configure when updates can be deployed to a Managed Cluster.
+     * @return a node pool snapshot resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<MaintenanceConfigurationInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String resourceName, String configName, MaintenanceConfigurationInner parameters) {
+    public Mono<Response<SnapshotInner>> createOrUpdateWithResponseAsync(
+        String resourceGroupName, String resourceName, SnapshotInner parameters) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -521,9 +659,6 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
         }
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
-        if (configName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter configName is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -542,7 +677,6 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             resourceName,
-                            configName,
                             parameters,
                             accept,
                             context))
@@ -550,25 +684,20 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
     }
 
     /**
-     * Creates or updates a maintenance configuration in the specified managed cluster.
+     * Creates or updates a snapshot.
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
-     * @param configName The name of the maintenance configuration.
-     * @param parameters The maintenance configuration to create or update.
+     * @param parameters The snapshot to create or update.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return planned maintenance configuration, used to configure when updates can be deployed to a Managed Cluster.
+     * @return a node pool snapshot resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<MaintenanceConfigurationInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String resourceName,
-        String configName,
-        MaintenanceConfigurationInner parameters,
-        Context context) {
+    private Mono<Response<SnapshotInner>> createOrUpdateWithResponseAsync(
+        String resourceGroupName, String resourceName, SnapshotInner parameters, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -587,9 +716,6 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
         }
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
-        if (configName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter configName is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -606,30 +732,28 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 resourceName,
-                configName,
                 parameters,
                 accept,
                 context);
     }
 
     /**
-     * Creates or updates a maintenance configuration in the specified managed cluster.
+     * Creates or updates a snapshot.
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
-     * @param configName The name of the maintenance configuration.
-     * @param parameters The maintenance configuration to create or update.
+     * @param parameters The snapshot to create or update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return planned maintenance configuration, used to configure when updates can be deployed to a Managed Cluster.
+     * @return a node pool snapshot resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<MaintenanceConfigurationInner> createOrUpdateAsync(
-        String resourceGroupName, String resourceName, String configName, MaintenanceConfigurationInner parameters) {
-        return createOrUpdateWithResponseAsync(resourceGroupName, resourceName, configName, parameters)
+    public Mono<SnapshotInner> createOrUpdateAsync(
+        String resourceGroupName, String resourceName, SnapshotInner parameters) {
+        return createOrUpdateWithResponseAsync(resourceGroupName, resourceName, parameters)
             .flatMap(
-                (Response<MaintenanceConfigurationInner> res) -> {
+                (Response<SnapshotInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -639,61 +763,53 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
     }
 
     /**
-     * Creates or updates a maintenance configuration in the specified managed cluster.
+     * Creates or updates a snapshot.
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
-     * @param configName The name of the maintenance configuration.
-     * @param parameters The maintenance configuration to create or update.
+     * @param parameters The snapshot to create or update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return planned maintenance configuration, used to configure when updates can be deployed to a Managed Cluster.
+     * @return a node pool snapshot resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public MaintenanceConfigurationInner createOrUpdate(
-        String resourceGroupName, String resourceName, String configName, MaintenanceConfigurationInner parameters) {
-        return createOrUpdateAsync(resourceGroupName, resourceName, configName, parameters).block();
+    public SnapshotInner createOrUpdate(String resourceGroupName, String resourceName, SnapshotInner parameters) {
+        return createOrUpdateAsync(resourceGroupName, resourceName, parameters).block();
     }
 
     /**
-     * Creates or updates a maintenance configuration in the specified managed cluster.
+     * Creates or updates a snapshot.
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
-     * @param configName The name of the maintenance configuration.
-     * @param parameters The maintenance configuration to create or update.
+     * @param parameters The snapshot to create or update.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return planned maintenance configuration, used to configure when updates can be deployed to a Managed Cluster.
+     * @return a node pool snapshot resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<MaintenanceConfigurationInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String resourceName,
-        String configName,
-        MaintenanceConfigurationInner parameters,
-        Context context) {
-        return createOrUpdateWithResponseAsync(resourceGroupName, resourceName, configName, parameters, context)
-            .block();
+    public Response<SnapshotInner> createOrUpdateWithResponse(
+        String resourceGroupName, String resourceName, SnapshotInner parameters, Context context) {
+        return createOrUpdateWithResponseAsync(resourceGroupName, resourceName, parameters, context).block();
     }
 
     /**
-     * Deletes a maintenance configuration.
+     * Updates tags on a snapshot.
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
-     * @param configName The name of the maintenance configuration.
+     * @param parameters Parameters supplied to the Update snapshot Tags operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return a node pool snapshot resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName, String resourceName, String configName) {
+    public Mono<Response<SnapshotInner>> updateTagsWithResponseAsync(
+        String resourceGroupName, String resourceName, TagsObject parameters) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -713,8 +829,171 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        if (configName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter configName is required and cannot be null."));
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
+        final String apiVersion = "2021-08-01";
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .updateTags(
+                            this.client.getEndpoint(),
+                            apiVersion,
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            resourceName,
+                            parameters,
+                            accept,
+                            context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Updates tags on a snapshot.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param resourceName The name of the managed cluster resource.
+     * @param parameters Parameters supplied to the Update snapshot Tags operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a node pool snapshot resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<SnapshotInner>> updateTagsWithResponseAsync(
+        String resourceGroupName, String resourceName, TagsObject parameters, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (resourceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
+        }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
+        final String apiVersion = "2021-08-01";
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .updateTags(
+                this.client.getEndpoint(),
+                apiVersion,
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                resourceName,
+                parameters,
+                accept,
+                context);
+    }
+
+    /**
+     * Updates tags on a snapshot.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param resourceName The name of the managed cluster resource.
+     * @param parameters Parameters supplied to the Update snapshot Tags operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a node pool snapshot resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SnapshotInner> updateTagsAsync(String resourceGroupName, String resourceName, TagsObject parameters) {
+        return updateTagsWithResponseAsync(resourceGroupName, resourceName, parameters)
+            .flatMap(
+                (Response<SnapshotInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
+    }
+
+    /**
+     * Updates tags on a snapshot.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param resourceName The name of the managed cluster resource.
+     * @param parameters Parameters supplied to the Update snapshot Tags operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a node pool snapshot resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SnapshotInner updateTags(String resourceGroupName, String resourceName, TagsObject parameters) {
+        return updateTagsAsync(resourceGroupName, resourceName, parameters).block();
+    }
+
+    /**
+     * Updates tags on a snapshot.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param resourceName The name of the managed cluster resource.
+     * @param parameters Parameters supplied to the Update snapshot Tags operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a node pool snapshot resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<SnapshotInner> updateTagsWithResponse(
+        String resourceGroupName, String resourceName, TagsObject parameters, Context context) {
+        return updateTagsWithResponseAsync(resourceGroupName, resourceName, parameters, context).block();
+    }
+
+    /**
+     * Deletes a snapshot.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param resourceName The name of the managed cluster resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String resourceName) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (resourceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         final String apiVersion = "2021-08-01";
         final String accept = "application/json";
@@ -728,18 +1007,16 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             resourceName,
-                            configName,
                             accept,
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * Deletes a maintenance configuration.
+     * Deletes a snapshot.
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
-     * @param configName The name of the maintenance configuration.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -748,7 +1025,7 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName, String resourceName, String configName, Context context) {
+        String resourceGroupName, String resourceName, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -768,9 +1045,6 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        if (configName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter configName is required and cannot be null."));
-        }
         final String apiVersion = "2021-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -781,49 +1055,44 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 resourceName,
-                configName,
                 accept,
                 context);
     }
 
     /**
-     * Deletes a maintenance configuration.
+     * Deletes a snapshot.
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
-     * @param configName The name of the maintenance configuration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteAsync(String resourceGroupName, String resourceName, String configName) {
-        return deleteWithResponseAsync(resourceGroupName, resourceName, configName)
-            .flatMap((Response<Void> res) -> Mono.empty());
+    public Mono<Void> deleteAsync(String resourceGroupName, String resourceName) {
+        return deleteWithResponseAsync(resourceGroupName, resourceName).flatMap((Response<Void> res) -> Mono.empty());
     }
 
     /**
-     * Deletes a maintenance configuration.
+     * Deletes a snapshot.
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
-     * @param configName The name of the maintenance configuration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String resourceName, String configName) {
-        deleteAsync(resourceGroupName, resourceName, configName).block();
+    public void delete(String resourceGroupName, String resourceName) {
+        deleteAsync(resourceGroupName, resourceName).block();
     }
 
     /**
-     * Deletes a maintenance configuration.
+     * Deletes a snapshot.
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
-     * @param configName The name of the maintenance configuration.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -831,9 +1100,8 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName, String resourceName, String configName, Context context) {
-        return deleteWithResponseAsync(resourceGroupName, resourceName, configName, context).block();
+    public Response<Void> deleteWithResponse(String resourceGroupName, String resourceName, Context context) {
+        return deleteWithResponseAsync(resourceGroupName, resourceName, context).block();
     }
 
     /**
@@ -843,11 +1111,10 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from the List maintenance configurations operation.
+     * @return the response from the List Snapshots operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<MaintenanceConfigurationInner>> listByManagedClusterNextSinglePageAsync(
-        String nextLink) {
+    private Mono<PagedResponse<SnapshotInner>> listNextSinglePageAsync(String nextLink) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
@@ -859,9 +1126,8 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context -> service.listByManagedClusterNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<MaintenanceConfigurationInner>>map(
+            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<SnapshotInner>>map(
                 res ->
                     new PagedResponseBase<>(
                         res.getRequest(),
@@ -881,10 +1147,82 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from the List maintenance configurations operation.
+     * @return the response from the List Snapshots operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<MaintenanceConfigurationInner>> listByManagedClusterNextSinglePageAsync(
+    private Mono<PagedResponse<SnapshotInner>> listNextSinglePageAsync(String nextLink, Context context) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .listNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * @param nextLink The nextLink parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response from the List Snapshots operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<SnapshotInner>> listByResourceGroupNextSinglePageAsync(String nextLink) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context -> service.listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<SnapshotInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * @param nextLink The nextLink parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response from the List Snapshots operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<SnapshotInner>> listByResourceGroupNextSinglePageAsync(
         String nextLink, Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
@@ -898,7 +1236,7 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByManagedClusterNext(nextLink, this.client.getEndpoint(), accept, context)
+            .listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context)
             .map(
                 res ->
                     new PagedResponseBase<>(
