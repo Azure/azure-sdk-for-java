@@ -113,7 +113,7 @@ public class SearchIndexerClient {
         Objects.requireNonNull(options, "'options' cannot be null.");
 
         return asyncClient.createOrUpdateDataSourceConnectionWithResponse(options.getDataSourceConnection(),
-            options.isOnlyIfUnchanged(), options.isResetRequirementsIgnored(), context)
+            options.isOnlyIfUnchanged(), options.isCacheResetRequirementsIgnored(), context)
             .block();
     }
 
@@ -390,7 +390,7 @@ public class SearchIndexerClient {
         Context context) {
         Objects.requireNonNull(options, "'options' cannot be null.");
         return asyncClient.createOrUpdateIndexerWithResponse(options.getIndexer(), options.isOnlyIfUnchanged(),
-            options.isCacheReprocessingChangeDetectionDisabled(), options.isResetRequirementsIgnored(), context)
+            options.isCacheReprocessingChangeDetectionDisabled(), options.isCacheResetRequirementsIgnored(), context)
             .block();
     }
 
@@ -831,7 +831,7 @@ public class SearchIndexerClient {
         Objects.requireNonNull(options, "'options' cannot be null.");
 
         return asyncClient.createOrUpdateSkillsetWithResponse(options.getSkillset(), options.isOnlyIfUnchanged(),
-            options.isCacheReprocessingChangeDetectionDisabled(), options.isResetRequirementsIgnored(), context)
+            options.isCacheReprocessingChangeDetectionDisabled(), options.isCacheResetRequirementsIgnored(), context)
             .block();
     }
 

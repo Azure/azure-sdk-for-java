@@ -13,6 +13,32 @@
 - Added support to consume `TenantId` challenges from `TokenRequestContext`.
 
 
+## 1.3.6 (2021-09-08)
+
+### Dependency Updates
+- Upgraded `azure-core` dependency to 1.20.0
+
+## 1.3.5 (2021-08-10)
+
+### Dependency Updates
+- Upgraded `azure-core` dependency to 1.19.0
+
+## 1.3.4 (2021-07-28)
+
+### Dependency Updates
+- Dropped `KeePassJava2` dependency
+
+## 1.3.3 (2021-07-07)
+
+### Dependency Updates
+- Pinned `json-smart` dependency to 2.4.7
+
+## 1.3.2 (2021-07-07)
+
+### Dependency Updates
+- Upgraded `azure-core` dependency to 1.18.0
+
+
 ## 1.3.1 (2021-06-08)
 
 ### Dependency Updates
