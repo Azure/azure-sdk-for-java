@@ -198,7 +198,7 @@ public final class ServerCallAsync {
      * @return Response for a successful start recording request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<StartCallRecordingResult> startRecording(String recordingStateCallbackUri){
+    public Mono<StartCallRecordingResult> startRecording(String recordingStateCallbackUri) {
         return startRecording(recordingStateCallbackUri, null, null, null);
     }
 
@@ -306,7 +306,7 @@ public final class ServerCallAsync {
     /**
      * Stop recording of the call.
      *
-     * @param recordingId Recording id to stop.
+     * @param recordingId Recording id to stop. 
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response for a successful stop recording request.
