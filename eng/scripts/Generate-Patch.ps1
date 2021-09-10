@@ -121,7 +121,7 @@ function ResetSourcesToReleaseTag($ArtifactName, $ServiceDirectoryName, $Release
   
   $pkgProperties = Get-PkgProperties -PackageName $ArtifactName -ServiceDirectory $ServiceDirectoryName
   $currentPackageVersion = $pkgProperties.Version
-   if($currentPackageVersion -eq $ReleaseVersion) {
+  if($currentPackageVersion -eq $ReleaseVersion) {
      Write-Information "We do not have to reset the sources."
      return;
   }
@@ -136,7 +136,7 @@ function ResetSourcesToReleaseTag($ArtifactName, $ServiceDirectoryName, $Release
   Write-Information "Fetching all the tags from $RemoteName"
   $CmdOutput = git fetch $RemoteName $ReleaseTag
   if($LASTEXITCODE -ne 0) {
-    LogError "Could not restore the tags"
+    LogError "Could not restore the tags for release tag $ReleaseTag"
     exit 1
   }
   
