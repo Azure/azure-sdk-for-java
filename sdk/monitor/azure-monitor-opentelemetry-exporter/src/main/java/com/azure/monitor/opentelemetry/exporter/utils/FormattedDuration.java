@@ -1,6 +1,7 @@
-package com.azure.monitor.opentelemetry.exporter.utils;
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
-import java.time.Duration;
+package com.azure.monitor.opentelemetry.exporter.utils;
 
 import static java.util.concurrent.TimeUnit.DAYS;
 import static java.util.concurrent.TimeUnit.HOURS;
@@ -8,15 +9,21 @@ import static java.util.concurrent.TimeUnit.MINUTES;
 import static java.util.concurrent.TimeUnit.NANOSECONDS;
 import static java.util.concurrent.TimeUnit.SECONDS;
 
+/**
+ * This class contains several utility functions to format duration
+ */
 public class FormattedDuration {
     private static final long NANOSECONDS_PER_DAY = DAYS.toNanos(1);
     private static final long NANOSECONDS_PER_HOUR = HOURS.toNanos(1);
     private static final long NANOSECONDS_PER_MINUTE = MINUTES.toNanos(1);
     private static final long NANOSECONDS_PER_SECOND = SECONDS.toNanos(1);
 
-    private static final ThreadLocal<StringBuilder> reusableStringBuilder =
+    private static final ThreadLocal<StringBuilder> REUSABLE_STRING_BUILDER =
         ThreadLocal.withInitial(StringBuilder::new);
 
+    /**
+     * This method generates a formatted string based on input duration in nano seconds.
+     */
     public static String getFormattedDuration(long durationNanos) {
         long remainingNanos = durationNanos;
 
@@ -32,7 +39,7 @@ public class FormattedDuration {
         long seconds = remainingNanos / NANOSECONDS_PER_SECOND;
         remainingNanos = remainingNanos % NANOSECONDS_PER_SECOND;
 
-        StringBuilder sb = reusableStringBuilder.get();
+        StringBuilder sb = REUSABLE_STRING_BUILDER.get();
         sb.setLength(0);
         appendDaysHoursMinutesSeconds(sb, days, hours, minutes, seconds);
         appendMinSixDigits(sb, NANOSECONDS.toMicros(remainingNanos));
