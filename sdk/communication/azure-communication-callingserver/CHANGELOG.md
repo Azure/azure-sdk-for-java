@@ -3,6 +3,7 @@
 ## 1.0.0-beta.5 (Unreleased)
 ### Features Added
 - Add support for TokenCredential authentication with CallingServerClientBuilder.
+- Added support for custom options(Recordingcontenttype, Recordingchanneltype, Recordingformattype) for Mixed Audio feature
 
 ### Features Added
 

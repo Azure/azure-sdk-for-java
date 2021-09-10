@@ -6,37 +6,26 @@ package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.appservice.fluent.models.AllowedPrincipalsProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The configuration settings of the Azure Active Directory allowed principals. */
 @Fluent
-public final class AllowedPrincipals extends ProxyOnlyResource {
+public final class AllowedPrincipals {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(AllowedPrincipals.class);
 
     /*
-     * AllowedPrincipals resource specific properties
+     * The list of the allowed groups.
      */
-    @JsonProperty(value = "properties")
-    private AllowedPrincipalsProperties innerProperties;
+    @JsonProperty(value = "groups")
+    private List<String> groups;
 
-    /**
-     * Get the innerProperties property: AllowedPrincipals resource specific properties.
-     *
-     * @return the innerProperties value.
+    /*
+     * The list of the allowed identities.
      */
-    private AllowedPrincipalsProperties innerProperties() {
-        return this.innerProperties;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public AllowedPrincipals withKind(String kind) {
-        super.withKind(kind);
-        return this;
-    }
+    @JsonProperty(value = "identities")
+    private List<String> identities;
 
     /**
      * Get the groups property: The list of the allowed groups.
@@ -44,7 +33,7 @@ public final class AllowedPrincipals extends ProxyOnlyResource {
      * @return the groups value.
      */
     public List<String> groups() {
-        return this.innerProperties() == null ? null : this.innerProperties().groups();
+        return this.groups;
     }
 
     /**
@@ -54,10 +43,7 @@ public final class AllowedPrincipals extends ProxyOnlyResource {
      * @return the AllowedPrincipals object itself.
      */
     public AllowedPrincipals withGroups(List<String> groups) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new AllowedPrincipalsProperties();
-        }
-        this.innerProperties().withGroups(groups);
+        this.groups = groups;
         return this;
     }
 
@@ -67,7 +53,7 @@ public final class AllowedPrincipals extends ProxyOnlyResource {
      * @return the identities value.
      */
     public List<String> identities() {
-        return this.innerProperties() == null ? null : this.innerProperties().identities();
+        return this.identities;
     }
 
     /**
@@ -77,10 +63,7 @@ public final class AllowedPrincipals extends ProxyOnlyResource {
      * @return the AllowedPrincipals object itself.
      */
     public AllowedPrincipals withIdentities(List<String> identities) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new AllowedPrincipalsProperties();
-        }
-        this.innerProperties().withIdentities(identities);
+        this.identities = identities;
         return this;
     }
 
@@ -89,11 +72,6 @@ public final class AllowedPrincipals extends ProxyOnlyResource {
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
-    @Override
     public void validate() {
-        super.validate();
-        if (innerProperties() != null) {
-            innerProperties().validate();
-        }
     }
 }

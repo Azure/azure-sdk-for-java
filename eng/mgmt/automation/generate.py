@@ -48,7 +48,11 @@ def generate(
         module,
     )
     shutil.rmtree(os.path.join(output_dir, 'src/main'), ignore_errors = True)
-    shutil.rmtree(os.path.join(output_dir, 'src/samples'), ignore_errors = True)
+    if os.path.exists(os.path.join(output_dir, 'src/samples/README.md')):
+        # samples contains hand-written code
+        shutil.rmtree(os.path.join(output_dir, 'src/samples/java', namespace.replace('.', '/'), 'generated'), ignore_errors = True)
+    else:
+        shutil.rmtree(os.path.join(output_dir, 'src/samples'), ignore_errors = True)
 
     if re.match(r'https?://', spec_root):
         readme = urllib.parse.urljoin(spec_root, readme)

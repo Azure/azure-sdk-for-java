@@ -261,7 +261,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg72868/providers/Microsoft.Compute/disks/javavm_OsDisk_1_c7a32d165b604d688628beb867e16e43?api-version=2020-12-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg72868/providers/Microsoft.Compute/disks/javavm_OsDisk_1_c7a32d165b604d688628beb867e16e43?api-version=2021-04-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "855bb1e7-140f-447e-961d-c8dbb615035e",
@@ -346,7 +346,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg72868/providers/Microsoft.Compute/disks/javavm_OsDisk_1_c7a32d165b604d688628beb867e16e43?api-version=2020-12-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg72868/providers/Microsoft.Compute/disks/javavm_OsDisk_1_c7a32d165b604d688628beb867e16e43?api-version=2021-04-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "d554b107-b247-40a9-b279-e5b3099c4833",
