@@ -15,6 +15,7 @@ import com.azure.monitor.opentelemetry.exporter.implementation.models.MonitorBas
 import com.azure.monitor.opentelemetry.exporter.implementation.models.MonitorDomain;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.RequestData;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.TelemetryItem;
+import com.azure.monitor.opentelemetry.exporter.utils.FormattedDuration;
 
 import java.time.Duration;
 import java.time.OffsetDateTime;
@@ -87,7 +88,7 @@ public class MonitorExporterClientTestBase extends TestBase {
                                                    Duration duration, OffsetDateTime time) {
         MonitorDomain requestData = new RequestData()
             .setId(UUID.randomUUID().toString())
-            .setDuration(getFormattedDuration(duration))
+            .setDuration(FormattedDuration.getFormattedDuration(duration))
             .setResponseCode(responseCode)
             .setSuccess(success)
             .setUrl("http://localhost:8080/")
@@ -125,11 +126,6 @@ public class MonitorExporterClientTestBase extends TestBase {
             }
         }
         return keyValues;
-    }
-
-    String getFormattedDuration(Duration duration) {
-        return duration.toDays() + "." + duration.toHours() + ":" + duration.toMinutes() + ":" + duration.getSeconds()
-            + "." + duration.toMillis();
     }
 
     List<TelemetryItem> getPartiallyInvalidTelemetryItems() {

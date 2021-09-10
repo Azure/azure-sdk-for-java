@@ -14,6 +14,7 @@ import com.azure.monitor.opentelemetry.exporter.implementation.models.RequestDat
 import com.azure.monitor.opentelemetry.exporter.implementation.models.TelemetryExceptionData;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.TelemetryExceptionDetails;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.TelemetryItem;
+import com.azure.monitor.opentelemetry.exporter.utils.FormattedDuration;
 import io.opentelemetry.api.common.AttributeKey;
 import io.opentelemetry.api.common.Attributes;
 import io.opentelemetry.api.trace.SpanId;
@@ -213,7 +214,7 @@ public final class AzureMonitorTraceExporter implements SpanExporter {
         // set dependency-specific properties
         data.setId(span.getSpanId());
         data.setName(span.getName());
-        data.setDuration(getFormattedDuration(Duration.ofNanos(span.getEndEpochNanos() - span.getStartEpochNanos())));
+        data.setDuration(FormattedDuration.getFormattedDuration(Duration.ofNanos(span.getEndEpochNanos() - span.getStartEpochNanos())));
         data.setSuccess(span.getStatus().getStatusCode() != StatusCode.ERROR);
 
         if (inProc) {
@@ -538,7 +539,7 @@ public final class AzureMonitorTraceExporter implements SpanExporter {
 
         // set request-specific properties
         data.setName(operationName);
-        data.setDuration(getFormattedDuration(Duration.ofNanos(span.getEndEpochNanos() - startEpochNanos)));
+        data.setDuration(FormattedDuration.getFormattedDuration(Duration.ofNanos(span.getEndEpochNanos() - startEpochNanos)));
         data.setSuccess(span.getStatus().getStatusCode() != StatusCode.ERROR);
 
         String httpUrl = attributes.get(SemanticAttributes.HTTP_URL);
@@ -702,11 +703,6 @@ public final class AzureMonitorTraceExporter implements SpanExporter {
 
     private static void setTime(TelemetryItem telemetry, long epochNanos) {
         telemetry.setTime(getFormattedTime(epochNanos));
-    }
-
-    private static String getFormattedDuration(Duration duration) {
-        return duration.toDays() + "." + duration.toHours() + ":" + duration.toMinutes() + ":" + duration.getSeconds()
-            + "." + duration.toMillis();
     }
 
     private static OffsetDateTime getFormattedTime(long epochNanos) {
