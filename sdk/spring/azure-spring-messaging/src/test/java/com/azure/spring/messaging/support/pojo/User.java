@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.integration.test.support.pojo;
+package com.azure.spring.messaging.support.pojo;
 
 import java.util.Objects;
 

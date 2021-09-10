@@ -1,10 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.integration.test.support;
+package com.azure.spring.messaging.core;
 
-import com.azure.spring.integration.core.api.PartitionSupplier;
-import com.azure.spring.integration.core.api.SendOperation;
+import com.azure.spring.messaging.PartitionSupplier;
+import org.assertj.core.api.Fail;
 import org.junit.jupiter.api.Test;
 import org.springframework.core.NestedRuntimeException;
 import org.springframework.messaging.Message;
@@ -16,7 +16,6 @@ import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
-import static org.assertj.core.api.Fail.fail;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -55,9 +54,9 @@ public abstract class SendOperationTest<O extends SendOperation> {
 
         try {
             future.get();
-            fail("Test should fail.");
+            Fail.fail("Test should fail.");
         } catch (InterruptedException ie) {
-            fail("get() should fail with an ExecutionException.");
+            Fail.fail("get() should fail with an ExecutionException.");
         } catch (ExecutionException ee) {
             assertEquals("future failed.", ee.getCause().getMessage());
         }

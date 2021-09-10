@@ -3,9 +3,10 @@
 
 package com.azure.spring.integration.core.api.reactor;
 
-import com.azure.spring.integration.core.AzureHeaders;
-import com.azure.spring.integration.core.AzureSendFailureException;
-import com.azure.spring.integration.core.api.PartitionSupplier;
+import com.azure.spring.messaging.AzureHeaders;
+import com.azure.spring.messaging.AzureSendFailureException;
+import com.azure.spring.messaging.PartitionSupplier;
+import com.azure.spring.messaging.core.reactor.SendOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.expression.EvaluationContext;

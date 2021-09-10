@@ -2359,7 +2359,7 @@
   </Match>
 
   <Match>
-    <Class name="com.azure.spring.integration.servicebus.converter.ServiceBusMessageConverter"/>
+    <Class name="com.azure.spring.integration.servicebus.com.azure.spring.eventhubs.support.converter.converter.ServiceBusMessageConverter"/>
     <Bug pattern="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"/>
   </Match>
 

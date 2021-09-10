@@ -3,8 +3,8 @@
 
 package com.azure.spring.integration.core;
 
-import com.azure.spring.integration.core.api.SubscribeByGroupOperation;
-import com.azure.spring.integration.core.api.SubscribeOperation;
+import com.azure.spring.messaging.core.SubscribeByGroupOperation;
+import com.azure.spring.messaging.core.SubscribeOperation;
 import org.springframework.integration.endpoint.MessageProducerSupport;
 import org.springframework.messaging.Message;
 import org.springframework.util.Assert;

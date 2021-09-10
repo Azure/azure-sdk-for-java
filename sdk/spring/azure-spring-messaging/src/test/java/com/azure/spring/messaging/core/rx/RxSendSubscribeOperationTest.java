@@ -1,12 +1,12 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.integration.test.support.rx;
+package com.azure.spring.messaging.core.rx;
 
-import com.azure.spring.integration.core.api.CheckpointConfig;
-import com.azure.spring.integration.core.api.CheckpointMode;
-import com.azure.spring.integration.core.api.RxSendOperation;
-import com.azure.spring.integration.test.support.pojo.User;
+import com.azure.spring.messaging.checkpoint.CheckpointConfig;
+import com.azure.spring.messaging.checkpoint.CheckpointMode;
+import com.azure.spring.messaging.core.RxSendOperation;
+import com.azure.spring.messaging.support.pojo.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.messaging.Message;

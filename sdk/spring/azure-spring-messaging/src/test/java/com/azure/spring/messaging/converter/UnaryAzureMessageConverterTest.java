@@ -1,20 +1,16 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.integration.test.support;
+package com.azure.spring.messaging.converter;
 
-import com.azure.spring.integration.core.converter.AzureMessageConverter;
-import com.azure.spring.integration.test.support.pojo.User;
+import com.azure.spring.messaging.support.pojo.User;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.integration.support.MessageBuilder;
+import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.messaging.Message;
 
 import java.nio.charset.StandardCharsets;
-
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public abstract class UnaryAzureMessageConverterTest<T> {
 
@@ -54,16 +50,16 @@ public abstract class UnaryAzureMessageConverterTest<T> {
 
         Message<U> convertedMessage = converter.toMessage(azureMessage, payloadClass);
 
-        assertNotNull(convertedMessage);
+        Assertions.assertNotNull(convertedMessage);
         assertMessagePayloadEquals(convertedMessage.getPayload(), payload);
         assertMessageHeadersEqual(azureMessage, convertedMessage);
     }
 
     private <U> void assertMessagePayloadEquals(U convertedPayload, U payload) {
         if (convertedPayload.getClass().equals(byte[].class)) {
-            assertArrayEquals((byte[]) convertedPayload, (byte[]) payload);
+            Assertions.assertArrayEquals((byte[]) convertedPayload, (byte[]) payload);
         } else {
-            assertEquals(convertedPayload, payload);
+            Assertions.assertEquals(convertedPayload, payload);
         }
     }
 }

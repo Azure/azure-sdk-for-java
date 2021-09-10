@@ -1,9 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.integration.test.support.reactor;
+package com.azure.spring.messaging.core.reactor;
 
-import com.azure.spring.integration.core.api.reactor.SendOperation;
 import org.junit.jupiter.api.Test;
 import org.springframework.core.NestedRuntimeException;
 import org.springframework.messaging.Message;

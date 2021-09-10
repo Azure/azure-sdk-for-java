@@ -1,11 +1,11 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.integration.test.support.rx;
+package com.azure.spring.messaging.core.rx;
 
-import com.azure.spring.integration.core.api.CheckpointConfig;
-import com.azure.spring.integration.core.api.RxSendOperation;
-import com.azure.spring.integration.core.api.RxSubscribeByGroupOperation;
+import com.azure.spring.messaging.checkpoint.CheckpointConfig;
+import com.azure.spring.messaging.core.RxSendOperation;
+import com.azure.spring.messaging.core.RxSubscribeByGroupOperation;
 import org.springframework.messaging.Message;
 import rx.Observable;
 

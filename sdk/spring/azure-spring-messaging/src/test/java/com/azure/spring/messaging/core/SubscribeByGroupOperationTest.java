@@ -1,9 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.integration.test.support;
+package com.azure.spring.messaging.core;
 
-import com.azure.spring.integration.core.api.SubscribeByGroupOperation;
 import org.junit.jupiter.api.Test;
 import org.springframework.messaging.Message;
 
