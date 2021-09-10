@@ -1,7 +1,12 @@
 # Release History
 
-## 12.2.0-beta.1 (Unreleased)
+## 12.1.2 (2021-09-09)
 
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` dependency to `1.20.0`
+- Upgraded `azure-core-http-netty` dependency to `1.11.0`
 
 ## 12.1.1 (2021-08-13)
 
