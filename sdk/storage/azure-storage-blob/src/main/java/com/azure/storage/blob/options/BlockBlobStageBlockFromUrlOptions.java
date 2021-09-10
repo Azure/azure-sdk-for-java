@@ -4,7 +4,7 @@
 package com.azure.storage.blob.options;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.experimental.http.HttpAuthorization;
+import com.azure.core.http.HttpAuthorization;
 import com.azure.core.util.CoreUtils;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
@@ -13,7 +13,7 @@ import com.azure.storage.blob.models.BlobRequestConditions;
  * Extended options that may be passed when staging a block from a source URL.
  */
 @Fluent
-public class BlockBlobStageBlockFromUrlOptions {
+public final class BlockBlobStageBlockFromUrlOptions {
     private final String base64BlockId;
     private final String sourceUrl;
     private BlobRange sourceRange;

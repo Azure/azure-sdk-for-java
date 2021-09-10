@@ -3,27 +3,29 @@
 
 package com.azure.cosmos.benchmark.linkedin;
 
-import com.azure.cosmos.BulkOperations;
-import com.azure.cosmos.BulkProcessingOptions;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
-import com.azure.cosmos.CosmosItemOperation;
 import com.azure.cosmos.benchmark.Configuration;
 import com.azure.cosmos.benchmark.linkedin.data.EntityConfiguration;
 import com.azure.cosmos.benchmark.linkedin.data.Key;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
+import com.azure.cosmos.models.CosmosBulkExecutionOptions;
+import com.azure.cosmos.models.CosmosBulkOperations;
+import com.azure.cosmos.models.CosmosItemOperation;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.PartitionKey;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.google.common.base.Preconditions;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import reactor.core.publisher.Flux;
+
 import java.time.Duration;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import reactor.core.publisher.Flux;
 
 
 public class DataLoader {
@@ -92,10 +94,11 @@ public class DataLoader {
             container.getId());
 
         // We want to wait longer depending on the number of documents in each iteration
-        final BulkProcessingOptions<Object> bulkProcessingOptions = new BulkProcessingOptions<>(Object.class);
-        bulkProcessingOptions.setMaxMicroBatchSize(MAX_BATCH_SIZE)
-            .setMaxMicroBatchConcurrency(BULK_OPERATION_CONCURRENCY);
-        container.processBulkOperations(Flux.fromIterable(cosmosItemOperations), bulkProcessingOptions)
+        final CosmosBulkExecutionOptions cosmosBulkExecutionOptions =
+            ImplementationBridgeHelpers.CosmosBulkExecutionOptionsHelper
+                .getCosmosBulkExecutionOptionsAccessor()
+                .setMaxMicroBatchSize(new CosmosBulkExecutionOptions(), MAX_BATCH_SIZE);
+        container.executeBulkOperations(Flux.fromIterable(cosmosItemOperations), cosmosBulkExecutionOptions)
             .blockLast(BATCH_DATA_LOAD_WAIT_DURATION);
 
         LOGGER.info("Completed loading {} documents into [{}:{}]", cosmosItemOperations.size(),
@@ -147,7 +150,7 @@ public class DataLoader {
             .map(record -> {
                 final String partitionKey = record.getKey().getPartitioningKey();
                 final ObjectNode value = record.getValue();
-                return BulkOperations.getCreateItemOperation(value, new PartitionKey(partitionKey));
+                return CosmosBulkOperations.getCreateItemOperation(value, new PartitionKey(partitionKey));
             })
             .collect(Collectors.toList());
     }

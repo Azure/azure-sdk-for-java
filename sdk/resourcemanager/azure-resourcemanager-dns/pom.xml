@@ -14,7 +14,7 @@
 
   <groupId>com.azure.resourcemanager</groupId>
   <artifactId>azure-resourcemanager-dns</artifactId>
-  <version>2.7.0</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-dns;current} -->
+  <version>2.8.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-dns;current} -->
   <packaging>jar</packaging>
 
   <name>Microsoft Azure SDK for DNS Management</name>
@@ -52,7 +52,7 @@
     <dependency>
       <groupId>com.azure.resourcemanager</groupId>
       <artifactId>azure-resourcemanager-resources</artifactId>
-      <version>2.7.0</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-resources;current} -->
+      <version>2.8.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-resources;current} -->
     </dependency>
     <dependency>
       <groupId>commons-io</groupId>
@@ -81,7 +81,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-netty</artifactId>
-      <version>1.10.2</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
+      <version>1.11.0</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>

@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Transformation for data flow source. */
 @Fluent
-public final class DataFlowSource extends Transformation {
+public class DataFlowSource extends Transformation {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(DataFlowSource.class);
 
     /*

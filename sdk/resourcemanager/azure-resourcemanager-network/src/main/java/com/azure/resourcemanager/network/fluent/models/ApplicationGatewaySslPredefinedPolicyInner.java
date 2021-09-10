@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ApplicationGatewaySslCipherSuite;
@@ -15,9 +14,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** An Ssl predefined policy. */
-@JsonFlatten
 @Fluent
-public class ApplicationGatewaySslPredefinedPolicyInner extends SubResource {
+public final class ApplicationGatewaySslPredefinedPolicyInner extends SubResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ApplicationGatewaySslPredefinedPolicyInner.class);
 
     /*
@@ -27,17 +25,10 @@ public class ApplicationGatewaySslPredefinedPolicyInner extends SubResource {
     private String name;
 
     /*
-     * Ssl cipher suites to be enabled in the specified order for application
-     * gateway.
+     * Properties of the application gateway SSL predefined policy.
      */
-    @JsonProperty(value = "properties.cipherSuites")
-    private List<ApplicationGatewaySslCipherSuite> cipherSuites;
-
-    /*
-     * Minimum version of Ssl protocol to be supported on application gateway.
-     */
-    @JsonProperty(value = "properties.minProtocolVersion")
-    private ApplicationGatewaySslProtocol minProtocolVersion;
+    @JsonProperty(value = "properties")
+    private ApplicationGatewaySslPredefinedPolicyPropertiesFormat innerProperties;
 
     /**
      * Get the name property: Name of the Ssl predefined policy.
@@ -60,45 +51,12 @@ public class ApplicationGatewaySslPredefinedPolicyInner extends SubResource {
     }
 
     /**
-     * Get the cipherSuites property: Ssl cipher suites to be enabled in the specified order for application gateway.
+     * Get the innerProperties property: Properties of the application gateway SSL predefined policy.
      *
-     * @return the cipherSuites value.
+     * @return the innerProperties value.
      */
-    public List<ApplicationGatewaySslCipherSuite> cipherSuites() {
-        return this.cipherSuites;
-    }
-
-    /**
-     * Set the cipherSuites property: Ssl cipher suites to be enabled in the specified order for application gateway.
-     *
-     * @param cipherSuites the cipherSuites value to set.
-     * @return the ApplicationGatewaySslPredefinedPolicyInner object itself.
-     */
-    public ApplicationGatewaySslPredefinedPolicyInner withCipherSuites(
-        List<ApplicationGatewaySslCipherSuite> cipherSuites) {
-        this.cipherSuites = cipherSuites;
-        return this;
-    }
-
-    /**
-     * Get the minProtocolVersion property: Minimum version of Ssl protocol to be supported on application gateway.
-     *
-     * @return the minProtocolVersion value.
-     */
-    public ApplicationGatewaySslProtocol minProtocolVersion() {
-        return this.minProtocolVersion;
-    }
-
-    /**
-     * Set the minProtocolVersion property: Minimum version of Ssl protocol to be supported on application gateway.
-     *
-     * @param minProtocolVersion the minProtocolVersion value to set.
-     * @return the ApplicationGatewaySslPredefinedPolicyInner object itself.
-     */
-    public ApplicationGatewaySslPredefinedPolicyInner withMinProtocolVersion(
-        ApplicationGatewaySslProtocol minProtocolVersion) {
-        this.minProtocolVersion = minProtocolVersion;
-        return this;
+    private ApplicationGatewaySslPredefinedPolicyPropertiesFormat innerProperties() {
+        return this.innerProperties;
     }
 
     /** {@inheritDoc} */
@@ -109,10 +67,61 @@ public class ApplicationGatewaySslPredefinedPolicyInner extends SubResource {
     }
 
     /**
+     * Get the cipherSuites property: Ssl cipher suites to be enabled in the specified order for application gateway.
+     *
+     * @return the cipherSuites value.
+     */
+    public List<ApplicationGatewaySslCipherSuite> cipherSuites() {
+        return this.innerProperties() == null ? null : this.innerProperties().cipherSuites();
+    }
+
+    /**
+     * Set the cipherSuites property: Ssl cipher suites to be enabled in the specified order for application gateway.
+     *
+     * @param cipherSuites the cipherSuites value to set.
+     * @return the ApplicationGatewaySslPredefinedPolicyInner object itself.
+     */
+    public ApplicationGatewaySslPredefinedPolicyInner withCipherSuites(
+        List<ApplicationGatewaySslCipherSuite> cipherSuites) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApplicationGatewaySslPredefinedPolicyPropertiesFormat();
+        }
+        this.innerProperties().withCipherSuites(cipherSuites);
+        return this;
+    }
+
+    /**
+     * Get the minProtocolVersion property: Minimum version of Ssl protocol to be supported on application gateway.
+     *
+     * @return the minProtocolVersion value.
+     */
+    public ApplicationGatewaySslProtocol minProtocolVersion() {
+        return this.innerProperties() == null ? null : this.innerProperties().minProtocolVersion();
+    }
+
+    /**
+     * Set the minProtocolVersion property: Minimum version of Ssl protocol to be supported on application gateway.
+     *
+     * @param minProtocolVersion the minProtocolVersion value to set.
+     * @return the ApplicationGatewaySslPredefinedPolicyInner object itself.
+     */
+    public ApplicationGatewaySslPredefinedPolicyInner withMinProtocolVersion(
+        ApplicationGatewaySslProtocol minProtocolVersion) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApplicationGatewaySslPredefinedPolicyPropertiesFormat();
+        }
+        this.innerProperties().withMinProtocolVersion(minProtocolVersion);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

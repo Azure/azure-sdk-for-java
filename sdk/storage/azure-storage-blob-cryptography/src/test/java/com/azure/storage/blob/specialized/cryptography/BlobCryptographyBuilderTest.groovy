@@ -1,23 +1,26 @@
 package com.azure.storage.blob.specialized.cryptography
 
+import com.azure.core.cryptography.AsyncKeyEncryptionKey
+import com.azure.core.cryptography.AsyncKeyEncryptionKeyResolver
+import com.azure.core.test.TestMode
 import com.azure.storage.blob.implementation.util.BlobUserAgentModificationPolicy
 import com.azure.storage.blob.models.BlobStorageException
 import com.azure.storage.blob.models.CustomerProvidedKey
 import com.azure.storage.common.implementation.Constants
 
 class BlobCryptographyBuilderTest extends APISpec {
-
     def beac
     def bc
     def cc
 
-    def fakeKey
-    def fakeKeyResolver
+    AsyncKeyEncryptionKey fakeKey
+    AsyncKeyEncryptionKeyResolver fakeKeyResolver
     def keyId
 
     def setup() {
         keyId = "keyId"
-        fakeKey = new FakeKey(keyId, getRandomByteArray(256))
+
+        fakeKey = new FakeKey(keyId, (getEnv().getTestMode() == TestMode.LIVE) ? getRandomByteArray(256) : mockRandomData)
         fakeKeyResolver = new FakeKeyResolver(fakeKey)
 
         def sc = getServiceClientBuilder(env.primaryAccount)
@@ -27,12 +30,12 @@ class BlobCryptographyBuilderTest extends APISpec {
         cc = sc.getBlobContainerClient(containerName)
         bc = cc.getBlobClient(blobName)
 
-        beac = new EncryptedBlobClientBuilder()
+        beac = mockAesKey(new EncryptedBlobClientBuilder()
             .blobName(blobName)
             .key(fakeKey, "keyWrapAlgorithm")
             .keyResolver(fakeKeyResolver)
             .blobClient(bc)
-            .buildEncryptedBlobAsyncClient()
+            .buildEncryptedBlobAsyncClient())
     }
 
     def "Pipeline integrity"() {
@@ -44,7 +47,7 @@ class BlobCryptographyBuilderTest extends APISpec {
 
         // Compare all policies
         for (int i = 0; i < bc.getHttpPipeline().getPolicyCount(); i++) {
-            beac.getHttpPipeline().getPolicy(i+1) == bc.getHttpPipeline().getPolicy(i)
+            beac.getHttpPipeline().getPolicy(i + 1) == bc.getHttpPipeline().getPolicy(i)
         }
     }
 
@@ -63,10 +66,10 @@ class BlobCryptographyBuilderTest extends APISpec {
     def "Http pipeline"() {
         when:
         def regularClient = cc.getBlobClient(generateBlobName())
-        def encryptedClient = getEncryptedClientBuilder(fakeKey, null, env.primaryAccount.credential, cc.getBlobContainerUrl())
+        def encryptedClient = new EncryptedBlobClient(mockAesKey(getEncryptedClientBuilder(fakeKey, null, env.primaryAccount.credential, cc.getBlobContainerUrl())
             .pipeline(regularClient.getHttpPipeline())
             .blobName(regularClient.getBlobName())
-            .buildEncryptedBlobClient()
+            .buildEncryptedBlobAsyncClient()))
 
         then:
         // Checks that there is one less policy in a regular client and that the extra policy is a decryption policy and a blob user agent modification policy
@@ -82,8 +85,8 @@ class BlobCryptographyBuilderTest extends APISpec {
         def builder = getEncryptedClientBuilder(fakeKey, null, env.primaryAccount.credential, cc.getBlobContainerUrl())
             .customerProvidedKey(key)
             .blobName(generateBlobName())
-        def encryptedAsyncClient = builder.buildEncryptedBlobAsyncClient()
-        def encryptedClient = builder.buildEncryptedBlobClient()
+        def encryptedAsyncClient = mockAesKey(builder.buildEncryptedBlobAsyncClient())
+        def encryptedClient = new EncryptedBlobClient(mockAesKey(builder.buildEncryptedBlobAsyncClient()))
 
         when:
         def uploadResponse = encryptedAsyncClient.uploadWithResponse(data.defaultFlux, null, null, null, null, null).block()
@@ -103,13 +106,13 @@ class BlobCryptographyBuilderTest extends APISpec {
         setup:
         cc.create()
         CustomerProvidedKey key = new CustomerProvidedKey(getRandomKey())
-        def encryptedClientWithCpk = getEncryptedClientBuilder(fakeKey, null, env.primaryAccount.credential, cc.getBlobContainerUrl())
+        def encryptedClientWithCpk = mockAesKey(getEncryptedClientBuilder(fakeKey, null, env.primaryAccount.credential, cc.getBlobContainerUrl())
             .customerProvidedKey(key)
             .blobName(generateBlobName())
-            .buildEncryptedBlobAsyncClient()
+            .buildEncryptedBlobAsyncClient())
 
-        def encryptedClientNoCpk = getEncryptedClientBuilder(fakeKey, null, env.primaryAccount.credential, encryptedClientWithCpk.getBlobUrl())
-            .buildEncryptedBlobClient()
+        def encryptedClientNoCpk = new EncryptedBlobClient(mockAesKey(getEncryptedClientBuilder(fakeKey, null, env.primaryAccount.credential, encryptedClientWithCpk.getBlobUrl())
+            .buildEncryptedBlobAsyncClient()))
 
         when:
         encryptedClientWithCpk.uploadWithResponse(data.defaultFlux, null, null, null, null, null).block()
@@ -129,8 +132,8 @@ class BlobCryptographyBuilderTest extends APISpec {
         def builder = getEncryptedClientBuilder(fakeKey, null, env.primaryAccount.credential, cc.getBlobContainerUrl())
             .encryptionScope(scope)
             .blobName(generateBlobName())
-        def encryptedAsyncClient = builder.buildEncryptedBlobAsyncClient()
-        def encryptedClient = builder.buildEncryptedBlobClient()
+        def encryptedAsyncClient = mockAesKey(builder.buildEncryptedBlobAsyncClient())
+        def encryptedClient = new EncryptedBlobClient(mockAesKey(builder.buildEncryptedBlobAsyncClient()))
 
         when:
         def uploadResponse = encryptedAsyncClient.uploadWithResponse(data.defaultFlux, null, null, null, null, null).block()

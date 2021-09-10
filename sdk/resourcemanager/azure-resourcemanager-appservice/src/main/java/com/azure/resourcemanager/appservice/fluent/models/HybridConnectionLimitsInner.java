@@ -4,47 +4,30 @@
 
 package com.azure.resourcemanager.appservice.fluent.models;
 
-import com.azure.core.annotation.Immutable;
-import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.models.ProxyOnlyResource;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Hybrid Connection limits contract. This is used to return the plan limits of Hybrid Connections. */
-@JsonFlatten
-@Immutable
-public class HybridConnectionLimitsInner extends ProxyOnlyResource {
+@Fluent
+public final class HybridConnectionLimitsInner extends ProxyOnlyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(HybridConnectionLimitsInner.class);
 
     /*
-     * The current number of Hybrid Connections.
+     * HybridConnectionLimits resource specific properties
      */
-    @JsonProperty(value = "properties.current", access = JsonProperty.Access.WRITE_ONLY)
-    private Integer current;
-
-    /*
-     * The maximum number of Hybrid Connections allowed.
-     */
-    @JsonProperty(value = "properties.maximum", access = JsonProperty.Access.WRITE_ONLY)
-    private Integer maximum;
+    @JsonProperty(value = "properties")
+    private HybridConnectionLimitsProperties innerProperties;
 
     /**
-     * Get the current property: The current number of Hybrid Connections.
+     * Get the innerProperties property: HybridConnectionLimits resource specific properties.
      *
-     * @return the current value.
+     * @return the innerProperties value.
      */
-    public Integer current() {
-        return this.current;
-    }
-
-    /**
-     * Get the maximum property: The maximum number of Hybrid Connections allowed.
-     *
-     * @return the maximum value.
-     */
-    public Integer maximum() {
-        return this.maximum;
+    private HybridConnectionLimitsProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /** {@inheritDoc} */
@@ -55,6 +38,24 @@ public class HybridConnectionLimitsInner extends ProxyOnlyResource {
     }
 
     /**
+     * Get the current property: The current number of Hybrid Connections.
+     *
+     * @return the current value.
+     */
+    public Integer current() {
+        return this.innerProperties() == null ? null : this.innerProperties().current();
+    }
+
+    /**
+     * Get the maximum property: The maximum number of Hybrid Connections allowed.
+     *
+     * @return the maximum value.
+     */
+    public Integer maximum() {
+        return this.innerProperties() == null ? null : this.innerProperties().maximum();
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -62,5 +63,8 @@ public class HybridConnectionLimitsInner extends ProxyOnlyResource {
     @Override
     public void validate() {
         super.validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

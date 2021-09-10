@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Response for ListExpressRoutePortsLocations API service call. */
+/** ExpressRoutePorts Location List Result Response for ListExpressRoutePortsLocations API service call. */
 @Fluent
 public final class ExpressRoutePortsLocationListResult {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ExpressRoutePortsLocationListResult.class);

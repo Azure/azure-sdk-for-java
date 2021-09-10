@@ -14,7 +14,7 @@
 
   <groupId>com.azure.resourcemanager</groupId>
   <artifactId>azure-resourcemanager-privatedns</artifactId>
-  <version>2.7.0</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-privatedns;current} -->
+  <version>2.8.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-privatedns;current} -->
   <packaging>jar</packaging>
 
   <name>Microsoft Azure SDK for Private DNS Management</name>
@@ -52,12 +52,12 @@
     <dependency>
       <groupId>com.azure.resourcemanager</groupId>
       <artifactId>azure-resourcemanager-resources</artifactId>
-      <version>2.7.0</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-resources;current} -->
+      <version>2.8.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-resources;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure.resourcemanager</groupId>
       <artifactId>azure-resourcemanager-network</artifactId>
-      <version>2.7.0</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-network;current} -->
+      <version>2.8.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-network;current} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -75,7 +75,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-netty</artifactId>
-      <version>1.10.2</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
+      <version>1.11.0</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>

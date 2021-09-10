@@ -2,14 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.security.attestation;
 
-import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.HttpPipelineBuilder;
-import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
-import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.test.TestBase;
-import com.azure.core.test.TestMode;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.identity.EnvironmentCredentialBuilder;
@@ -35,9 +29,7 @@ import java.security.interfaces.RSAPublicKey;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.text.ParseException;
-import java.util.ArrayList;
 import java.util.Base64;
-import java.util.List;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -105,38 +97,16 @@ public class AttestationClientTestBase extends TestBase {
      * @return Returns an attestation client builder corresponding to the httpClient and clientUri.
      */
     AttestationClientBuilder getBuilder(HttpClient httpClient, String clientUri) {
-        return new AttestationClientBuilder().pipeline(getHttpPipeline(httpClient)).endpoint(clientUri);
-    }
-
-    /**
-     * Retrieves an HTTP pipeline configured on the specified HTTP pipeline.
-     *
-     * Used by getBuilder().
-     * @param httpClient - Client on which to configure the HTTP pipeline.
-     * @return an HttpPipeline object configured for the MAA service on the specified http client.
-     */
-    private HttpPipeline getHttpPipeline(HttpClient httpClient) {
-        TokenCredential credential = null;
-
-        if (!interceptorManager.isPlaybackMode()) {
-            credential = new EnvironmentCredentialBuilder().httpClient(httpClient).build();
-        }
-
-        final List<HttpPipelinePolicy> policies = new ArrayList<>();
-        if (credential != null) {
-            policies.add(new BearerTokenAuthenticationPolicy(credential, DATAPLANE_SCOPE));
-        }
-
-        if (getTestMode() == TestMode.RECORD) {
-            policies.add(interceptorManager.getRecordPolicy());
-        }
-
-        return new HttpPipelineBuilder()
-            .policies(policies.toArray(new HttpPipelinePolicy[0]))
+        AttestationClientBuilder builder = new AttestationClientBuilder()
+            .endpoint(clientUri)
             .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient)
-            .build();
+//            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
+            .addPolicy(interceptorManager.getRecordPolicy());
+        if (!interceptorManager.isPlaybackMode()) {
+            builder.credential(new EnvironmentCredentialBuilder().httpClient(httpClient).build());
+        }
+        return builder;
     }
-
 
     /**
      * Verifies an MAA attestation token and returns the set of attestation claims embedded in the token.
@@ -154,9 +124,9 @@ public class AttestationClientTestBase extends TestBase {
         }
 
         SignedJWT finalToken = token;
-        return getSigningCertificateByKeyId(token, httpClient, clientUri)
+        return getSigningCertificateByKeyId(token.getHeader().getKeyID(), httpClient, clientUri)
             .handle((signer, sink) -> {
-                final PublicKey key = signer.getCertificates()[0].getPublicKey();
+                final PublicKey key = signer.getCertificates().get(0).getPublicKey();
                 final RSAPublicKey rsaKey = (RSAPublicKey) key;
 
                 final RSASSAVerifier verifier = new RSASSAVerifier(rsaKey);
@@ -215,11 +185,10 @@ public class AttestationClientTestBase extends TestBase {
      * @param clientUri - Base URI for the attestation client.
      * @return X509Certificate which will have been used to sign the token.
      */
-    Mono<AttestationSigner> getSigningCertificateByKeyId(SignedJWT token, HttpClient client, String clientUri) {
+    Mono<AttestationSigner> getSigningCertificateByKeyId(String keyId, HttpClient client, String clientUri) {
         AttestationClientBuilder builder = getBuilder(client, clientUri);
-        return builder.buildAttestationAsyncClient().getAttestationSigners()
+        return builder.buildAsyncClient().listAttestationSigners()
             .handle((signers, sink) -> {
-                final String keyId = token.getHeader().getKeyID();
                 boolean foundKey = false;
 
                 for (AttestationSigner signer : signers) {

@@ -302,7 +302,7 @@
       {
         "regex": true,
         "code": "java\\.annotation\\.attributeValueChanged",
-        "new": "method byte\\[\\] com\\.azure\\.security\\.keyvault\\.keys\\.models\\.JsonWebKey::get(D|Dp|E|K|N|P|Q|Qi|T|X|Y)\\(\\)",
+        "new": "method byte\\[\\] com\\.azure\\.security\\.keyvault\\.keys\\.models\\.JsonWebKey::(g|s)et(D|Dp|Dq|E|K|N|P|Q|Qi|T|X|Y)\\(\\)",
         "justification": "The class used by the serialization/deserialization annotations is package private and moving it is not a breaking change."
       },
       {
@@ -340,6 +340,61 @@
         "code": "java.method.added",
         "new": "method com.azure.core.http.policy.HttpLogOptions com.azure.core.http.policy.HttpLogOptions::setResponseLogger(com.azure.core.http.policy.HttpResponseLogger)",
         "justification": "New method included in azure-core."
+      },
+      {
+        "code": "java.method.added",
+        "new": "method void com.azure.core.credential.AzureSasCredential::<init>(java.lang.String, java.util.function.Function<java.lang.String, java.lang.String>)",
+        "justification": "New constructor added in azure-core."
+      },
+      {
+        "code": "java.method.added",
+        "new": "method com.azure.core.util.HttpClientOptions com.azure.core.util.HttpClientOptions::setConnectTimeout(java.time.Duration)",
+        "justification": "New setter added in azure-core."
+      },
+      {
+        "code": "java.method.added",
+        "new": "method java.time.Duration com.azure.core.util.HttpClientOptions::getConnectTimeout()",
+        "justification": "New getter added in azure-core."
+      },
+      {
+          "code": "java.method.defaultMethodAddedToInterface",
+          "new": "method boolean com.azure.core.http.policy.RetryStrategy::shouldRetryException(java.lang.Throwable)",
+          "justification": "New default method added in azure-core."
+      },
+      {
+        "code": "java.method.added",
+        "new": "method void com.azure.core.util.logging.ClientLogger::log(com.azure.core.util.logging.LogLevel, java.util.function.Supplier<java.lang.String>)",
+        "justification": "New default method added in azure-core."
+      },
+      {
+        "code": "java.method.added",
+        "new": "method void com.azure.core.util.logging.ClientLogger::log(com.azure.core.util.logging.LogLevel, java.util.function.Supplier<java.lang.String>, java.lang.Throwable)",
+        "justification": "New default method added in azure-core."
+      },
+      {
+        "code": "java.method.added",
+        "new": "method java.lang.Long com.azure.core.util.BinaryData::getLength()",
+        "justification": "New method added to BinaryData in azure-core."
+      },
+      {
+        "code": "java.method.added",
+        "new": "method reactor.core.publisher.Flux<java.nio.ByteBuffer> com.azure.core.util.BinaryData::toFluxByteBuffer()",
+        "justification": "New method added to BinaryData in azure-core."
+      },
+      {
+        "code": "java.method.added",
+        "new": "method reactor.core.publisher.Mono<com.azure.core.util.BinaryData> com.azure.core.util.BinaryData::fromFlux(reactor.core.publisher.Flux<java.nio.ByteBuffer>, java.lang.Long)",
+        "justification": "New method added to BinaryData in azure-core."
+      },
+      {
+        "code": "java.method.added",
+        "new": "method com.azure.core.util.BinaryData com.azure.core.util.BinaryData::fromFile(java.nio.file.Path)",
+        "justification": "New method added to BinaryData in azure-core."
+      },
+      {
+        "code": "java.method.added",
+        "new": "method com.azure.core.util.BinaryData com.azure.core.util.BinaryData::fromFile(java.nio.file.Path, int)",
+        "justification": "New method added to BinaryData in azure-core."
       }
     ]
   }

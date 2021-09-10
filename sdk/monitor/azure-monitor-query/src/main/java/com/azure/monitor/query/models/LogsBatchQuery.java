@@ -6,9 +6,9 @@ package com.azure.monitor.query.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.experimental.models.TimeInterval;
 import com.azure.core.util.CoreUtils;
-import com.azure.monitor.query.log.implementation.models.LogsQueryHelper;
-import com.azure.monitor.query.log.implementation.models.BatchQueryRequest;
-import com.azure.monitor.query.log.implementation.models.QueryBody;
+import com.azure.monitor.query.implementation.logs.models.LogsQueryHelper;
+import com.azure.monitor.query.implementation.logs.models.BatchQueryRequest;
+import com.azure.monitor.query.implementation.logs.models.QueryBody;
 
 import java.time.Duration;
 import java.util.ArrayList;
@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-import static com.azure.monitor.query.log.implementation.models.LogsQueryHelper.buildPreferHeaderString;
+import static com.azure.monitor.query.implementation.logs.models.LogsQueryHelper.buildPreferHeaderString;
 
 /**
  * A fluent class to create a batch of logs queries.
@@ -47,9 +47,9 @@ public final class LogsBatchQuery {
      * @param workspaceId The workspaceId on which the query is executed.
      * @param query The Kusto query.
      * @param timeInterval The time period for which the logs should be queried.
-     * @return The updated {@link LogsBatchQuery}.
+     * @return The index of the query in the batch.
      */
-    public LogsBatchQuery addQuery(String workspaceId, String query, TimeInterval timeInterval) {
+    public String addQuery(String workspaceId, String query, TimeInterval timeInterval) {
         return addQuery(workspaceId, query, timeInterval, new LogsQueryOptions());
     }
 
@@ -60,9 +60,9 @@ public final class LogsBatchQuery {
      * @param timeInterval The time period for which the logs should be queried.
      * @param logsQueryOptions The log query options to configure server timeout, set additional workspaces or enable
      * statistics and rendering information in response.
-     * @return The updated {@link LogsBatchQuery}.
+     * @return The index of the query in the batch.
      */
-    public LogsBatchQuery addQuery(String workspaceId, String query, TimeInterval timeInterval,
+    public String addQuery(String workspaceId, String query, TimeInterval timeInterval,
                                    LogsQueryOptions logsQueryOptions) {
         Objects.requireNonNull(query, "'query' cannot be null.");
         Objects.requireNonNull(workspaceId, "'workspaceId' cannot be null.");
@@ -87,7 +87,7 @@ public final class LogsBatchQuery {
                 .setMethod("POST");
 
         queries.add(batchQueryRequest);
-        return this;
+        return String.valueOf(index);
     }
 
     List<BatchQueryRequest> getBatchQueries() {

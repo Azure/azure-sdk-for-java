@@ -5,23 +5,30 @@
 package com.azure.resourcemanager.apimanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Sign-In settings for the Developer Portal. */
-@JsonFlatten
 @Fluent
-public class PortalSigninSettingsInner extends ProxyResource {
+public final class PortalSigninSettingsInner extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(PortalSigninSettingsInner.class);
 
     /*
-     * Redirect Anonymous users to the Sign-In page.
+     * Sign-in settings contract properties.
      */
-    @JsonProperty(value = "properties.enabled")
-    private Boolean enabled;
+    @JsonProperty(value = "properties")
+    private PortalSigninSettingProperties innerProperties;
+
+    /**
+     * Get the innerProperties property: Sign-in settings contract properties.
+     *
+     * @return the innerProperties value.
+     */
+    private PortalSigninSettingProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the enabled property: Redirect Anonymous users to the Sign-In page.
@@ -29,7 +36,7 @@ public class PortalSigninSettingsInner extends ProxyResource {
      * @return the enabled value.
      */
     public Boolean enabled() {
-        return this.enabled;
+        return this.innerProperties() == null ? null : this.innerProperties().enabled();
     }
 
     /**
@@ -39,7 +46,10 @@ public class PortalSigninSettingsInner extends ProxyResource {
      * @return the PortalSigninSettingsInner object itself.
      */
     public PortalSigninSettingsInner withEnabled(Boolean enabled) {
-        this.enabled = enabled;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PortalSigninSettingProperties();
+        }
+        this.innerProperties().withEnabled(enabled);
         return this;
     }
 
@@ -49,5 +59,8 @@ public class PortalSigninSettingsInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

@@ -10,7 +10,7 @@
 
   <groupId>com.azure.resourcemanager</groupId>
   <artifactId>azure-resourcemanager-containerinstance</artifactId>
-  <version>2.7.0</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-containerinstance;current} -->
+  <version>2.8.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-containerinstance;current} -->
   <packaging>jar</packaging>
 
   <name>Microsoft Azure SDK for Container Instance Management</name>
@@ -48,27 +48,27 @@
     <dependency>
       <groupId>com.azure.resourcemanager</groupId>
       <artifactId>azure-resourcemanager-resources</artifactId>
-      <version>2.7.0</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-resources;current} -->
+      <version>2.8.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-resources;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure.resourcemanager</groupId>
       <artifactId>azure-resourcemanager-storage</artifactId>
-      <version>2.7.0</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-storage;current} -->
+      <version>2.8.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-storage;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure.resourcemanager</groupId>
       <artifactId>azure-resourcemanager-authorization</artifactId>
-      <version>2.7.0</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-authorization;current} -->
+      <version>2.8.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-authorization;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure.resourcemanager</groupId>
       <artifactId>azure-resourcemanager-msi</artifactId>
-      <version>2.7.0</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-msi;current} -->
+      <version>2.8.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-msi;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure.resourcemanager</groupId>
       <artifactId>azure-resourcemanager-network</artifactId>
-      <version>2.7.0</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-network;current} -->
+      <version>2.8.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-network;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -96,7 +96,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-netty</artifactId>
-      <version>1.10.2</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
+      <version>1.11.0</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -176,6 +176,7 @@
         <artifactId>revapi-maven-plugin</artifactId>
         <version>0.11.2</version> <!-- {x-version-update;org.revapi:revapi-maven-plugin;external_dependency} -->
         <configuration>
+          <skip>true</skip>
           <analysisConfiguration>
             <revapi.ignore>
               <item>

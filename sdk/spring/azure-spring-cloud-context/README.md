@@ -14,7 +14,7 @@ This package helps developers to finish the auto-configuration of Azure Context.
 <dependency>
     <groupId>com.azure.spring</groupId>
     <artifactId>azure-spring-cloud-context</artifactId>
-    <version>2.7.0</version>
+    <version>2.8.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})

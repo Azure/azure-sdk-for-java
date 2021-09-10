@@ -13,10 +13,10 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.network.fluent.models.ExpressRouteGatewayInner;
 import com.azure.resourcemanager.network.fluent.models.ExpressRouteGatewayListInner;
+import com.azure.resourcemanager.network.models.TagsObject;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
 import java.nio.ByteBuffer;
-import java.util.Map;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -242,7 +242,7 @@ public interface ExpressRouteGatewaysClient
      *
      * @param resourceGroupName The resource group name of the ExpressRouteGateway.
      * @param expressRouteGatewayName The name of the gateway.
-     * @param tags Resource tags.
+     * @param expressRouteGatewayParameters Parameters supplied to update a virtual wan express route gateway tags.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -250,14 +250,14 @@ public interface ExpressRouteGatewaysClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> updateTagsWithResponseAsync(
-        String resourceGroupName, String expressRouteGatewayName, Map<String, String> tags);
+        String resourceGroupName, String expressRouteGatewayName, TagsObject expressRouteGatewayParameters);
 
     /**
      * Updates express route gateway tags.
      *
      * @param resourceGroupName The resource group name of the ExpressRouteGateway.
      * @param expressRouteGatewayName The name of the gateway.
-     * @param tags Resource tags.
+     * @param expressRouteGatewayParameters Parameters supplied to update a virtual wan express route gateway tags.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -265,14 +265,14 @@ public interface ExpressRouteGatewaysClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     PollerFlux<PollResult<ExpressRouteGatewayInner>, ExpressRouteGatewayInner> beginUpdateTagsAsync(
-        String resourceGroupName, String expressRouteGatewayName, Map<String, String> tags);
+        String resourceGroupName, String expressRouteGatewayName, TagsObject expressRouteGatewayParameters);
 
     /**
      * Updates express route gateway tags.
      *
      * @param resourceGroupName The resource group name of the ExpressRouteGateway.
      * @param expressRouteGatewayName The name of the gateway.
-     * @param tags Resource tags.
+     * @param expressRouteGatewayParameters Parameters supplied to update a virtual wan express route gateway tags.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -280,14 +280,14 @@ public interface ExpressRouteGatewaysClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     SyncPoller<PollResult<ExpressRouteGatewayInner>, ExpressRouteGatewayInner> beginUpdateTags(
-        String resourceGroupName, String expressRouteGatewayName, Map<String, String> tags);
+        String resourceGroupName, String expressRouteGatewayName, TagsObject expressRouteGatewayParameters);
 
     /**
      * Updates express route gateway tags.
      *
      * @param resourceGroupName The resource group name of the ExpressRouteGateway.
      * @param expressRouteGatewayName The name of the gateway.
-     * @param tags Resource tags.
+     * @param expressRouteGatewayParameters Parameters supplied to update a virtual wan express route gateway tags.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -296,14 +296,17 @@ public interface ExpressRouteGatewaysClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     SyncPoller<PollResult<ExpressRouteGatewayInner>, ExpressRouteGatewayInner> beginUpdateTags(
-        String resourceGroupName, String expressRouteGatewayName, Map<String, String> tags, Context context);
+        String resourceGroupName,
+        String expressRouteGatewayName,
+        TagsObject expressRouteGatewayParameters,
+        Context context);
 
     /**
      * Updates express route gateway tags.
      *
      * @param resourceGroupName The resource group name of the ExpressRouteGateway.
      * @param expressRouteGatewayName The name of the gateway.
-     * @param tags Resource tags.
+     * @param expressRouteGatewayParameters Parameters supplied to update a virtual wan express route gateway tags.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -311,27 +314,14 @@ public interface ExpressRouteGatewaysClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<ExpressRouteGatewayInner> updateTagsAsync(
-        String resourceGroupName, String expressRouteGatewayName, Map<String, String> tags);
+        String resourceGroupName, String expressRouteGatewayName, TagsObject expressRouteGatewayParameters);
 
     /**
      * Updates express route gateway tags.
      *
      * @param resourceGroupName The resource group name of the ExpressRouteGateway.
      * @param expressRouteGatewayName The name of the gateway.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return expressRoute gateway resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ExpressRouteGatewayInner> updateTagsAsync(String resourceGroupName, String expressRouteGatewayName);
-
-    /**
-     * Updates express route gateway tags.
-     *
-     * @param resourceGroupName The resource group name of the ExpressRouteGateway.
-     * @param expressRouteGatewayName The name of the gateway.
-     * @param tags Resource tags.
+     * @param expressRouteGatewayParameters Parameters supplied to update a virtual wan express route gateway tags.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -339,27 +329,14 @@ public interface ExpressRouteGatewaysClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     ExpressRouteGatewayInner updateTags(
-        String resourceGroupName, String expressRouteGatewayName, Map<String, String> tags);
+        String resourceGroupName, String expressRouteGatewayName, TagsObject expressRouteGatewayParameters);
 
     /**
      * Updates express route gateway tags.
      *
      * @param resourceGroupName The resource group name of the ExpressRouteGateway.
      * @param expressRouteGatewayName The name of the gateway.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return expressRoute gateway resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    ExpressRouteGatewayInner updateTags(String resourceGroupName, String expressRouteGatewayName);
-
-    /**
-     * Updates express route gateway tags.
-     *
-     * @param resourceGroupName The resource group name of the ExpressRouteGateway.
-     * @param expressRouteGatewayName The name of the gateway.
-     * @param tags Resource tags.
+     * @param expressRouteGatewayParameters Parameters supplied to update a virtual wan express route gateway tags.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -368,7 +345,10 @@ public interface ExpressRouteGatewaysClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     ExpressRouteGatewayInner updateTags(
-        String resourceGroupName, String expressRouteGatewayName, Map<String, String> tags, Context context);
+        String resourceGroupName,
+        String expressRouteGatewayName,
+        TagsObject expressRouteGatewayParameters,
+        Context context);
 
     /**
      * Fetches the details of a ExpressRoute gateway in a resource group.

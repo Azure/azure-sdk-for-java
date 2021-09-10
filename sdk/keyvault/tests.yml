@@ -36,12 +36,15 @@ stages:
         - name: azure-security-keyvault-certificates
           groupId: com.azure
           safeName: azuresecuritykeyvaultcertificates
-        - name: azure-security-test-keyvault-jca
-          groupId: com.azure
-          safeName: azuresecuritytestkeyvaultjca
         - name: azure-security-keyvault-keys
           groupId: com.azure
           safeName: azuresecuritykeyvaultkeys
         - name: azure-security-keyvault-secrets
           groupId: com.azure
           safeName: azuresecuritykeyvaultsecrets
+        - name: azure-security-test-keyvault-jca
+          groupId: com.azure
+          safeName: azuresecuritytestkeyvaultjca
+        - name: azure-security-keyvault-jca
+          groupId: com.azure
+          safeName: azuresecuritykeyvaultjca

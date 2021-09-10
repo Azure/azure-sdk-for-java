@@ -2,6 +2,21 @@
 
 ## 1.2.0-beta.1 (Unreleased)
 
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 1.1.6 (2021-09-07)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.19.0` to `1.20.0`.
 
 ## 1.1.5 (2021-08-06)
 

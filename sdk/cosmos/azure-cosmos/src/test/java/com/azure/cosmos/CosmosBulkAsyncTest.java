@@ -3,6 +3,9 @@
 
 package com.azure.cosmos;
 
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
+import com.azure.cosmos.models.CosmosBulkExecutionOptions;
+import com.azure.cosmos.models.CosmosBulkOperations;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.PartitionKeyDefinition;
@@ -17,7 +20,12 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Random;
+import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -50,7 +58,7 @@ public class CosmosBulkAsyncTest extends BatchTestBase {
         safeCloseAsync(this.bulkClient);
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    @Test(groups = {"simple"}, timeOut = TIMEOUT * 2)
     public void createItem_withBulkAndThroughputControl() throws InterruptedException {
         int totalRequest = getTotalRequest(180, 200);
 
@@ -68,37 +76,35 @@ public class CosmosBulkAsyncTest extends BatchTestBase {
             .build();
         bulkAsyncContainerWithThroughputControl.enableLocalThroughputControlGroup(groupConfig);
 
-        Flux<CosmosItemOperation> cosmosItemOperationFlux = Flux.merge(
+        Flux<com.azure.cosmos.models.CosmosItemOperation> cosmosItemOperationFlux = Flux.merge(
             Flux.range(0, totalRequest).map(i -> {
                 String partitionKey = UUID.randomUUID().toString();
                 TestDoc testDoc = this.populateTestDoc(partitionKey);
 
-                return BulkOperations.getUpsertItemOperation(testDoc, new PartitionKey(partitionKey));
+                return CosmosBulkOperations.getUpsertItemOperation(testDoc, new PartitionKey(partitionKey));
             }),
             Flux.range(0, totalRequest).map(i -> {
                 String partitionKey = UUID.randomUUID().toString();
                 EventDoc eventDoc = new EventDoc(UUID.randomUUID().toString(), 2, 4, "type1", partitionKey);
 
-                return BulkOperations.getUpsertItemOperation(eventDoc, new PartitionKey(partitionKey));
+                return CosmosBulkOperations.getUpsertItemOperation(eventDoc, new PartitionKey(partitionKey));
             }));
 
-        BulkProcessingOptions<CosmosBulkAsyncTest> bulkProcessingOptions = new BulkProcessingOptions<>();
-        bulkProcessingOptions.setMaxMicroBatchSize(100);
-        bulkProcessingOptions.setMaxMicroBatchConcurrency(5);
+        CosmosBulkExecutionOptions cosmosBulkExecutionOptions = new CosmosBulkExecutionOptions();
 
         try {
-            Flux<CosmosBulkOperationResponse<CosmosBulkAsyncTest>> responseFlux = bulkAsyncContainerWithThroughputControl
-                .processBulkOperations(cosmosItemOperationFlux, bulkProcessingOptions);
+            Flux<com.azure.cosmos.models.CosmosBulkOperationResponse<CosmosBulkAsyncTest>> responseFlux = bulkAsyncContainerWithThroughputControl
+                .executeBulkOperations(cosmosItemOperationFlux, cosmosBulkExecutionOptions);
 
             Thread.sleep(1000);
 
             AtomicInteger processedDoc = new AtomicInteger(0);
             responseFlux
-                .flatMap((CosmosBulkOperationResponse<CosmosBulkAsyncTest> cosmosBulkOperationResponse) -> {
+                .flatMap((com.azure.cosmos.models.CosmosBulkOperationResponse<CosmosBulkAsyncTest> cosmosBulkOperationResponse) -> {
 
                     processedDoc.incrementAndGet();
 
-                    CosmosBulkItemResponse cosmosBulkItemResponse = cosmosBulkOperationResponse.getResponse();
+                    com.azure.cosmos.models.CosmosBulkItemResponse cosmosBulkItemResponse = cosmosBulkOperationResponse.getResponse();
                     if (cosmosBulkOperationResponse.getException() != null) {
                         logger.error("Bulk operation failed", cosmosBulkOperationResponse.getException());
                         fail(cosmosBulkOperationResponse.getException().toString());
@@ -123,34 +129,32 @@ public class CosmosBulkAsyncTest extends BatchTestBase {
     public void createItem_withBulk() {
         int totalRequest = getTotalRequest();
 
-        Flux<CosmosItemOperation> cosmosItemOperationFlux = Flux.merge(
+        Flux<com.azure.cosmos.models.CosmosItemOperation> cosmosItemOperationFlux = Flux.merge(
             Flux.range(0, totalRequest).map(i -> {
                 String partitionKey = UUID.randomUUID().toString();
                 TestDoc testDoc = this.populateTestDoc(partitionKey);
 
-                return BulkOperations.getCreateItemOperation(testDoc, new PartitionKey(partitionKey));
+                return CosmosBulkOperations.getCreateItemOperation(testDoc, new PartitionKey(partitionKey));
             }),
             Flux.range(0, totalRequest).map(i -> {
                 String partitionKey = UUID.randomUUID().toString();
                 EventDoc eventDoc = new EventDoc(UUID.randomUUID().toString(), 2, 4, "type1", partitionKey);
 
-                return BulkOperations.getCreateItemOperation(eventDoc, new PartitionKey(partitionKey));
+                return CosmosBulkOperations.getCreateItemOperation(eventDoc, new PartitionKey(partitionKey));
             }));
 
-        BulkProcessingOptions<CosmosBulkAsyncTest> bulkProcessingOptions = new BulkProcessingOptions<>();
-        bulkProcessingOptions.setMaxMicroBatchSize(100);
-        bulkProcessingOptions.setMaxMicroBatchConcurrency(5);
+        CosmosBulkExecutionOptions cosmosBulkExecutionOptions = new CosmosBulkExecutionOptions();
 
-        Flux<CosmosBulkOperationResponse<CosmosBulkAsyncTest>> responseFlux = bulkAsyncContainer
-            .processBulkOperations(cosmosItemOperationFlux, bulkProcessingOptions);
+        Flux<com.azure.cosmos.models.CosmosBulkOperationResponse<CosmosBulkAsyncTest>> responseFlux = bulkAsyncContainer
+            .executeBulkOperations(cosmosItemOperationFlux, cosmosBulkExecutionOptions);
 
         AtomicInteger processedDoc = new AtomicInteger(0);
         responseFlux
-            .flatMap((CosmosBulkOperationResponse<CosmosBulkAsyncTest> cosmosBulkOperationResponse) -> {
+            .flatMap((com.azure.cosmos.models.CosmosBulkOperationResponse<CosmosBulkAsyncTest> cosmosBulkOperationResponse) -> {
 
                 processedDoc.incrementAndGet();
 
-                CosmosBulkItemResponse cosmosBulkItemResponse = cosmosBulkOperationResponse.getResponse();
+                com.azure.cosmos.models.CosmosBulkItemResponse cosmosBulkItemResponse = cosmosBulkOperationResponse.getResponse();
                 if (cosmosBulkOperationResponse.getException() != null) {
                     logger.error("Bulk operation failed", cosmosBulkOperationResponse.getException());
                     fail(cosmosBulkOperationResponse.getException().toString());
@@ -173,7 +177,7 @@ public class CosmosBulkAsyncTest extends BatchTestBase {
     public void createItem_withBulk_and_operationLevelContext() {
         int totalRequest = getTotalRequest();
 
-        Flux<CosmosItemOperation> cosmosItemOperationFlux = Flux.merge(
+        Flux<com.azure.cosmos.models.CosmosItemOperation> cosmosItemOperationFlux = Flux.merge(
             Flux.range(0, totalRequest).map(i -> {
 
                 String randomId = UUID.randomUUID().toString();
@@ -181,7 +185,7 @@ public class CosmosBulkAsyncTest extends BatchTestBase {
                 TestDoc testDoc = this.populateTestDoc(partitionKey);
                 ItemOperationContext ctx = new ItemOperationContext(randomId);
 
-                return BulkOperations.getCreateItemOperation(testDoc, new PartitionKey(partitionKey), ctx);
+                return CosmosBulkOperations.getCreateItemOperation(testDoc, new PartitionKey(partitionKey), ctx);
             }),
             Flux.range(0, totalRequest).map(i -> {
                 String randomId = UUID.randomUUID().toString();
@@ -189,23 +193,27 @@ public class CosmosBulkAsyncTest extends BatchTestBase {
                 EventDoc eventDoc = new EventDoc(UUID.randomUUID().toString(), 2, 4, "type1", partitionKey);
 
                 ItemOperationContext ctx = new ItemOperationContext(randomId);
-                return BulkOperations.getCreateItemOperation(eventDoc, new PartitionKey(partitionKey), ctx);
+                return CosmosBulkOperations.getCreateItemOperation(eventDoc, new PartitionKey(partitionKey), ctx);
             }));
 
-        BulkExecutionOptions bulkExecutionOptions = new BulkExecutionOptions();
-        bulkExecutionOptions.setTargetedMicroBatchRetryRate(0.25, 0.5);
-        bulkExecutionOptions.setMaxMicroBatchConcurrency(1);
+        CosmosBulkExecutionOptions bulkExecutionOptions = new CosmosBulkExecutionOptions();
+        ImplementationBridgeHelpers.CosmosBulkExecutionOptionsHelper
+            .getCosmosBulkExecutionOptionsAccessor()
+            .setTargetedMicroBatchRetryRate(
+                bulkExecutionOptions,
+                0.25,
+                0.5);
 
-        Flux<CosmosBulkOperationResponse<CosmosBulkAsyncTest>> responseFlux = bulkAsyncContainer
-            .processBulkOperations(cosmosItemOperationFlux, bulkExecutionOptions);
+        Flux<com.azure.cosmos.models.CosmosBulkOperationResponse<CosmosBulkAsyncTest>> responseFlux = bulkAsyncContainer
+            .executeBulkOperations(cosmosItemOperationFlux, bulkExecutionOptions);
 
         AtomicInteger processedDoc = new AtomicInteger(0);
         responseFlux
-            .flatMap((CosmosBulkOperationResponse<CosmosBulkAsyncTest> cosmosBulkOperationResponse) -> {
+            .flatMap((com.azure.cosmos.models.CosmosBulkOperationResponse<CosmosBulkAsyncTest> cosmosBulkOperationResponse) -> {
 
                 processedDoc.incrementAndGet();
 
-                CosmosBulkItemResponse cosmosBulkItemResponse = cosmosBulkOperationResponse.getResponse();
+                com.azure.cosmos.models.CosmosBulkItemResponse cosmosBulkItemResponse = cosmosBulkOperationResponse.getResponse();
                 if (cosmosBulkOperationResponse.getException() != null) {
                     logger.error("Bulk operation failed", cosmosBulkOperationResponse.getException());
                     fail(cosmosBulkOperationResponse.getException().toString());
@@ -231,37 +239,35 @@ public class CosmosBulkAsyncTest extends BatchTestBase {
     public void createItemMultipleTimesWithOperationOnFly_withBulk() {
         int totalRequest = getTotalRequest();
 
-        Flux<CosmosItemOperation> cosmosItemOperationFlux = Flux.merge(
+        Flux<com.azure.cosmos.models.CosmosItemOperation> cosmosItemOperationFlux = Flux.merge(
             Flux.range(0, totalRequest).map(i -> {
                 String partitionKey = UUID.randomUUID().toString();
                 TestDoc testDoc = this.populateTestDoc(partitionKey);
 
-                return BulkOperations.getCreateItemOperation(testDoc, new PartitionKey(partitionKey));
+                return CosmosBulkOperations.getCreateItemOperation(testDoc, new PartitionKey(partitionKey));
             }),
             Flux.range(0, totalRequest).map(i -> {
                 String partitionKey = UUID.randomUUID().toString();
                 EventDoc eventDoc = new EventDoc(UUID.randomUUID().toString(), 2, 4, "type1", partitionKey);
 
-                return BulkOperations.getCreateItemOperation(eventDoc, new PartitionKey(partitionKey));
+                return CosmosBulkOperations.getCreateItemOperation(eventDoc, new PartitionKey(partitionKey));
             }));
 
-        BulkProcessingOptions<CosmosBulkAsyncTest> bulkProcessingOptions = new BulkProcessingOptions<>();
-        bulkProcessingOptions.setMaxMicroBatchSize(100);
-        bulkProcessingOptions.setMaxMicroBatchConcurrency(5);
+        CosmosBulkExecutionOptions cosmosBulkExecutionOptions = new CosmosBulkExecutionOptions();
 
-        Flux<CosmosBulkOperationResponse<CosmosBulkAsyncTest>> responseFlux = bulkAsyncContainer
-            .processBulkOperations(cosmosItemOperationFlux, bulkProcessingOptions);
+        Flux<com.azure.cosmos.models.CosmosBulkOperationResponse<CosmosBulkAsyncTest>> responseFlux = bulkAsyncContainer
+            .executeBulkOperations(cosmosItemOperationFlux, cosmosBulkExecutionOptions);
 
         HashSet<Object> distinctDocs = new HashSet<>();
         AtomicInteger processedDoc = new AtomicInteger(0);
 
         // Subscribe first time
         responseFlux
-            .flatMap((CosmosBulkOperationResponse<CosmosBulkAsyncTest> cosmosBulkOperationResponse) -> {
+            .flatMap((com.azure.cosmos.models.CosmosBulkOperationResponse<CosmosBulkAsyncTest> cosmosBulkOperationResponse) -> {
 
                 processedDoc.incrementAndGet();
 
-                CosmosBulkItemResponse cosmosBulkItemResponse = cosmosBulkOperationResponse.getResponse();
+                com.azure.cosmos.models.CosmosBulkItemResponse cosmosBulkItemResponse = cosmosBulkOperationResponse.getResponse();
                 if (cosmosBulkOperationResponse.getException() != null) {
                     logger.error("Bulk operation failed", cosmosBulkOperationResponse.getException());
                     fail(cosmosBulkOperationResponse.getException().toString());
@@ -284,11 +290,11 @@ public class CosmosBulkAsyncTest extends BatchTestBase {
 
         // Subscribe second time should again return 201 as it will get new documents
         responseFlux
-            .flatMap((CosmosBulkOperationResponse<CosmosBulkAsyncTest> cosmosBulkOperationResponse) -> {
+            .flatMap((com.azure.cosmos.models.CosmosBulkOperationResponse<CosmosBulkAsyncTest> cosmosBulkOperationResponse) -> {
 
                 processedDoc.incrementAndGet();
 
-                CosmosBulkItemResponse cosmosBulkItemResponse = cosmosBulkOperationResponse.getResponse();
+                com.azure.cosmos.models.CosmosBulkItemResponse cosmosBulkItemResponse = cosmosBulkOperationResponse.getResponse();
                 if (cosmosBulkOperationResponse.getException() != null) {
                     logger.error("Bulk operation failed", cosmosBulkOperationResponse.getException());
                     fail(cosmosBulkOperationResponse.getException().toString());
@@ -314,7 +320,7 @@ public class CosmosBulkAsyncTest extends BatchTestBase {
     public void runCreateItemMultipleTimesWithFixedOperations_withBulk() {
         int totalRequest = getTotalRequest();
 
-        List<CosmosItemOperation> cosmosItemOperations = new ArrayList<>();
+        List<com.azure.cosmos.models.CosmosItemOperation> cosmosItemOperations = new ArrayList<>();
 
         for (int i = 0; i < totalRequest; i++) {
             String partitionKey = UUID.randomUUID().toString();
@@ -322,26 +328,24 @@ public class CosmosBulkAsyncTest extends BatchTestBase {
             // use i as a identifier for re check.
             TestDoc testDoc = this.populateTestDoc(partitionKey, i, 20);
 
-            cosmosItemOperations.add(BulkOperations.getCreateItemOperation(testDoc, new PartitionKey(partitionKey)));
+            cosmosItemOperations.add(CosmosBulkOperations.getCreateItemOperation(testDoc, new PartitionKey(partitionKey)));
         }
 
-        BulkProcessingOptions<Object> bulkProcessingOptions = new BulkProcessingOptions<>(Object.class);
-        bulkProcessingOptions.setMaxMicroBatchSize(30);
-        bulkProcessingOptions.setMaxMicroBatchConcurrency(5);
+        CosmosBulkExecutionOptions cosmosBulkExecutionOptions = new CosmosBulkExecutionOptions();
 
         HashSet<Object> distinctDocs = new HashSet<>();
         AtomicInteger processedDoc = new AtomicInteger(0);
 
-        Flux<CosmosBulkOperationResponse<Object>> createResponseFlux = bulkAsyncContainer
-            .processBulkOperations(Flux.fromIterable(cosmosItemOperations), bulkProcessingOptions);
+        Flux<com.azure.cosmos.models.CosmosBulkOperationResponse<Object>> createResponseFlux = bulkAsyncContainer
+            .executeBulkOperations(Flux.fromIterable(cosmosItemOperations), cosmosBulkExecutionOptions);
 
         // Subscribing first time should return 201(CREATED) status code for all
         createResponseFlux
-            .flatMap((CosmosBulkOperationResponse<Object> cosmosBulkOperationResponse) -> {
+            .flatMap(cosmosBulkOperationResponse -> {
 
                 processedDoc.incrementAndGet();
 
-                CosmosBulkItemResponse cosmosBulkItemResponse = cosmosBulkOperationResponse.getResponse();
+                com.azure.cosmos.models.CosmosBulkItemResponse cosmosBulkItemResponse = cosmosBulkOperationResponse.getResponse();
                 if (cosmosBulkOperationResponse.getException() != null) {
                     logger.error("Bulk operation failed", cosmosBulkOperationResponse.getException());
                     fail(cosmosBulkOperationResponse.getException().toString());
@@ -366,11 +370,11 @@ public class CosmosBulkAsyncTest extends BatchTestBase {
 
         // Subscribing second time should return 409(conflict) for all
         createResponseFlux
-            .flatMap((CosmosBulkOperationResponse<Object> cosmosBulkOperationResponse) -> {
+            .flatMap(cosmosBulkOperationResponse -> {
 
                 processedDoc.incrementAndGet();
 
-                CosmosBulkItemResponse cosmosBulkItemResponse = cosmosBulkOperationResponse.getResponse();
+                com.azure.cosmos.models.CosmosBulkItemResponse cosmosBulkItemResponse = cosmosBulkOperationResponse.getResponse();
                 if (cosmosBulkOperationResponse.getException() != null) {
                     logger.error("Bulk operation failed", cosmosBulkOperationResponse.getException());
                     fail(cosmosBulkOperationResponse.getException().toString());
@@ -393,7 +397,7 @@ public class CosmosBulkAsyncTest extends BatchTestBase {
     public void createItemWithError_withBulk() {
         int totalRequest = getTotalRequest();
 
-        Flux<CosmosItemOperation> cosmosItemOperationFlux = Flux.range(0, totalRequest).flatMap(i -> {
+        Flux<com.azure.cosmos.models.CosmosItemOperation> cosmosItemOperationFlux = Flux.range(0, totalRequest).flatMap(i -> {
 
             String partitionKey = UUID.randomUUID().toString();
             TestDoc testDoc = this.populateTestDoc(partitionKey, i, 20);
@@ -403,22 +407,20 @@ public class CosmosBulkAsyncTest extends BatchTestBase {
                 return Mono.error(new Exception("ex"));
             }
 
-            return Mono.just(BulkOperations.getCreateItemOperation(testDoc, new PartitionKey(partitionKey)));
+            return Mono.just(CosmosBulkOperations.getCreateItemOperation(testDoc, new PartitionKey(partitionKey)));
         });
 
-        BulkProcessingOptions<CosmosBulkAsyncTest> bulkProcessingOptions = new BulkProcessingOptions<>();
-        bulkProcessingOptions.setMaxMicroBatchSize(100);
-        bulkProcessingOptions.setMaxMicroBatchConcurrency(15);
+        CosmosBulkExecutionOptions cosmosBulkExecutionOptions = new CosmosBulkExecutionOptions();
 
-        Flux<CosmosBulkOperationResponse<CosmosBulkAsyncTest>> responseFlux = bulkAsyncContainer
-            .processBulkOperations(cosmosItemOperationFlux, bulkProcessingOptions);
+        Flux<com.azure.cosmos.models.CosmosBulkOperationResponse<CosmosBulkAsyncTest>> responseFlux = bulkAsyncContainer
+            .executeBulkOperations(cosmosItemOperationFlux, cosmosBulkExecutionOptions);
 
         AtomicInteger processedDoc = new AtomicInteger(0);
         AtomicInteger erroredDoc = new AtomicInteger(0);
         responseFlux
-            .flatMap((CosmosBulkOperationResponse<CosmosBulkAsyncTest> cosmosBulkOperationResponse) -> {
+            .flatMap((com.azure.cosmos.models.CosmosBulkOperationResponse<CosmosBulkAsyncTest> cosmosBulkOperationResponse) -> {
 
-                CosmosBulkItemResponse cosmosBulkItemResponse = cosmosBulkOperationResponse.getResponse();
+                com.azure.cosmos.models.CosmosBulkItemResponse cosmosBulkItemResponse = cosmosBulkOperationResponse.getResponse();
 
                 if(cosmosBulkItemResponse == null) {
 
@@ -449,7 +451,7 @@ public class CosmosBulkAsyncTest extends BatchTestBase {
     public void upsertItem_withbulk() {
         int totalRequest = getTotalRequest();
 
-        List<CosmosItemOperation> cosmosItemOperations = new ArrayList<>();
+        List<com.azure.cosmos.models.CosmosItemOperation> cosmosItemOperations = new ArrayList<>();
 
         for (int i = 0; i < totalRequest; i++) {
             String partitionKey = UUID.randomUUID().toString();
@@ -457,23 +459,21 @@ public class CosmosBulkAsyncTest extends BatchTestBase {
             // use i as a identifier for re check.
             TestDoc testDoc = this.populateTestDoc(partitionKey, i, 20);
 
-            cosmosItemOperations.add(BulkOperations.getUpsertItemOperation(testDoc, new PartitionKey(partitionKey)));
+            cosmosItemOperations.add(CosmosBulkOperations.getUpsertItemOperation(testDoc, new PartitionKey(partitionKey)));
         }
 
-        BulkProcessingOptions<Object> bulkProcessingOptions = new BulkProcessingOptions<>();
-        bulkProcessingOptions.setMaxMicroBatchSize(100);
-        bulkProcessingOptions.setMaxMicroBatchConcurrency(2);
+        CosmosBulkExecutionOptions cosmosBulkExecutionOptions = new CosmosBulkExecutionOptions();
 
-        Flux<CosmosBulkOperationResponse<Object>> responseFlux = bulkAsyncContainer
-            .processBulkOperations(Flux.fromIterable(cosmosItemOperations), bulkProcessingOptions);
+        Flux<com.azure.cosmos.models.CosmosBulkOperationResponse<Object>> responseFlux = bulkAsyncContainer
+            .executeBulkOperations(Flux.fromIterable(cosmosItemOperations), cosmosBulkExecutionOptions);
 
         AtomicInteger processedDoc = new AtomicInteger(0);
         responseFlux
-            .flatMap((CosmosBulkOperationResponse<Object> cosmosBulkOperationResponse) -> {
+            .flatMap(cosmosBulkOperationResponse -> {
 
                 processedDoc.incrementAndGet();
 
-                CosmosBulkItemResponse cosmosBulkItemResponse = cosmosBulkOperationResponse.getResponse();
+                com.azure.cosmos.models.CosmosBulkItemResponse cosmosBulkItemResponse = cosmosBulkOperationResponse.getResponse();
                 if (cosmosBulkOperationResponse.getException() != null) {
                     logger.error("Bulk operation failed", cosmosBulkOperationResponse.getException());
                     fail(cosmosBulkOperationResponse.getException().toString());
@@ -501,7 +501,7 @@ public class CosmosBulkAsyncTest extends BatchTestBase {
     public void deleteItem_withBulk() {
         int totalRequest = Math.min(getTotalRequest(), 20);
 
-        List<CosmosItemOperation> cosmosItemOperations = new ArrayList<>();
+        List<com.azure.cosmos.models.CosmosItemOperation> cosmosItemOperations = new ArrayList<>();
 
         for (int i = 0; i < totalRequest; i++) {
             String partitionKey = UUID.randomUUID().toString();
@@ -509,28 +509,25 @@ public class CosmosBulkAsyncTest extends BatchTestBase {
             // use i as a identifier for re check.
             TestDoc testDoc = this.populateTestDoc(partitionKey, i, 20);
 
-            cosmosItemOperations.add(BulkOperations.getCreateItemOperation(testDoc, new PartitionKey(partitionKey)));
+            cosmosItemOperations.add(CosmosBulkOperations.getCreateItemOperation(testDoc, new PartitionKey(partitionKey)));
         }
         createItemsAndVerify(cosmosItemOperations);
 
-        Flux<CosmosItemOperation> deleteCosmosItemOperationFlux =
-            Flux.fromIterable(cosmosItemOperations).map((CosmosItemOperation cosmosItemOperation) -> {
+        Flux<com.azure.cosmos.models.CosmosItemOperation> deleteCosmosItemOperationFlux =
+            Flux.fromIterable(cosmosItemOperations).map((com.azure.cosmos.models.CosmosItemOperation cosmosItemOperation) -> {
                 TestDoc testDoc = cosmosItemOperation.getItem();
-                return BulkOperations.getDeleteItemOperation(testDoc.getId(), cosmosItemOperation.getPartitionKeyValue());
+                return CosmosBulkOperations.getDeleteItemOperation(testDoc.getId(), cosmosItemOperation.getPartitionKeyValue());
             });
 
-        BulkProcessingOptions<TestDoc> bulkProcessingOptions = new BulkProcessingOptions<>();
-        bulkProcessingOptions.setMaxMicroBatchSize(30);
-        bulkProcessingOptions.setMaxMicroBatchConcurrency(1);
+        CosmosBulkExecutionOptions cosmosBulkExecutionOptions = new CosmosBulkExecutionOptions();
 
         AtomicInteger processedDoc = new AtomicInteger(0);
         bulkAsyncContainer
-            .processBulkOperations(deleteCosmosItemOperationFlux, bulkProcessingOptions)
-            .flatMap((CosmosBulkOperationResponse<TestDoc> cosmosBulkOperationResponse) -> {
-
+            .executeBulkOperations(deleteCosmosItemOperationFlux, cosmosBulkExecutionOptions)
+            .flatMap(cosmosBulkOperationResponse -> {
                 processedDoc.incrementAndGet();
 
-                CosmosBulkItemResponse cosmosBulkItemResponse = cosmosBulkOperationResponse.getResponse();
+                com.azure.cosmos.models.CosmosBulkItemResponse cosmosBulkItemResponse = cosmosBulkOperationResponse.getResponse();
                 if (cosmosBulkOperationResponse.getException() != null) {
                     logger.error("Bulk operation failed", cosmosBulkOperationResponse.getException());
                     fail(cosmosBulkOperationResponse.getException().toString());
@@ -552,7 +549,7 @@ public class CosmosBulkAsyncTest extends BatchTestBase {
     public void readItem_withBulk() {
         int totalRequest = getTotalRequest();
 
-        List<CosmosItemOperation> cosmosItemOperations = new ArrayList<>();
+        List<com.azure.cosmos.models.CosmosItemOperation> cosmosItemOperations = new ArrayList<>();
 
         for (int i = 0; i < totalRequest; i++) {
             String partitionKey = UUID.randomUUID().toString();
@@ -560,29 +557,27 @@ public class CosmosBulkAsyncTest extends BatchTestBase {
             // use i as a identifier for re check.
             TestDoc testDoc = this.populateTestDoc(partitionKey, i, 20);
 
-            cosmosItemOperations.add(BulkOperations.getUpsertItemOperation(testDoc, new PartitionKey(partitionKey)));
+            cosmosItemOperations.add(CosmosBulkOperations.getUpsertItemOperation(testDoc, new PartitionKey(partitionKey)));
         }
 
         createItemsAndVerify(cosmosItemOperations);
 
-        Flux<CosmosItemOperation> readCosmosItemOperationFlux =
-            Flux.fromIterable(cosmosItemOperations).map((CosmosItemOperation cosmosItemOperation) -> {
+        Flux<com.azure.cosmos.models.CosmosItemOperation> readCosmosItemOperationFlux =
+            Flux.fromIterable(cosmosItemOperations).map((com.azure.cosmos.models.CosmosItemOperation cosmosItemOperation) -> {
                 TestDoc testDoc = cosmosItemOperation.getItem();
-                return BulkOperations.getReadItemOperation(testDoc.getId(), cosmosItemOperation.getPartitionKeyValue());
+                return CosmosBulkOperations.getReadItemOperation(testDoc.getId(), cosmosItemOperation.getPartitionKeyValue());
             });
 
-        BulkProcessingOptions<Object> bulkProcessingOptions = new BulkProcessingOptions<>(Object.class);
-        bulkProcessingOptions.setMaxMicroBatchSize(30);
-        bulkProcessingOptions.setMaxMicroBatchConcurrency(5);
+        CosmosBulkExecutionOptions cosmosBulkExecutionOptions = new CosmosBulkExecutionOptions();
 
         AtomicInteger processedDoc = new AtomicInteger(0);
         bulkAsyncContainer
-            .processBulkOperations(readCosmosItemOperationFlux, bulkProcessingOptions)
-            .flatMap((CosmosBulkOperationResponse<Object> cosmosBulkOperationResponse) -> {
+            .executeBulkOperations(readCosmosItemOperationFlux, cosmosBulkExecutionOptions)
+            .flatMap(cosmosBulkOperationResponse -> {
 
                 processedDoc.incrementAndGet();
 
-                CosmosBulkItemResponse cosmosBulkItemResponse = cosmosBulkOperationResponse.getResponse();
+                com.azure.cosmos.models.CosmosBulkItemResponse cosmosBulkItemResponse = cosmosBulkOperationResponse.getResponse();
                 if (cosmosBulkOperationResponse.getException() != null) {
                     logger.error("Bulk operation failed", cosmosBulkOperationResponse.getException());
                     fail(cosmosBulkOperationResponse.getException().toString());
@@ -607,7 +602,7 @@ public class CosmosBulkAsyncTest extends BatchTestBase {
     public void readItemMultipleTimes_withBulk() {
         int totalRequest = getTotalRequest();
 
-        List<CosmosItemOperation> cosmosItemOperations = new ArrayList<>();
+        List<com.azure.cosmos.models.CosmosItemOperation> cosmosItemOperations = new ArrayList<>();
 
         for (int i = 0; i < totalRequest; i++) {
             String partitionKey = UUID.randomUUID().toString();
@@ -615,31 +610,29 @@ public class CosmosBulkAsyncTest extends BatchTestBase {
             // use i as a identifier for re check.
             TestDoc testDoc = this.populateTestDoc(partitionKey, i, 20);
 
-            cosmosItemOperations.add(BulkOperations.getUpsertItemOperation(testDoc, new PartitionKey(partitionKey)));
+            cosmosItemOperations.add(CosmosBulkOperations.getUpsertItemOperation(testDoc, new PartitionKey(partitionKey)));
         }
 
         createItemsAndVerify(cosmosItemOperations);
 
-        Flux<CosmosItemOperation> readCosmosItemOperationFlux =
-            Flux.fromIterable(cosmosItemOperations).map((CosmosItemOperation cosmosItemOperation) -> {
+        Flux<com.azure.cosmos.models.CosmosItemOperation> readCosmosItemOperationFlux =
+            Flux.fromIterable(cosmosItemOperations).map((com.azure.cosmos.models.CosmosItemOperation cosmosItemOperation) -> {
                 TestDoc testDoc = cosmosItemOperation.getItem();
-                return BulkOperations.getReadItemOperation(testDoc.getId(), cosmosItemOperation.getPartitionKeyValue());
+                return CosmosBulkOperations.getReadItemOperation(testDoc.getId(), cosmosItemOperation.getPartitionKeyValue());
             });
 
-        BulkProcessingOptions<Object> bulkProcessingOptions = new BulkProcessingOptions<>(Object.class);
-        bulkProcessingOptions.setMaxMicroBatchSize(30);
-        bulkProcessingOptions.setMaxMicroBatchConcurrency(5);
+        CosmosBulkExecutionOptions cosmosBulkExecutionOptions = new CosmosBulkExecutionOptions();
 
         HashSet<TestDoc> distinctDocs = new HashSet<>();
         AtomicInteger processedDoc = new AtomicInteger(0);
 
-        Flux<CosmosBulkOperationResponse<Object>> readResponseFlux = bulkAsyncContainer
-            .processBulkOperations(readCosmosItemOperationFlux, bulkProcessingOptions)
-            .flatMap((CosmosBulkOperationResponse<Object> cosmosBulkOperationResponse) -> {
+        Flux<com.azure.cosmos.models.CosmosBulkOperationResponse<Object>> readResponseFlux = bulkAsyncContainer
+            .executeBulkOperations(readCosmosItemOperationFlux, cosmosBulkExecutionOptions)
+            .flatMap(cosmosBulkOperationResponse -> {
 
                 processedDoc.incrementAndGet();
 
-                CosmosBulkItemResponse cosmosBulkItemResponse = cosmosBulkOperationResponse.getResponse();
+                com.azure.cosmos.models.CosmosBulkItemResponse cosmosBulkItemResponse = cosmosBulkOperationResponse.getResponse();
                 if (cosmosBulkOperationResponse.getException() != null) {
                     logger.error("Bulk operation failed", cosmosBulkOperationResponse.getException());
                     fail(cosmosBulkOperationResponse.getException().toString());
@@ -677,22 +670,22 @@ public class CosmosBulkAsyncTest extends BatchTestBase {
     public void replaceItem_withBulk() {
         int totalRequest = getTotalRequest();
 
-        List<CosmosItemOperation> cosmosItemOperations = new ArrayList<>();
+        List<com.azure.cosmos.models.CosmosItemOperation> cosmosItemOperations = new ArrayList<>();
 
         for (int i = 0; i < totalRequest; i++) {
             String partitionKey = UUID.randomUUID().toString();
 
             // use i as a identifier for re check.
             TestDoc testDoc = this.populateTestDoc(partitionKey, i, 20);
-            cosmosItemOperations.add(BulkOperations.getCreateItemOperation(testDoc, new PartitionKey(partitionKey)));
+            cosmosItemOperations.add(CosmosBulkOperations.getCreateItemOperation(testDoc, new PartitionKey(partitionKey)));
         }
 
         createItemsAndVerify(cosmosItemOperations);
 
-        Flux<CosmosItemOperation> replaceCosmosItemOperationFlux =
-            Flux.fromIterable(cosmosItemOperations).map((CosmosItemOperation cosmosItemOperation) -> {
+        Flux<com.azure.cosmos.models.CosmosItemOperation> replaceCosmosItemOperationFlux =
+            Flux.fromIterable(cosmosItemOperations).map((com.azure.cosmos.models.CosmosItemOperation cosmosItemOperation) -> {
                 TestDoc testDoc = cosmosItemOperation.getItem();
-                return BulkOperations.getReplaceItemOperation(
+                return CosmosBulkOperations.getReplaceItemOperation(
                     testDoc.getId(),
                     cosmosItemOperation.getItem(),
                     cosmosItemOperation.getPartitionKeyValue());
@@ -700,12 +693,12 @@ public class CosmosBulkAsyncTest extends BatchTestBase {
 
         AtomicInteger processedDoc = new AtomicInteger(0);
         bulkAsyncContainer
-            .processBulkOperations(replaceCosmosItemOperationFlux)
-            .flatMap((CosmosBulkOperationResponse<?> cosmosBulkOperationResponse) -> {
+            .executeBulkOperations(replaceCosmosItemOperationFlux)
+            .flatMap((com.azure.cosmos.models.CosmosBulkOperationResponse<?> cosmosBulkOperationResponse) -> {
 
                 processedDoc.incrementAndGet();
 
-                CosmosBulkItemResponse cosmosBulkItemResponse = cosmosBulkOperationResponse.getResponse();
+                com.azure.cosmos.models.CosmosBulkItemResponse cosmosBulkItemResponse = cosmosBulkOperationResponse.getResponse();
                 if (cosmosBulkOperationResponse.getException() != null) {
                     logger.error("Bulk operation failed", cosmosBulkOperationResponse.getException());
                     fail(cosmosBulkOperationResponse.getException().toString());
@@ -728,21 +721,19 @@ public class CosmosBulkAsyncTest extends BatchTestBase {
         assertThat(processedDoc.get()).isEqualTo(totalRequest);
     }
 
-    private void createItemsAndVerify(List<CosmosItemOperation> cosmosItemOperations) {
-        BulkProcessingOptions<Object> bulkProcessingOptions = new BulkProcessingOptions<>(Object.class);
-        bulkProcessingOptions.setMaxMicroBatchSize(100);
-        bulkProcessingOptions.setMaxMicroBatchConcurrency(5);
+    private void createItemsAndVerify(List<com.azure.cosmos.models.CosmosItemOperation> cosmosItemOperations) {
+        CosmosBulkExecutionOptions cosmosBulkExecutionOptions = new CosmosBulkExecutionOptions();
 
-        Flux<CosmosBulkOperationResponse<Object>> createResonseFlux = bulkAsyncContainer
-            .processBulkOperations(Flux.fromIterable(cosmosItemOperations), bulkProcessingOptions);
+        Flux<com.azure.cosmos.models.CosmosBulkOperationResponse<Object>> createResonseFlux = bulkAsyncContainer
+            .executeBulkOperations(Flux.fromIterable(cosmosItemOperations), cosmosBulkExecutionOptions);
 
         HashSet<Integer> distinctIndex = new HashSet<>();
         AtomicInteger processedDoc = new AtomicInteger(0);
         createResonseFlux
-            .flatMap((CosmosBulkOperationResponse<Object> cosmosBulkOperationResponse) -> {
+            .flatMap(cosmosBulkOperationResponse -> {
 
                 processedDoc.incrementAndGet();
-                CosmosBulkItemResponse cosmosBulkItemResponse = cosmosBulkOperationResponse.getResponse();
+                com.azure.cosmos.models.CosmosBulkItemResponse cosmosBulkItemResponse = cosmosBulkOperationResponse.getResponse();
                 if (cosmosBulkOperationResponse.getException() != null) {
                     logger.error("Bulk operation failed", cosmosBulkOperationResponse.getException());
                     fail(cosmosBulkOperationResponse.getException().toString());

@@ -7,11 +7,12 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.ProxyOptions;
 import com.azure.core.util.Configuration;
-import com.azure.identity.AuthenticationRecord;
 import com.azure.identity.AzureAuthorityHosts;
+import com.azure.identity.AuthenticationRecord;
 import com.azure.identity.RegionalAuthority;
 import com.azure.identity.TokenCachePersistenceOptions;
 import com.azure.identity.implementation.util.ValidationUtil;
+import com.microsoft.aad.msal4j.UserAssertion;
 
 import java.time.Duration;
 import java.util.concurrent.ExecutorService;
@@ -23,6 +24,7 @@ import java.util.function.Function;
  */
 public final class IdentityClientOptions {
     private static final int MAX_RETRY_DEFAULT_LIMIT = 3;
+    public static final String AZURE_IDENTITY_ENABLE_LEGACY_TENANT_SELECTION = "AZURE_IDENTITY_ENABLE_LEGACY_TENANT_SELECTION";
 
     private String authorityHost;
     private int maxRetry;
@@ -32,6 +34,7 @@ public final class IdentityClientOptions {
     private ExecutorService executorService;
     private HttpClient httpClient;
     private boolean allowUnencryptedCache;
+    private boolean allowMultiTenantAuthentication;
     private boolean sharedTokenCacheEnabled;
     private String keePassDatabasePath;
     private boolean includeX5c;
@@ -39,6 +42,8 @@ public final class IdentityClientOptions {
     private TokenCachePersistenceOptions tokenCachePersistenceOptions;
     private boolean cp1Disabled;
     private RegionalAuthority regionalAuthority;
+    private UserAssertion userAssertion;
+    private boolean identityLegacyTenantSelection;
     private Configuration configuration;
 
     /**
@@ -49,6 +54,10 @@ public final class IdentityClientOptions {
         loadFromConfiugration(configuration);
         maxRetry = MAX_RETRY_DEFAULT_LIMIT;
         retryTimeout = i -> Duration.ofSeconds((long) Math.pow(2, i.getSeconds() - 1));
+        regionalAuthority = RegionalAuthority.fromString(
+            configuration.get(Configuration.PROPERTY_AZURE_REGIONAL_AUTHORITY_NAME));
+        identityLegacyTenantSelection = configuration
+            .get(AZURE_IDENTITY_ENABLE_LEGACY_TENANT_SELECTION, false);
     }
 
     /**
@@ -193,8 +202,30 @@ public final class IdentityClientOptions {
         return this;
     }
 
+    /**
+     * Allows to override the tenant being used in the authentication request
+     * via {@link com.azure.core.experimental.credential.TokenRequestContextExperimental#setTenantId(String)}.
+     *
+     * @param allowMultiTenantAuthentication the flag to indicate if multi tenant authentication is enabled or not.
+     * @return The updated identity client options.
+     */
+    public IdentityClientOptions setAllowMultiTenantAuthentication(boolean allowMultiTenantAuthentication) {
+        this.allowMultiTenantAuthentication = allowMultiTenantAuthentication;
+        return this;
+    }
+
+
     public boolean getAllowUnencryptedCache() {
         return this.allowUnencryptedCache;
+    }
+
+    /**
+     * Get the flag indicating if multi tenant authentication is enabled or not.
+     *
+     * @return the boolean status indicating if multi tenant authentication is enabled or not.
+     */
+    public boolean isMultiTenantAuthenticationAllowed() {
+        return this.allowMultiTenantAuthentication;
     }
 
     /**
@@ -325,6 +356,34 @@ public final class IdentityClientOptions {
         return regionalAuthority;
     }
 
+
+    /**
+     * Configure the User Assertion Scope to be used for OnBehalfOf Authentication request.
+     *
+     * @param userAssertion the user assertion access token to be used for On behalf Of authentication flow
+     * @return the updated identity client options
+     */
+    public IdentityClientOptions userAssertion(String userAssertion) {
+        this.userAssertion = new UserAssertion(userAssertion);
+        return this;
+    }
+
+    /**
+     * Get the configured {@link UserAssertion}
+     *
+     * @return the configured user assertion scope
+     */
+    public UserAssertion getUserAssertion() {
+        return this.userAssertion;
+    }
+
+    /**
+     * Gets the regional authority, or null if regional authority should not be used.
+     * @return the regional authority value if specified
+     */
+    public boolean isLegacyTenantSelectionEnabled() {
+        return identityLegacyTenantSelection;
+    }
 
     /**
      * Sets the specified configuration store.
