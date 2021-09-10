@@ -43,7 +43,7 @@ public final class ShareFileDownloadOptions {
     }
 
     /**
-     * @param getRangeContentMd5 Whether or not the service returns the MD5 hash for the range.
+     * @param rangeContentMd5Requested Whether or not the service returns the MD5 hash for the range.
      * @return The updated options.
      */
     public ShareFileDownloadOptions setRangeContentMd5Requested(Boolean rangeContentMd5Requested) {
