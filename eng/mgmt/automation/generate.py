@@ -134,6 +134,8 @@ def update_changelog(changelog_file, changelog):
 
     first_version_part = old_changelog[:first_version.end() +
                                        second_version.start()]
+    # remove text starting from the first '###' (usually the block '### Features Added')
+    first_version_part = re.sub('###.*', '', first_version_part, re.S)
     first_version_part = re.sub('\s+$', '', first_version_part)
     first_version_part += '\n\n' + changelog.strip() + '\n\n'
 
