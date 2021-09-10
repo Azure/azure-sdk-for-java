@@ -307,7 +307,7 @@ cosmos_org.scalamock:scalamock_2.12;5.0.0
 
 # Maven Tools for Cosmos Spark connector only
 cosmos_org.scalatest:scalatest-maven-plugin;2.0.2
-cosmos_net.alchim31.maven:scala-maven-plugin;4.4.0
+cosmos_net.alchim31.maven:scala-maven-plugin;4.5.4
 cosmos_org.scalastyle:scalastyle-maven-plugin;1.0.0
 
 # sdk\core\azure-core-serializer-avro-jackson\pom.xml

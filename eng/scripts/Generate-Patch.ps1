@@ -91,9 +91,11 @@ function UpdateChangeLog($ArtifactName, $ServiceDirectoryName, $Version) {
   LogDebug "Adding new ChangeLog entry for Version [$Version]"
   $Content = @()
   $Content += ""
-  $Content += "### Dependency Updates"
+  $Content += "### Other Changes"
   $Content += ""
-  $Content += "Upgraded ``azure-core`` and other dependencies for the library."
+  $Content += "#### Dependency Updates"
+  $Content += ""
+  $Content += "- Upgraded ``azure-core`` and other dependencies for the library."
   $Content += ""
   $newChangeLogEntry = New-ChangeLogEntry -Version $Version -Status $ReleaseStatus -Content $Content
   if ($newChangeLogEntry) {
@@ -234,7 +236,7 @@ try {
   Write-Information "Resetting the $ArtifactName sources to the release $ReleaseTag."
 
   ## Creating a new branch
-  $CmdOutput = git checkout -b $BranchName $RemoteName/main
+  $cmdOutput = git checkout -b $BranchName $RemoteName/main
   if($LASTEXITCODE -ne 0) {
     LogError "Could not checkout branch $BranchName, please check if it already exists and delete as necessary. Exiting..."
     exit
