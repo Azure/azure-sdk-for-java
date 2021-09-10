@@ -111,7 +111,7 @@ com.azure:azure-search-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-security-attestation;1.0.0-beta.1;1.0.0-beta.2
 com.azure:azure-security-confidentialledger;1.0.0-beta.2;1.0.0-beta.3
 com.azure:azure-security-keyvault-administration;4.0.2;4.0.3
-com.azure:azure-security-keyvault-certificates;4.2.2;4.2.3
+com.azure:azure-security-keyvault-certificates;4.2.3;4.3.0-beta.1
 com.azure:azure-security-keyvault-jca;2.0.0;2.1.0-beta.1
 com.azure:azure-security-test-keyvault-jca;1.0.0;1.0.0
 com.azure:azure-security-keyvault-keys;4.3.2;4.3.3
