@@ -18,7 +18,7 @@ steps:
   - pwsh: |
       $pomf = Get-ChildItem "${{parameters.ArtifactDirectory}}/*.pom"
       if($pomf.name -notmatch "${{parameters.Artifact.name}}") {
-        Write-Error "Can't find package ${{parameters.Artifact.name}}"
+        Write-Error "Package name mismatch: expecting ${{parameters.Artifact.name}}, found $pomf.name"
         exit 1
       }
       if($pomf.Count -ne 1) {
