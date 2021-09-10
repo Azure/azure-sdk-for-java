@@ -26,12 +26,10 @@ import com.azure.resourcemanager.eventgrid.models.EventHubEventSubscriptionDesti
 import com.azure.resourcemanager.eventgrid.models.EventSubscription;
 import com.azure.resourcemanager.eventgrid.models.EventSubscriptionFilter;
 import com.azure.resourcemanager.eventgrid.models.Topic;
-import com.azure.resourcemanager.eventhubs.EventHubsManager;
 import com.azure.resourcemanager.eventhubs.models.EventHub;
 import com.azure.resourcemanager.eventhubs.models.EventHubNamespace;
 import com.azure.resourcemanager.eventhubs.models.EventHubNamespaceSkuType;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
-import com.azure.resourcemanager.resources.models.Subscription;
 import reactor.core.Disposable;
 import reactor.core.publisher.Flux;
 
@@ -51,10 +49,10 @@ public class EventGridPublishAndConsumeExample {
     private static final Region region = Region.US_WEST2;
     private static final String resourceGroupName = "rg" + randomPadding();
     private static final String eventHubName = "eh" + randomPadding();
-    private static final String eventHubNamespace = "eh-namespace" + randomPadding();
-    private static final String topicName = "my-topic-name" + randomPadding();
-    private static final String eventSubscriptionName = "event-subscription" + randomPadding();
-    private static final String eventHubRuleName = "my-management-rule" + randomPadding();
+    private static final String eventHubNamespace = "ehNamespace" + randomPadding();
+    private static final String topicName = "myTopicName" + randomPadding();
+    private static final String eventSubscriptionName = "eventSubscription" + randomPadding();
+    private static final String eventHubRuleName = "myManagementRule" + randomPadding();
 
     /**
      * Main entry point.
@@ -70,7 +68,7 @@ public class EventGridPublishAndConsumeExample {
                 .build();
 
             AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
-            
+
             // 2. Create ResourceManager, EventGridManager
 
             // Create one HttpClient to make it shared by two resource managers.
@@ -188,23 +186,23 @@ public class EventGridPublishAndConsumeExample {
 
             Disposable subscription = consumer.receiveFromPartition(firstPartition, EventPosition.latest())
                 .subscribe(partitionEvent -> {
-                        EventData eventData = partitionEvent.getData();
-                        String contents = new String(eventData.getBody(), UTF_8);
+                    EventData eventData = partitionEvent.getData();
+                    String contents = new String(eventData.getBody(), UTF_8);
+                    countDownLatch.countDown();
+
+                    System.out.printf("Event received. Event sequence number number: %s. Contents: %s%n",
+                        eventData.getSequenceNumber(), contents);
+                },
+                error -> {
+                    System.err.println("Error occurred while consuming events: " + error);
+
+                    // Count down until 0, so the main thread does not keep waiting for events.
+                    while (countDownLatch.getCount() > 0) {
                         countDownLatch.countDown();
-
-                        System.out.printf("Event received. Event sequence number number: %s. Contents: %s%n",
-                            eventData.getSequenceNumber(), contents);
-                    },
-                    error -> {
-                        System.err.println("Error occurred while consuming events: " + error);
-
-                        // Count down until 0, so the main thread does not keep waiting for events.
-                        while (countDownLatch.getCount() > 0) {
-                            countDownLatch.countDown();
-                        }
-                    }, () -> {
-                        System.out.println("Finished reading events.");
-                    });
+                    }
+                }, () -> {
+                    System.out.println("Finished reading events.");
+                });
 
             // 9. Publish custom events to the EventGrid.
             // We create events to send to the service and block until the send has completed.
