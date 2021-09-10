@@ -569,7 +569,8 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestBase {
         if (interceptorManager.isPlaybackMode()) {
             expectedName = "ShivangiServiceBus";
         } else {
-            final String[] split = TestUtils.getFullyQualifiedDomainName().split("\\.", 2);
+            final String[] split = new ConnectionStringProperties(TestUtils.getConnectionString())
+                .getEndpoint().getHost().split("\\.", 2);
             expectedName = split[0];
         }
 
