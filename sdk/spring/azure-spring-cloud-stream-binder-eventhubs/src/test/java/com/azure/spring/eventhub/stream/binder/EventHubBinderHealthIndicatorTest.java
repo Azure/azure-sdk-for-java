@@ -5,7 +5,7 @@ package com.azure.spring.eventhub.stream.binder;
 
 import com.azure.messaging.eventhubs.EventHubProducerAsyncClient;
 import com.azure.messaging.eventhubs.EventHubProperties;
-import com.azure.spring.integration.eventhub.api.EventHubClientFactory;
+import com.azure.spring.eventhubs.core.EventHubClientFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Timeout;

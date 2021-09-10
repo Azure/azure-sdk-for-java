@@ -9,8 +9,8 @@ import com.azure.spring.cloud.autoconfigure.eventhub.EventHubConnectionStringPro
 import com.azure.spring.cloud.context.core.impl.EventHubNamespaceManager;
 import com.azure.spring.cloud.context.core.impl.StorageAccountManager;
 import com.azure.spring.eventhub.stream.binder.config.EventHubBinderConfiguration;
-import com.azure.spring.integration.eventhub.api.EventHubClientFactory;
-import com.azure.spring.integration.eventhub.api.EventHubOperation;
+import com.azure.spring.eventhubs.core.EventHubClientFactory;
+import com.azure.spring.eventhubs.core.EventHubOperation;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;

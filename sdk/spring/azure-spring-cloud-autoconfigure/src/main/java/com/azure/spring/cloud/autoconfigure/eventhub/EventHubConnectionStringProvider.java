@@ -6,7 +6,7 @@ package com.azure.spring.cloud.autoconfigure.eventhub;
 import com.azure.resourcemanager.eventhubs.models.AuthorizationRule;
 import com.azure.resourcemanager.eventhubs.models.EventHubAuthorizationKey;
 import com.azure.resourcemanager.eventhubs.models.EventHubNamespace;
-import com.azure.spring.integration.eventhub.impl.EventHubRuntimeException;
+import com.azure.spring.eventhubs.core.EventHubRuntimeException;
 import org.springframework.lang.NonNull;
 
 /**

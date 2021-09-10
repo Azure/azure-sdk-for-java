@@ -5,7 +5,7 @@ package com.azure.spring.eventhub.stream.binder.config;
 
 import com.azure.spring.eventhub.stream.binder.EventHubHealthIndicator;
 import com.azure.spring.eventhub.stream.binder.EventHubMessageChannelBinder;
-import com.azure.spring.integration.eventhub.api.EventHubClientFactory;
+import com.azure.spring.eventhubs.core.EventHubClientFactory;
 import org.springframework.boot.actuate.autoconfigure.health.ConditionalOnEnabledHealthIndicator;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.context.annotation.Bean;

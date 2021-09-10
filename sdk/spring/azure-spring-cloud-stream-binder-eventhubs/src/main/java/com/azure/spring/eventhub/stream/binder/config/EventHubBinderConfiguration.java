@@ -17,7 +17,7 @@ import com.azure.spring.eventhub.stream.binder.EventHubMessageChannelBinder;
 import com.azure.spring.eventhub.stream.binder.properties.EventHubExtendedBindingProperties;
 import com.azure.spring.eventhub.stream.binder.provisioning.EventHubChannelProvisioner;
 import com.azure.spring.eventhub.stream.binder.provisioning.EventHubChannelResourceManagerProvisioner;
-import com.azure.spring.integration.eventhub.api.EventHubOperation;
+import com.azure.spring.eventhubs.core.EventHubOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;

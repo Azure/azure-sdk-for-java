@@ -8,9 +8,9 @@ import com.azure.spring.eventhub.stream.binder.properties.EventHubExtendedBindin
 import com.azure.spring.eventhub.stream.binder.properties.EventHubProducerProperties;
 import com.azure.spring.eventhub.stream.binder.provisioning.EventHubChannelProvisioner;
 import com.azure.spring.integration.core.api.CheckpointConfig;
-import com.azure.spring.integration.core.api.StartPosition;
+import com.azure.spring.eventhubs.support.StartPosition;
 import com.azure.spring.integration.core.api.reactor.DefaultMessageHandler;
-import com.azure.spring.integration.eventhub.api.EventHubOperation;
+import com.azure.spring.eventhubs.core.EventHubOperation;
 import com.azure.spring.integration.eventhub.inbound.EventHubInboundChannelAdapter;
 import org.springframework.cloud.stream.binder.AbstractMessageChannelBinder;
 import org.springframework.cloud.stream.binder.BinderHeaders;

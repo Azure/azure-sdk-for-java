@@ -5,7 +5,7 @@ package com.azure.spring.integration.eventhub.inbound;
 
 import com.azure.messaging.eventhubs.CheckpointStore;
 import com.azure.messaging.eventhubs.models.EventContext;
-import com.azure.spring.integration.eventhub.support.EventHubTestOperation;
+import com.azure.spring.eventhubs.support.EventHubTestOperation;
 import com.azure.spring.integration.test.support.InboundChannelAdapterTest;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;

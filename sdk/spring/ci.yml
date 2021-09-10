@@ -125,6 +125,14 @@ extends:
         groupId: com.azure.spring
         safeName: azurespringcloudcore
         skipPublishDocMs: true
+      - name: azure-spring-messaging
+        groupId: com.azure.spring
+        safeName: azurespringmessaging
+        skipPublishDocMs: true
+      - name: azure-spring-eventhubs
+        groupId: com.azure.spring
+        safeName: azurespringeventhubs
+        skipPublishDocMs: true
       - name: azure-spring-cloud-autoconfigure
         groupId: com.azure.spring
         safeName: azurespringcloudautoconfigure

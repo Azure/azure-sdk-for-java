@@ -6,7 +6,7 @@ package com.azure.spring.messaging.core.reactor;
 import com.azure.spring.messaging.AzureHeaders;
 import com.azure.spring.messaging.checkpoint.CheckpointConfig;
 import com.azure.spring.messaging.checkpoint.CheckpointMode;
-import com.azure.spring.messaging.checkpoint.Checkpointer;
+import com.azure.spring.messaging.checkpoint.reactor.Checkpointer;
 import com.azure.spring.messaging.support.pojo.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

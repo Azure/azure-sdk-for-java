@@ -4,7 +4,7 @@
 package com.azure.spring.eventhub.stream.binder;
 
 import com.azure.messaging.eventhubs.EventHubProducerAsyncClient;
-import com.azure.spring.integration.eventhub.api.EventHubClientFactory;
+import com.azure.spring.eventhubs.core.EventHubClientFactory;
 import org.springframework.boot.actuate.health.Health;
 import org.springframework.boot.actuate.health.HealthIndicator;
 

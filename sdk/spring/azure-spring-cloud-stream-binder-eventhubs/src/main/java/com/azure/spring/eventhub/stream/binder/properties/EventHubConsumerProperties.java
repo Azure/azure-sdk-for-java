@@ -4,7 +4,7 @@
 package com.azure.spring.eventhub.stream.binder.properties;
 
 import com.azure.spring.integration.core.api.CheckpointMode;
-import com.azure.spring.integration.core.api.StartPosition;
+import com.azure.spring.eventhubs.support.StartPosition;
 
 import java.time.Duration;
 

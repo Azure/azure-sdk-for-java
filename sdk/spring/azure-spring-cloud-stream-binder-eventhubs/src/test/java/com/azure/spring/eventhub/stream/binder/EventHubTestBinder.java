@@ -6,7 +6,7 @@ package com.azure.spring.eventhub.stream.binder;
 import com.azure.spring.eventhub.stream.binder.properties.EventHubProducerProperties;
 import com.azure.spring.eventhub.stream.binder.provisioning.EventHubChannelProvisioner;
 import com.azure.spring.eventhub.stream.binder.properties.EventHubConsumerProperties;
-import com.azure.spring.integration.eventhub.api.EventHubOperation;
+import com.azure.spring.eventhubs.core.EventHubOperation;
 import org.springframework.cloud.stream.binder.AbstractTestBinder;
 import org.springframework.cloud.stream.binder.BinderHeaders;
 import org.springframework.cloud.stream.binder.ExtendedConsumerProperties;
