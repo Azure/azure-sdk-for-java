@@ -49,7 +49,7 @@ public final class JreCertificates implements AzureCertificates {
      * Private constructor
      */
     private JreCertificates() {
-        KeyStore jreKeyStore = JREKeyStoreFactory.getDefault();
+        KeyStore jreKeyStore = JREKeyStoreFactory.getDefaultKeyStore();
         aliases = Optional.ofNullable(jreKeyStore)
             .map(a -> {
                 try {

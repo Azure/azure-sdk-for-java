@@ -112,7 +112,7 @@ public final class HttpUtil {
     }
 
     private static CloseableHttpClient buildClient() {
-        KeyStore keyStore = JREKeyStoreFactory.getDefault();
+        KeyStore keyStore = JREKeyStoreFactory.getDefaultKeyStore();
 
         SSLContext sslContext = null;
         try {

@@ -42,7 +42,7 @@ public final class JREKeyStoreFactory {
      * This method returns the instance of JRE key store
      * @return the JRE key store.
      */
-    public static KeyStore getDefault() {
+    public static KeyStore getDefaultKeyStore() {
         return  JRE_KEY_STORE;
     }
 
