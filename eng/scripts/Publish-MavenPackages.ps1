@@ -5,6 +5,7 @@ param(
   [Parameter(Mandatory=$true)][string]$RepositoryPassword,
   [Parameter(Mandatory=$true)][string]$GPGExecutablePath,
   [Parameter(Mandatory=$false)][switch]$StageOnly,
+  [Parameter(Mandatory=$false)][switch]$ShouldPublish,
   [Parameter(Mandatory=$false)][AllowEmptyString()][string]$GroupIDFilter,
   [Parameter(Mandatory=$false)][AllowEmptyString()][string]$ArtifactIDFilter
 )
@@ -37,6 +38,7 @@ Write-Information "GPG Executable Path is: $GPGExecutablePath"
 Write-Information "Group ID Filter is: $GroupIDFilter"
 Write-Information "Artifact ID Filter is: $ArtifactIDFilter"
 Write-Information "Stage Only is: $StageOnly"
+Write-Information "Should Publish is: $ShouldPublish"
 
 Write-Information "Getting filtered package details."
 $packageDetails = Get-FilteredMavenPackageDetails -ArtifactDirectory $ArtifactDirectory -GroupIDFilter $GroupIDFilter -ArtifactIDFilter $ArtifactIDFilter
@@ -48,7 +50,7 @@ if ($packageDetails.Length -eq 0) {
   throw "Aborting, no packages to publish."
 }
 
-if($StageOnly)
+if ($StageOnly)
 {
   foreach ($packageDetail in $packageDetails) {
     if ($packageDetail.IsSnapshot) {
@@ -127,6 +129,12 @@ foreach ($packageDetail in $packageDetails) {
   Write-Information "GPG Executable Option is: $gpgexeOption"
 
   if ($RepositoryUrl -match "https://pkgs.dev.azure.com/azure-sdk/\b(internal|public)\b/*") {
+    if(!$ShouldPublish)
+    {
+      Write-Information "Skipping deployment because ShouldPublish == false."
+      continue
+    }
+
     if (Test-ReleasedPackage -RepositoryUrl $RepositoryUrl -PackageDetail $packageDetail -BearerToken $RepositoryPassword) {
       Write-Information "Package $($packageDetail.FullyQualifiedName) already deployed. Skipping deployment."
       continue
@@ -149,15 +157,6 @@ foreach ($packageDetail in $packageDetails) {
       continue
     }
 
-    if (!$StageOnly) {
-      Write-Information "Checking to see if package $($packageDetail.FullyQualifiedName) is already deployed."
-      
-      if (Test-ReleasedPackage -RepositoryUrl $RepositoryUrl -PackageDetail $packageDetail) {
-        Write-Information "Package $($packageDetail.FullyQualifiedName) already deployed. Skipping deployment."
-        continue  
-      }
-    }
-      
     $localRepositoryDirectory = Get-RandomRepositoryDirectory
     $localRepositoryDirectoryUri = $([Uri]$localRepositoryDirectory.FullName).AbsoluteUri
     Write-Information "Local Repository Directory URI is: $localRepositoryDirectoryUri"
@@ -178,6 +177,21 @@ foreach ($packageDetail in $packageDetails) {
     Write-Information "mvn gpg:sign-and-deploy-file `"--batch-mode`" `"$pomOption`" `"$fileOption`" `"$javadocOption`" `"$sourcesOption`" `"$filesOption`" $classifiersOption `"$typesOption`" `"$urlOption`" `"$gpgexeOption`" `"-DrepositoryId=target-repo`" `"--settings=$PSScriptRoot\..\maven.publish.settings.xml`""
     mvn gpg:sign-and-deploy-file "--batch-mode" "$pomOption" "$fileOption" "$javadocOption" "$sourcesOption" "$filesOption" $classifiersOption "$typesOption" "$urlOption" "$gpgexeOption" "-DrepositoryId=target-repo" "--settings=$PSScriptRoot\..\maven.publish.settings.xml"
     if ($LASTEXITCODE) { exit $LASTEXITCODE }
+
+    if(!$ShouldPublish)
+    {
+      Write-Information "Skipping deployment because ShouldPublish == false."
+      continue
+    }
+
+    if (!$StageOnly) {
+      Write-Information "Checking to see if package $($packageDetail.FullyQualifiedName) is already deployed."
+      
+      if (Test-ReleasedPackage -RepositoryUrl $RepositoryUrl -PackageDetail $packageDetail) {
+        Write-Information "Package $($packageDetail.FullyQualifiedName) already deployed. Skipping deployment."
+        continue  
+      }
+    }
 
     Write-Information "Staging package to Maven Central"
     Write-Information "mvn org.sonatype.plugins:nexus-staging-maven-plugin:deploy-staged-repository `"--batch-mode`" `"-DnexusUrl=https://oss.sonatype.org`" `"$repositoryDirectoryOption`" `"$stagingProfileIdOption`" `"$stagingDescriptionOption`" `"-DrepositoryId=target-repo`" `"-DserverId=target-repo`" `"-Drepo.username=$RepositoryUsername`" `"-Drepo.password=`"[redacted]`"`" `"--settings=$PSScriptRoot\..\maven.publish.settings.xml`""
