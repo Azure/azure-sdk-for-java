@@ -7,6 +7,9 @@ import com.azure.security.keyvault.jca.implementation.signature.KeyVaultKeyLessR
 import com.azure.security.keyvault.jca.implementation.signature.KeyVaultKeyLessEcSha384Signature;
 import com.azure.security.keyvault.jca.implementation.signature.KeyVaultKeyLessEcSha512Signature;
 import com.azure.security.keyvault.jca.implementation.signature.KeyVaultKeyLessEcSha256Signature;
+import com.azure.security.keyvault.jca.implementation.signature.KeyVaultKeyLessRsa384Signature;
+import com.azure.security.keyvault.jca.implementation.signature.KeyVaultKeyLessRsa512Signature;
+import com.azure.security.keyvault.jca.implementation.signature.KeyVaultKeyLessRsa256Signature;
 import com.azure.security.keyvault.jca.implementation.signature.AbstractKeyVaultKeyLessSignature;
 
 import java.lang.reflect.InvocationTargetException;
@@ -98,6 +101,9 @@ public final class KeyVaultJcaProvider extends Provider {
                 KeyVaultKeyLessRsaSignature.class,
                 KeyVaultKeyLessEcSha256Signature.class,
                 KeyVaultKeyLessEcSha384Signature.class,
+                KeyVaultKeyLessRsa256Signature.class,
+                KeyVaultKeyLessRsa384Signature.class,
+                KeyVaultKeyLessRsa512Signature.class,
                 KeyVaultKeyLessEcSha512Signature.class)
                 .forEach(c -> putService(
                     new Service(

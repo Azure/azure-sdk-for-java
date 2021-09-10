@@ -16,7 +16,7 @@ import static com.azure.security.keyvault.jca.KeyVaultEncode.encodeByte;
  */
 public abstract class KeyVaultKeyLessECSignature extends AbstractKeyVaultKeyLessSignature {
 
-    private final String keyVaultDigestName;
+    protected final String keyVaultDigestName;
 
     /**
      * Constructs a new KeyVaultKeyLessECSignature that will use the specified digest
